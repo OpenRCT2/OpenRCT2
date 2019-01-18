@@ -817,18 +817,18 @@ public: // Peep
 public: // Guest
     void StopPurchaseThought(uint8_t ride_type);
     void TryGetUpFromSitting();
-    void ChoseNotToGoOnRide(ride_id_t rideIndex, bool peepAtRide, bool updateLastRide);
+    void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
     void ReadMap();
-    bool ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQueue, bool thinking);
-    bool ShouldGoToShop(ride_id_t rideIndex, bool peepAtShop);
+    bool ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool thinking);
+    bool ShouldGoToShop(Ride* ride, bool peepAtShop);
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
     void SpendMoney(money16& peep_expend_type, money32 amount);
     void SpendMoney(money32 amount);
-    void SetHasRidden(ride_id_t rideIndex);
-    bool HasRidden(ride_id_t rideIndex) const;
+    void SetHasRidden(Ride* ride);
+    bool HasRidden(Ride* ride) const;
     void SetHasRiddenRideType(int32_t rideType);
     bool HasRiddenRideType(int32_t rideType) const;
     int32_t HasFoodStandardFlag() const;
@@ -840,7 +840,7 @@ public: // Guest
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
-    bool DecideAndBuyItem(ride_id_t rideIndex, int32_t shopItem, money32 price);
+    bool DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price);
     void SetSpriteType(PeepSpriteType new_sprite_type);
 };
 assert_struct_size(rct_peep, 0x100);

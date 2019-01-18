@@ -349,10 +349,10 @@ static constexpr const ride_rating NauseaMinimumThresholds[] = {
 };
 // clang-format on
 
-static bool peep_has_voucher_for_free_ride(rct_peep* peep, ride_id_t rideIndex);
-static void peep_ride_is_too_intense(rct_peep* peep, ride_id_t rideIndex, bool peepAtRide);
+static bool peep_has_voucher_for_free_ride(rct_peep* peep, Ride* ride);
+static void peep_ride_is_too_intense(rct_peep* peep, Ride* ride, bool peepAtRide);
 static void peep_reset_ride_heading(rct_peep* peep);
-static void peep_tried_to_enter_full_queue(rct_peep* peep, ride_id_t rideIndex);
+static void peep_tried_to_enter_full_queue(rct_peep* peep, Ride* ride);
 static int16_t peep_calculate_ride_satisfaction(rct_peep* peep, Ride* ride);
 static void peep_update_favourite_ride(rct_peep* peep, Ride* ride);
 static int16_t peep_calculate_ride_value_satisfaction(rct_peep* peep, Ride* ride);
@@ -1193,9 +1193,8 @@ void rct_peep::CheckCantFindExit()
  *
  *  rct2: 0x0069AF1E
  */
-bool rct_peep::DecideAndBuyItem(ride_id_t rideIndex, int32_t shopItem, money32 price)
+bool rct_peep::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 {
-    Ride* ride = get_ride(rideIndex);
     money32 itemValue;
 
     bool hasVoucher = false;
@@ -1311,7 +1310,7 @@ loc_69B119:
                 PeepThoughtType thought_type = static_cast<PeepThoughtType>(
                     (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
                                     : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem)));
-                peep_insert_new_thought(this, thought_type, rideIndex);
+                peep_insert_new_thought(this, thought_type, ride->id);
                 return false;
             }
         }
@@ -1328,7 +1327,7 @@ loc_69B119:
                     PeepThoughtType thought_item = static_cast<PeepThoughtType>(
                         (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32))
                                         : (PEEP_THOUGHT_TYPE_BALLOON + shopItem)));
-                    peep_insert_new_thought(this, thought_item, rideIndex);
+                    peep_insert_new_thought(this, thought_item, ride->id);
                 }
             }
 
@@ -1390,16 +1389,16 @@ loc_69B221:
     time_to_consume = std::min((time_to_consume + consumptionTime), 255);
 
     if (shopItem == SHOP_ITEM_PHOTO)
-        photo1_ride_ref = rideIndex;
+        photo1_ride_ref = ride->id;
 
     if (shopItem == SHOP_ITEM_PHOTO2)
-        photo2_ride_ref = rideIndex;
+        photo2_ride_ref = ride->id;
 
     if (shopItem == SHOP_ITEM_PHOTO3)
-        photo3_ride_ref = rideIndex;
+        photo3_ride_ref = ride->id;
 
     if (shopItem == SHOP_ITEM_PHOTO4)
-        photo4_ride_ref = rideIndex;
+        photo4_ride_ref = ride->id;
 
     window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     UpdateSpriteType();
@@ -1488,7 +1487,7 @@ void rct_peep::OnEnterRide(ride_id_t rideIndex)
     if (no_of_rides < 255)
         no_of_rides++;
 
-    SetHasRidden(current_ride);
+    SetHasRidden(ride);
     peep_update_favourite_ride(this, ride);
     happiness_target = std::clamp(happiness_target + satisfaction, 0, PEEP_MAX_HAPPINESS);
     peep_update_ride_nausea_growth(this, ride);
@@ -1605,7 +1604,7 @@ void rct_peep::PickRideToGoOn()
         int32_t i;
         FOR_ALL_RIDES (i, ride)
         {
-            if (!HasRidden(i))
+            if (!HasRidden(ride))
             {
                 rideConsideration[i >> 5] |= (1u << (i & 0x1F));
             }
@@ -1662,7 +1661,7 @@ void rct_peep::PickRideToGoOn()
         ride = get_ride(i);
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
         {
-            if (ShouldGoOnRide(i, 0, false, true))
+            if (ShouldGoOnRide(ride, 0, false, true))
             {
                 *nextPotentialRide++ = i;
                 numPotentialRides++;
@@ -1713,10 +1712,8 @@ void rct_peep::PickRideToGoOn()
  * ride/shop, or they may just be thinking about it.
  *  rct2: 0x006960AB
  */
-bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQueue, bool thinking)
+bool rct_peep::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool thinking)
 {
-    Ride* ride = get_ride(rideIndex);
-
     // Indicates whether a peep is physically at the ride, or is just thinking about going on the ride.
     bool peepAtRide = !thinking;
 
@@ -1729,14 +1726,14 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
         {
             if (peep_flags & PEEP_FLAGS_LEAVING_PARK)
             {
-                ChoseNotToGoOnRide(rideIndex, peepAtRide, false);
+                ChoseNotToGoOnRide(ride, peepAtRide, false);
                 return false;
             }
         }
 
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
         {
-            return ShouldGoToShop(rideIndex, peepAtRide);
+            return ShouldGoToShop(ride, peepAtRide);
         }
 
         // This used to check !(flags & 2), but the function is only ever called with flags = 0, 1 or 6.
@@ -1746,7 +1743,7 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
             // Peeps won't join a queue that has 1000 peeps already in it.
             if (ride->stations[entranceNum].QueueLength >= 1000)
             {
-                peep_tried_to_enter_full_queue(this, rideIndex);
+                peep_tried_to_enter_full_queue(this, ride);
                 return false;
             }
 
@@ -1755,7 +1752,7 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
             {
                 if (ride->stations[entranceNum].LastPeepInQueue != SPRITE_INDEX_NULL)
                 {
-                    peep_tried_to_enter_full_queue(this, rideIndex);
+                    peep_tried_to_enter_full_queue(this, ride);
                     return false;
                 }
             }
@@ -1775,14 +1772,14 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
                         // This check enforces a minimum distance between peeps entering the queue.
                         if (maxD < 8)
                         {
-                            peep_tried_to_enter_full_queue(this, rideIndex);
+                            peep_tried_to_enter_full_queue(this, ride);
                             return false;
                         }
 
                         // This checks if there's a peep standing still at the very end of the queue.
                         if (maxD <= 13 && lastPeepInQueue->time_in_queue > 10)
                         {
-                            peep_tried_to_enter_full_queue(this, rideIndex);
+                            peep_tried_to_enter_full_queue(this, ride);
                             return false;
                         }
                     }
@@ -1796,14 +1793,14 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
         if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
             || ridePrice != 0)
         {
-            if (previous_ride == rideIndex)
+            if (previous_ride == ride->id)
             {
-                ChoseNotToGoOnRide(rideIndex, peepAtRide, false);
+                ChoseNotToGoOnRide(ride, peepAtRide, false);
                 return false;
             }
 
             // Basic price checks
-            if (ridePrice != 0 && !peep_has_voucher_for_free_ride(this, rideIndex))
+            if (ridePrice != 0 && !peep_has_voucher_for_free_ride(this, ride))
             {
                 if (ridePrice > cash_in_pocket)
                 {
@@ -1815,10 +1812,10 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
                         }
                         else
                         {
-                            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_CANT_AFFORD_0, rideIndex);
+                            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_CANT_AFFORD_0, ride->id);
                         }
                     }
-                    ChoseNotToGoOnRide(rideIndex, peepAtRide, true);
+                    ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
             }
@@ -1828,14 +1825,14 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
             {
                 if (peepAtRide)
                 {
-                    peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_NOT_SAFE, rideIndex);
+                    peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_NOT_SAFE, ride->id);
                     if (happiness_target >= 64)
                     {
                         happiness_target -= 8;
                     }
                     ride_update_popularity(ride, 0);
                 }
-                ChoseNotToGoOnRide(rideIndex, peepAtRide, true);
+                ChoseNotToGoOnRide(ride, peepAtRide, true);
                 return false;
             }
 
@@ -1843,11 +1840,11 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
             {
                 // If a peep has already decided that they're going to go on a ride, they'll skip the weather and
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
-                if (rideIndex == guest_heading_to_ride_id)
+                if (ride->id == guest_heading_to_ride_id)
                 {
                     if (ride->intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity)
                     {
-                        peep_ride_is_too_intense(this, rideIndex, peepAtRide);
+                        peep_ride_is_too_intense(this, ride, peepAtRide);
                         return false;
                     }
                 }
@@ -1858,14 +1855,14 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
                 {
                     if (peepAtRide)
                     {
-                        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
+                        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, ride->id);
                         if (happiness_target >= 64)
                         {
                             happiness_target -= 8;
                         }
                         ride_update_popularity(ride, 0);
                     }
-                    ChoseNotToGoOnRide(rideIndex, peepAtRide, true);
+                    ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
 
@@ -1880,19 +1877,19 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
                     {
                         if (peepAtRide)
                         {
-                            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_MORE_THRILLING, rideIndex);
+                            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_MORE_THRILLING, ride->id);
                             if (happiness_target >= 64)
                             {
                                 happiness_target -= 8;
                             }
                             ride_update_popularity(ride, 0);
                         }
-                        ChoseNotToGoOnRide(rideIndex, peepAtRide, true);
+                        ChoseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
                     }
                     if (ride->intensity > maxIntensity)
                     {
-                        peep_ride_is_too_intense(this, rideIndex, peepAtRide);
+                        peep_ride_is_too_intense(this, ride, peepAtRide);
                         return false;
                     }
 
@@ -1903,21 +1900,21 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
                     {
                         if (peepAtRide)
                         {
-                            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_SICKENING, rideIndex);
+                            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_SICKENING, ride->id);
                             if (happiness_target >= 64)
                             {
                                 happiness_target -= 8;
                             }
                             ride_update_popularity(ride, 0);
                         }
-                        ChoseNotToGoOnRide(rideIndex, peepAtRide, true);
+                        ChoseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
                     }
 
                     // Very nauseous peeps will only go on very gentle rides.
                     if (ride->nausea >= FIXED_2DP(1, 40) && nausea > 160)
                     {
-                        ChoseNotToGoOnRide(rideIndex, peepAtRide, false);
+                        ChoseNotToGoOnRide(ride, peepAtRide, false);
                         return false;
                     }
                 }
@@ -1929,7 +1926,7 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
             {
                 if ((scenario_rand() & 0xFFFF) > 0x1999U)
                 {
-                    ChoseNotToGoOnRide(rideIndex, peepAtRide, false);
+                    ChoseNotToGoOnRide(ride, peepAtRide, false);
                     return false;
                 }
 
@@ -1938,7 +1935,7 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
                     if (ride->max_positive_vertical_g > FIXED_2DP(5, 00) || ride->max_negative_vertical_g < FIXED_2DP(-4, 00)
                         || ride->max_lateral_g > FIXED_2DP(4, 00))
                     {
-                        ChoseNotToGoOnRide(rideIndex, peepAtRide, false);
+                        ChoseNotToGoOnRide(ride, peepAtRide, false);
                         return false;
                     }
                 }
@@ -1947,7 +1944,7 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
             uint32_t value = ride->value;
 
             // If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
-            if (value != 0xFFFF && !peep_has_voucher_for_free_ride(this, rideIndex) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+            if (value != 0xFFFF && !peep_has_voucher_for_free_ride(this, ride) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
                 // The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
                 if (peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
@@ -1959,14 +1956,14 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
                 {
                     if (peepAtRide)
                     {
-                        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_BAD_VALUE, rideIndex);
+                        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_BAD_VALUE, ride->id);
                         if (happiness_target >= 60)
                         {
                             happiness_target -= 16;
                         }
                         ride_update_popularity(ride, 0);
                     }
-                    ChoseNotToGoOnRide(rideIndex, peepAtRide, true);
+                    ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
                 }
 
@@ -1977,7 +1974,7 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
                     {
                         if (!(peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY))
                         {
-                            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_GOOD_VALUE, rideIndex);
+                            peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_GOOD_VALUE, ride->id);
                         }
                     }
                 }
@@ -1990,7 +1987,7 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
             ride_update_popularity(ride, 1);
         }
 
-        if (rideIndex == guest_heading_to_ride_id)
+        if (ride->id == guest_heading_to_ride_id)
         {
             peep_reset_ride_heading(this);
         }
@@ -1999,18 +1996,16 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
         return true;
     }
 
-    ChoseNotToGoOnRide(rideIndex, peepAtRide, false);
+    ChoseNotToGoOnRide(ride, peepAtRide, false);
     return false;
 }
 
-bool rct_peep::ShouldGoToShop(ride_id_t rideIndex, bool peepAtShop)
+bool rct_peep::ShouldGoToShop(Ride* ride, bool peepAtShop)
 {
-    Ride* ride = get_ride(rideIndex);
-
     // Peeps won't go to the same shop twice in a row.
-    if (rideIndex == previous_ride)
+    if (ride->id == previous_ride)
     {
-        ChoseNotToGoOnRide(rideIndex, peepAtShop, true);
+        ChoseNotToGoOnRide(ride, peepAtShop, true);
         return false;
     }
 
@@ -2018,7 +2013,7 @@ bool rct_peep::ShouldGoToShop(ride_id_t rideIndex, bool peepAtShop)
     {
         if (toilet < 70)
         {
-            ChoseNotToGoOnRide(rideIndex, peepAtShop, true);
+            ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
 
@@ -2028,14 +2023,14 @@ bool rct_peep::ShouldGoToShop(ride_id_t rideIndex, bool peepAtShop)
         {
             if (peepAtShop)
             {
-                peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_NOT_PAYING, rideIndex);
+                peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_NOT_PAYING, ride->id);
                 if (happiness_target >= 60)
                 {
                     happiness_target -= 16;
                 }
                 ride_update_popularity(ride, 0);
             }
-            ChoseNotToGoOnRide(rideIndex, peepAtShop, true);
+            ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
     }
@@ -2044,7 +2039,7 @@ bool rct_peep::ShouldGoToShop(ride_id_t rideIndex, bool peepAtShop)
     {
         if (nausea < 128)
         {
-            ChoseNotToGoOnRide(rideIndex, peepAtShop, true);
+            ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
     }
@@ -2060,17 +2055,17 @@ bool rct_peep::ShouldGoToShop(ride_id_t rideIndex, bool peepAtShop)
             }
             else
             {
-                peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_CANT_AFFORD_0, rideIndex);
+                peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_CANT_AFFORD_0, ride->id);
             }
         }
-        ChoseNotToGoOnRide(rideIndex, peepAtShop, true);
+        ChoseNotToGoOnRide(ride, peepAtShop, true);
         return false;
     }
 
     if (peepAtShop)
     {
         ride_update_popularity(ride, 1);
-        if (rideIndex == guest_heading_to_ride_id)
+        if (ride->id == guest_heading_to_ride_id)
         {
             peep_reset_ride_heading(this);
         }
@@ -2117,16 +2112,15 @@ void rct_peep::SpendMoney(money16& peep_expend_type, money32 amount)
     audio_play_sound_at_location(SOUND_PURCHASE, x, y, z);
 }
 
-void rct_peep::SetHasRidden(ride_id_t rideIndex)
+void rct_peep::SetHasRidden(Ride* ride)
 {
-    rides_been_on[rideIndex / 8] |= 1 << (rideIndex % 8);
-    Ride* ride = get_ride(rideIndex);
+    rides_been_on[ride->id / 8] |= 1 << (ride->id % 8);
     SetHasRiddenRideType(ride->type);
 }
 
-bool rct_peep::HasRidden(ride_id_t rideIndex) const
+bool rct_peep::HasRidden(Ride* ride) const
 {
-    return rides_been_on[rideIndex / 8] & (1 << (rideIndex % 8));
+    return rides_been_on[ride->id / 8] & (1 << (ride->id % 8));
 }
 
 void rct_peep::SetHasRiddenRideType(int32_t rideType)
@@ -2139,15 +2133,15 @@ bool rct_peep::HasRiddenRideType(int32_t rideType) const
     return ride_types_been_on[rideType / 8] & (1 << (rideType % 8));
 }
 
-void rct_peep::ChoseNotToGoOnRide(ride_id_t rideIndex, bool peepAtRide, bool updateLastRide)
+void rct_peep::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 {
     if (peepAtRide && updateLastRide)
     {
-        previous_ride = rideIndex;
+        previous_ride = ride->id;
         previous_ride_time_out = 0;
     }
 
-    if (rideIndex == guest_heading_to_ride_id)
+    if (ride->id == guest_heading_to_ride_id)
     {
         peep_reset_ride_heading(this);
     }
@@ -2165,10 +2159,10 @@ void rct_peep::ReadMap()
     }
 }
 
-static bool peep_has_voucher_for_free_ride(rct_peep* peep, ride_id_t rideIndex)
+static bool peep_has_voucher_for_free_ride(rct_peep* peep, Ride* ride)
 {
     return peep->item_standard_flags & PEEP_ITEM_VOUCHER && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
-        && peep->voucher_arguments == rideIndex;
+        && peep->voucher_arguments == ride->id;
 }
 
 /**
@@ -2176,15 +2170,13 @@ static bool peep_has_voucher_for_free_ride(rct_peep* peep, ride_id_t rideIndex)
  * Does not effect peeps that walk up to the queue entrance.
  * This flag is reset the next time a peep successfully joins the queue.
  */
-static void peep_tried_to_enter_full_queue(rct_peep* peep, ride_id_t rideIndex)
+static void peep_tried_to_enter_full_queue(rct_peep* peep, Ride* ride)
 {
-    Ride* ride = get_ride(rideIndex);
-
     ride->lifecycle_flags |= RIDE_LIFECYCLE_QUEUE_FULL;
-    peep->previous_ride = rideIndex;
+    peep->previous_ride = ride->id;
     peep->previous_ride_time_out = 0;
     // Change status "Heading to" to "Walking" if queue is full
-    if (rideIndex == peep->guest_heading_to_ride_id)
+    if (ride->id == peep->guest_heading_to_ride_id)
     {
         peep_reset_ride_heading(peep);
     }
@@ -2203,20 +2195,18 @@ static void peep_reset_ride_heading(rct_peep* peep)
     }
 }
 
-static void peep_ride_is_too_intense(rct_peep* peep, ride_id_t rideIndex, bool peepAtRide)
+static void peep_ride_is_too_intense(rct_peep* peep, Ride* ride, bool peepAtRide)
 {
-    Ride* ride = get_ride(rideIndex);
-
     if (peepAtRide)
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_INTENSE, rideIndex);
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_INTENSE, ride->id);
         if (peep->happiness_target >= 64)
         {
             peep->happiness_target -= 8;
         }
         ride_update_popularity(ride, 0);
     }
-    peep->ChoseNotToGoOnRide(rideIndex, peepAtRide, true);
+    peep->ChoseNotToGoOnRide(ride, peepAtRide, true);
 }
 
 /**
@@ -2463,7 +2453,7 @@ static int16_t peep_calculate_ride_satisfaction(rct_peep* peep, Ride* ride)
     if (peep->HasRiddenRideType(ride->type))
         satisfaction += 10;
 
-    if (peep->HasRidden(peep->current_ride))
+    if (peep->HasRidden(get_ride(peep->current_ride)))
         satisfaction += 10;
 
     return satisfaction;
@@ -2987,7 +2977,7 @@ static void peep_head_for_nearest_ride_type(rct_peep* peep, int32_t rideType)
         ride = get_ride(i);
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
         {
-            if (peep->ShouldGoOnRide(i, 0, false, true))
+            if (peep->ShouldGoOnRide(ride, 0, false, true))
             {
                 *nextPotentialRide++ = i;
                 numPotentialRides++;
@@ -3116,7 +3106,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep* peep, int32_t rideTy
         ride = get_ride(i);
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
         {
-            if (peep->ShouldGoOnRide(i, 0, false, true))
+            if (peep->ShouldGoOnRide(ride, 0, false, true))
             {
                 *nextPotentialRide++ = i;
                 numPotentialRides++;
@@ -3313,7 +3303,7 @@ void rct_peep::UpdateBuying()
             {
                 money16 price = ride->price_secondary;
 
-                item_bought = DecideAndBuyItem(current_ride, ride_type->shop_item_secondary, price);
+                item_bought = DecideAndBuyItem(ride, ride_type->shop_item_secondary, price);
                 if (item_bought)
                 {
                     ride->no_secondary_items_sold++;
@@ -3324,7 +3314,7 @@ void rct_peep::UpdateBuying()
             {
                 money16 price = ride->price;
 
-                item_bought = DecideAndBuyItem(current_ride, ride_type->shop_item, price);
+                item_bought = DecideAndBuyItem(ride, ride_type->shop_item, price);
                 if (item_bought)
                 {
                     ride->no_primary_items_sold++;
@@ -4283,7 +4273,7 @@ void rct_peep::UpdateRideInExit()
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
     {
         uint8_t secondaryItem = RidePhotoItems[ride->type];
-        if (DecideAndBuyItem(current_ride, secondaryItem, ride->price_secondary))
+        if (DecideAndBuyItem(ride, secondaryItem, ride->price_secondary))
         {
             ride->no_secondary_items_sold++;
         }
