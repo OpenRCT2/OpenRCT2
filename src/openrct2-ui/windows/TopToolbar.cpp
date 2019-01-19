@@ -3200,7 +3200,6 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
     }
 
     dropdown_set_checked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != nullptr);
-    gDropdownDefaultIndex = DDIDX_CONSOLE;
 }
 
 static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
