@@ -361,6 +361,7 @@ enum
 };
 
 #define AUTOSAVE_PAUSE 0
+#define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 

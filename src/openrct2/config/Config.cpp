@@ -34,8 +34,6 @@
 
 #include <memory>
 
-#define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
