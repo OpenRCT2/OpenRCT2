@@ -178,6 +178,9 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_ALWAYS_NATIVE_LOADSAVE,
     WIDX_AUTOSAVE,
     WIDX_AUTOSAVE_DROPDOWN,
+    WIDX_AUTOSAVE_AMOUNT,
+    WIDX_AUTOSAVE_AMOUNT_UP,
+    WIDX_AUTOSAVE_AMOUNT_DOWN,
     WIDX_PATH_TO_RCT1_TEXT,
     WIDX_PATH_TO_RCT1_BUTTON,
     WIDX_PATH_TO_RCT1_CLEAR,
@@ -359,9 +362,10 @@ static rct_widget window_options_advanced_widgets[] = {
     { WWT_CHECKBOX,         1,  10,     299,    129,    140,    STR_ALWAYS_NATIVE_LOADSAVE,                 STR_ALWAYS_NATIVE_LOADSAVE_TIP },                   // Use native load/save window
     { WWT_DROPDOWN,         1,  165,    299,    145,    157,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
     { WWT_BUTTON,           1,  288,    298,    146,    156,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
-    { WWT_LABEL,            1,  23,     298,    165,    176,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
-    { WWT_BUTTON,           1,  24,     289,    180,    193,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
-    { WWT_BUTTON,           1,  289,    299,    180,    193,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
+    SPINNER_WIDGETS        (1,  165,    299,    165,    176,    STR_NONE,                                   STR_AUTOSAVE_AMOUNT_TIP ),                          // Autosave amount spinner
+    { WWT_LABEL,            1,  23,     298,    184,    195,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
+    { WWT_BUTTON,           1,  24,     289,    199,    212,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
+    { WWT_BUTTON,           1,  289,    299,    199,    212,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
     { WIDGETS_END },
 };
 
@@ -598,6 +602,9 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_ALWAYS_NATIVE_LOADSAVE) |
     (1 << WIDX_AUTOSAVE) |
     (1 << WIDX_AUTOSAVE_DROPDOWN) |
+    (1 << WIDX_AUTOSAVE_AMOUNT) |
+    (1 << WIDX_AUTOSAVE_AMOUNT_UP) |
+    (1 << WIDX_AUTOSAVE_AMOUNT_DOWN) |
     (1 << WIDX_PATH_TO_RCT1_TEXT) |
     (1 << WIDX_PATH_TO_RCT1_BUTTON) |
     (1 << WIDX_PATH_TO_RCT1_CLEAR),
@@ -1318,6 +1325,22 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
                     dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
                     break;
+                case WIDX_AUTOSAVE_AMOUNT_UP:
+                    gConfigGeneral.autosave_amount += 1;
+                    config_save_default();
+                    widget_invalidate(w, WIDX_AUTOSAVE);
+                    widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
+                    widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
+                    break;
+                case WIDX_AUTOSAVE_AMOUNT_DOWN:
+                    if (gConfigGeneral.autosave_amount > 1)
+                    {
+                        gConfigGeneral.autosave_amount -= 1;
+                        config_save_default();
+                        widget_invalidate(w, WIDX_AUTOSAVE);
+                        widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
+                        widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
+                    }
             }
             break;
 
@@ -2062,6 +2085,13 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, window_options_autosave_names[gConfigGeneral.autosave_frequency], nullptr, w->colours[1],
                 w->x + window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
                 w->y + window_options_advanced_widgets[WIDX_AUTOSAVE].top);
+            gfx_draw_string_left(
+                dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1], w->x + 24,
+                w->y + window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
+            int32_t autosavesToKeep = (int32_t)(gConfigGeneral.autosave_amount);
+            gfx_draw_string_left(
+                dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
+                w->x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->y + w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
 
 #ifdef __APPLE__
             set_format_arg(0, uintptr_t, (uintptr_t)macos_str_decomp_to_precomp(gConfigGeneral.rct1_path));

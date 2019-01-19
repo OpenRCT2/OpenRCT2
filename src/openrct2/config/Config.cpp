@@ -137,6 +137,7 @@ namespace Config
             auto model = &gConfigGeneral;
             model->always_show_gridlines = reader->GetBoolean("always_show_gridlines", false);
             model->autosave_frequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
+            model->autosave_amount = reader->GetInt32("autosave_amount", DEFAULT_NUM_AUTOSAVES_TO_KEEP);
             model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
             model->currency_format = reader->GetEnum<int32_t>("currency_format", platform_get_locale_currency(), Enum_Currency);
             model->custom_currency_rate = reader->GetInt32("custom_currency_rate", 10);
@@ -220,6 +221,7 @@ namespace Config
         writer->WriteSection("general");
         writer->WriteBoolean("always_show_gridlines", model->always_show_gridlines);
         writer->WriteInt32("autosave", model->autosave_frequency);
+        writer->WriteInt32("autosave_amount", model->autosave_amount);
         writer->WriteBoolean("confirmation_prompt", model->confirmation_prompt);
         writer->WriteEnum<int32_t>("currency_format", model->currency_format, Enum_Currency);
         writer->WriteInt32("custom_currency_rate", model->custom_currency_rate);

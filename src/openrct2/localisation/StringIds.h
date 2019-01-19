@@ -3898,6 +3898,9 @@ enum
 
     STR_TILE_INSPECTOR_STATION_INDEX = 6277,
 
+    STR_AUTOSAVE_AMOUNT = 6278,
+    STR_AUTOSAVE_AMOUNT_TIP = 6279,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

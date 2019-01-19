@@ -71,6 +71,7 @@ struct GeneralConfiguration
     bool no_test_crashes;
     bool debugging_tools;
     int32_t autosave_frequency;
+    int32_t autosave_amount;
     bool auto_staff_placement;
     bool handymen_mow_default;
     bool auto_open_shops;
