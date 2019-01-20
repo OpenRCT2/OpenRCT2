@@ -429,8 +429,8 @@ static int32_t scenario_create_ducks()
     // Originally, this function generated coordinates from 64 to 191.
     // It now generates coordinates from 0 to 255, so smaller maps may also spawn ducks.
     r = scenario_rand();
-    x = ((r >> 16) & 0xFFFF) & 0xFF;
-    y = (r & 0xFFFF) & 0xFF;
+    x = ((r >> 16) & 0xFFFF) % MAXIMUM_MAP_SIZE_TECHNICAL;
+    y = (r & 0xFFFF) % MAXIMUM_MAP_SIZE_TECHNICAL;
     x = x * 32;
     y = y * 32;
 
