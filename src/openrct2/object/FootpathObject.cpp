@@ -39,6 +39,20 @@ void FootpathObject::Load()
     _legacyType.string_idx = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.bridge_image = _legacyType.image + 109;
+
+    _pathSurfaceEntry.string_idx = _legacyType.string_idx;
+    _pathSurfaceEntry.image = _legacyType.image;
+    _pathSurfaceEntry.queue_image = _legacyType.image + 51;
+    _pathSurfaceEntry.preview = _legacyType.image + 71;
+    _pathSurfaceEntry.flags = _legacyType.flags;
+
+    _pathRailingsEntry.string_idx = _legacyType.string_idx;
+    _pathRailingsEntry.bridge_image = _legacyType.bridge_image;
+    _pathRailingsEntry.preview = _legacyType.image + 71;
+    _pathRailingsEntry.flags = _legacyType.flags;
+    _pathRailingsEntry.scrolling_mode = _legacyType.scrolling_mode;
+    _pathRailingsEntry.support_type = _legacyType.support_type;
+    _pathRailingsEntry.railings_image = _legacyType.image + 73;
 }
 
 void FootpathObject::Unload()
@@ -54,8 +68,8 @@ void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t 
 {
     int32_t x = width / 2;
     int32_t y = height / 2;
-    gfx_draw_sprite(dpi, _legacyType.image + 71, x - 49, y - 17, 0);
-    gfx_draw_sprite(dpi, _legacyType.image + 72, x + 4, y - 17, 0);
+    gfx_draw_sprite(dpi, _pathSurfaceEntry.preview, x - 49, y - 17, 0);
+    gfx_draw_sprite(dpi, _pathSurfaceEntry.preview + 1, x + 4, y - 17, 0);
 }
 
 static uint8_t ParseSupportType(const std::string& s)

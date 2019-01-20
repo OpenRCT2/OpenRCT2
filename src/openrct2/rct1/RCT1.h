@@ -1287,6 +1287,14 @@ enum
     RCT1_LANDSCAPE_DOOR_OPEN = 3,
 };
 
+enum
+{
+    RCT1_PATH_SUPPORT_TYPE_TRUSS,
+    RCT1_PATH_SUPPORT_TYPE_COATED_WOOD,
+    RCT1_PATH_SUPPORT_TYPE_SPACE,
+    RCT1_PATH_SUPPORT_TYPE_BAMBOO,
+};
+
 void load_from_sv4(const char* path);
 void load_from_sc4(const char* path);
 

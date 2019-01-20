@@ -211,6 +211,7 @@ public:
     bool AdditionIsGhost() const;
     uint8_t GetAdditionStatus() const;
     uint8_t GetRCT1PathType() const;
+    uint8_t GetRCT1SupportType() const;
 };
 assert_struct_size(RCT12PathElement, 8);
 struct RCT12TrackElement : RCT12TileElementBase

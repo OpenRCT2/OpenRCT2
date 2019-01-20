@@ -155,6 +155,11 @@ uint8_t RCT12PathElement::GetRCT1PathType() const
     return pathType2;
 }
 
+uint8_t RCT12PathElement::GetRCT1SupportType() const
+{
+    return (flags & 0b01100000) >> 5;
+}
+
 uint8_t RCT12TrackElement::GetTrackType() const
 {
     return trackType;

@@ -1083,7 +1083,7 @@ bool metal_b_supports_paint_setup(
  */
 bool path_a_supports_paint_setup(
     paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags,
-    rct_footpath_entry* railingEntry, bool* underground)
+    PathRailingsEntry* railingEntry, bool* underground)
 {
     if (underground != nullptr)
     {
@@ -1230,7 +1230,7 @@ bool path_a_supports_paint_setup(
  */
 bool path_b_supports_paint_setup(
     paint_session* session, int32_t segment, int32_t special, int32_t height, uint32_t imageColourFlags,
-    rct_footpath_entry* railingEntry)
+    PathRailingsEntry* railingEntry)
 {
     support_height* supportSegments = session->SupportSegments;
 

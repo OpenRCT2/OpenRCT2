@@ -16,6 +16,8 @@ class FootpathObject final : public Object
 {
 private:
     rct_footpath_entry _legacyType = {};
+    PathSurfaceEntry _pathSurfaceEntry = {};
+    PathRailingsEntry _pathRailingsEntry = {};
 
 public:
     explicit FootpathObject(const rct_object_entry& entry)
@@ -26,6 +28,16 @@ public:
     void* GetLegacyData() override
     {
         return &_legacyType;
+    }
+
+    PathSurfaceEntry* GetPathSurfaceEntry()
+    {
+        return &_pathSurfaceEntry;
+    }
+
+    PathRailingsEntry* GetPathRailingsEntry()
+    {
+        return &_pathRailingsEntry;
     }
 
     void ReadLegacy(IReadObjectContext* context, IStream* stream) override;

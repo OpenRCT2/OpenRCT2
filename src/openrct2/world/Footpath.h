@@ -36,6 +36,26 @@ struct rct_footpath_entry
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
+struct PathSurfaceEntry
+{
+    rct_string_id string_idx;
+    uint32_t image;
+    uint32_t queue_image;
+    uint32_t preview;
+    uint8_t flags;
+};
+
+struct PathRailingsEntry
+{
+    rct_string_id string_idx;
+    uint32_t preview;
+    uint32_t bridge_image;
+    uint32_t railings_image;
+    uint8_t support_type;
+    uint8_t flags;
+    uint8_t scrolling_mode;
+};
+
 // Masks for values stored in TileElement.type
 enum
 {
@@ -170,7 +190,8 @@ int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32
 void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement);
 int32_t entrance_get_directions(const TileElement* tileElement);
 
-rct_footpath_entry* get_footpath_entry(int32_t entryIndex);
+PathSurfaceEntry* get_path_surface_entry(int32_t entryIndex);
+PathRailingsEntry* get_path_railings_entry(int32_t entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);
