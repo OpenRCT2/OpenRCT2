@@ -12,8 +12,11 @@
 
 #include "../common.h"
 #include "../rct12/RCT12.h"
+#include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
+
+#include <bitset>
 
 #define PEEP_MAX_THOUGHTS 5
 #define PEEP_THOUGHT_ITEM_NONE 255
@@ -842,6 +845,10 @@ public: // Guest
     void CheckCantFindExit();
     bool DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price);
     void SetSpriteType(PeepSpriteType new_sprite_type);
+
+private:
+    Ride* FindBestRideToGoOn();
+    std::bitset<MAX_RIDES> FindRidesToGoOn();
 };
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)

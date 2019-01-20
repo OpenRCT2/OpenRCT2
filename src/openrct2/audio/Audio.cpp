@@ -23,6 +23,7 @@
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
+#include "../peep/Peep.h"
 #include "AudioContext.h"
 #include "AudioMixer.h"
 

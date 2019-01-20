@@ -1580,8 +1580,6 @@ bool rct_peep::HasFood() const
  */
 void rct_peep::PickRideToGoOn()
 {
-    Ride* ride;
-
     if (state != PEEP_STATE_WALKING)
         return;
     if (guest_heading_to_ride_id != RIDE_ID_NULL)
@@ -1593,7 +1591,58 @@ void rct_peep::PickRideToGoOn()
     if (x == LOCATION_NULL)
         return;
 
-    uint32_t rideConsideration[8]{};
+    auto ride = FindBestRideToGoOn();
+    if (ride != nullptr)
+    {
+        // Head to that ride
+        guest_heading_to_ride_id = ride->id;
+        peep_is_lost_countdown = 200;
+        peep_reset_pathfind_goal(this);
+
+        // Invalidate windows
+        auto w = window_find_by_number(WC_PEEP, sprite_index);
+        if (w != nullptr)
+        {
+            window_event_invalidate_call(w);
+            widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
+        }
+
+        // Make peep look at their map if they have one
+        if (item_standard_flags & PEEP_ITEM_MAP)
+        {
+            ReadMap();
+        }
+    }
+}
+
+Ride* rct_peep::FindBestRideToGoOn()
+{
+    // Pick the most exciting ride
+    auto rideConsideration = FindRidesToGoOn();
+    Ride* mostExcitingRide = nullptr;
+    for (int32_t i = 0; i < MAX_RIDES; i++)
+    {
+        if (rideConsideration[i])
+        {
+            auto ride = get_ride(i);
+            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
+            {
+                if (ShouldGoOnRide(ride, 0, false, true) && ride_has_ratings(ride))
+                {
+                    if (mostExcitingRide == nullptr || ride->excitement > mostExcitingRide->excitement)
+                    {
+                        mostExcitingRide = ride;
+                    }
+                }
+            }
+        }
+    }
+    return mostExcitingRide;
+}
+
+std::bitset<MAX_RIDES> rct_peep::FindRidesToGoOn()
+{
+    std::bitset<MAX_RIDES> rideConsideration;
 
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
@@ -1602,108 +1651,56 @@ void rct_peep::PickRideToGoOn()
     {
         // Consider rides that peep hasn't been on yet
         int32_t i;
+        Ride* ride;
         FOR_ALL_RIDES (i, ride)
         {
             if (!HasRidden(ride))
             {
-                rideConsideration[i >> 5] |= (1u << (i & 0x1F));
+                rideConsideration[i] = true;
             }
         }
     }
     else
     {
         // Take nearby rides into consideration
+        constexpr auto radius = 10 * 32;
         int32_t cx = floor2(x, 32);
         int32_t cy = floor2(y, 32);
-        for (int32_t tileX = cx - 320; tileX <= cx + 320; tileX += 32)
+        for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += 32)
         {
-            for (int32_t tileY = cy - 320; tileY <= cy + 320; tileY += 32)
+            for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += 32)
             {
-                if (tileX >= 0 && tileY >= 0 && tileX < (256 * 32) && tileY < (256 * 32))
+                if (map_is_location_valid({ tileX, tileY }))
                 {
-                    TileElement* tileElement = map_get_first_element_at(tileX >> 5, tileY >> 5);
-                    do
+                    auto tileElement = map_get_first_element_at(tileX >> 5, tileY >> 5);
+                    if (tileElement != nullptr)
                     {
-                        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-                            continue;
-
-                        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                        rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
-                    } while (!(tileElement++)->IsLastForTile());
+                        do
+                        {
+                            if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+                            {
+                                auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+                                rideConsideration[rideIndex] = true;
+                            }
+                        } while (!(tileElement++)->IsLastForTile());
+                    }
                 }
             }
         }
 
         // Always take the tall rides into consideration (realistic as you can usually see them from anywhere in the park)
         int32_t i;
+        Ride* ride;
         FOR_ALL_RIDES (i, ride)
         {
-            if (ride->status != RIDE_STATUS_OPEN)
-                continue;
-            if (!ride_has_ratings(ride))
-                continue;
-            if (ride->highest_drop_height <= 66 && ride->excitement < RIDE_RATING(8, 00))
-                continue;
-
-            rideConsideration[i >> 5] |= (1u << (i & 0x1F));
-        }
-    }
-
-    // Filter the considered rides
-    uint8_t potentialRides[256];
-    uint8_t* nextPotentialRide = &potentialRides[0];
-    int32_t numPotentialRides = 0;
-    for (int32_t i = 0; i < MAX_RIDES; i++)
-    {
-        if (!(rideConsideration[i >> 5] & (1u << (i & 0x1F))))
-            continue;
-
-        ride = get_ride(i);
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
-        {
-            if (ShouldGoOnRide(ride, 0, false, true))
+            if (ride->highest_drop_height > 66 || ride->excitement >= RIDE_RATING(8, 00))
             {
-                *nextPotentialRide++ = i;
-                numPotentialRides++;
+                rideConsideration[i] = true;
             }
         }
     }
 
-    // Pick the most exciting ride
-    ride_id_t mostExcitingRideIndex = RIDE_ID_NULL;
-    ride_rating mostExcitingRideRating = 0;
-    for (int32_t i = 0; i < numPotentialRides; i++)
-    {
-        ride = get_ride(potentialRides[i]);
-        if (!ride_has_ratings(ride))
-            continue;
-        if (ride->excitement > mostExcitingRideRating)
-        {
-            mostExcitingRideIndex = potentialRides[i];
-            mostExcitingRideRating = ride->excitement;
-        }
-    }
-    if (mostExcitingRideIndex == RIDE_ID_NULL)
-        return;
-
-    // Head to that ride
-    guest_heading_to_ride_id = mostExcitingRideIndex;
-    peep_is_lost_countdown = 200;
-    peep_reset_pathfind_goal(this);
-
-    // Invalidate windows
-    rct_window* w = window_find_by_number(WC_PEEP, sprite_index);
-    if (w != nullptr)
-    {
-        window_event_invalidate_call(w);
-        widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
-    }
-
-    // Make peep look at their map if they have one
-    if (item_standard_flags & PEEP_ITEM_MAP)
-    {
-        ReadMap();
-    }
+    return rideConsideration;
 }
 
 /**

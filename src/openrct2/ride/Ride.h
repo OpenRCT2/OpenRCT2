@@ -11,7 +11,6 @@
 #define _RIDE_H_
 
 #include "../common.h"
-#include "../peep/Peep.h"
 #include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
 #include "../world/Map.h"
@@ -21,6 +20,7 @@
 
 interface IObjectManager;
 class StationObject;
+struct rct_peep;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
 // The max number of different types of vehicle.
