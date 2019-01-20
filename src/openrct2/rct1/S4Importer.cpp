@@ -2065,9 +2065,34 @@ private:
                 dst2->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
 
                 dst2->SetPathEntryIndex(entryIndex);
+                dst2->SetShouldDrawPathOverSupports(true);
                 if (RCT1::PathIsQueue(pathType))
                 {
                     dst2->SetIsQueue(true);
+                }
+                if (_gameVersion != FILE_VERSION_RCT1_LL)
+                {
+                    dst2->SetRailingEntryIndex(0);
+                }
+                else
+                {
+                    uint8_t railingsEntryIndex;
+                    switch (src2->GetRCT1SupportType())
+                    {
+                        case RCT1_PATH_SUPPORT_TYPE_COATED_WOOD:
+                            railingsEntryIndex = 3;
+                            break;
+                        case RCT1_PATH_SUPPORT_TYPE_SPACE:
+                            railingsEntryIndex = 4;
+                            break;
+                        case RCT1_PATH_SUPPORT_TYPE_BAMBOO:
+                            railingsEntryIndex = 5;
+                            break;
+                        case RCT1_PATH_SUPPORT_TYPE_TRUSS:
+                        default:
+                            railingsEntryIndex = 0;
+                    }
+                    dst2->SetRailingEntryIndex(railingsEntryIndex);
                 }
 
                 // Additions

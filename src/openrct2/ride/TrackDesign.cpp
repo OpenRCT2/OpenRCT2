@@ -783,9 +783,9 @@ static int32_t track_design_place_scenery(
                     }
 
                     entry_index = 0;
-                    for (rct_footpath_entry* path = get_footpath_entry(0);
+                    for (PathSurfaceEntry* path = get_path_surface_entry(0);
                          entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-                         path = get_footpath_entry(entry_index), entry_index++)
+                         path = get_path_surface_entry(entry_index), entry_index++)
                     {
                         if (path == nullptr)
                         {
@@ -899,9 +899,9 @@ static int32_t track_design_place_scenery(
                     }
 
                     entry_index = 0;
-                    for (rct_footpath_entry* path = get_footpath_entry(0);
+                    for (PathSurfaceEntry* path = get_path_surface_entry(0);
                          entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-                         path = get_footpath_entry(entry_index), entry_index++)
+                         path = get_path_surface_entry(entry_index), entry_index++)
                     {
                         if (path == nullptr)
                         {

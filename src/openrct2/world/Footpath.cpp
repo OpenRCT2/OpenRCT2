@@ -16,6 +16,7 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../paint/VirtualFloor.h"
@@ -2103,14 +2104,14 @@ uint8_t PathElement::GetRailingEntryIndex() const
     return GetPathEntryIndex();
 }
 
-rct_footpath_entry* PathElement::GetPathEntry() const
+PathSurfaceEntry* PathElement::GetPathEntry() const
 {
-    return get_footpath_entry(GetPathEntryIndex());
+    return get_path_surface_entry(GetPathEntryIndex());
 }
 
-rct_footpath_entry* PathElement::GetRailingEntry() const
+PathRailingsEntry* PathElement::GetRailingEntry() const
 {
-    return get_footpath_entry(GetRailingEntryIndex());
+    return get_path_railings_entry(GetRailingEntryIndex());
 }
 
 void PathElement::SetPathEntryIndex(uint8_t newEntryIndex)
@@ -2687,14 +2688,26 @@ void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement)
         tileElement->AsPath()->SetEdgesAndCorners(0);
 }
 
-rct_footpath_entry* get_footpath_entry(int32_t entryIndex)
+PathSurfaceEntry* get_path_surface_entry(int32_t entryIndex)
 {
-    rct_footpath_entry* result = nullptr;
+    PathSurfaceEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
     if (obj != nullptr)
     {
-        result = (rct_footpath_entry*)obj->GetLegacyData();
+        result = ((FootpathObject*)obj)->GetPathSurfaceEntry();
+    }
+    return result;
+}
+
+PathRailingsEntry* get_path_railings_entry(int32_t entryIndex)
+{
+    PathRailingsEntry* result = nullptr;
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
+    if (obj != nullptr)
+    {
+        result = ((FootpathObject*)obj)->GetPathRailingsEntry();
     }
     return result;
 }

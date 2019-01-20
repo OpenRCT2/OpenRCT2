@@ -234,12 +234,12 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     // Index to which part of the entrance
     // Middle, left, right
     uint8_t part_index = tile_element->AsEntrance()->GetSequenceIndex();
-    rct_footpath_entry* path_entry = nullptr;
+    PathSurfaceEntry* path_entry = nullptr;
 
     // The left and right of the park entrance often have this set to 127.
     // So only attempt to get the footpath type if we're dealing with the middle bit of the entrance.
     if (part_index == 0)
-        path_entry = get_footpath_entry(tile_element->AsEntrance()->GetPathType());
+        path_entry = get_path_surface_entry(tile_element->AsEntrance()->GetPathType());
 
     rct_entrance_type* entrance;
     uint8_t di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;

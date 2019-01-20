@@ -82,11 +82,11 @@ static constexpr const uint8_t byte_98D8A4[] = {
 // clang-format on
 
 void path_paint_box_support(
-    paint_session* session, const TileElement* tileElement, int32_t height, rct_footpath_entry* footpathEntry,
-    rct_footpath_entry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
+    paint_session* session, const TileElement* tileElement, int32_t height, PathSurfaceEntry* footpathEntry,
+    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 void path_paint_pole_support(
-    paint_session* session, const TileElement* tileElement, int16_t height, rct_footpath_entry* footpathEntry,
-    rct_footpath_entry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
+    paint_session* session, const TileElement* tileElement, int16_t height, PathSurfaceEntry* footpathEntry,
+    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(
@@ -322,8 +322,10 @@ static void path_bit_jumping_fountains_paint(
  */
 static void sub_6A4101(
     paint_session* session, const TileElement* tile_element, uint16_t height, uint32_t connectedEdges, bool word_F3F038,
-    rct_footpath_entry* railingEntry, uint32_t base_image_id, uint32_t imageFlags)
+    PathRailingsEntry* railingEntry, uint32_t imageFlags)
 {
+    uint32_t base_image_id = railingEntry->railings_image | imageFlags;
+
     if (tile_element->AsPath()->IsQueue())
     {
         uint8_t local_ebp = connectedEdges & 0x0F;
@@ -333,20 +335,20 @@ static void sub_6A4101(
                     & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
             {
                 case 0:
-                    sub_98197C(session, 95 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
-                    sub_98197C(session, 95 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
+                    sub_98197C(session, 22 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
+                    sub_98197C(session, 22 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
                     break;
                 case 1:
-                    sub_98197C(session, 94 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
-                    sub_98197C(session, 94 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
+                    sub_98197C(session, 21 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
+                    sub_98197C(session, 21 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
                     break;
                 case 2:
-                    sub_98197C(session, 96 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
-                    sub_98197C(session, 96 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
+                    sub_98197C(session, 23 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
+                    sub_98197C(session, 23 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
                     break;
                 case 3:
-                    sub_98197C(session, 93 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
-                    sub_98197C(session, 93 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
+                    sub_98197C(session, 20 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
+                    sub_98197C(session, 20 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
                     break;
             }
         }
@@ -355,52 +357,52 @@ static void sub_6A4101(
             switch (local_ebp)
             {
                 case 1:
-                    sub_98197C(session, 90 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                    sub_98197C(session, 90 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                    sub_98197C(session, 17 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                    sub_98197C(session, 17 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
                     break;
                 case 2:
-                    sub_98197C(session, 91 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                    sub_98197C(session, 91 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                    sub_98197C(session, 18 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                    sub_98197C(session, 18 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
                     break;
                 case 3:
-                    sub_98197C(session, 90 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                    sub_98197C(session, 17 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
                     sub_98197C(
-                        session, 91 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
+                        session, 18 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
                         height + 2); // bound_box_offset_y seems to be a bug
-                    sub_98197C(session, 98 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    sub_98197C(session, 25 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                     break;
                 case 4:
-                    sub_98197C(session, 92 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                    sub_98197C(session, 92 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                    sub_98197C(session, 19 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                    sub_98197C(session, 19 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
                     break;
                 case 5:
-                    sub_98197C(session, 88 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
-                    sub_98197C(session, 88 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
+                    sub_98197C(session, 15 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
+                    sub_98197C(session, 15 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
                     break;
                 case 6:
-                    sub_98197C(session, 91 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                    sub_98197C(session, 92 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                    sub_98197C(session, 99 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    sub_98197C(session, 18 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                    sub_98197C(session, 19 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                    sub_98197C(session, 26 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
                     break;
                 case 8:
-                    sub_98197C(session, 89 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                    sub_98197C(session, 89 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                    sub_98197C(session, 16 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                    sub_98197C(session, 16 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
                     break;
                 case 9:
-                    sub_98197C(session, 89 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
-                    sub_98197C(session, 90 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
-                    sub_98197C(session, 97 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    sub_98197C(session, 16 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                    sub_98197C(session, 17 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                    sub_98197C(session, 24 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
                     break;
                 case 10:
-                    sub_98197C(session, 87 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
-                    sub_98197C(session, 87 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
+                    sub_98197C(session, 14 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
+                    sub_98197C(session, 14 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
                     break;
                 case 12:
-                    sub_98197C(session, 89 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                    sub_98197C(session, 16 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
                     sub_98197C(
-                        session, 92 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
+                        session, 19 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
                         height + 2); // bound_box_offset_x seems to be a bug
-                    sub_98197C(session, 100 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    sub_98197C(session, 27 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                     break;
                 default:
                     // purposely left empty
@@ -427,7 +429,7 @@ static void sub_6A4101(
         LocationXYZ16 boundBoxOffsets = { BannerBoundBoxes[direction][0].x, BannerBoundBoxes[direction][0].y,
                                           static_cast<int16_t>(height + 2) };
 
-        uint32_t imageId = (direction << 1) + base_image_id + 101;
+        uint32_t imageId = (direction << 1) + base_image_id + 28;
 
         // Draw pole in the back
         sub_98197C(session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
@@ -498,20 +500,20 @@ static void sub_6A4101(
                 & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
         {
             case 0:
-                sub_98197C(session, 81 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
-                sub_98197C(session, 81 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
+                sub_98197C(session, 8 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
+                sub_98197C(session, 8 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
                 break;
             case 1:
-                sub_98197C(session, 80 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
-                sub_98197C(session, 80 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
+                sub_98197C(session, 7 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
+                sub_98197C(session, 7 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
                 break;
             case 2:
-                sub_98197C(session, 82 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
-                sub_98197C(session, 82 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
+                sub_98197C(session, 9 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2);
+                sub_98197C(session, 9 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2);
                 break;
             case 3:
-                sub_98197C(session, 79 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
-                sub_98197C(session, 79 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
+                sub_98197C(session, 6 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2);
+                sub_98197C(session, 6 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2);
                 break;
         }
     }
@@ -528,128 +530,128 @@ static void sub_6A4101(
                 // purposely left empty
                 break;
             case 1:
-                sub_98197C(session, 76 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                sub_98197C(session, 76 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                sub_98197C(session, 3 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                sub_98197C(session, 3 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
                 break;
             case 2:
-                sub_98197C(session, 77 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                sub_98197C(session, 77 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                sub_98197C(session, 4 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                sub_98197C(session, 4 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
                 break;
             case 4:
-                sub_98197C(session, 78 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                sub_98197C(session, 78 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                sub_98197C(session, 5 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                sub_98197C(session, 5 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
                 break;
             case 5:
-                sub_98197C(session, 74 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
-                sub_98197C(session, 74 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
+                sub_98197C(session, 1 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
+                sub_98197C(session, 1 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
                 break;
             case 8:
-                sub_98197C(session, 75 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                sub_98197C(session, 75 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                sub_98197C(session, 2 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                sub_98197C(session, 2 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
                 break;
             case 10:
-                sub_98197C(session, 73 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
-                sub_98197C(session, 73 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
+                sub_98197C(session, 0 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
+                sub_98197C(session, 0 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
                 break;
 
             case 3:
-                sub_98197C(session, 76 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                sub_98197C(session, 3 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
                 sub_98197C(
-                    session, 77 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
+                    session, 4 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
                     height + 2); // bound_box_offset_y seems to be a bug
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
-                    sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    sub_98197C(session, 11 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                 }
                 break;
             case 6:
-                sub_98197C(session, 77 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
-                sub_98197C(session, 78 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
+                sub_98197C(session, 4 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                sub_98197C(session, 5 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
-                    sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    sub_98197C(session, 12 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
                 }
                 break;
             case 9:
-                sub_98197C(session, 75 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
-                sub_98197C(session, 76 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
+                sub_98197C(session, 2 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
+                sub_98197C(session, 3 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
-                    sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    sub_98197C(session, 10 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
                 }
                 break;
             case 12:
-                sub_98197C(session, 75 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
+                sub_98197C(session, 2 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
                 sub_98197C(
-                    session, 78 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
+                    session, 5 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
                     height + 2); // bound_box_offset_x seems to be a bug
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
-                    sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    sub_98197C(session, 13 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                 }
                 break;
 
             case 7:
-                sub_98197C(session, 74 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
+                sub_98197C(session, 1 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
-                    sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    sub_98197C(session, 11 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
-                    sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    sub_98197C(session, 12 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
                 }
                 break;
             case 13:
-                sub_98197C(session, 74 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
+                sub_98197C(session, 1 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
-                    sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    sub_98197C(session, 13 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
-                    sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    sub_98197C(session, 10 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
                 }
                 break;
             case 14:
-                sub_98197C(session, 73 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
+                sub_98197C(session, 0 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
-                    sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    sub_98197C(session, 12 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
-                    sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    sub_98197C(session, 13 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                 }
                 break;
             case 11:
-                sub_98197C(session, 73 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
+                sub_98197C(session, 0 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
-                    sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    sub_98197C(session, 11 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
-                    sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    sub_98197C(session, 10 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
                 }
                 break;
 
             case 15:
                 if (!(drawnCorners & FOOTPATH_CORNER_0))
                 {
-                    sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
+                    sub_98197C(session, 11 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_1))
                 {
-                    sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
+                    sub_98197C(session, 12 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_2))
                 {
-                    sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
+                    sub_98197C(session, 13 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                 }
                 if (!(drawnCorners & FOOTPATH_CORNER_3))
                 {
-                    sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
+                    sub_98197C(session, 10 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
                 }
                 break;
         }
@@ -667,7 +669,7 @@ static void sub_6A4101(
  */
 static void sub_6A3F61(
     paint_session* session, const TileElement* tile_element, uint16_t connectedEdges, uint16_t height,
-    rct_footpath_entry* railingEntry, uint32_t imageFlags, uint32_t sceneryImageFlags, bool word_F3F038)
+    PathRailingsEntry* railingEntry, uint32_t imageFlags, uint32_t sceneryImageFlags, bool word_F3F038)
 {
     // eax --
     // ebx --
@@ -738,9 +740,7 @@ static void sub_6A3F61(
 
         // Redundant zoom-level check removed
 
-        sub_6A4101(
-            session, tile_element, height, connectedEdges, word_F3F038, railingEntry, railingEntry->image | imageFlags,
-            imageFlags);
+        sub_6A4101(session, tile_element, height, connectedEdges, word_F3F038, railingEntry, imageFlags);
     }
 
     // This is about tunnel drawing
@@ -928,8 +928,8 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2);
     }
 
-    rct_footpath_entry* footpathEntry = tile_element->AsPath()->GetPathEntry();
-    rct_footpath_entry* railingEntry = tile_element->AsPath()->GetRailingEntry();
+    PathSurfaceEntry* footpathEntry = tile_element->AsPath()->GetPathEntry();
+    PathRailingsEntry* railingEntry = tile_element->AsPath()->GetRailingEntry();
 
     if (footpathEntry != nullptr && railingEntry != nullptr)
     {
@@ -980,8 +980,8 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 }
 
 void path_paint_box_support(
-    paint_session* session, const TileElement* tileElement, int32_t height, rct_footpath_entry* footpathEntry,
-    rct_footpath_entry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
+    paint_session* session, const TileElement* tileElement, int32_t height, PathSurfaceEntry* footpathEntry,
+    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     PathElement* pathElement = tileElement->AsPath();
 
@@ -1009,10 +1009,13 @@ void path_paint_box_support(
         imageId = byte_98D6E0[edi];
     }
 
-    imageId += footpathEntry->image;
     if (pathElement->IsQueue())
     {
-        imageId += 51;
+        imageId += footpathEntry->queue_image;
+    }
+    else
+    {
+        imageId += footpathEntry->image;
     }
 
     if (!session->DidPassSurface)
@@ -1134,8 +1137,8 @@ void path_paint_box_support(
 }
 
 void path_paint_pole_support(
-    paint_session* session, const TileElement* tileElement, int16_t height, rct_footpath_entry* footpathEntry,
-    rct_footpath_entry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
+    paint_session* session, const TileElement* tileElement, int16_t height, PathSurfaceEntry* footpathEntry,
+    PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     PathElement* pathElement = tileElement->AsPath();
 
@@ -1162,10 +1165,13 @@ void path_paint_pole_support(
         imageId = byte_98D6E0[edi];
     }
 
-    imageId += footpathEntry->image;
     if (pathElement->IsQueue())
     {
-        imageId += 51;
+        imageId += footpathEntry->queue_image;
+    }
+    else
+    {
+        imageId += footpathEntry->image;
     }
 
     // Below Surface
