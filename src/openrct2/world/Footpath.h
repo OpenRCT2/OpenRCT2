@@ -111,6 +111,14 @@ enum
     RAISE_FOOTPATH_FLAG = (1 << 4)
 };
 
+enum
+{
+    FOOTPATH_CORNER_0 = (1 << 0),
+    FOOTPATH_CORNER_1 = (1 << 1),
+    FOOTPATH_CORNER_2 = (1 << 2),
+    FOOTPATH_CORNER_3 = (1 << 3),
+};
+
 extern uint8_t gFootpathProvisionalFlags;
 extern LocationXYZ16 gFootpathProvisionalPosition;
 extern uint8_t gFootpathProvisionalType;
