@@ -77,7 +77,7 @@ void FootpathObject::ReadJson(IReadObjectContext* context, const json_t* root)
         properties,
         {
             { "hasSupportImages", FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
-            { "hasElevatedPathImages", FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE },
+            { "hasElevatedPathImages", RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS },
             { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR },
         });
 

@@ -486,7 +486,7 @@ static void sub_6A4101(
 
     // save ecx, ebp, esi
     uint32_t dword_F3EF80 = ebp;
-    if (!(railingEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
+    if (!(railingEntry->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
     {
         dword_F3EF80 &= 0x0F;
     }
@@ -1061,7 +1061,7 @@ void path_paint_box_support(
             height + boundingBoxZOffset);
 
         // TODO: Revert this when path import works correctly.
-        if (!pathElement->IsQueue() && !(railingEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
+        if (!pathElement->IsQueue() && !(railingEntry->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
             // don't draw
         }
@@ -1216,7 +1216,7 @@ void path_paint_pole_support(
             boundBoxOffset.y, height + boundingBoxZOffset);
 
         // TODO: Revert this when path import works correctly.
-        if (pathElement->IsQueue() || (railingEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
+        if (pathElement->IsQueue() || (railingEntry->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
             sub_98199C(
                 session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
