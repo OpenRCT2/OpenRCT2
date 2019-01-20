@@ -1076,14 +1076,14 @@ bool metal_b_supports_paint_setup(
  * @param special (ax)
  * @param height (dx)
  * @param imageColourFlags (ebp)
- * @param pathEntry (0x00F3EF6C)
+ * @param railingEntry (0x00F3EF6C)
  * @param[out] underground (Carry Flag)
  *
  * @return Whether supports were drawn
  */
 bool path_a_supports_paint_setup(
     paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags,
-    rct_footpath_entry* pathEntry, bool* underground)
+    rct_footpath_entry* railingEntry, bool* underground)
 {
     if (underground != nullptr)
     {
@@ -1116,7 +1116,7 @@ bool path_a_supports_paint_setup(
     if (session->Support.slope & 0x20)
     {
         // save dx2
-        sub_98196C(session, (pathEntry->bridge_image + 48) | imageColourFlags, 0, 0, 32, 32, 0, baseHeight - 2);
+        sub_98196C(session, (railingEntry->bridge_image + 48) | imageColourFlags, 0, 0, 32, 32, 0, baseHeight - 2);
         hasSupports = true;
     }
     else if (session->Support.slope & 0x10)
@@ -1130,7 +1130,7 @@ bool path_a_supports_paint_setup(
         }
 
         uint32_t imageId = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
-            + pathEntry->bridge_image;
+            + railingEntry->bridge_image;
 
         sub_98197C(session, imageId | imageColourFlags, 0, 0, 32, 32, 11, baseHeight, 0, 0, baseHeight + 2);
         baseHeight += 16;
@@ -1151,7 +1151,7 @@ bool path_a_supports_paint_setup(
         }
 
         uint32_t ebx = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
-            + pathEntry->bridge_image;
+            + railingEntry->bridge_image;
 
         sub_98197C(session, ebx | imageColourFlags, 0, 0, 32, 32, 11, baseHeight, 0, 0, baseHeight + 2);
 
@@ -1163,7 +1163,7 @@ bool path_a_supports_paint_setup(
     {
         if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->WaterHeight)
         {
-            uint32_t imageId = (supportType * 24) + pathEntry->bridge_image + 23;
+            uint32_t imageId = (supportType * 24) + railingEntry->bridge_image + 23;
 
             sub_98196C(session, imageId | imageColourFlags, 0, 0, 32, 32, ((heightSteps == 1) ? 7 : 12), baseHeight);
             heightSteps -= 1;
@@ -1172,7 +1172,7 @@ bool path_a_supports_paint_setup(
         }
         else
         {
-            uint32_t imageId = (supportType * 24) + pathEntry->bridge_image + 22;
+            uint32_t imageId = (supportType * 24) + railingEntry->bridge_image + 22;
 
             sub_98196C(session, imageId | imageColourFlags, 0, 0, 32, 32, ((heightSteps == 2) ? 23 : 28), baseHeight);
             heightSteps -= 2;
@@ -1185,7 +1185,7 @@ bool path_a_supports_paint_setup(
     {
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
-        uint32_t imageId = pathEntry->bridge_image + 55 + specialIndex;
+        uint32_t imageId = railingEntry->bridge_image + 55 + specialIndex;
 
         unk_supports_desc supportsDesc = byte_98D8D4[specialIndex];
         unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
@@ -1224,13 +1224,13 @@ bool path_a_supports_paint_setup(
  * @param special (ax)
  * @param height (dx)
  * @param imageColourFlags (ebp)
- * @param pathEntry (0x00F3EF6C)
+ * @param railingEntry (0x00F3EF6C)
  *
  * @return Whether supports were drawn
  */
 bool path_b_supports_paint_setup(
     paint_session* session, int32_t segment, int32_t special, int32_t height, uint32_t imageColourFlags,
-    rct_footpath_entry* pathEntry)
+    rct_footpath_entry* railingEntry)
 {
     support_height* supportSegments = session->SupportSegments;
 
@@ -1252,7 +1252,7 @@ bool path_b_supports_paint_setup(
     uint16_t baseHeight;
 
     if ((supportSegments[segment].slope & 0x20) || (height - supportSegments[segment].height < 6)
-        || !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
+        || !(railingEntry->flags & RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
     {
         baseHeight = supportSegments[segment].height;
     }
@@ -1262,7 +1262,7 @@ bool path_b_supports_paint_setup(
         baseHeight = supportSegments[segment].height;
 
         sub_98196C(
-            session, (pathEntry->bridge_image + 37 + imageOffset) | imageColourFlags, loc_97AF20[segment].x,
+            session, (railingEntry->bridge_image + 37 + imageOffset) | imageColourFlags, loc_97AF20[segment].x,
             loc_97AF20[segment].y, 0, 0, 5, baseHeight);
         baseHeight += 6;
     }
@@ -1281,7 +1281,7 @@ bool path_b_supports_paint_setup(
     if (heightDiff > 0)
     {
         sub_98196C(
-            session, (pathEntry->bridge_image + 20 + (heightDiff - 1)) | imageColourFlags, loc_97AF20[segment].x,
+            session, (railingEntry->bridge_image + 20 + (heightDiff - 1)) | imageColourFlags, loc_97AF20[segment].x,
             loc_97AF20[segment].y, 0, 0, heightDiff - 1, baseHeight);
     }
 
@@ -1314,7 +1314,7 @@ bool path_b_supports_paint_setup(
             }
 
             sub_98196C(
-                session, (pathEntry->bridge_image + 20 + (z - 1)) | imageColourFlags, loc_97AF20[segment].x,
+                session, (railingEntry->bridge_image + 20 + (z - 1)) | imageColourFlags, loc_97AF20[segment].x,
                 loc_97AF20[segment].y, 0, 0, (z - 1), baseHeight);
 
             baseHeight += z;
@@ -1325,7 +1325,7 @@ bool path_b_supports_paint_setup(
             break;
         }
 
-        uint32_t imageId = pathEntry->bridge_image + 20 + (z - 1);
+        uint32_t imageId = railingEntry->bridge_image + 20 + (z - 1);
         if (z == 16)
         {
             imageId += 1;
@@ -1359,7 +1359,7 @@ bool path_b_supports_paint_setup(
                 break;
             }
 
-            uint32_t imageId = pathEntry->bridge_image + 20 + (z - 1);
+            uint32_t imageId = railingEntry->bridge_image + 20 + (z - 1);
             sub_98197C(
                 session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, 0, baseHeight,
                 loc_97AF20[segment].x, loc_97AF20[segment].y, baseHeight);
