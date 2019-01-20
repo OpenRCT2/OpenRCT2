@@ -488,7 +488,7 @@ static void sub_6A4101(
     uint32_t drawnEdges = connectedEdges;
     // If the path is not drawn over the supports, then no corner sprites will be drawn (making double-width paths
     // look like connected series of intersections).
-    if (!(railingEntry->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
+    if (!tile_element->AsPath()->ShouldDrawPathOverSupports())
     {
         drawnEdges &= FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     }
@@ -1062,7 +1062,7 @@ void path_paint_box_support(
             height + boundingBoxZOffset);
 
         // TODO: Revert this when path import works correctly.
-        if (!pathElement->IsQueue() && !(railingEntry->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
+        if (!pathElement->IsQueue() && !pathElement->ShouldDrawPathOverSupports())
         {
             // don't draw
         }
@@ -1217,7 +1217,7 @@ void path_paint_pole_support(
             boundBoxOffset.y, height + boundingBoxZOffset);
 
         // TODO: Revert this when path import works correctly.
-        if (pathElement->IsQueue() || (railingEntry->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
+        if (pathElement->IsQueue() || pathElement->ShouldDrawPathOverSupports())
         {
             sub_98199C(
                 session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
