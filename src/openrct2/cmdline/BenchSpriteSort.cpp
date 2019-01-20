@@ -65,8 +65,7 @@ static void fixup_pointers(paint_session* s, size_t paint_session_entries, size_
     }
 }
 
-// This function is based on benchgfx_render_screenshots
-static void BM_paint_session_arrange(benchmark::State& state)
+static std::vector<paint_session> extract_paint_session(const std::string parkFileName)
 {
     core_init();
     gOpenRCT2Headless = true;
@@ -76,9 +75,10 @@ static void BM_paint_session_arrange(benchmark::State& state)
     if (context->Initialise())
     {
         drawing_engine_init();
-        if (!context->LoadParkFromFile("data.sv6"))
+        if (!context->LoadParkFromFile(parkFileName))
         {
-            return;
+            log_error("Failed to load park!");
+            return {};
         }
 
         gIntroState = INTRO_STATE_NONE;
@@ -132,6 +132,13 @@ static void BM_paint_session_arrange(benchmark::State& state)
         drawing_engine_dispose();
     }
     log_info("Got %u paint sessions.", std::size(sessions));
+    return sessions;
+}
+
+// This function is based on benchgfx_render_screenshots
+static void BM_paint_session_arrange(benchmark::State& state, const std::vector<paint_session> inputSessions)
+{
+    std::vector<paint_session> sessions = inputSessions;
     // Fixing up the pointers continuously is wasteful. Fix it up once for `sessions` and store a copy.
     // Keep in mind we need bit-exact copy, as the lists use pointers.
     // Once sorted, just restore the copy with the original fixed-up version.
@@ -149,40 +156,47 @@ static void BM_paint_session_arrange(benchmark::State& state)
     state.SetItemsProcessed(state.iterations() * std::size(sessions));
     delete[] local_s;
 }
-BENCHMARK(BM_paint_session_arrange);
-
-// Provide some baseline performing similar things as the actual version of the benchmark does.
-static void BM_baseline(benchmark::State& state)
-{
-    std::vector<paint_session> sessions(1);
-    paint_session* local_s = new paint_session[std::size(sessions)];
-    std::copy_n(sessions.cbegin(), std::size(sessions), local_s);
-    for (auto _ : state)
-    {
-        state.PauseTiming();
-        std::copy_n(local_s, std::size(sessions), sessions.begin());
-        state.ResumeTiming();
-        paint_session_arrange(local_s);
-        benchmark::DoNotOptimize(local_s);
-    }
-    state.SetItemsProcessed(state.iterations() * std::size(sessions));
-    delete[] local_s;
-}
-BENCHMARK(BM_baseline);
 
 static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
 {
+    const char* inputFileName = nullptr;
+    int argStart = 0;
+    if (argc >= 1 && platform_file_exists(argv[0]))
+    {
+        inputFileName = argv[0];
+        argStart = 1; // skip file name
+    }
     // Google benchmark does stuff to argv. It doesn't modify the pointees,
     // but it wants to reorder the pointers, so present a copy of them.
     std::vector<char*> argv_for_benchmark;
-    // argv[0] is expected to contain the binary name. Don't bother.
+    // argv[0] is expected to contain the binary name. It's only for logging purposes, don't bother.
     argv_for_benchmark.push_back(nullptr);
-    for (int i = 0; i < argc; i++)
+    for (int i = argStart; i < argc; i++)
     {
         argv_for_benchmark.push_back((char*)argv[i]);
     }
-    // Account for argv[0]
-    argc++;
+    // Update argc with all the changes made
+    argc = (int)argv_for_benchmark.size();
+    {
+        // Register some basic "baseline" benchmark
+        std::vector<paint_session> sessions(1);
+        for (auto& ps : sessions[0].PaintStructs)
+        {
+            ps.basic.next_quadrant_ps = (paint_struct*)(std::size(sessions[0].PaintStructs));
+        }
+        for (auto& quad : sessions[0].Quadrants)
+        {
+            quad = (paint_struct*)(std::size(sessions[0].Quadrants));
+        }
+        benchmark::RegisterBenchmark("baseline", BM_paint_session_arrange, sessions);
+    }
+    if (inputFileName != nullptr)
+    {
+        // Register benchmark for sv6 if valid
+        std::vector<paint_session> sessions = extract_paint_session(inputFileName);
+        if (!sessions.empty())
+            benchmark::RegisterBenchmark(inputFileName, BM_paint_session_arrange, sessions);
+    }
     ::benchmark::Initialize(&argc, &argv_for_benchmark[0]);
     if (::benchmark::ReportUnrecognizedArguments(argc, &argv_for_benchmark[0]))
         return -1;
@@ -214,7 +228,7 @@ const CommandLineCommand CommandLine::BenchSpriteSortCommands[]{
 #ifdef USE_BENCHMARK
     DefineCommand(
         "",
-        "<file> [--benchmark_list_tests={true|false}] [--benchmark_filter=<regex>] [--benchmark_min_time=<min_time>] "
+        "[<file>] [--benchmark_list_tests={true|false}] [--benchmark_filter=<regex>] [--benchmark_min_time=<min_time>] "
         "[--benchmark_repetitions=<num_repetitions>] [--benchmark_report_aggregates_only={true|false}] "
         "[--benchmark_format=<console|json|csv>] [--benchmark_out=<filename>] [--benchmark_out_format=<json|console|csv>] "
         "[--benchmark_color={auto|true|false}] [--benchmark_counters_tabular={true|false}] [--v=<verbosity>]",
