@@ -321,12 +321,12 @@ static void path_bit_jumping_fountains_paint(
  * @param tile_element (esi)
  */
 static void sub_6A4101(
-    paint_session* session, const TileElement* tile_element, uint16_t height, uint32_t ebp, bool word_F3F038,
+    paint_session* session, const TileElement* tile_element, uint16_t height, uint32_t connectedEdges, bool word_F3F038,
     rct_footpath_entry* railingEntry, uint32_t base_image_id, uint32_t imageFlags)
 {
     if (tile_element->AsPath()->IsQueue())
     {
-        uint8_t local_ebp = ebp & 0x0F;
+        uint8_t local_ebp = connectedEdges & 0x0F;
         if (tile_element->AsPath()->IsSloped())
         {
             switch ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation)
@@ -485,10 +485,12 @@ static void sub_6A4101(
     }
 
     // save ecx, ebp, esi
-    uint32_t dword_F3EF80 = ebp;
+    uint32_t drawnEdges = connectedEdges;
+    // If the path is not drawn over the supports, then no corner sprites will be drawn (making double-width paths
+    // look like connected series of intersections).
     if (!(railingEntry->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
     {
-        dword_F3EF80 &= 0x0F;
+        drawnEdges &= FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     }
 
     if (tile_element->AsPath()->IsSloped())
@@ -521,8 +523,7 @@ static void sub_6A4101(
             return;
         }
 
-        uint8_t local_ebp = ebp & 0x0F;
-        switch (local_ebp)
+        switch (connectedEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK)
         {
             case 0:
                 // purposely left empty
@@ -557,7 +558,7 @@ static void sub_6A4101(
                 sub_98197C(
                     session, 77 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
                     height + 2); // bound_box_offset_y seems to be a bug
-                if (!(dword_F3EF80 & 0x10))
+                if (!(drawnEdges & 0x10))
                 {
                     sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                 }
@@ -565,7 +566,7 @@ static void sub_6A4101(
             case 6:
                 sub_98197C(session, 77 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
                 sub_98197C(session, 78 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
-                if (!(dword_F3EF80 & 0x20))
+                if (!(drawnEdges & 0x20))
                 {
                     sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
                 }
@@ -573,7 +574,7 @@ static void sub_6A4101(
             case 9:
                 sub_98197C(session, 75 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2);
                 sub_98197C(session, 76 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2);
-                if (!(dword_F3EF80 & 0x80))
+                if (!(drawnEdges & 0x80))
                 {
                     sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
                 }
@@ -583,7 +584,7 @@ static void sub_6A4101(
                 sub_98197C(
                     session, 78 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
                     height + 2); // bound_box_offset_x seems to be a bug
-                if (!(dword_F3EF80 & 0x40))
+                if (!(drawnEdges & 0x40))
                 {
                     sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                 }
@@ -591,63 +592,63 @@ static void sub_6A4101(
 
             case 7:
                 sub_98197C(session, 74 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2);
-                if (!(dword_F3EF80 & 0x10))
+                if (!(drawnEdges & 0x10))
                 {
                     sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                 }
-                if (!(dword_F3EF80 & 0x20))
+                if (!(drawnEdges & 0x20))
                 {
                     sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
                 }
                 break;
             case 13:
                 sub_98197C(session, 74 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2);
-                if (!(dword_F3EF80 & 0x40))
+                if (!(drawnEdges & 0x40))
                 {
                     sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                 }
-                if (!(dword_F3EF80 & 0x80))
+                if (!(drawnEdges & 0x80))
                 {
                     sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
                 }
                 break;
             case 14:
                 sub_98197C(session, 73 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2);
-                if (!(dword_F3EF80 & 0x20))
+                if (!(drawnEdges & 0x20))
                 {
                     sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
                 }
-                if (!(dword_F3EF80 & 0x40))
+                if (!(drawnEdges & 0x40))
                 {
                     sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                 }
                 break;
             case 11:
                 sub_98197C(session, 73 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2);
-                if (!(dword_F3EF80 & 0x10))
+                if (!(drawnEdges & 0x10))
                 {
                     sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                 }
-                if (!(dword_F3EF80 & 0x80))
+                if (!(drawnEdges & 0x80))
                 {
                     sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
                 }
                 break;
 
             case 15:
-                if (!(dword_F3EF80 & 0x10))
+                if (!(drawnEdges & 0x10))
                 {
                     sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                 }
-                if (!(dword_F3EF80 & 0x20))
+                if (!(drawnEdges & 0x20))
                 {
                     sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2);
                 }
-                if (!(dword_F3EF80 & 0x40))
+                if (!(drawnEdges & 0x40))
                 {
                     sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                 }
-                if (!(dword_F3EF80 & 0x80))
+                if (!(drawnEdges & 0x80))
                 {
                     sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2);
                 }
