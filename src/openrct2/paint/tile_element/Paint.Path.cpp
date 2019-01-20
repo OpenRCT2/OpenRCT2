@@ -322,7 +322,7 @@ static void path_bit_jumping_fountains_paint(
  */
 static void sub_6A4101(
     paint_session* session, const TileElement* tile_element, uint16_t height, uint32_t ebp, bool word_F3F038,
-    rct_footpath_entry* footpathEntry, uint32_t base_image_id, uint32_t imageFlags)
+    rct_footpath_entry* railingEntry, uint32_t base_image_id, uint32_t imageFlags)
 {
     if (tile_element->AsPath()->IsQueue())
     {
@@ -442,7 +442,7 @@ static void sub_6A4101(
         // If text shown
         if (direction < 2 && tile_element->AsPath()->GetRideIndex() != RIDE_ID_NULL && imageFlags == 0)
         {
-            uint16_t scrollingMode = footpathEntry->scrolling_mode;
+            uint16_t scrollingMode = railingEntry->scrolling_mode;
             scrollingMode += direction;
 
             set_format_arg(0, uint32_t, 0);
@@ -486,7 +486,7 @@ static void sub_6A4101(
 
     // save ecx, ebp, esi
     uint32_t dword_F3EF80 = ebp;
-    if (!(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
+    if (!(railingEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
     {
         dword_F3EF80 &= 0x0F;
     }
@@ -661,13 +661,13 @@ static void sub_6A4101(
  * @param tile_element (esp[0])
  * @param connectedEdges (bp) (relative to the camera's rotation)
  * @param height (dx)
- * @param footpathEntry (0x00F3EF6C)
+ * @param railingEntry (0x00F3EF6C)
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
 static void sub_6A3F61(
     paint_session* session, const TileElement* tile_element, uint16_t connectedEdges, uint16_t height,
-    rct_footpath_entry* footpathEntry, uint32_t imageFlags, uint32_t sceneryImageFlags, bool word_F3F038)
+    rct_footpath_entry* railingEntry, uint32_t imageFlags, uint32_t sceneryImageFlags, bool word_F3F038)
 {
     // eax --
     // ebx --
@@ -739,7 +739,7 @@ static void sub_6A3F61(
         // Redundant zoom-level check removed
 
         sub_6A4101(
-            session, tile_element, height, connectedEdges, word_F3F038, footpathEntry, footpathEntry->image | imageFlags,
+            session, tile_element, height, connectedEdges, word_F3F038, railingEntry, railingEntry->image | imageFlags,
             imageFlags);
     }
 
