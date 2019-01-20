@@ -88,6 +88,8 @@ static rct_widget window_guest_list_widgets[] = {
 };
 
 static constexpr const uint8_t SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
+static constexpr const auto GUESTS_PER_PAGE = 2000;
+static constexpr const auto GUEST_PAGE_HEIGHT = GUESTS_PER_PAGE * SCROLLABLE_ROW_HEIGHT;
 
 static void window_guest_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_guest_list_resize(rct_window *w);
@@ -490,7 +492,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
             }
             w->var_492 = numGuests;
             y = numGuests * SCROLLABLE_ROW_HEIGHT;
-            _window_guest_list_num_pages = (int32_t)std::ceil((float)numGuests / 3173);
+            _window_guest_list_num_pages = 1 + (numGuests - 1) / GUESTS_PER_PAGE;
             if (_window_guest_list_num_pages == 0)
                 _window_guest_list_selected_page = 0;
             else if (_window_guest_list_selected_page >= _window_guest_list_num_pages)
@@ -507,13 +509,9 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
             return;
     }
 
-    i = _window_guest_list_selected_page;
-    for (i = _window_guest_list_selected_page - 1; i >= 0; i--)
-        y -= 0x7BF2;
-    if (y < 0)
-        y = 0;
-    if (y > 0x7BF2)
-        y = 0x7BF2;
+    y -= GUEST_PAGE_HEIGHT * _window_guest_list_selected_page;
+    y = std::max(0, std::min(y, GUEST_PAGE_HEIGHT));
+
     if (_window_guest_list_highlighted_index != -1)
     {
         _window_guest_list_highlighted_index = -1;
@@ -546,7 +544,7 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
     {
         case PAGE_INDIVIDUAL:
             i = y / SCROLLABLE_ROW_HEIGHT;
-            i += _window_guest_list_selected_page * 3173;
+            i += _window_guest_list_selected_page * GUESTS_PER_PAGE;
             FOR_ALL_GUESTS (spriteIndex, peep)
             {
                 if (peep->outside_of_park != 0)
@@ -595,7 +593,7 @@ static void window_guest_list_scrollmouseover(rct_window* w, int32_t scrollIndex
     int32_t i;
 
     i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? SCROLLABLE_ROW_HEIGHT : SUMMARISED_GUEST_ROW_HEIGHT);
-    i += _window_guest_list_selected_page * 3173;
+    i += _window_guest_list_selected_page * GUESTS_PER_PAGE;
     if (i != _window_guest_list_highlighted_index)
     {
         _window_guest_list_highlighted_index = i;
@@ -730,7 +728,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
     {
         case PAGE_INDIVIDUAL:
             i = 0;
-            y = _window_guest_list_selected_page * -0x7BF2;
+            y = _window_guest_list_selected_page * -GUEST_PAGE_HEIGHT;
 
             // For each guest
             FOR_ALL_GUESTS (spriteIndex, peep)
