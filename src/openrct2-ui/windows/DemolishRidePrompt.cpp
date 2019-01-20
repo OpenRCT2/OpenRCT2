@@ -182,7 +182,8 @@ static void window_ride_demolish_mouseup(rct_window* w, rct_widgetindex widgetIn
     {
         case WIDX_DEMOLISH:
         {
-            ride_action_modify(w->number, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+            auto ride = get_ride(w->number);
+            ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
             break;
         }
         case WIDX_CANCEL:
@@ -198,7 +199,8 @@ static void window_ride_refurbish_mouseup(rct_window* w, rct_widgetindex widgetI
     {
         case WIDX_REFURBISH:
         {
-            ride_action_modify(w->number, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
+            auto ride = get_ride(w->number);
+            ride_action_modify(ride, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
             break;
         }
         case WIDX_CANCEL:

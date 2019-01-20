@@ -1202,7 +1202,7 @@ bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
 StationObject* ride_get_station_object(const Ride* ride);
 
-void ride_action_modify(ride_id_t rideIndex, int32_t modifyType, int32_t flags);
+void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 void ride_stop_peeps_queuing(ride_id_t rideIndex);
 
 LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z);

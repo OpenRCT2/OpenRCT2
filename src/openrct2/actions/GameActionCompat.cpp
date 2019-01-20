@@ -190,9 +190,9 @@ void game_command_set_ride_name(
 #pragma endregion
 
 #pragma region RideModifyAction
-void ride_action_modify(ride_id_t rideIndex, int32_t modifyType, int32_t flags)
+void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags)
 {
-    auto gameAction = RideDemolishAction(rideIndex, modifyType);
+    auto gameAction = RideDemolishAction(ride->id, modifyType);
     gameAction.SetFlags(flags);
 
     GameActions::Execute(&gameAction);

@@ -597,17 +597,15 @@ static void window_ride_construction_close(rct_window* w)
 
     hide_gridlines();
 
-    ride_id_t rideIndex = _currentRideIndex;
-    Ride* ride = get_ride(rideIndex);
-
     // If we demolish a ride all windows will be closed including the construction window,
     // the ride at this point is already gone.
+    auto ride = get_ride(_currentRideIndex);
     if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
     {
         return;
     }
 
-    if (ride_try_get_origin_element(rideIndex, nullptr))
+    if (ride_try_get_origin_element(ride->id, nullptr))
     {
         // Auto open shops if required.
         if (ride->mode == RIDE_MODE_SHOP_STALL && gConfigGeneral.auto_open_shops)
@@ -617,21 +615,21 @@ static void window_ride_construction_close(rct_window* w)
             if (!_autoOpeningShop)
             {
                 _autoOpeningShop = true;
-                ride_set_status(rideIndex, RIDE_STATUS_OPEN);
+                ride_set_status(ride->id, RIDE_STATUS_OPEN);
                 _autoOpeningShop = false;
             }
         }
 
-        ride_set_to_default_inspection_interval(rideIndex);
+        ride_set_to_default_inspection_interval(ride->id);
         auto intent = Intent(WC_RIDE);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
         context_open_intent(&intent);
     }
     else
     {
         int32_t previousPauseState = gGamePaused;
         gGamePaused = 0;
-        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         gGamePaused = previousPauseState;
     }
 }
