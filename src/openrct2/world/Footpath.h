@@ -78,9 +78,13 @@ enum
 
 enum
 {
-    FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
-    FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE = (1 << 1), // When elevated
     FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
+};
+
+enum
+{
+    RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
+    RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS = (1 << 1), // When elevated
 };
 
 enum
@@ -105,6 +109,14 @@ enum
 {
     SLOPE_IS_IRREGULAR_FLAG = (1 << 3), // Flag set in `DefaultPathSlope[]` and checked in `footpath_place_real`
     RAISE_FOOTPATH_FLAG = (1 << 4)
+};
+
+enum
+{
+    FOOTPATH_CORNER_0 = (1 << 0),
+    FOOTPATH_CORNER_1 = (1 << 1),
+    FOOTPATH_CORNER_2 = (1 << 2),
+    FOOTPATH_CORNER_3 = (1 << 3),
 };
 
 extern uint8_t gFootpathProvisionalFlags;

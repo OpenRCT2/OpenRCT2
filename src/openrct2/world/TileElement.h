@@ -228,6 +228,9 @@ public:
     void SetAdditionStatus(uint8_t newStatus);
 
     uint8_t GetRCT1PathType() const;
+
+    bool ShouldDrawPathOverSupports();
+    void SetShouldDrawPathOverSupports(bool on);
 };
 assert_struct_size(PathElement, 8);
 

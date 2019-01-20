@@ -2135,6 +2135,16 @@ void PathElement::SetQueueBannerDirection(uint8_t direction)
     type |= (direction << 6);
 }
 
+bool PathElement::ShouldDrawPathOverSupports()
+{
+    return (GetRailingEntry()->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
+}
+
+void PathElement::SetShouldDrawPathOverSupports(bool on)
+{
+    log_verbose("Setting 'draw path over supports' to %d", (size_t)on);
+}
+
 /**
  *
  *  rct2: 0x006A8B12
