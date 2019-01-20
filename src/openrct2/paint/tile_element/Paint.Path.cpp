@@ -83,10 +83,10 @@ static constexpr const uint8_t byte_98D8A4[] = {
 
 void path_paint_box_support(
     paint_session* session, const TileElement* tileElement, int32_t height, rct_footpath_entry* footpathEntry,
-    rct_footpath_entry* railingEntry, bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags);
+    rct_footpath_entry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 void path_paint_pole_support(
     paint_session* session, const TileElement* tileElement, int16_t height, rct_footpath_entry* footpathEntry,
-    rct_footpath_entry* railingEntry, bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags);
+    rct_footpath_entry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(
@@ -981,7 +981,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
 void path_paint_box_support(
     paint_session* session, const TileElement* tileElement, int32_t height, rct_footpath_entry* footpathEntry,
-    rct_footpath_entry* railingEntry, bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags)
+    rct_footpath_entry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     PathElement* pathElement = tileElement->AsPath();
 
@@ -1036,7 +1036,7 @@ void path_paint_box_support(
         }
     }
 
-    if (!hasFences || !session->DidPassSurface)
+    if (!hasSupports || !session->DidPassSurface)
     {
         sub_98197C(
             session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
@@ -1073,7 +1073,7 @@ void path_paint_box_support(
         }
     }
 
-    sub_6A3F61(session, tileElement, edi, height, railingEntry, imageFlags, sceneryImageFlags, hasFences);
+    sub_6A3F61(session, tileElement, edi, height, railingEntry, imageFlags, sceneryImageFlags, hasSupports);
 
     uint16_t ax = 0;
     if (tileElement->AsPath()->IsSloped())
@@ -1098,7 +1098,7 @@ void path_paint_box_support(
 
     paint_util_set_general_support_height(session, height, 0x20);
 
-    if (pathElement->IsQueue() || (tileElement->AsPath()->GetEdgesAndCorners() != 0xFF && hasFences))
+    if (pathElement->IsQueue() || (tileElement->AsPath()->GetEdgesAndCorners() != 0xFF && hasSupports))
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         return;
@@ -1135,7 +1135,7 @@ void path_paint_box_support(
 
 void path_paint_pole_support(
     paint_session* session, const TileElement* tileElement, int16_t height, rct_footpath_entry* footpathEntry,
-    rct_footpath_entry* railingEntry, bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags)
+    rct_footpath_entry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     PathElement* pathElement = tileElement->AsPath();
 
@@ -1190,7 +1190,7 @@ void path_paint_pole_support(
         }
     }
 
-    if (!hasFences || !session->DidPassSurface)
+    if (!hasSupports || !session->DidPassSurface)
     {
         sub_98197C(
             session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
@@ -1224,7 +1224,7 @@ void path_paint_pole_support(
         }
     }
 
-    sub_6A3F61(session, tileElement, edi, height, railingEntry, imageFlags, sceneryImageFlags, hasFences); // TODO: arguments
+    sub_6A3F61(session, tileElement, edi, height, railingEntry, imageFlags, sceneryImageFlags, hasSupports); // TODO: arguments
 
     uint16_t ax = 0;
     if (tileElement->AsPath()->IsSloped())
@@ -1255,7 +1255,7 @@ void path_paint_pole_support(
 
     paint_util_set_general_support_height(session, height, 0x20);
 
-    if (pathElement->IsQueue() || (tileElement->AsPath()->GetEdgesAndCorners() != 0xFF && hasFences))
+    if (pathElement->IsQueue() || (tileElement->AsPath()->GetEdgesAndCorners() != 0xFF && hasSupports))
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         return;
