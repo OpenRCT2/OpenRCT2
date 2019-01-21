@@ -1730,17 +1730,18 @@ void InteractiveConsole::Execute(const std::string& s)
         start = end;
     } while (*end != 0);
 
-    if (argc == 0)
-        return;
-
     bool validCommand = false;
-    for (const auto& c : console_command_table)
+
+    if (argc > 0)
     {
-        if (strcmp(argv[0], c.command) == 0)
+        for (const auto& c : console_command_table)
         {
-            c.func(*this, (const utf8**)(argv + 1), argc - 1);
-            validCommand = true;
-            break;
+            if (strcmp(argv[0], c.command) == 0)
+            {
+                c.func(*this, (const utf8**)(argv + 1), argc - 1);
+                validCommand = true;
+                break;
+            }
         }
     }
 
@@ -1748,7 +1749,7 @@ void InteractiveConsole::Execute(const std::string& s)
         free(argv[i]);
     free(argv);
 
-    if (!validCommand)
+    if (argc > 0 && !validCommand)
     {
         WriteLineError("Unknown command. Type help to list available commands.");
     }
