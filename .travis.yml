@@ -94,7 +94,7 @@ matrix:
           services:
             - docker
         - os: osx
-          name: macOS Clang Release
+          name: macOS Clang Xcode
           if: type != cron
           osx_image: xcode9.3
           env:
