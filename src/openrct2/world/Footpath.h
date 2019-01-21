@@ -139,6 +139,18 @@ enum
     FOOTPATH_CORNER_3 = (1 << 3),
 };
 
+enum
+{
+    FOOTPATH_CONNECTION_S = (1 << 0),
+    FOOTPATH_CONNECTION_NE = (1 << 1),
+    FOOTPATH_CONNECTION_W = (1 << 2),
+    FOOTPATH_CONNECTION_SE = (1 << 3),
+    FOOTPATH_CONNECTION_N = (1 << 4),
+    FOOTPATH_CONNECTION_SW = (1 << 5),
+    FOOTPATH_CONNECTION_E = (1 << 6),
+    FOOTPATH_CONNECTION_NW = (1 << 7),
+};
+
 extern uint8_t gFootpathProvisionalFlags;
 extern LocationXYZ16 gFootpathProvisionalPosition;
 extern uint8_t gFootpathProvisionalType;
