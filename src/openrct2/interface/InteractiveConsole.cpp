@@ -1006,8 +1006,7 @@ static int32_t cc_set(InteractiveConsole& console, const argv_t& argv)
     return 0;
 }
 
-static int32_t cc_twitch(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_twitch([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
 {
 #ifdef DISABLE_TWITCH
     console.WriteLineError("OpenRCT2 build not compiled with Twitch integration.");
@@ -1118,8 +1117,7 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
     return 0;
 }
 
-static int32_t cc_reset_user_strings(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_reset_user_strings([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
 {
     reset_user_strings();
     return 0;
@@ -1169,16 +1167,14 @@ static int32_t cc_open(InteractiveConsole& console, const argv_t& argv)
     return 0;
 }
 
-static int32_t cc_remove_unused_objects(
-    InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
 {
     int32_t result = editor_remove_unused_objects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
     return 0;
 }
 
-static int32_t cc_remove_park_fences(
-    InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
 {
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
@@ -1242,8 +1238,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     return 0;
 }
 
-static int32_t cc_for_date(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
 {
     int32_t year = 0;
     int32_t month = 0;
@@ -1299,8 +1294,7 @@ static int32_t cc_for_date(
     return 1;
 }
 
-static int32_t cc_save_park(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
 {
     if (argv.size() < 1)
     {
@@ -1499,15 +1493,13 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const argv_t& ar
 
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
-static int32_t cc_abort(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_abort([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
 {
     std::abort();
     return 0;
 }
 
-static int32_t cc_dereference(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_dereference([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnull-dereference"
@@ -1518,8 +1510,7 @@ static int32_t cc_dereference(
 #pragma GCC diagnostic pop
 }
 
-static int32_t cc_terminate(
-    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_terminate([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
 {
     std::terminate();
     return 0;
@@ -1723,7 +1714,7 @@ void InteractiveConsole::Execute(const std::string& s)
         start = end;
     } while (*end != 0);
 
-    if(argv.empty())
+    if( argv.empty())
         return;
 
     bool validCommand = false;
