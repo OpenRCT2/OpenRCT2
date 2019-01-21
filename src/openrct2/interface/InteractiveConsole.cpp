@@ -57,7 +57,7 @@
 #    include "../drawing/TTF.h"
 #endif
 
-using argv_t = std::vector<std::basic_string<utf8>>;
+using argv_t = std::vector<std::string>;
 
 static constexpr const utf8* ClimateNames[] = {
     "cool_and_wet",
