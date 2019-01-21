@@ -66,9 +66,9 @@ matrix:
               else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-i686.tar.gz -o link && cat link;
               fi
         - os: linux
-          name: Ubuntu amd64 Clang Debug
+          name: Ubuntu amd64 Clang
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DCMAKE_BUILD_TYPE=Debug" TARGET=ubuntu_amd64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_amd64
         - os: linux
           name: Windows i686-w64 MinGW
           if: type != cron
@@ -88,9 +88,9 @@ matrix:
           services:
             - docker
         - os: linux
-          name: Docker64 GCC Debug disable-opengl
+          name: Docker64 GCC disable-opengl
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DCMAKE_BUILD_TYPE=debug" TARGET=docker64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
           services:
             - docker
         - os: osx
