@@ -1714,7 +1714,7 @@ void InteractiveConsole::Execute(const std::string& s)
         start = end;
     } while (*end != 0);
 
-    if( argv.empty())
+    if (argv.empty())
         return;
 
     bool validCommand = false;
