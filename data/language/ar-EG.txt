@@ -4,21 +4,21 @@
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :أفعوانية حلزونية دائرية
-STR_0003    :أفعوانية حلزونية واقفة
+STR_0003    :أفعوانية حلزونية عمودية
 STR_0004    :أفعوانية دائرة معلقة
 STR_0005    :أفعوانية حلزونية معكوسة
 STR_0006    :أفعوانية حلزونية للصغار
-STR_0007    :قطار سكة حديدة مصغر
-STR_0008    :قطار معلق
-STR_0009    :أفعوانية حلزونية مصغرة
+STR_0007    :قطار سكة حديدية مصغر
+STR_0008    :قطار مُعلق
+STR_0009    :أفعوانية حلزونية مُصغرة
 STR_0010    :تأجير القارب
 STR_0011    :أفعوانية صغيرة خشبية
 STR_0012    :سباق التتابع
 STR_0013    :قيادة السيارة
 STR_0014    :إطلاق السقوط الحر
 STR_0015    :أفعوانية طائرة خشبية
-STR_0016    :برج المراقبة
-STR_0017    :أفعوانية حلزونية المتكررة
+STR_0016    :بُرج المراقبة
+STR_0017    :أفعوانية حلزُونية متكررة
 STR_0018    :المنحدر المتسلسل
 STR_0019    :أفعوانية قطار المغارة
 STR_0020    :مصعد هوائي
@@ -2074,19 +2074,19 @@ STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Year {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
 STR_2738    :Title screen music:
-STR_2739    :None
+STR_2739    :لاشئ
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Copy 'data/css17.dat' from your RCT1 installation to 'data/css50.dat' in your RCT2 installation, or make sure the path to RCT1 in the Miscellaneous tab is correct.
+STR_2743    :انسخ 'data/css17.dat' من "محاكي الأفعوانيات الجزء الأول" إلي 'data/css50.dat' في "محاكي الأفعوانيات الجزء الثاني"، أو تأكد من أن المسار لـ"محاكي الأفعوانيات الجزء الأول" صحيح في صفحة متقدم في الإعدادات.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :”
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
-STR_2750    :Move all items to top
-STR_2751    :Move all items to bottom
+STR_2750    :حرك كل العناصر إلي الأعلي
+STR_2751    :حرك كل العناصر إلي الأسفل
 STR_2752    :Clear grass
 STR_2753    :Mowed grass
 STR_2754    :Water plants
@@ -2095,14 +2095,14 @@ STR_2756    :Remove litter
 STR_2763    :???
 STR_2765    :Large Tram
 STR_2766    :Win scenario
-STR_2767    :Freeze Climate
-STR_2768    :Unfreeze Climate
-STR_2769    :Open Park
-STR_2770    :Close Park
-STR_2773    :Windowed
-STR_2774    :Fullscreen
+STR_2767    :جمد الطقس
+STR_2768    :الغا تجميد الطقس
+STR_2769    :افتح الحديقة
+STR_2770    :أغلق الحديقة
+STR_2773    :وضع النافذة
+STR_2774    :وضع الشاشة الكاملة
 STR_2775    :Fullscreen (borderless window)
-STR_2776    :Language:
+STR_2776    :اللغة:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Viewport #{COMMA16}
@@ -2111,25 +2111,25 @@ STR_2780    :Extra viewport
 STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
 STR_2782    :SHIFT +
 STR_2783    :CTRL +
-STR_2784    :Change keyboard shortcut
-STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}“{STRINGID}”
+STR_2784    :غير إختصار لوحة المفاتيح
+STR_2785    :{WINDOW_COLOUR_2}اضغط علي الإختصار الجديد لـ:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
 STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
 STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
 STR_2790    :Enter name into scenario chart
-STR_2791    :Enter name
+STR_2791    :ادخل أسمًا
 STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
-STR_2795    :Sort
+STR_2795    :ترتيب
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
 STR_2798    :{SMALLFONT}{BLACK}Scroll the view when the mouse pointer is at the screen edge
 STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
-STR_2802    :Map
+STR_2802    :خريطة
 STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
 STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
 STR_2805    :{SMALLFONT}{BLACK}Show map of park
@@ -2175,7 +2175,7 @@ STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the
 STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of colour schemes'!
 STR_2846    :{TOPAZ}Your park has received an award for being 'The park with the most confusing layout'!
 STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle rides'!
-STR_2848    :{WINDOW_COLOUR_2}No recent awards
+STR_2848    :{WINDOW_COLOUR_2}لا جوائز حالية
 STR_2849    :New scenario installed successfully
 STR_2850    :New track design installed successfully
 STR_2851    :Scenario already installed
@@ -2223,7 +2223,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chr
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics “Liquid Grooves”)
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
 STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
@@ -2333,18 +2333,6 @@ STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You hav
 STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
 STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
 STR_3077    :{RED}CLOSURE NOTICE: Your park has been closed down !
-STR_3078    :Plain entrance
-STR_3079    :Wooden entrance
-STR_3080    :Canvas tent entrance
-STR_3081    :Castle entrance (grey)
-STR_3082    :Castle entrance (brown)
-STR_3083    :Jungle entrance
-STR_3084    :Log cabin entrance
-STR_3085    :Classical/Roman entrance
-STR_3086    :Abstract entrance
-STR_3087    :Snow/Ice entrance
-STR_3088    :Pagoda entrance
-STR_3089    :Space entrance
 STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
 STR_3091    :You are not allowed to remove this section!
 STR_3092    :You are not allowed to move or modify the station for this ride!
@@ -2864,8 +2852,8 @@ STR_5352    :{BLACK}السعادة:
 STR_5353    :{BLACK}الطاقة:
 STR_5354    :{BLACK}الجوع:
 STR_5355    :{BLACK}العطش:
-STR_5356    :{BLACK}Nausea:
-STR_5357    :{BLACK}Nausea tolerance:
+STR_5356    :{BLACK}الإشمئزاز:
+STR_5357    :{BLACK}تسامح الإشمئزاز:
 STR_5358    :{BLACK}الحمام:
 STR_5359    :مسح الزوار
 STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
@@ -2912,7 +2900,7 @@ STR_5400    :Can't change this title sequence
 STR_5401    :Create a new title sequence to make changes to
 STR_5402    :Failed to load title sequence
 STR_5403    :There may be no Load or Wait command or a save may be invalid
-STR_5404    :Name already exists
+STR_5404    :الأسم موجود بالفعل
 STR_5405    :Enter a name for the save
 STR_5406    :Enter a name for the title sequence
 STR_5407    :إضافة
@@ -2920,7 +2908,7 @@ STR_5408    :مسح
 STR_5409    :إدخال
 STR_5410    :تعديل
 STR_5411    :إعادة تحميل
-STR_5412    :Skip to
+STR_5412    :تخطي لـ
 STR_5413    :تحميل
 STR_5414    :تحميل{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :تحميل{MOVE_X}{87}{STRING}
@@ -2935,7 +2923,7 @@ STR_5423    :إنتظر
 STR_5424    :إنتظر{MOVE_X}{87}{UINT16}
 STR_5425    :إعادة تشغيل
 STR_5426    :إنهاء
-STR_5427    :Coordinates:
+STR_5427    :الإحداثيات:
 STR_5428    :Anticlockwise rotations:
 STR_5429    :Zoom level:
 STR_5430    :Milliseconds to wait:
@@ -2962,8 +2950,8 @@ STR_5450    :زيادة سرعة اللعبة
 STR_5451    :إفتح نافذة الشفرات
 STR_5452    :Toggle visibility of toolbars
 STR_5453    :تحديد رحلة أخري
-STR_5454    :Uncap FPS
-STR_5455    :Enable sandbox mode
+STR_5454    :لا تحديد لمعدل الإطارات
+STR_5455    :تفعيل وضع صندوق الرمل
 STR_5456    :Disable clearance checks
 STR_5457    :Disable support limits
 STR_5458    :Rotate clockwise
@@ -2971,9 +2959,9 @@ STR_5459    :Rotate anti-clockwise
 STR_5460    :Rotate view anti-clockwise
 STR_5461    :Set guests' parameters
 STR_5462    :{CURRENCY}
-STR_5463    :الهدف: تمتع!
+STR_5463    :الهدف: إستمتع!
 STR_5464    :عام
-STR_5465    :المناغ
+STR_5465    :الطقس
 STR_5466    :العاملين
 STR_5467    :ALT +
 STR_5468    :الرسائل الحالية
@@ -2981,9 +2969,9 @@ STR_5469    :Scroll map up
 STR_5470    :Scroll map left
 STR_5471    :Scroll map down
 STR_5472    :Scroll map right
-STR_5473    :Cycle day / night
+STR_5473    :دورة الليل / النهار
 STR_5474    :Display text on banners in uppercase
-STR_5475    :{COMMA16} weeks
+STR_5475    :{COMMA16} أسابيع
 STR_5476    :الهاردوير
 STR_5477    :تصيير الخريطة
 STR_5478    :التحكم
@@ -2991,8 +2979,8 @@ STR_5479    :شريط الأدوات
 STR_5480    :Show toolbar buttons for:
 STR_5481    :الثيمات
 STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
-STR_5483    :{BLACK}({COMMA16} weeks remaining)
-STR_5484    :{BLACK}({COMMA16} week remaining)
+STR_5483    :{BLACK}({COMMA16} أسابيع باقية)
+STR_5484    :{BLACK}({COMMA16} أسبوع باقً)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}أظهر الرسائل الحالية
@@ -3025,20 +3013,20 @@ STR_5515    :{SMALLFONT}{BLACK}أوقف الزوار عن تخريب حديقت�
 STR_5516    :{SMALLFONT}{BLACK}أسود
 STR_5517    :{SMALLFONT}{BLACK}رمادي
 STR_5518    :{SMALLFONT}{BLACK}أبيض
-STR_5519    :{SMALLFONT}{BLACK}Dark purple
-STR_5520    :{SMALLFONT}{BLACK}Light purple
-STR_5521    :{SMALLFONT}{BLACK}Bright purple
-STR_5522    :{SMALLFONT}{BLACK}Dark blue
-STR_5523    :{SMALLFONT}{BLACK}Light blue
-STR_5524    :{SMALLFONT}{BLACK}Icy blue
-STR_5525    :{SMALLFONT}{BLACK}Dark water
-STR_5526    :{SMALLFONT}{BLACK}Light water
-STR_5527    :{SMALLFONT}{BLACK}Saturated green
-STR_5528    :{SMALLFONT}{BLACK}Dark green
-STR_5529    :{SMALLFONT}{BLACK}Moss green
-STR_5530    :{SMALLFONT}{BLACK}Bright green
-STR_5531    :{SMALLFONT}{BLACK}Olive green
-STR_5532    :{SMALLFONT}{BLACK}Dark olive green
+STR_5519    :{SMALLFONT}{BLACK}أرجواني غامق
+STR_5520    :{SMALLFONT}{BLACK}أرجواني مبيض
+STR_5521    :{SMALLFONT}{BLACK}أرجواني فاتح
+STR_5522    :{SMALLFONT}{BLACK}أزرق غامق
+STR_5523    :{SMALLFONT}{BLACK}أزرق فاتح
+STR_5524    :{SMALLFONT}{BLACK}أزرق ثلجي
+STR_5525    :{SMALLFONT}{BLACK}مائي غامق
+STR_5526    :{SMALLFONT}{BLACK}مائي خفيف
+STR_5527    :{SMALLFONT}{BLACK}أخضر مشبع
+STR_5528    :{SMALLFONT}{BLACK}أخضر غامق
+STR_5529    :{SMALLFONT}{BLACK}أخضر طحلبي
+STR_5530    :{SMALLFONT}{BLACK}أخضر فاتح
+STR_5531    :{SMALLFONT}{BLACK}أخضر زيتوني
+STR_5532    :{SMALLFONT}{BLACK}أخضر زيتوني غامق
 STR_5533    :{SMALLFONT}{BLACK}أصفر فاتح
 STR_5534    :{SMALLFONT}{BLACK}أصفر
 STR_5535    :{SMALLFONT}{BLACK}أصفر غامق
@@ -3083,10 +3071,10 @@ STR_5573    :إمسح من المفضلة
 STR_5574    :أسم السرفر:
 STR_5575    :حد اللاعبين:
 STR_5576    :المنفذ:
-STR_5577    :South Korean Won (W)
+STR_5577    :يوان شمال كوريا (W)
 STR_5578    :الروبية الروسية (₽)
 STR_5579    :معدل تكبير النافذه:
-STR_5580    :Czech koruna (Kč)
+STR_5580    :كرونة تشيكية (Kč)
 STR_5581    :أظهر معدل الإطارات
 STR_5582    :Trap mouse cursor in window
 STR_5583    :{COMMA1DP16}m/s
@@ -3154,13 +3142,13 @@ STR_5644    :إمسح مجموعة
 STR_5645    :الشات
 STR_5646    :Terraform
 STR_5647    :Toggle Pause
-STR_5648    :Set Water Level
-STR_5649    :Create Ride
-STR_5650    :Remove Ride
-STR_5651    :Build Ride
-STR_5652    :Ride Properties
+STR_5648    :حدد مستوي الماء
+STR_5649    :أنشئ الرحلة
+STR_5650    :حذف الرحلة
+STR_5651    :بناء الرحلة
+STR_5652    :خصائص الرحلة
 STR_5653    :Scenery
-STR_5654    :Path
+STR_5654    :المسار
 STR_5655    :زائر
 STR_5656    :العاملين
 STR_5657    :خصائص الحديقة
@@ -3192,18 +3180,18 @@ STR_5716    :غير مسموح به في وضع اللعب الجماعي
 # For identifying client network version in server list window
 STR_5717    :نسخة الشبكة: {STRING}
 STR_5718    :{SMALLFONT}{BLACK}نسخة الشبكة: {STRING}
-STR_5719    :مشمش
-STR_5720    :مغيم جزئياً
-STR_5721    :مغيمه
-STR_5722    :مطر
-STR_5723    :مطر شديد
-STR_5724    :عاصفة برق
+STR_5719    :مشمس
+STR_5720    :غائم جزئيًا
+STR_5721    :غائم
+STR_5722    :ممطر
+STR_5723    :عاصفة مطرية
+STR_5724    :عاصفة برقية
 STR_5725    :{BLACK}طبق الجو الأتي بالقوة:
 STR_5726    :{SMALLFONT}{BLACK}يُحدد الجو الحالي في الحديقة
 STR_5727    :جودة التكبير:
 STR_5728    :Requires hardware display option
 STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
-STR_5731    :Linear
+STR_5731    :حدي
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :حالة الشبكة
@@ -3235,25 +3223,25 @@ STR_5760    :دولار هونج كونج (HK$)
 STR_5761    :دولار تيوان الجديدة (NT$)
 STR_5762    :الين الصيني (CN¥)
 STR_5763    :كل الملفات
-STR_5764    :Invalid ride type
-STR_5765    :Cannot edit rides of invalid type
+STR_5764    :نوع رحلة غير صحيح
+STR_5765    :لا يمكن تعديل رحلة من النوع الغير صحيح
 STR_5766    :<available string id>
 STR_5767    :الدخل
 STR_5768    :العملاء الكلين
 STR_5769    :الربح الكلي
 STR_5770    :العملاء كل ساعة
-STR_5771    :Running cost
+STR_5771    :تكاليف التشغيل
 STR_5772    :العمر
-STR_5773    :Total customers: {COMMA32}
-STR_5774    :Total profit: {CURRENCY2DP}
-STR_5775    :Customers: {COMMA32} per hour
-STR_5776    :Built: This Year
-STR_5777    :Built: Last Year
-STR_5778    :Built: {COMMA16} Years Ago
-STR_5779    :Income: {CURRENCY2DP} per hour
-STR_5780    :Running cost: {CURRENCY2DP} per hour
-STR_5781    :Running cost: Unknown
-STR_5782    :You are now connected. Press '{STRING}' to chat.
+STR_5773    :الزبائن الكلين: {COMMA32}
+STR_5774    :الربح الكلي: {CURRENCY2DP}
+STR_5775    :الزبائن: {COMMA32} في الساعة
+STR_5776    :بُنيت: هذا العام
+STR_5777    :بُنيت: السنة السابقة
+STR_5778    :بُنيت: {COMMA16} عاماً سبق
+STR_5779    :الدخل: {CURRENCY2DP} في الساعة
+STR_5780    :تكاليف التشغيل: {CURRENCY2DP} في الساعة
+STR_5781    :تكاليف التشغيل: غير معروف
+STR_5782    :أنت الأن متصل. إضغط '{STRING}' لكي تتحدث.
 STR_5783    :{WINDOW_COLOUR_2}Scenario Locked
 STR_5784    :{BLACK}Complete earlier scenarios to unlock this scenario.
 STR_5785    :لا يمكن تسمية المجموعة...
@@ -3273,12 +3261,12 @@ STR_5798    :{SMALLFONT}{BLACK}Allows building actions in pause mode
 STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure
 STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
 STR_5801    :Disable littering
-STR_5802    :{SMALLFONT}{BLACK}Stops guests from littering and vomiting
+STR_5802    :{SMALLFONT}{BLACK}يوقف الزوار عن رمي القمامة والقئ
 STR_5803    :{SMALLFONT}{BLACK}Rotate selected map element
 STR_5804    :Mute sound
 STR_5805    :{SMALLFONT}{BLACK}If checked, your server will be added to the{NEWLINE}public server list so everyone can find it
 STR_5806    :تفعيل وضع النافذة
-STR_5807    :{WINDOW_COLOUR_2}Number of rides: {BLACK}{COMMA16}
+STR_5807    :{WINDOW_COLOUR_2}عدد الرحلات: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Number of shops and stalls: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities: {BLACK}{COMMA16}
 STR_5810    :Disable vehicle limits
@@ -3288,7 +3276,7 @@ STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 
 #tooltips
-STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
+STR_5815    :{SMALLFONT}{BLACK}أظهر عداد معدل الإطارات بداخل اللعبة
 STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
 STR_5817    :{SMALLFONT}{BLACK}Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbour scaling is sharp, but can cause a minor performance hit.
 STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
@@ -3494,15 +3482,15 @@ STR_6020    :بناء الرحلة - أستخدم المسار الإفتراض�
 STR_6021    :بنال الرحلة - أنحدر للآسفل
 STR_6022    :بناء الرحلة - أصعد للأعلي
 STR_6023    :بناء الرحلة - Toggle chain lift
-STR_6024    :بناء الرحلة - Bank left
-STR_6025    :بناء الرحلة - Bank right
+STR_6024    :بناء الرحلة - ميلان لليسار
+STR_6025    :بناء الرحلة - ميلان لليمين
 STR_6026    :بناء الرحلة - المسار السابق
 STR_6027    :بناء الرحلة - المسار التالي
 STR_6028    :بناء الرحلة - بناء المحدد
 STR_6029    :بناء الرحلة - إهدم المحدد
 STR_6030    :{SMALLFONT}{BLACK}Scenery picker. Click any scenery on the map to select the same piece for construction.
 STR_6031    ::وصف السرفر
-STR_6032    :Server Greeting:
+STR_6032    :ترحيب السرفر:
 STR_6033    :Path to RCT1 installation:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Please select your RCT1 directory
@@ -3540,7 +3528,7 @@ STR_6066    :{SMALLFONT}{BLACK} تُسجل أفعال اللاعب بالكام�
 STR_6067    :.بدء السرفر
 STR_6068    :.اغلق السرفر
 STR_6069    :{STRING} .{STRING} طُرد من السرفر بواسطة
-STR_6070    :{STRING} was set to group '{STRING}' by {STRING}.
+STR_6070    :{STRING} حُدد مع المجموعة '{STRING}' بواسطة {STRING}.
 STR_6071    :{STRING} created new player group '{STRING}'.
 STR_6072    :{STRING} deleted player group '{String}'.
 STR_6073    :{STRING} edited permissions for player group '{String}'.
@@ -3620,9 +3608,9 @@ STR_6146    :Enable all drawable track pieces
 STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
 STR_6148    :يتصل إلي السرفر الأساسي...
 STR_6149    :غير قادر علي الإتصال بالسرفر الأساسي
-STR_6150    :رد خاطئ من السرفر الأساسي (JSON لا رقم)
+STR_6150    :رد خاطئ من السرفر الأساسي (لا رقم جسون)
 STR_6151    :السرفر الأساسي فشل في إرجاع السرفرات
-STR_6152    :رد خاطئ من السرفر الأساسي(JSON لا طبقات)
+STR_6152    :رد خاطئ من السرفر الأساسي(لا طبقات جسون )
 STR_6153    :دُفع لدخول الحديقة / دُفع لكل رحلة
 STR_6154    :لا يٌفضل تشغيل اللعبة مع هذه الأذون المرتفعة. لأسباب  أمنية لا يُفضل هذا.
 STR_6155    :ليس هناك KDialog أو Zenity مثبت. الرجاء تثبيت إحداهما، أو إعداده من سطر الأوامر.
@@ -3633,7 +3621,7 @@ STR_6159    :تنعيم الجار الأقرب
 STR_6160    :{WINDOW_COLOUR_2}المركبات المتوفرة: {BLACK}{STRING}
 STR_6161    :إظهار/إخفاء شبكة الإرشاد
 STR_6162    :الفأر البري الدوار
-STR_6163    :سيارات بشكل فأر تسرع في اللفات الضيقة والنزلات الصغيرة، تدور بشكل لطيف للإرباك الراكبين
+STR_6163    :سيارات بشكل فأر تسرع في اللفات الضيقة والنزلات الصغيرة، تدور بشكل لطيف لإرباك الراكبين
 STR_6164    :{WHITE}❌
 STR_6165    :إستخدام المزامنة العمودية
 STR_6166    :{SMALLFONT}{BLACK}مزامنة كل فريم إلي معدل تحديث الشاشة، مما يمنع تمزيق وتمييع الشاشة.
@@ -3688,7 +3676,7 @@ STR_6214    :ناطحة السحاب ب
 STR_6215    :الإنشاء
 STR_6216    :العملية
 STR_6217    :توافرية المسار \الرحلة
-STR_6218    :الرسمية OpenRCT2
+STR_6218    :محاكاة الأفعوانيات المفتوحة 2 الرسمية
 STR_6219    :تعليم مشاكل المسار
 STR_6220    :أجعله مُستخدم
 STR_6221    :{SMALLFONT}{BLACK هذا سوف يحدد المدخل والمخرج المعروف للرحلة للمنطقة هذه. فقط مدخل ومخرج واحد يمكن إسخدامة لكل  محطة.
@@ -3731,9 +3719,21 @@ STR_6261    :أظهر المسارات الواسعة
 STR_6262    :الصوت الرئيسي
 STR_6263    :{SMALLFONT}{BLACK}إجعل كل الأصوات مفتوحة أو مغلقة
 STR_6264    :إستخدم متصفح ملفات النظام دائماً
-STR_6265    :{SMALLFONT}{BLACK}When enabled, your operating system's file browser will be used instead of OpenRCT2's.
+STR_6265    :{SMALLFONT}{BLACK}عندما يكون مُفعل، سيتم إستخدام متصفح الملفات الخاص بنظام التشغيل بدلاً من متصفح الملفات الخاص باللعبة.
 STR_6266    :إفتح مجلد المحتويات المخصصة
 STR_6267    :إفتح عارض المربع
+STR_6268    :إنتقل إلي الجزئية التالية
+STR_6269    :معرف طقس غير صحيح
+STR_6270    :أسطح التضاريس
+STR_6271    :حواف التضاريس
+STR_6272    :المحطات
+STR_6273    :الموسيقي
+STR_6274    :لا يمكن تحديد مخطط اللون...
+STR_6275    :{WINDOW_COLOUR_2}نمط المحطة
+STR_6276    :{RED}{STRINGID} هل علق الزوار؟ ربما يكون هذا بسبب أفعوانية غير صالحة أو وضع تشغيل غير صالح.
+STR_6277    :{WINDOW_COLOUR_2}فهرسة المحطة: {BLACK}{COMMA16}
+STR_6278    :عدد ملفات الحفظ التلقائي
+STR_6279    :{SMALLFONT}{BLACK}عدد ملفات الحفظ التلقائي التي يجب إبقائها في المرة الواحدة
 
 #############
 # Scenarios #
