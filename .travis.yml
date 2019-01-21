@@ -70,9 +70,9 @@ matrix:
           if: type != cron
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DCMAKE_BUILD_TYPE=Debug" TARGET=ubuntu_amd64
         - os: linux
-          name: Windows i686-w64 MinGW RelWithDebInfo
+          name: Windows i686-w64 MinGW
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo" TARGET=windows
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON" TARGET=windows
         - os: linux
           name: Docker64 GCC Release
           if: type != cron
