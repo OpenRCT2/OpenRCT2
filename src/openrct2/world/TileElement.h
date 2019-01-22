@@ -24,7 +24,6 @@
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
 #define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
 
-
 enum
 {
     TILE_ELEMENT_QUADRANT_SW,
@@ -76,7 +75,6 @@ enum
     MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT = (1 << 7),
 };
 
-
 struct rct_scenery_entry;
 struct rct_footpath_entry;
 
@@ -127,21 +125,26 @@ struct TileElementBase
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
 
-    constexpr uint8_t GetType() const {
+    constexpr uint8_t GetType() const
+    {
         return this->type & TILE_ELEMENT_TYPE_MASK;
     }
     void SetType(uint8_t newType);
-    constexpr uint8_t GetDirection() const {
+    constexpr uint8_t GetDirection() const
+    {
         return this->type & TILE_ELEMENT_DIRECTION_MASK;
     }
     void SetDirection(uint8_t direction);
-    constexpr uint8_t GetDirectionWithOffset(uint8_t offset) const {
+    constexpr uint8_t GetDirectionWithOffset(uint8_t offset) const
+    {
         return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
     }
-    constexpr bool IsLastForTile() const {
+    constexpr bool IsLastForTile() const
+    {
         return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
     }
-    constexpr bool IsGhost() const {
+    constexpr bool IsGhost() const
+    {
         return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
     }
     void Remove();
@@ -262,7 +265,8 @@ public:
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
 
-    constexpr bool IsSloped() const {
+    constexpr bool IsSloped() const
+    {
         return (entryIndex & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
     }
     void SetSloped(bool isSloped);
@@ -270,7 +274,8 @@ public:
     uint8_t GetSlopeDirection() const;
     void SetSlopeDirection(uint8_t newSlope);
 
-    constexpr ride_id_t GetRideIndex() const {
+    constexpr ride_id_t GetRideIndex() const
+    {
         return rideIndex;
     };
     void SetRideIndex(ride_id_t newRideIndex);
@@ -278,27 +283,32 @@ public:
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);
 
-    constexpr bool IsWide() const {
+    constexpr bool IsWide() const
+    {
         return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
     }
     void SetWide(bool isWide);
 
-    constexpr bool IsQueue() const {
+    constexpr bool IsQueue() const
+    {
         return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
     }
     void SetIsQueue(bool isQueue);
     bool HasQueueBanner() const;
     void SetHasQueueBanner(bool hasQueueBanner);
 
-    constexpr uint8_t GetEdges() const {
+    constexpr uint8_t GetEdges() const
+    {
         return edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     }
     void SetEdges(uint8_t newEdges);
-    constexpr uint8_t GetCorners() const {
+    constexpr uint8_t GetCorners() const
+    {
         return edges >> 4;
     }
     void SetCorners(uint8_t newCorners);
-    constexpr uint8_t GetEdgesAndCorners() const {
+    constexpr uint8_t GetEdgesAndCorners() const
+    {
         return edges;
     }
     void SetEdgesAndCorners(uint8_t newEdgesAndCorners);
@@ -312,7 +322,8 @@ public:
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);
 
-    constexpr uint8_t GetAdditionStatus() const {
+    constexpr uint8_t GetAdditionStatus() const
+    {
         return additionStatus;
     }
     void SetAdditionStatus(uint8_t newStatus);
@@ -356,7 +367,8 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    constexpr ride_id_t GetRideIndex() const {
+    constexpr ride_id_t GetRideIndex() const
+    {
         return rideIndex;
     };
     void SetRideIndex(ride_id_t newRideIndex);
@@ -509,7 +521,8 @@ public:
     uint8_t GetEntranceType() const;
     void SetEntranceType(uint8_t newType);
 
-    constexpr ride_id_t GetRideIndex() const {
+    constexpr ride_id_t GetRideIndex() const
+    {
         return rideIndex;
     };
     void SetRideIndex(ride_id_t newRideIndex);
@@ -554,8 +567,6 @@ struct CorruptElement : TileElementBase
 };
 assert_struct_size(CorruptElement, 8);
 #pragma pack(pop)
-
-
 
 BannerIndex tile_element_get_banner_index(TileElement* tileElement);
 bool tile_element_is_underground(TileElement* tileElement);

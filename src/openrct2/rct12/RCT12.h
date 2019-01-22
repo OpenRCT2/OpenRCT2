@@ -111,13 +111,16 @@ struct RCT12TileElementBase
     uint8_t flags;            // 1
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
-    constexpr uint8_t GetType() const {
+    constexpr uint8_t GetType() const
+    {
         return this->type & TILE_ELEMENT_TYPE_MASK;
     }
-    constexpr uint8_t GetDirection() const {
+    constexpr uint8_t GetDirection() const
+    {
         return this->type & TILE_ELEMENT_DIRECTION_MASK;
     }
-    constexpr bool IsLastForTile() const {
+    constexpr bool IsLastForTile() const
+    {
         return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
     }
     constexpr bool IsGhost() const;
