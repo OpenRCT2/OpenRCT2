@@ -961,7 +961,9 @@ void footpath_bridge_get_info_from_pos(
         if (directions & 0x0F)
         {
             int32_t bx = bitscanforward(directions);
-            bx += (*tileElement)->AsEntrance()->GetDirection();
+	    auto entrance = (*tileElement)->AsEntrance();
+	    if(entrance != nullptr)
+            	bx += entrance->GetDirection();
             bx &= 3;
             if (direction != nullptr)
                 *direction = bx;
