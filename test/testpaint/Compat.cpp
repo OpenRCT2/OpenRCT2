@@ -155,16 +155,6 @@ rct_sprite* get_sprite(size_t sprite_idx)
     return &sprite_list[sprite_idx];
 }
 
-bool TileElementBase::IsLastForTile() const
-{
-    return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
-}
-
-uint8_t TileElementBase::GetType() const
-{
-    return this->type & TILE_ELEMENT_TYPE_MASK;
-}
-
 TileElement* map_get_first_element_at(int x, int y)
 {
     if (x < 0 || y < 0 || x > 255 || y > 255)
@@ -283,11 +273,6 @@ uint8_t TrackElement::GetDoorBState() const
     return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
 }
 
-uint8_t TrackElement::GetRideIndex() const
-{
-    return rideIndex;
-}
-
 void TrackElement::SetRideIndex(uint8_t newRideIndex)
 {
     rideIndex = newRideIndex;
@@ -391,16 +376,6 @@ void TileElementBase::SetType(uint8_t newType)
     this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
 }
 
-uint8_t TileElementBase::GetDirection() const
-{
-    return this->type & TILE_ELEMENT_DIRECTION_MASK;
-}
-
-uint8_t TileElementBase::GetDirectionWithOffset(uint8_t offset) const
-{
-    return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
-}
-
 uint8_t SurfaceElement::GetSlope() const
 {
     return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
@@ -414,11 +389,6 @@ uint32_t SurfaceElement::GetWaterHeight() const
 bool TrackElement::IsHighlighted() const
 {
     return (type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT);
-}
-
-uint8_t PathElement::GetEdges() const
-{
-    return edges & 0xF;
 }
 
 StationObject* ride_get_station_object(const Ride* ride)
