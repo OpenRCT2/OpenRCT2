@@ -157,7 +157,7 @@ struct TileElement : public TileElementBase
 
     template<typename TType, TileElementType TClass> constexpr TType* as() const
     {
-        return (TileElementType)GetType() == TClass ? (TType*)this : nullptr;
+        return (TType*)this;
     }
 
 public:
