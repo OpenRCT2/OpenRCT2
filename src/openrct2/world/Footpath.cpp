@@ -1986,11 +1986,6 @@ int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32
     return footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, 0, 0, 16);
 }
 
-bool PathElement::IsSloped() const
-{
-    return (entryIndex & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
-}
-
 void PathElement::SetSloped(bool isSloped)
 {
     entryIndex &= ~FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
@@ -2007,11 +2002,6 @@ void PathElement::SetSlopeDirection(uint8_t newSlope)
 {
     entryIndex &= ~FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
     entryIndex |= newSlope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
-}
-
-bool PathElement::IsQueue() const
-{
-    return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
 }
 
 void PathElement::SetIsQueue(bool isQueue)
@@ -2042,11 +2032,6 @@ void PathElement::SetStationIndex(uint8_t newStationIndex)
 {
     additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
     additions |= ((newStationIndex << 4) & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK);
-}
-
-bool PathElement::IsWide() const
-{
-    return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
 }
 
 void PathElement::SetWide(bool isWide)
@@ -2712,29 +2697,14 @@ PathRailingsEntry* get_path_railings_entry(int32_t entryIndex)
     return result;
 }
 
-ride_id_t PathElement::GetRideIndex() const
-{
-    return rideIndex;
-}
-
 void PathElement::SetRideIndex(ride_id_t newRideIndex)
 {
     rideIndex = newRideIndex;
 }
 
-uint8_t PathElement::GetAdditionStatus() const
-{
-    return additionStatus;
-}
-
 void PathElement::SetAdditionStatus(uint8_t newStatus)
 {
     additionStatus = newStatus;
-}
-
-uint8_t PathElement::GetEdges() const
-{
-    return edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
 }
 
 void PathElement::SetEdges(uint8_t newEdges)
@@ -2743,20 +2713,10 @@ void PathElement::SetEdges(uint8_t newEdges)
     edges |= (newEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK);
 }
 
-uint8_t PathElement::GetCorners() const
-{
-    return edges >> 4;
-}
-
 void PathElement::SetCorners(uint8_t newCorners)
 {
     edges &= ~FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK;
     edges |= (newCorners << 4);
-}
-
-uint8_t PathElement::GetEdgesAndCorners() const
-{
-    return edges;
 }
 
 void PathElement::SetEdgesAndCorners(uint8_t newEdgesAndCorners)

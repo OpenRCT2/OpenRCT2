@@ -14,6 +14,69 @@
 #include "Footpath.h"
 #include "Location.hpp"
 
+#define TILE_ELEMENT_QUADRANT_MASK 0b11000000
+#define TILE_ELEMENT_TYPE_MASK 0b00111100
+#define TILE_ELEMENT_DIRECTION_MASK 0b00000011
+
+#define TILE_ELEMENT_COLOUR_MASK 0b00011111
+
+#define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0b01110000
+#define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
+#define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
+
+
+enum
+{
+    TILE_ELEMENT_QUADRANT_SW,
+    TILE_ELEMENT_QUADRANT_NW,
+    TILE_ELEMENT_QUADRANT_NE,
+    TILE_ELEMENT_QUADRANT_SE
+};
+
+enum
+{
+    TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6),
+    SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),
+};
+
+enum
+{
+    TILE_ELEMENT_DIRECTION_WEST,
+    TILE_ELEMENT_DIRECTION_NORTH,
+    TILE_ELEMENT_DIRECTION_EAST,
+    TILE_ELEMENT_DIRECTION_SOUTH
+};
+
+enum
+{
+    TILE_ELEMENT_FLAG_GHOST = (1 << 4),
+    TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
+    TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
+    TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
+    TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
+    TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
+};
+
+enum
+{
+    ENTRANCE_TYPE_RIDE_ENTRANCE,
+    ENTRANCE_TYPE_RIDE_EXIT,
+    ENTRANCE_TYPE_PARK_ENTRANCE
+};
+
+enum
+{
+    ELEMENT_IS_ABOVE_GROUND = 1 << 0,
+    ELEMENT_IS_UNDERGROUND = 1 << 1,
+    ELEMENT_IS_UNDERWATER = 1 << 2,
+};
+
+enum
+{
+    MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT = (1 << 7),
+};
+
+
 struct rct_scenery_entry;
 struct rct_footpath_entry;
 
@@ -64,13 +127,23 @@ struct TileElementBase
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
 
-    uint8_t GetType() const;
+    constexpr uint8_t GetType() const {
+        return this->type & TILE_ELEMENT_TYPE_MASK;
+    }
     void SetType(uint8_t newType);
-    uint8_t GetDirection() const;
+    constexpr uint8_t GetDirection() const {
+        return this->type & TILE_ELEMENT_DIRECTION_MASK;
+    }
     void SetDirection(uint8_t direction);
-    uint8_t GetDirectionWithOffset(uint8_t offset) const;
-    bool IsLastForTile() const;
-    bool IsGhost() const;
+    constexpr uint8_t GetDirectionWithOffset(uint8_t offset) const {
+        return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
+    }
+    constexpr bool IsLastForTile() const {
+        return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+    }
+    constexpr bool IsGhost() const {
+        return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+    }
     void Remove();
 };
 
@@ -82,45 +155,45 @@ struct TileElement : public TileElementBase
 {
     uint8_t pad_04[4];
 
-    template<typename TType, TileElementType TClass> TType* as() const
+    template<typename TType, TileElementType TClass> constexpr TType* as() const
     {
         return (TileElementType)GetType() == TClass ? (TType*)this : nullptr;
     }
 
 public:
-    SurfaceElement* AsSurface() const
+    constexpr SurfaceElement* AsSurface() const
     {
         return as<SurfaceElement, TileElementType::Surface>();
     }
-    PathElement* AsPath() const
+    constexpr PathElement* AsPath() const
     {
         return as<PathElement, TileElementType::Path>();
     }
-    TrackElement* AsTrack() const
+    constexpr TrackElement* AsTrack() const
     {
         return as<TrackElement, TileElementType::Track>();
     }
-    SmallSceneryElement* AsSmallScenery() const
+    constexpr SmallSceneryElement* AsSmallScenery() const
     {
         return as<SmallSceneryElement, TileElementType::SmallScenery>();
     }
-    LargeSceneryElement* AsLargeScenery() const
+    constexpr LargeSceneryElement* AsLargeScenery() const
     {
         return as<LargeSceneryElement, TileElementType::LargeScenery>();
     }
-    WallElement* AsWall() const
+    constexpr WallElement* AsWall() const
     {
         return as<WallElement, TileElementType::Wall>();
     }
-    EntranceElement* AsEntrance() const
+    constexpr EntranceElement* AsEntrance() const
     {
         return as<EntranceElement, TileElementType::Entrance>();
     }
-    BannerElement* AsBanner() const
+    constexpr BannerElement* AsBanner() const
     {
         return as<BannerElement, TileElementType::Banner>();
     }
-    CorruptElement* AsCorrupt() const
+    constexpr CorruptElement* AsCorrupt() const
     {
         return as<CorruptElement, TileElementType::Corrupt>();
     }
@@ -189,31 +262,45 @@ public:
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
 
-    bool IsSloped() const;
+    constexpr bool IsSloped() const {
+        return (entryIndex & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
+    }
     void SetSloped(bool isSloped);
 
     uint8_t GetSlopeDirection() const;
     void SetSlopeDirection(uint8_t newSlope);
 
-    ride_id_t GetRideIndex() const;
+    constexpr ride_id_t GetRideIndex() const {
+        return rideIndex;
+    };
     void SetRideIndex(ride_id_t newRideIndex);
 
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);
 
-    bool IsWide() const;
+    constexpr bool IsWide() const {
+        return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
+    }
     void SetWide(bool isWide);
 
-    bool IsQueue() const;
+    constexpr bool IsQueue() const {
+        return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
+    }
     void SetIsQueue(bool isQueue);
     bool HasQueueBanner() const;
     void SetHasQueueBanner(bool hasQueueBanner);
 
-    uint8_t GetEdges() const;
+    constexpr uint8_t GetEdges() const {
+        return edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+    }
     void SetEdges(uint8_t newEdges);
-    uint8_t GetCorners() const;
+    constexpr uint8_t GetCorners() const {
+        return edges >> 4;
+    }
     void SetCorners(uint8_t newCorners);
-    uint8_t GetEdgesAndCorners() const;
+    constexpr uint8_t GetEdgesAndCorners() const {
+        return edges;
+    }
     void SetEdgesAndCorners(uint8_t newEdgesAndCorners);
 
     bool HasAddition() const;
@@ -225,7 +312,9 @@ public:
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);
 
-    uint8_t GetAdditionStatus() const;
+    constexpr uint8_t GetAdditionStatus() const {
+        return additionStatus;
+    }
     void SetAdditionStatus(uint8_t newStatus);
 
     uint8_t GetRCT1PathType() const;
@@ -267,7 +356,9 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    ride_id_t GetRideIndex() const;
+    constexpr ride_id_t GetRideIndex() const {
+        return rideIndex;
+    };
     void SetRideIndex(ride_id_t newRideIndex);
 
     uint8_t GetColourScheme() const;
@@ -418,7 +509,9 @@ public:
     uint8_t GetEntranceType() const;
     void SetEntranceType(uint8_t newType);
 
-    ride_id_t GetRideIndex() const;
+    constexpr ride_id_t GetRideIndex() const {
+        return rideIndex;
+    };
     void SetRideIndex(ride_id_t newRideIndex);
 
     uint8_t GetStationIndex() const;
@@ -462,66 +555,7 @@ struct CorruptElement : TileElementBase
 assert_struct_size(CorruptElement, 8);
 #pragma pack(pop)
 
-enum
-{
-    TILE_ELEMENT_QUADRANT_SW,
-    TILE_ELEMENT_QUADRANT_NW,
-    TILE_ELEMENT_QUADRANT_NE,
-    TILE_ELEMENT_QUADRANT_SE
-};
 
-enum
-{
-    TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6),
-    SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),
-};
-
-enum
-{
-    TILE_ELEMENT_DIRECTION_WEST,
-    TILE_ELEMENT_DIRECTION_NORTH,
-    TILE_ELEMENT_DIRECTION_EAST,
-    TILE_ELEMENT_DIRECTION_SOUTH
-};
-
-enum
-{
-    TILE_ELEMENT_FLAG_GHOST = (1 << 4),
-    TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
-    TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
-    TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
-    TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
-    TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
-};
-
-enum
-{
-    ENTRANCE_TYPE_RIDE_ENTRANCE,
-    ENTRANCE_TYPE_RIDE_EXIT,
-    ENTRANCE_TYPE_PARK_ENTRANCE
-};
-
-enum
-{
-    ELEMENT_IS_ABOVE_GROUND = 1 << 0,
-    ELEMENT_IS_UNDERGROUND = 1 << 1,
-    ELEMENT_IS_UNDERWATER = 1 << 2,
-};
-
-enum
-{
-    MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT = (1 << 7),
-};
-
-#define TILE_ELEMENT_QUADRANT_MASK 0b11000000
-#define TILE_ELEMENT_TYPE_MASK 0b00111100
-#define TILE_ELEMENT_DIRECTION_MASK 0b00000011
-
-#define TILE_ELEMENT_COLOUR_MASK 0b00011111
-
-#define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0b01110000
-#define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
-#define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
 
 BannerIndex tile_element_get_banner_index(TileElement* tileElement);
 bool tile_element_is_underground(TileElement* tileElement);

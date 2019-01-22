@@ -17,41 +17,16 @@
 #include "LargeScenery.h"
 #include "Scenery.h"
 
-uint8_t TileElementBase::GetType() const
-{
-    return this->type & TILE_ELEMENT_TYPE_MASK;
-}
-
 void TileElementBase::SetType(uint8_t newType)
 {
     this->type &= ~TILE_ELEMENT_TYPE_MASK;
     this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
 }
 
-uint8_t TileElementBase::GetDirection() const
-{
-    return this->type & TILE_ELEMENT_DIRECTION_MASK;
-}
-
 void TileElementBase::SetDirection(uint8_t direction)
 {
     this->type &= ~TILE_ELEMENT_DIRECTION_MASK;
     this->type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
-}
-
-uint8_t TileElementBase::GetDirectionWithOffset(uint8_t offset) const
-{
-    return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
-}
-
-bool TileElementBase::IsLastForTile() const
-{
-    return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
-}
-
-bool TileElementBase::IsGhost() const
-{
-    return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
 bool tile_element_is_underground(TileElement* tileElement)

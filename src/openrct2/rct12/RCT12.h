@@ -13,6 +13,7 @@
 
 #include "../common.h"
 #include "../world/Location.hpp"
+#include "../world/TileElement.h"
 
 #define RCT12_MAX_RIDES_IN_PARK 255
 #define RCT12_MAX_AWARDS 4
@@ -110,10 +111,16 @@ struct RCT12TileElementBase
     uint8_t flags;            // 1
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
-    uint8_t GetType() const;
-    uint8_t GetDirection() const;
-    bool IsLastForTile() const;
-    bool IsGhost() const;
+    constexpr uint8_t GetType() const {
+        return this->type & TILE_ELEMENT_TYPE_MASK;
+    }
+    constexpr uint8_t GetDirection() const {
+        return this->type & TILE_ELEMENT_DIRECTION_MASK;
+    }
+    constexpr bool IsLastForTile() const {
+        return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+    }
+    constexpr bool IsGhost() const;
 };
 /**
  * Map element structure
@@ -122,40 +129,40 @@ struct RCT12TileElementBase
 struct RCT12TileElement : public RCT12TileElementBase
 {
     uint8_t pad_04[4];
-    template<typename TType, RCT12TileElementType TClass> TType* as() const
+    template<typename TType, RCT12TileElementType TClass> constexpr TType* as() const
     {
         return (RCT12TileElementType)GetType() == TClass ? (TType*)this : nullptr;
     }
 
-    RCT12SurfaceElement* AsSurface() const
+    constexpr RCT12SurfaceElement* AsSurface() const
     {
         return as<RCT12SurfaceElement, RCT12TileElementType::Surface>();
     }
-    RCT12PathElement* AsPath() const
+    constexpr RCT12PathElement* AsPath() const
     {
         return as<RCT12PathElement, RCT12TileElementType::Path>();
     }
-    RCT12TrackElement* AsTrack() const
+    constexpr RCT12TrackElement* AsTrack() const
     {
         return as<RCT12TrackElement, RCT12TileElementType::Track>();
     }
-    RCT12SmallSceneryElement* AsSmallScenery() const
+    constexpr RCT12SmallSceneryElement* AsSmallScenery() const
     {
         return as<RCT12SmallSceneryElement, RCT12TileElementType::SmallScenery>();
     }
-    RCT12LargeSceneryElement* AsLargeScenery() const
+    constexpr RCT12LargeSceneryElement* AsLargeScenery() const
     {
         return as<RCT12LargeSceneryElement, RCT12TileElementType::LargeScenery>();
     }
-    RCT12WallElement* AsWall() const
+    constexpr RCT12WallElement* AsWall() const
     {
         return as<RCT12WallElement, RCT12TileElementType::Wall>();
     }
-    RCT12EntranceElement* AsEntrance() const
+    constexpr RCT12EntranceElement* AsEntrance() const
     {
         return as<RCT12EntranceElement, RCT12TileElementType::Entrance>();
     }
-    RCT12BannerElement* AsBanner() const
+    constexpr RCT12BannerElement* AsBanner() const
     {
         return as<RCT12BannerElement, RCT12TileElementType::Banner>();
     }

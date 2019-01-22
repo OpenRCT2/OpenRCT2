@@ -2287,11 +2287,6 @@ uint8_t TrackElement::GetDoorBState() const
     return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
 }
 
-ride_id_t TrackElement::GetRideIndex() const
-{
-    return rideIndex;
-}
-
 void TrackElement::SetRideIndex(ride_id_t newRideIndex)
 {
     rideIndex = newRideIndex;
