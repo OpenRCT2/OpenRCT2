@@ -42,7 +42,7 @@ matrix:
               else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-x86_64.tar.gz -o link && cat link;
               fi
         - os: linux
-          name: Ubuntu i686 GCC Debug
+          name: Ubuntu i686 GCC Debug m32 no-build-shared-libs
           if: type != cron
           services:
             - docker
@@ -70,17 +70,17 @@ matrix:
           if: type != cron
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_amd64
         - os: linux
-          name: Windows i686-w64 MinGW
+          name: Windows i686-w64 MinGW m32
           if: type != cron
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON" TARGET=windows
         - os: linux
-          name: Docker64 GCC Release
+          name: Docker64 GCC Release disable-ttf
           if: type != cron
           env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2"
           services:
             - docker
         - os: linux
-          name: Docker64 GCC Debug coverage
+          name: Docker64 GCC Debug coverage disable-network disable-http-twitch
           if: type != cron
           env:
             - OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=debug -DCMAKE_CXX_FLAGS=\"-coverage\" -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
