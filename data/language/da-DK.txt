@@ -3748,6 +3748,8 @@ STR_6274    :Kan ikke sætte farveskema...
 STR_6275    :{WINDOW_COLOUR_2}Stations stil:
 STR_6276    :{RED}{STRINGID} har fastklemte gæster, muligvis på grund af forkert forlystelsetype eller operations tilstand.
 STR_6277    :{WINDOW_COLOUR_2}Stations index: {BLACK}{COMMA16}
+STR_6278    :Autogem mængde
+STR_6279    :{SMALLFONT}{BLACK}Antallet af automatisk gemte spil der skal beholdes
 
 #############
 # Scenarios #
@@ -3852,7 +3854,7 @@ STR_DTLS    :En veletableret Park, som har et par problemer
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
 STR_PARK    :Rainbow Valley
-STR_DTLS    :Rainbow Valley lokale myndighed vil ikke tillade nogen landskabsændringer eller store træ fjernelse, men du skal udvikle området til en stor forlystelsespark
+STR_DTLS    :Rainbow Valley lokale myndighed vil ikke tillade nogen landskabsændringer eller store træ rydninger, men du skal udvikle området til en stor forlystelsespark
 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
