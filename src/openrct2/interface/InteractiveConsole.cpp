@@ -1721,7 +1721,7 @@ void InteractiveConsole::Execute(const std::string& s)
 
     for (const auto& c : console_command_table)
     {
-        if (argv[0] == std::string(c.command))
+        if (argv[0] == c.command)
         {
             argv.erase(argv.begin());
             c.func(*this, argv);
