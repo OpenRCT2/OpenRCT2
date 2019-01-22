@@ -47,6 +47,8 @@ if (NOT DISABLE_NETWORK)
     find_package(OpenSSL 1.0.0 REQUIRED)
 endif ()
 
+find_package(benchmark)
+
 if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE AND NOT MSVC)
         PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
@@ -72,6 +74,15 @@ set(PROJECT libopenrct2)
 project(${PROJECT} CXX)
 add_library(${PROJECT} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
+
+if (benchmark_FOUND)
+    message("Found Google benchmark, enabling support")
+    set_target_properties(${PROJECT} PROPERTIES COMPILE_DEFINITIONS USE_BENCHMARK)
+    target_link_libraries(${PROJECT} benchmark::benchmark)
+    target_include_directories(${PROJECT} PRIVATE ${benchmark_INCLUDE_DIRS})
+else ()
+    message("Google benchmark not found, disabling support")
+endif ()
 
 # Libraries
 if (STATIC)

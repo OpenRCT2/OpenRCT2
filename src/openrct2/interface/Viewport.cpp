@@ -60,7 +60,7 @@ static int16_t _interactionMapX;
 static int16_t _interactionMapY;
 static uint16_t _unk9AC154;
 
-static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags);
+static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags, std::vector<paint_session>* sessions);
 static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi);
 
 /**
@@ -791,7 +791,9 @@ void viewport_update_smart_vehicle_follow(rct_window* window)
  *  edi: dpi
  *  ebp: bottom
  */
-void viewport_render(rct_drawpixelinfo* dpi, rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void viewport_render(
+    rct_drawpixelinfo* dpi, rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    std::vector<paint_session>* sessions)
 {
     if (right <= viewport->x)
         return;
@@ -821,7 +823,7 @@ void viewport_render(rct_drawpixelinfo* dpi, rct_viewport* viewport, int32_t lef
     top += viewport->view_y;
     bottom += viewport->view_y;
 
-    viewport_paint(viewport, dpi, left, top, right, bottom);
+    viewport_paint(viewport, dpi, left, top, right, bottom, sessions);
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
     if (viewport != g_viewport_list)
@@ -842,7 +844,9 @@ void viewport_render(rct_drawpixelinfo* dpi, rct_viewport* viewport, int32_t lef
  *  edi: dpi
  *  ebp: bottom
  */
-void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom)
+void viewport_paint(
+    rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
+    std::vector<paint_session>* sessions)
 {
     uint32_t viewFlags = viewport->flags;
     uint16_t width = right - left;
@@ -878,32 +882,37 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left
     int16_t rightBorder = dpi1.x + dpi1.width;
 
     // Splits the area into 32 pixel columns and renders them
-    for (x = floor2(dpi1.x, 32); x < rightBorder; x += 32)
+    int16_t start_x = floor2(dpi1.x, 32);
+    if (sessions != nullptr)
+    {
+        sessions->reserve((rightBorder - start_x) / 32);
+    }
+    for (int16_t columnx = start_x; columnx < rightBorder; columnx += 32)
     {
         rct_drawpixelinfo dpi2 = dpi1;
-        if (x >= dpi2.x)
+        if (columnx >= dpi2.x)
         {
-            int16_t leftPitch = x - dpi2.x;
+            int16_t leftPitch = columnx - dpi2.x;
             dpi2.width -= leftPitch;
             dpi2.bits += leftPitch >> dpi2.zoom_level;
             dpi2.pitch += leftPitch >> dpi2.zoom_level;
-            dpi2.x = x;
+            dpi2.x = columnx;
         }
 
         int16_t paintRight = dpi2.x + dpi2.width;
-        if (paintRight >= x + 32)
+        if (paintRight >= columnx + 32)
         {
-            int16_t rightPitch = paintRight - x - 32;
+            int16_t rightPitch = paintRight - columnx - 32;
             paintRight -= rightPitch;
             dpi2.pitch += rightPitch >> dpi2.zoom_level;
         }
         dpi2.width = paintRight - dpi2.x;
 
-        viewport_paint_column(&dpi2, viewFlags);
+        viewport_paint_column(&dpi2, viewFlags, sessions);
     }
 }
 
-static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags)
+static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags, std::vector<paint_session>* sessions)
 {
     if (viewFlags
         & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_CLIP_VIEW))
@@ -918,6 +927,23 @@ static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 
     paint_session* session = paint_session_alloc(dpi, viewFlags);
     paint_session_generate(session);
+    // Perform a deep copy of the paint session, use relative offsets.
+    // This is done to extract the session for benchmark.
+    if (sessions != nullptr)
+    {
+        sessions->push_back(*session);
+        paint_session* session_copy = &sessions->at(sessions->size() - 1);
+
+        // Mind the offset needs to be calculated against the original `session`, not `session_copy`
+        for (auto& ps : session_copy->PaintStructs)
+        {
+            ps.basic.next_quadrant_ps = (paint_struct*)(ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic) : std::size(session->PaintStructs));
+        }
+        for (auto& quad : session_copy->Quadrants)
+        {
+            quad = (paint_struct*)(quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
+        }
+    }
     paint_session_arrange(session);
     paint_draw_structs(session);
     paint_session_free(session);

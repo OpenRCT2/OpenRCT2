@@ -24,6 +24,7 @@
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
 		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
+		4C724B2221F0AD790012ADD0 /* BenchSpriteSort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C724B2121F0AD790012ADD0 /* BenchSpriteSort.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */; };
@@ -643,6 +644,7 @@
 		4C6AC20E1F9E1693004324AA /* Station.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Station.h; sourceTree = "<group>"; };
 		4C6AC2101F9E1CB3004324AA /* CableLift.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CableLift.cpp; sourceTree = "<group>"; };
 		4C6AC2111F9E1CB3004324AA /* CableLift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CableLift.h; sourceTree = "<group>"; };
+		4C724B2121F0AD790012ADD0 /* BenchSpriteSort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BenchSpriteSort.cpp; sourceTree = "<group>"; };
 		4C7B53A21FFC15ED00A52E21 /* ObjectLimits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectLimits.h; sourceTree = "<group>"; };
 		4C7B53A31FFC180400A52E21 /* ObjectList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectList.cpp; sourceTree = "<group>"; };
 		4C7B53A41FFC180400A52E21 /* ObjectList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectList.h; sourceTree = "<group>"; };
@@ -2411,6 +2413,7 @@
 			isa = PBXGroup;
 			children = (
 				D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */,
+				4C724B2121F0AD790012ADD0 /* BenchSpriteSort.cpp */,
 				F76C83631EC4E7CC00FA49E2 /* CommandLine.cpp */,
 				F76C83641EC4E7CC00FA49E2 /* CommandLine.hpp */,
 				F76C83651EC4E7CC00FA49E2 /* ConvertCommand.cpp */,
@@ -3647,6 +3650,7 @@
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
 				C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */,
 				93F6004D213DD7DD00EEB83E /* TerrainEdgeObject.cpp in Sources */,
+				4C724B2221F0AD790012ADD0 /* BenchSpriteSort.cpp in Sources */,
 				C666EE781F37ACB10061AA04 /* ServerList.cpp in Sources */,
 				C654DF341F69C0430040F43D /* NewCampaign.cpp in Sources */,
 				F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */,
