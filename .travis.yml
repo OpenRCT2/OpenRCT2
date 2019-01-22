@@ -19,6 +19,7 @@ env:
 matrix:
     include:
         - os: linux
+          name: Ubuntu amd64 GCC RelWithDebInfo
           if: type != cron
           services:
             - docker
@@ -26,8 +27,6 @@ matrix:
             - OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON -DCMAKE_CXX_FLAGS=\"-gz\"" TARGET=ubuntu_amd64
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
-            # Android jobs are triggered from cron and overwrite `after_sucess` part
-            - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
             - sudo chown -R $USER build
             - cd build
               # make install is done inside docker
@@ -43,6 +42,7 @@ matrix:
               else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-x86_64.tar.gz -o link && cat link;
               fi
         - os: linux
+          name: Ubuntu i686 GCC Debug m32 no-build-shared-libs
           if: type != cron
           services:
             - docker
@@ -51,8 +51,6 @@ matrix:
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
             - secure: "JGMzQHmDgpnVzP2uYP5KL7h6SzzGmL4kH7vJmGQRpudKAEzhzB0n7lzjrJOU82hxwmuQQ+RKlE/uxdI32Xbgl+wzZMdfQoZGMWHZfl8Le0Ft5gfZncPuE3poCbiSyPSXok9zU12JHKpEjV/sgqXv/HwhL3jAC68GPGpmxb6xWj8="
           after_success:
-            # Android jobs are triggered from cron and overwrite `after_sucess` part
-            - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
             - sudo chown -R $USER build
             - cd build
               # make install is done inside docker
@@ -68,17 +66,21 @@ matrix:
               else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-i686.tar.gz -o link && cat link;
               fi
         - os: linux
+          name: Ubuntu amd64 Clang
           if: type != cron
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_amd64
         - os: linux
+          name: Windows i686-w64 MinGW m32
           if: type != cron
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON" TARGET=windows
         - os: linux
+          name: Docker64 GCC Release disable-ttf
           if: type != cron
           env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2"
           services:
             - docker
         - os: linux
+          name: Docker64 GCC Debug coverage disable-network disable-http-twitch
           if: type != cron
           env:
             - OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=debug -DCMAKE_CXX_FLAGS=\"-coverage\" -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
@@ -86,18 +88,18 @@ matrix:
           services:
             - docker
         - os: linux
+          name: Docker64 GCC disable-opengl
           if: type != cron
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
           services:
             - docker
         - os: osx
+          name: macOS Clang Xcode
           if: type != cron
           osx_image: xcode9.3
           env:
             - secure: "OXn/i72FxW/oh6RGlaN+gHSbkt1ToFe36etaiDOsJQznt6fe9CpFdnE8U1XBHlGokcEjbGNErRU7CFDKYHQuGrPZyHXwgqG2/0emIqFaFt5ti5ypyYKf5qH9x1LLLfdZxDyHkxXdlJ7Etxbp3G7qrV8CGRQiYRNHm1f98AmuufE="
           after_success:
-            # Android jobs are triggered from cron and overwrite `after_sucess` part
-            - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
             - cd build/Release
             - zip -r openrct2-macos.zip OpenRCT2.app
             - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then
@@ -109,6 +111,7 @@ matrix:
               curl --progress-bar --upload-file openrct2-macos.zip https://transfer.sh/openrct2-macos.zip -o link && cat link;
               fi
         - os: linux
+          name: Android
           if: type = cron OR branch = master OR branch =~ ^android
           language: android
           before_install: []
@@ -164,6 +167,7 @@ matrix:
               curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-android-x86.apk" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=12" --form "file=@app/build/outputs/apk/x86/pr/app-x86-pr.apk" "https://openrct2.org/altapi/?command=push-build";
               fi
         - os: linux
+          name: clang-format
           services:
             - docker
           script:
