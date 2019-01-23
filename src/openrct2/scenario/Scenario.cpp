@@ -432,10 +432,10 @@ static int32_t scenario_create_ducks()
     // To spawn ducks safely, the generated coordinates should not be in the outer 3 tiles of the map.
 
     r = scenario_rand();
-    x = 1 + DUCK_TARGET_TILES_AWAY_FROM_EDGE +
-        ((r >> 16) % (MAXIMUM_MAP_SIZE_PRACTICAL - (DUCK_TARGET_TILES_AWAY_FROM_EDGE * 2)));
-    y = 1 + DUCK_TARGET_TILES_AWAY_FROM_EDGE +
-        ((r & 0xFFFF) % (MAXIMUM_MAP_SIZE_PRACTICAL - (DUCK_TARGET_TILES_AWAY_FROM_EDGE * 2)));
+    x = 1 + DUCK_TARGET_TILES_AWAY_FROM_EDGE
+        + ((r >> 16) % (MAXIMUM_MAP_SIZE_PRACTICAL - (DUCK_TARGET_TILES_AWAY_FROM_EDGE * 2)));
+    y = 1 + DUCK_TARGET_TILES_AWAY_FROM_EDGE
+        + ((r & 0xFFFF) % (MAXIMUM_MAP_SIZE_PRACTICAL - (DUCK_TARGET_TILES_AWAY_FROM_EDGE * 2)));
     x = x * 32;
     y = y * 32;
 
