@@ -90,6 +90,7 @@ if (NOT MINGW AND NOT MSVC)
     # For unicode code page conversion
     find_package(ICU 59.0 REQUIRED COMPONENTS uc)
     target_link_libraries(testpaint ${ICU_LIBRARIES})
+    target_include_directories(testpaint SYSTEM PUBLIC ${ICU_INCLUDE_DIRS})
 endif ()
 
 # Only use custom linker script for 32 bit builds. For 64 bit builds, it should still _compile_.
