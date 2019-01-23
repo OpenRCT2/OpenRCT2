@@ -363,6 +363,9 @@ enum
 #define AUTOSAVE_PAUSE 0
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
+// Defines how many tiles from the edge duck target coordinates should be generated
+#define DUCK_TARGET_TILES_AWAY_FROM_EDGE 3
+
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern uint32_t gScenarioTicks;
