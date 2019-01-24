@@ -23,6 +23,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <limits>
 
 using utf8 = char;
 using utf8string = utf8*;
@@ -41,14 +42,24 @@ using utf16string = utf16*;
 using codepoint_t = uint32_t;
 using colour_t = uint8_t;
 
-#define rol8(x, shift) (((uint8_t)(x) << (shift)) | ((uint8_t)(x) >> (8 - (shift))))
-#define ror8(x, shift) (((uint8_t)(x) >> (shift)) | ((uint8_t)(x) << (8 - (shift))))
-#define rol16(x, shift) (((uint16_t)(x) << (shift)) | ((uint16_t)(x) >> (16 - (shift))))
-#define ror16(x, shift) (((uint16_t)(x) >> (shift)) | ((uint16_t)(x) << (16 - (shift))))
-#define rol32(x, shift) (((uint32_t)(x) << (shift)) | ((uint32_t)(x) >> (32 - (shift))))
-#define ror32(x, shift) (((uint32_t)(x) >> (shift)) | ((uint32_t)(x) << (32 - (shift))))
-#define rol64(x, shift) (((uint64_t)(x) << (shift)) | ((uint64_t)(x) >> (64 - (shift))))
-#define ror64(x, shift) (((uint64_t)(x) >> (shift)) | ((uint64_t)(x) << (64 - (shift))))
+template<typename _UIntType>
+constexpr _UIntType rol(_UIntType x, size_t shift){
+    return (((_UIntType)(x) << (shift)) | ((_UIntType)(x) >> (std::numeric_limits<_UIntType>::digits - (shift))));
+}
+
+template<typename _UIntType>
+constexpr _UIntType ror(_UIntType x, size_t shift){
+    return (((_UIntType)(x) >> (shift)) | ((_UIntType)(x) << (std::numeric_limits<_UIntType>::digits - (shift))));
+}
+
+const constexpr auto rol8 = rol<uint8_t>;
+const constexpr auto ror8 = ror<uint8_t>;
+const constexpr auto rol16 = rol<uint16_t>;
+const constexpr auto ror16 = ror<uint16_t>;
+const constexpr auto rol32 = rol<uint32_t>;
+const constexpr auto ror32 = ror<uint32_t>;
+const constexpr auto rol64 = rol<uint64_t>;
+const constexpr auto ror64 = ror<uint64_t>;
 
 // Rounds an integer down to the given power of 2. y must be a power of 2.
 #define floor2(x, y) ((x) & (~((y)-1)))
