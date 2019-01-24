@@ -207,8 +207,7 @@ public:
         gDateMonthsElapsed = _s6.elapsed_months;
         gDateMonthTicks = _s6.current_day;
         gScenarioTicks = _s6.scenario_ticks;
-        gScenarioSrand0 = _s6.scenario_srand_0;
-        gScenarioSrand1 = _s6.scenario_srand_1;
+        scenario_rand_seed(_s6.scenario_srand_0);
 
         ImportTileElements();
 

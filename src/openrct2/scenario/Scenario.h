@@ -366,8 +366,6 @@ enum
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern uint32_t gScenarioTicks;
-extern uint32_t gScenarioSrand0;
-extern uint32_t gScenarioSrand1;
 
 extern uint8_t gScenarioObjectiveType;
 extern uint8_t gScenarioObjectiveYear;
@@ -393,6 +391,8 @@ extern char gScenarioFileName[260];
 void load_from_sc6(const char* path);
 void scenario_begin();
 void scenario_update();
+void scenario_rand_seed(uint32_t seed);
+uint32_t scenario_rand_state();
 
 #ifdef DEBUG_DESYNC
 uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data);

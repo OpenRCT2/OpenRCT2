@@ -48,6 +48,8 @@
 #include "ScenarioSources.h"
 
 #include <algorithm>
+#include <random>
+#include <sstream>
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
@@ -66,8 +68,9 @@ uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
 uint32_t gScenarioTicks;
-uint32_t gScenarioSrand0;
-uint32_t gScenarioSrand1;
+
+using random_engine_t = std::minstd_rand;
+static std::unique_ptr<random_engine_t> scenarioRandomEngine;
 
 uint8_t gScenarioObjectiveType;
 uint8_t gScenarioObjectiveYear;
@@ -89,9 +92,9 @@ void scenario_begin()
 {
     game_load_init();
 
+
     // Set the scenario pseudo-random seeds
-    gScenarioSrand0 ^= platform_get_ticks();
-    gScenarioSrand1 ^= platform_get_ticks();
+    scenario_rand_seed(0x12345678 ^ platform_get_ticks());
 
     gParkFlags &= ~PARK_FLAGS_NO_MONEY;
     if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
@@ -478,6 +481,27 @@ static int32_t scenario_create_ducks()
     return 1;
 }
 
+void scenario_rand_init()
+{
+    scenarioRandomEngine = std::make_unique<random_engine_t>();
+}
+
+uint32_t scenario_rand_state()
+{
+    std::ostringstream stateStream;
+    stateStream << *scenarioRandomEngine;
+    auto stateString = stateStream.str();
+    return static_cast<uint32_t>(std::stoul(stateString));
+}
+
+void scenario_rand_seed(uint32_t seed)
+{
+    if(scenarioRandomEngine == nullptr)
+        scenario_rand_init();
+
+    scenarioRandomEngine->seed(seed);
+};
+
 /**
  *
  *  rct2: 0x006E37D2
@@ -493,9 +517,8 @@ static const char* realm = "LC";
 uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data)
 #endif
 {
-    uint32_t originalSrand0 = gScenarioSrand0;
-    gScenarioSrand0 += ror32(gScenarioSrand1 ^ 0x1234567F, 7);
-    gScenarioSrand1 = ror32(originalSrand0, 3);
+    if(scenarioRandomEngine == nullptr)
+        scenario_rand_init();
 
 #ifdef DEBUG_DESYNC
     if (fp == nullptr)
@@ -520,7 +543,7 @@ uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_
     }
     if (fp)
     {
-        fprintf(fp, "Tick: %d, Rand: %08X - REF: %s:%u %s (%p)\n", gCurrentTicks, gScenarioSrand1, file, line, function, data);
+        fprintf(fp, "Tick: %d, Rand: %08X - REF: %s:%u %s (%p)\n", gCurrentTicks, scenario_rand_state(), file, line, function, data);
     }
     if (!gInUpdateCode && !gInMapInitCode)
     {
@@ -529,7 +552,7 @@ uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_
     }
 #endif
 
-    return gScenarioSrand1;
+    return (*scenarioRandomEngine)();
 }
 
 #ifdef DEBUG_DESYNC
