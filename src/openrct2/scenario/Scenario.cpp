@@ -71,6 +71,7 @@ uint32_t gScenarioTicks;
 
 using random_engine_t = std::minstd_rand;
 static std::unique_ptr<random_engine_t> scenarioRandomEngine;
+static random_engine_t::result_type scenarioRandomEngineState;
 
 uint8_t gScenarioObjectiveType;
 uint8_t gScenarioObjectiveYear;
@@ -88,10 +89,16 @@ static void scenario_objective_check();
 
 using namespace OpenRCT2;
 
+void scenario_rand_init();
+
+void scenario_init()
+{
+    scenario_rand_init();
+}
+
 void scenario_begin()
 {
     game_load_init();
-
 
     // Set the scenario pseudo-random seeds
     scenario_rand_seed(0x12345678 ^ platform_get_ticks());
@@ -481,24 +488,28 @@ static int32_t scenario_create_ducks()
     return 1;
 }
 
+/**
+ * Initializes the scenario RandomEngine unique_ptr
+ */
 void scenario_rand_init()
 {
     scenarioRandomEngine = std::make_unique<random_engine_t>();
 }
 
+/**
+ * Returns the state of the RandomEngine
+ */
 uint32_t scenario_rand_state()
 {
-    std::ostringstream stateStream;
-    stateStream << *scenarioRandomEngine;
-    auto stateString = stateStream.str();
-    return static_cast<uint32_t>(std::stoul(stateString));
+    return scenarioRandomEngineState;
 }
 
+/**
+ * Sets the state of the RandomEngine
+ */
 void scenario_rand_seed(uint32_t seed)
 {
-    if(scenarioRandomEngine == nullptr)
-        scenario_rand_init();
-
+    scenarioRandomEngineState = seed;
     scenarioRandomEngine->seed(seed);
 };
 
@@ -517,8 +528,6 @@ static const char* realm = "LC";
 uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data)
 #endif
 {
-    if(scenarioRandomEngine == nullptr)
-        scenario_rand_init();
 
 #ifdef DEBUG_DESYNC
     if (fp == nullptr)
@@ -552,7 +561,7 @@ uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_
     }
 #endif
 
-    return (*scenarioRandomEngine)();
+    return scenarioRandomEngineState = (*scenarioRandomEngine)();
 }
 
 #ifdef DEBUG_DESYNC

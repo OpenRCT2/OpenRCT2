@@ -47,6 +47,7 @@ void GameState::InitAll(int32_t mapSize)
 {
     gInMapInitCode = true;
 
+    scenario_init();
     map_init(mapSize);
     _park->Initialise();
     finance_init();

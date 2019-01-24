@@ -389,6 +389,7 @@ extern uint32_t gLastAutoSaveUpdate;
 extern char gScenarioFileName[260];
 
 void load_from_sc6(const char* path);
+void scenario_init();
 void scenario_begin();
 void scenario_update();
 void scenario_rand_seed(uint32_t seed);
