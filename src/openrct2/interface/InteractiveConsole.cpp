@@ -169,7 +169,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             }
             if (argv[1] == "type")
             {
-                bool int_valid[2] = { 0 };
+                bool int_valid[2] = { false };
                 int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
                 int32_t type = console_parse_int(argv[3], &int_valid[1]);
                 if (!int_valid[0] || !int_valid[1])
@@ -193,7 +193,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             }
             else if (argv[1] == "mode")
             {
-                bool int_valid[2] = { 0 };
+                bool int_valid[2] = { false };
                 int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
                 int32_t mode = console_parse_int(argv[3], &int_valid[1]);
                 if (!int_valid[0] || !int_valid[1])
@@ -224,7 +224,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             }
             else if (argv[1] == "mass")
             {
-                bool int_valid[2] = { 0 };
+                bool int_valid[2] = { false };
                 int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
                 int32_t mass = console_parse_int(argv[3], &int_valid[1]);
 
@@ -264,7 +264,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             }
             else if (argv[1] == "excitement")
             {
-                bool int_valid[2] = { 0 };
+                bool int_valid[2] = { false };
                 int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
                 ride_rating excitement = console_parse_int(argv[3], &int_valid[1]);
 
@@ -295,7 +295,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             }
             else if (argv[1] == "intensity")
             {
-                bool int_valid[2] = { 0 };
+                bool int_valid[2] = { false };
                 int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
                 ride_rating intensity = console_parse_int(argv[3], &int_valid[1]);
 
@@ -326,7 +326,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             }
             else if (argv[1] == "nausea")
             {
-                bool int_valid[2] = { 0 };
+                bool int_valid[2] = { false };
                 int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
                 ride_rating nausea = console_parse_int(argv[3], &int_valid[1]);
 
@@ -400,7 +400,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             if (argv[1] == "energy")
             {
                 int32_t int_val[3];
-                bool int_valid[3] = { 0 };
+                bool int_valid[3] = { false };
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
 
@@ -415,7 +415,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             else if (argv[1] == "costume")
             {
                 int32_t int_val[2];
-                bool int_valid[2] = { 0 };
+                bool int_valid[2] = { false };
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
                 rct_peep* peep = nullptr;
