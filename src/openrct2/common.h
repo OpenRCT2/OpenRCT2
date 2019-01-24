@@ -24,6 +24,7 @@
 #include <cassert>
 #include <cstdint>
 #include <limits>
+#include <cstddef>
 #include <type_traits>
 
 using utf8 = char;
