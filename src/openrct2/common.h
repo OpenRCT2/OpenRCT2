@@ -46,14 +46,16 @@ template<typename _UIntType>
 constexpr _UIntType rol(_UIntType x, size_t shift){
     static_assert(std::is_unsigned<_UIntType>::value,
                   "result_type must be an unsigned integral type");
-    return (((_UIntType)(x) << (shift)) | ((_UIntType)(x) >> (std::numeric_limits<_UIntType>::digits - (shift))));
+    using limits = typename std::numeric_limits<_UIntType>;
+    return (((_UIntType)(x) << shift) | ((_UIntType)(x) >> (limits::digits - shift)));
 }
 
 template<typename _UIntType>
 constexpr _UIntType ror(_UIntType x, size_t shift){
     static_assert(std::is_unsigned<_UIntType>::value,
                   "result_type must be an unsigned integral type");
-    return (((_UIntType)(x) >> (shift)) | ((_UIntType)(x) << (std::numeric_limits<_UIntType>::digits - (shift))));
+    using limits = std::numeric_limits<_UIntType>;
+    return (((_UIntType)(x) >> shift) | ((_UIntType)(x) << (limits::digits - shift)));
 }
 
 const constexpr auto rol8 = rol<uint8_t>;
