@@ -657,20 +657,16 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
     switch (trackSequence)
     {
         case 0:
-            // HACK this might be a mistake in original code
-            if (direction & 1)
-            {
-                bbHeight = bbHeights12[trackSequence];
-                sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
-                sub_98199C_rotated(session, direction, trackImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
+            bbHeight = bbHeights12[trackSequence];
+            sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
+            sub_98199C_rotated(session, direction, trackImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
 
-                wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-                paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-                paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
-            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
             break;
         case 1:
         case 2:
