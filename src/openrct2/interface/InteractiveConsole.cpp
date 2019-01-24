@@ -57,7 +57,7 @@
 #    include "../drawing/TTF.h"
 #endif
 
-using argv_t = std::vector<std::string>;
+using arguments_t = std::vector<std::string>;
 
 static constexpr const utf8* ClimateNames[] = {
     "cool_and_wet",
@@ -70,9 +70,9 @@ static void console_write_all_commands(InteractiveConsole& console);
 static int32_t console_parse_int(const utf8* src, bool* valid);
 static double console_parse_double(const utf8* src, bool* valid);
 
-static int32_t cc_variables(InteractiveConsole& console, const argv_t& argv);
-static int32_t cc_windows(InteractiveConsole& console, const argv_t& argv);
-static int32_t cc_help(InteractiveConsole& console, const argv_t& argv);
+static int32_t cc_variables(InteractiveConsole& console, const arguments_t& argv);
+static int32_t cc_windows(InteractiveConsole& console, const arguments_t& argv);
+static int32_t cc_help(InteractiveConsole& console, const arguments_t& argv);
 
 static bool invalidArguments(bool* invalid, bool arguments);
 
@@ -102,32 +102,32 @@ double console_parse_double(const utf8* src, bool* valid)
     return value;
 }
 
-static int32_t cc_clear(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_clear(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     console.Clear();
     return 0;
 }
 
-static int32_t cc_close(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_close(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     console.Close();
     return 0;
 }
 
-static int32_t cc_hide(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_hide(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     console.Hide();
     return 0;
 }
 
-static int32_t cc_echo(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_echo(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
         console.WriteLine(argv[0]);
     return 0;
 }
 
-static int32_t cc_rides(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -367,7 +367,7 @@ static int32_t cc_rides(InteractiveConsole& console, const argv_t& argv)
     return 0;
 }
 
-static int32_t cc_staff(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -453,7 +453,7 @@ static int32_t cc_staff(InteractiveConsole& console, const argv_t& argv)
     return 0;
 }
 
-static int32_t cc_get(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -656,7 +656,7 @@ static int32_t cc_get(InteractiveConsole& console, const argv_t& argv)
     }
     return 0;
 }
-static int32_t cc_set(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 {
     uint32_t i;
     if (argv.size() > 1)
@@ -1006,7 +1006,7 @@ static int32_t cc_set(InteractiveConsole& console, const argv_t& argv)
     return 0;
 }
 
-static int32_t cc_twitch([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_twitch([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
 #ifdef DISABLE_TWITCH
     console.WriteLineError("OpenRCT2 build not compiled with Twitch integration.");
@@ -1018,7 +1018,7 @@ static int32_t cc_twitch([[maybe_unused]] InteractiveConsole& console, [[maybe_u
     return 0;
 }
 
-static int32_t cc_load_object(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -1094,7 +1094,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const argv_t& argv)
     return 0;
 }
 
-static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     const utf8* object_type_names[] = {
         "Rides", "Small scenery",  "Large scenery",  "Walls",          "Banners",
@@ -1117,13 +1117,13 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
     return 0;
 }
 
-static int32_t cc_reset_user_strings([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_reset_user_strings([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     reset_user_strings();
     return 0;
 }
 
-static int32_t cc_open(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -1167,14 +1167,14 @@ static int32_t cc_open(InteractiveConsole& console, const argv_t& argv)
     return 0;
 }
 
-static int32_t cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     int32_t result = editor_remove_unused_objects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
     return 0;
 }
 
-static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
@@ -1191,7 +1191,7 @@ static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused
     return 0;
 }
 
-static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     map_reorganise_elements();
     int32_t tileElementCount = gNextFreeTileElement - gTileElements - 1;
@@ -1238,7 +1238,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     return 0;
 }
 
-static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     int32_t year = 0;
     int32_t month = 0;
@@ -1294,7 +1294,7 @@ static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe
     return 1;
 }
 
-static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     if (argv.size() < 1)
     {
@@ -1307,7 +1307,7 @@ static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[mayb
     return 1;
 }
 
-static int32_t cc_say(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
 {
     if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
         || network_get_authstatus() != NETWORK_AUTH_OK)
@@ -1330,7 +1330,7 @@ static int32_t cc_say(InteractiveConsole& console, const argv_t& argv)
     }
 }
 
-static int32_t cc_replay_startrecord(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_replay_startrecord(InteractiveConsole& console, const arguments_t& argv)
 {
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
@@ -1369,7 +1369,7 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const argv_t& 
     return 0;
 }
 
-static int32_t cc_replay_stoprecord(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments_t& argv)
 {
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
@@ -1404,7 +1404,7 @@ static int32_t cc_replay_stoprecord(InteractiveConsole& console, const argv_t& a
     return 0;
 }
 
-static int32_t cc_replay_start(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& argv)
 {
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
@@ -1446,7 +1446,7 @@ static int32_t cc_replay_start(InteractiveConsole& console, const argv_t& argv)
     return 0;
 }
 
-static int32_t cc_replay_stop(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_replay_stop(InteractiveConsole& console, const arguments_t& argv)
 {
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
@@ -1464,7 +1464,7 @@ static int32_t cc_replay_stop(InteractiveConsole& console, const argv_t& argv)
     return 0;
 }
 
-static int32_t cc_replay_normalise(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_t& argv)
 {
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
@@ -1493,13 +1493,13 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const argv_t& ar
 
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
-static int32_t cc_abort([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_abort([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     std::abort();
     return 0;
 }
 
-static int32_t cc_dereference([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_dereference([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnull-dereference"
@@ -1510,14 +1510,14 @@ static int32_t cc_dereference([[maybe_unused]] InteractiveConsole& console, [[ma
 #pragma GCC diagnostic pop
 }
 
-static int32_t cc_terminate([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_terminate([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     std::terminate();
     return 0;
 }
 #pragma warning(pop)
 
-using console_command_func = int32_t (*)(InteractiveConsole& console, const argv_t& argv);
+using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
 struct console_command
 {
     const utf8* command;
@@ -1616,7 +1616,7 @@ static constexpr const console_command console_command_table[] = {
 };
 // clang-format on
 
-static int32_t cc_windows(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_windows(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     for (auto s : console_window_table)
     {
@@ -1625,7 +1625,7 @@ static int32_t cc_windows(InteractiveConsole& console, [[maybe_unused]] const ar
     return 0;
 }
 
-static int32_t cc_variables(InteractiveConsole& console, [[maybe_unused]] const argv_t& argv)
+static int32_t cc_variables(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     for (auto s : console_variable_table)
     {
@@ -1634,7 +1634,7 @@ static int32_t cc_variables(InteractiveConsole& console, [[maybe_unused]] const 
     return 0;
 }
 
-static int32_t cc_help(InteractiveConsole& console, const argv_t& argv)
+static int32_t cc_help(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
     {
@@ -1674,7 +1674,7 @@ static bool invalidArguments(bool* invalid, bool arguments)
 
 void InteractiveConsole::Execute(const std::string& s)
 {
-    argv_t argv;
+    arguments_t argv;
     argv.reserve(8);
 
     const utf8* start = s.c_str();
