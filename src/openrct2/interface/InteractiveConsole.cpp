@@ -59,7 +59,7 @@
 
 using arguments_t = std::vector<std::string>;
 
-static constexpr const utf8* ClimateNames[] = {
+static constexpr const char* ClimateNames[] = {
     "cool_and_wet",
     "warm",
     "hot_and_dry",
@@ -67,9 +67,6 @@ static constexpr const utf8* ClimateNames[] = {
 };
 
 static void console_write_all_commands(InteractiveConsole& console);
-static int32_t console_parse_int(const utf8* src, bool* valid);
-static double console_parse_double(const utf8* src, bool* valid);
-
 static int32_t cc_variables(InteractiveConsole& console, const arguments_t& argv);
 static int32_t cc_windows(InteractiveConsole& console, const arguments_t& argv);
 static int32_t cc_help(InteractiveConsole& console, const arguments_t& argv);
@@ -84,20 +81,20 @@ static bool invalidArguments(bool* invalid, bool arguments);
             variable &= ~(flag);                                                                                               \
     }
 
-int32_t console_parse_int(const utf8* src, bool* valid)
+int32_t console_parse_int(const std::string& src, bool* valid)
 {
     utf8* end;
     int32_t value;
-    value = strtol(src, &end, 10);
+    value = static_cast<int32_t>(strtol(src.c_str(), &end, 10));
     *valid = (*end == '\0');
     return value;
 }
 
-double console_parse_double(const utf8* src, bool* valid)
+double console_parse_double(const std::string& src, bool* valid)
 {
     utf8* end;
     double value;
-    value = strtod(src, &end);
+    value = strtod(src.c_str(), &end);
     *valid = (*end == '\0');
     return value;
 }
@@ -173,8 +170,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             if (argv[1] == "type")
             {
                 bool int_valid[2] = { 0 };
-                int32_t ride_index = console_parse_int(argv[2].c_str(), &int_valid[0]);
-                int32_t type = console_parse_int(argv[3].c_str(), &int_valid[1]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
+                int32_t type = console_parse_int(argv[3], &int_valid[1]);
                 if (!int_valid[0] || !int_valid[1])
                 {
                     console.WriteFormatLine("This command expects integer arguments");
@@ -197,8 +194,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             else if (argv[1] == "mode")
             {
                 bool int_valid[2] = { 0 };
-                int32_t ride_index = console_parse_int(argv[2].c_str(), &int_valid[0]);
-                int32_t mode = console_parse_int(argv[3].c_str(), &int_valid[1]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
+                int32_t mode = console_parse_int(argv[3], &int_valid[1]);
                 if (!int_valid[0] || !int_valid[1])
                 {
                     console.WriteFormatLine("This command expects integer arguments");
@@ -228,8 +225,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             else if (argv[1] == "mass")
             {
                 bool int_valid[2] = { 0 };
-                int32_t ride_index = console_parse_int(argv[2].c_str(), &int_valid[0]);
-                int32_t mass = console_parse_int(argv[3].c_str(), &int_valid[1]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
+                int32_t mass = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {
@@ -268,8 +265,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             else if (argv[1] == "excitement")
             {
                 bool int_valid[2] = { 0 };
-                int32_t ride_index = console_parse_int(argv[2].c_str(), &int_valid[0]);
-                ride_rating excitement = console_parse_int(argv[3].c_str(), &int_valid[1]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
+                ride_rating excitement = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {
@@ -299,8 +296,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             else if (argv[1] == "intensity")
             {
                 bool int_valid[2] = { 0 };
-                int32_t ride_index = console_parse_int(argv[2].c_str(), &int_valid[0]);
-                ride_rating intensity = console_parse_int(argv[3].c_str(), &int_valid[1]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
+                ride_rating intensity = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {
@@ -330,8 +327,8 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             else if (argv[1] == "nausea")
             {
                 bool int_valid[2] = { 0 };
-                int32_t ride_index = console_parse_int(argv[2].c_str(), &int_valid[0]);
-                ride_rating nausea = console_parse_int(argv[3].c_str(), &int_valid[1]);
+                int32_t ride_index = console_parse_int(argv[2], &int_valid[0]);
+                ride_rating nausea = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {
@@ -404,8 +401,8 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 int32_t int_val[3];
                 bool int_valid[3] = { 0 };
-                int_val[0] = console_parse_int(argv[2].c_str(), &int_valid[0]);
-                int_val[1] = console_parse_int(argv[3].c_str(), &int_valid[1]);
+                int_val[0] = console_parse_int(argv[2], &int_valid[0]);
+                int_val[1] = console_parse_int(argv[3], &int_valid[1]);
 
                 if (int_valid[0] && int_valid[1] && ((GET_PEEP(int_val[0])) != nullptr))
                 {
@@ -419,8 +416,8 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 int32_t int_val[2];
                 bool int_valid[2] = { 0 };
-                int_val[0] = console_parse_int(argv[2].c_str(), &int_valid[0]);
-                int_val[1] = console_parse_int(argv[3].c_str(), &int_valid[1]);
+                int_val[0] = console_parse_int(argv[2], &int_valid[0]);
+                int_val[1] = console_parse_int(argv[3], &int_valid[1]);
                 rct_peep* peep = nullptr;
                 if (!int_valid[0])
                 {
@@ -671,8 +668,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             if (i + 1 < argv.size())
             {
-                int_val[i] = console_parse_int(argv[i + 1].c_str(), &int_valid[i]);
-                double_val[i] = console_parse_double(argv[i + 1].c_str(), &double_valid[i]);
+                int_val[i] = console_parse_int(argv[i + 1], &int_valid[i]);
+                double_val[i] = console_parse_double(argv[i + 1], &double_valid[i]);
             }
             else
             {
