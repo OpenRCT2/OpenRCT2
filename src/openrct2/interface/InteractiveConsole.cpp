@@ -66,6 +66,9 @@ static constexpr const char* ClimateNames[] = {
     "cold",
 };
 
+int32_t console_parse_int(const std::string& src, bool* valid);
+double console_parse_double(const std::string& src, bool* valid);
+
 static void console_write_all_commands(InteractiveConsole& console);
 static int32_t cc_variables(InteractiveConsole& console, const arguments_t& argv);
 static int32_t cc_windows(InteractiveConsole& console, const arguments_t& argv);
