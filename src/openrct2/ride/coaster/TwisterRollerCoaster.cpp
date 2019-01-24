@@ -1365,7 +1365,7 @@ static void twister_rc_track_flat_to_60_deg_down(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    bolliger_mabillard_track_flat_to_60_deg_up(
+    bolliger_mabillard_track_flat_to_60_deg_down(
         session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES);
 }
 
@@ -1373,7 +1373,7 @@ static void twister_rc_track_60_deg_down_to_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    bolliger_mabillard_track_60_deg_up_to_flat(
+    bolliger_mabillard_track_60_deg_down_to_flat(
         session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES);
 }
 
