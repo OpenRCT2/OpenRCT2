@@ -13,8 +13,6 @@
 #include <stdarg.h>
 #include <stdbool.h>
 
-void openrct2_assert_fwd(bool expression, const char* message, ...);
-
 #define openrct2_assert(expr, msg, ...)                                                                                        \
     if (!(expr))                                                                                                               \
     {                                                                                                                          \
@@ -67,3 +65,11 @@ namespace Guard
 } // namespace Guard
 
 #define GUARD_LINE "Location: %s:%d", __func__, __LINE__
+
+inline void openrct2_assert_fwd(bool expression, const char* message, ...)
+{
+    va_list va;
+    va_start(va, message);
+    Guard::Assert_VA(expression, message, va);
+    va_end(va);
+}
