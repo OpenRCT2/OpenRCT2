@@ -1794,9 +1794,9 @@ static money32 track_remove(
             footpath_remove_edges_at(x, y, tileElement);
         }
         tile_element_remove(tileElement);
+        sub_6CB945(rideIndex);
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            sub_6CB945(rideIndex);
             ride_update_max_vehicles(ride);
         }
     }
