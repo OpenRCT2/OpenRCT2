@@ -1886,27 +1886,6 @@ void screen_get_map_xy_side_with_z(int16_t screenX, int16_t screenY, int16_t z, 
     *mapY = floor2(*mapY, 32);
 }
 
-/**
- * Get current viewport rotation.
- *
- * If an invalid rotation is detected and DEBUG_LEVEL_1 is enabled, an error
- * will be reported.
- *
- * @returns rotation in range 0-3 (inclusive)
- */
-uint8_t get_current_rotation()
-{
-    uint8_t rotation = gCurrentRotation;
-    uint8_t rotation_masked = rotation & 3;
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    if (rotation != rotation_masked)
-    {
-        log_error("Found wrong rotation %d! Will return %d instead.", (uint32_t)rotation, (uint32_t)rotation_masked);
-    }
-#endif // DEBUG_LEVEL_1
-    return rotation_masked;
-}
-
 int16_t get_height_marker_offset()
 {
     // Height labels in units

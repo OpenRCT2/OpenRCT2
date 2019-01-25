@@ -177,7 +177,25 @@ void screen_get_map_xy_quadrant_with_z(
 void screen_get_map_xy_side(int16_t screenX, int16_t screenY, int16_t* mapX, int16_t* mapY, uint8_t* side);
 void screen_get_map_xy_side_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY, uint8_t* side);
 
-uint8_t get_current_rotation();
+/**
+ * Get current viewport rotation.
+ *
+ * If an invalid rotation is detected and DEBUG_LEVEL_1 is enabled, an error
+ * will be reported.
+ *
+ * @returns rotation in range 0-3 (inclusive)
+ */
+inline uint8_t get_current_rotation()
+{
+    auto rotation_masked = static_cast<uint8_t>(gCurrentRotation & 3);
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+    if (gCurrentRotation != rotation_masked)
+    {
+        log_error("Found wrong rotation %d! Will return %d instead.", (uint32_t)gCurrentRotation, (uint32_t)rotation_masked);
+    }
+#endif // DEBUG_LEVEL_1
+    return rotation_masked;
+}
 int16_t get_height_marker_offset();
 
 void viewport_set_saved_view();

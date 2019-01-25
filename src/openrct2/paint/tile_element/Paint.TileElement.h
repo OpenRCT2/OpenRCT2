@@ -12,6 +12,7 @@
 
 #include "../../common.h"
 #include "../../world/Map.h"
+#include "../../paint/Paint.h"
 
 struct paint_session;
 
@@ -98,7 +99,28 @@ void paint_util_force_set_general_support_height(paint_session* session, int16_t
 void paint_util_set_segment_support_height(paint_session* session, int32_t segments, uint16_t height, uint8_t slope);
 uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation);
 
-void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y);
+void blank_tiles_paint(paint_session* session, int32_t x, int32_t y);
+void sub_68B3FB(paint_session* session, int32_t x, int32_t y);
+
+/**
+ *  rct2: 0x0068B35F
+ */
+inline void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y)
+{
+    if (x < gMapSizeUnits && y < gMapSizeUnits && x >= 32 && y >= 32)
+    {
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_force_set_general_support_height(session, -1, 0);
+        session->Unk141E9DB = 0;
+        session->WaterHeight = 0xFFFF;
+
+        sub_68B3FB(session, x, y);
+    }
+    else
+    {
+        blank_tiles_paint(session, x, y);
+    }
+}
 
 void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element);
 void banner_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element);

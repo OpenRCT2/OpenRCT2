@@ -36,32 +36,8 @@
 uint16_t testPaintVerticalTunnelHeight;
 #endif
 
-static void blank_tiles_paint(paint_session* session, int32_t x, int32_t y);
-static void sub_68B3FB(paint_session* session, int32_t x, int32_t y);
-
 const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC
     | SEGMENT_D0 | SEGMENT_D4;
-
-/**
- *
- *  rct2: 0x0068B35F
- */
-void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y)
-{
-    if (x < gMapSizeUnits && y < gMapSizeUnits && x >= 32 && y >= 32)
-    {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_force_set_general_support_height(session, -1, 0);
-        session->Unk141E9DB = 0;
-        session->WaterHeight = 0xFFFF;
-
-        sub_68B3FB(session, x, y);
-    }
-    else
-    {
-        blank_tiles_paint(session, x, y);
-    }
-}
 
 /**
  *
@@ -88,7 +64,7 @@ void sub_68B2B7(paint_session* session, int32_t x, int32_t y)
  *
  *  rct2: 0x0068B60E
  */
-static void blank_tiles_paint(paint_session* session, int32_t x, int32_t y)
+void blank_tiles_paint(paint_session* session, int32_t x, int32_t y)
 {
     int32_t dx = 0;
     switch (session->CurrentRotation)
@@ -134,7 +110,7 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
+void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 {
     rct_drawpixelinfo* dpi = session->DPI;
 
