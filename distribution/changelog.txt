@@ -57,6 +57,7 @@
 - Fix: [#8555] Multiplayer window text limits are not computed properly.
 - Fix: [#8572] Steel Twister track pieces ID 64 and 65 drawn incorrectly.
 - Fix: [#8584] Duck spawning function does not check tiles with x or y coordinate of 0..63 (original bug).
+- Fix: [#8585] Part of track missing on air powered vertical coaster.
 - Fix: [#8588] Guest list scrolling breaks above ~2000 guests.
 - Fix: [#8591] Game loop does not run at a consistent tick rate of 40 Hz.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
