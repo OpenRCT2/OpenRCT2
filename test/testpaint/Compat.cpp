@@ -160,11 +160,6 @@ bool TileElementBase::IsLastForTile() const
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
-uint8_t TileElementBase::GetType() const
-{
-    return this->type & TILE_ELEMENT_TYPE_MASK;
-}
-
 TileElement* map_get_first_element_at(int x, int y)
 {
     if (x < 0 || y < 0 || x > 255 || y > 255)

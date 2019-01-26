@@ -17,11 +17,6 @@
 #include "LargeScenery.h"
 #include "Scenery.h"
 
-uint8_t TileElementBase::GetType() const
-{
-    return this->type & TILE_ELEMENT_TYPE_MASK;
-}
-
 void TileElementBase::SetType(uint8_t newType)
 {
     this->type &= ~TILE_ELEMENT_TYPE_MASK;

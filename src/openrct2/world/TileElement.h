@@ -17,6 +17,67 @@
 struct rct_scenery_entry;
 struct rct_footpath_entry;
 
+enum
+{
+    TILE_ELEMENT_QUADRANT_SW,
+    TILE_ELEMENT_QUADRANT_NW,
+    TILE_ELEMENT_QUADRANT_NE,
+    TILE_ELEMENT_QUADRANT_SE
+};
+
+enum
+{
+    TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6),
+    SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),
+};
+
+enum
+{
+    TILE_ELEMENT_DIRECTION_WEST,
+    TILE_ELEMENT_DIRECTION_NORTH,
+    TILE_ELEMENT_DIRECTION_EAST,
+    TILE_ELEMENT_DIRECTION_SOUTH
+};
+
+enum
+{
+    TILE_ELEMENT_FLAG_GHOST = (1 << 4),
+    TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
+    TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
+    TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
+    TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
+    TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
+};
+
+enum
+{
+    ENTRANCE_TYPE_RIDE_ENTRANCE,
+    ENTRANCE_TYPE_RIDE_EXIT,
+    ENTRANCE_TYPE_PARK_ENTRANCE
+};
+
+enum
+{
+    ELEMENT_IS_ABOVE_GROUND = 1 << 0,
+    ELEMENT_IS_UNDERGROUND = 1 << 1,
+    ELEMENT_IS_UNDERWATER = 1 << 2,
+};
+
+enum
+{
+    MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT = (1 << 7),
+};
+
+#define TILE_ELEMENT_QUADRANT_MASK 0b11000000
+#define TILE_ELEMENT_TYPE_MASK 0b00111100
+#define TILE_ELEMENT_DIRECTION_MASK 0b00000011
+
+#define TILE_ELEMENT_COLOUR_MASK 0b00011111
+
+#define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0b01110000
+#define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
+#define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
+
 #pragma pack(push, 1)
 
 enum
@@ -64,7 +125,11 @@ struct TileElementBase
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
 
-    uint8_t GetType() const;
+    inline uint8_t GetType() const
+    {
+        return this->type & (uint8_t)TILE_ELEMENT_TYPE_MASK;
+    }
+
     void SetType(uint8_t newType);
     uint8_t GetDirection() const;
     void SetDirection(uint8_t direction);
@@ -461,67 +526,6 @@ struct CorruptElement : TileElementBase
 };
 assert_struct_size(CorruptElement, 8);
 #pragma pack(pop)
-
-enum
-{
-    TILE_ELEMENT_QUADRANT_SW,
-    TILE_ELEMENT_QUADRANT_NW,
-    TILE_ELEMENT_QUADRANT_NE,
-    TILE_ELEMENT_QUADRANT_SE
-};
-
-enum
-{
-    TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6),
-    SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),
-};
-
-enum
-{
-    TILE_ELEMENT_DIRECTION_WEST,
-    TILE_ELEMENT_DIRECTION_NORTH,
-    TILE_ELEMENT_DIRECTION_EAST,
-    TILE_ELEMENT_DIRECTION_SOUTH
-};
-
-enum
-{
-    TILE_ELEMENT_FLAG_GHOST = (1 << 4),
-    TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
-    TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
-    TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
-    TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
-    TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
-};
-
-enum
-{
-    ENTRANCE_TYPE_RIDE_ENTRANCE,
-    ENTRANCE_TYPE_RIDE_EXIT,
-    ENTRANCE_TYPE_PARK_ENTRANCE
-};
-
-enum
-{
-    ELEMENT_IS_ABOVE_GROUND = 1 << 0,
-    ELEMENT_IS_UNDERGROUND = 1 << 1,
-    ELEMENT_IS_UNDERWATER = 1 << 2,
-};
-
-enum
-{
-    MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT = (1 << 7),
-};
-
-#define TILE_ELEMENT_QUADRANT_MASK 0b11000000
-#define TILE_ELEMENT_TYPE_MASK 0b00111100
-#define TILE_ELEMENT_DIRECTION_MASK 0b00000011
-
-#define TILE_ELEMENT_COLOUR_MASK 0b00011111
-
-#define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0b01110000
-#define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
-#define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
 
 BannerIndex tile_element_get_banner_index(TileElement* tileElement);
 bool tile_element_is_underground(TileElement* tileElement);
