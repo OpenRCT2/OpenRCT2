@@ -175,7 +175,32 @@ bool map_can_construct_with_clear_at(
     uint8_t crossingMode);
 int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, uint8_t bl);
 void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation);
-LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, int32_t rotation);
+inline LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, int32_t rotation)
+{
+    LocationXY16 coordinate_2d = { 0, 0 };
+
+    switch (rotation)
+    {
+        default:
+        case 0:
+            coordinate_2d.x = coordinate_3d->y - coordinate_3d->x;
+            coordinate_2d.y = ((coordinate_3d->y + coordinate_3d->x) >> 1) - coordinate_3d->z;
+            break;
+        case 1:
+            coordinate_2d.x = -coordinate_3d->y - coordinate_3d->x;
+            coordinate_2d.y = ((coordinate_3d->y - coordinate_3d->x) >> 1) - coordinate_3d->z;
+            break;
+        case 2:
+            coordinate_2d.x = -coordinate_3d->y + coordinate_3d->x;
+            coordinate_2d.y = ((-coordinate_3d->y - coordinate_3d->x) >> 1) - coordinate_3d->z;
+            break;
+        case 3:
+            coordinate_2d.x = coordinate_3d->y + coordinate_3d->x;
+            coordinate_2d.y = ((-coordinate_3d->y + coordinate_3d->x) >> 1) - coordinate_3d->z;
+            break;
+    }
+    return coordinate_2d;
+}
 money32 map_clear_scenery(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t clear, int32_t flags);
 money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flags);
 money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flags);
