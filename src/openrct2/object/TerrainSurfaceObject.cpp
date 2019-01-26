@@ -120,22 +120,4 @@ void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, const json_t* r
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
-uint32_t TerrainSurfaceObject::GetImageId(
-    const CoordsXY& position, int32_t length, int32_t rotation, int32_t offset, bool grid, bool underground) const
-{
-    uint32_t result = (underground ? DefaultUndergroundEntry : (grid ? DefaultGridEntry : DefaultEntry));
 
-    // Look for a matching special
-    auto variation = ((position.x << 1) & 0b10) | (position.y & 0b01);
-    for (const auto& special : SpecialEntries)
-    {
-        if ((special.Length == -1 || special.Length == length) && (special.Rotation == -1 || special.Rotation == rotation)
-            && (special.Variation == -1 || special.Variation == variation) && special.Grid == grid
-            && special.Underground == underground)
-        {
-            result = special.Index;
-            break;
-        }
-    }
-    return EntryBaseImageId + (result * NUM_IMAGES_IN_ENTRY) + offset;
-}
