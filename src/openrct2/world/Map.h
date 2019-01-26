@@ -174,7 +174,32 @@ bool map_can_construct_with_clear_at(
     int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, uint8_t bl, uint8_t flags, money32* price,
     uint8_t crossingMode);
 int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, uint8_t bl);
-void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation);
+inline void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation)
+{
+    int32_t temp;
+
+    switch (rotation)
+    {
+        case TILE_ELEMENT_DIRECTION_WEST:
+            break;
+        case TILE_ELEMENT_DIRECTION_NORTH:
+            temp = *x;
+            *x = *y;
+            *y = (uint16_t)-temp;
+            break;
+        case TILE_ELEMENT_DIRECTION_EAST:
+            *x = -*x;
+            *y = -*y;
+            break;
+        case TILE_ELEMENT_DIRECTION_SOUTH:
+            temp = *y;
+            *y = *x;
+            *x = (uint16_t)-temp;
+            break;
+        default:
+            break;
+    }
+}
 inline LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, int32_t rotation)
 {
     LocationXY16 coordinate_2d = { 0, 0 };

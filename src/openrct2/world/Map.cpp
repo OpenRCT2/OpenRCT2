@@ -105,31 +105,6 @@ bool gMapLandRightsUpdateSuccess;
 static void clear_elements_at(int32_t x, int32_t y);
 static void translate_3d_to_2d(int32_t rotation, int32_t* x, int32_t* y);
 
-void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation)
-{
-    int32_t temp;
-
-    switch (rotation)
-    {
-        case TILE_ELEMENT_DIRECTION_WEST:
-            break;
-        case TILE_ELEMENT_DIRECTION_NORTH:
-            temp = *x;
-            *x = *y;
-            *y = -temp;
-            break;
-        case TILE_ELEMENT_DIRECTION_EAST:
-            *x = -*x;
-            *y = -*y;
-            break;
-        case TILE_ELEMENT_DIRECTION_SOUTH:
-            temp = *y;
-            *y = *x;
-            *x = -temp;
-            break;
-    }
-}
-
 void tile_element_iterator_begin(tile_element_iterator* it)
 {
     it->x = 0;
