@@ -255,17 +255,27 @@ private:
 
 public:
     uint8_t GetPathEntryIndex() const;
-    PathSurfaceEntry* GetPathEntry() const;
+    inline PathSurfaceEntry* GetPathEntry() const
+    {
+        return get_path_surface_entry(GetPathEntryIndex());
+    }
     void SetPathEntryIndex(uint8_t newIndex);
 
     uint8_t GetRailingEntryIndex() const;
-    PathRailingsEntry* GetRailingEntry() const;
+
+    PathRailingsEntry* GetRailingEntry() const
+    {
+        return get_path_railings_entry(GetRailingEntryIndex());
+    }
     void SetRailingEntryIndex(uint8_t newIndex);
 
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
 
-    bool IsSloped() const;
+    inline bool IsSloped() const
+    {
+        return (entryIndex & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
+    }
     void SetSloped(bool isSloped);
 
     uint8_t GetSlopeDirection() const;

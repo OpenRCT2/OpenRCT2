@@ -1986,11 +1986,6 @@ int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32
     return footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, 0, 0, 16);
 }
 
-bool PathElement::IsSloped() const
-{
-    return (entryIndex & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
-}
-
 void PathElement::SetSloped(bool isSloped)
 {
     entryIndex &= ~FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
@@ -2102,16 +2097,6 @@ uint8_t PathElement::GetPathEntryIndex() const
 uint8_t PathElement::GetRailingEntryIndex() const
 {
     return GetPathEntryIndex();
-}
-
-PathSurfaceEntry* PathElement::GetPathEntry() const
-{
-    return get_path_surface_entry(GetPathEntryIndex());
-}
-
-PathRailingsEntry* PathElement::GetRailingEntry() const
-{
-    return get_path_railings_entry(GetRailingEntryIndex());
 }
 
 void PathElement::SetPathEntryIndex(uint8_t newEntryIndex)
