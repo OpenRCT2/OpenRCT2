@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "Footpath.h"
+#include "Surface.h"
 #include "Location.hpp"
 
 struct rct_scenery_entry;
@@ -202,10 +203,20 @@ private:
     uint8_t grass_length; // 6
     uint8_t ownership;    // 7
 public:
-    uint8_t GetSlope() const;
+    inline uint8_t GetSlope() const
+    {
+        return (slope & (uint8_t)TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    }
     void SetSlope(uint8_t newSlope);
 
-    uint32_t GetSurfaceStyle() const;
+    inline uint32_t GetSurfaceStyle() const
+    {
+        uint32_t retVal = (uint8_t)((terrain >> 5) & 7);
+        if (type & 1)
+            retVal |= (1 << 3);
+        return retVal;
+    }
+
     void SetSurfaceStyle(uint32_t newStyle);
     uint32_t GetEdgeStyle() const;
     void SetEdgeStyle(uint32_t newStyle);

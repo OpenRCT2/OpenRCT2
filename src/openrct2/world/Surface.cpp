@@ -16,14 +16,6 @@
 #include "Location.hpp"
 #include "Map.h"
 
-uint32_t SurfaceElement::GetSurfaceStyle() const
-{
-    uint32_t retVal = (terrain >> 5) & 7;
-    if (type & 1)
-        retVal |= (1 << 3);
-    return retVal;
-}
-
 uint32_t SurfaceElement::GetEdgeStyle() const
 {
     uint32_t terrain_edge = (slope >> 5) & 7;
@@ -222,11 +214,6 @@ void SurfaceElement::SetParkFences(uint8_t newParkFences)
 {
     ownership &= ~TILE_ELEMENT_SURFACE_PARK_FENCE_MASK;
     ownership |= (newParkFences & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
-}
-
-uint8_t SurfaceElement::GetSlope() const
-{
-    return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
 }
 
 void SurfaceElement::SetSlope(uint8_t newSlope)
