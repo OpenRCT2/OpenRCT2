@@ -12,7 +12,6 @@
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "Footpath.h"
-#include "Surface.h"
 #include "Location.hpp"
 
 struct rct_scenery_entry;
@@ -78,6 +77,18 @@ enum
 #define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0b01110000
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
 #define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
+
+// Surface
+#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG 0x10       // in TileElement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK 0x0F // in TileElement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_SLOPE_MASK                                                                                        \
+    (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) // in TileElement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK 0xE0                                   // in TileElement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK 0x1F                                 // in TileElement.properties.surface.terrain
+#define TILE_ELEMENT_SURFACE_TERRAIN_MASK 0xE0                                      // in TileElement.properties.surface.terrain
+
+#define TILE_ELEMENT_SURFACE_OWNERSHIP_MASK 0xF0
+#define TILE_ELEMENT_SURFACE_PARK_FENCE_MASK 0x0F
 
 #pragma pack(push, 1)
 
