@@ -20,12 +20,11 @@
 #endif
 
 #include "Diagnostic.h"
+#include "util/Numerics.hpp"
 
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
-#include <limits>
-#include <type_traits>
 
 using utf8 = char;
 using utf8string = utf8*;
@@ -43,20 +42,6 @@ using utf16string = utf16*;
 
 using codepoint_t = uint32_t;
 using colour_t = uint8_t;
-
-template<typename _UIntType> constexpr _UIntType rol(_UIntType x, size_t shift)
-{
-    static_assert(std::is_unsigned<_UIntType>::value, "result_type must be an unsigned integral type");
-    using limits = typename std::numeric_limits<_UIntType>;
-    return (((_UIntType)(x) << shift) | ((_UIntType)(x) >> (limits::digits - shift)));
-}
-
-template<typename _UIntType> constexpr _UIntType ror(_UIntType x, size_t shift)
-{
-    static_assert(std::is_unsigned<_UIntType>::value, "result_type must be an unsigned integral type");
-    using limits = std::numeric_limits<_UIntType>;
-    return (((_UIntType)(x) >> shift) | ((_UIntType)(x) << (limits::digits - shift)));
-}
 
 const constexpr auto rol8 = rol<uint8_t>;
 const constexpr auto ror8 = ror<uint8_t>;
