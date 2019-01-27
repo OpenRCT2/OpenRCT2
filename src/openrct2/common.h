@@ -20,7 +20,7 @@
 #endif
 
 #include "Diagnostic.h"
-#include "util/Numerics.hpp"
+#include "core/Numerics.hpp"
 
 #include <cassert>
 #include <cstddef>
