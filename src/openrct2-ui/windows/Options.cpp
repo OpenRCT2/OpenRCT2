@@ -150,6 +150,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TOOLBAR_SHOW_CHEATS,
     WIDX_TOOLBAR_SHOW_NEWS,
     WIDX_TOOLBAR_SHOW_MUTE,
+    WIDX_TOOLBAR_SHOW_CHAT,
 
     // Misc
     WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
@@ -319,6 +320,7 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     { WWT_CHECKBOX,         2,  155,    299,    TOOLBAR_GROUP_START + 31,    TOOLBAR_GROUP_START + 42,    STR_CHEATS_BUTTON_ON_TOOLBAR,           STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },         // Cheats
     { WWT_CHECKBOX,         2,  155,    299,    TOOLBAR_GROUP_START + 46,    TOOLBAR_GROUP_START + 57,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },  // Recent messages
     { WWT_CHECKBOX,         2,  24,     185,    TOOLBAR_GROUP_START + 61,    TOOLBAR_GROUP_START + 72,    STR_MUTE_BUTTON_ON_TOOLBAR,             STR_MUTE_BUTTON_ON_TOOLBAR_TIP },           // Mute
+    { WWT_CHECKBOX,         2,  155,    299,    TOOLBAR_GROUP_START + 61,    TOOLBAR_GROUP_START + 72,    STR_CHAT_BUTTON_ON_TOOLBAR,             STR_CHAT_BUTTON_ON_TOOLBAR_TIP },           // Chat
     { WIDGETS_END },
 #undef TOOLBAR_GROUP_START
 };
@@ -577,7 +579,8 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_THEMES) |
     (1 << WIDX_THEMES_DROPDOWN) |
     (1 << WIDX_THEMES_BUTTON) |
-    (1 << WIDX_TOOLBAR_SHOW_MUTE),
+    (1 << WIDX_TOOLBAR_SHOW_MUTE) |
+    (1 << WIDX_TOOLBAR_SHOW_CHAT) |
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_REAL_NAME_CHECKBOX) |
@@ -848,6 +851,12 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     break;
                 case WIDX_TOOLBAR_SHOW_MUTE:
                     gConfigInterface.toolbar_show_mute ^= 1;
+                    config_save_default();
+                    window_invalidate(w);
+                    window_invalidate_by_class(WC_TOP_TOOLBAR);
+                    break;
+                case WIDX_TOOLBAR_SHOW_CHAT:
+                    gConfigInterface.toolbar_show_chat ^= 1;
                     config_save_default();
                     window_invalidate(w);
                     window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -1857,6 +1866,7 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
+            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
 
             size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
             const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
