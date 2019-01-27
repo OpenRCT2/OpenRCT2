@@ -53,7 +53,7 @@ if (PORTABLE OR WIN32)
 endif ()
 
 include(cmake/ipo.cmake)
-list(APPEND IPO_ENABLED_BUILDS Release RelWithDebInfo MinSizeRel)
+list(APPEND IPO_ENABLED_BUILDS RELEASE RELWITHDEBINFO MINSIZEREL)
 ipo_enable("${IPO_ENABLED_BUILDS}")
 
 # Describe current version in terms of closest tag
