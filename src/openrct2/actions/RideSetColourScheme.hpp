@@ -34,8 +34,8 @@ public:
         : _x(x)
         , _y(y)
         , _z(z)
-        , _direction(direction)
         , _trackType(trackType)
+        , _direction(direction)
         , _newColourScheme(newColourScheme)
     {
     }
