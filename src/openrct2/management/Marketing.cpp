@@ -46,18 +46,18 @@ int32_t marketing_get_campaign_guest_generation_probability(int32_t campaign)
     switch (campaign)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            if (park_get_entrance_fee() < MONEY(4, 0))
+            if (park_get_entrance_fee() < MONEY(4, 00))
                 probability /= 8;
-            break;
+        break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            if (park_get_entrance_fee() < MONEY(6, 0))
+            if (park_get_entrance_fee() < MONEY(6, 00))
                 probability /= 8;
-            break;
+        break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
             ride = get_ride(gMarketingCampaignRideIndex[campaign]);
-            if (ride->price < MONEY(3, 0))
-                probability /= 8;
-            break;
+        if (ride->price < MONEY(0, 30))
+            probability /= 8;
+        break;
     }
 
     return probability;
