@@ -14,10 +14,7 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
 set (PROJECT openrct2-cli)
 project(${PROJECT} CXX)
 add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
-
-if(IPO_SUPPORTED)
-    set_property(TARGET ${PROJECT} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-endif()
+ipo_set_target_properties(${PROJECT})
 
 target_link_libraries(${PROJECT} "libopenrct2")
 

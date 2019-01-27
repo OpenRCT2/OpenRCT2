@@ -6,14 +6,6 @@ endif()
 
 project(openrct2 CXX)
 
-include(CheckIPOSupported)
-check_ipo_supported(RESULT IPO_SUPPORTED OUTPUT IPO_LOG)
-if(IPO_SUPPORTED)
-    message(INFO "IPO supported")
-else()
-    message(WARNING "IPO not supported: ${IPO_LOG}")
-endif()
-
 if (NOT MSVC)
     include(FindPkgConfig)
 endif ()
@@ -59,6 +51,10 @@ if (PORTABLE OR WIN32)
     set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_BINDIR}")
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif ()
+
+include(cmake/ipo.cmake)
+list(APPEND IPO_ENABLED_BUILDS Release RelWithDebInfo MinSizeRel)
+ipo_enable("${IPO_ENABLED_BUILDS}")
 
 # Describe current version in terms of closest tag
 execute_process(

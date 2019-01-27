@@ -49,10 +49,7 @@ endif ()
 set (PROJECT openrct2)
 project(${PROJECT} CXX)
 add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
-
-if(IPO_SUPPORTED)
-    set_property(TARGET ${PROJECT} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-endif()
+ipo_set_target_properties(${PROJECT})
 
 target_link_libraries(${PROJECT} "libopenrct2"
                                  ${SDL2_LDFLAGS}
