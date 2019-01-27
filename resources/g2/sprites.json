@@ -1622,5 +1622,8 @@
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
+    },
+    {
+        "path": "icons/chat.png"
     }
 ]
