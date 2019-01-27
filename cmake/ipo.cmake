@@ -1,5 +1,7 @@
 # Helpers for inter-procedural optimizations (IPO)
 
+option(DISABLE_IPO "Disable IPO in supported release builds." OFF)
+
 # Enabled IPO for a LIST of CMake build types.
 # Provides IPO_BUILD_ENABLED to the parent scope.
 function(ipo_enable IPO_ENABLED_BUILDS)
@@ -8,8 +10,12 @@ function(ipo_enable IPO_ENABLED_BUILDS)
 
     set(IPO_BUILD_ENABLED OFF PARENT_SCOPE)
     if(IPO_SUPPORTED AND ${CMAKE_BUILD_TYPE} IN_LIST IPO_ENABLED_BUILDS)
-        message(STATUS "IPO supported and enabled in ${CMAKE_BUILD_TYPE}.")
-        set(IPO_BUILD_ENABLED ON PARENT_SCOPE)
+        if(NOT DISABLE_IPO)
+            message(STATUS "IPO supported and enabled in ${CMAKE_BUILD_TYPE}.")
+            set(IPO_BUILD_ENABLED ON PARENT_SCOPE)
+        else()
+            message(STATUS "IPO explicitly disabled.")
+        endif()
     elseif(NOT IPO_SUPPORTED AND ${CMAKE_BUILD_TYPE} IN_LIST IPO_ENABLED_BUILDS)
         message(STATUS "IPO not supported: ${IPO_LOG}.")
     endif()
