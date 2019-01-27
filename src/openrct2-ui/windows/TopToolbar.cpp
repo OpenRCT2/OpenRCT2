@@ -28,6 +28,7 @@
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/network/network.h>
@@ -45,7 +46,6 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 #include <string>
-#include <openrct2/interface/Chat.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -394,9 +394,12 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
             audio_toggle_all_sounds();
             break;
         case WIDX_CHAT:
-            if(chat_available()){
+            if (chat_available())
+            {
                 chat_toggle();
-            } else {
+            }
+            else
+            {
                 context_show_error(STR_CHAT_UNAVAILABLE, STR_NONE);
             }
             break;
@@ -724,7 +727,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
     }
 
-    if(!gConfigInterface.toolbar_show_chat)
+    if (!gConfigInterface.toolbar_show_chat)
     {
         window_top_toolbar_widgets[WIDX_CHAT].type = WWT_EMPTY;
     }

@@ -40,8 +40,7 @@ static void chat_clear_input();
 
 bool chat_available()
 {
-    return network_get_mode() != NETWORK_MODE_NONE
-        && network_get_status() == NETWORK_STATUS_CONNECTED
+    return network_get_mode() != NETWORK_MODE_NONE && network_get_status() == NETWORK_STATUS_CONNECTED
         && network_get_authstatus() == NETWORK_AUTH_OK;
 }
 
