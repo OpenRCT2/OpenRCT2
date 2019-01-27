@@ -952,7 +952,7 @@ static void call_event_viewport_rotate_on_all_windows()
  *      1: clockwise
  *      -1: anti-clockwise
  */
-void window_rotate_camera(rct_window* w, int32_t direction)
+void window_rotate_camera(rct_window* w, int32_t rotationDirection)
 {
     rct_viewport* viewport = w->viewport;
     if (viewport == nullptr)
@@ -980,7 +980,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
         z = tile_element_height(x, y);
     }
 
-    gCurrentRotation = (get_current_rotation() + direction) & 3;
+    gCurrentRotation = (get_current_rotation() + rotationDirection) & 3;
 
     int32_t new_x, new_y;
     centre_2d_coordinates(x, y, z, &new_x, &new_y, viewport);

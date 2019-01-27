@@ -24,12 +24,13 @@
 DEFINE_GAME_ACTION(RideSetColourSchemeAction, GAME_COMMAND_SET_COLOUR_SCHEME, GameActionResult)
 {
 private:
-    int32_t _x = 0, _y = 0, _z = 0, _direction = 0, _trackType = 0;
+    int32_t _x = 0, _y = 0, _z = 0, _trackType = 0;
+    Direction _direction = Direction::WEST;
     uint16_t _newColourScheme = 0;
 
 public:
     RideSetColourSchemeAction() = default;
-    RideSetColourSchemeAction(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t trackType, uint16_t newColourScheme)
+    RideSetColourSchemeAction(int32_t x, int32_t y, int32_t z, Direction direction, int32_t trackType, uint16_t newColourScheme)
         : _x(x)
         , _y(y)
         , _z(z)

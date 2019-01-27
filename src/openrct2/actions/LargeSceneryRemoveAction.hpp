@@ -29,13 +29,13 @@ private:
     int16_t _x;
     int16_t _y;
     uint8_t _baseHeight;
-    uint8_t _direction;
+    Direction _direction;
     uint16_t _tileIndex;
 
 public:
     LargeSceneryRemoveAction() = default;
 
-    LargeSceneryRemoveAction(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint16_t tileIndex)
+    LargeSceneryRemoveAction(int16_t x, int16_t y, uint8_t baseHeight, Direction direction, uint16_t tileIndex)
         : _x(x)
         , _y(y)
         , _baseHeight(baseHeight)

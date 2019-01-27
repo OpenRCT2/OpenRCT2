@@ -295,7 +295,7 @@ TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z)
     return nullptr;
 }
 
-BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t position)
+BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, Direction position)
 {
     TileElement* tileElement = map_get_first_element_at(x, y);
 
@@ -1081,7 +1081,7 @@ static int32_t map_set_land_height_clear_func(
     return 1;
 }
 
-static int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction)
+static int32_t map_get_corner_height(int32_t z, int32_t slope, Direction direction)
 {
     switch (direction)
     {
@@ -1129,7 +1129,7 @@ static int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction
     return z;
 }
 
-static int32_t tile_element_get_corner_height(const TileElement* tileElement, int32_t direction)
+static int32_t tile_element_get_corner_height(const TileElement* tileElement, Direction direction)
 {
     int32_t z = tileElement->base_height;
     int32_t slope = tileElement->AsSurface()->GetSlope();
@@ -1802,7 +1802,7 @@ void game_command_lower_land(
 }
 
 static money32 smooth_land_tile(
-    int32_t direction, uint8_t flags, int32_t x, int32_t y, TileElement* tileElement, bool raiseLand)
+    Direction direction, uint8_t flags, int32_t x, int32_t y, TileElement* tileElement, bool raiseLand)
 {
     int32_t targetBaseZ = tileElement->base_height;
     int32_t slope = tileElement->AsSurface()->GetSlope();
@@ -1829,7 +1829,7 @@ static money32 smooth_land_tile(
 
 static money32 smooth_land_row_by_edge(
     int32_t flags, int32_t x, int32_t y, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX, int32_t stepY,
-    int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2, bool raiseLand)
+    Direction direction1, Direction direction2, Direction checkDirection1, Direction checkDirection2, bool raiseLand)
 {
     uint8_t shouldContinue = 0xF;
     int32_t landChangePerTile = raiseLand ? -2 : 2;
@@ -1970,7 +1970,7 @@ static money32 smooth_land_row_by_edge(
 }
 
 static money32 smooth_land_row_by_corner(
-    int32_t flags, int32_t x, int32_t y, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
+    int32_t flags, int32_t x, int32_t y, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, Direction direction,
     int32_t checkDirection, bool raiseLand)
 {
     bool shouldContinue = true;
@@ -3564,7 +3564,7 @@ int32_t map_get_highest_z(int32_t tileX, int32_t tileY)
     return z;
 }
 
-TileElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence)
+TileElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, Direction direction, int32_t sequence)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement == nullptr)
@@ -3685,7 +3685,7 @@ TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, i
 }
 
 bool map_large_scenery_get_origin(
-    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
+    int32_t x, int32_t y, int32_t z, Direction direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
     TileElement** outElement)
 {
     TileElement* tileElement;
@@ -3717,7 +3717,7 @@ bool map_large_scenery_get_origin(
  *  rct2: 0x006B9B05
  */
 bool sign_set_colour(
-    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, uint8_t mainColour, uint8_t textColour)
+    int32_t x, int32_t y, int32_t z, Direction direction, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
@@ -4360,7 +4360,7 @@ TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z,
  * @param direction The direction (0 - 3).
  */
 TileElement* map_get_track_element_at_with_direction_from_ride(
-    int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex)
+    int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -4403,7 +4403,7 @@ void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t o
     }
 }
 
-TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction)
+TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, Direction direction)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do

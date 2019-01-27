@@ -172,7 +172,7 @@ static constexpr const uint8_t ConstructionPreviewImages[][4] = {
     { 18, 19, 16, 17 }, // Downwards
 };
 
-static void window_footpath_mousedown_direction(int32_t direction);
+static void window_footpath_mousedown_direction(Direction direction);
 static void window_footpath_mousedown_slope(int32_t slope);
 static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget* widget, bool showQueues);
 static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y);
@@ -598,7 +598,7 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT)))
     {
         // Get construction image
-        uint8_t direction = (gFootpathConstructDirection + get_current_rotation()) % 4;
+        Direction direction = (gFootpathConstructDirection + get_current_rotation()) % 4;
         uint8_t slope = 0;
         if (gFootpathConstructSlope == 2)
         {
@@ -690,7 +690,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
  *
  *  rct2: 0x006A8111 0x006A8135 0x006A815C 0x006A8183
  */
-static void window_footpath_mousedown_direction(int32_t direction)
+static void window_footpath_mousedown_direction(Direction direction)
 {
     footpath_provisional_update();
     gFootpathConstructDirection = (direction - get_current_rotation()) & 3;
@@ -784,7 +784,8 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
  */
 static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX, int32_t screenY)
 {
-    int32_t x, y, direction;
+    int32_t x, y;
+    Direction direction;
     TileElement* tileElement;
 
     map_invalidate_selection_rect();
@@ -901,8 +902,9 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
  */
 static void window_footpath_start_bridge_at_point(int32_t screenX, int32_t screenY)
 {
-    int32_t x, y, z, direction;
+    int32_t x, y, z;
     TileElement* tileElement;
+    Direction direction;
 
     footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &tileElement);
     if (x == LOCATION_NULL)
@@ -1152,7 +1154,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
-        int32_t direction = gFootpathConstructDirection;
+        Direction direction = gFootpathConstructDirection;
         gMapSelectionTiles[0].x = gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;
         gMapSelectionTiles[0].y = gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y;
         gMapSelectionTiles[1].x = -1;
@@ -1167,7 +1169,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
     if (gFootpathConstructionMode >= PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
     {
         // Set pressed directional widget
-        int32_t direction = (gFootpathConstructDirection + currentRotation) & 3;
+        Direction direction = (gFootpathConstructDirection + currentRotation) & 3;
         pressedWidgets |= (1LL << (WIDX_DIRECTION_NW + direction));
 
         // Set pressed slope widget
@@ -1215,7 +1217,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
  */
 static void footpath_get_next_path_info(int32_t* type, int32_t* x, int32_t* y, int32_t* z, int32_t* slope)
 {
-    int32_t direction;
+    Direction direction;
 
     direction = gFootpathConstructDirection;
     *x = gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;

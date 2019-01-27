@@ -2280,7 +2280,7 @@ static void peep_go_to_ride_entrance(rct_peep* peep, Ride* ride)
     int32_t x = location.x;
     int32_t y = location.y;
 
-    uint8_t direction = location.direction;
+    Direction direction = location.direction;
 
     x *= 32;
     y *= 32;
@@ -3437,7 +3437,7 @@ static void peep_update_ride_leave_entrance_maze(rct_peep* peep, Ride* ride, Til
     entrance_loc.x += CoordsDirectionDelta[entrance_loc.direction].x;
     entrance_loc.y += CoordsDirectionDelta[entrance_loc.direction].y;
 
-    uint8_t direction = entrance_loc.direction * 4 + 11;
+    Direction direction = entrance_loc.direction * 4 + 11;
     if (scenario_rand() & 0x40)
     {
         direction += 4;
@@ -3468,7 +3468,7 @@ static void peep_update_ride_leave_entrance_spiral_slide(rct_peep* peep, Ride* r
 
     TileElement* tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
-    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+    Direction direction_track = (tile_element == nullptr ? Direction::WEST : tile_element->GetDirection());
 
     peep->var_37 = (entrance_loc.direction << 2) | (direction_track << 4);
 
@@ -3516,7 +3516,7 @@ static void peep_update_ride_leave_entrance_waypoints(rct_peep* peep, Ride* ride
 {
     TileCoordsXYZD entranceLocation = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
     Guard::Assert(!entranceLocation.isNull());
-    uint8_t direction_entrance = entranceLocation.direction;
+    Direction direction_entrance = entranceLocation.direction;
 
     LocationXY16 waypoint;
     waypoint.x = ride->stations[peep->current_ride_station].Start.x * 32 + 16;
@@ -3524,7 +3524,7 @@ static void peep_update_ride_leave_entrance_waypoints(rct_peep* peep, Ride* ride
 
     TileElement* tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
-    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
+    Direction direction_track = (tile_element == nullptr ? Direction::WEST : tile_element->GetDirection());
 
     auto vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
     auto ride_entry = get_ride_entry(vehicle->ride_subtype);
@@ -4150,7 +4150,7 @@ void rct_peep::UpdateRideLeaveVehicle()
 
     TileElement* trackElement = ride_get_station_start_track_element(ride, current_ride_station);
 
-    uint8_t station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
+    Direction station_direction = (trackElement == nullptr ? Direction::WEST : trackElement->GetDirection());
 
     vehicle = GET_VEHICLE(ride->vehicles[current_train]);
 

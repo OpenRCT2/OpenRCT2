@@ -21,7 +21,7 @@ uint8_t RCT12TileElementBase::GetType() const
     return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
-uint8_t RCT12TileElementBase::GetDirection() const
+Direction RCT12TileElementBase::GetDirection() const
 {
     return this->type & TILE_ELEMENT_DIRECTION_MASK;
 }
@@ -82,7 +82,7 @@ uint8_t RCT12PathElement::GetEntryIndex() const
     return (entryIndex & FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
 }
 
-uint8_t RCT12PathElement::GetQueueBannerDirection() const
+Direction RCT12PathElement::GetQueueBannerDirection() const
 {
     return ((type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
 }
@@ -92,7 +92,7 @@ bool RCT12PathElement::IsSloped() const
     return (entryIndex & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
 }
 
-uint8_t RCT12PathElement::GetSlopeDirection() const
+Direction RCT12PathElement::GetSlopeDirection() const
 {
     return entryIndex & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
 }

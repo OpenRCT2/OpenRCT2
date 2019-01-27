@@ -59,7 +59,7 @@ static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
     return resultRideIndex;
 }
 
-static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t flags)
+static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, Direction direction, uint8_t flags)
 {
     int32_t z = baseHeight * 8;
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
@@ -117,7 +117,7 @@ static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t di
     return refund;
 }
 
-static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t colour, uint8_t flags)
+static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, Direction direction, uint8_t colour, uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     int32_t z = (baseHeight * 8);
@@ -164,7 +164,7 @@ static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t
 }
 
 static money32 BannerPlace(
-    int16_t x, int16_t y, uint8_t pathBaseHeight, uint8_t direction, uint8_t colour, uint8_t type, BannerIndex* bannerIndex,
+    int16_t x, int16_t y, uint8_t pathBaseHeight, Direction direction, uint8_t colour, uint8_t type, BannerIndex* bannerIndex,
     uint8_t flags)
 {
     gCommandPosition.x = x + 16;

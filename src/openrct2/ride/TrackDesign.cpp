@@ -852,7 +852,7 @@ static int32_t track_design_place_scenery(
                     {
                         z = (scenery->z * 8 + originZ) / 8;
 
-                        uint8_t direction = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
+                        Direction direction = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
 
                         TileCoordsXYZD wallLocation = { tile.x, tile.y, z, direction };
                         auto wallRemoveAction = WallRemoveAction(wallLocation);

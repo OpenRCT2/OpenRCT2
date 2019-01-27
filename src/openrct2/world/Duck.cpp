@@ -117,7 +117,7 @@ void rct_duck::UpdateFlyToWater()
 
     Invalidate();
     int32_t manhattanDistance = abs(target_x - x) + abs(target_y - y);
-    int32_t direction = sprite_direction >> 3;
+    Direction direction = sprite_direction >> 3;
     int32_t newX = x + DuckMoveOffset[direction].x;
     int32_t newY = y + DuckMoveOffset[direction].y;
     int32_t manhattanDistanceN = abs(target_x - newX) + abs(target_y - newY);
@@ -220,7 +220,7 @@ void rct_duck::UpdateSwim()
                     sprite_direction = randomNumber & 0x18;
                 }
 
-                int32_t direction = sprite_direction >> 3;
+                Direction direction = sprite_direction >> 3;
                 int32_t newX = x + DuckMoveOffset[direction].x;
                 int32_t newY = y + DuckMoveOffset[direction].y;
                 landZ = tile_element_height(newX, newY);
@@ -279,7 +279,7 @@ void rct_duck::UpdateFlyAway()
 
         Invalidate();
 
-        int32_t direction = sprite_direction >> 3;
+        Direction direction = sprite_direction >> 3;
         int32_t newX = x + (DuckMoveOffset[direction].x * 2);
         int32_t newY = y + (DuckMoveOffset[direction].y * 2);
         int32_t newZ = std::min(z + 2, 496);
@@ -295,7 +295,7 @@ void rct_duck::UpdateFlyAway()
     }
 }
 
-uint32_t rct_duck::GetFrameImage(int32_t direction) const
+uint32_t rct_duck::GetFrameImage(Direction direction) const
 {
     uint32_t imageId = 0;
     if (state < DUCK_MAX_STATES)
@@ -322,7 +322,7 @@ void create_duck(int32_t targetX, int32_t targetY)
         targetY += offsetXY;
         sprite->duck.target_x = targetX;
         sprite->duck.target_y = targetY;
-        uint8_t direction = scenario_rand() & 3;
+        Direction direction = scenario_rand() & 3;
         switch (direction)
         {
             case 0:
@@ -387,7 +387,7 @@ void duck_remove_all()
     }
 }
 
-uint32_t duck_get_frame_image(const rct_duck* duck, int32_t direction)
+uint32_t duck_get_frame_image(const rct_duck* duck, Direction direction)
 {
     return duck->GetFrameImage(direction);
 }

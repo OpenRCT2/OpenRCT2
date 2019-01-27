@@ -135,11 +135,11 @@ TileElement* map_get_first_element_at(int32_t x, int32_t y);
 TileElement* map_get_nth_element_at(int32_t x, int32_t y, int32_t n);
 void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements);
 int32_t map_height_from_slope(CoordsXY coords, int32_t slope, bool isSloped);
-BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t direction);
+BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, Direction direction);
 TileElement* map_get_surface_element_at(int32_t x, int32_t y);
 TileElement* map_get_surface_element_at(CoordsXY coords);
 TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z);
-TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
+TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, Direction direction);
 TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
@@ -237,7 +237,7 @@ void tile_element_iterator_begin(tile_element_iterator* it);
 int32_t tile_element_iterator_next(tile_element_iterator* it);
 void tile_element_iterator_restart_for_tile(tile_element_iterator* it);
 
-void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction);
+void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, Direction direction);
 void map_update_tiles();
 int32_t map_get_highest_z(int32_t tileX, int32_t tileY);
 
@@ -247,7 +247,7 @@ void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();
 
 bool sign_set_colour(
-    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, uint8_t mainColour, uint8_t textColour);
+    int32_t x, int32_t y, int32_t z, Direction direction, int32_t sequence, uint8_t mainColour, uint8_t textColour);
 void wall_remove_at(int32_t x, int32_t y, int32_t z0, int32_t z1);
 void wall_remove_at_z(int32_t x, int32_t y, int32_t z);
 
@@ -263,9 +263,9 @@ int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY);
 
 void map_clear_all_elements();
 
-TileElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence);
+TileElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, Direction direction, int32_t sequence);
 bool map_large_scenery_get_origin(
-    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
+    int32_t x, int32_t y, int32_t z, Direction direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
     TileElement** outElement);
 
 void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t offsetY, uint8_t rotation);
@@ -278,7 +278,7 @@ TileElement* map_get_track_element_at_of_type_from_ride(
     int32_t x, int32_t y, int32_t z, int32_t trackType, ride_id_t rideIndex);
 TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, ride_id_t rideIndex);
 TileElement* map_get_track_element_at_with_direction_from_ride(
-    int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex);
+    int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex);
 
 bool map_is_location_at_edge(int32_t x, int32_t y);
 void map_obstruction_set_error_text(TileElement* tileElement);

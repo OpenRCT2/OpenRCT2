@@ -31,7 +31,7 @@ enum
  *  rct2: 0x0076522A
  */
 static void paint_motionsimulator_vehicle(
-    paint_session* session, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height, const TileElement* tileElement)
+    paint_session* session, int8_t offsetX, int8_t offsetY, Direction direction, int32_t height, const TileElement* tileElement)
 {
     Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
@@ -126,7 +126,7 @@ static void paint_motionsimulator_vehicle(
 
 /** rct2: 0x008A85C4 */
 static void paint_motionsimulator(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
@@ -162,7 +162,7 @@ static void paint_motionsimulator(
  *
  *  rct2: 0x00763520
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType, Direction direction)
 {
     switch (trackType)
     {

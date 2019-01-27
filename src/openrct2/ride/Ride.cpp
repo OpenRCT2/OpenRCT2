@@ -172,7 +172,7 @@ ride_id_t _currentRideIndex;
 uint16_t _currentTrackBeginX;
 uint16_t _currentTrackBeginY;
 uint16_t _currentTrackBeginZ;
-uint8_t _currentTrackPieceDirection;
+Direction _currentTrackPieceDirection;
 uint8_t _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
 int8_t _rideConstructionArrowPulseTime;
@@ -538,8 +538,8 @@ bool ride_try_get_origin_element(ride_id_t rideIndex, CoordsXYE* output)
  * on the first element of a track block
  */
 bool track_block_get_next_from_zero(
-    int16_t x, int16_t y, int16_t z_start, ride_id_t rideIndex, uint8_t direction_start, CoordsXYE* output, int32_t* z,
-    int32_t* direction, bool isGhost)
+    int16_t x, int16_t y, int16_t z_start, ride_id_t rideIndex, Direction direction_start, CoordsXYE* output, int32_t* z,
+    Direction* direction, bool isGhost)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -609,7 +609,7 @@ bool track_block_get_next_from_zero(
  *
  *  rct2: 0x006C60C2
  */
-bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction)
+bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, Direction* direction)
 {
     ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
     Ride* ride = get_ride(rideIndex);
@@ -656,7 +656,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     OriginZ -= trackBlock->z;
     OriginZ += trackCoordinate->z_end;
 
-    uint8_t directionStart = ((trackCoordinate->rotation_end + rotation) & TILE_ELEMENT_DIRECTION_MASK)
+    Direction directionStart = ((trackCoordinate->rotation_end + rotation) & TILE_ELEMENT_DIRECTION_MASK)
         | (trackCoordinate->rotation_end & (1 << 2));
 
     return track_block_get_next_from_zero(x, y, OriginZ, rideIndex, directionStart, output, z, direction, false);
@@ -671,11 +671,11 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
  *  rct2: 0x006C63D6
  */
 bool track_block_get_previous_from_zero(
-    int16_t x, int16_t y, int16_t z, ride_id_t rideIndex, uint8_t direction, track_begin_end* outTrackBeginEnd)
+    int16_t x, int16_t y, int16_t z, ride_id_t rideIndex, Direction direction, track_begin_end* outTrackBeginEnd)
 {
     Ride* ride = get_ride(rideIndex);
 
-    uint8_t directionStart = direction;
+    Direction directionStart = direction;
     direction = direction_reverse(direction);
 
     if (!(direction & (1 << 2)))
@@ -1283,7 +1283,7 @@ void ride_clear_blocked_tiles(Ride* ride)
  * bp : flags
  */
 int32_t sub_6C683D(
-    int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params, TileElement** output_element,
+    int32_t* x, int32_t* y, int32_t* z, Direction direction, int32_t type, uint16_t extra_params, TileElement** output_element,
     uint16_t flags)
 {
     TileElement* tileElement = map_get_first_element_at(*x / 32, *y / 32);
@@ -1433,7 +1433,8 @@ void ride_restore_provisional_track_piece()
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
     {
         ride_id_t rideIndex;
-        int32_t x, y, z, direction, type, liftHillAndAlternativeState;
+        int32_t x, y, z, type, liftHillAndAlternativeState;
+        Direction direction;
         if (window_ride_construction_update_state(
                 &type, &direction, &rideIndex, &liftHillAndAlternativeState, &x, &y, &z, nullptr))
         {
@@ -1455,7 +1456,8 @@ void ride_remove_provisional_track_piece()
         return;
     }
     Ride* ride;
-    int32_t x, y, z, direction;
+    int32_t x, y, z;
+    Direction direction;
 
     ride_id_t rideIndex = _currentRideIndex;
 
@@ -1586,7 +1588,8 @@ static void ride_construction_reset_current_piece()
 void ride_construction_set_default_next_piece()
 {
     ride_id_t rideIndex;
-    int32_t x, y, z, direction, trackType, curve, bank, slope;
+    int32_t x, y, z, trackType, curve, bank, slope;
+    Direction direction;
     Ride* ride;
     track_begin_end trackBeginEnd;
     CoordsXYE xyElement;
@@ -1752,7 +1755,7 @@ void ride_select_next_section()
         int32_t x = _currentTrackBeginX;
         int32_t y = _currentTrackBeginY;
         int32_t z = _currentTrackBeginZ;
-        int32_t direction = _currentTrackPieceDirection;
+        Direction direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
         TileElement* tileElement;
         if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0))
@@ -1825,7 +1828,7 @@ void ride_select_previous_section()
         int32_t x = _currentTrackBeginX;
         int32_t y = _currentTrackBeginY;
         int32_t z = _currentTrackBeginZ;
-        int32_t direction = _currentTrackPieceDirection;
+        Direction direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
         TileElement* tileElement;
         if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0))
@@ -4419,7 +4422,7 @@ static void sub_6B5952(ride_id_t rideIndex)
             if (tileElement->base_height != z)
                 continue;
 
-            int32_t direction = tileElement->GetDirection();
+            Direction direction = tileElement->GetDirection();
             footpath_chain_ride_queue(rideIndex, i, x, y, tileElement, direction_reverse(direction));
         } while (!(tileElement++)->IsLastForTile());
     }
@@ -4693,7 +4696,7 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
         int32_t x = trackBeginEnd.begin_x;
         int32_t y = trackBeginEnd.begin_y;
         int32_t z = trackBeginEnd.begin_z;
-        int32_t direction = trackBeginEnd.begin_direction;
+        Direction direction = trackBeginEnd.begin_direction;
         trackType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
         sub_6C683D(&x, &y, &z, direction, trackType, 0, &returnTrackElement, 0);
         returnX = x;
@@ -4909,7 +4912,7 @@ static rct_vehicle* vehicle_create_car(
     {
         // loc_6DDCA4:
         vehicle->var_CD = 0;
-        int32_t direction = tileElement->GetDirection();
+        Direction direction = tileElement->GetDirection();
         x += word_9A3AB4[direction].x;
         y += word_9A3AB4[direction].y;
         z = tileElement->base_height * 8;
@@ -4977,7 +4980,7 @@ static rct_vehicle* vehicle_create_car(
         vehicle->track_x = x;
         vehicle->track_y = y;
 
-        int32_t direction = tileElement->GetDirection();
+        Direction direction = tileElement->GetDirection();
         vehicle->sprite_direction = direction << 3;
 
         if (ride->type == RIDE_TYPE_SPACE_RINGS)
@@ -5237,7 +5240,7 @@ static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApply
     int32_t x = element->x;
     int32_t y = element->y;
     int32_t z = element->element->base_height;
-    int32_t direction = tileElement->GetDirection();
+    Direction direction = tileElement->GetDirection();
 
     //
     if (ride->mode == RIDE_MODE_STATION_TO_STATION)
@@ -5462,7 +5465,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         if (isApplying)
         {
             z = tileElement->base_height * 8;
-            int32_t direction = tileElement->GetDirection();
+            Direction direction = tileElement->GetDirection();
             trackType = tileElement->AsTrack()->GetTrackType();
             x = it.current.x;
             y = it.current.y;
@@ -5520,7 +5523,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
             continue;
         break;
     } while (!(tileElement++)->IsLastForTile());
-    int32_t direction = tileElement->GetDirection();
+    Direction direction = tileElement->GetDirection();
 
     rct_vehicle* head = nullptr;
     rct_vehicle* tail = nullptr;
@@ -5996,7 +5999,7 @@ int32_t ride_get_refund_price(int32_t ride_id)
     // Find the start in case it is not a complete circuit
     ride_get_start_of_track(&trackElement);
 
-    uint8_t direction = trackElement.element->GetDirection();
+    Direction direction = trackElement.element->GetDirection();
 
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
@@ -6332,7 +6335,8 @@ void game_command_callback_ride_construct_placed_front(
     [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
     [[maybe_unused]] int32_t esi, [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
 {
-    int32_t trackDirection, x, y, z;
+    int32_t x, y, z;
+    Direction trackDirection;
 
     trackDirection = _currentTrackPieceDirection;
     x = _currentTrackBeginX;
@@ -7064,7 +7068,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int3
 static int32_t loc_6CD18E(
     int16_t mapX, int16_t mapY, int16_t entranceMinX, int16_t entranceMinY, int16_t entranceMaxX, int16_t entranceMaxY)
 {
-    int32_t direction = 0;
+    Direction direction = 0;
     if (mapX == entranceMinX)
     {
         if (mapY > entranceMinY && mapY < entranceMaxY)
@@ -7104,7 +7108,7 @@ static int32_t loc_6CD18E(
  *  rct2: 0x006CCF70
  */
 void ride_get_entrance_or_exit_position_from_screen_position(
-    int32_t screenX, int32_t screenY, int32_t* outX, int32_t* outY, int32_t* outDirection)
+    int32_t screenX, int32_t screenY, int32_t* outX, int32_t* outY, Direction* outDirection)
 {
     int16_t mapX, mapY;
     int16_t entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
@@ -7312,7 +7316,8 @@ bool ride_select_backwards_from_front()
 
 bool ride_select_forwards_from_back()
 {
-    int32_t x, y, z, direction;
+    int32_t x, y, z;
+    Direction direction;
 
     ride_construction_invalidate_current_track();
 
@@ -7340,7 +7345,7 @@ bool ride_select_forwards_from_back()
     }
 }
 
-money32 ride_remove_track_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type, uint8_t flags)
+money32 ride_remove_track_piece(int32_t x, int32_t y, int32_t z, Direction direction, int32_t type, uint8_t flags)
 {
     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS;
     if (network_get_mode() == NETWORK_MODE_CLIENT)
@@ -8026,7 +8031,7 @@ void sub_6CB945(ride_id_t rideIndex)
                 (int16_t)(ride->stations[stationId].Start.y * 32),
                 (ride->stations[stationId].Height),
             };
-            uint8_t direction = 0xFF;
+            Direction direction = Direction::INVALID;
 
             bool specialTrack = false;
             TileElement* tileElement = nullptr;
@@ -8181,7 +8186,7 @@ void sub_6CB945(ride_id_t rideIndex)
                 uint8_t trackType = trackElement->AsTrack()->GetTrackType();
                 uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
-                uint8_t direction = (tileElement->GetDirection() - trackElement->GetDirectionWithOffset(2)) & 3;
+                Direction direction = (tileElement->GetDirection() - trackElement->GetDirectionWithOffset(2)) & 3;
 
                 if (!(TrackSequenceProperties[trackType][trackSequence] & (1 << direction)))
                 {
@@ -8201,8 +8206,7 @@ void sub_6CB945(ride_id_t rideIndex)
 
                     ride_set_exit_location(
                         ride, stationId,
-                        { location.x / 32, location.y / 32, ride->stations[stationId].Height,
-                          (uint8_t)tileElement->GetDirection() });
+                        { location.x / 32, location.y / 32, ride->stations[stationId].Height, tileElement->GetDirection() });
                 }
                 else
                 {
@@ -8213,7 +8217,7 @@ void sub_6CB945(ride_id_t rideIndex)
                         location.x / 32,
                         location.y / 32,
                         ride->stations[stationId].Height,
-                        (uint8_t)tileElement->GetDirection(),
+                        tileElement->GetDirection(),
                     };
                     ride_set_entrance_location(ride, stationId, entranceLocation);
                 }
@@ -8459,7 +8463,7 @@ TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tol
 /**
  * Check for an adjacent station to x,y,z in direction.
  */
-static bool check_for_adjacent_station(int32_t x, int32_t y, int32_t z, uint8_t direction)
+static bool check_for_adjacent_station(int32_t x, int32_t y, int32_t z, Direction direction)
 {
     bool found = false;
     int32_t adjX = x;
@@ -8506,7 +8510,7 @@ bool ride_has_adjacent_station(Ride* ride)
                 continue;
             }
             /* Check the first side of the station */
-            int32_t direction = stationElement->GetDirectionWithOffset(1);
+            Direction direction = stationElement->GetDirectionWithOffset(1);
             found = check_for_adjacent_station(stationX, stationY, stationZ, direction);
             if (found)
                 break;

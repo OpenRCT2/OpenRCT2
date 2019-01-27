@@ -272,7 +272,7 @@ static void virtual_floor_get_tile_properties(
 
         if (elementType == TILE_ELEMENT_TYPE_WALL || elementType == TILE_ELEMENT_TYPE_BANNER)
         {
-            int32_t direction = tileElement->GetDirection();
+            Direction direction = tileElement->GetDirection();
             *outOccupiedEdges |= 1 << direction;
             continue;
         }
@@ -299,7 +299,7 @@ void virtual_floor_paint(paint_session* session)
     if (_virtualFloorHeight < MINIMUM_LAND_HEIGHT)
         return;
 
-    uint8_t direction = session->CurrentRotation;
+    Direction direction = session->CurrentRotation;
 
     // This is a virtual floor, so no interactions
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;

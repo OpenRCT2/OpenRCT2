@@ -32,7 +32,7 @@ static constexpr const rct_crooked_house_bound_box crooked_house_data[] = { { 6,
  *  rct2: 0x0088ABA4
  */
 static void paint_crooked_house_structure(
-    paint_session* session, uint8_t direction, uint8_t x_offset, uint8_t y_offset, uint32_t segment, int32_t height)
+    paint_session* session, Direction direction, uint8_t x_offset, uint8_t y_offset, uint32_t segment, int32_t height)
 {
     const TileElement* original_tile_element = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -59,7 +59,7 @@ static void paint_crooked_house_structure(
 }
 
 static void paint_crooked_house(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -117,7 +117,7 @@ static void paint_crooked_house(
     paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int32_t trackType, Direction direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

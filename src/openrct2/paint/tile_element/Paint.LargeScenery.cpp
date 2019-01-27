@@ -26,7 +26,7 @@
 
 // 6B8172:
 static void large_scenery_paint_supports(
-    paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement, uint32_t dword_F4387C,
+    paint_session* session, Direction direction, uint16_t height, const TileElement* tileElement, uint32_t dword_F4387C,
     rct_large_scenery_tile* tile)
 {
     if (tile->flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
@@ -126,7 +126,7 @@ static int32_t div_to_minus_infinity(int32_t a, int32_t b)
 
 static void large_scenery_sign_paint_line(
     paint_session* session, const utf8* str, rct_large_scenery_text* text, int32_t textImage, int32_t textColour,
-    uint8_t direction, int32_t y_offset)
+    Direction direction, int32_t y_offset)
 {
     const utf8* fitStr = large_scenery_sign_fit_text(str, text, false);
     int32_t width = large_scenery_sign_text_width(fitStr, text);
@@ -219,7 +219,7 @@ static constexpr const boundbox s98E3C4[] = {
  *
  * rct2: 0x006B7F0C
  */
-void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
+void large_scenery_paint(paint_session* session, Direction direction, uint16_t height, const TileElement* tileElement)
 {
     if (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {

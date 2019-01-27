@@ -126,7 +126,7 @@ static rct_window_event_list window_maze_construction_events = {
 
 #pragma endregion
 
-static void window_maze_construction_construct(int32_t direction);
+static void window_maze_construction_construct(Direction direction);
 
 /**
  *
@@ -358,7 +358,7 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    int32_t direction = 0;
+    Direction direction = 0;
     ride_get_entrance_or_exit_position_from_screen_position(x, y, &x, &y, &direction);
 
     if (gRideEntranceExitPlaceDirection == 0xFF)
@@ -477,7 +477,7 @@ void window_maze_construction_update_pressed_widgets()
  *
  *  rct2: 0x006CD4AB
  */
-static void window_maze_construction_construct(int32_t direction)
+static void window_maze_construction_construct(Direction direction)
 {
     int32_t x, y, z, flags, mode;
 

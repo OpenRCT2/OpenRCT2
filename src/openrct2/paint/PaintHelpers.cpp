@@ -12,7 +12,7 @@
 #include "Paint.h"
 
 paint_struct* sub_98196C_rotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    paint_session* session, Direction direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
 {
     if (direction & 1)
@@ -28,7 +28,7 @@ paint_struct* sub_98196C_rotated(
 }
 
 paint_struct* sub_98197C_rotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    paint_session* session, Direction direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
@@ -47,7 +47,7 @@ paint_struct* sub_98197C_rotated(
 }
 
 paint_struct* sub_98199C_rotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    paint_session* session, Direction direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
@@ -65,7 +65,7 @@ paint_struct* sub_98199C_rotated(
     }
 }
 
-void paint_util_push_tunnel_rotated(paint_session* session, uint8_t direction, uint16_t height, uint8_t type)
+void paint_util_push_tunnel_rotated(paint_session* session, Direction direction, uint16_t height, uint8_t type)
 {
     if (direction & 1)
     {

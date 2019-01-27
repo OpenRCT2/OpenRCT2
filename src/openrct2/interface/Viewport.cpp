@@ -973,13 +973,13 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(int16_t* x, int16_t* y, int32_t* direction)
+void screen_pos_to_map_pos(int16_t* x, int16_t* y, Direction* direction)
 {
     screen_get_map_xy(*x, *y, x, y, nullptr);
     if (*x == LOCATION_NULL)
         return;
 
-    int32_t my_direction;
+    Direction my_direction;
     int32_t dist_from_centre_x = abs(*x % 32);
     int32_t dist_from_centre_y = abs(*y % 32);
     if (dist_from_centre_x > 8 && dist_from_centre_x < 24 && dist_from_centre_y > 8 && dist_from_centre_y < 24)

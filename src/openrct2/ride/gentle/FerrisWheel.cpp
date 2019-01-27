@@ -48,7 +48,7 @@ static ferris_wheel_bound_box ferris_wheel_data[] = {
  * rct2: 0x004C3874
  */
 static void paint_ferris_wheel_structure(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t axisOffset, uint16_t height)
+    paint_session* session, ride_id_t rideIndex, Direction direction, int8_t axisOffset, uint16_t height)
 {
     uint32_t imageId, baseImageId;
 
@@ -135,7 +135,7 @@ static void paint_ferris_wheel_structure(
  * rct2: 0x008A8EC4
  */
 static void paint_ferris_wheel(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -205,7 +205,7 @@ static void paint_ferris_wheel(
 /**
  * rct2: 0x008A8CC8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType, Direction direction)
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_4_C)
     {

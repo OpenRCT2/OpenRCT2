@@ -1654,7 +1654,8 @@ static void window_ride_construction_dropdown(rct_window* w, rct_widgetindex wid
 static void window_ride_construction_construct(rct_window* w)
 {
     ride_id_t rideIndex;
-    int32_t trackType, trackDirection, liftHillAndAlternativeState, x, y, z, properties;
+    int32_t trackType, liftHillAndAlternativeState, x, y, z, properties;
+    Direction trackDirection;
     track_begin_end trackBeginEnd;
 
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -1787,7 +1788,8 @@ static void window_ride_construction_construct(rct_window* w)
  */
 static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
-    int32_t x, y, z, direction, type;
+    int32_t x, y, z, type;
+    Direction direction;
     TileElement* tileElement;
     CoordsXYE inputElement, outputElement;
     track_begin_end trackBeginEnd;
@@ -2032,7 +2034,8 @@ static void window_ride_construction_update(rct_window* w)
 static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_t screenY, int32_t* outX, int32_t* outY)
 {
     int16_t mapX, mapY, mapZ;
-    int32_t interactionType, direction;
+    int32_t interactionType;
+    Direction direction;
     TileElement* tileElement;
     rct_viewport* viewport;
 
@@ -2224,7 +2227,8 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
         return;
 
     ride_id_t rideIndex;
-    int32_t trackType, trackDirection, liftHillAndAlternativeState;
+    int32_t trackType, liftHillAndAlternativeState;
+    Direction trackDirection;
     if (window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr, nullptr, nullptr))
         return;
@@ -2526,7 +2530,8 @@ void window_ride_construction_update_enabled_track_pieces()
 void sub_6C94D8()
 {
     ride_id_t rideIndex;
-    int32_t x, y, z, direction, type, liftHillAndAlternativeState;
+    int32_t x, y, z, type, liftHillAndAlternativeState;
+    Direction direction;
 
     // Recheck if area is fine for new track.
     // Set by footpath placement
@@ -2638,7 +2643,8 @@ void sub_6C94D8()
 static void window_ride_construction_update_map_selection()
 {
     Ride* ride;
-    int32_t trackType, trackDirection, x, y;
+    int32_t trackType, x, y;
+    Direction trackDirection;
 
     map_invalidate_map_selection_tiles();
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -3476,7 +3482,8 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
     gMapSelectionTiles[1].y = -1;
 
     ride_id_t rideIndex;
-    int32_t trackType, trackDirection, liftHillAndAlternativeState;
+    int32_t trackType, liftHillAndAlternativeState;
+    Direction trackDirection;
     if (window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr, nullptr, nullptr))
     {
@@ -3658,7 +3665,8 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
  */
 void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY)
 {
-    int32_t x, y, direction;
+    int32_t x, y;
+    Direction direction;
     uint8_t stationNum;
 
     map_invalidate_selection_rect();
@@ -3705,7 +3713,8 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
 {
     const CursorState* state = context_get_cursor_state();
     ride_id_t rideIndex;
-    int32_t trackType, trackDirection, liftHillAndAlternativeState, x, y, z, properties, highestZ;
+    int32_t trackType, liftHillAndAlternativeState, x, y, z, properties, highestZ;
+    Direction trackDirection;
     rct_window* w;
 
     map_invalidate_map_selection_tiles();
@@ -3923,7 +3932,8 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    int32_t mapX, mapY, direction;
+    int32_t mapX, mapY;
+    Direction direction;
     ride_get_entrance_or_exit_position_from_screen_position(screenX, screenY, &mapX, &mapY, &direction);
     if (gRideEntranceExitPlaceDirection == 255)
         return;

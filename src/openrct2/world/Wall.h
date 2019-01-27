@@ -20,4 +20,4 @@ enum
     WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_ACROSS_TRACK | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
 };
 
-money32 wall_remove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t flags);
+money32 wall_remove(int16_t x, int16_t y, uint8_t baseHeight, Direction direction, uint8_t flags);

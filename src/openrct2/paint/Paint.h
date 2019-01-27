@@ -205,18 +205,18 @@ paint_struct* sub_98199C(
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
 
 paint_struct* sub_98196C_rotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    paint_session* session, Direction direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset);
 paint_struct* sub_98197C_rotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    paint_session* session, Direction direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
 paint_struct* sub_98199C_rotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    paint_session* session, Direction direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
 
-void paint_util_push_tunnel_rotated(paint_session* session, uint8_t direction, uint16_t height, uint8_t type);
+void paint_util_push_tunnel_rotated(paint_session* session, Direction direction, uint16_t height, uint8_t type);
 
 bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y);
 bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y);
@@ -235,9 +235,9 @@ void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
 // TESTING
 #ifdef __TESTPAINT__
 void testpaint_clear_ignore();
-void testpaint_ignore(uint8_t direction, uint8_t trackSequence);
+void testpaint_ignore(Direction direction, uint8_t trackSequence);
 void testpaint_ignore_all();
-bool testpaint_is_ignored(uint8_t direction, uint8_t trackSequence);
+bool testpaint_is_ignored(Direction direction, uint8_t trackSequence);
 
 #    define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
 #    define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()

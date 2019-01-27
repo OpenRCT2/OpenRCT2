@@ -151,7 +151,7 @@ static bool map_animation_invalidate_queue_banner(int32_t x, int32_t y, int32_t 
         if (!tileElement->AsPath()->HasQueueBanner())
             continue;
 
-        int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + get_current_rotation()) & 3;
+        Direction direction = (tileElement->AsPath()->GetQueueBannerDirection() + get_current_rotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
         {
             baseZ = tileElement->base_height * 8;
@@ -199,7 +199,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
             // Peep, looking at scenery
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused())
             {
-                int32_t direction = tileElement->GetDirection();
+                Direction direction = tileElement->GetDirection();
                 int32_t x2 = x - CoordsDirectionDelta[direction].x;
                 int32_t y2 = y - CoordsDirectionDelta[direction].y;
 

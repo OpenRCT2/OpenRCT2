@@ -140,7 +140,7 @@ void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t* z);
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport* viewport, uint16_t x, uint16_t y);
 LocationXY16 viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z);
-void screen_pos_to_map_pos(int16_t* x, int16_t* y, int32_t* direction);
+void screen_pos_to_map_pos(int16_t* x, int16_t* y, Direction* direction);
 
 void show_gridlines();
 void hide_gridlines();
@@ -164,7 +164,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
 int32_t viewport_interaction_right_over(int32_t x, int32_t y);
 int32_t viewport_interaction_right_click(int32_t x, int32_t y);
 
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_t* direction, TileElement** tileElement);
+void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, Direction* direction, TileElement** tileElement);
 void sub_68B2B7(paint_session* session, int32_t x, int32_t y);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);

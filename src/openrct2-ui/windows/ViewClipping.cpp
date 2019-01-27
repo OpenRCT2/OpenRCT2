@@ -319,7 +319,7 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
 
     int16_t mapX = x;
     int16_t mapY = y;
-    int32_t direction;
+    Direction direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
     if (mapX != LOCATION_NULL)
     {
@@ -336,7 +336,7 @@ static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widget
 {
     int16_t mapX = x;
     int16_t mapY = y;
-    int32_t direction;
+    Direction direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
     if (mapX != LOCATION_NULL)
     {
@@ -354,7 +354,7 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
 
     int16_t mapX = x;
     int16_t mapY = y;
-    int32_t direction;
+    Direction direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
     if (mapX != LOCATION_NULL)
     {

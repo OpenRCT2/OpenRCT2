@@ -415,7 +415,7 @@ static void sub_6A4101(
             return;
         }
 
-        uint8_t direction = tile_element->AsPath()->GetQueueBannerDirection();
+        Direction direction = tile_element->AsPath()->GetQueueBannerDirection();
         // Draw ride sign
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         if (tile_element->AsPath()->IsSloped())
@@ -744,7 +744,7 @@ static void sub_6A3F61(
     }
 
     // This is about tunnel drawing
-    uint8_t direction = (tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation)
+    Direction direction = (tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation)
         & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
     bool sloped = tile_element->AsPath()->IsSloped();
 

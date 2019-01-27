@@ -24,7 +24,7 @@ static constexpr const uint16_t merry_go_round_breakdown_vibration[] = { 0, 1, 2
  * rct2: 0x0076287D
  */
 static void paint_merry_go_round_structure(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, ride_id_t rideIndex, Direction direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
     height += 7;
@@ -104,7 +104,7 @@ static void paint_merry_go_round_structure(
  * rct2: 0x00761B0C
  */
 static void paint_merry_go_round(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -172,7 +172,7 @@ static void paint_merry_go_round(
 /**
  * rct2: 0x0076190C
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType, Direction direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

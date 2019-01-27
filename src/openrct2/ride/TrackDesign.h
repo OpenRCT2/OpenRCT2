@@ -35,7 +35,7 @@ struct rct_td6_maze_element
                 uint16_t maze_entry;
                 struct
                 {
-                    uint8_t direction;
+                    Direction direction;
                     uint8_t type;
                 };
             };
@@ -56,7 +56,7 @@ assert_struct_size(rct_td6_track_element, 0x02);
 struct rct_td6_entrance_element
 {
     int8_t z;          // 0x00
-    uint8_t direction; // 0x01
+    Direction direction; // 0x01
     int16_t x;         // 0x02
     int16_t y;         // 0x04
 };

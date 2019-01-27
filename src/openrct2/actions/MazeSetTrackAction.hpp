@@ -55,7 +55,7 @@ private:
     uint16_t _y;
     uint16_t _z;
     bool _initialPlacement;
-    uint8_t _direction;
+    Direction _direction;
     NetworkRideId_t _rideIndex;
     uint8_t _mode;
 
@@ -64,7 +64,7 @@ public:
     {
     }
     MazeSetTrackAction(
-        uint16_t x, uint16_t y, uint16_t z, bool initialPlacement, uint8_t direction, NetworkRideId_t rideIndex, uint8_t mode)
+        uint16_t x, uint16_t y, uint16_t z, bool initialPlacement, Direction direction, NetworkRideId_t rideIndex, uint8_t mode)
         : _x(x)
         , _y(y)
         , _z(z)
@@ -323,7 +323,7 @@ public:
                     {
                         tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
 
-                        uint32_t direction1 = byte_993D0C[segmentBit];
+                        Direction direction1 = byte_993D0C[segmentBit];
                         uint16_t nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
                         uint16_t nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
 

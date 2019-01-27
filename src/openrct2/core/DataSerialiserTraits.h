@@ -106,6 +106,42 @@ template<> struct DataSerializerTraits<int64_t> : public DataSerializerTraitsInt
 {
 };
 
+template<> struct DataSerializerTraits<Direction>
+{
+    static void encode(IStream* stream, const Direction& val)
+    {
+        uint8_t temp = ByteSwapBE(static_cast<uint8_t>(val.direction));
+        stream->Write(&temp);
+    }
+    static void decode(IStream* stream, Direction& val)
+    {
+        uint8_t temp;
+        stream->Read(&temp);
+        val.Assign(ByteSwapBE(temp));
+    }
+    static void log(IStream* stream, const Direction& val)
+    {
+        switch (val.direction)
+        {
+            case Direction::WEST:
+                stream->Write("West", 4);
+                break;
+            case Direction::NORTH:
+                stream->Write("North", 5);
+                break;
+            case Direction::EAST:
+                stream->Write("East", 4);
+                break;
+            case Direction::SOUTH:
+                stream->Write("South", 5);
+                break;
+            case Direction::INVALID:
+                stream->Write("Invalid", 7);
+                break;
+        }
+    }
+};
+
 template<> struct DataSerializerTraits<std::string>
 {
     static void encode(IStream* stream, const std::string& str)

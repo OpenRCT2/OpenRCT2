@@ -1188,7 +1188,7 @@ static void window_map_set_land_rights_tool_update(int32_t x, int32_t y)
  *  rct2: 0x00666EEF
  */
 static void place_park_entrance_get_map_position(
-    int32_t x, int32_t y, int16_t* mapX, int16_t* mapY, int16_t* mapZ, int32_t* direction)
+    int32_t x, int32_t y, int16_t* mapX, int16_t* mapY, int16_t* mapZ, Direction* direction)
 {
     TileElement* tileElement;
 
@@ -1220,7 +1220,7 @@ static void place_park_entrance_get_map_position(
 static void window_map_place_park_entrance_tool_update(int32_t x, int32_t y)
 {
     int16_t mapX, mapY, mapZ = 0;
-    int32_t direction = 0, sideDirection;
+    Direction direction = 0, sideDirection;
 
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
@@ -1267,7 +1267,8 @@ static void window_map_place_park_entrance_tool_update(int32_t x, int32_t y)
  */
 static void window_map_set_peep_spawn_tool_update(int32_t x, int32_t y)
 {
-    int32_t mapX, mapY, mapZ, direction;
+    int32_t mapX, mapY, mapZ;
+    Direction direction;
     TileElement* tileElement;
 
     map_invalidate_selection_rect();
@@ -1309,7 +1310,7 @@ static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y)
     park_entrance_remove_ghost();
 
     int16_t mapX, mapY, mapZ;
-    int32_t direction;
+    Direction direction;
     place_park_entrance_get_map_position(x, y, &mapX, &mapY, &mapZ, &direction);
     if (mapX != LOCATION_NULL)
     {
@@ -1328,7 +1329,8 @@ static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y)
 static void window_map_set_peep_spawn_tool_down(int32_t x, int32_t y)
 {
     TileElement* tileElement;
-    int32_t mapX, mapY, mapZ, direction;
+    int32_t mapX, mapY, mapZ;
+    Direction direction;
 
     // Verify footpath exists at location, and retrieve coordinates
     footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &tileElement);

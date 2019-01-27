@@ -74,7 +74,7 @@ struct rct12_peep_spawn
     uint16_t x;
     uint16_t y;
     uint8_t z;
-    uint8_t direction;
+    Direction direction;
 };
 assert_struct_size(rct12_peep_spawn, 6);
 
@@ -111,7 +111,7 @@ struct RCT12TileElementBase
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
     uint8_t GetType() const;
-    uint8_t GetDirection() const;
+    Direction GetDirection() const;
     bool IsLastForTile() const;
     bool IsGhost() const;
 };
@@ -194,9 +194,9 @@ private:
 
 public:
     uint8_t GetEntryIndex() const;
-    uint8_t GetQueueBannerDirection() const;
+    Direction GetQueueBannerDirection() const;
     bool IsSloped() const;
-    uint8_t GetSlopeDirection() const;
+    Direction GetSlopeDirection() const;
     uint8_t GetRideIndex() const;
     uint8_t GetStationIndex() const;
     bool IsWide() const;

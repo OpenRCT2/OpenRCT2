@@ -36,7 +36,7 @@ struct rct1_entrance
     uint16_t x;
     uint16_t y;
     uint16_t z;
-    uint8_t direction;
+    Direction direction;
 };
 assert_struct_size(rct1_entrance, 7);
 
@@ -476,7 +476,7 @@ struct rct1_peep
     union
     {
         uint8_t maze_last_edge; // 0x78
-        uint8_t direction;      // Direction ?
+        Direction direction;      // Direction ?
     };
     uint8_t interaction_ride_index;
     uint16_t time_in_queue;    // 0x7A

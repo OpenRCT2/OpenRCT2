@@ -23,7 +23,7 @@
  *  rct2: 0x007617A5
  */
 static void shop_paint_setup(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     bool hasSupports = wooden_a_supports_paint_setup(
@@ -65,7 +65,7 @@ static void shop_paint_setup(
 }
 
 /* 0x00761160 */
-TRACK_PAINT_FUNCTION get_track_paint_function_shop(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_shop(int32_t trackType, Direction direction)
 {
     switch (trackType)
     {

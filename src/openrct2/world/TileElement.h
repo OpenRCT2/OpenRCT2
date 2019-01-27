@@ -66,9 +66,9 @@ struct TileElementBase
 
     uint8_t GetType() const;
     void SetType(uint8_t newType);
-    uint8_t GetDirection() const;
-    void SetDirection(uint8_t direction);
-    uint8_t GetDirectionWithOffset(uint8_t offset) const;
+    Direction GetDirection() const;
+    void SetDirection(Direction direction);
+    Direction GetDirectionWithOffset(uint8_t offset) const;
     bool IsLastForTile() const;
     bool IsGhost() const;
     void Remove();
@@ -187,7 +187,7 @@ public:
     void SetRailingEntryIndex(uint8_t newIndex);
 
     uint8_t GetQueueBannerDirection() const;
-    void SetQueueBannerDirection(uint8_t direction);
+    void SetQueueBannerDirection(Direction direction);
 
     bool IsSloped() const;
     void SetSloped(bool isSloped);

@@ -298,7 +298,7 @@ private:
             int32_t x = it.x * 32, y = it.y * 32;
             int32_t z = it.element->base_height * 8;
 
-            uint8_t rotation = it.element->GetDirection();
+            Direction rotation = it.element->GetDirection();
             uint8_t type = it.element->AsTrack()->GetTrackType();
 
             if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)

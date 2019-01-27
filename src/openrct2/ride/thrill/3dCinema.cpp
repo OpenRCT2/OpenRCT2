@@ -18,7 +18,7 @@
  * rct2: 0x007664C2
  */
 static void paint_3d_cinema_structure(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, ride_id_t rideIndex, Direction direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -53,7 +53,7 @@ static void paint_3d_cinema_structure(
  * rct2: 0x0076574C
  */
 static void paint_3d_cinema(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -119,7 +119,7 @@ static void paint_3d_cinema(
 }
 
 /* 0x0076554C */
-TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int32_t trackType, Direction direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

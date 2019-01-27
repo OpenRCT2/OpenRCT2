@@ -109,7 +109,7 @@ struct rct_duck : rct_sprite_common
     void UpdateDrink();
     void UpdateDoubleDrink();
     void UpdateFlyAway();
-    uint32_t GetFrameImage(int32_t direction) const;
+    uint32_t GetFrameImage(Direction direction) const;
     void Invalidate();
     void Remove();
     void MoveTo(int16_t x, int16_t y, int16_t z);
@@ -268,7 +268,7 @@ void invalidate_sprite_0(rct_sprite* sprite);
 void invalidate_sprite_1(rct_sprite* sprite);
 void invalidate_sprite_2(rct_sprite* sprite);
 void sprite_remove(rct_sprite* sprite);
-void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
+void litter_create(int32_t x, int32_t y, int32_t z, Direction direction, int32_t type);
 void litter_remove_at(int32_t x, int32_t y, int32_t z);
 void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z);
 void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z);
@@ -294,7 +294,7 @@ void create_duck(int32_t targetX, int32_t targetY);
 void duck_update(rct_duck* duck);
 void duck_press(rct_duck* duck);
 void duck_remove_all();
-uint32_t duck_get_frame_image(const rct_duck* duck, int32_t direction);
+uint32_t duck_get_frame_image(const rct_duck* duck, Direction direction);
 
 ///////////////////////////////////////////////////////////////
 // Money effect

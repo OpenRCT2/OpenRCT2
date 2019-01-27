@@ -158,13 +158,146 @@ struct TileCoordsXYZ
  * 3 is Y-decreasing
  * Direction is not used to model up/down, or diagonal directions.
  */
-typedef uint8_t Direction;
+struct Direction
+{
+    enum : uint8_t
+    {
+        WEST = 0,
+        NORTH,
+        EAST,
+        SOUTH,
+        INVALID = 0xFF, // Used to mark invalid direction.
+    } direction;
+
+    Direction() = default;
+
+    constexpr Direction(decltype(direction) dir)
+        : direction(dir)
+    {
+    }
+
+    constexpr Direction(const uint8_t dir)
+        : direction(static_cast<decltype(direction)>(dir))
+    {
+    }
+
+    Direction& Reverse()
+    {
+        direction = static_cast<decltype(direction)>(direction ^ 2);
+#ifdef _VALIDATE_DIRECTION_VALUES_
+        Validate();
+#endif
+        return *this;
+    }
+
+    Direction GetReverse() const
+    {
+#ifdef _VALIDATE_DIRECTION_VALUES_
+        Validate();
+#endif
+        return static_cast<decltype(direction)>(direction ^ 2);
+    }
+
+    Direction& Mirror()
+    {
+        direction = static_cast<decltype(direction)>(0 - direction);
+        // Normalise();
+#ifdef _VALIDATE_DIRECTION_VALUES_
+        Validate();
+#endif
+        return *this;
+    }
+
+    Direction& Rotate(int32_t times)
+    {
+        direction = static_cast<decltype(direction)>(static_cast<int32_t>(direction) + times);
+        // Normalise();
+#ifdef _VALIDATE_DIRECTION_VALUES_
+        Validate();
+#endif
+        return *this;
+    }
+
+    Direction& Normalise()
+    {
+        direction = static_cast<decltype(direction)>(direction & 3);
+#ifdef _VALIDATE_DIRECTION_VALUES_
+        Validate();
+#endif
+        return *this;
+    }
+
+    Direction GetNormalised()
+    {
+#ifdef _VALIDATE_DIRECTION_VALUES_
+        Validate();
+#endif
+        return static_cast<decltype(direction)>(direction & 3);
+    }
+
+    Direction& RotateForward()
+    {
+        return Rotate(1);
+    }
+
+    Direction& RotateBackward()
+    {
+        return Rotate(-1);
+    }
+
+    Direction& Assign(uint32_t dir)
+    {
+        direction = static_cast<decltype(direction)>(dir);
+        // Normalise();
+#ifdef _VALIDATE_DIRECTION_VALUES_
+        Validate();
+#endif
+        return *this;
+    }
+
+    uint32_t GetMask() const
+    {
+#ifdef _VALIDATE_DIRECTION_VALUES_
+        Validate();
+#endif
+        return 1U << static_cast<uint32_t>(direction);
+    }
+
+    bool IsValid() const
+    {
+        return direction != Direction::INVALID;
+    }
+
+    int32_t GetValue() const
+    {
+        return static_cast<int32_t>(direction);
+    }
+
+    operator uint8_t&()
+    {
+        return reinterpret_cast<uint8_t&>(direction);
+    }
+
+    operator uint8_t() const
+    {
+        return static_cast<uint8_t>(direction);
+    }
+
+#ifdef _VALIDATE_DIRECTION_VALUES_
+    void Validate() const
+    {
+        // We currently accept diagonal values for the time being.
+        uint32_t val = static_cast<uint32_t>(direction);
+        Guard::Assert(val == 0xFF || val <= 0x0F);
+    }
+#endif
+};
 
 /**
  * Given a direction, return the direction that points the other way,
  * on the same axis.
  */
-constexpr Direction direction_reverse(Direction dir)
+inline Direction direction_reverse(Direction dir)
 {
     return dir ^ 2;
 }

@@ -68,7 +68,7 @@ static rct_vehicle* get_first_vehicle(Ride* ride)
 }
 
 static void paint_magic_carpet_frame(
-    paint_session* session, uint8_t plane, uint8_t direction, LocationXYZ16 offset, LocationXYZ16 bbOffset,
+    paint_session* session, uint8_t plane, Direction direction, LocationXYZ16 offset, LocationXYZ16 bbOffset,
     LocationXYZ16 bbSize)
 {
     uint32_t imageId;
@@ -96,7 +96,7 @@ static void paint_magic_carpet_frame(
 }
 
 static void paint_magic_carpet_pendulum(
-    paint_session* session, uint8_t plane, uint32_t swingImageId, uint8_t direction, LocationXYZ16 offset,
+    paint_session* session, uint8_t plane, uint32_t swingImageId, Direction direction, LocationXYZ16 offset,
     LocationXYZ16 bbOffset, LocationXYZ16 bbSize)
 {
     uint32_t imageId = swingImageId;
@@ -119,7 +119,7 @@ static void paint_magic_carpet_pendulum(
 }
 
 static void paint_magic_carpet_vehicle(
-    paint_session* session, Ride* ride, uint8_t direction, uint32_t swingImageId, LocationXYZ16 offset, LocationXYZ16 bbOffset,
+    paint_session* session, Ride* ride, Direction direction, uint32_t swingImageId, LocationXYZ16 offset, LocationXYZ16 bbOffset,
     LocationXYZ16 bbSize)
 {
     rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
@@ -177,7 +177,7 @@ static void paint_magic_carpet_vehicle(
 
 /** rct2: 0x00899104 */
 static void paint_magic_carpet_structure(
-    paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    paint_session* session, Ride* ride, Direction direction, int8_t axisOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
     rct_vehicle* vehicle = get_first_vehicle(ride);
@@ -214,7 +214,7 @@ static void paint_magic_carpet_structure(
 
 /** rct2: 0x00898514 */
 static void paint_magic_carpet(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -269,7 +269,7 @@ static void paint_magic_carpet(
  *
  *  rct2: 0x00898384
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int32_t trackType, Direction direction)
 {
     switch (trackType)
     {

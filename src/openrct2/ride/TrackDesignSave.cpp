@@ -310,7 +310,8 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, TileElemen
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t x0, y0, z0, z;
-    int32_t direction, sequence;
+    int32_t sequence;
+    Direction direction;
 
     int32_t entryType = tileElement->AsLargeScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
@@ -503,7 +504,8 @@ static void track_design_save_remove_large_scenery(int32_t x, int32_t y, TileEle
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t x0, y0, z0, z;
-    int32_t direction, sequence;
+    int32_t sequence;
+    Direction direction;
 
     int32_t entryType = tileElement->AsLargeScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
@@ -688,7 +690,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6* td6)
                 scenery->flags |= ((slope & 3) << 5);
 
                 // Direction of connection on path
-                uint8_t direction = scenery->flags & 0xF;
+                Direction direction = scenery->flags & 0xF;
                 // Rotate the direction by the track direction
                 direction = ((direction << 4) >> _trackSaveDirection);
 
@@ -698,7 +700,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6* td6)
             }
             case OBJECT_TYPE_WALLS:
             {
-                uint8_t direction = scenery->flags & 3;
+                Direction direction = scenery->flags & 3;
                 direction -= _trackSaveDirection;
 
                 scenery->flags &= 0xFC;
@@ -707,7 +709,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6* td6)
             }
             default:
             {
-                uint8_t direction = scenery->flags & 3;
+                Direction direction = scenery->flags & 3;
                 uint8_t quadrant = (scenery->flags & 0x0C) >> 2;
 
                 direction -= _trackSaveDirection;
@@ -1019,7 +1021,7 @@ static bool track_design_save_to_td6_for_tracked_ride(ride_id_t rideIndex, rct_t
 
     int32_t z = trackElement.element->base_height * 8;
     uint8_t track_type = trackElement.element->AsTrack()->GetTrackType();
-    uint8_t direction = trackElement.element->GetDirection();
+    Direction direction = trackElement.element->GetDirection();
     _trackSaveDirection = direction;
 
     if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))

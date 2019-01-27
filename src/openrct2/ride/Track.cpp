@@ -598,7 +598,7 @@ const rct_preview_track* get_track_def_from_ride_index(ride_id_t rideIndex, int3
     return get_track_def_from_ride(get_ride(rideIndex), trackType);
 }
 
-static TileElement* find_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex)
+static TileElement* find_station_element(int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -636,7 +636,7 @@ static void ride_remove_station(Ride* ride, int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x006C4D89
  */
-static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
+static bool track_add_station_element(int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex, int32_t flags)
 {
     int32_t stationX0 = x;
     int32_t stationY0 = y;
@@ -787,7 +787,8 @@ static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t d
  *
  *  rct2: 0x006C494B
  */
-static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
+static bool track_remove_station_element(
+    int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex, int32_t flags)
 {
     int32_t removeX = x;
     int32_t removeY = y;
@@ -947,8 +948,8 @@ static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_
 }
 
 static money32 track_place(
-    ride_id_t rideIndex, int32_t type, int32_t originX, int32_t originY, int32_t originZ, int32_t direction, int32_t brakeSpeed,
-    int32_t colour, int32_t seatRotation, int32_t liftHillAndAlternativeState, int32_t flags)
+    ride_id_t rideIndex, int32_t type, int32_t originX, int32_t originY, int32_t originZ, Direction direction,
+    int32_t brakeSpeed, int32_t colour, int32_t seatRotation, int32_t liftHillAndAlternativeState, int32_t flags)
 {
     Ride* ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -2039,7 +2040,8 @@ void track_get_back(CoordsXYE* input, CoordsXYE* output)
 void track_get_front(CoordsXYE* input, CoordsXYE* output)
 {
     CoordsXYE lastTrack, currentTrack;
-    int32_t z, direction;
+    int32_t z;
+    Direction direction;
     bool result;
 
     lastTrack = *input;

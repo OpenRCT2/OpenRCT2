@@ -962,7 +962,7 @@ extern ride_id_t _currentRideIndex;
 extern uint16_t _currentTrackBeginX;
 extern uint16_t _currentTrackBeginY;
 extern uint16_t _currentTrackBeginZ;
-extern uint8_t _currentTrackPieceDirection;
+extern Direction _currentTrackPieceDirection;
 extern uint8_t _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
 extern int8_t _rideConstructionArrowPulseTime;
@@ -1044,7 +1044,7 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
 int32_t ride_initialise_construction_window(ride_id_t rideIndex);
 void ride_construction_invalidate_current_track();
 int32_t sub_6C683D(
-    int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params, TileElement** output_element,
+    int32_t* x, int32_t* y, int32_t* z, Direction direction, int32_t type, uint16_t extra_params, TileElement** output_element,
     uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
 int32_t ride_music_params_update(
@@ -1121,28 +1121,28 @@ void ride_all_has_any_track_elements(bool* rideIndexArray);
 
 void ride_construction_set_default_next_piece();
 
-bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction);
+bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, Direction* direction);
 bool track_block_get_next_from_zero(
-    int16_t x, int16_t y, int16_t z_start, ride_id_t rideIndex, uint8_t direction_start, CoordsXYE* output, int32_t* z,
-    int32_t* direction, bool isGhost);
+    int16_t x, int16_t y, int16_t z_start, ride_id_t rideIndex, Direction direction_start, CoordsXYE* output, int32_t* z,
+    Direction* direction, bool isGhost);
 
 bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, track_begin_end* outTrackBeginEnd);
 bool track_block_get_previous_from_zero(
-    int16_t x, int16_t y, int16_t z, ride_id_t rideIndex, uint8_t direction, track_begin_end* outTrackBeginEnd);
+    int16_t x, int16_t y, int16_t z, ride_id_t rideIndex, Direction direction, track_begin_end* outTrackBeginEnd);
 
 void ride_get_start_of_track(CoordsXYE* output);
 
 void window_ride_construction_update_active_elements();
 void ride_construction_remove_ghosts();
 money32 ride_entrance_exit_place_ghost(
-    ride_id_t rideIndex, int32_t x, int32_t y, int32_t direction, int32_t placeType, int32_t stationNum);
+    ride_id_t rideIndex, int32_t x, int32_t y, Direction direction, int32_t placeType, int32_t stationNum);
 void ride_get_entrance_or_exit_position_from_screen_position(
-    int32_t x, int32_t y, int32_t* outX, int32_t* outY, int32_t* outDirection);
+    int32_t x, int32_t y, int32_t* outX, int32_t* outY, Direction* outDirection);
 
 bool ride_select_backwards_from_front();
 bool ride_select_forwards_from_back();
 
-money32 ride_remove_track_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type, uint8_t flags);
+money32 ride_remove_track_piece(int32_t x, int32_t y, int32_t z, Direction direction, int32_t type, uint8_t flags);
 
 bool ride_are_all_possible_entrances_and_exits_built(Ride* ride);
 void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
@@ -1173,7 +1173,7 @@ void sub_6C94D8();
 void ride_reset_all_names();
 const uint8_t* ride_seek_available_modes(Ride* ride);
 
-void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
+void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, int32_t z, Direction direction, int32_t type);
 
 uint32_t ride_customers_per_hour(const Ride* ride);
 uint32_t ride_customers_in_last_5_minutes(const Ride* ride);

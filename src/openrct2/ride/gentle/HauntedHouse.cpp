@@ -31,7 +31,7 @@ static haunted_house_bound_box haunted_house_data[] = {
  * rct2: 0x0076F72C
  */
 static void paint_haunted_house_structure(
-    paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part,
+    paint_session* session, ride_id_t rideIndex, Direction direction, int8_t xOffset, int8_t yOffset, uint8_t part,
     uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
@@ -89,7 +89,7 @@ static void paint_haunted_house_structure(
  * rct2: 0x0076E9B0
  */
 static void paint_haunted_house(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -148,7 +148,7 @@ static void paint_haunted_house(
 /**
  * rct2: 0x0076E7B0
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType, Direction direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

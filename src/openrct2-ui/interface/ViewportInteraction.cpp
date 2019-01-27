@@ -626,7 +626,7 @@ static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
  *
  *  rct2: 0x0068A15E
  */
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_t* direction, TileElement** tileElement)
+void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, Direction* direction, TileElement** tileElement)
 {
     int16_t my_x, my_y;
     int32_t interactionType;

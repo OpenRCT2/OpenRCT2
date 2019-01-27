@@ -17,7 +17,7 @@
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(
-    paint_session* session, Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, Ride* ride, Direction direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -78,7 +78,7 @@ static void paint_twist_structure(
 
 /** rct2: 0x0076D858 */
 static void paint_twist(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -161,7 +161,7 @@ static void paint_twist(
 /**
  * rct2: 0x0076D658
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_twist(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_twist(int32_t trackType, Direction direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

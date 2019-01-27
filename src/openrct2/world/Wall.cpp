@@ -33,7 +33,7 @@
  * Gets whether the given track type can have a wall placed on the edge of the given direction.
  * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
  */
-static bool TrackIsAllowedWallEdges(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, uint8_t direction)
+static bool TrackIsAllowedWallEdges(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, Direction direction)
 {
     if (!ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_NO_WALLS))
     {
@@ -64,7 +64,7 @@ static bool WallCheckObstructionWithTrack(
 {
     int32_t trackType = trackElement->AsTrack()->GetTrackType();
     int32_t sequence = trackElement->AsTrack()->GetSequenceIndex();
-    int32_t direction = (edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
+    Direction direction = (edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
     Ride* ride = get_ride(trackElement->AsTrack()->GetRideIndex());
 
     if (TrackIsAllowedWallEdges(ride->type, trackType, sequence, direction))
@@ -183,7 +183,7 @@ static bool WallCheckObstruction(
             continue;
         if (elementType == TILE_ELEMENT_TYPE_WALL)
         {
-            int32_t direction = tileElement->GetDirection();
+            Direction direction = tileElement->GetDirection();
             if (edge == direction)
             {
                 map_obstruction_set_error_text(tileElement);
@@ -212,7 +212,7 @@ static bool WallCheckObstruction(
                 entry = get_large_scenery_entry(entryType);
                 tile = &entry->large_scenery.tiles[sequence];
                 {
-                    int32_t direction = ((edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
+                    Direction direction = ((edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                     if (!(tile->flags & (1 << direction)))
                     {
                         map_obstruction_set_error_text(tileElement);
@@ -556,7 +556,7 @@ static money32 WallPlace(
 }
 
 static money32 WallSetColour(
-    int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t primaryColour, uint8_t secondaryColour,
+    int16_t x, int16_t y, uint8_t baseHeight, Direction direction, uint8_t primaryColour, uint8_t secondaryColour,
     uint8_t tertiaryColour, uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
@@ -639,7 +639,7 @@ void wall_remove_at_z(int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x006E5935
  */
-void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
+void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, Direction direction)
 {
     TileElement* tileElement;
 

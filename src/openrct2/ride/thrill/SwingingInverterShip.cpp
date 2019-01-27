@@ -47,7 +47,7 @@ static constexpr const uint32_t swinging_inverter_ship_frame_sprites[] = { SPR_S
                                                                            SPR_SWINGING_INVERTER_SHIP_FRAME_3 };
 
 static void paint_swinging_inverter_ship_structure(
-    paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    paint_session* session, Ride* ride, Direction direction, int8_t axisOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -122,7 +122,7 @@ static void paint_swinging_inverter_ship_structure(
 
 /** rct2: 0x00760260 */
 static void paint_swinging_inverter_ship(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -191,7 +191,7 @@ static void paint_swinging_inverter_ship(
 /**
  * rct2: 0x00760070
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int32_t trackType, Direction direction)
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_4_B)
     {

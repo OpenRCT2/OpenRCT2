@@ -87,7 +87,7 @@ static money32 ParkEntranceRemove(int16_t x, int16_t y, uint8_t z, uint8_t flags
 }
 
 static money32 RideEntranceExitPlace(
-    int16_t x, int16_t y, int16_t z, uint8_t direction, uint8_t flags, ride_id_t rideIndex, uint8_t stationNum, bool isExit)
+    int16_t x, int16_t y, int16_t z, Direction direction, uint8_t flags, ride_id_t rideIndex, uint8_t stationNum, bool isExit)
 {
     // Remember when in unknown station num mode rideIndex is unknown and z is set
     // When in known station num mode rideIndex is known and z is unknown
@@ -420,7 +420,7 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, ride_id_t rideIndex,
 }
 
 static money32 RideEntranceExitPlaceGhost(
-    ride_id_t rideIndex, int16_t x, int16_t y, uint8_t direction, uint8_t placeType, uint8_t stationNum)
+    ride_id_t rideIndex, int16_t x, int16_t y, Direction direction, uint8_t placeType, uint8_t stationNum)
 {
     return game_do_command(
         x,
@@ -501,7 +501,7 @@ void ride_entrance_exit_remove_ghost()
  *  rct2: 0x006CA28C
  */
 money32 ride_entrance_exit_place_ghost(
-    ride_id_t rideIndex, int32_t x, int32_t y, int32_t direction, int32_t placeType, int32_t stationNum)
+    ride_id_t rideIndex, int32_t x, int32_t y, Direction direction, int32_t placeType, int32_t stationNum)
 {
     ride_construction_remove_ghosts();
     money32 result = RideEntranceExitPlaceGhost(rideIndex, x, y, direction, placeType, stationNum);
@@ -547,7 +547,7 @@ void game_command_remove_ride_entrance_or_exit(
  */
 void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElement)
 {
-    int32_t direction = tileElement->GetDirection();
+    Direction direction = tileElement->GetDirection();
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
@@ -583,7 +583,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElem
  */
 void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
 {
-    int32_t direction = tileElement->GetDirection();
+    Direction direction = tileElement->GetDirection();
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;

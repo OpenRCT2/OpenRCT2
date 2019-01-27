@@ -78,7 +78,7 @@ static void jumping_fountain_split(
 static void jumping_fountain_random(
     const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections);
 static void jumping_fountain_create_next(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t direction);
+    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, Direction direction);
 
 void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElement* tileElement)
 {
@@ -129,7 +129,8 @@ void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElemen
     }
 }
 
-void jumping_fountain_create(int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration)
+void jumping_fountain_create(
+    int32_t type, int32_t x, int32_t y, int32_t z, Direction direction, int32_t flags, int32_t iteration)
 {
     rct_jumping_fountain* jumpingFountain = (rct_jumping_fountain*)create_sprite(SPRITE_IDENTIFIER_MISC);
     if (jumpingFountain != nullptr)
@@ -200,7 +201,7 @@ static int32_t jumping_fountain_get_type(const rct_jumping_fountain* jumpingFoun
 static void jumping_fountain_continue(rct_jumping_fountain* jumpingFountain)
 {
     int32_t type = jumping_fountain_get_type(jumpingFountain);
-    int32_t direction = (jumpingFountain->sprite_direction >> 3) & 7;
+    Direction direction = (jumpingFountain->sprite_direction >> 3) & 7;
     int32_t x = jumpingFountain->x + CoordsDirectionDelta[direction].x;
     int32_t y = jumpingFountain->y + CoordsDirectionDelta[direction].y;
     int32_t z = jumpingFountain->z;
@@ -278,7 +279,7 @@ static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z)
 static void jumping_fountain_goto_edge(
     const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections)
 {
-    int32_t direction = (jumpingFountain->sprite_direction >> 3) << 1;
+    Direction direction = (jumpingFountain->sprite_direction >> 3) << 1;
     if (availableDirections & (1 << direction))
     {
         jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
@@ -319,7 +320,7 @@ static void jumping_fountain_bounce(
     jumpingFountain->iteration++;
     if (jumpingFountain->iteration < 8)
     {
-        int32_t direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
+        Direction direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
         if (availableDirections & (1 << direction))
         {
             jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
@@ -341,7 +342,7 @@ static void jumping_fountain_split(
     if (jumpingFountain->iteration < 3)
     {
         int32_t type = jumping_fountain_get_type(jumpingFountain);
-        int32_t direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
+        Direction direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
         availableDirections &= ~(1 << direction);
         availableDirections &= ~(1 << (direction + 1));
 
@@ -370,7 +371,7 @@ static void jumping_fountain_random(
     uint32_t randomIndex = scenario_rand();
     if ((randomIndex & 0xFFFF) >= 0x2000)
     {
-        int32_t direction = randomIndex & 7;
+        Direction direction = randomIndex & 7;
         while (!(availableDirections & (1 << direction)))
         {
             direction = (direction + 1) & 7;
@@ -380,7 +381,7 @@ static void jumping_fountain_random(
 }
 
 static void jumping_fountain_create_next(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t direction)
+    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, Direction direction)
 {
     int32_t type = jumping_fountain_get_type(jumpingFountain);
     int32_t flags = jumpingFountain->fountain_flags & ~FOUNTAIN_FLAG::DIRECTION;

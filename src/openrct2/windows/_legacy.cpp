@@ -334,7 +334,7 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
  * @return (CF)
  */
 bool window_ride_construction_update_state(
-    int32_t* _trackType, int32_t* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndAlternativeState, int32_t* _x,
+    int32_t* _trackType, Direction* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndAlternativeState, int32_t* _x,
     int32_t* _y, int32_t* _z, int32_t* _properties)
 {
     ride_id_t rideIndex;
@@ -543,7 +543,7 @@ void window_ride_construction_do_station_check()
     }
 }
 
-void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type)
+void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, int32_t z, Direction direction, int32_t type)
 {
     if (gGotoStartPlacementMode)
     {

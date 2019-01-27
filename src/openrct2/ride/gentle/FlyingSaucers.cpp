@@ -33,7 +33,7 @@ static constexpr const uint32_t flying_saucers_fence_sprites[] = {
  * rct2: 0x008873D8
  */
 static void paint_flying_saucers(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
@@ -58,7 +58,7 @@ static void paint_flying_saucers(
 /**
  * rct2: 0x00887208
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int32_t trackType, Direction direction)
 {
     if (trackType != FLAT_TRACK_ELEM_4_X_4)
     {

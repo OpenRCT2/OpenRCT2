@@ -716,7 +716,7 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x0067375D
  */
-void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type)
+void litter_create(int32_t x, int32_t y, int32_t z, Direction direction, int32_t type)
 {
     if (gCheatsDisableLittering)
         return;

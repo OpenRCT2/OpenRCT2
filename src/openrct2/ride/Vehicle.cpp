@@ -2561,7 +2561,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
     {
         CoordsXYE track;
         int32_t z;
-        int32_t direction;
+        Direction direction;
 
         if (track_block_get_next_from_zero(
                 vehicle->track_x, vehicle->track_y, vehicle->track_z, vehicle->ride, (uint8_t)(vehicle->track_direction & 0x3),
@@ -2847,7 +2847,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
      *  is found we allow for space between that and the next.
      */
 
-    int32_t direction = tileElement->GetDirectionWithOffset(1);
+    Direction direction = tileElement->GetDirectionWithOffset(1);
     int32_t spaceBetween;
     int32_t maxCheckDistance = RIDE_ADJACENCY_CHECK_DISTANCE;
 
@@ -6340,7 +6340,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
         while (true)
         {
             vehicle->var_35++;
-            uint8_t direction = vehicle->sprite_direction;
+            Direction direction = vehicle->sprite_direction;
             direction |= vehicle->var_35 & 1;
 
             LocationXYZ16 location = unk_F64E20;
@@ -6365,7 +6365,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
             int32_t oldVelocity = vehicle->velocity;
             vehicle->remaining_distance = 0;
             vehicle->velocity = 0;
-            uint8_t direction = vehicle->sprite_direction | 1;
+            Direction direction = vehicle->sprite_direction | 1;
 
             if (collideSprite != 0xFFFF)
             {
@@ -7438,7 +7438,7 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
     int32_t x = floor2(vehicle->x, 32);
     int32_t y = floor2(vehicle->y, 32);
     int32_t z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_end) >> 3;
-    int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
+    Direction direction = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
 
     TileElement* tileElement = map_get_wall_element_at(x, y, z, direction);
     if (tileElement == nullptr)
@@ -7517,7 +7517,7 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
     int32_t x = vehicle->track_x;
     int32_t y = vehicle->track_y;
     int32_t z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_begin) >> 3;
-    int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
+    Direction direction = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
 
     TileElement* tileElement = map_get_wall_element_at(x, y, z, direction);
@@ -7668,7 +7668,7 @@ static bool vehicle_update_motion_collision_detection(
         if (x_diff + y_diff + z_diff >= ecx)
             return false;
 
-        uint8_t direction = (vehicle->sprite_direction - collideVehicle->sprite_direction + 7) & 0x1F;
+        Direction direction = (vehicle->sprite_direction - collideVehicle->sprite_direction + 7) & 0x1F;
         if (direction >= 0xF)
             return false;
 
@@ -7738,7 +7738,7 @@ static bool vehicle_update_motion_collision_detection(
                 break;
             }
 
-            uint8_t direction = (vehicle->sprite_direction - collideVehicle->sprite_direction - 6) & 0x1F;
+            Direction direction = (vehicle->sprite_direction - collideVehicle->sprite_direction - 6) & 0x1F;
 
             if (direction < 0x14)
                 continue;
@@ -7884,7 +7884,8 @@ static void sub_6DBF3E(rct_vehicle* vehicle)
         if (vehicle->track_progress > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
         {
             CoordsXYE input, output;
-            int32_t outputZ, outputDirection;
+            int32_t outputZ;
+            Direction outputDirection;
 
             input.x = vehicle->track_x;
             input.y = vehicle->track_y;
@@ -8014,7 +8015,8 @@ loc_6DB32A:
 loc_6DB358:
 {
     CoordsXYE xyElement;
-    int32_t z, direction;
+    int32_t z;
+    Direction direction;
     xyElement.x = vehicle->track_x;
     xyElement.y = vehicle->track_y;
     xyElement.element = tileElement;
@@ -8388,7 +8390,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         return false;
 
     bool nextTileBackwards = true;
-    int32_t direction;
+    Direction direction;
     // loc_6DBB08:;
     int16_t x = vehicle->track_x;
     int16_t y = vehicle->track_y;
@@ -8847,10 +8849,11 @@ loc_6DC476:
             vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
     }
     int16_t x, y, z;
-    int32_t direction;
+    Direction direction;
     {
         CoordsXYE input, output;
-        int32_t outZ, outDirection;
+        int32_t outZ;
+        Direction outDirection;
         input.x = vehicle->track_x;
         input.y = vehicle->track_y;
         input.element = tileElement;
@@ -9891,7 +9894,8 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
 
     CoordsXYE xyElement;
     track_begin_end output;
-    int32_t z, direction;
+    int32_t z;
+    Direction direction;
 
     xyElement.x = frontVehicle->track_x;
     xyElement.y = frontVehicle->track_y;

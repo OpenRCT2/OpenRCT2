@@ -167,26 +167,26 @@ void game_command_remove_footpath(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 money32 footpath_place(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags);
 money32 footpath_place_remove_intersecting(
-    int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags, int32_t direction);
+    int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags, Direction direction);
 money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags);
 money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope);
 void footpath_provisional_remove();
 void footpath_provisional_update();
 void remove_banners_at_element(int32_t x, int32_t y, TileElement* tileElement);
 void footpath_get_coordinates_from_pos(
-    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
+    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, Direction* direction, TileElement** tileElement);
 void footpath_bridge_get_info_from_pos(
-    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
+    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, Direction* direction, TileElement** tileElement);
 void footpath_remove_litter(int32_t x, int32_t y, int32_t z);
 void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int32_t flags);
 void footpath_update_queue_chains();
-bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction);
+bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, Direction direction);
 void footpath_chain_ride_queue(
-    ride_id_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, TileElement* tileElement, int32_t direction);
+    ride_id_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, TileElement* tileElement, Direction direction);
 void footpath_update_path_wide_flags(int32_t x, int32_t y);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
-int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags);
+int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, Direction direction, int32_t flags);
 void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement);
 int32_t entrance_get_directions(const TileElement* tileElement);
 

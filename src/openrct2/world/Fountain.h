@@ -21,5 +21,5 @@ enum
 
 void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElement* tileElement);
 void jumping_fountain_create(
-    int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration);
+    int32_t type, int32_t x, int32_t y, int32_t z, Direction direction, int32_t flags, int32_t iteration);
 void jumping_fountain_update(rct_jumping_fountain* jumpingFountain);

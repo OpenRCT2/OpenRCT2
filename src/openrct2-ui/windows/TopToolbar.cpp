@@ -2060,7 +2060,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     if (tool_size == 1)
     {
-        int32_t selectionType;
+        Direction selectionType;
         // Get selection type and map coordinates from mouse x,y position
         mapTile = { x, y };
         screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &selectionType);
@@ -2088,6 +2088,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
             state_changed++;
         }
 
+        // gMapSelectType is probably direction rather than type.
         if (gMapSelectType != selectionType)
         {
             gMapSelectType = selectionType;

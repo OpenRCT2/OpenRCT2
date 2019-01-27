@@ -56,7 +56,7 @@ static constexpr const uint32_t pirate_ship_frame_sprites[][2] = {
 
 /** rct2: 0x4AF254 */
 static void paint_pirate_ship_structure(
-    paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    paint_session* session, Ride* ride, Direction direction, int8_t axisOffset, uint16_t height)
 {
     uint32_t imageId, baseImageId;
 
@@ -167,7 +167,7 @@ static void paint_pirate_ship_structure(
 
 /** rct2: 0x008A85C4 */
 static void paint_pirate_ship(
-    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, Direction direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
@@ -316,7 +316,7 @@ static void paint_pirate_ship(
 /**
  * rct2: 0x008A83E0
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int32_t trackType, Direction direction)
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_5)
     {

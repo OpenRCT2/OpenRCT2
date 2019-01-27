@@ -28,7 +28,7 @@ private:
     int16_t _x;
     int16_t _y;
     int16_t _z;
-    uint8_t _direction;
+    Direction _direction;
 
 public:
     PlaceParkEntranceAction()
