@@ -934,7 +934,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw chat button
     if (window_top_toolbar_widgets[WIDX_CHAT].type != WWT_EMPTY)
     {
-        x = w->x + window_top_toolbar_widgets[WIDX_CHAT].left - 1;
+        x = w->x + window_top_toolbar_widgets[WIDX_CHAT].left;
         y = w->y + window_top_toolbar_widgets[WIDX_CHAT].top - 1;
         if (widget_is_pressed(w, WIDX_CHAT))
             y++;
