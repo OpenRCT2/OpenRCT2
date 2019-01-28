@@ -206,17 +206,19 @@ endif()
 # Include sub-projects
 include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
 include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
-if(NOT DISABLE_GUI)
-    include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
-endif()
 
 # g2
 add_custom_command(
     OUTPUT g2.dat
+    DEPENDS ${PROJECT}
     COMMAND ./openrct2-cli sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
+
+if(NOT DISABLE_GUI)
+    include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
+endif()
 
 # Include tests
 if (WITH_TESTS)
@@ -283,3 +285,65 @@ install(FILES "distribution/linux/openrct2-scenario.desktop" DESTINATION "${CMAK
 install(FILES "distribution/linux/openrct2-uri.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
 install(FILES "distribution/linux/openrct2-mimeinfo.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages/" RENAME "openrct2.xml")
 install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")
+
+if(NOT DISABLE_GUI)
+
+    # Add distribution sources
+    target_sources(${PROJECT}
+        PUBLIC distribution/readme.txt
+        PUBLIC distribution/changelog.txt
+        PUBLIC g2.dat
+        PUBLIC AppIcon.icns)
+        
+    add_custom_command(OUTPUT AppIcon.icns
+        COMMAND touch AppIcon.icns
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+        
+    # Specify the resources to move to the bundle
+    set(BUNDLE_RESOURCES
+        distribution/readme.txt
+        distribution/changelog.txt
+        g2.dat
+        AppIcon.icns)
+        
+        
+    if(${OPENRCT2_BRANCH} EQUAL master)
+        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG}")
+    else()
+        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG} ${OPENRCT2_BRANCH}")
+    endif()
+        
+    set(MACOSX_BUNDLE_COPYRIGHT "OpenRCT2 is licensed under the GNU General Public License version 3")
+    set(MACOSX_BUNDLE_ICON_FILE "AppIcon")
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER "website.openrct2.OpenRCT2")
+    set(MACOSX_BUNDLE_BUNDLE_NAME "OpenRCT2")
+    set(MACOSX_BUNDLE_BUNDLE_VERSION "${OPENRCT2_COMMIT_SHA1_SHORT}")
+    
+        
+    # Create as a bundle
+    set_target_properties(${PROJECT} PROPERTIES
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/Info.plist.in
+        RESOURCE "${BUNDLE_RESOURCES}")
+        
+    set(BUNDLE_RESOURCES "${PROJECT}.app/Contents/Resources")
+    set(SOURCE_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
+    
+        
+    # Command to create the directory structure in resources
+    add_custom_command(OUTPUT
+        ${BUNDLE_RESOURCES}/language
+        ${BUNDLE_RESOURCES}/object
+        ${BUNDLE_RESOURCES}/title
+        COMMAND cp -r ${SOURCE_DATA_DIR}/language ${BUNDLE_RESOURCES}/language
+        COMMAND cp -r ${SOURCE_DATA_DIR}/object ${BUNDLE_RESOURCES}/object
+        COMMAND cp -r ${SOURCE_DATA_DIR}/title ${BUNDLE_RESOURCES}/title
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+        
+    # Build the app
+    add_custom_target(${PROJECT}-app DEPENDS 
+        ${PROJECT}
+        ${PROJECT}.app/Contents/Resources/language
+        ${PROJECT}.app/Contents/Resources/object
+        ${PROJECT}.app/Contents/Resources/title)
+endif()
