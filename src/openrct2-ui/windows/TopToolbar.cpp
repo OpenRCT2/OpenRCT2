@@ -935,7 +935,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (window_top_toolbar_widgets[WIDX_CHAT].type != WWT_EMPTY)
     {
         x = w->x + window_top_toolbar_widgets[WIDX_CHAT].left;
-        y = w->y + window_top_toolbar_widgets[WIDX_CHAT].top - 1;
+        y = w->y + window_top_toolbar_widgets[WIDX_CHAT].top - 2;
         if (widget_is_pressed(w, WIDX_CHAT))
             y++;
         imgId = SPR_G2_CHAT;
