@@ -461,14 +461,14 @@ STR_1076    :Bod
 STR_1077    :Roteringsmodus
 STR_1078    :Foroverrotasjon
 STR_1079    :Bakoverrotasjon
-STR_1080    :Film: ”Flyvere på hevntokt”
-STR_1081    :3D film: ”Musehaler”
+STR_1080    :Film: «Flyvere på hevntokt»
+STR_1081    :3D film: «Musehaler»
 STR_1082    :Romringer
 STR_1083    :Nybegynnermodus
 STR_1084    :LIM-utskytning
-STR_1085    :Film: ”Fartsspenning”
-STR_1086    :3D film: ”Stormjegere”
-STR_1087    :3D film: ”Verdensromsraidere”
+STR_1085    :Film: «Fartsspenning»
+STR_1086    :3D film: «Stormjegere»
+STR_1087    :3D film: «Verdensromsraidere»
 STR_1088    :Intens modus
 STR_1089    :Berserkmodus
 STR_1090    :Spøkelseshus
@@ -2078,7 +2078,7 @@ STR_2739    :None
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Kopier 'data/css17.dat' fra din RCT1-installasjon til 'data/css50.dat' i din RCT2-installasjon – eller sørg for at stien til din RCT1-insallasjon i Diverse-fanen er korrekt.
+STR_2743    :Kopier 'data/css17.dat' fra din RCT1-installasjon til 'data/css50.dat' i din RCT2-installasjon – eller sørg for at stien til din RCT1-installasjon i Avansert-fanen er korrekt.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2095,8 +2095,8 @@ STR_2756    :Remove litter
 STR_2763    :???
 STR_2765    :Large Tram
 STR_2766    :Win scenario
-STR_2767    :Freeze Climate
-STR_2768    :Unfreeze Climate
+STR_2767    :Forhindre værforandringer
+STR_2768    :Tillat værforandringer
 STR_2769    :Open Park
 STR_2770    :Close Park
 STR_2773    :Windowed
@@ -2223,7 +2223,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chr
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics «Liquid Grooves»)
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
 STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
@@ -2333,18 +2333,6 @@ STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You hav
 STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
 STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
 STR_3077    :{RED}CLOSURE NOTICE: Your park has been closed down !
-STR_3078    :Plain entrance
-STR_3079    :Wooden entrance
-STR_3080    :Canvas tent entrance
-STR_3081    :Castle entrance (grey)
-STR_3082    :Castle entrance (brown)
-STR_3083    :Jungle entrance
-STR_3084    :Log cabin entrance
-STR_3085    :Classical/Roman entrance
-STR_3086    :Abstract entrance
-STR_3087    :Snow/Ice entrance
-STR_3088    :Pagoda entrance
-STR_3089    :Space entrance
 STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
 STR_3091    :You are not allowed to remove this section!
 STR_3092    :You are not allowed to move or modify the station for this ride!
@@ -2973,7 +2961,7 @@ STR_5461    :Set guests' parameters
 STR_5462    :{CURRENCY}
 STR_5463    :Goal: Have fun!
 STR_5464    :General
-STR_5465    :Climate
+STR_5465    :Vær
 STR_5466    :Staff
 STR_5467    :ALT + 
 STR_5468    :Recent messages
@@ -3740,6 +3728,18 @@ STR_6264    :Alltid bruk systemets fildialog
 STR_6265    :{SMALLFONT}{BLACK}Alltid ta i bruk systemets egne fildialog-vindu istedenfor det fra OpenRCT2.
 STR_6266    :Åpne mappen for egendefinerte spillressurser
 STR_6267    :Åpne ruteinspektør
+STR_6268    :Gå fram ett tick
+STR_6269    :Ugyldig vær-ID
+STR_6270    :Terrengoverflater
+STR_6271    :Terrengkanter
+STR_6272    :Stasjoner
+STR_6273    :Musikk
+STR_6274    :Kan ikke sette fargevalg...
+STR_6275    :{WINDOW_COLOUR_2}Stasjon-stil:
+STR_6276    :{RED}Gjester sitter fast i {STRINGID}, mulig grunnet ugyldig attraksjonstype eller operasjonsmodus.
+STR_6277    :{WINDOW_COLOUR_2}Stasjonsindeks: {BLACK}{COMMA16}
+STR_6278    :Antall autolagringer
+STR_6279    :{SMALLFONT}{BLACK}Antall automatiske lagringer som blir beholdt
 
 #############
 # Scenarios #

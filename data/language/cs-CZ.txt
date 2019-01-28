@@ -2037,7 +2037,7 @@ STR_2696    :Umístit stromy
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Frekvence auto ukládání:
+STR_2700    :Frekvence autoukládání:
 STR_2701    :každou minutu
 STR_2702    :každých 5 minut
 STR_2703    :každých 15 minut
@@ -3746,6 +3746,8 @@ STR_6274    :Nelze nastavit schéma barev...
 STR_6275    :{WINDOW_COLOUR_2}Styl stanice:
 STR_6276    :{RED}Na atrakci {STRINGID} se zasekávají návštěvníci, zkontrolujte typ atrakce a mód provozu.
 STR_6277    :{WINDOW_COLOUR_2}Index stanice: {BLACK}{COMMA16}
+STR_6278    :Počet autouložení
+STR_6279    :{SMALLFONT}{BLACK}Maximální počet autouložených her
 
 ###############################################################################
 ## RCT2 Scenarios
