@@ -26,6 +26,8 @@
 #include <cstddef>
 #include <cstdint>
 
+using namespace Numerics;
+
 using utf8 = char;
 using utf8string = utf8*;
 using const_utf8string = const utf8*;
