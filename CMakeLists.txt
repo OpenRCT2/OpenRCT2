@@ -287,7 +287,7 @@ install(FILES "distribution/linux/openrct2-mimeinfo.xml" DESTINATION "${CMAKE_IN
 install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")
 
 if(NOT DISABLE_GUI)
-    
+
     set(BUNDLE_RESOURCE "${PROJECT}.app/Contents/Resources")
     set(SOURCE_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
     set(SOURCE_ICON_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources/logo")
@@ -308,6 +308,10 @@ if(NOT DISABLE_GUI)
         COMMAND iconutil -c icns ${ICON_TARGET}
         WORKING_DIRECTORY ${SOURCE_ICON_DIR})
      
+        
+    # Have target_sources convert relative paths to absolute ones
+    cmake_policy(SET CMP0076 NEW)
+        
     # Add distribution sources
     target_sources(${PROJECT}
         PUBLIC distribution/readme.txt
