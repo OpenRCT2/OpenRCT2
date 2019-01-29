@@ -20,7 +20,7 @@ matrix:
     include:
         - os: linux
           name: Ubuntu amd64 GCC RelWithDebInfo
-          if: type != cron
+          if: type != cron AND false
           services:
             - docker
           env:
@@ -43,7 +43,7 @@ matrix:
               fi
         - os: linux
           name: Ubuntu i686 GCC Debug m32 no-build-shared-libs
-          if: type != cron
+          if: type != cron AND false
           services:
             - docker
           env:
@@ -67,21 +67,21 @@ matrix:
               fi
         - os: linux
           name: Ubuntu amd64 Clang
-          if: type != cron
+          if: type != cron AND false
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=ubuntu_amd64
         - os: linux
           name: Windows i686-w64 MinGW m32
-          if: type != cron
+          if: type != cron AND false
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON" TARGET=windows
         - os: linux
           name: Docker64 GCC Release disable-ttf
-          if: type != cron
+          if: type != cron AND false
           env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2"
           services:
             - docker
         - os: linux
           name: Docker64 GCC Debug coverage disable-network disable-http-twitch
-          if: type != cron
+          if: type != cron AND false
           env:
             - OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=debug -DCMAKE_CXX_FLAGS=\"-coverage\" -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
             - secure: "JGMzQHmDgpnVzP2uYP5KL7h6SzzGmL4kH7vJmGQRpudKAEzhzB0n7lzjrJOU82hxwmuQQ+RKlE/uxdI32Xbgl+wzZMdfQoZGMWHZfl8Le0Ft5gfZncPuE3poCbiSyPSXok9zU12JHKpEjV/sgqXv/HwhL3jAC68GPGpmxb6xWj8="
@@ -89,7 +89,7 @@ matrix:
             - docker
         - os: linux
           name: Docker64 GCC disable-opengl
-          if: type != cron
+          if: type != cron AND false
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2" TARGET=docker64
           services:
             - docker
