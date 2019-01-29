@@ -1,5 +1,7 @@
 # CMAKE project for openrct2
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.9)
+cmake_policy(VERSION 3.9)
+
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
@@ -308,9 +310,6 @@ if(NOT DISABLE_GUI)
         COMMAND iconutil -c icns ${ICON_TARGET}
         WORKING_DIRECTORY ${SOURCE_ICON_DIR})
      
-        
-    # Have target_sources convert relative paths to absolute ones
-    cmake_policy(SET CMP0076 NEW)
         
     # Add distribution sources
     target_sources(${PROJECT}
