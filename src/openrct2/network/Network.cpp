@@ -4113,12 +4113,8 @@ std::string network_get_version()
 {
     return "Multiplayer disabled";
 }
-uint64_t network_get_stats()
+NetworkStats_t network_get_stats()
 {
-    return 0;
-}
-uint64_t network_get_bytes_sent()
-{
-    return 0;
+    return NetworkStats_t{};
 }
 #endif /* DISABLE_NETWORK */

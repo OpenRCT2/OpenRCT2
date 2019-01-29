@@ -3731,7 +3731,16 @@ STR_6280    :{SMALLFONT}{BLACK}Chat
 STR_6281    :{SMALLFONT}{BLACK}Show a separate button for the Chat window in the toolbar
 STR_6282    :Chat
 STR_6283    :Chat not available at this time. Are you connected to a server?
-
+STR_6284    :Network
+STR_6285    :Network Information
+STR_6286    :Bytes in
+STR_6287    :Bytes out
+STR_6288    :Total in
+STR_6289    :Total out
+STR_6290    :Base protocol
+STR_6291    :Commands
+STR_6292    :Map
+	
 #############
 # Scenarios #
 ################

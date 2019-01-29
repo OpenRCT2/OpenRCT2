@@ -3906,6 +3906,19 @@ enum
     STR_CHAT_BUTTON_ON_TOOLBAR = 6282,
     STR_CHAT_UNAVAILABLE = 6283,
 
+    STR_NETWORK = 6284,
+    STR_NETWORK_INFORMATION_TITLE = 6285,
+
+    STR_BYTES_IN = 6286,
+    STR_BYTES_OUT = 6287,
+
+    STR_TOTAL_IN = 6288,
+    STR_TOTAL_OUT = 6289,
+
+    STR_LEGEND_BASE = 6290,
+    STR_LEGEND_COMMANDS = 6291,
+    STR_LEGEND_MAPDATA = 6292,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
