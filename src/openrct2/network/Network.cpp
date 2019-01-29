@@ -184,6 +184,8 @@ public:
     void Client_Send_OBJECTS(const std::vector<std::string>& objects);
     void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
 
+    NetworkStats_t GetStats() const;
+
     std::vector<std::unique_ptr<NetworkPlayer>> player_list;
     std::vector<std::unique_ptr<NetworkGroup>> group_list;
     NetworkKey _key;
@@ -205,6 +207,7 @@ private:
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
     void AddClient(std::unique_ptr<ITcpSocket>&& socket);
     void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
+
     NetworkPlayer* AddPlayer(const utf8* name, const std::string& keyhash);
     std::string MakePlayerNameUnique(const std::string& name);
 
@@ -1396,6 +1399,27 @@ void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vect
     connection.QueuePacket(std::move(packet));
 }
 
+NetworkStats_t Network::GetStats() const
+{
+    NetworkStats_t stats = {};
+    if (mode == NETWORK_MODE_CLIENT)
+    {
+        stats = _serverConnection->Stats;
+    }
+    else
+    {
+        for (auto& connection : client_connection_list)
+        {
+            for (size_t n = 0; n < NETWORK_STATISTICS_GROUP_MAX; n++)
+            {
+                stats.bytesReceived[n] += connection->Stats.bytesReceived[n];
+                stats.bytesSent[n] += connection->Stats.bytesSent[n];
+            }
+        }
+    }
+    return stats;
+}
+
 void Network::Server_Send_AUTH(NetworkConnection& connection)
 {
     uint8_t new_playerid = 0;
@@ -1412,7 +1436,6 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
     connection.QueuePacket(std::move(packet));
     if (connection.AuthStatus != NETWORK_AUTH_OK && connection.AuthStatus != NETWORK_AUTH_REQUIREPASSWORD)
     {
-        connection.SendQueuedPackets();
         connection.Socket->Disconnect();
     }
 }
@@ -1538,6 +1561,7 @@ void Network::Client_Send_GAMECMD(
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_GAMECMD << gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx
             << esi << edi << ebp << callback;
+
     _serverConnection->QueuePacket(std::move(packet));
 }
 
@@ -1569,7 +1593,6 @@ void Network::Client_Send_GAME_ACTION(const GameAction* action)
     action->Serialise(stream);
 
     *packet << (uint32_t)NETWORK_COMMAND_GAME_ACTION << gCurrentTicks << action->GetType() << stream;
-
     _serverConnection->QueuePacket(std::move(packet));
 }
 
@@ -1616,6 +1639,7 @@ void Network::Server_Send_TICK()
         rct_sprite_checksum checksum = sprite_checksum();
         packet->WriteString(checksum.ToString().c_str());
     }
+
     SendPacketToClients(*packet);
 }
 
@@ -1666,7 +1690,6 @@ void Network::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const 
     *packet << (uint32_t)NETWORK_COMMAND_SETDISCONNECTMSG;
     packet->WriteString(msg);
     connection.QueuePacket(std::move(packet));
-    connection.SendQueuedPackets();
 }
 
 void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
@@ -3853,6 +3876,11 @@ std::string network_get_version()
     return NETWORK_STREAM_ID;
 }
 
+NetworkStats_t network_get_stats()
+{
+    return gNetwork.GetStats();
+}
+
 #else
 int32_t network_get_mode()
 {
@@ -4084,5 +4112,13 @@ const utf8* network_get_server_provider_website()
 std::string network_get_version()
 {
     return "Multiplayer disabled";
+}
+uint64_t network_get_stats()
+{
+    return 0;
+}
+uint64_t network_get_bytes_sent()
+{
+    return 0;
 }
 #endif /* DISABLE_NETWORK */
