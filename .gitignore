@@ -8,6 +8,8 @@ openrct2.dll
 # Distribution
 distribution/windows/*.exe
 distribution/android/*/external/
+distribution/macos/AppIcon.iconset/icon_*.png
+distribution/macos/AppIcon.icns
 
 # Build artifacts
 artifacts

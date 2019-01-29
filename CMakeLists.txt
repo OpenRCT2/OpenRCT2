@@ -270,9 +270,9 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_
 install(DIRECTORY "data/" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
 install(FILES ${DOC_FILES} DESTINATION "${CMAKE_INSTALL_DOCDIR}")
 install(FILES "distribution/linux/openrct2.appdata.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo")
-install(FILES "resources/logo/icon_x16.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps" RENAME "openrct2.png")
+install(FILES "distribution/macos/AppIcon.iconset/icon_16x16.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps" RENAME "openrct2.png")
 install(FILES "resources/logo/icon_x24.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/24x24/apps" RENAME "openrct2.png")
-install(FILES "resources/logo/icon_x32.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps" RENAME "openrct2.png")
+install(FILES "distribution/macos/AppIcon.iconset/icon_32x32.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps" RENAME "openrct2.png")
 install(FILES "resources/logo/icon_x48.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps" RENAME "openrct2.png")
 install(FILES "resources/logo/icon_x64.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps" RENAME "openrct2.png")
 install(FILES "resources/logo/icon_x96.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/96x96/apps" RENAME "openrct2.png")
@@ -287,24 +287,40 @@ install(FILES "distribution/linux/openrct2-mimeinfo.xml" DESTINATION "${CMAKE_IN
 install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")
 
 if(NOT DISABLE_GUI)
+    
+    set(BUNDLE_RESOURCE "${PROJECT}.app/Contents/Resources")
+    set(SOURCE_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
+    set(SOURCE_ICON_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources/logo")
+    set(ICON_TARGET "${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/AppIcon.iconset")
+    set(ICON_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/AppIcon.icns")
 
+    add_custom_command(OUTPUT ${ICON_OUTPUT}
+        COMMAND sips -z 16 16     icon_x1024.png --out ${ICON_TARGET}/icon_16x16.png
+        COMMAND sips -z 32 32     icon_x1024.png --out ${ICON_TARGET}/icon_16x16@2x.png
+        COMMAND sips -z 32 32     icon_x1024.png --out ${ICON_TARGET}/icon_32x32.png
+        COMMAND sips -z 64 64     icon_x1024.png --out ${ICON_TARGET}/icon_32x32@2x.png
+        COMMAND sips -z 128 128   icon_x1024.png --out ${ICON_TARGET}/icon_128x128.png
+        COMMAND sips -z 256 256   icon_x1024.png --out ${ICON_TARGET}/icon_128x128@2x.png
+        COMMAND sips -z 256 256   icon_x1024.png --out ${ICON_TARGET}/icon_256x256.png
+        COMMAND sips -z 512 512   icon_x1024.png --out ${ICON_TARGET}/icon_256x256@2x.png
+        COMMAND sips -z 512 512   icon_x1024.png --out ${ICON_TARGET}/icon_512x512.png
+        COMMAND cp icon_x1024.png ${ICON_TARGET}/icon_512x512@2x.png
+        COMMAND iconutil -c icns ${ICON_TARGET}
+        WORKING_DIRECTORY ${SOURCE_ICON_DIR})
+     
     # Add distribution sources
     target_sources(${PROJECT}
         PUBLIC distribution/readme.txt
         PUBLIC distribution/changelog.txt
         PUBLIC g2.dat
-        PUBLIC AppIcon.icns)
-        
-    add_custom_command(OUTPUT AppIcon.icns
-        COMMAND touch AppIcon.icns
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+        PUBLIC ${ICON_OUTPUT})
         
     # Specify the resources to move to the bundle
     set(BUNDLE_RESOURCES
         distribution/readme.txt
         distribution/changelog.txt
         g2.dat
-        AppIcon.icns)
+        ${ICON_OUTPUT})
         
         
     if(${OPENRCT2_BRANCH} EQUAL master)
@@ -326,24 +342,20 @@ if(NOT DISABLE_GUI)
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/Info.plist.in
         RESOURCE "${BUNDLE_RESOURCES}")
         
-    set(BUNDLE_RESOURCES "${PROJECT}.app/Contents/Resources")
-    set(SOURCE_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
-    
-        
     # Command to create the directory structure in resources
     add_custom_command(OUTPUT
-        ${BUNDLE_RESOURCES}/language
-        ${BUNDLE_RESOURCES}/object
-        ${BUNDLE_RESOURCES}/title
-        COMMAND cp -r ${SOURCE_DATA_DIR}/language ${BUNDLE_RESOURCES}/language
-        COMMAND cp -r ${SOURCE_DATA_DIR}/object ${BUNDLE_RESOURCES}/object
-        COMMAND cp -r ${SOURCE_DATA_DIR}/title ${BUNDLE_RESOURCES}/title
+        ${BUNDLE_RESOURCE}/language
+        ${BUNDLE_RESOURCE}/object
+        ${BUNDLE_RESOURCE}/title
+        COMMAND cp -r ${SOURCE_DATA_DIR}/language ${BUNDLE_RESOURCE}/language
+        COMMAND cp -r ${SOURCE_DATA_DIR}/object ${BUNDLE_RESOURCE}/object
+        COMMAND cp -r ${SOURCE_DATA_DIR}/title ${BUNDLE_RESOURCE}/title
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
         
     # Build the app
     add_custom_target(${PROJECT}-app DEPENDS 
         ${PROJECT}
-        ${PROJECT}.app/Contents/Resources/language
-        ${PROJECT}.app/Contents/Resources/object
-        ${PROJECT}.app/Contents/Resources/title)
+        ${BUNDLE_RESOURCE}/language
+        ${BUNDLE_RESOURCE}/object
+        ${BUNDLE_RESOURCE}/title)
 endif()
