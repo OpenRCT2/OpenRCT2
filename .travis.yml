@@ -201,7 +201,7 @@ script:
     # Android jobs are triggered from cron and overwrite `script` part
     - if [[ "$OPENRCT2_ANDROID" == "true" ]] ; then exit 0 ; fi
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/build.sh ; fi
-    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then bash script/macos/build.sh fi
+    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then bash scripts/macos/build.sh ; fi
 
 notifications:
     on_failure: change
