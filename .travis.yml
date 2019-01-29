@@ -97,8 +97,11 @@ matrix:
           name: macOS Clang Release
           if: type != cron
           osx_image: xcode10.1
+          addons:
+            homebrew:
+              packages:
+                - ccache
           install:
-            - brew install ccache
             - export PATH="/usr/local/opt/ccache/libexec:$PATH"
           env:
             - OPENRCT2_CMAKE_OPTS="-DCMAKE_BUILD_TYPE=Release"
