@@ -2347,7 +2347,7 @@ static bool peep_find_vehicle_to_enter(rct_peep* peep, Ride* ride, std::vector<u
     {
         chosen_train = ride->stations[peep->current_ride_station].TrainAtStation;
     }
-    if (chosen_train == 0xFF)
+    if (chosen_train == 0xFF || chosen_train >= MAX_VEHICLES_PER_RIDE)
     {
         return false;
     }
@@ -2357,7 +2357,7 @@ static bool peep_find_vehicle_to_enter(rct_peep* peep, Ride* ride, std::vector<u
     int32_t i = 0;
 
     uint16_t vehicle_id = ride->vehicles[chosen_train];
-    rct_vehicle* vehicle = GET_VEHICLE(vehicle_id);
+    rct_vehicle* vehicle = nullptr;
 
     for (; vehicle_id != SPRITE_INDEX_NULL; vehicle_id = vehicle->next_vehicle_on_train, i++)
     {

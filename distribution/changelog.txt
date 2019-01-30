@@ -61,6 +61,7 @@
 - Fix: [#8585] Part of track missing on air powered vertical coaster.
 - Fix: [#8588] Guest list scrolling breaks above ~2000 guests.
 - Fix: [#8591] Game loop does not run at a consistent tick rate of 40 Hz.
+- Fix: [#8653] Crash when peeps attempt to enter a ride with no vehicles.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
 - Improved: [#7930] Automatically create folders for custom content.
