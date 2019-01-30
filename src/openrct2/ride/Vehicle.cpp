@@ -6304,7 +6304,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
         }
     }
 
-    uint16_t collideSprite = 0xFFFF;
+    uint16_t collideSprite = SPRITE_INDEX_NULL;
 
     if (vehicle->dodgems_collision_direction != 0)
     {
@@ -6367,7 +6367,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
             vehicle->velocity = 0;
             uint8_t direction = vehicle->sprite_direction | 1;
 
-            if (collideSprite != 0xFFFF)
+            if (collideSprite != SPRITE_INDEX_NULL)
             {
                 vehicle->var_34 = (scenario_rand() & 1) ? 1 : -1;
 
