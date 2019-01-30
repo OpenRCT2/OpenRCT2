@@ -839,7 +839,7 @@ private:
         for (int32_t i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
         {
             dst->stations[i].Start.xy = RCT_XY8_UNDEFINED;
-            dst->stations[i].TrainAtStation = 255;
+            dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
             ride_clear_entrance_location(dst, i);
             ride_clear_exit_location(dst, i);
             dst->stations[i].LastPeepInQueue = SPRITE_INDEX_NULL;
