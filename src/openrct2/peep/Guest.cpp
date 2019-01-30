@@ -1724,7 +1724,7 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
         assert(ride->type < std::size(RideData4));
-        if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF
+        if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
             || ride_get_price(ride) != 0)
         {
             if (peep_flags & PEEP_FLAGS_LEAVING_PARK)
@@ -1793,7 +1793,8 @@ bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQ
         // Assuming the queue conditions are met, peeps will always go on free transport rides.
         // Ride ratings, recent crashes and weather will all be ignored.
         money16 ridePrice = ride_get_price(ride);
-        if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF || ridePrice != 0)
+        if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
+            || ridePrice != 0)
         {
             if (previous_ride == rideIndex)
             {
@@ -2500,7 +2501,7 @@ static int16_t peep_calculate_ride_value_satisfaction(rct_peep* peep, Ride* ride
         return -30;
     }
 
-    if (ride->value == 0xFFFF)
+    if (ride->value == RIDE_VALUE_UNDEFINED)
     {
         return -30;
     }
