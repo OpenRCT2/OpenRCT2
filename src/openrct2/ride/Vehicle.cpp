@@ -2169,7 +2169,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
         uint8_t peep = ((-vehicle->vehicle_sprite_type) / 8) & 0xF;
         if (vehicle->peep[peep] != SPRITE_INDEX_NULL)
         {
-            ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
+            ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
             vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
             vehicle->sub_state = 0;
             vehicle_invalidate_window(vehicle);
@@ -2179,7 +2179,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
         if (vehicle->num_peeps == 0)
             return;
 
-        ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
+        ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
         vehicle->sub_state = 2;
         return;
     }
@@ -2187,7 +2187,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
     if (num_peeps_on_train == 0)
         return;
 
-    ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
+    ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
     vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
     vehicle->sub_state = 0;
     vehicle_invalidate_window(vehicle);
@@ -2231,7 +2231,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
 
         if (ride_get_entrance_location(ride, vehicle->current_station).isNull())
         {
-            ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
+            ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
             vehicle->sub_state = 2;
             return;
         }
@@ -2242,7 +2242,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
             return;
         }
 
-        if (ride->stations[vehicle->current_station].TrainAtStation != 0xFF)
+        if (ride->stations[vehicle->current_station].TrainAtStation != RideStation::NO_TRAIN)
             return;
 
         ride->stations[vehicle->current_station].TrainAtStation = trainIndex;

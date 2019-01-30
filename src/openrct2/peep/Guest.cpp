@@ -2323,7 +2323,7 @@ static void peep_go_to_ride_entrance(rct_peep* peep, Ride* ride)
 
 static bool peep_find_vehicle_to_enter(rct_peep* peep, Ride* ride, std::vector<uint8_t>& car_array)
 {
-    uint8_t chosen_train = 0xFF;
+    uint8_t chosen_train = RideStation::NO_TRAIN;
 
     if (ride->mode == RIDE_MODE_BUMPERCAR || ride->mode == RIDE_MODE_RACE)
     {
@@ -2347,7 +2347,7 @@ static bool peep_find_vehicle_to_enter(rct_peep* peep, Ride* ride, std::vector<u
     {
         chosen_train = ride->stations[peep->current_ride_station].TrainAtStation;
     }
-    if (chosen_train == 0xFF || chosen_train >= MAX_VEHICLES_PER_RIDE)
+    if (chosen_train == RideStation::NO_TRAIN || chosen_train >= MAX_VEHICLES_PER_RIDE)
     {
         return false;
     }

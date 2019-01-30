@@ -152,7 +152,7 @@ public:
             ride->stations[i].Start.xy = RCT_XY8_UNDEFINED;
             ride_clear_entrance_location(ride, i);
             ride_clear_exit_location(ride, i);
-            ride->stations[i].TrainAtStation = 255;
+            ride->stations[i].TrainAtStation = RideStation::NO_TRAIN;
             ride->stations[i].QueueTime = 0;
         }
 
