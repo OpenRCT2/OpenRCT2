@@ -266,7 +266,7 @@ public:
         }
 
         std::fill(std::begin(ride->num_customers), std::end(ride->num_customers), 0);
-        ride->value = 0xFFFF;
+        ride->value = RIDE_VALUE_UNDEFINED;
         ride->satisfaction = 255;
         ride->satisfaction_time_out = 0;
         ride->satisfaction_next = 0;
