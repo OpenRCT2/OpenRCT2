@@ -286,12 +286,12 @@ public:
         // Not implemented
     }
 
-    int32_t Screenshot() override
+    std::string Screenshot() override
     {
         const OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
         framebuffer.Bind();
         framebuffer.GetPixels(_bitsDPI);
-        int32_t result = screenshot_dump_png(&_bitsDPI);
+        std::string result = screenshot_dump_png(&_bitsDPI);
         return result;
     }
 
