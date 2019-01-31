@@ -2184,18 +2184,6 @@ STR_3068    :Egyéb parkok
 STR_3070    :Lejtés vízszinthez
 STR_3071    :{WINDOW_COLOUR_2}Ugyanez az ár mindenhol a parkban
 STR_3072    :{SMALLFONT}{BLACK}Válaszd ki, hogy ezt az árat használják-e mindenhol a parkban
-STR_3078    :Sima bejárat
-STR_3079    :Fa bejárat
-STR_3080    :Vászonsátor bejárat
-STR_3081    :Kastély bejárat (szürke)
-STR_3082    :Kastély bejárat (barna)
-STR_3083    :Dzsungel bejárat
-STR_3084    :Fakunyhó bejárat
-STR_3085    :Klasszikus/római bejárat
-STR_3086    :Absztrakt bejárat
-STR_3087    :Havas/jeges bejárat
-STR_3088    :Pagoda bejárat
-STR_3089    :Űrbéli bejárat
 STR_3090    :{SMALLFONT}{BLACK}A bejárat, a kijárat és az állomás stílusának kiválasztása
 STR_3091    :Nem távolíthatod el ezt a szakaszt!
 STR_3092    :Nem mozgathatod vagy módosíthatod a játék állomását!
@@ -3112,6 +3100,16 @@ STR_6266    :Egyedi tartalmak mappájának megnyitása
 STR_6267    :Mezővizsgáló megnyitása
 STR_6268    :Megállított játék léptetése
 STR_6269    :Érvénytelen éghajlati ID
+STR_6270    :Terepfelületek
+STR_6271    :Terep szélek
+STR_6272    :Állomások
+STR_6273    :Zene
+STR_6274    :Nem állítható be színséma...
+STR_6275    :{WINDOW_COLOUR_2}Állomás stílusa:
+STR_6276    :A vendégek beragadnak itt: {RED}{STRINGID}. Lehet, hogy érvénytelen játéktípus vagy működési mód okozza.
+STR_6277    :{WINDOW_COLOUR_2}Állomás index: {BLACK}{COMMA16}
+STR_6278    :Automentések mennyisége
+STR_6279    :{SMALLFONT}{BLACK}A megőrzendő automentések száma
 
 #############
 # Scenarios #
