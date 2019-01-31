@@ -340,7 +340,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             set_map_tooltip_format_arg( 0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
             
             if (banner->flags & BANNER_FLAG_NO_ENTRY)
-                set_map_tooltip_format_arg( 2, rct_string_id, STR_NO_ENTRY_TOOLTIP);
+                set_map_tooltip_format_arg( 2, rct_string_id, STR_NO_ENTRY);
             else
                 set_map_tooltip_format_arg( 2, rct_string_id, banner->string_idx);
 
