@@ -337,8 +337,15 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             banner = &gBanners[tileElement->AsBanner()->GetIndex()];
             sceneryEntry = get_banner_entry(banner->type);
 
-            set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-            set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
+            set_map_tooltip_format_arg( 0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+            if (banner->flags & BANNER_FLAG_NO_ENTRY)
+            {
+                set_map_tooltip_format_arg( 2, rct_string_id, STR_NO_ENTRY_TOOLTIP);
+            } else {
+                set_map_tooltip_format_arg( 2, rct_string_id, banner->string_idx);
+            }
+            set_map_tooltip_format_arg( 4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+            set_map_tooltip_format_arg( 6, rct_string_id, sceneryEntry->name);
             return info->type;
     }
 
