@@ -95,19 +95,23 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     set_format_arg(0, uint32_t, 0);
     set_format_arg(4, uint32_t, 0);
 
-    rct_string_id string_id = STR_NO_ENTRY;
-    if (!(gBanners[tile_element->AsBanner()->GetIndex()].flags & BANNER_FLAG_NO_ENTRY))
+    if (gBanners[tile_element->AsBanner()->GetIndex()].flags & BANNER_FLAG_NO_ENTRY)
     {
-        set_format_arg(0, rct_string_id, gBanners[tile_element->AsBanner()->GetIndex()].string_idx);
-        string_id = STR_BANNER_TEXT_FORMAT;
-    }
-    if (gConfigGeneral.upper_case_banners)
-    {
-        format_string_to_upper(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+        set_format_arg(0, rct_string_id, STR_NO_ENTRY);
     }
     else
     {
-        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+        set_format_arg(0, rct_string_id, gBanners[tile_element->AsBanner()->GetIndex()].string_idx);
+    }
+
+
+    if (gConfigGeneral.upper_case_banners)
+    {
+        format_string_to_upper(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+    }
+    else
+    {
+        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
     }
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -116,6 +120,6 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
     sub_98199C(
-        session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22,
+        session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22,
         boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 }

@@ -451,21 +451,24 @@ static void sub_6A4101(
             set_format_arg(4, uint32_t, 0);
 
             Ride* ride = get_ride(tile_element->AsPath()->GetRideIndex());
-            rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
-                set_format_arg(0, rct_string_id, ride->name);
-                set_format_arg(2, uint32_t, ride->name_arguments);
-                string_id = STR_RIDE_ENTRANCE_NAME;
+                set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
+                set_format_arg(2, rct_string_id, ride->name);
+                set_format_arg(4, uint32_t, ride->name_arguments);
+            }
+            else
+            {
+                set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_CLOSED);
             }
             if (gConfigGeneral.upper_case_banners)
             {
                 format_string_to_upper(
-                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
             }
             else
             {
-                format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+                format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
             }
 
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -474,7 +477,7 @@ static void sub_6A4101(
             uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
             sub_98199C(
-                session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,
+                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,
                 boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
         }
 

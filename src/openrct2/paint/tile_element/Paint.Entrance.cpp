@@ -158,27 +158,28 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     if (!is_exit && !(tile_element->IsGhost()) && tile_element->AsEntrance()->GetRideIndex() != RIDE_ID_NULL
         && stationObj->ScrollingMode != SCROLLING_MODE_NONE)
     {
-        set_format_arg(0, uint32_t, 0);
+        set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
         set_format_arg(4, uint32_t, 0);
-
-        rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
 
         if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
-
-            string_id = STR_RIDE_ENTRANCE_NAME;
+            set_format_arg(2, rct_string_id, STR_RIDE_ENTRANCE_NAME);
+            set_format_arg(4, rct_string_id, ride->name);
+            set_format_arg(6, uint32_t, ride->name_arguments);
+        }
+        else
+        {
+            set_format_arg(2, rct_string_id, STR_RIDE_ENTRANCE_CLOSED);
         }
 
         utf8 entrance_string[256];
         if (gConfigGeneral.upper_case_banners)
         {
-            format_string_to_upper(entrance_string, sizeof(entrance_string), string_id, gCommonFormatArgs);
+            format_string_to_upper(entrance_string, sizeof(entrance_string), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
         }
         else
         {
-            format_string(entrance_string, sizeof(entrance_string), string_id, gCommonFormatArgs);
+            format_string(entrance_string, sizeof(entrance_string), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
         }
 
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -187,7 +188,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
         sub_98199C(
-            session, scrolling_text_setup(session, string_id, scroll, stationObj->ScrollingMode), 0, 0, 0x1C, 0x1C, 0x33,
+            session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, stationObj->ScrollingMode), 0, 0, 0x1C, 0x1C, 0x33,
             height + stationObj->Height, 2, 2, height + stationObj->Height);
     }
 
@@ -264,7 +265,6 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 break;
 
             {
-                rct_string_id park_text_id = STR_BANNER_TEXT_CLOSED;
                 set_format_arg(0, uint32_t, 0);
                 set_format_arg(4, uint32_t, 0);
 
@@ -272,18 +272,21 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 {
                     set_format_arg(0, rct_string_id, gParkName);
                     set_format_arg(2, uint32_t, gParkNameArgs);
-
-                    park_text_id = STR_BANNER_TEXT_FORMAT;
+                }
+                else
+                {
+                    set_format_arg(0, rct_string_id, STR_BANNER_TEXT_CLOSED);
+                    set_format_arg(2, uint32_t, 0);
                 }
 
                 utf8 park_name[256];
                 if (gConfigGeneral.upper_case_banners)
                 {
-                    format_string_to_upper(park_name, sizeof(park_name), park_text_id, gCommonFormatArgs);
+                    format_string_to_upper(park_name, sizeof(park_name), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
                 }
                 else
                 {
-                    format_string(park_name, sizeof(park_name), park_text_id, gCommonFormatArgs);
+                    format_string(park_name, sizeof(park_name), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
                 }
 
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -294,7 +297,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 if (entrance->scrolling_mode == SCROLLING_MODE_NONE)
                     break;
 
-                int32_t stsetup = scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2);
+                int32_t stsetup = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, entrance->scrolling_mode + direction / 2);
                 int32_t text_height = height + entrance->text_height;
                 sub_98199C(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height);
             }
