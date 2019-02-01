@@ -27,12 +27,12 @@ namespace Random
     /**
      * FixedSeedSequence adheres to the _Named Requirement_ `SeedSequence`.
      */
-    template<size_t _N = 0> class FixedSeedSequence
+    template<size_t _num = 0> class FixedSeedSequence
     {
     public:
         using result_type = uint32_t;
 
-        static constexpr size_t N = _N;
+        static constexpr size_t N = _num;
         static constexpr result_type default_seed = 0x1234567F;
 
         explicit FixedSeedSequence()
