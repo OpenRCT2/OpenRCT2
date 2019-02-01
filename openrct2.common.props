@@ -76,7 +76,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>bz2d.lib;discord-rpc.lib;freetyped.lib;jansson_d.lib;libcurl.lib;libeay32.lib;libpng16d.lib;libspeexdsp.lib;SDL2d.lib;ssleay32.lib;zip.lib;zlibd.lib;libbreakpadd.lib;libbreakpad_clientd.lib;benchmark.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bz2d.lib;discord-rpc.lib;freetyped.lib;jansson_d.lib;libcurl.lib;libeay32.lib;libpng16d.lib;libspeexdsp.lib;SDL2d.lib;ssleay32.lib;zip.lib;zlibd.lib;libbreakpadd.lib;libbreakpad_clientd.lib;benchmarkd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
