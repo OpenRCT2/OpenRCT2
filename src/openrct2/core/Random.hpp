@@ -11,6 +11,7 @@
 
 #include "Numerics.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <iostream>

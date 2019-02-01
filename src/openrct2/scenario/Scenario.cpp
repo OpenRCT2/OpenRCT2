@@ -68,7 +68,7 @@ uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
 uint32_t gScenarioTicks;
-static Random::Rct2Engine rnd;
+Random::Rct2Engine gScenarioRand;
 
 uint8_t gScenarioObjectiveType;
 uint8_t gScenarioObjectiveYear;
@@ -92,7 +92,7 @@ void scenario_begin()
 
     // Set the scenario pseudo-random seeds
     Random::Rct2Seed s{ 0x1234567F ^ platform_get_ticks(), 0x789FABCD ^ platform_get_ticks() };
-    rnd.seed(s);
+    gScenarioRand.seed(s);
 
     gParkFlags &= ~PARK_FLAGS_NO_MONEY;
     if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
@@ -480,7 +480,7 @@ static int32_t scenario_create_ducks()
 std::pair<uint32_t, uint32_t> scenario_rand_seed()
 {
     std::stringstream ss;
-    ss << rnd;
+    ss << gScenarioRand;
     uint32_t s0, s1;
     ss >> s0;
     ss >> s1;
@@ -490,7 +490,7 @@ std::pair<uint32_t, uint32_t> scenario_rand_seed()
 void scenario_rand_seed(uint32_t s0, uint32_t s1)
 {
     Random::Rct2Seed s{ s0, s1 };
-    rnd.seed(s);
+    gScenarioRand.seed(s);
 }
 
 /**
@@ -540,7 +540,7 @@ uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_
     }
 #endif
 
-    return rnd();
+    return gScenarioRand();
 }
 
 #ifdef DEBUG_DESYNC

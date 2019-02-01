@@ -11,6 +11,7 @@
 #define _SCENARIO_H_
 
 #include "../common.h"
+#include "../core/Random.hpp"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
@@ -366,6 +367,7 @@ enum
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern uint32_t gScenarioTicks;
+extern Random::Rct2Engine gScenarioRand;
 
 extern uint8_t gScenarioObjectiveType;
 extern uint8_t gScenarioObjectiveYear;
