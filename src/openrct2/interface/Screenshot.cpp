@@ -63,17 +63,15 @@ static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo
  */
 void screenshot_check()
 {
-    int32_t screenshotIndex;
-
     if (gScreenshotCountdown != 0)
     {
         gScreenshotCountdown--;
         if (gScreenshotCountdown == 0)
         {
             // update_rain_animation();
-            screenshotIndex = screenshot_dump();
+            std::string screenshotPath = screenshot_dump();
 
-            if (screenshotIndex != -1)
+            if (!screenshotPath.empty())
             {
                 audio_play_sound(SOUND_WINDOW_OPEN, 100, context_get_width() / 2);
             }
@@ -172,14 +170,13 @@ static int32_t screenshot_get_next_path(char* path, size_t size)
     return -1;
 }
 
-int32_t screenshot_dump_png(rct_drawpixelinfo* dpi)
+std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
 {
     // Get a free screenshot path
-    int32_t index;
     char path[MAX_PATH] = "";
-    if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1)
+    if (screenshot_get_next_path(path, MAX_PATH) == -1)
     {
-        return -1;
+        return "";
     }
 
     rct_palette renderedPalette;
@@ -187,22 +184,21 @@ int32_t screenshot_dump_png(rct_drawpixelinfo* dpi)
 
     if (WriteDpiToFile(path, dpi, renderedPalette))
     {
-        return index;
+        return std::string(path);
     }
     else
     {
-        return -1;
+        return "";
     }
 }
 
-int32_t screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pixels)
+std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pixels)
 {
     // Get a free screenshot path
-    int32_t index;
     char path[MAX_PATH] = "";
-    if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1)
+    if (screenshot_get_next_path(path, MAX_PATH) == -1)
     {
-        return -1;
+        return "";
     }
 
     const auto pixels8 = (const uint8_t*)pixels;
@@ -217,12 +213,12 @@ int32_t screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pix
         image.Stride = width * 4;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG_32);
-        return index;
+        return std::string(path);
     }
     catch (const std::exception& e)
     {
         log_error("Unable to save screenshot: %s", e.what());
-        return -1;
+        return "";
     }
 }
 

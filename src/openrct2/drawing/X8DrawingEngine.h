@@ -98,7 +98,7 @@ namespace OpenRCT2
             void UpdateWindows() override;
             void PaintRain() override;
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
-            int32_t Screenshot() override;
+            std::string Screenshot() override;
             IDrawingContext* GetDrawingContext(rct_drawpixelinfo* dpi) override;
             rct_drawpixelinfo* GetDrawingPixelInfo() override;
             DRAWING_ENGINE_FLAGS GetFlags() override;

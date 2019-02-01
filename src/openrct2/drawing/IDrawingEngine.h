@@ -12,6 +12,7 @@
 #include "../common.h"
 
 #include <memory>
+#include <string>
 
 enum DRAWING_ENGINE
 {
@@ -64,7 +65,7 @@ namespace OpenRCT2::Drawing
         virtual void UpdateWindows() abstract;
         virtual void PaintRain() abstract;
         virtual void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) abstract;
-        virtual int32_t Screenshot() abstract;
+        virtual std::string Screenshot() abstract;
 
         virtual IDrawingContext* GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
         virtual rct_drawpixelinfo* GetDrawingPixelInfo() abstract;

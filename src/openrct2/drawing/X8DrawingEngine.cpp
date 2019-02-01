@@ -276,7 +276,7 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
     }
 }
 
-int32_t X8DrawingEngine::Screenshot()
+std::string X8DrawingEngine::Screenshot()
 {
     return screenshot_dump_png(&_bitsDPI);
 }

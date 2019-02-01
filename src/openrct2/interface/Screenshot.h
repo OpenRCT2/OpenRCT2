@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+#include <string>
+
 struct rct_drawpixelinfo;
 
 extern uint8_t gScreenshotCountdown;
@@ -29,9 +31,9 @@ struct ScreenshotOptions
 };
 
 void screenshot_check();
-int32_t screenshot_dump();
-int32_t screenshot_dump_png(rct_drawpixelinfo* dpi);
-int32_t screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pixels);
+std::string screenshot_dump();
+std::string screenshot_dump_png(rct_drawpixelinfo* dpi);
+std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pixels);
 
 void screenshot_giant();
 int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOptions* options);

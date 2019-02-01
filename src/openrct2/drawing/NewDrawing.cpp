@@ -249,12 +249,12 @@ void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, int32
     }
 }
 
-int32_t screenshot_dump()
+std::string screenshot_dump()
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
         return drawingEngine->Screenshot();
     }
-    return false;
+    return "";
 }

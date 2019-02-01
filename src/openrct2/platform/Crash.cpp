@@ -27,6 +27,7 @@
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/String.hpp"
+#    include "../interface/Screenshot.h"
 #    include "../localisation/Language.h"
 #    include "../rct2/S6Exporter.h"
 #    include "../scenario/Scenario.h"
@@ -185,6 +186,15 @@ static bool OnCrash(
         uploadFiles[L"attachment_config.ini"] = configFilePath;
     }
     free(configFilePathUTF8);
+
+    std::string screenshotPath = screenshot_dump();
+    if (!screenshotPath.empty())
+    {
+        wchar_t* screenshotPathWchar = utf8_to_widechar(screenshotPath.c_str());
+        auto screenshotPathW = std::wstring(screenshotPathWchar);
+        free(screenshotPathWchar);
+        uploadFiles[L"attachment_screenshot.png"] = screenshotPathW;
+    }
 
     if (gOpenRCT2SilentBreakpad)
     {
