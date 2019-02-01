@@ -104,10 +104,10 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
         set_format_arg(0, rct_string_id, gBanners[tile_element->AsBanner()->GetIndex()].string_idx);
     }
 
-
     if (gConfigGeneral.upper_case_banners)
     {
-        format_string_to_upper(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+        format_string_to_upper(
+            gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
     }
     else
     {

@@ -330,7 +330,6 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
-
                 banner = &gBanners[tileElement->AsLargeScenery()->GetBannerIndex()];
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
                 set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
@@ -345,7 +344,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             sceneryEntry = get_banner_entry(banner->type);
 
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-            
+
             if (banner->flags & BANNER_FLAG_NO_ENTRY)
                 set_map_tooltip_format_arg(2, rct_string_id, STR_NO_ENTRY);
             else
