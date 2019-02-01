@@ -27,12 +27,12 @@ namespace Random
     /**
      * FixedSeedSequence adheres to the _Named Requirement_ `SeedSequence`.
      */
-    template<size_t __N = 0> class FixedSeedSequence
+    template<size_t _N = 0> class FixedSeedSequence
     {
     public:
         using result_type = uint32_t;
 
-        static constexpr size_t N = __N;
+        static constexpr size_t N = _N;
         static constexpr result_type default_seed = 0x1234567F;
 
         explicit FixedSeedSequence()
@@ -91,8 +91,7 @@ namespace Random
      * RotateEngine adheres to the _Named Requirement_ `RandomNumberEngine`
      * https://en.cppreference.com/w/cpp/named_req/RandomNumberEngine
      */
-    template<typename UIntType, UIntType __x, size_t __r1, size_t __r2>
-    class RotateEngine : protected RotateEngineState<UIntType>
+    template<typename UIntType, UIntType _x, size_t _r1, size_t _r2> class RotateEngine : protected RotateEngineState<UIntType>
     {
         static_assert(std::is_unsigned<UIntType>::value, "Type must be unsigned integral.");
 
@@ -103,9 +102,9 @@ namespace Random
         using result_type = UIntType;
         using state_type = RotateEngineState<UIntType>;
 
-        static constexpr result_type x = __x;
-        static constexpr size_t r1 = __r1;
-        static constexpr size_t r2 = __r2;
+        static constexpr result_type x = _x;
+        static constexpr size_t r1 = _r1;
+        static constexpr size_t r2 = _r2;
         static constexpr result_type default_seed = 1;
 
         static constexpr result_type min()
