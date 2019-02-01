@@ -2451,8 +2451,7 @@ private:
     {
         // Date and srand
         gScenarioTicks = _s4.ticks;
-        gScenarioSrand0 = _s4.random_a;
-        gScenarioSrand1 = _s4.random_b;
+        scenario_rand_seed(_s4.random_a, _s4.random_b);
         gDateMonthsElapsed = _s4.month;
         gDateMonthTicks = _s4.day;
 
