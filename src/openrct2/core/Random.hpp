@@ -81,16 +81,28 @@ namespace Random
 
     typedef FixedSeedSequence<2> Rct2Seed;
 
+    template<typename UIntType> struct RotateEngineState
+    {
+        UIntType s0;
+        UIntType s1;
+    };
+
     /**
      * RotateEngine adheres to the _Named Requirement_ `RandomNumberEngine`
      * https://en.cppreference.com/w/cpp/named_req/RandomNumberEngine
      */
-    template<typename UIntType, UIntType __x, size_t __r1, size_t __r2> class RotateEngine
+    template<typename UIntType, UIntType __x, size_t __r1, size_t __r2>
+    class RotateEngine : protected RotateEngineState<UIntType>
     {
         static_assert(std::is_unsigned<UIntType>::value, "Type must be unsigned integral.");
 
+        using RotateEngineState<UIntType>::s0;
+        using RotateEngineState<UIntType>::s1;
+
     public:
         typedef UIntType result_type;
+        typedef RotateEngineState<result_type> state_type;
+
         static constexpr result_type x = __x;
         static constexpr size_t r1 = __r1;
         static constexpr size_t r2 = __r2;
@@ -126,6 +138,7 @@ namespace Random
         void seed(result_type s = default_seed)
         {
             s0 = s;
+            s1 = s;
         }
 
         template<typename Sseq> typename std::enable_if<std::is_class<Sseq>::value, void>::type seed(Sseq& seed_seq)
@@ -154,6 +167,11 @@ namespace Random
             return lhs.s0 == rhs.s0 && lhs.s1 == rhs.s1;
         }
 
+        const state_type& state() const
+        {
+            return *this;
+        }
+
         friend std::ostream& operator<<(std::ostream& os, const RotateEngine& e)
         {
             os << e.s0 << ' ' << e.s1;
@@ -166,10 +184,6 @@ namespace Random
             is >> e.s1;
             return is;
         }
-
-    protected:
-        result_type s0;
-        result_type s1;
     };
 
     typedef RotateEngine<uint32_t, 0x1234567F, 7, 3> Rct2Engine;

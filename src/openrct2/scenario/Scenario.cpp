@@ -477,17 +477,12 @@ static int32_t scenario_create_ducks()
     return 1;
 }
 
-std::pair<uint32_t, uint32_t> scenario_rand_seed()
+const random_engine_t::state_type& scenario_rand_state()
 {
-    std::stringstream ss;
-    ss << gScenarioRand;
-    uint32_t s0, s1;
-    ss >> s0;
-    ss >> s1;
-    return { s0, s1 };
+    return gScenarioRand.state();
 };
 
-void scenario_rand_seed(uint32_t s0, uint32_t s1)
+void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1)
 {
     Random::Rct2Seed s{ s0, s1 };
     gScenarioRand.seed(s);
@@ -500,7 +495,7 @@ void scenario_rand_seed(uint32_t s0, uint32_t s1)
  * @return eax
  */
 #ifndef DEBUG_DESYNC
-uint32_t scenario_rand()
+random_engine_t::result_type scenario_rand()
 #else
 static FILE* fp = nullptr;
 static const char* realm = "LC";

@@ -189,7 +189,9 @@ void S6Exporter::Export()
     _s6.current_day = gDateMonthTicks;
     _s6.scenario_ticks = gScenarioTicks;
 
-    std::tie(_s6.scenario_srand_0, _s6.scenario_srand_1) = scenario_rand_seed();
+    auto state = scenario_rand_state();
+    _s6.scenario_srand_0 = state.s0;
+    _s6.scenario_srand_1 = state.s1;
 
     std::memcpy(_s6.tile_elements, gTileElements, sizeof(_s6.tile_elements));
 
