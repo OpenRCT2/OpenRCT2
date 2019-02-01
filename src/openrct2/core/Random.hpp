@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "Meta.hpp"
 #include "Numerics.hpp"
 
 #include <algorithm>
@@ -41,7 +42,7 @@ namespace Random
 
         template<
             typename... T, typename std::enable_if<sizeof...(T) == N, int>::type = 0,
-            typename std::enable_if<(std::is_convertible<T, result_type>::value && ...), int>::type = 0>
+            typename std::enable_if<Meta::all_convertible<result_type, T...>::value, int>::type = 0>
         explicit FixedSeedSequence(T... s)
             : v{ static_cast<result_type>(s)... }
         {
