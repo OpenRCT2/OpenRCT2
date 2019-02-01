@@ -68,7 +68,7 @@ uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
 uint32_t gScenarioTicks;
-Random::Rct2Engine gScenarioRand;
+random_engine_t gScenarioRand;
 
 uint8_t gScenarioObjectiveType;
 uint8_t gScenarioObjectiveYear;
@@ -91,7 +91,7 @@ void scenario_begin()
     game_load_init();
 
     // Set the scenario pseudo-random seeds
-    Random::Rct2Seed s{ 0x1234567F ^ platform_get_ticks(), 0x789FABCD ^ platform_get_ticks() };
+    Random::Rct2::Seed s{ 0x1234567F ^ platform_get_ticks(), 0x789FABCD ^ platform_get_ticks() };
     gScenarioRand.seed(s);
 
     gParkFlags &= ~PARK_FLAGS_NO_MONEY;
@@ -484,7 +484,7 @@ const random_engine_t::state_type& scenario_rand_state()
 
 void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1)
 {
-    Random::Rct2Seed s{ s0, s1 };
+    Random::Rct2::Seed s{ s0, s1 };
     gScenarioRand.seed(s);
 }
 

@@ -24,7 +24,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
 
-using random_engine_t = Random::Rct2Engine;
+using random_engine_t = Random::Rct2::Engine;
 
 struct ParkLoadResult;
 

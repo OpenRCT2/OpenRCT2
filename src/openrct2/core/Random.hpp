@@ -27,12 +27,12 @@ namespace Random
     /**
      * FixedSeedSequence adheres to the _Named Requirement_ `SeedSequence`.
      */
-    template<size_t _N = 0> class FixedSeedSequence
+    template<size_t __N = 0> class FixedSeedSequence
     {
     public:
-        typedef uint32_t result_type;
+        using result_type = uint32_t;
 
-        static constexpr size_t N = _N;
+        static constexpr size_t N = __N;
         static constexpr result_type default_seed = 0x1234567F;
 
         explicit FixedSeedSequence()
@@ -60,7 +60,7 @@ namespace Random
         {
         }
 
-        template<typename _It> void generate(_It begin, _It end)
+        template<typename _It> void generate(_It begin, _It end) const
         {
             std::copy_n(v.begin(), std::min((size_t)(end - begin), N), begin);
         }
@@ -79,12 +79,12 @@ namespace Random
         std::array<result_type, N> v;
     };
 
-    typedef FixedSeedSequence<2> Rct2Seed;
-
     template<typename UIntType> struct RotateEngineState
     {
-        UIntType s0;
-        UIntType s1;
+        using value_type = UIntType;
+
+        value_type s0;
+        value_type s1;
     };
 
     /**
@@ -100,8 +100,8 @@ namespace Random
         using RotateEngineState<UIntType>::s1;
 
     public:
-        typedef UIntType result_type;
-        typedef RotateEngineState<result_type> state_type;
+        using result_type = UIntType;
+        using state_type = RotateEngineState<UIntType>;
 
         static constexpr result_type x = __x;
         static constexpr size_t r1 = __r1;
@@ -162,14 +162,14 @@ namespace Random
             return s1;
         }
 
-        friend bool operator==(const RotateEngine& lhs, const RotateEngine& rhs)
-        {
-            return lhs.s0 == rhs.s0 && lhs.s1 == rhs.s1;
-        }
-
         const state_type& state() const
         {
             return *this;
+        }
+
+        friend bool operator==(const RotateEngine& lhs, const RotateEngine& rhs)
+        {
+            return lhs.s0 == rhs.s0 && lhs.s1 == rhs.s1;
         }
 
         friend std::ostream& operator<<(std::ostream& os, const RotateEngine& e)
@@ -186,6 +186,10 @@ namespace Random
         }
     };
 
-    typedef RotateEngine<uint32_t, 0x1234567F, 7, 3> Rct2Engine;
-
+    namespace Rct2
+    {
+        using Engine = RotateEngine<uint32_t, 0x1234567F, 7, 3>;
+        using Seed = FixedSeedSequence<2>;
+        using State = Engine::state_type;
+    } // namespace Rct2
 } // namespace Random
