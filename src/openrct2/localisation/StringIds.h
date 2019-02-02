@@ -3927,6 +3927,8 @@ enum
 
     STR_NETWORK_SPEED_SEC = 6298,
 
+    STR_DOWNLOAD_ALL = 6299,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

@@ -9,9 +9,14 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Json.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/Http.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/platform/platform.h>
 #include <string>
 #include <vector>
@@ -26,7 +31,8 @@ enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_COLUMN_OBJECT_TYPE,
     WIDX_SCROLL,
     WIDX_COPY_CURRENT,
-    WIDX_COPY_ALL
+    WIDX_COPY_ALL,
+    WIDX_DOWNLOAD_ALL
 };
 
 #define WW 450
@@ -45,8 +51,9 @@ static rct_widget window_object_load_error_widgets[] = {
     { WWT_TABLE_HEADER,      0, SOURCE_COL_LEFT, TYPE_COL_LEFT - 1,     57,         70,         STR_OBJECT_SOURCE,              STR_NONE },                // 'Object source' header
     { WWT_TABLE_HEADER,      0, TYPE_COL_LEFT,   WW_LESS_PADDING - 1,   57,         70,         STR_OBJECT_TYPE,                STR_NONE },                // 'Object type' header
     { WWT_SCROLL,            0, 4,               WW_LESS_PADDING,       70,         WH - 33,    SCROLL_VERTICAL,                STR_NONE },                // Scrollable list area
-    { WWT_BUTTON,            0, 45,              220,                   WH - 23,    WH - 10,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
-    { WWT_BUTTON,            0, 230,             400,                   WH - 23,    WH - 10,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
+    { WWT_BUTTON,            0, 4,               148,                   WH - 23,    WH - 10,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
+    { WWT_BUTTON,            0, 152,             296,                   WH - 23,    WH - 10,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
+    { WWT_BUTTON,            0, 300,             WW_LESS_PADDING,       WH - 23,    WH - 10,    STR_DOWNLOAD_ALL,               STR_NONE },                // Download all
     { WIDGETS_END },
 };
 
@@ -59,6 +66,7 @@ static void window_object_load_error_scrollmouseover(rct_window *w, int32_t scro
 static void window_object_load_error_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_object_load_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void window_object_load_error_download_all(rct_window* w);
 
 static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_close,
@@ -191,7 +199,8 @@ rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, 
         window = window_create_centred(WW, WH, &window_object_load_error_events, WC_OBJECT_LOAD_ERROR, 0);
 
         window->widgets = window_object_load_error_widgets;
-        window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_COPY_CURRENT) | (1 << WIDX_COPY_ALL);
+        window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_COPY_CURRENT) | (1 << WIDX_COPY_ALL)
+            | (1 << WIDX_DOWNLOAD_ALL);
 
         window_init_scroll_widgets(window);
         window->colours[0] = COLOUR_LIGHT_BLUE;
@@ -244,6 +253,9 @@ static void window_object_load_error_mouseup(rct_window* w, rct_widgetindex widg
             break;
         case WIDX_COPY_ALL:
             copy_object_names_to_clipboard(w);
+            break;
+        case WIDX_DOWNLOAD_ALL:
+            window_object_load_error_download_all(w);
             break;
     }
 }
@@ -333,5 +345,73 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
         // ... and type
         rct_string_id type = get_object_type_string(&_invalid_entries[i]);
         gfx_draw_string_left(dpi, type, nullptr, COLOUR_DARK_GREEN, TYPE_COL_LEFT - 3, y);
+    }
+}
+
+static void DownloadObject(IObjectRepository& objRepo, const std::string name, const std::string_view url)
+{
+    using namespace OpenRCT2::Network;
+    try
+    {
+        Http::Request req;
+        req.method = Http::Method::GET;
+        req.url = url;
+        auto response = Http::Do(req);
+        if (response.status == Http::Status::OK)
+        {
+            auto data = (uint8_t*)response.body.data();
+            auto dataLen = response.body.size();
+            objRepo.AddObjectFromFile(name, data, dataLen);
+        }
+        else
+        {
+            throw std::runtime_error("Non 200 status");
+        }
+    }
+    catch (const std::exception&)
+    {
+        std::printf("  Failed to download %s\n", name.c_str());
+    }
+}
+
+static void window_object_load_error_download_all(rct_window* w)
+{
+    using namespace OpenRCT2::Network;
+
+    auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
+    for (const auto& entry : _invalid_entries)
+    {
+        auto name = String::Trim(std::string(entry.name, sizeof(entry.name)));
+
+        std::printf("Downloading %s...\n", name.c_str());
+        try
+        {
+            Http::Request req;
+            req.method = Http::Method::GET;
+            req.url = "http://localhost:5000/objects/legacy/" + name;
+            auto response = Http::Do(req);
+            if (response.status == Http::Status::OK)
+            {
+                auto jresponse = Json::FromString(response.body);
+                if (jresponse != nullptr)
+                {
+                    auto objName = json_string_value(json_object_get(jresponse, "name"));
+                    auto downloadLink = json_string_value(json_object_get(jresponse, "download"));
+                    if (downloadLink != nullptr)
+                    {
+                        DownloadObject(objRepo, objName, downloadLink);
+                    }
+                    json_decref(jresponse);
+                }
+            }
+            else
+            {
+                std::printf("  %s not found\n", name.c_str());
+            }
+        }
+        catch (const std::exception&)
+        {
+            std::printf("  Failed to query %s\n", name.c_str());
+        }
     }
 }

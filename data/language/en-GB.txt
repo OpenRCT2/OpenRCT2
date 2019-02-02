@@ -3746,6 +3746,7 @@ STR_6295    :MiB
 STR_6296    :GiB
 STR_6297    :TiB
 STR_6298    :{STRING}/sec
+STR_6299    :Download all
 
 #############
 # Scenarios #

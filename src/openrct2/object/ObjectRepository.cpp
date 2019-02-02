@@ -339,6 +339,23 @@ public:
         }
     }
 
+    void AddObjectFromFile(const std::string_view& objectName, const void* data, size_t dataSize) override
+    {
+        utf8 path[MAX_PATH];
+        GetPathForNewObject(path, sizeof(path), std::string(objectName).c_str());
+
+        log_verbose("Adding object: [%s]", objectName);
+        try
+        {
+            File::WriteAllBytes(path, data, dataSize);
+            ScanObject(path);
+        }
+        catch (const std::exception&)
+        {
+            Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
+        }
+    }
+
     void ExportPackedObject(IStream* stream) override
     {
         auto chunkReader = SawyerChunkReader(stream);
