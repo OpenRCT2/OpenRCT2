@@ -1,5 +1,5 @@
 # CMAKE project for openrct2
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.9)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
@@ -52,6 +52,14 @@ if (PORTABLE OR WIN32)
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif ()
 
+# LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
+# Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.
+list(APPEND SUPPORTED_CHECK_CXX_COMPILER_FLAGS)
+
+include(cmake/ipo.cmake)
+list(APPEND IPO_ENABLED_BUILDS RELEASE RELWITHDEBINFO MINSIZEREL)
+ipo_enable("${IPO_ENABLED_BUILDS}")
+
 # Describe current version in terms of closest tag
 execute_process(
     COMMAND git describe HEAD
@@ -80,76 +88,6 @@ execute_process(
     ERROR_QUIET
 )
 
-function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
-    CHECK_CXX_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
-    if (${_CACHE_VAR})
-        set(${_CXXFLAGS} "${${_CXXFLAGS}} ${_FLAG}" PARENT_SCOPE)
-    else ()
-        message(STATUS "Unsupported CXXFLAG: ${_FLAG}")
-    endif ()
-endfunction ()
-
-if (MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8 /permissive- /Zc:externConstexpr /WX")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244") # C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
-
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-    add_definitions(-D_SCL_SECURE_NO_WARNINGS)
-    add_definitions(-D__SSE4_1__)
-    add_definitions(-D__AVX2__)
-else ()
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_OVERRIDE -Wsuggest-override)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_COND -Wduplicated-cond)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NON_VIRTUAL_DTOR -Wnon-virtual-dtor)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_MISSING_VARIABLE_DECLARATIONS -Wmissing-variable-declarations)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_BRANCHES -Wduplicated-branches)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_RESTRICT -Wrestrict)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_MISSING_FIELD_INITIALIZERS -Wmissing-field-initializers)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_UNREACHABLE_CODE_BREAK -Wunreachable-code-break)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_LOGICAL_OP -Wlogical-op)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_RANGE_LOOP_ANALYSIS -Wrange-loop-analysis)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_TAUTOLOGICAL_ZERO_COMPARE -Wtautological-unsigned-zero-compare)
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CLOBBERED -Wno-clobbered)
-    # Disabled due to problems compiling OpenSSL on macOS.
-    # ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DOCUMENTATION -Wdocumentation)
-
-    # Items below are not supported by ICC
-    if (NOT MINGW)
-        # Do not enable for MinGW, as its headers contain redundant declarations of builtin functions
-        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_REDUNDANT_DECLS -Wredundant-decls)
-    endif ()
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_IGNORED_QUALIFIERS -Wignored-qualifiers)
-
-    # -Wstrict-overflow is only active when -fstrict-overflow is enabled, but -fstrict-overflow
-    # is enabled on -O2, -O3, -Os. This should help catch bugs locally before they reach Travis
-    # As of 2a435bf -Wstrict-overflow=1 passes, but higher values do not.
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-overflow")
-    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_STRICT_OVERFLOW -Wstrict-overflow=1)
-
-    # Compiler flags
-    set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wextra -Wshadow")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas -Wno-missing-braces -Wno-comment -Wnonnull -Wno-unused-parameter")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
-
-    if(APPLE)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=objc-method-access")
-    endif()
-
-    # On mingw all code is already PIC, this will avoid compiler error on redefining this option
-    if (NOT MINGW)
-        set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-    endif ()
-
-    if (APPLE AND NOT USE_MMAP)
-        set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
-    else ()
-        set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-    endif ()
-endif ()
 
 # Defines
 if (USE_MMAP)
@@ -202,6 +140,93 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*")
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "i686.*|i386.*|x86.*|amd64.*|AMD64.*")
     set(X86 1)
 endif()
+
+# Check if a flag exists and add it to the list of compiler (so, not linker) options
+function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
+    CHECK_CXX_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
+    if (${_CACHE_VAR})
+        list(APPEND SUPPORTED_CHECK_CXX_COMPILER_FLAGS "${_FLAG}")
+    else ()
+        message(STATUS "Unsupported CXXFLAG: ${_FLAG}")
+    endif ()
+endfunction ()
+
+# Add check flags to a compile TARGET
+function (SET_CHECK_CXX_FLAGS _TARGET)
+    target_compile_options("${_TARGET}" PRIVATE "${SUPPORTED_CHECK_CXX_COMPILER_FLAGS}")
+endfunction()
+
+# Check if a flag exists and add it to the compiler and the linker options
+function (ADD_CHECK_CXX_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
+    CHECK_CXX_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
+    if (${_CACHE_VAR})
+        set(${_CXXFLAGS} "${${_CXXFLAGS}} ${_FLAG}" PARENT_SCOPE)
+    else ()
+        message(STATUS "Unsupported CXXFLAG: ${_FLAG}")
+    endif ()
+endfunction ()
+
+if (MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8 /permissive- /Zc:externConstexpr /WX")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244") # C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
+
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+    add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+    add_definitions(-D__SSE4_1__)
+    add_definitions(-D__AVX2__)
+else ()
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_OVERRIDE -Wsuggest-override)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_COND -Wduplicated-cond)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NON_VIRTUAL_DTOR -Wnon-virtual-dtor)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_MISSING_VARIABLE_DECLARATIONS -Wmissing-variable-declarations)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_BRANCHES -Wduplicated-branches)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_RESTRICT -Wrestrict)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_MISSING_FIELD_INITIALIZERS -Wmissing-field-initializers)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_UNREACHABLE_CODE_BREAK -Wunreachable-code-break)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_LOGICAL_OP -Wlogical-op)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_RANGE_LOOP_ANALYSIS -Wrange-loop-analysis)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_TAUTOLOGICAL_ZERO_COMPARE -Wtautological-unsigned-zero-compare)
+    ADD_CHECK_CXX_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CLOBBERED -Wno-clobbered)
+    # Disabled due to problems compiling OpenSSL on macOS.
+    # ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DOCUMENTATION -Wdocumentation)
+
+    # Items below are not supported by ICC
+    if (NOT MINGW)
+        # Do not enable for MinGW, as its headers contain redundant declarations of builtin functions
+        ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_REDUNDANT_DECLS -Wredundant-decls)
+    endif ()
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_IGNORED_QUALIFIERS -Wignored-qualifiers)
+
+    # -Wstrict-overflow is only active when -fstrict-overflow is enabled, but -fstrict-overflow
+    # is enabled on -O2, -O3, -Os. This should help catch bugs locally before they reach Travis
+    # As of 2a435bf -Wstrict-overflow=1 passes, but higher values do not.
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-overflow")
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_STRICT_OVERFLOW -Wstrict-overflow=1)
+
+    # Compiler flags
+    set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wextra -Wshadow")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unknown-pragmas -Wno-missing-braces -Wno-comment -Wnonnull -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
+
+    if(APPLE)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=objc-method-access")
+    endif()
+
+    # On mingw all code is already PIC, this will avoid compiler error on redefining this option
+    if (NOT MINGW)
+        set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    endif ()
+
+    if (APPLE AND NOT USE_MMAP)
+        set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
+    else ()
+        set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    endif ()
+endif ()
 
 # Include sub-projects
 include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)

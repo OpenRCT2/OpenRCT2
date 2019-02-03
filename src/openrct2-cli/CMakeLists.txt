@@ -1,5 +1,5 @@
 # CMAKE project for openrct2-cli (CLI-only build of OpenRCT2)
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.9)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
@@ -14,6 +14,7 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
 set (PROJECT openrct2-cli)
 project(${PROJECT} CXX)
 add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
+ipo_set_target_properties(${PROJECT})
 
 target_link_libraries(${PROJECT} "libopenrct2")
 
