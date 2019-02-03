@@ -44,13 +44,13 @@ public:
 
     reference operator[](size_type idx)
     {
-        idx = (_head + idx) % _elements.size();
+        idx = (_head + idx) % capacity();
         return _elements[idx];
     }
 
     const_reference operator[](size_type idx) const
     {
-        idx = (_head + idx) % _elements.size();
+        idx = (_head + idx) % capacity();
         return _elements[idx];
     }
 
@@ -71,37 +71,23 @@ public:
         return _size == 0;
     }
 
-    size_type capacity() const
+    constexpr size_type capacity() const
     {
         return _elements.size();
     }
 
     void push_back(const value_type& val)
     {
-        if (_size == 0)
+        if (_size == capacity())
         {
-            _elements[_head] = val;
-            _tail = _head;
-            _size++;
-        }
-        else if (_size != _elements.size())
-        {
-            _tail++;
-            if (_tail == _elements.size())
-                _tail = 0;
-            _size++;
-            _elements[_tail] = val;
+            _head = (_head + 1) % capacity();
         }
         else
         {
-            _head++;
-            if (_head == _elements.size())
-                _head = 0;
-            _tail++;
-            if (_tail == _elements.size())
-                _tail = 0;
-            _elements[_tail] = val;
+            _size++;
         }
+        _elements[_tail] = val;
+        _tail = (_tail + 1) % capacity();
     }
 
 private:
