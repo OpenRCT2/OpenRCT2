@@ -960,7 +960,7 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
 void Network::CheckDesynchronizaton()
 {
     // Check synchronisation
-    if (GetMode() == NETWORK_MODE_CLIENT && !_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0))
+    if (GetMode() == NETWORK_MODE_CLIENT && !_desynchronised && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
     {
         _desynchronised = true;
 
@@ -1596,7 +1596,7 @@ void Network::Server_Send_TICK()
     last_tick_sent_time = ticks;
 
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32_t)NETWORK_COMMAND_TICK << gCurrentTicks << gScenarioSrand0;
+    *packet << (uint32_t)NETWORK_COMMAND_TICK << gCurrentTicks << scenario_rand_state().s0;
     uint32_t flags = 0;
     // Simple counter which limits how often a sprite checksum gets sent.
     // This can get somewhat expensive, so we don't want to push it every tick in release,

@@ -17,6 +17,7 @@
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Path.hpp"
+#include "../core/Random.hpp"
 #include "../core/String.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -207,8 +208,8 @@ public:
         gDateMonthsElapsed = _s6.elapsed_months;
         gDateMonthTicks = _s6.current_day;
         gScenarioTicks = _s6.scenario_ticks;
-        gScenarioSrand0 = _s6.scenario_srand_0;
-        gScenarioSrand1 = _s6.scenario_srand_1;
+
+        scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
         ImportTileElements();
 
