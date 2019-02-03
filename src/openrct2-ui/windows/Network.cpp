@@ -154,6 +154,13 @@ rct_window* window_network_open()
     {
         window = window_create_auto_pos(320, 144, &window_network_information_events, WC_NETWORK, WF_10 | WF_RESIZABLE);
         window_network_set_page(window, WINDOW_NETWORK_PAGE_INFORMATION);
+
+        // Fill the buffer so it will start scrolling in.
+        _networkHistory.clear();
+        for (size_t i = 0; i < _networkHistory.capacity(); i++)
+        {
+            _networkHistory.push_back(NetworkHistory_t{});
+        }
     }
 
     _networkStats = network_get_stats();
