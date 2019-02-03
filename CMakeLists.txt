@@ -52,6 +52,10 @@ if (PORTABLE OR WIN32)
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif ()
 
+# LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
+# Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.
+list(APPEND SUPPORTED_CHECK_CXX_COMPILER_FLAGS)
+
 include(cmake/ipo.cmake)
 list(APPEND IPO_ENABLED_BUILDS RELEASE RELWITHDEBINFO MINSIZEREL)
 ipo_enable("${IPO_ENABLED_BUILDS}")
@@ -137,44 +141,20 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "i686.*|i386.*|x86.*|amd64.*|AMD64.*")
     set(X86 1)
 endif()
 
-# Include sub-projects
-include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
-include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
-if(NOT DISABLE_GUI)
-    include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
-endif()
-
-# g2
-add_custom_command(
-    OUTPUT g2.dat
-    COMMAND ./openrct2-cli sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
-add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
-
-# Include tests
-if (WITH_TESTS)
-    enable_testing()
-    if (UNIX AND (NOT USE_MMAP))
-        include("${ROOT_DIR}/test/testpaint/CMakeLists.txt" NO_POLICY_SCOPE)
-    endif ()
-    include("${ROOT_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
-endif ()
-
-# Check if a flag exists and add it to the compiler (so, not the linker) options
+# Check if a flag exists and add it to the list of compiler (so, not linker) options
 function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
     CHECK_CXX_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
     if (${_CACHE_VAR})
-        if(TARGET ${PROJECT})
-            target_compile_options(${PROJECT} PRIVATE ${_FLAG})
-        endif()
-        if(TARGET ${PROJECT}-cli)
-            target_compile_options(${PROJECT}-cli PRIVATE ${_FLAG})
-        endif()
+        list(APPEND SUPPORTED_CHECK_CXX_COMPILER_FLAGS "${_FLAG}")
     else ()
         message(STATUS "Unsupported CXXFLAG: ${_FLAG}")
     endif ()
 endfunction ()
+
+# Add check flags to a compile TARGET
+function (SET_CHECK_CXX_FLAGS _TARGET)
+    target_compile_options("${_TARGET}" PRIVATE "${SUPPORTED_CHECK_CXX_COMPILER_FLAGS}")
+endfunction()
 
 # Check if a flag exists and add it to the compiler and the linker options
 function (ADD_CHECK_CXX_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
@@ -248,6 +228,29 @@ else ()
     endif ()
 endif ()
 
+# Include sub-projects
+include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
+include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
+if(NOT DISABLE_GUI)
+    include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
+endif()
+
+# g2
+add_custom_command(
+    OUTPUT g2.dat
+    COMMAND ./openrct2-cli sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
+
+# Include tests
+if (WITH_TESTS)
+    enable_testing()
+    if (UNIX AND (NOT USE_MMAP))
+        include("${ROOT_DIR}/test/testpaint/CMakeLists.txt" NO_POLICY_SCOPE)
+    endif ()
+    include("${ROOT_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
+endif ()
 
 # Install
 # Don't recurse, grab all *.txt and *.md files

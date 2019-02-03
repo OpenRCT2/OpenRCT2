@@ -49,6 +49,7 @@ endif ()
 set (PROJECT openrct2)
 project(${PROJECT} CXX)
 add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
+SET_CHECK_CXX_FLAGS(${PROJECT})
 ipo_set_target_properties(${PROJECT})
 
 target_link_libraries(${PROJECT} "libopenrct2"
