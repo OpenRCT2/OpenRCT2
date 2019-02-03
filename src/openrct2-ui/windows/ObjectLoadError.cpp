@@ -18,8 +18,11 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/platform/platform.h>
+#include <openrct2/windows/Intent.h>
 #include <string>
 #include <vector>
+
+static constexpr auto OPENRCT2_API_LEGACY_OBJECT_URL = "https://api.openrct2.io/objects/legacy/";
 
 // clang-format off
 enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
@@ -67,6 +70,7 @@ static void window_object_load_error_scrollmousedown(rct_window *w, int32_t scro
 static void window_object_load_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 static void window_object_load_error_download_all(rct_window* w);
+static void next_download();
 
 static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_close,
@@ -103,6 +107,8 @@ static rct_window_event_list window_object_load_error_events = {
 static std::vector<rct_object_entry> _invalid_entries;
 static int32_t highlighted_index = -1;
 static std::string file_path;
+static int32_t _currentDownloadIndex;
+static bool _downloadingObjects;
 
 /**
  *  Returns an rct_string_id that represents an rct_object_entry's type.
@@ -348,7 +354,22 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
     }
 }
 
-static void DownloadObject(IObjectRepository& objRepo, const std::string name, const std::string_view url)
+static void show_progress(const std::string& name, int32_t count, int32_t total)
+{
+    char str_downloading_objects[256];
+    set_format_arg(0, int16_t, count);
+    set_format_arg(2, int16_t, total);
+    set_format_arg(4, char*, name.c_str());
+
+    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, gCommonFormatArgs);
+
+    auto intent = Intent(WC_NETWORK_STATUS);
+    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
+    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
+    context_open_intent(&intent);
+}
+
+static void DownloadObject(const std::string name, const std::string_view url)
 {
     using namespace OpenRCT2::Network;
     try
@@ -356,40 +377,50 @@ static void DownloadObject(IObjectRepository& objRepo, const std::string name, c
         Http::Request req;
         req.method = Http::Method::GET;
         req.url = url;
-        auto response = Http::Do(req);
-        if (response.status == Http::Status::OK)
-        {
-            auto data = (uint8_t*)response.body.data();
-            auto dataLen = response.body.size();
-            objRepo.AddObjectFromFile(name, data, dataLen);
-        }
-        else
-        {
-            throw std::runtime_error("Non 200 status");
-        }
+        Http::DoAsync(req, [name](Http::Response response) {
+            if (response.status == Http::Status::OK)
+            {
+                auto data = (uint8_t*)response.body.data();
+                auto dataLen = response.body.size();
+
+                auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
+                objRepo.AddObjectFromFile(name, data, dataLen);
+            }
+            else
+            {
+                throw std::runtime_error("Non 200 status");
+            }
+            next_download();
+        });
     }
     catch (const std::exception&)
     {
         std::printf("  Failed to download %s\n", name.c_str());
+        next_download();
     }
 }
 
-static void window_object_load_error_download_all(rct_window* w)
+static void next_download()
 {
     using namespace OpenRCT2::Network;
 
-    auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
-    for (const auto& entry : _invalid_entries)
+    if (!_downloadingObjects || _currentDownloadIndex >= _invalid_entries.size())
     {
-        auto name = String::Trim(std::string(entry.name, sizeof(entry.name)));
+        // Finished...
+        return;
+    }
 
-        std::printf("Downloading %s...\n", name.c_str());
-        try
-        {
-            Http::Request req;
-            req.method = Http::Method::GET;
-            req.url = "http://localhost:5000/objects/legacy/" + name;
-            auto response = Http::Do(req);
+    auto& entry = _invalid_entries[_currentDownloadIndex];
+    auto name = String::Trim(std::string(entry.name, sizeof(entry.name)));
+    show_progress(name, _currentDownloadIndex + 1, (int32_t)_invalid_entries.size());
+    std::printf("Downloading %s...\n", name.c_str());
+    _currentDownloadIndex++;
+    try
+    {
+        Http::Request req;
+        req.method = Http::Method::GET;
+        req.url = OPENRCT2_API_LEGACY_OBJECT_URL + name;
+        Http::DoAsync(req, [name](Http::Response response) {
             if (response.status == Http::Status::OK)
             {
                 auto jresponse = Json::FromString(response.body);
@@ -399,7 +430,7 @@ static void window_object_load_error_download_all(rct_window* w)
                     auto downloadLink = json_string_value(json_object_get(jresponse, "download"));
                     if (downloadLink != nullptr)
                     {
-                        DownloadObject(objRepo, objName, downloadLink);
+                        DownloadObject(objName, downloadLink);
                     }
                     json_decref(jresponse);
                 }
@@ -407,11 +438,19 @@ static void window_object_load_error_download_all(rct_window* w)
             else
             {
                 std::printf("  %s not found\n", name.c_str());
+                next_download();
             }
-        }
-        catch (const std::exception&)
-        {
-            std::printf("  Failed to query %s\n", name.c_str());
-        }
+        });
     }
+    catch (const std::exception&)
+    {
+        std::printf("  Failed to query %s\n", name.c_str());
+    }
+}
+
+static void window_object_load_error_download_all(rct_window* w)
+{
+    _currentDownloadIndex = 0;
+    _downloadingObjects = true;
+    next_download();
 }
