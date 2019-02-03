@@ -28,8 +28,10 @@
 #    include "../util/Util.h"
 #    include "platform.h"
 
+#    include <algorithm>
 #    include <iterator>
 #    include <lmcons.h>
+#    include <memory>
 #    include <psapi.h>
 #    include <shlobj.h>
 #    include <sys/stat.h>
@@ -251,6 +253,22 @@ std::string platform_get_rct1_steam_dir()
 std::string platform_get_rct2_steam_dir()
 {
     return "Rollercoaster Tycoon 2";
+}
+
+std::string platform_sanitise_filename(const std::string& path)
+{
+    auto sanitised = path;
+
+    std::vector<std::string::value_type> prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
+
+    std::replace_if(
+        sanitised.begin(), sanitised.end(),
+        [](const std::string::value_type& ch) {
+            return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
+        },
+        '_');
+
+    return sanitised;
 }
 
 uint16_t platform_get_locale_language()

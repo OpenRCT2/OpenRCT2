@@ -116,6 +116,7 @@
 - Fix: [#8588] Guest list scrolling breaks above ~2000 guests.
 - Fix: [#8591] Game loop does not run at a consistent tick rate of 40 Hz.
 - Fix: [#8647] Marketing campaigns check for entry fees below £1 (original bug). 
+- Fix: [#8598] Sanitize screenshot parknames.
 - Fix: [#8653] Crash when peeps attempt to enter a ride with no vehicles.
 - Fix: [#8720] Desync due to boats colliding with ghost pieces.
 - Fix: [#8736] Incomplete warning when all ride slots are full.
