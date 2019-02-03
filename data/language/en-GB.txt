@@ -3727,6 +3727,7 @@ STR_6276    :{RED}{STRINGID} has guests getting stuck, possibly due to invalid r
 STR_6277    :{WINDOW_COLOUR_2}Station index: {BLACK}{COMMA16}
 STR_6278    :Autosave amount
 STR_6279    :{SMALLFONT}{BLACK}Number of autosaves that should be kept
+<<<<<<< HEAD
 STR_6280    :{SMALLFONT}{BLACK}Chat
 STR_6281    :{SMALLFONT}{BLACK}Show a separate button for the Chat window in the toolbar
 STR_6282    :Chat
@@ -3741,6 +3742,24 @@ STR_6290    :Base protocol
 STR_6291    :Commands
 STR_6292    :Map
 	
+=======
+STR_6280    :Network
+STR_6281    :Network Information
+STR_6282    :Receive
+STR_6283    :Send
+STR_6284    :Total received
+STR_6285    :Total sent
+STR_6286    :Base protocol
+STR_6287    :Commands
+STR_6288    :Map
+STR_6289    :B
+STR_6290    :KB
+STR_6291    :MB
+STR_6292    :GB
+STR_6293    :TB
+STR_6294    :{STRING}/sec
+
+>>>>>>> Use localisation for speed and size information.
 #############
 # Scenarios #
 ################

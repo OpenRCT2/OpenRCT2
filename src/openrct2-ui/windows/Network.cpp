@@ -99,9 +99,9 @@ static constexpr int32_t NetworkTrafficGroupColors[NETWORK_STATISTICS_GROUP_MAX]
 
 static constexpr int32_t NetworkTrafficGroupNames[NETWORK_STATISTICS_GROUP_MAX] = {
     STR_NETWORK,
-    STR_LEGEND_BASE,
-    STR_LEGEND_COMMANDS,
-    STR_LEGEND_MAPDATA,
+    STR_NETWORK_LEGEND_BASE,
+    STR_NETWORK_LEGEND_COMMANDS,
+    STR_NETWORK_LEGEND_MAPDATA,
 };
 
 static rct_window_event_list window_network_information_events = {
@@ -285,9 +285,10 @@ static void window_network_information_update(rct_window* w)
     _networkHistory.push_back(_networkLastDeltaStats);
 }
 
-static void format_readable_size(char* buf, uint64_t bytes)
+static void format_readable_size(char* buf, size_t bufSize, uint64_t bytes)
 {
-    constexpr const char* SizeTable[] = { "B", "KB", "MB", "GB", "TB" };
+    constexpr uint32_t SizeTable[] = { STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE,
+                                       STR_SIZE_TERABYTE };
 
     double size = bytes;
     size_t idx = 0;
@@ -297,7 +298,21 @@ static void format_readable_size(char* buf, uint64_t bytes)
         idx++;
     }
 
-    sprintf(buf, "%.03f %s", size, SizeTable[idx]);
+    char sizeType[128] = {};
+    format_string(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
+
+    sprintf(buf, "%.03f %s", size, sizeType);
+}
+
+static void format_readable_speed(char* buf, size_t bufSize, uint64_t bytes)
+{
+    char sizeText[128] = {};
+    format_readable_size(sizeText, sizeof(sizeText), bytes);
+
+    const char* args[1] = {
+        sizeText,
+    };
+    format_string(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
 }
 
 static void window_network_information_invalidate(rct_window* w)
@@ -393,7 +408,7 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
     constexpr int32_t padding = 5;
     constexpr int32_t heightTab = 43;
     constexpr int32_t textHeight = 12;
-    constexpr int32_t graphBarWidth = 1;
+    const int32_t graphBarWidth = std::min(1, w->width / WH);
     const int32_t totalHeight = w->height;
     const int32_t totalHeightText = (textHeight + (padding * 2)) * 3;
     const int32_t graphHeight = (totalHeight - totalHeightText - heightTab) / 2;
@@ -408,13 +423,15 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
 
         // Received stats.
         {
-            sprintf(textBuffer, "%-6u %.2f B/s", _bytesIn, _bytesInSec);
-            gfx_draw_string_left(dpi, STR_BYTES_IN, nullptr, PALETTE_INDEX_10, x, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_RECEIVE, nullptr, PALETTE_INDEX_10, x, y);
+
+            format_readable_speed(textBuffer, sizeof(textBuffer), _bytesInSec);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
 
-            format_readable_size(textBuffer, _networkStats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL]);
-            gfx_draw_string_left(dpi, STR_TOTAL_IN, nullptr, PALETTE_INDEX_10, x + 200, y);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 260, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, x + 200, y);
+
+            format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL]);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);
             y += textHeight + padding;
 
             window_network_draw_graph(w, dpi, x, y, graphHeight, w->width - (padding * 2), graphBarWidth, true);
@@ -423,13 +440,15 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
 
         // Sent stats.
         {
-            sprintf(textBuffer, "%-6u %.2f B/s", _bytesOut, _bytesOutSec);
-            gfx_draw_string_left(dpi, STR_BYTES_OUT, nullptr, PALETTE_INDEX_10, x, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_SEND, nullptr, PALETTE_INDEX_10, x, y);
+
+            format_readable_speed(textBuffer, sizeof(textBuffer), _bytesOutSec);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
 
-            format_readable_size(textBuffer, _networkStats.bytesSent[NETWORK_STATISTICS_GROUP_TOTAL]);
-            gfx_draw_string_left(dpi, STR_TOTAL_OUT, nullptr, PALETTE_INDEX_10, x + 200, y);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 260, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, x + 200, y);
+
+            format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesSent[NETWORK_STATISTICS_GROUP_TOTAL]);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);
             y += textHeight + padding;
 
             window_network_draw_graph(w, dpi, x, y, graphHeight, w->width - (padding * 2), graphBarWidth, false);
