@@ -16,15 +16,15 @@ namespace Meta
     /**
      * Meta function for checking that all Conditions are true types.
      */
-    template<typename... Conditions> struct all : std::true_type
+    template<typename... _TConditions> struct all : std::true_type
     {
     };
 
-    template<typename Condition, typename... Conditions>
-    struct all<Condition, Conditions...> : std::conditional<Condition::value, all<Conditions...>, std::false_type>::type
+    template<typename _TCondition, typename... _TConditions>
+    struct all<_TCondition, _TConditions...> : std::conditional<_TCondition::value, all<_TConditions...>, std::false_type>::type
     {
     };
 
-    template<typename Type, typename... Types> using all_convertible = all<std::is_convertible<Types, Type>...>;
+    template<typename _TType, typename... _TTypes> using all_convertible = all<std::is_convertible<_TTypes, _TType>...>;
 
 } // namespace Meta
