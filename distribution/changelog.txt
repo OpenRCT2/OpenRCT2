@@ -19,6 +19,7 @@
 - Feature: [#8583] Add boosters to water coaster.
 - Change: [#7961] Add new object types: station, terrain surface, and terrain edge.
 - Change: [#8222] The climate setting has been moved from objective options to scenario options.
+- Change: [#8647] Increased 'guest generation probability' thresholds of marketing campaigns. 
 - Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.
 - Fix: [#5684] Player list can desync between clients and server and can crash.
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
