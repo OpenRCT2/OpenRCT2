@@ -17,6 +17,7 @@
 - Feature: [#8377] Add option to adjust amount of autosaves to keep.
 - Feature: [#8458] Add sprite sorting benchmark.
 - Feature: [#8583] Add boosters to water coaster.
+- Feature: [#8648] Add optional chat button to top toolbar in multiplayer games.
 - Change: [#7961] Add new object types: station, terrain surface, and terrain edge.
 - Change: [#8222] The climate setting has been moved from objective options to scenario options.
 - Change: [#8647] Increased 'guest generation probability' thresholds of marketing campaigns. 

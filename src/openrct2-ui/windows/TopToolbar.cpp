@@ -28,6 +28,7 @@
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/network/network.h>
@@ -78,6 +79,7 @@ enum {
     WIDX_RESEARCH,
     WIDX_NEWS,
     WIDX_NETWORK,
+    WIDX_CHAT,
 
     WIDX_SEPARATOR,
 };
@@ -165,6 +167,7 @@ static constexpr const int32_t left_aligned_widgets_order[] = {
     WIDX_FILE_MENU,
     WIDX_MUTE,
     WIDX_NETWORK,
+    WIDX_CHAT,
     WIDX_CHEATS,
     WIDX_DEBUG,
 
@@ -226,6 +229,7 @@ static rct_widget window_top_toolbar_widgets[] = {
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_FINANCES_RESEARCH_TIP },        // Research
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_RECENT_MESSAGES_TIP },     // News
     { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
+    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_TOOLBAR_CHAT_TIP },             // Chat
 
     { WWT_EMPTY,    0,  0,      10-1,   0,                      0,                      0xFFFFFFFF,                                 STR_NONE },                         // Artificial widget separator
     { WIDGETS_END },
@@ -388,6 +392,16 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
             break;
         case WIDX_MUTE:
             audio_toggle_all_sounds();
+            break;
+        case WIDX_CHAT:
+            if (chat_available())
+            {
+                chat_toggle();
+            }
+            else
+            {
+                context_show_error(STR_CHAT_UNAVAILABLE, STR_NONE);
+            }
             break;
     }
 }
@@ -689,6 +703,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
     window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_TRNBTN;
     window_top_toolbar_widgets[WIDX_MAP].type = WWT_TRNBTN;
     window_top_toolbar_widgets[WIDX_MUTE].type = WWT_TRNBTN;
+    window_top_toolbar_widgets[WIDX_CHAT].type = WWT_TRNBTN;
     window_top_toolbar_widgets[WIDX_LAND].type = WWT_TRNBTN;
     window_top_toolbar_widgets[WIDX_WATER].type = WWT_TRNBTN;
     window_top_toolbar_widgets[WIDX_SCENERY].type = WWT_TRNBTN;
@@ -710,6 +725,11 @@ static void window_top_toolbar_invalidate(rct_window* w)
     if (!gConfigInterface.toolbar_show_mute)
     {
         window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
+    }
+
+    if (!gConfigInterface.toolbar_show_chat)
+    {
+        window_top_toolbar_widgets[WIDX_CHAT].type = WWT_EMPTY;
     }
 
     if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
@@ -767,6 +787,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         {
             case NETWORK_MODE_NONE:
                 window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
+                window_top_toolbar_widgets[WIDX_CHAT].type = WWT_EMPTY;
                 break;
             case NETWORK_MODE_CLIENT:
                 window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
@@ -778,7 +799,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
     }
 
     enabledWidgets = 0;
-    for (int i = WIDX_PAUSE; i <= WIDX_NETWORK; i++)
+    for (int i = WIDX_PAUSE; i <= WIDX_CHAT; i++)
         if (window_top_toolbar_widgets[i].type != WWT_EMPTY)
             enabledWidgets |= (1 << i);
     w->enabled_widgets = enabledWidgets;
@@ -907,6 +928,17 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (widget_is_pressed(w, WIDX_CHEATS))
             y++;
         imgId = SPR_G2_SANDBOX;
+        gfx_draw_sprite(dpi, imgId, x, y, 3);
+    }
+
+    // Draw chat button
+    if (window_top_toolbar_widgets[WIDX_CHAT].type != WWT_EMPTY)
+    {
+        x = w->x + window_top_toolbar_widgets[WIDX_CHAT].left;
+        y = w->y + window_top_toolbar_widgets[WIDX_CHAT].top - 2;
+        if (widget_is_pressed(w, WIDX_CHAT))
+            y++;
+        imgId = SPR_G2_CHAT;
         gfx_draw_sprite(dpi, imgId, x, y, 3);
     }
 
