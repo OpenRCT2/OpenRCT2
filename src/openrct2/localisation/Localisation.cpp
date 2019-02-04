@@ -1010,7 +1010,7 @@ static void format_realtime(char** dest, size_t* size, uint16_t value)
 
 static void format_string_code(uint32_t format_code, char** dest, size_t* size, char** args)
 {
-    intptr_t value;
+    intptr_t value = 0;
 
     if ((*size) == 0)
         return;
@@ -1026,56 +1026,56 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
     {
         case FORMAT_COMMA32:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&value, *args, sizeof(int32_t));
             *args += 4;
 
             format_comma_separated_integer(dest, size, value);
             break;
         case FORMAT_INT32:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&value, *args, sizeof(int32_t));
             *args += 4;
 
             format_integer(dest, size, value);
             break;
         case FORMAT_COMMA2DP32:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&value, *args, sizeof(int32_t));
             *args += 4;
 
             format_comma_separated_fixed_2dp(dest, size, value);
             break;
         case FORMAT_COMMA1DP16:
             // Pop argument
-            value = *((int16_t*)*args);
+            std::memcpy(&value, *args, sizeof(int16_t));
             *args += 2;
 
             format_comma_separated_fixed_1dp(dest, size, value);
             break;
         case FORMAT_COMMA16:
             // Pop argument
-            value = *((int16_t*)*args);
+            std::memcpy(&value, *args, sizeof(int16_t));
             *args += 2;
 
             format_comma_separated_integer(dest, size, value);
             break;
         case FORMAT_UINT16:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_integer(dest, size, value);
             break;
         case FORMAT_CURRENCY2DP:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&value, *args, sizeof(int32_t));
             *args += 4;
 
             format_currency_2dp(dest, size, value);
             break;
         case FORMAT_CURRENCY:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&value, *args, sizeof(int32_t));
             *args += 4;
 
             format_currency(dest, size, value);
@@ -1083,14 +1083,14 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
         case FORMAT_STRINGID:
         case FORMAT_STRINGID2:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_string_part(dest, size, (rct_string_id)value, args);
             break;
         case FORMAT_STRING:
             // Pop argument
-            value = *((uintptr_t*)*args);
+            std::memcpy(&value, *args, sizeof(uintptr_t));
             *args += sizeof(uintptr_t);
 
             if (value != 0)
@@ -1098,21 +1098,21 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             break;
         case FORMAT_MONTHYEAR:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_date(dest, size, (uint16_t)value);
             break;
         case FORMAT_MONTH:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_append_string(dest, size, language_get_string(DateGameMonthNames[date_get_month((int32_t)value)]));
             break;
         case FORMAT_VELOCITY:
             // Pop argument
-            value = *((int16_t*)*args);
+            std::memcpy(&value, *args, sizeof(int16_t));
             *args += 2;
 
             format_velocity(dest, size, (uint16_t)value);
@@ -1125,34 +1125,34 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             break;
         case FORMAT_DURATION:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_duration(dest, size, (uint16_t)value);
             break;
         case FORMAT_REALTIME:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_realtime(dest, size, (uint16_t)value);
             break;
         case FORMAT_LENGTH:
             // Pop argument
-            value = *((int16_t*)*args);
+            std::memcpy(&value, *args, sizeof(int16_t));
             *args += 2;
 
             format_length(dest, size, (int16_t)value);
             break;
         case FORMAT_SPRITE:
             // Pop argument
-            value = *((uint32_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint32_t));
             *args += 4;
 
             format_handle_overflow(1 + sizeof(uint32_t));
 
             format_push_char_safe('\x17');
-            *((uint32_t*)(*dest)) = (uint32_t)value;
+            std::memcpy(*dest, &value, sizeof(uint32_t));
             (*dest) += sizeof(uint32_t);
             (*size) -= sizeof(uint32_t);
             break;
