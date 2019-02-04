@@ -292,36 +292,6 @@ static void window_network_information_update(rct_window* w)
     _networkHistory.push_back(_networkLastDeltaStats);
 }
 
-static void format_readable_size(char* buf, size_t bufSize, uint64_t bytes)
-{
-    constexpr uint32_t SizeTable[] = { STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE,
-                                       STR_SIZE_TERABYTE };
-
-    double size = bytes;
-    size_t idx = 0;
-    while (size >= 1024.0)
-    {
-        size /= 1024.0;
-        idx++;
-    }
-
-    char sizeType[128] = {};
-    format_string(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
-
-    sprintf(buf, "%.03f %s", size, sizeType);
-}
-
-static void format_readable_speed(char* buf, size_t bufSize, uint64_t bytes)
-{
-    char sizeText[128] = {};
-    format_readable_size(sizeText, sizeof(sizeText), bytes);
-
-    const char* args[1] = {
-        sizeText,
-    };
-    format_string(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
-}
-
 static void window_network_information_invalidate(rct_window* w)
 {
     window_network_set_pressed_tab(w);

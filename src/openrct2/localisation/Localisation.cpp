@@ -1403,6 +1403,36 @@ void format_string_to_upper(utf8* dest, size_t size, rct_string_id format, const
     dest[upperString.size()] = '\0';
 }
 
+void format_readable_size(char* buf, size_t bufSize, uint64_t sizeBytes)
+{
+    constexpr uint32_t SizeTable[] = { STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE,
+                                       STR_SIZE_TERABYTE };
+
+    double size = sizeBytes;
+    size_t idx = 0;
+    while (size >= 1024.0)
+    {
+        size /= 1024.0;
+        idx++;
+    }
+
+    char sizeType[128] = {};
+    format_string(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
+
+    sprintf(buf, "%.03f %s", size, sizeType);
+}
+
+void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytes)
+{
+    char sizeText[128] = {};
+    format_readable_size(sizeText, sizeof(sizeText), sizeBytes);
+
+    const char* args[1] = {
+        sizeText,
+    };
+    format_string(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
+}
+
 money32 string_to_money(const char* string_to_monetise)
 {
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
