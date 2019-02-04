@@ -78,16 +78,30 @@ public:
 
     void push_back(const value_type& val)
     {
-        if (_size == capacity())
+        if (_size == 0)
         {
-            _head = (_head + 1) % capacity();
+            _elements[_head] = val;
+            _tail = _head;
+            _size++;
+        }
+        else if (_size != capacity())
+        {
+            _tail++;
+            if (_tail == capacity())
+                _tail = 0;
+            _size++;
+            _elements[_tail] = val;
         }
         else
         {
-            _size++;
+            _head++;
+            if (_head == capacity())
+                _head = 0;
+            _tail++;
+            if (_tail == capacity())
+                _tail = 0;
+            _elements[_tail] = val;
         }
-        _elements[_tail] = val;
-        _tail = (_tail + 1) % capacity();
     }
 
 private:
