@@ -18,6 +18,7 @@
 - Feature: [#8458] Add sprite sorting benchmark.
 - Feature: [#8583] Add boosters to water coaster.
 - Feature: [#8648] Add optional chat button to top toolbar in multiplayer games.
+- Feature: [#8652] Add network window including a graph for data usage visualisation.
 - Change: [#7961] Add new object types: station, terrain surface, and terrain edge.
 - Change: [#8222] The climate setting has been moved from objective options to scenario options.
 - Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.
