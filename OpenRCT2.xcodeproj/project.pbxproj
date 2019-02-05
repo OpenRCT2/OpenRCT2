@@ -612,6 +612,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2A5354EB22099D7700A5440F /* SignSetStyleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SignSetStyleAction.hpp; sourceTree = "<group>"; };
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
 		4C29DEB2218C6AE500E8707F /* RCT12.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RCT12.cpp; sourceTree = "<group>"; };
@@ -1990,6 +1991,7 @@
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				2A5354EB22099D7700A5440F /* SignSetStyleAction.hpp */,
 				C6352B881F477032006CCEE3 /* GameAction.cpp */,
 				C6352B891F477032006CCEE3 /* GameAction.h */,
 				C6352B8A1F477032006CCEE3 /* GameActionCompat.cpp */,
