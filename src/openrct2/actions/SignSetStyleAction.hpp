@@ -16,6 +16,7 @@
 #include "../ui/UiContext.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
+#include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
@@ -58,8 +59,7 @@ public:
 
         rct_banner* banner = &gBanners[_bannerIndex];
 
-        int32_t x = banner->x << 5;
-        int32_t y = banner->y << 5;
+        CoordsXY coords{ banner->x * 32, banner->y * 32 };
 
         if (_isLarge)
         {
@@ -77,7 +77,7 @@ public:
         }
         else
         {
-            TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+            TileElement* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
             bool wallFound = false;
             do
             {
@@ -107,14 +107,13 @@ public:
     {
         rct_banner* banner = &gBanners[_bannerIndex];
 
-        int32_t x = banner->x << 5;
-        int32_t y = banner->y << 5;
+        CoordsXY coords{ banner->x * 32, banner->y * 32 };
 
         if (_isLarge)
         {
             TileElement* tileElement = banner_get_tile_element((BannerIndex)_bannerIndex);
             if (!sign_set_colour(
-                    banner->x * 32, banner->y * 32, tileElement->base_height, tileElement->GetDirection(),
+                    coords.x, coords.y, tileElement->base_height, tileElement->GetDirection(),
                     tileElement->AsLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
             {
                 return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
@@ -122,10 +121,10 @@ public:
         }
         else
         {
-            TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+            TileElement* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
             tileElement->AsWall()->SetPrimaryColour(_mainColour);
             tileElement->AsWall()->SetSecondaryColour(_textColour);
-            map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+            map_invalidate_tile(coords.x, coords.y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
