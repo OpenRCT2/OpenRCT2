@@ -1,5 +1,6 @@
 # CMAKE project for openrct2-cli (CLI-only build of OpenRCT2)
 cmake_minimum_required(VERSION 3.9)
+
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
@@ -15,21 +16,13 @@ set (PROJECT openrct2-cli)
 project(${PROJECT} CXX)
 add_executable(${PROJECT} ${OPENRCT2_CLI_SOURCES})
 ipo_set_target_properties(${PROJECT})
-
 target_link_libraries(${PROJECT} "libopenrct2")
+target_link_platform_libraries(${PROJECT})
 
 # Needed for interactive console
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(${PROJECT} Threads::Threads)
-
-if (APPLE)
-    target_link_libraries(${PROJECT} "-framework Cocoa")
-endif ()
-
-if (WIN32)
-    target_link_libraries(${PROJECT} gdi32)
-endif ()
-
+target_link_platform_libraries(${PROJECT})
 # Includes
 target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/..")
