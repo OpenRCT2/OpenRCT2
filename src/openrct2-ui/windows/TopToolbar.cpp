@@ -999,10 +999,11 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         imgId = SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION;
         gfx_draw_sprite(dpi, imgId, x, y, 0);
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        if (network_is_desynchronised())
-            gfx_draw_string(dpi, "</>", COLOUR_BORDEAUX_RED | COLOUR_FLAG_OUTLINE, x - 1, y + 2);
+        imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
+        gfx_draw_sprite(dpi, imgId, x + 3, y + 11, 0);
+
         int32_t player_count = network_get_num_players();
-        gfx_draw_string_right(dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, x + 24, y + 15);
+        gfx_draw_string_right(dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, x + 23, y + 1);
     }
 }
 
