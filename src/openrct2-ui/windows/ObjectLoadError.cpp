@@ -30,7 +30,7 @@ private:
 
     std::vector<rct_object_entry> _entries;
     std::vector<rct_object_entry> _downloadedEntries;
-    int32_t _currentDownloadIndex{};
+    size_t _currentDownloadIndex{};
     std::mutex _downloadedEntriesMutex;
 
     // TODO static due to INTENT_EXTRA_CALLBACK not allowing a std::function
@@ -57,7 +57,7 @@ public:
     }
 
 private:
-    void UpdateProgress(const std::string& name, int32_t count, int32_t total)
+    void UpdateProgress(const std::string& name, size_t count, size_t total)
     {
         char str_downloading_objects[256];
         set_format_arg(0, int16_t, count);
