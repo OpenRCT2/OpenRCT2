@@ -31,6 +31,7 @@ namespace OpenRCT2
 
 void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 void network_close();
+void network_reconnect();
 void network_shutdown_client();
 int32_t network_begin_client(const std::string& host, int32_t port);
 int32_t network_begin_server(int32_t port, const std::string& address);

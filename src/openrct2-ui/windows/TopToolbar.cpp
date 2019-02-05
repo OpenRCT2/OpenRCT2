@@ -152,6 +152,9 @@ enum TOP_TOOLBAR_DEBUG_DDIDX {
 enum TOP_TOOLBAR_NETWORK_DDIDX {
     DDIDX_MULTIPLAYER = 0,
     DDIDX_NETWORK = 1,
+    DDIDX_MULTIPLAYER_RECONNECT = 2,
+
+    TOP_TOOLBAR_NETWORK_COUNT
 };
 
 enum {
@@ -3415,13 +3418,13 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 
 static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_MULTIPLAYER;
-
     gDropdownItemsFormat[DDIDX_MULTIPLAYER] = STR_MULTIPLAYER;
     gDropdownItemsFormat[DDIDX_NETWORK] = STR_NETWORK;
+    gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, 2);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        TOP_TOOLBAR_NETWORK_COUNT);
 
     gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
@@ -3465,6 +3468,9 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
                 break;
             case DDIDX_NETWORK:
                 context_open_window(WC_NETWORK);
+                break;
+            case DDIDX_MULTIPLAYER_RECONNECT:
+                network_reconnect();
                 break;
         }
     }
