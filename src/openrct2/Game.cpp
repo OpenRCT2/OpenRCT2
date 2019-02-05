@@ -1516,7 +1516,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     game_command_set_banner_style,
-    game_command_set_sign_style,
+    nullptr,
     game_command_set_player_group,
     game_command_modify_groups,
     game_command_kick_player,
