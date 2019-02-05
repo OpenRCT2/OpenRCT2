@@ -23,6 +23,6 @@ target_link_platform_libraries(${PROJECT})
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(${PROJECT} Threads::Threads)
-target_link_platform_libraries(${PROJECT})
+
 # Includes
 target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/..")
