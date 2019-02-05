@@ -6,6 +6,8 @@ endif()
 
 project(openrct2 CXX)
 
+include(cmake/platform.cmake)
+
 if (NOT MSVC)
     include(FindPkgConfig)
 endif ()
