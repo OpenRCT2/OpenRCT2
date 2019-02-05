@@ -54,7 +54,7 @@ if (PORTABLE OR WIN32)
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif ()
 
-# LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
+# LIST of supported flags, use set_check_cxx_flags() to apply to target.
 # Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.
 list(APPEND SUPPORTED_CHECK_CXX_COMPILER_FLAGS)
 
@@ -154,7 +154,7 @@ function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
 endfunction ()
 
 # Add check flags to a compile TARGET
-function (SET_CHECK_CXX_FLAGS _TARGET)
+function (set_check_cxx_flags _TARGET)
     target_compile_options("${_TARGET}" PRIVATE "${SUPPORTED_CHECK_CXX_COMPILER_FLAGS}")
 endfunction()
 

@@ -74,7 +74,7 @@ set(PROJECT libopenrct2)
 project(${PROJECT} CXX)
 add_library(${PROJECT} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
-SET_CHECK_CXX_FLAGS(${PROJECT})
+set_check_cxx_flags(${PROJECT})
 
 if (benchmark_FOUND)
     message("Found Google benchmark, enabling support")
