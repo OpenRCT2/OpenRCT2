@@ -419,6 +419,11 @@
         "path": "icons/map_east_pressed.png"
     },
     {
+        "path": "icons/multiplayer_toolbar.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
         "path": "icons/multiplayer_sync.png",
         "x_offset": 0,
         "y_offset": 0

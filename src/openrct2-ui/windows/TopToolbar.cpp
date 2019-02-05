@@ -996,8 +996,8 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y = w->y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
         if (widget_is_pressed(w, WIDX_NETWORK))
             y++;
-        imgId = SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION;
-        gfx_draw_sprite(dpi, imgId, x, y, 0);
+        imgId = SPR_G2_MULTIPLAYER_TOOLBAR;
+        gfx_draw_sprite(dpi, imgId, x - 2, y - 2, 0);
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
         gfx_draw_sprite(dpi, imgId, x + 3, y + 11, 0);
