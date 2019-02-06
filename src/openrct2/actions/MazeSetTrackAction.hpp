@@ -96,7 +96,7 @@ public:
         if (!map_check_free_elements_and_reorganise(1))
         {
             res->Error = GA_ERROR::NO_FREE_ELEMENTS;
-            res->ErrorMessage = STR_NONE;
+            res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
 
@@ -110,7 +110,7 @@ public:
         if (!map_is_location_owned(floor2(_x, 32), floor2(_y, 32), _z) && !gCheatsSandboxMode)
         {
             res->Error = GA_ERROR::NOT_OWNED;
-            res->ErrorMessage = STR_NONE;
+            res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
             return res;
         }
 
