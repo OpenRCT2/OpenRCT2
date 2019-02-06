@@ -47,7 +47,7 @@ if (NOT DISABLE_NETWORK)
     find_package(OpenSSL 1.0.0 REQUIRED)
 endif ()
 
-find_package(benchmark QUIET)
+find_package(benchmark 1.4 QUIET)
 
 if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE AND NOT MSVC)
