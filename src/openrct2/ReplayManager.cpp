@@ -304,10 +304,7 @@ namespace OpenRCT2
 
             MemoryStream data(compressLength);
 
-            ReplayRecordFile file = { .magic = _currentRecording->magic,
-                                      .version = _currentRecording->version,
-                                      .uncompressedSize = streamLength,
-                                      .data = data };
+            ReplayRecordFile file{ _currentRecording->magic, _currentRecording->version, streamLength, data };
 
             auto compressBuf = std::make_unique<unsigned char[]>(compressLength);
             compress2(
