@@ -4501,25 +4501,29 @@ static void window_ride_colour_dropdown(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_TRACK_MAIN_COLOUR:
         {
-            auto rideSetAppearanceAction = RideSetAppearanceAction(w->number, 0, dropdownIndex, w->ride_colour);
+            auto rideSetAppearanceAction = RideSetAppearanceAction(
+                w->number, RideSetAppearanceType::TrackColourMain, dropdownIndex, w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_TRACK_ADDITIONAL_COLOUR:
         {
-            auto rideSetAppearanceAction = RideSetAppearanceAction(w->number, 1, dropdownIndex, w->ride_colour);
+            auto rideSetAppearanceAction = RideSetAppearanceAction(
+                w->number, RideSetAppearanceType::TrackColourAdditional, dropdownIndex, w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_TRACK_SUPPORT_COLOUR:
         {
-            auto rideSetAppearanceAction = RideSetAppearanceAction(w->number, 4, dropdownIndex, w->ride_colour);
+            auto rideSetAppearanceAction = RideSetAppearanceAction(
+                w->number, RideSetAppearanceType::TrackColourSupports, dropdownIndex, w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_MAZE_STYLE_DROPDOWN:
         {
-            auto rideSetAppearanceAction = RideSetAppearanceAction(w->number, 4, dropdownIndex, w->ride_colour);
+            auto rideSetAppearanceAction = RideSetAppearanceAction(
+                w->number, RideSetAppearanceType::MazeStyle, dropdownIndex, w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
@@ -4534,7 +4538,8 @@ static void window_ride_colour_dropdown(rct_window* w, rct_widgetindex widgetInd
                 {
                     if (ddIndex == dropdownIndex)
                     {
-                        auto rideSetAppearanceAction = RideSetAppearanceAction(w->number, 6, ddIndex, 0);
+                        auto rideSetAppearanceAction = RideSetAppearanceAction(
+                            w->number, RideSetAppearanceType::EntranceStyle, ddIndex, 0);
                         GameActions::Execute(&rideSetAppearanceAction);
                         break;
                     }
@@ -4545,7 +4550,8 @@ static void window_ride_colour_dropdown(rct_window* w, rct_widgetindex widgetInd
         }
         case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
         {
-            auto rideSetAppearanceAction = RideSetAppearanceAction(w->number, 5, dropdownIndex, 0);
+            auto rideSetAppearanceAction = RideSetAppearanceAction(
+                w->number, RideSetAppearanceType::VehicleColourScheme, dropdownIndex, 0);
             GameActions::Execute(&rideSetAppearanceAction);
             w->vehicleIndex = 0;
         }
@@ -4556,19 +4562,22 @@ static void window_ride_colour_dropdown(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_VEHICLE_MAIN_COLOUR:
         {
-            auto rideSetAppearanceAction = RideSetAppearanceAction(w->number, 2, dropdownIndex, w->vehicleIndex);
+            auto rideSetAppearanceAction = RideSetAppearanceAction(
+                w->number, RideSetAppearanceType::VehicleColourBody, dropdownIndex, w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_VEHICLE_ADDITIONAL_COLOUR_1:
         {
-            auto rideSetAppearanceAction = RideSetAppearanceAction(w->number, 3, dropdownIndex, w->vehicleIndex);
+            auto rideSetAppearanceAction = RideSetAppearanceAction(
+                w->number, RideSetAppearanceType::VehicleColourTrim, dropdownIndex, w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_VEHICLE_ADDITIONAL_COLOUR_2:
         {
-            auto rideSetAppearanceAction = RideSetAppearanceAction(w->number, 7, dropdownIndex, w->vehicleIndex);
+            auto rideSetAppearanceAction = RideSetAppearanceAction(
+                w->number, RideSetAppearanceType::VehicleColourTernary, dropdownIndex, w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
