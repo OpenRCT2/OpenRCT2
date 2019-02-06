@@ -3741,10 +3741,10 @@ STR_6290    :Base protocol
 STR_6291    :Commands
 STR_6292    :Map
 STR_6293    :B
-STR_6294    :KB
-STR_6295    :MB
-STR_6296    :GB
-STR_6297    :TB
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
 STR_6298    :{STRING}/sec
 
 #############
