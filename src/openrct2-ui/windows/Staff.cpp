@@ -16,6 +16,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/StaffSetCostumeAction.hpp>
+#include <openrct2/actions/StaffSetOrdersAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
@@ -629,10 +631,9 @@ static void window_staff_set_order(rct_window* w, int32_t order_id)
 {
     rct_peep* peep = GET_PEEP(w->number);
 
-    int32_t ax = peep->staff_orders ^ (1 << order_id);
-    int32_t flags = (ax << 8) | 1;
-
-    game_do_command(peep->x, flags, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
+    uint8_t newOrders = peep->staff_orders ^ (1 << order_id);
+    auto staffSetOrdersAction = StaffSetOrdersAction(w->number, newOrders);
+    GameActions::Execute(&staffSetOrdersAction);
 }
 
 /**
@@ -1442,7 +1443,7 @@ void window_staff_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, i
     if (dropdownIndex == -1)
         return;
 
-    rct_peep* peep = GET_PEEP(w->number);
-    int32_t costume = _availableCostumes[dropdownIndex] | 0x80;
-    game_do_command(peep->x, (costume << 8) | 1, peep->y, w->number, GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
+    uint8_t costume = _availableCostumes[dropdownIndex];
+    auto staffSetCostumeAction = StaffSetCostumeAction(w->number, costume);
+    GameActions::Execute(&staffSetCostumeAction);
 }

@@ -16,6 +16,7 @@
 #include "../ReplayManager.h"
 #include "../Version.h"
 #include "../actions/ClimateSetAction.hpp"
+#include "../actions/StaffSetCostumeAction.hpp"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
@@ -441,8 +442,8 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     return 1;
                 }
 
-                int32_t costume = int_val[1] | 0x80;
-                game_do_command(peep->x, (costume << 8) | 1, peep->y, int_val[0], GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
+                uint8_t costume = int_val[1];
+                auto staffSetCostumeAction = StaffSetCostumeAction(int_val[0], costume);
             }
         }
     }

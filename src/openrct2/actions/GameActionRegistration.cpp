@@ -31,7 +31,9 @@
 #include "SignSetStyleAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
 #include "StaffSetColourAction.hpp"
+#include "StaffSetCostumeAction.hpp"
 #include "StaffSetNameAction.hpp"
+#include "StaffSetOrdersAction.hpp"
 #include "WallRemoveAction.hpp"
 
 namespace GameActions
@@ -59,6 +61,8 @@ namespace GameActions
         Register<SignSetStyleAction>();
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
+        Register<StaffSetOrdersAction>();
+        Register<StaffSetCostumeAction>();
         Register<WallRemoveAction>();
         Register<SmallSceneryRemoveAction>();
         Register<LargeSceneryRemoveAction>();

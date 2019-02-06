@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../actions/StaffSetOrdersAction.hpp"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
@@ -360,77 +361,6 @@ void game_command_hire_new_staff_member(
         (*ebx & 0xFF00) >> 8, *ebx & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFFFF, (*ebx & 0xFF0000) >> 16, edi);
 }
 
-/** rct2: 0x00982134 */
-static constexpr const bool peep_slow_walking_types[] = {
-    false, // PEEP_SPRITE_TYPE_NORMAL
-    false, // PEEP_SPRITE_TYPE_HANDYMAN
-    false, // PEEP_SPRITE_TYPE_MECHANIC
-    false, // PEEP_SPRITE_TYPE_SECURITY
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_PANDA
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_TIGER
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT
-    true,  // PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_BANDIT
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_SHERIFF
-    true,  // PEEP_SPRITE_TYPE_ENTERTAINER_PIRATE
-    true,  // PEEP_SPRITE_TYPE_BALLOON
-};
-
-/**
- *
- *  rct2: 0x006C0BB5
- */
-void game_command_set_staff_order(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
-    uint8_t order_id = *ebx >> 8;
-    uint16_t sprite_id = *edx;
-    if (sprite_id >= MAX_SPRITES)
-    {
-        log_warning("Invalid game command, sprite_id = %u", sprite_id);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        rct_peep* peep = &get_sprite(sprite_id)->peep;
-        if (order_id & 0x80)
-        { // change costume
-            auto sprite_type = static_cast<PeepSpriteType>((order_id & ~0x80) + 4);
-            if (sprite_type >= std::size(peep_slow_walking_types))
-            {
-                log_error("Invalid change costume order for sprite_type %u", sprite_type);
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-            peep->sprite_type = sprite_type;
-            peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
-            if (peep_slow_walking_types[sprite_type])
-            {
-                peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
-            }
-            peep->action_frame = 0;
-            peep->UpdateCurrentActionSpriteType();
-            peep->Invalidate();
-            window_invalidate_by_number(WC_PEEP, sprite_id);
-            window_invalidate_by_class(WC_STAFF_LIST);
-        }
-        else
-        {
-            peep->staff_orders = order_id;
-            window_invalidate_by_number(WC_PEEP, sprite_id);
-            window_invalidate_by_class(WC_STAFF_LIST);
-        }
-    }
-    *ebx = 0;
-}
-
 /**
  *
  *  rct2: 0x006C09D1
@@ -548,10 +478,10 @@ uint16_t hire_new_staff_member(uint8_t staffType)
     if ((staffType == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default)
     {
         rct_peep* newPeep = GET_PEEP(new_sprite_index);
-        uint8_t new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
-        game_do_command(
-            newPeep->x, ((int32_t)new_orders << 8) | GAME_COMMAND_FLAG_APPLY, newPeep->y, new_sprite_index,
-            GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
+        uint8_t newOrders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
+
+        auto staffSetOrdersAction = StaffSetOrdersAction(new_sprite_index, newOrders);
+        GameActions::Execute(&staffSetOrdersAction);
     }
 
     return new_sprite_index;
