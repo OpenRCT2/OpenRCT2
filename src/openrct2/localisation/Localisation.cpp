@@ -1022,39 +1022,48 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
     }
 #endif
 
+    // Use the temporaries below to enforce sign extension, which does not happen with simple memcpy. See
+    // https://github.com/OpenRCT2/OpenRCT2/issues/8674. This is only required for signed values.
+    [[maybe_unused]] int32_t temp32;
+    [[maybe_unused]] int16_t temp16;
     switch (format_code)
     {
         case FORMAT_COMMA32:
             // Pop argument
-            std::memcpy(&value, *args, sizeof(int32_t));
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_comma_separated_integer(dest, size, value);
             break;
         case FORMAT_INT32:
             // Pop argument
-            std::memcpy(&value, *args, sizeof(int32_t));
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_integer(dest, size, value);
             break;
         case FORMAT_COMMA2DP32:
             // Pop argument
-            std::memcpy(&value, *args, sizeof(int32_t));
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_comma_separated_fixed_2dp(dest, size, value);
             break;
         case FORMAT_COMMA1DP16:
             // Pop argument
-            std::memcpy(&value, *args, sizeof(int16_t));
+            std::memcpy(&temp16, *args, sizeof(int16_t));
+            value = temp16;
             *args += 2;
 
             format_comma_separated_fixed_1dp(dest, size, value);
             break;
         case FORMAT_COMMA16:
             // Pop argument
-            std::memcpy(&value, *args, sizeof(int16_t));
+            std::memcpy(&temp16, *args, sizeof(int16_t));
+            value = temp16;
             *args += 2;
 
             format_comma_separated_integer(dest, size, value);
@@ -1068,14 +1077,16 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             break;
         case FORMAT_CURRENCY2DP:
             // Pop argument
-            std::memcpy(&value, *args, sizeof(int32_t));
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_currency_2dp(dest, size, value);
             break;
         case FORMAT_CURRENCY:
             // Pop argument
-            std::memcpy(&value, *args, sizeof(int32_t));
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_currency(dest, size, value);
@@ -1112,7 +1123,8 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             break;
         case FORMAT_VELOCITY:
             // Pop argument
-            std::memcpy(&value, *args, sizeof(int16_t));
+            std::memcpy(&temp16, *args, sizeof(int16_t));
+            value = temp16;
             *args += 2;
 
             format_velocity(dest, size, (uint16_t)value);
@@ -1139,7 +1151,8 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             break;
         case FORMAT_LENGTH:
             // Pop argument
-            std::memcpy(&value, *args, sizeof(int16_t));
+            std::memcpy(&temp16, *args, sizeof(int16_t));
+            value = temp16;
             *args += 2;
 
             format_length(dest, size, (int16_t)value);
