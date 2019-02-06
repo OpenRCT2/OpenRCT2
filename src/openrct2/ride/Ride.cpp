@@ -220,7 +220,6 @@ static void ride_music_update(Ride* ride);
 static void ride_shop_connected(Ride* ride);
 static void ride_spiral_slide_update(Ride* ride);
 static void ride_update(Ride* ride);
-static void ride_update_vehicle_colours(Ride* ride);
 void loc_6DDF9C(Ride* ride, TileElement* tileElement);
 
 Ride* get_ride(int32_t index)
@@ -6392,162 +6391,6 @@ void game_command_callback_ride_remove_track_piece(
 
 /**
  *
- *  rct2: 0x006B2FC5
- */
-void game_command_set_ride_appearance(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
-    int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    bool apply = (*ebx & GAME_COMMAND_FLAG_APPLY);
-
-    ride_id_t ride_id = *edx;
-    if (ride_id >= MAX_RIDES)
-    {
-        log_warning("Invalid game command for ride %u", ride_id);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-    uint8_t type = *ebx >> 8;
-    uint8_t value = *edx >> 8;
-    uint32_t index = (uint32_t)*edi;
-
-    if (*edi < 0)
-    {
-        log_warning("Invalid game command, index %d out of bounds", index);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    Ride* ride = get_ride(ride_id);
-    if (ride->type == RIDE_TYPE_NULL)
-    {
-        log_warning("Invalid game command, ride_id = %u", ride_id);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (apply && gGameCommandNestLevel == 1)
-    {
-        if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
-        {
-            LocationXYZ16 coord;
-            coord.x = ride->overall_view.x * 32 + 16;
-            coord.y = ride->overall_view.y * 32 + 16;
-            coord.z = tile_element_height(coord.x, coord.y);
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-    }
-
-    *ebx = 0;
-    switch (type)
-    {
-        case 0:
-            if (index >= std::size(ride->track_colour))
-            {
-                log_warning("Invalid game command, index %d out of bounds", index);
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-            if (apply)
-            {
-                ride->track_colour[index].main = value;
-                gfx_invalidate_screen();
-            }
-            break;
-        case 1:
-            if (index >= std::size(ride->track_colour))
-            {
-                log_warning("Invalid game command, index %d out of bounds", index);
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-            if (apply)
-            {
-                ride->track_colour[index].additional = value;
-                gfx_invalidate_screen();
-            }
-            break;
-        case 2:
-            if (index >= std::size(ride->vehicle_colours))
-            {
-                log_warning("Invalid game command, index %d out of bounds", index);
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-            if (apply)
-            {
-                *((uint8_t*)(&ride->vehicle_colours[index])) = value;
-                ride_update_vehicle_colours(ride);
-            }
-            break;
-        case 3:
-            if (index >= std::size(ride->vehicle_colours))
-            {
-                log_warning("Invalid game command, index %d out of bounds", index);
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-            if (apply)
-            {
-                *((uint8_t*)(&ride->vehicle_colours[index]) + 1) = value;
-                ride_update_vehicle_colours(ride);
-            }
-            break;
-        case 4:
-            if (index >= std::size(ride->track_colour))
-            {
-                log_warning("Invalid game command, index %d out of bounds", index);
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-            if (apply)
-            {
-                ride->track_colour[index].supports = value;
-                gfx_invalidate_screen();
-            }
-            break;
-        case 5:
-            if (apply)
-            {
-                ride->colour_scheme_type &= ~(RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR);
-                ride->colour_scheme_type |= value;
-                for (uint32_t i = 1; i < std::size(ride->vehicle_colours); i++)
-                {
-                    ride->vehicle_colours[i] = ride->vehicle_colours[0];
-                }
-                ride_update_vehicle_colours(ride);
-            }
-            break;
-        case 6:
-            if (apply)
-            {
-                ride->entrance_style = value;
-                gLastEntranceStyle = value;
-                gfx_invalidate_screen();
-            }
-            break;
-        case 7:
-            if (index >= std::size(ride->vehicle_colours))
-            {
-                log_warning("Invalid game command, index %d out of bounds", index);
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-            else
-            {
-                if (apply)
-                {
-                    ride->vehicle_colours[index].Ternary = value;
-                    ride_update_vehicle_colours(ride);
-                }
-            }
-            break;
-    }
-    window_invalidate_by_number(WC_RIDE, ride_id);
-}
-
-/**
- *
  *  rct2: 0x006B53E9
  */
 void game_command_set_ride_price(
@@ -7442,7 +7285,7 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor)
  *
  *  rct2: 0x006DE102
  */
-static void ride_update_vehicle_colours(Ride* ride)
+void ride_update_vehicle_colours(Ride* ride)
 {
     if (ride->type == RIDE_TYPE_SPACE_RINGS || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16))
     {

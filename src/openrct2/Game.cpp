@@ -1454,7 +1454,7 @@ void game_load_or_quit_no_save_prompt()
 }
 
 GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
-    game_command_set_ride_appearance,
+    nullptr,
     game_command_set_land_height,
     game_pause_toggle,
     game_command_place_track,
