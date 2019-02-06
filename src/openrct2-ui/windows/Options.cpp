@@ -580,7 +580,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_THEMES_DROPDOWN) |
     (1 << WIDX_THEMES_BUTTON) |
     (1 << WIDX_TOOLBAR_SHOW_MUTE) |
-    (1 << WIDX_TOOLBAR_SHOW_CHAT) |
+    (1 << WIDX_TOOLBAR_SHOW_CHAT),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_REAL_NAME_CHECKBOX) |
