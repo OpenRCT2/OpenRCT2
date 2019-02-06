@@ -3576,7 +3576,7 @@ STR_6125    :Object type
 STR_6126    :Unknown type
 STR_6127    :File: {STRING}
 STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
-STR_6129    :Copy selected item to clipboard
+STR_6129    :Copy item to clipboard
 STR_6130    :Copy entire list to clipboard
 STR_6131    :Object source
 STR_6132    :Ignore research status
