@@ -185,6 +185,9 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
             continue;
 
         sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        if (sceneryEntry == nullptr)
+            continue;
+
         if (scenery_small_entry_has_flag(
                 sceneryEntry,
                 SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
