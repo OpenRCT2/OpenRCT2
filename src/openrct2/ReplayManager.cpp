@@ -299,7 +299,7 @@ namespace OpenRCT2
 
             const auto& stream = recSerialiser.GetStream();
             size_t streamLength = stream.GetLength();
-            size_t compressLength = compressBound(streamLength);
+            unsigned long compressLength = compressBound(streamLength);
 
             MemoryStream data(compressLength);
 
