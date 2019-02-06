@@ -23,6 +23,8 @@
 #include <string>
 #include <vector>
 
+#ifndef DISABLE_HTTP
+
 class ObjectDownloader
 {
 private:
@@ -166,6 +168,8 @@ private:
     }
 };
 
+#endif
+
 // clang-format off
 enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -198,7 +202,9 @@ static rct_widget window_object_load_error_widgets[] = {
     { WWT_SCROLL,            0, 4,               WW_LESS_PADDING,       70,         WH - 33,    SCROLL_VERTICAL,                STR_NONE },                // Scrollable list area
     { WWT_BUTTON,            0, 4,               148,                   WH - 23,    WH - 10,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
     { WWT_BUTTON,            0, 152,             296,                   WH - 23,    WH - 10,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
+#ifndef DISABLE_HTTP
     { WWT_BUTTON,            0, 300,             WW_LESS_PADDING,       WH - 23,    WH - 10,    STR_DOWNLOAD_ALL,               STR_NONE },                // Download all
+#endif
     { WIDGETS_END },
 };
 
@@ -211,8 +217,10 @@ static void window_object_load_error_scrollmouseover(rct_window *w, int32_t scro
 static void window_object_load_error_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_object_load_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+#ifndef DISABLE_HTTP
 static void window_object_load_error_download_all(rct_window* w);
 static void window_object_load_error_update_list(rct_window* w);
+#endif
 
 static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_close,
@@ -249,8 +257,10 @@ static rct_window_event_list window_object_load_error_events = {
 static std::vector<rct_object_entry> _invalid_entries;
 static int32_t highlighted_index = -1;
 static std::string file_path;
+#ifndef DISABLE_HTTP
 static ObjectDownloader _objDownloader;
 static bool _updatedListAfterDownload;
+#endif
 
 /**
  *  Returns an rct_string_id that represents an rct_object_entry's type.
@@ -381,6 +391,7 @@ static void window_object_load_error_update(rct_window* w)
         widget_invalidate(w, WIDX_SCROLL);
     }
 
+#ifndef DISABLE_HTTP
     // Remove downloaded objects from our invalid entry list
     if (_objDownloader.IsDownloading())
     {
@@ -395,6 +406,7 @@ static void window_object_load_error_update(rct_window* w)
         window_object_load_error_update_list(w);
         _updatedListAfterDownload = true;
     }
+#endif
 }
 
 static void window_object_load_error_mouseup(rct_window* w, rct_widgetindex widgetIndex)
@@ -419,9 +431,11 @@ static void window_object_load_error_mouseup(rct_window* w, rct_widgetindex widg
         case WIDX_COPY_ALL:
             copy_object_names_to_clipboard(w);
             break;
+#ifndef DISABLE_HTTP
         case WIDX_DOWNLOAD_ALL:
             window_object_load_error_download_all(w);
             break;
+#endif
     }
 }
 
@@ -513,6 +527,8 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
     }
 }
 
+#ifndef DISABLE_HTTP
+
 static void window_object_load_error_download_all(rct_window* w)
 {
     if (!_objDownloader.IsDownloading())
@@ -535,3 +551,5 @@ static void window_object_load_error_update_list(rct_window* w)
         w->no_list_items = (uint16_t)_invalid_entries.size();
     }
 }
+
+#endif
