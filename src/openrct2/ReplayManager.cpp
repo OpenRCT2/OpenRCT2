@@ -26,6 +26,7 @@
 #include "zlib.h"
 
 #include <chrono>
+#include <memory>
 #include <vector>
 
 namespace OpenRCT2
@@ -303,10 +304,10 @@ namespace OpenRCT2
 
             MemoryStream data(compressLength);
 
-            ReplayRecordFile file{ .magic = _currentRecording->magic,
-                                   .version = _currentRecording->version,
-                                   .uncompressedSize = streamLength,
-                                   .data = data };
+            ReplayRecordFile file = { .magic = _currentRecording->magic,
+                                      .version = _currentRecording->version,
+                                      .uncompressedSize = streamLength,
+                                      .data = data };
 
             auto compressBuf = std::make_unique<unsigned char[]>(compressLength);
             compress2(
