@@ -39,7 +39,7 @@ DEFINE_GAME_ACTION(RideSetAppearanceAction, GAME_COMMAND_SET_RIDE_APPEARANCE, Ga
 {
 private:
     NetworkRideId_t _rideIndex{ -1 };
-    RideSetAppearanceType _type;
+    uint8_t _type;
     uint8_t _value;
     uint32_t _index;
 
@@ -49,7 +49,7 @@ public:
     }
     RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint8_t value, uint32_t index)
         : _rideIndex(rideIndex)
-        , _type(type)
+        , _type(static_cast<uint8_t>(type))
         , _value(value)
         , _index(index)
     {
@@ -63,9 +63,7 @@ public:
     void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
-        auto type = static_cast<uint8_t>(_type);
-        stream << DS_TAG(_rideIndex) << DS_TAG(type) << DS_TAG(_value) << DS_TAG(_index);
-        _type = static_cast<RideSetAppearanceType>(type);
+        stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_index);
     }
 
     GameActionResult::Ptr Query() const override
@@ -83,7 +81,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        switch (_type)
+        switch (static_cast<RideSetAppearanceType>(_type))
         {
             case RideSetAppearanceType::TrackColourMain:
             case RideSetAppearanceType::TrackColourAdditional:
@@ -123,7 +121,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        switch (_type)
+        switch (static_cast<RideSetAppearanceType>(_type))
         {
             case RideSetAppearanceType::TrackColourMain:
                 ride->track_colour[_index].main = _value;
