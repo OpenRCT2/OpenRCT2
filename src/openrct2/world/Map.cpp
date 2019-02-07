@@ -15,6 +15,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/LandSetHeightAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
@@ -1064,24 +1065,7 @@ static constexpr const uint8_t tile_element_lower_styles[9][32] = {
       0x29, 0x29, 0x00, 0x01, 0x00, 0x01, 0x00, 0x07, 0x29, 0x29, 0x08, 0x09, 0x08, 0x09, 0x0E, 0x09 }, // MAP_SELECT_TYPE_EDGE_3
 };
 
-/**
- *
- *  rct2: 0x00663CB9
- */
-static int32_t map_set_land_height_clear_func(
-    TileElement** tile_element, [[maybe_unused]] int32_t x, [[maybe_unused]] int32_t y, [[maybe_unused]] uint8_t flags,
-    [[maybe_unused]] money32* price)
-{
-    if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
-        return 0;
-
-    if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
-        return 0;
-
-    return 1;
-}
-
-static int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction)
+int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction)
 {
     switch (direction)
     {
@@ -1129,246 +1113,11 @@ static int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction
     return z;
 }
 
-static int32_t tile_element_get_corner_height(const TileElement* tileElement, int32_t direction)
+int32_t tile_element_get_corner_height(const TileElement* tileElement, int32_t direction)
 {
     int32_t z = tileElement->base_height;
     int32_t slope = tileElement->AsSurface()->GetSlope();
     return map_get_corner_height(z, slope, direction);
-}
-
-static money32 map_set_land_height(int32_t flags, int32_t x, int32_t y, int32_t height, int32_t style)
-{
-    TileElement* tileElement;
-
-    if (game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
-    {
-        if (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
-        {
-            gGameCommandErrorText = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    if (x > gMapSizeMaxXY || y > gMapSizeMaxXY)
-    {
-        gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (height < MINIMUM_LAND_HEIGHT)
-    {
-        gGameCommandErrorText = STR_TOO_LOW;
-        return MONEY32_UNDEFINED;
-    }
-
-    // Divide by 2 and subtract 7 to get the in-game units.
-    if (height > MAXIMUM_LAND_HEIGHT)
-    {
-        gGameCommandErrorText = STR_TOO_HIGH;
-        return MONEY32_UNDEFINED;
-    }
-    else if (height > MAXIMUM_LAND_HEIGHT - 2 && (style & 0x1F) != 0)
-    {
-        gGameCommandErrorText = STR_TOO_HIGH;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (height == MAXIMUM_LAND_HEIGHT - 2 && (style & 0x10))
-    {
-        gGameCommandErrorText = STR_TOO_HIGH;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
-    {
-        if (!map_is_location_in_park({ x, y }))
-        {
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    money32 cost = MONEY(0, 0);
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        footpath_remove_litter(x, y, tile_element_height(x, y));
-        if (!gCheatsDisableClearanceChecks)
-            wall_remove_at(x, y, height * 8 - 16, height * 8 + 32);
-    }
-
-    if (!gCheatsDisableClearanceChecks)
-    {
-        // Check for obstructing scenery
-        tileElement = map_get_first_element_at(x / 32, y / 32);
-        do
-        {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
-                continue;
-            if (height > tileElement->clearance_height)
-                continue;
-            if (height + 4 < tileElement->base_height)
-                continue;
-            rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-            if (sceneryEntry->small_scenery.height > 64 && gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
-            {
-                map_obstruction_set_error_text(tileElement);
-                return MONEY32_UNDEFINED;
-            }
-            cost += MONEY(sceneryEntry->small_scenery.removal_price, 0);
-            if (flags & GAME_COMMAND_FLAG_APPLY)
-                tile_element_remove(tileElement--);
-        } while (!(tileElement++)->IsLastForTile());
-    }
-
-    // Check for ride support limits
-    if (!gCheatsDisableSupportLimits)
-    {
-        tileElement = map_get_first_element_at(x / 32, y / 32);
-        do
-        {
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
-            {
-                ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                Ride* ride = get_ride(rideIndex);
-                if (ride != nullptr)
-                {
-                    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
-                    if (rideEntry != nullptr)
-                    {
-                        int32_t maxHeight = rideEntry->max_height;
-                        if (maxHeight == 0)
-                        {
-                            maxHeight = RideData5[get_ride(rideIndex)->type].max_height;
-                        }
-                        int32_t zDelta = tileElement->clearance_height - height;
-                        if (zDelta >= 0 && zDelta / 2 > maxHeight)
-                        {
-                            gGameCommandErrorText = STR_SUPPORTS_CANT_BE_EXTENDED;
-                            return MONEY32_UNDEFINED;
-                        }
-                    }
-                }
-            }
-        } while (!(tileElement++)->IsLastForTile());
-    }
-
-    uint8_t zCorner = height; // z position of highest corner of tile
-    TileElement* surfaceElement = map_get_surface_element_at({ x, y });
-    if (surfaceElement->AsSurface()->HasTrackThatNeedsWater())
-    {
-        uint32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight();
-        if (waterHeight != 0)
-        {
-            if (style & 0x1F)
-            {
-                zCorner += 2;
-                if (style & 0x10)
-                {
-                    zCorner += 2;
-                }
-            }
-            if (zCorner > waterHeight * 2 - 2)
-            {
-                surfaceElement++;
-                map_obstruction_set_error_text(surfaceElement);
-                return MONEY32_UNDEFINED;
-            }
-        }
-    }
-
-    zCorner = height;
-    if (style & 0xF)
-    {
-        zCorner += 2;
-        if (style & 0x10)
-        {
-            zCorner += 2;
-        }
-    }
-
-    if (!gCheatsDisableClearanceChecks)
-    {
-        if (!map_can_construct_with_clear_at(
-                x, y, height, zCorner, &map_set_land_height_clear_func, 0xF, 0, nullptr, CREATE_CROSSING_MODE_NONE))
-        {
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    if (!gCheatsDisableClearanceChecks)
-    {
-        tileElement = map_get_first_element_at(x / 32, y / 32);
-        do
-        {
-            int32_t elementType = tileElement->GetType();
-
-            if (elementType == TILE_ELEMENT_TYPE_WALL)
-                continue;
-            if (elementType == TILE_ELEMENT_TYPE_SMALL_SCENERY)
-                continue;
-            if (tileElement->flags & 0x10)
-                continue;
-            if (tileElement == surfaceElement)
-                continue;
-            if (tileElement > surfaceElement)
-            {
-                if (zCorner > tileElement->base_height)
-                {
-                    map_obstruction_set_error_text(tileElement);
-                    return MONEY32_UNDEFINED;
-                }
-                continue;
-            }
-            if (height < tileElement->clearance_height)
-            {
-                map_obstruction_set_error_text(tileElement);
-                return MONEY32_UNDEFINED;
-            }
-        } while (!(tileElement++)->IsLastForTile());
-    }
-
-    for (int32_t i = 0; i < 4; i += 1)
-    {
-        int32_t cornerHeight = tile_element_get_corner_height(surfaceElement, i);
-        cornerHeight -= map_get_corner_height(height, style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
-        cost += MONEY(abs(cornerHeight) * 5 / 2, 0);
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (gGameCommandNestLevel == 1)
-        {
-            LocationXYZ16 coord;
-            coord.x = x + 16;
-            coord.y = y + 16;
-            coord.z = tile_element_height(coord.x, coord.y);
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-
-        surfaceElement = map_get_surface_element_at({ x, y });
-        surfaceElement->base_height = height;
-        surfaceElement->clearance_height = height;
-        surfaceElement->AsSurface()->SetSlope(style);
-        int32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight();
-        if (waterHeight != 0 && waterHeight <= height / 2)
-            surfaceElement->AsSurface()->SetWaterHeight(0);
-        map_invalidate_tile_full(x, y);
-    }
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        return 0;
-    return cost;
-}
-
-void game_command_set_land_height(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    *ebx = map_set_land_height(*ebx & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF);
 }
 
 static money32 map_set_land_ownership(uint8_t flags, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t newOwnership)
@@ -1508,12 +1257,14 @@ static money32 raise_land(
                         height += 2;
 
                     slope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
-                    money32 tileCost = map_set_land_height(flags, x_coord, y_coord, height, slope);
-                    if (tileCost == MONEY32_UNDEFINED)
+                    auto landSetHeightAction = LandSetHeightAction({ x_coord, y_coord }, height, slope);
+                    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
+
+                    if (res->Error != GA_ERROR::OK)
                     {
                         return MONEY32_UNDEFINED;
                     }
-                    cost += tileCost;
+                    cost += res->Cost;
                 }
             }
         }
@@ -1575,12 +1326,15 @@ static money32 lower_land(
                         height -= 2;
 
                     newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
-                    money32 tileCost = map_set_land_height(flags, x_coord, y_coord, height, newSlope);
-                    if (tileCost == MONEY32_UNDEFINED)
+
+                    auto landSetHeightAction = LandSetHeightAction({ x_coord, y_coord }, height, newSlope);
+                    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
+
+                    if (res->Error != GA_ERROR::OK)
                     {
                         return MONEY32_UNDEFINED;
                     }
-                    cost += tileCost;
+                    cost += res->Cost;
                 }
             }
         }
@@ -1824,7 +1578,18 @@ static money32 smooth_land_tile(
             slope &= ~SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT;
         }
     }
-    return game_do_command(x, flags, y, targetBaseZ | (slope << 8), GAME_COMMAND_SET_LAND_HEIGHT, 0, 0);
+
+    auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
+    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
+
+    if (res->Error == GA_ERROR::OK)
+    {
+        return res->Cost;
+    }
+    else
+    {
+        return MONEY32_UNDEFINED;
+    }
 }
 
 static money32 smooth_land_row_by_edge(
@@ -1835,7 +1600,6 @@ static money32 smooth_land_row_by_edge(
     int32_t landChangePerTile = raiseLand ? -2 : 2;
     TileElement *tileElement, *nextTileElement;
     money32 totalCost = 0;
-    money32 result;
 
     // check if we need to start at all
     if (!map_is_location_valid({ x, y }) || !map_is_location_valid({ x + stepX, y + stepY }))
@@ -1960,10 +1724,12 @@ static money32 smooth_land_row_by_edge(
                 }
             }
         }
-        result = game_do_command(x, flags, y, targetBaseZ | (slope << 8), GAME_COMMAND_SET_LAND_HEIGHT, 0, 0);
-        if (result != MONEY32_UNDEFINED)
+        auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
+
+        if (res->Error == GA_ERROR::OK)
         {
-            totalCost += result;
+            totalCost += res->Cost;
         }
     }
     return totalCost;
