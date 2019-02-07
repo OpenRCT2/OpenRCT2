@@ -37,6 +37,7 @@ rct_window* window_land_rights_open();
 rct_window* window_main_open();
 rct_window* window_mapgen_open();
 rct_window* window_multiplayer_open();
+rct_window* window_network_open();
 rct_window* window_music_credits_open();
 rct_window* window_news_open();
 rct_window* window_news_options_open();

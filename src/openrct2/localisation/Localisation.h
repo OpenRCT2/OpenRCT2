@@ -29,6 +29,17 @@ void format_string(char* dest, size_t size, rct_string_id format, const void* ar
 void format_string_raw(char* dest, size_t size, const char* src, const void* args);
 void format_string_to_upper(char* dest, size_t size, rct_string_id format, const void* args);
 void generate_string_file();
+
+/**
+ * Formats sizeBytes into buf as a human readable text, e.x.: "1024 MB"
+ */
+void format_readable_size(char* buf, size_t bufSize, uint64_t sizeBytes);
+
+/**
+ * Formats sizeBytesPerSec into buf as a human readable text, e.x.: "1024 MB/sec"
+ */
+void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytesPerSec);
+
 utf8* get_string_end(const utf8* text);
 size_t get_string_size(const utf8* text);
 int32_t get_string_length(const utf8* text);

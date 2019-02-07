@@ -30,7 +30,7 @@ uint8_t* NetworkPacket::GetData()
     return &(*Data)[0];
 }
 
-int32_t NetworkPacket::GetCommand()
+int32_t NetworkPacket::GetCommand() const
 {
     if (Data->size() >= sizeof(uint32_t))
     {

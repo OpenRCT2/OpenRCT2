@@ -29,6 +29,7 @@ public:
     std::unique_ptr<ITcpSocket> Socket = nullptr;
     NetworkPacket InboundPacket;
     NETWORK_AUTH AuthStatus = NETWORK_AUTH_NONE;
+    NetworkStats_t Stats = {};
     NetworkPlayer* Player = nullptr;
     uint32_t PingTime = 0;
     NetworkKey Key;
@@ -53,6 +54,7 @@ private:
     uint32_t _lastPacketTime = 0;
     utf8* _lastDisconnectReason = nullptr;
 
+    void RecordPacketStats(const NetworkPacket& packet, bool sending);
     bool SendPacket(NetworkPacket& packet);
 };
 
