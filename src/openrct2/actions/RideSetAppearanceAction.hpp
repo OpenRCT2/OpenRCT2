@@ -69,7 +69,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_rideIndex >= MAX_RIDES)
+        if (_rideIndex >= MAX_RIDES || _rideIndex == RIDE_ID_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
