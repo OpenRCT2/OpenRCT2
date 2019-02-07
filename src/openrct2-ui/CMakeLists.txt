@@ -48,10 +48,7 @@ ipo_set_target_properties(${PROJECT})
 target_link_libraries(${PROJECT} "libopenrct2"
                                  ${SDL2_LDFLAGS}
                                  ${SPEEX_LDFLAGS})
-
-if (APPLE)
-    target_link_libraries(${PROJECT} "-framework Cocoa")
-endif ()
+target_link_platform_libraries(${PROJECT})
 
 if (NOT DISABLE_OPENGL)
     if (WIN32)
