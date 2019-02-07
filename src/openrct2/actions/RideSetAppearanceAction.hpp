@@ -76,7 +76,7 @@ public:
         }
 
         Ride* ride = get_ride(_rideIndex);
-        if (!ride || ride->type == RIDE_TYPE_NULL)
+        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command, ride_id = %u", _rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -116,7 +116,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         Ride* ride = get_ride(_rideIndex);
-        if (!ride)
+        if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", _rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
