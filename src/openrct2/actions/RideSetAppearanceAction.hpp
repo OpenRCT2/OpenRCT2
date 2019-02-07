@@ -65,6 +65,7 @@ public:
         GameAction::Serialise(stream);
         auto type = static_cast<uint8_t>(_type);
         stream << DS_TAG(_rideIndex) << DS_TAG(type) << DS_TAG(_value) << DS_TAG(_index);
+        _type = static_cast<RideSetAppearanceType>(type);
     }
 
     GameActionResult::Ptr Query() const override
