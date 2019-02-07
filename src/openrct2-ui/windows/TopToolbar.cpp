@@ -26,6 +26,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/actions/ClearAction.hpp>
+#include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
@@ -337,7 +338,8 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_PAUSE:
             if (network_get_mode() != NETWORK_MODE_CLIENT)
             {
-                game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+                auto pauseToggleAction = PauseToggleAction();
+                GameActions::Execute(&pauseToggleAction);
             }
             break;
         case WIDX_ZOOM_OUT:

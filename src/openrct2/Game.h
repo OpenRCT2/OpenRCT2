@@ -20,7 +20,7 @@ enum GAME_COMMAND
 {
     GAME_COMMAND_SET_RIDE_APPEARANCE, // GA
     GAME_COMMAND_SET_LAND_HEIGHT,     // GA
-    GAME_COMMAND_TOGGLE_PAUSE,
+    GAME_COMMAND_TOGGLE_PAUSE,        // GA
     GAME_COMMAND_PLACE_TRACK,
     GAME_COMMAND_REMOVE_TRACK,
     GAME_COMMAND_LOAD_OR_QUIT,
@@ -176,7 +176,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
 void game_load_or_quit_no_save_prompt();
 void load_from_sv6(const char* path);
 void game_load_init();
-void game_pause_toggle(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void pause_toggle();
 bool game_is_paused();
 bool game_is_not_paused();

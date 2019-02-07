@@ -883,20 +883,6 @@ bool game_is_not_paused()
 
 /**
  *
- *  rct2: 0x00667C15
- */
-void game_pause_toggle(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-        pause_toggle();
-
-    *ebx = 0;
-}
-
-/**
- *
  *  rct2: 0x0066DB5F
  */
 static void game_load_or_quit(
@@ -1456,7 +1442,7 @@ void game_load_or_quit_no_save_prompt()
 GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
-    game_pause_toggle,
+    nullptr,
     game_command_place_track,
     game_command_remove_track,
     game_load_or_quit,

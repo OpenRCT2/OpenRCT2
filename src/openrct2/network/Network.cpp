@@ -42,6 +42,7 @@ static int32_t _pickup_peep_old_x = LOCATION_NULL;
 #    include "../ParkImporter.h"
 #    include "../Version.h"
 #    include "../actions/GameAction.h"
+#    include "../actions/PauseToggleAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/FileStream.hpp"
@@ -622,7 +623,8 @@ bool Network::BeginServer(uint16_t port, const char* address)
 
     if (gConfigNetwork.pause_server_if_no_clients)
     {
-        game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+        auto pauseToggleAction = PauseToggleAction();
+        GameActions::Execute(&pauseToggleAction);
     }
 
     return true;
@@ -1986,7 +1988,8 @@ void Network::AddClient(std::unique_ptr<ITcpSocket>&& socket)
 {
     if (gConfigNetwork.pause_server_if_no_clients && game_is_paused())
     {
-        game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+        auto pauseToggleAction = PauseToggleAction();
+        GameActions::Execute(&pauseToggleAction);
     }
 
     // Log connection info.
@@ -2044,7 +2047,8 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
     client_connection_list.remove(connection);
     if (gConfigNetwork.pause_server_if_no_clients && game_is_not_paused() && client_connection_list.size() == 0)
     {
-        game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+        auto pauseToggleAction = PauseToggleAction();
+        GameActions::Execute(&pauseToggleAction);
     }
     Server_Send_PLAYERLIST();
 }
