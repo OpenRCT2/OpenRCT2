@@ -2674,8 +2674,8 @@ void Network::Client_Handle_GAMECMD([[maybe_unused]] NetworkConnection& connecti
 void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t tick;
-    uint32_t type;
-    packet >> tick >> type;
+    uint32_t actionType;
+    packet >> tick >> actionType;
 
     MemoryStream stream;
     size_t size = packet.Size - packet.BytesRead;
@@ -2684,10 +2684,11 @@ void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& conn
 
     DataSerialiser ds(false, stream);
 
-    GameAction::Ptr action = GameActions::Create(type);
-    if (!action)
+    GameAction::Ptr action = GameActions::Create(actionType);
+    if (action == nullptr)
     {
-        // TODO: Handle error.
+        log_error("Received unregistered game action type: 0x%08X", actionType);
+        return;
     }
     action->Serialise(ds);
 
@@ -2710,20 +2711,20 @@ void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& conn
 void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t tick;
-    uint32_t type;
+    uint32_t actionType;
 
     if (!connection.Player)
     {
         return;
     }
 
-    packet >> tick >> type;
+    packet >> tick >> actionType;
 
     // tick count is different by time last_action_time is set, keep same value
     // Check if player's group permission allows command to run
     uint32_t ticks = platform_get_ticks();
     NetworkGroup* group = GetGroupByID(connection.Player->Group);
-    if (!group || !group->CanPerformCommand(type))
+    if (!group || !group->CanPerformCommand(actionType))
     {
         Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
         return;
@@ -2732,7 +2733,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     // In case someone modifies the code / memory to enable cluster build,
     // require a small delay in between placing scenery to provide some security, as
     // cluster mode is a for loop that runs the place_scenery code multiple times.
-    if (type == GAME_COMMAND_PLACE_SCENERY)
+    if (actionType == GAME_COMMAND_PLACE_SCENERY)
     {
         if (ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
             // Incase platform_get_ticks() wraps after ~49 days, ignore larger logged times.
@@ -2747,7 +2748,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     }
     // This is to prevent abuse of demolishing rides. Anyone that is not the server
     // host will have to wait a small amount of time in between deleting rides.
-    else if (type == GAME_COMMAND_DEMOLISH_RIDE)
+    else if (actionType == GAME_COMMAND_DEMOLISH_RIDE)
     {
         if (ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
             // Incase platform_get_ticks()() wraps after ~49 days, ignore larger logged times.
@@ -2758,16 +2759,19 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
         }
     }
     // Don't let clients send pause or quit
-    else if (type == GAME_COMMAND_TOGGLE_PAUSE || type == GAME_COMMAND_LOAD_OR_QUIT)
+    else if (actionType == GAME_COMMAND_TOGGLE_PAUSE || actionType == GAME_COMMAND_LOAD_OR_QUIT)
     {
         return;
     }
 
     // Run game command, and if it is successful send to clients
-    GameAction::Ptr ga = GameActions::Create(type);
-    if (!ga)
+    GameAction::Ptr ga = GameActions::Create(actionType);
+    if (ga == nullptr)
     {
-        // TODO: Handle error.
+        log_error(
+            "Received unregistered game action type: 0x%08X from player: (%d) %s", actionType, connection.Player->Id,
+            connection.Player->Name.c_str());
+        return;
     }
 
     DataSerialiser stream(false);
