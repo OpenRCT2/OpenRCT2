@@ -62,7 +62,7 @@ static void window_scenery_resize(rct_window *w);
 static void window_scenery_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_scenery_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_scenery_update(rct_window *w);
-static void window_scenery_event_07(rct_window *w);
+static void window_scenery_periodic_update(rct_window *w);
 static void window_scenery_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_scenery_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_scenery_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
@@ -79,7 +79,7 @@ static rct_window_event_list window_scenery_events = {
     window_scenery_dropdown,
     nullptr,
     window_scenery_update,
-    window_scenery_event_07,
+    window_scenery_periodic_update,
     nullptr,
     nullptr,
     nullptr,
@@ -731,7 +731,7 @@ static void window_scenery_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
  *
  *  rct2: 0x006E1B9F
  */
-static void window_scenery_event_07(rct_window* w)
+static void window_scenery_periodic_update(rct_window* w)
 {
     if (w->scenery.selected_scenery_id != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
     {

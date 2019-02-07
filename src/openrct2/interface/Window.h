@@ -164,7 +164,7 @@ struct rct_window_event_list
     void (*dropdown)(struct rct_window*, rct_widgetindex, int32_t);
     void (*unknown_05)(struct rct_window*);
     void (*update)(struct rct_window*);
-    void (*unknown_07)(struct rct_window*);
+    void (*periodic_update)(struct rct_window*);
     void (*unknown_08)(struct rct_window*);
     void (*tool_update)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
     void (*tool_down)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
@@ -674,7 +674,7 @@ void window_event_mouse_down_call(rct_window* w, rct_widgetindex widgetIndex);
 void window_event_dropdown_call(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 void window_event_unknown_05_call(rct_window* w);
 void window_event_update_call(rct_window* w);
-void window_event_unknown_07_call(rct_window* w);
+void window_event_periodic_update_call(rct_window* w);
 void window_event_unknown_08_call(rct_window* w);
 void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);

@@ -140,7 +140,7 @@ void window_update_all()
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
         {
             auto w = it->get();
-            window_event_unknown_07_call(w);
+            window_event_periodic_update_call(w);
         }
     }
 
@@ -1468,10 +1468,10 @@ void window_event_update_call(rct_window* w)
         w->event_handlers->update(w);
 }
 
-void window_event_unknown_07_call(rct_window* w)
+void window_event_periodic_update_call(rct_window* w)
 {
-    if (w->event_handlers->unknown_07 != nullptr)
-        w->event_handlers->unknown_07(w);
+    if (w->event_handlers->periodic_update != nullptr)
+        w->event_handlers->periodic_update(w);
 }
 
 void window_event_unknown_08_call(rct_window* w)
