@@ -25,6 +25,7 @@
 #include <openrct2/actions/GameAction.h>
 #include <openrct2/actions/RideSetAppearanceAction.hpp>
 #include <openrct2/actions/RideSetColourScheme.hpp>
+#include <openrct2/actions/RideSetPriceAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
@@ -47,7 +48,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-
 using namespace OpenRCT2;
 
 enum
@@ -6179,7 +6179,6 @@ static void window_ride_income_toggle_primary_price(rct_window* w)
     Ride* ride;
     rct_ride_entry* rideEntry;
     uint32_t shop_item;
-    money16 price;
 
     ride = get_ride(w->number);
     rideEntry = get_ride_entry(ride->subtype);
@@ -6197,8 +6196,8 @@ static void window_ride_income_toggle_primary_price(rct_window* w)
 
     update_same_price_throughout_flags(shop_item);
 
-    price = ride->price;
-    game_do_command(0, 1, 0, w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
+    auto rideSetPriceAction = RideSetPriceAction(w->number, ride->price, true);
+    GameActions::Execute(&rideSetPriceAction);
 }
 
 /**
@@ -6210,7 +6209,6 @@ static void window_ride_income_toggle_secondary_price(rct_window* w)
     Ride* ride;
     rct_ride_entry* rideEntry;
     uint32_t shop_item;
-    money16 price;
 
     ride = get_ride(w->number);
     rideEntry = get_ride_entry(ride->subtype);
@@ -6221,13 +6219,14 @@ static void window_ride_income_toggle_secondary_price(rct_window* w)
 
     update_same_price_throughout_flags(shop_item);
 
-    price = ride->price_secondary;
-    game_do_command(0, 1, 0, (1 << 8) | w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
+    auto rideSetPriceAction = RideSetPriceAction(w->number, ride->price_secondary, false);
+    GameActions::Execute(&rideSetPriceAction);
 }
 
 static void window_ride_income_set_primary_price(rct_window* w, money16 price)
 {
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
+    auto rideSetPriceAction = RideSetPriceAction(w->number, price, true);
+    GameActions::Execute(&rideSetPriceAction);
 }
 
 /**
