@@ -57,6 +57,7 @@ namespace GameActions
         Register<RideSetColourSchemeAction>();
         Register<RideSetNameAction>();
         Register<RideSetStatusAction>();
+        Register<RideSetAppearanceAction>();
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
         Register<SignSetStyleAction>();
