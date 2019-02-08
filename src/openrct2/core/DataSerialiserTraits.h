@@ -339,7 +339,34 @@ template<> struct DataSerializerTraits<CoordsXY>
     {
         char msg[128] = {};
         snprintf(msg, sizeof(msg), "CoordsXY(x = %d, y = %d)", coords.x, coords.y);
+        stream->Write(msg, strlen(msg));
+    }
+};
 
+template<> struct DataSerializerTraits<CoordsXYZD>
+{
+    static void encode(IStream* stream, const CoordsXYZD& coord)
+    {
+        stream->WriteValue(ByteSwapBE(coord.x));
+        stream->WriteValue(ByteSwapBE(coord.y));
+        stream->WriteValue(ByteSwapBE(coord.z));
+        stream->WriteValue(ByteSwapBE(coord.direction));
+    }
+
+    static void decode(IStream* stream, CoordsXYZD& coord)
+    {
+        auto x = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto z = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto d = ByteSwapBE(stream->ReadValue<uint8_t>());
+        coord = CoordsXYZD{ x, y, z, d };
+    }
+
+    static void log(IStream* stream, const CoordsXYZD& coord)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "CoordsXYZD(x = %d, y = %d, z = %d, direction = %d)", coord.x, coord.y, coord.z, coord.direction);
         stream->Write(msg, strlen(msg));
     }
 };

@@ -636,7 +636,7 @@ static void ride_remove_station(Ride* ride, int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x006C4D89
  */
-static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
+bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
 {
     int32_t stationX0 = x;
     int32_t stationY0 = y;

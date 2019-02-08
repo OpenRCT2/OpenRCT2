@@ -39,6 +39,7 @@
 #include "StaffSetNameAction.hpp"
 #include "StaffSetOrdersAction.hpp"
 #include "WallRemoveAction.hpp"
+#include "TrackPlaceAction.hpp"
 
 namespace GameActions
 {
@@ -73,6 +74,7 @@ namespace GameActions
         Register<SmallSceneryRemoveAction>();
         Register<LargeSceneryRemoveAction>();
         Register<LandSetHeightAction>();
+        Register<TrackPlaceAction>();
         Register<ClearAction>();
         Register<PauseToggleAction>();
     }

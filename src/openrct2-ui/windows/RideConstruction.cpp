@@ -17,6 +17,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/TrackPlaceAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
@@ -1678,15 +1679,18 @@ static void window_ride_construction_construct(rct_window* w)
         }
     }
 
-    gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-    _trackPlaceCost = game_do_command(
-        x, (GAME_COMMAND_FLAG_APPLY) | (trackDirection << 8), y,
-        rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16), GAME_COMMAND_PLACE_TRACK, z | (properties << 16),
-        0);
-    if (_trackPlaceCost == MONEY32_UNDEFINED)
+    auto trackPlaceAction = TrackPlaceAction(
+        rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, (properties)&0xFF, (properties >> 8) & 0x0F,
+        (properties >> 12) & 0x0F, liftHillAndAlternativeState);
+    // trackPlaceAction.SetCallback();
+    auto res = GameActions::Execute(&trackPlaceAction);
+    // Used by some functions
+    _trackPlaceCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+
+    if (res->Error != GA_ERROR::OK)
     {
         if (network_get_mode() == NETWORK_MODE_CLIENT)
-            game_command_callback = nullptr; // don't do callback if we can't afford the track piece
+            trackPlaceAction.SetCallback(nullptr); // don't do callback if we can't afford the track piece
         window_ride_construction_update_active_elements();
         return;
     }
