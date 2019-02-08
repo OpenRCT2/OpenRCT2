@@ -3736,6 +3736,25 @@ STR_6276    :{RED}{STRINGID}의 손님이 올바르지 않은 놀이기구 종�
 STR_6277    :{WINDOW_COLOUR_2}정거장 번호: {BLACK}{COMMA16}
 STR_6278    :자동 저장 개수
 STR_6279    :{SMALLFONT}{BLACK}보관되는 자동 저장 파일의 개수입니다.
+STR_6280    :{SMALLFONT}{BLACK}채팅
+STR_6281    :{SMALLFONT}{BLACK}메인 메뉴에 채팅 창을 열기 위한 별도의 버튼을 표시합니다.
+STR_6282    :채팅
+STR_6283    :채팅을 사용할 수 없는 상태입니다. 멀티 플레이 서버에 접속하고 있는지 확인하십시오.
+STR_6284    :네트워크
+STR_6285    :네트워크 정보
+STR_6286    :수신
+STR_6287    :송신
+STR_6288    :총 수신
+STR_6289    :총 송신
+STR_6290    :기본 프로토콜
+STR_6291    :명령
+STR_6292    :지도
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/초
 
 
 #############
