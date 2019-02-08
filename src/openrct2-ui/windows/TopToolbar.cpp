@@ -3427,6 +3427,8 @@ static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
         w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
         TOP_TOOLBAR_NETWORK_COUNT);
 
+    dropdown_set_disabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
+
     gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
 
