@@ -501,7 +501,13 @@ private:
         int32_t stringId;
         if (_currentGroup.empty())
         {
-            if (sscanf(identifier, "STR_%4d", &stringId) != 1)
+            std::string stringName(identifier);
+            std::unordered_map<std::string, rct_string_id>::const_iterator foundString = stringIdMap.find(stringName);
+            if (foundString != stringIdMap.end())
+            {
+                stringId = foundString->second;
+            }
+            else if (sscanf(identifier, "STR_%4d", &stringId) != 1)
             {
                 // Ignore line entirely
                 return;
