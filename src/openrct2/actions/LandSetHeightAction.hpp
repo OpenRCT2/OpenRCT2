@@ -23,23 +23,6 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-/**
- *
- *  rct2: 0x00663CB9
- */
-static int32_t map_set_land_height_clear_func(
-    TileElement** tile_element, [[maybe_unused]] int32_t x, [[maybe_unused]] int32_t y, [[maybe_unused]] uint8_t flags,
-    [[maybe_unused]] money32* price)
-{
-    if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
-        return 0;
-
-    if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
-        return 0;
-
-    return 1;
-}
-
 DEFINE_GAME_ACTION(LandSetHeightAction, GAME_COMMAND_SET_LAND_HEIGHT, GameActionResult)
 {
 private:
@@ -67,7 +50,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_coords.x) << DS_TAG(_coords.y) << DS_TAG(_height) << DS_TAG(_style);
+        stream << DS_TAG(_coords) << DS_TAG(_height) << DS_TAG(_style);
     }
 
     GameActionResult::Ptr Query() const override
@@ -381,5 +364,22 @@ private:
         }
 
         map_invalidate_tile_full(_coords.x, _coords.y);
+    }
+
+    /**
+     *
+     *  rct2: 0x00663CB9
+     */
+    static int32_t map_set_land_height_clear_func(
+        TileElement * *tile_element, [[maybe_unused]] int32_t x, [[maybe_unused]] int32_t y, [[maybe_unused]] uint8_t flags,
+        [[maybe_unused]] money32 * price)
+    {
+        if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+            return 0;
+
+        if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            return 0;
+
+        return 1;
     }
 };
