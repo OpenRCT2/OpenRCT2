@@ -152,14 +152,23 @@ public:
             }
         }
 
-        ride = get_ride(0);
+        // Synchronize prices if enabled.
+        RideSetCommonPrice(shopItem);
+
+        return res;
+    }
+
+private:
+    void RideSetCommonPrice(int32_t shopItem) const
+    {
+        Ride* ride = get_ride(0);
         for (uint8_t rideId = 0; rideId < MAX_RIDES; rideId++, ride++)
         {
             // Unplaced rides have a type of NULL
             if (ride->type == RIDE_TYPE_NULL)
                 continue;
 
-            rideEntry = get_ride_entry(ride->subtype);
+            rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
 
             if (ride->type != RIDE_TYPE_TOILETS || shopItem != SHOP_ITEM_ADMISSION)
             {
@@ -183,7 +192,5 @@ public:
                 window_invalidate_by_number(WC_RIDE, rideId);
             }
         }
-
-        return res;
     }
 };
