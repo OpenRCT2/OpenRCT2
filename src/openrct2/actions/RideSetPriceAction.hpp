@@ -50,13 +50,12 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_rideIndex) << DS_TAG(_price);
+        stream << DS_TAG(_rideIndex) << DS_TAG(_price) << DS_TAG(_primaryPrice);
     }
 
     GameActionResult::Ptr Query() const override
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
 
         if (_rideIndex >= MAX_RIDES || _rideIndex == RIDE_ID_NULL)
         {
