@@ -6272,7 +6272,8 @@ static money16 window_ride_income_get_secondary_price(rct_window* w)
 
 static void window_ride_income_set_secondary_price(rct_window* w, money16 price)
 {
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, (w->number & 0x00FF) | 0x0100, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
+    auto rideSetPriceAction = RideSetPriceAction((w->number & 0x00FF), price, false);
+    GameActions::Execute(&rideSetPriceAction);
 }
 
 static bool window_ride_income_can_modify_primary_price(rct_window* w)
