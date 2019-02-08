@@ -136,7 +136,7 @@ public:
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
     void SendPacketToClients(NetworkPacket& packet, bool front = false, bool gameCmd = false);
     bool CheckSRAND(uint32_t tick, uint32_t srand0);
-    bool IsDesynchronized();
+    bool IsDesynchronised();
     void CheckDesynchronizaton();
     void KickPlayer(int32_t playerId);
     void SetPassword(const char* password);
@@ -1012,7 +1012,7 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
     return true;
 }
 
-bool Network::IsDesynchronized()
+bool Network::IsDesynchronised()
 {
     return gNetwork._desynchronised;
 }
@@ -3230,7 +3230,7 @@ int32_t network_get_status()
 
 bool network_is_desynchronised()
 {
-    return gNetwork.IsDesynchronized();
+    return gNetwork.IsDesynchronised();
 }
 
 void network_check_desynchronization()
@@ -4017,6 +4017,10 @@ void network_flush()
 void network_send_tick()
 {
 }
+bool network_is_desynchronised()
+{
+    return false;
+}
 void network_check_desynchronization()
 {
 }
@@ -4175,6 +4179,9 @@ void network_send_password(const std::string& password)
 {
 }
 void network_close()
+{
+}
+void network_reconnect()
 {
 }
 void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>&)
