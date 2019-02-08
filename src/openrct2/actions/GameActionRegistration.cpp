@@ -13,6 +13,7 @@
 #include "FootpathRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
+#include "LandSetHeightAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkMarketingAction.hpp"
@@ -68,6 +69,7 @@ namespace GameActions
         Register<WallRemoveAction>();
         Register<SmallSceneryRemoveAction>();
         Register<LargeSceneryRemoveAction>();
+        Register<LandSetHeightAction>();
         Register<ClearAction>();
     }
 } // namespace GameActions
