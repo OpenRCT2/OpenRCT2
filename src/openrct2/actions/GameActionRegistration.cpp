@@ -27,6 +27,7 @@
 #include "RideSetAppearanceAction.hpp"
 #include "RideSetColourScheme.hpp"
 #include "RideSetName.hpp"
+#include "RideSetPriceAction.hpp"
 #include "RideSetStatus.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
@@ -57,6 +58,7 @@ namespace GameActions
         Register<RideDemolishAction>();
         Register<RideSetColourSchemeAction>();
         Register<RideSetNameAction>();
+        Register<RideSetPriceAction>();
         Register<RideSetStatusAction>();
         Register<RideSetAppearanceAction>();
         Register<SetParkEntranceFeeAction>();
