@@ -175,7 +175,7 @@ TileElement* map_get_first_element_at(int x, int y)
     return gTileElementTilePointers[x + y * 256];
 }
 
-bool ride_type_has_flag(int rideType, int flag)
+bool ride_type_has_flag(int rideType, uint32_t flag)
 {
     return (RideProperties[rideType].flags & flag) != 0;
 }
