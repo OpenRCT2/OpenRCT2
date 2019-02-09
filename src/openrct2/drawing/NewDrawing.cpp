@@ -13,7 +13,7 @@
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Screenshot.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../paint/Painter.h"
 #include "../ui/UiContext.h"
 #include "IDrawingContext.h"

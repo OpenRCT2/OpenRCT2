@@ -13,7 +13,7 @@
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #include "../common.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "NetworkTypes.h"
 
 #include <memory>

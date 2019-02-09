@@ -15,7 +15,7 @@
 #include "Date.h"
 #include "FormatCodes.h"
 #include "Language.h"
-#include "StringIds.h"
+#include "RctStrings.h"
 
 #include <cstring>
 

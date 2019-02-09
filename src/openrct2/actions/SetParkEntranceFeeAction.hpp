@@ -12,7 +12,7 @@
 #include "../Cheats.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../world/Park.h"
 #include "GameAction.h"
 

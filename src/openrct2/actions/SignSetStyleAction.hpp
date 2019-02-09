@@ -12,7 +12,7 @@
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../ui/UiContext.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"

@@ -11,7 +11,7 @@
 
 #include "../config/Config.h"
 #include "../core/String.hpp"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Research.h"
 #include "Ride.h"
 #include "RideData.h"

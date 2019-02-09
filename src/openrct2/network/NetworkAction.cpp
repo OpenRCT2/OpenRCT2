@@ -12,7 +12,7 @@
 #    include "NetworkAction.h"
 
 #    include "../Game.h"
-#    include "../localisation/StringIds.h"
+#    include "../localisation/RctStrings.h"
 
 #    include <algorithm>
 

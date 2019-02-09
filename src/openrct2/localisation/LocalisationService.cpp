@@ -16,7 +16,7 @@
 #include "../object/ObjectManager.h"
 #include "Language.h"
 #include "LanguagePack.h"
-#include "StringIds.h"
+#include "RctStrings.h"
 
 #include <stdexcept>
 
@@ -60,6 +60,7 @@ const char* LocalisationService::GetString(rct_string_id id) const
         }
         if (result == nullptr)
         {
+            printf("Tried to get undefined string %d\n", id);
             result = "(undefined string)";
         }
     }

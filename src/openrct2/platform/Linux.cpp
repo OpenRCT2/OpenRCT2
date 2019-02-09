@@ -28,7 +28,7 @@
 #    endif // NO_TTF
 #    include "../config/Config.h"
 #    include "../localisation/Language.h"
-#    include "../localisation/StringIds.h"
+#    include "../localisation/RctStrings.h"
 #    include "../util/Util.h"
 #    include "platform.h"
 

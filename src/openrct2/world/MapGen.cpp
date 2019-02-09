@@ -15,7 +15,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Imaging.h"
 #include "../core/String.hpp"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../object/Object.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"

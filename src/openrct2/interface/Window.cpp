@@ -20,7 +20,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"

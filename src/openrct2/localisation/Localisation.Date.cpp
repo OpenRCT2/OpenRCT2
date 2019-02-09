@@ -9,7 +9,7 @@
 
 #include "../Game.h"
 #include "Date.h"
-#include "StringIds.h"
+#include "RctStrings.h"
 
 #include <algorithm>
 #include <time.h>

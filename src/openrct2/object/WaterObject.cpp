@@ -14,7 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../core/IStream.hpp"
 #include "../localisation/Language.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "ObjectJsonHelpers.h"
 
 #include <memory>

@@ -12,7 +12,7 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../ride/Station.h"

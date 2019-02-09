@@ -14,7 +14,7 @@
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../world/Park.h"

@@ -22,7 +22,7 @@
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/StringIds.h>
+#include <openrct2/localisation/RctStrings.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>

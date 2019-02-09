@@ -19,7 +19,7 @@
 #include "../core/String.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Language.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"

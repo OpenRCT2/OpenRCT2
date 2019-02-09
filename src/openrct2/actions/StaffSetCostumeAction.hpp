@@ -12,7 +12,7 @@
 #include "../Context.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../peep/Staff.h"
 #include "../windows/Intent.h"
 #include "../world/Sprite.h"

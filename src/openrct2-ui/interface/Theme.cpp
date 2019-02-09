@@ -29,7 +29,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Language.h>
-#include <openrct2/localisation/StringIds.h>
+#include <openrct2/localisation/RctStrings.h>
 #include <stdexcept>
 #include <vector>
 

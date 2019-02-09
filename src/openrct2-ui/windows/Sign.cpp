@@ -18,7 +18,7 @@
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/StringIds.h>
+#include <openrct2/localisation/RctStrings.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/LargeScenery.h>

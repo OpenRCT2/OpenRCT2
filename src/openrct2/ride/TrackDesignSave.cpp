@@ -13,7 +13,7 @@
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../object/ObjectList.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"

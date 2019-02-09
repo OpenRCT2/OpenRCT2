@@ -12,7 +12,7 @@
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Finance.h"
 #include "../world/LargeScenery.h"
 #include "../world/Location.hpp"

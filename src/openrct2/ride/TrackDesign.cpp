@@ -19,7 +19,7 @@
 #include "../core/File.h"
 #include "../core/String.hpp"
 #include "../localisation/Localisation.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"

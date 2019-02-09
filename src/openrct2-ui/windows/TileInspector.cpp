@@ -17,7 +17,7 @@
 #include <openrct2/common.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/StringIds.h>
+#include <openrct2/localisation/RctStrings.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>

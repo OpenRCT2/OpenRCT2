@@ -13,7 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"

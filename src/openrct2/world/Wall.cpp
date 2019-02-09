@@ -13,7 +13,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../common.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../ride/RideGroupManager.h"

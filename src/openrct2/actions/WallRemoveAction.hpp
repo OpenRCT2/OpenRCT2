@@ -13,7 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Finance.h"
 #include "../world/Location.hpp"
 #include "../world/Wall.h"

@@ -14,7 +14,7 @@
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../rct1/RCT1.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"

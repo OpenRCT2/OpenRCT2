@@ -12,7 +12,7 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "ObjectLimits.h"
 
 #include <algorithm>

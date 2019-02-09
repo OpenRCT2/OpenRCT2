@@ -18,7 +18,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../object/ObjectList.h"
 #include "../rct1/RCT1.h"
 #include "../ride/Ride.h"

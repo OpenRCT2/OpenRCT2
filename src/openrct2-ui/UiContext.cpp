@@ -36,7 +36,7 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
-#include <openrct2/localisation/StringIds.h>
+#include <openrct2/localisation/RctStrings.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>

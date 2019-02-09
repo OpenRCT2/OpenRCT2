@@ -11,7 +11,7 @@
 
 #include "../config/Config.h"
 #include "../util/Util.h"
-#include "StringIds.h"
+#include "RctStrings.h"
 
 // clang-format off
 currency_descriptor CurrencyDescriptors[CURRENCY_END] = {

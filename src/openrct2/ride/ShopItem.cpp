@@ -10,7 +10,7 @@
 #include "ShopItem.h"
 
 #include "../common.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../sprites.h"
 
 uint32_t gSamePriceThroughoutParkA;

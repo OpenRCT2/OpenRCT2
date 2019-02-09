@@ -9,7 +9,7 @@
 
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/StringIds.h"
+#include "../../localisation/RctStrings.h"
 #include "../../world/Sprite.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"

@@ -13,7 +13,7 @@
 #include "../ParkImporter.h"
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"

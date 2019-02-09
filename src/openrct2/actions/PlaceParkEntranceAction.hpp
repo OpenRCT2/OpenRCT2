@@ -12,7 +12,7 @@
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Finance.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"

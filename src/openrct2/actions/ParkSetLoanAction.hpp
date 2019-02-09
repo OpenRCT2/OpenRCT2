@@ -11,7 +11,7 @@
 
 #include "../Context.h"
 #include "../core/MemoryStream.h"
-#include "../localisation/StringIds.h"
+#include "../localisation/RctStrings.h"
 #include "../management/Finance.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
