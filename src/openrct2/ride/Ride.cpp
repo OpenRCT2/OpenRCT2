@@ -485,7 +485,7 @@ static money32 ride_calculate_income_per_hour(Ride* ride)
  * dl ride index
  * esi result map element
  */
-bool ride_try_get_origin_element(ride_id_t rideIndex, CoordsXYE* output)
+bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output)
 {
     TileElement* resultTileElement = nullptr;
 
@@ -495,7 +495,7 @@ bool ride_try_get_origin_element(ride_id_t rideIndex, CoordsXYE* output)
     {
         if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (rideIndex != it.element->AsTrack()->GetRideIndex())
+        if (it.element->AsTrack()->GetRideIndex() != ride->id)
             continue;
 
         // Found a track piece for target ride
@@ -822,14 +822,12 @@ bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, tr
  * bx result y
  * esi input / output map element
  */
-int32_t ride_find_track_gap(ride_id_t rideIndex, CoordsXYE* input, CoordsXYE* output)
+int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output)
 {
     assert(input->element->GetType() == TILE_ELEMENT_TYPE_TRACK);
-
-    Ride* ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
-        log_error("Trying to access invalid ride %d", rideIndex);
+        log_error("Trying to access invalid ride %d", ride->id);
         return 0;
     }
 
@@ -839,7 +837,7 @@ int32_t ride_find_track_gap(ride_id_t rideIndex, CoordsXYE* input, CoordsXYE* ou
     }
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
+    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == ride->id)
     {
         ride_construction_invalidate_current_track();
     }
@@ -1068,10 +1066,9 @@ static rct_window* ride_create_or_find_construction_window(ride_id_t rideIndex)
 void ride_construct(Ride* ride)
 {
     CoordsXYE trackElement;
-
-    if (ride_try_get_origin_element(ride->id, &trackElement))
+    if (ride_try_get_origin_element(ride, &trackElement))
     {
-        ride_find_track_gap(ride->id, &trackElement, &trackElement);
+        ride_find_track_gap(ride, &trackElement, &trackElement);
 
         rct_window* w = window_get_main();
         if (w != nullptr && ride_modify(&trackElement))
@@ -1079,7 +1076,7 @@ void ride_construct(Ride* ride)
     }
     else
     {
-        ride_initialise_construction_window(ride->id);
+        ride_initialise_construction_window(ride);
     }
 }
 
@@ -1887,6 +1884,7 @@ static int32_t ride_modify_entrance_or_exit(TileElement* tileElement, int32_t x,
     rct_window* constructionWindow;
 
     ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
+    auto ride = get_ride(rideIndex);
 
     entranceType = tileElement->AsEntrance()->GetEntranceType();
     if (entranceType != ENTRANCE_TYPE_RIDE_ENTRANCE && entranceType != ENTRANCE_TYPE_RIDE_EXIT)
@@ -1898,7 +1896,7 @@ static int32_t ride_modify_entrance_or_exit(TileElement* tileElement, int32_t x,
     constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (constructionWindow == nullptr)
     {
-        if (!ride_initialise_construction_window(rideIndex))
+        if (!ride_initialise_construction_window(ride))
             return 0;
 
         constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -2009,7 +2007,7 @@ int32_t ride_modify(CoordsXYE* input)
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
     {
-        if (ride_find_track_gap(rideIndex, &tileElement, &endOfTrackElement))
+        if (ride_find_track_gap(ride, &tileElement, &endOfTrackElement))
             tileElement = endOfTrackElement;
     }
 
@@ -2076,13 +2074,11 @@ int32_t ride_modify(CoordsXYE* input)
  *
  *  rct2: 0x006CC3FB
  */
-int32_t ride_initialise_construction_window(ride_id_t rideIndex)
+int32_t ride_initialise_construction_window(Ride* ride)
 {
-    Ride* ride;
     rct_window* w;
 
     tool_cancel();
-    ride = get_ride(rideIndex);
 
     if (!ride_check_if_construction_allowed(ride))
         return 0;
@@ -2090,7 +2086,7 @@ int32_t ride_initialise_construction_window(ride_id_t rideIndex)
     ride_clear_for_construction(ride);
     ride_remove_peeps(ride);
 
-    w = ride_create_or_find_construction_window(rideIndex);
+    w = ride_create_or_find_construction_window(ride->id);
 
     tool_set(w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, TOOL_CROSSHAIR);
     input_set_flag(INPUT_FLAG_6, true);
@@ -3450,8 +3446,8 @@ static void ride_entrance_exit_connected(Ride* ride)
     for (int32_t i = 0; i < MAX_STATIONS; ++i)
     {
         LocationXY8 station_start = ride->stations[i].Start;
-        TileCoordsXYZD entrance = ride_get_entrance_location(ride->id, i);
-        TileCoordsXYZD exit = ride_get_exit_location(ride->id, i);
+        auto entrance = ride_get_entrance_location(ride, i);
+        auto exit = ride_get_exit_location(ride, i);
 
         if (station_start.xy == RCT_XY8_UNDEFINED)
             continue;
@@ -4396,11 +4392,11 @@ static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
  *
  *  rct2: 0x006B5952
  */
-static void sub_6B5952(ride_id_t rideIndex)
+static void sub_6B5952(Ride* ride)
 {
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        TileCoordsXYZD location = ride_get_entrance_location(rideIndex, i);
+        auto location = ride_get_entrance_location(ride, i);
         if (location.isNull())
             continue;
 
@@ -4419,7 +4415,7 @@ static void sub_6B5952(ride_id_t rideIndex)
                 continue;
 
             int32_t direction = tileElement->GetDirection();
-            footpath_chain_ride_queue(rideIndex, i, x, y, tileElement, direction_reverse(direction));
+            footpath_chain_ride_queue(ride->id, i, x, y, tileElement, direction_reverse(direction));
         } while (!(tileElement++)->IsLastForTile());
     }
 }
@@ -5559,10 +5555,8 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
  *
  *  rct2: 0x006B51C0
  */
-static void loc_6B51C0(ride_id_t rideIndex)
+static void loc_6B51C0(const Ride* ride)
 {
-    Ride* ride = get_ride(rideIndex);
-
     if (gUnk141F568 != gUnk13CA740)
         return;
 
@@ -5577,13 +5571,13 @@ static void loc_6B51C0(ride_id_t rideIndex)
         if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
             continue;
 
-        if (ride_get_entrance_location(rideIndex, i).isNull())
+        if (ride_get_entrance_location(ride, i).isNull())
         {
             entranceOrExit = 0;
             break;
         }
 
-        if (ride_get_exit_location(rideIndex, i).isNull())
+        if (ride_get_exit_location(ride, i).isNull())
         {
             entranceOrExit = 1;
             break;
@@ -5601,8 +5595,8 @@ static void loc_6B51C0(ride_id_t rideIndex)
         window_scroll_to_location(w, x, y, z);
 
         CoordsXYE trackElement;
-        ride_try_get_origin_element(rideIndex, &trackElement);
-        ride_find_track_gap(rideIndex, &trackElement, &trackElement);
+        ride_try_get_origin_element(ride, &trackElement);
+        ride_find_track_gap(ride, &trackElement, &trackElement);
         int32_t ok = ride_modify(&trackElement);
         if (ok == 0)
         {
@@ -5687,13 +5681,13 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
 
     if (!ride_check_for_entrance_exit(rideIndex))
     {
-        loc_6B51C0(rideIndex);
+        loc_6B51C0(ride);
         return 0;
     }
 
     if (goingToBeOpen && isApplying)
     {
-        sub_6B5952(rideIndex);
+        sub_6B5952(ride);
         ride->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
     }
 
@@ -5711,7 +5705,7 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
     if (ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT
         || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
     {
-        if (ride_find_track_gap(rideIndex, &trackElement, &problematicTrackElement)
+        if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement)
             && (!gConfigGeneral.test_unfinished_tracks || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
                 || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
         {
@@ -5755,7 +5749,7 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
 
     if (ride->mode == RIDE_MODE_STATION_TO_STATION)
     {
-        if (!ride_find_track_gap(rideIndex, &trackElement, &problematicTrackElement))
+        if (!ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
             gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
             return 0;
@@ -5826,13 +5820,13 @@ int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32
 
     if (!ride_check_for_entrance_exit(rideIndex))
     {
-        loc_6B51C0(rideIndex);
+        loc_6B51C0(ride);
         return 0;
     }
 
     if (goingToBeOpen && isApplying)
     {
-        sub_6B5952(rideIndex);
+        sub_6B5952(ride);
         ride->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
     }
 
@@ -5851,7 +5845,7 @@ int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32
         || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
         || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
     {
-        if (ride_find_track_gap(rideIndex, &trackElement, &problematicTrackElement))
+        if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
@@ -5893,7 +5887,7 @@ int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32
 
     if (ride->mode == RIDE_MODE_STATION_TO_STATION)
     {
-        if (!ride_find_track_gap(rideIndex, &trackElement, &problematicTrackElement))
+        if (!ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
             gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
             return 0;
@@ -5982,12 +5976,12 @@ void ride_get_start_of_track(CoordsXYE* output)
  *
  *  rct2: 0x006CB7FB
  */
-int32_t ride_get_refund_price(int32_t ride_id)
+int32_t ride_get_refund_price(const Ride* ride)
 {
     CoordsXYE trackElement;
     money32 addedcost, cost = 0;
 
-    if (!ride_try_get_origin_element(ride_id, &trackElement))
+    if (!ride_try_get_origin_element(ride, &trackElement))
     {
         return 0; // Ride has no track to refund
     }
@@ -7825,14 +7819,14 @@ void sub_6CB945(ride_id_t rideIndex)
     TileCoordsXYZD* locationList = locations;
     for (uint8_t stationId = 0; stationId < MAX_STATIONS; ++stationId)
     {
-        TileCoordsXYZD entrance = ride_get_entrance_location(rideIndex, stationId);
+        auto entrance = ride_get_entrance_location(ride, stationId);
         if (!entrance.isNull())
         {
             *locationList++ = entrance;
             ride_clear_entrance_location(ride, stationId);
         }
 
-        TileCoordsXYZD exit = ride_get_exit_location(rideIndex, stationId);
+        auto exit = ride_get_exit_location(ride, stationId);
         if (!exit.isNull())
         {
             *locationList++ = exit;

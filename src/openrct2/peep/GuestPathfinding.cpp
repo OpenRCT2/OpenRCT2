@@ -2063,13 +2063,13 @@ int32_t guest_path_finding(rct_peep* peep)
     for (uint8_t stationNum = 0; stationNum < MAX_STATIONS; ++stationNum)
     {
         // Skip if stationNum has no entrance (so presumably an exit only station)
-        if (ride_get_entrance_location(rideIndex, stationNum).isNull())
+        if (ride_get_entrance_location(ride, stationNum).isNull())
             continue;
 
         numEntranceStations++;
         entranceStations |= (1 << stationNum);
 
-        TileCoordsXYZD entranceLocation = ride_get_entrance_location(rideIndex, stationNum);
+        TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, stationNum);
 
         int16_t stationX = (int16_t)(entranceLocation.x * 32);
         int16_t stationY = (int16_t)(entranceLocation.y * 32);
@@ -2119,7 +2119,7 @@ int32_t guest_path_finding(rct_peep* peep)
     }
     else
     {
-        TileCoordsXYZD entranceXYZD = ride_get_entrance_location(rideIndex, closestStationNum);
+        TileCoordsXYZD entranceXYZD = ride_get_entrance_location(ride, closestStationNum);
         loc.x = entranceXYZD.x;
         loc.y = entranceXYZD.y;
         loc.z = entranceXYZD.z;

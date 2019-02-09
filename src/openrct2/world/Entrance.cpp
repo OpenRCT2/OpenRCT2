@@ -176,7 +176,7 @@ static money32 RideEntranceExitPlace(
 
         if (isExit)
         {
-            const auto exit = ride_get_exit_location(rideIndex, stationNum);
+            const auto exit = ride_get_exit_location(ride, stationNum);
             if (!exit.isNull())
             {
                 if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -192,7 +192,7 @@ static money32 RideEntranceExitPlace(
         }
         else
         {
-            const auto entrance = ride_get_entrance_location(rideIndex, stationNum);
+            const auto entrance = ride_get_entrance_location(ride, stationNum);
             if (!entrance.isNull())
             {
                 if (flags & GAME_COMMAND_FLAG_GHOST)

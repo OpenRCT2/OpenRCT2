@@ -1015,8 +1015,8 @@ void ride_update_all();
 void ride_check_all_reachable();
 void ride_update_satisfaction(Ride* ride, uint8_t happiness);
 void ride_update_popularity(Ride* ride, uint8_t pop_amount);
-bool ride_try_get_origin_element(ride_id_t rideIndex, CoordsXYE* output);
-int32_t ride_find_track_gap(ride_id_t rideIndex, CoordsXYE* input, CoordsXYE* output);
+bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
+int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(Ride* ride);
 int32_t ride_modify(CoordsXYE* input);
@@ -1041,7 +1041,7 @@ void ride_breakdown_add_news_item(ride_id_t rideIndex);
 rct_peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32_t isApplying);
 int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32_t isApplying);
-int32_t ride_initialise_construction_window(ride_id_t rideIndex);
+int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
 int32_t sub_6C683D(
     int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params, TileElement** output_element,
@@ -1061,7 +1061,7 @@ void game_command_set_ride_name(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_set_ride_setting(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-int32_t ride_get_refund_price(int32_t ride_id);
+int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 void ride_set_colour_preset(Ride* ride, uint8_t index);
 money32 ride_get_common_price(Ride* forRide);

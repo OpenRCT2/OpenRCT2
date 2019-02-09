@@ -2708,14 +2708,14 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
     // Entrance / exit
     if (ride->status == RIDE_STATUS_CLOSED)
     {
-        if (ride_get_entrance_location((uint8_t)w->number, (uint8_t)stationIndex).isNull())
+        if (ride_get_entrance_location(ride, (uint8_t)stationIndex).isNull())
             stringId = STR_NO_ENTRANCE;
-        else if (ride_get_exit_location((uint8_t)w->number, (uint8_t)stationIndex).isNull())
+        else if (ride_get_exit_location(ride, (uint8_t)stationIndex).isNull())
             stringId = STR_NO_EXIT;
     }
     else
     {
-        if (ride_get_entrance_location((uint8_t)w->number, (uint8_t)stationIndex).isNull())
+        if (ride_get_entrance_location(ride, (uint8_t)stationIndex).isNull())
             stringId = STR_EXIT_ONLY;
     }
 

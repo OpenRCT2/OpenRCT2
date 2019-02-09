@@ -2263,7 +2263,7 @@ static void peep_choose_seat_from_car(rct_peep* peep, Ride* ride, rct_vehicle* v
  */
 static void peep_go_to_ride_entrance(rct_peep* peep, Ride* ride)
 {
-    TileCoordsXYZD location = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
+    TileCoordsXYZD location = ride_get_entrance_location(ride, peep->current_ride_station);
     Guard::Assert(!location.isNull());
     int32_t x = location.x;
     int32_t y = location.y;
@@ -3502,7 +3502,7 @@ static uint8_t peep_get_waypointed_seat_location(
 
 static void peep_update_ride_leave_entrance_waypoints(rct_peep* peep, Ride* ride)
 {
-    TileCoordsXYZD entranceLocation = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
+    TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, peep->current_ride_station);
     Guard::Assert(!entranceLocation.isNull());
     uint8_t direction_entrance = entranceLocation.direction;
 
@@ -3582,7 +3582,7 @@ void rct_peep::UpdateRideAdvanceThroughEntrance()
     Guard::Assert(sub_state == PEEP_RIDE_LEAVE_ENTRANCE, "Peep substate should be LEAVE_ENTRANCE");
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        TileCoordsXYZD entranceLocation = ride_get_entrance_location(current_ride, current_ride_station);
+        TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, current_ride_station);
         Guard::Assert(!entranceLocation.isNull());
 
         if (ride->type == RIDE_TYPE_MAZE)
@@ -3797,7 +3797,7 @@ void rct_peep::UpdateRideFreeVehicleEnterRide(Ride* ride)
  */
 static void peep_update_ride_no_free_vehicle_rejoin_queue(rct_peep* peep, Ride* ride)
 {
-    TileCoordsXYZD entranceLocation = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
+    TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, peep->current_ride_station);
 
     int32_t x = entranceLocation.x * 32;
     int32_t y = entranceLocation.y * 32;
@@ -4036,7 +4036,7 @@ void rct_peep::UpdateRideLeaveVehicle()
     if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS))
     {
         assert(current_ride_station < MAX_STATIONS);
-        TileCoordsXYZD exitLocation = ride_get_exit_location(current_ride, current_ride_station);
+        TileCoordsXYZD exitLocation = ride_get_exit_location(ride, current_ride_station);
         CoordsXYZD platformLocation;
         platformLocation.z = ride->stations[current_ride_station].Height;
 
@@ -4128,7 +4128,7 @@ void rct_peep::UpdateRideLeaveVehicle()
         return;
     }
 
-    TileCoordsXYZD exitLocation = ride_get_exit_location(current_ride, current_ride_station);
+    TileCoordsXYZD exitLocation = ride_get_exit_location(ride, current_ride_station);
     Guard::Assert(!exitLocation.isNull());
     CoordsXYZ waypointLoc;
 
@@ -4184,7 +4184,7 @@ static void peep_update_ride_prepare_for_exit(rct_peep* peep)
     Ride* ride = get_ride(peep->current_ride);
 
     Guard::Assert(peep->current_ride_station < std::size(ride->stations), GUARD_LINE);
-    auto exit = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
+    auto exit = ride_get_exit_location(ride, peep->current_ride_station);
     int16_t x = exit.x;
     int16_t y = exit.y;
     uint8_t exit_direction = exit.direction;
@@ -4422,7 +4422,7 @@ void rct_peep::UpdateRideApproachExitWaypoints()
 
     var_37 |= 3;
 
-    auto exit = ride_get_exit_location(current_ride, current_ride_station);
+    auto exit = ride_get_exit_location(ride, current_ride_station);
     actionX = exit.x;
     actionY = exit.y;
     uint8_t exit_direction = direction_reverse(exit.direction);
@@ -4497,7 +4497,7 @@ void rct_peep::UpdateRideApproachSpiralSlide()
 
         if (lastRide)
         {
-            auto exit = ride_get_exit_location(current_ride, current_ride_station);
+            auto exit = ride_get_exit_location(ride, current_ride_station);
             waypoint = 1;
             var_37 = (exit.direction * 4) | (var_37 & 0x30) | waypoint;
             actionX = ride->stations[current_ride_station].Start.x * 32;
@@ -4683,7 +4683,7 @@ void rct_peep::UpdateRideLeaveSpiralSlide()
     // Actually force the final waypoint
     var_37 |= 3;
 
-    auto exit = ride_get_exit_location(current_ride, current_ride_station);
+    auto exit = ride_get_exit_location(ride, current_ride_station);
     actionX = exit.x * 32 + 16;
     actionY = exit.y * 32 + 16;
 

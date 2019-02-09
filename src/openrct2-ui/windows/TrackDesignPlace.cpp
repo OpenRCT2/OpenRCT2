@@ -353,7 +353,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
             }
             else
             {
-                ride_initialise_construction_window(rideIndex);
+                ride_initialise_construction_window(get_ride(rideIndex));
                 w = window_find_by_class(WC_RIDE_CONSTRUCTION);
                 window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             }

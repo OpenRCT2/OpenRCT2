@@ -605,7 +605,7 @@ static void window_ride_construction_close(rct_window* w)
         return;
     }
 
-    if (ride_try_get_origin_element(ride->id, nullptr))
+    if (ride_try_get_origin_element(ride, nullptr))
     {
         // Auto open shops if required.
         if (ride->mode == RIDE_MODE_SHOP_STALL && gConfigGeneral.auto_open_shops)
@@ -1914,9 +1914,10 @@ static void window_ride_construction_entrance_click(rct_window* w)
 {
     if (tool_set(w, WIDX_ENTRANCE, TOOL_CROSSHAIR))
     {
-        if (!ride_try_get_origin_element(_currentRideIndex, nullptr))
+        auto ride = get_ride(_currentRideIndex);
+        if (!ride_try_get_origin_element(ride, nullptr))
         {
-            ride_initialise_construction_window(_currentRideIndex);
+            ride_initialise_construction_window(ride);
         }
     }
     else
@@ -1943,9 +1944,10 @@ static void window_ride_construction_exit_click(rct_window* w)
 {
     if (tool_set(w, WIDX_EXIT, TOOL_CROSSHAIR))
     {
-        if (!ride_try_get_origin_element(_currentRideIndex, nullptr))
+        auto ride = get_ride(_currentRideIndex);
+        if (!ride_try_get_origin_element(ride, nullptr))
         {
-            ride_initialise_construction_window(_currentRideIndex);
+            ride_initialise_construction_window(ride);
         }
     }
     else
@@ -3864,7 +3866,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
                 int32_t saveCurrentTrackAlternative = _currentTrackAlternative;
                 int32_t saveCurrentTrackLiftHill = _currentTrackLiftHill;
 
-                ride_initialise_construction_window(_currentRideIndex);
+                ride_initialise_construction_window(ride);
 
                 _currentTrackPieceDirection = saveTrackDirection;
                 _currentTrackCurve = saveCurrentTrackCurve;

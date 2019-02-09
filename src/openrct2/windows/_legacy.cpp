@@ -562,9 +562,10 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
         int32_t b4 = _currentTrackLiftHill;
         ride_construction_set_default_next_piece();
         window_ride_construction_update_active_elements();
-        if (!ride_try_get_origin_element(_currentRideIndex, nullptr))
+        auto ride = get_ride(_currentRideIndex);
+        if (!ride_try_get_origin_element(ride, nullptr))
         {
-            ride_initialise_construction_window(_currentRideIndex);
+            ride_initialise_construction_window(ride);
             _currentTrackPieceDirection = direction & 3;
             if (!(slope & 0x100))
             {

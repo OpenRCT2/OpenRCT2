@@ -54,8 +54,8 @@ static bool track_design_save_add_tile_element(int32_t interactionType, int32_t 
 static void track_design_save_remove_tile_element(int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement);
 static bool track_design_save_copy_scenery_to_td6(rct_track_td6* td6);
 static rct_track_td6* track_design_save_to_td6(ride_id_t rideIndex);
-static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6* td6);
-static bool track_design_save_to_td6_for_tracked_ride(ride_id_t rideIndex, rct_track_td6* td6);
+static bool track_design_save_to_td6_for_maze(const Ride* ride, rct_track_td6* td6);
+static bool track_design_save_to_td6_for_tracked_ride(const Ride* ride, rct_track_td6* td6);
 
 void track_design_save_init()
 {
@@ -819,11 +819,11 @@ static rct_track_td6* track_design_save_to_td6(ride_id_t rideIndex)
     bool result;
     if (td6->type == RIDE_TYPE_MAZE)
     {
-        result = track_design_save_to_td6_for_maze(rideIndex, td6);
+        result = track_design_save_to_td6_for_maze(ride, td6);
     }
     else
     {
-        result = track_design_save_to_td6_for_tracked_ride(rideIndex, td6);
+        result = track_design_save_to_td6_for_tracked_ride(ride, td6);
     }
 
     if (!result)
@@ -838,7 +838,7 @@ static rct_track_td6* track_design_save_to_td6(ride_id_t rideIndex)
  *
  *  rct2: 0x006CEAAE
  */
-static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6* td6)
+static bool track_design_save_to_td6_for_maze(const Ride* ride, rct_track_td6* td6)
 {
     TileElement* tileElement = nullptr;
     bool mapFound = false;
@@ -853,7 +853,7 @@ static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
-                if (tileElement->AsTrack()->GetRideIndex() == rideIndex)
+                if (tileElement->AsTrack()->GetRideIndex() == ride->id)
                 {
                     mapFound = true;
                     break;
@@ -894,7 +894,7 @@ static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
-                if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
+                if (tileElement->AsTrack()->GetRideIndex() != ride->id)
                     continue;
 
                 maze->maze_entry = tileElement->AsTrack()->GetMazeEntry();
@@ -914,8 +914,7 @@ static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6
         x = 0;
     }
 
-    TileCoordsXYZD location = ride_get_entrance_location(rideIndex, 0);
-
+    auto location = ride_get_entrance_location(ride, 0);
     if (location.isNull())
     {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -933,7 +932,7 @@ static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
-        if (tileElement->AsEntrance()->GetRideIndex() == rideIndex)
+        if (tileElement->AsEntrance()->GetRideIndex() == ride->id)
             break;
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
@@ -946,7 +945,7 @@ static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6
     maze++;
     numMazeElements++;
 
-    location = ride_get_exit_location(rideIndex, 0);
+    location = ride_get_exit_location(ride, 0);
     if (location.isNull())
     {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -963,7 +962,7 @@ static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
             continue;
-        if (tileElement->AsEntrance()->GetRideIndex() == rideIndex)
+        if (tileElement->AsEntrance()->GetRideIndex() == ride->id)
             break;
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
@@ -1004,12 +1003,10 @@ static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6
  *
  *  rct2: 0x006CE68D
  */
-static bool track_design_save_to_td6_for_tracked_ride(ride_id_t rideIndex, rct_track_td6* td6)
+static bool track_design_save_to_td6_for_tracked_ride(const Ride* ride, rct_track_td6* td6)
 {
-    Ride* ride = get_ride(rideIndex);
     CoordsXYE trackElement;
-
-    if (!ride_try_get_origin_element(rideIndex, &trackElement))
+    if (!ride_try_get_origin_element(ride, &trackElement))
     {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         return false;
@@ -1113,11 +1110,11 @@ static bool track_design_save_to_td6_for_tracked_ride(ride_id_t rideIndex, rct_t
             TileCoordsXYZD location;
             if (i == 0)
             {
-                location = ride_get_entrance_location(rideIndex, station_index);
+                location = ride_get_entrance_location(ride, station_index);
             }
             else
             {
-                location = ride_get_exit_location(rideIndex, station_index);
+                location = ride_get_exit_location(ride, station_index);
             }
 
             if (location.isNull())

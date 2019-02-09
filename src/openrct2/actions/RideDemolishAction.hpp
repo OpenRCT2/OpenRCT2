@@ -90,7 +90,7 @@ public:
             }
 
             result->ErrorTitle = STR_CANT_REFURBISH_RIDE;
-            result->Cost = GetRefurbishPrice();
+            result->Cost = GetRefurbishPrice(ride);
         }
 
         return result;
@@ -344,7 +344,7 @@ private:
     {
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        res->Cost = GetRefurbishPrice();
+        res->Cost = GetRefurbishPrice(ride);
 
         ride_renew(ride);
 
@@ -367,13 +367,13 @@ private:
         return res;
     }
 
-    money32 GetRefurbishPrice() const
+    money32 GetRefurbishPrice(const Ride* ride) const
     {
-        return -GetRefundPrice() / 2;
+        return -GetRefundPrice(ride) / 2;
     }
 
-    money32 GetRefundPrice() const
+    money32 GetRefundPrice(const Ride* ride) const
     {
-        return ride_get_refund_price(_rideIndex);
+        return ride_get_refund_price(ride);
     }
 };
