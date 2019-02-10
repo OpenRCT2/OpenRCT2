@@ -99,10 +99,8 @@ struct rct_ride_entry_vehicle
 #    pragma pack(pop)
 #endif // __TESTPAINT__
 #ifdef PLATFORM_32BIT
-static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 4 == 0, "Invalid struct layout");
 static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
 #else
-static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 8 == 0, "Invalid struct layout");
 static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
 #endif
 

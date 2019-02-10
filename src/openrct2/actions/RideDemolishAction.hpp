@@ -56,7 +56,7 @@ public:
         Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid game command for ride %u", _rideIndex);
+            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
@@ -101,7 +101,7 @@ public:
         Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid game command for ride %u", _rideIndex);
+            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 

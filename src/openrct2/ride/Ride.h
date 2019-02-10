@@ -1109,7 +1109,7 @@ bool ride_has_log_reverser(Ride* ride);
 bool ride_has_waterfall(Ride* ride);
 bool ride_has_whirlpool(Ride* ride);
 
-bool ride_type_has_flag(int32_t rideType, int32_t flag);
+bool ride_type_has_flag(int32_t rideType, uint32_t flag);
 bool ride_is_powered_launched(Ride* ride);
 bool ride_is_block_sectioned(Ride* ride);
 bool ride_has_any_track_elements(ride_id_t rideIndex);

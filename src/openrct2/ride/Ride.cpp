@@ -6389,7 +6389,7 @@ void game_command_callback_ride_remove_track_piece(
     window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
 }
 
-bool ride_type_has_flag(int32_t rideType, int32_t flag)
+bool ride_type_has_flag(int32_t rideType, uint32_t flag)
 {
     return (RideProperties[rideType].flags & flag) != 0;
 }

@@ -342,9 +342,10 @@ public:
     void AddObjectFromFile(const std::string_view& objectName, const void* data, size_t dataSize) override
     {
         utf8 path[MAX_PATH];
-        GetPathForNewObject(path, sizeof(path), std::string(objectName).c_str());
+        std::string objectNameString(objectName);
+        GetPathForNewObject(path, sizeof(path), objectNameString.c_str());
 
-        log_verbose("Adding object: [%s]", objectName);
+        log_verbose("Adding object: [%s]", objectNameString.c_str());
         try
         {
             File::WriteAllBytes(path, data, dataSize);
@@ -352,7 +353,7 @@ public:
         }
         catch (const std::exception&)
         {
-            Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
+            Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectNameString.c_str(), path);
         }
     }
 

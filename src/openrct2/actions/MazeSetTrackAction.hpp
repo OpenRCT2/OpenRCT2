@@ -217,7 +217,7 @@ public:
         if (tileElement == nullptr)
         {
             Ride* ride = get_ride(_rideIndex);
-            openrct2_assert(ride != nullptr, "Invalid ride index: %d\n", _rideIndex);
+            openrct2_assert(ride != nullptr, "Invalid ride index: %d\n", uint32_t(_rideIndex));
 
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;

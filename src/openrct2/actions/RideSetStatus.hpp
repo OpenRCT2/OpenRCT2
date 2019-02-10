@@ -65,7 +65,7 @@ public:
 
         if (_rideIndex >= MAX_RIDES || _rideIndex < 0)
         {
-            log_warning("Invalid game command for ride %u", _rideIndex);
+            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             res->Error = GA_ERROR::INVALID_PARAMETERS;
             res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
@@ -107,7 +107,7 @@ public:
 
         if (ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid game command for ride %u", _rideIndex);
+            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             res->Error = GA_ERROR::INVALID_PARAMETERS;
             res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
