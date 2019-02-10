@@ -91,11 +91,9 @@ bool finance_check_affordability(money32 cost, uint32_t flags)
 {
     if (finance_check_money_required(flags) == false)
         return true;
-    if (cost <= 0)
-        return true;
-    if (cost <= gCash)
-        return true;
-    return false;
+    if (cost > gCash)
+        return false;
+    return true;
 }
 
 /**

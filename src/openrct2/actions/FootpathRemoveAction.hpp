@@ -138,16 +138,6 @@ private:
     money32 GetRefundPrice(TileElement * footpathElement) const
     {
         money32 cost = -MONEY(10, 00);
-
-        bool isNotOwnedByPark = (GetFlags() & GAME_COMMAND_FLAG_5);
-        bool moneyDisabled = (gParkFlags & PARK_FLAGS_NO_MONEY);
-        bool isGhost = (footpathElement == nullptr) || (footpathElement->IsGhost());
-
-        if (isNotOwnedByPark || moneyDisabled || isGhost)
-        {
-            cost = 0;
-        }
-
         return cost;
     }
 };
