@@ -10,7 +10,7 @@
 #include "openrct2/localisation/LanguagePack.h"
 
 #include "openrct2/localisation/Language.h"
-#include "openrct2/localisation/StringIds.h"
+#include "openrct2/localisation/RctStrings.h"
 
 #include <gtest/gtest.h>
 
