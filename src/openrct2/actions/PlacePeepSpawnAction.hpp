@@ -55,11 +55,9 @@ public:
                 GA_ERROR::NOT_IN_EDITOR_MODE, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
 
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-        gCommandPosition.x = _location.x;
-        gCommandPosition.y = _location.y;
-        gCommandPosition.z = _location.z / 8;
+        auto res = std::make_unique<GameActionResult>();
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Position = CoordsXYZ{ _location.x, _location.y, _location.z / 8 };
 
         if (!map_check_free_elements_and_reorganise(3))
         {
@@ -94,16 +92,14 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
         }
 
-        return std::make_unique<GameActionResult>();
+        return res;
     }
 
     GameActionResult::Ptr Execute() const override
     {
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-        gCommandPosition.x = _location.x;
-        gCommandPosition.y = _location.y;
-        gCommandPosition.z = _location.z / 8;
+        auto res = std::make_unique<GameActionResult>();
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Position = CoordsXYZ{ _location.x, _location.y, _location.z / 8 };
 
         // If we have reached our max peep spawns, use peep spawn next to last one set.
         if (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
@@ -134,6 +130,6 @@ public:
         // Invalidate tile
         map_invalidate_tile_full(_location.x, _location.y);
 
-        return std::make_unique<GameActionResult>();
+        return res;
     }
 };

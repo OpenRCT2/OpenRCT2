@@ -97,12 +97,7 @@ public:
         res->Position.x = _origin.x + 16;
         res->Position.y = _origin.y + 16;
         res->Position.z = _origin.z;
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        gCommandPosition.x = res->Position.x;
-        gCommandPosition.y = res->Position.y;
-        gCommandPosition.z = res->Position.z;
 
-        int16_t trackpieceZ = _origin.z;
         gTrackGroundFlags = 0;
 
         uint32_t rideTypeFlags = RideProperties[ride->type].flags;
@@ -245,8 +240,6 @@ public:
             }
 
             mapLoc.z += trackBlock->z;
-
-            trackpieceZ = mapLoc.z;
 
             if (mapLoc.z < 16)
             {
@@ -443,12 +436,6 @@ public:
             cost += ((supportHeight / 2) * RideTrackCosts[ride->type].support_price) * 5;
         }
 
-        LocationXYZ16 coord;
-        coord.x = res->Position.x;
-        coord.y = res->Position.y;
-        coord.z = trackpieceZ;
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-
         money32 price = RideTrackCosts[ride->type].track_price;
         price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackPricing[_trackType] : TrackPricing[_trackType];
 
@@ -480,12 +467,7 @@ public:
         res->Position.x = _origin.x + 16;
         res->Position.y = _origin.y + 16;
         res->Position.z = _origin.z;
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        gCommandPosition.x = res->Position.x;
-        gCommandPosition.y = res->Position.y;
-        gCommandPosition.z = res->Position.z;
 
-        int16_t trackpieceZ = _origin.z;
         gTrackGroundFlags = 0;
 
         uint32_t rideTypeFlags = RideProperties[ride->type].flags;
@@ -546,8 +528,6 @@ public:
             }
 
             mapLoc.z += trackBlock->z;
-
-            trackpieceZ = mapLoc.z;
 
             int32_t baseZ = mapLoc.z / 8;
 
@@ -788,12 +768,6 @@ public:
             }
             map_invalidate_tile_full(mapLoc.x, mapLoc.y);
         }
-
-        LocationXYZ16 coord;
-        coord.x = res->Position.x;
-        coord.y = res->Position.y;
-        coord.z = trackpieceZ;
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
         money32 price = RideTrackCosts[ride->type].track_price;
         price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackPricing[_trackType] : TrackPricing[_trackType];

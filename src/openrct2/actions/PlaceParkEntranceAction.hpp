@@ -62,11 +62,9 @@ public:
                 GA_ERROR::NOT_IN_EDITOR_MODE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
         }
 
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-        gCommandPosition.x = _x;
-        gCommandPosition.y = _y;
-        gCommandPosition.z = _z * 16;
+        auto res = std::make_unique<GameActionResult>();
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Position = CoordsXYZ{ _x, _y, _z * 16 };
 
         if (!map_check_free_elements_and_reorganise(3))
         {
@@ -119,18 +117,16 @@ public:
             }
         }
 
-        return std::make_unique<GameActionResult>();
+        return res;
     }
 
     GameActionResult::Ptr Execute() const override
     {
+        auto res = std::make_unique<GameActionResult>();
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Position = CoordsXYZ{ _x, _y, _z * 16 };
+
         uint32_t flags = GetFlags();
-
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-        gCommandPosition.x = _x;
-        gCommandPosition.y = _y;
-        gCommandPosition.z = _z * 16;
 
         CoordsXYZD parkEntrance;
         parkEntrance.x = _x;
@@ -201,6 +197,6 @@ public:
             }
         }
 
-        return std::make_unique<GameActionResult>();
+        return res;
     }
 };
