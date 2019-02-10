@@ -23,8 +23,10 @@
 #include "object/ObjectRepository.h"
 #include "rct2/S6Exporter.h"
 #include "world/Park.h"
+#include "zlib.h"
 
 #include <chrono>
+#include <memory>
 #include <vector>
 
 namespace OpenRCT2
@@ -77,6 +79,14 @@ namespace OpenRCT2
         }
     };
 
+    struct ReplayRecordFile
+    {
+        uint32_t magic;
+        uint16_t version;
+        uint64_t uncompressedSize;
+        MemoryStream data;
+    };
+
     struct ReplayRecordData
     {
         uint32_t magic;
@@ -97,8 +107,9 @@ namespace OpenRCT2
 
     class ReplayManager final : public IReplayManager
     {
-        static constexpr uint16_t ReplayVersion = 1;
+        static constexpr uint16_t ReplayVersion = 2;
         static constexpr uint32_t ReplayMagic = 0x5243524F; // ORCR.
+        static constexpr int ReplayCompressionLevel = 9;
 
         enum class ReplayMode
         {
@@ -284,19 +295,38 @@ namespace OpenRCT2
             _currentRecording->tickEnd = gCurrentTicks;
 
             // Serialise Body.
-            DataSerialiser serialiser(true);
-            Serialise(serialiser, *_currentRecording);
+            DataSerialiser recSerialiser(true);
+            Serialise(recSerialiser, *_currentRecording);
 
-            bool result = true;
+            const auto& stream = recSerialiser.GetStream();
+            unsigned long streamLength = static_cast<unsigned long>(stream.GetLength());
+            unsigned long compressLength = compressBound(streamLength);
+
+            MemoryStream data(compressLength);
+
+            ReplayRecordFile file{ _currentRecording->magic, _currentRecording->version, streamLength, data };
+
+            auto compressBuf = std::make_unique<unsigned char[]>(compressLength);
+            compress2(
+                compressBuf.get(), &compressLength, (unsigned char*)stream.GetData(), stream.GetLength(),
+                ReplayCompressionLevel);
+            file.data.Write(compressBuf.get(), compressLength);
+
+            DataSerialiser fileSerialiser(true);
+            fileSerialiser << file.magic;
+            fileSerialiser << file.version;
+            fileSerialiser << file.uncompressedSize;
+            fileSerialiser << file.data;
+
+            bool result = false;
 
             const std::string& outFile = _currentRecording->filePath;
 
             FILE* fp = fopen(outFile.c_str(), "wb");
             if (fp)
             {
-                const auto& stream = serialiser.GetStream();
-                fwrite(stream.GetData(), 1, stream.GetLength(), fp);
-
+                const auto& fileStream = fileSerialiser.GetStream();
+                fwrite(fileStream.GetData(), 1, fileStream.GetLength(), fp);
                 fclose(fp);
 
                 result = true;
@@ -556,10 +586,42 @@ namespace OpenRCT2
             return true;
         }
 
+        /**
+         * Returns true if decompression was not needed or succeeded
+         * @param stream
+         * @return
+         */
+        bool TryDecompress(MemoryStream& stream)
+        {
+            ReplayRecordFile recFile;
+            stream.SetPosition(0);
+            DataSerialiser fileSerializer(false, stream);
+            fileSerializer << recFile.magic;
+            fileSerializer << recFile.version;
+
+            if (recFile.version >= 2)
+            {
+                fileSerializer << recFile.uncompressedSize;
+                fileSerializer << recFile.data;
+
+                auto buff = std::make_unique<unsigned char[]>(recFile.uncompressedSize);
+                unsigned long outSize = recFile.uncompressedSize;
+                uncompress(
+                    (unsigned char*)buff.get(), &outSize, (unsigned char*)recFile.data.GetData(), recFile.data.GetLength());
+                if (outSize != recFile.uncompressedSize)
+                {
+                    return false;
+                }
+                stream.SetPosition(0);
+                stream.Write(buff.get(), outSize);
+            }
+
+            return true;
+        }
+
         bool ReadReplayData(const std::string& file, ReplayRecordData& data)
         {
             MemoryStream stream;
-            DataSerialiser serialiser(false, stream);
 
             std::string fileName = file;
             if (fileName.size() < 5 || fileName.substr(fileName.size() - 5) != ".sv6r")
@@ -584,8 +646,11 @@ namespace OpenRCT2
             if (!loaded)
                 return false;
 
-            stream.SetPosition(0);
+            if (!TryDecompress(stream))
+                return false;
 
+            stream.SetPosition(0);
+            DataSerialiser serialiser(false, stream);
             if (!Serialise(serialiser, data))
             {
                 return false;
@@ -671,6 +736,14 @@ namespace OpenRCT2
             return true;
         }
 
+        bool Compatible(ReplayRecordData& data)
+        {
+            if (data.version == 1 && ReplayVersion == 2)
+                return true;
+
+            return false;
+        }
+
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)
         {
             serialiser << data.magic;
@@ -680,7 +753,7 @@ namespace OpenRCT2
                 return false;
             }
             serialiser << data.version;
-            if (data.version != ReplayVersion)
+            if (data.version != ReplayVersion && !Compatible(data))
             {
                 log_error("Invalid version detected %04X, expected: %04X", data.version, ReplayVersion);
                 return false;
