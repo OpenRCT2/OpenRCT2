@@ -74,7 +74,7 @@ public:
             }
         }
 
-        money32 cost{};
+        money32 sceneryRemovalCost = 0;
         if (!gCheatsDisableClearanceChecks)
         {
             if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
@@ -87,7 +87,7 @@ public:
                     return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, gGameCommandErrorText);
                 }
             }
-            cost = GetSmallSceneryRemovalCost();
+            sceneryRemovalCost = GetSmallSceneryRemovalCost();
         }
 
         // Check for ride support limits
@@ -134,7 +134,11 @@ public:
             }
         }
         auto res = std::make_unique<GameActionResult>();
-        res->Cost = cost + GetSurfaceHeightChangeCost(surfaceElement);
+        res->Cost = 0;
+        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        {
+            res->Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
+        }
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         return res;
     }
