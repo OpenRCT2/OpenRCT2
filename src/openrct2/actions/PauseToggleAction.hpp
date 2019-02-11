@@ -11,7 +11,8 @@
 
 #include "GameAction.h"
 
-
+// Clang format is broken for small game actions
+// clang-format off
 DEFINE_GAME_ACTION(PauseToggleAction, GAME_COMMAND_TOGGLE_PAUSE, GameActionResult)
 {
 public:
@@ -33,3 +34,4 @@ public:
         return std::make_unique<GameActionResult>();
     }
 };
+// clang-format on
