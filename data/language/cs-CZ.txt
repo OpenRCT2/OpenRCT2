@@ -3597,8 +3597,8 @@ STR_6125    :Typ objektu
 STR_6126    :Neznámý typ
 STR_6127    :Soubor: {STRING}
 STR_6128    :Soubor se nepodařilo načíst, protože využívá objekty, z nichž některé jsou porušené nebo zcela chybí. Seznam takových objektů je k dispozici níže.
-STR_6129    :Kopírovat vybrané do schránky
-STR_6130    :Kopírovat celý seznam do schránky
+STR_6129    :Kopírovat
+STR_6130    :Kopírovat vše
 STR_6131    :Zdroj objektu
 STR_6132    :Ignorovat nutnost výzkumu
 STR_6133    :{SMALLFONT}{BLACK}Povolí přístup k atrakcím a kulisám, které ještě nebyly vyzkoumány
@@ -3748,6 +3748,30 @@ STR_6276    :{RED}Na atrakci {STRINGID} se zasekávají návštěvníci, zkontro
 STR_6277    :{WINDOW_COLOUR_2}Index stanice: {BLACK}{COMMA16}
 STR_6278    :Počet autouložení
 STR_6279    :{SMALLFONT}{BLACK}Maximální počet autouložených her
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Zobrazit tlačítko pro chat na hlavní liště
+STR_6282    :Chat
+STR_6283    :Chat momentálně není dostupný. Jste připojeni k serveru?
+STR_6284    :Síť
+STR_6285    :Informace o síti
+STR_6286    :Přijato
+STR_6287    :Odesláno
+STR_6288    :Celkem přijato
+STR_6289    :Celkem odesláno
+STR_6290    :Komunikační protokol
+STR_6291    :Příkazy
+STR_6292    :Mapa
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/sec
+STR_6299    :Stáhnout vše
+STR_6300    :{SMALLFONT}{BLACK}Stáhnout všechny chybějící objekty dostupné online.
+STR_6301    :{SMALLFONT}{BLACK}Kopírovat název vybraného objektu do schránky.
+STR_6302    :{SMALLFONT}{BLACK}Kopírovat seznam objektů do schránky
+STR_6303    :Stahování objektu ({COMMA16} / {COMMA16}): [{STRING}]
 
 ###############################################################################
 ## RCT2 Scenarios
