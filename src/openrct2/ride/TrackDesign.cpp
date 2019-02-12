@@ -1992,7 +1992,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
         ride->vehicle_colours[i].Ternary = td6->vehicle_additional_colour[i];
     }
 
-    ride_set_name(ride->id, td6->name, flags);
+    ride_set_name(ride, td6->name, flags);
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
     *outRideIndex = ride->id;

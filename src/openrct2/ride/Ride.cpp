@@ -878,10 +878,8 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
  *
  *  rct2: 0x006AF561
  */
-void ride_get_status(ride_id_t rideIndex, rct_string_id* formatSecondary, int32_t* argument)
+void ride_get_status(const Ride* ride, rct_string_id* formatSecondary, int32_t* argument)
 {
-    Ride* ride = get_ride(rideIndex);
-
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
     {
         *formatSecondary = STR_CRASHED;
@@ -1994,7 +1992,7 @@ int32_t ride_modify(CoordsXYE* input)
     }
 
     // Stop the ride again to clear all vehicles and peeps (compatible with network games)
-    ride_set_status(rideIndex, RIDE_STATUS_CLOSED);
+    ride_set_status(ride, RIDE_STATUS_CLOSED);
 
     // Check if element is a station entrance or exit
     if (tileElement.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
@@ -2213,9 +2211,9 @@ static void ride_update(Ride* ride)
 
             if (vehicle->status == VEHICLE_STATUS_CRASHED || vehicle->status == VEHICLE_STATUS_CRASHING)
             {
-                ride_set_status(ride->id, RIDE_STATUS_CLOSED);
-                ride_set_status(ride->id, RIDE_STATUS_CLOSED);
-                ride_set_status(ride->id, RIDE_STATUS_TESTING);
+                ride_set_status(ride, RIDE_STATUS_CLOSED);
+                ride_set_status(ride, RIDE_STATUS_CLOSED);
+                ride_set_status(ride, RIDE_STATUS_TESTING);
                 break;
             }
         }
@@ -2506,7 +2504,7 @@ static void ride_breakdown_update(Ride* ride)
     {
         int32_t breakdownReason = ride_get_new_breakdown_problem(ride);
         if (breakdownReason != -1)
-            ride_prepare_breakdown(ride->id, breakdownReason);
+            ride_prepare_breakdown(ride, breakdownReason);
     }
 }
 
@@ -2607,14 +2605,12 @@ static void choose_random_train_to_breakdown_safe(Ride* ride)
  *
  *  rct2: 0x006B7348
  */
-void ride_prepare_breakdown(ride_id_t rideIndex, int32_t breakdownReason)
+void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
 {
     int32_t i;
     uint16_t vehicleSpriteIdx;
-    Ride* ride;
     rct_vehicle* vehicle;
 
-    ride = get_ride(rideIndex);
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
 
@@ -2694,15 +2690,13 @@ void ride_prepare_breakdown(ride_id_t rideIndex, int32_t breakdownReason)
  *
  *  rct2: 0x006B74FA
  */
-void ride_breakdown_add_news_item(ride_id_t rideIndex)
+void ride_breakdown_add_news_item(Ride* ride)
 {
-    Ride* ride = get_ride(rideIndex);
-
     set_format_arg(0, rct_string_id, ride->name);
     set_format_arg(2, uint32_t, ride->name_arguments);
     if (gConfigNotifications.ride_broken_down)
     {
-        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, rideIndex);
+        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, ride->id);
     }
 }
 
@@ -2758,7 +2752,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAIN;
             ride->breakdown_reason = breakdownReason;
-            ride_breakdown_add_news_item(ride->id);
+            ride_breakdown_add_news_item(ride);
         }
     }
     switch (mechanicStatus)
@@ -3032,7 +3026,7 @@ static void ride_music_update(Ride* ride)
         sampleRate += 22050;
     }
 
-    ride->music_position = ride_music_params_update(x, y, z, ride->id, sampleRate, ride->music_position, &ride->music_tune_id);
+    ride->music_position = ride_music_params_update(x, y, z, ride, sampleRate, ride->music_position, &ride->music_tune_id);
 }
 
 #pragma endregion
@@ -3210,10 +3204,8 @@ static int32_t ride_get_free_measurement()
  *
  *  rct2: 0x006B66D9
  */
-rct_ride_measurement* ride_get_measurement(ride_id_t rideIndex, rct_string_id* message)
+rct_ride_measurement* ride_get_measurement(Ride* ride, rct_string_id* message)
 {
-    Ride* ride = get_ride(rideIndex);
-
     // Check if ride type supports data logging
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
     {
@@ -3223,7 +3215,7 @@ rct_ride_measurement* ride_get_measurement(ride_id_t rideIndex, rct_string_id* m
     }
 
     // Check if a measurement already exists for this ride
-    rct_ride_measurement* measurement = ride_get_existing_measurement(rideIndex);
+    rct_ride_measurement* measurement = ride_get_existing_measurement(ride->id);
     if (measurement == nullptr)
     {
         // Find a free measurement
@@ -3253,7 +3245,7 @@ rct_ride_measurement* ride_get_measurement(ride_id_t rideIndex, rct_string_id* m
             measurement = get_ride_measurement(i);
         }
 
-        measurement->ride_index = rideIndex;
+        measurement->ride_index = ride->id;
         ride->measurement_index = i;
         measurement->flags = 0;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
@@ -3569,7 +3561,7 @@ static void ride_track_set_map_tooltip(TileElement* tileElement)
 
     rct_string_id formatSecondary;
     int32_t arg1 = 0;
-    ride_get_status(rideIndex, &formatSecondary, &arg1);
+    ride_get_status(ride, &formatSecondary, &arg1);
     set_map_tooltip_format_arg(8, rct_string_id, formatSecondary);
     set_map_tooltip_format_arg(10, uint32_t, arg1);
 }
@@ -3585,7 +3577,7 @@ static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
 
     rct_string_id formatSecondary;
     int32_t arg1 = 0;
-    ride_get_status(rideIndex, &formatSecondary, &arg1);
+    ride_get_status(ride, &formatSecondary, &arg1);
     set_map_tooltip_format_arg(8, rct_string_id, formatSecondary);
     set_map_tooltip_format_arg(10, uint32_t, arg1);
 }
@@ -3608,7 +3600,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
 
     rct_string_id formatSecondary;
     int32_t arg1;
-    ride_get_status(rideIndex, &formatSecondary, &arg1);
+    ride_get_status(ride, &formatSecondary, &arg1);
     set_map_tooltip_format_arg(14, rct_string_id, formatSecondary);
     set_map_tooltip_format_arg(16, uint32_t, arg1);
 }
@@ -3689,14 +3681,14 @@ void ride_set_map_tooltip(TileElement* tileElement)
 }
 
 static int32_t ride_music_params_update_label_51(
-    uint32_t a1, uint8_t* tuneId, ride_id_t rideIndex, int32_t v32, int32_t pan_x, uint16_t sampleRate)
+    uint32_t a1, uint8_t* tuneId, Ride* ride, int32_t v32, int32_t pan_x, uint16_t sampleRate)
 {
     if (a1 < gRideMusicInfoList[*tuneId].length)
     {
         rct_ride_music_params* ride_music_params = gRideMusicParamsListEnd;
         if (ride_music_params < &gRideMusicParamsList[std::size(gRideMusicParamsList)])
         {
-            ride_music_params->ride_id = rideIndex;
+            ride_music_params->ride_id = ride->id;
             ride_music_params->tune_id = *tuneId;
             ride_music_params->offset = a1;
             ride_music_params->volume = v32;
@@ -3743,7 +3735,7 @@ static int32_t ride_music_params_update_label_58(uint32_t position, uint8_t* tun
  * @returns new position (ebp)
  */
 int32_t ride_music_params_update(
-    int16_t x, int16_t y, int16_t z, ride_id_t rideIndex, uint16_t sampleRate, uint32_t position, uint8_t* tuneId)
+    int16_t x, int16_t y, int16_t z, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
     {
@@ -3846,7 +3838,7 @@ int32_t ride_music_params_update(
             rct_ride_music* ride_music = &gRideMusicList[0];
             int32_t channel = 0;
             uint32_t a1;
-            while (ride_music->ride_id != rideIndex || ride_music->tune_id != *tuneId)
+            while (ride_music->ride_id != ride->id || ride_music->tune_id != *tuneId)
             {
                 ride_music++;
                 channel++;
@@ -3855,7 +3847,7 @@ int32_t ride_music_params_update(
                     rct_ride_music_info* ride_music_info = &gRideMusicInfoList[*tuneId];
                     a1 = position + ride_music_info->offset;
 
-                    return ride_music_params_update_label_51(a1, tuneId, rideIndex, v32, pan_x, sampleRate);
+                    return ride_music_params_update_label_51(a1, tuneId, ride, v32, pan_x, sampleRate);
                 }
             }
             int32_t playing = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
@@ -3866,7 +3858,7 @@ int32_t ride_music_params_update(
             }
             a1 = (uint32_t)Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel);
 
-            return ride_music_params_update_label_51(a1, tuneId, rideIndex, v32, pan_x, sampleRate);
+            return ride_music_params_update_label_51(a1, tuneId, ride, v32, pan_x, sampleRate);
         }
         else
         {
@@ -5657,20 +5649,18 @@ static TileElement* loc_6B4F6B(ride_id_t rideIndex, int32_t x, int32_t y)
     return nullptr;
 }
 
-int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32_t isApplying)
+int32_t ride_is_valid_for_test(Ride* ride, int32_t goingToBeOpen, int32_t isApplying)
 {
     int32_t stationIndex;
-    Ride* ride;
     CoordsXYE trackElement, problematicTrackElement = {};
 
-    ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL)
     {
-        log_warning("Invalid ride type for ride %u", rideIndex);
+        log_warning("Invalid ride type for ride %u", ride->id);
         return 0;
     }
 
-    window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
+    window_close_by_number(WC_RIDE_CONSTRUCTION, ride->id);
 
     stationIndex = ride_mode_check_station_present(ride);
     if (stationIndex == -1)
@@ -5679,7 +5669,7 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
     if (!ride_mode_check_valid_station_numbers(ride))
         return 0;
 
-    if (!ride_check_for_entrance_exit(rideIndex))
+    if (!ride_check_for_entrance_exit(ride->id))
     {
         loc_6B51C0(ride);
         return 0;
@@ -5694,7 +5684,7 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
     // z = ride->stations[i].Height * 8;
     trackElement.x = ride->stations[stationIndex].Start.x * 32;
     trackElement.y = ride->stations[stationIndex].Start.y * 32;
-    trackElement.element = loc_6B4F6B(rideIndex, trackElement.x, trackElement.y);
+    trackElement.element = loc_6B4F6B(ride->id, trackElement.x, trackElement.y);
     if (trackElement.element == nullptr)
     {
         // Maze is strange, station start is 0... investigation required
@@ -5771,7 +5761,7 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
     }
 
     if (isApplying)
-        ride_set_start_finish_points(rideIndex, &trackElement);
+        ride_set_start_finish_points(ride->id, &trackElement);
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
@@ -5785,7 +5775,7 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
         && (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
         && !(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
-        if (!ride_create_cable_lift(rideIndex, isApplying))
+        if (!ride_create_cable_lift(ride->id, isApplying))
             return 0;
     }
 
@@ -5795,21 +5785,18 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
  *
  *  rct2: 0x006B4EEA
  */
-int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32_t isApplying)
+int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, int32_t isApplying)
 {
     int32_t stationIndex;
-    Ride* ride;
     CoordsXYE trackElement, problematicTrackElement = {};
-
-    ride = get_ride(rideIndex);
 
     // Check to see if construction tool is in use. If it is close the construction window
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification && rideIndex == gCurrentToolWidget.window_number
+    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification && ride->id == gCurrentToolWidget.window_number
         && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
-        window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
+        window_close_by_number(WC_RIDE_CONSTRUCTION, ride->id);
 
     stationIndex = ride_mode_check_station_present(ride);
     if (stationIndex == -1)
@@ -5818,7 +5805,7 @@ int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32
     if (!ride_mode_check_valid_station_numbers(ride))
         return 0;
 
-    if (!ride_check_for_entrance_exit(rideIndex))
+    if (!ride_check_for_entrance_exit(ride->id))
     {
         loc_6B51C0(ride);
         return 0;
@@ -5833,7 +5820,7 @@ int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32
     // z = ride->stations[i].Height * 8;
     trackElement.x = ride->stations[stationIndex].Start.x * 32;
     trackElement.y = ride->stations[stationIndex].Start.y * 32;
-    trackElement.element = loc_6B4F6B(rideIndex, trackElement.x, trackElement.y);
+    trackElement.element = loc_6B4F6B(ride->id, trackElement.x, trackElement.y);
     if (trackElement.element == nullptr)
     {
         // Maze is strange, station start is 0... investigation required
@@ -5909,7 +5896,7 @@ int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32
     }
 
     if (isApplying)
-        ride_set_start_finish_points(rideIndex, &trackElement);
+        ride_set_start_finish_points(ride->id, &trackElement);
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
@@ -5923,7 +5910,7 @@ int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32
         && (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
         && !(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
-        if (!ride_create_cable_lift(rideIndex, isApplying))
+        if (!ride_create_cable_lift(ride->id, isApplying))
             return 0;
     }
 
@@ -6111,7 +6098,7 @@ static bool ride_name_exists(char* name)
     FOR_ALL_RIDES (i, ride)
     {
         format_string(buffer, 256, ride->name, &ride->name_arguments);
-        if ((strcmp(buffer, name) == 0) && ride_has_any_track_elements(i))
+        if ((strcmp(buffer, name) == 0) && ride_has_any_track_elements(ride))
         {
             return true;
         }
@@ -6629,7 +6616,7 @@ bool ride_is_block_sectioned(Ride* ride)
     return ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
 }
 
-bool ride_has_any_track_elements(ride_id_t rideIndex)
+bool ride_has_any_track_elements(const Ride* ride)
 {
     tile_element_iterator it;
 
@@ -6638,7 +6625,7 @@ bool ride_has_any_track_elements(ride_id_t rideIndex)
     {
         if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (it.element->AsTrack()->GetRideIndex() != rideIndex)
+        if (it.element->AsTrack()->GetRideIndex() != ride->id)
             continue;
         if (it.element->flags & TILE_ELEMENT_FLAG_GHOST)
             continue;

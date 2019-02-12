@@ -615,7 +615,7 @@ static void window_ride_construction_close(rct_window* w)
             if (!_autoOpeningShop)
             {
                 _autoOpeningShop = true;
-                ride_set_status(ride->id, RIDE_STATUS_OPEN);
+                ride_set_status(ride, RIDE_STATUS_OPEN);
                 _autoOpeningShop = false;
             }
         }

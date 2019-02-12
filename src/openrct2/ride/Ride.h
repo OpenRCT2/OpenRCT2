@@ -1022,7 +1022,7 @@ void ride_construct(Ride* ride);
 int32_t ride_modify(CoordsXYE* input);
 void ride_remove_peeps(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
-void ride_get_status(ride_id_t rideIndex, rct_string_id* formatSecondary, int32_t* argument);
+void ride_get_status(const Ride* ride, rct_string_id* formatSecondary, int32_t* argument);
 rct_peep* ride_get_assigned_mechanic(Ride* ride);
 int32_t ride_get_total_length(Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
@@ -1036,11 +1036,11 @@ uint8_t* get_ride_entry_indices_for_ride_type(uint8_t rideType);
 void reset_type_to_ride_entry_index_map(IObjectManager& objectManager);
 void ride_measurement_clear(Ride* ride);
 void ride_measurements_update();
-rct_ride_measurement* ride_get_measurement(ride_id_t rideIndex, rct_string_id* message);
-void ride_breakdown_add_news_item(ride_id_t rideIndex);
+rct_ride_measurement* ride_get_measurement(Ride* ride, rct_string_id* message);
+void ride_breakdown_add_news_item(Ride* ride);
 rct_peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
-int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32_t isApplying);
-int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32_t isApplying);
+int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, int32_t isApplying);
+int32_t ride_is_valid_for_test(Ride* ride, int32_t goingToBeOpen, int32_t isApplying);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
 int32_t sub_6C683D(
@@ -1048,15 +1048,15 @@ int32_t sub_6C683D(
     uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
 int32_t ride_music_params_update(
-    int16_t x, int16_t y, int16_t z, ride_id_t rideIndex, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);
+    int16_t x, int16_t y, int16_t z, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);
 void ride_music_update_final();
-void ride_prepare_breakdown(ride_id_t rideIndex, int32_t breakdownReason);
+void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
 TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex);
 TileElement* ride_get_station_exit_element(int32_t x, int32_t y, int32_t z);
-void ride_set_status(ride_id_t rideIndex, int32_t status);
+void ride_set_status(Ride* ride, int32_t status);
 void game_command_set_ride_status(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void ride_set_name(ride_id_t rideIndex, const char* name, uint32_t flags);
+void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 void game_command_set_ride_name(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_set_ride_setting(
@@ -1112,7 +1112,7 @@ bool ride_has_whirlpool(Ride* ride);
 bool ride_type_has_flag(int32_t rideType, uint32_t flag);
 bool ride_is_powered_launched(Ride* ride);
 bool ride_is_block_sectioned(Ride* ride);
-bool ride_has_any_track_elements(ride_id_t rideIndex);
+bool ride_has_any_track_elements(const Ride* ride);
 void ride_all_has_any_track_elements(bool* rideIndexArray);
 
 void ride_construction_set_default_next_piece();

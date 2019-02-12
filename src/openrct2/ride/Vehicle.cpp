@@ -1368,7 +1368,7 @@ static bool vehicle_close_restraints(rct_vehicle* vehicle)
             {
                 ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
 
-                ride_breakdown_add_news_item(vehicle->ride);
+                ride_breakdown_add_news_item(ride);
 
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -1475,7 +1475,7 @@ static bool vehicle_open_restraints(rct_vehicle* vehicle)
             {
                 ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
 
-                ride_breakdown_add_news_item(vehicle->ride);
+                ride_breakdown_add_news_item(ride);
 
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                     | RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -3202,7 +3202,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
                 return;
 
             ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride_breakdown_add_news_item(vehicle->ride);
+            ride_breakdown_add_news_item(ride);
 
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -3536,7 +3536,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
-            ride_set_status(vehicle->ride, RIDE_STATUS_CLOSED);
+            ride_set_status(ride, RIDE_STATUS_CLOSED);
         }
     }
 
@@ -4180,7 +4180,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle)
                 return;
 
             ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride_breakdown_add_news_item(vehicle->ride);
+            ride_breakdown_add_news_item(ride);
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
                 | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
@@ -5274,7 +5274,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
-            ride_set_status(vehicle->ride, RIDE_STATUS_CLOSED);
+            ride_set_status(ride, RIDE_STATUS_CLOSED);
         }
     }
     ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
@@ -5331,7 +5331,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
-            ride_set_status(vehicle->ride, RIDE_STATUS_CLOSED);
+            ride_set_status(ride, RIDE_STATUS_CLOSED);
         }
     }
     ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
@@ -6214,7 +6214,7 @@ void vehicle_set_map_toolbar(const rct_vehicle* vehicle)
 
     rct_string_id formatSecondary;
     int32_t arg1;
-    ride_get_status(vehicle->ride, &formatSecondary, &arg1);
+    ride_get_status(ride, &formatSecondary, &arg1);
     set_map_tooltip_format_arg(14, rct_string_id, formatSecondary);
     // TODO: odd cast
     set_map_tooltip_format_arg(16, uint32_t, (uint16_t)arg1);

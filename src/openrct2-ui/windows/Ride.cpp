@@ -2038,7 +2038,11 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     break;
             }
 
-            ride_set_status(w->number, status);
+            auto ride = get_ride(w->number);
+            if (ride != nullptr)
+            {
+                ride_set_status(ride, status);
+            }
             break;
     }
 }
@@ -2420,7 +2424,7 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                     status = RIDE_STATUS_OPEN;
                     break;
             }
-            ride_set_status(w->number, status);
+            ride_set_status(ride, status);
             break;
         case WIDX_RIDE_TYPE_DROPDOWN:
             if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
@@ -2482,7 +2486,11 @@ static void window_ride_main_textinput(rct_window* w, rct_widgetindex widgetInde
     if (widgetIndex != WIDX_RENAME || text == nullptr)
         return;
 
-    ride_set_name(w->number, text, 0);
+    auto ride = get_ride(w->number);
+    if (ride != nullptr)
+    {
+        ride_set_name(ride, text, 0);
+    }
 }
 
 /**
@@ -2618,16 +2626,21 @@ static void window_ride_main_invalidate(rct_window* w)
  */
 static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* arguments)
 {
-    int32_t argument;
-    rct_string_id formatSecondary, stringId;
-
-    ride_get_status(w->number, &formatSecondary, &argument);
-    std::memcpy(arguments, &formatSecondary, sizeof(formatSecondary));
-    std::memcpy((void*)((uintptr_t)arguments + 2), &argument, sizeof(argument));
-    stringId = STR_RED_OUTLINED_STRING;
-    if (formatSecondary != STR_BROKEN_DOWN && formatSecondary != STR_CRASHED)
-        stringId = STR_BLACK_STRING;
-
+    auto stringId = STR_NONE;
+    auto ride = get_ride(w->number);
+    if (ride != nullptr)
+    {
+        rct_string_id formatSecondary;
+        int32_t argument;
+        ride_get_status(ride, &formatSecondary, &argument);
+        std::memcpy(arguments, &formatSecondary, sizeof(formatSecondary));
+        std::memcpy((void*)((uintptr_t)arguments + 2), &argument, sizeof(argument));
+        stringId = STR_RED_OUTLINED_STRING;
+        if (formatSecondary != STR_BROKEN_DOWN && formatSecondary != STR_CRASHED)
+        {
+            stringId = STR_BLACK_STRING;
+        }
+    }
     return stringId;
 }
 
@@ -4047,7 +4060,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                         num_items++;
                     }
                 }
-                ride_prepare_breakdown(w->number, i);
+                ride_prepare_breakdown(ride, i);
             }
             break;
     }
@@ -5841,8 +5854,12 @@ static void window_ride_graphs_update(rct_window* w)
     x = w->scrolls[0].h_left;
     if (!(w->list_information_type & 0x8000))
     {
-        measurement = ride_get_measurement(w->number, nullptr);
-        x = measurement == nullptr ? 0 : measurement->current_item - (((widget->right - widget->left) / 4) * 3);
+        auto ride = get_ride(w->number);
+        if (ride != nullptr)
+        {
+            measurement = ride_get_measurement(ride, nullptr);
+            x = measurement == nullptr ? 0 : measurement->current_item - (((widget->right - widget->left) / 4) * 3);
+        }
     }
 
     w->scrolls[0].h_left = std::clamp(x, 0, w->scrolls[0].h_right - ((widget->right - widget->left) - 2));
@@ -5863,9 +5880,15 @@ static void window_ride_graphs_scrollgetheight(rct_window* w, int32_t scrollInde
     *width = window_ride_graphs_widgets[WIDX_GRAPH].right - window_ride_graphs_widgets[WIDX_GRAPH].left - 2;
 
     // Get measurement size
-    measurement = ride_get_measurement(w->number, nullptr);
-    if (measurement != nullptr)
-        *width = std::max<int32_t>(*width, measurement->num_items);
+    auto ride = get_ride(w->number);
+    if (ride != nullptr)
+    {
+        measurement = ride_get_measurement(ride, nullptr);
+        if (measurement != nullptr)
+        {
+            *width = std::max<int32_t>(*width, measurement->num_items);
+        }
+    }
 }
 
 /**
@@ -5885,17 +5908,20 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
 {
     if (widgetIndex == WIDX_GRAPH)
     {
-        rct_string_id message;
-        rct_ride_measurement* measurement = ride_get_measurement(w->number, &message);
-        if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING))
+        auto ride = get_ride(w->number);
+        if (ride != nullptr)
         {
-            set_format_arg(4, uint16_t, measurement->vehicle_index + 1);
-            Ride* ride = get_ride(w->number);
-            set_format_arg(2, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].count);
-        }
-        else
-        {
-            *stringId = message;
+            rct_string_id message;
+            auto measurement = ride_get_measurement(ride, &message);
+            if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING))
+            {
+                set_format_arg(4, uint16_t, measurement->vehicle_index + 1);
+                set_format_arg(2, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].count);
+            }
+            else
+            {
+                *stringId = message;
+            }
         }
     }
     else
@@ -5986,9 +6012,14 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 {
     gfx_clear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
-    rct_widget* widget = &window_ride_graphs_widgets[WIDX_GRAPH];
-    rct_string_id stringId;
-    rct_ride_measurement* measurement = ride_get_measurement(w->number, &stringId);
+    auto widget = &window_ride_graphs_widgets[WIDX_GRAPH];
+    auto stringId = STR_NONE;
+    rct_ride_measurement* measurement{};
+    auto ride = get_ride(w->number);
+    if (ride != nullptr)
+    {
+        measurement = ride_get_measurement(ride, &stringId);
+    }
     if (measurement == nullptr)
     {
         // No measurement message

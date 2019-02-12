@@ -150,9 +150,9 @@ void game_command_create_ride(
 
 #pragma region RideSetStatusAction
 
-void ride_set_status(ride_id_t rideIndex, int32_t status)
+void ride_set_status(Ride* ride, int32_t status)
 {
-    auto gameAction = RideSetStatusAction(rideIndex, status);
+    auto gameAction = RideSetStatusAction(ride->id, status);
     GameActions::Execute(&gameAction);
 }
 
@@ -170,9 +170,9 @@ void game_command_set_ride_status(
 #pragma endregion
 
 #pragma region RideSetNameAction
-void ride_set_name(ride_id_t rideIndex, const char* name, uint32_t flags)
+void ride_set_name(Ride* ride, const char* name, uint32_t flags)
 {
-    auto gameAction = RideSetNameAction(rideIndex, name);
+    auto gameAction = RideSetNameAction(ride->id, name);
     gameAction.SetFlags(flags);
     GameActions::Execute(&gameAction);
 }
