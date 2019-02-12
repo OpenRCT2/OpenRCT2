@@ -3597,8 +3597,8 @@ STR_6125    :Type de l'objet
 STR_6126    :Type inconnu
 STR_6127    :Fichier : {STRING}
 STR_6128    :Le fichier n'a pas pu être chargé car certains d'entre eux qui sont référencés sont soit corrompus ou manquants. Une liste de ces objets est donnée ci-dessous.
-STR_6129    :Copier les objets sélectionnés dans le presse-papier
-STR_6130    :Copier la liste entière dans le presse-papier
+STR_6129    :Copier
+STR_6130    :Tout copier
 STR_6131    :Source de l'objet
 STR_6132    :Ignorer le status de la recherche
 STR_6133    :{SMALLFONT}{BLACK}Accéder au décor et aux attractions qui ne sont pas encore inventés
@@ -3742,6 +3742,30 @@ STR_6276    :{RED}{STRINGID} a des visiteurs coincés, probablement à cause du 
 STR_6277    :{WINDOW_COLOUR_2}Index du quai : {BLACK}{COMMA16}
 STR_6278    :Nombre de sauvegardes automatiques
 STR_6279    :{SMALLFONT}{BLACK}Nombre de sauvegardes automatiques à conserver
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Affiche un bouton séparé pour la fenêtre du Chat dans la barre d'outils
+STR_6282    :Chat
+STR_6283    :Le Chat n'est pas disponible actuellement. Etes-vous connecté(e) à un serveur ?
+STR_6284    :Réseau
+STR_6285    :Informations Réseau
+STR_6286    :Réception
+STR_6287    :Envoi
+STR_6288    :Total reçu
+STR_6289    :Total envoyé
+STR_6290    :Base du protocole
+STR_6291    :Commandes
+STR_6292    :Carte
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/sec
+STR_6299    :Tout télécharger
+STR_6300    :{SMALLFONT}{BLACK}Télécharge tous les objets manquants s'ils sont disponible en ligne.
+STR_6301    :{SMALLFONT}{BLACK}Copie les noms des objets sélectionnés dans le presse-papier.
+STR_6302    :{SMALLFONT}{BLACK}Copie la liste des objets manquants dans le presse-papier.
+STR_6303    :Téléchargement de l'objet ({COMMA16} / {COMMA16}): [{STRING}]
 
 #############
 # Scenarios #
