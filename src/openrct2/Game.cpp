@@ -615,6 +615,35 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
         network_append_server_log(log_msg);
     }
+     else if (
+        command == GAME_COMMAND_SET_RIDE_VEHICLES || command == GAME_COMMAND_SET_RIDE_SETTING)
+    {
+        // Get ride name
+        int ride_index = *edx & 0xFF;
+        Ride* ride = get_ride(ride_index);
+        char ride_name[128];
+        format_string(ride_name, 128, ride->name, &ride->name_arguments);
+
+        char* args[2] = {
+            (char*)player_name,
+            ride_name,
+        };
+
+        switch (command)
+        {
+            case GAME_COMMAND_SET_RIDE_APPEARANCE:
+                format_string(log_msg, 256, STR_LOG_RIDE_APPEARANCE, args);
+                break;
+            case GAME_COMMAND_SET_RIDE_VEHICLES:
+                format_string(log_msg, 256, STR_LOG_RIDE_VEHICLES, args);
+                break;
+            case GAME_COMMAND_SET_RIDE_SETTING:
+                format_string(log_msg, 256, STR_LOG_RIDE_SETTINGS, args);
+                break;
+        }
+
+        network_append_server_log(log_msg);
+    }
     else if (command == GAME_COMMAND_SET_PARK_OPEN)
     {
         // Log change in park open/close
@@ -671,7 +700,7 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
     else if (
         command == GAME_COMMAND_SET_SCENERY_COLOUR || command == GAME_COMMAND_SET_WALL_COLOUR
         || command == GAME_COMMAND_SET_LARGE_SCENERY_COLOUR || command == GAME_COMMAND_SET_BANNER_COLOUR
-        || command == GAME_COMMAND_SET_SIGN_NAME || command == GAME_COMMAND_SET_BANNER_STYLE)
+        || command == GAME_COMMAND_SET_BANNER_STYLE)
     {
         // Log editing scenery
         char* args[1] = {
