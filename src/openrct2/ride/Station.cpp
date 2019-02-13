@@ -392,16 +392,6 @@ int8_t ride_get_first_empty_station_start(const Ride* ride)
     return -1;
 }
 
-TileCoordsXYZD ride_get_entrance_location(Ride* ride, const int32_t stationIndex)
-{
-    return ride->stations[stationIndex].Entrance;
-}
-
-TileCoordsXYZD ride_get_exit_location(Ride* ride, const int32_t stationIndex)
-{
-    return ride->stations[stationIndex].Exit;
-}
-
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)
 {
     return ride->stations[stationIndex].Entrance;

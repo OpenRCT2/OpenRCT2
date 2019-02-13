@@ -19,8 +19,6 @@ int8_t ride_get_first_empty_station_start(const Ride* ride);
 
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex);
 TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex);
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex);
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex);
 
 void ride_clear_entrance_location(Ride* ride, const int32_t stationIndex);
 void ride_clear_exit_location(Ride* ride, const int32_t stationIndex);
