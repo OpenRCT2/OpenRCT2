@@ -183,8 +183,6 @@ money32 wall_place(
     int32_t type, int32_t x, int32_t y, int32_t z, int32_t edge, int32_t primaryColour, int32_t secondaryColour,
     int32_t tertiaryColour, int32_t flags);
 
-void game_command_set_land_height(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_set_land_ownership(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_remove_banner(
@@ -218,8 +216,6 @@ void game_command_place_park_entrance(
 void game_command_set_banner_name(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_set_banner_style(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_set_sign_style(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_modify_tile(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
@@ -260,6 +256,8 @@ void map_invalidate_region(const LocationXY16& mins, const LocationXY16& maxs);
 
 int32_t map_get_tile_side(int32_t mapX, int32_t mapY);
 int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY);
+int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction);
+int32_t tile_element_get_corner_height(const TileElement* tileElement, int32_t direction);
 
 void map_clear_all_elements();
 

@@ -75,6 +75,7 @@ interface IObjectRepository
     virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
 
     virtual void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) abstract;
+    virtual void AddObjectFromFile(const std::string_view& objectName, const void* data, size_t dataSize) abstract;
 
     virtual void ExportPackedObject(IStream * stream) abstract;
     virtual void WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem*> & objects) abstract;

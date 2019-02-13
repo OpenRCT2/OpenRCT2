@@ -21,6 +21,13 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		2A5354E922099C4F00A5440F /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5354E822099C4F00A5440F /* Network.cpp */; };
+		2AA050322209A8E300D3A922 /* StaffSetCostumeAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */; };
+		2AA050332209A8E300D3A922 /* StaffSetOrdersAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AA050312209A8E300D3A922 /* StaffSetOrdersAction.hpp */; };
+		2AAFD800220DD3D2002461A4 /* LandSetHeightAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */; };
+		2AAFD7FC220DD336002461A4 /* RideSetPriceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */; };
+		2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */; };
+		2AF7893D220B253E0072754A /* RideSetAppearanceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
 		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
@@ -612,6 +619,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2A5354E822099C4F00A5440F /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
+		2A5354EA22099C7200A5440F /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
+		2A5354EB22099D7700A5440F /* SignSetStyleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SignSetStyleAction.hpp; sourceTree = "<group>"; };
+		2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetCostumeAction.hpp; sourceTree = "<group>"; };
+		2AA050312209A8E300D3A922 /* StaffSetOrdersAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetOrdersAction.hpp; sourceTree = "<group>"; };
+		2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSetHeightAction.hpp; sourceTree = "<group>"; };
+		2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetPriceAction.hpp; sourceTree = "<group>"; };
+		2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PauseToggleAction.hpp; sourceTree = "<group>"; };
+		2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetAppearanceAction.hpp; sourceTree = "<group>"; };
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
 		4C29DEB2218C6AE500E8707F /* RCT12.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RCT12.cpp; sourceTree = "<group>"; };
@@ -1990,6 +2006,13 @@
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */,
+				2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */,
+				2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */,
+				2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */,
+				2A5354EB22099D7700A5440F /* SignSetStyleAction.hpp */,
+				2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */,
+				2AA050312209A8E300D3A922 /* StaffSetOrdersAction.hpp */,
 				C6352B881F477032006CCEE3 /* GameAction.cpp */,
 				C6352B891F477032006CCEE3 /* GameAction.h */,
 				C6352B8A1F477032006CCEE3 /* GameActionCompat.cpp */,
@@ -2443,6 +2466,7 @@
 		F76C83781EC4E7CC00FA49E2 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				2A5354EA22099C7200A5440F /* CircularBuffer.h */,
 				F76C83791EC4E7CC00FA49E2 /* Collections.hpp */,
 				F76C837A1EC4E7CC00FA49E2 /* Console.cpp */,
 				9344BEF720C1E6180047D165 /* Crypt.h */,
@@ -3182,6 +3206,7 @@
 		F7CB86401EEDA0E20030C877 /* windows */ = {
 			isa = PBXGroup;
 			children = (
+				2A5354E822099C4F00A5440F /* Network.cpp */,
 				C666EE551F37ACB10061AA04 /* About.cpp */,
 				C654DF1C1F69C0430040F43D /* Banner.cpp */,
 				C666EE561F37ACB10061AA04 /* Changelog.cpp */,
@@ -3289,11 +3314,14 @@
 				939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */,
 				C67B28192002D7F200109C93 /* Window_internal.h in Headers */,
 				C6352B971F477032006CCEE3 /* SetParkEntranceFeeAction.hpp in Headers */,
+				2AA050332209A8E300D3A922 /* StaffSetOrdersAction.hpp in Headers */,
 				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
 				C6352B861F477022006CCEE3 /* Endianness.h in Headers */,
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
+				2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */,
 				C6352B941F477032006CCEE3 /* PlaceParkEntranceAction.hpp in Headers */,
 				C6352B911F477032006CCEE3 /* GameAction.h in Headers */,
+				2AA050322209A8E300D3A922 /* StaffSetCostumeAction.hpp in Headers */,
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
 				9344BEF920C1E6180047D165 /* Crypt.h in Headers */,
 				939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */,
@@ -3302,8 +3330,11 @@
 				93DE9753209C3C1000FB1CC8 /* GameState.h in Headers */,
 				C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */,
 				939A35A020C12FDE00630B3F /* Paint.TileElement.h in Headers */,
+				2AF7893D220B253E0072754A /* RideSetAppearanceAction.hpp in Headers */,
+				2AAFD7FC220DD336002461A4 /* RideSetPriceAction.hpp in Headers */,
 				C67B28162002D67A00109C93 /* Window.h in Headers */,
 				C6352B961F477032006CCEE3 /* RideSetStatus.hpp in Headers */,
+				2AAFD800220DD3D2002461A4 /* LandSetHeightAction.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3695,6 +3726,7 @@
 				C654DF311F69C0430040F43D /* GuestList.cpp in Sources */,
 				4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */,
 				C666EE761F37ACB10061AA04 /* Options.cpp in Sources */,
+				2A5354E922099C4F00A5440F /* Network.cpp in Sources */,
 				C666EE6E1F37ACB10061AA04 /* CustomCurrency.cpp in Sources */,
 				C654DF2D1F69C0430040F43D /* Banner.cpp in Sources */,
 				C666EE711F37ACB10061AA04 /* MapGen.cpp in Sources */,

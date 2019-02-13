@@ -28,6 +28,7 @@ enum CHAT_INPUT
 
 extern bool gChatOpen;
 
+bool chat_available();
 void chat_open();
 void chat_close();
 void chat_toggle();

@@ -1010,7 +1010,7 @@ static void format_realtime(char** dest, size_t* size, uint16_t value)
 
 static void format_string_code(uint32_t format_code, char** dest, size_t* size, char** args)
 {
-    intptr_t value;
+    intptr_t value = 0;
 
     if ((*size) == 0)
         return;
@@ -1022,60 +1022,71 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
     }
 #endif
 
+    // Use the temporaries below to enforce sign extension, which does not happen with simple memcpy. See
+    // https://github.com/OpenRCT2/OpenRCT2/issues/8674. This is only required for signed values.
+    [[maybe_unused]] int32_t temp32;
+    [[maybe_unused]] int16_t temp16;
     switch (format_code)
     {
         case FORMAT_COMMA32:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_comma_separated_integer(dest, size, value);
             break;
         case FORMAT_INT32:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_integer(dest, size, value);
             break;
         case FORMAT_COMMA2DP32:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_comma_separated_fixed_2dp(dest, size, value);
             break;
         case FORMAT_COMMA1DP16:
             // Pop argument
-            value = *((int16_t*)*args);
+            std::memcpy(&temp16, *args, sizeof(int16_t));
+            value = temp16;
             *args += 2;
 
             format_comma_separated_fixed_1dp(dest, size, value);
             break;
         case FORMAT_COMMA16:
             // Pop argument
-            value = *((int16_t*)*args);
+            std::memcpy(&temp16, *args, sizeof(int16_t));
+            value = temp16;
             *args += 2;
 
             format_comma_separated_integer(dest, size, value);
             break;
         case FORMAT_UINT16:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_integer(dest, size, value);
             break;
         case FORMAT_CURRENCY2DP:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_currency_2dp(dest, size, value);
             break;
         case FORMAT_CURRENCY:
             // Pop argument
-            value = *((int32_t*)*args);
+            std::memcpy(&temp32, *args, sizeof(int32_t));
+            value = temp32;
             *args += 4;
 
             format_currency(dest, size, value);
@@ -1083,14 +1094,14 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
         case FORMAT_STRINGID:
         case FORMAT_STRINGID2:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_string_part(dest, size, (rct_string_id)value, args);
             break;
         case FORMAT_STRING:
             // Pop argument
-            value = *((uintptr_t*)*args);
+            std::memcpy(&value, *args, sizeof(uintptr_t));
             *args += sizeof(uintptr_t);
 
             if (value != 0)
@@ -1098,21 +1109,22 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             break;
         case FORMAT_MONTHYEAR:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_date(dest, size, (uint16_t)value);
             break;
         case FORMAT_MONTH:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_append_string(dest, size, language_get_string(DateGameMonthNames[date_get_month((int32_t)value)]));
             break;
         case FORMAT_VELOCITY:
             // Pop argument
-            value = *((int16_t*)*args);
+            std::memcpy(&temp16, *args, sizeof(int16_t));
+            value = temp16;
             *args += 2;
 
             format_velocity(dest, size, (uint16_t)value);
@@ -1125,34 +1137,35 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             break;
         case FORMAT_DURATION:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_duration(dest, size, (uint16_t)value);
             break;
         case FORMAT_REALTIME:
             // Pop argument
-            value = *((uint16_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
             format_realtime(dest, size, (uint16_t)value);
             break;
         case FORMAT_LENGTH:
             // Pop argument
-            value = *((int16_t*)*args);
+            std::memcpy(&temp16, *args, sizeof(int16_t));
+            value = temp16;
             *args += 2;
 
             format_length(dest, size, (int16_t)value);
             break;
         case FORMAT_SPRITE:
             // Pop argument
-            value = *((uint32_t*)*args);
+            std::memcpy(&value, *args, sizeof(uint32_t));
             *args += 4;
 
             format_handle_overflow(1 + sizeof(uint32_t));
 
             format_push_char_safe('\x17');
-            *((uint32_t*)(*dest)) = (uint32_t)value;
+            std::memcpy(*dest, &value, sizeof(uint32_t));
             (*dest) += sizeof(uint32_t);
             (*size) -= sizeof(uint32_t);
             break;
@@ -1388,6 +1401,36 @@ void format_string_to_upper(utf8* dest, size_t size, rct_string_id format, const
 
     upperString.copy(dest, upperString.size());
     dest[upperString.size()] = '\0';
+}
+
+void format_readable_size(char* buf, size_t bufSize, uint64_t sizeBytes)
+{
+    constexpr uint32_t SizeTable[] = { STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE,
+                                       STR_SIZE_TERABYTE };
+
+    double size = sizeBytes;
+    size_t idx = 0;
+    while (size >= 1024.0)
+    {
+        size /= 1024.0;
+        idx++;
+    }
+
+    char sizeType[128] = {};
+    format_string(sizeType, sizeof(sizeType), SizeTable[idx], nullptr);
+
+    sprintf(buf, "%.03f %s", size, sizeType);
+}
+
+void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytes)
+{
+    char sizeText[128] = {};
+    format_readable_size(sizeText, sizeof(sizeText), sizeBytes);
+
+    const char* args[1] = {
+        sizeText,
+    };
+    format_string(buf, bufSize, STR_NETWORK_SPEED_SEC, args);
 }
 
 money32 string_to_money(const char* string_to_monetise)

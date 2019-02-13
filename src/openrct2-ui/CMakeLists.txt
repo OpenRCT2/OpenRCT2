@@ -1,5 +1,5 @@
 # CMAKE project for openrct2-ui (UI build of OpenRCT2)
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.9)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
@@ -10,14 +10,7 @@ option(DISABLE_OPENGL "Disable OpenGL support.")
 # Third party libraries
 if (MSVC)
     find_package(jansson REQUIRED)
-
-    find_path(SDL2_INCLUDE_DIRS SDL2/SDL.h)
-    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        find_library(SDL2_LDFLAGS sdl2d)
-    else ()
-        find_library(SDL2_LDFLAGS sdl2)
-    endif ()
-
+    find_package(SDL2 REQUIRED)
     find_library(SPEEX_LDFLAGS libspeexdsp)
 else ()
     PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
@@ -49,14 +42,13 @@ endif ()
 set (PROJECT openrct2)
 project(${PROJECT} CXX)
 add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
+SET_CHECK_CXX_FLAGS(${PROJECT})
+ipo_set_target_properties(${PROJECT})
 
 target_link_libraries(${PROJECT} "libopenrct2"
                                  ${SDL2_LDFLAGS}
                                  ${SPEEX_LDFLAGS})
-
-if (APPLE)
-    target_link_libraries(${PROJECT} "-framework Cocoa")
-endif ()
+target_link_platform_libraries(${PROJECT})
 
 if (NOT DISABLE_OPENGL)
     if (WIN32)
@@ -78,6 +70,19 @@ if (WIN32)
     # mingw complains about "%zu" not being a valid format specifier for printf, unless we
     # tell it that it is
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
+    target_link_libraries(${PROJECT} comdlg32)
+    if (MSVC)
+        target_link_libraries(${PROJECT} SDL2::SDL2-static)
+        target_include_directories(${PROJECT} SYSTEM PRIVATE SDL2::SDL2-static)
+    else ()
+        # mingw does not provide proper CMake information like other configurations
+        find_path(SDL2_INCLUDE_DIRS SDL2/SDL.h)
+        if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+            find_library(SDL2_LDFLAGS sdl2d)
+        else ()
+            find_library(SDL2_LDFLAGS sdl2)
+        endif ()
+    endif ()
 endif ()
 if (MSVC)
     # Add DPI-aware manifest

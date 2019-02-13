@@ -17,6 +17,9 @@
 - Feature: [#8377] Add option to adjust amount of autosaves to keep.
 - Feature: [#8458] Add sprite sorting benchmark.
 - Feature: [#8583] Add boosters to water coaster.
+- Feature: [#8648] Add optional chat button to top toolbar in multiplayer games.
+- Feature: [#8652] Add network window including a graph for data usage visualisation.
+- Feature: [#8670] Add ability to download missing objects when loading a park.
 - Change: [#7961] Add new object types: station, terrain surface, and terrain edge.
 - Change: [#8222] The climate setting has been moved from objective options to scenario options.
 - Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.
@@ -32,6 +35,7 @@
 - Fix: [#7954] Key validation fails on Windows due to non-ASCII user / player name.
 - Fix: [#7975] Inspection flag not cleared for rides which are set to never be inspected (Original bug).
 - Fix: [#7985] Giant Screenshot ignores 'Map rendering' settings.
+- Fix: [#7987] Broken track designs increase money by MONEY32_UNDEFINED.
 - Fix: [#8034] Vanilla sprites are broken when making screenshots from command line.
 - Fix: [#8045] Crash when switching between languages.
 - Fix: [#8062] In multiplayer warnings for unstable cheats are shown when disabling them.
@@ -61,6 +65,7 @@
 - Fix: [#8585] Part of track missing on air powered vertical coaster.
 - Fix: [#8588] Guest list scrolling breaks above ~2000 guests.
 - Fix: [#8591] Game loop does not run at a consistent tick rate of 40 Hz.
+- Fix: [#8647] Marketing campaigns check for entry fees below £1 (original bug). 
 - Fix: [#8653] Crash when peeps attempt to enter a ride with no vehicles.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.

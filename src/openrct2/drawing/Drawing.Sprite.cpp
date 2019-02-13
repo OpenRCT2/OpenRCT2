@@ -928,8 +928,9 @@ size_t g1_calculate_data_size(const rct_g1_element* g1)
         }
         else
         {
-            uint16_t* offsets = (uint16_t*)g1->offset;
-            uint8_t* ptr = g1->offset + offsets[g1->height - 1];
+            auto idx = (g1->height - 1) * 2;
+            uint16_t offset = g1->offset[idx] | (g1->offset[idx + 1] << 8);
+            uint8_t* ptr = g1->offset + offset;
             bool endOfLine = false;
             do
             {

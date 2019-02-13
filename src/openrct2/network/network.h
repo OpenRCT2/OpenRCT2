@@ -101,3 +101,5 @@ const utf8* network_get_server_provider_email();
 const utf8* network_get_server_provider_website();
 
 std::string network_get_version();
+
+NetworkStats_t network_get_stats();

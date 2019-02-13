@@ -57,6 +57,11 @@ static void paint_ferris_wheel_structure(
     Ride* ride = get_ride(rideIndex);
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle* vehicle = nullptr;
+    if (rideEntry == nullptr)
+    {
+        log_error("Error drawing Ferris Wheel, rideEntry is NULL.");
+        return;
+    }
 
     int8_t xOffset = !(direction & 1) ? axisOffset : 0;
     int8_t yOffset = (direction & 1) ? axisOffset : 0;

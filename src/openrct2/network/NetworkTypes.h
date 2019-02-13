@@ -95,3 +95,18 @@ template<typename T, size_t _TypeID> struct NetworkObjectId_t
 // there is no way to specialize templates if they have the exact symbol.
 using NetworkPlayerId_t = NetworkObjectId_t<int32_t, 0>;
 using NetworkRideId_t = NetworkObjectId_t<int32_t, 1>;
+
+enum NetworkStatisticsGroup
+{
+    NETWORK_STATISTICS_GROUP_TOTAL = 0, // Entire network traffic.
+    NETWORK_STATISTICS_GROUP_BASE,      // Messages such as Tick, Ping
+    NETWORK_STATISTICS_GROUP_COMMANDS,  // Command / Game actions
+    NETWORK_STATISTICS_GROUP_MAPDATA,
+    NETWORK_STATISTICS_GROUP_MAX,
+};
+
+struct NetworkStats_t
+{
+    uint64_t bytesReceived[NETWORK_STATISTICS_GROUP_MAX];
+    uint64_t bytesSent[NETWORK_STATISTICS_GROUP_MAX];
+};

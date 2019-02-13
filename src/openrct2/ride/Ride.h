@@ -95,6 +95,8 @@ struct rct_ride_name
 };
 assert_struct_size(rct_ride_name, 4);
 
+#pragma pack(pop)
+
 /**
  * Ride type structure.
  * size: unknown
@@ -134,8 +136,6 @@ struct rct_ride_entry
     rct_string_id capacity;
     void* obj;
 };
-
-#pragma pack(pop)
 
 struct RideStation
 {
@@ -1077,10 +1077,6 @@ void game_command_callback_ride_remove_track_piece(
     int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
 void game_command_demolish_ride(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_set_ride_appearance(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_set_ride_price(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex, uint8_t* outRideColour);
 void ride_set_name_to_default(Ride* ride, rct_ride_entry* rideEntry);
 
@@ -1113,7 +1109,7 @@ bool ride_has_log_reverser(Ride* ride);
 bool ride_has_waterfall(Ride* ride);
 bool ride_has_whirlpool(Ride* ride);
 
-bool ride_type_has_flag(int32_t rideType, int32_t flag);
+bool ride_type_has_flag(int32_t rideType, uint32_t flag);
 bool ride_is_powered_launched(Ride* ride);
 bool ride_is_block_sectioned(Ride* ride);
 bool ride_has_any_track_elements(ride_id_t rideIndex);
@@ -1150,6 +1146,7 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
 void ride_entry_get_train_layout(int32_t rideEntryIndex, int32_t numCarsPerTrain, uint8_t* trainLayout);
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void ride_update_max_vehicles(Ride* ride);
+void ride_update_vehicle_colours(Ride* ride);
 uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
 
 void ride_set_ride_entry(ride_id_t rideIndex, int32_t rideEntry);

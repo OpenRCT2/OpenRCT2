@@ -160,7 +160,10 @@ namespace OpenRCT2::Network::Http
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &code);
         curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
         res.status = static_cast<Status>(code);
-        res.content_type = std::string(content_type);
+        if (content_type != nullptr)
+        {
+            res.content_type = std::string(content_type);
+        }
 
         return res;
     }

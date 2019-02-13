@@ -21,7 +21,8 @@ namespace OpenRCT2::Network::Http
 {
     enum class Status
     {
-        OK = 200
+        OK = 200,
+        NotFound = 404
     };
 
     enum class Method

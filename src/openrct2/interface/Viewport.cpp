@@ -1285,7 +1285,8 @@ static bool pixel_is_present_bmp(uint32_t imageType, const rct_g1_element* g1, c
  */
 static bool is_pixel_present_rle(const uint8_t* esi, int16_t x_start_point, int16_t y_start_point, int32_t round)
 {
-    const uint8_t* ebx = esi + ((uint16_t*)esi)[y_start_point];
+    uint16_t start_offset = esi[y_start_point * 2] | (esi[y_start_point * 2 + 1] << 8);
+    const uint8_t* ebx = esi + start_offset;
 
     uint8_t last_data_line = 0;
     while (!last_data_line)

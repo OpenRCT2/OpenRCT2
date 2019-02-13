@@ -1093,6 +1093,11 @@ static int32_t track_design_place_scenery(
                             cost = game_do_command(
                                 mapCoord.x, flags | (bh << 8), mapCoord.y, z | (entry_index << 8),
                                 GAME_COMMAND_PLACE_PATH_FROM_TRACK, 0, 0);
+
+                            if (cost == MONEY32_UNDEFINED)
+                            {
+                                cost = 0;
+                            }
                         }
                         else
                         {

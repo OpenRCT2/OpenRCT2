@@ -1,5 +1,5 @@
 # CMAKE project for libopenrct2 (core OpenRCT2 component)
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.9)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
@@ -47,7 +47,7 @@ if (NOT DISABLE_NETWORK)
     find_package(OpenSSL 1.0.0 REQUIRED)
 endif ()
 
-find_package(benchmark QUIET)
+find_package(benchmark 1.4 QUIET)
 
 if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE AND NOT MSVC)
@@ -74,6 +74,7 @@ set(PROJECT libopenrct2)
 project(${PROJECT} CXX)
 add_library(${PROJECT} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
+SET_CHECK_CXX_FLAGS(${PROJECT})
 
 if (benchmark_FOUND)
     message("Found Google benchmark, enabling support")
@@ -104,7 +105,7 @@ endif ()
 
 if (NOT DISABLE_NETWORK)
     if (WIN32)
-        target_link_libraries(${PROJECT} ws2_32 crypt32 wldap32 version winmm imm32)
+        target_link_libraries(${PROJECT} ws2_32 crypt32 wldap32 version winmm imm32 advapi32 shell32 ole32)
     endif ()
 
     # our HTTP implementation requires use of threads

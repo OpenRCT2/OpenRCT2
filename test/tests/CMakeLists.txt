@@ -112,6 +112,7 @@ set(SAWYERCODING_TEST_SOURCES
         )
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
 target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_platform_libraries(test_sawyercoding)
 add_test(NAME sawyercoding COMMAND test_sawyercoding)
 
 # LanguagePack test
@@ -125,6 +126,7 @@ if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
     set(LDL dl)
 endif ()
 target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_platform_libraries(test_languagepack)
 add_test(NAME languagepack COMMAND test_languagepack)
 
 # INI test
@@ -137,7 +139,9 @@ set(INI_TEST_SOURCES
         "${ROOT_DIR}/src/openrct2/core/MemoryStream.cpp"
         )
 add_executable(test_ini ${INI_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_ini)
 target_link_libraries(test_ini ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_platform_libraries(test_ini)
 add_test(NAME ini COMMAND test_ini)
 
 # String test
@@ -145,48 +149,62 @@ set(STRING_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/StringTest.cpp"
         )
 add_executable(test_string ${STRING_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_string)
 target_link_libraries(test_string ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_platform_libraries(test_string)
 add_test(NAME string COMMAND test_string)
 
 # Localisation test
 set(STRING_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/Localisation.cpp")
 add_executable(test_localisation ${STRING_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_localisation)
 target_link_libraries(test_localisation ${GTEST_LIBRARIES} test-common ${LDL} z)
+target_link_platform_libraries(test_localisation)
 add_test(NAME localisation COMMAND test_localisation)
 
 if (NOT DISABLE_NETWORK)
     # Crypt tests
     add_executable(test_crypt "${CMAKE_CURRENT_LIST_DIR}/CryptTests.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+    SET_CHECK_CXX_FLAGS(test_crypt)
     target_link_libraries(test_crypt ${GTEST_LIBRARIES} libopenrct2)
+    target_link_platform_libraries(test_crypt)
     add_test(NAME Crypt COMMAND test_crypt)
 endif ()
 
 # ImageImporter tests
 add_executable(test_imageimporter "${CMAKE_CURRENT_LIST_DIR}/ImageImporterTests.cpp"
                                   "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+SET_CHECK_CXX_FLAGS(test_imageimporter)
 target_link_libraries(test_imageimporter ${GTEST_LIBRARIES} libopenrct2)
+target_link_platform_libraries(test_imageimporter)
 add_test(NAME ImageImporter COMMAND test_imageimporter)
 
 # Ride ratings test
 set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_ride_ratings ${RIDE_RATINGS_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_ride_ratings)
 target_link_libraries(test_ride_ratings ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_ride_ratings)
 add_test(NAME ride_ratings COMMAND test_ride_ratings)
 
 # Multi-launch test
 set(MULTILAUNCH_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/MultiLaunch.cpp"
                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_multilaunch ${MULTILAUNCH_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_multilaunch)
 target_link_libraries(test_multilaunch ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_multilaunch)
 add_test(NAME multilaunch COMMAND test_multilaunch)
 
 # Tile element test
 set(TILE_ELEMENT_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/TileElements.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_tile_elements ${TILE_ELEMENT_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_tile_elements)
 target_link_libraries(test_tile_elements ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_tile_elements)
 add_test(NAME tile_elements COMMAND test_tile_elements)
 
 if (NOT DISABLE_NETWORK)
@@ -194,7 +212,9 @@ if (NOT DISABLE_NETWORK)
     set(REPLAY_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/ReplayTests.cpp"
                                   "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
     add_executable(test_replays ${REPLAY_TEST_SOURCES})
+    SET_CHECK_CXX_FLAGS(test_replays)
     target_link_libraries(test_replays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+    target_link_platform_libraries(test_replays)
     add_test(NAME replay_tests COMMAND test_replays)
 endif ()
 
@@ -202,5 +222,7 @@ endif ()
 set(PATHFINDING_TEST_SOURCES  "${CMAKE_CURRENT_LIST_DIR}/Pathfinding.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_pathfinding ${PATHFINDING_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_pathfinding)
 target_link_libraries(test_pathfinding ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_pathfinding)
 add_test(NAME pathfinding COMMAND test_pathfinding)

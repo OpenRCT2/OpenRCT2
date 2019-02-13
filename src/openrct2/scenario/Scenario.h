@@ -11,6 +11,7 @@
 #define _SCENARIO_H_
 
 #include "../common.h"
+#include "../core/Random.hpp"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
@@ -22,6 +23,8 @@
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
+
+using random_engine_t = Random::Rct2::Engine;
 
 struct ParkLoadResult;
 
@@ -366,8 +369,7 @@ enum
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern uint32_t gScenarioTicks;
-extern uint32_t gScenarioSrand0;
-extern uint32_t gScenarioSrand1;
+extern random_engine_t gScenarioRand;
 
 extern uint8_t gScenarioObjectiveType;
 extern uint8_t gScenarioObjectiveYear;
@@ -394,13 +396,15 @@ void load_from_sc6(const char* path);
 void scenario_begin();
 void scenario_update();
 
+const random_engine_t::state_type& scenario_rand_state();
+void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1);
 #ifdef DEBUG_DESYNC
 uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data);
 #    define scenario_rand() dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, NULL)
 #    define scenario_rand_data(data) dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, data)
 void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char* clientHash, const char* serverHash);
 #else
-uint32_t scenario_rand();
+random_engine_t::result_type scenario_rand();
 #endif
 
 uint32_t scenario_rand_max(uint32_t max);

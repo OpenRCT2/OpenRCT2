@@ -13,24 +13,31 @@
 #include "FootpathRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
+#include "LandSetHeightAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkMarketingAction.hpp"
 #include "ParkSetLoanAction.hpp"
 #include "ParkSetNameAction.hpp"
 #include "ParkSetResearchFundingAction.hpp"
+#include "PauseToggleAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
+#include "RideSetAppearanceAction.hpp"
 #include "RideSetColourScheme.hpp"
 #include "RideSetName.hpp"
+#include "RideSetPriceAction.hpp"
 #include "RideSetStatus.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
+#include "SignSetStyleAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
 #include "StaffSetColourAction.hpp"
+#include "StaffSetCostumeAction.hpp"
 #include "StaffSetNameAction.hpp"
+#include "StaffSetOrdersAction.hpp"
 #include "WallRemoveAction.hpp"
 
 namespace GameActions
@@ -52,14 +59,21 @@ namespace GameActions
         Register<RideDemolishAction>();
         Register<RideSetColourSchemeAction>();
         Register<RideSetNameAction>();
+        Register<RideSetPriceAction>();
         Register<RideSetStatusAction>();
+        Register<RideSetAppearanceAction>();
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
+        Register<SignSetStyleAction>();
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
+        Register<StaffSetOrdersAction>();
+        Register<StaffSetCostumeAction>();
         Register<WallRemoveAction>();
         Register<SmallSceneryRemoveAction>();
         Register<LargeSceneryRemoveAction>();
+        Register<LandSetHeightAction>();
         Register<ClearAction>();
+        Register<PauseToggleAction>();
     }
 } // namespace GameActions

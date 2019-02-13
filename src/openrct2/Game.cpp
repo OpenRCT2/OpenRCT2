@@ -883,20 +883,6 @@ bool game_is_not_paused()
 
 /**
  *
- *  rct2: 0x00667C15
- */
-void game_pause_toggle(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-        pause_toggle();
-
-    *ebx = 0;
-}
-
-/**
- *
  *  rct2: 0x0066DB5F
  */
 static void game_load_or_quit(
@@ -1454,9 +1440,9 @@ void game_load_or_quit_no_save_prompt()
 }
 
 GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
-    game_command_set_ride_appearance,
-    game_command_set_land_height,
-    game_pause_toggle,
+    nullptr,
+    nullptr,
+    nullptr,
     game_command_place_track,
     game_command_remove_track,
     game_load_or_quit,
@@ -1475,7 +1461,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_place_footpath_from_track,
     nullptr,
     game_command_change_surface_style,
-    game_command_set_ride_price,
+    nullptr,
     game_command_set_guest_name,
     game_command_set_staff_name,
     game_command_raise_land,
@@ -1487,7 +1473,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_hire_new_staff_member,
     game_command_set_staff_patrol,
     game_command_fire_staff_member,
-    game_command_set_staff_order,
+    nullptr,
     nullptr,
     game_command_set_park_open,
     game_command_buy_land_rights,
@@ -1516,7 +1502,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     game_command_set_banner_style,
-    game_command_set_sign_style,
+    nullptr,
     game_command_set_player_group,
     game_command_modify_groups,
     game_command_kick_player,

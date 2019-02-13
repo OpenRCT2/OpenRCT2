@@ -38,6 +38,12 @@ static const char* chat_history_get(uint32_t index);
 static uint32_t chat_history_get_time(uint32_t index);
 static void chat_clear_input();
 
+bool chat_available()
+{
+    return network_get_mode() != NETWORK_MODE_NONE && network_get_status() == NETWORK_STATUS_CONNECTED
+        && network_get_authstatus() == NETWORK_AUTH_OK;
+}
+
 void chat_open()
 {
     gChatOpen = true;
@@ -76,8 +82,7 @@ void chat_update()
 
 void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 {
-    if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
-        || network_get_authstatus() != NETWORK_AUTH_OK)
+    if (!chat_available())
     {
         gChatOpen = false;
         return;

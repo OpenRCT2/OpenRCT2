@@ -3576,8 +3576,8 @@ STR_6125    :Object type
 STR_6126    :Unknown type
 STR_6127    :File: {STRING}
 STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
-STR_6129    :Copy selected item to clipboard
-STR_6130    :Copy entire list to clipboard
+STR_6129    :Copy
+STR_6130    :Copy all
 STR_6131    :Object source
 STR_6132    :Ignore research status
 STR_6133    :{SMALLFONT}{BLACK}Access rides and scenery that have not yet been invented
@@ -3727,6 +3727,30 @@ STR_6276    :{RED}{STRINGID} has guests getting stuck, possibly due to invalid r
 STR_6277    :{WINDOW_COLOUR_2}Station index: {BLACK}{COMMA16}
 STR_6278    :Autosave amount
 STR_6279    :{SMALLFONT}{BLACK}Number of autosaves that should be kept
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Show a separate button for the Chat window in the toolbar
+STR_6282    :Chat
+STR_6283    :Chat not available at this time. Are you connected to a server?
+STR_6284    :Network
+STR_6285    :Network Information
+STR_6286    :Receive
+STR_6287    :Send
+STR_6288    :Total received
+STR_6289    :Total sent
+STR_6290    :Base protocol
+STR_6291    :Commands
+STR_6292    :Map
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/sec
+STR_6299    :Download all
+STR_6300    :{SMALLFONT}{BLACK}Download all missing objects if available online.
+STR_6301    :{SMALLFONT}{BLACK}Copy the selected object name to the clipboard.
+STR_6302    :{SMALLFONT}{BLACK}Copy the entire list of missing objects to the clipboard.
+STR_6303    :Downloading object ({COMMA16} / {COMMA16}): [{STRING}]
 
 #############
 # Scenarios #

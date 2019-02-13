@@ -109,7 +109,7 @@ void game_handle_input()
     for (size_t i = g_window_list.size(); i > 0; i--)
     {
         auto& w = g_window_list[i - 1];
-        window_event_unknown_07_call(w.get());
+        window_event_periodic_update_call(w.get());
     }
 
     invalidate_all_windows_after_input();

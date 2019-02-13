@@ -102,6 +102,7 @@ struct InterfaceConfiguration
     bool toolbar_show_cheats;
     bool toolbar_show_news;
     bool toolbar_show_mute;
+    bool toolbar_show_chat;
     bool console_small_font;
     utf8* current_theme_preset;
     utf8* current_title_sequence_preset;
