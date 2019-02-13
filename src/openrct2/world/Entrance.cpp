@@ -501,10 +501,10 @@ void ride_entrance_exit_remove_ghost()
  *  rct2: 0x006CA28C
  */
 money32 ride_entrance_exit_place_ghost(
-    ride_id_t rideIndex, int32_t x, int32_t y, int32_t direction, int32_t placeType, int32_t stationNum)
+    Ride* ride, int32_t x, int32_t y, int32_t direction, int32_t placeType, int32_t stationNum)
 {
     ride_construction_remove_ghosts();
-    money32 result = RideEntranceExitPlaceGhost(rideIndex, x, y, direction, placeType, stationNum);
+    money32 result = RideEntranceExitPlaceGhost(ride->id, x, y, direction, placeType, stationNum);
 
     if (result != MONEY32_UNDEFINED)
     {

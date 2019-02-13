@@ -123,10 +123,10 @@ private:
 
         ride_clear_for_construction(ride);
         ride_remove_peeps(ride);
-        ride_stop_peeps_queuing(_rideIndex);
+        ride_stop_peeps_queuing(ride);
 
-        sub_6CB945(_rideIndex);
-        ride_clear_leftover_entrances(_rideIndex);
+        sub_6CB945(ride);
+        ride_clear_leftover_entrances(ride);
         news_item_disable_news(NEWS_ITEM_RIDE, _rideIndex);
 
         for (auto& banner : gBanners)

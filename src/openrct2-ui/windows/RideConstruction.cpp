@@ -620,7 +620,7 @@ static void window_ride_construction_close(rct_window* w)
             }
         }
 
-        ride_set_to_default_inspection_interval(ride->id);
+        ride_set_to_default_inspection_interval(ride);
         auto intent = Intent(WC_RIDE);
         intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
         context_open_intent(&intent);
@@ -1710,6 +1710,7 @@ static void window_ride_construction_construct(rct_window* w)
     // ***************
     // NOTE: the rest of this function (minus the network condition) is copied to
     // game_command_callback_ride_construct_placed_front/back Please update both ends if there are any changes here
+    auto ride = get_ride(rideIndex);
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         trackDirection = direction_reverse(_currentTrackPieceDirection);
@@ -1722,7 +1723,7 @@ static void window_ride_construction_construct(rct_window* w)
             y += CoordsDirectionDelta[trackDirection].y;
         }
 
-        if (track_block_get_previous_from_zero(x, y, z, _currentRideIndex, trackDirection, &trackBeginEnd))
+        if (track_block_get_previous_from_zero(x, y, z, ride, trackDirection, &trackBeginEnd))
         {
             _currentTrackBeginX = trackBeginEnd.begin_x;
             _currentTrackBeginY = trackBeginEnd.begin_y;
@@ -1752,7 +1753,7 @@ static void window_ride_construction_construct(rct_window* w)
         }
 
         CoordsXYE next_track;
-        if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, trackDirection, &next_track, &z, &trackDirection, false))
+        if (track_block_get_next_from_zero(x, y, z, ride, trackDirection, &next_track, &z, &trackDirection, false))
         {
             _currentTrackBeginX = next_track.x;
             _currentTrackBeginY = next_track.y;
@@ -3691,8 +3692,11 @@ void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY
         || y != gRideEntranceExitGhostPosition.y || direction != gRideEntranceExitGhostPosition.direction
         || stationNum != gRideEntranceExitGhostStationIndex)
     {
-        _currentTrackPrice = ride_entrance_exit_place_ghost(
-            _currentRideIndex, x, y, direction, gRideEntranceExitPlaceType, stationNum);
+        auto ride = get_ride(_currentRideIndex);
+        if (ride != nullptr)
+        {
+            _currentTrackPrice = ride_entrance_exit_place_ghost(ride, x, y, direction, gRideEntranceExitPlaceType, stationNum);
+        }
         window_ride_construction_update_active_elements();
     }
 }

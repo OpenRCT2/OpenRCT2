@@ -2564,8 +2564,8 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
         int32_t direction;
 
         if (track_block_get_next_from_zero(
-                vehicle->track_x, vehicle->track_y, vehicle->track_z, vehicle->ride, (uint8_t)(vehicle->track_direction & 0x3),
-                &track, &z, &direction, false))
+                vehicle->track_x, vehicle->track_y, vehicle->track_z, ride, (uint8_t)(vehicle->track_direction & 0x3), &track,
+                &z, &direction, false))
         {
             if (track.element->AsTrack()->HasCableLift())
             {
@@ -3532,7 +3532,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
             return;
         }
 
-        ride_crash(vehicle->ride, trainIndex);
+        ride_crash(ride, trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
@@ -5270,7 +5270,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
             return;
         }
 
-        ride_crash(vehicle->ride, trainIndex);
+        ride_crash(ride, trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
@@ -5327,7 +5327,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
             return;
         }
 
-        ride_crash(vehicle->ride, trainIndex);
+        ride_crash(ride, trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {

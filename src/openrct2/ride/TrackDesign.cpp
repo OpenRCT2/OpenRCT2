@@ -1643,8 +1643,8 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
     {
-        sub_6CB945(_currentRideIndex);
-        ride_delete(_currentRideIndex);
+        sub_6CB945(ride);
+        ride_delete(ride);
     }
     return true;
 }
@@ -1730,8 +1730,9 @@ int32_t place_virtual_track(
  * ebx = ride_id
  * cost = edi
  */
-static bool track_design_place_preview(rct_track_td6* td6, money32* cost, uint8_t* rideId, uint8_t* flags)
+static bool track_design_place_preview(rct_track_td6* td6, money32* cost, Ride** outRide, uint8_t* flags)
 {
+    *outRide = nullptr;
     *flags = 0;
 
     uint8_t entry_type, entry_index;
@@ -1818,7 +1819,7 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, uint8_
         _currentTrackPieceDirection = backup_rotation;
         byte_9D8150 = false;
         *cost = resultCost;
-        *rideId = rideIndex;
+        *outRide = ride;
         return true;
     }
     else
@@ -1972,7 +1973,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     }
     game_do_command(0, flags | (num_circuits << 8), 0, ride->id | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 
-    ride_set_to_default_inspection_interval(ride->id);
+    ride_set_to_default_inspection_interval(ride);
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = td6->version_and_colour_scheme & 3;
 
@@ -2189,9 +2190,9 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels)
     }
 
     money32 cost;
-    ride_id_t rideIndex;
+    Ride* ride;
     uint8_t flags;
-    if (!track_design_place_preview(td6, &cost, &rideIndex, &flags))
+    if (!track_design_place_preview(td6, &cost, &ride, &flags))
     {
         std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
         track_design_preview_restore_map(mapBackup);
@@ -2277,7 +2278,7 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels)
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
     }
 
-    ride_delete(rideIndex);
+    ride_delete(ride);
     track_design_preview_restore_map(mapBackup);
 }
 
