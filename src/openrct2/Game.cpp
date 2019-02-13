@@ -615,7 +615,7 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
         network_append_server_log(log_msg);
     }
-     else if (command == GAME_COMMAND_SET_RIDE_VEHICLES || command == GAME_COMMAND_SET_RIDE_SETTING)
+    else if (command == GAME_COMMAND_SET_RIDE_VEHICLES || command == GAME_COMMAND_SET_RIDE_SETTING)
     {
         // Get ride name
         int ride_index = *edx & 0xFF;
