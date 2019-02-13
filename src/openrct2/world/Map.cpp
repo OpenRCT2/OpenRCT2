@@ -1580,8 +1580,12 @@ static money32 smooth_land_tile(
     }
 
     auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
-    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
-
+    auto res = landSetHeightAction.Query();
+    if (res->Error == GA_ERROR::OK && flags & GAME_COMMAND_FLAG_APPLY)
+    {
+        // This is required as we want Query to not fail the parent game command
+        res = landSetHeightAction.Execute();
+    }
     if (res->Error == GA_ERROR::OK)
     {
         return res->Cost;
@@ -1725,7 +1729,12 @@ static money32 smooth_land_row_by_edge(
             }
         }
         auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
-        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
+        auto res = landSetHeightAction.Query();
+        if (res->Error == GA_ERROR::OK && flags & GAME_COMMAND_FLAG_APPLY)
+        {
+            // This is required as we want Query to not fail the parent game command
+            res = landSetHeightAction.Execute();
+        }
 
         if (res->Error == GA_ERROR::OK)
         {
@@ -2393,8 +2402,8 @@ void game_command_place_large_scenery(
 
         if (!gCheatsDisableClearanceChecks
             && !map_can_construct_with_clear_at(
-                   curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &supportsCost,
-                   CREATE_CROSSING_MODE_NONE))
+                curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &supportsCost,
+                CREATE_CROSSING_MODE_NONE))
         {
             *ebx = MONEY32_UNDEFINED;
             return;
