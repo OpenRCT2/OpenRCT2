@@ -20,6 +20,7 @@
 #include "../interface/Viewport.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
+#include "../peep/Peep.h"
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"

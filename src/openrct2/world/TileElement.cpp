@@ -136,7 +136,7 @@ uint8_t tile_element_get_ride_index(const TileElement* tileElement)
         case TILE_ELEMENT_TYPE_PATH:
             return tileElement->AsPath()->GetRideIndex();
         default:
-            return 0xFF;
+            return RIDE_ID_NULL;
     }
 }
 

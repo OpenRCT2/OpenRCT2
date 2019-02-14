@@ -104,7 +104,8 @@ void ride_construct_new(ride_list_item listItem)
         if (result->Error != GA_ERROR::OK)
             return;
 
-        ride_construct(result->rideIndex);
+        auto ride = get_ride(result->rideIndex);
+        ride_construct(ride);
     });
 
     GameActions::Execute(&gameAction);
@@ -149,9 +150,9 @@ void game_command_create_ride(
 
 #pragma region RideSetStatusAction
 
-void ride_set_status(ride_id_t rideIndex, int32_t status)
+void ride_set_status(Ride* ride, int32_t status)
 {
-    auto gameAction = RideSetStatusAction(rideIndex, status);
+    auto gameAction = RideSetStatusAction(ride->id, status);
     GameActions::Execute(&gameAction);
 }
 
@@ -169,9 +170,9 @@ void game_command_set_ride_status(
 #pragma endregion
 
 #pragma region RideSetNameAction
-void ride_set_name(ride_id_t rideIndex, const char* name, uint32_t flags)
+void ride_set_name(Ride* ride, const char* name, uint32_t flags)
 {
-    auto gameAction = RideSetNameAction(rideIndex, name);
+    auto gameAction = RideSetNameAction(ride->id, name);
     gameAction.SetFlags(flags);
     GameActions::Execute(&gameAction);
 }
@@ -189,9 +190,9 @@ void game_command_set_ride_name(
 #pragma endregion
 
 #pragma region RideModifyAction
-void ride_action_modify(ride_id_t rideIndex, int32_t modifyType, int32_t flags)
+void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags)
 {
-    auto gameAction = RideDemolishAction(rideIndex, modifyType);
+    auto gameAction = RideDemolishAction(ride->id, modifyType);
     gameAction.SetFlags(flags);
 
     GameActions::Execute(&gameAction);

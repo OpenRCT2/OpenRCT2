@@ -2428,6 +2428,7 @@ static void peep_interact_with_entrance(
 {
     uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
     ride_id_t rideIndex = tile_element->AsEntrance()->GetRideIndex();
+    auto ride = get_ride(rideIndex);
 
     // Store some details to determine when to override the default
     // behaviour (defined below) for when staff attempt to enter a ride
@@ -2487,7 +2488,7 @@ static void peep_interact_with_entrance(
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
         // the path tile.
-        if (!peep->ShouldGoOnRide(rideIndex, stationNum, false, false))
+        if (!peep->ShouldGoOnRide(ride, stationNum, false, false))
         {
             // Peep remembers that this is the last ride they
             // considered while on this path tile.
@@ -2500,7 +2501,6 @@ static void peep_interact_with_entrance(
         peep->action_sprite_image_offset = _unk_F1AEF0;
         peep->interaction_ride_index = rideIndex;
 
-        Ride* ride = get_ride(rideIndex);
         uint16_t previous_last = ride->stations[stationNum].LastPeepInQueue;
         ride->stations[stationNum].LastPeepInQueue = peep->sprite_index;
         peep->next_in_queue = previous_last;
@@ -2901,6 +2901,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
     if (peep->type == PEEP_TYPE_GUEST && tile_element->AsPath()->IsQueue())
     {
         ride_id_t rideIndex = tile_element->AsPath()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
 
         if (peep->state == PEEP_STATE_QUEUING)
         {
@@ -2931,7 +2932,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
         {
             /* Peep is approaching the entrance of a ride queue.
              * Decide whether to go on the ride. */
-            if (!peep->ShouldGoOnRide(rideIndex, stationNum, true, false))
+            if (!peep->ShouldGoOnRide(ride, stationNum, true, false))
             {
                 // Peep has decided not to go on the ride.
                 peep_return_to_centre_of_tile(peep);
@@ -2948,7 +2949,6 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
 
         // Peep has decided to go on the ride at the queue.
         peep->interaction_ride_index = rideIndex;
-        Ride* ride = get_ride(rideIndex);
 
         // Add the peep to the ride queue.
         uint16_t old_last_peep = ride->stations[stationNum].LastPeepInQueue;
@@ -3033,7 +3033,7 @@ static bool peep_interact_with_shop(rct_peep* peep, int16_t x, int16_t y, TileEl
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
         peep->time_lost = 0;
-        if (!peep->ShouldGoOnRide(rideIndex, 0, false, false))
+        if (!peep->ShouldGoOnRide(ride, 0, false, false))
         {
             peep_return_to_centre_of_tile(peep);
             return true;

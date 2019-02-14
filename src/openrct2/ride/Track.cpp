@@ -1509,7 +1509,7 @@ static money32 track_place(
             {
                 track_add_station_element(x, y, baseZ, direction, rideIndex, GAME_COMMAND_FLAG_APPLY);
             }
-            sub_6CB945(rideIndex);
+            sub_6CB945(ride);
             ride_update_max_vehicles(ride);
         }
 
@@ -1794,7 +1794,7 @@ static money32 track_remove(
             footpath_remove_edges_at(x, y, tileElement);
         }
         tile_element_remove(tileElement);
-        sub_6CB945(rideIndex);
+        sub_6CB945(ride);
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
             ride_update_max_vehicles(ride);

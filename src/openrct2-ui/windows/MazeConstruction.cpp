@@ -168,19 +168,18 @@ static void window_maze_construction_close(rct_window* w)
 
     hide_gridlines();
 
-    ride_id_t rideIndex = _currentRideIndex;
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(_currentRideIndex);
     if (ride->overall_view.xy == RCT_XY8_UNDEFINED)
     {
         int32_t savedPausedState = gGamePaused;
         gGamePaused = 0;
-        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         gGamePaused = savedPausedState;
     }
     else
     {
         auto intent = Intent(WC_RIDE);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
         context_open_intent(&intent);
     }
 }

@@ -70,8 +70,8 @@ rct_window* window_park_objective_open();
 rct_window* window_park_rating_open();
 
 rct_window* window_banner_open(rct_windownumber number);
-rct_window* window_ride_demolish_prompt_open(ride_id_t rideIndex);
-rct_window* window_ride_refurbish_prompt_open(ride_id_t rideIndex);
+rct_window* window_ride_demolish_prompt_open(Ride* ride);
+rct_window* window_ride_refurbish_prompt_open(Ride* ride);
 rct_window* window_sign_open(rct_windownumber number);
 rct_window* window_sign_small_open(rct_windownumber number);
 rct_window* window_player_open(uint8_t id);
@@ -108,7 +108,7 @@ void window_new_ride_focus(ride_list_item rideItem);
 rct_window* window_ride_list_open();
 void window_ride_list_refresh_list(rct_window* w);
 
-rct_window* window_ride_main_open(ride_id_t rideIndex);
+rct_window* window_ride_main_open(Ride* ride);
 rct_window* window_ride_open_track(TileElement* tileElement);
 rct_window* window_ride_open_vehicle(rct_vehicle* vehicle);
 void window_ride_measurements_design_cancel();

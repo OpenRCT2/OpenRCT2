@@ -267,7 +267,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     // Check if tool map position has changed since last update
     if (mapX == _window_track_place_last_x && mapY == _window_track_place_last_y)
     {
-        place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, true, 0, mapX, mapY, 0);
+        place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, true, get_ride(0), mapX, mapY, 0);
         return;
     }
 
@@ -306,7 +306,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, true, 0, mapX, mapY, mapZ);
+    place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, true, get_ride(0), mapX, mapY, mapZ);
 }
 
 /**
@@ -353,7 +353,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
             }
             else
             {
-                ride_initialise_construction_window(rideIndex);
+                ride_initialise_construction_window(get_ride(rideIndex));
                 w = window_find_by_class(WC_RIDE_CONSTRUCTION);
                 window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             }
@@ -402,8 +402,9 @@ static void window_track_place_clear_provisional()
 {
     if (_window_track_place_last_was_valid)
     {
+        auto ride = get_ride(_window_track_place_ride_index);
         place_virtual_track(
-            _trackDesign, PTD_OPERATION_CLEAR_OUTLINES, true, _window_track_place_ride_index, _window_track_place_last_valid_x,
+            _trackDesign, PTD_OPERATION_CLEAR_OUTLINES, true, ride, _window_track_place_last_valid_x,
             _window_track_place_last_valid_y, _window_track_place_last_valid_z);
         _window_track_place_last_was_valid = false;
     }
@@ -435,7 +436,7 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
     if (tileElement->AsSurface()->GetWaterHeight() > 0)
         z = std::max(z, tileElement->AsSurface()->GetWaterHeight() << 4);
 
-    return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);
+    return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, get_ride(0), x, y, z);
 }
 
 static void window_track_place_attempt_placement(

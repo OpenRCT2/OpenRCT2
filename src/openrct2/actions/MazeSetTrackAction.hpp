@@ -348,7 +348,7 @@ public:
         {
             Ride* ride = get_ride(_rideIndex);
             tile_element_remove(tileElement);
-            sub_6CB945(_rideIndex);
+            sub_6CB945(ride);
             ride->maze_tiles--;
         }
 

@@ -216,7 +216,7 @@ static void ride_ratings_update_state_2()
             {
                 int32_t entranceIndex = tileElement->AsTrack()->GetStationIndex();
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (ride_get_entrance_location(rideIndex, entranceIndex).isNull())
+                if (ride_get_entrance_location(ride, entranceIndex).isNull())
                 {
                     gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
@@ -371,7 +371,7 @@ static void ride_ratings_begin_proximity_loop()
         if (ride->stations[i].Start.xy != RCT_XY8_UNDEFINED)
         {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride_get_entrance_location(rideIndex, i).isNull())
+            if (ride_get_entrance_location(ride, i).isNull())
             {
                 gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
