@@ -85,7 +85,7 @@ public:
                     continue;
 
                 rct_scenery_entry* scenery_entry = tileElement->AsWall()->GetEntry();
-                if (scenery_entry->wall.scrolling_mode == 0xFF)
+                if (scenery_entry->wall.scrolling_mode == SCROLLING_MODE_NONE)
                     continue;
                 if (tileElement->AsWall()->GetBannerIndex() != (BannerIndex)_bannerIndex)
                     continue;

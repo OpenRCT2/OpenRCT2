@@ -15,6 +15,7 @@
 #include "../../object/StationObject.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
+#include "../../world/Banner.h"
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Park.h"
@@ -294,7 +295,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 uint16_t string_width = gfx_get_string_width(park_name);
                 uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
-                if (entrance->scrolling_mode == 0xFF)
+                if (entrance->scrolling_mode == SCROLLING_MODE_NONE)
                     break;
 
                 int32_t stsetup = scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2);

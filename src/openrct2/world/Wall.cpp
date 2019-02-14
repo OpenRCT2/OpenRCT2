@@ -443,7 +443,7 @@ static money32 WallPlace(
         return MONEY32_UNDEFINED;
     }
 
-    if (wallEntry->wall.scrolling_mode != 0xFF)
+    if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
     {
         bannerIndex = create_new_banner(flags);
 
