@@ -2031,7 +2031,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 // Banner info
                 rct_scenery_entry* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
-                if (largeSceneryEntry->large_scenery.scrolling_mode != 0xFF)
+                if (largeSceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     const BannerIndex bannerIndex = sceneryElement->GetBannerIndex();
                     rct_string_id* string = &gBanners[bannerIndex].string_idx;

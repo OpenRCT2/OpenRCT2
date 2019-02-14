@@ -163,7 +163,7 @@ rct_window* window_sign_open(rct_windownumber number)
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
-            if (scenery_entry != nullptr && scenery_entry->large_scenery.scrolling_mode != 0xFF)
+            if (scenery_entry != nullptr && scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
                 BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
 
@@ -222,7 +222,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 {
                     rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
-                    if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+                    if (scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
                         if (bannerIndex == w->number)
@@ -422,7 +422,7 @@ rct_window* window_sign_small_open(rct_windownumber number)
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
         {
             rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
-            if (scenery_entry->wall.scrolling_mode != 0xFF)
+            if (scenery_entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
             {
                 if (tile_element->AsWall()->GetBannerIndex() == w->number)
                     break;
@@ -480,7 +480,7 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
                 {
                     rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
-                    if (scenery_entry->wall.scrolling_mode != 0xFF)
+                    if (scenery_entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         if (tile_element->AsWall()->GetBannerIndex() == w->number)
                             break;

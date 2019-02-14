@@ -13,6 +13,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
+#include "../world/Banner.h"
 #include "ObjectJsonHelpers.h"
 
 void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
@@ -94,7 +95,7 @@ void WallObject::ReadJson(IReadObjectContext* context, const json_t* root)
     _legacyType.wall.price = json_integer_value(json_object_get(properties, "price"));
 
     auto jScrollingMode = json_object_get(properties, "scrollingMode");
-    _legacyType.wall.scrolling_mode = jScrollingMode != nullptr ? json_integer_value(jScrollingMode) : -1;
+    _legacyType.wall.scrolling_mode = jScrollingMode != nullptr ? json_integer_value(jScrollingMode) : SCROLLING_MODE_NONE;
 
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
 

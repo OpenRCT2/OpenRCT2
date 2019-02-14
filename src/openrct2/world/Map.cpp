@@ -2291,7 +2291,7 @@ void game_command_place_large_scenery(
         return;
     }
 
-    if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+    if (scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
     {
         banner_id = create_new_banner(flags);
 
