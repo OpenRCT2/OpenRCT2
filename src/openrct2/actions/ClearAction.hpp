@@ -155,7 +155,9 @@ private:
                             auto footpathRemoveAction = FootpathRemoveAction(x * 32, y * 32, tileElement->base_height);
                             footpathRemoveAction.SetFlags(GetFlags());
 
-                            auto res = executing ? footpathRemoveAction.Execute() : footpathRemoveAction.Query();
+                            auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
+                                                 : GameActions::QueryNested(&footpathRemoveAction);
+
                             if (res->Error != GA_ERROR::OK)
                                 return MONEY32_UNDEFINED;
 
@@ -171,7 +173,9 @@ private:
                                 tileElement->AsSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
-                            auto res = executing ? removeSceneryAction.Execute() : removeSceneryAction.Query();
+                            auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
+                                                 : GameActions::QueryNested(&removeSceneryAction);
+
                             if (res->Error != GA_ERROR::OK)
                                 return MONEY32_UNDEFINED;
 
@@ -186,7 +190,9 @@ private:
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 
-                            auto res = executing ? wallRemoveAction.Execute() : wallRemoveAction.Query();
+                            auto res = executing ? GameActions::ExecuteNested(&wallRemoveAction)
+                                                 : GameActions::QueryNested(&wallRemoveAction);
+
                             if (res->Error != GA_ERROR::OK)
                                 return MONEY32_UNDEFINED;
 
@@ -202,7 +208,9 @@ private:
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
 
-                            auto res = executing ? removeSceneryAction.Execute() : removeSceneryAction.Query();
+                            auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
+                                                 : GameActions::QueryNested(&removeSceneryAction);
+
                             if (res->Error != GA_ERROR::OK)
                                 return MONEY32_UNDEFINED;
 
