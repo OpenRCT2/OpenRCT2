@@ -244,8 +244,8 @@ namespace GameActions
     bool IsValidId(uint32_t id);
     GameAction::Ptr Create(uint32_t id);
     GameAction::Ptr Clone(const GameAction* action);
-    GameActionResult::Ptr Query(const GameAction* action);
-    GameActionResult::Ptr Execute(const GameAction* action);
+    GameActionResult::Ptr Query(const GameAction* action, bool topLevel = true);
+    GameActionResult::Ptr Execute(const GameAction* action, bool topLevel = true);
     GameActionFactory Register(uint32_t id, GameActionFactory action);
 
     template<typename T> static GameActionFactory Register()
