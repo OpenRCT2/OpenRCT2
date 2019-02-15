@@ -264,14 +264,10 @@ private:
         auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
-        auto queryRes = setMazeTrack.Query();
-        if (queryRes->Error == GA_ERROR::OK)
+        auto execRes = GameActions::Execute(&setMazeTrack, false);
+        if (execRes->Error == GA_ERROR::OK)
         {
-            auto execRes = setMazeTrack.Execute();
-            if (execRes->Error == GA_ERROR::OK)
-            {
-                return execRes->Cost;
-            }
+            return execRes->Cost;
         }
 
         return MONEY32_UNDEFINED;
