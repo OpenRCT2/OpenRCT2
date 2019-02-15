@@ -435,6 +435,7 @@ public:
                 entranceDirections &= 0x0F;
                 if (entranceDirections != 0)
                 {
+                    // ???? Eh?
                     if (!(GetFlags() & GAME_COMMAND_FLAG_APPLY) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
                         && !gCheatsDisableClearanceChecks)
                     {
@@ -631,7 +632,7 @@ public:
                     ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                     : CREATE_CROSSING_MODE_NONE;
                 if (!map_can_construct_with_clear_at(
-                        tileCoords.x, tileCoords.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, GetFlags(), &cost,
+                        tileCoords.x, tileCoords.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost,
                         crossingMode))
                 {
                     return std::make_unique<GameActionResult>(
@@ -812,7 +813,7 @@ public:
                     track_add_station_element(
                         tileCoords.x, tileCoords.y, baseZ, _origin.direction, _rideIndex, GAME_COMMAND_FLAG_APPLY);
                 }
-                sub_6CB945(_rideIndex);
+                sub_6CB945(ride);
                 ride_update_max_vehicles(ride);
             }
 
