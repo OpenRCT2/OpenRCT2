@@ -1330,8 +1330,8 @@ static money32 lower_land(
                     auto landSetHeightAction = LandSetHeightAction({ x_coord, y_coord }, height, newSlope);
                     landSetHeightAction.SetFlags(flags);
 
-                    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSetHeightAction, false)
-                                                                 : GameActions::Query(&landSetHeightAction, false);
+                    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::ExecuteNested(&landSetHeightAction)
+                                                                 : GameActions::QueryNested(&landSetHeightAction);
                     if (res->Error != GA_ERROR::OK)
                     {
                         return MONEY32_UNDEFINED;
@@ -1583,8 +1583,8 @@ static money32 smooth_land_tile(
 
     auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
     landSetHeightAction.SetFlags(flags);
-    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSetHeightAction, false)
-                                                 : GameActions::Query(&landSetHeightAction, false);
+    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::ExecuteNested(&landSetHeightAction)
+                                                 : GameActions::QueryNested(&landSetHeightAction);
 
     if (res->Error == GA_ERROR::OK)
     {
@@ -1730,8 +1730,8 @@ static money32 smooth_land_row_by_edge(
         }
         auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
         landSetHeightAction.SetFlags(flags);
-        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSetHeightAction, false)
-                                                     : GameActions::Query(&landSetHeightAction, false);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::ExecuteNested(&landSetHeightAction)
+                                                     : GameActions::QueryNested(&landSetHeightAction);
         if (res->Error == GA_ERROR::OK)
         {
             totalCost += res->Cost;

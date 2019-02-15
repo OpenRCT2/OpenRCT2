@@ -264,7 +264,7 @@ private:
         auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
-        auto execRes = GameActions::Execute(&setMazeTrack, false);
+        auto execRes = GameActions::ExecuteNested(&setMazeTrack);
         if (execRes->Error == GA_ERROR::OK)
         {
             return execRes->Cost;

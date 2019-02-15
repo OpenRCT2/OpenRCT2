@@ -137,7 +137,7 @@ namespace GameActions
         return false;
     }
 
-    GameActionResult::Ptr Query(const GameAction* action, bool topLevel /* = true */)
+    static GameActionResult::Ptr QueryInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
@@ -156,7 +156,7 @@ namespace GameActions
         auto result = action->Query();
 
         // Only top level actions affect the command position.
-        if (topLevel == true)
+        if (topLevel)
         {
             gCommandPosition.x = result->Position.x;
             gCommandPosition.y = result->Position.y;
@@ -173,6 +173,16 @@ namespace GameActions
             }
         }
         return result;
+    }
+
+    GameActionResult::Ptr Query(const GameAction* action)
+    {
+        return QueryInternal(action, true);
+    }
+
+    GameActionResult::Ptr QueryNested(const GameAction* action)
+    {
+        return QueryInternal(action, false);
     }
 
     static const char* GetRealm()
@@ -227,7 +237,7 @@ namespace GameActions
         network_append_server_log(text);
     }
 
-    GameActionResult::Ptr Execute(const GameAction* action, bool topLevel /* = true */)
+    static GameActionResult::Ptr ExecuteInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
@@ -251,7 +261,7 @@ namespace GameActions
             }
         }
 
-        GameActionResult::Ptr result = Query(action, topLevel);
+        GameActionResult::Ptr result = Query(action);
         if (result->Error == GA_ERROR::OK)
         {
             if (topLevel)
@@ -362,6 +372,16 @@ namespace GameActions
         }
 
         return result;
+    }
+
+    GameActionResult::Ptr Execute(const GameAction* action)
+    {
+        return ExecuteInternal(action, true);
+    }
+
+    GameActionResult::Ptr ExecuteNested(const GameAction* action)
+    {
+        return ExecuteInternal(action, false);
     }
 
 } // namespace GameActions
