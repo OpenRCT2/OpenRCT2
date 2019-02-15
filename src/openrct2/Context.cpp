@@ -861,9 +861,14 @@ namespace OpenRCT2
 
             _uiContext->ProcessMessages();
 
+            network_update();
+
             if (_accumulator < GAME_UPDATE_TIME_MS)
             {
-                platform_sleep(GAME_UPDATE_TIME_MS - _accumulator - 1);
+                network_process_pending();
+                network_flush();
+
+                platform_sleep(1);
                 return;
             }
 
@@ -872,6 +877,9 @@ namespace OpenRCT2
                 Update();
                 _accumulator -= GAME_UPDATE_TIME_MS;
             }
+
+            network_process_pending();
+            network_flush();
 
             if (!_isWindowMinimised && !gOpenRCT2Headless)
             {
@@ -900,6 +908,8 @@ namespace OpenRCT2
 
             _uiContext->ProcessMessages();
 
+            network_update();
+
             while (_accumulator >= GAME_UPDATE_TIME_MS)
             {
                 // Get the original position of each sprite
@@ -914,6 +924,9 @@ namespace OpenRCT2
                 if (draw)
                     sprite_position_tween_store_b();
             }
+
+            network_process_pending();
+            network_flush();
 
             if (draw)
             {
