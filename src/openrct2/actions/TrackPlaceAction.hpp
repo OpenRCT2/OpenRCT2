@@ -267,19 +267,16 @@ public:
                     GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
             }
 
-            if (!gCheatsDisableClearanceChecks || (GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
+                ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
+                : CREATE_CROSSING_MODE_NONE;
+            if (!map_can_construct_with_clear_at(
+                    mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, GetFlags(), &cost,
+                    crossingMode))
             {
-                uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
-                    ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
-                    : CREATE_CROSSING_MODE_NONE;
-                if (!map_can_construct_with_clear_at(
-                        mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, GetFlags(), &cost,
-                        crossingMode))
-                {
-                    return std::make_unique<GameActionResult>(
-                        GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
-                        gCommonFormatArgs);
-                }
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
+                    gCommonFormatArgs);
             }
 
             uint8_t mapGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
@@ -543,19 +540,16 @@ public:
 
             clearanceZ = (clearanceZ / 8) + baseZ;
 
-            if (!gCheatsDisableClearanceChecks || (GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
+                ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
+                : CREATE_CROSSING_MODE_NONE;
+            if (!map_can_construct_with_clear_at(
+                    mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl,
+                    GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost, crossingMode))
             {
-                uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
-                    ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
-                    : CREATE_CROSSING_MODE_NONE;
-                if (!map_can_construct_with_clear_at(
-                        mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl,
-                        GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost, crossingMode))
-                {
-                    return std::make_unique<GameActionResult>(
-                        GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
-                        gCommonFormatArgs);
-                }
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
+                    gCommonFormatArgs);
             }
 
             if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)

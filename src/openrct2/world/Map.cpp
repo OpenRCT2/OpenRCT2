@@ -2213,7 +2213,7 @@ void game_command_set_water_height(
         zLow = temp;
     }
 
-    if (gCheatsDisableClearanceChecks || map_can_construct_at(x, y, zLow, zHigh, 0xFF))
+    if (map_can_construct_at(x, y, zLow, zHigh, 0xFF))
     {
         if (tile_element->AsSurface()->HasTrackThatNeedsWater())
         {
@@ -2396,10 +2396,9 @@ void game_command_place_large_scenery(
         bl |= bh;
         uint8_t F43887 = bl;
 
-        if (!gCheatsDisableClearanceChecks
-            && !map_can_construct_with_clear_at(
-                   curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &supportsCost,
-                   CREATE_CROSSING_MODE_NONE))
+        if (!map_can_construct_with_clear_at(
+                curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &supportsCost,
+                CREATE_CROSSING_MODE_NONE))
         {
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -3036,8 +3035,7 @@ bool map_can_construct_with_clear_at(
  */
 int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, uint8_t bl)
 {
-    return gCheatsDisableClearanceChecks
-        || map_can_construct_with_clear_at(x, y, zLow, zHigh, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
+    return map_can_construct_with_clear_at(x, y, zLow, zHigh, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
 }
 
 /**
