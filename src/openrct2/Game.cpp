@@ -332,17 +332,16 @@ void update_palette_effects()
  *
  * @param cost (ebp)
  */
-static int32_t game_check_affordability(int32_t cost)
+static int32_t game_check_affordability(int32_t cost, uint32_t flags)
 {
-    if (cost <= 0)
-        return cost;
+    // Only checked for game commands.
     if (gUnk141F568 & 0xF0)
         return cost;
-    if (cost <= gCash)
+
+    if (finance_check_affordability(cost, flags))
         return cost;
 
     set_format_arg(0, uint32_t, cost);
-
     gGameCommandErrorText = STR_NOT_ENOUGH_CASH_REQUIRES;
     return MONEY32_UNDEFINED;
 }
@@ -447,7 +446,7 @@ int32_t game_do_command_p(
         // Check funds
         int32_t insufficientFunds = 0;
         if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
-            insufficientFunds = game_check_affordability(cost);
+            insufficientFunds = game_check_affordability(cost, flags);
 
         if (insufficientFunds != MONEY32_UNDEFINED)
         {
@@ -531,8 +530,8 @@ int32_t game_do_command_p(
             if (gGameCommandNestLevel != 0)
                 return cost;
 
-            //
-            if (!(flags & 0x20))
+            // Check if money is required.
+            if (finance_check_money_required(flags))
             {
                 // Update money balance
                 finance_payment(cost, gCommandExpenditureType);
