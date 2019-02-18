@@ -1542,7 +1542,7 @@ static constexpr const utf8* console_variable_table[] = {
     "guest_initial_thirst",
     "guest_prefer_less_intense_rides",
     "guest_prefer_more_intense_rides",
-    "forbid_marketing_campaign",
+    "forbid_marketing_campaigns",
     "forbid_landscape_changes",
     "forbid_tree_removal",
     "forbid_high_construction",
