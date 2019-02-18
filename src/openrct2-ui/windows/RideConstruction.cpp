@@ -1773,6 +1773,11 @@ static void window_ride_construction_construct(rct_window* w)
     }
     audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
 
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
+    }
+
     if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
     {
         viewport_set_visibility(1);
@@ -2549,7 +2554,8 @@ void sub_6C94D8()
     {
         case RIDE_CONSTRUCTION_STATE_FRONT:
         case RIDE_CONSTRUCTION_STATE_BACK:
-            if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
+            if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
+                && !(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED))
             {
                 if (window_ride_construction_update_state(
                         &type, &direction, &rideIndex, &liftHillAndAlternativeState, &x, &y, &z, nullptr))

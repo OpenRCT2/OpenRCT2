@@ -123,12 +123,7 @@ public:
             }
         }
 
-        const uint8_t(*wallEdges)[16];
-        if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE)
-        {
-            wallEdges = &FlatRideTrackSequenceElementAllowedWallEdges[_trackType];
-        }
-        else
+        if (!(rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             if (_trackType == TRACK_ELEM_ON_RIDE_PHOTO)
             {
@@ -159,8 +154,6 @@ public:
                         GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_STEEP_FOR_LIFT_HILL);
                 }
             }
-
-            wallEdges = &TrackSequenceElementAllowedWallEdges[_trackType];
         }
 
         money32 cost = 0;
@@ -313,7 +306,8 @@ public:
                         crossingMode))
                 {
                     return std::make_unique<GameActionResult>(
-                        GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText);
+                        GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
+                        gCommonFormatArgs);
                 }
             }
 
@@ -632,11 +626,12 @@ public:
                     ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                     : CREATE_CROSSING_MODE_NONE;
                 if (!map_can_construct_with_clear_at(
-                        tileCoords.x, tileCoords.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost,
-                        crossingMode))
+                        tileCoords.x, tileCoords.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl,
+                        GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost, crossingMode))
                 {
                     return std::make_unique<GameActionResult>(
-                        GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText);
+                        GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
+                        gCommonFormatArgs);
                 }
             }
 
