@@ -158,11 +158,11 @@ private:
                             auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
                                                  : GameActions::QueryNested(&footpathRemoveAction);
 
-                            if (res->Error != GA_ERROR::OK)
-                                return MONEY32_UNDEFINED;
-
-                            totalCost += res->Cost;
-                            tileEdited = executing;
+                            if (res->Error == GA_ERROR::OK)
+                            {
+                                totalCost += res->Cost;
+                                tileEdited = executing;
+                            }
                         }
                         break;
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
@@ -176,11 +176,11 @@ private:
                             auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
                                                  : GameActions::QueryNested(&removeSceneryAction);
 
-                            if (res->Error != GA_ERROR::OK)
-                                return MONEY32_UNDEFINED;
-
-                            totalCost += res->Cost;
-                            tileEdited = executing;
+                            if (res->Error == GA_ERROR::OK)
+                            {
+                                totalCost += res->Cost;
+                                tileEdited = executing;
+                            }
                         }
                         break;
                     case TILE_ELEMENT_TYPE_WALL:
@@ -193,11 +193,11 @@ private:
                             auto res = executing ? GameActions::ExecuteNested(&wallRemoveAction)
                                                  : GameActions::QueryNested(&wallRemoveAction);
 
-                            if (res->Error != GA_ERROR::OK)
-                                return MONEY32_UNDEFINED;
-
-                            totalCost += res->Cost;
-                            tileEdited = executing;
+                            if (res->Error == GA_ERROR::OK)
+                            {
+                                totalCost += res->Cost;
+                                tileEdited = executing;
+                            }
                         }
                         break;
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
@@ -211,11 +211,11 @@ private:
                             auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
                                                  : GameActions::QueryNested(&removeSceneryAction);
 
-                            if (res->Error != GA_ERROR::OK)
-                                return MONEY32_UNDEFINED;
-
-                            totalCost += res->Cost;
-                            tileEdited = executing;
+                            if (res->Error == GA_ERROR::OK)
+                            {
+                                totalCost += res->Cost;
+                                tileEdited = executing;
+                            }
                         }
                         break;
                 }

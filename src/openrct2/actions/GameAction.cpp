@@ -261,7 +261,7 @@ namespace GameActions
             }
         }
 
-        GameActionResult::Ptr result = Query(action);
+        GameActionResult::Ptr result = QueryInternal(action, topLevel);
         if (result->Error == GA_ERROR::OK)
         {
             if (topLevel)
