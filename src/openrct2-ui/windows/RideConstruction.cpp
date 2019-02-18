@@ -2395,8 +2395,7 @@ static void sub_6CBCE2(
     trackBlock = get_track_def_from_ride(ride, trackType);
     while (trackBlock->index != 255)
     {
-        int32_t bl = trackBlock->var_08;
-        int32_t bh;
+        auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
         switch (trackDirection)
         {
             default:
@@ -2407,32 +2406,14 @@ static void sub_6CBCE2(
             case 1:
                 offsetX = trackBlock->y;
                 offsetY = -trackBlock->x;
-                bl = rol8(bl, 1);
-                bh = bl;
-                bh = ror8(bh, 4);
-                bl &= 0xEE;
-                bh &= 0x11;
-                bl |= bh;
                 break;
             case 2:
                 offsetX = -trackBlock->x;
                 offsetY = -trackBlock->y;
-                bl = rol8(bl, 2);
-                bh = bl;
-                bh = ror8(bh, 4);
-                bl &= 0xCC;
-                bh &= 0x33;
-                bl |= bh;
                 break;
             case 3:
                 offsetX = -trackBlock->y;
                 offsetY = trackBlock->x;
-                bl = rol8(bl, 3);
-                bh = bl;
-                bh = ror8(bh, 4);
-                bl &= 0x88;
-                bh &= 0x77;
-                bl |= bh;
                 break;
         }
         int32_t x = originX + offsetX;
@@ -2459,7 +2440,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
         _tempTrackTileElement.SetDirection(trackDirection);
         _tempTrackTileElement.AsTrack()->SetHasChain((edx & 0x10000) ? true : false);
-        _tempTrackTileElement.flags = (bl & 0x0F) | TILE_ELEMENT_FLAG_LAST_TILE;
+        _tempTrackTileElement.flags = quarterTile.GetBaseQuarterOccupied() | TILE_ELEMENT_FLAG_LAST_TILE;
         _tempTrackTileElement.base_height = baseZ;
         _tempTrackTileElement.clearance_height = clearanceZ;
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
