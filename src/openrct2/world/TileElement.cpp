@@ -73,13 +73,13 @@ BannerIndex tile_element_get_banner_index(TileElement* tileElement)
     {
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (sceneryEntry->large_scenery.scrolling_mode == 0xFF)
+            if (sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
                 return BANNER_INDEX_NULL;
 
             return tileElement->AsLargeScenery()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_WALL:
             sceneryEntry = tileElement->AsWall()->GetEntry();
-            if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == 0xFF)
+            if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
                 return BANNER_INDEX_NULL;
 
             return tileElement->AsWall()->GetBannerIndex();
@@ -136,7 +136,7 @@ uint8_t tile_element_get_ride_index(const TileElement* tileElement)
         case TILE_ELEMENT_TYPE_PATH:
             return tileElement->AsPath()->GetRideIndex();
         default:
-            return 0xFF;
+            return RIDE_ID_NULL;
     }
 }
 

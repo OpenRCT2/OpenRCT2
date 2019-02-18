@@ -313,7 +313,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
 
         case VIEWPORT_INTERACTION_ITEM_WALL:
             sceneryEntry = tileElement->AsWall()->GetEntry();
-            if (sceneryEntry->wall.scrolling_mode != 255)
+            if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                 set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
@@ -323,7 +323,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
 
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (sceneryEntry->large_scenery.scrolling_mode != 255)
+            if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                 set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
@@ -427,7 +427,7 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
 
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
             if (info.sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
-                ride_construct(info.sprite->vehicle.ride);
+                ride_construct(get_ride(info.sprite->vehicle.ride));
             break;
         case VIEWPORT_INTERACTION_ITEM_RIDE:
             tileElement.x = info.x;
@@ -548,7 +548,7 @@ void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t
 static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
-    if (sceneryEntry->wall.scrolling_mode != 0xFF)
+    if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
     {
         context_open_detail_window(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex());
     }
@@ -568,7 +568,7 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
 
-    if (sceneryEntry->large_scenery.scrolling_mode != 0xFF)
+    if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
     {
         BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
         context_open_detail_window(WD_SIGN, bannerIndex);

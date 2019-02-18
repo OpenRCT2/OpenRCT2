@@ -120,7 +120,7 @@ static rct_window_event_list window_ride_refurbish_events = {
 };
 
 /** Based off of rct2: 0x006B486A */
-rct_window* window_ride_demolish_prompt_open(ride_id_t rideIndex)
+rct_window* window_ride_demolish_prompt_open(Ride* ride)
 {
     rct_window* w;
 
@@ -140,13 +140,13 @@ rct_window* window_ride_demolish_prompt_open(ride_id_t rideIndex)
     w->widgets = window_ride_demolish_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
     window_init_scroll_widgets(w);
-    w->number = rideIndex;
-    _demolishRideCost = -ride_get_refund_price(rideIndex);
+    w->number = ride->id;
+    _demolishRideCost = -ride_get_refund_price(ride);
 
     return w;
 }
 
-rct_window* window_ride_refurbish_prompt_open(ride_id_t rideIndex)
+rct_window* window_ride_refurbish_prompt_open(Ride* ride)
 {
     rct_window* w;
 
@@ -166,8 +166,8 @@ rct_window* window_ride_refurbish_prompt_open(ride_id_t rideIndex)
     w->widgets = window_ride_refurbish_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_REFURBISH);
     window_init_scroll_widgets(w);
-    w->number = rideIndex;
-    _demolishRideCost = -ride_get_refund_price(rideIndex);
+    w->number = ride->id;
+    _demolishRideCost = -ride_get_refund_price(ride);
 
     return w;
 }
@@ -182,7 +182,8 @@ static void window_ride_demolish_mouseup(rct_window* w, rct_widgetindex widgetIn
     {
         case WIDX_DEMOLISH:
         {
-            ride_action_modify(w->number, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+            auto ride = get_ride(w->number);
+            ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
             break;
         }
         case WIDX_CANCEL:
@@ -198,7 +199,8 @@ static void window_ride_refurbish_mouseup(rct_window* w, rct_widgetindex widgetI
     {
         case WIDX_REFURBISH:
         {
-            ride_action_modify(w->number, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
+            auto ride = get_ride(w->number);
+            ride_action_modify(ride, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
             break;
         }
         case WIDX_CANCEL:

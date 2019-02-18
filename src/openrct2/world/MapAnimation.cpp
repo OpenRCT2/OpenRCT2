@@ -17,6 +17,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../world/Wall.h"
+#include "Banner.h"
 #include "Footpath.h"
 #include "LargeScenery.h"
 #include "Map.h"
@@ -561,7 +562,8 @@ static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
         sceneryEntry = tileElement->AsWall()->GetEntry();
 
         if (!sceneryEntry
-            || (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED) && sceneryEntry->wall.scrolling_mode == 255))
+            || (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED)
+                && sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE))
             continue;
 
         int32_t z = tileElement->base_height * 8;

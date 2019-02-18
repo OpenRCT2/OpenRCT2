@@ -17,6 +17,8 @@
 #include "../world/Map.h"
 #include "Vehicle.h"
 
+struct Ride;
+
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
 #pragma pack(push, 1)
@@ -228,7 +230,7 @@ void track_design_dispose(rct_track_td6* td6);
 void track_design_mirror(rct_track_td6* td6);
 
 int32_t place_virtual_track(
-    rct_track_td6* td6, uint8_t ptdOperation, bool placeScenery, ride_id_t rideIndex, int16_t x, int16_t y, int16_t z);
+    rct_track_td6* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, int16_t x, int16_t y, int16_t z);
 
 void game_command_place_track_design(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);

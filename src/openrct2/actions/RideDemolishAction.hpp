@@ -90,7 +90,7 @@ public:
             }
 
             result->ErrorTitle = STR_CANT_REFURBISH_RIDE;
-            result->Cost = GetRefurbishPrice();
+            result->Cost = GetRefurbishPrice(ride);
         }
 
         return result;
@@ -123,10 +123,10 @@ private:
 
         ride_clear_for_construction(ride);
         ride_remove_peeps(ride);
-        ride_stop_peeps_queuing(_rideIndex);
+        ride_stop_peeps_queuing(ride);
 
-        sub_6CB945(_rideIndex);
-        ride_clear_leftover_entrances(_rideIndex);
+        sub_6CB945(ride);
+        ride_clear_leftover_entrances(ride);
         news_item_disable_news(NEWS_ITEM_RIDE, _rideIndex);
 
         for (auto& banner : gBanners)
@@ -264,14 +264,10 @@ private:
         auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
-        auto queryRes = setMazeTrack.Query();
-        if (queryRes->Error == GA_ERROR::OK)
+        auto execRes = GameActions::ExecuteNested(&setMazeTrack);
+        if (execRes->Error == GA_ERROR::OK)
         {
-            auto execRes = setMazeTrack.Execute();
-            if (execRes->Error == GA_ERROR::OK)
-            {
-                return execRes->Cost;
-            }
+            return execRes->Cost;
         }
 
         return MONEY32_UNDEFINED;
@@ -344,7 +340,7 @@ private:
     {
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        res->Cost = GetRefurbishPrice();
+        res->Cost = GetRefurbishPrice(ride);
 
         ride_renew(ride);
 
@@ -367,13 +363,13 @@ private:
         return res;
     }
 
-    money32 GetRefurbishPrice() const
+    money32 GetRefurbishPrice(const Ride* ride) const
     {
-        return -GetRefundPrice() / 2;
+        return -GetRefundPrice(ride) / 2;
     }
 
-    money32 GetRefundPrice() const
+    money32 GetRefundPrice(const Ride* ride) const
     {
-        return ride_get_refund_price(_rideIndex);
+        return ride_get_refund_price(ride);
     }
 };

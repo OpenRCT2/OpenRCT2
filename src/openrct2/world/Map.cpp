@@ -1328,8 +1328,10 @@ static money32 lower_land(
                     newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
 
                     auto landSetHeightAction = LandSetHeightAction({ x_coord, y_coord }, height, newSlope);
-                    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
+                    landSetHeightAction.SetFlags(flags);
 
+                    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::ExecuteNested(&landSetHeightAction)
+                                                                 : GameActions::QueryNested(&landSetHeightAction);
                     if (res->Error != GA_ERROR::OK)
                     {
                         return MONEY32_UNDEFINED;
@@ -1580,7 +1582,9 @@ static money32 smooth_land_tile(
     }
 
     auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
-    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
+    landSetHeightAction.SetFlags(flags);
+    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::ExecuteNested(&landSetHeightAction)
+                                                 : GameActions::QueryNested(&landSetHeightAction);
 
     if (res->Error == GA_ERROR::OK)
     {
@@ -1725,8 +1729,9 @@ static money32 smooth_land_row_by_edge(
             }
         }
         auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
-        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
-
+        landSetHeightAction.SetFlags(flags);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::ExecuteNested(&landSetHeightAction)
+                                                     : GameActions::QueryNested(&landSetHeightAction);
         if (res->Error == GA_ERROR::OK)
         {
             totalCost += res->Cost;
@@ -2291,7 +2296,7 @@ void game_command_place_large_scenery(
         return;
     }
 
-    if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+    if (scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
     {
         banner_id = create_new_banner(flags);
 

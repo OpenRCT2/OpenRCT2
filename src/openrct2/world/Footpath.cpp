@@ -1774,7 +1774,7 @@ void footpath_update_queue_chains()
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {
-            TileCoordsXYZD location = ride_get_entrance_location(rideIndex, i);
+            TileCoordsXYZD location = ride_get_entrance_location(ride, i);
             if (location.isNull())
                 continue;
 
@@ -2327,9 +2327,8 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
             constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_SE;
-            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathList[6] != nullptr && !pathList[6]->AsPath()->IsWide()
-                && (pathList[6]->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathList[5] != nullptr
-                && !(pathList[5])->AsPath()->IsWide())
+            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathList[6] != nullptr && !(pathList[6])->AsPath()->IsWide()
+                && (pathList[6]->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathList[5] != nullptr)
             {
                 pathConnections |= FOOTPATH_CONNECTION_E;
             }
@@ -2341,10 +2340,10 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
          * are always false due to the tile update order
          * in combination with reset tiles.
          * Short circuit the logic appropriately. */
-        if ((pathConnections & FOOTPATH_CONNECTION_SE) && pathList[3] != nullptr && !pathList[3]->AsPath()->IsWide())
+        if ((pathConnections & FOOTPATH_CONNECTION_SE) && pathList[3] != nullptr)
         {
             constexpr uint8_t edgeMask1 = EDGE_SW | EDGE_NW;
-            if ((pathConnections & FOOTPATH_CONNECTION_NE) && (pathList[2] != nullptr) && !pathList[2]->AsPath()->IsWide()
+            if ((pathConnections & FOOTPATH_CONNECTION_NE) && (pathList[2] != nullptr)
                 && (pathList[2]->AsPath()->GetEdges() & edgeMask1) == edgeMask1 && pathList[1] != nullptr
                 && !pathList[1]->AsPath()->IsWide())
             {
@@ -2358,9 +2357,8 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
             constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_NW;
-            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathList[4] != nullptr && !pathList[4]->AsPath()->IsWide()
-                && (pathList[4]->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathList[5] != nullptr
-                && !pathList[5]->AsPath()->IsWide())
+            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathList[4] != nullptr
+                && (pathList[4]->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathList[5] != nullptr)
             {
                 pathConnections |= FOOTPATH_CONNECTION_N;
             }

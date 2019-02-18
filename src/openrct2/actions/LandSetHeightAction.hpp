@@ -134,11 +134,7 @@ public:
             }
         }
         auto res = std::make_unique<GameActionResult>();
-        res->Cost = 0;
-        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
-        {
-            res->Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
-        }
+        res->Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         return res;
     }

@@ -155,12 +155,14 @@ private:
                             auto footpathRemoveAction = FootpathRemoveAction(x * 32, y * 32, tileElement->base_height);
                             footpathRemoveAction.SetFlags(GetFlags());
 
-                            auto res = executing ? footpathRemoveAction.Execute() : footpathRemoveAction.Query();
-                            if (res->Error != GA_ERROR::OK)
-                                return MONEY32_UNDEFINED;
+                            auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
+                                                 : GameActions::QueryNested(&footpathRemoveAction);
 
-                            totalCost += res->Cost;
-                            tileEdited = executing;
+                            if (res->Error == GA_ERROR::OK)
+                            {
+                                totalCost += res->Cost;
+                                tileEdited = executing;
+                            }
                         }
                         break;
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
@@ -171,12 +173,14 @@ private:
                                 tileElement->AsSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
-                            auto res = executing ? removeSceneryAction.Execute() : removeSceneryAction.Query();
-                            if (res->Error != GA_ERROR::OK)
-                                return MONEY32_UNDEFINED;
+                            auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
+                                                 : GameActions::QueryNested(&removeSceneryAction);
 
-                            totalCost += res->Cost;
-                            tileEdited = executing;
+                            if (res->Error == GA_ERROR::OK)
+                            {
+                                totalCost += res->Cost;
+                                tileEdited = executing;
+                            }
                         }
                         break;
                     case TILE_ELEMENT_TYPE_WALL:
@@ -186,12 +190,14 @@ private:
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 
-                            auto res = executing ? wallRemoveAction.Execute() : wallRemoveAction.Query();
-                            if (res->Error != GA_ERROR::OK)
-                                return MONEY32_UNDEFINED;
+                            auto res = executing ? GameActions::ExecuteNested(&wallRemoveAction)
+                                                 : GameActions::QueryNested(&wallRemoveAction);
 
-                            totalCost += res->Cost;
-                            tileEdited = executing;
+                            if (res->Error == GA_ERROR::OK)
+                            {
+                                totalCost += res->Cost;
+                                tileEdited = executing;
+                            }
                         }
                         break;
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
@@ -202,12 +208,14 @@ private:
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
 
-                            auto res = executing ? removeSceneryAction.Execute() : removeSceneryAction.Query();
-                            if (res->Error != GA_ERROR::OK)
-                                return MONEY32_UNDEFINED;
+                            auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
+                                                 : GameActions::QueryNested(&removeSceneryAction);
 
-                            totalCost += res->Cost;
-                            tileEdited = executing;
+                            if (res->Error == GA_ERROR::OK)
+                            {
+                                totalCost += res->Cost;
+                                tileEdited = executing;
+                            }
                         }
                         break;
                 }

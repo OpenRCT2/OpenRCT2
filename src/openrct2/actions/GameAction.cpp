@@ -126,18 +126,7 @@ namespace GameActions
         return false;
     }
 
-    static bool CheckActionAffordability(const GameActionResult* result)
-    {
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
-            return true;
-        if (result->Cost <= 0)
-            return true;
-        if (result->Cost <= gCash)
-            return true;
-        return false;
-    }
-
-    GameActionResult::Ptr Query(const GameAction* action)
+    static GameActionResult::Ptr QueryInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
@@ -155,13 +144,17 @@ namespace GameActions
 
         auto result = action->Query();
 
-        gCommandPosition.x = result->Position.x;
-        gCommandPosition.y = result->Position.y;
-        gCommandPosition.z = result->Position.z;
+        // Only top level actions affect the command position.
+        if (topLevel)
+        {
+            gCommandPosition.x = result->Position.x;
+            gCommandPosition.y = result->Position.y;
+            gCommandPosition.z = result->Position.z;
+        }
 
         if (result->Error == GA_ERROR::OK)
         {
-            if (!CheckActionAffordability(result.get()))
+            if (finance_check_affordability(result->Cost, action->GetFlags()) == false)
             {
                 result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
@@ -169,6 +162,16 @@ namespace GameActions
             }
         }
         return result;
+    }
+
+    GameActionResult::Ptr Query(const GameAction* action)
+    {
+        return QueryInternal(action, true);
+    }
+
+    GameActionResult::Ptr QueryNested(const GameAction* action)
+    {
+        return QueryInternal(action, false);
     }
 
     static const char* GetRealm()
@@ -223,7 +226,7 @@ namespace GameActions
         network_append_server_log(text);
     }
 
-    GameActionResult::Ptr Execute(const GameAction* action)
+    static GameActionResult::Ptr ExecuteInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
@@ -247,31 +250,34 @@ namespace GameActions
             }
         }
 
-        GameActionResult::Ptr result = Query(action);
+        GameActionResult::Ptr result = QueryInternal(action, topLevel);
         if (result->Error == GA_ERROR::OK)
         {
-            // Networked games send actions to the server to be run
-            if (network_get_mode() == NETWORK_MODE_CLIENT)
+            if (topLevel)
             {
-                // As a client we have to wait or send it first.
-                if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                // Networked games send actions to the server to be run
+                if (network_get_mode() == NETWORK_MODE_CLIENT)
                 {
-                    log_verbose("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
-                    network_send_game_action(action);
+                    // As a client we have to wait or send it first.
+                    if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    {
+                        log_verbose("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
+                        network_send_game_action(action);
 
-                    return result;
+                        return result;
+                    }
                 }
-            }
-            else if (network_get_mode() == NETWORK_MODE_SERVER)
-            {
-                // If player is the server it would execute right away as where clients execute the commands
-                // at the beginning of the frame, so we have to put them into the queue.
-                if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                else if (network_get_mode() == NETWORK_MODE_SERVER)
                 {
-                    log_verbose("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
-                    network_enqueue_game_action(action);
+                    // If player is the server it would execute right away as where clients execute the commands
+                    // at the beginning of the frame, so we have to put them into the queue.
+                    if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    {
+                        log_verbose("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
+                        network_enqueue_game_action(action);
 
-                    return result;
+                        return result;
+                    }
                 }
             }
 
@@ -283,13 +289,16 @@ namespace GameActions
 
             LogActionFinish(logContext, action, result);
 
+            // If not top level just give away the result.
+            if (topLevel == false)
+                return result;
+
             gCommandPosition.x = result->Position.x;
             gCommandPosition.y = result->Position.y;
             gCommandPosition.z = result->Position.z;
 
             // Update money balance
-            if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5)
-                && result->Cost != 0)
+            if (result->Error == GA_ERROR::OK && finance_check_money_required(flags) && result->Cost != 0)
             {
                 finance_payment(result->Cost, result->ExpenditureType);
                 money_effect_create(result->Cost);
@@ -349,7 +358,18 @@ namespace GameActions
             std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);
             context_show_error(result->ErrorTitle, result->ErrorMessage);
         }
+
         return result;
+    }
+
+    GameActionResult::Ptr Execute(const GameAction* action)
+    {
+        return ExecuteInternal(action, true);
+    }
+
+    GameActionResult::Ptr ExecuteNested(const GameAction* action)
+    {
+        return ExecuteInternal(action, false);
     }
 
 } // namespace GameActions
