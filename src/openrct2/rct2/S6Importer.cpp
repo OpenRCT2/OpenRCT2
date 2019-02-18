@@ -212,20 +212,7 @@ public:
         scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
         ImportTileElements();
-
-        gNextFreeTileElementPointerIndex = _s6.next_free_tile_element_pointer_index;
-        for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
-        {
-            std::memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));
-        }
-
-        for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
-        {
-            gSpriteListHead[i] = _s6.sprite_lists_head[i];
-            gSpriteListCount[i] = _s6.sprite_lists_count[i];
-        }
-        // This list contains the number of free slots. Increase it according to our own sprite limit.
-        gSpriteListCount[SPRITE_LIST_NULL] += (MAX_SPRITES - RCT2_MAX_SPRITES);
+        ImportSprites();
 
         gParkName = _s6.park_name;
         // pad_013573D6
@@ -881,7 +868,9 @@ public:
                     ImportTileElement(dst, src);
             }
         }
+        gNextFreeTileElementPointerIndex = _s6.next_free_tile_element_pointer_index;
     }
+
     void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
     {
         // Todo: allow for changing defition of OpenRCT2 tile element types - replace with a map
@@ -1048,6 +1037,71 @@ public:
                 gMarketingCampaigns.push_back(campaign);
             }
         }
+    }
+
+    void ImportSprites()
+    {
+        for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
+        {
+            auto src = &_s6.sprites[i];
+            auto dst = get_sprite(i);
+            ImportSprite(dst, src);
+        }
+
+        for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
+        {
+            gSpriteListHead[i] = _s6.sprite_lists_head[i];
+            gSpriteListCount[i] = _s6.sprite_lists_count[i];
+        }
+        // This list contains the number of free slots. Increase it according to our own sprite limit.
+        gSpriteListCount[SPRITE_LIST_NULL] += (MAX_SPRITES - RCT2_MAX_SPRITES);
+    }
+
+    void ImportSprite(rct_sprite* dst, const rct_sprite* src)
+    {
+        std::memset(dst, 0, sizeof(rct_sprite));
+        switch (src->generic.type)
+        {
+            case SPRITE_IDENTIFIER_VEHICLE:
+            case SPRITE_IDENTIFIER_PEEP:
+            case SPRITE_IDENTIFIER_MISC:
+            default:
+                std::memcpy(dst, src, sizeof(rct_sprite));
+                break;
+            case SPRITE_IDENTIFIER_LITTER:
+                ImportSpriteLitter(&dst->litter, &src->litter);
+                break;
+        }
+    }
+
+    void ImportSpriteLitter(rct_litter* dst, const rct_litter* src)
+    {
+        ImportSpriteCommonProperties(dst, src);
+        dst->creationTick = src->creationTick;
+    }
+
+    void ImportSpriteCommonProperties(rct_sprite_common* dst, const rct_sprite_common* src)
+    {
+        dst->sprite_identifier = src->sprite_identifier;
+        dst->type = src->type;
+        dst->next_in_quadrant = src->next_in_quadrant;
+        dst->next = src->next;
+        dst->previous = src->previous;
+        dst->linked_list_type_offset = src->linked_list_type_offset;
+        dst->sprite_height_negative = src->sprite_height_negative;
+        dst->sprite_index = src->sprite_index;
+        dst->flags = src->flags;
+        dst->x = src->x;
+        dst->y = src->y;
+        dst->z = src->z;
+        dst->sprite_width = src->sprite_width;
+        dst->sprite_height_positive = src->sprite_height_positive;
+        dst->sprite_left = src->sprite_left;
+        dst->sprite_top = src->sprite_top;
+        dst->sprite_right = src->sprite_right;
+        dst->sprite_bottom = src->sprite_bottom;
+        dst->sprite_direction = src->sprite_direction;
+        dst->name_string_idx = src->name_string_idx;
     }
 };
 
