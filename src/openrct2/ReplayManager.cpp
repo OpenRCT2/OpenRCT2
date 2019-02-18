@@ -156,9 +156,6 @@ namespace OpenRCT2
             args[6] = ebp;
 
             _currentRecording->commands.emplace(gCurrentTicks, args, callback, _commandId++);
-
-            // Force a checksum record the next tick.
-            _nextChecksumTick = tick + 1;
         }
 
         virtual void AddGameAction(uint32_t tick, const GameAction* action) override
@@ -169,9 +166,6 @@ namespace OpenRCT2
             auto ga = GameActions::Clone(action);
 
             _currentRecording->commands.emplace(gCurrentTicks, std::move(ga), _commandId++);
-
-            // Force a checksum record the next tick.
-            _nextChecksumTick = tick + 1;
         }
 
         void AddChecksum(uint32_t tick, rct_sprite_checksum&& checksum)
@@ -190,16 +184,7 @@ namespace OpenRCT2
                 rct_sprite_checksum checksum = sprite_checksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
 
-                if (_mode == ReplayMode::RECORDING)
-                {
-                    // Record checksums every ~200ms.
-                    _nextChecksumTick = gCurrentTicks + 5;
-                }
-                else
-                {
-                    // Wait for next command.
-                    _nextChecksumTick = 0;
-                }
+                _nextChecksumTick = gCurrentTicks + 1;
             }
 
             if (_mode == ReplayMode::RECORDING)
@@ -231,7 +216,7 @@ namespace OpenRCT2
                 ReplayCommands();
 
                 // If we run out of commands we can just stop
-                if (_currentReplay->commands.empty() && _nextChecksumTick == 0)
+                if (_currentReplay->commands.empty())
                 {
                     StopPlayback();
                     StopRecording();
@@ -819,6 +804,9 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         void CheckState()
         {
+            if (_nextChecksumTick != gCurrentTicks)
+                return;
+
             uint32_t checksumIndex = _currentReplay->checksumIndex;
 
             if (checksumIndex >= _currentReplay->checksums.size())
@@ -830,10 +818,12 @@ namespace OpenRCT2
                 rct_sprite_checksum checksum = sprite_checksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
+                    uint32_t replayTick = gCurrentTicks - _currentReplay->tickStart;
+
                     // Detected different game state.
-                    log_verbose(
-                        "Different sprite checksum at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
-                        savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
+                    log_warning(
+                        "Different sprite checksum at tick %u (Replay Tick: %u) ; Saved: %s, Current: %s", gCurrentTicks,
+                        replayTick, savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
 
                     _faultyChecksumIndex = checksumIndex;
                 }
