@@ -1645,9 +1645,35 @@ static void window_ride_construction_dropdown(rct_window* w, rct_widgetindex wid
     _currentTrackCurve = trackPiece | 0x100;
     window_ride_construction_update_active_elements();
 }
+static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActionResult* result);
+static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActionResult* result);
+static void CloseConstructWindowOnCompletion(Ride* ride);
 
-void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActionResult* result)
+static void CloseConstructWindowOnCompletion(Ride* ride)
 {
+    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_0)
+    {
+        auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        if (w != nullptr)
+        {
+            if (ride_are_all_possible_entrances_and_exits_built(ride))
+            {
+                // Clients don't necessarily have any ride built at this point
+                if (network_get_mode() != NETWORK_MODE_CLIENT)
+                {
+                    window_close(w);
+                }
+            }
+            else
+            {
+                window_event_mouse_up_call(w, WIDX_ENTRANCE);
+            }
+        }
+    }
+}
+
+static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActionResult* result)
+    {
     if (result->Error != GA_ERROR::OK)
     {
         window_ride_construction_update_active_elements();
@@ -1688,9 +1714,12 @@ void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const Ga
         window_ride_construction_do_entrance_exit_check();
         window_ride_construction_update_active_elements();
     }
+
+    window_close_by_class(WC_ERROR);
+    CloseConstructWindowOnCompletion(ride);
 }
 
-void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActionResult* result)
+static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActionResult* result)
 {
     if (result->Error != GA_ERROR::OK)
     {
@@ -1731,6 +1760,9 @@ void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const G
         window_ride_construction_do_station_check();
         window_ride_construction_update_active_elements();
     }
+
+    window_close_by_class(WC_ERROR);
+    CloseConstructWindowOnCompletion(ride);
 }
 /**
  *
@@ -2542,6 +2574,11 @@ void sub_6C94D8()
     ride_id_t rideIndex;
     int32_t x, y, z, direction, type, liftHillAndAlternativeState;
 
+    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED)
+    {
+        return;
+    }
+
     // Recheck if area is fine for new track.
     // Set by footpath placement
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_RECHECK)
@@ -2554,8 +2591,7 @@ void sub_6C94D8()
     {
         case RIDE_CONSTRUCTION_STATE_FRONT:
         case RIDE_CONSTRUCTION_STATE_BACK:
-            if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
-                && !(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED))
+            if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
             {
                 if (window_ride_construction_update_state(
                         &type, &direction, &rideIndex, &liftHillAndAlternativeState, &x, &y, &z, nullptr))
@@ -3905,26 +3941,6 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
         }
         else
         {
-            window_close_by_class(WC_ERROR);
-            if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_0)
-            {
-                w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-                if (w != nullptr)
-                {
-                    if (ride_are_all_possible_entrances_and_exits_built(ride))
-                    {
-                        // Clients don't necessarily have any ride built at this point
-                        if (network_get_mode() != NETWORK_MODE_CLIENT)
-                        {
-                            window_close(w);
-                        }
-                    }
-                    else
-                    {
-                        window_event_mouse_up_call(w, WIDX_ENTRANCE);
-                    }
-                }
-            }
             break;
         }
     }

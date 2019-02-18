@@ -38,8 +38,8 @@
 #include "StaffSetCostumeAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "StaffSetOrdersAction.hpp"
-#include "WallRemoveAction.hpp"
 #include "TrackPlaceAction.hpp"
+#include "WallRemoveAction.hpp"
 
 namespace GameActions
 {
