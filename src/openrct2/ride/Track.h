@@ -33,12 +33,12 @@ private:
     uint8_t _val{0};
 
 public:
-    QuarterTile(uint8_t tileQuarter, uint8_t zQuarter)
+    constexpr QuarterTile(uint8_t tileQuarter, uint8_t zQuarter)
         : _val(tileQuarter | (zQuarter << 4))
     {
     }
 
-    constexpr QuarterTile(uint8_t tileAndZQuarter)
+    QuarterTile(uint8_t tileAndZQuarter)
         : _val(tileAndZQuarter)
     {
     }
