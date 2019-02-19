@@ -165,8 +165,6 @@ uint16_t _numCurrentPossibleRideConfigurations;
 uint16_t _numCurrentPossibleSpecialTrackPieces;
 
 uint16_t _currentTrackCurve;
-uint16_t _currentTrackEndX;
-uint16_t _currentTrackEndY;
 uint8_t _rideConstructionState;
 ride_id_t _currentRideIndex;
 uint16_t _currentTrackBeginX;

@@ -159,7 +159,7 @@ public:
         money32 cost = 0;
         TileElement* tileElement;
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, _trackType);
-        uint32_t num_elements = 0;
+        uint32_t numElements = 0;
         // First check if any of the track pieces are outside the park
         for (; trackBlock->index != 0xFF; trackBlock++)
         {
@@ -174,10 +174,10 @@ public:
                 return std::make_unique<GameActionResult>(
                     GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
             }
-            num_elements++;
+            numElements++;
         }
 
-        if (!map_check_free_elements_and_reorganise(num_elements))
+        if (!map_check_free_elements_and_reorganise(numElements))
         {
             log_warning("Not enough free map elments to place track.");
             return std::make_unique<GameActionResult>(
@@ -274,9 +274,6 @@ public:
                     GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
             }
 
-            _currentTrackEndX = mapLoc.x;
-            _currentTrackEndY = mapLoc.y;
-
             if (!gCheatsDisableClearanceChecks || (GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
                 uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
@@ -361,20 +358,20 @@ public:
             {
                 tileElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
 
-                uint8_t water_height = tileElement->AsSurface()->GetWaterHeight() * 2;
-                if (water_height == 0)
+                uint8_t waterHeight = tileElement->AsSurface()->GetWaterHeight() * 2;
+                if (waterHeight == 0)
                 {
                     return std::make_unique<GameActionResult>(
                         GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
                 }
 
-                if (water_height != baseZ)
+                if (waterHeight != baseZ)
                 {
                     return std::make_unique<GameActionResult>(
                         GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
                 }
-                water_height -= 2;
-                if (water_height == tileElement->base_height)
+                waterHeight -= 2;
+                if (waterHeight == tileElement->base_height)
                 {
                     uint8_t slope = tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
                     if (slope == TILE_ELEMENT_SLOPE_W_CORNER_DN || slope == TILE_ELEMENT_SLOPE_S_CORNER_DN
@@ -437,13 +434,13 @@ public:
                 }
             }
 
-            int32_t _support_height = baseZ - tileElement->base_height;
-            if (_support_height < 0)
+            int32_t supportHeight = baseZ - tileElement->base_height;
+            if (supportHeight < 0)
             {
-                _support_height = 10;
+                supportHeight = 10;
             }
 
-            cost += ((_support_height / 2) * RideTrackCosts[ride->type].support_price) * 5;
+            cost += ((supportHeight / 2) * RideTrackCosts[ride->type].support_price) * 5;
         }
 
         LocationXYZ16 coord;
@@ -506,12 +503,6 @@ public:
         money32 cost = 0;
         TileElement* tileElement;
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, _trackType);
-        uint32_t num_elements = 0;
-
-        for (; trackBlock->index != 0xFF; trackBlock++)
-        {
-            num_elements++;
-        }
 
         trackBlock = get_track_def_from_ride(ride, _trackType);
         for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
@@ -572,9 +563,6 @@ public:
 
             clearanceZ = (clearanceZ / 8) + baseZ;
 
-            _currentTrackEndX = mapLoc.x;
-            _currentTrackEndY = mapLoc.y;
-
             if (!gCheatsDisableClearanceChecks || (GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
                 uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
@@ -625,13 +613,13 @@ public:
             // 6c5648 12 push
             tileElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
 
-            int32_t _support_height = baseZ - tileElement->base_height;
-            if (_support_height < 0)
+            int32_t supportHeight = baseZ - tileElement->base_height;
+            if (supportHeight < 0)
             {
-                _support_height = 10;
+                supportHeight = 10;
             }
 
-            cost += ((_support_height / 2) * RideTrackCosts[ride->type].support_price) * 5;
+            cost += ((supportHeight / 2) * RideTrackCosts[ride->type].support_price) * 5;
 
             invalidate_test_results(ride);
             switch (_trackType)
@@ -766,11 +754,11 @@ public:
                         {
                             availableDirections &= ~(1 << chosenDirection);
                             CoordsXY tempLoc{ mapLoc.x, mapLoc.y };
-                            int32_t temp_direction = (_origin.direction + chosenDirection) & 3;
-                            tempLoc.x += CoordsDirectionDelta[temp_direction].x;
-                            tempLoc.y += CoordsDirectionDelta[temp_direction].y;
-                            temp_direction = direction_reverse(temp_direction);
-                            wall_remove_intersecting_walls(tempLoc.x, tempLoc.y, baseZ, clearanceZ, temp_direction & 3);
+                            int32_t tempDirection = (_origin.direction + chosenDirection) & 3;
+                            tempLoc.x += CoordsDirectionDelta[tempDirection].x;
+                            tempLoc.y += CoordsDirectionDelta[tempDirection].y;
+                            tempDirection = direction_reverse(tempDirection);
+                            wall_remove_intersecting_walls(tempLoc.x, tempLoc.y, baseZ, clearanceZ, tempDirection & 3);
                         }
                     }
                 }
