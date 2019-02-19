@@ -22,6 +22,8 @@
 - Feature: [#8670] Add ability to download missing objects when loading a park.
 - Change: [#7961] Add new object types: station, terrain surface, and terrain edge.
 - Change: [#8222] The climate setting has been moved from objective options to scenario options.
+- Change: [#8718] Allow TARMAC object to be removed when running the `remove_unused_objects` command.
+- Change: [#8718] No longer require the generic scenery groups and tarmac footpath to be checked when creating a scenario.
 - Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.
 - Fix: [#5684] Player list can desync between clients and server and can crash.
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
