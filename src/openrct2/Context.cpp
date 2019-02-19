@@ -220,6 +220,11 @@ namespace OpenRCT2
             return _drawingEngine.get();
         }
 
+        virtual Paint::Painter* GetPainter() override
+        {
+            return _painter.get();
+        }
+
         int32_t RunOpenRCT2(int argc, const char** argv) override
         {
             if (Initialise())
