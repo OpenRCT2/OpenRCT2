@@ -1673,7 +1673,7 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
 }
 
 static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActionResult* result)
-    {
+{
     if (result->Error != GA_ERROR::OK)
     {
         window_ride_construction_update_active_elements();

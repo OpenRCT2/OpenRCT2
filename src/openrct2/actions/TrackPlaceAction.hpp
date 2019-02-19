@@ -404,31 +404,7 @@ public:
                         GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText);
                 }
             }
-            // 6c55be
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
-            {
-                entranceDirections &= 0x0F;
-                if (entranceDirections != 0)
-                {
-                    // ???? Eh?
-                    if (!(GetFlags() & GAME_COMMAND_FLAG_APPLY) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
-                        && !gCheatsDisableClearanceChecks)
-                    {
-                        uint8_t availableDirections = entranceDirections;
-                        for (int32_t chosenDirection = bitscanforward(availableDirections); chosenDirection != -1;
-                             chosenDirection = bitscanforward(availableDirections))
-                        {
-                            availableDirections &= ~(1 << chosenDirection);
-                            int32_t temp_x = mapLoc.x, temp_y = mapLoc.y;
-                            int32_t temp_direction = (_origin.direction + chosenDirection) & 3;
-                            temp_x += CoordsDirectionDelta[temp_direction].x;
-                            temp_y += CoordsDirectionDelta[temp_direction].y;
-                            temp_direction = direction_reverse(temp_direction);
-                            wall_remove_intersecting_walls(temp_x, temp_y, baseZ, clearanceZ, temp_direction & 3);
-                        }
-                    }
-                }
-            }
+
             // 6c5648 12 push
             tileElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
             if (!gCheatsDisableSupportLimits)
@@ -714,6 +690,7 @@ public:
                     }
                 }
             }
+
             if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.xy == RCT_XY8_UNDEFINED)
             {
                 ride->overall_view.x = mapLoc.x / 32;
@@ -775,6 +752,28 @@ public:
             else
             {
                 entranceDirections = TrackSequenceProperties[_trackType][0];
+            }
+
+            if (entranceDirections & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
+            {
+                uint8_t availableDirections = entranceDirections & 0x0F;
+                if (availableDirections != 0)
+                {
+                    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
+                    {
+                        for (int32_t chosenDirection = bitscanforward(availableDirections); chosenDirection != -1;
+                             chosenDirection = bitscanforward(availableDirections))
+                        {
+                            availableDirections &= ~(1 << chosenDirection);
+                            CoordsXY tempLoc{ mapLoc.x, mapLoc.y };
+                            int32_t temp_direction = (_origin.direction + chosenDirection) & 3;
+                            tempLoc.x += CoordsDirectionDelta[temp_direction].x;
+                            tempLoc.y += CoordsDirectionDelta[temp_direction].y;
+                            temp_direction = direction_reverse(temp_direction);
+                            wall_remove_intersecting_walls(tempLoc.x, tempLoc.y, baseZ, clearanceZ, temp_direction & 3);
+                        }
+                    }
+                }
             }
 
             if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN)
