@@ -1066,6 +1066,8 @@ public:
                 ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
                 break;
             case SPRITE_IDENTIFIER_PEEP:
+                ImportSpritePeep(&dst->peep, &src->peep);
+                break;
             case SPRITE_IDENTIFIER_MISC:
             default:
                 std::memcpy(dst, src, sizeof(rct_sprite));
@@ -1142,6 +1144,113 @@ public:
         dst->colours_extended = src->colours_extended;
         dst->seat_rotation = src->seat_rotation;
         dst->target_seat_rotation = src->target_seat_rotation;
+    }
+
+    void ImportSpritePeep(rct_peep* dst, const rct_peep* src)
+    {
+        ImportSpriteCommonProperties((rct_sprite_common*)dst, (const rct_sprite_common*)src);
+        dst->next_x = src->next_x;
+        dst->next_y = src->next_y;
+        dst->next_z = src->next_z;
+        dst->next_flags = src->next_flags;
+        dst->outside_of_park = src->outside_of_park;
+        dst->state = src->state;
+        dst->sub_state = src->sub_state;
+        dst->sprite_type = src->sprite_type;
+        dst->type = src->type;
+        dst->no_of_rides = src->no_of_rides;
+        dst->tshirt_colour = src->tshirt_colour;
+        dst->trousers_colour = src->trousers_colour;
+        dst->destination_x = src->destination_x;
+        dst->destination_y = src->destination_y;
+        dst->destination_tolerance = src->destination_tolerance;
+        dst->var_37 = src->var_37;
+        dst->energy = src->energy;
+        dst->energy_target = src->energy_target;
+        dst->happiness = src->happiness;
+        dst->happiness_target = src->happiness_target;
+        dst->nausea = src->nausea;
+        dst->nausea_target = src->nausea_target;
+        dst->hunger = src->hunger;
+        dst->thirst = src->thirst;
+        dst->toilet = src->toilet;
+        dst->mass = src->mass;
+        dst->time_to_consume = src->time_to_consume;
+        dst->intensity = src->intensity;
+        dst->nausea_tolerance = src->nausea_tolerance;
+        dst->window_invalidate_flags = src->window_invalidate_flags;
+        dst->paid_on_drink = src->paid_on_drink;
+        for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
+        {
+            dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+        }
+        dst->item_extra_flags = src->item_extra_flags;
+        dst->photo2_ride_ref = src->photo2_ride_ref;
+        dst->photo3_ride_ref = src->photo3_ride_ref;
+        dst->photo4_ride_ref = src->photo4_ride_ref;
+        dst->current_ride = src->current_ride;
+        dst->current_ride_station = src->current_ride_station;
+        dst->current_train = src->current_train;
+        dst->time_to_sitdown = src->time_to_sitdown;
+        dst->special_sprite = src->special_sprite;
+        dst->action_sprite_type = src->action_sprite_type;
+        dst->next_action_sprite_type = src->next_action_sprite_type;
+        dst->action_sprite_image_offset = src->action_sprite_image_offset;
+        dst->action = src->action;
+        dst->action_frame = src->action_frame;
+        dst->step_progress = src->step_progress;
+        dst->next_in_queue = src->next_in_queue;
+        dst->direction = src->direction;
+        dst->interaction_ride_index = src->interaction_ride_index;
+        dst->time_in_queue = src->time_in_queue;
+        for (size_t i = 0; i < std::size(src->rides_been_on); i++)
+        {
+            dst->rides_been_on[i] = src->rides_been_on[i];
+        }
+        dst->id = src->id;
+        dst->cash_in_pocket = src->cash_in_pocket;
+        dst->cash_spent = src->cash_spent;
+        dst->time_in_park = src->time_in_park;
+        dst->rejoin_queue_timeout = src->rejoin_queue_timeout;
+        dst->previous_ride = src->previous_ride;
+        dst->previous_ride_time_out = src->previous_ride_time_out;
+        for (size_t i = 0; i < std::size(src->thoughts); i++)
+        {
+            dst->thoughts[i] = src->thoughts[i];
+        }
+        dst->path_check_optimisation = src->path_check_optimisation;
+        dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
+        dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
+        dst->photo1_ride_ref = src->photo1_ride_ref;
+        dst->peep_flags = src->peep_flags;
+        dst->pathfind_goal = src->pathfind_goal;
+        for (size_t i = 0; i < std::size(src->pathfind_history); i++)
+        {
+            dst->pathfind_history[i] = src->pathfind_history[i];
+        }
+        dst->no_action_frame_num = src->no_action_frame_num;
+        dst->litter_count = src->litter_count;
+        dst->time_on_ride = src->time_on_ride;
+        dst->disgusting_count = src->disgusting_count;
+        dst->paid_to_enter = src->paid_to_enter;
+        dst->paid_on_rides = src->paid_on_rides;
+        dst->paid_on_food = src->paid_on_food;
+        dst->paid_on_souvenirs = src->paid_on_souvenirs;
+        dst->no_of_drinks = src->no_of_drinks;
+        dst->no_of_souvenirs = src->no_of_souvenirs;
+        dst->vandalism_seen = src->vandalism_seen;
+        dst->voucher_type = src->voucher_type;
+        dst->voucher_arguments = src->voucher_arguments;
+        dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
+        dst->angriness = src->angriness;
+        dst->time_lost = src->time_lost;
+        dst->days_in_queue = src->days_in_queue;
+        dst->balloon_colour = src->balloon_colour;
+        dst->umbrella_colour = src->umbrella_colour;
+        dst->hat_colour = src->hat_colour;
+        dst->favourite_ride = src->favourite_ride;
+        dst->favourite_ride_rating = src->favourite_ride_rating;
+        dst->item_standard_flags = src->item_standard_flags;
     }
 
     void ImportSpriteLitter(rct_litter* dst, const rct_litter* src)
