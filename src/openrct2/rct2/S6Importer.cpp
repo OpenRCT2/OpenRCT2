@@ -1060,8 +1060,11 @@ public:
     void ImportSprite(rct_sprite* dst, const rct_sprite* src)
     {
         std::memset(dst, 0, sizeof(rct_sprite));
-        switch (src->generic.type)
+        switch (src->generic.sprite_identifier)
         {
+            case SPRITE_IDENTIFIER_NULL:
+                ImportSpriteCommonProperties((rct_sprite_common*)dst, (const rct_sprite_common*)src);
+                break;
             case SPRITE_IDENTIFIER_VEHICLE:
                 ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
                 break;
@@ -1069,11 +1072,14 @@ public:
                 ImportSpritePeep(&dst->peep, &src->peep);
                 break;
             case SPRITE_IDENTIFIER_MISC:
-            default:
-                std::memcpy(dst, src, sizeof(rct_sprite));
+                ImportSpriteMisc(&dst->generic, &src->generic);
                 break;
             case SPRITE_IDENTIFIER_LITTER:
                 ImportSpriteLitter(&dst->litter, &src->litter);
+                break;
+            default:
+                ImportSpriteCommonProperties((rct_sprite_common*)dst, (const rct_sprite_common*)src);
+                log_warning("Sprite identifier %d can not be imported.");
                 break;
         }
     }
@@ -1251,6 +1257,97 @@ public:
         dst->favourite_ride = src->favourite_ride;
         dst->favourite_ride_rating = src->favourite_ride_rating;
         dst->item_standard_flags = src->item_standard_flags;
+    }
+
+    void ImportSpriteMisc(rct_sprite_common* cdst, const rct_sprite_common* csrc)
+    {
+        ImportSpriteCommonProperties(cdst, csrc);
+        switch (cdst->type)
+        {
+            case SPRITE_MISC_STEAM_PARTICLE:
+            {
+                auto src = (const rct_steam_particle*)csrc;
+                auto dst = (rct_steam_particle*)cdst;
+                dst->time_to_move = src->time_to_move;
+                dst->frame = src->frame;
+                break;
+            }
+            case SPRITE_MISC_MONEY_EFFECT:
+            {
+                auto src = (const rct_money_effect*)csrc;
+                auto dst = (rct_money_effect*)cdst;
+                dst->move_delay = src->move_delay;
+                dst->num_movements = src->num_movements;
+                dst->vertical = src->vertical;
+                dst->value = src->value;
+                dst->offset_x = src->offset_x;
+                dst->wiggle = src->wiggle;
+                break;
+            }
+            case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+            {
+                auto src = (const rct_crashed_vehicle_particle*)csrc;
+                auto dst = (rct_crashed_vehicle_particle*)cdst;
+                dst->frame = src->frame;
+                dst->time_to_live = src->time_to_live;
+                dst->frame = src->frame;
+                dst->colour[0] = src->colour[0];
+                dst->colour[1] = src->colour[1];
+                dst->crashed_sprite_base = src->crashed_sprite_base;
+                dst->velocity_x = src->velocity_x;
+                dst->velocity_y = src->velocity_y;
+                dst->velocity_z = src->velocity_z;
+                dst->acceleration_x = src->acceleration_x;
+                dst->acceleration_y = src->acceleration_y;
+                dst->acceleration_z = src->acceleration_z;
+                break;
+            }
+            case SPRITE_MISC_EXPLOSION_CLOUD:
+            case SPRITE_MISC_EXPLOSION_FLARE:
+            case SPRITE_MISC_CRASH_SPLASH:
+            {
+                auto src = (const rct_sprite_generic*)csrc;
+                auto dst = (rct_sprite_generic*)cdst;
+                dst->frame = src->frame;
+                break;
+            }
+            case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+            case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+            {
+                auto src = (const rct_jumping_fountain*)csrc;
+                auto dst = (rct_jumping_fountain*)cdst;
+                dst->num_ticks_alive = src->num_ticks_alive;
+                dst->frame = src->frame;
+                dst->fountain_flags = src->fountain_flags;
+                dst->target_x = src->target_x;
+                dst->target_y = src->target_y;
+                dst->iteration = src->iteration;
+                break;
+            }
+            case SPRITE_MISC_BALLOON:
+            {
+                auto src = (const rct_balloon*)csrc;
+                auto dst = (rct_balloon*)cdst;
+                dst->popped = src->popped;
+                dst->time_to_move = src->time_to_move;
+                dst->frame = src->frame;
+                dst->colour = src->colour;
+                break;
+            }
+            case SPRITE_MISC_DUCK:
+            {
+                auto src = (const rct_duck*)csrc;
+                auto dst = (rct_duck*)cdst;
+                dst->frame = src->frame;
+                dst->target_x = src->target_x;
+                dst->target_y = src->target_y;
+                dst->state = src->state;
+                break;
+            }
+            default:
+                log_warning("Misc. sprite type %d can not be imported.");
+                break;
+        }
     }
 
     void ImportSpriteLitter(rct_litter* dst, const rct_litter* src)
