@@ -11,6 +11,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../actions/TrackPlaceAction.hpp"
 #include "../audio/audio.h"
 #include "../interface/Viewport.h"
 #include "../network/network.h"
@@ -174,9 +175,12 @@ money32 place_provisional_track_piece(
     }
     else
     {
-        result = game_do_command(
-            x, 105 | (trackDirection << 8), y, rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16),
-            GAME_COMMAND_PLACE_TRACK, z, 0);
+        auto trackPlaceAction = TrackPlaceAction(
+            rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, 0, 0, 0, liftHillAndAlternativeState);
+        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+        // This command must not be sent over the network
+        auto res = GameActions::Execute(&trackPlaceAction);
+        result = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
         if (result == MONEY32_UNDEFINED)
             return result;
 
