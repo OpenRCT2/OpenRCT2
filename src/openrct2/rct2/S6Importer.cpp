@@ -1063,6 +1063,8 @@ public:
         switch (src->generic.type)
         {
             case SPRITE_IDENTIFIER_VEHICLE:
+                ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
+                break;
             case SPRITE_IDENTIFIER_PEEP:
             case SPRITE_IDENTIFIER_MISC:
             default:
@@ -1072,6 +1074,74 @@ public:
                 ImportSpriteLitter(&dst->litter, &src->litter);
                 break;
         }
+    }
+
+    void ImportSpriteVehicle(rct_vehicle* dst, const rct_vehicle* src)
+    {
+        ImportSpriteCommonProperties((rct_sprite_common*)dst, (const rct_sprite_common*)src);
+        dst->vehicle_sprite_type = src->vehicle_sprite_type;
+        dst->bank_rotation = src->bank_rotation;
+        dst->remaining_distance = src->remaining_distance;
+        dst->velocity = src->velocity;
+        dst->acceleration = src->acceleration;
+        dst->ride = src->ride;
+        dst->vehicle_type = src->vehicle_type;
+        dst->colours = src->colours;
+        dst->track_progress = src->track_progress;
+        dst->track_direction = src->track_direction;
+        dst->track_type = src->track_type;
+        dst->track_x = src->track_x;
+        dst->track_y = src->track_y;
+        dst->track_z = src->track_z;
+        dst->next_vehicle_on_train = src->next_vehicle_on_train;
+        dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
+        dst->next_vehicle_on_ride = src->next_vehicle_on_ride;
+        dst->var_44 = src->var_44;
+        dst->mass = src->mass;
+        dst->update_flags = src->update_flags;
+        dst->swing_sprite = src->swing_sprite;
+        dst->current_station = src->current_station;
+        dst->current_time = src->current_time;
+        dst->crash_z = src->crash_z;
+        dst->status = src->status;
+        dst->sub_state = src->sub_state;
+        for (size_t i = 0; i < sizeof(src->peep); i++)
+        {
+            dst->peep[i] = src->peep[i];
+            dst->peep_tshirt_colours[i] = src->peep_tshirt_colours[i];
+        }
+        dst->num_seats = src->num_seats;
+        dst->num_peeps = src->num_peeps;
+        dst->next_free_seat = src->next_free_seat;
+        dst->restraints_position = src->restraints_position;
+        dst->crash_x = src->crash_x;
+        dst->sound2_flags = src->sound2_flags;
+        dst->spin_sprite = src->spin_sprite;
+        dst->sound1_id = src->sound1_id;
+        dst->sound1_volume = src->sound1_volume;
+        dst->sound2_id = src->sound2_id;
+        dst->sound2_volume = src->sound2_volume;
+        dst->sound_vector_factor = src->sound_vector_factor;
+        dst->time_waiting = src->time_waiting;
+        dst->speed = src->speed;
+        dst->powered_acceleration = src->powered_acceleration;
+        dst->dodgems_collision_direction = src->dodgems_collision_direction;
+        dst->animation_frame = src->animation_frame;
+        dst->var_C8 = src->var_C8;
+        dst->var_CA = src->var_CA;
+        dst->scream_sound_id = src->scream_sound_id;
+        dst->var_CD = src->var_CD;
+        dst->var_CE = src->var_CE;
+        dst->var_CF = src->var_CF;
+        dst->lost_time_out = src->lost_time_out;
+        dst->vertical_drop_countdown = src->vertical_drop_countdown;
+        dst->var_D3 = src->var_D3;
+        dst->mini_golf_current_animation = src->mini_golf_current_animation;
+        dst->mini_golf_flags = src->mini_golf_flags;
+        dst->ride_subtype = src->ride_subtype;
+        dst->colours_extended = src->colours_extended;
+        dst->seat_rotation = src->seat_rotation;
+        dst->target_seat_rotation = src->target_seat_rotation;
     }
 
     void ImportSpriteLitter(rct_litter* dst, const rct_litter* src)
