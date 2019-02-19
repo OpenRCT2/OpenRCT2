@@ -1658,11 +1658,7 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
         {
             if (ride_are_all_possible_entrances_and_exits_built(ride))
             {
-                // Clients don't necessarily have any ride built at this point
-                if (network_get_mode() != NETWORK_MODE_CLIENT)
-                {
-                    window_close(w);
-                }
+                window_close(w);
             }
             else
             {
