@@ -59,7 +59,7 @@ namespace MarketingCampaignFlags
 extern const money16 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
 extern std::vector<MarketingCampaign> gMarketingCampaigns;
 
-int32_t marketing_get_campaign_guest_generation_probability(int32_t campaign);
+uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaign);
 void marketing_update();
 void marketing_set_guest_campaign(rct_peep* peep, int32_t campaign);
 bool marketing_is_campaign_type_applicable(int32_t campaignType);

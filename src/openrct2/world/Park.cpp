@@ -39,6 +39,7 @@
 #include "Surface.h"
 
 #include <algorithm>
+#include <limits>
 
 using namespace OpenRCT2;
 
@@ -966,7 +967,9 @@ void Park::GenerateGuests()
     for (const auto& campaign : gMarketingCampaigns)
     {
         // Random chance of guest generation
-        if ((int32_t)scenario_rand_max(0xFFFF) < marketing_get_campaign_guest_generation_probability(campaign.Type))
+        auto probability = marketing_get_campaign_guest_generation_probability(campaign.Type);
+        auto random = scenario_rand_max(std::numeric_limits<uint16_t>::max());
+        if (random < probability)
         {
             GenerateGuestFromCampaign(campaign.Type);
         }

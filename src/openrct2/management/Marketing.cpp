@@ -30,20 +30,20 @@ const money16 AdvertisingCampaignPricePerWeek[] = {
     MONEY(200, 00), // RIDE
 };
 
-static constexpr const int32_t AdvertisingCampaignGuestGenerationProbabilities[] = {
+static constexpr const uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
     400, 300, 200, 200, 250, 200,
 };
 
 std::vector<MarketingCampaign> gMarketingCampaigns;
 
-int32_t marketing_get_campaign_guest_generation_probability(int32_t campaignType)
+uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignType)
 {
     auto campaign = marketing_get_campaign(campaignType);
     if (campaign == nullptr)
         return 0;
 
     // Lower probability of guest generation if price was already low
-    int32_t probability = AdvertisingCampaignGuestGenerationProbabilities[campaign->Type];
+    auto probability = AdvertisingCampaignGuestGenerationProbabilities[campaign->Type];
     switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
@@ -57,7 +57,7 @@ int32_t marketing_get_campaign_guest_generation_probability(int32_t campaignType
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
         {
             auto ride = get_ride(campaign->RideId);
-            if (ride->price < MONEY(0, 30))
+            if (ride == nullptr || ride->price < MONEY(0, 30))
                 probability /= 8;
             break;
         }
