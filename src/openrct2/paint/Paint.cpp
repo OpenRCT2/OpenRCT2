@@ -9,17 +9,21 @@
 
 #include "Paint.h"
 
+#include "../Context.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
+#include "../paint/Painter.h"
 #include "sprite/Paint.Sprite.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <algorithm>
 #include <array>
 #include <atomic>
+
+using namespace OpenRCT2;
 
 // Globals for paint clipping
 uint8_t gClipHeight = 128; // Default to middle value
@@ -48,33 +52,11 @@ bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
-static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi, uint32_t viewFlags);
 static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void paint_ps_image_with_bounding_boxes(
     rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
 static void paint_ps_image(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
 static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags);
-
-static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi, uint32_t viewFlags)
-{
-    session->DPI = *dpi;
-    session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
-    session->NextFreePaintStruct = session->PaintStructs;
-    session->LastRootPS = nullptr;
-    session->UnkF1AD2C = nullptr;
-    session->ViewFlags = viewFlags;
-    for (auto& quadrant : session->Quadrants)
-    {
-        quadrant = nullptr;
-    }
-    session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
-    session->QuadrantFrontIndex = 0;
-    session->PSStringHead = nullptr;
-    session->LastPSString = nullptr;
-    session->WoodenSupportsPrependTo = nullptr;
-    session->CurrentlyDrawnItem = nullptr;
-    session->SurfaceElement = nullptr;
-}
 
 static void paint_session_add_ps_to_quadrant(paint_session* session, paint_struct* ps, int32_t positionHash)
 {
@@ -732,25 +714,12 @@ static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo* dpi)
 
 paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
-    paint_session* session = nullptr;
-
-    if (_freePaintSessions.empty())
-    {
-        session = new paint_session();
-    }
-    else
-    {
-        session = _freePaintSessions[_freePaintSessions.size() - 1];
-        _freePaintSessions.resize(_freePaintSessions.size() - 1);
-    }
-
-    paint_session_init(session, dpi, viewFlags);
-    return session;
+    return GetContext()->GetPainter()->CreateSession(dpi, viewFlags);
 }
 
 void paint_session_free([[maybe_unused]] paint_session* session)
 {
-    _freePaintSessions.push_back(session);
+    GetContext()->GetPainter()->ReleaseSession(session);
 }
 
 /**
