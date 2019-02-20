@@ -1149,28 +1149,34 @@ void Network::SaveGroups()
 
 void Network::SetupDefaultGroups()
 {
+    // Admin group
     auto admin = std::make_unique<NetworkGroup>();
     admin->SetName("Admin");
     admin->ActionsAllowed.fill(0xFF);
     admin->Id = 0;
     group_list.push_back(std::move(admin));
+
+    // Spectator group
     auto spectator = std::make_unique<NetworkGroup>();
     spectator->SetName("Spectator");
-    spectator->ToggleActionPermission(0); // Chat
+    spectator->ToggleActionPermission(NETWORK_PERMISSION_CHAT);
     spectator->Id = 1;
     group_list.push_back(std::move(spectator));
+
+    // User group
     auto user = std::make_unique<NetworkGroup>();
     user->SetName("User");
     user->ActionsAllowed.fill(0xFF);
-    user->ToggleActionPermission(15); // Kick Player
-    user->ToggleActionPermission(16); // Modify Groups
-    user->ToggleActionPermission(17); // Set Player Group
-    user->ToggleActionPermission(18); // Cheat
-    user->ToggleActionPermission(20); // Passwordless login
-    user->ToggleActionPermission(21); // Modify Tile
-    user->ToggleActionPermission(22); // Edit Scenario Options
+    user->ToggleActionPermission(NETWORK_PERMISSION_KICK_PLAYER);
+    user->ToggleActionPermission(NETWORK_PERMISSION_MODIFY_GROUPS);
+    user->ToggleActionPermission(NETWORK_PERMISSION_SET_PLAYER_GROUP);
+    user->ToggleActionPermission(NETWORK_PERMISSION_CHEAT);
+    user->ToggleActionPermission(NETWORK_PERMISSION_PASSWORDLESS_LOGIN);
+    user->ToggleActionPermission(NETWORK_PERMISSION_MODIFY_TILE);
+    user->ToggleActionPermission(NETWORK_PERMISSION_EDIT_SCENARIO_OPTIONS);
     user->Id = 2;
     group_list.push_back(std::move(user));
+
     SetDefaultGroup(1);
 }
 
