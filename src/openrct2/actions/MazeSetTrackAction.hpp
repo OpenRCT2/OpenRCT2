@@ -148,7 +148,7 @@ public:
                 return res;
             }
 
-            if (!map_can_construct_at(floor2(_x, 32), floor2(_y, 32), baseHeight, clearanceHeight, 0x0F))
+            if (!map_can_construct_at(floor2(_x, 32), floor2(_y, 32), baseHeight, clearanceHeight, { 0b1111, 0 }))
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
                 res->ErrorMessage = STR_NONE;

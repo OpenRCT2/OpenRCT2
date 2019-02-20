@@ -101,7 +101,7 @@ public:
 
             if (!gCheatsDisableClearanceChecks)
             {
-                if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, 0xF))
+                if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, { 0b1111, 0 }))
                 {
                     return std::make_unique<GameActionResult>(
                         GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);

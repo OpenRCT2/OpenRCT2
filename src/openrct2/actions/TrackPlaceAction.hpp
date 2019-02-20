@@ -241,9 +241,8 @@ public:
                     ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                     : CREATE_CROSSING_MODE_NONE;
                 if (!map_can_construct_with_clear_at(
-                        mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func,
-                        quarterTile.GetBaseQuarterOccupied() | (quarterTile.GetZQuarterOccupied() << 4), GetFlags(), &cost,
-                        crossingMode))
+                        mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, quarterTile, GetFlags(),
+                        &cost, crossingMode))
                 {
                     return std::make_unique<GameActionResult>(
                         GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
@@ -486,8 +485,7 @@ public:
                     ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                     : CREATE_CROSSING_MODE_NONE;
                 if (!map_can_construct_with_clear_at(
-                        mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func,
-                        quarterTile.GetBaseQuarterOccupied() | (quarterTile.GetZQuarterOccupied() << 4),
+                        mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, quarterTile,
                         GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost, crossingMode))
                 {
                     return std::make_unique<GameActionResult>(
