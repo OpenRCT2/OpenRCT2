@@ -832,9 +832,9 @@ public:
     {
         // The number of riders might have overflown or underflown. Re-calculate the value.
         uint16_t numRiders = 0;
-        for (const rct_sprite& sprite : _s6.sprites)
+        for (const auto& sprite : _s6.sprites)
         {
-            if (sprite.generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 if (sprite.peep.current_ride == rideIndex
                     && (sprite.peep.state == PEEP_STATE_ON_RIDE || sprite.peep.state == PEEP_STATE_ENTERING_RIDE))
@@ -1057,13 +1057,13 @@ public:
         gSpriteListCount[SPRITE_LIST_NULL] += (MAX_SPRITES - RCT2_MAX_SPRITES);
     }
 
-    void ImportSprite(rct_sprite* dst, const rct_sprite* src)
+    void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
     {
         std::memset(dst, 0, sizeof(rct_sprite));
-        switch (src->generic.sprite_identifier)
+        switch (src->unknown.sprite_identifier)
         {
             case SPRITE_IDENTIFIER_NULL:
-                ImportSpriteCommonProperties((rct_sprite_common*)dst, (const rct_sprite_common*)src);
+                ImportSpriteCommonProperties((rct_sprite_common*)dst, &src->unknown);
                 break;
             case SPRITE_IDENTIFIER_VEHICLE:
                 ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
@@ -1072,21 +1072,21 @@ public:
                 ImportSpritePeep(&dst->peep, &src->peep);
                 break;
             case SPRITE_IDENTIFIER_MISC:
-                ImportSpriteMisc(&dst->generic, &src->generic);
+                ImportSpriteMisc(&dst->generic, &src->unknown);
                 break;
             case SPRITE_IDENTIFIER_LITTER:
                 ImportSpriteLitter(&dst->litter, &src->litter);
                 break;
             default:
-                ImportSpriteCommonProperties((rct_sprite_common*)dst, (const rct_sprite_common*)src);
-                log_warning("Sprite identifier %d can not be imported.");
+                ImportSpriteCommonProperties((rct_sprite_common*)dst, (const RCT12SpriteBase*)src);
+                log_warning("Sprite identifier %d can not be imported.", src->unknown.sprite_identifier);
                 break;
         }
     }
 
     void ImportSpriteVehicle(rct_vehicle* dst, const rct_vehicle* src)
     {
-        ImportSpriteCommonProperties((rct_sprite_common*)dst, (const rct_sprite_common*)src);
+        ImportSpriteCommonProperties((rct_sprite_common*)dst, (const RCT12SpriteBase*)src);
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
         dst->remaining_distance = src->remaining_distance;
@@ -1152,18 +1152,19 @@ public:
         dst->target_seat_rotation = src->target_seat_rotation;
     }
 
-    void ImportSpritePeep(rct_peep* dst, const rct_peep* src)
+    void ImportSpritePeep(rct_peep* dst, const RCT2SpritePeep* src)
     {
-        ImportSpriteCommonProperties((rct_sprite_common*)dst, (const rct_sprite_common*)src);
+        ImportSpriteCommonProperties((rct_sprite_common*)dst, src);
+        dst->name_string_idx = src->name_string_idx;
         dst->next_x = src->next_x;
         dst->next_y = src->next_y;
         dst->next_z = src->next_z;
         dst->next_flags = src->next_flags;
         dst->outside_of_park = src->outside_of_park;
-        dst->state = src->state;
+        dst->state = (PeepState)src->state;
         dst->sub_state = src->sub_state;
-        dst->sprite_type = src->sprite_type;
-        dst->type = src->type;
+        dst->sprite_type = (PeepSpriteType)src->sprite_type;
+        dst->type = (PeepType)src->peep_type;
         dst->no_of_rides = src->no_of_rides;
         dst->tshirt_colour = src->tshirt_colour;
         dst->trousers_colour = src->trousers_colour;
@@ -1199,10 +1200,10 @@ public:
         dst->current_train = src->current_train;
         dst->time_to_sitdown = src->time_to_sitdown;
         dst->special_sprite = src->special_sprite;
-        dst->action_sprite_type = src->action_sprite_type;
-        dst->next_action_sprite_type = src->next_action_sprite_type;
+        dst->action_sprite_type = (PeepActionSpriteType)src->action_sprite_type;
+        dst->next_action_sprite_type = (PeepActionSpriteType)src->next_action_sprite_type;
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
-        dst->action = src->action;
+        dst->action = (PeepActionType)src->action;
         dst->action_frame = src->action_frame;
         dst->step_progress = src->step_progress;
         dst->next_in_queue = src->next_in_queue;
@@ -1222,7 +1223,12 @@ public:
         dst->previous_ride_time_out = src->previous_ride_time_out;
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
-            dst->thoughts[i] = src->thoughts[i];
+            auto srcThought = &src->thoughts[i];
+            auto dstThought = &dst->thoughts[i];
+            dstThought->type = (PeepThoughtType)srcThought->type;
+            dstThought->item = srcThought->type;
+            dstThought->freshness = srcThought->freshness;
+            dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
         dst->path_check_optimisation = src->path_check_optimisation;
         dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
@@ -1259,7 +1265,7 @@ public:
         dst->item_standard_flags = src->item_standard_flags;
     }
 
-    void ImportSpriteMisc(rct_sprite_common* cdst, const rct_sprite_common* csrc)
+    void ImportSpriteMisc(rct_sprite_common* cdst, const RCT12SpriteBase* csrc)
     {
         ImportSpriteCommonProperties(cdst, csrc);
         switch (cdst->type)
@@ -1267,7 +1273,7 @@ public:
             case SPRITE_MISC_STEAM_PARTICLE:
             {
                 auto src = (const rct_steam_particle*)csrc;
-                auto dst = (rct_steam_particle*)cdst;
+                auto dst = (RCT12SpriteSteamParticle*)cdst;
                 dst->time_to_move = src->time_to_move;
                 dst->frame = src->frame;
                 break;
@@ -1275,7 +1281,7 @@ public:
             case SPRITE_MISC_MONEY_EFFECT:
             {
                 auto src = (const rct_money_effect*)csrc;
-                auto dst = (rct_money_effect*)cdst;
+                auto dst = (RCT12SpriteMoneyEffect*)cdst;
                 dst->move_delay = src->move_delay;
                 dst->num_movements = src->num_movements;
                 dst->vertical = src->vertical;
@@ -1287,7 +1293,7 @@ public:
             case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
             {
                 auto src = (const rct_crashed_vehicle_particle*)csrc;
-                auto dst = (rct_crashed_vehicle_particle*)cdst;
+                auto dst = (RCT12SpriteCrashedVehicleParticle*)cdst;
                 dst->frame = src->frame;
                 dst->time_to_live = src->time_to_live;
                 dst->frame = src->frame;
@@ -1306,7 +1312,7 @@ public:
             case SPRITE_MISC_EXPLOSION_FLARE:
             case SPRITE_MISC_CRASH_SPLASH:
             {
-                auto src = (const rct_sprite_generic*)csrc;
+                auto src = (const RCT12SpriteParticle*)csrc;
                 auto dst = (rct_sprite_generic*)cdst;
                 dst->frame = src->frame;
                 break;
@@ -1314,7 +1320,7 @@ public:
             case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
             case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
             {
-                auto src = (const rct_jumping_fountain*)csrc;
+                auto src = (const RCT12SpriteJumpingFountain*)csrc;
                 auto dst = (rct_jumping_fountain*)cdst;
                 dst->num_ticks_alive = src->num_ticks_alive;
                 dst->frame = src->frame;
@@ -1326,7 +1332,7 @@ public:
             }
             case SPRITE_MISC_BALLOON:
             {
-                auto src = (const rct_balloon*)csrc;
+                auto src = (const RCT12SpriteBalloon*)csrc;
                 auto dst = (rct_balloon*)cdst;
                 dst->popped = src->popped;
                 dst->time_to_move = src->time_to_move;
@@ -1336,7 +1342,7 @@ public:
             }
             case SPRITE_MISC_DUCK:
             {
-                auto src = (const rct_duck*)csrc;
+                auto src = (const RCT12SpriteDuck*)csrc;
                 auto dst = (rct_duck*)cdst;
                 dst->frame = src->frame;
                 dst->target_x = src->target_x;
@@ -1345,18 +1351,18 @@ public:
                 break;
             }
             default:
-                log_warning("Misc. sprite type %d can not be imported.");
+                log_warning("Misc. sprite type %d can not be imported.", cdst->type);
                 break;
         }
     }
 
-    void ImportSpriteLitter(rct_litter* dst, const rct_litter* src)
+    void ImportSpriteLitter(rct_litter* dst, const RCT12SpriteLitter* src)
     {
         ImportSpriteCommonProperties(dst, src);
         dst->creationTick = src->creationTick;
     }
 
-    void ImportSpriteCommonProperties(rct_sprite_common* dst, const rct_sprite_common* src)
+    void ImportSpriteCommonProperties(rct_sprite_common* dst, const RCT12SpriteBase* src)
     {
         dst->sprite_identifier = src->sprite_identifier;
         dst->type = src->type;
@@ -1377,7 +1383,6 @@ public:
         dst->sprite_right = src->sprite_right;
         dst->sprite_bottom = src->sprite_bottom;
         dst->sprite_direction = src->sprite_direction;
-        dst->name_string_idx = src->name_string_idx;
     }
 };
 
