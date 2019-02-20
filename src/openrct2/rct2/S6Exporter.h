@@ -46,5 +46,6 @@ private:
     void ExportResearchedRideEntries();
     void ExportResearchedSceneryItems();
     void ExportResearchList();
+    void ExportMarketingCampaigns();
     void ExportPeepSpawns();
 };

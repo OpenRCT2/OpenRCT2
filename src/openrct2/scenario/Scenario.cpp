@@ -162,7 +162,7 @@ void scenario_begin()
     map_count_remaining_land_rights();
     staff_reset_stats();
     gLastEntranceStyle = 0;
-    std::fill_n(gMarketingCampaignDaysLeft, sizeof(gMarketingCampaignDaysLeft), 0x00);
+    gMarketingCampaigns.clear();
     gParkRatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
