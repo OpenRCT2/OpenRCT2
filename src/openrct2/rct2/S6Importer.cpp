@@ -1084,9 +1084,9 @@ public:
         }
     }
 
-    void ImportSpriteVehicle(rct_vehicle* dst, const rct_vehicle* src)
+    void ImportSpriteVehicle(rct_vehicle* dst, const RCT2SpriteVehicle* src)
     {
-        ImportSpriteCommonProperties((rct_sprite_common*)dst, (const RCT12SpriteBase*)src);
+        ImportSpriteCommonProperties((rct_sprite_common*)dst, src);
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
         dst->remaining_distance = src->remaining_distance;
