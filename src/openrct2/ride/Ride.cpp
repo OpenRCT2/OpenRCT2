@@ -4758,7 +4758,7 @@ static void ride_set_block_points(CoordsXYE* startElement)
             case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
             case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
             case TRACK_ELEM_BLOCK_BRAKES:
-                currentElement.element->flags &= ~(1 << 5);
+                currentElement.element->flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
                 break;
         }
     } while (track_block_get_next(&currentElement, &currentElement, nullptr, nullptr)
