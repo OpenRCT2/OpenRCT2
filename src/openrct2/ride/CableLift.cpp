@@ -39,7 +39,7 @@ rct_vehicle* cable_lift_segment_create(
         move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_TRAIN * 2);
         ride->cable_lift = current->sprite_index;
     }
-    current->is_child = head ? 0 : 1;
+    current->type = head ? 0 : 1;
     current->var_44 = var_44;
     current->remaining_distance = remaining_distance;
     current->sprite_width = 10;

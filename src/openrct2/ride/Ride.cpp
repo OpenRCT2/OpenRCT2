@@ -4840,7 +4840,7 @@ static rct_vehicle* vehicle_create_car(
     vehicle->ride_subtype = ride->subtype;
 
     vehicle->vehicle_type = vehicleEntryIndex;
-    vehicle->is_child = carIndex == 0 ? 0 : 1;
+    vehicle->type = carIndex == 0 ? 0 : 1;
     vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
     edx = vehicleEntry->spacing >> 1;
     *remainingDistance -= edx;
@@ -4941,7 +4941,7 @@ static rct_vehicle* vehicle_create_car(
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_4)
         {
-            if (!vehicle->is_child)
+            if (!vehicle->IsChild())
             {
                 dl = 15;
             }

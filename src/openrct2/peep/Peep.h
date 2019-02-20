@@ -15,6 +15,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
+#include "../world/SpriteBase.h"
 
 #include <bitset>
 
@@ -519,7 +520,6 @@ enum PeepRideDecision
     PEEP_RIDE_DECISION_THINKING = 1 << 2,
 };
 
-#pragma pack(push, 1)
 struct rct_peep_thought
 {
     PeepThoughtType type;  // 0
@@ -527,33 +527,9 @@ struct rct_peep_thought
     uint8_t freshness;     // 2 larger is less fresh
     uint8_t fresh_timeout; // 3 updates every tick
 };
-assert_struct_size(rct_peep_thought, 4);
 
-struct rct_peep
+struct rct_peep : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative; // 0x09
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    // Width from centre of sprite to edge
-    uint8_t sprite_width; // 0x14
-    // Height from centre of sprite to top
-    uint8_t sprite_height_positive; // 0x15
-    int16_t sprite_left;            // 0x16
-    int16_t sprite_top;             // 0x18
-    int16_t sprite_right;           // 0x1A
-    int16_t sprite_bottom;          // 0x1C
-    uint8_t sprite_direction;       // 0x1E
-    uint8_t pad_1F[3];
     rct_string_id name_string_idx; // 0x22
     uint16_t next_x;               // 0x24
     uint16_t next_y;               // 0x26
@@ -595,7 +571,6 @@ struct rct_peep
     uint8_t photo2_ride_ref;         // 0x5C
     uint8_t photo3_ride_ref;         // 0x5D
     uint8_t photo4_ride_ref;         // 0x5E
-    uint8_t pad_5F[0x09];            // 0x5F
     uint8_t current_ride;            // 0x68
     uint8_t current_ride_station;    // 0x69
     uint8_t current_train;           // 0x6A
@@ -628,8 +603,6 @@ struct rct_peep
         uint16_t mechanic_time_since_call; // time getting to ride to fix
         uint16_t next_in_queue;            // 0x74
     };
-    uint8_t pad_76; // Previously this was set to 0 but never used.
-    uint8_t pad_77;
     union
     {
         uint8_t maze_last_edge; // 0x78
@@ -710,7 +683,6 @@ struct rct_peep
     uint8_t hat_colour;                   // 0xF8
     uint8_t favourite_ride;               // 0xF9
     uint8_t favourite_ride_rating;        // 0xFA
-    uint8_t pad_FB;
     uint32_t item_standard_flags; // 0xFC
 
 public: // Peep
@@ -850,8 +822,6 @@ private:
     Ride* FindBestRideToGoOn();
     std::bitset<MAX_RIDES> FindRidesToGoOn();
 };
-assert_struct_size(rct_peep, 0x100);
-#pragma pack(pop)
 
 struct rct_sprite_bounds
 {
