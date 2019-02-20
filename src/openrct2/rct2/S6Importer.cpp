@@ -1113,7 +1113,7 @@ public:
         dst->crash_z = src->crash_z;
         dst->status = src->status;
         dst->sub_state = src->sub_state;
-        for (size_t i = 0; i < sizeof(src->peep); i++)
+        for (size_t i = 0; i < std::size(src->peep); i++)
         {
             dst->peep[i] = src->peep[i];
             dst->peep_tshirt_colours[i] = src->peep_tshirt_colours[i];
