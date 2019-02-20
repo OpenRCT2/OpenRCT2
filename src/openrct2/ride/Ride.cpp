@@ -152,11 +152,6 @@ rct_ride_measurement gRideMeasurements[MAX_RIDE_MEASUREMENTS];
 
 uint16_t gRideCount;
 bool gGotoStartPlacementMode = false;
-int32_t gRideRemoveTrackPieceCallbackX;
-int32_t gRideRemoveTrackPieceCallbackY;
-int32_t gRideRemoveTrackPieceCallbackZ;
-int32_t gRideRemoveTrackPieceCallbackDirection;
-int32_t gRideRemoveTrackPieceCallbackType;
 
 money16 gTotalRideValueForMoney;
 
@@ -6259,29 +6254,6 @@ rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
     }
 }
 
-/**
- *
- * Network client callback when removing ride pieces
- *   Client does execute placing the piece on the same tick as mouse_up - waits for server command
- * Re-executes function from ride_construction - window_ride_construction_mouseup_demolish()
- * Only uses part that deals with construction state
- */
-
-void game_command_callback_ride_remove_track_piece(
-    [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi, [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    int32_t x, y, z, direction, type;
-
-    x = gRideRemoveTrackPieceCallbackX;
-    y = gRideRemoveTrackPieceCallbackY;
-    z = gRideRemoveTrackPieceCallbackZ;
-    direction = gRideRemoveTrackPieceCallbackDirection;
-    type = gRideRemoveTrackPieceCallbackType;
-
-    window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
-}
-
 bool ride_type_has_flag(int32_t rideType, uint32_t flag)
 {
     return (RideProperties[rideType].flags & flag) != 0;
@@ -6942,16 +6914,6 @@ bool ride_select_forwards_from_back()
     return false;
 }
 
-money32 ride_remove_track_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type, uint8_t flags)
-{
-    gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS;
-    if (network_get_mode() == NETWORK_MODE_CLIENT)
-    {
-        game_command_callback = game_command_callback_ride_remove_track_piece;
-    }
-    return game_do_command(x, flags | ((direction & 3) << 8), y, type, GAME_COMMAND_REMOVE_TRACK, z, 0);
-}
-
 /**
  *
  *  rct2: 0x006B58EF
@@ -7422,9 +7384,8 @@ static bool ride_is_vehicle_type_valid(Ride* ride, uint8_t inputRideEntryIndex)
     int32_t rideTypeIterator, rideTypeIteratorMax;
 
     if (gCheatsShowVehiclesFromOtherTrackTypes
-        && !(
-            ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-            || ride->type == RIDE_TYPE_MINI_GOLF))
+        && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
+             || ride->type == RIDE_TYPE_MINI_GOLF))
     {
         selectionShouldBeExpanded = true;
         rideTypeIterator = 0;

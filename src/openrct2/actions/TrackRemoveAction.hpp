@@ -48,7 +48,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_trackType) << DS_TAG(_origin);
+        stream << DS_TAG(_trackType) << DS_TAG(_sequence) << DS_TAG(_origin);
     }
 
     GameActionResult::Ptr Query() const override
@@ -74,8 +74,8 @@ public:
         if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode)
         {
             return MakeResult(
-                GA_ERROR::GAME_PAUSED,
-                STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
+                GA_ERROR::GAME_PAUSED, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS,
+                STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
         }
 
         bool found = false;
