@@ -25,6 +25,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 #include "MazeSetTrackAction.hpp"
+#include "TrackRemoveAction.hpp"
 
 using namespace OpenRCT2;
 
@@ -299,14 +300,20 @@ private:
 
             if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
             {
-                money32 removePrice = game_do_command(
-                    x, GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8), y,
-                    type | (it.element->AsTrack()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_TRACK, z, 0);
+                auto trackRemoveAction = TrackRemoveAction(
+                    type, it.element->AsTrack()->GetSequenceIndex(), { x, y, z, rotation });
+                trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_5);
 
-                if (removePrice == MONEY32_UNDEFINED)
+                auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
+
+                if (removRes->Error != GA_ERROR::OK)
+                {
                     tile_element_remove(it.element);
+                }
                 else
-                    refundPrice += removePrice;
+                {
+                    refundPrice += removRes->Cost;
+                }
 
                 tile_element_iterator_restart_for_tile(&it);
                 continue;

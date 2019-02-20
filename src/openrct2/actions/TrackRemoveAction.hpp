@@ -73,7 +73,9 @@ public:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode)
         {
-            return MakeResult(GA_ERROR::GAME_PAUSED, STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
+            return MakeResult(
+                GA_ERROR::GAME_PAUSED,
+                STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
         }
 
         bool found = false;
@@ -82,7 +84,7 @@ public:
         if (tileElement == nullptr)
         {
             log_warning("Invalid coordinates for track removal. x = %d, y = %d", _origin.x, _origin.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
         do
@@ -123,17 +125,17 @@ public:
             log_warning(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
                 _origin.direction, _sequence);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
+            return MakeResult(
+                GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
         }
 
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto trackType = tileElement->AsTrack()->GetTrackType();
-        bool isLiftHill = tileElement->AsTrack()->HasChain();
 
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, trackType);
@@ -154,7 +156,7 @@ public:
         for (; trackBlock->index != 255; trackBlock++)
         {
             CoordsXYZ mapLoc{ startLoc.x, startLoc.y, startLoc.z };
-            LocationXY16 trackLoc = { trackBlock->x, trackBlock->y };
+            trackLoc = { trackBlock->x, trackBlock->y };
             rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
             mapLoc.x += trackLoc.x;
             mapLoc.y += trackLoc.y;
@@ -198,7 +200,7 @@ public:
                 log_warning(
                     "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
                     _origin.direction, trackBlock->index);
-                return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
+                return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
             }
 
             int32_t entranceDirections;
@@ -215,7 +217,7 @@ public:
             {
                 if (!track_remove_station_element(mapLoc.x, mapLoc.y, mapLoc.z / 8, _origin.direction, rideIndex, 0))
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, gGameCommandErrorText);
+                    return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
                 }
             }
 
@@ -223,7 +225,7 @@ public:
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
-                return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
+                return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
             }
 
             int8_t _support_height = tileElement->base_height - surfaceElement->base_height;
@@ -290,7 +292,7 @@ public:
         if (tileElement == nullptr)
         {
             log_warning("Invalid coordinates for track removal. x = %d, y = %d", _origin.x, _origin.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
         do
@@ -331,7 +333,7 @@ public:
             log_warning(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
                 _origin.direction, _sequence);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
@@ -357,7 +359,7 @@ public:
         for (; trackBlock->index != 255; trackBlock++)
         {
             CoordsXYZ mapLoc{ startLoc.x, startLoc.y, startLoc.z };
-            LocationXY16 trackLoc = { trackBlock->x, trackBlock->y };
+            trackLoc = { trackBlock->x, trackBlock->y };
             rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
             mapLoc.x += trackLoc.x;
             mapLoc.y += trackLoc.y;
@@ -401,7 +403,7 @@ public:
                 log_warning(
                     "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
                     _origin.direction, trackBlock->index);
-                return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
+                return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
             }
 
             int32_t entranceDirections;
@@ -418,7 +420,7 @@ public:
             {
                 if (!track_remove_station_element(mapLoc.x, mapLoc.y, mapLoc.z / 8, _origin.direction, rideIndex, 0))
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, gGameCommandErrorText);
+                    return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
                 }
             }
 
@@ -426,7 +428,7 @@ public:
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
-                return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
+                return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
             }
 
             int8_t _support_height = tileElement->base_height - surfaceElement->base_height;
@@ -442,7 +444,7 @@ public:
                 if (!track_remove_station_element(
                         mapLoc.x, mapLoc.y, mapLoc.z / 8, _origin.direction, rideIndex, GAME_COMMAND_FLAG_APPLY))
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, gGameCommandErrorText);
+                    return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
                 }
             }
 

@@ -15,6 +15,7 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../actions/TrackRemoveAction.hpp"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../common.h"
@@ -1472,13 +1473,13 @@ void ride_remove_provisional_track_piece()
         CoordsXYE next_track;
         if (track_block_get_next_from_zero(x, y, z, ride, direction, &next_track, &z, &direction, true))
         {
-            int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-                | GAME_COMMAND_FLAG_GHOST;
             uint8_t trackType = next_track.element->AsTrack()->GetTrackType();
             int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
-            game_do_command(
-                next_track.x, flags | ((direction & 3) << 8), next_track.y, trackType | (trackSequence << 8),
-                GAME_COMMAND_REMOVE_TRACK, z, 0);
+            auto trackRemoveAction = TrackRemoveAction{ trackType,
+                                                        trackSequence,
+                                                        { next_track.x, next_track.y, z, static_cast<Direction>(direction) } };
+            trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+            GameActions::Execute(&trackRemoveAction);
         }
     }
 }
@@ -5960,7 +5961,7 @@ void ride_get_start_of_track(CoordsXYE* output)
 int32_t ride_get_refund_price(const Ride* ride)
 {
     CoordsXYE trackElement;
-    money32 addedcost, cost = 0;
+    money32 cost = 0;
 
     if (!ride_try_get_origin_element(ride, &trackElement))
     {
@@ -5981,12 +5982,14 @@ int32_t ride_get_refund_price(const Ride* ride)
 
     do
     {
-        addedcost = game_do_command(
-            trackElement.x, GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | (direction << 8), trackElement.y,
-            trackElement.element->AsTrack()->GetTrackType() | ((trackElement.element->AsTrack()->GetSequenceIndex()) << 8),
-            GAME_COMMAND_REMOVE_TRACK, trackElement.element->base_height * 8, 0);
+        auto trackRemoveAction = TrackRemoveAction(
+            trackElement.element->AsTrack()->GetTrackType(), trackElement.element->AsTrack()->GetSequenceIndex(),
+            { trackElement.x, trackElement.y, trackElement.element->base_height * 8, direction });
+        trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
 
-        cost += (addedcost == MONEY32_UNDEFINED) ? 0 : addedcost;
+        auto res = GameActions::Query(&trackRemoveAction);
+
+        cost += res->Cost;
 
         if (!track_block_get_next(&trackElement, &trackElement, nullptr, nullptr))
         {
@@ -7419,8 +7422,9 @@ static bool ride_is_vehicle_type_valid(Ride* ride, uint8_t inputRideEntryIndex)
     int32_t rideTypeIterator, rideTypeIteratorMax;
 
     if (gCheatsShowVehiclesFromOtherTrackTypes
-        && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-             || ride->type == RIDE_TYPE_MINI_GOLF))
+        && !(
+            ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
+            || ride->type == RIDE_TYPE_MINI_GOLF))
     {
         selectionShouldBeExpanded = true;
         rideTypeIterator = 0;
