@@ -90,7 +90,7 @@ static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_callback_ride_remove_track_piece,
+    nullptr,
     game_command_callback_place_banner,
     game_command_callback_place_ride_entrance_or_exit,
     game_command_callback_hire_new_staff_member,
@@ -731,14 +731,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
             network_append_server_log(log_msg);
         }
     }
-    else if (command == GAME_COMMAND_REMOVE_TRACK)
-    {
-        char* args[1] = {
-            (char*)player_name,
-        };
-        format_string(log_msg, 256, STR_LOG_REMOVE_TRACK, args);
-        network_append_server_log(log_msg);
-    }
 }
 
 void pause_toggle()
@@ -1324,7 +1316,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_remove_track,
+    nullptr,
     game_load_or_quit,
     game_command_create_ride,
     game_command_demolish_ride,

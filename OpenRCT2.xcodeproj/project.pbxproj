@@ -22,12 +22,13 @@
 
 /* Begin PBXBuildFile section */
 		2A5354E922099C4F00A5440F /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5354E822099C4F00A5440F /* Network.cpp */; };
+		2A5C1368221E9F9000F8C245 /* TrackRemoveAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */; };
 		2AA050322209A8E300D3A922 /* StaffSetCostumeAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */; };
 		2AA050332209A8E300D3A922 /* StaffSetOrdersAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AA050312209A8E300D3A922 /* StaffSetOrdersAction.hpp */; };
-		2AAFD800220DD3D2002461A4 /* LandSetHeightAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */; };
+		2AAFD7FA220DD2DC002461A4 /* TrackPlaceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7F9220DD2DC002461A4 /* TrackPlaceAction.hpp */; };
 		2AAFD7FC220DD336002461A4 /* RideSetPriceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */; };
 		2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */; };
-		2AAFD7FA220DD2DC002461A4 /* TrackPlaceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7F9220DD2DC002461A4 /* TrackPlaceAction.hpp */; };
+		2AAFD800220DD3D2002461A4 /* LandSetHeightAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */; };
 		2AF7893D220B253E0072754A /* RideSetAppearanceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
@@ -623,12 +624,13 @@
 		2A5354E822099C4F00A5440F /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
 		2A5354EA22099C7200A5440F /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		2A5354EB22099D7700A5440F /* SignSetStyleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SignSetStyleAction.hpp; sourceTree = "<group>"; };
+		2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackRemoveAction.hpp; sourceTree = "<group>"; };
 		2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetCostumeAction.hpp; sourceTree = "<group>"; };
 		2AA050312209A8E300D3A922 /* StaffSetOrdersAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetOrdersAction.hpp; sourceTree = "<group>"; };
-		2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSetHeightAction.hpp; sourceTree = "<group>"; };
+		2AAFD7F9220DD2DC002461A4 /* TrackPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackPlaceAction.hpp; sourceTree = "<group>"; };
 		2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetPriceAction.hpp; sourceTree = "<group>"; };
 		2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PauseToggleAction.hpp; sourceTree = "<group>"; };
-		2AAFD7F9220DD2DC002461A4 /* TrackPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackPlaceAction.hpp; sourceTree = "<group>"; };
+		2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSetHeightAction.hpp; sourceTree = "<group>"; };
 		2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetAppearanceAction.hpp; sourceTree = "<group>"; };
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
@@ -2008,6 +2010,7 @@
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */,
 				2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */,
 				2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */,
 				2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */,
@@ -3320,6 +3323,7 @@
 				2AA050332209A8E300D3A922 /* StaffSetOrdersAction.hpp in Headers */,
 				2AAFD7FA220DD2DC002461A4 /* TrackPlaceAction.hpp in Headers */,
 				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
+				2A5C1368221E9F9000F8C245 /* TrackRemoveAction.hpp in Headers */,
 				C6352B861F477022006CCEE3 /* Endianness.h in Headers */,
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */,
