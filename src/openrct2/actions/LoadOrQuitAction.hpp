@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include "GameAction.h"
+#include "../Context.h"
 #include "../OpenRCT2.h"
+#include "GameAction.h"
 
 enum class LoadOrQuitModes : uint8_t
 {
