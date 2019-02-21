@@ -41,6 +41,7 @@
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "WallRemoveAction.hpp"
+#include "LoadOrQuitAction.hpp"
 
 namespace GameActions
 {
@@ -79,5 +80,6 @@ namespace GameActions
         Register<TrackRemoveAction>();
         Register<ClearAction>();
         Register<PauseToggleAction>();
+        Register<LoadOrQuitAction>();
     }
 } // namespace GameActions

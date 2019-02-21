@@ -26,6 +26,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/actions/ClearAction.hpp>
+#include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
@@ -587,8 +588,11 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     break;
                 }
                 case DDIDX_LOAD_GAME:
-                    game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+                {
+                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
+                    GameActions::Execute(&loadOrQuitAction);
                     break;
+                }
                 case DDIDX_SAVE_GAME:
                     tool_cancel();
                     save_game();
@@ -620,10 +624,13 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     screenshot_giant();
                     break;
                 case DDIDX_QUIT_TO_MENU:
+                {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
                     window_close_by_class(WC_TRACK_DELETE_PROMPT);
-                    game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, 1);
+                    GameActions::Execute(&loadOrQuitAction);
                     break;
+                }
                 case DDIDX_EXIT_OPENRCT2:
                     context_quit();
                     break;
@@ -3054,7 +3061,8 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
                     game_do_command(
                         gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
                         GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
-                    // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change cursor
+                    // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
+                    // cursor
                     gCurrentToolId = TOOL_CROSSHAIR;
                 }
             }

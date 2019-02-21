@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../actions/LoadOrQuitAction.hpp"
 #include "../core/Guard.hpp"
 #include "../platform/platform.h"
 #include "../ui/UiContext.h"
@@ -2551,7 +2552,8 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         else
         {
             // Something went wrong, game is not loaded. Return to main screen.
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, 1);
+            GameActions::Execute(&loadOrQuitAction);
         }
         if (has_to_free)
         {

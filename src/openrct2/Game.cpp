@@ -17,6 +17,7 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "ReplayManager.h"
+#include "actions/LoadOrQuitAction.hpp"
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"
@@ -1280,7 +1281,9 @@ void game_load_or_quit_no_save_prompt()
     switch (gSavePromptMode)
     {
         case PM_SAVE_BEFORE_LOAD:
-            game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+        {
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            GameActions::Execute(&loadOrQuitAction);
             tool_cancel();
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
@@ -1294,8 +1297,11 @@ void game_load_or_quit_no_save_prompt()
                 context_open_intent(&intent);
             }
             break;
+        }
         case PM_SAVE_BEFORE_QUIT:
-            game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+        {
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            GameActions::Execute(&loadOrQuitAction);
             tool_cancel();
             if (input_test_flag(INPUT_FLAG_5))
             {
@@ -1305,6 +1311,7 @@ void game_load_or_quit_no_save_prompt()
             gFirstTimeSaving = true;
             title_load();
             break;
+        }
         default:
             openrct2_finish();
             break;

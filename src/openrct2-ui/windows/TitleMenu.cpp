@@ -16,6 +16,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
@@ -153,7 +154,8 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
             {
                 window_close_by_class(WC_SCENARIO_SELECT);
                 window_close_by_class(WC_SERVER_LIST);
-                game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+                auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
+                GameActions::Execute(&loadOrQuitAction);
             }
             break;
         case WIDX_MULTIPLAYER:
