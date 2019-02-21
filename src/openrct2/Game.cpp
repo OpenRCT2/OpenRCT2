@@ -611,7 +611,7 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
         network_append_server_log(log_msg);
     }
-    else if (command == GAME_COMMAND_SET_RIDE_VEHICLES || command == GAME_COMMAND_SET_RIDE_SETTING)
+    else if (command == GAME_COMMAND_SET_RIDE_SETTING)
     {
         // Get ride name
         int ride_index = *edx & 0xFF;
@@ -626,12 +626,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
 
         switch (command)
         {
-            case GAME_COMMAND_SET_RIDE_APPEARANCE:
-                format_string(log_msg, 256, STR_LOG_RIDE_APPEARANCE, args);
-                break;
-            case GAME_COMMAND_SET_RIDE_VEHICLES:
-                format_string(log_msg, 256, STR_LOG_RIDE_VEHICLES, args);
-                break;
             case GAME_COMMAND_SET_RIDE_SETTING:
                 format_string(log_msg, 256, STR_LOG_RIDE_SETTINGS, args);
                 break;
@@ -1297,7 +1291,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_create_ride,
     game_command_demolish_ride,
     game_command_set_ride_status,
-    game_command_set_ride_vehicles,
+    nullptr,
     game_command_set_ride_name,
     game_command_set_ride_setting,
     game_command_place_ride_entrance_or_exit,

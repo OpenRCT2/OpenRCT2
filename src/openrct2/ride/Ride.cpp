@@ -16,6 +16,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/TrackRemoveAction.hpp"
+#include "../actions/RideSetVehiclesAction.hpp"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../common.h"
@@ -7365,219 +7366,21 @@ void ride_update_max_vehicles(Ride* ride)
 
 void ride_set_ride_entry(Ride* ride, int32_t rideEntry)
 {
-    gGameCommandErrorTitle = STR_RIDE_SET_VEHICLE_TYPE_FAIL;
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY << 8), 0, (rideEntry << 8) | ride->id,
-        GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+    auto colour = ride_get_unused_preset_vehicle_colour(rideEntry);
+    auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, rideEntry, colour);
+    GameActions::Execute(&rideSetVehicleAction);
 }
 
 void ride_set_num_vehicles(Ride* ride, int32_t numVehicles)
 {
-    gGameCommandErrorTitle = STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL;
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS << 8), 0, (numVehicles << 8) | ride->id,
-        GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+    auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, numVehicles);
+    GameActions::Execute(&rideSetVehicleAction);
 }
 
 void ride_set_num_cars_per_vehicle(Ride* ride, int32_t numCarsPerVehicle)
 {
-    gGameCommandErrorTitle = STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL;
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN << 8), 0,
-        (numCarsPerVehicle << 8) | ride->id, GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
-}
-
-static bool ride_is_vehicle_type_valid(Ride* ride, uint8_t inputRideEntryIndex)
-{
-    bool selectionShouldBeExpanded;
-    int32_t rideTypeIterator, rideTypeIteratorMax;
-
-    if (gCheatsShowVehiclesFromOtherTrackTypes
-        && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-             || ride->type == RIDE_TYPE_MINI_GOLF))
-    {
-        selectionShouldBeExpanded = true;
-        rideTypeIterator = 0;
-        rideTypeIteratorMax = RIDE_TYPE_COUNT - 1;
-    }
-    else
-    {
-        selectionShouldBeExpanded = false;
-        rideTypeIterator = ride->type;
-        rideTypeIteratorMax = ride->type;
-    }
-
-    for (; rideTypeIterator <= rideTypeIteratorMax; rideTypeIterator++)
-    {
-        if (selectionShouldBeExpanded)
-        {
-            if (ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
-                continue;
-            if (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF)
-                continue;
-        }
-
-        uint8_t* rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
-        for (uint8_t* currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL;
-             currentRideEntryIndex++)
-        {
-            uint8_t rideEntryIndex = *currentRideEntryIndex;
-            if (rideEntryIndex == inputRideEntryIndex)
-            {
-                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
-                {
-                    return false;
-                }
-
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-static money32 ride_set_vehicles(ride_id_t rideIndex, uint8_t setting, uint8_t value, uint32_t flags, uint8_t ex)
-{
-    rct_ride_entry* rideEntry;
-
-    Ride* ride = get_ride(rideIndex);
-    if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
-    {
-        log_warning("Invalid game command for ride #%u", rideIndex);
-        return MONEY32_UNDEFINED;
-    }
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
-
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-    {
-        gGameCommandErrorText = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (ride->status != RIDE_STATUS_CLOSED)
-    {
-        gGameCommandErrorText = STR_MUST_BE_CLOSED_FIRST;
-        return MONEY32_UNDEFINED;
-    }
-
-    switch (setting)
-    {
-        case RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS:
-            if (!(flags & GAME_COMMAND_FLAG_APPLY))
-            {
-                return 0;
-            }
-
-            ride_clear_for_construction(ride);
-            ride_remove_peeps(ride);
-            ride->vehicle_change_timeout = 100;
-
-            ride->proposed_num_vehicles = value;
-            break;
-        case RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN:
-            if (!(flags & GAME_COMMAND_FLAG_APPLY))
-            {
-                return 0;
-            }
-
-            ride_clear_for_construction(ride);
-            ride_remove_peeps(ride);
-            ride->vehicle_change_timeout = 100;
-
-            invalidate_test_results(ride);
-            rideEntry = get_ride_entry(ride->subtype);
-            if (!gCheatsDisableTrainLengthLimit)
-            {
-                value = std::clamp(value, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
-            }
-            ride->proposed_num_cars_per_train = value;
-            break;
-        case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
-        {
-            if (!ride_is_vehicle_type_valid(ride, value))
-            {
-                log_error("Invalid vehicle type.");
-                return MONEY32_UNDEFINED;
-            }
-
-            if (!(flags & GAME_COMMAND_FLAG_APPLY))
-            {
-                return 0;
-            }
-
-            ride_clear_for_construction(ride);
-            ride_remove_peeps(ride);
-            ride->vehicle_change_timeout = 100;
-
-            invalidate_test_results(ride);
-            ride->subtype = value;
-            rideEntry = get_ride_entry(ride->subtype);
-
-            uint8_t preset = ex;
-            if (!(flags & GAME_COMMAND_FLAG_NETWORKED))
-            {
-                preset = ride_get_unused_preset_vehicle_colour(ride->subtype);
-            }
-
-            // Validate preset
-            vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
-            if (preset >= presetList->count)
-            {
-                log_error("Unknown vehicle colour preset.");
-                return MONEY32_UNDEFINED;
-            }
-
-            ride_set_vehicle_colours_to_random_preset(ride, preset);
-            if (!gCheatsDisableTrainLengthLimit)
-            {
-                ride->proposed_num_cars_per_train = std::clamp(
-                    ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
-            }
-            break;
-        }
-
-        default:
-            log_error("Unknown vehicle command.");
-            return MONEY32_UNDEFINED;
-    }
-
-    ride->num_circuits = 1;
-    ride_update_max_vehicles(ride);
-
-    if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
-    {
-        LocationXYZ16 coord;
-        coord.x = ride->overall_view.x * 32 + 16;
-        coord.y = ride->overall_view.y * 32 + 16;
-        coord.z = tile_element_height(coord.x, coord.y);
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-    }
-
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);
-    intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
-    windowManager->BroadcastIntent(intent);
-
-    gfx_invalidate_screen();
-    return 0;
-}
-
-/**
- *
- *  rct2: 0x006B52D4
- */
-void game_command_set_ride_vehicles(
-    int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    ride_id_t rideIndex = *edx & 0xFF;
-    uint8_t setting = (*ebx >> 8) & 0xFF;
-    uint8_t value = (*edx >> 8) & 0xFF;
-    uint32_t flags = *ebx;
-    uint8_t ex = *eax & 0xFF;
-    *ebx = ride_set_vehicles(rideIndex, setting, value, flags, ex);
+    auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
+    GameActions::Execute(&rideSetVehicleAction);
 }
 
 /**

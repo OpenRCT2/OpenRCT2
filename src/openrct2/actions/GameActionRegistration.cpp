@@ -42,6 +42,7 @@
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "WallRemoveAction.hpp"
+#include "RideSetVehiclesAction.hpp"
 
 namespace GameActions
 {
@@ -65,6 +66,7 @@ namespace GameActions
         Register<RideSetPriceAction>();
         Register<RideSetStatusAction>();
         Register<RideSetAppearanceAction>();
+        Register<RideSetVehicleAction>();
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
         Register<SignSetStyleAction>();

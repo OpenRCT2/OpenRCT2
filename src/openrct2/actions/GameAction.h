@@ -39,6 +39,9 @@ enum class GA_ERROR : uint16_t
     NO_CLEARANCE,
     ITEM_ALREADY_PLACED,
 
+    NOT_CLOSED,
+    BROKEN,
+
     NO_FREE_ELEMENTS,
 
     UNKNOWN = UINT16_MAX,
