@@ -59,8 +59,6 @@ public:
         res->Position.z = _origin.z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 
-        int16_t trackpieceZ = _origin.z;
-
         // Stations require some massaging of the track type for comparing
         auto comparableTrackType = _trackType;
         switch (_trackType)
@@ -145,6 +143,9 @@ public:
         startLoc.x -= trackLoc.x;
         startLoc.y -= trackLoc.y;
         startLoc.z -= trackBlock->z;
+        res->Position.x = startLoc.x;
+        res->Position.y = startLoc.y;
+        res->Position.z = startLoc.z;
 
         money32 cost = 0;
 
@@ -159,8 +160,6 @@ public:
             mapLoc.z += trackBlock->z;
 
             map_invalidate_tile_full(mapLoc.x, mapLoc.y);
-
-            trackpieceZ = mapLoc.z;
 
             found = false;
             tileElement = map_get_first_element_at(mapLoc.x / 32, mapLoc.y / 32);
@@ -249,12 +248,6 @@ public:
         else
             price *= -10;
 
-        LocationXYZ16 coord;
-        coord.x = startLoc.x + 16;
-        coord.y = startLoc.y + 16;
-        coord.z = trackpieceZ;
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-
         res->Cost = price;
         return res;
     }
@@ -266,8 +259,6 @@ public:
         res->Position.y = _origin.y + 16;
         res->Position.z = _origin.z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-
-        int16_t trackpieceZ = _origin.z;
 
         // Stations require some massaging of the track type for comparing
         auto comparableTrackType = _trackType;
@@ -348,7 +339,9 @@ public:
         startLoc.x -= trackLoc.x;
         startLoc.y -= trackLoc.y;
         startLoc.z -= trackBlock->z;
-
+        res->Position.x = startLoc.x;
+        res->Position.y = startLoc.y;
+        res->Position.z = startLoc.z;
         money32 cost = 0;
 
         trackBlock = get_track_def_from_ride(ride, trackType);
@@ -362,8 +355,6 @@ public:
             mapLoc.z += trackBlock->z;
 
             map_invalidate_tile_full(mapLoc.x, mapLoc.y);
-
-            trackpieceZ = mapLoc.z;
 
             found = false;
             tileElement = map_get_first_element_at(mapLoc.x / 32, mapLoc.y / 32);
@@ -514,12 +505,6 @@ public:
             price *= -7;
         else
             price *= -10;
-
-        LocationXYZ16 coord;
-        coord.x = startLoc.x + 16;
-        coord.y = startLoc.y + 16;
-        coord.z = trackpieceZ;
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
         res->Cost = price;
         return res;
