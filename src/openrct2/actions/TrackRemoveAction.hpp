@@ -71,24 +71,15 @@ public:
                 break;
         }
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode)
-        {
-            return MakeResult(
-                GA_ERROR::GAME_PAUSED, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS,
-                STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
-        }
-
         bool found = false;
         bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
         TileElement* tileElement = map_get_first_element_at(_origin.x / 32, _origin.y / 32);
-        if (tileElement == nullptr)
-        {
-            log_warning("Invalid coordinates for track removal. x = %d, y = %d", _origin.x, _origin.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
-        }
 
         do
         {
+            if (tileElement == nullptr)
+                break;
+
             if (tileElement->base_height * 8 != _origin.z)
                 continue;
 
@@ -138,6 +129,11 @@ public:
         auto trackType = tileElement->AsTrack()->GetTrackType();
 
         Ride* ride = get_ride(rideIndex);
+        if (ride == nullptr)
+        {
+            log_warning("Ride not found. ride index = %d.", rideIndex);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+        }
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, trackType);
         trackBlock += tileElement->AsTrack()->GetSequenceIndex();
 
@@ -253,14 +249,11 @@ public:
         else
             price *= -10;
 
-        if (gGameCommandNestLevel == 1)
-        {
-            LocationXYZ16 coord;
-            coord.x = startLoc.x + 16;
-            coord.y = startLoc.y + 16;
-            coord.z = trackpieceZ;
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
+        LocationXYZ16 coord;
+        coord.x = startLoc.x + 16;
+        coord.y = startLoc.y + 16;
+        coord.z = trackpieceZ;
+        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
         res->Cost = price;
         return res;
@@ -289,14 +282,12 @@ public:
         bool found = false;
         bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
         TileElement* tileElement = map_get_first_element_at(_origin.x / 32, _origin.y / 32);
-        if (tileElement == nullptr)
-        {
-            log_warning("Invalid coordinates for track removal. x = %d, y = %d", _origin.x, _origin.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
-        }
 
         do
         {
+            if (tileElement == nullptr)
+                break;
+
             if (tileElement->base_height * 8 != _origin.z)
                 continue;
 
@@ -341,6 +332,11 @@ public:
         bool isLiftHill = tileElement->AsTrack()->HasChain();
 
         Ride* ride = get_ride(rideIndex);
+        if (ride == nullptr)
+        {
+            log_warning("Ride not found. ride index = %d.", rideIndex);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+        }
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, trackType);
         trackBlock += tileElement->AsTrack()->GetSequenceIndex();
 
@@ -519,14 +515,11 @@ public:
         else
             price *= -10;
 
-        if (gGameCommandNestLevel == 1)
-        {
-            LocationXYZ16 coord;
-            coord.x = startLoc.x + 16;
-            coord.y = startLoc.y + 16;
-            coord.z = trackpieceZ;
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
+        LocationXYZ16 coord;
+        coord.x = startLoc.x + 16;
+        coord.y = startLoc.y + 16;
+        coord.z = trackpieceZ;
+        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
         res->Cost = price;
         return res;
