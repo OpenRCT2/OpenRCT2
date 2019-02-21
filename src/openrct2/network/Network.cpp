@@ -2871,11 +2871,6 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
             return;
         }
     }
-    // Don't let clients send pause or quit
-    else if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE || commandCommand == GAME_COMMAND_LOAD_OR_QUIT)
-    {
-        return;
-    }
 
     game_command_queue.emplace(tick, args, playerid, callback, _commandId++);
 }
