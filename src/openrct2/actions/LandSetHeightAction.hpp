@@ -156,12 +156,6 @@ public:
         cost += GetSurfaceHeightChangeCost(surfaceElement);
         SetSurfaceHeight(surfaceElement);
 
-        LocationXYZ16 coord;
-        coord.x = _coords.x + 16;
-        coord.y = _coords.y + 16;
-        coord.z = surfaceHeight;
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-
         auto res = std::make_unique<GameActionResult>();
         res->Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
         res->Cost = cost;
