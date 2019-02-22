@@ -4260,6 +4260,12 @@ void game_command_set_ride_setting(
     *ebx = ride_set_setting(rideIndex, setting, newValue, flags);
 }
 
+money32 set_operating_setting(int32_t rideId, uint8_t setting, uint8_t value, uint8_t flags)
+{
+    gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
+    return game_do_command(0, (value << 8) | flags, 0, (setting << 8) | rideId, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+}
+
 /**
  *
  *  rct2: 0x006B4CC1
@@ -7618,9 +7624,8 @@ void ride_set_to_default_inspection_interval(Ride* ride)
     {
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
         {
-            gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-            game_do_command(
-                0, (defaultInspectionInterval << 8) | 1, 0, (5 << 8) | ride->id, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+            set_operating_setting(
+                ride->id, RIDE_SETTING_INSPECTION_INTERVAL, defaultInspectionInterval, GAME_COMMAND_FLAG_APPLY);
         }
     }
 }

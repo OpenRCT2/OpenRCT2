@@ -186,9 +186,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-                    int32_t res = game_do_command(
-                        0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+                    int32_t res = set_operating_setting(ride_index, RIDE_SETTING_RIDE_TYPE, type, GAME_COMMAND_FLAG_APPLY);
                     if (res == MONEY32_UNDEFINED)
                     {
                         console.WriteFormatLine("That didn't work");

@@ -3189,8 +3189,7 @@ static void window_ride_vehicle_scrollpaint(rct_window* w, rct_drawpixelinfo* dp
 
 static void set_operating_setting(int32_t rideNumber, uint8_t setting, uint8_t value)
 {
-    gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-    game_do_command(0, (value << 8) | 1, 0, (setting << 8) | rideNumber, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+    set_operating_setting(rideNumber, setting, value, GAME_COMMAND_FLAG_APPLY);
 }
 
 static void window_ride_mode_tweak_set(rct_window* w, uint8_t value)
@@ -3987,8 +3986,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
     switch (widgetIndex)
     {
         case WIDX_INSPECTION_INTERVAL_DROPDOWN:
-            gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-            game_do_command(0, (dropdownIndex << 8) | 1, 0, (5 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+            set_operating_setting(w->number, RIDE_SETTING_INSPECTION_INTERVAL, dropdownIndex, GAME_COMMAND_FLAG_APPLY);
             break;
 
         case WIDX_FORCE_BREAKDOWN:
@@ -5036,9 +5034,7 @@ static void window_ride_toggle_music(rct_window* w)
     Ride* ride = get_ride(w->number);
 
     int32_t activateMusic = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) ? 0 : 1;
-
-    gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-    game_do_command(0, (activateMusic << 8) | 1, 0, (6 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+    set_operating_setting(w->number, RIDE_SETTING_MUSIC, activateMusic, GAME_COMMAND_FLAG_APPLY);
 }
 
 /**
@@ -5142,8 +5138,7 @@ static void window_ride_music_dropdown(rct_window* w, rct_widgetindex widgetInde
         return;
 
     musicStyle = window_ride_current_music_style_order[dropdownIndex];
-    gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-    game_do_command(0, (musicStyle << 8) | 1, 0, (7 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+    set_operating_setting(w->number, RIDE_SETTING_MUSIC_TYPE, musicStyle, GAME_COMMAND_FLAG_APPLY);
 }
 
 /**
