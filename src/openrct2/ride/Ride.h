@@ -1051,8 +1051,6 @@ void game_command_set_ride_status(
 void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 void game_command_set_ride_name(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_set_ride_setting(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 void ride_set_colour_preset(Ride* ride, uint8_t index);
