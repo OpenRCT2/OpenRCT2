@@ -16,6 +16,7 @@
 #include "PlatformEnvironment.h"
 #include "actions/GameAction.h"
 #include "actions/TrackPlaceAction.hpp"
+#include "actions/RideSetSetting.hpp"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
@@ -491,6 +492,15 @@ namespace OpenRCT2
                         rideId, trackType, origin, brakeSpeed, colour, seatRotation, liftHillAndAlternativeState);
                     result.action->SetFlags(command.ebx & 0xFF);
                     break;
+                }
+                case GAME_COMMAND_SET_RIDE_SETTING:
+                {
+                    ride_id_t rideId = command.edx & 0xFF;
+                    RideSetSetting setting = static_cast<RideSetSetting>((command.edx >> 8) & 0xFF);
+                    uint8_t value = (command.ebx >> 8) & 0xFF;
+
+                    result.action = std::make_unique<RideSetSettingAction>(rideId, setting, value);
+                    result.action->SetFlags(command.ebx & 0xFF);
                 }
                 default:
                     throw std::runtime_error("Deprecated game command requires replay translation.");
