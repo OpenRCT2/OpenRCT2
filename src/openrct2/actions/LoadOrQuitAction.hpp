@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,14 +23,14 @@ DEFINE_GAME_ACTION(LoadOrQuitAction, GAME_COMMAND_LOAD_OR_QUIT, GameActionResult
 {
 private:
     uint8_t _mode{ 0 };
-    uint8_t _savePromptMode{ 0 };
+    uint8_t _savePromptMode{ PM_SAVE_BEFORE_LOAD };
 
 public:
     LoadOrQuitAction()
     {
     }
 
-    LoadOrQuitAction(LoadOrQuitModes mode, uint8_t savePromptMode = 0)
+    LoadOrQuitAction(LoadOrQuitModes mode, uint8_t savePromptMode = PM_SAVE_BEFORE_LOAD)
         : _mode(static_cast<uint8_t>(mode))
         , _savePromptMode(savePromptMode)
     {

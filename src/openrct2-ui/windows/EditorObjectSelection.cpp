@@ -468,7 +468,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
         case WIDX_CLOSE:
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
             {
-                auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, 1);
+                auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
                 GameActions::Execute(&loadOrQuitAction);
             }
             else
