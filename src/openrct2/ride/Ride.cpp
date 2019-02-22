@@ -17,6 +17,7 @@
 #include "../OpenRCT2.h"
 #include "../actions/RideSetVehiclesAction.hpp"
 #include "../actions/TrackRemoveAction.hpp"
+#include "../actions/RideSetSetting.hpp"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../common.h"
@@ -4260,10 +4261,20 @@ void game_command_set_ride_setting(
     *ebx = ride_set_setting(rideIndex, setting, newValue, flags);
 }
 
-money32 set_operating_setting(int32_t rideId, uint8_t setting, uint8_t value, uint8_t flags)
+money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t value)
 {
-    gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-    return game_do_command(0, (value << 8) | flags, 0, (setting << 8) | rideId, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+    auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
+    auto res = GameActions::Execute(&rideSetSetting);
+    return res->Error == GA_ERROR::OK ? 0 : MONEY32_UNDEFINED;
+}
+
+money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
+{
+    auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
+    rideSetSetting.SetFlags(flags);
+    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
+                                               : GameActions::QueryNested(&rideSetSetting);
+    return res->Error == GA_ERROR::OK ? 0 : MONEY32_UNDEFINED;
 }
 
 /**
@@ -7625,7 +7636,7 @@ void ride_set_to_default_inspection_interval(Ride* ride)
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
         {
             set_operating_setting(
-                ride->id, RIDE_SETTING_INSPECTION_INTERVAL, defaultInspectionInterval, GAME_COMMAND_FLAG_APPLY);
+                ride->id, RideSetSetting::InspectionInterval, defaultInspectionInterval);
         }
     }
 }

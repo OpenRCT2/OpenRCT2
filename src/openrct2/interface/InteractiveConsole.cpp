@@ -15,6 +15,7 @@
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
 #include "../Version.h"
+#include "../actions/RideSetSetting.hpp"
 #include "../actions/ClimateSetAction.hpp"
 #include "../actions/StaffSetCostumeAction.hpp"
 #include "../config/Config.h"
@@ -186,7 +187,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    int32_t res = set_operating_setting(ride_index, RIDE_SETTING_RIDE_TYPE, type, GAME_COMMAND_FLAG_APPLY);
+                    int32_t res = set_operating_setting(ride_index, RideSetSetting::RideType, type);
                     if (res == MONEY32_UNDEFINED)
                     {
                         console.WriteFormatLine("That didn't work");

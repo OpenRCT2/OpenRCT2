@@ -18,6 +18,7 @@
 #include "../actions/TrackPlaceAction.hpp"
 #include "../actions/TrackRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
+#include "../actions/RideSetSetting.hpp"
 #include "../audio/audio.h"
 #include "../core/File.h"
 #include "../core/String.hpp"
@@ -1967,7 +1968,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
                                        : GameActions::QueryNested(&rideSetVehicleAction);
     }
 
-    set_operating_setting(ride->id, RIDE_SETTING_MODE, td6->ride_mode, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::Mode, td6->ride_mode, flags);
     auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, td6->number_of_trains);
     flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction2)
                                    : GameActions::QueryNested(&rideSetVehicleAction2);
@@ -1975,18 +1976,18 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
         ride->id, RideSetVehicleType::NumCarsPerTrain, td6->number_of_cars_per_train);
     flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction3)
                                    : GameActions::QueryNested(&rideSetVehicleAction3);
-    set_operating_setting(ride->id, RIDE_SETTING_DEPARTURE, td6->depart_flags, flags);
-    set_operating_setting(ride->id, RIDE_SETTING_MIN_WAITING_TIME, td6->min_waiting_time, flags);
-    set_operating_setting(ride->id, RIDE_SETTING_MAX_WAITING_TIME, td6->max_waiting_time, flags);
-    set_operating_setting(ride->id, RIDE_SETTING_OPERATION_OPTION, td6->operation_setting, flags);
-    set_operating_setting(ride->id, RIDE_SETTING_LIFT_HILL_SPEED, td6->lift_hill_speed_num_circuits & 0x1F, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::Departure, td6->depart_flags, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::MinWaitingTime, td6->min_waiting_time, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::MaxWaitingTime, td6->max_waiting_time, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::Operation, td6->operation_setting, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::LiftHillSpeed, td6->lift_hill_speed_num_circuits & 0x1F, flags);
 
     uint8_t num_circuits = td6->lift_hill_speed_num_circuits >> 5;
     if (num_circuits == 0)
     {
         num_circuits = 1;
     }
-    set_operating_setting(ride->id, RIDE_SETTING_NUM_CIRCUITS, num_circuits, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::NumCircuits, num_circuits, flags);
     ride_set_to_default_inspection_interval(ride);
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = td6->version_and_colour_scheme & 3;
