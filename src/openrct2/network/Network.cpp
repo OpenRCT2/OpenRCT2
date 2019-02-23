@@ -102,8 +102,8 @@ enum
 static void network_chat_show_connected_message();
 static void network_chat_show_server_greeting();
 static void network_get_keys_directory(utf8* buffer, size_t bufferSize);
-static void network_get_private_key_path(utf8* buffer, size_t bufferSize, const utf8* playerName);
-static void network_get_public_key_path(utf8* buffer, size_t bufferSize, const utf8* playerName, const utf8* hash);
+static void network_get_private_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName);
+static void network_get_public_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash);
 
 class Network
 {
@@ -113,8 +113,8 @@ public:
     void SetEnvironment(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
     bool Init();
     void Close();
-    bool BeginClient(const char* host, uint16_t port);
-    bool BeginServer(uint16_t port, const char* address);
+    bool BeginClient(const std::string& host, uint16_t port);
+    bool BeginServer(uint16_t port, const std::string& address);
     int32_t GetMode();
     int32_t GetStatus();
     int32_t GetAuthStatus();
@@ -157,7 +157,9 @@ public:
     void CloseServerLog();
 
     void Client_Send_TOKEN();
-    void Client_Send_AUTH(const char* name, const char* password, const char* pubkey, const char* sig, size_t sigsize);
+    void Client_Send_AUTH(
+        const std::string& name, const std::string& password, const std::string& pubkey, const std::string& sig,
+        size_t sigsize);
     void Server_Send_AUTH(NetworkConnection& connection);
     void Server_Send_TOKEN(NetworkConnection& connection);
     void Server_Send_MAP(NetworkConnection* connection = nullptr);
@@ -209,10 +211,10 @@ private:
     void AddClient(std::unique_ptr<ITcpSocket>&& socket);
     void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
 
-    NetworkPlayer* AddPlayer(const utf8* name, const std::string& keyhash);
+    NetworkPlayer* AddPlayer(const std::string& name, const std::string& keyhash);
     std::string MakePlayerNameUnique(const std::string& name);
 
-    const char* GetMasterServerUrl();
+    std::string GetMasterServerUrl();
     std::string GenerateAdvertiseKey();
     void SetupDefaultGroups();
 
@@ -465,7 +467,7 @@ void Network::CloseConnection()
     DisposeWSA();
 }
 
-bool Network::BeginClient(const char* host, uint16_t port)
+bool Network::BeginClient(const std::string& host, uint16_t port)
 {
     if (GetMode() != NETWORK_MODE_NONE)
     {
@@ -478,7 +480,7 @@ bool Network::BeginClient(const char* host, uint16_t port)
 
     mode = NETWORK_MODE_CLIENT;
 
-    log_info("Connecting to %s:%u\n", host, port);
+    log_info("Connecting to %s:%u\n", host.c_str(), port);
 
     _serverConnection = std::make_unique<NetworkConnection>();
     _serverConnection->Socket = CreateTcpSocket();
@@ -557,7 +559,7 @@ bool Network::BeginClient(const char* host, uint16_t port)
     return true;
 }
 
-bool Network::BeginServer(uint16_t port, const char* address)
+bool Network::BeginServer(uint16_t port, const std::string& address)
 {
     Close();
     if (!Init())
@@ -566,9 +568,6 @@ bool Network::BeginServer(uint16_t port, const char* address)
     mode = NETWORK_MODE_SERVER;
 
     _userManager.Load();
-
-    if (strlen(address) == 0)
-        address = nullptr;
 
     log_verbose("Begin listening for clients");
 
@@ -584,12 +583,12 @@ bool Network::BeginServer(uint16_t port, const char* address)
         return false;
     }
 
-    ServerName = String::ToStd(gConfigNetwork.server_name);
-    ServerDescription = String::ToStd(gConfigNetwork.server_description);
-    ServerGreeting = String::ToStd(gConfigNetwork.server_greeting);
-    ServerProviderName = String::ToStd(gConfigNetwork.provider_name);
-    ServerProviderEmail = String::ToStd(gConfigNetwork.provider_email);
-    ServerProviderWebsite = String::ToStd(gConfigNetwork.provider_website);
+    ServerName = gConfigNetwork.server_name;
+    ServerDescription = gConfigNetwork.server_description;
+    ServerGreeting = gConfigNetwork.server_greeting;
+    ServerProviderName = gConfigNetwork.provider_name;
+    ServerProviderEmail = gConfigNetwork.provider_email;
+    ServerProviderWebsite = gConfigNetwork.provider_website;
 
     cheats_reset();
     LoadGroups();
@@ -1028,9 +1027,9 @@ std::string Network::GenerateAdvertiseKey()
     return key;
 }
 
-const char* Network::GetMasterServerUrl()
+std::string Network::GetMasterServerUrl()
 {
-    if (str_is_null_or_empty(gConfigNetwork.master_server_url))
+    if (gConfigNetwork.master_server_url.empty())
     {
         return OPENRCT2_MASTER_SERVER_URL;
     }
@@ -1351,17 +1350,18 @@ void Network::Client_Send_TOKEN()
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-void Network::Client_Send_AUTH(const char* name, const char* password, const char* pubkey, const char* sig, size_t sigsize)
+void Network::Client_Send_AUTH(
+    const std::string& name, const std::string& password, const std::string& pubkey, const std::string& sig, size_t sigsize)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_AUTH;
     packet->WriteString(network_get_version().c_str());
-    packet->WriteString(name);
-    packet->WriteString(password);
-    packet->WriteString(pubkey);
+    packet->WriteString(name.c_str());
+    packet->WriteString(password.c_str());
+    packet->WriteString(pubkey.c_str());
     assert(sigsize <= (size_t)UINT32_MAX);
     *packet << (uint32_t)sigsize;
-    packet->Write((const uint8_t*)sig, sigsize);
+    packet->Write((const uint8_t*)sig.c_str(), sigsize);
     _serverConnection->AuthStatus = NETWORK_AUTH_REQUESTED;
     _serverConnection->QueuePacket(std::move(packet));
 }
@@ -1700,20 +1700,20 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
     *packet << (uint32_t)NETWORK_COMMAND_GAMEINFO;
 #    ifndef DISABLE_HTTP
     json_t* obj = json_object();
-    json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name));
+    json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name.c_str()));
     json_object_set_new(obj, "requiresPassword", json_boolean(_password.size() > 0));
     json_object_set_new(obj, "version", json_string(network_get_version().c_str()));
     json_object_set_new(obj, "players", json_integer(player_list.size()));
     json_object_set_new(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
-    json_object_set_new(obj, "description", json_string(gConfigNetwork.server_description));
-    json_object_set_new(obj, "greeting", json_string(gConfigNetwork.server_greeting));
+    json_object_set_new(obj, "description", json_string(gConfigNetwork.server_description.c_str()));
+    json_object_set_new(obj, "greeting", json_string(gConfigNetwork.server_greeting.c_str()));
     json_object_set_new(obj, "dedicated", json_boolean(gOpenRCT2Headless));
 
     // Provider details
     json_t* jsonProvider = json_object();
-    json_object_set_new(jsonProvider, "name", json_string(gConfigNetwork.provider_name));
-    json_object_set_new(jsonProvider, "email", json_string(gConfigNetwork.provider_email));
-    json_object_set_new(jsonProvider, "website", json_string(gConfigNetwork.provider_website));
+    json_object_set_new(jsonProvider, "name", json_string(gConfigNetwork.provider_name.c_str()));
+    json_object_set_new(jsonProvider, "email", json_string(gConfigNetwork.provider_email.c_str()));
+    json_object_set_new(jsonProvider, "website", json_string(gConfigNetwork.provider_website.c_str()));
     json_object_set_new(obj, "provider", jsonProvider);
 
     packet->WriteString(json_dumps(obj, 0));
@@ -2053,7 +2053,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
     Server_Send_PLAYERLIST();
 }
 
-NetworkPlayer* Network::AddPlayer(const utf8* name, const std::string& keyhash)
+NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& keyhash)
 {
     NetworkPlayer* addedplayer = nullptr;
     int32_t newid = -1;
@@ -2093,9 +2093,9 @@ NetworkPlayer* Network::AddPlayer(const utf8* name, const std::string& keyhash)
             if (networkUser == nullptr)
             {
                 player->Group = GetDefaultGroup();
-                if (!String::IsNullOrEmpty(name))
+                if (name.empty() == false)
                 {
-                    player->SetName(MakePlayerNameUnique(String::Trim(std::string(name))));
+                    player->SetName(MakePlayerNameUnique(String::Trim(name)));
                 }
             }
             else
@@ -2205,7 +2205,7 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
     _key.Unload();
 
     const char* password = String::IsNullOrEmpty(gCustomPassword) ? "" : gCustomPassword;
-    Client_Send_AUTH(gConfigNetwork.player_name, password, pubkey.c_str(), signature, sigsize);
+    Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature, sigsize);
 
     delete[] signature;
 }
@@ -3082,12 +3082,12 @@ void network_shutdown_client()
     gNetwork.ShutdownClient();
 }
 
-int32_t network_begin_client(const char* host, int32_t port)
+int32_t network_begin_client(const std::string& host, int32_t port)
 {
     return gNetwork.BeginClient(host, port);
 }
 
-int32_t network_begin_server(int32_t port, const char* address)
+int32_t network_begin_server(int32_t port, const std::string& address)
 {
     return gNetwork.BeginServer(port, address);
 }
@@ -3788,7 +3788,7 @@ void network_send_gamecmd(
     }
 }
 
-void network_send_password(const char* password)
+void network_send_password(const std::string& password)
 {
     utf8 keyPath[MAX_PATH];
     network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
@@ -3814,7 +3814,7 @@ void network_send_password(const char* password)
     // Don't keep private key in memory. There's no need and it may get leaked
     // when process dump gets collected at some point in future.
     gNetwork._key.Unload();
-    gNetwork.Client_Send_AUTH(gConfigNetwork.player_name, password, pubkey.c_str(), signature, sigsize);
+    gNetwork.Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature, sigsize);
     delete[] signature;
 }
 
@@ -3838,17 +3838,17 @@ static void network_get_keys_directory(utf8* buffer, size_t bufferSize)
     platform_get_user_directory(buffer, "keys", bufferSize);
 }
 
-static void network_get_private_key_path(utf8* buffer, size_t bufferSize, const utf8* playerName)
+static void network_get_private_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName)
 {
     network_get_keys_directory(buffer, bufferSize);
-    Path::Append(buffer, bufferSize, playerName);
+    Path::Append(buffer, bufferSize, playerName.c_str());
     String::Append(buffer, bufferSize, ".privkey");
 }
 
-static void network_get_public_key_path(utf8* buffer, size_t bufferSize, const utf8* playerName, const utf8* hash)
+static void network_get_public_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash)
 {
     network_get_keys_directory(buffer, bufferSize);
-    Path::Append(buffer, bufferSize, playerName);
+    Path::Append(buffer, bufferSize, playerName.c_str());
     String::Append(buffer, bufferSize, "-");
     String::Append(buffer, bufferSize, hash);
     String::Append(buffer, bufferSize, ".pubkey");
@@ -3934,11 +3934,11 @@ void network_update()
 void network_process_pending()
 {
 }
-int32_t network_begin_client(const char* host, int32_t port)
+int32_t network_begin_client(const std::string& host, int32_t port)
 {
     return 1;
 }
-int32_t network_begin_server(int32_t port, const char* address)
+int32_t network_begin_server(int32_t port, const std::string& address)
 {
     return 1;
 }
@@ -4064,7 +4064,7 @@ int32_t network_get_pickup_peep_old_x(uint8_t playerid)
 void network_send_chat(const char* text)
 {
 }
-void network_send_password(const char* password)
+void network_send_password(const std::string& password)
 {
 }
 void network_close()
