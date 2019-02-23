@@ -958,9 +958,9 @@ extern uint16_t _numCurrentPossibleSpecialTrackPieces;
 extern uint16_t _currentTrackCurve;
 extern uint8_t _rideConstructionState;
 extern ride_id_t _currentRideIndex;
-extern uint16_t _currentTrackBeginX;
-extern uint16_t _currentTrackBeginY;
-extern uint16_t _currentTrackBeginZ;
+
+extern CoordsXYZ _currentTrackBegin;
+
 extern uint8_t _currentTrackPieceDirection;
 extern uint8_t _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
