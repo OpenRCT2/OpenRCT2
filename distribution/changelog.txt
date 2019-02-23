@@ -71,6 +71,7 @@
 - Fix: [#8647] Marketing campaigns check for entry fees below £1 (original bug). 
 - Fix: [#8653] Crash when peeps attempt to enter a ride with no vehicles.
 - Fix: [#8720] Desync due to boats colliding with ghost pieces.
+- Fix: [#8739] Savegame from original game crashes when cruising through map.
 - Fix: [#8742] Access violation in vehicle_update_sound_params.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
