@@ -974,9 +974,7 @@ extern uint8_t _selectedTrackType;
 extern uint8_t _previousTrackBankEnd;
 extern uint8_t _previousTrackSlopeEnd;
 
-extern uint16_t _previousTrackPieceX;
-extern uint16_t _previousTrackPieceY;
-extern uint16_t _previousTrackPieceZ;
+extern CoordsXYZ _previousTrackPiece;
 
 extern uint8_t _currentBrakeSpeed2;
 extern uint8_t _currentSeatRotationAngle;

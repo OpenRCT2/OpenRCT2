@@ -183,9 +183,7 @@ uint8_t _selectedTrackType;
 uint8_t _previousTrackBankEnd;
 uint8_t _previousTrackSlopeEnd;
 
-uint16_t _previousTrackPieceX;
-uint16_t _previousTrackPieceY;
-uint16_t _previousTrackPieceZ;
+CoordsXYZ _previousTrackPiece;
 
 uint8_t _currentBrakeSpeed2;
 uint8_t _currentSeatRotationAngle;
