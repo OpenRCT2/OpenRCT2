@@ -139,6 +139,7 @@ static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex w
 static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 static void window_ride_construction_invalidate(rct_window *w);
 static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static bool track_piece_direction_is_diagonal(const uint8_t direction);
 
 //0x993EEC
 static rct_window_event_list window_ride_construction_events = {
@@ -837,7 +838,8 @@ static void window_ride_construction_resize(rct_window* w)
     switch (_previousTrackSlopeEnd)
     {
         case TRACK_SLOPE_NONE:
-            if (_currentTrackCurve != TRACK_CURVE_NONE)
+            if (_currentTrackCurve != TRACK_CURVE_NONE
+                || (is_track_enabled(TRACK_SLOPE_STEEP_LONG) && track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
             {
                 disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_UP_STEEP);
             }
@@ -847,7 +849,9 @@ static void window_ride_construction_resize(rct_window* w)
             break;
         case TRACK_SLOPE_DOWN_60:
             disabledWidgets |= (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
-            if (!is_track_enabled(TRACK_SLOPE_LONG) && !is_track_enabled(TRACK_SLOPE_STEEP_LONG))
+            if (!is_track_enabled(TRACK_SLOPE_LONG)
+                && !(is_track_enabled(TRACK_SLOPE_STEEP_LONG)
+                     && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
             {
                 disabledWidgets |= (1ULL << WIDX_LEVEL);
             }
@@ -857,7 +861,9 @@ static void window_ride_construction_resize(rct_window* w)
             break;
         case TRACK_SLOPE_UP_60:
             disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN);
-            if (!is_track_enabled(TRACK_SLOPE_LONG) && !is_track_enabled(TRACK_SLOPE_STEEP_LONG))
+            if (!is_track_enabled(TRACK_SLOPE_LONG)
+                && !(is_track_enabled(TRACK_SLOPE_STEEP_LONG)
+                     && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
             {
                 disabledWidgets |= (1ULL << WIDX_LEVEL);
             }
@@ -4693,4 +4699,9 @@ void window_ride_construction_keyboard_shortcut_demolish_current()
     }
 
     window_event_mouse_up_call(w, WIDX_DEMOLISH);
+}
+
+static bool track_piece_direction_is_diagonal(const uint8_t direction)
+{
+    return direction >= 4;
 }
