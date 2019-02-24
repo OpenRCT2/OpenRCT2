@@ -412,9 +412,9 @@ bool window_ride_construction_update_state(
 
     const rct_track_coordinates* trackCoordinates = get_track_coord_from_ride(ride, trackType);
 
-    x = _currentTrackBeginX;
-    y = _currentTrackBeginY;
-    z = _currentTrackBeginZ;
+    x = _currentTrackBegin.x;
+    y = _currentTrackBegin.y;
+    z = _currentTrackBegin.z;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         z -= trackCoordinates->z_end;
@@ -552,7 +552,7 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
     if (gGotoStartPlacementMode)
     {
         z &= 0xFFF0;
-        _currentTrackBeginZ = z;
+        _currentTrackBegin.z = z;
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackSelectionFlags = 0;
         _rideConstructionArrowPulseTime = 0;
@@ -606,9 +606,9 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
             // rideConstructionState needs to be set again to the proper value, this only affects the client
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
         }
-        _currentTrackBeginX = x;
-        _currentTrackBeginY = y;
-        _currentTrackBeginZ = z;
+        _currentTrackBegin.x = x;
+        _currentTrackBegin.y = y;
+        _currentTrackBegin.z = z;
         _currentTrackPieceDirection = direction;
         _currentTrackPieceType = type;
         _currentTrackSelectionFlags = 0;
