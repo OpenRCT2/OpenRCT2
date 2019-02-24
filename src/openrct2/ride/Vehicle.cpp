@@ -879,6 +879,9 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
     if (vehicle->sprite_left == LOCATION_NULL)
         return;
 
+    if (g_music_tracking_viewport == nullptr)
+        return;
+
     int16_t left = g_music_tracking_viewport->view_x;
     int16_t bottom = g_music_tracking_viewport->view_y;
     int16_t quarter_w = g_music_tracking_viewport->view_width / 4;
