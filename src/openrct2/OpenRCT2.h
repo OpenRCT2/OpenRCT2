@@ -11,6 +11,8 @@
 
 #include "common.h"
 
+#include <string>
+
 enum STARTUP_ACTION
 {
     STARTUP_ACTION_NONE,
@@ -50,9 +52,9 @@ extern bool gOpenRCT2SilentBreakpad;
 
 #ifndef DISABLE_NETWORK
 extern int32_t gNetworkStart;
-extern char gNetworkStartHost[128];
+extern std::string gNetworkStartHost;
 extern int32_t gNetworkStartPort;
-extern char* gNetworkStartAddress;
+extern std::string gNetworkStartAddress;
 #endif
 
 extern uint32_t gCurrentDrawCount;

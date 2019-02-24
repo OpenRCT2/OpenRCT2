@@ -251,10 +251,10 @@ private:
         return key;
     }
 
-    static const char* GetMasterServerUrl()
+    static std::string GetMasterServerUrl()
     {
-        const char* result = OPENRCT2_MASTER_SERVER_URL;
-        if (!String::IsNullOrEmpty(gConfigNetwork.master_server_url))
+        std::string result = OPENRCT2_MASTER_SERVER_URL;
+        if (gConfigNetwork.master_server_url.empty() == false)
         {
             result = gConfigNetwork.master_server_url;
         }
