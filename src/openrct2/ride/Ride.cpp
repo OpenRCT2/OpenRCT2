@@ -163,9 +163,9 @@ uint16_t _numCurrentPossibleSpecialTrackPieces;
 uint16_t _currentTrackCurve;
 uint8_t _rideConstructionState;
 ride_id_t _currentRideIndex;
-uint16_t _currentTrackBeginX;
-uint16_t _currentTrackBeginY;
-uint16_t _currentTrackBeginZ;
+
+CoordsXYZ _currentTrackBegin;
+
 uint8_t _currentTrackPieceDirection;
 uint8_t _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
@@ -179,9 +179,7 @@ uint8_t _selectedTrackType;
 uint8_t _previousTrackBankEnd;
 uint8_t _previousTrackSlopeEnd;
 
-uint16_t _previousTrackPieceX;
-uint16_t _previousTrackPieceY;
-uint16_t _previousTrackPieceZ;
+CoordsXYZ _previousTrackPiece;
 
 uint8_t _currentBrakeSpeed2;
 uint8_t _currentSeatRotationAngle;
@@ -1507,9 +1505,9 @@ void ride_construction_invalidate_current_track()
     switch (_rideConstructionState)
     {
         case RIDE_CONSTRUCTION_STATE_SELECTED:
-            x = _currentTrackBeginX;
-            y = _currentTrackBeginY;
-            z = _currentTrackBeginZ;
+            x = _currentTrackBegin.x;
+            y = _currentTrackBegin.y;
+            z = _currentTrackBegin.z;
             sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, nullptr, 1);
             break;
         case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
@@ -1517,7 +1515,7 @@ void ride_construction_invalidate_current_track()
         case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
             {
-                map_invalidate_tile_full(_currentTrackBeginX & 0xFFE0, _currentTrackBeginY & 0xFFE0);
+                map_invalidate_tile_full(_currentTrackBegin.x & 0xFFE0, _currentTrackBegin.y & 0xFFE0);
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             }
             break;
@@ -1526,7 +1524,7 @@ void ride_construction_invalidate_current_track()
             {
                 _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ARROW;
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-                map_invalidate_tile_full(_currentTrackBeginX, _currentTrackBeginY);
+                map_invalidate_tile_full(_currentTrackBegin.x, _currentTrackBegin.y);
             }
             ride_construction_remove_ghosts();
             break;
@@ -1583,9 +1581,9 @@ void ride_construction_set_default_next_piece()
             rideIndex = _currentRideIndex;
             ride = get_ride(rideIndex);
 
-            x = _currentTrackBeginX;
-            y = _currentTrackBeginY;
-            z = _currentTrackBeginZ;
+            x = _currentTrackBegin.x;
+            y = _currentTrackBegin.y;
+            z = _currentTrackBegin.z;
             direction = _currentTrackPieceDirection;
             if (!track_block_get_previous_from_zero(x, y, z, ride, direction, &trackBeginEnd))
             {
@@ -1656,9 +1654,9 @@ void ride_construction_set_default_next_piece()
             rideIndex = _currentRideIndex;
             ride = get_ride(rideIndex);
 
-            x = _currentTrackBeginX;
-            y = _currentTrackBeginY;
-            z = _currentTrackBeginZ;
+            x = _currentTrackBegin.x;
+            y = _currentTrackBegin.y;
+            z = _currentTrackBegin.z;
             direction = direction_reverse(_currentTrackPieceDirection);
             if (!track_block_get_next_from_zero(x, y, z, ride, direction, &xyElement, &z, &direction, false))
             {
@@ -1733,9 +1731,9 @@ void ride_select_next_section()
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
     {
         ride_construction_invalidate_current_track();
-        int32_t x = _currentTrackBeginX;
-        int32_t y = _currentTrackBeginY;
-        int32_t z = _currentTrackBeginZ;
+        int32_t x = _currentTrackBegin.x;
+        int32_t y = _currentTrackBegin.y;
+        int32_t z = _currentTrackBegin.z;
         int32_t direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
         TileElement* tileElement;
@@ -1767,9 +1765,9 @@ void ride_select_next_section()
         else
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
-            _currentTrackBeginX = outputElement.x;
-            _currentTrackBeginY = outputElement.y;
-            _currentTrackBeginZ = z;
+            _currentTrackBegin.x = outputElement.x;
+            _currentTrackBegin.y = outputElement.y;
+            _currentTrackBegin.z = z;
             _currentTrackPieceDirection = direction;
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
@@ -1779,9 +1777,9 @@ void ride_select_next_section()
             return;
         }
 
-        _currentTrackBeginX = x;
-        _currentTrackBeginY = y;
-        _currentTrackBeginZ = z;
+        _currentTrackBegin.x = x;
+        _currentTrackBegin.y = y;
+        _currentTrackBegin.z = z;
         _currentTrackPieceDirection = tileElement->GetDirection();
         _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
         _currentTrackSelectionFlags = 0;
@@ -1806,9 +1804,9 @@ void ride_select_previous_section()
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
     {
         ride_construction_invalidate_current_track();
-        int32_t x = _currentTrackBeginX;
-        int32_t y = _currentTrackBeginY;
-        int32_t z = _currentTrackBeginZ;
+        int32_t x = _currentTrackBegin.x;
+        int32_t y = _currentTrackBegin.y;
+        int32_t z = _currentTrackBegin.z;
         int32_t direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
         TileElement* tileElement;
@@ -1825,9 +1823,9 @@ void ride_select_previous_section()
         track_begin_end trackBeginEnd;
         if (track_block_get_previous(x, y, tileElement, &trackBeginEnd))
         {
-            _currentTrackBeginX = trackBeginEnd.begin_x;
-            _currentTrackBeginY = trackBeginEnd.begin_y;
-            _currentTrackBeginZ = trackBeginEnd.begin_z;
+            _currentTrackBegin.x = trackBeginEnd.begin_x;
+            _currentTrackBegin.y = trackBeginEnd.begin_y;
+            _currentTrackBegin.z = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
@@ -1842,9 +1840,9 @@ void ride_select_previous_section()
         else
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_BACK;
-            _currentTrackBeginX = trackBeginEnd.end_x;
-            _currentTrackBeginY = trackBeginEnd.end_y;
-            _currentTrackBeginZ = trackBeginEnd.begin_z;
+            _currentTrackBegin.x = trackBeginEnd.end_x;
+            _currentTrackBegin.y = trackBeginEnd.end_y;
+            _currentTrackBegin.z = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.end_direction;
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
@@ -1937,9 +1935,9 @@ static int32_t ride_modify_maze(TileElement* tileElement, int32_t x, int32_t y)
 {
     _currentRideIndex = tileElement->AsTrack()->GetRideIndex();
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
-    _currentTrackBeginX = x;
-    _currentTrackBeginY = y;
-    _currentTrackBeginZ = tileElement->base_height * 8;
+    _currentTrackBegin.x = x;
+    _currentTrackBegin.y = y;
+    _currentTrackBegin.z = tileElement->base_height * 8;
     _currentTrackSelectionFlags = 0;
     _rideConstructionArrowPulseTime = 0;
 
@@ -2010,9 +2008,9 @@ int32_t ride_modify(CoordsXYE* input)
 
     _currentRideIndex = rideIndex;
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
-    _currentTrackBeginX = x;
-    _currentTrackBeginY = y;
-    _currentTrackBeginZ = z;
+    _currentTrackBegin.x = x;
+    _currentTrackBegin.y = y;
+    _currentTrackBegin.z = z;
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags = 0;
@@ -2032,9 +2030,9 @@ int32_t ride_modify(CoordsXYE* input)
     }
 
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
-    _currentTrackBeginX = x;
-    _currentTrackBeginY = y;
-    _currentTrackBeginZ = z;
+    _currentTrackBegin.x = x;
+    _currentTrackBegin.y = y;
+    _currentTrackBegin.z = z;
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags = 0;
@@ -2045,9 +2043,9 @@ int32_t ride_modify(CoordsXYE* input)
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_BACK)
     {
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
-        _currentTrackBeginX = x;
-        _currentTrackBeginY = y;
-        _currentTrackBeginZ = z;
+        _currentTrackBegin.x = x;
+        _currentTrackBegin.y = y;
+        _currentTrackBegin.z = z;
         _currentTrackPieceDirection = direction;
         _currentTrackPieceType = type;
         _currentTrackSelectionFlags = 0;
@@ -6869,13 +6867,13 @@ bool ride_select_backwards_from_front()
         ride_construction_invalidate_current_track();
         track_begin_end trackBeginEnd;
         if (track_block_get_previous_from_zero(
-                _currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ, ride, _currentTrackPieceDirection,
+                _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, ride, _currentTrackPieceDirection,
                 &trackBeginEnd))
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
-            _currentTrackBeginX = trackBeginEnd.begin_x;
-            _currentTrackBeginY = trackBeginEnd.begin_y;
-            _currentTrackBeginZ = trackBeginEnd.begin_z;
+            _currentTrackBegin.x = trackBeginEnd.begin_x;
+            _currentTrackBegin.y = trackBeginEnd.begin_y;
+            _currentTrackBegin.z = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
@@ -6893,17 +6891,17 @@ bool ride_select_forwards_from_back()
     {
         ride_construction_invalidate_current_track();
 
-        int32_t x = _currentTrackBeginX;
-        int32_t y = _currentTrackBeginY;
-        int32_t z = _currentTrackBeginZ;
+        int32_t x = _currentTrackBegin.x;
+        int32_t y = _currentTrackBegin.y;
+        int32_t z = _currentTrackBegin.z;
         int32_t direction = direction_reverse(_currentTrackPieceDirection);
         CoordsXYE next_track;
         if (track_block_get_next_from_zero(x, y, z, ride, direction, &next_track, &z, &direction, false))
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
-            _currentTrackBeginX = next_track.x;
-            _currentTrackBeginY = next_track.y;
-            _currentTrackBeginZ = z;
+            _currentTrackBegin.x = next_track.x;
+            _currentTrackBegin.y = next_track.y;
+            _currentTrackBegin.z = z;
             _currentTrackPieceDirection = next_track.element->GetDirection();
             _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;

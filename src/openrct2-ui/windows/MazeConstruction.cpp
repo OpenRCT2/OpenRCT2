@@ -482,9 +482,9 @@ static void window_maze_construction_construct(int32_t direction)
 
     ride_construction_invalidate_current_track();
 
-    x = _currentTrackBeginX + (CoordsDirectionDelta[direction].x / 2);
-    y = _currentTrackBeginY + (CoordsDirectionDelta[direction].y / 2);
-    z = _currentTrackBeginZ;
+    x = _currentTrackBegin.x + (CoordsDirectionDelta[direction].x / 2);
+    y = _currentTrackBegin.y + (CoordsDirectionDelta[direction].y / 2);
+    z = _currentTrackBegin.z;
     switch (_rideConstructionState)
     {
         case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
@@ -508,8 +508,8 @@ static void window_maze_construction_construct(int32_t direction)
         return;
     }
 
-    _currentTrackBeginX = x;
-    _currentTrackBeginY = y;
+    _currentTrackBegin.x = x;
+    _currentTrackBegin.y = y;
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_MAZE_MOVE)
     {
         audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
