@@ -1273,7 +1273,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_ride_name,
     nullptr,
     game_command_place_ride_entrance_or_exit,
-    game_command_remove_ride_entrance_or_exit,
+    nullptr,
     nullptr,
     nullptr,
     game_command_set_water_height,

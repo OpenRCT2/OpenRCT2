@@ -1144,8 +1144,6 @@ void game_command_set_ride_vehicles(
 
 void game_command_place_ride_entrance_or_exit(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_remove_ride_entrance_or_exit(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 void ride_set_to_default_inspection_interval(Ride* ride);
 
