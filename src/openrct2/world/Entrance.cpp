@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../actions/RideEntranceExitRemoveAction.hpp"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -209,10 +210,13 @@ static money32 RideEntranceExitPlace(
 
         if (requiresRemove)
         {
-            money32 success = game_do_command(
-                removeCoord.x, flags, removeCoord.y, rideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, stationNum, isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
+                { removeCoord.x, removeCoord.y }, rideIndex, stationNum, isExit);
+            rideEntranceExitRemove.SetFlags(flags);
 
-            if (success == MONEY32_UNDEFINED)
+            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitRemove)
+                                                       : GameActions::QueryNested(&rideEntranceExitRemove);
+            if (res->Error != GA_ERROR::OK)
             {
                 return MONEY32_UNDEFINED;
             }
@@ -488,11 +492,12 @@ void ride_entrance_exit_remove_ghost()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
-        game_do_command(
-            gRideEntranceExitGhostPosition.x,
-            (GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
-            gRideEntranceExitGhostPosition.y, _currentRideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
+        auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
+            { gRideEntranceExitGhostPosition.x, gRideEntranceExitGhostPosition.y }, _currentRideIndex,
             gRideEntranceExitGhostStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
+
+        rideEntranceExitRemove.SetFlags(GAME_COMMAND_FLAG_5);
+        GameActions::Execute(&rideEntranceExitRemove);
     }
 }
 
