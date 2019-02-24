@@ -305,7 +305,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
 
     gNetworkStart = NETWORK_MODE_SERVER;
     gNetworkStartPort = _port;
-    gNetworkStartAddress = _address;
+    gNetworkStartAddress = String::ToStd(_address);
 
     return EXITCODE_CONTINUE;
 }
