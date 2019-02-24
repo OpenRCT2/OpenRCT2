@@ -15,6 +15,7 @@
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/TrackPlaceAction.hpp"
+#include "../actions/TrackRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../core/File.h"
@@ -1416,9 +1417,10 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                 const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
                 const rct_preview_track* trackBlock = trackBlockArray[trackType];
                 int32_t tempZ = z - trackCoordinates->z_begin + trackBlock->z;
-                uint8_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-                    | GAME_COMMAND_FLAG_GHOST;
-                ride_remove_track_piece(x, y, tempZ, rotation & 3, trackType, flags);
+                auto trackRemoveAction = TrackRemoveAction(trackType, 0, { x, y, tempZ, static_cast<Direction>(rotation & 3) });
+                trackRemoveAction.SetFlags(
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+                GameActions::ExecuteNested(&trackRemoveAction);
                 break;
             }
             case PTD_OPERATION_1:

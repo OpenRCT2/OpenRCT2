@@ -167,15 +167,11 @@ public:
         auto res = std::make_unique<GameActionResult>();
         if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
         {
-            LocationXYZ16 coord;
-            coord.x = ride->overall_view.x * 32 + 16;
-            coord.y = ride->overall_view.y * 32 + 16;
-            coord.z = tile_element_height(coord.x, coord.y);
-            res->Position.x = coord.x;
-            res->Position.y = coord.y;
-            res->Position.z = coord.z;
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+            res->Position.x = ride->overall_view.x * 32 + 16;
+            res->Position.y = ride->overall_view.y * 32 + 16;
+            res->Position.z = tile_element_height(res->Position.x, res->Position.y);
         }
+
         return res;
     }
 };

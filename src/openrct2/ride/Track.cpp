@@ -787,7 +787,7 @@ bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t directio
  *
  *  rct2: 0x006C494B
  */
-static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
+bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
 {
     int32_t removeX = x;
     int32_t removeY = y;

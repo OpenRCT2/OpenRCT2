@@ -18,6 +18,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/TrackPlaceAction.hpp>
+#include <openrct2/actions/TrackRemoveAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
@@ -288,7 +289,7 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     STR_HELIX_DOWN_LEFT,                    // 108
     STR_HELIX_DOWN_RIGHT,                   // 109
     STR_BASE_SIZE_2_X_2,                    // 110
-    STR_BASE_SIZE_4_X_4,                    // 111
+    STR_BASE_SIZE_4_X_4,                    // ****111
     STR_WATERFALLS,                         // 112
     STR_RAPIDS,                             // 113
     STR_ON_RIDE_PHOTO_SECTION,              // 114
@@ -1910,29 +1911,20 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         gGotoStartPlacementMode = true;
     }
 
-    money32 cost = ride_remove_track_piece(
-        _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, _currentTrackPieceDirection, _currentTrackPieceType,
-        GAME_COMMAND_FLAG_APPLY);
-    if (cost == MONEY32_UNDEFINED)
-    {
-        window_ride_construction_update_active_elements();
-        return;
-    }
+    auto trackRemoveAction = TrackRemoveAction(
+        _currentTrackPieceType, 0,
+        { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, _currentTrackPieceDirection });
 
-    _stationConstructed = get_ride(w->number)->num_stations != 0;
-
-    if (network_get_mode() == NETWORK_MODE_CLIENT)
-    {
-        gRideRemoveTrackPieceCallbackX = x;
-        gRideRemoveTrackPieceCallbackY = y;
-        gRideRemoveTrackPieceCallbackZ = z;
-        gRideRemoveTrackPieceCallbackDirection = direction;
-        gRideRemoveTrackPieceCallbackType = type;
-    }
-    else
-    {
+    trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+        _stationConstructed = get_ride(w->number)->num_stations != 0;
         window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
-    }
+        if (result->Error != GA_ERROR::OK)
+        {
+            window_ride_construction_update_active_elements();
+        }
+    });
+
+    GameActions::Execute(&trackRemoveAction);
 }
 
 /**
