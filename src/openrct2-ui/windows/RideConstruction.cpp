@@ -289,7 +289,7 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     STR_HELIX_DOWN_LEFT,                    // 108
     STR_HELIX_DOWN_RIGHT,                   // 109
     STR_BASE_SIZE_2_X_2,                    // 110
-    STR_BASE_SIZE_4_X_4,                    // ****111
+    STR_BASE_SIZE_4_X_4,                    // 111
     STR_WATERFALLS,                         // 112
     STR_RAPIDS,                             // 113
     STR_ON_RIDE_PHOTO_SECTION,              // 114
