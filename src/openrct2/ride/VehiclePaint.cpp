@@ -3075,8 +3075,6 @@ void vehicle_visual_splash_effect(
 {
     switch (vehicleEntry->effect_visual)
     {
-        case 1: /* nullsub */
-            break;
         case VEHICLE_VISUAL_SPLASH1_EFFECT:
             vehicle_visual_splash1_effect(session, z, vehicle);
             break;
@@ -3091,9 +3089,6 @@ void vehicle_visual_splash_effect(
             break;
         case VEHICLE_VISUAL_SPLASH5_EFFECT:
             vehicle_visual_splash5_effect(session, z, vehicle);
-            break;
-        default:
-            assert(false);
             break;
     }
 }
@@ -3143,13 +3138,19 @@ void vehicle_paint(paint_session* session, const rct_vehicle* vehicle, int32_t i
         {
             return;
         }
-        vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
+        auto vehicleEntryIndex = vehicle->vehicle_type;
         if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
         {
-            vehicleEntry++;
+            vehicleEntryIndex++;
             z += 16;
         }
+
+        if (vehicleEntryIndex >= std::size(rideEntry->vehicles))
+        {
+            return;
+        }
+        vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
     }
 
     switch (vehicleEntry->car_visual)
