@@ -2626,27 +2626,30 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
         case BREAKDOWN_DOORS_STUCK_OPEN:
             // Choose a random train and car
             choose_random_train_to_breakdown_safe(ride);
-            ride->broken_car = scenario_rand() % ride->num_cars_per_train;
-
-            // Set flag on broken car
-            vehicleSpriteIdx = ride->vehicles[ride->broken_vehicle];
-            if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
+            if (ride->num_cars_per_train != 0)
             {
-                vehicle = GET_VEHICLE(vehicleSpriteIdx);
-                for (i = ride->broken_car; i > 0; i--)
+                ride->broken_car = scenario_rand() % ride->num_cars_per_train;
+
+                // Set flag on broken car
+                vehicleSpriteIdx = ride->vehicles[ride->broken_vehicle];
+                if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
                 {
-                    if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
+                    vehicle = GET_VEHICLE(vehicleSpriteIdx);
+                    for (i = ride->broken_car; i > 0; i--)
                     {
-                        vehicle = nullptr;
-                        break;
+                        if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
+                        {
+                            vehicle = nullptr;
+                            break;
+                        }
+                        else
+                        {
+                            vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+                        }
                     }
-                    else
-                    {
-                        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
-                    }
+                    if (vehicle != nullptr)
+                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_CAR;
                 }
-                if (vehicle != nullptr)
-                    vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_CAR;
             }
             break;
         case BREAKDOWN_VEHICLE_MALFUNCTION:
