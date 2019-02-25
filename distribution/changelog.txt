@@ -26,6 +26,7 @@
 - Change: [#8718] No longer require the generic scenery groups and tarmac footpath to be checked when creating a scenario.
 - Change: [#8734] Disable kick button in multiplayer window when unable to use it.
 - Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.
+- Fix: [#4094] Coasters with long flat-to-steep pieces offer them in diagonal mode (original bug).
 - Fix: [#5684] Player list can desync between clients and server and can crash.
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
 - Fix: [#7439] Placement messages have mixed strings
