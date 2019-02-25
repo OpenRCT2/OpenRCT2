@@ -9,7 +9,6 @@
 
 #include "Ride.h"
 
-#include "../actions/RideEntranceExitRemoveAction.hpp"
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Editor.h"
@@ -18,6 +17,7 @@
 #include "../OpenRCT2.h"
 #include "../actions/RideSetSetting.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
+#include "../actions/RideEntranceExitRemoveAction.hpp"
 #include "../actions/TrackRemoveAction.hpp"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -62,13 +62,52 @@ public:
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
-            gGameCommandErrorText = STR_MUST_BE_CLOSED_FIRST;
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_MUST_BE_CLOSED_FIRST);
         }
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NOT_ALLOWED_TO_MODIFY_STATION);
+        }
+
+        bool found = false;
+        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
+
+        do
+        {
+            if (tileElement == nullptr)
+                break;
+
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+                continue;
+
+            if (tile_element_get_ride_index(tileElement) != _rideIndex)
+                continue;
+
+            if (tileElement->AsEntrance()->GetStationIndex() != _stationNum)
+                continue;
+
+            if ((GetFlags() & GAME_COMMAND_FLAG_5) && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+                continue;
+
+            if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                continue;
+
+            if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE && _isExit)
+                continue;
+
+            if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT && !_isExit)
+                continue;
+
+            found = true;
+            break;
+        } while (!(tileElement++)->IsLastForTile());
+
+        if (!found)
+        {
+            log_warning(
+                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, _rideIndex, _stationNum);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         return MakeResult();
