@@ -883,6 +883,7 @@ enum
     TRACK_SELECTION_FLAG_TRACK = 1 << 1,
     TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT = 1 << 2,
     TRACK_SELECTION_FLAG_RECHECK = 1 << 3,
+    TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED = 1 << 4,
 };
 
 enum
@@ -955,13 +956,11 @@ extern uint16_t _numCurrentPossibleRideConfigurations;
 extern uint16_t _numCurrentPossibleSpecialTrackPieces;
 
 extern uint16_t _currentTrackCurve;
-extern uint16_t _currentTrackEndX;
-extern uint16_t _currentTrackEndY;
 extern uint8_t _rideConstructionState;
 extern ride_id_t _currentRideIndex;
-extern uint16_t _currentTrackBeginX;
-extern uint16_t _currentTrackBeginY;
-extern uint16_t _currentTrackBeginZ;
+
+extern CoordsXYZ _currentTrackBegin;
+
 extern uint8_t _currentTrackPieceDirection;
 extern uint8_t _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
@@ -975,9 +974,7 @@ extern uint8_t _selectedTrackType;
 extern uint8_t _previousTrackBankEnd;
 extern uint8_t _previousTrackSlopeEnd;
 
-extern uint16_t _previousTrackPieceX;
-extern uint16_t _previousTrackPieceY;
-extern uint16_t _previousTrackPieceZ;
+extern CoordsXYZ _previousTrackPiece;
 
 extern uint8_t _currentBrakeSpeed2;
 extern uint8_t _currentSeatRotationAngle;
@@ -993,11 +990,6 @@ extern uint8_t gRideEntranceExitPlacePreviousRideConstructionState;
 extern uint8_t gRideEntranceExitPlaceDirection;
 
 extern bool gGotoStartPlacementMode;
-extern int32_t gRideRemoveTrackPieceCallbackX;
-extern int32_t gRideRemoveTrackPieceCallbackY;
-extern int32_t gRideRemoveTrackPieceCallbackZ;
-extern int32_t gRideRemoveTrackPieceCallbackDirection;
-extern int32_t gRideRemoveTrackPieceCallbackType;
 
 extern uint8_t gLastEntranceStyle;
 
@@ -1069,12 +1061,6 @@ rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
 void game_command_create_ride(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_callback_ride_construct_new(
     int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
-void game_command_callback_ride_construct_placed_front(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
-void game_command_callback_ride_construct_placed_back(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
-void game_command_callback_ride_remove_track_piece(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
 void game_command_demolish_ride(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex, uint8_t* outRideColour);
@@ -1137,8 +1123,6 @@ void ride_get_entrance_or_exit_position_from_screen_position(
 
 bool ride_select_backwards_from_front();
 bool ride_select_forwards_from_back();
-
-money32 ride_remove_track_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type, uint8_t flags);
 
 bool ride_are_all_possible_entrances_and_exits_built(Ride* ride);
 void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);

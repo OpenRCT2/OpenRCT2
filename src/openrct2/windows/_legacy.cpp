@@ -11,6 +11,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../actions/TrackPlaceAction.hpp"
 #include "../audio/audio.h"
 #include "../interface/Viewport.h"
 #include "../network/network.h"
@@ -174,9 +175,12 @@ money32 place_provisional_track_piece(
     }
     else
     {
-        result = game_do_command(
-            x, 105 | (trackDirection << 8), y, rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16),
-            GAME_COMMAND_PLACE_TRACK, z, 0);
+        auto trackPlaceAction = TrackPlaceAction(
+            rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, 0, 0, 0, liftHillAndAlternativeState);
+        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+        // This command must not be sent over the network
+        auto res = GameActions::Execute(&trackPlaceAction);
+        result = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
         if (result == MONEY32_UNDEFINED)
             return result;
 
@@ -408,9 +412,9 @@ bool window_ride_construction_update_state(
 
     const rct_track_coordinates* trackCoordinates = get_track_coord_from_ride(ride, trackType);
 
-    x = _currentTrackBeginX;
-    y = _currentTrackBeginY;
-    z = _currentTrackBeginZ;
+    x = _currentTrackBegin.x;
+    y = _currentTrackBegin.y;
+    z = _currentTrackBegin.z;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         z -= trackCoordinates->z_end;
@@ -548,7 +552,7 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
     if (gGotoStartPlacementMode)
     {
         z &= 0xFFF0;
-        _currentTrackBeginZ = z;
+        _currentTrackBegin.z = z;
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackSelectionFlags = 0;
         _rideConstructionArrowPulseTime = 0;
@@ -602,9 +606,9 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
             // rideConstructionState needs to be set again to the proper value, this only affects the client
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
         }
-        _currentTrackBeginX = x;
-        _currentTrackBeginY = y;
-        _currentTrackBeginZ = z;
+        _currentTrackBegin.x = x;
+        _currentTrackBegin.y = y;
+        _currentTrackBegin.z = z;
         _currentTrackPieceDirection = direction;
         _currentTrackPieceType = type;
         _currentTrackSelectionFlags = 0;

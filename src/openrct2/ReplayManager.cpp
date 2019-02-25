@@ -15,6 +15,7 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "actions/GameAction.h"
+#include "actions/TrackPlaceAction.hpp"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
@@ -475,6 +476,22 @@ namespace OpenRCT2
             {
                 case GAME_COMMAND_COUNT: // prevent default without case warning.
                     break;
+                case GAME_COMMAND_PLACE_TRACK:
+                {
+                    ride_id_t rideId = command.edx & 0xFF;
+                    int32_t trackType = (command.edx >> 8) & 0xFF;
+                    CoordsXYZD origin = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF),
+                                          (int32_t)(command.edi & 0xFFFF), (uint8_t)((command.ebx >> 8) & 0xFF) };
+                    int32_t brakeSpeed = (command.edi >> 16) & 0xFF;
+                    int32_t colour = (command.edi >> 24) & 0x0F;
+                    int32_t seatRotation = (command.edi >> 28) & 0x0F;
+                    int32_t liftHillAndAlternativeState = (command.edx >> 16);
+
+                    result.action = std::make_unique<TrackPlaceAction>(
+                        rideId, trackType, origin, brakeSpeed, colour, seatRotation, liftHillAndAlternativeState);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
                 default:
                     throw std::runtime_error("Deprecated game command requires replay translation.");
             }

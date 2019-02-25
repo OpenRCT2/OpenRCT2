@@ -318,6 +318,11 @@ namespace GameActions
                     {
                         network_add_player_money_spent(playerIndex, result->Cost);
                     }
+
+                    if (result->Position.x != LOCATION_NULL)
+                    {
+                        network_set_player_last_action_coord(playerId, gCommandPosition);
+                    }
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)
                 {

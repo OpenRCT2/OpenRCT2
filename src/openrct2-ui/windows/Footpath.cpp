@@ -719,8 +719,8 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    int32_t interactionType;
-    TileElement* tileElement;
+    int32_t interactionType{};
+    TileElement* tileElement{};
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
         x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
@@ -728,7 +728,7 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     x = mapCoord.x;
     y = mapCoord.y;
 
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE || tileElement == nullptr)
     {
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         footpath_provisional_update();
@@ -757,13 +757,27 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
         switch (interactionType)
         {
             case VIEWPORT_INTERACTION_ITEM_TERRAIN:
-                slope = DefaultPathSlope[tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+            {
+                auto surfaceElement = tileElement->AsSurface();
+                if (surfaceElement != nullptr)
+                {
+                    slope = DefaultPathSlope[surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+                }
                 break;
+            }
             case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-                slope = tileElement->AsPath()->GetSlopeDirection();
-                if (tileElement->AsPath()->IsSloped())
-                    slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+            {
+                auto pathElement = tileElement->AsPath();
+                if (pathElement != nullptr)
+                {
+                    slope = pathElement->GetSlopeDirection();
+                    if (pathElement->IsSloped())
+                    {
+                        slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+                    }
+                }
                 break;
+            }
         }
         uint8_t z = tileElement->base_height;
         if (slope & RAISE_FOOTPATH_FLAG)

@@ -739,14 +739,14 @@ namespace OpenRCT2
                             gNetworkStartPort = gConfigNetwork.default_port;
                         }
 
-                        if (String::IsNullOrEmpty(gNetworkStartAddress))
+                        if (gNetworkStartAddress.empty())
                         {
                             gNetworkStartAddress = gConfigNetwork.listen_address;
                         }
 
                         if (String::IsNullOrEmpty(gCustomPassword))
                         {
-                            network_set_password(gConfigNetwork.default_password);
+                            network_set_password(gConfigNetwork.default_password.c_str());
                         }
                         else
                         {

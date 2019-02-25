@@ -277,8 +277,7 @@ void S6Exporter::Export()
     // pad_013580FA
     _s6.objective_currency = gScenarioObjectiveCurrency;
     _s6.objective_guests = gScenarioObjectiveNumGuests;
-    std::memcpy(_s6.campaign_weeks_left, gMarketingCampaignDaysLeft, sizeof(_s6.campaign_weeks_left));
-    std::memcpy(_s6.campaign_ride_index, gMarketingCampaignRideIndex, sizeof(_s6.campaign_ride_index));
+    ExportMarketingCampaigns();
 
     std::memcpy(_s6.balance_history, gCashHistory, sizeof(_s6.balance_history));
 
@@ -744,6 +743,24 @@ void S6Exporter::ExportResearchedSceneryItems()
 void S6Exporter::ExportResearchList()
 {
     std::memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
+}
+
+void S6Exporter::ExportMarketingCampaigns()
+{
+    std::memset(_s6.campaign_weeks_left, 0, sizeof(_s6.campaign_weeks_left));
+    std::memset(_s6.campaign_ride_index, 0, sizeof(_s6.campaign_ride_index));
+    for (const auto& campaign : gMarketingCampaigns)
+    {
+        _s6.campaign_weeks_left[campaign.Type] = campaign.WeeksLeft;
+        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        {
+            _s6.campaign_ride_index[campaign.Type] = campaign.RideId;
+        }
+        else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+        {
+            _s6.campaign_ride_index[campaign.Type] = campaign.ShopItemType;
+        }
+    }
 }
 
 enum : uint32_t

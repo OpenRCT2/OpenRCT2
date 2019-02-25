@@ -2881,9 +2881,9 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
     }
 
     int16_t z = tile_element->base_height * 8;
-    if (!map_is_location_owned(x, y, z))
+    if (map_is_location_owned(x, y, z))
     {
-        if (peep->outside_of_park == 0)
+        if (peep->outside_of_park == 1)
         {
             peep_return_to_centre_of_tile(peep);
             return;
@@ -2891,7 +2891,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
     }
     else
     {
-        if (peep->outside_of_park == 1)
+        if (peep->outside_of_park == 0)
         {
             peep_return_to_centre_of_tile(peep);
             return;
@@ -2900,9 +2900,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
 
     if (peep->type == PEEP_TYPE_GUEST && tile_element->AsPath()->IsQueue())
     {
-        ride_id_t rideIndex = tile_element->AsPath()->GetRideIndex();
-        auto ride = get_ride(rideIndex);
-
+        auto rideIndex = tile_element->AsPath()->GetRideIndex();
         if (peep->state == PEEP_STATE_QUEUING)
         {
             // Check if this queue is connected to the ride the
@@ -2911,74 +2909,79 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
             if (peep->current_ride == rideIndex)
             {
                 peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
-                return;
             }
-            // Queue got disconnected from the original ride.
-            peep->interaction_ride_index = 0xFF;
-            peep->RemoveFromQueue();
-            peep->SetState(PEEP_STATE_1);
-            peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
-            return;
-        }
-
-        // Peep is not queuing.
-        peep->time_lost = 0;
-        uint8_t stationNum = tile_element->AsPath()->GetStationIndex();
-
-        if ((tile_element->AsPath()->HasQueueBanner())
-            && (tile_element->AsPath()->GetQueueBannerDirection()
-                == direction_reverse(peep->direction)) // Ride sign is facing the direction the peep is walking
-        )
-        {
-            /* Peep is approaching the entrance of a ride queue.
-             * Decide whether to go on the ride. */
-            if (!peep->ShouldGoOnRide(ride, stationNum, true, false))
+            else
             {
-                // Peep has decided not to go on the ride.
-                peep_return_to_centre_of_tile(peep);
-                return;
+                // Queue got disconnected from the original ride.
+                peep->interaction_ride_index = 0xFF;
+                peep->RemoveFromQueue();
+                peep->SetState(PEEP_STATE_1);
+                peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
             }
         }
         else
         {
-            /* Peep is approaching a queue tile without a ride
-             * sign facing the peep. */
-            peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
-            return;
-        }
+            // Peep is not queuing.
+            peep->time_lost = 0;
+            uint8_t stationNum = tile_element->AsPath()->GetStationIndex();
 
-        // Peep has decided to go on the ride at the queue.
-        peep->interaction_ride_index = rideIndex;
-
-        // Add the peep to the ride queue.
-        uint16_t old_last_peep = ride->stations[stationNum].LastPeepInQueue;
-        ride->stations[stationNum].LastPeepInQueue = peep->sprite_index;
-        peep->next_in_queue = old_last_peep;
-        ride->stations[stationNum].QueueLength++;
-
-        peep_decrement_num_riders(peep);
-        peep->current_ride = rideIndex;
-        peep->current_ride_station = stationNum;
-        peep->state = PEEP_STATE_QUEUING;
-        peep->days_in_queue = 0;
-        peep_window_state_update(peep);
-
-        peep->sub_state = 10;
-        peep->destination_tolerance = 2;
-        peep->time_in_queue = 0;
-        if (peep->peep_flags & PEEP_FLAGS_TRACKING)
-        {
-            set_format_arg(0, rct_string_id, peep->name_string_idx);
-            set_format_arg(2, uint32_t, peep->id);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
-            if (gConfigNotifications.guest_queuing_for_ride)
+            if ((tile_element->AsPath()->HasQueueBanner())
+                && (tile_element->AsPath()->GetQueueBannerDirection()
+                    == direction_reverse(peep->direction)) // Ride sign is facing the direction the peep is walking
+            )
             {
-                news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+                /* Peep is approaching the entrance of a ride queue.
+                 * Decide whether to go on the ride. */
+                auto ride = get_ride(rideIndex);
+                if (ride != nullptr && peep->ShouldGoOnRide(ride, stationNum, true, false))
+                {
+                    // Peep has decided to go on the ride at the queue.
+                    peep->interaction_ride_index = rideIndex;
+
+                    // Add the peep to the ride queue.
+                    uint16_t old_last_peep = ride->stations[stationNum].LastPeepInQueue;
+                    ride->stations[stationNum].LastPeepInQueue = peep->sprite_index;
+                    peep->next_in_queue = old_last_peep;
+                    ride->stations[stationNum].QueueLength++;
+
+                    peep_decrement_num_riders(peep);
+                    peep->current_ride = rideIndex;
+                    peep->current_ride_station = stationNum;
+                    peep->state = PEEP_STATE_QUEUING;
+                    peep->days_in_queue = 0;
+                    peep_window_state_update(peep);
+
+                    peep->sub_state = 10;
+                    peep->destination_tolerance = 2;
+                    peep->time_in_queue = 0;
+                    if (peep->peep_flags & PEEP_FLAGS_TRACKING)
+                    {
+                        set_format_arg(0, rct_string_id, peep->name_string_idx);
+                        set_format_arg(2, uint32_t, peep->id);
+                        set_format_arg(6, rct_string_id, ride->name);
+                        set_format_arg(8, uint32_t, ride->name_arguments);
+                        if (gConfigNotifications.guest_queuing_for_ride)
+                        {
+                            news_item_add_to_queue(
+                                NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+                        }
+                    }
+
+                    peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+                }
+                else
+                {
+                    // Peep has decided not to go on the ride.
+                    peep_return_to_centre_of_tile(peep);
+                }
+            }
+            else
+            {
+                /* Peep is approaching a queue tile without a ride
+                 * sign facing the peep. */
+                peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
             }
         }
-
-        peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
     }
     else
     {

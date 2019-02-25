@@ -879,6 +879,9 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
     if (vehicle->sprite_left == LOCATION_NULL)
         return;
 
+    if (g_music_tracking_viewport == nullptr)
+        return;
+
     int16_t left = g_music_tracking_viewport->view_x;
     int16_t bottom = g_music_tracking_viewport->view_y;
     int16_t quarter_w = g_music_tracking_viewport->view_width / 4;
@@ -4656,6 +4659,9 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
     TileElement* tileElement = map_get_first_element_at(location.x, location.y);
     do
     {
+        if (tileElement->IsGhost() == true)
+            continue;
+
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         {
             int32_t waterZ = tileElement->AsSurface()->GetWaterHeight() * 2;

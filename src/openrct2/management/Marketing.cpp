@@ -30,20 +30,21 @@ const money16 AdvertisingCampaignPricePerWeek[] = {
     MONEY(200, 00), // RIDE
 };
 
-static constexpr const int32_t AdvertisingCampaignGuestGenerationProbabilities[] = {
+static constexpr const uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
     400, 300, 200, 200, 250, 200,
 };
 
-uint8_t gMarketingCampaignDaysLeft[20];
-ride_id_t gMarketingCampaignRideIndex[22];
+std::vector<MarketingCampaign> gMarketingCampaigns;
 
-int32_t marketing_get_campaign_guest_generation_probability(int32_t campaign)
+uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignType)
 {
-    int32_t probability = AdvertisingCampaignGuestGenerationProbabilities[campaign];
-    Ride* ride;
+    auto campaign = marketing_get_campaign(campaignType);
+    if (campaign == nullptr)
+        return 0;
 
     // Lower probability of guest generation if price was already low
-    switch (campaign)
+    auto probability = AdvertisingCampaignGuestGenerationProbabilities[campaign->Type];
+    switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
             if (park_get_entrance_fee() < MONEY(4, 00))
@@ -54,13 +55,35 @@ int32_t marketing_get_campaign_guest_generation_probability(int32_t campaign)
                 probability /= 8;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
-            ride = get_ride(gMarketingCampaignRideIndex[campaign]);
-            if (ride->price < MONEY(0, 30))
+        {
+            auto ride = get_ride(campaign->RideId);
+            if (ride == nullptr || ride->price < MONEY(0, 30))
                 probability /= 8;
             break;
+        }
     }
 
     return probability;
+}
+
+static void marketing_raise_finished_notification(const MarketingCampaign& campaign)
+{
+    if (gConfigNotifications.park_marketing_campaign_finished)
+    {
+        // This sets the string parameters for the marketing types that have an argument.
+        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        {
+            Ride* ride = get_ride(campaign.RideId);
+            set_format_arg(0, rct_string_id, ride->name);
+            set_format_arg(2, uint32_t, ride->name_arguments);
+        }
+        else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+        {
+            set_format_arg(0, rct_string_id, ShopItemStringIds[campaign.ShopItemType].plural);
+        }
+
+        news_item_add_to_queue(NEWS_ITEM_MONEY, MarketingCampaignNames[campaign.Type][2], 0);
+    }
 }
 
 /**
@@ -69,50 +92,44 @@ int32_t marketing_get_campaign_guest_generation_probability(int32_t campaign)
  */
 void marketing_update()
 {
-    for (int32_t campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++)
+    if (gCheatsNeverendingMarketing)
+        return;
+
+    for (auto it = gMarketingCampaigns.begin(); it != gMarketingCampaigns.end();)
     {
-        if (gCheatsNeverendingMarketing)
-            continue;
-
-        int32_t active = (gMarketingCampaignDaysLeft[campaign] & CAMPAIGN_ACTIVE_FLAG) != 0;
-        if (gMarketingCampaignDaysLeft[campaign] == 0)
-            continue;
-
-        window_invalidate_by_class(WC_FINANCES);
-
-        // High bit marks the campaign as inactive, on first check the campaign is set active
-        // this makes campaigns run a full x weeks even when started in the middle of a week
-        gMarketingCampaignDaysLeft[campaign] &= ~CAMPAIGN_ACTIVE_FLAG;
-        if (active)
-            continue;
-
-        if (--gMarketingCampaignDaysLeft[campaign] != 0)
-            continue;
-
-        int32_t campaignItem = gMarketingCampaignRideIndex[campaign];
-
-        // This sets the string parameters for the marketing types that have an argument.
-        if (campaign == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign == ADVERTISING_CAMPAIGN_RIDE)
+        auto& campaign = *it;
+        if (campaign.Flags & MarketingCampaignFlags::FIRST_WEEK)
         {
-            Ride* ride = get_ride(campaignItem);
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            // This ensures the campaign is active for x full weeks if started within the
+            // middle of a week.
+            campaign.Flags &= ~MarketingCampaignFlags::FIRST_WEEK;
         }
-        else if (campaign == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+        else if (campaign.WeeksLeft > 0)
         {
-            set_format_arg(0, rct_string_id, ShopItemStringIds[campaignItem].plural);
+            campaign.WeeksLeft--;
         }
 
-        if (gConfigNotifications.park_marketing_campaign_finished)
+        if (campaign.WeeksLeft == 0)
         {
-            news_item_add_to_queue(NEWS_ITEM_MONEY, MarketingCampaignNames[campaign][2], 0);
+            marketing_raise_finished_notification(campaign);
+            it = gMarketingCampaigns.erase(it);
+        }
+        else
+        {
+            ++it;
         }
     }
+
+    window_invalidate_by_class(WC_FINANCES);
 }
 
-void marketing_set_guest_campaign(rct_peep* peep, int32_t campaign)
+void marketing_set_guest_campaign(rct_peep* peep, int32_t campaignType)
 {
-    switch (campaign)
+    auto campaign = marketing_get_campaign(campaignType);
+    if (campaign == nullptr)
+        return;
+
+    switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
             peep->item_standard_flags |= PEEP_ITEM_VOUCHER;
@@ -121,8 +138,8 @@ void marketing_set_guest_campaign(rct_peep* peep, int32_t campaign)
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
             peep->item_standard_flags |= PEEP_ITEM_VOUCHER;
             peep->voucher_type = VOUCHER_TYPE_RIDE_FREE;
-            peep->voucher_arguments = gMarketingCampaignRideIndex[campaign];
-            peep->guest_heading_to_ride_id = gMarketingCampaignRideIndex[campaign];
+            peep->voucher_arguments = campaign->RideId;
+            peep->guest_heading_to_ride_id = campaign->RideId;
             peep->peep_is_lost_countdown = 240;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
@@ -132,12 +149,12 @@ void marketing_set_guest_campaign(rct_peep* peep, int32_t campaign)
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
             peep->item_standard_flags |= PEEP_ITEM_VOUCHER;
             peep->voucher_type = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
-            peep->voucher_arguments = gMarketingCampaignRideIndex[campaign];
+            peep->voucher_arguments = campaign->ShopItemType;
             break;
         case ADVERTISING_CAMPAIGN_PARK:
             break;
         case ADVERTISING_CAMPAIGN_RIDE:
-            peep->guest_heading_to_ride_id = gMarketingCampaignRideIndex[campaign];
+            peep->guest_heading_to_ride_id = campaign->RideId;
             peep->peep_is_lost_countdown = 240;
             break;
     }
@@ -192,5 +209,31 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
 
         default:
             return true;
+    }
+}
+
+MarketingCampaign* marketing_get_campaign(int32_t campaignType)
+{
+    for (auto& campaign : gMarketingCampaigns)
+    {
+        if (campaign.Type == campaignType)
+        {
+            return &campaign;
+        }
+    }
+    return nullptr;
+}
+
+void marketing_new_campaign(const MarketingCampaign& campaign)
+{
+    // Do not allow same campaign twice, just overwrite
+    auto currentCampaign = marketing_get_campaign(campaign.Type);
+    if (currentCampaign != nullptr)
+    {
+        *currentCampaign = campaign;
+    }
+    else
+    {
+        gMarketingCampaigns.push_back(campaign);
     }
 }

@@ -35,7 +35,6 @@ static int32_t _numAvailableObjectsForType[OBJECT_TYPE_COUNT];
 static void setup_in_use_selection_flags();
 static void setup_track_designer_objects();
 static void setup_track_manager_objects();
-static void window_editor_object_selection_select_required_objects();
 static void window_editor_object_selection_select_default_objects();
 
 /**
@@ -253,8 +252,6 @@ void sub_6AB211()
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
-        window_editor_object_selection_select_required_objects();
-
         // To prevent it breaking in scenario mode.
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         {
@@ -347,16 +344,6 @@ static void window_editor_object_selection_select_default_objects()
             window_editor_object_selection_select_object(0, 7, &defaultSelectedObject);
         }
     }
-}
-
-/**
- *
- *  rct2: 0x006AA7E9
- */
-static void window_editor_object_selection_select_required_objects()
-{
-    for (size_t i = 0; i < std::size(RequiredSelectedObjects); i++)
-        window_editor_object_selection_select_object(0, 0xF, &RequiredSelectedObjects[i]);
 }
 
 /**

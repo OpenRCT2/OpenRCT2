@@ -1849,10 +1849,23 @@ private:
         gTotalIncomeFromAdmissions = _s4.admission_total_income;
 
         // TODO marketing campaigns not working
-        for (size_t i = 0; i < 6; i++)
+        for (size_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
-            gMarketingCampaignDaysLeft[i] = _s4.marketing_status[i];
-            gMarketingCampaignRideIndex[i] = _s4.marketing_assoc[i];
+            if (_s4.marketing_status[i] & CAMPAIGN_ACTIVE_FLAG)
+            {
+                MarketingCampaign campaign;
+                campaign.Type = (uint8_t)i;
+                campaign.WeeksLeft = _s4.marketing_status[i] & ~CAMPAIGN_ACTIVE_FLAG;
+                if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+                {
+                    campaign.RideId = _s4.marketing_assoc[i];
+                }
+                else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+                {
+                    campaign.ShopItemType = _s4.marketing_assoc[i];
+                }
+                gMarketingCampaigns.push_back(campaign);
+            }
         }
     }
 

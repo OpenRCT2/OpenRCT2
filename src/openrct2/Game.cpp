@@ -88,9 +88,9 @@ GAME_COMMAND_CALLBACK_POINTER * game_command_callback = nullptr;
 static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     nullptr,
     nullptr,
-    game_command_callback_ride_construct_placed_front,
-    game_command_callback_ride_construct_placed_back,
-    game_command_callback_ride_remove_track_piece,
+    nullptr,
+    nullptr,
+    nullptr,
     game_command_callback_place_banner,
     game_command_callback_place_ride_entrance_or_exit,
     game_command_callback_hire_new_staff_member,
@@ -731,29 +731,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
             network_append_server_log(log_msg);
         }
     }
-    else if (command == GAME_COMMAND_PLACE_TRACK)
-    {
-        // Get ride name
-        int ride_index = *edx & 0xFF;
-        Ride* ride = get_ride(ride_index);
-        char ride_name[128];
-        format_string(ride_name, 128, ride->name, &ride->name_arguments);
-
-        char* args[2] = {
-            (char*)player_name,
-            ride_name,
-        };
-        format_string(log_msg, 256, STR_LOG_PLACE_TRACK, args);
-        network_append_server_log(log_msg);
-    }
-    else if (command == GAME_COMMAND_REMOVE_TRACK)
-    {
-        char* args[1] = {
-            (char*)player_name,
-        };
-        format_string(log_msg, 256, STR_LOG_REMOVE_TRACK, args);
-        network_append_server_log(log_msg);
-    }
 }
 
 void pause_toggle()
@@ -1338,8 +1315,8 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_place_track,
-    game_command_remove_track,
+    nullptr,
+    nullptr,
     game_load_or_quit,
     game_command_create_ride,
     game_command_demolish_ride,

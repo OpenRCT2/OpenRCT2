@@ -295,8 +295,7 @@ public:
         // pad_013580FA
         gScenarioObjectiveCurrency = _s6.objective_currency;
         gScenarioObjectiveNumGuests = _s6.objective_guests;
-        std::memcpy(gMarketingCampaignDaysLeft, _s6.campaign_weeks_left, sizeof(_s6.campaign_weeks_left));
-        std::memcpy(gMarketingCampaignRideIndex, _s6.campaign_ride_index, sizeof(_s6.campaign_ride_index));
+        ImportMarketingCampaigns();
 
         gCurrentExpenditure = _s6.current_expenditure;
         gCurrentProfit = _s6.current_profit;
@@ -1026,6 +1025,28 @@ public:
             }
             default:
                 assert(false);
+        }
+    }
+
+    void ImportMarketingCampaigns()
+    {
+        for (size_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
+        {
+            if (_s6.campaign_weeks_left[i] & CAMPAIGN_ACTIVE_FLAG)
+            {
+                MarketingCampaign campaign{};
+                campaign.Type = (uint8_t)i;
+                campaign.WeeksLeft = _s6.campaign_weeks_left[i] & ~CAMPAIGN_ACTIVE_FLAG;
+                if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+                {
+                    campaign.RideId = _s6.campaign_ride_index[i];
+                }
+                else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+                {
+                    campaign.ShopItemType = _s6.campaign_ride_index[i];
+                }
+                gMarketingCampaigns.push_back(campaign);
+            }
         }
     }
 };

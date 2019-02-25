@@ -68,8 +68,18 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        gMarketingCampaignDaysLeft[_type] = _numWeeks | CAMPAIGN_ACTIVE_FLAG;
-        gMarketingCampaignRideIndex[_type] = _item;
+        MarketingCampaign campaign{};
+        campaign.Type = _type;
+        campaign.WeeksLeft = _numWeeks;
+        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        {
+            campaign.RideId = _item;
+        }
+        else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+        {
+            campaign.ShopItemType = _item;
+        }
+        marketing_new_campaign(campaign);
 
         // We are only interested in invalidating the finances (marketing) window
         auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();

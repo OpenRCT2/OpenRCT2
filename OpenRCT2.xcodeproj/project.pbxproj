@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -21,12 +21,17 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		2A1F4FE0221FF4B0003CA045 /* Twitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */; };
+		2A1F4FE1221FF4B0003CA045 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
+		2A1F4FE2221FF4B0003CA045 /* macos.mm in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.mm */; };
 		2A5354E922099C4F00A5440F /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5354E822099C4F00A5440F /* Network.cpp */; };
+		2A5C1368221E9F9000F8C245 /* TrackRemoveAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */; };
 		2AA050322209A8E300D3A922 /* StaffSetCostumeAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */; };
 		2AA050332209A8E300D3A922 /* StaffSetOrdersAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AA050312209A8E300D3A922 /* StaffSetOrdersAction.hpp */; };
-		2AAFD800220DD3D2002461A4 /* LandSetHeightAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */; };
+		2AAFD7FA220DD2DC002461A4 /* TrackPlaceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7F9220DD2DC002461A4 /* TrackPlaceAction.hpp */; };
 		2AAFD7FC220DD336002461A4 /* RideSetPriceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */; };
 		2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */; };
+		2AAFD800220DD3D2002461A4 /* LandSetHeightAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */; };
 		2AF7893D220B253E0072754A /* RideSetAppearanceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
@@ -413,7 +418,6 @@
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
 		F70839931FFC0B61002DCEFA /* Scenario.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F70839911FFC0AFF002DCEFA /* Scenario.cpp */; };
-		F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
 		F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835B1EC4E7CC00FA49E2 /* AudioMixer.cpp */; };
 		F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835E1EC4E7CC00FA49E2 /* NullAudioSource.cpp */; };
 		F76C85BA1EC4E88300FA49E2 /* CommandLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83631EC4E7CC00FA49E2 /* CommandLine.cpp */; };
@@ -455,7 +459,6 @@
 		F76C86581EC4E88300FA49E2 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84091EC4E7CC00FA49E2 /* NetworkUser.cpp */; };
 		F76C865A1EC4E88300FA49E2 /* ServerList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840B1EC4E7CC00FA49E2 /* ServerList.cpp */; };
 		F76C865C1EC4E88300FA49E2 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */; };
-		F76C865E1EC4E88300FA49E2 /* Twitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */; };
 		F76C86601EC4E88300FA49E2 /* BannerObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */; };
 		F76C86621EC4E88300FA49E2 /* EntranceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84141EC4E7CC00FA49E2 /* EntranceObject.cpp */; };
 		F76C86641EC4E88300FA49E2 /* FootpathItemObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84161EC4E7CC00FA49E2 /* FootpathItemObject.cpp */; };
@@ -475,7 +478,6 @@
 		F76C86861EC4E88400FA49E2 /* OpenRCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */; };
 		F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */; };
 		F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */; };
-		F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.mm */; };
 		F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */; };
 		F76C86AF1EC4E88400FA49E2 /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84671EC4E7CC00FA49E2 /* S4Importer.cpp */; };
 		F76C86B01EC4E88400FA49E2 /* Tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84681EC4E7CC00FA49E2 /* Tables.cpp */; };
@@ -622,11 +624,13 @@
 		2A5354E822099C4F00A5440F /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
 		2A5354EA22099C7200A5440F /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		2A5354EB22099D7700A5440F /* SignSetStyleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SignSetStyleAction.hpp; sourceTree = "<group>"; };
+		2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackRemoveAction.hpp; sourceTree = "<group>"; };
 		2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetCostumeAction.hpp; sourceTree = "<group>"; };
 		2AA050312209A8E300D3A922 /* StaffSetOrdersAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetOrdersAction.hpp; sourceTree = "<group>"; };
-		2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSetHeightAction.hpp; sourceTree = "<group>"; };
+		2AAFD7F9220DD2DC002461A4 /* TrackPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackPlaceAction.hpp; sourceTree = "<group>"; };
 		2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetPriceAction.hpp; sourceTree = "<group>"; };
 		2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PauseToggleAction.hpp; sourceTree = "<group>"; };
+		2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSetHeightAction.hpp; sourceTree = "<group>"; };
 		2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetAppearanceAction.hpp; sourceTree = "<group>"; };
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
@@ -2006,9 +2010,11 @@
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */,
 				2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */,
 				2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */,
 				2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */,
+				2AAFD7F9220DD2DC002461A4 /* TrackPlaceAction.hpp */,
 				2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */,
 				2A5354EB22099D7700A5440F /* SignSetStyleAction.hpp */,
 				2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */,
@@ -3315,7 +3321,9 @@
 				C67B28192002D7F200109C93 /* Window_internal.h in Headers */,
 				C6352B971F477032006CCEE3 /* SetParkEntranceFeeAction.hpp in Headers */,
 				2AA050332209A8E300D3A922 /* StaffSetOrdersAction.hpp in Headers */,
+				2AAFD7FA220DD2DC002461A4 /* TrackPlaceAction.hpp in Headers */,
 				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
+				2A5C1368221E9F9000F8C245 /* TrackRemoveAction.hpp in Headers */,
 				C6352B861F477022006CCEE3 /* Endianness.h in Headers */,
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */,
@@ -3411,7 +3419,7 @@
 		D497D0701C20FD52002BF46A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = OpenRCT2;
 				TargetAttributes = {
 					C68B2D431EC790690020651C = {
@@ -3432,7 +3440,7 @@
 				};
 			};
 			buildConfigurationList = D497D0731C20FD52002BF46A /* Build configuration list for PBXProject "OpenRCT2" */;
-			compatibilityVersion = "Xcode 8.0";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -3777,9 +3785,8 @@
 				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */,
 				C6352B931F477032006CCEE3 /* GameActionRegistration.cpp in Sources */,
-				F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */,
+				2A1F4FE1221FF4B0003CA045 /* Audio.cpp in Sources */,
 				C688790920289B9B0084B384 /* WildMouse.cpp in Sources */,
-				F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */,
 				C688791420289B9B0084B384 /* Maze.cpp in Sources */,
 				C688784C202899BE0084B384 /* Game.cpp in Sources */,
 				F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */,
@@ -3892,8 +3899,7 @@
 				F76C865C1EC4E88300FA49E2 /* TcpSocket.cpp in Sources */,
 				C688784B202899B90084B384 /* Intro.cpp in Sources */,
 				C68878FD20289B9B0084B384 /* MiniRollerCoaster.cpp in Sources */,
-				F76C865E1EC4E88300FA49E2 /* Twitch.cpp in Sources */,
-				F76C865E1EC4E88300FA49E2 /* Twitch.cpp in Sources */,
+				2A1F4FE0221FF4B0003CA045 /* Twitch.cpp in Sources */,
 				93F76EF520BFF76E00D4512C /* Paint.Peep.cpp in Sources */,
 				C6887857202899FD0084B384 /* Park.cpp in Sources */,
 				F76C86601EC4E88300FA49E2 /* BannerObject.cpp in Sources */,
@@ -3963,12 +3969,11 @@
 				C688792E20289B9B0084B384 /* BoatHire.cpp in Sources */,
 				F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */,
 				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
-				F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */,
+				2A1F4FE2221FF4B0003CA045 /* macos.mm in Sources */,
 				C688789420289B140084B384 /* Screenshot.cpp in Sources */,
 				9346F9DC208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
 				C688790620289B9B0084B384 /* TwisterRollerCoaster.cpp in Sources */,
 				C688786720289A4A0084B384 /* SawyerCoding.cpp in Sources */,
-				F76C86A61EC4E88400FA49E2 /* macos.mm in Sources */,
 				93F9DA3B20B4701100D1BE92 /* StdInOutConsole.cpp in Sources */,
 				9344BEFA20C1E6180047D165 /* Crypt.OpenSSL.cpp in Sources */,
 				93F76F0520BFF77B00D4512C /* Paint.TileElement.cpp in Sources */,
@@ -4252,7 +4257,10 @@
 					"$(SRCROOT)/src/",
 				);
 				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
@@ -4291,7 +4299,10 @@
 					"$(SRCROOT)/src/",
 				);
 				INFOPLIST_FILE = "$(DERIVED_FILE_DIR)/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",

@@ -14,6 +14,8 @@
 #include "../OpenRCT2.h"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
+#include "../actions/TrackPlaceAction.hpp"
+#include "../actions/TrackRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../core/File.h"
@@ -1415,9 +1417,10 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                 const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
                 const rct_preview_track* trackBlock = trackBlockArray[trackType];
                 int32_t tempZ = z - trackCoordinates->z_begin + trackBlock->z;
-                uint8_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-                    | GAME_COMMAND_FLAG_GHOST;
-                ride_remove_track_piece(x, y, tempZ, rotation & 3, trackType, flags);
+                auto trackRemoveAction = TrackRemoveAction(trackType, 0, { x, y, tempZ, static_cast<Direction>(rotation & 3) });
+                trackRemoveAction.SetFlags(
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+                GameActions::ExecuteNested(&trackRemoveAction);
                 break;
             }
             case PTD_OPERATION_1:
@@ -1433,16 +1436,14 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                 uint32_t brakeSpeed = (track->flags & 0x0F) * 2;
                 uint32_t seatRotation = track->flags & 0x0F;
 
-                uint32_t edi = (brakeSpeed << 16) | (seatRotation << 28) | (trackColour << 24) | (tempZ & 0xFFFF);
-
-                int32_t edx = _currentRideIndex | (trackType << 8);
+                int32_t liftHillAndAlternativeState = 0;
                 if (track->flags & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
                 {
-                    edx |= 0x10000;
+                    liftHillAndAlternativeState |= 1;
                 }
                 if (track->flags & TRACK_ELEMENT_FLAG_INVERTED)
                 {
-                    edx |= 0x20000;
+                    liftHillAndAlternativeState |= 2;
                 }
 
                 uint8_t flags = GAME_COMMAND_FLAG_APPLY;
@@ -1463,7 +1464,15 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                 }
 
                 gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-                money32 cost = game_do_command(x, flags | (rotation << 8), y, edx, GAME_COMMAND_PLACE_TRACK, edi, 0);
+                auto trackPlaceAction = TrackPlaceAction(
+                    _currentRideIndex, trackType, { x, y, tempZ, static_cast<uint8_t>(rotation) }, brakeSpeed, trackColour,
+                    seatRotation, liftHillAndAlternativeState);
+                trackPlaceAction.SetFlags(flags);
+
+                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&trackPlaceAction)
+                                                           : GameActions::QueryNested(&trackPlaceAction);
+                money32 cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+
                 _trackDesignPlaceCost += cost;
                 if (cost == MONEY32_UNDEFINED)
                 {
