@@ -35,7 +35,7 @@ struct rct_preview_track
     int16_t y;     // 0x03
     int16_t z;     // 0x05
     uint8_t var_07;
-    uint8_t var_08;
+    QuarterTile var_08;
     uint8_t var_09;
 };
 

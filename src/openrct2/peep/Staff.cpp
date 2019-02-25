@@ -1729,7 +1729,7 @@ void rct_peep::UpdateEmptyingBin()
         }
 
         rct_scenery_entry* scenery_entry = tile_element->AsPath()->GetAdditionEntry();
-        if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->flags & (1 << 5)
+        if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->flags & TILE_ELEMENT_FLAG_BROKEN
             || tile_element->AsPath()->AdditionIsGhost())
         {
             StateReset();
