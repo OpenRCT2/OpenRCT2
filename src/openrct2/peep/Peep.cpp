@@ -359,6 +359,16 @@ rct_peep* rct_sprite::AsPeep()
     return result;
 }
 
+GuestPeep* rct_peep::AsGuest()
+{
+    return type == PEEP_TYPE_GUEST ? static_cast<GuestPeep*>(this) : nullptr;
+}
+
+StaffPeep* rct_peep::AsStaff()
+{
+    return type == PEEP_TYPE_STAFF ? static_cast<StaffPeep*>(this) : nullptr;
+}
+
 void rct_peep::Invalidate()
 {
     invalidate_sprite_2((rct_sprite*)this);
@@ -459,13 +469,18 @@ void peep_update_all()
  */
 static void peep_128_tick_update(rct_peep* peep, int32_t index)
 {
-    if (peep->type == PEEP_TYPE_STAFF)
+    auto guest = peep->AsGuest();
+    if (guest != nullptr)
     {
-        peep->Tick128UpdateStaff();
+        guest->Tick128UpdateGuest(index);
     }
     else
     {
-        peep->Tick128UpdateGuest(index);
+        auto staff = peep->AsStaff();
+        if (staff != nullptr)
+        {
+            staff->Tick128UpdateStaff();
+        }
     }
 }
 
@@ -741,7 +756,11 @@ void peep_window_state_update(rct_peep* peep)
 
 void rct_peep::Pickup()
 {
-    RemoveFromRide();
+    auto guest = AsGuest();
+    if (guest != nullptr)
+    {
+        guest->RemoveFromRide();
+    }
     Invalidate();
 
     sprite_move(LOCATION_NULL, y, z, (rct_sprite*)this);
@@ -933,7 +952,11 @@ void game_command_pickup_guest(
  */
 void peep_sprite_remove(rct_peep* peep)
 {
-    peep->RemoveFromRide();
+    auto guest = peep->AsGuest();
+    if (guest != nullptr)
+    {
+        guest->RemoveFromRide();
+    }
     peep->Invalidate();
 
     window_close_by_number(WC_PEEP, peep->sprite_index);
@@ -1255,76 +1278,33 @@ void rct_peep::Update()
             case PEEP_STATE_1:
                 Update1();
                 break;
-            case PEEP_STATE_QUEUING_FRONT:
-                UpdateRide();
-                break;
             case PEEP_STATE_ON_RIDE:
                 // No action
-                break;
-            case PEEP_STATE_LEAVING_RIDE:
-                UpdateRide();
-                break;
-            case PEEP_STATE_WALKING:
-                UpdateWalking();
-                break;
-            case PEEP_STATE_QUEUING:
-                UpdateQueuing();
-                break;
-            case PEEP_STATE_ENTERING_RIDE:
-                UpdateRide();
-                break;
-            case PEEP_STATE_SITTING:
-                UpdateSitting();
                 break;
             case PEEP_STATE_PICKED:
                 UpdatePicked();
                 break;
-            case PEEP_STATE_PATROLLING:
-                UpdatePatrolling();
-                break;
-            case PEEP_STATE_MOWING:
-                UpdateMowing();
-                break;
-            case PEEP_STATE_SWEEPING:
-                UpdateSweeping();
-                break;
-            case PEEP_STATE_ENTERING_PARK:
-                UpdateEnteringPark();
-                break;
-            case PEEP_STATE_LEAVING_PARK:
-                UpdateLeavingPark();
-                break;
-            case PEEP_STATE_ANSWERING:
-                UpdateAnswering();
-                break;
-            case PEEP_STATE_FIXING:
-                UpdateFixing(stepsToTake);
-                break;
-            case PEEP_STATE_BUYING:
-                UpdateBuying();
-                break;
-            case PEEP_STATE_WATCHING:
-                UpdateWatching();
-                break;
-            case PEEP_STATE_EMPTYING_BIN:
-                UpdateEmptyingBin();
-                break;
-            case PEEP_STATE_USING_BIN:
-                UpdateUsingBin();
-                break;
-            case PEEP_STATE_WATERING:
-                UpdateWatering();
-                break;
-            case PEEP_STATE_HEADING_TO_INSPECTION:
-                UpdateHeadingToInspect();
-                break;
-            case PEEP_STATE_INSPECTING:
-                UpdateFixing(stepsToTake);
-                break;
-                // There shouldn't be any more
             default:
-                assert(0);
+            {
+                auto guest = AsGuest();
+                if (guest != nullptr)
+                {
+                    guest->UpdateGuest();
+                }
+                else
+                {
+                    auto staff = AsStaff();
+                    if (staff != nullptr)
+                    {
+                        staff->UpdateStaff(stepsToTake);
+                    }
+                    else
+                    {
+                        assert(false);
+                    }
+                }
                 break;
+            }
         }
     }
 }
@@ -2455,7 +2435,8 @@ static void peep_interact_with_entrance(
 
     if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
-        if (peep->type == PEEP_TYPE_STAFF)
+        auto guest = peep->AsGuest();
+        if (guest == nullptr)
         {
             // Default staff behaviour attempting to enter a
             // ride entrance is to turn around.
@@ -2488,7 +2469,7 @@ static void peep_interact_with_entrance(
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
         // the path tile.
-        if (!peep->ShouldGoOnRide(ride, stationNum, false, false))
+        if (!guest->ShouldGoOnRide(ride, stationNum, false, false))
         {
             // Peep remembers that this is the last ride they
             // considered while on this path tile.
@@ -2527,7 +2508,8 @@ static void peep_interact_with_entrance(
     else
     {
         // PARK_ENTRANCE
-        if (peep->type == PEEP_TYPE_STAFF)
+        auto guest = peep->AsGuest();
+        if (guest == nullptr)
         {
             // Staff cannot leave the park, so go back.
             peep_return_to_centre_of_tile(peep);
@@ -2702,7 +2684,7 @@ static void peep_interact_with_entrance(
 
             gTotalIncomeFromAdmissions += entranceFee;
             gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
-            peep->SpendMoney(peep->paid_to_enter, entranceFee);
+            guest->SpendMoney(peep->paid_to_enter, entranceFee);
             peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
@@ -2898,7 +2880,8 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
         }
     }
 
-    if (peep->type == PEEP_TYPE_GUEST && tile_element->AsPath()->IsQueue())
+    auto guest = peep->AsGuest();
+    if (guest != nullptr && tile_element->AsPath()->IsQueue())
     {
         auto rideIndex = tile_element->AsPath()->GetRideIndex();
         if (peep->state == PEEP_STATE_QUEUING)
@@ -2914,7 +2897,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
             {
                 // Queue got disconnected from the original ride.
                 peep->interaction_ride_index = 0xFF;
-                peep->RemoveFromQueue();
+                guest->RemoveFromQueue();
                 peep->SetState(PEEP_STATE_1);
                 peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
             }
@@ -2933,7 +2916,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
                 /* Peep is approaching the entrance of a ride queue.
                  * Decide whether to go on the ride. */
                 auto ride = get_ride(rideIndex);
-                if (ride != nullptr && peep->ShouldGoOnRide(ride, stationNum, true, false))
+                if (ride != nullptr && guest->ShouldGoOnRide(ride, stationNum, true, false))
                 {
                     // Peep has decided to go on the ride at the queue.
                     peep->interaction_ride_index = rideIndex;
@@ -3007,7 +2990,8 @@ static bool peep_interact_with_shop(rct_peep* peep, int16_t x, int16_t y, TileEl
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
         return false;
 
-    if (peep->type == PEEP_TYPE_STAFF)
+    auto guest = peep->AsGuest();
+    if (guest == nullptr)
     {
         peep_return_to_centre_of_tile(peep);
         return true;
@@ -3036,7 +3020,7 @@ static bool peep_interact_with_shop(rct_peep* peep, int16_t x, int16_t y, TileEl
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
         peep->time_lost = 0;
-        if (!peep->ShouldGoOnRide(ride, 0, false, false))
+        if (!guest->ShouldGoOnRide(ride, 0, false, false))
         {
             peep_return_to_centre_of_tile(peep);
             return true;
@@ -3051,7 +3035,7 @@ static bool peep_interact_with_shop(rct_peep* peep, int16_t x, int16_t y, TileEl
             // TODO: Refactor? SpendMoney previously accepted nullptr to not track money, passing a temporary variable as a
             // workaround
             money16 money = 0;
-            peep->SpendMoney(money, cost);
+            guest->SpendMoney(money, cost);
         }
         peep->destination_x = (x & 0xFFE0) + 16;
         peep->destination_y = (y & 0xFFE0) + 16;
@@ -3146,13 +3130,16 @@ void rct_peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_res
     {
         pathing_result |= PATHING_DESTINATION_REACHED;
         uint8_t result = 0;
-        if (type == PEEP_TYPE_GUEST)
+
+        auto guest = AsGuest();
+        if (guest != nullptr)
         {
-            result = guest_path_finding(this);
+            result = guest_path_finding(guest);
         }
         else
         {
-            result = staff_path_finding(this);
+            auto staff = AsStaff();
+            result = staff_path_finding(staff);
         }
 
         if (result != 0)
@@ -3690,11 +3677,6 @@ void peep_update_names(bool realNames)
 
     peep_sort();
     gfx_invalidate_screen();
-}
-
-bool rct_peep::HeadingForRideOrParkExit() const
-{
-    return (peep_flags & PEEP_FLAGS_LEAVING_PARK) || (guest_heading_to_ride_id != 0xFF);
 }
 
 void peep_handle_easteregg_name(rct_peep* peep)

@@ -528,6 +528,9 @@ struct rct_peep_thought
     uint8_t fresh_timeout; // 3 updates every tick
 };
 
+struct GuestPeep;
+struct StaffPeep;
+
 struct rct_peep : rct_sprite_common
 {
     rct_string_id name_string_idx; // 0x22
@@ -686,6 +689,9 @@ struct rct_peep : rct_sprite_common
     uint32_t item_standard_flags;         // 0xFC
 
 public: // Peep
+    GuestPeep* AsGuest();
+    StaffPeep* AsStaff();
+
     void Update();
     bool UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance);
     bool UpdateAction();
@@ -704,7 +710,25 @@ public: // Peep
     void PickupAbort(int32_t old_x);
     bool Place(TileCoordsXYZ location, bool apply);
 
-public: // Guest
+    // TODO: Make these private again when done refactoring
+public: // Peep
+    bool CheckForPath();
+    void PerformNextAction(uint8_t& pathing_result);
+    void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
+    int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
+    void SwitchNextActionSpriteType();
+    PeepActionSpriteType GetActionSpriteType();
+
+private:
+    void UpdateFalling();
+    void Update1();
+    void UpdatePicked();
+};
+
+struct GuestPeep : rct_peep
+{
+public:
+    void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
     void RemoveFromQueue();
     bool HasItem(int32_t peepItem) const;
@@ -716,17 +740,35 @@ public: // Guest
     void RemoveFromRide();
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
+    void StopPurchaseThought(uint8_t ride_type);
+    void TryGetUpFromSitting();
+    void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
+    void PickRideToGoOn();
+    void ReadMap();
+    bool ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool thinking);
+    bool ShouldGoToShop(Ride* ride, bool peepAtShop);
+    bool ShouldFindBench();
+    bool UpdateWalkingFindBench();
+    bool UpdateWalkingFindBin();
+    void SpendMoney(money16& peep_expend_type, money32 amount);
+    void SpendMoney(money32 amount);
+    void SetHasRidden(Ride* ride);
+    bool HasRidden(Ride* ride) const;
+    void SetHasRiddenRideType(int32_t rideType);
+    bool HasRiddenRideType(int32_t rideType) const;
+    int32_t HasFoodStandardFlag() const;
+    int32_t HasFoodExtraFlag() const;
+    bool HasDrinkStandardFlag() const;
+    bool HasDrinkExtraFlag() const;
+    int32_t HasEmptyContainerStandardFlag() const;
+    int32_t HasEmptyContainerExtraFlag() const;
+    void CheckIfLost();
+    void CheckCantFindRide();
+    void CheckCantFindExit();
+    bool DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price);
+    void SetSpriteType(PeepSpriteType new_sprite_type);
 
-public: // Staff
-    void Tick128UpdateStaff();
-    bool IsMechanic() const;
-
-private: // Peep update
-    void UpdateFalling();
-    void Update1();
-    void UpdatePicked();
-
-private: // Guest update
+private:
     void UpdateRide();
     void UpdateOnRide(){}; // TODO
     void UpdateWalking();
@@ -757,7 +799,18 @@ private: // Guest update
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
 
-private: // Staff update
+    Ride* FindBestRideToGoOn();
+    std::bitset<MAX_RIDES> FindRidesToGoOn();
+};
+
+struct StaffPeep : rct_peep
+{
+public:
+    void UpdateStaff(uint32_t stepsToTake);
+    void Tick128UpdateStaff();
+    bool IsMechanic() const;
+
+private:
     void UpdatePatrolling();
     void UpdateMowing();
     void UpdateSweeping();
@@ -779,48 +832,6 @@ private: // Staff update
     bool UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride);
     void UpdateRideInspected(ride_id_t rideIndex);
     void UpdateHeadingToInspect();
-
-    // TODO: Make these private again when done refactoring
-public: // Peep
-    bool CheckForPath();
-    void PerformNextAction(uint8_t& pathing_result);
-    void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
-    int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
-    void SwitchNextActionSpriteType();
-    PeepActionSpriteType GetActionSpriteType();
-
-public: // Guest
-    void StopPurchaseThought(uint8_t ride_type);
-    void TryGetUpFromSitting();
-    void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
-    void PickRideToGoOn();
-    void ReadMap();
-    bool ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool thinking);
-    bool ShouldGoToShop(Ride* ride, bool peepAtShop);
-    bool ShouldFindBench();
-    bool UpdateWalkingFindBench();
-    bool UpdateWalkingFindBin();
-    void SpendMoney(money16& peep_expend_type, money32 amount);
-    void SpendMoney(money32 amount);
-    void SetHasRidden(Ride* ride);
-    bool HasRidden(Ride* ride) const;
-    void SetHasRiddenRideType(int32_t rideType);
-    bool HasRiddenRideType(int32_t rideType) const;
-    int32_t HasFoodStandardFlag() const;
-    int32_t HasFoodExtraFlag() const;
-    bool HasDrinkStandardFlag() const;
-    bool HasDrinkExtraFlag() const;
-    int32_t HasEmptyContainerStandardFlag() const;
-    int32_t HasEmptyContainerExtraFlag() const;
-    void CheckIfLost();
-    void CheckCantFindRide();
-    void CheckCantFindExit();
-    bool DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price);
-    void SetSpriteType(PeepSpriteType new_sprite_type);
-
-private:
-    Ride* FindBestRideToGoOn();
-    std::bitset<MAX_RIDES> FindRidesToGoOn();
 };
 
 struct rct_sprite_bounds
@@ -967,7 +978,7 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep);
 void peep_reset_pathfind_goal(rct_peep* peep);
 
 bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
-int32_t guest_path_finding(rct_peep* peep);
+int32_t guest_path_finding(GuestPeep* peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 #    define PATHFIND_DEBUG                                                                                                     \
