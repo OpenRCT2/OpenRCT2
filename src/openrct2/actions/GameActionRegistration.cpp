@@ -31,6 +31,7 @@
 #include "RideSetName.hpp"
 #include "RideSetPriceAction.hpp"
 #include "RideSetStatus.hpp"
+#include "RideSetVehiclesAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
 #include "SignSetStyleAction.hpp"
@@ -42,7 +43,6 @@
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "WallRemoveAction.hpp"
-#include "RideSetVehiclesAction.hpp"
 
 namespace GameActions
 {

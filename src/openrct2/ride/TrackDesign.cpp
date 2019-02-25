@@ -1963,15 +1963,18 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     {
         auto colour = ride_get_unused_preset_vehicle_colour(entryIndex);
         auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
-        GameActions::ExecuteNested(&rideSetVehicleAction);
+        flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction)
+                                       : GameActions::QueryNested(&rideSetVehicleAction);
     }
 
     game_do_command(0, flags | (td6->ride_mode << 8), 0, ride->id | (0 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
     auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, td6->number_of_trains);
-    GameActions::ExecuteNested(&rideSetVehicleAction2);
+    flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction2)
+                                   : GameActions::QueryNested(&rideSetVehicleAction2);
     auto rideSetVehicleAction3 = RideSetVehicleAction(
         ride->id, RideSetVehicleType::NumCarsPerTrain, td6->number_of_cars_per_train);
-    GameActions::ExecuteNested(&rideSetVehicleAction3);
+    flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction3)
+                                   : GameActions::QueryNested(&rideSetVehicleAction3);
     game_do_command(0, flags | (td6->depart_flags << 8), 0, ride->id | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
     game_do_command(0, flags | (td6->min_waiting_time << 8), 0, ride->id | (2 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
     game_do_command(0, flags | (td6->max_waiting_time << 8), 0, ride->id | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
