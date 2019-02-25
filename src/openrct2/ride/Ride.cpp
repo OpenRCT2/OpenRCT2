@@ -3463,7 +3463,6 @@ static void ride_entrance_exit_connected(Ride* ride)
 static void ride_shop_connected(Ride* ride)
 {
     int32_t x, y, count;
-    TileElement* tileElement;
 
     LocationXY8 coordinates = ride->stations[0].Start;
     if (coordinates.xy == RCT_XY8_UNDEFINED)
@@ -3472,16 +3471,25 @@ static void ride_shop_connected(Ride* ride)
     x = coordinates.x;
     y = coordinates.y;
 
-    tileElement = map_get_first_element_at(x, y);
+    TrackElement* trackElement = nullptr;
+    TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && tileElement->AsTrack()->GetRideIndex() == ride->id)
+        if (tileElement == nullptr)
             break;
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && tileElement->AsTrack()->GetRideIndex() == ride->id)
+        {
+            trackElement = tileElement->AsTrack();
+            break;
+        }
     } while (!(tileElement++)->IsLastForTile());
 
+    if (trackElement == nullptr)
+        return;
+
     uint16_t entrance_directions = 0;
-    uint8_t track_type = tileElement->AsTrack()->GetTrackType();
-    ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    uint8_t track_type = trackElement->GetTrackType();
+    ride = get_ride(trackElement->GetRideIndex());
     if (ride == nullptr)
     {
         return;
@@ -3495,7 +3503,7 @@ static void ride_shop_connected(Ride* ride)
         entrance_directions = TrackSequenceProperties[track_type][0];
     }
 
-    uint8_t tile_direction = tileElement->GetDirection();
+    uint8_t tile_direction = trackElement->GetDirection();
     entrance_directions <<= tile_direction;
     entrance_directions = ((entrance_directions >> 12) | entrance_directions) & 0xF;
 
