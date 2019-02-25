@@ -15,6 +15,7 @@
 #include "GuestSetNameAction.hpp"
 #include "LandSetHeightAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
+#include "LoadOrQuitAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkMarketingAction.hpp"
 #include "ParkSetLoanAction.hpp"
@@ -79,5 +80,6 @@ namespace GameActions
         Register<TrackRemoveAction>();
         Register<ClearAction>();
         Register<PauseToggleAction>();
+        Register<LoadOrQuitAction>();
     }
 } // namespace GameActions

@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../actions/LoadOrQuitAction.hpp"
 #include "../core/Guard.hpp"
 #include "../platform/platform.h"
 #include "../ui/UiContext.h"
@@ -2557,7 +2558,8 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         else
         {
             // Something went wrong, game is not loaded. Return to main screen.
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
+            GameActions::Execute(&loadOrQuitAction);
         }
         if (has_to_free)
         {
@@ -2874,11 +2876,6 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
             Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
             return;
         }
-    }
-    // Don't let clients send pause or quit
-    else if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE || commandCommand == GAME_COMMAND_LOAD_OR_QUIT)
-    {
-        return;
     }
 
     game_command_queue.emplace(tick, args, playerid, callback, _commandId++);
