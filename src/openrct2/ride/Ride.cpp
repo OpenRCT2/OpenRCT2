@@ -15,9 +15,9 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../actions/RideSetSetting.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
 #include "../actions/TrackRemoveAction.hpp"
-#include "../actions/RideSetSetting.hpp"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../common.h"
@@ -7381,8 +7381,7 @@ void ride_set_to_default_inspection_interval(Ride* ride)
     {
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
         {
-            set_operating_setting(
-                ride->id, RideSetSetting::InspectionInterval, defaultInspectionInterval);
+            set_operating_setting(ride->id, RideSetSetting::InspectionInterval, defaultInspectionInterval);
         }
     }
 }

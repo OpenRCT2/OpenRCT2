@@ -15,8 +15,8 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "actions/GameAction.h"
-#include "actions/TrackPlaceAction.hpp"
 #include "actions/RideSetSetting.hpp"
+#include "actions/TrackPlaceAction.hpp"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
@@ -501,6 +501,7 @@ namespace OpenRCT2
 
                     result.action = std::make_unique<RideSetSettingAction>(rideId, setting, value);
                     result.action->SetFlags(command.ebx & 0xFF);
+                    break;
                 }
                 default:
                     throw std::runtime_error("Deprecated game command requires replay translation.");
