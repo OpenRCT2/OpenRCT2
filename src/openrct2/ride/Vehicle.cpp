@@ -3525,10 +3525,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
     Ride* ride = get_ride(vehicle->ride);
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
-        rct_vehicle* frontVehicle = vehicle;
-        while (frontVehicle->IsChild() != 0)
-            frontVehicle = GET_VEHICLE(frontVehicle->prev_vehicle_on_ride);
-
+        auto frontVehicle = vehicle->GetHead();
         int trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
         if (trainIndex == VEHICLE_INVALID_ID)
         {
@@ -5266,10 +5263,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
     Ride* ride = get_ride(vehicle->ride);
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
-        rct_vehicle* frontVehicle = vehicle;
-        while (frontVehicle->IsChild() != 0)
-            frontVehicle = GET_VEHICLE(frontVehicle->prev_vehicle_on_ride);
-
+        auto frontVehicle = vehicle->GetHead();
         int trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
         if (trainIndex == VEHICLE_INVALID_ID)
         {
@@ -5323,10 +5317,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
     Ride* ride = get_ride(vehicle->ride);
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
-        rct_vehicle* frontVehicle = vehicle;
-        while (frontVehicle->IsChild() != 0)
-            frontVehicle = GET_VEHICLE(frontVehicle->prev_vehicle_on_ride);
-
+        auto frontVehicle = vehicle->GetHead();
         int trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
         if (trainIndex == VEHICLE_INVALID_ID)
         {
@@ -10015,4 +10006,14 @@ void vehicle_claxon(const rct_vehicle* vehicle)
             audio_play_sound_at_location(SOUND_TRAM, vehicle->x, vehicle->y, vehicle->z);
             break;
     }
+}
+
+rct_vehicle* rct_vehicle::GetHead()
+{
+    auto v = this;
+    while (v != nullptr && v->IsChild())
+    {
+        v = GET_VEHICLE(v->prev_vehicle_on_ride);
+    }
+    return v;
 }
