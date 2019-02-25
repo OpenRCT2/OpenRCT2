@@ -2549,7 +2549,7 @@ bool rct_peep::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
 
         while (true)
         {
-            if (!vehicle->IsChild())
+            if (vehicle->IsHead())
             {
                 break;
             }

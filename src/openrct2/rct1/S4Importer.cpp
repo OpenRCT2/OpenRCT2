@@ -1150,7 +1150,7 @@ private:
                     ImportVehicle(vehicle, srcVehicle);
 
                     // If vehicle is the first car on a train add to train list
-                    if (!vehicle->IsChild())
+                    if (vehicle->IsHead())
                     {
                         move_sprite_to_list((rct_sprite*)vehicle, SPRITE_LIST_TRAIN * 2);
                     }

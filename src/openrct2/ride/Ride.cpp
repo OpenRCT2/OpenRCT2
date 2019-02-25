@@ -4941,7 +4941,7 @@ static rct_vehicle* vehicle_create_car(
         }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_4)
         {
-            if (!vehicle->IsChild())
+            if (vehicle->IsHead())
             {
                 dl = 15;
             }

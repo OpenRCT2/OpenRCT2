@@ -4044,7 +4044,7 @@ void rct_peep::UpdateRideLeaveVehicle()
 
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16))
         {
-            for (; vehicle->IsChild(); vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride))
+            for (; !vehicle->IsHead(); vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride))
             {
                 uint16_t trackType = vehicle->track_type >> 2;
                 if (trackType == TRACK_ELEM_FLAT || trackType > TRACK_ELEM_MIDDLE_STATION)
