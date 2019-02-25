@@ -221,7 +221,10 @@ struct rct_vehicle : rct_sprite_common
     uint8_t seat_rotation;        // 0xD8
     uint8_t target_seat_rotation; // 0xD9
 
-    constexpr bool IsHead() const { return type == 0; }
+    constexpr bool IsHead() const
+    {
+        return type == 0;
+    }
     rct_vehicle* GetHead();
     const rct_vehicle* GetHead() const;
 };

@@ -683,7 +683,7 @@ struct rct_peep : rct_sprite_common
     uint8_t hat_colour;                   // 0xF8
     uint8_t favourite_ride;               // 0xF9
     uint8_t favourite_ride_rating;        // 0xFA
-    uint32_t item_standard_flags; // 0xFC
+    uint32_t item_standard_flags;         // 0xFC
 
 public: // Peep
     void Update();
