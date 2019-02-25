@@ -111,7 +111,7 @@ struct rct_s6_data
 
     // SC6[6]
     uint32_t next_free_tile_element_pointer_index;
-    rct_sprite sprites[RCT2_MAX_SPRITES];
+    RCT2Sprite sprites[RCT2_MAX_SPRITES];
     uint16_t sprite_lists_head[6];
     uint16_t sprite_lists_count[6];
     rct_string_id park_name;

@@ -1174,7 +1174,7 @@ private:
         dst->ride_subtype = ride->subtype;
 
         dst->vehicle_type = vehicleEntryIndex;
-        dst->is_child = src->is_child;
+        dst->is_child = src->type;
         dst->var_44 = src->var_44;
         dst->remaining_distance = src->remaining_distance;
 
@@ -1536,9 +1536,14 @@ private:
 
         dst->photo1_ride_ref = src->photo1_ride_ref;
 
-        for (size_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
+        for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
-            dst->thoughts[i] = src->thoughts[i];
+            auto srcThought = &src->thoughts[i];
+            auto dstThought = &dst->thoughts[i];
+            dstThought->type = (PeepThoughtType)srcThought->type;
+            dstThought->item = srcThought->type;
+            dstThought->freshness = srcThought->freshness;
+            dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
 
         dst->previous_ride = src->previous_ride;
@@ -1652,7 +1657,7 @@ private:
         {
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
             {
-                rct_litter* srcLitter = &sprite.litter;
+                const auto* srcLitter = &sprite.litter;
 
                 rct_litter* litter = (rct_litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
                 move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER * 2);
@@ -1685,7 +1690,7 @@ private:
                 move_sprite_to_list((rct_sprite*)dst, SPRITE_LIST_MISC * 2);
 
                 dst->sprite_identifier = src->sprite_identifier;
-                dst->type = src->misc_identifier;
+                dst->type = src->type;
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;
                 dst->sprite_width = src->sprite_width;
@@ -1694,7 +1699,7 @@ private:
 
                 sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
 
-                switch (src->misc_identifier)
+                switch (src->type)
                 {
                     case SPRITE_MISC_STEAM_PARTICLE:
                         ImportSteamParticle((rct_steam_particle*)dst, (rct_steam_particle*)src);

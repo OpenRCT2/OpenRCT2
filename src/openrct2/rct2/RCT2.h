@@ -302,6 +302,297 @@ struct rct_scores_entry
 };
 assert_struct_size(rct_scores_entry, 0x02B0);
 
+struct RCT2SpriteVehicle : RCT12SpriteBase
+{
+    uint8_t vehicle_sprite_type; // 0x1F
+    uint8_t bank_rotation;       // 0x20
+    uint8_t pad_21[3];
+    int32_t remaining_distance; // 0x24
+    int32_t velocity;           // 0x28
+    int32_t acceleration;       // 0x2C
+    ride_id_t ride;             // 0x30
+    uint8_t vehicle_type;       // 0x31
+    rct_vehicle_colour colours; // 0x32
+    union
+    {
+        uint16_t track_progress; // 0x34
+        struct
+        {
+            int8_t var_34;
+            uint8_t var_35;
+        };
+    };
+    union
+    {
+        int16_t track_direction;   // 0x36
+        int16_t track_type;        // 0x36
+        LocationXY8 boat_location; // 0x36
+    };
+    uint16_t track_x;               // 0x38
+    uint16_t track_y;               // 0x3A
+    uint16_t track_z;               // 0x3C
+    uint16_t next_vehicle_on_train; // 0x3E
+    uint16_t prev_vehicle_on_ride;  // 0x40
+    uint16_t next_vehicle_on_ride;  // 0x42
+    uint16_t var_44;
+    uint16_t mass;         // 0x46
+    uint16_t update_flags; // 0x48
+    uint8_t swing_sprite;
+    uint8_t current_station; // 0x4B
+    union
+    {
+        int16_t swinging_car_var_0; // 0x4C
+        int16_t current_time;       // 0x4C
+        struct
+        {
+            int8_t ferris_wheel_var_0; // 0x4C
+            int8_t ferris_wheel_var_1; // 0x4D
+        };
+    };
+    union
+    {
+        int16_t var_4E;
+        int16_t crash_z; // 0x4E
+    };
+    uint8_t status;                  // 0x50
+    uint8_t sub_state;               // 0x51
+    uint16_t peep[32];               // 0x52
+    uint8_t peep_tshirt_colours[32]; // 0x92
+    uint8_t num_seats;               // 0xB2
+    uint8_t num_peeps;               // 0xB3
+    uint8_t next_free_seat;          // 0xB4
+    uint8_t restraints_position;     // 0xB5
+    union
+    {
+        int16_t spin_speed; // 0xB6
+        int16_t crash_x;    // 0xB6
+    };
+    uint16_t sound2_flags; // 0xB8
+    uint8_t spin_sprite;   // 0xBA
+    uint8_t sound1_id;     // 0xBB
+    uint8_t sound1_volume; // 0xBC
+    uint8_t sound2_id;     // 0xBD
+    uint8_t sound2_volume; // 0xBE
+    int8_t sound_vector_factor;
+    union
+    {
+        uint16_t var_C0;
+        int16_t crash_y;            // 0xC0
+        uint16_t time_waiting;      // 0xC0
+        uint16_t cable_lift_target; // 0xC0
+    };
+    uint8_t speed;                // 0xC2
+    uint8_t powered_acceleration; // 0xC3
+    union
+    {
+        uint8_t dodgems_collision_direction; // 0xC4
+        uint8_t var_C4;
+    };
+    uint8_t animation_frame; // 0xC5
+    uint8_t pad_C6[0x2];
+    uint16_t var_C8;
+    uint16_t var_CA;
+    uint8_t scream_sound_id; // 0xCC
+    uint8_t var_CD;
+    union
+    {
+        uint8_t var_CE;
+        uint8_t num_laps; // 0xCE
+    };
+    union
+    {
+        uint8_t var_CF;
+        uint8_t brake_speed; // 0xCF
+    };
+    uint16_t lost_time_out;         // 0xD0
+    int8_t vertical_drop_countdown; // 0xD1
+    uint8_t var_D3;
+    uint8_t mini_golf_current_animation;
+    uint8_t mini_golf_flags;      // 0xD5
+    uint8_t ride_subtype;         // 0xD6
+    uint8_t colours_extended;     // 0xD7
+    uint8_t seat_rotation;        // 0xD8
+    uint8_t target_seat_rotation; // 0xD9
+};
+assert_struct_size(RCT2SpriteVehicle, 0xDA);
+
+struct RCT2SpritePeep : RCT12SpriteBase
+{
+    uint8_t pad_1F[0x22 - 0x1F];
+    rct_string_id name_string_idx; // 0x22
+    uint16_t next_x;               // 0x24
+    uint16_t next_y;               // 0x26
+    uint8_t next_z;                // 0x28
+    uint8_t next_flags;            // 0x29
+    uint8_t outside_of_park;       // 0x2A
+    uint8_t state;                 // 0x2B
+    uint8_t sub_state;             // 0x2C
+    uint8_t sprite_type;           // 0x2D
+    uint8_t peep_type;             // 0x2E
+    union
+    {
+        uint8_t staff_type;  // 0x2F
+        uint8_t no_of_rides; // 0x2F
+    };
+    uint8_t tshirt_colour;         // 0x30
+    uint8_t trousers_colour;       // 0x31
+    uint16_t destination_x;        // 0x32
+    uint16_t destination_y;        // 0x34
+    uint8_t destination_tolerance; // 0x36
+    uint8_t var_37;
+    uint8_t energy;                  // 0x38
+    uint8_t energy_target;           // 0x39
+    uint8_t happiness;               // 0x3A
+    uint8_t happiness_target;        // 0x3B
+    uint8_t nausea;                  // 0x3C
+    uint8_t nausea_target;           // 0x3D
+    uint8_t hunger;                  // 0x3E
+    uint8_t thirst;                  // 0x3F
+    uint8_t toilet;                  // 0x40
+    uint8_t mass;                    // 0x41
+    uint8_t time_to_consume;         // 0x42
+    uint8_t intensity;               // 0x43
+    uint8_t nausea_tolerance;        // 0x44
+    uint8_t window_invalidate_flags; // 0x45
+    money16 paid_on_drink;           // 0x46
+    uint8_t ride_types_been_on[16];  // 0x48
+    uint32_t item_extra_flags;       // 0x58
+    uint8_t photo2_ride_ref;         // 0x5C
+    uint8_t photo3_ride_ref;         // 0x5D
+    uint8_t photo4_ride_ref;         // 0x5E
+    uint8_t pad_5F[0x09];            // 0x5F
+    uint8_t current_ride;            // 0x68
+    uint8_t current_ride_station;    // 0x69
+    uint8_t current_train;           // 0x6A
+    union
+    {
+        struct
+        {
+            uint8_t current_car;  // 0x6B
+            uint8_t current_seat; // 0x6C
+        };
+        uint16_t time_to_sitdown; // 0x6B
+        struct
+        {
+            uint8_t time_to_stand;  // 0x6B
+            uint8_t standing_flags; // 0x6C
+        };
+    };
+    uint8_t special_sprite;             // 0x6D
+    uint8_t action_sprite_type;         // 0x6E
+    uint8_t next_action_sprite_type;    // 0x6F
+    uint8_t action_sprite_image_offset; // 0x70
+    uint8_t action;                     // 0x71
+    uint8_t action_frame;               // 0x72
+    uint8_t step_progress;              // 0x73
+    union
+    {
+        uint16_t mechanic_time_since_call;
+        uint16_t next_in_queue; // 0x74
+    };
+    uint8_t pad_76;
+    uint8_t pad_77;
+    union
+    {
+        uint8_t maze_last_edge; // 0x78
+        uint8_t direction;
+    };
+    uint8_t interaction_ride_index;
+    uint16_t time_in_queue;                             // 0x7A
+    uint8_t rides_been_on[32];                          // 0x7C
+    uint32_t id;                                        // 0x9C
+    money32 cash_in_pocket;                             // 0xA0
+    money32 cash_spent;                                 // 0xA4
+    int32_t time_in_park;                               // 0xA8
+    int8_t rejoin_queue_timeout;                        // 0xAC
+    uint8_t previous_ride;                              // 0xAD
+    uint16_t previous_ride_time_out;                    // 0xAE
+    RCT12PeepThought thoughts[RCT12_PEEP_MAX_THOUGHTS]; // 0xB0
+    uint8_t path_check_optimisation;                    // 0xC4
+    union
+    {
+        uint8_t staff_id;                 // 0xC5
+        uint8_t guest_heading_to_ride_id; // 0xC5
+    };
+    union
+    {
+        uint8_t staff_orders;           // 0xC6
+        uint8_t peep_is_lost_countdown; // 0xC6
+    };
+    uint8_t photo1_ride_ref;         // 0xC7
+    uint32_t peep_flags;             // 0xC8
+    rct12_xyzd8 pathfind_goal;       // 0xCC
+    rct12_xyzd8 pathfind_history[4]; // 0xD0
+    uint8_t no_action_frame_num;     // 0xE0
+    uint8_t litter_count;            // 0xE1
+    union
+    {
+        uint8_t time_on_ride;         // 0xE2
+        uint8_t staff_mowing_timeout; // 0xE2
+    };
+    uint8_t disgusting_count; // 0xE3
+    union
+    {
+        money16 paid_to_enter;      // 0xE4
+        uint16_t staff_lawns_mown;  // 0xE4
+        uint16_t staff_rides_fixed; // 0xE4
+    };
+    union
+    {
+        money16 paid_on_rides;          // 0xE6
+        uint16_t staff_gardens_watered; // 0xE6
+        uint16_t staff_rides_inspected; // 0xE6
+    };
+    union
+    {
+        money16 paid_on_food;        // 0xE8
+        uint16_t staff_litter_swept; // 0xE8
+    };
+    union
+    {
+        money16 paid_on_souvenirs;   // 0xEA
+        uint16_t staff_bins_emptied; // 0xEA
+    };
+    uint8_t no_of_food;                   // 0xEC
+    uint8_t no_of_drinks;                 // 0xED
+    uint8_t no_of_souvenirs;              // 0xEE
+    uint8_t vandalism_seen;               // 0xEF 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
+    uint8_t voucher_type;                 // 0xF0
+    uint8_t voucher_arguments;            // 0xF1 ride_id or string_offset_id
+    uint8_t surroundings_thought_timeout; // 0xF2
+    uint8_t angriness;                    // 0xF3
+    uint8_t time_lost;                    // 0xF4 the time the peep has been lost when it reaches 254 generates the lost thought
+    uint8_t days_in_queue;                // 0xF5
+    uint8_t balloon_colour;               // 0xF6
+    uint8_t umbrella_colour;              // 0xF7
+    uint8_t hat_colour;                   // 0xF8
+    uint8_t favourite_ride;               // 0xF9
+    uint8_t favourite_ride_rating;        // 0xFA
+    uint8_t pad_FB;
+    uint32_t item_standard_flags; // 0xFC
+};
+assert_struct_size(RCT2SpritePeep, 0x100);
+
+union RCT2Sprite
+{
+private:
+    uint8_t pad_00[0x100];
+
+public:
+    RCT12SpriteBase unknown;
+    RCT2SpriteVehicle vehicle;
+    RCT2SpritePeep peep;
+    RCT12SpriteLitter litter;
+    RCT12SpriteBalloon balloon;
+    RCT12SpriteDuck duck;
+    RCT12SpriteJumpingFountain jumping_fountain;
+    RCT12SpriteMoneyEffect money_effect;
+    RCT12SpriteCrashedVehicleParticle crashed_vehicle_particle;
+    RCT12SpriteCrashSplash crash_splash;
+    RCT12SpriteSteamParticle steam_particle;
+};
+assert_struct_size(RCT2Sprite, 0x100);
+
 #pragma pack(pop)
 
 #endif
