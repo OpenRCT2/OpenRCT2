@@ -3191,7 +3191,7 @@ void rct_peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_res
             continue;
         if (top_z < tileElement->base_height)
             continue;
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)

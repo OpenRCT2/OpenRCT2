@@ -538,7 +538,7 @@ static money32 WallPlace(
 
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
-            tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+            tileElement->SetGhost();
         }
 
         gSceneryTileElement = tileElement;
@@ -577,7 +577,7 @@ static money32 WallSetColour(
         return 0;
     }
 
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(wallElement->flags & TILE_ELEMENT_FLAG_GHOST))
+    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(wallElement->IsGhost()))
     {
         return 0;
     }

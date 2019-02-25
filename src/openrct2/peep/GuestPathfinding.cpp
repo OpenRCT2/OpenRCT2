@@ -238,7 +238,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, TileElement
     nextTileElement = map_get_first_element_at(loc.x, loc.y);
     do
     {
-        if (nextTileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (nextTileElement->IsGhost())
             continue;
         if (nextTileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
@@ -292,7 +292,7 @@ static uint8_t footpath_element_dest_in_dir(
     }
     do
     {
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
 
         switch (tileElement->GetType())
@@ -643,7 +643,7 @@ static void peep_pathfind_heuristic_search(
         /* Look for all map elements that the peep could walk onto while
          * navigating to the goal, including the goal tile. */
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
 
         ride_id_t rideIndex = RIDE_ID_NULL;

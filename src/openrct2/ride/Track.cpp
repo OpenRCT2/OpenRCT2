@@ -1170,7 +1170,7 @@ static money32 track_remove(
 
         invalidate_test_results(ride);
         footpath_queue_chain_reset();
-        if (!gCheatsDisableClearanceChecks || !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+        if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
         {
             footpath_remove_edges_at(x, y, tileElement);
         }

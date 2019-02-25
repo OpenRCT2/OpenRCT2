@@ -6512,7 +6512,7 @@ bool ride_has_any_track_elements(const Ride* ride)
             continue;
         if (it.element->AsTrack()->GetRideIndex() != ride->id)
             continue;
-        if (it.element->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (it.element->IsGhost())
             continue;
 
         return true;
@@ -6532,7 +6532,7 @@ void ride_all_has_any_track_elements(bool* rideIndexArray)
     {
         if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (it.element->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (it.element->IsGhost())
             continue;
 
         rideIndexArray[it.element->AsTrack()->GetRideIndex()] = true;

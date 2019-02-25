@@ -275,7 +275,7 @@ static money32 RideEntranceExitPlace(
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                tileElement->SetGhost();
             }
 
             if (isExit)
@@ -370,7 +370,7 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, ride_id_t rideIndex,
             if (tileElement->AsEntrance()->GetStationIndex() != stationNum)
                 continue;
 
-            if (flags & GAME_COMMAND_FLAG_5 && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if (flags & GAME_COMMAND_FLAG_5 && !(tileElement->IsGhost()))
                 continue;
 
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
