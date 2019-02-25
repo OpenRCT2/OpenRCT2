@@ -2129,7 +2129,7 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
         tileElement->AsTrack()->SetMazeEntry(mazeEntry);
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
-            tileElement->SetGhost();
+            tileElement->SetGhost(true);
         }
 
         map_invalidate_element(fx, fy, tileElement);

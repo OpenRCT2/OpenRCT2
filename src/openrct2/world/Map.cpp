@@ -413,7 +413,7 @@ void map_strip_ghost_flag_from_elements()
 {
     for (auto& element : gTileElements)
     {
-        element.ClearGhost();
+        element.SetGhost(false);
     }
 }
 
@@ -2472,7 +2472,7 @@ void game_command_place_large_scenery(
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                new_tile_element->SetGhost();
+                new_tile_element->SetGhost(true);
             }
 
             if (tile_num == 0)

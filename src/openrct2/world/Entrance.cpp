@@ -275,7 +275,7 @@ static money32 RideEntranceExitPlace(
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                tileElement->SetGhost();
+                tileElement->SetGhost(true);
             }
 
             if (isExit)

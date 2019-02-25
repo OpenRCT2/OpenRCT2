@@ -538,7 +538,7 @@ static money32 WallPlace(
 
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
-            tileElement->SetGhost();
+            tileElement->SetGhost(true);
         }
 
         gSceneryTileElement = tileElement;

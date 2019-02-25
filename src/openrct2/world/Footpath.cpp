@@ -291,7 +291,7 @@ static money32 footpath_element_insert(
             tileElement->AsPath()->SetAdditionStatus(255);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & GAME_COMMAND_FLAG_GHOST)
-                pathElement->SetGhost();
+                pathElement->SetGhost(true);
 
             footpath_queue_chain_reset();
 
@@ -686,7 +686,7 @@ static money32 footpath_place_from_track(
             tileElement->AsPath()->SetCorners(0);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & (1 << 6))
-                pathElement->SetGhost();
+                pathElement->SetGhost(true);
 
             map_invalidate_tile_full(x, y);
         }

@@ -237,7 +237,7 @@ public:
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                tileElement->SetGhost();
+                tileElement->SetGhost(true);
             }
 
             map_invalidate_tile_full(flooredX, flooredY);

@@ -157,8 +157,8 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    if (!is_exit && !(tile_element->IsGhost()) && tile_element->AsEntrance()->GetRideIndex() != 0xFF
-        && stationObj->ScrollingMode != 0xFF)
+    if (!is_exit && !(tile_element->IsGhost()) && tile_element->AsEntrance()->GetRideIndex() != RIDE_ID_NULL
+        && stationObj->ScrollingMode != SCROLLING_MODE_NONE)
     {
         set_format_arg(0, uint32_t, 0);
         set_format_arg(4, uint32_t, 0);

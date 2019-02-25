@@ -317,7 +317,7 @@ static money32 SmallSceneryPlace(
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
     {
-        newElement->SetGhost();
+        newElement->SetGhost(true);
     }
 
     map_invalidate_tile_full(x, y);
