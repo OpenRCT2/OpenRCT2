@@ -2199,7 +2199,7 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
             session->TrackColours[SCHEME_MISC] = 0x21600000;
             session->TrackColours[SCHEME_3] = 0x21600000;
         }
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
         {
             uint32_t ghost_id = CONSTRUCTION_MARKER;
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;

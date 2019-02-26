@@ -291,7 +291,7 @@ static money32 footpath_element_insert(
             tileElement->AsPath()->SetAdditionStatus(255);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & GAME_COMMAND_FLAG_GHOST)
-                pathElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                pathElement->SetGhost(true);
 
             footpath_queue_chain_reset();
 
@@ -686,7 +686,7 @@ static money32 footpath_place_from_track(
             tileElement->AsPath()->SetCorners(0);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & (1 << 6))
-                pathElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                pathElement->SetGhost(true);
 
             map_invalidate_tile_full(x, y);
         }
@@ -1061,7 +1061,7 @@ bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t dire
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
         if (z0 >= tileElement->clearance_height)
             continue;

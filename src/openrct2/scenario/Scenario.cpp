@@ -695,7 +695,7 @@ void scenario_fix_ghosts(rct_s6_data* s6)
             RCT12TileElement* originalElement = reinterpret_cast<RCT12TileElement*>(map_get_first_element_at(x, y));
             do
             {
-                if (originalElement->flags & TILE_ELEMENT_FLAG_GHOST)
+                if (originalElement->IsGhost())
                 {
                     BannerIndex bannerIndex = tile_element_get_banner_index(reinterpret_cast<TileElement*>(originalElement));
                     if (bannerIndex != BANNER_INDEX_NULL)

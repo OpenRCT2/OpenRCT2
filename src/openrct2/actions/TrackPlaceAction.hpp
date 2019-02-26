@@ -616,7 +616,7 @@ public:
             tileElement->AsTrack()->SetTrackType(_trackType);
             if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
             {
-                tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                tileElement->SetGhost(true);
             }
 
             switch (_trackType)

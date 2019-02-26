@@ -54,6 +54,18 @@ bool TileElementBase::IsGhost() const
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
+void TileElementBase::SetGhost(bool isGhost)
+{
+    if (isGhost == true)
+    {
+        this->flags |= TILE_ELEMENT_FLAG_GHOST;
+    }
+    else
+    {
+        this->flags &= ~TILE_ELEMENT_FLAG_GHOST;
+    }
+}
+
 bool tile_element_is_underground(TileElement* tileElement)
 {
     do

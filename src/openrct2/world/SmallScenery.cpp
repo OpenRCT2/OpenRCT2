@@ -49,7 +49,7 @@ static money32 SmallScenerySetColour(
         return 0;
     }
 
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tileElement->IsGhost()))
     {
         return 0;
     }
@@ -317,7 +317,7 @@ static money32 SmallSceneryPlace(
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
     {
-        newElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+        newElement->SetGhost(true);
     }
 
     map_invalidate_tile_full(x, y);

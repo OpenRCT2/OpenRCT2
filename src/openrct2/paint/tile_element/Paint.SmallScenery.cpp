@@ -53,7 +53,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             baseImageid = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
         }
     }
-    if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+    if (tileElement->IsGhost())
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         baseImageid = CONSTRUCTION_MARKER;

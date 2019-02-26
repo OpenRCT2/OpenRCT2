@@ -170,7 +170,7 @@ public:
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                newElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                newElement->SetGhost(true);
             }
 
             entranceElement->SetDirection(_direction);

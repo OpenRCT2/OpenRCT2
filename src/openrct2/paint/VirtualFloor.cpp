@@ -277,7 +277,7 @@ static void virtual_floor_get_tile_properties(
             continue;
         }
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
         {
             *outLit = true;
             continue;

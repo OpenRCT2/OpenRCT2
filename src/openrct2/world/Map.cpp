@@ -283,7 +283,7 @@ TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z)
     // Find the path element at known z
     do
     {
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
@@ -413,7 +413,7 @@ void map_strip_ghost_flag_from_elements()
 {
     for (auto& element : gTileElements)
     {
-        element.flags &= ~TILE_ELEMENT_FLAG_GHOST;
+        element.SetGhost(false);
     }
 }
 
@@ -821,7 +821,7 @@ void game_command_set_large_scenery_colour(
         return;
     }
 
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST))
+    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tile_element->IsGhost()))
     {
         *ebx = 0;
         return;
@@ -2472,7 +2472,7 @@ void game_command_place_large_scenery(
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                new_tile_element->flags |= TILE_ELEMENT_FLAG_GHOST;
+                new_tile_element->SetGhost(true);
             }
 
             if (tile_num == 0)
@@ -2884,8 +2884,7 @@ bool map_can_construct_with_clear_at(
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
         {
-            if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height
-                && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height && !(tileElement->IsGhost()))
             {
                 if (tileElement->flags & (bl.GetBaseQuarterOccupied()))
                 {
@@ -3372,7 +3371,7 @@ EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((ghost == false) && (tileElement->IsGhost()))
                 continue;
 
             return tileElement->AsEntrance();
@@ -3397,7 +3396,7 @@ EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((ghost == false) && (tileElement->IsGhost()))
                 continue;
 
             return tileElement->AsEntrance();
@@ -3422,7 +3421,7 @@ EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, b
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
-            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((ghost == false) && (tileElement->IsGhost()))
                 continue;
 
             return tileElement->AsEntrance();
