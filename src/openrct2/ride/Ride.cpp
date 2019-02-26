@@ -4530,7 +4530,7 @@ static void ride_set_block_points(CoordsXYE* startElement)
             case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
             case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
             case TRACK_ELEM_BLOCK_BRAKES:
-                currentElement.element->flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+                currentElement.element->AsTrack()->SetBlockBrakeClosed(false);
                 break;
         }
     } while (track_block_get_next(&currentElement, &currentElement, nullptr, nullptr)
@@ -5076,7 +5076,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
 
         do
         {
-            tileElement->flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+            tileElement->AsTrack()->SetBlockBrakeClosed(true);
             car = train;
             while (true)
             {
@@ -5094,7 +5094,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
             }
         } while (!(vehicle_update_track_motion(train, nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_10));
 
-        tileElement->flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+        tileElement->AsTrack()->SetBlockBrakeClosed(true);
         car = train;
         while (true)
         {

@@ -57,7 +57,7 @@ static void ride_update_station_blocksection(Ride* ride, int32_t stationIndex)
     TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
 
     if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0)
-        || (tileElement != nullptr && tileElement->flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED))
+        || (tileElement != nullptr && tileElement->AsTrack()->BlockBrakeClosed()))
     {
         ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
 
