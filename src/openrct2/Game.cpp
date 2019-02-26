@@ -630,8 +630,8 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         network_append_server_log(log_msg);
     }
     else if (
-        command == GAME_COMMAND_PLACE_SCENERY || command == GAME_COMMAND_PLACE_WALL
-        || command == GAME_COMMAND_PLACE_LARGE_SCENERY || command == GAME_COMMAND_PLACE_BANNER)
+        command == GAME_COMMAND_PLACE_WALL || command == GAME_COMMAND_PLACE_LARGE_SCENERY
+        || command == GAME_COMMAND_PLACE_BANNER)
     {
         uint8_t flags = *ebx & 0xFF;
         if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -1275,7 +1275,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_place_ride_entrance_or_exit,
     game_command_remove_ride_entrance_or_exit,
     nullptr,
-    game_command_place_scenery,
+    nullptr,
     game_command_set_water_height,
     game_command_place_footpath,
     game_command_place_footpath_from_track,

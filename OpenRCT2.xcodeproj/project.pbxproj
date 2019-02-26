@@ -24,6 +24,9 @@
 		2A1F4FE0221FF4B0003CA045 /* Twitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */; };
 		2A1F4FE1221FF4B0003CA045 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
 		2A1F4FE2221FF4B0003CA045 /* macos.mm in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.mm */; };
+		2A43D2BA2225B8D900E8F73B /* RideSetVehiclesAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2B72225B8D900E8F73B /* RideSetVehiclesAction.hpp */; };
+		2A43D2BB2225B8D900E8F73B /* SmallSceneryPlaceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2B82225B8D900E8F73B /* SmallSceneryPlaceAction.hpp */; };
+		2A43D2BC2225B8D900E8F73B /* LoadOrQuitAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2B92225B8D900E8F73B /* LoadOrQuitAction.hpp */; };
 		2A5354E922099C4F00A5440F /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5354E822099C4F00A5440F /* Network.cpp */; };
 		2A5C1368221E9F9000F8C245 /* TrackRemoveAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */; };
 		2AA050322209A8E300D3A922 /* StaffSetCostumeAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */; };
@@ -622,6 +625,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2A43D2B72225B8D900E8F73B /* RideSetVehiclesAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetVehiclesAction.hpp; sourceTree = "<group>"; };
+		2A43D2B82225B8D900E8F73B /* SmallSceneryPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SmallSceneryPlaceAction.hpp; sourceTree = "<group>"; };
+		2A43D2B92225B8D900E8F73B /* LoadOrQuitAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LoadOrQuitAction.hpp; sourceTree = "<group>"; };
 		2A5354E822099C4F00A5440F /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
 		2A5354EA22099C7200A5440F /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		2A5354EB22099D7700A5440F /* SignSetStyleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SignSetStyleAction.hpp; sourceTree = "<group>"; };
@@ -2013,6 +2019,9 @@
 			isa = PBXGroup;
 			children = (
 				2ACBAB162226850A0034FB91 /* RideSetSetting.hpp */,
+				2A43D2B92225B8D900E8F73B /* LoadOrQuitAction.hpp */,
+				2A43D2B72225B8D900E8F73B /* RideSetVehiclesAction.hpp */,
+				2A43D2B82225B8D900E8F73B /* SmallSceneryPlaceAction.hpp */,
 				2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */,
 				2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */,
 				2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */,
@@ -3332,8 +3341,10 @@
 				2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */,
 				C6352B941F477032006CCEE3 /* PlaceParkEntranceAction.hpp in Headers */,
 				C6352B911F477032006CCEE3 /* GameAction.h in Headers */,
+				2A43D2BA2225B8D900E8F73B /* RideSetVehiclesAction.hpp in Headers */,
 				2AA050322209A8E300D3A922 /* StaffSetCostumeAction.hpp in Headers */,
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
+				2A43D2BC2225B8D900E8F73B /* LoadOrQuitAction.hpp in Headers */,
 				9344BEF920C1E6180047D165 /* Crypt.h in Headers */,
 				939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */,
 				2ACBAB172226850A0034FB91 /* RideSetSetting.hpp in Headers */,
@@ -3346,6 +3357,7 @@
 				2AAFD7FC220DD336002461A4 /* RideSetPriceAction.hpp in Headers */,
 				C67B28162002D67A00109C93 /* Window.h in Headers */,
 				C6352B961F477032006CCEE3 /* RideSetStatus.hpp in Headers */,
+				2A43D2BB2225B8D900E8F73B /* SmallSceneryPlaceAction.hpp in Headers */,
 				2AAFD800220DD3D2002461A4 /* LandSetHeightAction.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

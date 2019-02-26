@@ -1958,6 +1958,7 @@ void Network::ProcessGameCommands()
 
                 if (mode == NETWORK_MODE_SERVER)
                 {
+                    // Note these are currently not reached as both commands are ported to GameActions
                     if (command == GAME_COMMAND_PLACE_SCENERY)
                     {
                         player->LastPlaceSceneryTime = player->LastActionTime;
