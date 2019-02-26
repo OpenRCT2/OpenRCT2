@@ -1015,7 +1015,7 @@ static money32 track_remove(
         return MONEY32_UNDEFINED;
     }
 
-    if (tileElement->flags & TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE)
+    if (tileElement->AsTrack()->IsIndestructible())
     {
         gGameCommandErrorText = STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION;
         return MONEY32_UNDEFINED;
