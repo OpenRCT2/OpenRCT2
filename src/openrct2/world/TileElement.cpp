@@ -53,6 +53,7 @@ bool TileElementBase::IsGhost() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
+
 void TileElementBase::SetGhost(bool isGhost)
 {
     if (isGhost == true)

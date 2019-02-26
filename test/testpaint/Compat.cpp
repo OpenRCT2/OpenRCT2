@@ -165,6 +165,11 @@ uint8_t TileElementBase::GetType() const
     return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
+bool TileElementBase::IsGhost() const
+{
+    return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+}
+
 TileElement* map_get_first_element_at(int x, int y)
 {
     if (x < 0 || y < 0 || x > 255 || y > 255)
