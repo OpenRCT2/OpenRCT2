@@ -1729,7 +1729,7 @@ void rct_peep::UpdateEmptyingBin()
         }
 
         rct_scenery_entry* scenery_entry = tile_element->AsPath()->GetAdditionEntry();
-        if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->flags & TILE_ELEMENT_FLAG_BROKEN
+        if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
             || tile_element->AsPath()->AdditionIsGhost())
         {
             StateReset();
@@ -2130,7 +2130,7 @@ static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
         return 0;
 
-    if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+    if (tileElement->AsPath()->IsBroken())
         return 0;
 
     if (tileElement->AsPath()->AdditionIsGhost())

@@ -325,7 +325,7 @@ static money32 footpath_element_update(
     else if (pathItemType != 0)
     {
         if (!(flags & GAME_COMMAND_FLAG_GHOST) && tileElement->AsPath()->GetAddition() == pathItemType
-            && !(tileElement->flags & TILE_ELEMENT_FLAG_BROKEN))
+            && !(tileElement->AsPath()->IsBroken()))
         {
             if (flags & GAME_COMMAND_FLAG_4)
                 return MONEY32_UNDEFINED;

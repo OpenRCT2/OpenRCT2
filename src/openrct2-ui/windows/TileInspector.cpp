@@ -2186,7 +2186,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         const int32_t baseHeight = tileElement->base_height;
         const int32_t clearanceHeight = tileElement->clearance_height;
         const bool ghost = tileElement->IsGhost();
-        const bool broken = (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN) != 0;
+        const bool broken = tileElement->AsPath() == nullptr ? false : tileElement->AsPath()->IsBroken();
         const bool last = (tileElement->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 
         const rct_string_id stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
