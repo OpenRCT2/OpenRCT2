@@ -287,9 +287,9 @@ static money32 footpath_element_insert(
             if (type & FOOTPATH_ELEMENT_INSERT_QUEUE)
                 pathElement->SetIsQueue(true);
             pathElement->SetAddition(pathItemType);
-            tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
-            tileElement->AsPath()->SetAdditionStatus(255);
-            pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+            pathElement->SetRideIndex(RIDE_ID_NULL);
+            pathElement->SetAdditionStatus(255);
+            pathElement->SetIsBroken(false);
             if (flags & GAME_COMMAND_FLAG_GHOST)
                 pathElement->SetGhost(true);
 
@@ -394,7 +394,7 @@ static money32 footpath_element_update(
         }
 
         tileElement->AsPath()->SetAddition(pathItemType);
-        tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+        tileElement->AsPath()->SetIsBroken(false);
         if (pathItemType != 0)
         {
             rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
@@ -423,7 +423,7 @@ static money32 footpath_element_update(
         else
             tileElement->AsPath()->SetIsQueue(false);
         tileElement->AsPath()->SetAddition(pathItemType);
-        tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+        tileElement->AsPath()->SetIsBroken(false);
 
         loc_6A6620(flags, x, y, tileElement);
     }
@@ -678,13 +678,13 @@ static money32 footpath_place_from_track(
             if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
                 pathElement->SetSloped(true);
             if (type & (1 << 7))
-                tileElement->AsPath()->SetIsQueue(true);
+                pathElement->SetIsQueue(true);
             pathElement->SetAddition(0);
-            tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
-            tileElement->AsPath()->SetAdditionStatus(255);
-            tileElement->AsPath()->SetEdges(edges);
-            tileElement->AsPath()->SetCorners(0);
-            pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+            pathElement->SetRideIndex(RIDE_ID_NULL);
+            pathElement->SetAdditionStatus(255);
+            pathElement->SetEdges(edges);
+            pathElement->SetCorners(0);
+            pathElement->SetIsBroken(false);
             if (flags & (1 << 6))
                 pathElement->SetGhost(true);
 

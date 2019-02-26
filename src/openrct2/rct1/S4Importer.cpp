@@ -2080,7 +2080,8 @@ private:
                 uint8_t entryIndex = _pathTypeToEntryMap[pathType];
 
                 dst2->SetDirection(0);
-                dst2->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
+                dst2->SetIsBroken(false);
+                dst2->SetIsBlockedByVehicle(false);
 
                 dst2->SetPathEntryIndex(entryIndex);
                 dst2->SetShouldDrawPathOverSupports(true);
@@ -2121,7 +2122,7 @@ private:
                     entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
                     if (additionType != normalisedType)
                     {
-                        dst2->flags |= TILE_ELEMENT_FLAG_BROKEN;
+                        dst2->SetIsBroken(true);
                     }
                     dst2->SetAddition(entryIndex + 1);
                 }

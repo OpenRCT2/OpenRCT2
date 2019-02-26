@@ -6185,7 +6185,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
             return;
     }
 
-    tileElement->flags |= TILE_ELEMENT_FLAG_BROKEN;
+    tileElement->AsPath()->SetIsBroken(true);
 
     map_invalidate_tile_zoom1(peep->next_x, peep->next_y, (tileElement->base_height << 3) + 32, tileElement->base_height << 3);
 
