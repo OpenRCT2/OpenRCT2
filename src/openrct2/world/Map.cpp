@@ -2782,7 +2782,7 @@ TileElement* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags)
             originalTileElement->base_height = 255;
             originalTileElement++;
             newTileElement++;
-        } while (!((newTileElement - 1)->flags & TILE_ELEMENT_FLAG_LAST_TILE));
+        } while (!((newTileElement - 1)->IsLastForTile()));
     }
 
     gNextFreeTileElement = newTileElement;

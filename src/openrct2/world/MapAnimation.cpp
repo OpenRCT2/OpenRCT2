@@ -182,7 +182,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
-        if (tileElement->flags & (1 << 4))
+        if (tileElement->IsGhost())
             continue;
 
         sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
