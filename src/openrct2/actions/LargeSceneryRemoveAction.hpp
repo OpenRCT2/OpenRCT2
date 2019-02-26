@@ -113,11 +113,11 @@ public:
             // scenery tile elements.
             if (flags & GAME_COMMAND_FLAG_PATH_SCENERY)
             {
-                if (tileElement->flags & TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED)
+                if (tileElement->AsLargeScenery()->IsAccounted())
                     calculate_cost = false;
 
                 // Sets the flag to prevent this being counted in additional calls
-                tileElement->flags |= TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED;
+                tileElement->AsLargeScenery()->SetIsAccounted(true);
             }
         }
 
