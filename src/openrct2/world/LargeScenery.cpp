@@ -52,7 +52,7 @@ void LargeSceneryElement::SetBannerIndex(BannerIndex newIndex)
 
 bool LargeSceneryElement::IsAccounted() const
 {
-    return flags & TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED;
+    return (flags & TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED) != 0;
 }
 
 void LargeSceneryElement::SetIsAccounted(bool isAccounted)

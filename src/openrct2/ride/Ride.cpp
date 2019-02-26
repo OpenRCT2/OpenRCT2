@@ -1246,7 +1246,7 @@ void ride_clear_blocked_tiles(Ride* ride)
                         auto footpathElement = map_get_footpath_element(x, y, element->base_height);
                         if (footpathElement != nullptr)
                         {
-                            footpathElement->flags &= ~TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+                            footpathElement->AsPath()->SetIsBlockedByVehicle(false);
                         }
                     }
                 } while (!(element++)->IsLastForTile());

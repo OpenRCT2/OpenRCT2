@@ -9925,12 +9925,12 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
 
             if (tileElement)
             {
-                if (!playedClaxon && 0 == (tileElement->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE))
+                if (!playedClaxon && !tileElement->AsPath()->IsBlockedByVehicle())
                 {
                     vehicle_claxon(vehicle);
                 }
                 crossingBonus = 4;
-                tileElement->flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+                tileElement->AsPath()->SetIsBlockedByVehicle(true);
             }
             else
             {
@@ -9997,7 +9997,7 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
                 xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
             if (tileElement)
             {
-                tileElement->flags &= ~TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+                tileElement->AsPath()->SetIsBlockedByVehicle(false);
             }
         }
     }

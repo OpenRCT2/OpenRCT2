@@ -2433,8 +2433,8 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
 
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
 {
-    auto pathElement = map_get_path_element_at(position.x, position.y, position.z);
-    return pathElement != nullptr && (pathElement->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE);
+    auto pathElement = map_get_path_element_at(position.x, position.y, position.z)->AsPath();
+    return pathElement != nullptr && pathElement->IsBlockedByVehicle();
 }
 
 /**
