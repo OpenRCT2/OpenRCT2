@@ -2035,6 +2035,41 @@ void PathElement::SetHasQueueBanner(bool hasQueueBanner)
         entryIndex |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
 }
 
+
+bool PathElement::IsBroken() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BROKEN) != 0;
+}
+
+void PathElement::SetIsBroken(bool isBroken)
+{
+    if (isBroken == true)
+    {
+        flags |= TILE_ELEMENT_FLAG_BROKEN;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+    }
+}
+
+bool PathElement::IsBlockedByVehicle() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
+}
+
+void PathElement::SetIsBlockedByVehicle(bool isBlocked)
+{
+    if (isBlocked == true)
+    {
+        flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+}
+
 uint8_t PathElement::GetStationIndex() const
 {
     return (additions & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK) >> 4;

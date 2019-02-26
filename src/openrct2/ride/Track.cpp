@@ -1718,6 +1718,40 @@ void TrackElement::SetInverted(bool inverted)
     }
 }
 
+bool TrackElement::BlockBrakeClosed() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+}
+
+void TrackElement::SetBlockBrakeClosed(bool isClosed)
+{
+    if (isClosed)
+    {
+        flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    }
+}
+
+bool TrackElement::IsIndestructible() const
+{
+    return (flags & TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;
+}
+
+void TrackElement::SetIsIndestructible(bool isIndestructible)
+{
+    if (isIndestructible)
+    {
+        flags |= TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+    }
+}
+
 uint8_t TrackElement::GetBrakeBoosterSpeed() const
 {
     return (sequence >> 4) << 1;

@@ -210,6 +210,12 @@ public:
     bool HasQueueBanner() const;
     void SetHasQueueBanner(bool hasQueueBanner);
 
+    bool IsBroken() const;
+    void SetIsBroken(bool isBroken);
+
+    bool IsBlockedByVehicle() const;
+    void SetIsBlockedByVehicle(bool isBlocked);
+
     uint8_t GetEdges() const;
     void SetEdges(uint8_t newEdges);
     uint8_t GetCorners() const;
@@ -286,6 +292,12 @@ public:
     bool IsInverted() const;
     void SetInverted(bool inverted);
 
+    bool BlockBrakeClosed() const;
+    void SetBlockBrakeClosed(bool isClosed);
+
+    bool IsIndestructible() const;
+    void SetIsIndestructible(bool isIndestructible);
+
     uint8_t GetBrakeBoosterSpeed() const;
     void SetBrakeBoosterSpeed(uint8_t speed);
 
@@ -360,6 +372,9 @@ public:
 
     BannerIndex GetBannerIndex() const;
     void SetBannerIndex(BannerIndex newIndex);
+
+    bool IsAccounted() const;
+    void SetIsAccounted(bool isAccounted);
 };
 assert_struct_size(LargeSceneryElement, 8);
 

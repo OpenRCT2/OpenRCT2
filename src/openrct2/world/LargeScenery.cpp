@@ -50,6 +50,23 @@ void LargeSceneryElement::SetBannerIndex(BannerIndex newIndex)
     colour[1] |= (newIndex & 7) << 5;
 }
 
+bool LargeSceneryElement::IsAccounted() const
+{
+    return flags & TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED;
+}
+
+void LargeSceneryElement::SetIsAccounted(bool isAccounted)
+{
+    if (isAccounted)
+    {
+        flags |= TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED;
+    }
+}
+
 uint32_t LargeSceneryElement::GetEntryIndex() const
 {
     return entryIndex & TILE_ELEMENT_LARGE_TYPE_MASK;
