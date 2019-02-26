@@ -4840,7 +4840,7 @@ static rct_vehicle* vehicle_create_car(
     vehicle->ride_subtype = ride->subtype;
 
     vehicle->vehicle_type = vehicleEntryIndex;
-    vehicle->type = carIndex == 0 ? 0 : 1;
+    vehicle->type = carIndex == 0 ? VEHICLE_TYPE_HEAD : VEHICLE_TYPE_TAIL;
     vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
     edx = vehicleEntry->spacing >> 1;
     *remainingDistance -= edx;

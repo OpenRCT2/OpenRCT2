@@ -105,6 +105,12 @@ static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
 static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
 #endif
 
+enum VEHICLE_TYPE : uint8_t
+{
+    VEHICLE_TYPE_HEAD = 0,
+    VEHICLE_TYPE_TAIL = 1,
+};
+
 struct rct_vehicle : rct_sprite_common
 {
     uint8_t vehicle_sprite_type; // 0x1F
@@ -223,7 +229,7 @@ struct rct_vehicle : rct_sprite_common
 
     constexpr bool IsHead() const
     {
-        return type == 0;
+        return type == VEHICLE_TYPE_HEAD;
     }
     rct_vehicle* GetHead();
     const rct_vehicle* GetHead() const;
