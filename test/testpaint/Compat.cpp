@@ -170,6 +170,11 @@ bool TileElementBase::IsGhost() const
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
+bool TrackElement::BlockBrakeClosed() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+}
+
 TileElement* map_get_first_element_at(int x, int y)
 {
     if (x < 0 || y < 0 || x > 255 || y > 255)

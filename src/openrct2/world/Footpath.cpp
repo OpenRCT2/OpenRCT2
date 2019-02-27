@@ -2035,7 +2035,6 @@ void PathElement::SetHasQueueBanner(bool hasQueueBanner)
         entryIndex |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
 }
 
-
 bool PathElement::IsBroken() const
 {
     return (flags & TILE_ELEMENT_FLAG_BROKEN) != 0;

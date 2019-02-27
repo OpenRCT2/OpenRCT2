@@ -703,8 +703,7 @@ static void sub_6A3F61(
                 if (sceneryEntry == nullptr)
                     return;
 
-                if ((session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
-                    && !(tile_element->AsPath()->IsBroken())
+                if ((session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(tile_element->AsPath()->IsBroken())
                     && !(sceneryEntry->path_bit.draw_type == PATH_BIT_DRAW_TYPE_BINS))
                 {
                     return;
