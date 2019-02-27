@@ -11,8 +11,8 @@
 
 #include "../core/MemoryStream.h"
 #include "../localisation/Localisation.h"
+#include "../network/NetworkLegacy.h"
 #include "../network/NetworkTypes.h"
-#include "../network/network.h"
 #include "../ride/Ride.h"
 #include "../world/Location.hpp"
 #include "DataSerialiserTag.h"
@@ -113,7 +113,7 @@ template<typename T, size_t N> struct DataSerializerTraitsIntegralArray
         DataSerializerTraits<T> s;
         for (size_t i = 0; i < N; i++)
         {
-            s.encode(val[i]);
+            s.encode(stream, val[i]);
         }
     }
     static void decode(IStream* stream, T (&val)[N])

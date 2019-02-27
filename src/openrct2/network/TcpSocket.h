@@ -37,6 +37,8 @@ enum NETWORK_READPACKET
 interface ITcpSocket
 {
 public:
+    static std::unique_ptr<ITcpSocket> Create();
+
     virtual ~ITcpSocket()
     {
     }
@@ -58,8 +60,6 @@ public:
     virtual void Disconnect() abstract;
     virtual void Close() abstract;
 };
-
-std::unique_ptr<ITcpSocket> CreateTcpSocket();
 
 bool InitialiseWSA();
 void DisposeWSA();
