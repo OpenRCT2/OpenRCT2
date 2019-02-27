@@ -196,7 +196,7 @@ script:
     # Android jobs are triggered from cron and overwrite `script` part
     - if [[ "$OPENRCT2_ANDROID" == "true" ]] ; then exit 0 ; fi
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/build.sh ; fi
-    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild | xcpretty -f `xcpretty-travis-formatter`; fi
+    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild ; fi
 
 notifications:
     on_failure: change
