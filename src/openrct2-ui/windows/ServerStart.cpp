@@ -150,18 +150,22 @@ static void window_server_start_close(rct_window* w)
 
 static void window_server_start_scenarioselect_callback(const utf8* path)
 {
+    INetwork* network = OpenRCT2::GetContext()->GetNetwork();
+
     network_set_password(_password);
     if (context_load_park_from_file(path))
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        network->BeginServer(gConfigNetwork.listen_address, gConfigNetwork.default_port);
     }
 }
 
 static void window_server_start_loadsave_callback(int32_t result, const utf8* path)
 {
+    INetwork* network = OpenRCT2::GetContext()->GetNetwork();
+
     if (result == MODAL_RESULT_OK && context_load_park_from_file(path))
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        network->BeginServer(gConfigNetwork.listen_address, gConfigNetwork.default_port);
     }
 }
 

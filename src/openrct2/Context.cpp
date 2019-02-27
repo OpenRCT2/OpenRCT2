@@ -743,9 +743,7 @@ namespace OpenRCT2
                     gScreenFlags = SCREEN_FLAGS_PLAYING;
 
 #ifndef DISABLE_NETWORK
-                    // FIXME:
-                    // if (gNetworkStart == NETWORK_MODE_SERVER)
-                    if (false)
+                    if (gNetworkStart == NETWORK_MODE::HOST)
                     {
                         if (gNetworkStartPort == 0)
                         {
@@ -765,7 +763,8 @@ namespace OpenRCT2
                         {
                             network_set_password(gCustomPassword);
                         }
-                        network_begin_server(gNetworkStartPort, gNetworkStartAddress);
+
+                        _network->BeginServer(gNetworkStartAddress, gNetworkStartPort);
                     }
 #endif // DISABLE_NETWORK
                     break;
@@ -783,14 +782,13 @@ namespace OpenRCT2
             }
 
 #ifndef DISABLE_NETWORK
-            // if (gNetworkStart == NETWORK_MODE_CLIENT)
-            if (false)
+            if (gNetworkStart == NETWORK_MODE::CLIENT)
             {
                 if (gNetworkStartPort == 0)
                 {
                     gNetworkStartPort = gConfigNetwork.default_port;
                 }
-                network_begin_client(gNetworkStartHost, gNetworkStartPort);
+                _network->BeginClient(gNetworkStartHost, gNetworkStartPort);
             }
 #endif // DISABLE_NETWORK
 

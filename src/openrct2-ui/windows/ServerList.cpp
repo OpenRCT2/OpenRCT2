@@ -21,8 +21,8 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/Http.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/network/ServerList.h>
-#include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <vector>
@@ -629,7 +629,8 @@ static void join_server(std::string address)
         address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
     }
 
-    if (!network_begin_client(address.c_str(), port))
+    INetwork* network = OpenRCT2::GetContext()->GetNetwork();
+    if (network->BeginClient(address, port) == false)
     {
         context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
     }
