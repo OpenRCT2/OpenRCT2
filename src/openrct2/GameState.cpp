@@ -115,6 +115,7 @@ void GameState::Update()
     // FIXME
     // if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
     //    && network_get_authstatus() == NETWORK_AUTH_OK)
+    if (false)
     {
         if (network_get_server_tick() - gCurrentTicks >= 10)
         {
@@ -224,8 +225,7 @@ void GameState::UpdateLogic()
     if (gScreenAge == 0)
         gScreenAge--;
 
-    network_update();
-
+    GetContext()->GetNetwork->Update();
     GetContext()->GetReplayManager()->Update();
 
     // FIXME:
