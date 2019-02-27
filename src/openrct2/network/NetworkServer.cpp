@@ -74,7 +74,7 @@ void NetworkServer::Close()
     // TODO: Close all clients and listen socket.
 }
 
-bool NetworkServer::Listen(uint16_t port, const char* address)
+bool NetworkServer::Listen(const std::string& host, uint16_t port)
 {
     log_verbose("%s\n", __FUNCTION__);
 
@@ -85,16 +85,11 @@ bool NetworkServer::Listen(uint16_t port, const char* address)
 
     assert(_listenSocket != nullptr);
 
-    if (strlen(address) == 0)
-    {
-        address = nullptr;
-    }
-
     log_verbose("Begin listening for clients.");
 
     try
     {
-        _listenSocket->Listen(address, port);
+        _listenSocket->Listen(host, port);
     }
     catch (const std::exception& ex)
     {

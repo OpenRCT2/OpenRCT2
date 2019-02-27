@@ -27,7 +27,7 @@ public:
     virtual void Update() override;
     virtual void Flush() override;
 
-    bool Connect(const char* host, int32_t port);
+    bool Connect(const std::string& host, int32_t port);
 
 private:
     bool UpdateConnecting();

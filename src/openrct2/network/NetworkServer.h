@@ -35,7 +35,7 @@ public:
     virtual void Update() override;
     virtual void Flush() override;
 
-    bool Listen(uint16_t port, const char* address);
+    bool Listen(const std::string& host, uint16_t port);
 
 private:
     void UpdateServer();

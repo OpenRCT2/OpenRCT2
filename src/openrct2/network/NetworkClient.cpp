@@ -93,6 +93,24 @@ void NetworkClient::Flush()
     }
 }
 
+bool NetworkClient::Connect(const std::string& host, int32_t port)
+{
+    log_verbose("%s\n", __FUNCTION__);
+
+    if (_state != NETWORK_STATE::READY)
+    {
+        return false;
+    }
+
+    log_verbose("Connecting to %s:%d\n", host.c_str(), port);
+
+    _connection->ConnectAsync(host, port);
+
+    _state = NETWORK_STATE::CONNECTING;
+
+    return true;
+}
+
 bool NetworkClient::UpdateConnecting()
 {
     switch (_connection->GetStatus())
@@ -126,24 +144,6 @@ bool NetworkClient::UpdateConnecting()
         }
         break;
     }
-
-    return true;
-}
-
-bool NetworkClient::Connect(const char* host, int32_t port)
-{
-    log_verbose("%s\n", __FUNCTION__);
-
-    if (_state != NETWORK_STATE::READY)
-    {
-        return false;
-    }
-
-    log_verbose("Connecting to %s:%d\n", host, port);
-
-    _connection->ConnectAsync(host, port);
-
-    _state = NETWORK_STATE::CONNECTING;
 
     return true;
 }
