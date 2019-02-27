@@ -2730,8 +2730,6 @@ static void ride_breakdown_status_update(Ride* ride)
  */
 static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
 {
-    rct_peep* mechanic;
-
     // Turn a pending breakdown into a breakdown.
     if ((mechanicStatus == RIDE_MECHANIC_STATUS_UNDEFINED || mechanicStatus == RIDE_MECHANIC_STATUS_CALLING
          || mechanicStatus == RIDE_MECHANIC_STATUS_HEADING)
@@ -2767,12 +2765,9 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
             ride_call_closest_mechanic(ride);
             break;
         case RIDE_MECHANIC_STATUS_HEADING:
-            mechanic = nullptr;
-            if (ride->mechanic != SPRITE_INDEX_NULL)
-            {
-                mechanic = &(get_sprite(ride->mechanic)->peep);
-            }
-            if (mechanic == nullptr || !mechanic->IsMechanic()
+        {
+            auto mechanic = ride_get_mechanic(ride);
+            if (mechanic == nullptr
                 || (mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_ANSWERING)
                 || mechanic->current_ride != ride->id)
             {
@@ -2781,13 +2776,11 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
                 ride_mechanic_status_update(ride, RIDE_MECHANIC_STATUS_CALLING);
             }
             break;
+        }
         case RIDE_MECHANIC_STATUS_FIXING:
-            mechanic = nullptr;
-            if (ride->mechanic != SPRITE_INDEX_NULL)
-            {
-                mechanic = &(get_sprite(ride->mechanic)->peep);
-            }
-            if (mechanic == nullptr || !mechanic->IsMechanic()
+        {
+            auto mechanic = ride_get_mechanic(ride);
+            if (mechanic == nullptr
                 || (mechanic->state != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->state != PEEP_STATE_FIXING
                     && mechanic->state != PEEP_STATE_INSPECTING && mechanic->state != PEEP_STATE_ANSWERING))
             {
@@ -2796,6 +2789,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
                 ride_mechanic_status_update(ride, RIDE_MECHANIC_STATUS_CALLING);
             }
             break;
+        }
     }
 }
 
@@ -2915,16 +2909,27 @@ rct_peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
     return closestMechanic;
 }
 
-rct_peep* ride_get_assigned_mechanic(Ride* ride)
+StaffPeep* ride_get_mechanic(Ride* ride)
+{
+    if (ride->mechanic != SPRITE_INDEX_NULL)
+    {
+        auto peep = (&(get_sprite(ride->mechanic)->peep))->AsStaff();
+        if (peep != nullptr && peep->IsMechanic())
+        {
+            return peep;
+        }
+    }
+    return nullptr;
+}
+
+StaffPeep* ride_get_assigned_mechanic(Ride* ride)
 {
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
         if (ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING || ride->mechanic_status == RIDE_MECHANIC_STATUS_FIXING
             || ride->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            rct_peep* peep = &(get_sprite(ride->mechanic)->peep);
-            if (peep->IsMechanic())
-                return peep;
+            return ride_get_mechanic(ride);
         }
     }
 

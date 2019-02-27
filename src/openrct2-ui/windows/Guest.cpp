@@ -2192,33 +2192,35 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_guest_thoughts_tab_paint(w, dpi);
     window_guest_inventory_tab_paint(w, dpi);
 
-    rct_peep* peep = GET_PEEP(w->number);
-
-    rct_widget* pageBackgroundWidget = &window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND];
-    int32_t x = w->x + pageBackgroundWidget->left + 4;
-    int32_t y = w->y + pageBackgroundWidget->top + 2;
-    int32_t itemNameWidth = pageBackgroundWidget->right - pageBackgroundWidget->left - 8;
-
-    int32_t maxY = w->y + w->height - 22;
-    int32_t numItems = 0;
-
-    gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, x, y);
-    y += 10;
-
-    for (int32_t item = 0; item < SHOP_ITEM_COUNT; item++)
+    const auto guest = (GET_PEEP(w->number))->AsGuest();
+    if (guest != nullptr)
     {
-        if (y >= maxY)
-            break;
-        if (!peep->HasItem(item))
-            continue;
+        rct_widget* pageBackgroundWidget = &window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND];
+        int32_t x = w->x + pageBackgroundWidget->left + 4;
+        int32_t y = w->y + pageBackgroundWidget->top + 2;
+        int32_t itemNameWidth = pageBackgroundWidget->right - pageBackgroundWidget->left - 8;
 
-        rct_string_id stringId = window_guest_inventory_format_item(peep, item);
-        y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, itemNameWidth, stringId, COLOUR_BLACK);
-        numItems++;
-    }
+        int32_t maxY = w->y + w->height - 22;
+        int32_t numItems = 0;
 
-    if (numItems == 0)
-    {
-        gfx_draw_string_left(dpi, STR_NOTHING, nullptr, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, x, y);
+        y += 10;
+
+        for (int32_t item = 0; item < SHOP_ITEM_COUNT; item++)
+        {
+            if (y >= maxY)
+                break;
+            if (!guest->HasItem(item))
+                continue;
+
+            rct_string_id stringId = window_guest_inventory_format_item(guest, item);
+            y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, itemNameWidth, stringId, COLOUR_BLACK);
+            numItems++;
+        }
+
+        if (numItems == 0)
+        {
+            gfx_draw_string_left(dpi, STR_NOTHING, nullptr, COLOUR_BLACK, x, y);
+        }
     }
 }

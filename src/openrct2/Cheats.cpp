@@ -280,10 +280,11 @@ static void cheat_generate_guests(int32_t count)
 static void cheat_set_guest_parameter(int32_t parameter, int32_t value)
 {
     int32_t spriteIndex;
-    rct_peep* peep;
-
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    rct_peep* p;
+    FOR_ALL_GUESTS (spriteIndex, p)
     {
+        auto peep = p->AsGuest();
+        assert(peep != nullptr);
         switch (parameter)
         {
             case GUEST_PARAMETER_HAPPINESS:
@@ -327,10 +328,11 @@ static void cheat_set_guest_parameter(int32_t parameter, int32_t value)
 static void cheat_give_all_guests(int32_t object)
 {
     int32_t spriteIndex;
-    rct_peep* peep;
-
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    rct_peep* p;
+    FOR_ALL_GUESTS (spriteIndex, p)
     {
+        auto peep = p->AsGuest();
+        assert(peep != nullptr);
         switch (object)
         {
             case OBJECT_MONEY:

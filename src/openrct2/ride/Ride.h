@@ -21,6 +21,7 @@
 interface IObjectManager;
 class StationObject;
 struct rct_peep;
+struct StaffPeep;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
 // The max number of different types of vehicle.
@@ -1015,7 +1016,8 @@ int32_t ride_modify(CoordsXYE* input);
 void ride_remove_peeps(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
 void ride_get_status(const Ride* ride, rct_string_id* formatSecondary, int32_t* argument);
-rct_peep* ride_get_assigned_mechanic(Ride* ride);
+StaffPeep* ride_get_mechanic(Ride* ride);
+StaffPeep* ride_get_assigned_mechanic(Ride* ride);
 int32_t ride_get_total_length(Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
 int32_t ride_can_have_multiple_circuits(Ride* ride);

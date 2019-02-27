@@ -79,9 +79,9 @@ static TileElement* _peepRideEntranceExitElement;
 static void* _crowdSoundChannel = nullptr;
 
 static void peep_128_tick_update(rct_peep* peep, int32_t index);
-static void peep_easter_egg_peep_interactions(rct_peep* peep);
+static void peep_easter_egg_peep_interactions(GuestPeep* peep);
 static void peep_give_real_name(rct_peep* peep);
-static void peep_release_balloon(rct_peep* peep, int16_t spawn_height);
+static void peep_release_balloon(GuestPeep* peep, int16_t spawn_height);
 
 // clang-format off
 static constexpr const char *gPeepEasterEggNames[] = {
@@ -1066,8 +1066,13 @@ void rct_peep::UpdateFalling()
                         // Looks like we are drowning!
                         Invalidate();
                         MoveTo(x, y, height);
-                        // Drop balloon if held
-                        peep_release_balloon(this, height);
+
+                        auto guest = AsGuest();
+                        if (guest != nullptr)
+                        {
+                            // Drop balloon if held
+                            peep_release_balloon(guest, height);
+                        }
 
                         peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
 
@@ -1265,7 +1270,11 @@ void rct_peep::Update()
     step_progress = carryCheck;
     if (carryCheck <= 255)
     {
-        peep_easter_egg_peep_interactions(this);
+        auto guest = AsGuest();
+        if (guest != nullptr)
+        {
+            peep_easter_egg_peep_interactions(guest);
+        }
     }
     else
     {
@@ -1572,10 +1581,11 @@ void peep_update_crowd_noise()
 void peep_applause()
 {
     uint16_t spriteIndex;
-    rct_peep* peep;
-
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    rct_peep* p;
+    FOR_ALL_GUESTS (spriteIndex, p)
     {
+        auto peep = p->AsGuest();
+        assert(peep != nullptr);
         if (peep->outside_of_park != 0)
             continue;
 
@@ -3295,9 +3305,9 @@ static bool peep_has_valid_xy(rct_peep* peep)
     return false;
 }
 
-using easter_egg_function = void (*)(rct_peep* peep, rct_peep* otherPeep);
+using easter_egg_function = void (*)(GuestPeep* peep, GuestPeep* otherPeep);
 
-static void peep_apply_easter_egg_to_nearby_guests(rct_peep* peep, easter_egg_function easter_egg)
+static void peep_apply_easter_egg_to_nearby_guests(GuestPeep* peep, easter_egg_function easter_egg)
 {
     if (!peep_has_valid_xy(peep))
         return;
@@ -3306,33 +3316,30 @@ static void peep_apply_easter_egg_to_nearby_guests(rct_peep* peep, easter_egg_fu
     if (spriteIndex == SPRITE_INDEX_NULL)
         return;
 
-    rct_peep* otherPeep = GET_PEEP(spriteIndex);
+    auto otherPeep = GET_PEEP(spriteIndex);
     for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant)
     {
         otherPeep = GET_PEEP(spriteIndex);
-
-        if (otherPeep->sprite_identifier != SPRITE_IDENTIFIER_PEEP)
-            continue;
-
-        if (otherPeep->type != PEEP_TYPE_GUEST)
-            continue;
-
-        int32_t zDiff = abs(otherPeep->z - peep->z);
-        if (zDiff > 32)
-            continue;
-
-        easter_egg(peep, otherPeep);
+        auto otheerGuest = otherPeep->AsGuest();
+        if (otheerGuest != nullptr)
+        {
+            auto zDiff = std::abs(otherPeep->z - peep->z);
+            if (zDiff <= 32)
+            {
+                easter_egg(peep, otheerGuest);
+            }
+        }
     }
 }
 
-static void peep_give_passing_peeps_purple_clothes([[maybe_unused]] rct_peep* peep, rct_peep* otherPeep)
+static void peep_give_passing_peeps_purple_clothes([[maybe_unused]] GuestPeep* peep, GuestPeep* otherPeep)
 {
     otherPeep->tshirt_colour = COLOUR_BRIGHT_PURPLE;
     otherPeep->trousers_colour = COLOUR_BRIGHT_PURPLE;
     invalidate_sprite_2((rct_sprite*)otherPeep);
 }
 
-static void peep_give_passing_peeps_pizza(rct_peep* peep, rct_peep* otherPeep)
+static void peep_give_passing_peeps_pizza(GuestPeep* peep, GuestPeep* otherPeep)
 {
     if ((otherPeep->item_standard_flags & PEEP_ITEM_PIZZA))
         return;
@@ -3356,7 +3363,7 @@ static void peep_give_passing_peeps_pizza(rct_peep* peep, rct_peep* otherPeep)
     invalidate_sprite_2((rct_sprite*)otherPeep);
 }
 
-static void peep_make_passing_peeps_sick(rct_peep* peep, rct_peep* otherPeep)
+static void peep_make_passing_peeps_sick(GuestPeep* peep, GuestPeep* otherPeep)
 {
     if (peep == otherPeep)
         return;
@@ -3373,7 +3380,7 @@ static void peep_make_passing_peeps_sick(rct_peep* peep, rct_peep* otherPeep)
     }
 }
 
-static void peep_give_passing_peeps_ice_cream(rct_peep* peep, rct_peep* otherPeep)
+static void peep_give_passing_peeps_ice_cream(GuestPeep* peep, GuestPeep* otherPeep)
 {
     if (peep == otherPeep)
         return;
@@ -3388,7 +3395,7 @@ static void peep_give_passing_peeps_ice_cream(rct_peep* peep, rct_peep* otherPee
  *
  *  rct2: 0x0068FD3A
  */
-static void peep_easter_egg_peep_interactions(rct_peep* peep)
+static void peep_easter_egg_peep_interactions(GuestPeep* peep)
 {
     if (peep->peep_flags & PEEP_FLAGS_PURPLE)
     {
@@ -3886,7 +3893,7 @@ void decrement_guests_heading_for_park()
     }
 }
 
-static void peep_release_balloon(rct_peep* peep, int16_t spawn_height)
+static void peep_release_balloon(GuestPeep* peep, int16_t spawn_height)
 {
     if (peep->item_standard_flags & PEEP_ITEM_BALLOON)
     {
@@ -3899,4 +3906,52 @@ static void peep_release_balloon(rct_peep* peep, int16_t spawn_height)
             peep->UpdateSpriteType();
         }
     }
+}
+
+/**
+ *
+ *  rct2: 0x006966A9
+ */
+void rct_peep::RemoveFromQueue()
+{
+    Ride* ride = get_ride(current_ride);
+
+    auto& station = ride->stations[current_ride_station];
+    // Make sure we don't underflow, building while paused might reset it to 0 where peeps have
+    // not yet left the queue.
+    if (station.QueueLength > 0)
+    {
+        station.QueueLength--;
+    }
+
+    if (sprite_index == station.LastPeepInQueue)
+    {
+        station.LastPeepInQueue = next_in_queue;
+        return;
+    }
+
+    auto spriteId = station.LastPeepInQueue;
+    while (spriteId != SPRITE_INDEX_NULL)
+    {
+        rct_peep* other_peep = GET_PEEP(spriteId);
+        if (sprite_index == other_peep->next_in_queue)
+        {
+            other_peep->next_in_queue = next_in_queue;
+            return;
+        }
+        spriteId = other_peep->next_in_queue;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x0069A512
+ */
+void rct_peep::RemoveFromRide()
+{
+    if (state == PEEP_STATE_QUEUING)
+    {
+        RemoveFromQueue();
+    }
+    StateReset();
 }

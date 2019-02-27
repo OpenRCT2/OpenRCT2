@@ -709,6 +709,8 @@ public: // Peep
     void Pickup();
     void PickupAbort(int32_t old_x);
     bool Place(TileCoordsXYZ location, bool apply);
+    void RemoveFromQueue();
+    void RemoveFromRide();
 
     // TODO: Make these private again when done refactoring
 public: // Peep
@@ -730,14 +732,12 @@ struct GuestPeep : rct_peep
 public:
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
-    void RemoveFromQueue();
     bool HasItem(int32_t peepItem) const;
     bool HasFood() const;
     bool HasDrink() const;
     bool HasEmptyContainer() const;
     void OnEnterRide(ride_id_t rideIndex);
     void OnExitRide(ride_id_t rideIndex);
-    void RemoveFromRide();
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
     void StopPurchaseThought(uint8_t ride_type);
