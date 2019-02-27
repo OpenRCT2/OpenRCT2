@@ -123,7 +123,8 @@ static money32 RideEntranceExitPlace(
         int16_t clear_z = z / 8 + (isExit ? 5 : 7);
 
         if (!map_can_construct_with_clear_at(
-                x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 }, flags, &cost, CREATE_CROSSING_MODE_NONE))
+                x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 }, flags, &cost,
+                CREATE_CROSSING_MODE_NONE))
         {
             return MONEY32_UNDEFINED;
         }
@@ -235,7 +236,8 @@ static money32 RideEntranceExitPlace(
         int8_t clear_z = (z / 8) + (isExit ? 5 : 7);
 
         if (!map_can_construct_with_clear_at(
-                x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 }, flags, &cost, CREATE_CROSSING_MODE_NONE))
+                x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 }, flags, &cost,
+                CREATE_CROSSING_MODE_NONE))
         {
             return MONEY32_UNDEFINED;
         }
