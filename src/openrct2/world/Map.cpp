@@ -2213,7 +2213,7 @@ void game_command_set_water_height(
         zLow = temp;
     }
 
-    if (gCheatsDisableClearanceChecks || map_can_construct_at(x, y, zLow, zHigh, { 0b1111, 0b1111 }))
+    if (map_can_construct_at(x, y, zLow, zHigh, { 0b1111, 0b1111 }))
     {
         if (tile_element->AsSurface()->HasTrackThatNeedsWater())
         {
@@ -2389,10 +2389,9 @@ void game_command_place_large_scenery(
         int32_t zHigh = (tile->z_clearance / 8) + zLow;
 
         QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(rotation);
-        if (!gCheatsDisableClearanceChecks
-            && !map_can_construct_with_clear_at(
-                   curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, flags, &supportsCost,
-                   CREATE_CROSSING_MODE_NONE))
+        if (!map_can_construct_with_clear_at(
+                curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, flags, &supportsCost,
+                CREATE_CROSSING_MODE_NONE))
         {
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -3033,8 +3032,7 @@ bool map_can_construct_with_clear_at(
  */
 int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, QuarterTile bl)
 {
-    return gCheatsDisableClearanceChecks
-        || map_can_construct_with_clear_at(x, y, zLow, zHigh, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
+    return map_can_construct_with_clear_at(x, y, zLow, zHigh, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
 }
 
 /**

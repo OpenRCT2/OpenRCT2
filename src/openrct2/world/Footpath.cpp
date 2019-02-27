@@ -240,7 +240,7 @@ static money32 footpath_element_insert(
     uint8_t crossingMode = (type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (slope != TILE_ELEMENT_SLOPE_FLAT)
         ? CREATE_CROSSING_MODE_NONE
         : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath && !gCheatsDisableClearanceChecks
+    if (!entrancePath
         && !map_can_construct_with_clear_at(
                x, y, z, zHigh, &map_place_non_scenery_clear_func, quarterTile, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;
@@ -623,7 +623,7 @@ static money32 footpath_place_from_track(
     uint8_t crossingMode = (type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (slope != TILE_ELEMENT_SLOPE_FLAT)
         ? CREATE_CROSSING_MODE_NONE
         : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath && !gCheatsDisableClearanceChecks
+    if (!entrancePath
         && !map_can_construct_with_clear_at(
                x, y, z, zHigh, &map_place_non_scenery_clear_func, quarterTile, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;

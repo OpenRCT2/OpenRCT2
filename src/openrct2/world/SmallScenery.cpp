@@ -268,9 +268,8 @@ static money32 SmallSceneryPlace(
 
     QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
 
-    if (!gCheatsDisableClearanceChecks
-        && !map_can_construct_with_clear_at(
-               x, y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, flags, &clearCost, CREATE_CROSSING_MODE_NONE))
+    if (!map_can_construct_with_clear_at(
+            x, y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, flags, &clearCost, CREATE_CROSSING_MODE_NONE))
     {
         return MONEY32_UNDEFINED;
     }
