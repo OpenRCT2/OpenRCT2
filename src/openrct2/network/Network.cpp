@@ -7,10 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "network.h"
+#include "Network.h"
 
-class Network
+Network::Network()
 {
-public:
-    Network();
-};
+}
+
+bool Network::BeginServer(const std::string& host, uint16_t port)
+{
+    return true;
+}
+
+bool Network::BeginClient(const std::string& host, uint16_t port)
+{
+    return true;
+}
