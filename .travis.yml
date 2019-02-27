@@ -10,6 +10,11 @@ before_install:
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; export OPENRCT_MAKE_OPTS="-k 10 all openrct2-cli" ; fi
     - if [[ $TRAVIS_OS_NAME == "osx" ]]; then sudo gem install xcpretty-travis-formatter; fi
 
+install:
+    - if [[ $TRAVIS_JOB_NAME != "clang-format" ]]; then git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/*; fi
+    - if [[ $TRAVIS_JOB_NAME != "clang-format" ]]; then git config remote.origin.fetch +refs/tags/*:refs/tags/*; fi
+    - if [[ $TRAVIS_JOB_NAME != "clang-format" ]]; then git fetch --tags; fi
+
 sudo: required
 dist: trusty
 env:
