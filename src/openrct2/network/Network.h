@@ -36,9 +36,15 @@ class Network
 public:
     Network();
 
+    void Startup();
+    void Shutdown();
+
     bool BeginServer(const std::string& host, uint16_t port);
     bool BeginClient(const std::string& host, uint16_t port);
+    void Close();
+
+    NETWORK_MODE GetMode() const;
 
 private:
-    std::unique_ptr<NetworkBase> _networkImpl = nullptr;
+    std::unique_ptr<NetworkBase> _networkImpl;
 };
