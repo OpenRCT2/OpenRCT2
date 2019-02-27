@@ -30,7 +30,7 @@ TextureCache::~TextureCache()
 
 void TextureCache::InvalidateImage(uint32_t image)
 {
-    std::unique_lock<std::shared_mutex> lock(_mutex);
+    unique_lock lock(_mutex);
 
     uint32_t index = _indexMap[image];
     if (index == UNUSED_INDEX)
@@ -83,7 +83,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
     }
 
     // Load new texture.
-    std::unique_lock<std::shared_mutex> lock(_mutex);
+    unique_lock lock(_mutex);
 
     index = (uint32_t)_textureCache.size();
 
@@ -118,7 +118,7 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* pa
     }
 
     // Load new texture.
-    std::unique_lock<std::shared_mutex> lock(_mutex);
+    unique_lock lock(_mutex);
 
     auto cacheInfo = LoadGlyphTexture(image, palette);
     auto it = _glyphTextureMap.insert(std::make_pair(glyphId, cacheInfo));

@@ -206,9 +206,11 @@ private:
 #ifndef __MACOSX__
     std::shared_mutex _mutex;
     typedef std::shared_lock<std::shared_mutex> shared_lock;
+    typedef std::unique_lock<std::shared_mutex> unique_lock;
 #else
     std::mutex _mutex;
     typedef std::unique_lock<std::mutex> shared_lock;
+    typedef std::unique_lock<std::mutex> unique_lock;
 #endif
 
 public:
