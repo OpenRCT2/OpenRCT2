@@ -86,16 +86,6 @@ void network_process_pending()
 {
 }
 
-int32_t network_begin_client(const std::string& host, int32_t port)
-{
-    return 1;
-}
-
-int32_t network_begin_server(int32_t port, const std::string& address)
-{
-    return 1;
-}
-
 int32_t network_get_num_players()
 {
     return 1;
