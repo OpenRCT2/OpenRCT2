@@ -32,6 +32,7 @@
 		2AAFD7FC220DD336002461A4 /* RideSetPriceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */; };
 		2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */; };
 		2AAFD800220DD3D2002461A4 /* LandSetHeightAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */; };
+		2ACBAB172226850A0034FB91 /* RideSetSetting.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ACBAB162226850A0034FB91 /* RideSetSetting.hpp */; };
 		2AF7893D220B253E0072754A /* RideSetAppearanceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
@@ -631,6 +632,7 @@
 		2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetPriceAction.hpp; sourceTree = "<group>"; };
 		2AAFD7FD220DD374002461A4 /* PauseToggleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PauseToggleAction.hpp; sourceTree = "<group>"; };
 		2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSetHeightAction.hpp; sourceTree = "<group>"; };
+		2ACBAB162226850A0034FB91 /* RideSetSetting.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetSetting.hpp; sourceTree = "<group>"; };
 		2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetAppearanceAction.hpp; sourceTree = "<group>"; };
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
@@ -2010,6 +2012,7 @@
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				2ACBAB162226850A0034FB91 /* RideSetSetting.hpp */,
 				2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */,
 				2AAFD7FF220DD3D2002461A4 /* LandSetHeightAction.hpp */,
 				2AAFD7FB220DD336002461A4 /* RideSetPriceAction.hpp */,
@@ -3333,6 +3336,7 @@
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
 				9344BEF920C1E6180047D165 /* Crypt.h in Headers */,
 				939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */,
+				2ACBAB172226850A0034FB91 /* RideSetSetting.hpp in Headers */,
 				93CBA4C320A7502E00867D56 /* Imaging.h in Headers */,
 				9308DA05209908090079EE96 /* Surface.h in Headers */,
 				93DE9753209C3C1000FB1CC8 /* GameState.h in Headers */,
