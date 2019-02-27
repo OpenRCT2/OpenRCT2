@@ -306,6 +306,7 @@ private:
     std::vector<uint8_t> chunk_buffer;
     std::string _password;
     bool _desynchronised = false;
+    bool _desyncStarted = false;
     uint32_t server_connect_time = 0;
     uint8_t default_group = 0;
     uint32_t game_commands_processed_this_tick = 0;
@@ -948,7 +949,7 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
         // Check that the server and client sprite hashes match
         rct_sprite_checksum checksum = sprite_checksum();
         std::string client_sprite_hash = checksum.ToString();
-        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && client_sprite_hash != server_sprite_hash;
+        const bool sprites_mismatch = server_sprite_hash.empty() == false && client_sprite_hash != server_sprite_hash;
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch)
         {
@@ -965,20 +966,31 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
 void Network::CheckDesynchronizaton()
 {
     // Check synchronisation
-    if (GetMode() == NETWORK_MODE_CLIENT && !_desynchronised && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
+    if (GetMode() == NETWORK_MODE_CLIENT && !_desynchronised)
     {
-        _desynchronised = true;
-
-        char str_desync[256];
-        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
-
-        auto intent = Intent(WC_NETWORK_STATUS);
-        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
-        context_open_intent(&intent);
-
-        if (!gConfigNetwork.stay_connected)
+        if (CheckSRAND(gCurrentTicks, scenario_rand_state().s0) == false)
         {
-            Close();
+            if (_desyncStarted == true)
+            {
+                _desynchronised = true;
+
+                char str_desync[256];
+                format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
+
+                auto intent = Intent(WC_NETWORK_STATUS);
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
+                context_open_intent(&intent);
+
+                if (!gConfigNetwork.stay_connected)
+                {
+                    Close();
+                }
+            }
+            _desyncStarted = true;
+        }
+        else
+        {
+            _desyncStarted = false;
         }
     }
 }
@@ -2547,6 +2559,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
             server_srand0_tick = 0;
             // window_network_status_open("Loaded new map from network");
             _desynchronised = false;
+            _desyncStarted = false;
             gFirstTimeSaving = true;
 
             // Notify user he is now online and which shortcut key enables chat
