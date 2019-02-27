@@ -1250,13 +1250,13 @@ void vehicle_visual_splash_boats_or_water_coaster(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->is_child)
+    if (vehicle->IsHead())
     {
-        vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
     }
     else
     {
-        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+        vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
     }
     session->CurrentlyDrawnItem = vehicle;
     imageDirection = ((session->CurrentRotation * 8) + vehicle->sprite_direction) & 0x1F;

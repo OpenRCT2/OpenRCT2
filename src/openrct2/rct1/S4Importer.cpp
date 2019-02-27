@@ -1150,7 +1150,7 @@ private:
                     ImportVehicle(vehicle, srcVehicle);
 
                     // If vehicle is the first car on a train add to train list
-                    if (!vehicle->is_child)
+                    if (vehicle->IsHead())
                     {
                         move_sprite_to_list((rct_sprite*)vehicle, SPRITE_LIST_TRAIN * 2);
                     }
@@ -1174,7 +1174,7 @@ private:
         dst->ride_subtype = ride->subtype;
 
         dst->vehicle_type = vehicleEntryIndex;
-        dst->is_child = src->type;
+        dst->type = src->type;
         dst->var_44 = src->var_44;
         dst->remaining_distance = src->remaining_distance;
 

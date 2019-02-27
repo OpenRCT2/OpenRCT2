@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
+#include "../world/SpriteBase.h"
 
 #include <array>
 #include <cstddef>
@@ -104,39 +105,22 @@ static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
 static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
 #endif
 
-struct rct_vehicle
+enum VEHICLE_TYPE : uint8_t
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t is_child;                // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative; // 0x09
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    // Width from centre of sprite to edge
-    uint8_t sprite_width; // 0x14
-    // Height from centre of sprite to top
-    uint8_t sprite_height_positive; // 0x15
-    int16_t sprite_left;            // 0x16
-    int16_t sprite_top;             // 0x18
-    int16_t sprite_right;           // 0x1A
-    int16_t sprite_bottom;          // 0x1C
-    uint8_t sprite_direction;       // 0x1E
-    uint8_t vehicle_sprite_type;    // 0x1F
-    uint8_t bank_rotation;          // 0x20
-    uint8_t pad_21[3];
-    int32_t remaining_distance; // 0x24
-    int32_t velocity;           // 0x28
-    int32_t acceleration;       // 0x2C
-    ride_id_t ride;             // 0x30
-    uint8_t vehicle_type;       // 0x31
-    rct_vehicle_colour colours; // 0x32
+    VEHICLE_TYPE_HEAD = 0,
+    VEHICLE_TYPE_TAIL = 1,
+};
+
+struct rct_vehicle : rct_sprite_common
+{
+    uint8_t vehicle_sprite_type; // 0x1F
+    uint8_t bank_rotation;       // 0x20
+    int32_t remaining_distance;  // 0x24
+    int32_t velocity;            // 0x28
+    int32_t acceleration;        // 0x2C
+    ride_id_t ride;              // 0x30
+    uint8_t vehicle_type;        // 0x31
+    rct_vehicle_colour colours;  // 0x32
     union
     {
         uint16_t track_progress; // 0x34
@@ -242,6 +226,13 @@ struct rct_vehicle
     uint8_t colours_extended;     // 0xD7
     uint8_t seat_rotation;        // 0xD8
     uint8_t target_seat_rotation; // 0xD9
+
+    constexpr bool IsHead() const
+    {
+        return type == VEHICLE_TYPE_HEAD;
+    }
+    rct_vehicle* GetHead();
+    const rct_vehicle* GetHead() const;
 };
 
 struct train_ref

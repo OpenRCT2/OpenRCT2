@@ -366,7 +366,6 @@ rct_sprite* create_sprite(uint8_t bl)
     sprite->x = LOCATION_NULL;
     sprite->y = LOCATION_NULL;
     sprite->z = 0;
-    sprite->name_string_idx = 0;
     sprite->sprite_width = 0x10;
     sprite->sprite_height_negative = 0x14;
     sprite->sprite_height_positive = 0x8;
@@ -672,8 +671,13 @@ void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
  */
 void sprite_remove(rct_sprite* sprite)
 {
+    auto peep = sprite->AsPeep();
+    if (peep != nullptr)
+    {
+        user_string_free(peep->name_string_idx);
+    }
+
     move_sprite_to_list(sprite, SPRITE_LIST_NULL * 2);
-    user_string_free(sprite->generic.name_string_idx);
     sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
     _spriteFlashingList[sprite->generic.sprite_index] = false;
 
