@@ -611,28 +611,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
         network_append_server_log(log_msg);
     }
-    else if (command == GAME_COMMAND_SET_RIDE_SETTING)
-    {
-        // Get ride name
-        int ride_index = *edx & 0xFF;
-        Ride* ride = get_ride(ride_index);
-        char ride_name[128];
-        format_string(ride_name, 128, ride->name, &ride->name_arguments);
-
-        char* args[2] = {
-            (char*)player_name,
-            ride_name,
-        };
-
-        switch (command)
-        {
-            case GAME_COMMAND_SET_RIDE_SETTING:
-                format_string(log_msg, 256, STR_LOG_RIDE_SETTINGS, args);
-                break;
-        }
-
-        network_append_server_log(log_msg);
-    }
     else if (command == GAME_COMMAND_SET_PARK_OPEN)
     {
         // Log change in park open/close
@@ -1293,7 +1271,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_ride_status,
     nullptr,
     game_command_set_ride_name,
-    game_command_set_ride_setting,
+    nullptr,
     game_command_place_ride_entrance_or_exit,
     game_command_remove_ride_entrance_or_exit,
     nullptr,
