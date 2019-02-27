@@ -11,6 +11,7 @@
 
 #include "NetworkConnection.h"
 #include "NetworkPackets.h"
+#include "NetworkTypes.h"
 
 #include <functional>
 #include <stdint.h>
@@ -19,31 +20,6 @@
 #ifdef _WIN32
 #    pragma comment(lib, "Ws2_32.lib")
 #endif
-
-struct NetworkHostInfo
-{
-    std::string name;
-    std::string description;
-    std::string greeting;
-    std::string providerName;
-    std::string providerEmail;
-    std::string providerWebsite;
-};
-
-enum class NetworkState : uint8_t
-{
-    NONE = 0,
-    READY,
-    CONNECTING,
-    CONNECTED,
-};
-
-enum class NetworkMode : uint8_t
-{
-    NONE = 0,
-    CLIENT,
-    HOST,
-};
 
 class NetworkPacketDispatcher
 {
@@ -108,24 +84,29 @@ public:
     virtual void Update() = 0;
     virtual void Flush() = 0;
 
-    NetworkState GetState() const
+    virtual NETWORK_MODE GetMode() const
+    {
+        return NETWORK_MODE::NONE;
+    }
+
+    NETWORK_STATE GetState() const
     {
         return _state;
     }
 
     bool IsReady() const
     {
-        return _state == NetworkState::READY;
+        return _state == NETWORK_STATE::READY;
     }
 
     bool IsConnected() const
     {
-        return _state == NetworkState::CONNECTED;
+        return _state == NETWORK_STATE::CONNECTED;
     }
 
     bool IsConnecting() const
     {
-        return _state == NetworkState::CONNECTING;
+        return _state == NETWORK_STATE::CONNECTING;
     }
 
     const NetworkHostInfo& GetHostInfo() const
@@ -139,7 +120,7 @@ public:
     }
 
 protected:
-    NetworkState _state = NetworkState::NONE;
+    NETWORK_STATE _state = NETWORK_STATE::NONE;
     NetworkHostInfo _hostInfo;
     NetworkPacketDispatcher _dispatcher;
 };

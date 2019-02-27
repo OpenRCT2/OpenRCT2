@@ -47,7 +47,7 @@ bool NetworkServer::Startup()
 
     LoadConfiguration();
 
-    _state = NetworkState::READY;
+    _state = NETWORK_STATE::READY;
 
     return true;
 }
@@ -56,13 +56,13 @@ bool NetworkServer::Shutdown()
 {
     log_verbose("%s\n", __FUNCTION__);
 
-    if (_state == NetworkState::NONE)
+    if (_state == NETWORK_STATE::NONE)
     {
         return false;
     }
 
     Close();
-    _state = NetworkState::NONE;
+    _state = NETWORK_STATE::NONE;
 
     return true;
 }
@@ -78,7 +78,7 @@ bool NetworkServer::Listen(uint16_t port, const char* address)
 {
     log_verbose("%s\n", __FUNCTION__);
 
-    if (_state != NetworkState::READY)
+    if (_state != NETWORK_STATE::READY)
     {
         return false;
     }
@@ -106,14 +106,14 @@ bool NetworkServer::Listen(uint16_t port, const char* address)
     log_verbose("Listening for clients.");
 
     // TODO: Setup advertiser.
-    _state = NetworkState::CONNECTED;
+    _state = NETWORK_STATE::CONNECTED;
 
     return true;
 }
 
 void NetworkServer::Update()
 {
-    if (_state != NetworkState::CONNECTED)
+    if (_state != NETWORK_STATE::CONNECTED)
     {
         return;
     }

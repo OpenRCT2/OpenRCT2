@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,11 @@
 class NetworkClient : public NetworkBase
 {
 public:
+    virtual NETWORK_MODE GetMode() const override
+    {
+        return NETWORK_MODE::CLIENT;
+    }
+
     virtual bool Startup() override;
     virtual bool Shutdown() override;
 
@@ -29,16 +34,16 @@ private:
     bool UpdateConnection();
 
 private:
+    // Connection Handlers.
     void HandleSocketResolving();
     void HandleSocketConnecting();
     void HandleSocketConnected();
-	void HandleSocketError();
+    void HandleSocketError();
 
 private:
     void RequestToken();
 
 private:
     std::unique_ptr<NetworkConnection> _connection;
-
-    int32_t _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    SOCKET_STATUS _lastConnectStatus;
 };

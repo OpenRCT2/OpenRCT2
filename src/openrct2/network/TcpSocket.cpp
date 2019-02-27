@@ -78,7 +78,7 @@ public:
 class TcpSocket final : public ITcpSocket
 {
 private:
-    SOCKET_STATUS _status = SOCKET_STATUS_CLOSED;
+    SOCKET_STATUS _status = SOCKET_STATUS::CLOSED;
     uint16_t _listeningPort = 0;
     SOCKET _socket = INVALID_SOCKET;
 
@@ -115,7 +115,7 @@ public:
 
     void Listen(const std::string& address, uint16_t port) override
     {
-        if (_status != SOCKET_STATUS_CLOSED)
+        if (_status != SOCKET_STATUS::CLOSED)
         {
             throw std::runtime_error("Socket not closed.");
         }
@@ -171,12 +171,12 @@ public:
         }
 
         _listeningPort = port;
-        _status = SOCKET_STATUS_LISTENING;
+        _status = SOCKET_STATUS::LISTENING;
     }
 
     std::unique_ptr<ITcpSocket> Accept() override
     {
-        if (_status != SOCKET_STATUS_LISTENING)
+        if (_status != SOCKET_STATUS::LISTENING)
         {
             throw std::runtime_error("Socket not listening.");
         }
@@ -223,7 +223,7 @@ public:
 
     void Connect(const std::string& address, uint16_t port) override
     {
-        if (_status != SOCKET_STATUS_CLOSED)
+        if (_status != SOCKET_STATUS::CLOSED)
         {
             throw std::runtime_error("Socket not closed.");
         }
@@ -231,7 +231,7 @@ public:
         try
         {
             // Resolve address
-            _status = SOCKET_STATUS_RESOLVING;
+            _status = SOCKET_STATUS::RESOLVING;
 
             sockaddr_storage ss{};
             int32_t ss_len;
@@ -240,7 +240,7 @@ public:
                 throw SocketException("Unable to resolve address.");
             }
 
-            _status = SOCKET_STATUS_CONNECTING;
+            _status = SOCKET_STATUS::CONNECTING;
             _socket = socket(ss.ss_family, SOCK_STREAM, IPPROTO_TCP);
             if (_socket == INVALID_SOCKET)
             {
@@ -297,7 +297,7 @@ public:
                     }
                     if (error == 0)
                     {
-                        _status = SOCKET_STATUS_CONNECTED;
+                        _status = SOCKET_STATUS::CONNECTED;
                         return;
                     }
                 }
@@ -315,7 +315,7 @@ public:
 
     void ConnectAsync(const std::string& address, uint16_t port) override
     {
-        if (_status != SOCKET_STATUS_CLOSED)
+        if (_status != SOCKET_STATUS::CLOSED)
         {
             throw std::runtime_error("Socket not closed.");
         }
@@ -341,7 +341,7 @@ public:
 
     void Disconnect() override
     {
-        if (_status == SOCKET_STATUS_CONNECTED)
+        if (_status == SOCKET_STATUS::CONNECTED)
         {
             shutdown(_socket, SHUT_RDWR);
         }
@@ -349,7 +349,7 @@ public:
 
     size_t SendData(const void* buffer, size_t size) override
     {
-        if (_status != SOCKET_STATUS_CONNECTED)
+        if (_status != SOCKET_STATUS::CONNECTED)
         {
             throw std::runtime_error("Socket not connected.");
         }
@@ -371,7 +371,7 @@ public:
 
     NETWORK_READPACKET ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
     {
-        if (_status != SOCKET_STATUS_CONNECTED)
+        if (_status != SOCKET_STATUS::CONNECTED)
         {
             throw std::runtime_error("Socket not connected.");
         }
@@ -380,7 +380,7 @@ public:
         if (readBytes == 0)
         {
             *sizeReceived = 0;
-            return NETWORK_READPACKET_DISCONNECTED;
+            return NETWORK_READPACKET::DISCONNECTED;
         }
         else if (readBytes == SOCKET_ERROR)
         {
@@ -399,17 +399,17 @@ public:
 #endif // _WIN32
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
             {
-                return NETWORK_READPACKET_DISCONNECTED;
+                return NETWORK_READPACKET::DISCONNECTED;
             }
             else
             {
-                return NETWORK_READPACKET_NO_DATA;
+                return NETWORK_READPACKET::FAILURE;
             }
         }
         else
         {
             *sizeReceived = readBytes;
-            return NETWORK_READPACKET_SUCCESS;
+            return NETWORK_READPACKET::SUCCESS;
         }
     }
 
@@ -432,7 +432,7 @@ private:
     {
         _socket = socket;
         _hostName = hostName;
-        _status = SOCKET_STATUS_CONNECTED;
+        _status = SOCKET_STATUS::CONNECTED;
     }
 
     void CloseSocket()
@@ -442,7 +442,7 @@ private:
             closesocket(_socket);
             _socket = INVALID_SOCKET;
         }
-        _status = SOCKET_STATUS_CLOSED;
+        _status = SOCKET_STATUS::CLOSED;
     }
 
     bool ResolveAddress(const std::string& address, uint16_t port, sockaddr_storage* ss, int32_t* ss_len)

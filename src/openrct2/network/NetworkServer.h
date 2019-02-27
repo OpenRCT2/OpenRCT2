@@ -23,6 +23,11 @@ public:
 
     virtual ~NetworkServer();
 
+    virtual NETWORK_MODE GetMode() const override
+    {
+        return NETWORK_MODE::HOST;
+    }
+
     virtual bool Startup() override;
     virtual bool Shutdown() override;
 
@@ -44,7 +49,7 @@ private:
 
 private:
     // Packet Handlers.
-	void HandleRequestToken(NetworkConnection& connection, const NetworkPacketRequestToken& packet);
+    void HandleRequestToken(NetworkConnection& connection, const NetworkPacketRequestToken& packet);
 
 private:
     NetworkUserManager _userManager;

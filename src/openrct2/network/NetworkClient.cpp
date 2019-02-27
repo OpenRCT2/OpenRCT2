@@ -28,8 +28,8 @@ bool NetworkClient::Startup()
 
     _connection = std::make_unique<NetworkConnection>();
 
-    _state = NetworkState::READY;
-    _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    _state = NETWORK_STATE::READY;
+    _lastConnectStatus = SOCKET_STATUS::CLOSED;
 
     return true;
 }
@@ -38,14 +38,14 @@ bool NetworkClient::Shutdown()
 {
     log_verbose("%s\n", __FUNCTION__);
 
-    if (_state == NetworkState::NONE)
+    if (_state == NETWORK_STATE::NONE)
     {
         return false;
     }
 
     Close();
 
-    _state = NetworkState::NONE;
+    _state = NETWORK_STATE::NONE;
 
     return true;
 }
@@ -54,20 +54,20 @@ void NetworkClient::Close()
 {
     log_verbose("%s\n", __FUNCTION__);
 
-    if (_state != NetworkState::CONNECTING && _state != NetworkState::CONNECTED)
+    if (_state != NETWORK_STATE::CONNECTING && _state != NETWORK_STATE::CONNECTED)
     {
         return;
     }
 
     _connection->Close();
-    _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    _lastConnectStatus = SOCKET_STATUS::CLOSED;
 
-    _state = NetworkState::READY;
+    _state = NETWORK_STATE::READY;
 }
 
 void NetworkClient::Update()
 {
-    if (_state == NetworkState::CONNECTING)
+    if (_state == NETWORK_STATE::CONNECTING)
     {
         if (!UpdateConnecting())
         {
@@ -75,7 +75,7 @@ void NetworkClient::Update()
         }
         return;
     }
-    else if (_state == NetworkState::CONNECTED)
+    else if (_state == NETWORK_STATE::CONNECTED)
     {
         if (!UpdateConnection())
         {
@@ -87,7 +87,7 @@ void NetworkClient::Update()
 
 void NetworkClient::Flush()
 {
-    if (_state == NetworkState::CONNECTED)
+    if (_state == NETWORK_STATE::CONNECTED)
     {
         //_connection->SendQueuedPackets();
     }
@@ -97,31 +97,31 @@ bool NetworkClient::UpdateConnecting()
 {
     switch (_connection->GetStatus())
     {
-        case SOCKET_STATUS_RESOLVING:
-            if (_lastConnectStatus != SOCKET_STATUS_RESOLVING)
+        case SOCKET_STATUS::RESOLVING:
+            if (_lastConnectStatus != SOCKET_STATUS::RESOLVING)
             {
-                _lastConnectStatus = SOCKET_STATUS_RESOLVING;
+                _lastConnectStatus = SOCKET_STATUS::RESOLVING;
                 HandleSocketConnecting();
             }
             break;
-        case SOCKET_STATUS_CONNECTING:
-            if (_lastConnectStatus != SOCKET_STATUS_CONNECTING)
+        case SOCKET_STATUS::CONNECTING:
+            if (_lastConnectStatus != SOCKET_STATUS::CONNECTING)
             {
-                _lastConnectStatus = SOCKET_STATUS_CONNECTING;
+                _lastConnectStatus = SOCKET_STATUS::CONNECTING;
                 HandleSocketConnecting();
             }
             break;
-        case SOCKET_STATUS_CONNECTED:
+        case SOCKET_STATUS::CONNECTED:
         {
-            _state = NetworkState::CONNECTED;
-            _lastConnectStatus = SOCKET_STATUS_CONNECTED;
+            _state = NETWORK_STATE::CONNECTED;
+            _lastConnectStatus = SOCKET_STATUS::CONNECTED;
             HandleSocketConnected();
         }
         break;
         default:
         {
-            _state = NetworkState::READY;
-            _lastConnectStatus = SOCKET_STATUS_CLOSED;
+            _state = NETWORK_STATE::READY;
+            _lastConnectStatus = SOCKET_STATUS::CLOSED;
             HandleSocketError();
         }
         break;
@@ -134,7 +134,7 @@ bool NetworkClient::Connect(const char* host, int32_t port)
 {
     log_verbose("%s\n", __FUNCTION__);
 
-    if (_state != NetworkState::READY)
+    if (_state != NETWORK_STATE::READY)
     {
         return false;
     }
@@ -143,7 +143,7 @@ bool NetworkClient::Connect(const char* host, int32_t port)
 
     _connection->ConnectAsync(host, port);
 
-    _state = NetworkState::CONNECTING;
+    _state = NETWORK_STATE::CONNECTING;
 
     return true;
 }

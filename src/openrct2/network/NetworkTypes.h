@@ -12,11 +12,31 @@
 #include "../common.h"
 #include "../core/Endianness.h"
 
-enum
+#include <string>
+
+struct NetworkHostInfo
 {
-    NETWORK_MODE_NONE,
-    NETWORK_MODE_CLIENT,
-    NETWORK_MODE_SERVER
+    std::string name;
+    std::string description;
+    std::string greeting;
+    std::string providerName;
+    std::string providerEmail;
+    std::string providerWebsite;
+};
+
+enum class NETWORK_STATE : uint8_t
+{
+    NONE = 0,
+    READY,
+    CONNECTING,
+    CONNECTED,
+};
+
+enum class NETWORK_MODE : uint8_t
+{
+    NONE = 0,
+    CLIENT,
+    HOST,
 };
 
 enum
@@ -24,7 +44,7 @@ enum
     NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
 };
 
-enum
+enum class NETWORK_STATUS : uint8_t
 {
     NETWORK_STATUS_NONE,
     NETWORK_STATUS_READY,
@@ -32,7 +52,7 @@ enum
     NETWORK_STATUS_CONNECTED
 };
 
-enum NETWORK_AUTH
+enum class NETWORK_AUTH : uint8_t
 {
     NETWORK_AUTH_NONE,
     NETWORK_AUTH_REQUESTED,
