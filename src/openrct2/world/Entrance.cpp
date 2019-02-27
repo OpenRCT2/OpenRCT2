@@ -384,7 +384,7 @@ void ride_entrance_exit_remove_ghost()
             { gRideEntranceExitGhostPosition.x, gRideEntranceExitGhostPosition.y }, _currentRideIndex,
             gRideEntranceExitGhostStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-        rideEntranceExitRemove.SetFlags(GAME_COMMAND_FLAG_5);
+        rideEntranceExitRemove.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         GameActions::Execute(&rideEntranceExitRemove);
     }
 }

@@ -87,7 +87,7 @@ public:
             if (tileElement->AsEntrance()->GetStationIndex() != _stationNum)
                 continue;
 
-            if ((GetFlags() & GAME_COMMAND_FLAG_5) && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(tileElement->IsGhost()))
                 continue;
 
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -143,7 +143,7 @@ public:
             if (tileElement->AsEntrance()->GetStationIndex() != _stationNum)
                 continue;
 
-            if ((GetFlags() & GAME_COMMAND_FLAG_5) && !tileElement->IsGhost())
+            if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !tileElement->IsGhost())
                 continue;
 
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
