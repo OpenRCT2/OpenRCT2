@@ -112,8 +112,9 @@ void GameState::Update()
         numUpdates = 1 << (gGameSpeed - 1);
     }
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NETWORK_AUTH_OK)
+    // FIXME
+    // if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
+    //    && network_get_authstatus() == NETWORK_AUTH_OK)
     {
         if (network_get_server_tick() - gCurrentTicks >= 10)
         {
@@ -125,7 +126,9 @@ void GameState::Update()
     bool didRunSingleFrame = false;
     if (game_is_paused())
     {
-        if (gDoSingleUpdate && network_get_mode() == NETWORK_MODE_NONE)
+        // FIXME
+        // if (gDoSingleUpdate && network_get_mode() == NETWORK_MODE_NONE)
+        if (gDoSingleUpdate)
         {
             didRunSingleFrame = true;
             pause_toggle();
@@ -225,8 +228,10 @@ void GameState::UpdateLogic()
 
     GetContext()->GetReplayManager()->Update();
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NETWORK_AUTH_OK)
+    // FIXME:
+    //     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
+    //         && network_get_authstatus() == NETWORK_AUTH_OK)
+    if (false)
     {
         // Can't be in sync with server, round trips won't work if we are at same level.
         if (gCurrentTicks >= network_get_server_tick())
@@ -236,6 +241,8 @@ void GameState::UpdateLogic()
         }
     }
 
+    // FIXME:
+    /*
     if (network_get_mode() == NETWORK_MODE_SERVER)
     {
         // Send current tick out.
@@ -246,6 +253,7 @@ void GameState::UpdateLogic()
         // Check desync.
         network_check_desynchronization();
     }
+    */
 
     date_update();
     _date = Date(gDateMonthTicks, gDateMonthTicks);

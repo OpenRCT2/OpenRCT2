@@ -1808,7 +1808,9 @@ static void window_ride_construction_construct(rct_window* w)
     }
     audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
 
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    // FIXME:
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (false)
     {
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
     }

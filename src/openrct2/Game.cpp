@@ -422,10 +422,16 @@ int32_t game_do_command_p(
     }
 
     // Log certain commands if we are in multiplayer and logging is enabled
+    // FIXME:
+    bool serverLog = false;
+    bool clientLog = false;
+    /*
     bool serverLog = (network_get_mode() == NETWORK_MODE_SERVER) && gGameCommandNestLevel == 1
         && gConfigNetwork.log_server_actions;
     bool clientLog = (network_get_mode() == NETWORK_MODE_CLIENT) && (flags & GAME_COMMAND_FLAG_NETWORKED)
         && gGameCommandNestLevel == 1 && gConfigNetwork.log_server_actions;
+    */
+
     if (serverLog || clientLog)
     {
         game_log_multiplayer_command(command, eax, ebx, ecx, edx, edi, ebp);
@@ -464,13 +470,15 @@ int32_t game_do_command_p(
                 return cost;
             }
 
-            if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED)
+            // FIXME:
+            if (/* network_get_mode() != NETWORK_MODE_NONE && */ !(flags & GAME_COMMAND_FLAG_NETWORKED)
                 && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5)
                 && gGameCommandNestLevel == 1) /* Send only top-level commands */
             {
                 network_send_gamecmd(
                     *eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, game_command_callback_get_index(game_command_callback));
-                if (network_get_mode() == NETWORK_MODE_CLIENT)
+                // if (network_get_mode() == NETWORK_MODE_CLIENT)
+                if (false)
                 {
                     // Client sent the command to the server, do not run it locally, just return.  It will run when server
                     // sends it.
@@ -540,7 +548,8 @@ int32_t game_do_command_p(
                 }
             }
 
-            if (network_get_mode() == NETWORK_MODE_SERVER && !(flags & GAME_COMMAND_FLAG_NETWORKED)
+            // FIXME:
+            if (/*network_get_mode() == NETWORK_MODE_SERVER && */ !(flags & GAME_COMMAND_FLAG_NETWORKED)
                 && !(flags & GAME_COMMAND_FLAG_GHOST))
             {
                 network_set_player_last_action(network_get_player_index(network_get_current_player_id()), command);
@@ -995,7 +1004,9 @@ void game_load_init()
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->SetMainView(gSavedViewX, gSavedViewY, gSavedViewZoom, gSavedViewRotation);
 
-    if (network_get_mode() != NETWORK_MODE_CLIENT)
+    // FIXME:
+    // if (network_get_mode() != NETWORK_MODE_CLIENT)
+    if (false)
     {
         reset_sprite_spatial_index();
     }

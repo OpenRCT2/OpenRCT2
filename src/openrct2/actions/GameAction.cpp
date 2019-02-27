@@ -176,10 +176,13 @@ namespace GameActions
 
     static const char* GetRealm()
     {
+        // FIXME
+        /*
         if (network_get_mode() == NETWORK_MODE_CLIENT)
             return "cl";
         else if (network_get_mode() == NETWORK_MODE_SERVER)
             return "sv";
+        */
         return "sp";
     }
 
@@ -256,7 +259,9 @@ namespace GameActions
             if (topLevel)
             {
                 // Networked games send actions to the server to be run
-                if (network_get_mode() == NETWORK_MODE_CLIENT)
+                // FIXME:
+                // if (network_get_mode() == NETWORK_MODE_CLIENT)
+                if (false)
                 {
                     // As a client we have to wait or send it first.
                     if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
@@ -267,7 +272,8 @@ namespace GameActions
                         return result;
                     }
                 }
-                else if (network_get_mode() == NETWORK_MODE_SERVER)
+                // else if (network_get_mode() == NETWORK_MODE_SERVER)
+                else if (false)
                 {
                     // If player is the server it would execute right away as where clients execute the commands
                     // at the beginning of the frame, so we have to put them into the queue.
@@ -306,7 +312,9 @@ namespace GameActions
 
             if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && result->Error == GA_ERROR::OK)
             {
-                if (network_get_mode() == NETWORK_MODE_SERVER)
+                // FIXME:
+                // if (network_get_mode() == NETWORK_MODE_SERVER)
+                if (false)
                 {
                     NetworkPlayerId_t playerId = action->GetPlayer();
 
@@ -324,7 +332,8 @@ namespace GameActions
                         network_set_player_last_action_coord(playerId, gCommandPosition);
                     }
                 }
-                else if (network_get_mode() == NETWORK_MODE_NONE)
+                // else if (network_get_mode() == NETWORK_MODE_NONE)
+                else if (false)
                 {
                     bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_5) == 0;
 

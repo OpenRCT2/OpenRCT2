@@ -337,7 +337,8 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
     switch (widgetIndex)
     {
         case WIDX_PAUSE:
-            if (network_get_mode() != NETWORK_MODE_CLIENT)
+            // FIXME:
+            // if (network_get_mode() != NETWORK_MODE_CLIENT)
             {
                 auto pauseToggleAction = PauseToggleAction();
                 GameActions::Execute(&pauseToggleAction);
@@ -793,6 +794,8 @@ static void window_top_toolbar_invalidate(rct_window* w)
         if (!gConfigInterface.toolbar_show_news)
             window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
 
+        // FIXME:
+        /*
         switch (network_get_mode())
         {
             case NETWORK_MODE_NONE:
@@ -806,6 +809,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
                 window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
                 break;
         }
+        */
     }
 
     enabledWidgets = 0;
@@ -1716,9 +1720,13 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         case SCENERY_TYPE_SMALL:
         {
             int32_t quantity = 1;
+            // FIXME:
+            /*
             bool isCluster = gWindowSceneryClusterEnabled
                 && (network_get_mode() != NETWORK_MODE_CLIENT
                     || network_can_perform_command(network_get_current_player_group_index(), -2));
+            */
+            bool isCluster = gWindowSceneryClusterEnabled;
             if (isCluster)
             {
                 quantity = 35;
@@ -3236,7 +3244,8 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
         DROPDOWN_FLAG_STAY_OPEN, TOP_TOOLBAR_DEBUG_COUNT);
 
     // Disable items that are not yet available in multiplayer
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (false)
     {
         dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
         dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);

@@ -601,7 +601,9 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
                 type = TRACK_ELEM_BEGIN_STATION;
             }
         }
-        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        // FIXME:
+        // if (network_get_mode() == NETWORK_MODE_CLIENT)
+        if (true)
         {
             // rideConstructionState needs to be set again to the proper value, this only affects the client
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;

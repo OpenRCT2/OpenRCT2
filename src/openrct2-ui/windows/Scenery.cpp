@@ -588,12 +588,15 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             {
                 gWindowSceneryClusterEnabled = 0;
             }
+            // FIXME
+            /*
             else if (
                 network_get_mode() != NETWORK_MODE_CLIENT
                 || network_can_perform_command(network_get_current_player_group_index(), -2))
             {
                 gWindowSceneryClusterEnabled ^= 1;
             }
+            */
             else
             {
                 context_show_error(STR_CANT_DO_THIS, STR_PERMISSION_DENIED);

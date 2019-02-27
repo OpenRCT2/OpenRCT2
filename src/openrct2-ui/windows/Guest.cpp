@@ -1160,7 +1160,8 @@ void window_guest_overview_update(rct_window* w)
         w->highlighted_item++;
 
     // Disable peep watching thought for multiplayer as it's client specific
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    // FIXME
+    // if (network_get_mode() == NETWORK_MODE_NONE)
     {
         // Create the "I have the strangest feeling I am being watched thought"
         if ((w->highlighted_item & 0xFFFF) >= 3840)

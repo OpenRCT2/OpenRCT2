@@ -205,7 +205,8 @@ rct_window* window_ride_list_open()
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OPEN_CLOSE_ALL) | (1 << WIDX_CURRENT_INFORMATION_TYPE)
             | (1 << WIDX_INFORMATION_TYPE_DROPDOWN) | (1 << WIDX_SORT) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2)
             | (1 << WIDX_TAB_3) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
-        if (network_get_mode() != NETWORK_MODE_CLIENT)
+        // FIXME
+        // if (network_get_mode() != NETWORK_MODE_CLIENT)
         {
             window->enabled_widgets |= (1 << WIDX_QUICK_DEMOLISH);
         }
@@ -267,7 +268,9 @@ static void window_ride_list_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_ride_list_open_all(w);
             break;
         case WIDX_QUICK_DEMOLISH:
-            if (network_get_mode() != NETWORK_MODE_CLIENT)
+            // FIXME
+            // if (network_get_mode() != NETWORK_MODE_CLIENT)
+            if (true)
             {
                 _quickDemolishMode = !_quickDemolishMode;
             }
@@ -453,7 +456,9 @@ static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex,
     // Open ride window
     auto rideIndex = w->list_item_positions[index];
     auto ride = get_ride(rideIndex);
-    if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
+    // FIXME
+    // if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
+    if (_quickDemolishMode)
     {
         ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         window_ride_list_refresh_list(w);
@@ -562,7 +567,9 @@ static void window_ride_list_invalidate(rct_window* w)
         w->widgets[WIDX_QUICK_DEMOLISH].top = w->widgets[WIDX_OPEN_CLOSE_ALL].bottom + 3;
     }
     w->widgets[WIDX_QUICK_DEMOLISH].bottom = w->widgets[WIDX_QUICK_DEMOLISH].top + 23;
-    w->widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WWT_FLATBTN : WWT_EMPTY;
+    // FIXME:
+    // w->widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WWT_FLATBTN : WWT_EMPTY;
+    w->widgets[WIDX_QUICK_DEMOLISH].type = WWT_FLATBTN;
 }
 
 /**

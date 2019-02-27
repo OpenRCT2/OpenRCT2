@@ -985,7 +985,9 @@ static void window_new_ride_paint_ride_information(
     }
 
     // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    // FIXME:
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (false)
     {
         _lastTrackDesignCount = 0;
     }
@@ -1054,7 +1056,9 @@ static void window_new_ride_select(rct_window* w)
 #ifndef NETWORK_DISABLE
     // TODO: FIX NETWORK TRACKS
     // Until tracks work with the network this will disable them
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    // FIXME
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (false)
     {
         allowTrackDesigns = false;
     }

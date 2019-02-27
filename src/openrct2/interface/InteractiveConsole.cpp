@@ -696,7 +696,10 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
                 {
                     // When in networked client mode, console.Execute("get money")
                     // does not print value accurately. Instead, print the argument.
-                    if (network_get_mode() == NETWORK_MODE_CLIENT)
+
+                    // FIXME:
+                    // if (network_get_mode() == NETWORK_MODE_CLIENT)
+                    if (false)
                     {
                         run_get_money = false;
                         console.WriteFormatLine("money %d.%d0", money / 10, money % 10);
@@ -1311,8 +1314,10 @@ static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[mayb
 
 static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
-        || network_get_authstatus() != NETWORK_AUTH_OK)
+    // FIXME:
+    // if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
+    //    || network_get_authstatus() != NETWORK_AUTH_OK)
+    if (false)
     {
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return 0;
@@ -1334,7 +1339,9 @@ static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
 
 static int32_t cc_replay_startrecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    // FIXME:
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (false)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1373,7 +1380,8 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const argument
 
 static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (false)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1408,7 +1416,9 @@ static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments
 
 static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    // FIXME:
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (false)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1450,7 +1460,9 @@ static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& a
 
 static int32_t cc_replay_stop(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    // FIXME:
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (false)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1468,7 +1480,9 @@ static int32_t cc_replay_stop(InteractiveConsole& console, const arguments_t& ar
 
 static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    // FIXME:
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (false)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;

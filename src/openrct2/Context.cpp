@@ -537,12 +537,15 @@ namespace OpenRCT2
                         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
                         if (info.Type == FILE_TYPE::SAVED_GAME)
                         {
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            // FIXME:
+                            // if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            if (false)
                             {
                                 network_close();
                             }
                             game_load_init();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            // if (network_get_mode() == NETWORK_MODE_SERVER)
+                            if (false)
                             {
                                 network_send_map();
                             }
@@ -550,11 +553,13 @@ namespace OpenRCT2
                         else
                         {
                             scenario_begin();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            // if (network_get_mode() == NETWORK_MODE_SERVER)
+                            if (false)
                             {
                                 network_send_map();
                             }
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            // if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            if (false)
                             {
                                 network_close();
                             }
@@ -732,7 +737,9 @@ namespace OpenRCT2
                     gScreenFlags = SCREEN_FLAGS_PLAYING;
 
 #ifndef DISABLE_NETWORK
-                    if (gNetworkStart == NETWORK_MODE_SERVER)
+                    // FIXME:
+                    // if (gNetworkStart == NETWORK_MODE_SERVER)
+                    if (false)
                     {
                         if (gNetworkStartPort == 0)
                         {
@@ -770,7 +777,8 @@ namespace OpenRCT2
             }
 
 #ifndef DISABLE_NETWORK
-            if (gNetworkStart == NETWORK_MODE_CLIENT)
+            // if (gNetworkStart == NETWORK_MODE_CLIENT)
+            if (false)
             {
                 if (gNetworkStartPort == 0)
                 {

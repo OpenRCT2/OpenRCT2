@@ -36,7 +36,7 @@
 #endif // USE_BREAKPAD
 
 #ifndef DISABLE_NETWORK
-int32_t gNetworkStart = NETWORK_MODE_NONE;
+NETWORK_MODE gNetworkStart = NETWORK_MODE::NONE;
 std::string gNetworkStartHost;
 int32_t gNetworkStartPort = NETWORK_DEFAULT_PORT;
 std::string gNetworkStartAddress;
@@ -303,7 +303,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
     gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
-    gNetworkStart = NETWORK_MODE_SERVER;
+    gNetworkStart = NETWORK_MODE::HOST;
     gNetworkStartPort = _port;
     gNetworkStartAddress = String::ToStd(_address);
 
@@ -325,7 +325,7 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator* enumerator)
         return EXITCODE_FAIL;
     }
 
-    gNetworkStart = NETWORK_MODE_CLIENT;
+    gNetworkStart = NETWORK_MODE::CLIENT;
     gNetworkStartPort = _port;
     gNetworkStartHost = hostname;
     return EXITCODE_CONTINUE;

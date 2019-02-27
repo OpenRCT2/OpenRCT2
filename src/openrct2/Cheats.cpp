@@ -651,7 +651,9 @@ void game_command_cheat(
                 gCheatsEnableAllDrawableTrackPieces = *edx != 0;
                 break;
         }
-        if (network_get_mode() == NETWORK_MODE_NONE)
+        // FIXME:
+        // if (network_get_mode() == NETWORK_MODE_NONE)
+        if (true)
         {
             config_save_default();
         }

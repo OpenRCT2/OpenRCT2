@@ -1234,8 +1234,9 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (widgetIndex != WIDX_PATROL)
         return;
 
-    if (network_get_mode() != NETWORK_MODE_NONE)
-        return;
+    // FIXME:
+    //     if (network_get_mode() != NETWORK_MODE_NONE)
+    //         return;
 
     // This works only for singleplayer if the game_do_command can not be prevented
     // to send packets more often than patrol area is updated.

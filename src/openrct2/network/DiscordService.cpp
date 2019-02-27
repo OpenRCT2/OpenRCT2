@@ -87,7 +87,9 @@ void DiscordService::RefreshPresence()
     {
         default:
             details = GetParkName();
-            if (network_get_mode() == NETWORK_MODE_NONE)
+            // FIXME:
+            // if (network_get_mode() == NETWORK_MODE_NONE)
+            if (true)
             {
                 state = "Playing Solo";
             }

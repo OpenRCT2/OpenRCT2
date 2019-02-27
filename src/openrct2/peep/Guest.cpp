@@ -2100,7 +2100,10 @@ void rct_peep::SpendMoney(money16& peep_expend_type, money32 amount)
     {
         // HACK Currently disabled for multiplayer due to limitation of all sprites
         //      needing to be synchronised
-        if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
+
+        // FIXME:
+        // if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
+        if (true)
         {
             money_effect_create_at(amount, x, y, z, true);
         }
@@ -6203,7 +6206,10 @@ static bool peep_should_watch_ride(TileElement* tileElement)
 
     // Ghosts are purely this-client-side and should not cause any interaction,
     // as that may lead to a desync.
-    if (network_get_mode() != NETWORK_MODE_NONE)
+
+    // FIXME:
+    // if (network_get_mode() != NETWORK_MODE_NONE)
+    if (true)
     {
         if (tileElement->IsGhost())
             return false;
@@ -6308,7 +6314,9 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6342,7 +6350,10 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6369,7 +6380,10 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6413,7 +6427,10 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6460,7 +6477,10 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6486,7 +6506,10 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6530,7 +6553,10 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6571,7 +6597,10 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6597,7 +6626,10 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;

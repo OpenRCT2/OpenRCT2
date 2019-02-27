@@ -524,8 +524,11 @@ static void shortcut_reduce_game_speed()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
+    // FIXME:
+    /*
     if (network_get_mode() == NETWORK_MODE_NONE)
         game_reduce_game_speed();
+    */
 }
 
 static void shortcut_increase_game_speed()
@@ -533,8 +536,11 @@ static void shortcut_increase_game_speed()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
+    // FIXME:
+    /*
     if (network_get_mode() == NETWORK_MODE_NONE)
         game_increase_game_speed();
+    */
 }
 
 static void shortcut_open_cheat_window()
@@ -613,8 +619,11 @@ static void shortcut_windowed_mode_toggle()
 
 static void shortcut_show_multiplayer()
 {
+    // FIXME:
+    /*
     if (network_get_mode() != NETWORK_MODE_NONE)
         context_open_window(WC_MULTIPLAYER);
+    */
 }
 
 static void shortcut_debug_paint_toggle()

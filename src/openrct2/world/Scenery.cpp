@@ -78,7 +78,10 @@ void scenery_update_tile(int32_t x, int32_t y)
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+
+        // FIXME:
+        // if (network_get_mode() != NETWORK_MODE_NONE)
+        if (true)
         {
             if (tileElement->IsGhost())
                 continue;

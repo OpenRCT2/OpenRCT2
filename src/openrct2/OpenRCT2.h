@@ -10,6 +10,7 @@
 #pragma once
 
 #include "common.h"
+#include "network/NetworkTypes.h"
 
 #include <string>
 
@@ -51,7 +52,7 @@ extern bool gOpenRCT2ShowChangelog;
 extern bool gOpenRCT2SilentBreakpad;
 
 #ifndef DISABLE_NETWORK
-extern int32_t gNetworkStart;
+extern NETWORK_MODE gNetworkStart;
 extern std::string gNetworkStartHost;
 extern int32_t gNetworkStartPort;
 extern std::string gNetworkStartAddress;

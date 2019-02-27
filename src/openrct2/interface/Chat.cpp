@@ -40,8 +40,12 @@ static void chat_clear_input();
 
 bool chat_available()
 {
+    // FIXME:
+    /*
     return network_get_mode() != NETWORK_MODE_NONE && network_get_status() == NETWORK_STATUS_CONNECTED
         && network_get_authstatus() == NETWORK_AUTH_OK;
+    */
+    return false;
 }
 
 void chat_open()
