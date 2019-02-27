@@ -30,8 +30,6 @@ uint8_t gClipHeight = 128; // Default to middle value
 LocationXY8 gClipSelectionA = { 0, 0 };
 LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
 
-static std::vector<paint_session*> _freePaintSessions;
-
 static constexpr const uint8_t BoundBoxDebugColours[] = {
     0,   // NONE
     102, // TERRAIN
