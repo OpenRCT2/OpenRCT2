@@ -294,7 +294,6 @@ private:
     std::unique_ptr<INetworkServerAdvertiser> _advertiser;
     uint16_t listening_port = 0;
     SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
-    uint32_t last_tick_sent_time = 0;
     uint32_t last_ping_sent_time = 0;
     uint32_t server_tick = 0;
     uint32_t server_srand0 = 0;
@@ -363,7 +362,6 @@ Network::Network()
     wsa_initialized = false;
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
-    last_tick_sent_time = 0;
     last_ping_sent_time = 0;
     _commandId = 0;
     _actionId = 0;
@@ -1631,14 +1629,6 @@ void Network::Server_Send_GAME_ACTION(const GameAction* action)
 
 void Network::Server_Send_TICK()
 {
-    uint32_t ticks = platform_get_ticks();
-    if (ticks < last_tick_sent_time + 25)
-    {
-        return;
-    }
-
-    last_tick_sent_time = ticks;
-
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_TICK << gCurrentTicks << scenario_rand_state().s0;
     uint32_t flags = 0;
