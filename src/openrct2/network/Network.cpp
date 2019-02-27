@@ -305,7 +305,8 @@ private:
     std::multiset<GameCommand> game_command_queue;
     std::vector<uint8_t> chunk_buffer;
     std::string _password;
-    bool _desynchronised = false;
+    bool _desyncStarted = false;
+    bool _fullyDesynced = false;
     uint32_t server_connect_time = 0;
     uint8_t default_group = 0;
     uint32_t game_commands_processed_this_tick = 0;
@@ -965,20 +966,34 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
 void Network::CheckDesynchronizaton()
 {
     // Check synchronisation
-    if (GetMode() == NETWORK_MODE_CLIENT && !_desynchronised && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
+    if (GetMode() == NETWORK_MODE_CLIENT && !_fullyDesynced)
     {
-        _desynchronised = true;
-
-        char str_desync[256];
-        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
-
-        auto intent = Intent(WC_NETWORK_STATUS);
-        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
-        context_open_intent(&intent);
-
-        if (!gConfigNetwork.stay_connected)
+        if (CheckSRAND(gCurrentTicks, scenario_rand_state().s0) == false)
         {
-            Close();
+            if (_desyncStarted == false)
+            {
+                _desyncStarted = true;
+            }
+            else
+            {
+                _fullyDesynced = true;
+
+                char str_desync[256];
+                format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
+
+                auto intent = Intent(WC_NETWORK_STATUS);
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
+                context_open_intent(&intent);
+
+                if (!gConfigNetwork.stay_connected)
+                {
+                    Close();
+                }
+            }
+        }
+        else
+        {
+            _desyncStarted = false;
         }
     }
 }
@@ -1619,6 +1634,7 @@ void Network::Server_Send_GAME_ACTION(const GameAction* action)
 
 void Network::Server_Send_TICK()
 {
+    /*
     uint32_t ticks = platform_get_ticks();
     if (ticks < last_tick_sent_time + 25)
     {
@@ -1626,9 +1642,11 @@ void Network::Server_Send_TICK()
     }
 
     last_tick_sent_time = ticks;
+    */
 
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_TICK << gCurrentTicks << scenario_rand_state().s0;
+
     uint32_t flags = 0;
     // Simple counter which limits how often a sprite checksum gets sent.
     // This can get somewhat expensive, so we don't want to push it every tick in release,
@@ -1649,7 +1667,7 @@ void Network::Server_Send_TICK()
         packet->WriteString(checksum.ToString().c_str());
     }
 
-    SendPacketToClients(*packet);
+    SendPacketToClients(*packet, true);
 }
 
 void Network::Server_Send_PLAYERLIST()
@@ -2541,13 +2559,16 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         auto ms = MemoryStream(data, data_size);
         if (LoadMap(&ms))
         {
+            _fullyDesynced = false;
+            _desyncStarted = false;
+
+            gFirstTimeSaving = true;
+
             game_load_init();
             game_command_queue.clear();
             server_tick = gCurrentTicks;
             server_srand0_tick = 0;
             // window_network_status_open("Loaded new map from network");
-            _desynchronised = false;
-            gFirstTimeSaving = true;
 
             // Notify user he is now online and which shortcut key enables chat
             network_chat_show_connected_message();
