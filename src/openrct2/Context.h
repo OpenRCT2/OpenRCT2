@@ -19,6 +19,7 @@ interface IObjectRepository;
 interface IScenarioRepository;
 interface IStream;
 interface ITrackDesignRepository;
+interface INetwork;
 
 class Intent;
 struct rct_window;
@@ -105,6 +106,7 @@ namespace OpenRCT2
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;
+        virtual INetwork* GetNetwork() abstract;
         virtual int32_t GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
 

@@ -31,20 +31,22 @@ namespace OpenRCT2
     interface IPlatformEnvironment;
 }
 
-class Network
+interface INetwork
 {
 public:
-    Network();
+    static std::unique_ptr<INetwork> Create();
 
-    void Startup();
-    void Shutdown();
+    virtual ~INetwork()
+    {
+    }
 
-    bool BeginServer(const std::string& host, uint16_t port);
-    bool BeginClient(const std::string& host, uint16_t port);
-    void Close();
+    virtual void Startup() = 0;
+    virtual void Shutdown() = 0;
+    virtual void Update() = 0;
 
-    NETWORK_MODE GetMode() const;
+    virtual bool BeginServer(const std::string& host, uint16_t port) = 0;
+    virtual bool BeginClient(const std::string& host, uint16_t port) = 0;
+    virtual void Close() = 0;
 
-private:
-    std::unique_ptr<NetworkBase> _networkImpl;
+    virtual NETWORK_MODE GetMode() const = 0;
 };

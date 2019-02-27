@@ -44,7 +44,7 @@
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/Http.h"
-#include "network/network.h"
+#include "network/Network.h"
 #include "network/twitch.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -92,6 +92,7 @@ namespace OpenRCT2
         std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
         std::unique_ptr<IReplayManager> _replayManager;
+        std::unique_ptr<INetwork> _network;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
@@ -150,7 +151,6 @@ namespace OpenRCT2
                 _objectManager->UnloadAll();
             }
 
-            network_close();
             window_close_all();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
@@ -208,6 +208,11 @@ namespace OpenRCT2
         IReplayManager* GetReplayManager() override
         {
             return _replayManager.get();
+        }
+
+        INetwork* GetNetwork() override
+        {
+            return _network.get();
         }
 
         int32_t GetDrawingEngineType() override
@@ -334,6 +339,7 @@ namespace OpenRCT2
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
             _replayManager = CreateReplayManager();
+            _network = INetwork::Create();
 #ifdef __ENABLE_DISCORD__
             _discordService = std::make_unique<DiscordService>();
 #endif
