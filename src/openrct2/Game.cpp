@@ -849,7 +849,7 @@ void game_convert_strings_to_rct2(rct_s6_data* s6)
 void game_fix_save_vars()
 {
     // Recalculates peep count after loading a save to fix corrupted files
-    rct_peep* peep;
+    Peep* peep;
     uint16_t spriteIndex;
     uint16_t peepCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
@@ -863,7 +863,7 @@ void game_fix_save_vars()
     peep_sort();
 
     // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
-    std::vector<rct_peep*> peepsToRemove;
+    std::vector<Peep*> peepsToRemove;
 
     // Fix possibly invalid field values
     FOR_ALL_GUESTS (spriteIndex, peep)

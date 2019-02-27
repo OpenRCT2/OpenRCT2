@@ -81,7 +81,7 @@ void staff_reset_modes()
     staff_update_greyed_patrol_areas();
 }
 
-static inline void staff_autoposition_new_staff_member(rct_peep* newPeep)
+static inline void staff_autoposition_new_staff_member(Peep* newPeep)
 {
     // Find a location to place new staff member
 
@@ -90,7 +90,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep* newPeep)
     int16_t x, y, z;
     uint32_t count = 0;
     uint16_t sprite_index;
-    rct_peep* guest = nullptr;
+    Peep* guest = nullptr;
     TileElement* guest_tile = nullptr;
 
     // Count number of walking guests
@@ -209,7 +209,7 @@ static money32 staff_hire_new_staff_member(
     {
         int32_t newStaffId = i;
         const rct_sprite_bounds* spriteBounds;
-        rct_peep* newPeep = &(create_sprite(flags)->peep);
+        Peep* newPeep = &(create_sprite(flags)->peep);
 
         if (newPeep == nullptr)
         {
@@ -249,7 +249,7 @@ static money32 staff_hire_new_staff_member(
                 newPeep->staff_orders = 0;
 
             uint16_t idSearchSpriteIndex;
-            rct_peep* idSearchPeep;
+            Peep* idSearchPeep;
 
             // We search for the first available id for a given staff type
             uint32_t newStaffIndex = 0;
@@ -387,7 +387,7 @@ void game_command_set_staff_patrol(
             log_warning("Invalid type of sprite %u for game command", sprite_id);
             return;
         }
-        rct_peep* peep = &sprite->peep;
+        Peep* peep = &sprite->peep;
         int32_t patrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
 
         staff_toggle_patrol_area(peep->staff_id, x, y);
@@ -435,7 +435,7 @@ void game_command_fire_staff_member(
             *ebx = MONEY32_UNDEFINED;
             return;
         }
-        rct_peep* peep = &get_sprite(sprite_id)->peep;
+        Peep* peep = &get_sprite(sprite_id)->peep;
         if (peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
         {
             log_warning(
@@ -477,7 +477,7 @@ uint16_t hire_new_staff_member(uint8_t staffType)
 
     if ((staffType == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default)
     {
-        rct_peep* newPeep = GET_PEEP(new_sprite_index);
+        Peep* newPeep = GET_PEEP(new_sprite_index);
         uint8_t newOrders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
 
         auto staffSetOrdersAction = StaffSetOrdersAction(new_sprite_index, newOrders);
@@ -493,7 +493,7 @@ uint16_t hire_new_staff_member(uint8_t staffType)
  */
 void staff_update_greyed_patrol_areas()
 {
-    rct_peep* peep;
+    Peep* peep;
 
     for (int32_t staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
     {
@@ -520,7 +520,7 @@ void staff_update_greyed_patrol_areas()
     }
 }
 
-static bool staff_is_location_in_patrol_area(rct_peep* peep, int32_t x, int32_t y)
+static bool staff_is_location_in_patrol_area(Peep* peep, int32_t x, int32_t y)
 {
     // Patrol quads are stored in a bit map (8 patrol quads per byte)
     // Each patrol quad is 4x4
@@ -532,7 +532,7 @@ static bool staff_is_location_in_patrol_area(rct_peep* peep, int32_t x, int32_t 
  *
  *  rct2: 0x006C0905
  */
-bool staff_is_location_in_patrol(rct_peep* staff, int32_t x, int32_t y)
+bool staff_is_location_in_patrol(Peep* staff, int32_t x, int32_t y)
 {
     // Check if location is in the park
     if (!map_is_location_owned_or_has_rights(x, y))
@@ -545,7 +545,7 @@ bool staff_is_location_in_patrol(rct_peep* staff, int32_t x, int32_t y)
     return staff_is_location_in_patrol_area(staff, x, y);
 }
 
-bool staff_is_location_on_patrol_edge(rct_peep* mechanic, int32_t x, int32_t y)
+bool staff_is_location_on_patrol_edge(Peep* mechanic, int32_t x, int32_t y)
 {
     // Check whether the location x,y is inside and on the edge of the
     // patrol zone for mechanic.
@@ -561,7 +561,7 @@ bool staff_is_location_on_patrol_edge(rct_peep* mechanic, int32_t x, int32_t y)
     return onZoneEdge;
 }
 
-bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z, TileElement* path)
+bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, TileElement* path)
 {
     /* Wide flags can potentially wall off parts of a staff patrol zone
      * for the heuristic search.
@@ -682,7 +682,7 @@ bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z
  *  rct2: 0x006C095B
  *  returns 0xF if not in a valid patrol area
  */
-static uint8_t staff_get_valid_patrol_directions(rct_peep* peep, int16_t x, int16_t y)
+static uint8_t staff_get_valid_patrol_directions(Peep* peep, int16_t x, int16_t y)
 {
     uint8_t directions = 0;
 
@@ -721,7 +721,7 @@ static uint8_t staff_get_valid_patrol_directions(rct_peep* peep, int16_t x, int1
 void staff_reset_stats()
 {
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     FOR_ALL_STAFF (spriteIndex, peep)
     {
@@ -782,7 +782,7 @@ void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y)
  *
  * Returns 0xFF when no nearby litter or unpathable litter
  */
-static uint8_t staff_handyman_direction_to_nearest_litter(rct_peep* peep)
+static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 {
     uint16_t nearestLitterDist = (uint16_t)-1;
     rct_litter* nearestLitter = nullptr;
@@ -870,7 +870,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(rct_peep* peep)
  *
  *  rct2: 0x006BF931
  */
-static uint8_t staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8_t valid_directions)
+static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid_directions)
 {
     if (!(peep->GetNextIsSurface()))
     {
@@ -923,7 +923,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8_t v
  *
  *  rct2: 0x006BFD9C
  */
-static int32_t staff_handyman_direction_rand_surface(rct_peep* peep, uint8_t validDirections)
+static int32_t staff_handyman_direction_rand_surface(Peep* peep, uint8_t validDirections)
 {
     uint8_t direction = scenario_rand() & 3;
     for (int32_t i = 0; i < 4; ++i, ++direction)
@@ -951,7 +951,7 @@ static int32_t staff_handyman_direction_rand_surface(rct_peep* peep, uint8_t val
  *
  *  rct2: 0x006BFBA8
  */
-static bool staff_path_finding_handyman(rct_peep* peep)
+static bool staff_path_finding_handyman(Peep* peep)
 {
     peep->staff_mowing_timeout++;
 
@@ -1042,7 +1042,7 @@ static bool staff_path_finding_handyman(rct_peep* peep)
     return false;
 }
 
-static uint8_t staff_direction_surface(rct_peep* peep, uint8_t initialDirection)
+static uint8_t staff_direction_surface(Peep* peep, uint8_t initialDirection)
 {
     uint8_t direction = initialDirection;
     for (int32_t i = 0; i < 3; ++i)
@@ -1085,7 +1085,7 @@ static uint8_t staff_direction_surface(rct_peep* peep, uint8_t initialDirection)
  *
  *  rct2: 0x006BFF45
  */
-static uint8_t staff_mechanic_direction_surface(rct_peep* peep)
+static uint8_t staff_mechanic_direction_surface(Peep* peep)
 {
     uint8_t direction = scenario_rand() & 3;
 
@@ -1121,7 +1121,7 @@ static uint8_t staff_mechanic_direction_surface(rct_peep* peep)
  *
  *  rct2: 0x006C02D1
  */
-static uint8_t staff_mechanic_direction_path_rand(rct_peep* peep, uint8_t pathDirections)
+static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirections)
 {
     if (scenario_rand() & 1)
     {
@@ -1145,7 +1145,7 @@ static uint8_t staff_mechanic_direction_path_rand(rct_peep* peep, uint8_t pathDi
  *
  *  rct2: 0x006C0121
  */
-static uint8_t staff_mechanic_direction_path(rct_peep* peep, uint8_t validDirections, TileElement* pathElement)
+static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections, TileElement* pathElement)
 {
     uint8_t direction = 0xFF;
     uint8_t pathDirections = pathElement->AsPath()->GetEdges();
@@ -1238,7 +1238,7 @@ static uint8_t staff_mechanic_direction_path(rct_peep* peep, uint8_t validDirect
  *
  *  rct2: 0x006BFF2C
  */
-static bool staff_path_finding_mechanic(rct_peep* peep)
+static bool staff_path_finding_mechanic(Peep* peep)
 {
     uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
     uint8_t direction = 0xFF;
@@ -1280,7 +1280,7 @@ static bool staff_path_finding_mechanic(rct_peep* peep)
  *
  *  rct2: 0x006C050B
  */
-static uint8_t staff_direction_path(rct_peep* peep, uint8_t validDirections, TileElement* pathElement)
+static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, TileElement* pathElement)
 {
     uint8_t direction = 0xFF;
     uint8_t pathDirections = pathElement->AsPath()->GetEdges();
@@ -1325,7 +1325,7 @@ static uint8_t staff_direction_path(rct_peep* peep, uint8_t validDirections, Til
  *
  *  rct2: 0x006C0351
  */
-static bool staff_path_finding_misc(rct_peep* peep)
+static bool staff_path_finding_misc(Peep* peep)
 {
     uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
@@ -1365,10 +1365,10 @@ static bool staff_path_finding_misc(rct_peep* peep)
  *
  *  rct2: 0x006C086D
  */
-static void staff_entertainer_update_nearby_peeps(rct_peep* peep)
+static void staff_entertainer_update_nearby_peeps(Peep* peep)
 {
     uint16_t spriteIndex;
-    rct_peep* guest;
+    Peep* guest;
 
     FOR_ALL_GUESTS (spriteIndex, guest)
     {
@@ -1411,7 +1411,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep* peep)
  *
  *  rct2: 0x006C05AE
  */
-static int32_t staff_path_finding_entertainer(rct_peep* peep)
+static int32_t staff_path_finding_entertainer(Peep* peep)
 {
     if (((scenario_rand() & 0xFFFF) <= 0x4000) && (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2))
     {
@@ -2029,7 +2029,7 @@ static constexpr const LocationXY16 _WateringUseOffsets[] = {
  *
  *  rct2: 0x006BF483
  */
-static int32_t peep_update_patrolling_find_watering(rct_peep* peep)
+static int32_t peep_update_patrolling_find_watering(Peep* peep)
 {
     if (!(peep->staff_orders & STAFF_ORDERS_WATER_FLOWERS))
         return 0;
@@ -2102,7 +2102,7 @@ static int32_t peep_update_patrolling_find_watering(rct_peep* peep)
  *
  *  rct2: 0x006BF3A1
  */
-static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
+static int32_t peep_update_patrolling_find_bin(Peep* peep)
 {
     if (!(peep->staff_orders & STAFF_ORDERS_EMPTY_BINS))
         return 0;
@@ -2165,7 +2165,7 @@ static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
  *
  *  rct2: 0x006BF322
  */
-static int32_t peep_update_patrolling_find_grass(rct_peep* peep)
+static int32_t peep_update_patrolling_find_grass(Peep* peep)
 {
     if (!(peep->staff_orders & STAFF_ORDERS_MOWING))
         return 0;
@@ -2197,7 +2197,7 @@ static int32_t peep_update_patrolling_find_grass(rct_peep* peep)
  *
  *  rct2: 0x006BF295
  */
-static int32_t peep_update_patrolling_find_sweeping(rct_peep* peep)
+static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 {
     if (!(peep->staff_orders & STAFF_ORDERS_SWEEPING))
         return 0;

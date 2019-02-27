@@ -661,7 +661,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     }
     else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
     {
-        rct_peep* peep = GET_PEEP(window->viewport_smart_follow_sprite);
+        Peep* peep = GET_PEEP(window->viewport_smart_follow_sprite);
 
         if (peep->type == PEEP_TYPE_GUEST)
             viewport_update_smart_guest_follow(window, peep);
@@ -686,7 +686,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     }
 }
 
-void viewport_update_smart_guest_follow(rct_window* window, rct_peep* peep)
+void viewport_update_smart_guest_follow(rct_window* window, Peep* peep)
 {
     union
     {
@@ -748,7 +748,7 @@ void viewport_update_smart_guest_follow(rct_window* window, rct_peep* peep)
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
 }
 
-void viewport_update_smart_staff_follow(rct_window* window, rct_peep* peep)
+void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
 {
     sprite_focus focus = {};
 

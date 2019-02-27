@@ -1714,7 +1714,7 @@ rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
                 rct_window* w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
                 if (w2 == nullptr)
                 {
-                    rct_peep* peep = &(get_sprite(peepSpriteIndex)->peep);
+                    Peep* peep = &(get_sprite(peepSpriteIndex)->peep);
                     auto intent = Intent(WC_PEEP);
                     intent.putExtra(INTENT_EXTRA_PEEP, peep);
                     context_open_intent(&intent);
@@ -3758,7 +3758,7 @@ static void window_ride_operating_paint(rct_window* w, rct_drawpixelinfo* dpi)
 static void window_ride_locate_mechanic(rct_window* w)
 {
     Ride* ride;
-    rct_peep* mechanic;
+    Peep* mechanic;
 
     ride = get_ride(w->number);
 
@@ -4183,7 +4183,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
 
                 uint16_t spriteIndex;
-                rct_peep* peep;
+                Peep* peep;
                 FOR_ALL_STAFF (spriteIndex, peep)
                 {
                     if (peep->staff_type == STAFF_TYPE_MECHANIC)

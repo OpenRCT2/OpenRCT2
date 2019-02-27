@@ -20,7 +20,7 @@
 
 interface IObjectManager;
 class StationObject;
-struct rct_peep;
+struct Peep;
 struct StaffPeep;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
@@ -999,8 +999,8 @@ int32_t ride_get_default_mode(Ride* ride);
 int32_t ride_get_count();
 int32_t ride_get_total_queue_length(Ride* ride);
 int32_t ride_get_max_queue_time(Ride* ride);
-rct_peep* ride_get_queue_head_guest(Ride* ride, int32_t stationIndex);
-void ride_queue_insert_guest_at_front(Ride* ride, int32_t stationIndex, rct_peep* peep);
+Peep* ride_get_queue_head_guest(Ride* ride, int32_t stationIndex);
+void ride_queue_insert_guest_at_front(Ride* ride, int32_t stationIndex, Peep* peep);
 void ride_init_all();
 void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
@@ -1032,7 +1032,7 @@ void ride_measurement_clear(Ride* ride);
 void ride_measurements_update();
 rct_ride_measurement* ride_get_measurement(Ride* ride, rct_string_id* message);
 void ride_breakdown_add_news_item(Ride* ride);
-rct_peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
+Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, int32_t isApplying);
 int32_t ride_is_valid_for_test(Ride* ride, int32_t goingToBeOpen, int32_t isApplying);
 int32_t ride_initialise_construction_window(Ride* ride);

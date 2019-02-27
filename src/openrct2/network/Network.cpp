@@ -34,7 +34,7 @@
 #define NETWORK_STREAM_VERSION "46"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
-static rct_peep* _pickup_peep = nullptr;
+static Peep* _pickup_peep = nullptr;
 static int32_t _pickup_peep_old_x = LOCATION_NULL;
 
 #ifndef DISABLE_NETWORK
@@ -2031,7 +2031,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
         }
 
         chat_history_add(text);
-        rct_peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
+        Peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
         if (pickup_peep)
         {
             game_command_playerid = connection_player->Id;
@@ -3663,7 +3663,7 @@ int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
     return gNetwork.group_list[groupindex]->CanPerformCommand(index);
 }
 
-void network_set_pickup_peep(uint8_t playerid, rct_peep* peep)
+void network_set_pickup_peep(uint8_t playerid, Peep* peep)
 {
     if (gNetwork.GetMode() == NETWORK_MODE_NONE)
     {
@@ -3679,7 +3679,7 @@ void network_set_pickup_peep(uint8_t playerid, rct_peep* peep)
     }
 }
 
-rct_peep* network_get_pickup_peep(uint8_t playerid)
+Peep* network_get_pickup_peep(uint8_t playerid)
 {
     if (gNetwork.GetMode() == NETWORK_MODE_NONE)
     {
@@ -4048,11 +4048,11 @@ int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
 {
     return 0;
 }
-void network_set_pickup_peep(uint8_t playerid, rct_peep* peep)
+void network_set_pickup_peep(uint8_t playerid, Peep* peep)
 {
     _pickup_peep = peep;
 }
-rct_peep* network_get_pickup_peep(uint8_t playerid)
+Peep* network_get_pickup_peep(uint8_t playerid)
 {
     return _pickup_peep;
 }

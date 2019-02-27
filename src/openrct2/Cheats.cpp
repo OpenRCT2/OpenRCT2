@@ -280,7 +280,7 @@ static void cheat_generate_guests(int32_t count)
 static void cheat_set_guest_parameter(int32_t parameter, int32_t value)
 {
     int32_t spriteIndex;
-    rct_peep* p;
+    Peep* p;
     FOR_ALL_GUESTS (spriteIndex, p)
     {
         auto peep = p->AsGuest();
@@ -328,7 +328,7 @@ static void cheat_set_guest_parameter(int32_t parameter, int32_t value)
 static void cheat_give_all_guests(int32_t object)
 {
     int32_t spriteIndex;
-    rct_peep* p;
+    Peep* p;
     FOR_ALL_GUESTS (spriteIndex, p)
     {
         auto peep = p->AsGuest();
@@ -358,7 +358,7 @@ static void cheat_give_all_guests(int32_t object)
 
 static void cheat_remove_all_guests()
 {
-    rct_peep* peep;
+    Peep* peep;
     rct_vehicle* vehicle;
     uint16_t spriteIndex, nextSpriteIndex;
     ride_id_t rideIndex;
@@ -420,7 +420,7 @@ static void cheat_remove_all_guests()
 static void cheat_explode_guests()
 {
     int32_t sprite_index;
-    rct_peep* peep;
+    Peep* peep;
 
     FOR_ALL_GUESTS (sprite_index, peep)
     {
@@ -434,7 +434,7 @@ static void cheat_explode_guests()
 static void cheat_set_staff_speed(uint8_t value)
 {
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     FOR_ALL_STAFF (spriteIndex, peep)
     {

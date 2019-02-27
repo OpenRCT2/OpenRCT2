@@ -1026,7 +1026,7 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
     uint16_t spriteIndex = sprite_get_first_in_quadrant(x, y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        rct_peep* peep = &get_sprite(spriteIndex)->peep;
+        Peep* peep = &get_sprite(spriteIndex)->peep;
         uint16_t nextSpriteIndex = peep->next_in_quadrant;
         if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2)
         {

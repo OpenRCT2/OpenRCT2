@@ -126,7 +126,7 @@ union rct_sprite
 {
     uint8_t pad_00[0x100];
     rct_sprite_generic generic;
-    rct_peep peep;
+    Peep peep;
     rct_litter litter;
     rct_vehicle vehicle;
     rct_balloon balloon;
@@ -142,7 +142,7 @@ union rct_sprite
     bool IsPeep();
     rct_balloon* AsBalloon();
     rct_duck* AsDuck();
-    rct_peep* AsPeep();
+    Peep* AsPeep();
 };
 assert_struct_size(rct_sprite, 0x100);
 

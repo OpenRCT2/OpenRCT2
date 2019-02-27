@@ -531,7 +531,7 @@ struct rct_peep_thought
 struct GuestPeep;
 struct StaffPeep;
 
-struct rct_peep : rct_sprite_common
+struct Peep : rct_sprite_common
 {
     rct_string_id name_string_idx; // 0x22
     uint16_t next_x;               // 0x24
@@ -727,7 +727,7 @@ private:
     void UpdatePicked();
 };
 
-struct GuestPeep : rct_peep
+struct GuestPeep : Peep
 {
 public:
     void UpdateGuest();
@@ -803,7 +803,7 @@ private:
     std::bitset<MAX_RIDES> FindRidesToGoOn();
 };
 
-struct StaffPeep : rct_peep
+struct StaffPeep : Peep
 {
 public:
     void UpdateStaff(uint32_t stepsToTake);
@@ -931,51 +931,51 @@ extern TileCoordsXYZ gPeepPathFindGoalPosition;
 extern bool gPeepPathFindIgnoreForeignQueues;
 extern ride_id_t gPeepPathFindQueueRideIndex;
 
-rct_peep* try_get_guest(uint16_t spriteIndex);
+Peep* try_get_guest(uint16_t spriteIndex);
 int32_t peep_get_staff_count();
-bool peep_can_be_picked_up(rct_peep* peep);
+bool peep_can_be_picked_up(Peep* peep);
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-rct_peep* peep_generate(int32_t x, int32_t y, int32_t z);
-void get_arguments_from_action(rct_peep* peep, uint32_t* argument_1, uint32_t* argument_2);
+Peep* peep_generate(int32_t x, int32_t y, int32_t z);
+void get_arguments_from_action(Peep* peep, uint32_t* argument_1, uint32_t* argument_2);
 void peep_thought_set_format_args(rct_peep_thought* thought);
-int32_t get_peep_face_sprite_small(rct_peep* peep);
-int32_t get_peep_face_sprite_large(rct_peep* peep);
-int32_t peep_check_easteregg_name(int32_t index, rct_peep* peep);
-int32_t peep_get_easteregg_name_id(rct_peep* peep);
+int32_t get_peep_face_sprite_small(Peep* peep);
+int32_t get_peep_face_sprite_large(Peep* peep);
+int32_t peep_check_easteregg_name(int32_t index, Peep* peep);
+int32_t peep_get_easteregg_name_id(Peep* peep);
 bool peep_pickup_command(uint32_t peepnum, int32_t x, int32_t y, int32_t z, int32_t action, bool apply);
 void game_command_pickup_guest(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void peep_sprite_remove(rct_peep* peep);
+void peep_sprite_remove(Peep* peep);
 
-void peep_window_state_update(rct_peep* peep);
-void peep_decrement_num_riders(rct_peep* peep);
+void peep_window_state_update(Peep* peep);
+void peep_decrement_num_riders(Peep* peep);
 /**
  * rct2: 0x699F5A
  * al:thought_type
  * ah:thought_arguments
  * esi: peep
  */
-void peep_insert_new_thought(rct_peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
+void peep_insert_new_thought(Peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
 
-void peep_set_map_tooltip(rct_peep* peep);
+void peep_set_map_tooltip(Peep* peep);
 
-void SwitchToSpecialSprite(rct_peep* peep, uint8_t special_sprite_id);
-void peep_update_name_sort(rct_peep* peep);
+void SwitchToSpecialSprite(Peep* peep, uint8_t special_sprite_id);
+void peep_update_name_sort(Peep* peep);
 void peep_sort();
 void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
-void peep_handle_easteregg_name(rct_peep* peep);
+void peep_handle_easteregg_name(Peep* peep);
 void game_command_set_guest_name(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
-int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep);
-void peep_reset_pathfind_goal(rct_peep* peep);
+int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep);
+void peep_reset_pathfind_goal(Peep* peep);
 
 bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
 int32_t guest_path_finding(GuestPeep* peep);
@@ -990,7 +990,7 @@ extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log 
 
 // The following calls set the above two variables for a peep.
 // ... when PATHFIND_DEBUG is 1 (nonzero)
-void pathfind_logging_enable(rct_peep* peep);
+void pathfind_logging_enable(Peep* peep);
 void pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 

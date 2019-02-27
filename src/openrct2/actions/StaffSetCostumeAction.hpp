@@ -73,7 +73,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        rct_peep* peep = GET_PEEP(_spriteIndex);
+        Peep* peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_STAFF || peep->staff_type != STAFF_TYPE_ENTERTAINER)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
@@ -91,7 +91,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_peep* peep = GET_PEEP(_spriteIndex);
+        Peep* peep = GET_PEEP(_spriteIndex);
 
         auto spriteType = static_cast<PeepSpriteType>(_costume + 4);
         peep->sprite_type = spriteType;

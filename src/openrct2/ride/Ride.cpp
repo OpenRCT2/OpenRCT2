@@ -199,11 +199,11 @@ uint8_t gRideEntranceExitPlaceDirection;
 uint8_t gLastEntranceStyle;
 
 // Static function declarations
-rct_peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection);
+Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection);
 static void ride_breakdown_status_update(Ride* ride);
 static void ride_breakdown_update(Ride* ride);
 static void ride_call_closest_mechanic(Ride* ride);
-static void ride_call_mechanic(Ride* ride, rct_peep* mechanic, int32_t forInspection);
+static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection);
 static void ride_chairlift_update(Ride* ride);
 static void ride_entrance_exit_connected(Ride* ride);
 static void ride_set_name_to_vehicle_default(Ride* ride, rct_ride_entry* rideEntry);
@@ -361,10 +361,10 @@ int32_t ride_get_max_queue_time(Ride* ride)
     return (int32_t)queueTime;
 }
 
-rct_peep* ride_get_queue_head_guest(Ride* ride, int32_t stationIndex)
+Peep* ride_get_queue_head_guest(Ride* ride, int32_t stationIndex)
 {
-    rct_peep* peep;
-    rct_peep* result = nullptr;
+    Peep* peep;
+    Peep* result = nullptr;
     uint16_t spriteIndex = ride->stations[stationIndex].LastPeepInQueue;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
@@ -377,7 +377,7 @@ rct_peep* ride_get_queue_head_guest(Ride* ride, int32_t stationIndex)
 static void ride_update_queue_length(Ride* ride, int32_t stationIndex)
 {
     uint16_t count = 0;
-    rct_peep* peep;
+    Peep* peep;
     uint16_t spriteIndex = ride->stations[stationIndex].LastPeepInQueue;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
@@ -387,14 +387,14 @@ static void ride_update_queue_length(Ride* ride, int32_t stationIndex)
     ride->stations[stationIndex].QueueLength = count;
 }
 
-void ride_queue_insert_guest_at_front(Ride* ride, int32_t stationIndex, rct_peep* peep)
+void ride_queue_insert_guest_at_front(Ride* ride, int32_t stationIndex, Peep* peep)
 {
     assert(ride != nullptr);
     assert(stationIndex < MAX_STATIONS);
     assert(peep != nullptr);
 
     peep->next_in_queue = SPRITE_INDEX_NULL;
-    rct_peep* queueHeadGuest = ride_get_queue_head_guest(ride, peep->current_ride_station);
+    Peep* queueHeadGuest = ride_get_queue_head_guest(ride, peep->current_ride_station);
     if (queueHeadGuest == nullptr)
     {
         ride->stations[peep->current_ride_station].LastPeepInQueue = peep->sprite_index;
@@ -415,7 +415,7 @@ void ride_update_favourited_stat()
     int32_t i;
     Ride* ride;
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     FOR_ALL_RIDES (i, ride)
         ride->guests_favourite = 0;
@@ -908,7 +908,7 @@ void ride_get_status(const Ride* ride, rct_string_id* formatSecondary, int32_t* 
     if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         && ride->race_winner != SPRITE_INDEX_NULL && (GET_PEEP(ride->race_winner))->sprite_identifier == SPRITE_IDENTIFIER_PEEP)
     {
-        rct_peep* peep = GET_PEEP(ride->race_winner);
+        Peep* peep = GET_PEEP(ride->race_winner);
         if (peep->name_string_idx == STR_GUEST_X)
         {
             *argument = peep->id;
@@ -1183,7 +1183,7 @@ void ride_remove_peeps(Ride* ride)
 
     // Place all the peeps at exit
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
     FOR_ALL_PEEPS (spriteIndex, peep)
     {
         if (peep->state == PEEP_STATE_QUEUING_FRONT || peep->state == PEEP_STATE_ENTERING_RIDE
@@ -2324,7 +2324,7 @@ static void ride_spiral_slide_update(Ride* ride)
     {
         ride->slide_in_use--;
 
-        rct_peep* peep = GET_PEEP(ride->slide_peep);
+        Peep* peep = GET_PEEP(ride->slide_peep);
         peep->destination_x++;
     }
 
@@ -2797,7 +2797,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
  *
  *  rct2: 0x006B796C
  */
-static void ride_call_mechanic(Ride* ride, rct_peep* mechanic, int32_t forInspection)
+static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection)
 {
     mechanic->SetState(forInspection ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING);
     mechanic->sub_state = 0;
@@ -2820,7 +2820,7 @@ static void ride_call_closest_mechanic(Ride* ride)
         ride_call_mechanic(ride, mechanic, forInspection);
 }
 
-rct_peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
+Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
 {
     int32_t x, y, z, stationIndex;
     TileCoordsXYZD location;
@@ -2859,11 +2859,11 @@ rct_peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
  *  rct2: 0x006B774B (forInspection = 0)
  *  rct2: 0x006B78C3 (forInspection = 1)
  */
-rct_peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
+Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
 {
     uint32_t closestDistance, distance;
     uint16_t spriteIndex;
-    rct_peep *peep, *closestMechanic = nullptr;
+    Peep *peep, *closestMechanic = nullptr;
 
     closestDistance = UINT_MAX;
     FOR_ALL_STAFF (spriteIndex, peep)
@@ -5792,7 +5792,7 @@ int32_t ride_get_refund_price(const Ride* ride)
 void ride_stop_peeps_queuing(Ride* ride)
 {
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     FOR_ALL_PEEPS (spriteIndex, peep)
     {

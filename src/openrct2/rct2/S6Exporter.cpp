@@ -888,7 +888,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const rct_vehicle* 
     dst->target_seat_rotation = src->target_seat_rotation;
 }
 
-void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const rct_peep* src)
+void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 {
     ExportSpriteCommonProperties(dst, (const rct_sprite_common*)src);
     dst->name_string_idx = src->name_string_idx;

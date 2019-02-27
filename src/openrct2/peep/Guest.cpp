@@ -349,25 +349,25 @@ static constexpr const ride_rating NauseaMinimumThresholds[] = {
 };
 // clang-format on
 
-static bool peep_has_voucher_for_free_ride(rct_peep* peep, Ride* ride);
+static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride);
 static void peep_ride_is_too_intense(GuestPeep* peep, Ride* ride, bool peepAtRide);
-static void peep_reset_ride_heading(rct_peep* peep);
-static void peep_tried_to_enter_full_queue(rct_peep* peep, Ride* ride);
+static void peep_reset_ride_heading(Peep* peep);
+static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride);
 static int16_t peep_calculate_ride_satisfaction(GuestPeep* peep, Ride* ride);
-static void peep_update_favourite_ride(rct_peep* peep, Ride* ride);
-static int16_t peep_calculate_ride_value_satisfaction(rct_peep* peep, Ride* ride);
-static int16_t peep_calculate_ride_intensity_nausea_satisfaction(rct_peep* peep, Ride* ride);
-static void peep_update_ride_nausea_growth(rct_peep* peep, Ride* ride);
-static bool peep_should_go_on_ride_again(rct_peep* peep, Ride* ride);
-static bool peep_should_preferred_intensity_increase(rct_peep* peep);
-static bool peep_really_liked_ride(rct_peep* peep, Ride* ride);
+static void peep_update_favourite_ride(Peep* peep, Ride* ride);
+static int16_t peep_calculate_ride_value_satisfaction(Peep* peep, Ride* ride);
+static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Peep* peep, Ride* ride);
+static void peep_update_ride_nausea_growth(Peep* peep, Ride* ride);
+static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride);
+static bool peep_should_preferred_intensity_increase(Peep* peep);
+static bool peep_really_liked_ride(Peep* peep, Ride* ride);
 static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z);
-static void peep_update_hunger(rct_peep* peep);
-static void peep_decide_whether_to_leave_park(rct_peep* peep);
-static void peep_leave_park(rct_peep* peep);
+static void peep_update_hunger(Peep* peep);
+static void peep_decide_whether_to_leave_park(Peep* peep);
+static void peep_leave_park(Peep* peep);
 static void peep_head_for_nearest_ride_type(GuestPeep* peep, int32_t rideType);
 static void peep_head_for_nearest_ride_with_flags(GuestPeep* peep, int32_t rideTypeFlags);
-bool loc_690FD0(rct_peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
+bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 void GuestPeep::Tick128UpdateGuest(int32_t index)
 {
@@ -1710,7 +1710,7 @@ bool GuestPeep::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bo
                 // Check if there's room in the queue for the peep to enter.
                 if (ride->stations[entranceNum].LastPeepInQueue != SPRITE_INDEX_NULL)
                 {
-                    rct_peep* lastPeepInQueue = GET_PEEP(ride->stations[entranceNum].LastPeepInQueue);
+                    Peep* lastPeepInQueue = GET_PEEP(ride->stations[entranceNum].LastPeepInQueue);
                     if (abs(lastPeepInQueue->z - z) <= 6)
                     {
                         int32_t dx = abs(lastPeepInQueue->x - x);
@@ -2108,7 +2108,7 @@ void GuestPeep::ReadMap()
     }
 }
 
-static bool peep_has_voucher_for_free_ride(rct_peep* peep, Ride* ride)
+static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
     return peep->item_standard_flags & PEEP_ITEM_VOUCHER && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
         && peep->voucher_arguments == ride->id;
@@ -2119,7 +2119,7 @@ static bool peep_has_voucher_for_free_ride(rct_peep* peep, Ride* ride)
  * Does not effect peeps that walk up to the queue entrance.
  * This flag is reset the next time a peep successfully joins the queue.
  */
-static void peep_tried_to_enter_full_queue(rct_peep* peep, Ride* ride)
+static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_QUEUE_FULL;
     peep->previous_ride = ride->id;
@@ -2131,7 +2131,7 @@ static void peep_tried_to_enter_full_queue(rct_peep* peep, Ride* ride)
     }
 }
 
-static void peep_reset_ride_heading(rct_peep* peep)
+static void peep_reset_ride_heading(Peep* peep)
 {
     rct_window* w;
 
@@ -2162,7 +2162,7 @@ static void peep_ride_is_too_intense(GuestPeep* peep, Ride* ride, bool peepAtRid
  *
  *  rct2: 0x00691C6E
  */
-static rct_vehicle* peep_choose_car_from_ride(rct_peep* peep, Ride* ride, std::vector<uint8_t>& car_array)
+static rct_vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<uint8_t>& car_array)
 {
     uint8_t chosen_car = scenario_rand();
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES) && ((chosen_car & 0xC) != 0xC))
@@ -2190,7 +2190,7 @@ static rct_vehicle* peep_choose_car_from_ride(rct_peep* peep, Ride* ride, std::v
  *
  *  rct2: 0x00691CD1
  */
-static void peep_choose_seat_from_car(rct_peep* peep, Ride* ride, rct_vehicle* vehicle)
+static void peep_choose_seat_from_car(Peep* peep, Ride* ride, rct_vehicle* vehicle)
 {
     uint8_t chosen_seat = vehicle->next_free_seat;
 
@@ -2418,7 +2418,7 @@ static int16_t peep_calculate_ride_satisfaction(GuestPeep* peep, Ride* ride)
  * the ride becomes the peep's favourite. (This doesn't happen right away, but will be updated once the peep
  * exits the ride.)
  */
-static void peep_update_favourite_ride(rct_peep* peep, Ride* ride)
+static void peep_update_favourite_ride(Peep* peep, Ride* ride)
 {
     peep->peep_flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
     uint8_t peepRideRating = std::clamp((ride->excitement / 4) + peep->happiness, 0, PEEP_MAX_HAPPINESS);
@@ -2433,7 +2433,7 @@ static void peep_update_favourite_ride(rct_peep* peep, Ride* ride)
 }
 
 /* rct2: 0x00695555 */
-static int16_t peep_calculate_ride_value_satisfaction(rct_peep* peep, Ride* ride)
+static int16_t peep_calculate_ride_value_satisfaction(Peep* peep, Ride* ride)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
@@ -2465,7 +2465,7 @@ static int16_t peep_calculate_ride_value_satisfaction(rct_peep* peep, Ride* ride
  * of the ride fall exactly within the peep's preferences, but lower scores can still be achieved
  * if the peep's happiness is enough to offset it.
  */
-static int16_t peep_calculate_ride_intensity_nausea_satisfaction(rct_peep* peep, Ride* ride)
+static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Peep* peep, Ride* ride)
 {
     if (!ride_has_ratings(ride))
     {
@@ -2565,7 +2565,7 @@ static int16_t peep_calculate_ride_intensity_nausea_satisfaction(rct_peep* peep,
  * - How hungry the peep is (+0% nausea at 50% hunger up to +100% nausea at 100% hunger)
  * - The peep's nausea tolerance (Final modifier: none: 100%, low: 50%, average: 25%, high: 12.5%)
  */
-static void peep_update_ride_nausea_growth(rct_peep* peep, Ride* ride)
+static void peep_update_ride_nausea_growth(Peep* peep, Ride* ride)
 {
     uint32_t nauseaMultiplier = std::clamp(256 - peep->happiness_target, 64, 200);
     uint32_t nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
@@ -2574,7 +2574,7 @@ static void peep_update_ride_nausea_growth(rct_peep* peep, Ride* ride)
     peep->nausea_target = (uint8_t)std::min(peep->nausea_target + nauseaGrowthRateChange, 255u);
 }
 
-static bool peep_should_go_on_ride_again(rct_peep* peep, Ride* ride)
+static bool peep_should_go_on_ride_again(Peep* peep, Ride* ride)
 {
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN))
         return false;
@@ -2607,7 +2607,7 @@ static bool peep_should_go_on_ride_again(rct_peep* peep, Ride* ride)
     return true;
 }
 
-static bool peep_should_preferred_intensity_increase(rct_peep* peep)
+static bool peep_should_preferred_intensity_increase(Peep* peep)
 {
     if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
         return false;
@@ -2617,7 +2617,7 @@ static bool peep_should_preferred_intensity_increase(rct_peep* peep)
     return (scenario_rand() & 0xFF) >= peep->intensity;
 }
 
-static bool peep_really_liked_ride(rct_peep* peep, Ride* ride)
+static bool peep_really_liked_ride(Peep* peep, Ride* ride)
 {
     if (peep->happiness < 215)
         return false;
@@ -2751,7 +2751,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
  *
  *  rct2: 0x0068F9A9
  */
-static void peep_update_hunger(rct_peep* peep)
+static void peep_update_hunger(Peep* peep)
 {
     if (peep->hunger >= 3)
     {
@@ -2768,7 +2768,7 @@ static void peep_update_hunger(rct_peep* peep)
  *
  *  rct2: 0x0068F8CD
  */
-static void peep_decide_whether_to_leave_park(rct_peep* peep)
+static void peep_decide_whether_to_leave_park(Peep* peep)
 {
     if (peep->energy_target >= 33)
     {
@@ -2820,7 +2820,7 @@ static void peep_decide_whether_to_leave_park(rct_peep* peep)
  *
  *  rct2: 0x0068F93E
  */
-static void peep_leave_park(rct_peep* peep)
+static void peep_leave_park(Peep* peep)
 {
     peep->guest_heading_to_ride_id = RIDE_ID_NULL;
     if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
@@ -3152,7 +3152,7 @@ void GuestPeep::StopPurchaseThought(uint8_t ride_type)
  *
  *  rct2: 0x0069AEB7
  */
-static bool peep_should_use_cash_machine(rct_peep* peep, ride_id_t rideIndex)
+static bool peep_should_use_cash_machine(Peep* peep, ride_id_t rideIndex)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
@@ -3427,7 +3427,7 @@ static void peep_update_ride_leave_entrance_spiral_slide(GuestPeep* peep, Ride* 
 }
 
 static uint8_t peep_get_waypointed_seat_location(
-    rct_peep* peep, Ride* ride, rct_ride_entry_vehicle* vehicle_type, uint8_t track_direction)
+    Peep* peep, Ride* ride, rct_ride_entry_vehicle* vehicle_type, uint8_t track_direction)
 {
     // The seatlocation can be split into segments around the ride base
     // to decide the segment first split off the segmentable seat location
@@ -3452,7 +3452,7 @@ static uint8_t peep_get_waypointed_seat_location(
     return seatLocationSegment + seatLocationFixed;
 }
 
-static void peep_update_ride_leave_entrance_waypoints(rct_peep* peep, Ride* ride)
+static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
 {
     TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, peep->current_ride_station);
     Guard::Assert(!entranceLocation.isNull());
@@ -3633,7 +3633,7 @@ void GuestPeep::UpdateRideAdvanceThroughEntrance()
  *
  *  rct2: 0x0069321D
  */
-static void peep_go_to_ride_exit(rct_peep* peep, Ride* ride, int16_t x, int16_t y, int16_t z, uint8_t exit_direction)
+static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, int16_t z, uint8_t exit_direction)
 {
     z += RideData5[ride->type].z;
 
@@ -3747,7 +3747,7 @@ void GuestPeep::UpdateRideFreeVehicleEnterRide(Ride* ride)
  *
  *  rct2: 0x00691FD4
  */
-static void peep_update_ride_no_free_vehicle_rejoin_queue(rct_peep* peep, Ride* ride)
+static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride)
 {
     TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, peep->current_ride_station);
 
@@ -4131,7 +4131,7 @@ void GuestPeep::UpdateRideLeaveVehicle()
  *
  *  rct2: 0x0069376A
  */
-static void peep_update_ride_prepare_for_exit(rct_peep* peep)
+static void peep_update_ride_prepare_for_exit(Peep* peep)
 {
     Ride* ride = get_ride(peep->current_ride);
 
@@ -5117,8 +5117,8 @@ void GuestPeep::UpdateRide()
     }
 }
 
-static void peep_update_walking_break_scenery(rct_peep* peep);
-static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView);
+static void peep_update_walking_break_scenery(Peep* peep);
+static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView);
 
 /**
  *
@@ -5438,7 +5438,7 @@ void GuestPeep::UpdateQueuing()
             // first check if the next in queue is actually nearby
             // if they are not then it's safe to assume that this is
             // the front of the queue.
-            rct_peep* next_peep = GET_PEEP(next_in_queue);
+            Peep* next_peep = GET_PEEP(next_in_queue);
             if (abs(next_peep->x - x) < 32 && abs(next_peep->y - y) < 32)
             {
                 is_front = false;
@@ -6091,7 +6091,7 @@ bool GuestPeep::UpdateWalkingFindBin()
  *
  *  rct2: 0x00690848
  */
-static void peep_update_walking_break_scenery(rct_peep* peep)
+static void peep_update_walking_break_scenery(Peep* peep)
 {
     if (gCheatsDisableVandalism)
         return;
@@ -6163,7 +6163,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
         return;
     }
 
-    rct_peep* inner_peep;
+    Peep* inner_peep;
     uint16_t sprite_index;
 
     FOR_ALL_STAFF (sprite_index, inner_peep)
@@ -6248,7 +6248,7 @@ static bool peep_should_watch_ride(TileElement* tileElement)
     return true;
 }
 
-bool loc_690FD0(rct_peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
+bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
 {
     Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
 
@@ -6293,7 +6293,7 @@ bool loc_690FD0(rct_peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, Ti
  * @param[out] rideSeatToView (ch)
  * @return !CF
  */
-static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView)
+static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView)
 {
     TileElement *tileElement, *surfaceElement;
 
