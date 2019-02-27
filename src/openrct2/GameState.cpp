@@ -221,8 +221,6 @@ void GameState::UpdateLogic()
     if (gScreenAge == 0)
         gScreenAge--;
 
-    network_update();
-
     GetContext()->GetReplayManager()->Update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
@@ -304,8 +302,6 @@ void GameState::UpdateLogic()
     // Separated out processing commands in network_update which could call scenario_rand where gInUpdateCode is false.
     // All commands that are received are first queued and then executed where gInUpdateCode is set to true.
     network_process_pending();
-
-    network_flush();
 
     gCurrentTicks++;
     gScenarioTicks++;

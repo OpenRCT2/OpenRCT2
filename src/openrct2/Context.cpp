@@ -947,6 +947,7 @@ namespace OpenRCT2
             }
 
             date_update_real_time_of_day();
+            network_update();
 
             if (gIntroState != INTRO_STATE_NONE)
             {
@@ -970,6 +971,8 @@ namespace OpenRCT2
 
             twitch_update();
             chat_update();
+            network_flush();
+
             _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Update();
         }
