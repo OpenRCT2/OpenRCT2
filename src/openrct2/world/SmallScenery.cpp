@@ -462,7 +462,7 @@ void SmallSceneryElement::SetAge(uint8_t newAge)
 
 void SmallSceneryElement::IncreaseAge(int32_t x, int32_t y)
 {
-    if (flags & SMALL_SCENERY_FLAG_ANIMATED)
+    if (IsGhost())
         return;
 
     if (age < 255)

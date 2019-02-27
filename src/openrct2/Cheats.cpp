@@ -105,7 +105,7 @@ static void cheat_fix_vandalism()
         if (!(it.element)->AsPath()->HasAddition())
             continue;
 
-        it.element->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+        it.element->AsPath()->SetIsBroken(false);
     } while (tile_element_iterator_next(&it));
 
     gfx_invalidate_screen();

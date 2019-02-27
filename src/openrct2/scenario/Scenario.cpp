@@ -633,14 +633,7 @@ static bool scenario_prepare_rides_for_save()
                 }
             }
 
-            if (markTrackAsIndestructible)
-            {
-                it.element->flags |= TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
-            }
-            else
-            {
-                it.element->flags &= ~TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
-            }
+            it.element->AsTrack()->SetIsIndestructible(markTrackAsIndestructible);
         }
     } while (tile_element_iterator_next(&it));
 

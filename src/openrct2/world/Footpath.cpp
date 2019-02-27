@@ -287,9 +287,9 @@ static money32 footpath_element_insert(
             if (type & FOOTPATH_ELEMENT_INSERT_QUEUE)
                 pathElement->SetIsQueue(true);
             pathElement->SetAddition(pathItemType);
-            tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
-            tileElement->AsPath()->SetAdditionStatus(255);
-            pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+            pathElement->SetRideIndex(RIDE_ID_NULL);
+            pathElement->SetAdditionStatus(255);
+            pathElement->SetIsBroken(false);
             if (flags & GAME_COMMAND_FLAG_GHOST)
                 pathElement->SetGhost(true);
 
@@ -325,7 +325,7 @@ static money32 footpath_element_update(
     else if (pathItemType != 0)
     {
         if (!(flags & GAME_COMMAND_FLAG_GHOST) && tileElement->AsPath()->GetAddition() == pathItemType
-            && !(tileElement->flags & TILE_ELEMENT_FLAG_BROKEN))
+            && !(tileElement->AsPath()->IsBroken()))
         {
             if (flags & GAME_COMMAND_FLAG_4)
                 return MONEY32_UNDEFINED;
@@ -394,7 +394,7 @@ static money32 footpath_element_update(
         }
 
         tileElement->AsPath()->SetAddition(pathItemType);
-        tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+        tileElement->AsPath()->SetIsBroken(false);
         if (pathItemType != 0)
         {
             rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
@@ -423,7 +423,7 @@ static money32 footpath_element_update(
         else
             tileElement->AsPath()->SetIsQueue(false);
         tileElement->AsPath()->SetAddition(pathItemType);
-        tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+        tileElement->AsPath()->SetIsBroken(false);
 
         loc_6A6620(flags, x, y, tileElement);
     }
@@ -678,13 +678,13 @@ static money32 footpath_place_from_track(
             if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
                 pathElement->SetSloped(true);
             if (type & (1 << 7))
-                tileElement->AsPath()->SetIsQueue(true);
+                pathElement->SetIsQueue(true);
             pathElement->SetAddition(0);
-            tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
-            tileElement->AsPath()->SetAdditionStatus(255);
-            tileElement->AsPath()->SetEdges(edges);
-            tileElement->AsPath()->SetCorners(0);
-            pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+            pathElement->SetRideIndex(RIDE_ID_NULL);
+            pathElement->SetAdditionStatus(255);
+            pathElement->SetEdges(edges);
+            pathElement->SetCorners(0);
+            pathElement->SetIsBroken(false);
             if (flags & (1 << 6))
                 pathElement->SetGhost(true);
 
@@ -2035,6 +2035,40 @@ void PathElement::SetHasQueueBanner(bool hasQueueBanner)
         entryIndex |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
 }
 
+bool PathElement::IsBroken() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BROKEN) != 0;
+}
+
+void PathElement::SetIsBroken(bool isBroken)
+{
+    if (isBroken == true)
+    {
+        flags |= TILE_ELEMENT_FLAG_BROKEN;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+    }
+}
+
+bool PathElement::IsBlockedByVehicle() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
+}
+
+void PathElement::SetIsBlockedByVehicle(bool isBlocked)
+{
+    if (isBlocked == true)
+    {
+        flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+}
+
 uint8_t PathElement::GetStationIndex() const
 {
     return (additions & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK) >> 4;
@@ -2399,7 +2433,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
 {
     auto pathElement = map_get_path_element_at(position.x, position.y, position.z);
-    return pathElement != nullptr && (pathElement->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE);
+    return pathElement != nullptr && pathElement->AsPath()->IsBlockedByVehicle();
 }
 
 /**

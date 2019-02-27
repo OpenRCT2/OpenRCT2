@@ -1646,7 +1646,7 @@ void junior_rc_paint_station(
 {
     uint32_t imageId;
 
-    bool isBraked = (bool)(tileElement->flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED);
+    bool isBraked = tileElement->AsTrack()->BlockBrakeClosed();
 
     if (direction == 0 || direction == 2)
     {
@@ -3693,7 +3693,7 @@ static void junior_rc_block_brake_paint_setup(
 {
     uint32_t image_id;
 
-    bool isBraked = (bool)(tileElement->flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED);
+    bool isBraked = tileElement->AsTrack()->BlockBrakeClosed();
 
     image_id = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1)

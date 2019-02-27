@@ -366,7 +366,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
             sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-            if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+            if (tileElement->AsPath()->IsBroken())
             {
                 set_map_tooltip_format_arg(2, rct_string_id, STR_BROKEN);
                 set_map_tooltip_format_arg(4, rct_string_id, sceneryEntry->name);

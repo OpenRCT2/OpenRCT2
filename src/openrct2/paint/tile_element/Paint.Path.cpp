@@ -102,7 +102,7 @@ static void path_bit_lights_paint(
     {
         imageId = pathBitEntry->image + 1;
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+        if (tileElement->AsPath()->IsBroken())
             imageId += 4;
 
         imageId |= pathBitImageFlags;
@@ -113,7 +113,7 @@ static void path_bit_lights_paint(
     {
         imageId = pathBitEntry->image + 2;
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+        if (tileElement->AsPath()->IsBroken())
             imageId += 4;
 
         imageId |= pathBitImageFlags;
@@ -125,7 +125,7 @@ static void path_bit_lights_paint(
     {
         imageId = pathBitEntry->image + 3;
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+        if (tileElement->AsPath()->IsBroken())
             imageId += 4;
 
         imageId |= pathBitImageFlags;
@@ -137,7 +137,7 @@ static void path_bit_lights_paint(
     {
         imageId = pathBitEntry->image + 4;
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+        if (tileElement->AsPath()->IsBroken())
             imageId += 4;
 
         imageId |= pathBitImageFlags;
@@ -155,7 +155,7 @@ static void path_bit_bins_paint(
         height += 8;
 
     uint32_t imageId;
-    bool binsAreVandalised = tileElement->flags & TILE_ELEMENT_FLAG_BROKEN;
+    bool binsAreVandalised = tileElement->AsPath()->IsBroken();
 
     if (!(edges & EDGE_NE))
     {
@@ -256,7 +256,7 @@ static void path_bit_benches_paint(
     {
         imageId = pathBitEntry->image + 1;
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+        if (tileElement->AsPath()->IsBroken())
             imageId += 4;
 
         imageId |= pathBitImageFlags;
@@ -267,7 +267,7 @@ static void path_bit_benches_paint(
     {
         imageId = pathBitEntry->image + 2;
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+        if (tileElement->AsPath()->IsBroken())
             imageId += 4;
 
         imageId |= pathBitImageFlags;
@@ -279,7 +279,7 @@ static void path_bit_benches_paint(
     {
         imageId = pathBitEntry->image + 3;
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+        if (tileElement->AsPath()->IsBroken())
             imageId += 4;
 
         imageId |= pathBitImageFlags;
@@ -291,7 +291,7 @@ static void path_bit_benches_paint(
     {
         imageId = pathBitEntry->image + 4;
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+        if (tileElement->AsPath()->IsBroken())
             imageId += 4;
 
         imageId |= pathBitImageFlags;
@@ -703,8 +703,7 @@ static void sub_6A3F61(
                 if (sceneryEntry == nullptr)
                     return;
 
-                if ((session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
-                    && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
+                if ((session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(tile_element->AsPath()->IsBroken())
                     && !(sceneryEntry->path_bit.draw_type == PATH_BIT_DRAW_TYPE_BINS))
                 {
                     return;
@@ -836,7 +835,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     }
 
     // For debugging purpose, show blocked tiles with a colour
-    if (gPaintBlockedTiles && (tile_element->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE))
+    if (gPaintBlockedTiles && tile_element->AsPath()->IsBlockedByVehicle())
     {
         imageFlags = COLOUR_BRIGHT_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP;
     }
@@ -948,7 +947,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        if (tile_element->AsPath()->HasAddition() && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN))
+        if (tile_element->AsPath()->HasAddition() && !(tile_element->AsPath()->IsBroken()))
         {
             rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
             if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP)

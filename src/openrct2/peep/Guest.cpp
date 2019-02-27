@@ -2728,7 +2728,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                             num_fountains++;
                             break;
                         }
-                        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+                        if (tileElement->AsPath()->IsBroken())
                         {
                             num_rubbish++;
                         }
@@ -5782,7 +5782,7 @@ void rct_peep::UpdateUsingBin()
                 return;
             }
 
-            if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+            if (tileElement->AsPath()->IsBroken())
             {
                 StateReset();
                 return;
@@ -5945,7 +5945,7 @@ bool rct_peep::UpdateWalkingFindBench()
     if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
         return false;
 
-    if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+    if (tileElement->AsPath()->IsBroken())
         return false;
 
     if (tileElement->AsPath()->AdditionIsGhost())
@@ -6044,7 +6044,7 @@ bool rct_peep::UpdateWalkingFindBin()
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
         return false;
 
-    if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+    if (tileElement->AsPath()->IsBroken())
         return false;
 
     if (tileElement->AsPath()->AdditionIsGhost())
@@ -6141,7 +6141,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE))
         return;
 
-    if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+    if (tileElement->AsPath()->IsBroken())
         return;
 
     if (tileElement->AsPath()->AdditionIsGhost())
@@ -6185,7 +6185,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
             return;
     }
 
-    tileElement->flags |= TILE_ELEMENT_FLAG_BROKEN;
+    tileElement->AsPath()->SetIsBroken(true);
 
     map_invalidate_tile_zoom1(peep->next_x, peep->next_y, (tileElement->base_height << 3) + 32, tileElement->base_height << 3);
 
