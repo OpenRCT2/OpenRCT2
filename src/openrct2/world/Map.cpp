@@ -283,7 +283,7 @@ TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z)
     // Find the path element at known z
     do
     {
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
@@ -413,7 +413,7 @@ void map_strip_ghost_flag_from_elements()
 {
     for (auto& element : gTileElements)
     {
-        element.flags &= ~TILE_ELEMENT_FLAG_GHOST;
+        element.SetGhost(false);
     }
 }
 
@@ -821,7 +821,7 @@ void game_command_set_large_scenery_colour(
         return;
     }
 
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST))
+    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tile_element->IsGhost()))
     {
         *ebx = 0;
         return;
@@ -2213,7 +2213,7 @@ void game_command_set_water_height(
         zLow = temp;
     }
 
-    if (map_can_construct_at(x, y, zLow, zHigh, 0xFF))
+    if (map_can_construct_at(x, y, zLow, zHigh, { 0b1111, 0b1111 }))
     {
         if (tile_element->AsSurface()->HasTrackThatNeedsWater())
         {
@@ -2388,16 +2388,9 @@ void game_command_place_large_scenery(
         int32_t zLow = (tile->z_offset + maxHeight) / 8;
         int32_t zHigh = (tile->z_clearance / 8) + zLow;
 
-        int32_t bx = tile->flags >> 12;
-        bx <<= rotation;
-        uint8_t bl = bx;
-        uint8_t bh = bl >> 4;
-        bl &= 0xF;
-        bl |= bh;
-        uint8_t F43887 = bl;
-
+        QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(rotation);
         if (!map_can_construct_with_clear_at(
-                curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &supportsCost,
+                curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, flags, &supportsCost,
                 CREATE_CROSSING_MODE_NONE))
         {
             *ebx = MONEY32_UNDEFINED;
@@ -2455,7 +2448,8 @@ void game_command_place_large_scenery(
                 network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
             }
 
-            TileElement* new_tile_element = tile_element_insert(curTile.x / 32, curTile.y / 32, zLow, F43887);
+            TileElement* new_tile_element = tile_element_insert(
+                curTile.x / 32, curTile.y / 32, zLow, quarterTile.GetBaseQuarterOccupied());
             assert(new_tile_element != nullptr);
             map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
 
@@ -2477,7 +2471,7 @@ void game_command_place_large_scenery(
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                new_tile_element->flags |= TILE_ELEMENT_FLAG_GHOST;
+                new_tile_element->SetGhost(true);
             }
 
             if (tile_num == 0)
@@ -2864,7 +2858,7 @@ void map_obstruction_set_error_text(TileElement* tileElement)
  *  bl = bl
  */
 bool map_can_construct_with_clear_at(
-    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, uint8_t bl, uint8_t flags, money32* price,
+    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile bl, uint8_t flags, money32* price,
     uint8_t crossingMode)
 {
     int32_t al, ah, bh, cl, ch, water_height;
@@ -2889,10 +2883,9 @@ bool map_can_construct_with_clear_at(
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
         {
-            if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height
-                && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height && !(tileElement->IsGhost()))
             {
-                if (tileElement->flags & (bl & 0x0F))
+                if (tileElement->flags & (bl.GetBaseQuarterOccupied()))
                 {
                     goto loc_68BABC;
                 }
@@ -2929,7 +2922,7 @@ bool map_can_construct_with_clear_at(
             canBuildCrossing = true;
         }
 
-        if ((bl & 0xF0) != 0xF0)
+        if (bl.GetZQuarterOccupied() != 0b1111)
         {
             if (tileElement->base_height >= zHigh)
             {
@@ -2969,12 +2962,16 @@ bool map_can_construct_with_clear_at(
                         ch += 2;
                 }
                 bh = zLow + 4;
-                if ((!(bl & 1) || ((bl & 0x10 || zLow >= al) && bh >= al))
-                    && (!(bl & 2) || ((bl & 0x20 || zLow >= ah) && bh >= ah))
-                    && (!(bl & 4) || ((bl & 0x40 || zLow >= cl) && bh >= cl))
-                    && (!(bl & 8) || ((bl & 0x80 || zLow >= ch) && bh >= ch)))
                 {
-                    continue;
+                    auto baseQuarter = bl.GetBaseQuarterOccupied();
+                    auto zQuarter = bl.GetZQuarterOccupied();
+                    if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || zLow >= al) && bh >= al))
+                        && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || zLow >= ah) && bh >= ah))
+                        && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || zLow >= cl) && bh >= cl))
+                        && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || zLow >= ch) && bh >= ch)))
+                    {
+                        continue;
+                    }
                 }
             loc_68BABC:
                 if (clearFunc != nullptr)
@@ -3033,7 +3030,7 @@ bool map_can_construct_with_clear_at(
  *
  *  rct2: 0x0068B93A
  */
-int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, uint8_t bl)
+int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, QuarterTile bl)
 {
     return map_can_construct_with_clear_at(x, y, zLow, zHigh, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
 }
@@ -3372,7 +3369,7 @@ EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((ghost == false) && (tileElement->IsGhost()))
                 continue;
 
             return tileElement->AsEntrance();
@@ -3397,7 +3394,7 @@ EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((ghost == false) && (tileElement->IsGhost()))
                 continue;
 
             return tileElement->AsEntrance();
@@ -3422,7 +3419,7 @@ EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, b
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
-            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((ghost == false) && (tileElement->IsGhost()))
                 continue;
 
             return tileElement->AsEntrance();

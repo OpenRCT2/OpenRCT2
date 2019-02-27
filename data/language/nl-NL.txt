@@ -1689,7 +1689,7 @@ STR_2337    :Duitse mark (DM)
 STR_2338    :Yen (¥)
 STR_2339    :Peseta (Pts)
 STR_2340    :Lire (L)
-STR_2341    :Guldens (fl)
+STR_2341    :Guldens (ƒ)
 STR_2342    :Kronen (kr)
 STR_2343    :Euro's (€)
 STR_2344    :Engelse maten

@@ -797,7 +797,7 @@ bool rct_peep::Place(TileCoordsXYZ location, bool apply)
         return false;
     }
 
-    if (!map_can_construct_at(destination.x, destination.y, destination.z / 8, (destination.z / 8) + 1, 15))
+    if (!map_can_construct_at(destination.x, destination.y, destination.z / 8, (destination.z / 8) + 1, { 0b1111, 0 }))
     {
         if (gGameCommandErrorText != STR_RAISE_OR_LOWER_LAND_FIRST)
         {
@@ -3191,7 +3191,7 @@ void rct_peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_res
             continue;
         if (top_z < tileElement->base_height)
             continue;
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)

@@ -254,7 +254,7 @@ static money32 BannerPlace(
         newTileElement->AsBanner()->SetIndex(*bannerIndex);
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
-            newTileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+            newTileElement->SetGhost(true);
         }
         map_invalidate_tile_full(x, y);
         map_animation_create(MAP_ANIMATION_TYPE_BANNER, x, y, newTileElement->base_height);

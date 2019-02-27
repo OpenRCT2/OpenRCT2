@@ -1693,7 +1693,7 @@ STR_2337    :Marki (DM)
 STR_2338    :Jeny (¥)
 STR_2339    :Pesety (Pts)
 STR_2340    :Liry (L)
-STR_2341    :Guldeny (fl.)
+STR_2341    :Guldeny (ƒ)
 STR_2342    :Korony (kr)
 STR_2343    :Euro (€)
 STR_2344    :Imperialne

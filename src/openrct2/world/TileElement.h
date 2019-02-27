@@ -71,6 +71,7 @@ struct TileElementBase
     uint8_t GetDirectionWithOffset(uint8_t offset) const;
     bool IsLastForTile() const;
     bool IsGhost() const;
+    void SetGhost(bool isGhost);
     void Remove();
 };
 
@@ -462,6 +463,36 @@ struct CorruptElement : TileElementBase
 assert_struct_size(CorruptElement, 8);
 #pragma pack(pop)
 
+class QuarterTile
+{
+private:
+    uint8_t _val{ 0 };
+
+public:
+    constexpr QuarterTile(uint8_t tileQuarter, uint8_t zQuarter)
+        : _val(tileQuarter | (zQuarter << 4))
+    {
+    }
+
+    QuarterTile(uint8_t tileAndZQuarter)
+        : _val(tileAndZQuarter)
+    {
+    }
+
+    // Rotate both of the values amount. Returns new RValue QuarterTile
+    const QuarterTile Rotate(uint8_t amount) const;
+
+    uint8_t GetBaseQuarterOccupied() const
+    {
+        return _val & 0xF;
+    }
+
+    uint8_t GetZQuarterOccupied() const
+    {
+        return (_val >> 4) & 0xF;
+    }
+};
+
 enum
 {
     TILE_ELEMENT_QUADRANT_SW,
@@ -491,6 +522,7 @@ enum
     TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
     TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
     TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
+    TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED = (1 << 6),
     TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
 

@@ -128,7 +128,7 @@ public:
             log_warning("Invalid request for ride %u", rideIndex);
             res->Error = GA_ERROR::UNKNOWN;
             res->ErrorMessage = STR_UNKNOWN_OBJECT_TYPE;
-            return std::move(res);
+            return res;
         }
 
         ride->id = rideIndex;
@@ -308,6 +308,6 @@ public:
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 
-        return std::move(res);
+        return res;
     }
 };

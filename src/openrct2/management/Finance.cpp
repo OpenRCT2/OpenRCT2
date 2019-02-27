@@ -89,7 +89,7 @@ bool finance_check_money_required(uint32_t flags)
  */
 bool finance_check_affordability(money32 cost, uint32_t flags)
 {
-    if (cost == 0)
+    if (cost <= 0)
         return true;
     if (finance_check_money_required(flags) == false)
         return true;

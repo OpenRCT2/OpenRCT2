@@ -829,7 +829,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         sceneryImageFlags = CONSTRUCTION_MARKER;
     }
 
-    if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST)
+    if (tile_element->IsGhost())
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         imageFlags = CONSTRUCTION_MARKER;

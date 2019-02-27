@@ -1688,7 +1688,7 @@ STR_2337    :Alman Markı (DM)
 STR_2338    :Yen (¥)
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Gulden (fl.)
+STR_2341    :Gulden (ƒ)
 STR_2342    :Kron (kr)
 STR_2343    :Euro (€)
 STR_2344    :Amerikan sistemi

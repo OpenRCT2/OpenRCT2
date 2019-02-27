@@ -24,7 +24,9 @@
 - Change: [#8222] The climate setting has been moved from objective options to scenario options.
 - Change: [#8718] Allow TARMAC object to be removed when running the `remove_unused_objects` command.
 - Change: [#8718] No longer require the generic scenery groups and tarmac footpath to be checked when creating a scenario.
+- Change: [#8734] Disable kick button in multiplayer window when unable to use it.
 - Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.
+- Fix: [#4094] Coasters with long flat-to-steep pieces offer them in diagonal mode (original bug).
 - Fix: [#5684] Player list can desync between clients and server and can crash.
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
 - Fix: [#7439] Placement messages have mixed strings
@@ -72,6 +74,8 @@
 - Fix: [#8647] Marketing campaigns check for entry fees below £1 (original bug). 
 - Fix: [#8653] Crash when peeps attempt to enter a ride with no vehicles.
 - Fix: [#8720] Desync due to boats colliding with ghost pieces.
+- Fix: [#8739] Savegame from original game crashes when cruising through map.
+- Fix: [#8742] Access violation in vehicle_update_sound_params.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
 - Improved: [#7930] Automatically create folders for custom content.

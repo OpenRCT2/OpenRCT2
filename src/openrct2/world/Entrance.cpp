@@ -123,7 +123,7 @@ static money32 RideEntranceExitPlace(
         int16_t clear_z = z / 8 + (isExit ? 5 : 7);
 
         if (!map_can_construct_with_clear_at(
-                x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost, CREATE_CROSSING_MODE_NONE))
+                x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 }, flags, &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MONEY32_UNDEFINED;
         }
@@ -235,7 +235,7 @@ static money32 RideEntranceExitPlace(
         int8_t clear_z = (z / 8) + (isExit ? 5 : 7);
 
         if (!map_can_construct_with_clear_at(
-                x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, &cost, CREATE_CROSSING_MODE_NONE))
+                x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 }, flags, &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MONEY32_UNDEFINED;
         }
@@ -271,7 +271,7 @@ static money32 RideEntranceExitPlace(
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                tileElement->SetGhost(true);
             }
 
             if (isExit)
@@ -366,7 +366,7 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, ride_id_t rideIndex,
             if (tileElement->AsEntrance()->GetStationIndex() != stationNum)
                 continue;
 
-            if (flags & GAME_COMMAND_FLAG_5 && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if (flags & GAME_COMMAND_FLAG_5 && !(tileElement->IsGhost()))
                 continue;
 
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)

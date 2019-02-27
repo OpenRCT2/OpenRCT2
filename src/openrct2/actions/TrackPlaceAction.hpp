@@ -206,40 +206,8 @@ public:
             rotate_map_coordinates(&track.x, &track.y, _origin.direction);
             mapLoc.x += track.x;
             mapLoc.y += track.y;
-
-            int32_t bl = trackBlock->var_08;
-            int32_t bh;
-            switch (_origin.direction)
-            {
-                case 0:
-                    break;
-                case 1:
-                    bl = rol8(bl, 1);
-                    bh = bl;
-                    bh = ror8(bh, 4);
-                    bl &= 0xEE;
-                    bh &= 0x11;
-                    bl |= bh;
-                    break;
-                case 2:
-                    bl = rol8(bl, 2);
-                    bh = bl;
-                    bh = ror8(bh, 4);
-                    bl &= 0xCC;
-                    bh &= 0x33;
-                    bl |= bh;
-                    break;
-                case 3:
-                    bl = rol8(bl, 3);
-                    bh = bl;
-                    bh = ror8(bh, 4);
-                    bl &= 0x88;
-                    bh &= 0x77;
-                    bl |= bh;
-                    break;
-            }
-
             mapLoc.z += trackBlock->z;
+            auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
             if (mapLoc.z < 16)
             {
@@ -271,7 +239,7 @@ public:
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
-                    mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, GetFlags(), &cost,
+                    mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &cost,
                     crossingMode))
             {
                 return std::make_unique<GameActionResult>(
@@ -491,43 +459,11 @@ public:
             rotate_map_coordinates(&track.x, &track.y, _origin.direction);
             mapLoc.x += track.x;
             mapLoc.y += track.y;
-
-            int32_t bl = trackBlock->var_08;
-            int32_t bh;
-            switch (_origin.direction)
-            {
-                case 0:
-                    break;
-                case 1:
-                    bl = rol8(bl, 1);
-                    bh = bl;
-                    bh = ror8(bh, 4);
-                    bl &= 0xEE;
-                    bh &= 0x11;
-                    bl |= bh;
-                    break;
-                case 2:
-                    bl = rol8(bl, 2);
-                    bh = bl;
-                    bh = ror8(bh, 4);
-                    bl &= 0xCC;
-                    bh &= 0x33;
-                    bl |= bh;
-                    break;
-                case 3:
-                    bl = rol8(bl, 3);
-                    bh = bl;
-                    bh = ror8(bh, 4);
-                    bl &= 0x88;
-                    bh &= 0x77;
-                    bl |= bh;
-                    break;
-            }
-
             mapLoc.z += trackBlock->z;
 
-            int32_t baseZ = mapLoc.z / 8;
+            auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
+            int32_t baseZ = mapLoc.z / 8;
             int32_t clearanceZ = trackBlock->var_07;
             if (trackBlock->var_09 & (1 << 2) && RideData5[ride->type].clearance_height > 24)
             {
@@ -544,7 +480,7 @@ public:
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
-                    mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl,
+                    mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, quarterTile,
                     GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost, crossingMode))
             {
                 return std::make_unique<GameActionResult>(
@@ -659,7 +595,7 @@ public:
                 ride->overall_view.y = mapLoc.y / 32;
             }
 
-            tileElement = tile_element_insert(mapLoc.x / 32, mapLoc.y / 32, baseZ, bl & 0xF);
+            tileElement = tile_element_insert(mapLoc.x / 32, mapLoc.y / 32, baseZ, quarterTile.GetBaseQuarterOccupied());
             assert(tileElement != nullptr);
             tileElement->clearance_height = clearanceZ;
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
@@ -674,7 +610,7 @@ public:
             tileElement->AsTrack()->SetTrackType(_trackType);
             if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
             {
-                tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                tileElement->SetGhost(true);
             }
 
             switch (_trackType)

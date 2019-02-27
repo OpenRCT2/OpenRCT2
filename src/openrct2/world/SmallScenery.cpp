@@ -49,7 +49,7 @@ static money32 SmallScenerySetColour(
         return 0;
     }
 
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tileElement->IsGhost()))
     {
         return 0;
     }
@@ -231,11 +231,12 @@ static money32 SmallSceneryPlace(
 
     int32_t zLow = targetHeight / 8;
     int32_t zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8) / 8;
-    uint8_t collisionQuadrants = 0xF;
-    uint8_t blSupports = 0;
+    uint8_t collisionQuadrants = 0b1111;
+    auto quadRotation{ 0 };
     if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
     {
-        collisionQuadrants = 1 << (quadrant ^ 2);
+        quadRotation = (quadrant ^ 2);
+        collisionQuadrants = 0b0001;
     }
     if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HALF_SPACE)))
     {
@@ -244,26 +245,31 @@ static money32 SmallSceneryPlace(
         {
             if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_THREE_QUARTERS))
             {
-                collisionQuadrants = 0xF & rol8(0xBB, ((quadrant ^ 2) + rotation) & 3);
+                quadRotation = ((quadrant ^ 2) + rotation) & 3;
+                collisionQuadrants = 0b1011;
             }
             else
             {
-                collisionQuadrants = 0xA >> ((quadrant + rotation) & 1);
+                quadRotation = (quadrant + rotation) & 1;
+                collisionQuadrants = 0b1010;
             }
         }
     }
     else
     {
-        collisionQuadrants = 0xF & rol8(0x33, ((quadrant ^ 2) + rotation) & 3);
+        quadRotation = ((quadrant ^ 2) + rotation) & 3;
+        collisionQuadrants = 0b0011;
     }
+    uint8_t supports = 0;
     if (!supportsRequired)
     {
-        blSupports |= 0xF0;
+        supports |= 0xF0;
     }
 
+    QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
+
     if (!map_can_construct_with_clear_at(
-            x, y, zLow, zHigh, &map_place_scenery_clear_func, blSupports | collisionQuadrants, flags, &clearCost,
-            CREATE_CROSSING_MODE_NONE))
+            x, y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, flags, &clearCost, CREATE_CROSSING_MODE_NONE))
     {
         return MONEY32_UNDEFINED;
     }
@@ -310,7 +316,7 @@ static money32 SmallSceneryPlace(
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
     {
-        newElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+        newElement->SetGhost(true);
     }
 
     map_invalidate_tile_full(x, y);

@@ -112,10 +112,10 @@ public:
 
     void Listen(uint16_t port) override
     {
-        Listen(nullptr, port);
+        Listen("", port);
     }
 
-    void Listen(const char* address, uint16_t port) override
+    void Listen(const std::string& address, uint16_t port) override
     {
         if (_status != SOCKET_STATUS_CLOSED)
         {
@@ -223,7 +223,7 @@ public:
         return tcpSocket;
     }
 
-    void Connect(const char* address, uint16_t port) override
+    void Connect(const std::string& address, uint16_t port) override
     {
         if (_status != SOCKET_STATUS_CLOSED)
         {
@@ -315,7 +315,7 @@ public:
         }
     }
 
-    void ConnectAsync(const char* address, uint16_t port) override
+    void ConnectAsync(const std::string& address, uint16_t port) override
     {
         if (_status != SOCKET_STATUS_CLOSED)
         {
@@ -447,19 +447,19 @@ private:
         _status = SOCKET_STATUS_CLOSED;
     }
 
-    bool ResolveAddress(const char* address, uint16_t port, sockaddr_storage* ss, int32_t* ss_len)
+    bool ResolveAddress(const std::string& address, uint16_t port, sockaddr_storage* ss, int32_t* ss_len)
     {
         std::string serviceName = std::to_string(port);
 
         addrinfo hints = {};
         hints.ai_family = AF_UNSPEC;
-        if (address == nullptr)
+        if (address.empty())
         {
             hints.ai_flags = AI_PASSIVE;
         }
 
         addrinfo* result = nullptr;
-        int errorcode = getaddrinfo(address, serviceName.c_str(), &hints, &result);
+        int errorcode = getaddrinfo(address.empty() ? nullptr : address.c_str(), serviceName.c_str(), &hints, &result);
         if (errorcode != 0)
         {
             log_error("Resolving address failed: Code %d.", errorcode);

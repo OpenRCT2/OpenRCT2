@@ -17,6 +17,7 @@
 #include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
@@ -467,7 +468,8 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
         case WIDX_CLOSE:
             if (gScreenFlags & SCREEN_FLAGS_EDITOR)
             {
-                game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+                auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
+                GameActions::Execute(&loadOrQuitAction);
             }
             else
             {

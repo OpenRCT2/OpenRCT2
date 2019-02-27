@@ -31,8 +31,8 @@ namespace OpenRCT2
 void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 void network_close();
 void network_shutdown_client();
-int32_t network_begin_client(const char* host, int32_t port);
-int32_t network_begin_server(int32_t port, const char* address);
+int32_t network_begin_client(const std::string& host, int32_t port);
+int32_t network_begin_server(int32_t port, const std::string& address);
 
 int32_t network_get_mode();
 int32_t network_get_status();
@@ -86,7 +86,7 @@ void network_send_gamecmd(
     uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi, uint32_t ebp, uint8_t callback);
 void network_send_game_action(const GameAction* action);
 void network_enqueue_game_action(const GameAction* action);
-void network_send_password(const char* password);
+void network_send_password(const std::string& password);
 
 void network_set_password(const char* password);
 

@@ -558,8 +558,7 @@ static void window_track_place_draw_mini_preview_track(
                 {
                     uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
-                    uint8_t bits = trackBlock->var_08 << (rotation & 3);
-                    bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
+                    auto bits = trackBlock->var_08.Rotate(rotation & 3).GetBaseQuarterOccupied();
 
                     // Station track is a lighter colour
                     uint8_t colour = (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)

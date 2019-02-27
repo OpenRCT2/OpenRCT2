@@ -213,32 +213,10 @@ struct rct1_ride
 };
 assert_struct_size(rct1_ride, 0x260);
 
-struct rct1_unk_sprite
+struct rct1_unk_sprite : RCT12SpriteBase
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative; // 0x09
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    // Width from centre of sprite to edge
-    uint8_t sprite_width; // 0x14
-    // Height from centre of sprite to top
-    uint8_t sprite_height_positive; // 0x15
-    int16_t sprite_left;            // 0x16
-    int16_t sprite_top;             // 0x18
-    int16_t sprite_right;           // 0x1A
-    int16_t sprite_bottom;          // 0x1C
-    uint8_t sprite_direction;       // direction of sprite? 0x1e
-    uint8_t pad_1F[3];              // 0x1f
-    rct_string_id name_string_idx;  // 0x22
+    uint8_t pad_1F[3];             // 0x1f
+    rct_string_id name_string_idx; // 0x22
     uint16_t var_24;
     uint16_t frame; // 0x26
     uint8_t var_28[3];
@@ -247,32 +225,10 @@ struct rct1_unk_sprite
     uint8_t var_71;
 };
 
-struct rct1_vehicle
+struct rct1_vehicle : RCT12SpriteBase
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t is_child;                // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative; // 0x09
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    // Width from centre of sprite to edge
-    uint8_t sprite_width; // 0x14
-    // Height from centre of sprite to top
-    uint8_t sprite_height_positive; // 0x15
-    int16_t sprite_left;            // 0x16
-    int16_t sprite_top;             // 0x18
-    int16_t sprite_right;           // 0x1A
-    int16_t sprite_bottom;          // 0x1C
-    uint8_t sprite_direction;       // 0x1E
-    uint8_t vehicle_sprite_type;    // 0x1F
-    uint8_t bank_rotation;          // 0x20
+    uint8_t vehicle_sprite_type; // 0x1F
+    uint8_t bank_rotation;       // 0x20
     uint8_t pad_21[3];
     int32_t remaining_distance; // 0x24
     int32_t velocity;           // 0x28
@@ -372,30 +328,8 @@ struct rct1_vehicle
     uint8_t colours_extended; // 0xD7
 };
 
-struct rct1_peep
+struct rct1_peep : RCT12SpriteBase
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative; // 0x09
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    // Width from centre of sprite to edge
-    uint8_t sprite_width; // 0x14
-    // Height from centre of sprite to top
-    uint8_t sprite_height_positive; // 0x15
-    int16_t sprite_left;            // 0x16
-    int16_t sprite_top;             // 0x18
-    int16_t sprite_right;           // 0x1A
-    int16_t sprite_bottom;          // 0x1C
-    uint8_t sprite_direction;       // 0x1E
     uint8_t pad_1F[3];
     rct_string_id name_string_idx; // 0x22
     uint16_t next_x;               // 0x24
@@ -483,14 +417,14 @@ struct rct1_peep
     uint8_t rides_been_on[32]; // 0x7C
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.
-    uint32_t id;                                  // 0x9C
-    money32 cash_in_pocket;                       // 0xA0
-    money32 cash_spent;                           // 0xA4
-    int32_t time_in_park;                         // 0xA8
-    int8_t rejoin_queue_timeout;                  // 0xAC
-    uint8_t previous_ride;                        // 0xAD
-    uint16_t previous_ride_time_out;              // 0xAE
-    rct_peep_thought thoughts[PEEP_MAX_THOUGHTS]; // 0xB0
+    uint32_t id;                                        // 0x9C
+    money32 cash_in_pocket;                             // 0xA0
+    money32 cash_spent;                                 // 0xA4
+    int32_t time_in_park;                               // 0xA8
+    int8_t rejoin_queue_timeout;                        // 0xAC
+    uint8_t previous_ride;                              // 0xAD
+    uint16_t previous_ride_time_out;                    // 0xAE
+    RCT12PeepThought thoughts[RCT12_PEEP_MAX_THOUGHTS]; // 0xB0
     uint8_t pad_C4;
     union
     {
@@ -578,14 +512,14 @@ union rct1_sprite
     rct1_unk_sprite unknown;
     rct1_vehicle vehicle;
     rct1_peep peep;
-    rct_litter litter;
-    rct_balloon balloon;
-    rct_sprite duck;
-    rct_jumping_fountain jumping_fountain;
-    rct_money_effect money_effect;
-    rct_crashed_vehicle_particle crashed_vehicle_particle;
-    rct_crash_splash crash_splash;
-    rct_steam_particle steam_particle;
+    RCT12SpriteLitter litter;
+    RCT12SpriteBalloon balloon;
+    RCT12SpriteDuck duck;
+    RCT12SpriteJumpingFountain jumping_fountain;
+    RCT12SpriteMoneyEffect money_effect;
+    RCT12SpriteCrashedVehicleParticle crashed_vehicle_particle;
+    RCT12SpriteCrashSplash crash_splash;
+    RCT12SpriteSteamParticle steam_particle;
 };
 assert_struct_size(rct1_sprite, 0x100);
 

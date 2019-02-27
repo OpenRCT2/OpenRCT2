@@ -64,7 +64,7 @@ static exitcode_t HandleUriJoin(const std::vector<std::string>& args)
     {
         // Set the network start configuration
         gNetworkStart = NETWORK_MODE_CLIENT;
-        String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname.c_str());
+        gNetworkStartHost = hostname;
         gNetworkStartPort = port;
         return EXITCODE_CONTINUE;
     }

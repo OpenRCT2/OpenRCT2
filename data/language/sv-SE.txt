@@ -1685,7 +1685,7 @@ STR_2333    :Ljudeffekter
 STR_2334    :Pund (£)
 STR_2335    :Dollar ($)
 STR_2336    :Franc (F)
-STR_2337    :Deutschmark (DM)
+STR_2337    :Deutsche mark (DM)
 STR_2338    :Yen (¥)
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)

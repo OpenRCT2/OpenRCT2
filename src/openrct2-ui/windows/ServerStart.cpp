@@ -137,9 +137,9 @@ rct_window* window_server_start_open()
     window->list_information_type = 0;
 
     snprintf(_port, 7, "%u", gConfigNetwork.default_port);
-    safe_strcpy(_name, gConfigNetwork.server_name, sizeof(_name));
-    safe_strcpy(_description, gConfigNetwork.server_description, sizeof(_description));
-    safe_strcpy(_greeting, gConfigNetwork.server_greeting, sizeof(_greeting));
+    safe_strcpy(_name, gConfigNetwork.server_name.c_str(), sizeof(_name));
+    safe_strcpy(_description, gConfigNetwork.server_description.c_str(), sizeof(_description));
+    safe_strcpy(_greeting, gConfigNetwork.server_greeting.c_str(), sizeof(_greeting));
 
     return window;
 }
@@ -153,7 +153,7 @@ static void window_server_start_scenarioselect_callback(const utf8* path)
     network_set_password(_password);
     if (context_load_park_from_file(path))
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
+        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
     }
 }
 
@@ -161,7 +161,7 @@ static void window_server_start_loadsave_callback(int32_t result, const utf8* pa
 {
     if (result == MODAL_RESULT_OK && context_load_park_from_file(path))
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
+        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
     }
 }
 
@@ -267,8 +267,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
 
             if (strlen(_name) > 0)
             {
-                SafeFree(gConfigNetwork.server_name);
-                gConfigNetwork.server_name = _strdup(_name);
+                gConfigNetwork.server_name = _name;
                 config_save_default();
             }
 
@@ -286,8 +285,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
 
             if (strlen(_description) > 0)
             {
-                SafeFree(gConfigNetwork.server_description);
-                gConfigNetwork.server_description = _strdup(_description);
+                gConfigNetwork.server_description = _description;
                 config_save_default();
             }
 
@@ -305,8 +303,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
 
             if (strlen(_greeting) > 0)
             {
-                SafeFree(gConfigNetwork.server_greeting);
-                gConfigNetwork.server_greeting = _strdup(_greeting);
+                gConfigNetwork.server_greeting = _greeting;
                 config_save_default();
             }
 

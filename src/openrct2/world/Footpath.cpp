@@ -195,14 +195,16 @@ static void loc_6A6620(int32_t flags, int32_t x, int32_t y, TileElement* tileEle
 }
 
 /** rct2: 0x0098D7EC */
-static constexpr const uint8_t byte_98D7EC[] = { 207, 159, 63, 111 };
+static constexpr const QuarterTile SlopedFootpathQuarterTiles[] = {
+    { 0b1111, 0b1100 }, { 0b1111, 0b1001 }, { 0b1111, 0b0011 }, { 0b1111, 0b0110 }
+};
 
 static money32 footpath_element_insert(
     int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags, uint8_t pathItemType)
 {
     TileElement* tileElement;
     EntranceElement* entranceElement;
-    int32_t bl, zHigh;
+    int32_t zHigh;
     bool entrancePath = false, entranceIsSamePath = false;
 
     if (!map_check_free_elements_and_reorganise(1))
@@ -214,11 +216,11 @@ static money32 footpath_element_insert(
     // loc_6A649D:
     gFootpathPrice += MONEY(12, 00);
 
-    bl = 15;
+    QuarterTile quarterTile{ 0b1111, 0 };
     zHigh = z + 4;
     if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
     {
-        bl = byte_98D7EC[slope & TILE_ELEMENT_DIRECTION_MASK];
+        quarterTile = SlopedFootpathQuarterTiles[slope & TILE_ELEMENT_DIRECTION_MASK];
         zHigh += 2;
     }
 
@@ -240,7 +242,7 @@ static money32 footpath_element_insert(
         : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath
         && !map_can_construct_with_clear_at(
-               x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice, crossingMode))
+               x, y, z, zHigh, &map_place_non_scenery_clear_func, quarterTile, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;
 
     gFootpathGroundFlags = gMapGroundFlags;
@@ -289,7 +291,7 @@ static money32 footpath_element_insert(
             tileElement->AsPath()->SetAdditionStatus(255);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & GAME_COMMAND_FLAG_GHOST)
-                pathElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                pathElement->SetGhost(true);
 
             footpath_queue_chain_reset();
 
@@ -597,11 +599,11 @@ static money32 footpath_place_from_track(
     }
 
     gFootpathPrice += 120;
-    uint8_t bl = 15;
+    QuarterTile quarterTile = { 0b1111, 0 };
     int32_t zHigh = z + 4;
     if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP)
     {
-        bl = byte_98D7EC[slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP];
+        quarterTile = SlopedFootpathQuarterTiles[slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP];
         zHigh += 2;
     }
 
@@ -623,7 +625,7 @@ static money32 footpath_place_from_track(
         : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath
         && !map_can_construct_with_clear_at(
-               x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice, crossingMode))
+               x, y, z, zHigh, &map_place_non_scenery_clear_func, quarterTile, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;
 
     gFootpathGroundFlags = gMapGroundFlags;
@@ -684,7 +686,7 @@ static money32 footpath_place_from_track(
             tileElement->AsPath()->SetCorners(0);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & (1 << 6))
-                pathElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                pathElement->SetGhost(true);
 
             map_invalidate_tile_full(x, y);
         }
@@ -1059,7 +1061,7 @@ bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t dire
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
         if (z0 >= tileElement->clearance_height)
             continue;

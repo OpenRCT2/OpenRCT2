@@ -109,13 +109,15 @@ public:
                 }
             }
 
-            // NOTE: Not sure what to make of this, is this actually correct?
+            // Prevent duplicate costs when using the clear scenery tool that overlaps multiple large
+            // scenery tile elements.
             if (flags & GAME_COMMAND_FLAG_PATH_SCENERY)
             {
-                if (tileElement->flags & (1 << 6))
+                if (tileElement->flags & TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED)
                     calculate_cost = false;
 
-                tileElement->flags |= (1 << 6);
+                // Sets the flag to prevent this being counted in additional calls
+                tileElement->flags |= TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED;
             }
         }
 

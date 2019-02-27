@@ -60,7 +60,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     uint32_t base_id = (direction << 1) + banner_scenery->image;
     uint32_t image_id = base_id;
 
-    if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST) // if being placed
+    if (tile_element->IsGhost()) // if being placed
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         image_id |= CONSTRUCTION_MARKER;
@@ -81,7 +81,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     direction = direction_reverse(direction);
     direction--;
     // If text not showing / ghost
-    if (direction >= 2 || (tile_element->flags & TILE_ELEMENT_FLAG_GHOST))
+    if (direction >= 2 || (tile_element->IsGhost()))
         return;
 
     uint16_t scrollingMode = banner_scenery->banner.scrolling_mode;

@@ -15,6 +15,7 @@
 #include "GuestSetNameAction.hpp"
 #include "LandSetHeightAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
+#include "LoadOrQuitAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkMarketingAction.hpp"
 #include "ParkSetLoanAction.hpp"
@@ -29,7 +30,9 @@
 #include "RideSetColourScheme.hpp"
 #include "RideSetName.hpp"
 #include "RideSetPriceAction.hpp"
+#include "RideSetSetting.hpp"
 #include "RideSetStatus.hpp"
+#include "RideSetVehiclesAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
 #include "SignSetStyleAction.hpp"
@@ -64,6 +67,8 @@ namespace GameActions
         Register<RideSetPriceAction>();
         Register<RideSetStatusAction>();
         Register<RideSetAppearanceAction>();
+        Register<RideSetVehicleAction>();
+        Register<RideSetSettingAction>();
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
         Register<SignSetStyleAction>();
@@ -79,5 +84,6 @@ namespace GameActions
         Register<TrackRemoveAction>();
         Register<ClearAction>();
         Register<PauseToggleAction>();
+        Register<LoadOrQuitAction>();
     }
 } // namespace GameActions
