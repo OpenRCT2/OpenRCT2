@@ -33,15 +33,15 @@
 
 int32_t network_get_mode()
 {
-    return NETWORK_MODE_NONE;
+    return 0;
 }
 int32_t network_get_status()
 {
-    return NETWORK_STATUS_NONE;
+    return 0;
 }
 int32_t network_get_authstatus()
 {
-    return NETWORK_AUTH_NONE;
+    return 0;
 }
 
 uint32_t network_get_server_tick()
