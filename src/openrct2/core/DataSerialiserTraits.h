@@ -333,7 +333,7 @@ template<> struct DataSerializerTraits<CoordsXY>
     {
         auto x = ByteSwapBE(stream->ReadValue<int32_t>());
         auto y = ByteSwapBE(stream->ReadValue<int32_t>());
-        coords = CoordsXY{x, y};
+        coords = CoordsXY{ x, y };
     }
     static void log(IStream* stream, const CoordsXY& coords)
     {
