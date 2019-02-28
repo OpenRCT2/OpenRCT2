@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../actions/LargeSceneryRemoveAction.hpp"
+#include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
 #include "../actions/SmallSceneryPlaceAction.hpp"
@@ -1217,9 +1218,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                     {
-                        cost = game_do_command(
-                            mapCoord.x, 0 | rotation << 8, mapCoord.y, (z / 16) & 0xFF,
-                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
+                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({mapCoord.x, mapCoord.y, z}, false);
+                        cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     }
                     else
                     {
@@ -1251,9 +1251,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                     {
-                        cost = game_do_command(
-                            mapCoord.x, 0 | rotation << 8, mapCoord.y, ((z / 16) & 0xFF) | (1 << 8),
-                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
+                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord.x, mapCoord.y, z }, true);
+                        cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     }
                     else
                     {
@@ -1635,19 +1634,16 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                     z = (entrance->z == (int8_t)(uint8_t)0x80) ? -1 : entrance->z;
                     z *= 8;
                     z += gTrackPreviewOrigin.z;
-                    z >>= 4;
 
-                    gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-                    money32 cost = game_do_command(
-                        x, 0 | (rotation << 8), y, z | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
-                    if (cost == MONEY32_UNDEFINED)
+                    auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ x, y, z }, false);
+                    if (res->Error != GA_ERROR::OK)
                     {
-                        _trackDesignPlaceCost = cost;
+                        _trackDesignPlaceCost = MONEY32_UNDEFINED;
                         return false;
                     }
                     else
                     {
-                        _trackDesignPlaceCost += cost;
+                        _trackDesignPlaceCost += res->Cost;
                         _trackDesignPlaceStateEntranceExitPlaced = true;
                     }
                 }
