@@ -3941,8 +3941,7 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
 
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
         { _unkF44188.x, _unkF44188.y }, direction_reverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
-        gRideEntranceExitPlaceStationIndex,
-        gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
+        gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
     rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
         if (result->Error != GA_ERROR::OK)
@@ -3956,7 +3955,7 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
             tool_cancel();
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
             {
-            window_close_by_class(WC_RIDE_CONSTRUCTION);
+                window_close_by_class(WC_RIDE_CONSTRUCTION);
             }
         }
         else

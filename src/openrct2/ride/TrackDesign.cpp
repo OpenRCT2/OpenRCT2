@@ -1218,7 +1218,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                     {
-                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({mapCoord.x, mapCoord.y, z}, false);
+                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord.x, mapCoord.y, z }, false);
                         cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     }
                     else

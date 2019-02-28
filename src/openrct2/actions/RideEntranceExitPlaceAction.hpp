@@ -10,11 +10,11 @@
 #pragma once
 
 #include "../actions/RideEntranceExitRemoveAction.hpp"
+#include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/Station.h"
 #include "../world/Entrance.h"
 #include "../world/MapAnimation.h"
-#include "../management/Finance.h"
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
@@ -92,44 +92,13 @@ public:
         ride_clear_for_construction(ride);
         ride_remove_peeps(ride);
 
-        bool requiresRemove = false;
-        LocationXY16 removeCoord = { 0, 0 };
+        const auto location = _isExit ? ride_get_exit_location(ride, _stationNum)
+                                      : ride_get_entrance_location(ride, _stationNum);
 
-        if (_isExit)
-        {
-            const auto exit = ride_get_exit_location(ride, _stationNum);
-            if (!exit.isNull())
-            {
-                if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-                {
-                    return MakeResult(GA_ERROR::DISALLOWED, errorTitle);
-                }
-
-                removeCoord.x = exit.x * 32;
-                removeCoord.y = exit.y * 32;
-                requiresRemove = true;
-            }
-        }
-        else
-        {
-            const auto entrance = ride_get_entrance_location(ride, _stationNum);
-            if (!entrance.isNull())
-            {
-                if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-                {
-                    return MakeResult(GA_ERROR::DISALLOWED, errorTitle);
-                }
-
-                removeCoord.x = entrance.x * 32;
-                removeCoord.y = entrance.y * 32;
-                requiresRemove = true;
-            }
-        }
-
-        if (requiresRemove)
+        if (!location.isNull())
         {
             auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
-                { removeCoord.x, removeCoord.y }, _rideIndex, _stationNum, _isExit);
+                { location.x * 32, location.y * 32 }, _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = GameActions::QueryNested(&rideEntranceExitRemove);
@@ -161,7 +130,7 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        if (z / 8 > 244)
+        if (z / 8 > MaxRideEntranceOrExitHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_TOO_HIGH);
         }
@@ -190,34 +159,12 @@ public:
         ride_clear_for_construction(ride);
         ride_remove_peeps(ride);
 
-        bool requiresRemove = false;
-        LocationXY16 removeCoord = { 0, 0 };
-
-        if (_isExit)
-        {
-            const auto exit = ride_get_exit_location(ride, _stationNum);
-            if (!exit.isNull())
-            {
-                removeCoord.x = exit.x * 32;
-                removeCoord.y = exit.y * 32;
-                requiresRemove = true;
-            }
-        }
-        else
-        {
-            const auto entrance = ride_get_entrance_location(ride, _stationNum);
-            if (!entrance.isNull())
-            {
-                removeCoord.x = entrance.x * 32;
-                removeCoord.y = entrance.y * 32;
-                requiresRemove = true;
-            }
-        }
-
-        if (requiresRemove)
+        const auto location = _isExit ? ride_get_exit_location(ride, _stationNum)
+                                      : ride_get_entrance_location(ride, _stationNum);
+        if (!location.isNull())
         {
             auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
-                { removeCoord.x, removeCoord.y }, _rideIndex, _stationNum, _isExit);
+                { location.x * 32, location.y * 32 }, _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = GameActions::ExecuteNested(&rideEntranceExitRemove);
@@ -324,7 +271,7 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        if (baseZ > 244)
+        if (baseZ > MaxRideEntranceOrExitHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_TOO_HIGH);
         }
