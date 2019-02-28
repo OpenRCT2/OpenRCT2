@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideEntranceExitRemoveAction.hpp"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -314,11 +315,12 @@ static money32 RideEntranceExitPlace(
 static money32 RideEntranceExitPlaceGhost(
     ride_id_t rideIndex, int16_t x, int16_t y, uint8_t direction, uint8_t placeType, uint8_t stationNum)
 {
-    return game_do_command(
-        x,
-        (GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST)
-            | (direction << 8),
-        y, rideIndex | (placeType << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, stationNum, 0);
+    auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+        { x, y }, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
+    rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
+    auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
+
+    return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
 }
 
 /**

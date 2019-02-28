@@ -14,6 +14,8 @@
 #include "../ride/Station.h"
 #include "../world/Entrance.h"
 #include "../world/MapAnimation.h"
+#include "../management/Finance.h"
+#include "../world/Sprite.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(RideEntranceExitPlaceAction, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, GameActionResult)
@@ -46,7 +48,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_loc) << DS_TAG(_rideIndex) << DS_TAG(_stationNum) << DS_TAG(_isExit);
+        stream << DS_TAG(_loc) << DS_TAG(_direction) << DS_TAG(_rideIndex) << DS_TAG(_stationNum) << DS_TAG(_isExit);
     }
 
     GameActionResult::Ptr Query() const override

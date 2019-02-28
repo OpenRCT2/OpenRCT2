@@ -17,6 +17,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/RideEntranceExitPlaceAction.hpp>
 #include <openrct2/actions/TrackPlaceAction.hpp>
 #include <openrct2/actions/TrackRemoveAction.hpp>
 #include <openrct2/audio/audio.h>
@@ -3938,15 +3939,36 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
     if (gRideEntranceExitPlaceDirection == 255)
         return;
 
-    gGameCommandErrorTitle = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
-        ? STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION
-        : STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
+    auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+        { _unkF44188.x, _unkF44188.y }, direction_reverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
+        gRideEntranceExitPlaceStationIndex,
+        gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-    game_command_callback = game_command_callback_place_ride_entrance_or_exit;
-    game_do_command(
-        _unkF44188.x, (GAME_COMMAND_FLAG_APPLY) | (direction_reverse(gRideEntranceExitPlaceDirection) << 8), _unkF44188.y,
-        gRideEntranceExitPlaceRideIndex | (gRideEntranceExitPlaceType << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-        gRideEntranceExitPlaceStationIndex, 0);
+    rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+        if (result->Error != GA_ERROR::OK)
+            return;
+
+        audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+
+        Ride* ride = get_ride(gRideEntranceExitPlaceRideIndex);
+        if (ride_are_all_possible_entrances_and_exits_built(ride))
+        {
+            tool_cancel();
+            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
+            {
+            window_close_by_class(WC_RIDE_CONSTRUCTION);
+            }
+        }
+        else
+        {
+            gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
+            window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+            gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
+                : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+        }
+    });
+    auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
 }
 
 void window_ride_construction_keyboard_shortcut_turn_left()

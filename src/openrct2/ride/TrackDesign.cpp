@@ -1232,9 +1232,10 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                             flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
-                        cost = game_do_command(
-                            mapCoord.x, flags | rotation << 8, mapCoord.y, ride->id, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-                            0, 0);
+                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, false);
+                        rideEntranceExitPlaceAction.SetFlags(flags);
+                        auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
+                        cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     }
                     if (cost != MONEY32_UNDEFINED)
                     {
@@ -1265,9 +1266,10 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                             flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
-                        cost = game_do_command(
-                            mapCoord.x, flags | rotation << 8, mapCoord.y, ride->id | (1 << 8),
-                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
+                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, true);
+                        rideEntranceExitPlaceAction.SetFlags(flags);
+                        auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
+                        cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     }
                     if (cost != MONEY32_UNDEFINED)
                     {
@@ -1572,10 +1574,10 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
             case PTD_OPERATION_GET_COST:
             {
                 rotation = (rotation + entrance->direction) & 3;
-                uint8_t isExit = 0;
+                bool isExit = false;
                 if (entrance->direction & (1 << 7))
                 {
-                    isExit = 1;
+                    isExit = true;
                 }
 
                 if (_trackDesignPlaceOperation != PTD_OPERATION_1)
@@ -1600,29 +1602,33 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                         }
 
                         int32_t stationIndex = tile_element->AsTrack()->GetStationIndex();
-                        uint8_t bl = 1;
+                        uint8_t flags = GAME_COMMAND_FLAG_APPLY;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                         {
-                            bl = 41;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
                         }
                         if (_trackDesignPlaceOperation == PTD_OPERATION_4)
                         {
-                            bl = 105;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                                | GAME_COMMAND_FLAG_GHOST;
                         }
                         if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                         {
-                            bl = 0;
+                            flags = 0;
                         }
 
                         gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-                        money32 cost = game_do_command(
-                            x, bl | (rotation << 8), y, ride->id | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-                            stationIndex, 0);
-                        _trackDesignPlaceCost += cost;
+                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+                            { x, y }, rotation, ride->id, stationIndex, isExit);
+                        rideEntranceExitPlaceAction.SetFlags(flags);
+                        auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
+                                                                   : GameActions::QueryNested(&rideEntranceExitPlaceAction);
 
-                        if (cost == MONEY32_UNDEFINED)
+                        _trackDesignPlaceCost += res->Cost;
+
+                        if (res->Error != GA_ERROR::OK)
                         {
-                            _trackDesignPlaceCost = cost;
+                            _trackDesignPlaceCost = MONEY32_UNDEFINED;
                             return false;
                         }
                         _trackDesignPlaceStateEntranceExitPlaced = true;

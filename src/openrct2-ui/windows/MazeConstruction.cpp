@@ -13,6 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/RideEntranceExitPlaceAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
@@ -364,38 +365,32 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
         return;
 
     ride_id_t rideIndex = gRideEntranceExitPlaceRideIndex;
-    uint8_t entranceExitType = gRideEntranceExitPlaceType;
-    if (entranceExitType == ENTRANCE_TYPE_RIDE_ENTRANCE)
-    {
-        gGameCommandErrorTitle = STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
-    }
-    else
-    {
-        gGameCommandErrorTitle = STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
-    }
 
-    money32 cost = game_do_command(
-        x, GAME_COMMAND_FLAG_APPLY | (direction_reverse(direction) << 8), y, rideIndex | (entranceExitType << 8),
-        GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, gRideEntranceExitPlaceStationIndex, 0);
+    auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+        { x, y }, direction_reverse(direction), rideIndex, gRideEntranceExitPlaceStationIndex,
+        gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-    if (cost == MONEY32_UNDEFINED)
-        return;
+    rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+        if (result->Error != GA_ERROR::OK)
+            return;
 
-    audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+        audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
 
-    Ride* ride = get_ride(rideIndex);
-    if (ride_are_all_possible_entrances_and_exits_built(ride))
-    {
-        tool_cancel();
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
-            window_close(w);
-    }
-    else
-    {
-        gRideEntranceExitPlaceType = entranceExitType ^ 1;
-        window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
-        gCurrentToolWidget.widget_index = entranceExitType ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
-    }
+        Ride* ride = get_ride(rideIndex);
+        if (ride_are_all_possible_entrances_and_exits_built(ride))
+        {
+            tool_cancel();
+            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
+                window_close_by_class(WC_RIDE_CONSTRUCTION);
+        }
+        else
+        {
+            gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
+            window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+            gCurrentToolWidget.widget_index = gRideEntranceExitPlaceType ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
+        }
+    });
+    auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
 }
 
 /**
