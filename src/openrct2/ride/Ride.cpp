@@ -2909,7 +2909,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
     return closestMechanic;
 }
 
-StaffPeep* ride_get_mechanic(Ride* ride)
+Staff* ride_get_mechanic(Ride* ride)
 {
     if (ride->mechanic != SPRITE_INDEX_NULL)
     {
@@ -2922,7 +2922,7 @@ StaffPeep* ride_get_mechanic(Ride* ride)
     return nullptr;
 }
 
-StaffPeep* ride_get_assigned_mechanic(Ride* ride)
+Staff* ride_get_assigned_mechanic(Ride* ride)
 {
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {

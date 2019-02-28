@@ -1433,7 +1433,7 @@ static int32_t staff_path_finding_entertainer(Peep* peep)
  *
  *  rct2: 0x006BF926
  */
-int32_t staff_path_finding(StaffPeep* peep)
+int32_t staff_path_finding(Staff* peep)
 {
     switch (peep->staff_type)
     {
@@ -1552,7 +1552,7 @@ static constexpr const LocationXY16 _MowingWaypoints[] = {
  *
  *  rct2: 0x006BF567
  */
-void StaffPeep::UpdateMowing()
+void Staff::UpdateMowing()
 {
     if (!CheckForPath())
         return;
@@ -1605,7 +1605,7 @@ void StaffPeep::UpdateMowing()
  *
  *  rct2: 0x006BF7E6
  */
-void StaffPeep::UpdateWatering()
+void Staff::UpdateWatering()
 {
     staff_mowing_timeout = 0;
     if (sub_state == 0)
@@ -1668,7 +1668,7 @@ void StaffPeep::UpdateWatering()
  *
  *  rct2: 0x006BF6C9
  */
-void StaffPeep::UpdateEmptyingBin()
+void Staff::UpdateEmptyingBin()
 {
     staff_mowing_timeout = 0;
 
@@ -1750,7 +1750,7 @@ void StaffPeep::UpdateEmptyingBin()
  *
  *  rct2: 0x6BF641
  */
-void StaffPeep::UpdateSweeping()
+void Staff::UpdateSweeping()
 {
     staff_mowing_timeout = 0;
     if (!CheckForPath())
@@ -1793,7 +1793,7 @@ void StaffPeep::UpdateSweeping()
  *
  *  rct2: 0x006C16D7
  */
-void StaffPeep::UpdateHeadingToInspect()
+void Staff::UpdateHeadingToInspect()
 {
     Ride* ride = get_ride(current_ride);
 
@@ -1906,7 +1906,7 @@ void StaffPeep::UpdateHeadingToInspect()
  *
  *  rct2: 0x006C0CB8
  */
-void StaffPeep::UpdateAnswering()
+void Staff::UpdateAnswering()
 {
     Ride* ride = get_ride(current_ride);
 
@@ -2227,7 +2227,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
     return 0;
 }
 
-void StaffPeep::Tick128UpdateStaff()
+void Staff::Tick128UpdateStaff()
 {
     if (staff_type != STAFF_TYPE_SECURITY)
         return;
@@ -2255,12 +2255,12 @@ void StaffPeep::Tick128UpdateStaff()
     UpdateCurrentActionSpriteType();
 }
 
-bool StaffPeep::IsMechanic() const
+bool Staff::IsMechanic() const
 {
     return (sprite_identifier == SPRITE_IDENTIFIER_PEEP && type == PEEP_TYPE_STAFF && staff_type == STAFF_TYPE_MECHANIC);
 }
 
-void StaffPeep::UpdateStaff(uint32_t stepsToTake)
+void Staff::UpdateStaff(uint32_t stepsToTake)
 {
     switch (state)
     {
@@ -2302,7 +2302,7 @@ void StaffPeep::UpdateStaff(uint32_t stepsToTake)
  *
  *  rct2: 0x006BF1FD
  */
-void StaffPeep::UpdatePatrolling()
+void Staff::UpdatePatrolling()
 {
     if (!CheckForPath())
         return;
@@ -2452,7 +2452,7 @@ static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
  *  rct2: 0x006C0E8B
  * Also used by inspecting.
  */
-void StaffPeep::UpdateFixing(int32_t steps)
+void Staff::UpdateFixing(int32_t steps)
 {
     Ride* ride = get_ride(current_ride);
 
@@ -2562,7 +2562,7 @@ void StaffPeep::UpdateFixing(int32_t steps)
  * rct2: 0x006C0EEC
  * fixing sub_state: enter_station - applies to fixing all break down reasons and ride inspections.
  */
-bool StaffPeep::UpdateFixingEnterStation(Ride* ride)
+bool Staff::UpdateFixingEnterStation(Ride* ride)
 {
     ride->mechanic_status = RIDE_MECHANIC_STATUS_FIXING;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -2575,7 +2575,7 @@ bool StaffPeep::UpdateFixingEnterStation(Ride* ride)
  * fixing sub_state: move_to_broken_down_vehicle - applies to fixing all vehicle specific breakdown reasons
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2638,7 +2638,7 @@ bool StaffPeep::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
  * 4. doors stuck open.
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2680,7 +2680,7 @@ bool StaffPeep::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
  * fixing sub_state: fix_vehicle_malfunction - applies fixing to vehicle malfunction.
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2729,7 +2729,7 @@ static constexpr const CoordsXY _StationFixingOffsets[] = {
  * inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2794,7 +2794,7 @@ bool StaffPeep::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
  * inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingFixStationEnd(bool firstRun)
+bool Staff::UpdateFixingFixStationEnd(bool firstRun)
 {
     if (!firstRun)
     {
@@ -2825,7 +2825,7 @@ bool StaffPeep::UpdateFixingFixStationEnd(bool firstRun)
  * 3. applies to inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2911,7 +2911,7 @@ bool StaffPeep::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
  * 2. applies to inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingFixStationStart(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingFixStationStart(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2945,7 +2945,7 @@ bool StaffPeep::UpdateFixingFixStationStart(bool firstRun, Ride* ride)
  * fixing sub_state: fix_station_brakes - applies to fixing brake failure
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2984,7 +2984,7 @@ bool StaffPeep::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
  * fixing sub_state: move_to_station_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -3034,7 +3034,7 @@ bool StaffPeep::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
  * fixing sub_state: finish_fix_or_inspect - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride)
+bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride)
 {
     if (!firstRun)
     {
@@ -3078,7 +3078,7 @@ bool StaffPeep::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Rid
  * fixing sub_state: leave_by_entrance_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool StaffPeep::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -3133,7 +3133,7 @@ bool StaffPeep::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 /**
  * rct2: 0x6B7588
  */
-void StaffPeep::UpdateRideInspected(ride_id_t rideIndex)
+void Staff::UpdateRideInspected(ride_id_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;

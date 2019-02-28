@@ -528,8 +528,8 @@ struct rct_peep_thought
     uint8_t fresh_timeout; // 3 updates every tick
 };
 
-struct GuestPeep;
-struct StaffPeep;
+struct Guest;
+struct Staff;
 
 struct Peep : rct_sprite_common
 {
@@ -689,8 +689,8 @@ struct Peep : rct_sprite_common
     uint32_t item_standard_flags;         // 0xFC
 
 public: // Peep
-    GuestPeep* AsGuest();
-    StaffPeep* AsStaff();
+    Guest* AsGuest();
+    Staff* AsStaff();
 
     void Update();
     bool UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance);
@@ -727,7 +727,7 @@ private:
     void UpdatePicked();
 };
 
-struct GuestPeep : Peep
+struct Guest : Peep
 {
 public:
     void UpdateGuest();
@@ -803,7 +803,7 @@ private:
     std::bitset<MAX_RIDES> FindRidesToGoOn();
 };
 
-struct StaffPeep : Peep
+struct Staff : Peep
 {
 public:
     void UpdateStaff(uint32_t stepsToTake);
@@ -978,7 +978,7 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep);
 void peep_reset_pathfind_goal(Peep* peep);
 
 bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
-int32_t guest_path_finding(GuestPeep* peep);
+int32_t guest_path_finding(Guest* peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 #    define PATHFIND_DEBUG                                                                                                     \

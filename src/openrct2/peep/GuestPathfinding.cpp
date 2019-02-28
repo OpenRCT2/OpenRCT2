@@ -1846,7 +1846,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
  *
  *  rct2: 0x00694C35
  */
-int32_t guest_path_finding(GuestPeep* peep)
+int32_t guest_path_finding(Guest* peep)
 {
     // int16_t x, y, z;
 

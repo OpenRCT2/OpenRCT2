@@ -79,9 +79,9 @@ static TileElement* _peepRideEntranceExitElement;
 static void* _crowdSoundChannel = nullptr;
 
 static void peep_128_tick_update(Peep* peep, int32_t index);
-static void peep_easter_egg_peep_interactions(GuestPeep* peep);
+static void peep_easter_egg_peep_interactions(Guest* peep);
 static void peep_give_real_name(Peep* peep);
-static void peep_release_balloon(GuestPeep* peep, int16_t spawn_height);
+static void peep_release_balloon(Guest* peep, int16_t spawn_height);
 
 // clang-format off
 static constexpr const char *gPeepEasterEggNames[] = {
@@ -359,14 +359,14 @@ Peep* rct_sprite::AsPeep()
     return result;
 }
 
-GuestPeep* Peep::AsGuest()
+Guest* Peep::AsGuest()
 {
-    return type == PEEP_TYPE_GUEST ? static_cast<GuestPeep*>(this) : nullptr;
+    return type == PEEP_TYPE_GUEST ? static_cast<Guest*>(this) : nullptr;
 }
 
-StaffPeep* Peep::AsStaff()
+Staff* Peep::AsStaff()
 {
-    return type == PEEP_TYPE_STAFF ? static_cast<StaffPeep*>(this) : nullptr;
+    return type == PEEP_TYPE_STAFF ? static_cast<Staff*>(this) : nullptr;
 }
 
 void Peep::Invalidate()
@@ -3304,9 +3304,9 @@ static bool peep_has_valid_xy(Peep* peep)
     return false;
 }
 
-using easter_egg_function = void (*)(GuestPeep* peep, GuestPeep* otherPeep);
+using easter_egg_function = void (*)(Guest* peep, Guest* otherPeep);
 
-static void peep_apply_easter_egg_to_nearby_guests(GuestPeep* peep, easter_egg_function easter_egg)
+static void peep_apply_easter_egg_to_nearby_guests(Guest* peep, easter_egg_function easter_egg)
 {
     if (!peep_has_valid_xy(peep))
         return;
@@ -3331,14 +3331,14 @@ static void peep_apply_easter_egg_to_nearby_guests(GuestPeep* peep, easter_egg_f
     }
 }
 
-static void peep_give_passing_peeps_purple_clothes([[maybe_unused]] GuestPeep* peep, GuestPeep* otherPeep)
+static void peep_give_passing_peeps_purple_clothes([[maybe_unused]] Guest* peep, Guest* otherPeep)
 {
     otherPeep->tshirt_colour = COLOUR_BRIGHT_PURPLE;
     otherPeep->trousers_colour = COLOUR_BRIGHT_PURPLE;
     invalidate_sprite_2((rct_sprite*)otherPeep);
 }
 
-static void peep_give_passing_peeps_pizza(GuestPeep* peep, GuestPeep* otherPeep)
+static void peep_give_passing_peeps_pizza(Guest* peep, Guest* otherPeep)
 {
     if ((otherPeep->item_standard_flags & PEEP_ITEM_PIZZA))
         return;
@@ -3362,7 +3362,7 @@ static void peep_give_passing_peeps_pizza(GuestPeep* peep, GuestPeep* otherPeep)
     invalidate_sprite_2((rct_sprite*)otherPeep);
 }
 
-static void peep_make_passing_peeps_sick(GuestPeep* peep, GuestPeep* otherPeep)
+static void peep_make_passing_peeps_sick(Guest* peep, Guest* otherPeep)
 {
     if (peep == otherPeep)
         return;
@@ -3379,7 +3379,7 @@ static void peep_make_passing_peeps_sick(GuestPeep* peep, GuestPeep* otherPeep)
     }
 }
 
-static void peep_give_passing_peeps_ice_cream(GuestPeep* peep, GuestPeep* otherPeep)
+static void peep_give_passing_peeps_ice_cream(Guest* peep, Guest* otherPeep)
 {
     if (peep == otherPeep)
         return;
@@ -3394,7 +3394,7 @@ static void peep_give_passing_peeps_ice_cream(GuestPeep* peep, GuestPeep* otherP
  *
  *  rct2: 0x0068FD3A
  */
-static void peep_easter_egg_peep_interactions(GuestPeep* peep)
+static void peep_easter_egg_peep_interactions(Guest* peep)
 {
     if (peep->peep_flags & PEEP_FLAGS_PURPLE)
     {
@@ -3892,7 +3892,7 @@ void decrement_guests_heading_for_park()
     }
 }
 
-static void peep_release_balloon(GuestPeep* peep, int16_t spawn_height)
+static void peep_release_balloon(Guest* peep, int16_t spawn_height)
 {
     if (peep->item_standard_flags & PEEP_ITEM_BALLOON)
     {

@@ -350,10 +350,10 @@ static constexpr const ride_rating NauseaMinimumThresholds[] = {
 // clang-format on
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride);
-static void peep_ride_is_too_intense(GuestPeep* peep, Ride* ride, bool peepAtRide);
+static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide);
 static void peep_reset_ride_heading(Peep* peep);
 static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride);
-static int16_t peep_calculate_ride_satisfaction(GuestPeep* peep, Ride* ride);
+static int16_t peep_calculate_ride_satisfaction(Guest* peep, Ride* ride);
 static void peep_update_favourite_ride(Peep* peep, Ride* ride);
 static int16_t peep_calculate_ride_value_satisfaction(Peep* peep, Ride* ride);
 static int16_t peep_calculate_ride_intensity_nausea_satisfaction(Peep* peep, Ride* ride);
@@ -365,11 +365,11 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
 static void peep_update_hunger(Peep* peep);
 static void peep_decide_whether_to_leave_park(Peep* peep);
 static void peep_leave_park(Peep* peep);
-static void peep_head_for_nearest_ride_type(GuestPeep* peep, int32_t rideType);
-static void peep_head_for_nearest_ride_with_flags(GuestPeep* peep, int32_t rideTypeFlags);
+static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
+static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags);
 bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
-void GuestPeep::Tick128UpdateGuest(int32_t index)
+void Guest::Tick128UpdateGuest(int32_t index)
 {
     if ((uint32_t)(index & 0x1FF) == (gCurrentTicks & 0x1FF))
     {
@@ -867,7 +867,7 @@ void GuestPeep::Tick128UpdateGuest(int32_t index)
  *
  *  rct2: 0x00691677
  */
-void GuestPeep::TryGetUpFromSitting()
+void Guest::TryGetUpFromSitting()
 {
     // Eats all food first
     if (HasFood())
@@ -890,7 +890,7 @@ void GuestPeep::TryGetUpFromSitting()
  *
  *  rct2: 0x0069152B
  */
-void GuestPeep::UpdateSitting()
+void Guest::UpdateSitting()
 {
     if (sub_state == PEEP_SITTING_TRYING_TO_SIT)
     {
@@ -999,7 +999,7 @@ void GuestPeep::UpdateSitting()
     }
 }
 
-bool GuestPeep::HasItem(int32_t peepItem) const
+bool Guest::HasItem(int32_t peepItem) const
 {
     if (peepItem < 32)
     {
@@ -1011,7 +1011,7 @@ bool GuestPeep::HasItem(int32_t peepItem) const
     }
 }
 
-int32_t GuestPeep::HasFoodStandardFlag() const
+int32_t Guest::HasFoodStandardFlag() const
 {
     return item_standard_flags
         & (PEEP_ITEM_DRINK | PEEP_ITEM_BURGER | PEEP_ITEM_CHIPS | PEEP_ITEM_ICE_CREAM | PEEP_ITEM_CANDYFLOSS | PEEP_ITEM_PIZZA
@@ -1019,7 +1019,7 @@ int32_t GuestPeep::HasFoodStandardFlag() const
            | PEEP_ITEM_COFFEE | PEEP_ITEM_CHICKEN | PEEP_ITEM_LEMONADE);
 }
 
-int32_t GuestPeep::HasFoodExtraFlag() const
+int32_t Guest::HasFoodExtraFlag() const
 {
     return item_extra_flags
         & (PEEP_ITEM_PRETZEL | PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FUNNEL_CAKE | PEEP_ITEM_BEEF_NOODLES
@@ -1028,12 +1028,12 @@ int32_t GuestPeep::HasFoodExtraFlag() const
            | PEEP_ITEM_ROAST_SAUSAGE);
 }
 
-bool GuestPeep::HasDrinkStandardFlag() const
+bool Guest::HasDrinkStandardFlag() const
 {
     return item_standard_flags & (PEEP_ITEM_DRINK | PEEP_ITEM_COFFEE | PEEP_ITEM_LEMONADE);
 }
 
-bool GuestPeep::HasDrinkExtraFlag() const
+bool Guest::HasDrinkExtraFlag() const
 {
     return item_extra_flags
         & (PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FRUIT_JUICE | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA);
@@ -1043,25 +1043,25 @@ bool GuestPeep::HasDrinkExtraFlag() const
  * To simplify check of NOT(0x12BA3C0 and 0x118F48)
  * returns 0 on no food.
  */
-bool GuestPeep::HasDrink() const
+bool Guest::HasDrink() const
 {
     return HasDrinkStandardFlag() || HasDrinkExtraFlag();
 }
 
-int32_t GuestPeep::HasEmptyContainerStandardFlag() const
+int32_t Guest::HasEmptyContainerStandardFlag() const
 {
     return item_standard_flags
         & (PEEP_ITEM_EMPTY_CAN | PEEP_ITEM_EMPTY_BURGER_BOX | PEEP_ITEM_EMPTY_CUP | PEEP_ITEM_RUBBISH | PEEP_ITEM_EMPTY_BOX
            | PEEP_ITEM_EMPTY_BOTTLE);
 }
 
-int32_t GuestPeep::HasEmptyContainerExtraFlag() const
+int32_t Guest::HasEmptyContainerExtraFlag() const
 {
     return item_extra_flags
         & (PEEP_ITEM_EMPTY_BOWL_RED | PEEP_ITEM_EMPTY_DRINK_CARTON | PEEP_ITEM_EMPTY_JUICE_CUP | PEEP_ITEM_EMPTY_BOWL_BLUE);
 }
 
-bool GuestPeep::HasEmptyContainer() const
+bool Guest::HasEmptyContainer() const
 {
     return HasEmptyContainerStandardFlag() || HasEmptyContainerExtraFlag();
 }
@@ -1071,7 +1071,7 @@ bool GuestPeep::HasEmptyContainer() const
  *  rct2: 0x69C308
  * Check if lost.
  */
-void GuestPeep::CheckIfLost()
+void Guest::CheckIfLost()
 {
     if (!(peep_flags & PEEP_FLAGS_LOST))
     {
@@ -1097,7 +1097,7 @@ void GuestPeep::CheckIfLost()
  *  rct2: 0x69C26B
  * Check if cant find ride.
  */
-void GuestPeep::CheckCantFindRide()
+void Guest::CheckCantFindRide()
 {
     if (guest_heading_to_ride_id == RIDE_ID_NULL)
         return;
@@ -1129,7 +1129,7 @@ void GuestPeep::CheckCantFindRide()
  *  rct2: 0x69C2D0
  * Check if cant find exit.
  */
-void GuestPeep::CheckCantFindExit()
+void Guest::CheckCantFindExit()
 {
     if (!(peep_flags & PEEP_FLAGS_LEAVING_PARK))
         return;
@@ -1158,7 +1158,7 @@ void GuestPeep::CheckCantFindExit()
  *
  *  rct2: 0x0069AF1E
  */
-bool GuestPeep::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
+bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 {
     money32 itemValue;
 
@@ -1430,7 +1430,7 @@ loc_69B221:
  * ride's satisfaction value.
  *  rct2: 0x0069545B
  */
-void GuestPeep::OnEnterRide(ride_id_t rideIndex)
+void Guest::OnEnterRide(ride_id_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -1462,7 +1462,7 @@ void GuestPeep::OnEnterRide(ride_id_t rideIndex)
  *
  *  rct2: 0x0069576E
  */
-void GuestPeep::OnExitRide(ride_id_t rideIndex)
+void Guest::OnExitRide(ride_id_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -1521,7 +1521,7 @@ void GuestPeep::OnExitRide(ride_id_t rideIndex)
  * To simplify check of 0x36BA3E0 and 0x11FF78
  * returns false on no food.
  */
-bool GuestPeep::HasFood() const
+bool Guest::HasFood() const
 {
     return HasFoodStandardFlag() || HasFoodExtraFlag();
 }
@@ -1530,7 +1530,7 @@ bool GuestPeep::HasFood() const
  *
  *  rct2: 0x00695DD2
  */
-void GuestPeep::PickRideToGoOn()
+void Guest::PickRideToGoOn()
 {
     if (state != PEEP_STATE_WALKING)
         return;
@@ -1567,7 +1567,7 @@ void GuestPeep::PickRideToGoOn()
     }
 }
 
-Ride* GuestPeep::FindBestRideToGoOn()
+Ride* Guest::FindBestRideToGoOn()
 {
     // Pick the most exciting ride
     auto rideConsideration = FindRidesToGoOn();
@@ -1592,7 +1592,7 @@ Ride* GuestPeep::FindBestRideToGoOn()
     return mostExcitingRide;
 }
 
-std::bitset<MAX_RIDES> GuestPeep::FindRidesToGoOn()
+std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
 {
     std::bitset<MAX_RIDES> rideConsideration;
 
@@ -1661,7 +1661,7 @@ std::bitset<MAX_RIDES> GuestPeep::FindRidesToGoOn()
  * ride/shop, or they may just be thinking about it.
  *  rct2: 0x006960AB
  */
-bool GuestPeep::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool thinking)
+bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool thinking)
 {
     // Indicates whether a peep is physically at the ride, or is just thinking about going on the ride.
     bool peepAtRide = !thinking;
@@ -1949,7 +1949,7 @@ bool GuestPeep::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bo
     return false;
 }
 
-bool GuestPeep::ShouldGoToShop(Ride* ride, bool peepAtShop)
+bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 {
     // Peeps won't go to the same shop twice in a row.
     if (ride->id == previous_ride)
@@ -2023,7 +2023,7 @@ bool GuestPeep::ShouldGoToShop(Ride* ride, bool peepAtShop)
 }
 
 // Used when no logging to an expend type required
-void GuestPeep::SpendMoney(money32 amount)
+void Guest::SpendMoney(money32 amount)
 {
     money16 unused;
     SpendMoney(unused, amount);
@@ -2034,7 +2034,7 @@ void GuestPeep::SpendMoney(money32 amount)
  *  rct2: 0x0069926C
  * Expend type was previously an offset saved in 0x00F1AEC0
  */
-void GuestPeep::SpendMoney(money16& peep_expend_type, money32 amount)
+void Guest::SpendMoney(money16& peep_expend_type, money32 amount)
 {
     assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
@@ -2061,28 +2061,28 @@ void GuestPeep::SpendMoney(money16& peep_expend_type, money32 amount)
     audio_play_sound_at_location(SOUND_PURCHASE, x, y, z);
 }
 
-void GuestPeep::SetHasRidden(Ride* ride)
+void Guest::SetHasRidden(Ride* ride)
 {
     rides_been_on[ride->id / 8] |= 1 << (ride->id % 8);
     SetHasRiddenRideType(ride->type);
 }
 
-bool GuestPeep::HasRidden(Ride* ride) const
+bool Guest::HasRidden(Ride* ride) const
 {
     return rides_been_on[ride->id / 8] & (1 << (ride->id % 8));
 }
 
-void GuestPeep::SetHasRiddenRideType(int32_t rideType)
+void Guest::SetHasRiddenRideType(int32_t rideType)
 {
     ride_types_been_on[rideType / 8] |= 1 << (rideType % 8);
 }
 
-bool GuestPeep::HasRiddenRideType(int32_t rideType) const
+bool Guest::HasRiddenRideType(int32_t rideType) const
 {
     return ride_types_been_on[rideType / 8] & (1 << (rideType % 8));
 }
 
-void GuestPeep::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
+void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 {
     if (peepAtRide && updateLastRide)
     {
@@ -2096,7 +2096,7 @@ void GuestPeep::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastR
     }
 }
 
-void GuestPeep::ReadMap()
+void Guest::ReadMap()
 {
     if (action == PEEP_ACTION_NONE_1 || action == PEEP_ACTION_NONE_2)
     {
@@ -2144,7 +2144,7 @@ static void peep_reset_ride_heading(Peep* peep)
     }
 }
 
-static void peep_ride_is_too_intense(GuestPeep* peep, Ride* ride, bool peepAtRide)
+static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
 {
     if (peepAtRide)
     {
@@ -2213,7 +2213,7 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, rct_vehicle* vehic
  *
  *  rct2: 0x00691D27
  */
-static void peep_go_to_ride_entrance(GuestPeep* peep, Ride* ride)
+static void peep_go_to_ride_entrance(Guest* peep, Ride* ride)
 {
     TileCoordsXYZD location = ride_get_entrance_location(ride, peep->current_ride_station);
     Guard::Assert(!location.isNull());
@@ -2261,7 +2261,7 @@ static void peep_go_to_ride_entrance(GuestPeep* peep, Ride* ride)
     peep->RemoveFromQueue();
 }
 
-static bool peep_find_vehicle_to_enter(GuestPeep* peep, Ride* ride, std::vector<uint8_t>& car_array)
+static bool peep_find_vehicle_to_enter(Guest* peep, Ride* ride, std::vector<uint8_t>& car_array)
 {
     uint8_t chosen_train = RideStation::NO_TRAIN;
 
@@ -2330,7 +2330,7 @@ static bool peep_find_vehicle_to_enter(GuestPeep* peep, Ride* ride, std::vector<
     return !car_array.empty();
 }
 
-static void peep_update_ride_at_entrance_try_leave(GuestPeep* peep)
+static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 {
     // Destination Tolerance is zero when peep has completely
     // entered entrance
@@ -2341,7 +2341,7 @@ static void peep_update_ride_at_entrance_try_leave(GuestPeep* peep)
     }
 }
 
-static bool peep_check_ride_price_at_entrance(GuestPeep* peep, Ride* ride, money32 ridePrice)
+static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
     if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
         && peep->voucher_arguments == peep->current_ride)
@@ -2382,7 +2382,7 @@ static bool peep_check_ride_price_at_entrance(GuestPeep* peep, Ride* ride, money
  * - How long the peep was waiting in the queue
  * - If the peep has been on the ride before, or on another ride of the same type
  */
-static int16_t peep_calculate_ride_satisfaction(GuestPeep* peep, Ride* ride)
+static int16_t peep_calculate_ride_satisfaction(Guest* peep, Ride* ride)
 {
     int16_t satisfaction = peep_calculate_ride_value_satisfaction(peep, ride);
     satisfaction += peep_calculate_ride_intensity_nausea_satisfaction(peep, ride);
@@ -2849,7 +2849,7 @@ static void peep_leave_park(Peep* peep)
  *
  *  rct2: 0x00695B70
  */
-static void peep_head_for_nearest_ride_type(GuestPeep* peep, int32_t rideType)
+static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
 {
     Ride* ride;
 
@@ -2972,7 +2972,7 @@ static void peep_head_for_nearest_ride_type(GuestPeep* peep, int32_t rideType)
  *
  *  rct2: 0x006958D0
  */
-static void peep_head_for_nearest_ride_with_flags(GuestPeep* peep, int32_t rideTypeFlags)
+static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags)
 {
     Ride* ride;
 
@@ -3104,7 +3104,7 @@ static void peep_head_for_nearest_ride_with_flags(GuestPeep* peep, int32_t rideT
  * such as "I'm hungry" after visiting a food shop.
  * Works for Thirst/Hungry/Low Money/Bathroom
  */
-void GuestPeep::StopPurchaseThought(uint8_t ride_type)
+void Guest::StopPurchaseThought(uint8_t ride_type)
 {
     uint8_t thoughtType = PEEP_THOUGHT_TYPE_HUNGRY;
 
@@ -3177,7 +3177,7 @@ static bool peep_should_use_cash_machine(Peep* peep, ride_id_t rideIndex)
  *
  *  rct2: 0x006912A3
  */
-void GuestPeep::UpdateBuying()
+void Guest::UpdateBuying()
 {
     if (!CheckForPath())
         return;
@@ -3289,7 +3289,7 @@ void GuestPeep::UpdateBuying()
  *
  *  rct2: 0x00691A3B
  */
-void GuestPeep::UpdateRideAtEntrance()
+void Guest::UpdateRideAtEntrance()
 {
     Ride* ride = get_ride(current_ride);
 
@@ -3368,7 +3368,7 @@ static constexpr const LocationXY16 _MazeEntranceStart[] = {
     { 24, 8 },
 };
 
-static void peep_update_ride_leave_entrance_maze(GuestPeep* peep, Ride* ride, TileCoordsXYZD& entrance_loc)
+static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, TileCoordsXYZD& entrance_loc)
 {
     peep->maze_last_edge = entrance_loc.direction + 1;
     entrance_loc.x *= 32;
@@ -3401,7 +3401,7 @@ static void peep_update_ride_leave_entrance_maze(GuestPeep* peep, Ride* ride, Ti
     peep->sub_state = PEEP_RIDE_MAZE_PATHFINDING;
 }
 
-static void peep_update_ride_leave_entrance_spiral_slide(GuestPeep* peep, Ride* ride, TileCoordsXYZD& entrance_loc)
+static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride, TileCoordsXYZD& entrance_loc)
 {
     entrance_loc.x = ride->stations[peep->current_ride_station].Start.x * 32;
     entrance_loc.y = ride->stations[peep->current_ride_station].Start.y * 32;
@@ -3491,7 +3491,7 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
  *
  *  rct2: 0x006921D3
  */
-void GuestPeep::UpdateRideAdvanceThroughEntrance()
+void Guest::UpdateRideAdvanceThroughEntrance()
 {
     int16_t actionX, actionY, actionZ, xy_distance;
 
@@ -3684,7 +3684,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
  *
  *  rct2: 0x006920B4
  */
-void GuestPeep::UpdateRideFreeVehicleEnterRide(Ride* ride)
+void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
 {
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
@@ -3775,7 +3775,7 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride
  * branch it out to 1 and 3. Now uses
  * separate functions.
  */
-void GuestPeep::UpdateRideFreeVehicleCheck()
+void Guest::UpdateRideFreeVehicleCheck()
 {
     Ride* ride = get_ride(current_ride);
 
@@ -3868,7 +3868,7 @@ void GuestPeep::UpdateRideFreeVehicleCheck()
     peep_update_ride_no_free_vehicle_rejoin_queue(this, ride);
 }
 
-void GuestPeep::UpdateRideApproachVehicle()
+void Guest::UpdateRideApproachVehicle()
 {
     int16_t actionX, actionY, xy_distance;
     if (!UpdateAction(&actionX, &actionY, &xy_distance))
@@ -3882,7 +3882,7 @@ void GuestPeep::UpdateRideApproachVehicle()
     Invalidate();
 }
 
-void GuestPeep::UpdateRideEnterVehicle()
+void Guest::UpdateRideEnterVehicle()
 {
     Ride* ride = get_ride(current_ride);
 
@@ -3937,7 +3937,7 @@ void GuestPeep::UpdateRideEnterVehicle()
  *
  *  rct2: 0x00693028
  */
-void GuestPeep::UpdateRideLeaveVehicle()
+void Guest::UpdateRideLeaveVehicle()
 {
     Ride* ride = get_ride(current_ride);
 
@@ -4177,7 +4177,7 @@ static void peep_update_ride_prepare_for_exit(Peep* peep)
  *
  *  rct2: 0x0069374F
  */
-void GuestPeep::UpdateRideApproachExit()
+void Guest::UpdateRideApproachExit()
 {
     int16_t actionX, actionY, xy_distance;
     if (UpdateAction(&actionX, &actionY, &xy_distance))
@@ -4195,7 +4195,7 @@ void GuestPeep::UpdateRideApproachExit()
  *
  *  rct2: 0x0069382E
  */
-void GuestPeep::UpdateRideInExit()
+void Guest::UpdateRideInExit()
 {
     int16_t actionX, actionY, xy_distance;
     Ride* ride = get_ride(current_ride);
@@ -4234,7 +4234,7 @@ void GuestPeep::UpdateRideInExit()
  *
  *  rct2: 0x006926AD
  */
-void GuestPeep::UpdateRideApproachVehicleWaypoints()
+void Guest::UpdateRideApproachVehicleWaypoints()
 {
     int16_t actionX, actionY, xy_distance;
     Ride* ride = get_ride(current_ride);
@@ -4310,7 +4310,7 @@ void GuestPeep::UpdateRideApproachVehicleWaypoints()
  *
  *  rct2: 0x0069357D
  */
-void GuestPeep::UpdateRideApproachExitWaypoints()
+void Guest::UpdateRideApproachExitWaypoints()
 {
     int16_t actionX, actionY, xy_distance;
     Ride* ride = get_ride(current_ride);
@@ -4410,7 +4410,7 @@ void GuestPeep::UpdateRideApproachExitWaypoints()
  *
  *  rct2: 0x006927B3
  */
-void GuestPeep::UpdateRideApproachSpiralSlide()
+void Guest::UpdateRideApproachSpiralSlide()
 {
     int16_t actionX, actionY, xy_distance;
     Ride* ride = get_ride(current_ride);
@@ -4504,7 +4504,7 @@ static constexpr const CoordsXY _SpiralSlideEndWaypoint[] = {
  *
  *  rct2: 0x00692D83
  */
-void GuestPeep::UpdateRideOnSpiralSlide()
+void Guest::UpdateRideOnSpiralSlide()
 {
     Ride* ride = get_ride(current_ride);
 
@@ -4589,7 +4589,7 @@ void GuestPeep::UpdateRideOnSpiralSlide()
  *
  *  rct2: 0x00692C6B
  */
-void GuestPeep::UpdateRideLeaveSpiralSlide()
+void Guest::UpdateRideLeaveSpiralSlide()
 {
     // Iterates through the spiral slide waypoints until it reaches
     // waypoint 0. Then it readies to leave the ride by the entrance.
@@ -4676,7 +4676,7 @@ static constexpr const uint8_t _MazeCurrentDirectionToOpenHedge[][4] = {
  *
  *  rct2: 0x00692A83
  */
-void GuestPeep::UpdateRideMazePathfinding()
+void Guest::UpdateRideMazePathfinding()
 {
     int16_t actionX, actionY, xy_distance;
     if (UpdateAction(&actionX, &actionY, &xy_distance))
@@ -4838,7 +4838,7 @@ void GuestPeep::UpdateRideMazePathfinding()
  *
  *  rct2: 0x006938D2
  */
-void GuestPeep::UpdateRideLeaveExit()
+void Guest::UpdateRideLeaveExit()
 {
     int16_t actionX, actionY, xy_distance;
     Ride* ride = get_ride(current_ride);
@@ -4897,7 +4897,7 @@ void GuestPeep::UpdateRideLeaveExit()
  *
  *  rct2: 0x0069299C
  */
-void GuestPeep::UpdateRideShopApproach()
+void Guest::UpdateRideShopApproach()
 {
     int16_t actionX, actionY, xy_distance;
 
@@ -4916,7 +4916,7 @@ void GuestPeep::UpdateRideShopApproach()
  *
  *  rct2: 0x006929BB
  */
-void GuestPeep::UpdateRideShopInteract()
+void Guest::UpdateRideShopInteract()
 {
     const int16_t tileCenterX = next_x + 16;
     const int16_t tileCenterY = next_y + 16;
@@ -4969,7 +4969,7 @@ void GuestPeep::UpdateRideShopInteract()
  *
  *  rct2: 0x00692935
  */
-void GuestPeep::UpdateRideShopLeave()
+void Guest::UpdateRideShopLeave()
 {
     int16_t actionX, actionY, xy_distance;
 
@@ -4996,7 +4996,7 @@ void GuestPeep::UpdateRideShopLeave()
     ride_update_satisfaction(ride, happiness / 64);
 }
 
-void GuestPeep::UpdateGuest()
+void Guest::UpdateGuest()
 {
     switch (state)
     {
@@ -5044,7 +5044,7 @@ void GuestPeep::UpdateGuest()
  *
  *  rct2: 0x691A30
  * Used by entering_ride and queueing_front */
-void GuestPeep::UpdateRide()
+void Guest::UpdateRide()
 {
     next_flags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
 
@@ -5124,7 +5124,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
  *
  *  rct2: 0x0069030A
  */
-void GuestPeep::UpdateWalking()
+void Guest::UpdateWalking()
 {
     if (!CheckForPath())
         return;
@@ -5413,7 +5413,7 @@ void GuestPeep::UpdateWalking()
  *
  *  rct2: 0x69185D
  */
-void GuestPeep::UpdateQueuing()
+void Guest::UpdateQueuing()
 {
     if (!CheckForPath())
     {
@@ -5539,7 +5539,7 @@ void GuestPeep::UpdateQueuing()
 /**
  * rct2: 0x691451
  */
-void GuestPeep::UpdateEnteringPark()
+void Guest::UpdateEnteringPark()
 {
     if (var_37 != 1)
     {
@@ -5576,7 +5576,7 @@ void GuestPeep::UpdateEnteringPark()
  *
  *  rct2: 0x6914CD
  */
-void GuestPeep::UpdateLeavingPark()
+void Guest::UpdateLeavingPark()
 {
     if (var_37 != 0)
     {
@@ -5618,7 +5618,7 @@ void GuestPeep::UpdateLeavingPark()
  *
  *  rct2: 0x6916D6
  */
-void GuestPeep::UpdateWatching()
+void Guest::UpdateWatching()
 {
     if (sub_state == 0)
     {
@@ -5720,7 +5720,7 @@ void GuestPeep::UpdateWatching()
  *
  *  rct2: 0x00691089
  */
-void GuestPeep::UpdateUsingBin()
+void Guest::UpdateUsingBin()
 {
     switch (sub_state)
     {
@@ -5878,7 +5878,7 @@ void GuestPeep::UpdateUsingBin()
 }
 
 /* Simplifies 0x690582. Returns true if should find bench*/
-bool GuestPeep::ShouldFindBench()
+bool Guest::ShouldFindBench()
 {
     if (peep_flags & PEEP_FLAGS_LEAVING_PARK)
     {
@@ -5914,7 +5914,7 @@ bool GuestPeep::ShouldFindBench()
  *  rct2: 0x00690582
  * Returns true when the guest wants to sit down and has found a bench to sit on
  */
-bool GuestPeep::UpdateWalkingFindBench()
+bool Guest::UpdateWalkingFindBench()
 {
     if (!ShouldFindBench())
         return false;
@@ -6005,7 +6005,7 @@ bool GuestPeep::UpdateWalkingFindBench()
     return true;
 }
 
-bool GuestPeep::UpdateWalkingFindBin()
+bool Guest::UpdateWalkingFindBin()
 {
     auto peep = this;
     if (!peep->HasEmptyContainer())
@@ -6634,7 +6634,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 }
 
 /* Part of 0x0069B8CC rct2: 0x0069BC31 */
-void GuestPeep::SetSpriteType(PeepSpriteType new_sprite_type)
+void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 {
     if (sprite_type == new_sprite_type)
         return;
@@ -6718,7 +6718,7 @@ static item_pref_t item_order_preference[] = {
  *
  *  rct2: 0x0069B8CC
  */
-void GuestPeep::UpdateSpriteType()
+void Guest::UpdateSpriteType()
 {
     if (sprite_type == PEEP_SPRITE_TYPE_BALLOON && (scenario_rand() & 0xFFFF) <= 327)
     {
@@ -6815,7 +6815,7 @@ void GuestPeep::UpdateSpriteType()
     SetSpriteType(PEEP_SPRITE_TYPE_NORMAL);
 }
 
-bool GuestPeep::HeadingForRideOrParkExit() const
+bool Guest::HeadingForRideOrParkExit() const
 {
     return (peep_flags & PEEP_FLAGS_LEAVING_PARK) || (guest_heading_to_ride_id != 0xFF);
 }
