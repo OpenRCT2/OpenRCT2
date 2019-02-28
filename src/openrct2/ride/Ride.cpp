@@ -15,6 +15,7 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../actions/RideEntranceExitRemoveAction.hpp"
 #include "../actions/RideSetSetting.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
 #include "../actions/TrackRemoveAction.hpp"
@@ -1917,12 +1918,17 @@ static int32_t ride_modify_entrance_or_exit(TileElement* tileElement, int32_t x,
     else
     {
         // Remove entrance / exit
-        game_do_command(
-            x, (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY), y, rideIndex,
-            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, stationIndex, entranceType == ENTRANCE_TYPE_RIDE_EXIT);
-        gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
-                                                                                      : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
-        gRideEntranceExitPlaceType = entranceType;
+        auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
+            { x, y }, rideIndex, stationIndex, entranceType == ENTRANCE_TYPE_RIDE_EXIT);
+
+        rideEntranceExitRemove.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+            gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
+                                                                                          : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+            gRideEntranceExitPlaceType = entranceType;
+            window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+        });
+
+        GameActions::Execute(&rideEntranceExitRemove);
     }
 
     window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
