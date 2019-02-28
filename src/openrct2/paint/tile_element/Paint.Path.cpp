@@ -892,7 +892,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
         if (!is_staff_list)
         {
-            rct_peep* staff = GET_PEEP(staffIndex);
+            Peep* staff = GET_PEEP(staffIndex);
             if (!staff_is_patrol_area_set(staff->staff_id, x, y))
             {
                 patrolColour = COLOUR_GREY;

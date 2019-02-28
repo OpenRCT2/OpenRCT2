@@ -209,7 +209,7 @@ static int32_t news_item_get_new_history_slot()
 void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, int32_t* y, int32_t* z)
 {
     Ride* ride;
-    rct_peep* peep;
+    Peep* peep;
     rct_vehicle* vehicle;
 
     switch (type)
@@ -329,7 +329,7 @@ NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t as
  */
 void news_item_open_subject(int32_t type, int32_t subject)
 {
-    rct_peep* peep;
+    Peep* peep;
     rct_window* window;
 
     switch (type)

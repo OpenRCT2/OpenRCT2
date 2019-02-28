@@ -74,7 +74,7 @@ bool award_is_positive(int32_t type)
 static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
     int32_t negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_BEAUTIFUL))
@@ -108,7 +108,7 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
     int32_t positiveCount;
     int32_t negativeCount;
 
@@ -198,7 +198,7 @@ static bool award_is_deserved_best_value(int32_t activeAwardTypes)
 static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
     int32_t positiveCount;
     int32_t negativeCount;
 
@@ -252,7 +252,7 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
 {
     int32_t i, peepsWhoDislikeVandalism;
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
     Ride* ride;
 
     peepsWhoDislikeVandalism = 0;
@@ -281,7 +281,7 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
 static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
     int32_t peepCount, staffCount;
     int32_t staffTypeFlags;
 
@@ -315,7 +315,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
     Ride* ride;
     rct_ride_entry* rideEntry;
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     if (activeAwardTypes & (1 << PARK_AWARD_WORST_FOOD))
         return false;
@@ -368,7 +368,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
     Ride* ride;
     rct_ride_entry* rideEntry;
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_FOOD))
         return false;
@@ -419,7 +419,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
     uint32_t i, numRestrooms, guestsWhoNeedRestroom;
     Ride* ride;
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     // Count open restrooms
     numRestrooms = 0;
@@ -582,7 +582,7 @@ static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t act
 {
     uint32_t peepsCounted, peepsLost;
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     peepsCounted = 0;
     peepsLost = 0;

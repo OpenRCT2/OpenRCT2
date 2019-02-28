@@ -41,7 +41,7 @@ static void viewport_interaction_remove_footpath_item(TileElement* tileElement, 
 static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y);
 static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y);
 static void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y);
-static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance);
+static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance);
 
 /**
  *
@@ -581,13 +581,13 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     }
 }
 
-static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance)
+static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance)
 {
     int32_t distance, closestDistance;
     uint16_t spriteIndex;
     rct_window* w;
     rct_viewport* viewport;
-    rct_peep *peep, *closestPeep;
+    Peep *peep, *closestPeep;
 
     w = window_find_from_point(x, y);
     if (w == nullptr)

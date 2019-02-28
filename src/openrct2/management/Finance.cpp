@@ -126,7 +126,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
  */
 void finance_pay_wages()
 {
-    rct_peep* peep;
+    Peep* peep;
     uint16_t spriteIndex;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -273,7 +273,7 @@ void finance_update_daily_profit()
     {
         // Staff costs
         uint16_t sprite_index;
-        rct_peep* peep;
+        Peep* peep;
 
         FOR_ALL_STAFF (sprite_index, peep)
         {

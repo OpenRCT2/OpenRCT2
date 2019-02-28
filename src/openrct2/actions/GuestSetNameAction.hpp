@@ -62,7 +62,7 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_ERR_INVALID_NAME_FOR_GUEST);
         }
 
-        rct_peep* peep = GET_PEEP(_spriteIndex);
+        Peep* peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_GUEST)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
@@ -91,7 +91,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, gGameCommandErrorText);
         }
 
-        rct_peep* peep = GET_PEEP(_spriteIndex);
+        Peep* peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_GUEST)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);

@@ -373,7 +373,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
     {
         if (argv[0] == "list")
         {
-            rct_peep* peep;
+            Peep* peep;
             int32_t i;
             FOR_ALL_STAFF (i, peep)
             {
@@ -409,7 +409,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
 
                 if (int_valid[0] && int_valid[1] && ((GET_PEEP(int_val[0])) != nullptr))
                 {
-                    rct_peep* peep = GET_PEEP(int_val[0]);
+                    Peep* peep = GET_PEEP(int_val[0]);
 
                     peep->energy = int_val[1];
                     peep->energy_target = int_val[1];
@@ -421,7 +421,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 bool int_valid[2] = { false };
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
-                rct_peep* peep = nullptr;
+                Peep* peep = nullptr;
                 if (!int_valid[0])
                 {
                     console.WriteLineError("Invalid staff ID");

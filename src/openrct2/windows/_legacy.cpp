@@ -67,7 +67,7 @@ void game_command_callback_hire_new_staff_member(
     }
     else
     {
-        rct_peep* peep = &get_sprite(sprite_index)->peep;
+        Peep* peep = &get_sprite(sprite_index)->peep;
         auto intent = Intent(WC_PEEP);
         intent.putExtra(INTENT_EXTRA_PEEP, peep);
         context_open_intent(&intent);

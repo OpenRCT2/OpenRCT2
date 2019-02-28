@@ -3032,7 +3032,7 @@ void vehicle_peep_easteregg_here_we_are(const rct_vehicle* vehicle)
         vehicle = GET_VEHICLE(spriteId);
         for (int32_t i = 0; i < vehicle->num_peeps; ++i)
         {
-            rct_peep* peep = GET_PEEP(vehicle->peep[i]);
+            Peep* peep = GET_PEEP(vehicle->peep[i]);
             if (peep->peep_flags & PEEP_FLAGS_HERE_WE_ARE)
             {
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HERE_WE_ARE, peep->current_ride);
@@ -4075,7 +4075,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle)
         {
             vehicle->next_free_seat -= 2;
 
-            rct_peep* peep = GET_PEEP(vehicle->peep[seat * 2]);
+            Peep* peep = GET_PEEP(vehicle->peep[seat * 2]);
             vehicle->peep[seat * 2] = SPRITE_INDEX_NULL;
 
             peep->SetState(PEEP_STATE_LEAVING_RIDE);
@@ -4119,7 +4119,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle)
             train->next_free_seat = 0;
             for (uint8_t peepIndex = 0; peepIndex < train->num_peeps; peepIndex++)
             {
-                rct_peep* peep = GET_PEEP(train->peep[peepIndex]);
+                Peep* peep = GET_PEEP(train->peep[peepIndex]);
                 peep->SetState(PEEP_STATE_LEAVING_RIDE);
                 peep->sub_state = PEEP_RIDE_LEAVE_VEHICLE;
             }
@@ -5239,7 +5239,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle)
 
         for (uint8_t i = 0; i < curVehicle->num_peeps; i++)
         {
-            rct_peep* peep = GET_PEEP(curVehicle->peep[i]);
+            Peep* peep = GET_PEEP(curVehicle->peep[i]);
             if (peep->outside_of_park == 0)
             {
                 decrement_guests_in_park();
@@ -8956,7 +8956,7 @@ loc_6DC743:
                 {
                     if (z == 2)
                     {
-                        rct_peep* peep = GET_PEEP(vehicle->peep[0]);
+                        Peep* peep = GET_PEEP(vehicle->peep[0]);
                         if (peep->id & 7)
                         {
                             z = 7;
@@ -8964,7 +8964,7 @@ loc_6DC743:
                     }
                     if (z == 6)
                     {
-                        rct_peep* peep = GET_PEEP(vehicle->peep[0]);
+                        Peep* peep = GET_PEEP(vehicle->peep[0]);
                         if (peep->id & 7)
                         {
                             z = 8;

@@ -20,7 +20,7 @@
 #include <string>
 
 struct GameAction;
-struct rct_peep;
+struct Peep;
 struct LocationXYZ16;
 
 namespace OpenRCT2
@@ -75,8 +75,8 @@ int32_t network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32_t index);
 int32_t network_can_perform_action(uint32_t groupindex, uint32_t index);
 int32_t network_can_perform_command(uint32_t groupindex, int32_t index);
-void network_set_pickup_peep(uint8_t playerid, rct_peep* peep);
-rct_peep* network_get_pickup_peep(uint8_t playerid);
+void network_set_pickup_peep(uint8_t playerid, Peep* peep);
+Peep* network_get_pickup_peep(uint8_t playerid);
 void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x);
 int32_t network_get_pickup_peep_old_x(uint8_t playerid);
 

@@ -1343,7 +1343,7 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
-                rct_peep* peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
+                Peep* peep = (Peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
                 move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
                 spriteIndexMap[i] = peep->sprite_index;
 
@@ -1362,7 +1362,7 @@ private:
 
         int i;
         Ride* ride;
-        rct_peep* peep;
+        Peep* peep;
 
         FOR_ALL_RIDES (i, ride)
         {
@@ -1399,7 +1399,7 @@ private:
         staff_update_greyed_patrol_areas();
     }
 
-    void ImportPeep(rct_peep* dst, rct1_peep* src)
+    void ImportPeep(Peep* dst, rct1_peep* src)
     {
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
@@ -1605,12 +1605,12 @@ private:
         }
     }
 
-    void FixPeepNextInQueue(rct_peep* peep, const uint16_t* spriteIndexMap)
+    void FixPeepNextInQueue(Peep* peep, const uint16_t* spriteIndexMap)
     {
         peep->next_in_queue = MapSpriteIndex(peep->next_in_queue, spriteIndexMap);
     }
 
-    void ImportStaffPatrolArea(rct_peep* staffmember)
+    void ImportStaffPatrolArea(Peep* staffmember)
     {
         // The patrol areas in RCT1 are encoded as follows, for coordinates x and y, separately for every staff member:
         // - Chop off the 7 lowest bits of the x and y coordinates, which leaves 5 bits per coordinate.

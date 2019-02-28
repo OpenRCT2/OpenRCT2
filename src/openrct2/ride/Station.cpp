@@ -207,7 +207,7 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
                 // Found a winner
                 if (vehicle->num_peeps != 0)
                 {
-                    rct_peep* peep = GET_PEEP(vehicle->peep[0]);
+                    Peep* peep = GET_PEEP(vehicle->peep[0]);
                     ride->race_winner = peep->sprite_index;
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 }
@@ -282,7 +282,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
 
         if (vehicle->num_peeps != 0)
         {
-            rct_peep* peep = &get_sprite(vehicle->peep[0])->peep;
+            Peep* peep = &get_sprite(vehicle->peep[0])->peep;
 
             switch (peep_get_easteregg_name_id(peep))
             {

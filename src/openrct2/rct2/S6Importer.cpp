@@ -1152,7 +1152,7 @@ public:
         dst->target_seat_rotation = src->target_seat_rotation;
     }
 
-    void ImportSpritePeep(rct_peep* dst, const RCT2SpritePeep* src)
+    void ImportSpritePeep(Peep* dst, const RCT2SpritePeep* src)
     {
         ImportSpriteCommonProperties((rct_sprite_common*)dst, src);
         dst->name_string_idx = src->name_string_idx;

@@ -16,7 +16,7 @@
 
 using loadsave_callback = void (*)(int32_t result, const utf8* path);
 using scenarioselect_callback = void (*)(const utf8* path);
-struct rct_peep;
+struct Peep;
 struct TileElement;
 struct rct_vehicle;
 
@@ -31,7 +31,7 @@ rct_window* window_editor_main_open();
 rct_window* window_editor_objective_options_open();
 rct_window* window_editor_scenario_options_open();
 rct_window* window_footpath_open();
-rct_window* window_guest_open(rct_peep* peep);
+rct_window* window_guest_open(Peep* peep);
 rct_window* window_land_open();
 rct_window* window_land_rights_open();
 rct_window* window_main_open();
@@ -48,7 +48,7 @@ rct_window* window_server_start_open();
 rct_window* window_shortcut_change_open(int32_t selected_key);
 rct_window* window_shortcut_keys_open();
 rct_window* window_staff_list_open();
-rct_window* window_staff_open(rct_peep* peep);
+rct_window* window_staff_open(Peep* peep);
 rct_window* window_themes_open();
 rct_window* window_title_exit_open();
 rct_window* window_title_logo_open();
@@ -82,7 +82,7 @@ void window_guest_list_init_vars();
 void window_guest_list_refresh_list();
 rct_window* window_guest_list_open();
 rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index);
-rct_window* window_staff_fire_prompt_open(rct_peep* peep);
+rct_window* window_staff_fire_prompt_open(Peep* peep);
 void window_title_editor_open(int32_t tab);
 void window_title_command_editor_open(struct TitleSequence* sequence, int32_t command, bool insert);
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);

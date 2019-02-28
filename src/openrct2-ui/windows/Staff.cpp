@@ -308,7 +308,7 @@ static PatrolAreaValue _staffPatrolAreaPaintValue = PatrolAreaValue::NONE;
  *
  *  rct2: 0x006BEE98
  */
-rct_window* window_staff_open(rct_peep* peep)
+rct_window* window_staff_open(Peep* peep)
 {
     rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
     if (w == nullptr)
@@ -351,7 +351,7 @@ rct_window* window_staff_open(rct_peep* peep)
  */
 void window_staff_disable_widgets(rct_window* w)
 {
-    rct_peep* peep = &get_sprite(w->number)->peep;
+    Peep* peep = &get_sprite(w->number)->peep;
     uint64_t disabled_widgets = (1 << WIDX_TAB_4);
 
     if (peep->staff_type == STAFF_TYPE_SECURITY)
@@ -444,7 +444,7 @@ void window_staff_set_page(rct_window* w, int32_t page)
  */
 void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
 
     switch (widgetIndex)
     {
@@ -563,7 +563,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     window_dropdown_show_text(x, y, extray, w->colours[1], 0, 2);
     gDropdownDefaultIndex = 0;
 
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
 
     // Disable clear patrol area if no area is set.
     if (!(gStaffModes[peep->staff_id] & 2))
@@ -586,7 +586,7 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     // Clear patrol
     if (dropdownIndex == 1)
     {
-        rct_peep* peep = GET_PEEP(w->number);
+        Peep* peep = GET_PEEP(w->number);
         for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
         {
             gStaffPatrolAreas[peep->staff_id * STAFF_PATROL_AREA_SIZE + i] = 0;
@@ -629,7 +629,7 @@ void window_staff_overview_update(rct_window* w)
  */
 static void window_staff_set_order(rct_window* w, int32_t order_id)
 {
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
 
     uint8_t newOrders = peep->staff_orders ^ (1 << order_id);
     auto staffSetOrdersAction = StaffSetOrdersAction(w->number, newOrders);
@@ -735,7 +735,7 @@ void window_staff_stats_update(rct_window* w)
     w->frame_no++;
     widget_invalidate(w, WIDX_TAB_3);
 
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
     if (peep->window_invalidate_flags & PEEP_INVALIDATE_STAFF_STATS)
     {
         peep->window_invalidate_flags &= ~PEEP_INVALIDATE_STAFF_STATS;
@@ -768,7 +768,7 @@ void window_staff_stats_invalidate(rct_window* w)
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
 
     set_format_arg(0, rct_string_id, peep->name_string_idx);
     set_format_arg(2, uint32_t, peep->id);
@@ -803,7 +803,7 @@ void window_staff_options_invalidate(rct_window* w)
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
 
     set_format_arg(0, rct_string_id, peep->name_string_idx);
     set_format_arg(2, uint32_t, peep->id);
@@ -881,7 +881,7 @@ void window_staff_overview_invalidate(rct_window* w)
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
 
     set_format_arg(0, rct_string_id, peep->name_string_idx);
     set_format_arg(2, uint32_t, peep->id);
@@ -946,7 +946,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw the centred label
     uint32_t argument1, argument2;
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
     get_arguments_from_action(peep, &argument1, &argument2);
     set_format_arg(0, uint32_t, argument1);
     set_format_arg(4, uint32_t, argument2);
@@ -1028,7 +1028,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     x = 14;
     y = 20;
 
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
 
     if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
         y++;
@@ -1095,7 +1095,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_staff_options_tab_paint(w, dpi);
     window_staff_stats_tab_paint(w, dpi);
 
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
 
     int32_t x = w->x + window_staff_stats_widgets[WIDX_RESIZE].left + 4;
     int32_t y = w->y + window_staff_stats_widgets[WIDX_RESIZE].top + 4;
@@ -1172,7 +1172,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
         w->picked_peep_frame = 0;
     }
 
-    rct_peep* peep;
+    Peep* peep;
     peep = GET_PEEP(w->number);
 
     uint32_t imageId = g_peep_animation_entries[peep->sprite_type].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
@@ -1213,7 +1213,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         if (sprite == nullptr || sprite->IsPeep() == false)
             return;
 
-        rct_peep& peep = sprite->peep;
+        Peep& peep = sprite->peep;
         if (peep.type != PEEP_TYPE_STAFF)
             return;
 
@@ -1253,7 +1253,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (sprite == nullptr || sprite->IsPeep() == false)
         return;
 
-    rct_peep& peep = sprite->peep;
+    Peep& peep = sprite->peep;
     if (peep.type != PEEP_TYPE_STAFF)
         return;
 
@@ -1325,7 +1325,7 @@ void window_staff_viewport_init(rct_window* w)
 
     focus.sprite_id = w->number;
 
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
 
     if (peep->state == PEEP_STATE_PICKED)
     {
@@ -1396,7 +1396,7 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
         return;
     }
 
-    rct_peep* peep = GET_PEEP(w->number);
+    Peep* peep = GET_PEEP(w->number);
     int32_t checkedIndex = -1;
     // This will be moved below where Items Checked is when all
     // of dropdown related functions are finished. This prevents

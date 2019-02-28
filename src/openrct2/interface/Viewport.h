@@ -18,7 +18,7 @@
 struct paint_session;
 struct paint_struct;
 struct rct_drawpixelinfo;
-struct rct_peep;
+struct Peep;
 struct TileElement;
 struct rct_vehicle;
 struct rct_window;
@@ -91,7 +91,7 @@ struct viewport_interaction_info
     {
         TileElement* tileElement;
         rct_sprite* sprite;
-        rct_peep* peep;
+        Peep* peep;
         rct_vehicle* vehicle;
     };
 };
@@ -126,8 +126,8 @@ void viewport_create(
 void viewport_update_position(rct_window* window);
 void viewport_update_sprite_follow(rct_window* window);
 void viewport_update_smart_sprite_follow(rct_window* window);
-void viewport_update_smart_guest_follow(rct_window* window, rct_peep* peep);
-void viewport_update_smart_staff_follow(rct_window* window, rct_peep* peep);
+void viewport_update_smart_guest_follow(rct_window* window, Peep* peep);
+void viewport_update_smart_staff_follow(rct_window* window, Peep* peep);
 void viewport_update_smart_vehicle_follow(rct_window* window);
 void viewport_render(
     rct_drawpixelinfo* dpi, rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,

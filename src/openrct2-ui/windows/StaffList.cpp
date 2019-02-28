@@ -314,7 +314,7 @@ void window_staff_list_update(rct_window* w)
         if (window_find_by_class(WC_MAP) != nullptr)
         {
             int32_t spriteIndex;
-            rct_peep* peep;
+            Peep* peep;
             gWindowMapFlashingFlags |= (1 << 2);
             FOR_ALL_STAFF (spriteIndex, peep)
             {
@@ -348,7 +348,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, x, y);
 
         uint16_t spriteIndex;
-        rct_peep *peep, *closestPeep = nullptr;
+        Peep *peep, *closestPeep = nullptr;
         int32_t closestPeepDistance = std::numeric_limits<int32_t>::max();
         FOR_ALL_STAFF (spriteIndex, peep)
         {
@@ -416,7 +416,7 @@ void window_staff_list_toolabort(rct_window* w, rct_widgetindex widgetIndex)
 void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     int32_t i, spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     uint16_t staffCount = 0;
     FOR_ALL_STAFF (spriteIndex, peep)
@@ -454,7 +454,7 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
 void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     int32_t i, spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     i = y / SCROLLABLE_ROW_HEIGHT;
     FOR_ALL_STAFF (spriteIndex, peep)
@@ -658,7 +658,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     int32_t spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
     uint32_t argument_1, argument_2;
     uint8_t selectedTab;
-    rct_peep* peep;
+    Peep* peep;
 
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
