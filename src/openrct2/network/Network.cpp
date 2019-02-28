@@ -31,7 +31,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "47"
+#define NETWORK_STREAM_VERSION "48"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static rct_peep* _pickup_peep = nullptr;
@@ -1958,6 +1958,7 @@ void Network::ProcessGameCommands()
 
                 if (mode == NETWORK_MODE_SERVER)
                 {
+                    // Note these are currently not reached as both commands are ported to GameActions
                     if (command == GAME_COMMAND_PLACE_SCENERY)
                     {
                         player->LastPlaceSceneryTime = player->LastActionTime;
