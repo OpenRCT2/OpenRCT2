@@ -331,9 +331,9 @@ template<> struct DataSerializerTraits<CoordsXY>
     }
     static void decode(IStream* stream, CoordsXY& coords)
     {
-        auto x = ByteSwapBE(stream->ReadValue<int16_t>());
-        auto y = ByteSwapBE(stream->ReadValue<int16_t>());
-        coords = CoordsXY(x, y);
+        auto x = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+        coords = CoordsXY{x, y};
     }
     static void log(IStream* stream, const CoordsXY& coords)
     {
