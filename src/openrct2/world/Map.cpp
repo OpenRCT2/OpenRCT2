@@ -19,6 +19,7 @@
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
+#include "../actions/WaterSetHeightAction.hpp"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
@@ -1402,12 +1403,18 @@ money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
                         height = tile_element->base_height + 2;
                     }
 
-                    money32 tileCost = game_do_command(
-                        xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
-                    if (tileCost == MONEY32_UNDEFINED)
+                    auto waterSetHeightAction = WaterSetHeightAction({ xi, yi }, height);
+                    waterSetHeightAction.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&waterSetHeightAction)
+                                                               : GameActions::QueryNested(&waterSetHeightAction);
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        gGameCommandErrorText = res->ErrorMessage;
+                        // set gCommonFormatArguments to res->ErrorArgs
                         return MONEY32_UNDEFINED;
+                    }
 
-                    cost += tileCost;
+                    cost += res->Cost;
                     waterHeightChanged = true;
                 }
             }
@@ -1490,11 +1497,18 @@ money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
                     if (height < min_height)
                         continue;
                     height -= 2;
-                    int32_t tileCost = game_do_command(
-                        xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
-                    if (tileCost == MONEY32_UNDEFINED)
+                    auto waterSetHeightAction = WaterSetHeightAction({ xi, yi }, height);
+                    waterSetHeightAction.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&waterSetHeightAction)
+                                                               : GameActions::QueryNested(&waterSetHeightAction);
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        gGameCommandErrorText = res->ErrorMessage;
+                        // set gCommonFormatArguments to res->ErrorArgs
                         return MONEY32_UNDEFINED;
-                    cost += tileCost;
+                    }
+
+                    cost += res->Cost;
                     waterHeightChanged = true;
                 }
             }
