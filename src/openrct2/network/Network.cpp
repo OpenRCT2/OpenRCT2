@@ -2793,20 +2793,24 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
         return;
     }
 
-    auto cooldownIt = player->CooldownTime.find(actionType);
-    if (cooldownIt != std::end(player->CooldownTime))
+    // Player who is hosting is not affected by cooldowns.
+    if ((player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) == 0)
     {
-        if (cooldownIt->second > 0)
+        auto cooldownIt = player->CooldownTime.find(actionType);
+        if (cooldownIt != std::end(player->CooldownTime))
         {
-            Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
-            return;
+            if (cooldownIt->second > 0)
+            {
+                Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
+                return;
+            }
         }
-    }
 
-    uint32_t cooldownTime = ga->GetCooldownTime();
-    if (cooldownTime > 0)
-    {
-        player->CooldownTime[actionType] = cooldownTime;
+        uint32_t cooldownTime = ga->GetCooldownTime();
+        if (cooldownTime > 0)
+        {
+            player->CooldownTime[actionType] = cooldownTime;
+        }
     }
 
     DataSerialiser stream(false);
