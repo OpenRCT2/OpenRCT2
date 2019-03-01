@@ -19,6 +19,7 @@
 #include <openrct2/actions/LargeSceneryRemoveAction.hpp>
 #include <openrct2/actions/SmallSceneryRemoveAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
+#include <openrct2/actions/FootpathSceneryRemoveAction.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
@@ -507,16 +508,8 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, int32
  */
 static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y)
 {
-    int32_t type = tileElement->AsPath()->GetPathEntryIndex();
-    if (tileElement->AsPath()->IsQueue())
-        type |= 0x80;
-
-    int32_t slopeData = tileElement->AsPath()->GetSlopeDirection();
-    if (tileElement->AsPath()->IsSloped())
-        slopeData |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
-
-    gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-    game_do_command(x, (slopeData << 8) | 1, y, (type << 8) | tileElement->base_height, GAME_COMMAND_PLACE_PATH, 0, 0);
+    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({x, y, tileElement->base_height * 8});
+    GameActions::Execute(&footpathSceneryRemoveAction);
 }
 
 /**

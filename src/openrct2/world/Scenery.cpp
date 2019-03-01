@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
+#include "../actions/FootpathSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../common.h"
 #include "../localisation/Localisation.h"
@@ -205,9 +206,9 @@ void scenery_remove_ghost_tool_placement()
             if (tileElement->base_height != z)
                 continue;
 
-            game_do_command(
-                x, 233 | (gSceneryPlacePathSlope << 8), y, z | (gSceneryPlacePathType << 8), GAME_COMMAND_PLACE_PATH,
-                gSceneryGhostPathObjectType & 0xFFFF0000, 0);
+            auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({x, y, z * 8});
+            footpathSceneryRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
+            GameActions::Execute(&footpathSceneryRemoveAction);
             break;
         } while (!(tileElement++)->IsLastForTile());
     }
