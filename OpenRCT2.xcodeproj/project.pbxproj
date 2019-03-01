@@ -32,6 +32,7 @@
 		2A43D2C22225B91A00E8F73B /* LoadOrQuitAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2BF2225B91A00E8F73B /* LoadOrQuitAction.hpp */; };
 		2A5354E922099C4F00A5440F /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5354E822099C4F00A5440F /* Network.cpp */; };
 		2A5C1368221E9F9000F8C245 /* TrackRemoveAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */; };
+		2A61CAFB2229E5C50095AD67 /* RideEntranceExitPlaceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A61CAFA2229E5C50095AD67 /* RideEntranceExitPlaceAction.hpp */; };
 		2AA050322209A8E300D3A922 /* StaffSetCostumeAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */; };
 		2AA050332209A8E300D3A922 /* StaffSetOrdersAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AA050312209A8E300D3A922 /* StaffSetOrdersAction.hpp */; };
 		2AAFD7FA220DD2DC002461A4 /* TrackPlaceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AAFD7F9220DD2DC002461A4 /* TrackPlaceAction.hpp */; };
@@ -638,6 +639,7 @@
 		2A5354EA22099C7200A5440F /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		2A5354EB22099D7700A5440F /* SignSetStyleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SignSetStyleAction.hpp; sourceTree = "<group>"; };
 		2A5C1367221E9F9000F8C245 /* TrackRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackRemoveAction.hpp; sourceTree = "<group>"; };
+		2A61CAFA2229E5C50095AD67 /* RideEntranceExitPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideEntranceExitPlaceAction.hpp; sourceTree = "<group>"; };
 		2AA050302209A8E300D3A922 /* StaffSetCostumeAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetCostumeAction.hpp; sourceTree = "<group>"; };
 		2AA050312209A8E300D3A922 /* StaffSetOrdersAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetOrdersAction.hpp; sourceTree = "<group>"; };
 		2AAFD7F9220DD2DC002461A4 /* TrackPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackPlaceAction.hpp; sourceTree = "<group>"; };
@@ -2024,6 +2026,7 @@
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				2A61CAFA2229E5C50095AD67 /* RideEntranceExitPlaceAction.hpp */,
 				2ACBAB162226850A0034FB91 /* RideSetSetting.hpp */,
 				2A43D2B92225B8D900E8F73B /* LoadOrQuitAction.hpp */,
 				2A43D2B72225B8D900E8F73B /* RideSetVehiclesAction.hpp */,
@@ -3346,6 +3349,7 @@
 				2AAFD7FA220DD2DC002461A4 /* TrackPlaceAction.hpp in Headers */,
 				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
 				2A5C1368221E9F9000F8C245 /* TrackRemoveAction.hpp in Headers */,
+				2A61CAFB2229E5C50095AD67 /* RideEntranceExitPlaceAction.hpp in Headers */,
 				C6352B861F477022006CCEE3 /* Endianness.h in Headers */,
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */,
