@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include "../OpenRCT2.h"
+#include "../management/Finance.h"
+#include "../world/Park.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
 
@@ -100,7 +103,7 @@ public:
         res->Cost = 250;
 
         return res;
-     }
+    }
 
     GameActionResult::Ptr Execute() const override
     {
@@ -114,7 +117,6 @@ public:
         footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
         if (!gCheatsDisableClearanceChecks)
             wall_remove_at_z(_coords.x, _coords.y, surfaceHeight);
-        
 
         SurfaceElement* surfaceElement = map_get_surface_element_at(_coords)->AsSurface();
         if (surfaceElement == nullptr)
@@ -132,7 +134,7 @@ public:
             surfaceElement->SetWaterHeight(0);
         }
         map_invalidate_tile_full(_coords.x, _coords.y);
-        
+
         res->Cost = 250;
 
         return res;
