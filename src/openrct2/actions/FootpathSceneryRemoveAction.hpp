@@ -76,7 +76,14 @@ public:
             log_error("Could not find path element.");
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
         }
+
+        if (!pathElement->AdditionIsGhost() && (GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            log_error("Tried to remove non ghost during ghost removal.");
+            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_REMOVE_THIS);
+        }
         auto res = MakeResult();
+        res->Position = _loc;
         res->Cost = MONEY(0, 0);
         return res;
     }
@@ -98,7 +105,10 @@ public:
         }
 
         pathElement->SetAddition(0);
+        map_invalidate_tile_full(_loc.x, _loc.y);
+
         auto res = MakeResult();
+        res->Position = _loc;
         res->Cost = MONEY(0, 0);
         return res;
     }

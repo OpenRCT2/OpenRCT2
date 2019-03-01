@@ -26,6 +26,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/actions/ClearAction.hpp>
+#include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
@@ -1816,14 +1817,18 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         }
         case SCENERY_TYPE_PATH_ITEM:
         {
-            int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | (parameter_1 & 0xFF00);
+            auto pathItemType = parameter_3 & 0xFF;
+            int32_t z = (parameter_2 & 0xFF) * 8;
+            auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ gridX, gridY, z }, pathItemType);
 
-            gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-            int32_t cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
-            if (cost != MONEY32_UNDEFINED)
-            {
-                audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-            }
+            footpathSceneryPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error != GA_ERROR::OK)
+                {
+                    return;
+                }
+                audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+            });
+            auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             break;
         }
         case SCENERY_TYPE_WALL:
@@ -2489,27 +2494,32 @@ static money32 try_place_ghost_scenery(
             break;
         }
         case 1:
+        {
             // Path Bits
             // 6e265b
-            cost = game_do_command(
-                map_tile.x,
-                (parameter_1 & 0xFF00)
-                    | (GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-                       | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY),
-                map_tile.y, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
+            auto pathItemType = parameter_3 & 0xFF;
+            int32_t z = (parameter_2 & 0xFF) * 8;
+            auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ map_tile.x, map_tile.y, z }, pathItemType);
+            footpathSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            footpathSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error != GA_ERROR::OK)
+                {
+                    return;
+                }
+                gSceneryGhostPosition.x = map_tile.x;
+                gSceneryGhostPosition.y = map_tile.y;
+                gSceneryGhostPosition.z = (parameter_2 & 0xFF);
+                gSceneryPlacePathSlope = ((parameter_1 >> 8) & 0xFF);
+                gSceneryPlacePathType = ((parameter_2 >> 8) & 0xFF);
+                gSceneryGhostPathObjectType = parameter_3;
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
-
-            gSceneryGhostPosition.x = map_tile.x;
-            gSceneryGhostPosition.y = map_tile.y;
-            gSceneryGhostPosition.z = (parameter_2 & 0xFF);
-            gSceneryPlacePathSlope = ((parameter_1 >> 8) & 0xFF);
-            gSceneryPlacePathType = ((parameter_2 >> 8) & 0xFF);
-            gSceneryGhostPathObjectType = parameter_3;
-
-            gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
+                gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
+            });
+            auto res = GameActions::Execute(&footpathSceneryPlaceAction);
+            if (res->Error != GA_ERROR::OK)
+                return MONEY32_UNDEFINED;
             break;
+        }
         case 2:
             // Walls
             // 6e26b0
