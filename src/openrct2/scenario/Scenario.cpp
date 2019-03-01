@@ -633,14 +633,7 @@ static bool scenario_prepare_rides_for_save()
                 }
             }
 
-            if (markTrackAsIndestructible)
-            {
-                it.element->flags |= TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
-            }
-            else
-            {
-                it.element->flags &= ~TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
-            }
+            it.element->AsTrack()->SetIsIndestructible(markTrackAsIndestructible);
         }
     } while (tile_element_iterator_next(&it));
 
@@ -695,7 +688,7 @@ void scenario_fix_ghosts(rct_s6_data* s6)
             RCT12TileElement* originalElement = reinterpret_cast<RCT12TileElement*>(map_get_first_element_at(x, y));
             do
             {
-                if (originalElement->flags & TILE_ELEMENT_FLAG_GHOST)
+                if (originalElement->IsGhost())
                 {
                     BannerIndex bannerIndex = tile_element_get_banner_index(reinterpret_cast<TileElement*>(originalElement));
                     if (bannerIndex != BANNER_INDEX_NULL)

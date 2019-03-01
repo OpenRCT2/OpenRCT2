@@ -117,7 +117,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE)
+        if (tileElement->AsTrack()->IsIndestructible())
         {
             return MakeResult(
                 GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
@@ -442,7 +442,7 @@ public:
 
             invalidate_test_results(ride);
             footpath_queue_chain_reset();
-            if (!gCheatsDisableClearanceChecks || !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
             {
                 footpath_remove_edges_at(mapLoc.x, mapLoc.y, tileElement);
             }

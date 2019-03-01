@@ -18,7 +18,7 @@
 
 #define MAX_ENTRANCE_FEE MONEY(200, 00)
 
-struct rct_peep;
+struct Peep;
 
 enum : uint32_t
 {
@@ -43,7 +43,7 @@ enum : uint32_t
     PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31),   // OpenRCT2 only!
 };
 
-struct rct_peep;
+struct Peep;
 struct rct_ride;
 
 namespace OpenRCT2
@@ -71,7 +71,7 @@ namespace OpenRCT2
         money32 CalculateCompanyValue() const;
         static uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
 
-        rct_peep* GenerateGuest();
+        Peep* GenerateGuest();
 
         void ResetHistories();
         void UpdateHistories();
@@ -83,7 +83,7 @@ namespace OpenRCT2
         uint32_t CalculateGuestGenerationProbability() const;
 
         void GenerateGuests();
-        rct_peep* GenerateGuestFromCampaign(int32_t campaign);
+        Peep* GenerateGuestFromCampaign(int32_t campaign);
     };
 } // namespace OpenRCT2
 

@@ -195,14 +195,16 @@ static void loc_6A6620(int32_t flags, int32_t x, int32_t y, TileElement* tileEle
 }
 
 /** rct2: 0x0098D7EC */
-static constexpr const uint8_t byte_98D7EC[] = { 207, 159, 63, 111 };
+static constexpr const QuarterTile SlopedFootpathQuarterTiles[] = {
+    { 0b1111, 0b1100 }, { 0b1111, 0b1001 }, { 0b1111, 0b0011 }, { 0b1111, 0b0110 }
+};
 
 static money32 footpath_element_insert(
     int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags, uint8_t pathItemType)
 {
     TileElement* tileElement;
     EntranceElement* entranceElement;
-    int32_t bl, zHigh;
+    int32_t zHigh;
     bool entrancePath = false, entranceIsSamePath = false;
 
     if (!map_check_free_elements_and_reorganise(1))
@@ -214,11 +216,11 @@ static money32 footpath_element_insert(
     // loc_6A649D:
     gFootpathPrice += MONEY(12, 00);
 
-    bl = 15;
+    QuarterTile quarterTile{ 0b1111, 0 };
     zHigh = z + 4;
     if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
     {
-        bl = byte_98D7EC[slope & TILE_ELEMENT_DIRECTION_MASK];
+        quarterTile = SlopedFootpathQuarterTiles[slope & TILE_ELEMENT_DIRECTION_MASK];
         zHigh += 2;
     }
 
@@ -238,9 +240,9 @@ static money32 footpath_element_insert(
     uint8_t crossingMode = (type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (slope != TILE_ELEMENT_SLOPE_FLAT)
         ? CREATE_CROSSING_MODE_NONE
         : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath && !gCheatsDisableClearanceChecks
+    if (!entrancePath
         && !map_can_construct_with_clear_at(
-               x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice, crossingMode))
+               x, y, z, zHigh, &map_place_non_scenery_clear_func, quarterTile, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;
 
     gFootpathGroundFlags = gMapGroundFlags;
@@ -285,11 +287,11 @@ static money32 footpath_element_insert(
             if (type & FOOTPATH_ELEMENT_INSERT_QUEUE)
                 pathElement->SetIsQueue(true);
             pathElement->SetAddition(pathItemType);
-            tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
-            tileElement->AsPath()->SetAdditionStatus(255);
-            pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+            pathElement->SetRideIndex(RIDE_ID_NULL);
+            pathElement->SetAdditionStatus(255);
+            pathElement->SetIsBroken(false);
             if (flags & GAME_COMMAND_FLAG_GHOST)
-                pathElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                pathElement->SetGhost(true);
 
             footpath_queue_chain_reset();
 
@@ -323,7 +325,7 @@ static money32 footpath_element_update(
     else if (pathItemType != 0)
     {
         if (!(flags & GAME_COMMAND_FLAG_GHOST) && tileElement->AsPath()->GetAddition() == pathItemType
-            && !(tileElement->flags & TILE_ELEMENT_FLAG_BROKEN))
+            && !(tileElement->AsPath()->IsBroken()))
         {
             if (flags & GAME_COMMAND_FLAG_4)
                 return MONEY32_UNDEFINED;
@@ -392,7 +394,7 @@ static money32 footpath_element_update(
         }
 
         tileElement->AsPath()->SetAddition(pathItemType);
-        tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+        tileElement->AsPath()->SetIsBroken(false);
         if (pathItemType != 0)
         {
             rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
@@ -421,7 +423,7 @@ static money32 footpath_element_update(
         else
             tileElement->AsPath()->SetIsQueue(false);
         tileElement->AsPath()->SetAddition(pathItemType);
-        tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+        tileElement->AsPath()->SetIsBroken(false);
 
         loc_6A6620(flags, x, y, tileElement);
     }
@@ -597,11 +599,11 @@ static money32 footpath_place_from_track(
     }
 
     gFootpathPrice += 120;
-    uint8_t bl = 15;
+    QuarterTile quarterTile = { 0b1111, 0 };
     int32_t zHigh = z + 4;
     if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP)
     {
-        bl = byte_98D7EC[slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP];
+        quarterTile = SlopedFootpathQuarterTiles[slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP];
         zHigh += 2;
     }
 
@@ -621,9 +623,9 @@ static money32 footpath_place_from_track(
     uint8_t crossingMode = (type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (slope != TILE_ELEMENT_SLOPE_FLAT)
         ? CREATE_CROSSING_MODE_NONE
         : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath && !gCheatsDisableClearanceChecks
+    if (!entrancePath
         && !map_can_construct_with_clear_at(
-               x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice, crossingMode))
+               x, y, z, zHigh, &map_place_non_scenery_clear_func, quarterTile, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;
 
     gFootpathGroundFlags = gMapGroundFlags;
@@ -676,15 +678,15 @@ static money32 footpath_place_from_track(
             if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
                 pathElement->SetSloped(true);
             if (type & (1 << 7))
-                tileElement->AsPath()->SetIsQueue(true);
+                pathElement->SetIsQueue(true);
             pathElement->SetAddition(0);
-            tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
-            tileElement->AsPath()->SetAdditionStatus(255);
-            tileElement->AsPath()->SetEdges(edges);
-            tileElement->AsPath()->SetCorners(0);
-            pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+            pathElement->SetRideIndex(RIDE_ID_NULL);
+            pathElement->SetAdditionStatus(255);
+            pathElement->SetEdges(edges);
+            pathElement->SetCorners(0);
+            pathElement->SetIsBroken(false);
             if (flags & (1 << 6))
-                pathElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                pathElement->SetGhost(true);
 
             map_invalidate_tile_full(x, y);
         }
@@ -1024,7 +1026,7 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
     uint16_t spriteIndex = sprite_get_first_in_quadrant(x, y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
-        rct_peep* peep = &get_sprite(spriteIndex)->peep;
+        Peep* peep = &get_sprite(spriteIndex)->peep;
         uint16_t nextSpriteIndex = peep->next_in_quadrant;
         if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2)
         {
@@ -1059,7 +1061,7 @@ bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t dire
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
         if (z0 >= tileElement->clearance_height)
             continue;
@@ -2033,6 +2035,40 @@ void PathElement::SetHasQueueBanner(bool hasQueueBanner)
         entryIndex |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
 }
 
+bool PathElement::IsBroken() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BROKEN) != 0;
+}
+
+void PathElement::SetIsBroken(bool isBroken)
+{
+    if (isBroken == true)
+    {
+        flags |= TILE_ELEMENT_FLAG_BROKEN;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+    }
+}
+
+bool PathElement::IsBlockedByVehicle() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
+}
+
+void PathElement::SetIsBlockedByVehicle(bool isBlocked)
+{
+    if (isBlocked == true)
+    {
+        flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
+    }
+}
+
 uint8_t PathElement::GetStationIndex() const
 {
     return (additions & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK) >> 4;
@@ -2397,7 +2433,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
 {
     auto pathElement = map_get_path_element_at(position.x, position.y, position.z);
-    return pathElement != nullptr && (pathElement->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE);
+    return pathElement != nullptr && pathElement->AsPath()->IsBlockedByVehicle();
 }
 
 /**

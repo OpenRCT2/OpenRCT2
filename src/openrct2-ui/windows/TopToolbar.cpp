@@ -26,7 +26,9 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/actions/ClearAction.hpp>
+#include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
+#include <openrct2/actions/SmallSceneryPlaceAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
@@ -587,8 +589,11 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     break;
                 }
                 case DDIDX_LOAD_GAME:
-                    game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+                {
+                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
+                    GameActions::Execute(&loadOrQuitAction);
                     break;
+                }
                 case DDIDX_SAVE_GAME:
                     tool_cancel();
                     save_game();
@@ -620,10 +625,13 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     screenshot_giant();
                     break;
                 case DDIDX_QUIT_TO_MENU:
+                {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
                     window_close_by_class(WC_TRACK_DELETE_PROMPT);
-                    game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
+                    GameActions::Execute(&loadOrQuitAction);
                     break;
+                }
                 case DDIDX_EXIT_OPENRCT2:
                     context_quit();
                     break;
@@ -1716,7 +1724,8 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             {
                 quantity = 35;
             }
-            int32_t successfulPlacements = 0;
+
+            bool forceError = true;
             for (int32_t q = 0; q < quantity; q++)
             {
                 int32_t zCoordinate = gSceneryPlaceZ;
@@ -1748,57 +1757,60 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     zAttemptRange = 20;
                 }
 
-                bool success = false;
+                uint8_t quadrant = parameter_2 & 0xFF;
+                uint8_t primaryColour = (parameter_2 >> 8) & 0xFF;
+                uint8_t secondaryColour = (parameter_3 >> 16) & 0xFF;
+                uint8_t type = (parameter_1 >> 8) & 0xFF;
+                auto success = GA_ERROR::UNKNOWN;
+                // Try find a valid z coordinate
                 for (; zAttemptRange != 0; zAttemptRange--)
                 {
-                    int32_t flags = GAME_COMMAND_FLAG_APPLY | (parameter_1 & 0xFF00);
-
-                    gDisableErrorWindowSound = true;
-                    gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-                    int32_t cost = game_do_command(
-                        cur_grid_x, flags, cur_grid_y, parameter_2, GAME_COMMAND_PLACE_SCENERY,
-                        gSceneryPlaceRotation | (parameter_3 & 0xFFFF0000), gSceneryPlaceZ);
-                    gDisableErrorWindowSound = false;
-
-                    if (cost != MONEY32_UNDEFINED)
-                    {
-                        window_close_by_class(WC_ERROR);
-                        audio_play_sound_at_location(
-                            SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-                        success = true;
-                        break;
-                    }
-
-                    if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES
-                        || gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+                        { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, type, primaryColour,
+                        secondaryColour);
+                    auto res = GameActions::Query(&smallSceneryPlaceAction);
+                    success = res->Error;
+                    if (res->Error == GA_ERROR::OK)
                     {
                         break;
                     }
 
-                    gSceneryPlaceZ += 8;
+                    if (res->Error == GA_ERROR::INSUFFICIENT_FUNDS)
+                    {
+                        break;
+                    }
+                    if (zAttemptRange != 1)
+                    {
+                        gSceneryPlaceZ += 8;
+                    }
                 }
 
-                if (success)
+                // Actually place
+                if (success == GA_ERROR::OK || ((q + 1 == quantity) && (forceError == true)))
                 {
-                    successfulPlacements++;
-                }
-                else
-                {
-                    if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES)
+                    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+                        { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, type, primaryColour,
+                        secondaryColour);
+
+                    smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+                        if (result->Error == GA_ERROR::OK)
+                        {
+                            audio_play_sound_at_location(
+                                SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                        }
+                    });
+                    auto res = GameActions::Execute(&smallSceneryPlaceAction);
+                    if (res->Error == GA_ERROR::OK)
+                    {
+                        forceError = false;
+                    }
+
+                    if (res->Error == GA_ERROR::INSUFFICIENT_FUNDS)
                     {
                         break;
                     }
                 }
                 gSceneryPlaceZ = zCoordinate;
-            }
-
-            if (successfulPlacements > 0)
-            {
-                window_close_by_class(WC_ERROR);
-            }
-            else
-            {
-                audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
             }
             break;
         }
@@ -2437,16 +2449,22 @@ static money32 try_place_ghost_scenery(
     switch (scenery_type)
     {
         case 0:
+        {
             // Small Scenery
             // 6e252b
-            cost = game_do_command(
-                map_tile.x,
-                parameter_1 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-                    | GAME_COMMAND_FLAG_GHOST,
-                map_tile.y, parameter_2, GAME_COMMAND_PLACE_SCENERY, parameter_3, gSceneryPlaceZ);
+            uint8_t quadrant = parameter_2 & 0xFF;
+            uint8_t primaryColour = (parameter_2 >> 8) & 0xFF;
+            uint8_t secondaryColour = (parameter_3 >> 16) & 0xFF;
+            uint8_t type = (parameter_1 >> 8) & 0xFF;
+            uint8_t rotation = parameter_3 & 0xFF;
+            auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+                { map_tile.x, map_tile.y, gSceneryPlaceZ, rotation }, quadrant, type, primaryColour, secondaryColour);
+            smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            auto res = GameActions::Execute(&smallSceneryPlaceAction);
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
+            cost = res->Cost;
+            if (res->Error != GA_ERROR::OK)
+                return MONEY32_UNDEFINED;
 
             gSceneryGhostPosition.x = map_tile.x;
             gSceneryGhostPosition.y = map_tile.y;
@@ -2469,6 +2487,7 @@ static money32 try_place_ghost_scenery(
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
             break;
+        }
         case 1:
             // Path Bits
             // 6e265b
@@ -3054,7 +3073,8 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
                     game_do_command(
                         gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
                         GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
-                    // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change cursor
+                    // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
+                    // cursor
                     gCurrentToolId = TOOL_CROSSHAIR;
                 }
             }

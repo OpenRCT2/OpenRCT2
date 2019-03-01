@@ -241,7 +241,7 @@ private:
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                     {
-                        tileElement->flags &= ~(1 << 6);
+                        tileElement->AsLargeScenery()->SetIsAccounted(false);
                     }
                 } while (!(tileElement++)->IsLastForTile());
             }

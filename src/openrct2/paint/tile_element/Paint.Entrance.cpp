@@ -91,7 +91,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
     _unk9E32BC = 0;
 
-    if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST)
+    if (tile_element->IsGhost())
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         image_id = CONSTRUCTION_MARKER;
@@ -157,8 +157,8 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    if (!is_exit && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST) && tile_element->AsEntrance()->GetRideIndex() != 0xFF
-        && stationObj->ScrollingMode != 0xFF)
+    if (!is_exit && !(tile_element->IsGhost()) && tile_element->AsEntrance()->GetRideIndex() != RIDE_ID_NULL
+        && stationObj->ScrollingMode != SCROLLING_MODE_NONE)
     {
         set_format_arg(0, uint32_t, 0);
         set_format_arg(4, uint32_t, 0);
@@ -225,7 +225,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
     _unk9E32BC = 0;
     uint32_t image_id, ghost_id = 0;
-    if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST)
+    if (tile_element->IsGhost())
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         ghost_id = CONSTRUCTION_MARKER;

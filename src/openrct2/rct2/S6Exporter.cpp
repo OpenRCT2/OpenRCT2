@@ -196,21 +196,9 @@ void S6Exporter::Export()
     std::memcpy(_s6.tile_elements, gTileElements, sizeof(_s6.tile_elements));
 
     _s6.next_free_tile_element_pointer_index = gNextFreeTileElementPointerIndex;
-    // Sprites needs to be reset before they get used.
-    // Might as well reset them in here to zero out the space and improve
-    // compression ratios. Especially useful for multiplayer servers that
-    // use zlib on the sent stream.
-    sprite_clear_all_unused();
-    for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
-    {
-        std::memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));
-    }
 
-    for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
-    {
-        _s6.sprite_lists_head[i] = gSpriteListHead[i];
-        _s6.sprite_lists_count[i] = gSpriteListCount[i];
-    }
+    ExportSprites();
+
     _s6.park_name = gParkName;
     // pad_013573D6
     _s6.park_name_args = gParkNameArgs;
@@ -761,6 +749,353 @@ void S6Exporter::ExportMarketingCampaigns()
             _s6.campaign_ride_index[campaign.Type] = campaign.ShopItemType;
         }
     }
+}
+
+void S6Exporter::ExportSprites()
+{
+    // Sprites needs to be reset before they get used.
+    // Might as well reset them in here to zero out the space and improve
+    // compression ratios. Especially useful for multiplayer servers that
+    // use zlib on the sent stream.
+    sprite_clear_all_unused();
+    for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
+    {
+        ExportSprite(&_s6.sprites[i], get_sprite(i));
+    }
+
+    for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
+    {
+        _s6.sprite_lists_head[i] = gSpriteListHead[i];
+        _s6.sprite_lists_count[i] = gSpriteListCount[i];
+    }
+}
+
+void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
+{
+    std::memset(dst, 0, sizeof(rct_sprite));
+    switch (src->generic.sprite_identifier)
+    {
+        case SPRITE_IDENTIFIER_NULL:
+            ExportSpriteCommonProperties(&dst->unknown, &src->generic);
+            break;
+        case SPRITE_IDENTIFIER_VEHICLE:
+            ExportSpriteVehicle(&dst->vehicle, &src->vehicle);
+            break;
+        case SPRITE_IDENTIFIER_PEEP:
+            ExportSpritePeep(&dst->peep, &src->peep);
+            break;
+        case SPRITE_IDENTIFIER_MISC:
+            ExportSpriteMisc(&dst->unknown, &src->generic);
+            break;
+        case SPRITE_IDENTIFIER_LITTER:
+            ExportSpriteLitter(&dst->litter, &src->litter);
+            break;
+        default:
+            ExportSpriteCommonProperties(&dst->unknown, &src->generic);
+            log_warning("Sprite identifier %d can not be exported.", src->generic.sprite_identifier);
+            break;
+    }
+}
+
+void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const rct_sprite_common* src)
+{
+    dst->sprite_identifier = src->sprite_identifier;
+    dst->type = src->type;
+    dst->next_in_quadrant = src->next_in_quadrant;
+    dst->next = src->next;
+    dst->previous = src->previous;
+    dst->linked_list_type_offset = src->linked_list_type_offset;
+    dst->sprite_height_negative = src->sprite_height_negative;
+    dst->sprite_index = src->sprite_index;
+    dst->flags = src->flags;
+    dst->x = src->x;
+    dst->y = src->y;
+    dst->z = src->z;
+    dst->sprite_width = src->sprite_width;
+    dst->sprite_height_positive = src->sprite_height_positive;
+    dst->sprite_left = src->sprite_left;
+    dst->sprite_top = src->sprite_top;
+    dst->sprite_right = src->sprite_right;
+    dst->sprite_bottom = src->sprite_bottom;
+    dst->sprite_direction = src->sprite_direction;
+}
+
+void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const rct_vehicle* src)
+{
+    ExportSpriteCommonProperties(dst, (const rct_sprite_common*)src);
+    dst->vehicle_sprite_type = src->vehicle_sprite_type;
+    dst->bank_rotation = src->bank_rotation;
+    dst->remaining_distance = src->remaining_distance;
+    dst->velocity = src->velocity;
+    dst->acceleration = src->acceleration;
+    dst->ride = src->ride;
+    dst->vehicle_type = src->vehicle_type;
+    dst->colours = src->colours;
+    dst->track_progress = src->track_progress;
+    dst->track_direction = src->track_direction;
+    dst->track_type = src->track_type;
+    dst->track_x = src->track_x;
+    dst->track_y = src->track_y;
+    dst->track_z = src->track_z;
+    dst->next_vehicle_on_train = src->next_vehicle_on_train;
+    dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
+    dst->next_vehicle_on_ride = src->next_vehicle_on_ride;
+    dst->var_44 = src->var_44;
+    dst->mass = src->mass;
+    dst->update_flags = src->update_flags;
+    dst->swing_sprite = src->swing_sprite;
+    dst->current_station = src->current_station;
+    dst->current_time = src->current_time;
+    dst->crash_z = src->crash_z;
+    dst->status = src->status;
+    dst->sub_state = src->sub_state;
+    for (size_t i = 0; i < std::size(src->peep); i++)
+    {
+        dst->peep[i] = src->peep[i];
+        dst->peep_tshirt_colours[i] = src->peep_tshirt_colours[i];
+    }
+    dst->num_seats = src->num_seats;
+    dst->num_peeps = src->num_peeps;
+    dst->next_free_seat = src->next_free_seat;
+    dst->restraints_position = src->restraints_position;
+    dst->crash_x = src->crash_x;
+    dst->sound2_flags = src->sound2_flags;
+    dst->spin_sprite = src->spin_sprite;
+    dst->sound1_id = src->sound1_id;
+    dst->sound1_volume = src->sound1_volume;
+    dst->sound2_id = src->sound2_id;
+    dst->sound2_volume = src->sound2_volume;
+    dst->sound_vector_factor = src->sound_vector_factor;
+    dst->time_waiting = src->time_waiting;
+    dst->speed = src->speed;
+    dst->powered_acceleration = src->powered_acceleration;
+    dst->dodgems_collision_direction = src->dodgems_collision_direction;
+    dst->animation_frame = src->animation_frame;
+    dst->var_C8 = src->var_C8;
+    dst->var_CA = src->var_CA;
+    dst->scream_sound_id = src->scream_sound_id;
+    dst->var_CD = src->var_CD;
+    dst->var_CE = src->var_CE;
+    dst->var_CF = src->var_CF;
+    dst->lost_time_out = src->lost_time_out;
+    dst->vertical_drop_countdown = src->vertical_drop_countdown;
+    dst->var_D3 = src->var_D3;
+    dst->mini_golf_current_animation = src->mini_golf_current_animation;
+    dst->mini_golf_flags = src->mini_golf_flags;
+    dst->ride_subtype = src->ride_subtype;
+    dst->colours_extended = src->colours_extended;
+    dst->seat_rotation = src->seat_rotation;
+    dst->target_seat_rotation = src->target_seat_rotation;
+}
+
+void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
+{
+    ExportSpriteCommonProperties(dst, (const rct_sprite_common*)src);
+    dst->name_string_idx = src->name_string_idx;
+    dst->next_x = src->next_x;
+    dst->next_y = src->next_y;
+    dst->next_z = src->next_z;
+    dst->next_flags = src->next_flags;
+    dst->outside_of_park = src->outside_of_park;
+    dst->state = (uint8_t)src->state;
+    dst->sub_state = src->sub_state;
+    dst->sprite_type = (uint8_t)src->sprite_type;
+    dst->peep_type = (uint8_t)src->type;
+    dst->no_of_rides = src->no_of_rides;
+    dst->tshirt_colour = src->tshirt_colour;
+    dst->trousers_colour = src->trousers_colour;
+    dst->destination_x = src->destination_x;
+    dst->destination_y = src->destination_y;
+    dst->destination_tolerance = src->destination_tolerance;
+    dst->var_37 = src->var_37;
+    dst->energy = src->energy;
+    dst->energy_target = src->energy_target;
+    dst->happiness = src->happiness;
+    dst->happiness_target = src->happiness_target;
+    dst->nausea = src->nausea;
+    dst->nausea_target = src->nausea_target;
+    dst->hunger = src->hunger;
+    dst->thirst = src->thirst;
+    dst->toilet = src->toilet;
+    dst->mass = src->mass;
+    dst->time_to_consume = src->time_to_consume;
+    dst->intensity = src->intensity;
+    dst->nausea_tolerance = src->nausea_tolerance;
+    dst->window_invalidate_flags = src->window_invalidate_flags;
+    dst->paid_on_drink = src->paid_on_drink;
+    for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
+    {
+        dst->ride_types_been_on[i] = src->ride_types_been_on[i];
+    }
+    dst->item_extra_flags = src->item_extra_flags;
+    dst->photo2_ride_ref = src->photo2_ride_ref;
+    dst->photo3_ride_ref = src->photo3_ride_ref;
+    dst->photo4_ride_ref = src->photo4_ride_ref;
+    dst->current_ride = src->current_ride;
+    dst->current_ride_station = src->current_ride_station;
+    dst->current_train = src->current_train;
+    dst->time_to_sitdown = src->time_to_sitdown;
+    dst->special_sprite = src->special_sprite;
+    dst->action_sprite_type = (uint8_t)src->action_sprite_type;
+    dst->next_action_sprite_type = (uint8_t)src->next_action_sprite_type;
+    dst->action_sprite_image_offset = src->action_sprite_image_offset;
+    dst->action = (uint8_t)src->action;
+    dst->action_frame = src->action_frame;
+    dst->step_progress = src->step_progress;
+    dst->next_in_queue = src->next_in_queue;
+    dst->direction = src->direction;
+    dst->interaction_ride_index = src->interaction_ride_index;
+    dst->time_in_queue = src->time_in_queue;
+    for (size_t i = 0; i < std::size(src->rides_been_on); i++)
+    {
+        dst->rides_been_on[i] = src->rides_been_on[i];
+    }
+    dst->id = src->id;
+    dst->cash_in_pocket = src->cash_in_pocket;
+    dst->cash_spent = src->cash_spent;
+    dst->time_in_park = src->time_in_park;
+    dst->rejoin_queue_timeout = src->rejoin_queue_timeout;
+    dst->previous_ride = src->previous_ride;
+    dst->previous_ride_time_out = src->previous_ride_time_out;
+    for (size_t i = 0; i < std::size(src->thoughts); i++)
+    {
+        auto srcThought = &src->thoughts[i];
+        auto dstThought = &dst->thoughts[i];
+        dstThought->type = (uint8_t)srcThought->type;
+        dstThought->item = srcThought->type;
+        dstThought->freshness = srcThought->freshness;
+        dstThought->fresh_timeout = srcThought->fresh_timeout;
+    }
+    dst->path_check_optimisation = src->path_check_optimisation;
+    dst->guest_heading_to_ride_id = src->guest_heading_to_ride_id;
+    dst->peep_is_lost_countdown = src->peep_is_lost_countdown;
+    dst->photo1_ride_ref = src->photo1_ride_ref;
+    dst->peep_flags = src->peep_flags;
+    dst->pathfind_goal = src->pathfind_goal;
+    for (size_t i = 0; i < std::size(src->pathfind_history); i++)
+    {
+        dst->pathfind_history[i] = src->pathfind_history[i];
+    }
+    dst->no_action_frame_num = src->no_action_frame_num;
+    dst->litter_count = src->litter_count;
+    dst->time_on_ride = src->time_on_ride;
+    dst->disgusting_count = src->disgusting_count;
+    dst->paid_to_enter = src->paid_to_enter;
+    dst->paid_on_rides = src->paid_on_rides;
+    dst->paid_on_food = src->paid_on_food;
+    dst->paid_on_souvenirs = src->paid_on_souvenirs;
+    dst->no_of_drinks = src->no_of_drinks;
+    dst->no_of_souvenirs = src->no_of_souvenirs;
+    dst->vandalism_seen = src->vandalism_seen;
+    dst->voucher_type = src->voucher_type;
+    dst->voucher_arguments = src->voucher_arguments;
+    dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
+    dst->angriness = src->angriness;
+    dst->time_lost = src->time_lost;
+    dst->days_in_queue = src->days_in_queue;
+    dst->balloon_colour = src->balloon_colour;
+    dst->umbrella_colour = src->umbrella_colour;
+    dst->hat_colour = src->hat_colour;
+    dst->favourite_ride = src->favourite_ride;
+    dst->favourite_ride_rating = src->favourite_ride_rating;
+    dst->item_standard_flags = src->item_standard_flags;
+}
+
+void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common* csrc)
+{
+    ExportSpriteCommonProperties(cdst, csrc);
+    switch (cdst->type)
+    {
+        case SPRITE_MISC_STEAM_PARTICLE:
+        {
+            auto src = (const RCT12SpriteSteamParticle*)csrc;
+            auto dst = (rct_steam_particle*)cdst;
+            dst->time_to_move = src->time_to_move;
+            dst->frame = src->frame;
+            break;
+        }
+        case SPRITE_MISC_MONEY_EFFECT:
+        {
+            auto src = (const RCT12SpriteMoneyEffect*)csrc;
+            auto dst = (rct_money_effect*)cdst;
+            dst->move_delay = src->move_delay;
+            dst->num_movements = src->num_movements;
+            dst->vertical = src->vertical;
+            dst->value = src->value;
+            dst->offset_x = src->offset_x;
+            dst->wiggle = src->wiggle;
+            break;
+        }
+        case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+        {
+            auto src = (const RCT12SpriteCrashedVehicleParticle*)csrc;
+            auto dst = (rct_crashed_vehicle_particle*)cdst;
+            dst->frame = src->frame;
+            dst->time_to_live = src->time_to_live;
+            dst->frame = src->frame;
+            dst->colour[0] = src->colour[0];
+            dst->colour[1] = src->colour[1];
+            dst->crashed_sprite_base = src->crashed_sprite_base;
+            dst->velocity_x = src->velocity_x;
+            dst->velocity_y = src->velocity_y;
+            dst->velocity_z = src->velocity_z;
+            dst->acceleration_x = src->acceleration_x;
+            dst->acceleration_y = src->acceleration_y;
+            dst->acceleration_z = src->acceleration_z;
+            break;
+        }
+        case SPRITE_MISC_EXPLOSION_CLOUD:
+        case SPRITE_MISC_EXPLOSION_FLARE:
+        case SPRITE_MISC_CRASH_SPLASH:
+        {
+            auto src = (const rct_sprite_generic*)csrc;
+            auto dst = (RCT12SpriteParticle*)cdst;
+            dst->frame = src->frame;
+            break;
+        }
+        case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+        case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+        {
+            auto src = (const rct_jumping_fountain*)csrc;
+            auto dst = (RCT12SpriteJumpingFountain*)cdst;
+            dst->num_ticks_alive = src->num_ticks_alive;
+            dst->frame = src->frame;
+            dst->fountain_flags = src->fountain_flags;
+            dst->target_x = src->target_x;
+            dst->target_y = src->target_y;
+            dst->iteration = src->iteration;
+            break;
+        }
+        case SPRITE_MISC_BALLOON:
+        {
+            auto src = (const rct_balloon*)csrc;
+            auto dst = (RCT12SpriteBalloon*)cdst;
+            dst->popped = src->popped;
+            dst->time_to_move = src->time_to_move;
+            dst->frame = src->frame;
+            dst->colour = src->colour;
+            break;
+        }
+        case SPRITE_MISC_DUCK:
+        {
+            auto src = (const rct_duck*)csrc;
+            auto dst = (RCT12SpriteDuck*)cdst;
+            dst->frame = src->frame;
+            dst->target_x = src->target_x;
+            dst->target_y = src->target_y;
+            dst->state = src->state;
+            break;
+        }
+        default:
+            log_warning("Misc. sprite type %d can not be exported.", cdst->type);
+            break;
+    }
+}
+
+void S6Exporter::ExportSpriteLitter(RCT12SpriteLitter* dst, const rct_litter* src)
+{
+    ExportSpriteCommonProperties(dst, src);
+    dst->creationTick = src->creationTick;
 }
 
 enum : uint32_t

@@ -13,6 +13,9 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../actions/LargeSceneryRemoveAction.hpp"
+#include "../actions/RideSetSetting.hpp"
+#include "../actions/RideSetVehiclesAction.hpp"
+#include "../actions/SmallSceneryPlaceAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/TrackPlaceAction.hpp"
 #include "../actions/TrackRemoveAction.hpp"
@@ -930,6 +933,7 @@ static int32_t track_design_place_scenery(
                 switch (entry_type)
                 {
                     case OBJECT_TYPE_SMALL_SCENERY:
+                    {
                         if (mode != 0)
                         {
                             continue;
@@ -962,15 +966,17 @@ static int32_t track_design_place_scenery(
 
                         gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
-                        cost = game_do_command(
-                            mapCoord.x, flags | (entry_index << 8), mapCoord.y, quadrant | (scenery->primary_colour << 8),
-                            GAME_COMMAND_PLACE_SCENERY, rotation | (scenery->secondary_colour << 16), z);
+                        auto smallSceneryPlace = SmallSceneryPlaceAction(
+                            { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entry_index, scenery->primary_colour,
+                            scenery->secondary_colour);
 
-                        if (cost == MONEY32_UNDEFINED)
-                        {
-                            cost = 0;
-                        }
+                        smallSceneryPlace.SetFlags(flags);
+                        auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace)
+                                                                   : GameActions::QueryNested(&smallSceneryPlace);
+
+                        cost = res->Error == GA_ERROR::OK ? res->Cost : 0;
                         break;
+                    }
                     case OBJECT_TYPE_LARGE_SCENERY:
                         if (mode != 0)
                         {
@@ -1960,28 +1966,32 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
 
     if (entryIndex != 0xFF)
     {
-        game_do_command(0, flags | (2 << 8), 0, ride->id | (entryIndex << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+        auto colour = ride_get_unused_preset_vehicle_colour(entryIndex);
+        auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
+        flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction)
+                                       : GameActions::QueryNested(&rideSetVehicleAction);
     }
 
-    game_do_command(0, flags | (td6->ride_mode << 8), 0, ride->id | (0 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-    game_do_command(0, flags | (0 << 8), 0, ride->id | (td6->number_of_trains << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
-    game_do_command(
-        0, flags | (1 << 8), 0, ride->id | (td6->number_of_cars_per_train << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
-    game_do_command(0, flags | (td6->depart_flags << 8), 0, ride->id | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-    game_do_command(0, flags | (td6->min_waiting_time << 8), 0, ride->id | (2 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-    game_do_command(0, flags | (td6->max_waiting_time << 8), 0, ride->id | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-    game_do_command(0, flags | (td6->operation_setting << 8), 0, ride->id | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-    game_do_command(
-        0, flags | ((td6->lift_hill_speed_num_circuits & 0x1F) << 8), 0, ride->id | (8 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0,
-        0);
+    set_operating_setting_nested(ride->id, RideSetSetting::Mode, td6->ride_mode, flags);
+    auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, td6->number_of_trains);
+    flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction2)
+                                   : GameActions::QueryNested(&rideSetVehicleAction2);
+    auto rideSetVehicleAction3 = RideSetVehicleAction(
+        ride->id, RideSetVehicleType::NumCarsPerTrain, td6->number_of_cars_per_train);
+    flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction3)
+                                   : GameActions::QueryNested(&rideSetVehicleAction3);
+    set_operating_setting_nested(ride->id, RideSetSetting::Departure, td6->depart_flags, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::MinWaitingTime, td6->min_waiting_time, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::MaxWaitingTime, td6->max_waiting_time, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::Operation, td6->operation_setting, flags);
+    set_operating_setting_nested(ride->id, RideSetSetting::LiftHillSpeed, td6->lift_hill_speed_num_circuits & 0x1F, flags);
 
     uint8_t num_circuits = td6->lift_hill_speed_num_circuits >> 5;
     if (num_circuits == 0)
     {
         num_circuits = 1;
     }
-    game_do_command(0, flags | (num_circuits << 8), 0, ride->id | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-
+    set_operating_setting_nested(ride->id, RideSetSetting::NumCircuits, num_circuits, flags);
     ride_set_to_default_inspection_interval(ride);
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = td6->version_and_colour_scheme & 3;
@@ -2078,7 +2088,7 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
         int32_t fz1 = fz0 + 4;
 
         if (!map_can_construct_with_clear_at(
-                fx, fy, fz0, fz1, &map_place_non_scenery_clear_func, 15, flags, &cost, CREATE_CROSSING_MODE_NONE))
+                fx, fy, fz0, fz1, &map_place_non_scenery_clear_func, { 0b1111, 0 }, flags, &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MONEY32_UNDEFINED;
         }
@@ -2129,7 +2139,7 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
         tileElement->AsTrack()->SetMazeEntry(mazeEntry);
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
-            tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+            tileElement->SetGhost(true);
         }
 
         map_invalidate_element(fx, fy, tileElement);

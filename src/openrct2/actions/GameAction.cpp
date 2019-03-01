@@ -131,7 +131,7 @@ namespace GameActions
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
-        if (!CheckActionInPausedMode(actionFlags))
+        if (topLevel == true && !CheckActionInPausedMode(actionFlags))
         {
             GameActionResult::Ptr result = std::make_unique<GameActionResult>();
 

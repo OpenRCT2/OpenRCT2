@@ -61,12 +61,13 @@ public:
 private:
     void UpdateProgress(const std::string& name, size_t count, size_t total)
     {
-        char str_downloading_objects[256];
-        set_format_arg(0, int16_t, count);
-        set_format_arg(2, int16_t, total);
-        set_format_arg(4, char*, name.c_str());
+        char str_downloading_objects[256]{};
+        uint8_t args[32]{};
+        set_format_arg_on(args, 0, int16_t, count);
+        set_format_arg_on(args, 2, int16_t, total);
+        set_format_arg_on(args, 4, char*, name.c_str());
 
-        format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, gCommonFormatArgs);
+        format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, args);
 
         auto intent = Intent(WC_NETWORK_STATUS);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));

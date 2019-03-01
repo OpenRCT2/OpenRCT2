@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../actions/LoadOrQuitAction.hpp"
 #include "../core/Guard.hpp"
 #include "../platform/platform.h"
 #include "../ui/UiContext.h"
@@ -30,10 +31,10 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "44"
+#define NETWORK_STREAM_VERSION "50"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
-static rct_peep* _pickup_peep = nullptr;
+static Peep* _pickup_peep = nullptr;
 static int32_t _pickup_peep_old_x = LOCATION_NULL;
 
 #ifndef DISABLE_NETWORK
@@ -1148,28 +1149,34 @@ void Network::SaveGroups()
 
 void Network::SetupDefaultGroups()
 {
+    // Admin group
     auto admin = std::make_unique<NetworkGroup>();
     admin->SetName("Admin");
     admin->ActionsAllowed.fill(0xFF);
     admin->Id = 0;
     group_list.push_back(std::move(admin));
+
+    // Spectator group
     auto spectator = std::make_unique<NetworkGroup>();
     spectator->SetName("Spectator");
-    spectator->ToggleActionPermission(0); // Chat
+    spectator->ToggleActionPermission(NETWORK_PERMISSION_CHAT);
     spectator->Id = 1;
     group_list.push_back(std::move(spectator));
+
+    // User group
     auto user = std::make_unique<NetworkGroup>();
     user->SetName("User");
     user->ActionsAllowed.fill(0xFF);
-    user->ToggleActionPermission(15); // Kick Player
-    user->ToggleActionPermission(16); // Modify Groups
-    user->ToggleActionPermission(17); // Set Player Group
-    user->ToggleActionPermission(18); // Cheat
-    user->ToggleActionPermission(20); // Passwordless login
-    user->ToggleActionPermission(21); // Modify Tile
-    user->ToggleActionPermission(22); // Edit Scenario Options
+    user->ToggleActionPermission(NETWORK_PERMISSION_KICK_PLAYER);
+    user->ToggleActionPermission(NETWORK_PERMISSION_MODIFY_GROUPS);
+    user->ToggleActionPermission(NETWORK_PERMISSION_SET_PLAYER_GROUP);
+    user->ToggleActionPermission(NETWORK_PERMISSION_CHEAT);
+    user->ToggleActionPermission(NETWORK_PERMISSION_PASSWORDLESS_LOGIN);
+    user->ToggleActionPermission(NETWORK_PERMISSION_MODIFY_TILE);
+    user->ToggleActionPermission(NETWORK_PERMISSION_EDIT_SCENARIO_OPTIONS);
     user->Id = 2;
     group_list.push_back(std::move(user));
+
     SetDefaultGroup(1);
 }
 
@@ -1951,6 +1958,7 @@ void Network::ProcessGameCommands()
 
                 if (mode == NETWORK_MODE_SERVER)
                 {
+                    // Note these are currently not reached as both commands are ported to GameActions
                     if (command == GAME_COMMAND_PLACE_SCENERY)
                     {
                         player->LastPlaceSceneryTime = player->LastActionTime;
@@ -2024,7 +2032,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
         }
 
         chat_history_add(text);
-        rct_peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
+        Peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
         if (pickup_peep)
         {
             game_command_playerid = connection_player->Id;
@@ -2551,7 +2559,8 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         else
         {
             // Something went wrong, game is not loaded. Return to main screen.
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
+            GameActions::Execute(&loadOrQuitAction);
         }
         if (has_to_free)
         {
@@ -2868,11 +2877,6 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
             Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
             return;
         }
-    }
-    // Don't let clients send pause or quit
-    else if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE || commandCommand == GAME_COMMAND_LOAD_OR_QUIT)
-    {
-        return;
     }
 
     game_command_queue.emplace(tick, args, playerid, callback, _commandId++);
@@ -3660,7 +3664,7 @@ int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
     return gNetwork.group_list[groupindex]->CanPerformCommand(index);
 }
 
-void network_set_pickup_peep(uint8_t playerid, rct_peep* peep)
+void network_set_pickup_peep(uint8_t playerid, Peep* peep)
 {
     if (gNetwork.GetMode() == NETWORK_MODE_NONE)
     {
@@ -3676,7 +3680,7 @@ void network_set_pickup_peep(uint8_t playerid, rct_peep* peep)
     }
 }
 
-rct_peep* network_get_pickup_peep(uint8_t playerid)
+Peep* network_get_pickup_peep(uint8_t playerid)
 {
     if (gNetwork.GetMode() == NETWORK_MODE_NONE)
     {
@@ -4045,11 +4049,11 @@ int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
 {
     return 0;
 }
-void network_set_pickup_peep(uint8_t playerid, rct_peep* peep)
+void network_set_pickup_peep(uint8_t playerid, Peep* peep)
 {
     _pickup_peep = peep;
 }
-rct_peep* network_get_pickup_peep(uint8_t playerid)
+Peep* network_get_pickup_peep(uint8_t playerid)
 {
     return _pickup_peep;
 }

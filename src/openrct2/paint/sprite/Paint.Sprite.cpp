@@ -57,7 +57,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         {
             if (spr->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
-                rct_peep* peep = (rct_peep*)spr;
+                Peep* peep = (Peep*)spr;
                 if (!(peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_HANDYMAN))
                 {
                     continue;
@@ -113,7 +113,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                 vehicle_paint(session, (rct_vehicle*)spr, image_direction);
                 break;
             case SPRITE_IDENTIFIER_PEEP:
-                peep_paint(session, (rct_peep*)spr, image_direction);
+                peep_paint(session, (Peep*)spr, image_direction);
                 break;
             case SPRITE_IDENTIFIER_MISC:
                 misc_paint(session, spr, image_direction);

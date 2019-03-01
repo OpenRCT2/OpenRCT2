@@ -16,6 +16,7 @@
 #include "../ReplayManager.h"
 #include "../Version.h"
 #include "../actions/ClimateSetAction.hpp"
+#include "../actions/RideSetSetting.hpp"
 #include "../actions/StaffSetCostumeAction.hpp"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
@@ -186,9 +187,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
-                    int32_t res = game_do_command(
-                        0, (type << 8) | 1, 0, (RIDE_SETTING_RIDE_TYPE << 8) | ride_index, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+                    int32_t res = set_operating_setting(ride_index, RideSetSetting::RideType, type);
                     if (res == MONEY32_UNDEFINED)
                     {
                         console.WriteFormatLine("That didn't work");
@@ -374,7 +373,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
     {
         if (argv[0] == "list")
         {
-            rct_peep* peep;
+            Peep* peep;
             int32_t i;
             FOR_ALL_STAFF (i, peep)
             {
@@ -410,7 +409,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
 
                 if (int_valid[0] && int_valid[1] && ((GET_PEEP(int_val[0])) != nullptr))
                 {
-                    rct_peep* peep = GET_PEEP(int_val[0]);
+                    Peep* peep = GET_PEEP(int_val[0]);
 
                     peep->energy = int_val[1];
                     peep->energy_target = int_val[1];
@@ -422,7 +421,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 bool int_valid[2] = { false };
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
-                rct_peep* peep = nullptr;
+                Peep* peep = nullptr;
                 if (!int_valid[0])
                 {
                     console.WriteLineError("Invalid staff ID");

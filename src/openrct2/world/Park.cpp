@@ -183,7 +183,7 @@ void update_park_fences(const CoordsXY coords)
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if (!(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if (!(tileElement->IsGhost()))
             {
                 fenceRequired = false;
                 break;
@@ -660,7 +660,7 @@ int32_t Park::CalculateParkRating() const
         int32_t happyGuestCount = 0;
         int32_t lostGuestCount = 0;
         uint16_t spriteIndex;
-        rct_peep* peep;
+        Peep* peep;
         FOR_ALL_GUESTS (spriteIndex, peep)
         {
             if (peep->outside_of_park == 0)
@@ -976,7 +976,7 @@ void Park::GenerateGuests()
     }
 }
 
-rct_peep* Park::GenerateGuestFromCampaign(int32_t campaign)
+Peep* Park::GenerateGuestFromCampaign(int32_t campaign)
 {
     auto peep = GenerateGuest();
     if (peep != nullptr)
@@ -986,9 +986,9 @@ rct_peep* Park::GenerateGuestFromCampaign(int32_t campaign)
     return peep;
 }
 
-rct_peep* Park::GenerateGuest()
+Peep* Park::GenerateGuest()
 {
-    rct_peep* peep = nullptr;
+    Peep* peep = nullptr;
     const auto spawn = get_random_peep_spawn();
     if (spawn != nullptr)
     {

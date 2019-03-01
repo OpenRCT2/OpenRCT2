@@ -15,6 +15,7 @@
 #include "GuestSetNameAction.hpp"
 #include "LandSetHeightAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
+#include "LoadOrQuitAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkMarketingAction.hpp"
 #include "ParkSetLoanAction.hpp"
@@ -25,14 +26,18 @@
 #include "PlacePeepSpawnAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
+#include "RideEntranceExitRemoveAction.hpp"
 #include "RideSetAppearanceAction.hpp"
 #include "RideSetColourScheme.hpp"
 #include "RideSetName.hpp"
 #include "RideSetPriceAction.hpp"
+#include "RideSetSetting.hpp"
 #include "RideSetStatus.hpp"
+#include "RideSetVehiclesAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
 #include "SignSetStyleAction.hpp"
+#include "SmallSceneryPlaceAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
 #include "StaffSetColourAction.hpp"
 #include "StaffSetCostumeAction.hpp"
@@ -59,11 +64,14 @@ namespace GameActions
         Register<PlacePeepSpawnAction>();
         Register<RideCreateAction>();
         Register<RideDemolishAction>();
+        Register<RideEntranceExitRemoveAction>();
         Register<RideSetColourSchemeAction>();
         Register<RideSetNameAction>();
         Register<RideSetPriceAction>();
         Register<RideSetStatusAction>();
         Register<RideSetAppearanceAction>();
+        Register<RideSetVehicleAction>();
+        Register<RideSetSettingAction>();
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
         Register<SignSetStyleAction>();
@@ -72,6 +80,7 @@ namespace GameActions
         Register<StaffSetOrdersAction>();
         Register<StaffSetCostumeAction>();
         Register<WallRemoveAction>();
+        Register<SmallSceneryPlaceAction>();
         Register<SmallSceneryRemoveAction>();
         Register<LargeSceneryRemoveAction>();
         Register<LandSetHeightAction>();
@@ -79,5 +88,6 @@ namespace GameActions
         Register<TrackRemoveAction>();
         Register<ClearAction>();
         Register<PauseToggleAction>();
+        Register<LoadOrQuitAction>();
     }
 } // namespace GameActions

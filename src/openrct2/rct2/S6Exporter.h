@@ -17,6 +17,8 @@
 
 interface IStream;
 struct ObjectRepositoryItem;
+struct RCT12SpriteBase;
+struct rct_sprite_common;
 
 /**
  * Class to export RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
@@ -36,6 +38,13 @@ public:
     void Export();
     void ExportRides();
     void ExportRide(rct2_ride* dst, const Ride* src);
+    void ExportSprites();
+    void ExportSprite(RCT2Sprite* dst, const rct_sprite* src);
+    void ExportSpriteCommonProperties(RCT12SpriteBase* dst, const rct_sprite_common* src);
+    void ExportSpriteVehicle(RCT2SpriteVehicle* dst, const rct_vehicle* src);
+    void ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src);
+    void ExportSpriteMisc(RCT12SpriteBase* dst, const rct_sprite_common* src);
+    void ExportSpriteLitter(RCT12SpriteLitter* dst, const rct_litter* src);
 
 private:
     rct_s6_data _s6{};

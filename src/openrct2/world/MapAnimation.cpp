@@ -173,7 +173,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_sprite* sprite;
-    rct_peep* peep;
+    Peep* peep;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -182,7 +182,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
-        if (tileElement->flags & (1 << 4))
+        if (tileElement->IsGhost())
             continue;
 
         sceneryEntry = tileElement->AsSmallScenery()->GetEntry();

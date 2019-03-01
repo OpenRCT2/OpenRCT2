@@ -140,7 +140,7 @@ private:
         }
 
         uint16_t spriteIndex;
-        rct_peep* peep;
+        Peep* peep;
         FOR_ALL_GUESTS (spriteIndex, peep)
         {
             uint8_t ride_id_bit = _rideIndex % 8;

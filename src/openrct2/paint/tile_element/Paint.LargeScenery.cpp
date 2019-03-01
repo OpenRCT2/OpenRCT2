@@ -248,7 +248,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
             image_id |= dword_F4387C;
         }
     }
-    if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+    if (tileElement->IsGhost())
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         sequenceNum = CONSTRUCTION_MARKER;

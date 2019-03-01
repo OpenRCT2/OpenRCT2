@@ -99,13 +99,9 @@ public:
                 entranceLoc.y += CoordsDirectionDelta[(_direction + 1) & 0x3].y * 2;
             }
 
-            if (!gCheatsDisableClearanceChecks)
+            if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, { 0b1111, 0 }))
             {
-                if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, 0xF))
-                {
-                    return std::make_unique<GameActionResult>(
-                        GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
-                }
+                return std::make_unique<GameActionResult>(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
             }
 
             // Check that entrance element does not already exist at this location
@@ -170,7 +166,7 @@ public:
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                newElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                newElement->SetGhost(true);
             }
 
             entranceElement->SetDirection(_direction);

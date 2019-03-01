@@ -1042,7 +1042,7 @@ static MapCoordsXY window_map_transform_to_map_coords(CoordsXY c)
  */
 static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 {
-    rct_peep* peep;
+    Peep* peep;
     uint16_t spriteIndex;
 
     FOR_ALL_PEEPS (spriteIndex, peep)

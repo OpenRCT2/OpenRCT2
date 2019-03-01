@@ -1426,7 +1426,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
             TileElement* tileElement = map_get_first_element_at(xx, yy);
             do
             {
-                if (tileElement->flags & (1 << 4))
+                if (tileElement->IsGhost())
                     continue;
 
                 int32_t type = tileElement->GetType();

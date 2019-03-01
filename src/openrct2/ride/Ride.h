@@ -20,7 +20,8 @@
 
 interface IObjectManager;
 class StationObject;
-struct rct_peep;
+struct Peep;
+struct Staff;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
 // The max number of different types of vehicle.
@@ -998,8 +999,8 @@ int32_t ride_get_default_mode(Ride* ride);
 int32_t ride_get_count();
 int32_t ride_get_total_queue_length(Ride* ride);
 int32_t ride_get_max_queue_time(Ride* ride);
-rct_peep* ride_get_queue_head_guest(Ride* ride, int32_t stationIndex);
-void ride_queue_insert_guest_at_front(Ride* ride, int32_t stationIndex, rct_peep* peep);
+Peep* ride_get_queue_head_guest(Ride* ride, int32_t stationIndex);
+void ride_queue_insert_guest_at_front(Ride* ride, int32_t stationIndex, Peep* peep);
 void ride_init_all();
 void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
@@ -1015,7 +1016,8 @@ int32_t ride_modify(CoordsXYE* input);
 void ride_remove_peeps(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
 void ride_get_status(const Ride* ride, rct_string_id* formatSecondary, int32_t* argument);
-rct_peep* ride_get_assigned_mechanic(Ride* ride);
+Staff* ride_get_mechanic(Ride* ride);
+Staff* ride_get_assigned_mechanic(Ride* ride);
 int32_t ride_get_total_length(Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
 int32_t ride_can_have_multiple_circuits(Ride* ride);
@@ -1030,7 +1032,7 @@ void ride_measurement_clear(Ride* ride);
 void ride_measurements_update();
 rct_ride_measurement* ride_get_measurement(Ride* ride, rct_string_id* message);
 void ride_breakdown_add_news_item(Ride* ride);
-rct_peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
+Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, int32_t isApplying);
 int32_t ride_is_valid_for_test(Ride* ride, int32_t goingToBeOpen, int32_t isApplying);
 int32_t ride_initialise_construction_window(Ride* ride);
@@ -1050,8 +1052,6 @@ void game_command_set_ride_status(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 void game_command_set_ride_name(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_set_ride_setting(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
@@ -1136,12 +1136,15 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
 void ride_set_ride_entry(Ride* ride, int32_t rideEntry);
 void ride_set_num_vehicles(Ride* ride, int32_t numVehicles);
 void ride_set_num_cars_per_vehicle(Ride* ride, int32_t numCarsPerVehicle);
+
+enum class RideSetSetting : uint8_t;
+money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t value);
+money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
+
 void game_command_set_ride_vehicles(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 void game_command_place_ride_entrance_or_exit(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_remove_ride_entrance_or_exit(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 void ride_set_to_default_inspection_interval(Ride* ride);

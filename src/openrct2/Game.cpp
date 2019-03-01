@@ -17,6 +17,7 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "ReplayManager.h"
+#include "actions/LoadOrQuitAction.hpp"
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"
@@ -467,20 +468,16 @@ int32_t game_do_command_p(
                 && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5)
                 && gGameCommandNestLevel == 1) /* Send only top-level commands */
             {
-                // Disable these commands over the network
-                if (command != GAME_COMMAND_LOAD_OR_QUIT)
+                network_send_gamecmd(
+                    *eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, game_command_callback_get_index(game_command_callback));
+                if (network_get_mode() == NETWORK_MODE_CLIENT)
                 {
-                    network_send_gamecmd(
-                        *eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, game_command_callback_get_index(game_command_callback));
-                    if (network_get_mode() == NETWORK_MODE_CLIENT)
-                    {
-                        // Client sent the command to the server, do not run it locally, just return.  It will run when server
-                        // sends it.
-                        game_command_callback = nullptr;
-                        // Decrement nest count
-                        gGameCommandNestLevel--;
-                        return cost;
-                    }
+                    // Client sent the command to the server, do not run it locally, just return.  It will run when server
+                    // sends it.
+                    game_command_callback = nullptr;
+                    // Decrement nest count
+                    gGameCommandNestLevel--;
+                    return cost;
                 }
             }
 
@@ -614,34 +611,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
         network_append_server_log(log_msg);
     }
-    else if (command == GAME_COMMAND_SET_RIDE_VEHICLES || command == GAME_COMMAND_SET_RIDE_SETTING)
-    {
-        // Get ride name
-        int ride_index = *edx & 0xFF;
-        Ride* ride = get_ride(ride_index);
-        char ride_name[128];
-        format_string(ride_name, 128, ride->name, &ride->name_arguments);
-
-        char* args[2] = {
-            (char*)player_name,
-            ride_name,
-        };
-
-        switch (command)
-        {
-            case GAME_COMMAND_SET_RIDE_APPEARANCE:
-                format_string(log_msg, 256, STR_LOG_RIDE_APPEARANCE, args);
-                break;
-            case GAME_COMMAND_SET_RIDE_VEHICLES:
-                format_string(log_msg, 256, STR_LOG_RIDE_VEHICLES, args);
-                break;
-            case GAME_COMMAND_SET_RIDE_SETTING:
-                format_string(log_msg, 256, STR_LOG_RIDE_SETTINGS, args);
-                break;
-        }
-
-        network_append_server_log(log_msg);
-    }
     else if (command == GAME_COMMAND_SET_PARK_OPEN)
     {
         // Log change in park open/close
@@ -661,8 +630,8 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         network_append_server_log(log_msg);
     }
     else if (
-        command == GAME_COMMAND_PLACE_SCENERY || command == GAME_COMMAND_PLACE_WALL
-        || command == GAME_COMMAND_PLACE_LARGE_SCENERY || command == GAME_COMMAND_PLACE_BANNER)
+        command == GAME_COMMAND_PLACE_WALL || command == GAME_COMMAND_PLACE_LARGE_SCENERY
+        || command == GAME_COMMAND_PLACE_BANNER)
     {
         uint8_t flags = *ebx & 0xFF;
         if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -751,33 +720,6 @@ bool game_is_paused()
 bool game_is_not_paused()
 {
     return gGamePaused == 0;
-}
-
-/**
- *
- *  rct2: 0x0066DB5F
- */
-static void game_load_or_quit(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
-    int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        switch (*edx & 0xFF)
-        {
-            case 0:
-                gSavePromptMode = *edi & 0xFF;
-                context_open_window(WC_SAVE_PROMPT);
-                break;
-            case 1:
-                window_close_by_class(WC_SAVE_PROMPT);
-                break;
-            default:
-                game_load_or_quit_no_save_prompt();
-                break;
-        }
-    }
-    *ebx = 0;
 }
 
 /**
@@ -907,7 +849,7 @@ void game_convert_strings_to_rct2(rct_s6_data* s6)
 void game_fix_save_vars()
 {
     // Recalculates peep count after loading a save to fix corrupted files
-    rct_peep* peep;
+    Peep* peep;
     uint16_t spriteIndex;
     uint16_t peepCount = 0;
     FOR_ALL_GUESTS (spriteIndex, peep)
@@ -921,7 +863,7 @@ void game_fix_save_vars()
     peep_sort();
 
     // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
-    std::vector<rct_peep*> peepsToRemove;
+    std::vector<Peep*> peepsToRemove;
 
     // Fix possibly invalid field values
     FOR_ALL_GUESTS (spriteIndex, peep)
@@ -1280,7 +1222,9 @@ void game_load_or_quit_no_save_prompt()
     switch (gSavePromptMode)
     {
         case PM_SAVE_BEFORE_LOAD:
-            game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+        {
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            GameActions::Execute(&loadOrQuitAction);
             tool_cancel();
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
@@ -1294,8 +1238,11 @@ void game_load_or_quit_no_save_prompt()
                 context_open_intent(&intent);
             }
             break;
+        }
         case PM_SAVE_BEFORE_QUIT:
-            game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
+        {
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            GameActions::Execute(&loadOrQuitAction);
             tool_cancel();
             if (input_test_flag(INPUT_FLAG_5))
             {
@@ -1305,6 +1252,7 @@ void game_load_or_quit_no_save_prompt()
             gFirstTimeSaving = true;
             title_load();
             break;
+        }
         default:
             openrct2_finish();
             break;
@@ -1317,17 +1265,17 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_load_or_quit,
+    nullptr,
     game_command_create_ride,
     game_command_demolish_ride,
     game_command_set_ride_status,
-    game_command_set_ride_vehicles,
-    game_command_set_ride_name,
-    game_command_set_ride_setting,
-    game_command_place_ride_entrance_or_exit,
-    game_command_remove_ride_entrance_or_exit,
     nullptr,
-    game_command_place_scenery,
+    game_command_set_ride_name,
+    nullptr,
+    game_command_place_ride_entrance_or_exit,
+    nullptr,
+    nullptr,
+    nullptr,
     game_command_set_water_height,
     game_command_place_footpath,
     game_command_place_footpath_from_track,

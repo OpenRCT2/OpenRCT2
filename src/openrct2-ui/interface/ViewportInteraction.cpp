@@ -41,7 +41,7 @@ static void viewport_interaction_remove_footpath_item(TileElement* tileElement, 
 static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y);
 static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y);
 static void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y);
-static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance);
+static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance);
 
 /**
  *
@@ -366,7 +366,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
             sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-            if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+            if (tileElement->AsPath()->IsBroken())
             {
                 set_map_tooltip_format_arg(2, rct_string_id, STR_BROKEN);
                 set_map_tooltip_format_arg(4, rct_string_id, sceneryEntry->name);
@@ -581,13 +581,13 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     }
 }
 
-static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance)
+static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance)
 {
     int32_t distance, closestDistance;
     uint16_t spriteIndex;
     rct_window* w;
     rct_viewport* viewport;
-    rct_peep *peep, *closestPeep;
+    Peep *peep, *closestPeep;
 
     w = window_find_from_point(x, y);
     if (w == nullptr)

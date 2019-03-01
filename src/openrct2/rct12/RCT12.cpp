@@ -31,6 +31,11 @@ bool RCT12TileElementBase::IsLastForTile() const
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
+bool RCT12TileElementBase::IsGhost() const
+{
+    return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+}
+
 uint8_t RCT12SurfaceElement::GetSlope() const
 {
     return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);

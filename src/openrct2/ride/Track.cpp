@@ -1015,7 +1015,7 @@ static money32 track_remove(
         return MONEY32_UNDEFINED;
     }
 
-    if (tileElement->flags & TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE)
+    if (tileElement->AsTrack()->IsIndestructible())
     {
         gGameCommandErrorText = STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION;
         return MONEY32_UNDEFINED;
@@ -1170,7 +1170,7 @@ static money32 track_remove(
 
         invalidate_test_results(ride);
         footpath_queue_chain_reset();
-        if (!gCheatsDisableClearanceChecks || !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+        if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
         {
             footpath_remove_edges_at(x, y, tileElement);
         }
@@ -1715,6 +1715,40 @@ void TrackElement::SetInverted(bool inverted)
     else
     {
         colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+}
+
+bool TrackElement::BlockBrakeClosed() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+}
+
+void TrackElement::SetBlockBrakeClosed(bool isClosed)
+{
+    if (isClosed)
+    {
+        flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    }
+}
+
+bool TrackElement::IsIndestructible() const
+{
+    return (flags & TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;
+}
+
+void TrackElement::SetIsIndestructible(bool isIndestructible)
+{
+    if (isIndestructible)
+    {
+        flags |= TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
     }
 }
 

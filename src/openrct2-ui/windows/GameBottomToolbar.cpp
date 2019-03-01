@@ -607,7 +607,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
                 break;
             }
 
-            rct_peep* peep = GET_PEEP(newsItem->Assoc);
+            Peep* peep = GET_PEEP(newsItem->Assoc);
             int32_t clip_x = 10, clip_y = 19;
 
             if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)

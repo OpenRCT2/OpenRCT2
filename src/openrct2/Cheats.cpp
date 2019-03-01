@@ -105,7 +105,7 @@ static void cheat_fix_vandalism()
         if (!(it.element)->AsPath()->HasAddition())
             continue;
 
-        it.element->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+        it.element->AsPath()->SetIsBroken(false);
     } while (tile_element_iterator_next(&it));
 
     gfx_invalidate_screen();
@@ -280,10 +280,11 @@ static void cheat_generate_guests(int32_t count)
 static void cheat_set_guest_parameter(int32_t parameter, int32_t value)
 {
     int32_t spriteIndex;
-    rct_peep* peep;
-
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    Peep* p;
+    FOR_ALL_GUESTS (spriteIndex, p)
     {
+        auto peep = p->AsGuest();
+        assert(peep != nullptr);
         switch (parameter)
         {
             case GUEST_PARAMETER_HAPPINESS:
@@ -327,10 +328,11 @@ static void cheat_set_guest_parameter(int32_t parameter, int32_t value)
 static void cheat_give_all_guests(int32_t object)
 {
     int32_t spriteIndex;
-    rct_peep* peep;
-
-    FOR_ALL_GUESTS (spriteIndex, peep)
+    Peep* p;
+    FOR_ALL_GUESTS (spriteIndex, p)
     {
+        auto peep = p->AsGuest();
+        assert(peep != nullptr);
         switch (object)
         {
             case OBJECT_MONEY:
@@ -356,7 +358,7 @@ static void cheat_give_all_guests(int32_t object)
 
 static void cheat_remove_all_guests()
 {
-    rct_peep* peep;
+    Peep* peep;
     rct_vehicle* vehicle;
     uint16_t spriteIndex, nextSpriteIndex;
     ride_id_t rideIndex;
@@ -418,7 +420,7 @@ static void cheat_remove_all_guests()
 static void cheat_explode_guests()
 {
     int32_t sprite_index;
-    rct_peep* peep;
+    Peep* peep;
 
     FOR_ALL_GUESTS (sprite_index, peep)
     {
@@ -432,7 +434,7 @@ static void cheat_explode_guests()
 static void cheat_set_staff_speed(uint8_t value)
 {
     uint16_t spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     FOR_ALL_STAFF (spriteIndex, peep)
     {
