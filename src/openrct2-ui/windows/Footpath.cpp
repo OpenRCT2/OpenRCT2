@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/actions/FootpathPlaceAction.hpp>
 #include <openrct2/Cheats.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -847,7 +848,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX,
  */
 static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 {
-    int32_t interactionType, currentType, selectedType, z, cost;
+    int32_t interactionType, currentType, selectedType, z;
     TileElement* tileElement;
 
     if (_footpathErrorOccured)
@@ -894,19 +895,18 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    cost = footpath_place(selectedType, x, y, z, currentType, GAME_COMMAND_FLAG_APPLY);
-
-    if (cost == MONEY32_UNDEFINED)
-    {
-        _footpathErrorOccured = true;
-    }
-    else if (gFootpathPrice != 0)
-    {
-        // bp = RCT2_ADDRESS_COMMAND_MAP_Z
-        // dx = RCT2_ADDRESS_COMMAND_MAP_Y
-        // cx = RCT2_ADDRESS_COMMAND_MAP_X
-        audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-    }
+    auto footpathPlaceAction = FootpathPlaceAction({ x, y, z * 8 }, currentType, selectedType);
+    footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+        if (result->Error == GA_ERROR::OK)
+        {
+            audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+        }
+        else
+        {
+            _footpathErrorOccured = true;
+        }
+    });
+    GameActions::Execute(&footpathPlaceAction);
 }
 
 /**

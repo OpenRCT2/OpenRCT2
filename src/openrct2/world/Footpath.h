@@ -170,6 +170,8 @@ extern const LocationXY16 BinUseOffsets[4];
 extern const LocationXY16 BenchUseOffsets[8];
 
 TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z);
+struct PathElement;
+PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope);
 void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z);
 void game_command_place_footpath(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);

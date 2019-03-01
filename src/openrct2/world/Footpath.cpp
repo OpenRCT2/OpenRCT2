@@ -156,7 +156,7 @@ TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
     return nullptr;
 }
 
-static TileElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope)
+PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope)
 {
     TileElement* tileElement;
     bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
@@ -168,7 +168,7 @@ static TileElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t
             && (tileElement->AsPath()->IsSloped() == isSloped)
             && (tileElement->AsPath()->GetSlopeDirection() == (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)))
         {
-            return tileElement;
+            return tileElement->AsPath();
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -424,7 +424,7 @@ static money32 footpath_place_real(
     }
 
     footpath_provisional_remove();
-    tileElement = map_get_footpath_element_slope((x / 32), (y / 32), z, slope);
+    tileElement = (TileElement*)map_get_footpath_element_slope((x / 32), (y / 32), z, slope);
     if (tileElement == nullptr)
     {
         return footpath_element_insert(type, x, y, z, slope, flags, pathItemType);
