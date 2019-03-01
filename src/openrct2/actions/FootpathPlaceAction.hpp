@@ -240,8 +240,8 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost,
-                   crossingMode))
+                _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost,
+                crossingMode))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
@@ -306,8 +306,8 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(), &res->Cost,
-                   crossingMode))
+                _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile,
+                GAME_COMMAND_FLAG_APPLY | GetFlags(), &res->Cost, crossingMode))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
@@ -433,5 +433,23 @@ private:
 
         footpath_update_queue_chains();
         map_invalidate_tile_full(_loc.x, _loc.y);
+    }
+
+    PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope) const
+    {
+        TileElement* tileElement;
+        bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+
+        tileElement = map_get_first_element_at(x, y);
+        do
+        {
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z
+                && (tileElement->AsPath()->IsSloped() == isSloped)
+                && (tileElement->AsPath()->GetSlopeDirection() == (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)))
+            {
+                return tileElement->AsPath();
+            }
+        } while (!(tileElement++)->IsLastForTile());
+        return nullptr;
     }
 };
