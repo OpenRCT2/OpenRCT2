@@ -11,11 +11,11 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/actions/FootpathPlaceAction.hpp>
 #include <openrct2/Cheats.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/FootpathPlaceAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectLimits.h>
@@ -899,7 +899,11 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
     footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {
-            audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+            // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
+            if (result->Cost != 0)
+            {
+                audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+            }
         }
         else
         {
@@ -982,43 +986,44 @@ static void window_footpath_construct()
     footpath_get_next_path_info(&type, &x, &y, &z, &slope);
 
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    money32 cost = footpath_place_remove_intersecting(
-        type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, gFootpathConstructDirection);
-
-    if (cost != MONEY32_UNDEFINED)
-    {
-        audio_play_sound_at_location(
-            SOUND_PLACE_ITEM, gFootpathConstructFromPosition.x, gFootpathConstructFromPosition.y,
-            gFootpathConstructFromPosition.z);
-
-        if (gFootpathConstructSlope == 0)
+    auto footpathPlaceAction = FootpathPlaceAction({ x, y, z * 8 }, slope, type, gFootpathConstructDirection);
+    footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+        if (result->Error == GA_ERROR::OK)
         {
-            gFootpathConstructValidDirections = 0xFF;
-        }
-        else
-        {
-            gFootpathConstructValidDirections = gFootpathConstructDirection;
-        }
+            audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
 
-        if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
-        {
-            viewport_set_visibility(1);
+            if (gFootpathConstructSlope == 0)
+            {
+                gFootpathConstructValidDirections = 0xFF;
+            }
+            else
+            {
+                gFootpathConstructValidDirections = gFootpathConstructDirection;
+            }
+
+            if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
+            {
+                viewport_set_visibility(1);
+            }
+
+            // If we have just built an upwards slope, the next path to construct is
+            // a bit higher. Note that the z returned by footpath_get_next_path_info
+            // already is lowered if we are building a downwards slope.
+            if (gFootpathConstructSlope == 2)
+            {
+                gFootpathConstructFromPosition.z = (z + 2) * 8;
+            }
+            else
+            {
+                gFootpathConstructFromPosition.z = z * 8;
+            }
+
+            gFootpathConstructFromPosition.x = x;
+            gFootpathConstructFromPosition.y = y;
         }
-
-        // If we have just built an upwards slope, the next path to construct is
-        // a bit higher. Note that the z returned by footpath_get_next_path_info
-        // already is lowered if we are building a downwards slope.
-        if (gFootpathConstructSlope == 2)
-        {
-            z += 2;
-        }
-
-        gFootpathConstructFromPosition.x = x;
-        gFootpathConstructFromPosition.y = y;
-        gFootpathConstructFromPosition.z = z << 3;
-    }
-
-    window_footpath_set_enabled_and_pressed_widgets();
+        window_footpath_set_enabled_and_pressed_widgets();
+    });
+    GameActions::Execute(&footpathPlaceAction);
 }
 
 /**

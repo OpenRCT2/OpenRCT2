@@ -11,6 +11,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../actions/FootpathPlaceAction.hpp"
 #include "../actions/FootpathRemoveAction.hpp"
 #include "../core/Guard.hpp"
 #include "../localisation/Localisation.h"
@@ -667,11 +668,11 @@ money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, 
 
     footpath_provisional_remove();
 
-    cost = footpath_place(
-        type, x, y, z, slope,
-        GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_4 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-            | GAME_COMMAND_FLAG_APPLY);
-    if (cost != MONEY32_UNDEFINED)
+    auto footpathPlaceAction = FootpathPlaceAction({ x, y, z * 8 }, slope, type);
+    footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+    auto res = GameActions::Execute(&footpathPlaceAction);
+    cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+    if (res->Error == GA_ERROR::OK)
     {
         gFootpathProvisionalType = type;
         gFootpathProvisionalPosition.x = x;
@@ -695,7 +696,7 @@ money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, 
 
     if (!scenery_tool_is_active())
     {
-        if (cost == MONEY32_UNDEFINED)
+        if (res->Error != GA_ERROR::OK)
         {
             // If we can't build this, don't show a virtual floor.
             virtual_floor_set_height(0);

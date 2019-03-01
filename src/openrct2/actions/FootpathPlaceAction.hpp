@@ -99,11 +99,11 @@ public:
         auto tileElement = map_get_footpath_element_slope((_loc.x / 32), (_loc.y / 32), _loc.z / 8, _slope);
         if (tileElement == nullptr)
         {
-            return footpath_element_insert_query(std::move(res));
+            return ElementInsertQuery(std::move(res));
         }
         else
         {
-            return footpath_element_update_query(tileElement, std::move(res));
+            return ElementUpdateQuery(tileElement, std::move(res));
         }
     }
 
@@ -145,16 +145,16 @@ public:
         auto tileElement = map_get_footpath_element_slope((_loc.x / 32), (_loc.y / 32), _loc.z / 8, _slope);
         if (tileElement == nullptr)
         {
-            return footpath_element_insert_execute(std::move(res));
+            return ElementInsertExecute(std::move(res));
         }
         else
         {
-            return footpath_element_update_execute(tileElement, std::move(res));
+            return ElementUpdateExecute(tileElement, std::move(res));
         }
     }
 
 private:
-    GameActionResult::Ptr footpath_element_update_query(PathElement * pathElement, GameActionResult::Ptr res) const
+    GameActionResult::Ptr ElementUpdateQuery(PathElement * pathElement, GameActionResult::Ptr res) const
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
@@ -163,14 +163,14 @@ private:
             res->Cost += MONEY(6, 00);
         }
 
-        if (GetFlags() & GAME_COMMAND_FLAG_4)
+        if (GetFlags() & GAME_COMMAND_FLAG_GHOST && !pathElement->IsGhost())
         {
             return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_BUILD_FOOTPATH_HERE);
         }
         return res;
     }
 
-    GameActionResult::Ptr footpath_element_update_execute(PathElement * pathElement, GameActionResult::Ptr res) const
+    GameActionResult::Ptr ElementUpdateExecute(PathElement * pathElement, GameActionResult::Ptr res) const
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
@@ -198,11 +198,11 @@ private:
         pathElement->SetAddition(0);
         pathElement->SetIsBroken(false);
 
-        loc_6A6620(pathElement);
+        RemoveIntersectingWalls(pathElement);
         return res;
     }
 
-    GameActionResult::Ptr footpath_element_insert_query(GameActionResult::Ptr res) const
+    GameActionResult::Ptr ElementInsertQuery(GameActionResult::Ptr res) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
@@ -268,7 +268,7 @@ private:
         return res;
     }
 
-    GameActionResult::Ptr footpath_element_insert_execute(GameActionResult::Ptr res) const
+    GameActionResult::Ptr ElementInsertExecute(GameActionResult::Ptr res) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
@@ -306,7 +306,7 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost,
+                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(), &res->Cost,
                    crossingMode))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
@@ -365,10 +365,10 @@ private:
             }
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
-                automatically_set_peep_spawn();
+                AutomaticallySetPeepSpawn();
             }
 
-            loc_6A6620(pathElement);
+            RemoveIntersectingWalls(pathElement);
         }
 
         // Prevent the place sound from being spammed
@@ -381,7 +381,7 @@ private:
      *
      *  rct2: 0x006A65AD
      */
-    void automatically_set_peep_spawn() const
+    void AutomaticallySetPeepSpawn() const
     {
         uint8_t direction = 0;
         if (_loc.x != 32)
@@ -410,7 +410,7 @@ private:
         peepSpawn->z = _loc.z;
     }
 
-    void loc_6A6620(PathElement * pathElement) const
+    void RemoveIntersectingWalls(PathElement * pathElement) const
     {
         if (pathElement->IsSloped() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
