@@ -16,10 +16,10 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/FootpathSceneryRemoveAction.hpp>
 #include <openrct2/actions/LargeSceneryRemoveAction.hpp>
 #include <openrct2/actions/SmallSceneryRemoveAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
-#include <openrct2/actions/FootpathSceneryRemoveAction.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
@@ -508,7 +508,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, int32
  */
 static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y)
 {
-    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({x, y, tileElement->base_height * 8});
+    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ x, y, tileElement->base_height * 8 });
     GameActions::Execute(&footpathSceneryRemoveAction);
 }
 

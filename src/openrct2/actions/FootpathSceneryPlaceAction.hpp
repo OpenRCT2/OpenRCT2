@@ -159,8 +159,8 @@ public:
         }
 
         // No change
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType
-            && !(pathElement->IsBroken()) && !pathElement->AdditionIsGhost())
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType && !(pathElement->IsBroken())
+            && !pathElement->AdditionIsGhost())
         {
             return res;
         }

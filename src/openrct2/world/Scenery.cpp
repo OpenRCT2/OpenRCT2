@@ -12,9 +12,9 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../actions/FootpathSceneryRemoveAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
-#include "../actions/FootpathSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../common.h"
 #include "../localisation/Localisation.h"
@@ -206,7 +206,7 @@ void scenery_remove_ghost_tool_placement()
             if (tileElement->base_height != z)
                 continue;
 
-            auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({x, y, z * 8});
+            auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ x, y, z * 8 });
             footpathSceneryRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&footpathSceneryRemoveAction);
             break;

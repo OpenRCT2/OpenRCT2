@@ -363,8 +363,7 @@ template<> struct DataSerializerTraits<CoordsXYZ>
     static void log(IStream* stream, const CoordsXYZ& coord)
     {
         char msg[128] = {};
-        snprintf(
-            msg, sizeof(msg), "CoordsXYZ(x = %d, y = %d, z = %d)", coord.x, coord.y, coord.z);
+        snprintf(msg, sizeof(msg), "CoordsXYZ(x = %d, y = %d, z = %d)", coord.x, coord.y, coord.z);
         stream->Write(msg, strlen(msg));
     }
 };
