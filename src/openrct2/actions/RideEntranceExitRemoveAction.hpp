@@ -49,14 +49,14 @@ public:
     {
         if (_rideIndex >= MAX_RIDES || _rideIndex == RIDE_ID_NULL)
         {
-            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+            log_warning("Invalid game command for ride %d", int32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         Ride* ride = get_ride(_rideIndex);
         if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid ride id %u for entrance/exit removal", _rideIndex);
+            log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -106,7 +106,8 @@ public:
         if (!found)
         {
             log_warning(
-                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, _rideIndex, _stationNum);
+                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, (int32_t)_rideIndex,
+                _stationNum);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -118,7 +119,7 @@ public:
         Ride* ride = get_ride(_rideIndex);
         if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid ride id %u for entrance/exit removal", _rideIndex);
+            log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -162,7 +163,8 @@ public:
         if (!found)
         {
             log_warning(
-                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, _rideIndex, _stationNum);
+                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, (int32_t)_rideIndex,
+                _stationNum);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 

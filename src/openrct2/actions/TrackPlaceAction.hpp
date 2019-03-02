@@ -67,20 +67,20 @@ public:
         Ride* ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride for track placement, rideIndex = %d", _rideIndex);
+            log_warning("Invalid ride for track placement, rideIndex = %d", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
         }
         if (ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid ride type, rideIndex = %d", _rideIndex);
+            log_warning("Invalid ride type, rideIndex = %d", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
         }
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
         {
-            log_warning("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex);
+            log_warning("Invalid ride subtype for track placement, rideIndex = %d", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
         }
@@ -414,7 +414,7 @@ public:
         Ride* ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride for track placement, rideIndex = %d", _rideIndex);
+            log_warning("Invalid ride for track placement, rideIndex = %d", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
         }
@@ -422,7 +422,7 @@ public:
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
         {
-            log_warning("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex);
+            log_warning("Invalid ride subtype for track placement, rideIndex = %d", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
         }
