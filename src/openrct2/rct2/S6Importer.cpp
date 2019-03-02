@@ -1248,6 +1248,7 @@ public:
         dst->paid_on_rides = src->paid_on_rides;
         dst->paid_on_food = src->paid_on_food;
         dst->paid_on_souvenirs = src->paid_on_souvenirs;
+        dst->no_of_food = src->no_of_food;
         dst->no_of_drinks = src->no_of_drinks;
         dst->no_of_souvenirs = src->no_of_souvenirs;
         dst->vandalism_seen = src->vandalism_seen;
