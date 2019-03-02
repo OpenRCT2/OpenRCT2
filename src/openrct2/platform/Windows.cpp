@@ -22,6 +22,7 @@
 #    include "../OpenRCT2.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
+#    include "../core/String.h"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
 #    include "../rct2/RCT2.h"
@@ -267,6 +268,8 @@ std::string platform_sanitise_filename(const std::string& path)
             return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
         },
         '_');
+
+    sanitised = String::Trim(sanitised);
 
     return sanitised;
 }
