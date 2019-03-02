@@ -58,8 +58,6 @@ if (NOT DISABLE_HTTP)
     endif ()
 endif ()
 
-find_package(benchmark 1.4 QUIET)
-
 if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE AND NOT MSVC)
         PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
@@ -87,6 +85,7 @@ add_library(${PROJECT} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RC
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT})
 
+find_package(benchmark 1.4 QUIET)
 if (benchmark_FOUND)
     message("Found Google benchmark, enabling support")
     set_target_properties(${PROJECT} PROPERTIES COMPILE_DEFINITIONS USE_BENCHMARK)
