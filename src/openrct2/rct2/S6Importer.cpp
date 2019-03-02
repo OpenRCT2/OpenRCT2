@@ -1226,7 +1226,7 @@ public:
             auto srcThought = &src->thoughts[i];
             auto dstThought = &dst->thoughts[i];
             dstThought->type = (PeepThoughtType)srcThought->type;
-            dstThought->item = srcThought->type;
+            dstThought->item = srcThought->item;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }

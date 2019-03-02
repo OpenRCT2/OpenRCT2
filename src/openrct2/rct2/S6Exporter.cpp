@@ -962,7 +962,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const rct_peep* src)
         auto srcThought = &src->thoughts[i];
         auto dstThought = &dst->thoughts[i];
         dstThought->type = (uint8_t)srcThought->type;
-        dstThought->item = srcThought->type;
+        dstThought->item = srcThought->item;
         dstThought->freshness = srcThought->freshness;
         dstThought->fresh_timeout = srcThought->fresh_timeout;
     }
