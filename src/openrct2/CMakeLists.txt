@@ -34,8 +34,13 @@ else ()
     endif ()
 endif ()
 
-if (NOT DISABLE_NETWORK AND NOT DISABLE_HTTP)
+if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
     find_package(OpenSSL 1.0.0 REQUIRED)
+    if(STATIC)
+        target_link_libraries(${PROJECT} ${SSL_STATIC_LIBRARIES})
+    else ()
+        target_link_libraries(${PROJECT} ${OPENSSL_LIBRARIES})
+    endif()
 endif ()
 
 if (NOT DISABLE_NETWORK AND WIN32)
@@ -50,11 +55,9 @@ if (NOT DISABLE_HTTP)
         PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
     endif ()
     if (STATIC)
-        target_link_libraries(${PROJECT} ${LIBCURL_STATIC_LIBRARIES}
-            ${SSL_STATIC_LIBRARIES})
+        target_link_libraries(${PROJECT} ${LIBCURL_STATIC_LIBRARIES})
     else ()
-        target_link_libraries(${PROJECT} ${LIBCURL_LIBRARIES}
-            ${OPENSSL_LIBRARIES})
+        target_link_libraries(${PROJECT} ${LIBCURL_LIBRARIES})
     endif ()
 endif ()
 
