@@ -108,30 +108,6 @@ uint8_t _rideConstructionState2;
 bool _stationConstructed;
 bool _deferClose;
 
-void game_command_callback_place_ride_entrance_or_exit(
-    [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi, [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-
-    Ride* ride = get_ride(gRideEntranceExitPlaceRideIndex);
-    if (ride_are_all_possible_entrances_and_exits_built(ride))
-    {
-        tool_cancel();
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
-        {
-            window_close_by_class(WC_RIDE_CONSTRUCTION);
-        }
-    }
-    else
-    {
-        gRideEntranceExitPlaceType ^= 1;
-        gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
-            ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
-            : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
-    }
-}
-
 /**
  *
  *  rct2: 0x006CA162

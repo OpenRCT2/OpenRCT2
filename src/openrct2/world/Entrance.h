@@ -37,6 +37,8 @@ extern uint8_t gParkEntranceGhostDirection;
 
 #define MAX_PARK_ENTRANCES 4
 
+constexpr int32_t MaxRideEntranceOrExitHeight = 244;
+
 extern std::vector<CoordsXYZD> gParkEntrances;
 
 extern CoordsXYZD gRideEntranceExitGhostPosition;
