@@ -208,7 +208,7 @@ std::string platform_sanitise_filename(const std::string& path)
 
     std::replace_if(
         sanitised.begin(), sanitised.end(),
-        [&prohibited](const std::string::value_type& ch) {
+        [&prohibited](const std::string::value_type& ch) -> bool {
             return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
         },
         '_');

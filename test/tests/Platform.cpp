@@ -7,9 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/platform/platform.h>
-
 #include <gtest/gtest.h>
+#include <openrct2/platform/platform.h>
 
 TEST(platform, sanitise_filename)
 {
@@ -27,4 +26,3 @@ TEST(platform, sanitise_filename)
     ASSERT_EQ("non trimmed", platform_sanitise_filename(" non trimmed "));
 #endif
 }
-

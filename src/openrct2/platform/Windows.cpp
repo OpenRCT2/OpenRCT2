@@ -22,7 +22,7 @@
 #    include "../OpenRCT2.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
-#    include "../core/String.h"
+#    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
 #    include "../rct2/RCT2.h"
@@ -264,7 +264,7 @@ std::string platform_sanitise_filename(const std::string& path)
 
     std::replace_if(
         sanitised.begin(), sanitised.end(),
-        [](const std::string::value_type& ch) {
+        [&prohibited](const std::string::value_type& ch) -> bool {
             return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
         },
         '_');
