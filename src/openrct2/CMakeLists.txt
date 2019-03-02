@@ -163,7 +163,7 @@ target_include_directories(${PROJECT} PRIVATE ${PNG_INCLUDE_DIRS}
 if (NOT DISABLE_HTTP)
     target_include_directories(${PROJECT} PRIVATE ${LIBCURL_INCLUDE_DIRS})
 endif ()
-if (NOT DISABLE_NETWORK)
+if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
     target_include_directories(${PROJECT} PUBLIC ${OPENSSL_INCLUDE_DIR})
 endif ()
 if (NOT DISABLE_TTF)
