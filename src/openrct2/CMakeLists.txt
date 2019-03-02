@@ -34,13 +34,19 @@ else ()
     endif ()
 endif ()
 
-# Third party libraries (optional)
-if (NOT DISABLE_HTTP_TWITCH OR NOT DISABLE_NETWORK)
+if (NOT DISABLE_HTTP)
     if (MSVC)
         find_package(curl REQUIRED)
         set(LIBCURL_LIBRARIES ${CURL_LIBRARIES})
     else ()
         PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
+    endif ()
+    if (STATIC)
+        target_link_libraries(${PROJECT} ${LIBCURL_STATIC_LIBRARIES}
+            ${SSL_STATIC_LIBRARIES})
+    else ()
+        target_link_libraries(${PROJECT} ${LIBCURL_LIBRARIES}
+            ${OPENSSL_LIBRARIES})
     endif ()
 endif ()
 if (NOT DISABLE_NETWORK)
@@ -107,20 +113,11 @@ if (NOT DISABLE_NETWORK)
     if (WIN32)
         target_link_libraries(${PROJECT} ws2_32 crypt32 wldap32 version winmm imm32 advapi32 shell32 ole32)
     endif ()
-
-    # our HTTP implementation requires use of threads
-    set(THREADS_PREFER_PTHREAD_FLAG ON)
-    find_package(Threads REQUIRED)
-    target_link_libraries(${PROJECT} Threads::Threads)
-
-    if (STATIC)
-        target_link_libraries(${PROJECT} ${LIBCURL_STATIC_LIBRARIES}
-                                         ${SSL_STATIC_LIBRARIES})
-    else ()
-        target_link_libraries(${PROJECT} ${LIBCURL_LIBRARIES}
-                                         ${OPENSSL_LIBRARIES})
-    endif ()
 endif ()
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(${PROJECT} Threads::Threads)
 
 if (NOT MINGW AND NOT MSVC)
     # For unicode code page conversion.
