@@ -34,6 +34,7 @@ private:
     std::vector<rct_object_entry> _downloadedEntries;
     size_t _currentDownloadIndex{};
     std::mutex _downloadedEntriesMutex;
+    bool _nextDownloadQueued{};
 
     // TODO static due to INTENT_EXTRA_CALLBACK not allowing a std::function
     inline static bool _downloadingObjects;
@@ -44,7 +45,7 @@ public:
         _entries = entries;
         _currentDownloadIndex = 0;
         _downloadingObjects = true;
-        NextDownload();
+        QueueNextDownload();
     }
 
     bool IsDownloading() const
@@ -56,6 +57,15 @@ public:
     {
         std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
         return _downloadedEntries;
+    }
+
+    void Update()
+    {
+        if (_nextDownloadQueued)
+        {
+            _nextDownloadQueued = false;
+            NextDownload();
+        }
     }
 
 private:
@@ -73,6 +83,11 @@ private:
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
         context_open_intent(&intent);
+    }
+
+    void QueueNextDownload()
+    {
+        _nextDownloadQueued = true;
     }
 
     void DownloadObject(const rct_object_entry& entry, const std::string name, const std::string_view url)
@@ -103,13 +118,13 @@ private:
                 {
                     throw std::runtime_error("Non 200 status");
                 }
-                NextDownload();
+                QueueNextDownload();
             });
         }
         catch (const std::exception&)
         {
             std::printf("  Failed to download %s\n", name.c_str());
-            NextDownload();
+            QueueNextDownload();
         }
     }
 
@@ -153,12 +168,12 @@ private:
                 else if (response.status == Http::Status::NotFound)
                 {
                     std::printf("  %s not found\n", name.c_str());
-                    NextDownload();
+                    QueueNextDownload();
                 }
                 else
                 {
                     std::printf("  %s query failed (status %d)\n", name.c_str(), (int32_t)response.status);
-                    NextDownload();
+                    QueueNextDownload();
                 }
             });
         }
@@ -393,6 +408,8 @@ static void window_object_load_error_update(rct_window* w)
     }
 
 #ifndef DISABLE_HTTP
+    _objDownloader.Update();
+
     // Remove downloaded objects from our invalid entry list
     if (_objDownloader.IsDownloading())
     {
