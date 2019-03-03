@@ -49,6 +49,11 @@ MemoryStream::MemoryStream(const void* data, size_t dataSize)
 {
 }
 
+MemoryStream::MemoryStream(MemoryStream&& mv)
+{
+    *this = std::move(mv);
+}
+
 MemoryStream::~MemoryStream()
 {
     if (_access & MEMORY_ACCESS::OWNER)
@@ -58,6 +63,21 @@ MemoryStream::~MemoryStream()
     _dataCapacity = 0;
     _dataSize = 0;
     _data = nullptr;
+}
+
+MemoryStream& MemoryStream::operator=(MemoryStream&& mv)
+{
+    _access = mv._access;
+    _dataCapacity = mv._dataCapacity;
+    _data = mv._data;
+    _position = mv._position;
+
+    mv._data = nullptr;
+    mv._position = nullptr;
+    mv._dataCapacity = 0;
+    mv._dataSize = 0;
+
+    return *this;
 }
 
 const void* MemoryStream::GetData() const
