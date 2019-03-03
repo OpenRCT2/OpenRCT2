@@ -123,7 +123,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
     {
         snapshot.SerialiseSprites(get_sprite(0), MAX_SPRITES, true);
 
-        log_info("Snapshot size: %u bytes\n", (uint32_t)snapshot.storedSprites.GetLength());
+        // log_info("Snapshot size: %u bytes\n", (uint32_t)snapshot.storedSprites.GetLength());
     }
 
     virtual const GameStateSnapshot_t* GetLinkedSnapshot(uint32_t tick) const override final

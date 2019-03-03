@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameStateSnapshots.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/LoadOrQuitAction.hpp"
@@ -36,6 +37,9 @@
 
 static Peep* _pickup_peep = nullptr;
 static int32_t _pickup_peep_old_x = LOCATION_NULL;
+
+// General chunk size is 63 kb.
+static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 
 #ifndef DISABLE_NETWORK
 
@@ -137,7 +141,9 @@ public:
     void SendPacketToClients(NetworkPacket& packet, bool front = false, bool gameCmd = false);
     bool CheckSRAND(uint32_t tick, uint32_t srand0);
     bool IsDesynchronised();
-    void CheckDesynchronizaton();
+    bool CheckDesynchronizaton();
+    void RequestDesyncedState();
+    NetworkServerState_t GetServerState() const;
     void KickPlayer(int32_t playerId);
     void SetPassword(const char* password);
     void ShutdownClient();
@@ -159,6 +165,8 @@ public:
     void BeginServerLog();
     void AppendServerLog(const std::string& s);
     void CloseServerLog();
+
+    void Client_Send_RequestGameState(uint32_t tick);
 
     void Client_Send_TOKEN();
     void Client_Send_AUTH(
@@ -317,7 +325,8 @@ private:
     std::string _host;
     uint16_t _port = 0;
     std::string _password;
-    bool _desynchronised = false;
+    NetworkServerState_t _serverState;
+    MemoryStream _serverGameState;
     uint32_t server_connect_time = 0;
     uint8_t default_group = 0;
     uint32_t _commandId;
@@ -336,6 +345,7 @@ private:
 private:
     std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
     std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
+    void Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Client_Joined(const char* name, const std::string& keyhash, NetworkConnection& connection);
@@ -361,6 +371,7 @@ private:
     void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
 
     uint8_t* save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const;
@@ -397,6 +408,7 @@ Network::Network()
     client_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Client_Handle_GAMEINFO;
     client_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Client_Handle_TOKEN;
     client_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Client_Handle_OBJECTS;
+    client_command_handlers[NETWORK_COMMAND_GAMESTATE] = &Network::Client_Handle_GAMESTATE;
     server_command_handlers.resize(NETWORK_COMMAND_MAX, nullptr);
     server_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Server_Handle_AUTH;
     server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
@@ -406,6 +418,7 @@ Network::Network()
     server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
     server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
     server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
+    server_command_handlers[NETWORK_COMMAND_REQUEST_GAMESTATE] = &Network::Server_Handle_REQUEST_GAMESTATE;
 
     _chat_log_fs << std::unitbuf;
     _server_log_fs << std::unitbuf;
@@ -703,7 +716,7 @@ int32_t Network::GetAuthStatus()
 
 uint32_t Network::GetServerTick()
 {
-    return server_tick;
+    return _serverState.server_tick;
 }
 
 uint8_t Network::GetPlayerID()
@@ -1014,15 +1027,17 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
 
 bool Network::IsDesynchronised()
 {
-    return gNetwork._desynchronised;
+    return _serverState.state == NETWORK_SERVER_STATE_DESYNCED;
 }
 
-void Network::CheckDesynchronizaton()
+bool Network::CheckDesynchronizaton()
 {
     // Check synchronisation
-    if (GetMode() == NETWORK_MODE_CLIENT && !_desynchronised && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
+    if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NETWORK_SERVER_STATE_DESYNCED
+        && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
     {
-        _desynchronised = true;
+        _serverState.state = NETWORK_SERVER_STATE_DESYNCED;
+        _serverState.desync_tick = gCurrentTicks;
 
         char str_desync[256];
         format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
@@ -1035,7 +1050,23 @@ void Network::CheckDesynchronizaton()
         {
             Close();
         }
+
+        return true;
     }
+
+    return false;
+}
+
+void Network::RequestDesyncedState()
+{
+    log_info("Requesting game state for tick %u", _serverState.desync_tick);
+
+    Client_Send_RequestGameState(_serverState.desync_tick);
+}
+
+NetworkServerState_t Network::GetServerState() const
+{
+    return _serverState;
 }
 
 void Network::KickPlayer(int32_t playerId)
@@ -1403,6 +1434,14 @@ void Network::CloseServerLog()
     _server_log_fs.close();
 }
 
+void Network::Client_Send_RequestGameState(uint32_t tick)
+{
+    log_verbose("requesting gamestate from tick %u", tick);
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    *packet << (uint32_t)NETWORK_COMMAND_REQUEST_GAMESTATE << tick;
+    _serverConnection->QueuePacket(std::move(packet));
+}
+
 void Network::Client_Send_TOKEN()
 {
     log_verbose("requesting token");
@@ -1531,7 +1570,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
         }
         return;
     }
-    size_t chunksize = 65000;
+    size_t chunksize = CHUNK_SIZE;
     for (size_t i = 0; i < out_size; i += chunksize)
     {
         size_t datasize = std::min(chunksize, out_size - i);
@@ -2313,6 +2352,42 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
     Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature);
 }
 
+void Network::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet)
+{
+    uint32_t tick;
+    packet >> tick;
+
+    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+    const GameStateSnapshot_t* snapshot = snapshots->GetLinkedSnapshot(tick);
+    if (snapshot)
+    {
+        MemoryStream snapshotMemory;
+        DataSerialiser ds(true, snapshotMemory);
+
+        snapshots->SerialiseSnapshot(const_cast<GameStateSnapshot_t&>(*snapshot), ds);
+
+        uint32_t bytesSent = 0;
+        uint32_t length = (uint32_t)snapshotMemory.GetLength();
+        while (bytesSent < length)
+        {
+            uint32_t dataSize = CHUNK_SIZE;
+            if (bytesSent + dataSize > snapshotMemory.GetLength())
+            {
+                dataSize = snapshotMemory.GetLength() - bytesSent;
+            }
+
+            std::unique_ptr<NetworkPacket> gameStateChunk(NetworkPacket::Allocate());
+            *gameStateChunk << (uint32_t)NETWORK_COMMAND_GAMESTATE << tick << length << bytesSent << dataSize;
+            gameStateChunk->Write((const uint8_t*)snapshotMemory.GetData() + bytesSent, dataSize);
+
+            connection.QueuePacket(std::move(gameStateChunk));
+
+            bytesSent += dataSize;
+        }
+    }
+}
+
 void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t auth_status;
@@ -2434,6 +2509,78 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         }
     }
     Client_Send_OBJECTS(requested_objects);
+}
+
+void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet)
+{
+    uint32_t tick;
+    uint32_t totalSize;
+    uint32_t offset;
+    uint32_t dataSize;
+
+    packet >> tick >> totalSize >> offset >> dataSize;
+
+    if (offset == 0)
+    {
+        // Reset
+        _serverGameState = MemoryStream();
+    }
+
+    _serverGameState.SetPosition(offset);
+
+    const uint8_t* data = packet.Read(dataSize);
+    _serverGameState.Write(data, dataSize);
+
+    log_verbose("Received Game State %.02f%%", ((float)_serverGameState.GetLength() / (float)totalSize) * 100.0f);
+
+    if (_serverGameState.GetLength() == totalSize)
+    {
+        _serverGameState.SetPosition(0);
+        DataSerialiser ds(false, _serverGameState);
+
+        IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+        GameStateSnapshot_t& serverSnapshot = snapshots->CreateSnapshot();
+        snapshots->SerialiseSnapshot(serverSnapshot, ds);
+
+        std::string outputBuffer;
+        char tempBuffer[128];
+
+        const GameStateSnapshot_t* desyncSnapshot = snapshots->GetLinkedSnapshot(tick);
+        if (desyncSnapshot)
+        {
+            GameStateCompareData_t cmpData = snapshots->Compare(serverSnapshot, *desyncSnapshot);
+            for (auto& change : cmpData.spriteChanges)
+            {
+                if (change.changeType == GameStateSpriteChange_t::EQUAL)
+                    continue;
+
+                if (change.changeType == GameStateSpriteChange_t::ADDED)
+                {
+                    snprintf(tempBuffer, sizeof(tempBuffer), "Sprite added, index: %u\n", change.spriteIndex);
+                    outputBuffer += tempBuffer;
+                }
+                else if (change.changeType == GameStateSpriteChange_t::REMOVED)
+                {
+                    snprintf(tempBuffer, sizeof(tempBuffer), "Sprite removed, index: %u\n", change.spriteIndex);
+                    outputBuffer += tempBuffer;
+                }
+                else if (change.changeType == GameStateSpriteChange_t::MODIFIED)
+                {
+                    snprintf(tempBuffer, sizeof(tempBuffer), "Sprite modifications, index: %u\n", change.spriteIndex);
+                    outputBuffer += tempBuffer;
+                    for (auto& diff : change.diffs)
+                    {
+                        snprintf(
+                            tempBuffer, sizeof(tempBuffer), "  %s::%s, len = %u, offset = %u\n", diff.structname,
+                            diff.fieldname, (uint32_t)diff.length, (uint32_t)diff.offset);
+                        outputBuffer += tempBuffer;
+                    }
+                }
+            }
+            log_warning(outputBuffer.c_str());
+        }
+    }
 }
 
 void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
@@ -2646,7 +2793,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
             _serverTickData.clear();
             server_tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
-            _desynchronised = false;
+            _serverState.state = NETWORK_SERVER_STATE_OK;
             _clientMapLoaded = true;
             gFirstTimeSaving = true;
 
@@ -3234,9 +3381,14 @@ bool network_is_desynchronised()
     return gNetwork.IsDesynchronised();
 }
 
-void network_check_desynchronization()
+bool network_check_desynchronization()
 {
     return gNetwork.CheckDesynchronizaton();
+}
+
+void network_request_desynced_state()
+{
+    return gNetwork.RequestDesyncedState();
 }
 
 void network_send_tick()
@@ -3995,6 +4147,11 @@ NetworkStats_t network_get_stats()
     return gNetwork.GetStats();
 }
 
+NetworkServerState_t network_get_server_state()
+{
+    return gNetwork.GetServerState();
+}
+
 #else
 int32_t network_get_mode()
 {
@@ -4022,7 +4179,11 @@ bool network_is_desynchronised()
 {
     return false;
 }
-void network_check_desynchronization()
+bool network_check_desynchronization()
+{
+    return false;
+}
+void network_request_desynced_state()
 {
 }
 void network_enqueue_game_action(const GameAction* action)
@@ -4239,5 +4400,9 @@ std::string network_get_version()
 NetworkStats_t network_get_stats()
 {
     return NetworkStats_t{};
+}
+NetworkServerState_t network_get_server_state()
+{
+    return NetworkServerState_t{};
 }
 #endif /* DISABLE_NETWORK */

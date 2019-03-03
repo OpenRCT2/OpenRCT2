@@ -39,7 +39,8 @@ int32_t network_begin_server(int32_t port, const std::string& address);
 int32_t network_get_mode();
 int32_t network_get_status();
 bool network_is_desynchronised();
-void network_check_desynchronization();
+bool network_check_desynchronization();
+void network_request_desynced_state();
 void network_send_tick();
 void network_update();
 void network_process_pending();
@@ -106,3 +107,4 @@ const utf8* network_get_server_provider_website();
 std::string network_get_version();
 
 NetworkStats_t network_get_stats();
+NetworkServerState_t network_get_server_state();

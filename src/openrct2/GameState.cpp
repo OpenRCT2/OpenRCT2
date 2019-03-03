@@ -239,13 +239,25 @@ void GameState::UpdateLogic()
 
     if (network_get_mode() == NETWORK_MODE_SERVER)
     {
+        CreateStateSnapshot();
+
         // Send current tick out.
         network_send_tick();
     }
     else if (network_get_mode() == NETWORK_MODE_CLIENT)
     {
         // Check desync.
-        network_check_desynchronization();
+        bool desynced = network_check_desynchronization();
+        if (desynced)
+        {
+            log_verbose("Desynchronized");
+
+            // Create snapshot from this tick so we can compare it later
+            // as we won't pause the game on this event.
+            CreateStateSnapshot();
+
+            network_request_desynced_state();
+        }
     }
 
     date_update();
@@ -308,9 +320,6 @@ void GameState::UpdateLogic()
 
     network_flush();
 
-    // Create snapshot of current state before incrementing next tick.
-    CreateStateSnapshot();
-
     gCurrentTicks++;
     gScenarioTicks++;
     gSavedAge++;
@@ -323,48 +332,4 @@ void GameState::CreateStateSnapshot()
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
     snapshots->LinkSnapshot(snapshot, gCurrentTicks);
-
-    std::string outputBuffer;
-    char tempBuffer[128];
-
-    // Proof of concept.
-    // Compares current state with the previous one and prints the output.
-    if (true)
-    {
-        const GameStateSnapshot_t* lastSnapshot = snapshots->GetLinkedSnapshot(gCurrentTicks - 1);
-        if (lastSnapshot)
-        {
-            GameStateCompareData_t cmpData = snapshots->Compare(*lastSnapshot, snapshot);
-            for (auto& change : cmpData.spriteChanges)
-            {
-                if (change.changeType == GameStateSpriteChange_t::EQUAL)
-                    continue;
-
-                if (change.changeType == GameStateSpriteChange_t::ADDED)
-                {
-                    sprintf_s(tempBuffer, "Sprite added, index: %u\n", change.spriteIndex);
-                    outputBuffer += tempBuffer;
-                }
-                else if (change.changeType == GameStateSpriteChange_t::REMOVED)
-                {
-                    sprintf_s(tempBuffer, "Sprite removed, index: %u\n", change.spriteIndex);
-                    outputBuffer += tempBuffer;
-                }
-                else if (change.changeType == GameStateSpriteChange_t::MODIFIED)
-                {
-                    sprintf_s(tempBuffer, "Sprite modifications, index: %u\n", change.spriteIndex);
-                    outputBuffer += tempBuffer;
-                    for (auto& diff : change.diffs)
-                    {
-                        sprintf_s(
-                            tempBuffer, "  %s::%s, len = %u, offset = %u\n", diff.structname, diff.fieldname,
-                            (uint32_t)diff.length, (uint32_t)diff.offset);
-                        outputBuffer += tempBuffer;
-                    }
-                }
-            }
-
-            printf(outputBuffer.c_str());
-        }
-    }
 }

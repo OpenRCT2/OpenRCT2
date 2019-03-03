@@ -66,11 +66,28 @@ enum NETWORK_COMMAND
     NETWORK_COMMAND_OBJECTS,
     NETWORK_COMMAND_GAME_ACTION,
     NETWORK_COMMAND_PLAYERINFO,
+    NETWORK_COMMAND_REQUEST_GAMESTATE,
+    NETWORK_COMMAND_GAMESTATE,
     NETWORK_COMMAND_MAX,
     NETWORK_COMMAND_INVALID = -1
 };
 
 static_assert(NETWORK_COMMAND::NETWORK_COMMAND_GAMEINFO == 9, "Master server expects this to be 9");
+
+enum NETWORK_SERVER_STATE
+{
+    NETWORK_SERVER_STATE_OK,
+    NETWORK_SERVER_STATE_DESYNCED,
+};
+
+struct NetworkServerState_t
+{
+    NETWORK_SERVER_STATE state = NETWORK_SERVER_STATE_OK;
+    uint32_t desync_tick = 0;
+    uint32_t server_tick = 0;
+    uint32_t server_srand0 = 0;
+    uint32_t server_srand0_tick = 0;
+};
 
 // Structure is used for networking specific fields with meaning,
 // this structure can be used in combination with DataSerialiser
