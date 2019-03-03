@@ -76,6 +76,7 @@
 - Fix: [#8720] Desync due to boats colliding with ghost pieces.
 - Fix: [#8739] Savegame from original game crashes when cruising through map.
 - Fix: [#8742] Access violation in vehicle_update_sound_params.
+- Fix: [#8804] Raising water shows money effect at the bottom rather than new height.
 - Fix: [#8811] Some fields in the sv6 save file not being copied correctly.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
