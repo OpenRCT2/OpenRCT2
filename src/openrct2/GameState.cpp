@@ -12,6 +12,7 @@
 #include "Context.h"
 #include "Editor.h"
 #include "Game.h"
+#include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ReplayManager.h"
@@ -307,7 +308,63 @@ void GameState::UpdateLogic()
 
     network_flush();
 
+    // Create snapshot of current state before incrementing next tick.
+    CreateStateSnapshot();
+
     gCurrentTicks++;
     gScenarioTicks++;
     gSavedAge++;
+}
+
+void GameState::CreateStateSnapshot()
+{
+    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+    auto& snapshot = snapshots->CreateSnapshot();
+    snapshots->Capture(snapshot);
+    snapshots->LinkSnapshot(snapshot, gCurrentTicks);
+
+    std::string outputBuffer;
+    char tempBuffer[128];
+
+    // Proof of concept.
+    // Compares current state with the previous one and prints the output.
+    if (true)
+    {
+        const GameStateSnapshot_t* lastSnapshot = snapshots->GetLinkedSnapshot(gCurrentTicks - 1);
+        if (lastSnapshot)
+        {
+            GameStateCompareData_t cmpData = snapshots->Compare(*lastSnapshot, snapshot);
+            for (auto& change : cmpData.spriteChanges)
+            {
+                if (change.changeType == GameStateSpriteChange_t::EQUAL)
+                    continue;
+
+                if (change.changeType == GameStateSpriteChange_t::ADDED)
+                {
+                    sprintf_s(tempBuffer, "Sprite added, index: %u\n", change.spriteIndex);
+                    outputBuffer += tempBuffer;
+                }
+                else if (change.changeType == GameStateSpriteChange_t::REMOVED)
+                {
+                    sprintf_s(tempBuffer, "Sprite removed, index: %u\n", change.spriteIndex);
+                    outputBuffer += tempBuffer;
+                }
+                else if (change.changeType == GameStateSpriteChange_t::MODIFIED)
+                {
+                    sprintf_s(tempBuffer, "Sprite modifications, index: %u\n", change.spriteIndex);
+                    outputBuffer += tempBuffer;
+                    for (auto& diff : change.diffs)
+                    {
+                        sprintf_s(
+                            tempBuffer, "  %s::%s, len = %u, offset = %u\n", diff.structname, diff.fieldname,
+                            (uint32_t)diff.length, (uint32_t)diff.offset);
+                        outputBuffer += tempBuffer;
+                    }
+                }
+            }
+
+            printf(outputBuffer.c_str());
+        }
+    }
 }

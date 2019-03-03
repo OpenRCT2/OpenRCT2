@@ -42,5 +42,8 @@ namespace OpenRCT2
         void InitAll(int32_t mapSize);
         void Update();
         void UpdateLogic();
+
+    private:
+        void CreateStateSnapshot();
     };
 } // namespace OpenRCT2
