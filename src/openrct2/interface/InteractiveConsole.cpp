@@ -1549,6 +1549,32 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_
     return 0;
 }
 
+static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv)
+{
+    int32_t desyncType = 0;
+    if (argv.size() >= 1)
+    {
+        desyncType = atoi(argv[0].c_str());
+    }
+    switch (desyncType)
+    {
+        case 0: // Peep t-shirts.
+        {
+            for (int i = 0; i < MAX_SPRITES; i++)
+            {
+                rct_sprite* sprite = get_sprite(i);
+                if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_PEEP)
+                    continue;
+
+                Peep* peep = sprite->AsPeep();
+                peep->tshirt_colour = util_rand() & 0xFF;
+            }
+        }
+        break;
+    }
+    return 0;
+}
+
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
 static int32_t cc_abort([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
@@ -1670,6 +1696,7 @@ static constexpr const console_command console_command_table[] = {
     { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
     { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
+    { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Peep Shirts]"},
     
 };
 // clang-format on
