@@ -156,8 +156,8 @@ struct GameStateSnapshots : public IGameStateSnapshots
 #define COMPARE_FIELD(struc, field)                                                                                            \
     if (memcmp(&spriteBase.field, &spriteCmp.field, sizeof(struc::field)) != 0)                                                \
     {                                                                                                                          \
-        changeData.diffs.push_back(                                                                                            \
-            GameStateSpriteChange_t::Diff_t{ offsetof(struc, field), sizeof(struc::field), #struc, #field });                  \
+        uintptr_t offset = reinterpret_cast<uintptr_t>(&spriteBase.field) - reinterpret_cast<uintptr_t>(&spriteBase);          \
+        changeData.diffs.push_back(GameStateSpriteChange_t::Diff_t{ (size_t)offset, sizeof(struc::field), #struc, #field });   \
     }
 
     void CompareSpriteDataCommon(
