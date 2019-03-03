@@ -40,6 +40,7 @@
 - Fix: [#7975] Inspection flag not cleared for rides which are set to never be inspected (original bug).
 - Fix: [#7985] Giant Screenshot ignores 'Map rendering' settings.
 - Fix: [#7987] Broken track designs increase money by MONEY32_UNDEFINED.
+- Fix: [#7991] Scenery and footpaths on Construction Rights tiles can be deleted using Clear Scenery.
 - Fix: [#8034] Vanilla sprites are broken when making screenshots from command line.
 - Fix: [#8045] Crash when switching between languages.
 - Fix: [#8062] In multiplayer warnings for unstable cheats are shown when disabling them.
