@@ -1429,7 +1429,7 @@ money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
         int16_t water_height_z = z >> 16;
         int16_t base_height_z = z;
         z = water_height_z;
-        if (z != 0)
+        if (z == 0)
             z = base_height_z;
 
         LocationXYZ16 coord;
