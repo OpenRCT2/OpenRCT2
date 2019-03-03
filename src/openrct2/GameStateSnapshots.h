@@ -10,13 +10,17 @@
 #pragma once
 
 #include "common.h"
+#include "core/DataSerialiser.h"
 
 #include <memory>
 #include <set>
 #include <string>
 
 struct GameStateSnapshot_t;
-struct GameStateCompareData_t;
+
+struct GameStateCompareData_t
+{
+};
 
 /*
  * Interface to create and capture game states. It only allows to have 32 active snapshots
@@ -26,20 +30,22 @@ struct GameStateCompareData_t;
  */
 interface IGameStateSnapshots
 {
+    virtual ~IGameStateSnapshots() = default;
+
     /*
      * Creates a new empty snapshot, oldest snapshot will be removed.
      */
-    virtual GameStateSnapshot_t* CreateSnapshot() = 0;
+    virtual GameStateSnapshot_t& CreateSnapshot() = 0;
 
     /*
      * Links the snapshot to a specific game tick.
      */
-    virtual void LinkSnapshot(GameStateSnapshot_t * snapshot, uint32_t tick) = 0;
+    virtual void LinkSnapshot(GameStateSnapshot_t & snapshot, uint32_t tick) = 0;
 
     /*
      * This will fill the snapshot with the current game state in a compact form.
      */
-    virtual void Capture(GameStateSnapshot_t * snapshot) = 0;
+    virtual void Capture(GameStateSnapshot_t & snapshot) = 0;
 
     /*
      * Returns the snapshot for a given tick in the history, nullptr if not found.
@@ -49,10 +55,12 @@ interface IGameStateSnapshots
     /*
      * Serialisation of GameStateSnapshot_t
      */
-    virtual void SerialiseSnapshot(GameStateSnapshot_t * snapshot, DataSerialiser & serialiser) const = 0;
+    virtual void SerialiseSnapshot(GameStateSnapshot_t & snapshot, DataSerialiser & serialiser) const = 0;
 
     /*
      * Compares two states resulting GameStateCompareData_t with all mismatches stored.
      */
-    virtual GameStateCompareData_t Compare(const GameStateSnapshot_t* left, const GameStateSnapshot_t* right) const = 0;
+    virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& left, const GameStateSnapshot_t& right) const = 0;
 };
+
+std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots();
