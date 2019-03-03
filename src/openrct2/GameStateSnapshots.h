@@ -18,8 +18,32 @@
 
 struct GameStateSnapshot_t;
 
+struct GameStateSpriteChange_t
+{
+    enum
+    {
+        REMOVED,
+        ADDED,
+        MODIFIED,
+        EQUAL
+    };
+
+    struct Diff_t
+    {
+        size_t offset;
+        size_t length;
+        const char* fieldname;
+    };
+
+    uint8_t changeType;
+    uint32_t spriteIndex;
+
+    std::vector<Diff_t> diffs;
+};
+
 struct GameStateCompareData_t
 {
+    std::vector<GameStateSpriteChange_t> changes;
 };
 
 /*
@@ -60,7 +84,7 @@ interface IGameStateSnapshots
     /*
      * Compares two states resulting GameStateCompareData_t with all mismatches stored.
      */
-    virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& left, const GameStateSnapshot_t& right) const = 0;
+    virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const = 0;
 };
 
 std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots();

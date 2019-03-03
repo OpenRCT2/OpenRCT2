@@ -19,6 +19,7 @@ struct GameStateSnapshot_t
     uint32_t tick = InvalidTick;
 
     MemoryStream storedSprites;
+    MemoryStream parkParameters;
 
     void SerialiseSprites(rct_sprite* sprites, const size_t numSprites, bool saving)
     {
@@ -70,6 +71,28 @@ struct GameStateSnapshot_t
                 case SPRITE_IDENTIFIER_LITTER:
                     ds << reinterpret_cast<uint8_t(&)[sizeof(rct_litter)]>(sprite.litter);
                     break;
+                case SPRITE_IDENTIFIER_MISC:
+                {
+                    switch (sprite.generic.type)
+                    {
+                        case SPRITE_MISC_MONEY_EFFECT:
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_money_effect)]>(sprite.money_effect);
+                            break;
+                        case SPRITE_MISC_BALLOON:
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_balloon)]>(sprite.balloon);
+                            break;
+                        case SPRITE_MISC_DUCK:
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_duck)]>(sprite.duck);
+                            break;
+                        case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_jumping_fountain)]>(sprite.jumping_fountain);
+                            break;
+                        case SPRITE_MISC_STEAM_PARTICLE:
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_steam_particle)]>(sprite.steam_particle);
+                            break;
+                    }
+                }
+                break;
             }
         }
     }
@@ -107,14 +130,313 @@ struct GameStateSnapshots : public IGameStateSnapshots
         return nullptr;
     }
 
-    virtual void SerialiseSnapshot(GameStateSnapshot_t& snapshot, DataSerialiser& serialiser) const override final
+    virtual void SerialiseSnapshot(GameStateSnapshot_t& snapshot, DataSerialiser& ds) const override final
     {
+        ds << snapshot.tick;
+        ds << snapshot.storedSprites;
+        ds << snapshot.parkParameters;
     }
 
-    virtual GameStateCompareData_t Compare(
-        const GameStateSnapshot_t& left, const GameStateSnapshot_t& right) const override final
+    std::vector<rct_sprite> BuildSpriteList(GameStateSnapshot_t& snapshot) const
     {
-        return GameStateCompareData_t{};
+        std::vector<rct_sprite> spriteList;
+        spriteList.resize(MAX_SPRITES);
+
+        snapshot.SerialiseSprites(spriteList.data(), MAX_SPRITES, false);
+
+        return spriteList;
+    }
+
+#define COMPARE_FIELD(struc, field)                                                                                            \
+    if (memcmp(&spriteBase.field, &spriteCmp.field, sizeof(struc::field)) != 0)                                                \
+    {                                                                                                                          \
+        changeData.diffs.push_back(GameStateSpriteChange_t::Diff_t{ offsetof(struc, field), sizeof(struc::field), #field });   \
+    }
+
+    void CompareSpriteDataCommon(
+        const rct_sprite_common& spriteBase, const rct_sprite_common& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(rct_sprite_common, sprite_identifier);
+        COMPARE_FIELD(rct_sprite_common, type);
+        COMPARE_FIELD(rct_sprite_common, next_in_quadrant);
+        COMPARE_FIELD(rct_sprite_common, next);
+        COMPARE_FIELD(rct_sprite_common, previous);
+        COMPARE_FIELD(rct_sprite_common, linked_list_type_offset);
+        COMPARE_FIELD(rct_sprite_common, sprite_height_negative);
+        COMPARE_FIELD(rct_sprite_common, sprite_index);
+        COMPARE_FIELD(rct_sprite_common, flags);
+        COMPARE_FIELD(rct_sprite_common, x);
+        COMPARE_FIELD(rct_sprite_common, y);
+        COMPARE_FIELD(rct_sprite_common, z);
+        COMPARE_FIELD(rct_sprite_common, sprite_width);
+        COMPARE_FIELD(rct_sprite_common, sprite_height_positive);
+        COMPARE_FIELD(rct_sprite_common, sprite_left);
+        COMPARE_FIELD(rct_sprite_common, sprite_top);
+        COMPARE_FIELD(rct_sprite_common, sprite_right);
+        COMPARE_FIELD(rct_sprite_common, sprite_bottom);
+        COMPARE_FIELD(rct_sprite_common, sprite_direction);
+    }
+
+    void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(Peep, name_string_idx);
+        COMPARE_FIELD(Peep, next_x);
+        COMPARE_FIELD(Peep, next_y);
+        COMPARE_FIELD(Peep, next_z);
+        COMPARE_FIELD(Peep, next_flags);
+        COMPARE_FIELD(Peep, outside_of_park);
+        COMPARE_FIELD(Peep, state);
+        COMPARE_FIELD(Peep, sub_state);
+        COMPARE_FIELD(Peep, sprite_type);
+        COMPARE_FIELD(Peep, type);
+        COMPARE_FIELD(Peep, no_of_rides);
+        COMPARE_FIELD(Peep, tshirt_colour);
+        COMPARE_FIELD(Peep, trousers_colour);
+        COMPARE_FIELD(Peep, destination_x);
+        COMPARE_FIELD(Peep, destination_y);
+        COMPARE_FIELD(Peep, destination_tolerance);
+        COMPARE_FIELD(Peep, var_37);
+        COMPARE_FIELD(Peep, energy);
+        COMPARE_FIELD(Peep, energy_target);
+        COMPARE_FIELD(Peep, happiness);
+        COMPARE_FIELD(Peep, happiness_target);
+        COMPARE_FIELD(Peep, nausea);
+        COMPARE_FIELD(Peep, nausea_target);
+        COMPARE_FIELD(Peep, hunger);
+        COMPARE_FIELD(Peep, thirst);
+        COMPARE_FIELD(Peep, toilet);
+        COMPARE_FIELD(Peep, mass);
+        COMPARE_FIELD(Peep, time_to_consume);
+        COMPARE_FIELD(Peep, intensity);
+        COMPARE_FIELD(Peep, nausea_tolerance);
+        COMPARE_FIELD(Peep, window_invalidate_flags);
+        COMPARE_FIELD(Peep, paid_on_drink);
+        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
+        {
+            COMPARE_FIELD(Peep, ride_types_been_on[i]);
+        }
+        COMPARE_FIELD(Peep, item_extra_flags);
+        COMPARE_FIELD(Peep, photo2_ride_ref);
+        COMPARE_FIELD(Peep, photo3_ride_ref);
+        COMPARE_FIELD(Peep, photo4_ride_ref);
+        COMPARE_FIELD(Peep, current_ride);
+        COMPARE_FIELD(Peep, current_ride_station);
+        COMPARE_FIELD(Peep, current_train);
+        COMPARE_FIELD(Peep, time_to_sitdown);
+        COMPARE_FIELD(Peep, special_sprite);
+        COMPARE_FIELD(Peep, action_sprite_type);
+        COMPARE_FIELD(Peep, next_action_sprite_type);
+        COMPARE_FIELD(Peep, action_sprite_image_offset);
+        COMPARE_FIELD(Peep, action);
+        COMPARE_FIELD(Peep, action_frame);
+        COMPARE_FIELD(Peep, step_progress);
+        COMPARE_FIELD(Peep, next_in_queue);
+        COMPARE_FIELD(Peep, maze_last_edge);
+        COMPARE_FIELD(Peep, interaction_ride_index);
+        COMPARE_FIELD(Peep, time_in_queue);
+        for (int i = 0; i < 32; i++)
+        {
+            COMPARE_FIELD(Peep, rides_been_on[i]);
+        }
+        COMPARE_FIELD(Peep, id);
+        COMPARE_FIELD(Peep, cash_in_pocket);
+        COMPARE_FIELD(Peep, cash_spent);
+        COMPARE_FIELD(Peep, time_in_park);
+        COMPARE_FIELD(Peep, rejoin_queue_timeout);
+        COMPARE_FIELD(Peep, previous_ride);
+        COMPARE_FIELD(Peep, previous_ride_time_out);
+        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
+        {
+            COMPARE_FIELD(Peep, thoughts[i]);
+        }
+        COMPARE_FIELD(Peep, path_check_optimisation);
+        COMPARE_FIELD(Peep, guest_heading_to_ride_id);
+        COMPARE_FIELD(Peep, staff_orders);
+        COMPARE_FIELD(Peep, photo1_ride_ref);
+        COMPARE_FIELD(Peep, peep_flags);
+        COMPARE_FIELD(Peep, pathfind_goal);
+        for (int i = 0; i < 4; i++)
+        {
+            COMPARE_FIELD(Peep, pathfind_history[i]);
+        }
+        COMPARE_FIELD(Peep, no_action_frame_num);
+        COMPARE_FIELD(Peep, litter_count);
+        COMPARE_FIELD(Peep, time_on_ride);
+        COMPARE_FIELD(Peep, disgusting_count);
+        COMPARE_FIELD(Peep, paid_to_enter);
+        COMPARE_FIELD(Peep, paid_on_rides);
+        COMPARE_FIELD(Peep, paid_on_food);
+        COMPARE_FIELD(Peep, paid_on_souvenirs);
+        COMPARE_FIELD(Peep, no_of_food);
+        COMPARE_FIELD(Peep, no_of_drinks);
+        COMPARE_FIELD(Peep, no_of_souvenirs);
+        COMPARE_FIELD(Peep, vandalism_seen);
+        COMPARE_FIELD(Peep, voucher_type);
+        COMPARE_FIELD(Peep, voucher_arguments);
+        COMPARE_FIELD(Peep, surroundings_thought_timeout);
+        COMPARE_FIELD(Peep, angriness);
+        COMPARE_FIELD(Peep, time_lost);
+        COMPARE_FIELD(Peep, days_in_queue);
+        COMPARE_FIELD(Peep, balloon_colour);
+        COMPARE_FIELD(Peep, umbrella_colour);
+        COMPARE_FIELD(Peep, hat_colour);
+        COMPARE_FIELD(Peep, favourite_ride);
+        COMPARE_FIELD(Peep, favourite_ride_rating);
+        COMPARE_FIELD(Peep, item_standard_flags);
+    }
+
+    void CompareSpriteDataVehicle(
+        const rct_vehicle& spriteBase, const rct_vehicle& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(rct_vehicle, vehicle_sprite_type);
+        COMPARE_FIELD(rct_vehicle, bank_rotation);
+        COMPARE_FIELD(rct_vehicle, remaining_distance);
+        COMPARE_FIELD(rct_vehicle, velocity);
+        COMPARE_FIELD(rct_vehicle, acceleration);
+        COMPARE_FIELD(rct_vehicle, ride);
+        COMPARE_FIELD(rct_vehicle, vehicle_type);
+        COMPARE_FIELD(rct_vehicle, colours);
+        COMPARE_FIELD(rct_vehicle, track_progress);
+        COMPARE_FIELD(rct_vehicle, track_direction);
+        COMPARE_FIELD(rct_vehicle, track_x);
+        COMPARE_FIELD(rct_vehicle, track_y);
+        COMPARE_FIELD(rct_vehicle, track_z);
+        COMPARE_FIELD(rct_vehicle, next_vehicle_on_train);
+        COMPARE_FIELD(rct_vehicle, prev_vehicle_on_ride);
+        COMPARE_FIELD(rct_vehicle, next_vehicle_on_ride);
+        COMPARE_FIELD(rct_vehicle, var_44);
+        COMPARE_FIELD(rct_vehicle, mass);
+        COMPARE_FIELD(rct_vehicle, update_flags);
+        COMPARE_FIELD(rct_vehicle, swing_sprite);
+        COMPARE_FIELD(rct_vehicle, current_station);
+        COMPARE_FIELD(rct_vehicle, swinging_car_var_0);
+        COMPARE_FIELD(rct_vehicle, var_4E);
+        COMPARE_FIELD(rct_vehicle, status);
+        COMPARE_FIELD(rct_vehicle, sub_state);
+        for (int i = 0; i < 32; i++)
+        {
+            COMPARE_FIELD(rct_vehicle, peep[i]);
+        }
+        for (int i = 0; i < 32; i++)
+        {
+            COMPARE_FIELD(rct_vehicle, peep_tshirt_colours[i]);
+        }
+        COMPARE_FIELD(rct_vehicle, num_seats);
+        COMPARE_FIELD(rct_vehicle, num_peeps);
+        COMPARE_FIELD(rct_vehicle, next_free_seat);
+        COMPARE_FIELD(rct_vehicle, restraints_position);
+        COMPARE_FIELD(rct_vehicle, spin_speed);
+        COMPARE_FIELD(rct_vehicle, sound2_flags);
+        COMPARE_FIELD(rct_vehicle, spin_sprite);
+        COMPARE_FIELD(rct_vehicle, sound1_id);
+        COMPARE_FIELD(rct_vehicle, sound1_volume);
+        COMPARE_FIELD(rct_vehicle, sound2_id);
+        COMPARE_FIELD(rct_vehicle, sound2_volume);
+        COMPARE_FIELD(rct_vehicle, sound_vector_factor);
+        COMPARE_FIELD(rct_vehicle, cable_lift_target);
+        COMPARE_FIELD(rct_vehicle, speed);
+        COMPARE_FIELD(rct_vehicle, powered_acceleration);
+        COMPARE_FIELD(rct_vehicle, var_C4);
+        COMPARE_FIELD(rct_vehicle, animation_frame);
+        for (int i = 0; i < 2; i++)
+        {
+            COMPARE_FIELD(rct_vehicle, pad_C6[i]);
+        }
+        COMPARE_FIELD(rct_vehicle, var_C8);
+        COMPARE_FIELD(rct_vehicle, var_CA);
+        COMPARE_FIELD(rct_vehicle, scream_sound_id);
+        COMPARE_FIELD(rct_vehicle, var_CD);
+        COMPARE_FIELD(rct_vehicle, num_laps);
+        COMPARE_FIELD(rct_vehicle, brake_speed);
+        COMPARE_FIELD(rct_vehicle, lost_time_out);
+        COMPARE_FIELD(rct_vehicle, vertical_drop_countdown);
+        COMPARE_FIELD(rct_vehicle, var_D3);
+        COMPARE_FIELD(rct_vehicle, mini_golf_current_animation);
+        COMPARE_FIELD(rct_vehicle, mini_golf_flags);
+        COMPARE_FIELD(rct_vehicle, ride_subtype);
+        COMPARE_FIELD(rct_vehicle, colours_extended);
+        COMPARE_FIELD(rct_vehicle, seat_rotation);
+        COMPARE_FIELD(rct_vehicle, target_seat_rotation);
+    }
+
+    void CompareSpriteDataLitter(
+        const rct_litter& spriteBase, const rct_litter& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        COMPARE_FIELD(rct_litter, creationTick);
+    }
+
+    void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        CompareSpriteDataCommon(spriteBase.generic, spriteCmp.generic, changeData);
+        if (spriteBase.generic.sprite_identifier == spriteCmp.generic.sprite_identifier)
+        {
+            switch (spriteBase.generic.sprite_identifier)
+            {
+                case SPRITE_IDENTIFIER_PEEP:
+                    CompareSpriteDataPeep(spriteBase.peep, spriteCmp.peep, changeData);
+                    break;
+                case SPRITE_IDENTIFIER_VEHICLE:
+                    CompareSpriteDataVehicle(spriteBase.vehicle, spriteCmp.vehicle, changeData);
+                    break;
+                case SPRITE_IDENTIFIER_LITTER:
+                    CompareSpriteDataLitter(spriteBase.litter, spriteCmp.litter, changeData);
+                    break;
+            }
+        }
+    }
+
+    virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const override final
+    {
+        GameStateCompareData_t res;
+
+        std::vector<rct_sprite> spritesBase = BuildSpriteList(const_cast<GameStateSnapshot_t&>(base));
+        std::vector<rct_sprite> spritesCmp = BuildSpriteList(const_cast<GameStateSnapshot_t&>(cmp));
+
+        for (uint32_t i = 0; i < (uint32_t)spritesBase.size(); i++)
+        {
+            GameStateSpriteChange_t changeData;
+            changeData.spriteIndex = i;
+
+            const rct_sprite& spriteBase = spritesBase[i];
+            const rct_sprite& spriteCmp = spritesCmp[i];
+
+            if (spriteBase.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL
+                && spriteCmp.generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
+            {
+                // Sprite was added.
+                changeData.changeType = GameStateSpriteChange_t::ADDED;
+            }
+            else if (
+                spriteBase.generic.sprite_identifier != SPRITE_IDENTIFIER_NULL
+                && spriteCmp.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+            {
+                // Sprite was removed.
+                changeData.changeType = GameStateSpriteChange_t::REMOVED;
+            }
+            else if (
+                spriteBase.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL
+                && spriteCmp.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+            {
+                // Do nothing.
+                changeData.changeType = GameStateSpriteChange_t::EQUAL;
+            }
+            else
+            {
+                CompareSpriteData(spriteBase, spriteCmp, changeData);
+                if (changeData.diffs.size() == 0)
+                {
+                    changeData.changeType = GameStateSpriteChange_t::EQUAL;
+                }
+                else
+                {
+                    changeData.changeType = GameStateSpriteChange_t::MODIFIED;
+                }
+            }
+
+            res.changes.push_back(changeData);
+        }
+
+        return res;
     }
 
 private:
