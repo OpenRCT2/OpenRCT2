@@ -1556,21 +1556,51 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
     {
         desyncType = atoi(argv[0].c_str());
     }
+
+    std::vector<rct_sprite*> peeps;
+    std::vector<rct_sprite*> vehicles;
+
+    for (int i = 0; i < MAX_SPRITES; i++)
+    {
+        rct_sprite* sprite = get_sprite(i);
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+            continue;
+
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            peeps.push_back(sprite);
+        else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            vehicles.push_back(sprite);
+    }
+
     switch (desyncType)
     {
         case 0: // Peep t-shirts.
         {
-            for (int i = 0; i < MAX_SPRITES; i++)
+            if (peeps.empty())
             {
-                rct_sprite* sprite = get_sprite(i);
-                if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_PEEP)
-                    continue;
-
-                Peep* peep = sprite->AsPeep();
-                peep->tshirt_colour = util_rand() & 0xFF;
+                console.WriteFormatLine("No peeps");
             }
+            else
+            {
+                rct_sprite* sprite = peeps[util_rand() % peeps.size() - 1];
+                sprite->peep.tshirt_colour = util_rand() & 0xFF;
+                invalidate_sprite_0(sprite);
+            }
+            break;
         }
-        break;
+        case 1: // Remove random peep.
+        {
+            if (peeps.empty())
+            {
+                console.WriteFormatLine("No peep removed");
+            }
+            else
+            {
+                rct_sprite* sprite = peeps[util_rand() % peeps.size() - 1];
+                sprite->AsPeep()->Remove();
+            }
+            break;
+        }
     }
     return 0;
 }
@@ -1696,7 +1726,7 @@ static constexpr const console_command console_command_table[] = {
     { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
     { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
-    { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Peep Shirts]"},
+    { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random peep, 1 = Remove random peep ]"},
     
 };
 // clang-format on
