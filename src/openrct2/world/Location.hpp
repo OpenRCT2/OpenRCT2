@@ -169,7 +169,7 @@ typedef uint8_t Direction;
     return dir ^ 2;
 }
 
-constexpr bool direction_valid(Direction dir)
+[[maybe_unused]] static constexpr bool direction_valid(Direction dir)
 {
     return dir < 4;
 }

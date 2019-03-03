@@ -62,14 +62,14 @@ public:
     {
         if (_rideIndex >= MAX_RIDES || _rideIndex < 0)
         {
-            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+            log_warning("Invalid game command for ride %d", int32_t(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
         }
 
         Ride* ride = get_ride(_rideIndex);
         if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid ride: #%u.", _rideIndex);
+            log_warning("Invalid ride: #%d.", (int32_t)_rideIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
         }
 
@@ -174,7 +174,7 @@ public:
         Ride* ride = get_ride(_rideIndex);
         if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid ride: #%u.", _rideIndex);
+            log_warning("Invalid ride: #%d.", (int32_t)_rideIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
         }
 
