@@ -73,6 +73,7 @@ struct GameStateSnapshot_t
                     break;
                 case SPRITE_IDENTIFIER_MISC:
                 {
+                    ds << sprite.generic.type;
                     switch (sprite.generic.type)
                     {
                         case SPRITE_MISC_MONEY_EFFECT:
@@ -100,6 +101,11 @@ struct GameStateSnapshot_t
 
 struct GameStateSnapshots : public IGameStateSnapshots
 {
+    virtual void Reset() override final
+    {
+        _snapshots.clear();
+    }
+
     virtual GameStateSnapshot_t& CreateSnapshot() override final
     {
         auto snapshot = std::make_unique<GameStateSnapshot_t>();
@@ -150,7 +156,8 @@ struct GameStateSnapshots : public IGameStateSnapshots
 #define COMPARE_FIELD(struc, field)                                                                                            \
     if (memcmp(&spriteBase.field, &spriteCmp.field, sizeof(struc::field)) != 0)                                                \
     {                                                                                                                          \
-        changeData.diffs.push_back(GameStateSpriteChange_t::Diff_t{ offsetof(struc, field), sizeof(struc::field), #field });   \
+        changeData.diffs.push_back(                                                                                            \
+            GameStateSpriteChange_t::Diff_t{ offsetof(struc, field), sizeof(struc::field), #struc, #field });                  \
     }
 
     void CompareSpriteDataCommon(
@@ -433,7 +440,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
                 }
             }
 
-            res.changes.push_back(changeData);
+            res.spriteChanges.push_back(changeData);
         }
 
         return res;

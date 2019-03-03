@@ -32,6 +32,7 @@ struct GameStateSpriteChange_t
     {
         size_t offset;
         size_t length;
+        const char* structname;
         const char* fieldname;
     };
 
@@ -43,7 +44,7 @@ struct GameStateSpriteChange_t
 
 struct GameStateCompareData_t
 {
-    std::vector<GameStateSpriteChange_t> changes;
+    std::vector<GameStateSpriteChange_t> spriteChanges;
 };
 
 /*
@@ -55,6 +56,11 @@ struct GameStateCompareData_t
 interface IGameStateSnapshots
 {
     virtual ~IGameStateSnapshots() = default;
+
+    /*
+     * Removes all existing entries and starts over.
+     */
+    virtual void Reset() = 0;
 
     /*
      * Creates a new empty snapshot, oldest snapshot will be removed.

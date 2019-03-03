@@ -13,6 +13,7 @@
 #include "Context.h"
 #include "Editor.h"
 #include "FileClassifier.h"
+#include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
@@ -846,6 +847,9 @@ void game_fix_save_vars()
 void game_load_init()
 {
     rct_window* mainWindow;
+
+    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+    snapshots->Reset();
 
     gScreenFlags = SCREEN_FLAGS_PLAYING;
     audio_stop_all_music_and_sounds();
