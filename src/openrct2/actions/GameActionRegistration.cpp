@@ -10,7 +10,10 @@
 #include "BannerSetNameAction.hpp"
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
+#include "FootpathPlaceAction.hpp"
 #include "FootpathRemoveAction.hpp"
+#include "FootpathSceneryPlaceAction.hpp"
+#include "FootpathSceneryRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
 #include "LandSetHeightAction.hpp"
@@ -55,7 +58,10 @@ namespace GameActions
     {
         Register<BannerSetNameAction>();
         Register<ClimateSetAction>();
+        Register<FootpathPlaceAction>();
         Register<FootpathRemoveAction>();
+        Register<FootpathSceneryPlaceAction>();
+        Register<FootpathSceneryRemoveAction>();
         Register<GuestSetNameAction>();
         Register<MazeSetTrackAction>();
         Register<ParkMarketingAction>();
