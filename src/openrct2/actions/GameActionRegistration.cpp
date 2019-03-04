@@ -16,6 +16,8 @@
 #include "FootpathSceneryRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
+#include "LandLowerAction.hpp"
+#include "LandRaiseAction.hpp"
 #include "LandSetHeightAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
 #include "LoadOrQuitAction.hpp"
@@ -50,6 +52,8 @@
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "WallRemoveAction.hpp"
+#include "WaterLowerAction.hpp"
+#include "WaterRaiseAction.hpp"
 #include "WaterSetHeightAction.hpp"
 
 namespace GameActions
@@ -92,6 +96,8 @@ namespace GameActions
         Register<SmallSceneryPlaceAction>();
         Register<SmallSceneryRemoveAction>();
         Register<LargeSceneryRemoveAction>();
+        Register<LandLowerAction>();
+        Register<LandRaiseAction>();
         Register<LandSetHeightAction>();
         Register<TrackPlaceAction>();
         Register<TrackRemoveAction>();
@@ -99,5 +105,7 @@ namespace GameActions
         Register<PauseToggleAction>();
         Register<LoadOrQuitAction>();
         Register<WaterSetHeightAction>();
+        Register<WaterLowerAction>();
+        Register<WaterRaiseAction>();
     }
 } // namespace GameActions
