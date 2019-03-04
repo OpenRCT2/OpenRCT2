@@ -27,9 +27,13 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
+#include <openrct2/actions/LandLowerAction.hpp>
+#include <openrct2/actions/LandRaiseAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
+#include <openrct2/actions/WaterLowerAction.hpp>
+#include <openrct2/actions/WaterRaiseAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
@@ -2331,16 +2335,21 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
             return;
 
-        money32 lower_cost = lower_water(
-            gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+        auto waterLowerAction = WaterLowerAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+        auto waterRaiseAction = WaterRaiseAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
-        money32 raise_cost = raise_water(
-            gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+        auto res = GameActions::Query(&waterLowerAction);
+        money32 lowerCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
 
-        if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost)
+        res = GameActions::Query(&waterRaiseAction);
+        money32 raiseCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+
+        if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
         {
-            gWaterToolRaiseCost = raise_cost;
-            gWaterToolLowerCost = lower_cost;
+            gWaterToolRaiseCost = raiseCost;
+            gWaterToolLowerCost = lowerCost;
             window_invalidate_by_class(WC_WATER);
         }
         return;
@@ -2422,16 +2431,21 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
     if (!state_changed)
         return;
 
-    money32 lower_cost = lower_water(
-        gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+    auto waterLowerAction = WaterLowerAction(
+        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+    auto waterRaiseAction = WaterRaiseAction(
+        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
-    money32 raise_cost = raise_water(
-        gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+    auto res = GameActions::Query(&waterLowerAction);
+    money32 lowerCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
 
-    if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost)
+    res = GameActions::Query(&waterRaiseAction);
+    money32 raiseCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+
+    if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
     {
-        gWaterToolRaiseCost = raise_cost;
-        gWaterToolLowerCost = lower_cost;
+        gWaterToolRaiseCost = raiseCost;
+        gWaterToolLowerCost = lowerCost;
         window_invalidate_by_class(WC_WATER);
     }
 }
@@ -2927,7 +2941,13 @@ static money32 selection_raise_land(uint8_t flags)
     }
     else
     {
-        return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_RAISE_LAND, gMapSelectType, yBounds);
+        auto landRaiseAction = LandRaiseAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
+                                                     : GameActions::Query(&landRaiseAction);
+
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
 }
 
@@ -2953,7 +2973,13 @@ static money32 selection_lower_land(uint8_t flags)
     }
     else
     {
-        return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_LOWER_LAND, gMapSelectType, yBounds);
+        auto landLowerAction = LandLowerAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
+                                                     : GameActions::Query(&landLowerAction);
+
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
 }
 
@@ -3028,11 +3054,10 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
     {
         gInputDragLastY += dx;
 
-        gGameCommandErrorTitle = STR_CANT_RAISE_WATER_LEVEL_HERE;
+        auto waterRaiseAction = WaterRaiseAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+        GameActions::Execute(&waterRaiseAction);
 
-        game_do_command(
-            gMapSelectPositionA.x, 1, gMapSelectPositionA.y, dx, GAME_COMMAND_RAISE_WATER, gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
         gWaterToolRaiseCost = MONEY32_UNDEFINED;
         gWaterToolLowerCost = MONEY32_UNDEFINED;
 
@@ -3045,11 +3070,9 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
     {
         gInputDragLastY += dx;
 
-        gGameCommandErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
-
-        game_do_command(
-            gMapSelectPositionA.x, 1, gMapSelectPositionA.y, dx, GAME_COMMAND_LOWER_WATER, gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
+        auto waterLowerAction = WaterLowerAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+        GameActions::Execute(&waterLowerAction);
         gWaterToolRaiseCost = MONEY32_UNDEFINED;
         gWaterToolLowerCost = MONEY32_UNDEFINED;
 

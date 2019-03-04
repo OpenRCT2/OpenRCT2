@@ -15,6 +15,8 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/LandLowerAction.hpp"
+#include "../actions/LandRaiseAction.hpp"
 #include "../actions/LandSetHeightAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
@@ -1015,11 +1017,10 @@ void game_command_change_surface_style(
 }
 
 // 0x00981A1E
-#define SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT 0x20
 // Table of pre-calculated surface slopes (32) when raising the land tile for a given selection (5)
 // 0x1F = new slope
 // 0x20 = base height increases
-static constexpr const uint8_t tile_element_raise_styles[9][32] = {
+const uint8_t tile_element_raise_styles[9][32] = {
     { 0x01, 0x1B, 0x03, 0x1B, 0x05, 0x21, 0x07, 0x21, 0x09, 0x1B, 0x0B, 0x1B, 0x0D, 0x21, 0x20, 0x0F,
       0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x23, 0x18, 0x19, 0x1A, 0x3B, 0x1C, 0x29, 0x24, 0x1F }, // MAP_SELECT_TYPE_CORNER_0
                                                                                                         // (absolute rotation)
@@ -1045,7 +1046,7 @@ static constexpr const uint8_t tile_element_raise_styles[9][32] = {
 // Basically the inverse of the table above.
 // 0x1F = new slope
 // 0x20 = base height increases
-static constexpr const uint8_t tile_element_lower_styles[9][32] = {
+const uint8_t tile_element_lower_styles[9][32] = {
     { 0x2E, 0x00, 0x2E, 0x02, 0x3E, 0x04, 0x3E, 0x06, 0x2E, 0x08, 0x2E, 0x0A, 0x3E, 0x0C, 0x3E, 0x0F,
       0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x06, 0x18, 0x19, 0x1A, 0x0B, 0x1C, 0x0C, 0x3E, 0x1F }, // MAP_SELECT_TYPE_CORNER_0
     { 0x2D, 0x2D, 0x00, 0x01, 0x2D, 0x2D, 0x04, 0x05, 0x3D, 0x3D, 0x08, 0x09, 0x3D, 0x3D, 0x0C, 0x0F,
@@ -1167,7 +1168,7 @@ void game_command_set_land_ownership(
     }
 }
 
-static uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax)
+uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax)
 {
     xMin = std::max(xMin, 32);
     yMin = std::max(yMin, 32);
@@ -1189,7 +1190,7 @@ static uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yM
     return min_height;
 }
 
-static uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax)
+uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax)
 {
     xMin = std::max(xMin, 32);
     yMin = std::max(yMin, 32);
@@ -2089,16 +2090,27 @@ static money32 smooth_land(
     } // switch selectionType
 
     // Raise / lower the land tool selection area
-    int32_t commandType = raiseLand ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
-    int32_t mapLeftRight = mapLeft | (mapRight << 16);
-    int32_t mapTopBottom = mapTop | (mapBottom << 16);
-    money32 cost = game_do_command(centreX, flags, centreY, mapLeftRight, commandType, command & 0x7FFF, mapTopBottom);
-    if (cost == MONEY32_UNDEFINED)
+    GameActionResult::Ptr res;
+    if (raiseLand)
+    {
+        auto raiseLandAction = LandRaiseAction({ centreX, centreY }, { mapLeft, mapTop, mapRight, mapBottom }, selectionType);
+        raiseLandAction.SetFlags(flags);
+        res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&raiseLandAction)
+                                              : GameActions::QueryNested(&raiseLandAction);
+    }
+    else
+    {
+        auto lowerLandAction = LandLowerAction({ centreX, centreY }, { mapLeft, mapTop, mapRight, mapBottom }, selectionType);
+        lowerLandAction.SetFlags(flags);
+        res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&lowerLandAction)
+                                              : GameActions::QueryNested(&lowerLandAction);
+    }
+    if (res->Error != GA_ERROR::OK)
     {
         return MONEY32_UNDEFINED;
     }
 
-    totalCost += cost;
+    totalCost += res->Cost;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     gCommandPosition.x = centreX;
