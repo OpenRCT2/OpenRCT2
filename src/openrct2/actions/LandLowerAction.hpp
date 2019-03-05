@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.hpp"
+#include "../audio/audio.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
@@ -22,7 +23,6 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
-#include "../audio/audio.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(LandLowerAction, GAME_COMMAND_LOWER_LAND, GameActionResult)
