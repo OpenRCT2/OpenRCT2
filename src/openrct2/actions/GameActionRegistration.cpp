@@ -11,6 +11,7 @@
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
 #include "FootpathPlaceAction.hpp"
+#include "FootpathPlaceFromTrackAction.hpp"
 #include "FootpathRemoveAction.hpp"
 #include "FootpathSceneryPlaceAction.hpp"
 #include "FootpathSceneryRemoveAction.hpp"
@@ -59,6 +60,7 @@ namespace GameActions
         Register<BannerSetNameAction>();
         Register<ClimateSetAction>();
         Register<FootpathPlaceAction>();
+        Register<FootpathPlaceFromTrackAction>();
         Register<FootpathRemoveAction>();
         Register<FootpathSceneryPlaceAction>();
         Register<FootpathSceneryRemoveAction>();
