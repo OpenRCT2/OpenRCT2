@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include "WaterSetHeightAction.hpp"
+#include "../audio/audio.h"
 #include "GameAction.h"
+#include "WaterSetHeightAction.hpp"
 
 DEFINE_GAME_ACTION(WaterLowerAction, GAME_COMMAND_LOWER_WATER, GameActionResult)
 {

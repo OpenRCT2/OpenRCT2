@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../audio/audio.h"
 #include "GameAction.h"
 #include "WaterSetHeightAction.hpp"
 
