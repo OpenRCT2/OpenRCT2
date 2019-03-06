@@ -1247,33 +1247,36 @@ void footpath_chain_ride_queue(
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
         tileElement = map_get_first_element_at(x >> 5, y >> 5);
-        do
+        if (tileElement != nullptr)
         {
-            if (lastQueuePathElement == tileElement)
-                continue;
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-                continue;
-            if (tileElement->base_height == z)
+            do
             {
-                if (tileElement->AsPath()->IsSloped())
+                if (lastQueuePathElement == tileElement)
+                    continue;
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+                    continue;
+                if (tileElement->base_height == z)
                 {
-                    if (tileElement->AsPath()->GetSlopeDirection() != direction)
-                        break;
+                    if (tileElement->AsPath()->IsSloped())
+                    {
+                        if (tileElement->AsPath()->GetSlopeDirection() != direction)
+                            break;
+                    }
+                    goto foundNextPath;
                 }
-                goto foundNextPath;
-            }
-            if (tileElement->base_height == z - 2)
-            {
-                if (!tileElement->AsPath()->IsSloped())
-                    break;
+                if (tileElement->base_height == z - 2)
+                {
+                    if (!tileElement->AsPath()->IsSloped())
+                        break;
 
-                if (direction_reverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
-                    break;
+                    if (direction_reverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
+                        break;
 
-                z -= 2;
-                goto foundNextPath;
-            }
-        } while (!(tileElement++)->IsLastForTile());
+                    z -= 2;
+                    goto foundNextPath;
+                }
+            } while (!(tileElement++)->IsLastForTile());
+        }
         break;
 
     foundNextPath:
@@ -1371,18 +1374,21 @@ void footpath_update_queue_chains()
                 continue;
 
             TileElement* tileElement = map_get_first_element_at(location.x, location.y);
-            do
+            if (tileElement != nullptr)
             {
-                if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
-                    continue;
-                if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
-                    continue;
-                if (tileElement->AsEntrance()->GetRideIndex() != rideIndex)
-                    continue;
+                do
+                {
+                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+                        continue;
+                    if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+                        continue;
+                    if (tileElement->AsEntrance()->GetRideIndex() != rideIndex)
+                        continue;
 
-                uint8_t direction = tileElement->GetDirectionWithOffset(2);
-                footpath_chain_ride_queue(rideIndex, i, location.x << 5, location.y << 5, tileElement, direction);
-            } while (!(tileElement++)->IsLastForTile());
+                    uint8_t direction = tileElement->GetDirectionWithOffset(2);
+                    footpath_chain_ride_queue(rideIndex, i, location.x << 5, location.y << 5, tileElement, direction);
+                } while (!(tileElement++)->IsLastForTile());
+            }
         }
     }
 }

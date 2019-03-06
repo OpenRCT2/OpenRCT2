@@ -4173,16 +4173,19 @@ static void sub_6B5952(Ride* ride)
         // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
         // the ride or not.
         TileElement* tileElement = map_get_first_element_at(location.x, location.y);
-        do
+        if (tileElement != nullptr)
         {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
-                continue;
-            if (tileElement->base_height != z)
-                continue;
+            do
+            {
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+                    continue;
+                if (tileElement->base_height != z)
+                    continue;
 
-            int32_t direction = tileElement->GetDirection();
-            footpath_chain_ride_queue(ride->id, i, x, y, tileElement, direction_reverse(direction));
-        } while (!(tileElement++)->IsLastForTile());
+                int32_t direction = tileElement->GetDirection();
+                footpath_chain_ride_queue(ride->id, i, x, y, tileElement, direction_reverse(direction));
+            } while (!(tileElement++)->IsLastForTile());
+        }
     }
 }
 
