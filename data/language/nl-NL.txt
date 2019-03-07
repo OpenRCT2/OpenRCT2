@@ -3592,8 +3592,8 @@ STR_6125    :Objecttype
 STR_6126    :Onbekend type
 STR_6127    :Bestand: {STRING}
 STR_6128    :Het bestand kon niet geladen worden omdat sommige objecten waar het naar verwijst beschadigd zijn of ontbreken. Hieronder staat een lijst van deze objecten.
-STR_6129    :Selectie naar klembord kopiëren
-STR_6130    :Hele lijst naar klembord kopiëren
+STR_6129    :Kopiëren
+STR_6130    :Alles kopiëren
 STR_6131    :Afkomst
 STR_6132    :Uitvindingsstatus negeren
 STR_6133    :{SMALLFONT}{BLACK}Maakt attracties en decor beschikbaar die nog niet zijn uitgevonden.
@@ -3741,6 +3741,32 @@ STR_6274    :Kan kleurenschema niet instellen...
 STR_6275    :{WINDOW_COLOUR_2}Stationsstijl:
 STR_6276    :{RED}Bezoekers komen vast te zitten in {STRINGID}, mogelijk door een ongeldig attractietype of ongeldige bedrijfsmodus.
 STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{COMMA16}
+STR_6278    :Aantal autosaves
+STR_6279    :{SMALLFONT}{BLACK}Het aantal autosaves dat moet worden bewaard.
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Toont een knop voor het openen van de chat in de werkbalk.
+STR_6282    :Chat
+STR_6283    :Chat is momenteel niet beschikbaar. Weet je zeker dat je verbonden bent met een server?
+STR_6284    :Netwerk
+STR_6285    :Netwerkinformatie
+STR_6286    :Ontvangen
+STR_6287    :Verzonden
+STR_6288    :Totaal ontvangen
+STR_6289    :Totaal verzonden
+STR_6290    :Basisprotocol
+STR_6291    :Commando's
+STR_6292    :Kaart
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/sec
+STR_6299    :Ales downloaden
+STR_6300    :{SMALLFONT}{BLACK}Download alle ontbrekende objecten, mits ze online beschikbaar zijn.
+STR_6301    :{SMALLFONT}{BLACK}Kopieert de naam van het geselecteerde object naar het klembord.
+STR_6302    :{SMALLFONT}{BLACK}Kopieert de lijst van ontbrekende objecten naar het klembord.
+STR_6303    :Bezig met downloaden van object ({COMMA16} van {COMMA16}): [{STRING}]
 
 #############
 # Scenarios #

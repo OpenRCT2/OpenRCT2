@@ -2092,8 +2092,8 @@ STR_2756    :Remover vômito
 STR_2763    :???
 STR_2765    :Leva de Visitantes
 STR_2766    :Ganhar cenário
-STR_2767    :Congelar Clima
-STR_2768    :Descongelar Clima
+STR_2767    :Congelar clima
+STR_2768    :Descongelar clima
 STR_2769    :Abrir o Parque
 STR_2770    :Fechar o Parque
 STR_2773    :Janela
@@ -3576,8 +3576,8 @@ STR_6125    :Tipo do objeto
 STR_6126    :Tipo desconhecido
 STR_6127    :Arquivo: {STRING}
 STR_6128    :O arquivo não pode ser carregado pois alguns dos objetos referência dele estão faltando ou corrompidos. Uma lista desses objetos está disponível abaixo.
-STR_6129    :Copiar itens selecionados para o clipboard
-STR_6130    :Copiar lista inteira para o clipboard
+STR_6129    :Copiar
+STR_6130    :Copiar todos
 STR_6131    :Fonte do objeto
 STR_6132    :Ignorar status de pesquisa
 STR_6133    :{SMALLFONT}{BLACK}Acessa atrações e cenários que ainda não foram inventados
@@ -3723,6 +3723,34 @@ STR_6272    :Estações
 STR_6273    :Música
 STR_6274    :Impossível definir esquema de cor...
 STR_6275    :{WINDOW_COLOUR_2}Estilo da estação:
+STR_6276    :{RED}{STRINGID} está deixando visitantes presos, possivelmente por um tipo de brinquedo ou modo de operação inválido.
+STR_6277    :{WINDOW_COLOUR_2}Índice de estação: {BLACK}{COMMA16}
+STR_6278    :Quantidade de Autosave
+STR_6279    :{SMALLFONT}{BLACK}Número de autosaves que devem ser guardados
+STR_6280    :{SMALLFONT}{BLACK}Bate-papo
+STR_6281    :{SMALLFONT}{BLACK}Mostra um botão separado para a janela de Bate-papo na barra de ferramentas
+STR_6282    :Bate-papo
+STR_6283    :Bate-papo não está disponível agora. Você está conectado em um servidor?
+STR_6284    :Rede
+STR_6285    :Informação da Rede
+STR_6286    :Receber
+STR_6287    :Enviar
+STR_6288    :Total recebido
+STR_6289    :Total enviado
+STR_6290    :Protocolo base
+STR_6291    :Comandos
+STR_6292    :Mapa
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/seg
+STR_6299    :Baixar todos
+STR_6300    :{SMALLFONT}{BLACK}Baixa todos os objetos faltantes se disponíveis online.
+STR_6301    :{SMALLFONT}{BLACK}Copia o nome do objeto selecionado para a área de transferência.
+STR_6302    :{SMALLFONT}{BLACK}Copia toda a lista de objetos faltantes para a área de transferência.
+STR_6303    :Baixando objeto ({COMMA16} / {COMMA16}): [{STRING}]
 
 #############
 # Scenarios #
