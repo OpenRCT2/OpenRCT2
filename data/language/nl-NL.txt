@@ -3762,7 +3762,7 @@ STR_6295    :MiB
 STR_6296    :GiB
 STR_6297    :TiB
 STR_6298    :{STRING}/sec
-STR_6299    :Ales downloaden
+STR_6299    :Alles downloaden
 STR_6300    :{SMALLFONT}{BLACK}Download alle ontbrekende objecten, mits ze online beschikbaar zijn.
 STR_6301    :{SMALLFONT}{BLACK}Kopieert de naam van het geselecteerde object naar het klembord.
 STR_6302    :{SMALLFONT}{BLACK}Kopieert de lijst van ontbrekende objecten naar het klembord.
