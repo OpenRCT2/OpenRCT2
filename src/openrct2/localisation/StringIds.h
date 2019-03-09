@@ -3934,6 +3934,7 @@ enum
     STR_DOWNLOADING_OBJECTS = 6303,
 
     STR_SHORTCUT_OPEN_SCENERY_PICKER = 6304,
+
     STR_MULTITHREADING = 6305,
     STR_MULTITHREADING_TIP = 6306,
 
@@ -3951,6 +3952,8 @@ enum
     STR_PEEP_DEBUG_PATHFIND_GOAL = 6315,
     STR_PEEP_DEBUG_PATHFIND_HISTORY = 6316,
     STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM = 6317,
+
+    STR_DESYNC_REPORT = 6318,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

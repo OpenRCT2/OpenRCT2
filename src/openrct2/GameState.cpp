@@ -16,6 +16,7 @@
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ReplayManager.h"
+#include "config/Config.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
@@ -255,7 +256,8 @@ void GameState::UpdateLogic()
         {
             log_verbose("Desynchronized");
 
-            if (network_desync_debugging_enabled())
+            // If desync debugging is enabled and we are still connected request the specific game state from server.
+            if (network_desync_debugging_enabled() && network_get_status() == NETWORK_STATUS_CONNECTED)
             {
                 // Create snapshot from this tick so we can compare it later
                 // as we won't pause the game on this event.
