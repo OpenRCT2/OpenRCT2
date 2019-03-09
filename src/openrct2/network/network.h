@@ -42,6 +42,7 @@ bool network_is_desynchronised();
 bool network_check_desynchronization();
 void network_request_desynced_state();
 void network_send_tick();
+bool network_desync_debugging_enabled();
 void network_update();
 void network_process_pending();
 void network_flush();

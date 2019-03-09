@@ -545,6 +545,8 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
     _serverConnection = std::make_unique<NetworkConnection>();
     _serverConnection->Socket = CreateTcpSocket();
     _serverConnection->Socket->ConnectAsync(host, port);
+    _serverState.desync_debugging = false;
+
     status = NETWORK_STATUS_CONNECTING;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
     _clientMapLoaded = false;
@@ -677,6 +679,8 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
 
     status = NETWORK_STATUS_CONNECTED;
     listening_port = port;
+    _serverState.desync_debugging = gConfigNetwork.desync_debugging;
+
     if (gConfigNetwork.advertise)
     {
         _advertiser = CreateServerAdvertiser(listening_port);
@@ -1436,7 +1440,13 @@ void Network::CloseServerLog()
 
 void Network::Client_Send_RequestGameState(uint32_t tick)
 {
-    log_verbose("requesting gamestate from tick %u", tick);
+    if (_serverState.desync_debugging == false)
+    {
+        log_verbose("Server does not store a gamestate history");
+        return;
+    }
+
+    log_verbose("Requesting gamestate from server for tick %u", tick);
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_REQUEST_GAMESTATE << tick;
     _serverConnection->QueuePacket(std::move(packet));
@@ -1823,6 +1833,8 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
     json_object_set_new(obj, "provider", jsonProvider);
 
     packet->WriteString(json_dumps(obj, 0));
+    *packet << _serverState.desync_debugging;
+
     json_decref(obj);
 #    endif
     connection.QueuePacket(std::move(packet));
@@ -2356,6 +2368,12 @@ void Network::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, Net
 {
     uint32_t tick;
     packet >> tick;
+
+    if (_serverState.desync_debugging == false)
+    {
+        // Ignore this if this is off.
+        return;
+    }
 
     IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
 
@@ -3284,6 +3302,7 @@ static std::string json_stdstring_value(const json_t* string)
 void Network::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     const char* jsonString = packet.ReadString();
+    packet >> _serverState.desync_debugging;
 
     json_error_t error;
     json_t* root = json_loads(jsonString, 0, &error);
@@ -4135,6 +4154,11 @@ NetworkServerState_t network_get_server_state()
     return gNetwork.GetServerState();
 }
 
+bool network_desync_debugging_enabled()
+{
+    return network_get_server_state().desync_debugging;
+}
+
 #else
 int32_t network_get_mode()
 {
@@ -4159,6 +4183,10 @@ void network_send_tick()
 {
 }
 bool network_is_desynchronised()
+{
+    return false;
+}
+bool network_desync_debugging_enabled()
 {
     return false;
 }

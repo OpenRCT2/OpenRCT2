@@ -87,6 +87,7 @@ struct NetworkServerState_t
     uint32_t server_tick = 0;
     uint32_t server_srand0 = 0;
     uint32_t server_srand0_tick = 0;
+    bool desync_debugging = false;
 };
 
 // Structure is used for networking specific fields with meaning,

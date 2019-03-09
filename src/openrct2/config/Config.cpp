@@ -395,6 +395,7 @@ namespace Config
             model->log_chat = reader->GetBoolean("log_chat", false);
             model->log_server_actions = reader->GetBoolean("log_server_actions", false);
             model->pause_server_if_no_clients = reader->GetBoolean("pause_server_if_no_clients", false);
+            model->desync_debugging = reader->GetBoolean("desync_debugging", true);
         }
     }
 
@@ -420,6 +421,7 @@ namespace Config
         writer->WriteBoolean("log_chat", model->log_chat);
         writer->WriteBoolean("log_server_actions", model->log_server_actions);
         writer->WriteBoolean("pause_server_if_no_clients", model->pause_server_if_no_clients);
+        writer->WriteBoolean("desync_debugging", model->desync_debugging);
     }
 
     static void ReadNotifications(IIniReader* reader)
