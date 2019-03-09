@@ -148,12 +148,22 @@ struct sprite_focus
 };
 
 #define VIEWPORT_FOCUS_TYPE_MASK 0xC0
-enum
+enum VIEWPORT_FOCUS_TYPE : uint8_t
 {
     VIEWPORT_FOCUS_TYPE_COORDINATE = (1 << 6),
     VIEWPORT_FOCUS_TYPE_SPRITE = (1 << 7)
 };
 #define VIEWPORT_FOCUS_Y_MASK 0x3FFF
+
+struct viewport_focus
+{
+    VIEWPORT_FOCUS_TYPE type{};
+    union
+    {
+        sprite_focus sprite;
+        coordinate_focus coordinate;
+    };
+};
 
 struct rct_window_event_list
 {
