@@ -194,32 +194,27 @@ std::string NetworkKey::PublicKeyHash()
     return nullptr;
 }
 
-bool NetworkKey::Sign(const uint8_t* md, const size_t len, char** signature, size_t* out_size)
+bool NetworkKey::Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature)
 {
     try
     {
         auto rsa = Crypt::CreateRSA();
-        auto sig = rsa->SignData(*_key, md, len);
-        *out_size = sig.size();
-        *signature = new char[sig.size()];
-        std::memcpy(*signature, sig.data(), sig.size());
+        signature = rsa->SignData(*_key, md, len);
         return true;
     }
     catch (const std::exception& e)
     {
         log_error("NetworkKey::Sign failed: %s", e.what());
-        *signature = nullptr;
-        *out_size = 0;
         return false;
     }
 }
 
-bool NetworkKey::Verify(const uint8_t* md, const size_t len, const char* sig, const size_t siglen)
+bool NetworkKey::Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature)
 {
     try
     {
         auto rsa = Crypt::CreateRSA();
-        return rsa->VerifyData(*_key, md, len, sig, siglen);
+        return rsa->VerifyData(*_key, md, len, signature.data(), signature.size());
     }
     catch (const std::exception& e)
     {

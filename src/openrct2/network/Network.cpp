@@ -159,8 +159,7 @@ public:
 
     void Client_Send_TOKEN();
     void Client_Send_AUTH(
-        const std::string& name, const std::string& password, const std::string& pubkey, const std::string& sig,
-        size_t sigsize);
+        const std::string& name, const std::string& password, const std::string& pubkey, const std::vector<uint8_t>& signature);
     void Server_Send_AUTH(NetworkConnection& connection);
     void Server_Send_TOKEN(NetworkConnection& connection);
     void Server_Send_MAP(NetworkConnection* connection = nullptr);
@@ -1358,7 +1357,7 @@ void Network::Client_Send_TOKEN()
 }
 
 void Network::Client_Send_AUTH(
-    const std::string& name, const std::string& password, const std::string& pubkey, const std::string& sig, size_t sigsize)
+    const std::string& name, const std::string& password, const std::string& pubkey, const std::vector<uint8_t>& signature)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_AUTH;
@@ -1366,9 +1365,9 @@ void Network::Client_Send_AUTH(
     packet->WriteString(name.c_str());
     packet->WriteString(password.c_str());
     packet->WriteString(pubkey.c_str());
-    assert(sigsize <= (size_t)UINT32_MAX);
-    *packet << (uint32_t)sigsize;
-    packet->Write((const uint8_t*)sig.c_str(), sigsize);
+    assert(signature.size() <= (size_t)UINT32_MAX);
+    *packet << (uint32_t)signature.size();
+    packet->Write(signature.data(), signature.size());
     _serverConnection->AuthStatus = NETWORK_AUTH_REQUESTED;
     _serverConnection->QueuePacket(std::move(packet));
 }
@@ -2195,12 +2194,12 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
     uint32_t challenge_size;
     packet >> challenge_size;
     const char* challenge = (const char*)packet.Read(challenge_size);
-    size_t sigsize;
-    char* signature;
+
+    std::vector<uint8_t> signature;
     const std::string pubkey = _key.PublicKeyString();
     _challenge.resize(challenge_size);
     std::memcpy(_challenge.data(), challenge, challenge_size);
-    bool ok = _key.Sign(_challenge.data(), _challenge.size(), &signature, &sigsize);
+    bool ok = _key.Sign(_challenge.data(), _challenge.size(), signature);
     if (!ok)
     {
         log_error("Failed to sign server's challenge.");
@@ -2213,9 +2212,7 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
     _key.Unload();
 
     const char* password = String::IsNullOrEmpty(gCustomPassword) ? "" : gCustomPassword;
-    Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature, sigsize);
-
-    delete[] signature;
+    Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature);
 }
 
 void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
@@ -2403,11 +2400,16 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
         {
             try
             {
-                const char* signature = (const char*)packet.Read(sigsize);
-                if (signature == nullptr)
+                std::vector<uint8_t> signature;
+                signature.resize(sigsize);
+
+                const uint8_t* signatureData = (const uint8_t*)packet.Read(sigsize);
+                if (signatureData == nullptr)
                 {
                     throw std::runtime_error("Failed to read packet.");
                 }
+
+                std::memcpy(signature.data(), signatureData, sigsize);
 
                 auto ms = MemoryStream(pubkey, strlen(pubkey));
                 if (!connection.Key.LoadPublic(&ms))
@@ -2415,8 +2417,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
                     throw std::runtime_error("Failed to load public key.");
                 }
 
-                bool verified = connection.Key.Verify(
-                    connection.Challenge.data(), connection.Challenge.size(), signature, sigsize);
+                bool verified = connection.Key.Verify(connection.Challenge.data(), connection.Challenge.size(), signature);
                 const std::string hash = connection.Key.PublicKeyHash();
                 if (verified)
                 {
@@ -3812,14 +3813,13 @@ void network_send_password(const std::string& password)
         return;
     }
     const std::string pubkey = gNetwork._key.PublicKeyString();
-    size_t sigsize;
-    char* signature;
-    gNetwork._key.Sign(gNetwork._challenge.data(), gNetwork._challenge.size(), &signature, &sigsize);
+
+    std::vector<uint8_t> signature;
+    gNetwork._key.Sign(gNetwork._challenge.data(), gNetwork._challenge.size(), signature);
     // Don't keep private key in memory. There's no need and it may get leaked
     // when process dump gets collected at some point in future.
     gNetwork._key.Unload();
-    gNetwork.Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature, sigsize);
-    delete[] signature;
+    gNetwork.Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature);
 }
 
 void network_set_password(const char* password)
