@@ -34,7 +34,7 @@ public:
     {
     }
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message)
-        : GameActionResult(error, message)
+        : GameActionResult(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message)
     {
     }
 
