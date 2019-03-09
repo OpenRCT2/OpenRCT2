@@ -123,7 +123,8 @@ public:
                     _coords.x, _coords.y, _height, zCorner, &map_set_land_height_clear_func, { 0b1111, 0 }, 0, nullptr,
                     CREATE_CROSSING_MODE_NONE))
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::DISALLOWED, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
             }
 
             tileElement = CheckUnremovableObstructions(surfaceElement, zCorner);
