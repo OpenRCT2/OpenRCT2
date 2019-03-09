@@ -148,13 +148,19 @@ struct GameStateSnapshots : public IGameStateSnapshots
         std::vector<rct_sprite> spriteList;
         spriteList.resize(MAX_SPRITES);
 
+        for (auto& sprite : spriteList)
+        {
+            // By default they don't exist.
+            sprite.generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
+        }
+
         snapshot.SerialiseSprites(spriteList.data(), MAX_SPRITES, false);
 
         return spriteList;
     }
 
 #define COMPARE_FIELD(struc, field)                                                                                            \
-    if (memcmp(&spriteBase.field, &spriteCmp.field, sizeof(struc::field)) != 0)                                                \
+    if (std::memcmp(&spriteBase.field, &spriteCmp.field, sizeof(struc::field)) != 0)                                           \
     {                                                                                                                          \
         uintptr_t offset = reinterpret_cast<uintptr_t>(&spriteBase.field) - reinterpret_cast<uintptr_t>(&spriteBase);          \
         changeData.diffs.push_back(GameStateSpriteChange_t::Diff_t{ (size_t)offset, sizeof(struc::field), #struc, #field });   \
