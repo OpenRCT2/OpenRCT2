@@ -91,6 +91,11 @@ interface IGameStateSnapshots
      * Compares two states resulting GameStateCompareData_t with all mismatches stored.
      */
     virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const = 0;
+
+    /*
+     * Writes the GameStateCompareData_t into the specified file as readable text.
+     */
+    virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData_t& cmpData) const = 0;
 };
 
 std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots();

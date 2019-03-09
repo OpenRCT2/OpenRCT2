@@ -1002,6 +1002,7 @@ namespace OpenRCT2
                     DIRID::THEME,
                     DIRID::SEQUENCE,
                     DIRID::REPLAY,
+                    DIRID::LOG_DESYNCS,
                 });
         }
 

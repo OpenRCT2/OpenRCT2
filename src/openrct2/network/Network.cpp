@@ -2543,42 +2543,25 @@ void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPack
         GameStateSnapshot_t& serverSnapshot = snapshots->CreateSnapshot();
         snapshots->SerialiseSnapshot(serverSnapshot, ds);
 
-        std::string outputBuffer;
-        char tempBuffer[128];
-
         const GameStateSnapshot_t* desyncSnapshot = snapshots->GetLinkedSnapshot(tick);
         if (desyncSnapshot)
         {
             GameStateCompareData_t cmpData = snapshots->Compare(serverSnapshot, *desyncSnapshot);
-            for (auto& change : cmpData.spriteChanges)
-            {
-                if (change.changeType == GameStateSpriteChange_t::EQUAL)
-                    continue;
 
-                if (change.changeType == GameStateSpriteChange_t::ADDED)
-                {
-                    snprintf(tempBuffer, sizeof(tempBuffer), "Sprite added, index: %u\n", change.spriteIndex);
-                    outputBuffer += tempBuffer;
-                }
-                else if (change.changeType == GameStateSpriteChange_t::REMOVED)
-                {
-                    snprintf(tempBuffer, sizeof(tempBuffer), "Sprite removed, index: %u\n", change.spriteIndex);
-                    outputBuffer += tempBuffer;
-                }
-                else if (change.changeType == GameStateSpriteChange_t::MODIFIED)
-                {
-                    snprintf(tempBuffer, sizeof(tempBuffer), "Sprite modifications, index: %u\n", change.spriteIndex);
-                    outputBuffer += tempBuffer;
-                    for (auto& diff : change.diffs)
-                    {
-                        snprintf(
-                            tempBuffer, sizeof(tempBuffer), "  %s::%s, len = %u, offset = %u\n", diff.structname,
-                            diff.fieldname, (uint32_t)diff.length, (uint32_t)diff.offset);
-                        outputBuffer += tempBuffer;
-                    }
-                }
+            std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+                DIRBASE::USER, DIRID::LOG_DESYNCS);
+
+            platform_ensure_directory_exists(outputPath.c_str());
+
+            char uniqueFileName[128] = {};
+            snprintf(uniqueFileName, sizeof(uniqueFileName), "desync_%llu_%u.txt", platform_get_datetime_now_utc(), tick);
+
+            std::string outputFile = Path::Combine(outputPath, uniqueFileName);
+
+            if (snapshots->LogCompareDataToFile(outputFile, cmpData))
+            {
+                log_verbose("Wrote desync report to '%s'", outputFile.c_str());
             }
-            log_warning(outputBuffer.c_str());
         }
     }
 }

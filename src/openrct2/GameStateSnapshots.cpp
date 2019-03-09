@@ -452,6 +452,50 @@ struct GameStateSnapshots : public IGameStateSnapshots
         return res;
     }
 
+    virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData_t& cmpData) const override
+    {
+        std::string outputBuffer;
+        char tempBuffer[1024] = {};
+
+        for (auto& change : cmpData.spriteChanges)
+        {
+            if (change.changeType == GameStateSpriteChange_t::EQUAL)
+                continue;
+
+            if (change.changeType == GameStateSpriteChange_t::ADDED)
+            {
+                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite added, index: %u\n", change.spriteIndex);
+                outputBuffer += tempBuffer;
+            }
+            else if (change.changeType == GameStateSpriteChange_t::REMOVED)
+            {
+                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite removed, index: %u\n", change.spriteIndex);
+                outputBuffer += tempBuffer;
+            }
+            else if (change.changeType == GameStateSpriteChange_t::MODIFIED)
+            {
+                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite modifications, index: %u\n", change.spriteIndex);
+                outputBuffer += tempBuffer;
+                for (auto& diff : change.diffs)
+                {
+                    snprintf(
+                        tempBuffer, sizeof(tempBuffer), "  %s::%s, len = %u, offset = %u\n", diff.structname, diff.fieldname,
+                        (uint32_t)diff.length, (uint32_t)diff.offset);
+                    outputBuffer += tempBuffer;
+                }
+            }
+        }
+
+        FILE* fp = fopen(fileName.c_str(), "wt");
+        if (!fp)
+            return false;
+
+        fputs(outputBuffer.c_str(), fp);
+        fclose(fp);
+
+        return true;
+    }
+
 private:
     CircularBuffer<std::unique_ptr<GameStateSnapshot_t>, MaximumGameStateSnapshots> _snapshots;
 };
