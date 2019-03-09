@@ -2572,7 +2572,9 @@ void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPack
             platform_ensure_directory_exists(outputPath.c_str());
 
             char uniqueFileName[128] = {};
-            snprintf(uniqueFileName, sizeof(uniqueFileName), "desync_%llu_%u.txt", platform_get_datetime_now_utc(), tick);
+            snprintf(
+                uniqueFileName, sizeof(uniqueFileName), "desync_%llu_%u.txt",
+                (long long unsigned)platform_get_datetime_now_utc(), tick);
 
             std::string outputFile = Path::Combine(outputPath, uniqueFileName);
 
