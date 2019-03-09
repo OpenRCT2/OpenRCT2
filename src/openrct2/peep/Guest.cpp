@@ -4389,11 +4389,14 @@ void Guest::UpdateRideApproachExitWaypoints()
 
     int16_t shift_multiplier = 20;
 
-    rct_ride_entry* ride_type = get_ride_entry(ride->subtype);
-    rct_ride_entry_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
-    if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+    auto rideEntry = get_ride_entry(ride->subtype);
+    if (rideEntry != nullptr)
     {
-        shift_multiplier = 32;
+        auto vehicleEntry = &rideEntry->vehicles[rideEntry->default_vehicle];
+        if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+        {
+            shift_multiplier = 32;
+        }
     }
 
     x_shift *= shift_multiplier;
