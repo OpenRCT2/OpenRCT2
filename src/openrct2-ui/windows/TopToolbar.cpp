@@ -32,6 +32,7 @@
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
+#include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/actions/WaterLowerAction.hpp>
 #include <openrct2/actions/WaterRaiseAction.hpp>
 #include <openrct2/audio/audio.h>
@@ -2901,10 +2902,12 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
         case WIDX_LAND:
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
-                gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-                game_do_command(
-                    gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
-                    GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
+                auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                    gLandToolTerrainSurface, gLandToolTerrainEdge);
+
+                GameActions::Execute(&surfaceSetStyleAction);
+
                 gCurrentToolId = TOOL_UP_DOWN_ARROW;
             }
             break;
@@ -3102,10 +3105,12 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             {
                 if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                 {
-                    gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-                    game_do_command(
-                        gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
-                        GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
+                    auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                        gLandToolTerrainSurface, gLandToolTerrainEdge);
+
+                    GameActions::Execute(&surfaceSetStyleAction);
+
                     // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
                     // cursor
                     gCurrentToolId = TOOL_CROSSHAIR;

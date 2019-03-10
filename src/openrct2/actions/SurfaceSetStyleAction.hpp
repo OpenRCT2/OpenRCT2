@@ -10,9 +10,13 @@
 #pragma once
 
 #include "../Context.h"
+#include "../management/Finance.h"
 #include "../object/ObjectManager.h"
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
+#include "../world/Park.h"
+#include "../world/Surface.h"
+#include "../world/TileElement.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(SurfaceSetStyleAction, GAME_COMMAND_CHANGE_SURFACE_STYLE, GameActionResult)
@@ -34,18 +38,28 @@ public:
     {
     }
 
+    void Serialise(DataSerialiser & stream) override
+    {
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle);
+    }
+
     GameActionResult::Ptr Query() const override
     {
         auto res = MakeResult();
+        res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-        auto x0 = std::max(_range.GetLeft(), 32);
-        auto y0 = std::max(_range.GetTop(), 32);
-        auto x1 = std::min(_range.GetRight(), (int32_t)gMapSizeMaxXY);
-        auto y1 = std::min(_range.GetBottom(), (int32_t)gMapSizeMaxXY);
+        auto normRange = _range.Normalise();
+        auto x0 = std::max(normRange.GetLeft(), 32);
+        auto y0 = std::max(normRange.GetTop(), 32);
+        auto x1 = std::min(normRange.GetRight(), (int32_t)gMapSizeMaxXY);
+        auto y1 = std::min(normRange.GetBottom(), (int32_t)gMapSizeMaxXY);
 
         MapRange validRange{ x0, y0, x1, y1 };
-        auto& objManager = GetContext()->GetObjectManager();
+
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
         if (_surfaceStyle != 0xFF)
         {
             if (_surfaceStyle > 0x1F)
@@ -122,12 +136,11 @@ public:
 
                     if (_surfaceStyle != curSurfaceStyle)
                     {
-                        auto& objManager = GetContext()->GetObjectManager();
-                        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+                        const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
                             objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _surfaceStyle));
-                        if (surfaceObj != nullptr)
+                        if (surfaceObject != nullptr)
                         {
-                            surfaceCost += surfaceObj->Price;
+                            surfaceCost += surfaceObject->Price;
                         }
                     }
                 }
@@ -151,12 +164,14 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto res = MakeResult();
+        res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-        auto x0 = std::max(_range.GetLeft(), 32);
-        auto y0 = std::max(_range.GetTop(), 32);
-        auto x1 = std::min(_range.GetRight(), (int32_t)gMapSizeMaxXY);
-        auto y1 = std::min(_range.GetBottom(), (int32_t)gMapSizeMaxXY);
+        auto normRange = _range.Normalise();
+        auto x0 = std::max(normRange.GetLeft(), 32);
+        auto y0 = std::max(normRange.GetTop(), 32);
+        auto x1 = std::min(normRange.GetRight(), (int32_t)gMapSizeMaxXY);
+        auto y1 = std::min(normRange.GetBottom(), (int32_t)gMapSizeMaxXY);
 
         MapRange validRange{ x0, y0, x1, y1 };
 
@@ -174,6 +189,12 @@ public:
         {
             for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
             {
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+                {
+                    if (!map_is_location_in_park({ x, y }))
+                        continue;
+                }
+
                 auto tileElement = map_get_surface_element_at({ x, y });
                 if (tileElement == nullptr)
                 {
@@ -187,12 +208,12 @@ public:
 
                     if (_surfaceStyle != curSurfaceStyle)
                     {
-                        auto& objManager = GetContext()->GetObjectManager();
-                        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+                        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+                        const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
                             objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _surfaceStyle));
-                        if (surfaceObj != nullptr)
+                        if (surfaceObject != nullptr)
                         {
-                            surfaceCost += surfaceObj->Price;
+                            surfaceCost += surfaceObject->Price;
 
                             surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
