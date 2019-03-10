@@ -51,6 +51,7 @@
 #include "StaffSetCostumeAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "StaffSetOrdersAction.hpp"
+#include "SurfaceSetStyleAction.hpp"
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "TrackSetBrakeSpeedAction.hpp"
@@ -97,6 +98,7 @@ namespace GameActions
         Register<StaffSetNameAction>();
         Register<StaffSetOrdersAction>();
         Register<StaffSetCostumeAction>();
+        Register<SurfaceSetStyleAction>();
         Register<WallRemoveAction>();
         Register<SmallSceneryPlaceAction>();
         Register<SmallSceneryRemoveAction>();
