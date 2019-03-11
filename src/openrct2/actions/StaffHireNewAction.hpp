@@ -106,7 +106,9 @@ private:
         if (_staffType >= STAFF_TYPE_COUNT)
         {
             // Invalid staff type.
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+            log_error("Tried to use invalid staff type: %u", (uint32_t)_staffType);
+
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         if (gSpriteListCount[SPRITE_LIST_NULL] < 400)
@@ -119,14 +121,18 @@ private:
             if (_entertainerType >= ENTERTAINER_COSTUME_COUNT)
             {
                 // Invalid entertainer costume
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+                log_error("Tried to use invalid entertainer type: %u", (uint32_t)_entertainerType);
+
+                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }
 
             uint32_t availableCostumes = staff_get_available_entertainer_costumes();
             if (!(availableCostumes & (1 << _entertainerType)))
             {
                 // Entertainer costume unavailable
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+                log_error("Tried to use unavailable entertainer type: %u", (uint32_t)_entertainerType);
+
+                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }
         }
 
@@ -147,7 +153,7 @@ private:
         Peep* newPeep = &(create_sprite(GetFlags())->peep);
         if (newPeep == nullptr)
         {
-            // Too many staff members exist already.
+            // Too many peeps exist already.
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
