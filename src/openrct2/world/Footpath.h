@@ -21,6 +21,9 @@ enum
     PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
+constexpr auto FootpathMaxHeight = 248;
+constexpr auto FootpathMinHeight = 2;
+
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 
 #pragma pack(push, 1)

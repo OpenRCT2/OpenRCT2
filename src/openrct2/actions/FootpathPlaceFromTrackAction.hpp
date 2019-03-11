@@ -75,12 +75,12 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        if (_loc.z / 8 < 2)
+        if (_loc.z / 8 < FootpathMinHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
         }
 
-        if (_loc.z / 8 > 248)
+        if (_loc.z / 8 > FootpathMaxHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
