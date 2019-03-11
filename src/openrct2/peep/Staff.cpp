@@ -180,19 +180,25 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
         autoPosition = autoPosition ^ 1;
     }
 
-    auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType);
+    uint32_t staffOrders = 0;
+
+    if (staffType == STAFF_TYPE_HANDYMAN)
+    {
+        staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
+        if (gConfigGeneral.handymen_mow_default)
+        {
+            staffOrders |= STAFF_ORDERS_MOWING;
+        }
+    }
+    else if (staffType == STAFF_TYPE_MECHANIC)
+    {
+        staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
+    }
+
+    auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
     hireStaffAction.SetCallback([=](const GameAction*, const StaffHireNewActionResult* res) -> void {
         if (res->Error != GA_ERROR::OK)
             return;
-
-        if ((staffType == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default)
-        {
-            Peep* newPeep = GET_PEEP(res->peepSriteIndex);
-            uint8_t newOrders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
-
-            auto staffSetOrdersAction = StaffSetOrdersAction(res->peepSriteIndex, newOrders);
-            GameActions::Execute(&staffSetOrdersAction);
-        }
 
         // Open window for new staff.
         Peep* peep = &get_sprite(res->peepSriteIndex)->peep;

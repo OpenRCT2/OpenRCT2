@@ -45,7 +45,7 @@ class StaffHireNewActionResult final : public GameActionResult
 {
 public:
     StaffHireNewActionResult()
-        : GameActionResult(GA_ERROR::OK, 0)
+        : GameActionResult(GA_ERROR::OK, STR_CANT_HIRE_NEW_STAFF)
     {
     }
     StaffHireNewActionResult(GA_ERROR error, rct_string_id message)
@@ -62,13 +62,15 @@ private:
     bool _autoPosition = false;
     uint8_t _staffType = STAFF_TYPE::STAFF_TYPE_COUNT;
     uint8_t _entertainerType = ENTERTAINER_COSTUME::ENTERTAINER_COSTUME_COUNT;
+    uint32_t _staffOrders = 0;
 
 public:
     StaffHireNewAction() = default;
-    StaffHireNewAction(bool autoPosition, STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainerType)
+    StaffHireNewAction(bool autoPosition, STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainerType, uint32_t staffOrders)
         : _autoPosition(autoPosition)
         , _staffType(staffType)
         , _entertainerType(entertainerType)
+        , _staffOrders(staffOrders)
     {
     }
 
@@ -81,7 +83,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_autoPosition) << DS_TAG(_staffType) << DS_TAG(_entertainerType);
+        stream << DS_TAG(_autoPosition) << DS_TAG(_staffType) << DS_TAG(_entertainerType) << DS_TAG(_staffOrders);
     }
 
     GameActionResult::Ptr Query() const override
@@ -173,13 +175,7 @@ private:
             newPeep->paid_on_rides = 0;
             newPeep->paid_on_food = 0;
             newPeep->paid_on_souvenirs = 0;
-
-            if (_staffType == STAFF_TYPE_HANDYMAN)
-                newPeep->staff_orders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
-            else if (_staffType == STAFF_TYPE_MECHANIC)
-                newPeep->staff_orders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
-            else
-                newPeep->staff_orders = 0;
+            newPeep->staff_orders = _staffOrders;
 
             uint16_t idSearchSpriteIndex;
             Peep* idSearchPeep;
