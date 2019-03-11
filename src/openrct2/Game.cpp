@@ -1289,7 +1289,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_smooth_land,
     game_command_raise_water,
     game_command_lower_water,
-    game_command_set_brakes_speed,
+    nullptr,
     game_command_hire_new_staff_member,
     game_command_set_staff_patrol,
     game_command_fire_staff_member,
