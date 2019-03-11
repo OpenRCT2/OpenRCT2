@@ -18,7 +18,7 @@ public:
     rct_string_id NameStringId{};
     uint32_t IconImageId{};
     uint32_t BaseImageId{};
-    uint32_t NumImagesLoaded = 0;
+    uint32_t NumImagesLoaded{};
 
     explicit TerrainEdgeObject(const rct_object_entry& entry)
         : Object(entry)
