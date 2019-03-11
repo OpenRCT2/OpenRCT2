@@ -207,16 +207,12 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_STAFF_LIST_HIRE_BUTTON:
         {
             STAFF_TYPE staffType = static_cast<STAFF_TYPE>(_windowStaffListSelectedTab);
+            ENTERTAINER_COSTUME costume = ENTERTAINER_COSTUME_COUNT;
             if (staffType == STAFF_TYPE_ENTERTAINER)
             {
-                ENTERTAINER_COSTUME costume = static_cast<ENTERTAINER_COSTUME>(
-                    window_staff_list_get_random_entertainer_costume());
-                staff_hire_new_member(staffType, costume);
+                costume = static_cast<ENTERTAINER_COSTUME>(window_staff_list_get_random_entertainer_costume());
             }
-            else
-            {
-                staff_hire_new_member(staffType, ENTERTAINER_COSTUME::ENTERTAINER_COSTUME_COUNT);
-            }
+            staff_hire_new_member(staffType, costume);
             break;
         }
         case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
