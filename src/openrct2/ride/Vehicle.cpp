@@ -10002,3 +10002,13 @@ const rct_vehicle* rct_vehicle::GetHead() const
 {
     return ((rct_vehicle*)this)->GetHead();
 }
+
+const rct_vehicle* rct_vehicle::GetCar(size_t carIndex) const
+{
+    auto car = this;
+    for (; carIndex != 0; carIndex--)
+    {
+        car = GET_VEHICLE(car->next_vehicle_on_train);
+    }
+    return car;
+}

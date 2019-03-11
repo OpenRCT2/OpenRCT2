@@ -145,7 +145,7 @@ void centre_2d_coordinates(int32_t x, int32_t y, int32_t z, int32_t* out_x, int3
  */
 void viewport_create(
     rct_window* w, int32_t x, int32_t y, int32_t width, int32_t height, int32_t zoom, int32_t centre_x, int32_t centre_y,
-    int32_t centre_z, char flags, int16_t sprite)
+    int32_t centre_z, char flags, uint16_t sprite)
 {
     rct_viewport* viewport = nullptr;
     for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
@@ -686,55 +686,53 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     }
 }
 
-void viewport_update_smart_guest_follow(rct_window* window, Peep* peep)
+viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep)
 {
-    union
-    {
-        sprite_focus sprite;
-        coordinate_focus coordinate;
-    } focus = {}; // The focus will be either a sprite or a coordinate.
-
-    focus.sprite.sprite_id = window->viewport_smart_follow_sprite;
+    viewport_focus focus{};
+    focus.type = VIEWPORT_FOCUS_TYPE_SPRITE;
+    focus.sprite.sprite_id = peep->sprite_index;
 
     if (peep->state == PEEP_STATE_PICKED)
     {
-        // focus.sprite.sprite_id = SPRITE_INDEX_NULL;
+        focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
-        return;
+        return focus;
     }
     else
     {
-        uint8_t final_check = 1;
+        bool overallFocus = true;
         if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE
             || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
         {
             Ride* ride = get_ride(peep->current_ride);
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
             {
-                rct_vehicle* train = GET_VEHICLE(ride->vehicles[peep->current_train]);
-                int32_t car = peep->current_car;
-
-                for (; car != 0; car--)
+                auto train = GET_VEHICLE(ride->vehicles[peep->current_train]);
+                if (train != nullptr)
                 {
-                    train = GET_VEHICLE(train->next_vehicle_on_train);
+                    auto car = train->GetCar(peep->current_car);
+                    if (car != nullptr)
+                    {
+                        focus.sprite.sprite_id = car->sprite_index;
+                        overallFocus = false;
+                    }
                 }
-
-                focus.sprite.sprite_id = train->sprite_index;
-                final_check = 0;
             }
         }
-        if (peep->x == LOCATION_NULL && final_check)
+        if (peep->x == LOCATION_NULL && overallFocus)
         {
-            Ride* ride = get_ride(peep->current_ride);
-            int32_t x = ride->overall_view.x * 32 + 16;
-            int32_t y = ride->overall_view.y * 32 + 16;
-            int32_t height = tile_element_height(x, y);
-            height += 32;
-            focus.coordinate.x = x;
-            focus.coordinate.y = y;
-            focus.coordinate.z = height;
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            auto ride = get_ride(peep->current_ride);
+            if (ride != nullptr)
+            {
+                auto x = (int32_t)ride->overall_view.x * 32 + 16;
+                auto y = (int32_t)ride->overall_view.y * 32 + 16;
+                focus.type = VIEWPORT_FOCUS_TYPE_COORDINATE;
+                focus.coordinate.x = x;
+                focus.coordinate.y = y;
+                focus.coordinate.z = tile_element_height(x, y) + 32;
+                focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            }
         }
         else
         {
@@ -746,6 +744,7 @@ void viewport_update_smart_guest_follow(rct_window* window, Peep* peep)
 
     window->viewport_focus_sprite = focus.sprite;
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
+    return focus;
 }
 
 void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
