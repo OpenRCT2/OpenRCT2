@@ -51,6 +51,7 @@
 #include "TrackRemoveAction.hpp"
 #include "WallRemoveAction.hpp"
 #include "WaterSetHeightAction.hpp"
+#include "TrackSetBrakeSpeedAction.hpp"
 
 namespace GameActions
 {
