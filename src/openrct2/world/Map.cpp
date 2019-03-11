@@ -19,6 +19,7 @@
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
+#include "../actions/WaterSetHeightAction.hpp"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
@@ -1402,12 +1403,18 @@ money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
                         height = tile_element->base_height + 2;
                     }
 
-                    money32 tileCost = game_do_command(
-                        xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
-                    if (tileCost == MONEY32_UNDEFINED)
+                    auto waterSetHeightAction = WaterSetHeightAction({ xi, yi }, height);
+                    waterSetHeightAction.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&waterSetHeightAction)
+                                                               : GameActions::QueryNested(&waterSetHeightAction);
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        gGameCommandErrorText = res->ErrorMessage;
+                        // set gCommonFormatArguments to res->ErrorArgs
                         return MONEY32_UNDEFINED;
+                    }
 
-                    cost += tileCost;
+                    cost += res->Cost;
                     waterHeightChanged = true;
                 }
             }
@@ -1422,7 +1429,7 @@ money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
         int16_t water_height_z = z >> 16;
         int16_t base_height_z = z;
         z = water_height_z;
-        if (z != 0)
+        if (z == 0)
             z = base_height_z;
 
         LocationXYZ16 coord;
@@ -1490,11 +1497,18 @@ money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
                     if (height < min_height)
                         continue;
                     height -= 2;
-                    int32_t tileCost = game_do_command(
-                        xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
-                    if (tileCost == MONEY32_UNDEFINED)
+                    auto waterSetHeightAction = WaterSetHeightAction({ xi, yi }, height);
+                    waterSetHeightAction.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&waterSetHeightAction)
+                                                               : GameActions::QueryNested(&waterSetHeightAction);
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        gGameCommandErrorText = res->ErrorMessage;
+                        // set gCommonFormatArguments to res->ErrorArgs
                         return MONEY32_UNDEFINED;
-                    cost += tileCost;
+                    }
+
+                    cost += res->Cost;
                     waterHeightChanged = true;
                 }
             }
@@ -2133,116 +2147,6 @@ void game_command_lower_water(
 {
     *ebx = lower_water(
         (int16_t)(*eax & 0xFFFF), (int16_t)(*ecx & 0xFFFF), (int16_t)(*edi & 0xFFFF), (int16_t)(*ebp & 0xFFFF), (uint8_t)*ebx);
-}
-
-/**
- *
- *  rct2: 0x006E650F
- */
-void game_command_set_water_height(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    int32_t x = *eax;
-    int32_t y = *ecx;
-    uint8_t base_height = *edx;
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = base_height * 8;
-    if (game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-        && gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
-    {
-        gGameCommandErrorText = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (base_height < 2)
-    {
-        gGameCommandErrorText = STR_TOO_LOW;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (base_height >= 58)
-    {
-        gGameCommandErrorText = STR_TOO_HIGH;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (x >= gMapSizeUnits || y >= gMapSizeUnits)
-    {
-        gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_in_park({ x, y }))
-    {
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        int32_t element_height = tile_element_height(x, y);
-        footpath_remove_litter(x, y, element_height);
-        if (!gCheatsDisableClearanceChecks)
-            wall_remove_at_z(x, y, element_height);
-    }
-
-    TileElement* tile_element = map_get_surface_element_at({ x, y });
-    int32_t zHigh = tile_element->base_height;
-    int32_t zLow = base_height;
-    if (tile_element->AsSurface()->GetWaterHeight() > 0)
-    {
-        zHigh = tile_element->AsSurface()->GetWaterHeight() * 2;
-    }
-    if (zLow > zHigh)
-    {
-        int32_t temp = zHigh;
-        zHigh = zLow;
-        zLow = temp;
-    }
-
-    if (map_can_construct_at(x, y, zLow, zHigh, { 0b1111, 0b1111 }))
-    {
-        if (tile_element->AsSurface()->HasTrackThatNeedsWater())
-        {
-            gGameCommandErrorText = 0;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-        if (*ebx & GAME_COMMAND_FLAG_APPLY)
-        {
-            if (base_height > tile_element->base_height)
-            {
-                tile_element->AsSurface()->SetWaterHeight(base_height / 2);
-            }
-            else
-            {
-                tile_element->AsSurface()->SetWaterHeight(0);
-            }
-            map_invalidate_tile_full(x, y);
-        }
-        *ebx = 250;
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        {
-            *ebx = 0;
-        }
-    }
-    else
-    {
-        *ebx = MONEY32_UNDEFINED;
-    }
 }
 
 bool map_is_location_at_edge(int32_t x, int32_t y)

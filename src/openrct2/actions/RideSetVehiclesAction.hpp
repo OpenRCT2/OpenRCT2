@@ -118,7 +118,7 @@ public:
 
                 // Validate preset
                 vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
-                if (_colour >= presetList->count)
+                if (_colour >= presetList->count && _colour != 255 && _colour != 0)
                 {
                     log_error("Unknown vehicle colour preset. colour = %d", _colour);
                     return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);

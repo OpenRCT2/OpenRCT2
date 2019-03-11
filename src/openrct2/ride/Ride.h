@@ -1166,8 +1166,6 @@ rct_vehicle* ride_get_broken_vehicle(Ride* ride);
 
 void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();
-void game_command_callback_place_ride_entrance_or_exit(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
 
 void ride_delete(Ride* ride);
 void ride_renew(Ride* ride);

@@ -10,7 +10,10 @@
 #include "BannerSetNameAction.hpp"
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
+#include "FootpathPlaceAction.hpp"
 #include "FootpathRemoveAction.hpp"
+#include "FootpathSceneryPlaceAction.hpp"
+#include "FootpathSceneryRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
 #include "LandSetHeightAction.hpp"
@@ -26,6 +29,7 @@
 #include "PlacePeepSpawnAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
+#include "RideEntranceExitPlaceAction.hpp"
 #include "RideEntranceExitRemoveAction.hpp"
 #include "RideSetAppearanceAction.hpp"
 #include "RideSetColourScheme.hpp"
@@ -46,6 +50,7 @@
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "WallRemoveAction.hpp"
+#include "WaterSetHeightAction.hpp"
 
 namespace GameActions
 {
@@ -53,7 +58,10 @@ namespace GameActions
     {
         Register<BannerSetNameAction>();
         Register<ClimateSetAction>();
+        Register<FootpathPlaceAction>();
         Register<FootpathRemoveAction>();
+        Register<FootpathSceneryPlaceAction>();
+        Register<FootpathSceneryRemoveAction>();
         Register<GuestSetNameAction>();
         Register<MazeSetTrackAction>();
         Register<ParkMarketingAction>();
@@ -64,6 +72,7 @@ namespace GameActions
         Register<PlacePeepSpawnAction>();
         Register<RideCreateAction>();
         Register<RideDemolishAction>();
+        Register<RideEntranceExitPlaceAction>();
         Register<RideEntranceExitRemoveAction>();
         Register<RideSetColourSchemeAction>();
         Register<RideSetNameAction>();
@@ -89,5 +98,6 @@ namespace GameActions
         Register<ClearAction>();
         Register<PauseToggleAction>();
         Register<LoadOrQuitAction>();
+        Register<WaterSetHeightAction>();
     }
 } // namespace GameActions

@@ -14,7 +14,9 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
+#include "actions/FootpathPlaceAction.hpp"
 #include "actions/GameAction.h"
+#include "actions/RideEntranceExitPlaceAction.hpp"
 #include "actions/RideSetSetting.hpp"
 #include "actions/TrackPlaceAction.hpp"
 #include "config/Config.h"
@@ -500,6 +502,27 @@ namespace OpenRCT2
                     uint8_t value = (command.ebx >> 8) & 0xFF;
 
                     result.action = std::make_unique<RideSetSettingAction>(rideId, setting, value);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT:
+                {
+                    CoordsXY loc = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF) };
+                    Direction direction = (command.ebx >> 8) & 0xFF;
+                    ride_id_t rideId = command.edx & 0xFF;
+                    uint8_t stationNum = command.edi & 0xFF;
+                    bool isExit = ((command.edx >> 8) & 0xFF) != 0;
+                    result.action = std::make_unique<RideEntranceExitPlaceAction>(loc, direction, rideId, stationNum, isExit);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_PLACE_PATH:
+                {
+                    CoordsXYZ loc = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF),
+                                      (int32_t)(command.edx & 0xFF) * 8 };
+                    uint8_t slope = (command.ebx >> 8) & 0xFF;
+                    uint8_t type = (command.edx >> 8) & 0xFF;
+                    result.action = std::make_unique<FootpathPlaceAction>(loc, slope, type);
                     result.action->SetFlags(command.ebx & 0xFF);
                     break;
                 }
