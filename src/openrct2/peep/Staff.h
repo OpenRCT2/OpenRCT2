@@ -25,7 +25,7 @@ enum STAFF_MODE
     STAFF_MODE_PATROL = 3
 };
 
-enum STAFF_TYPE
+enum STAFF_TYPE : uint8_t
 {
     STAFF_TYPE_HANDYMAN,
     STAFF_TYPE_MECHANIC,
@@ -45,7 +45,7 @@ enum STAFF_ORDERS
     STAFF_ORDERS_FIX_RIDES = (1 << 1)
 };
 
-enum ENTERTAINER_COSTUME
+enum ENTERTAINER_COSTUME : uint8_t
 {
     ENTERTAINER_COSTUME_PANDA,
     ENTERTAINER_COSTUME_TIGER,
@@ -86,7 +86,7 @@ void game_command_pickup_staff(
 
 void staff_reset_modes();
 void staff_set_name(uint16_t spriteIndex, const char* name);
-uint16_t hire_new_staff_member(uint8_t staffType);
+bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainerType);
 void staff_update_greyed_patrol_areas();
 bool staff_is_location_in_patrol(Peep* mechanic, int32_t x, int32_t y);
 bool staff_is_location_on_patrol_edge(Peep* mechanic, int32_t x, int32_t y);

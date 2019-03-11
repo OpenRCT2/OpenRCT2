@@ -94,7 +94,7 @@ static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     nullptr,
     game_command_callback_place_banner,
     nullptr,
-    game_command_callback_hire_new_staff_member,
+    nullptr,
     game_command_callback_pickup_guest,
     game_command_callback_pickup_staff
 };
@@ -1290,7 +1290,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_raise_water,
     game_command_lower_water,
     game_command_set_brakes_speed,
-    game_command_hire_new_staff_member,
+    nullptr,
     game_command_set_staff_patrol,
     game_command_fire_staff_member,
     nullptr,

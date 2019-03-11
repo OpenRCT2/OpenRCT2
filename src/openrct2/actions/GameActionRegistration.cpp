@@ -43,6 +43,7 @@
 #include "SignSetStyleAction.hpp"
 #include "SmallSceneryPlaceAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
+#include "StaffHireNewAction.hpp"
 #include "StaffSetColourAction.hpp"
 #include "StaffSetCostumeAction.hpp"
 #include "StaffSetNameAction.hpp"
@@ -99,5 +100,6 @@ namespace GameActions
         Register<PauseToggleAction>();
         Register<LoadOrQuitAction>();
         Register<WaterSetHeightAction>();
+        Register<StaffHireNewAction>();
     }
 } // namespace GameActions
