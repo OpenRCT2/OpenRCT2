@@ -18,6 +18,7 @@ STR_0529    :Mine train themed roller coaster trains career along steel roller c
 STR_0534    :Self-driven gas-engined go karts
 STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
 
+STR_0574    :Riders are held in special harnesses in a lying-down position, traveling through twisted track and inversions either on their backs or facing the ground
 
 STR_0976    :Restrooms and Information Kiosks
 
@@ -117,7 +118,7 @@ STR_1438    :Sitting
 STR_1439    :(select location)
 STR_1440    :Mowing grass
 STR_1441    :Sweeping footpath
-STR_1442    :Emptying litter bin
+STR_1442    :Emptying trash can
 STR_1443    :Watering gardens
 STR_1444    :Watching {STRINGID}
 STR_1445    :Watching construction of {STRINGID}
@@ -181,7 +182,7 @@ STR_1502    :{SMALLFONT}“I need to go to the bathroom”
 STR_1503    :{SMALLFONT}“I can't find {STRINGID}”
 STR_1504    :{SMALLFONT}“I'm not paying that much to use {STRINGID}”
 STR_1505    :{SMALLFONT}“I'm not going on {STRINGID} while it's raining”
-STR_1506    :{SMALLFONT}“The litter here is really bad”
+STR_1506    :{SMALLFONT}“The trash here is really bad”
 STR_1507    :{SMALLFONT}“I can't find the park exit”
 STR_1508    :{SMALLFONT}“I want to get off {STRINGID}”
 STR_1509    :{SMALLFONT}“I want to get out of {STRINGID}”
@@ -388,7 +389,7 @@ STR_1710    :Yes
 STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
-STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty trash cans
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
 STR_1716    :Invalid name for park
 STR_1717    :Can't rename park...
@@ -846,9 +847,22 @@ STR_2207    :Empty Juice Cup
 STR_2208    :Roast Sausage
 STR_2209    :Empty Bowl
 
+STR_2353    :{WINDOW_COLOUR_2}Trash swept: {BLACK}{COMMA16}
+STR_2354    :{WINDOW_COLOUR_2}Trash cans emptied: {BLACK}{COMMA16}
+
 STR_2707    :Use system dialog window
 
 STR_2735    :{COMMA16}km/h
+
+STR_2756    :Remove trash
+
+STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organizing them better
+STR_2807    :{RED}Guests are complaining about the amount of trash in your park{NEWLINE}Check where your handymen are and consider organizing them better
+STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
+
+STR_2811    :{RED}Guests are complaining because they can't find the bathrooms in your park
+
+STR_2824    :{WINDOW_COLOUR_2}Best park bathrooms award
 
 STR_2828    :{WINDOW_COLOUR_2}Most dazzling ride color schemes award
 
@@ -863,8 +877,6 @@ STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the s
 
 STR_2989    :{SMALLFONT}{BLACK}Select main color
 STR_2990    :{SMALLFONT}{BLACK}Select text color
-
-STR_3081    :Castle entrance (gray)
 
 STR_3093    :{WINDOW_COLOUR_2}Favorite: {BLACK}{STRINGID}
 
@@ -881,7 +893,11 @@ STR_3373    :{BLACK}= Restroom
 
 
 # Strings added by OpenRCT2. Only add strings that differ from UK English!
+STR_5306    :RollerCoaster Tycoon 1 (CF)
+STR_5307    :RollerCoaster Tycoon 1 (CF + LL)
+STR_5428    :Counterclockwise rotations:
 STR_5440    :Minimize fullscreen on focus loss
+STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behavior)
 STR_5459    :Rotate counterclockwise
 STR_5460    :Rotate view counterclockwise
 STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalizing your park when they're angry
@@ -891,14 +907,22 @@ STR_5572    :Add To Favorites
 STR_5573    :Remove From Favorites
 STR_5620    :Corkscrew Follies
 STR_5817    :{SMALLFONT}{BLACK}Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbor scaling is sharp, but can cause a minor performance hit.
+STR_5820    :{SMALLFONT}{BLACK}Minimize the game if focus is{NEWLINE}lost while in fullscreen mode
+STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behavior)
 STR_5827    :{SMALLFONT}{BLACK}Sets the color scheme used for the GUI
+STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behavior) or their source game (RCT1 behavior)
 STR_5843    :{SMALLFONT}{BLACK}Enables progressive unlocking of scenarios (RCT1 behavior)
+STR_5872    :{SMALLFONT}{BLACK}Disable plant aging such that they don't wilt.
 STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will center around the cursor, as opposed to the screen center.
 STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colors will be rendered during storms.
 STR_6046    :Normalize height map
 STR_6053    :The heightmap cannot be normalized
+STR_6116    :Wide roller coaster trains glide along smooth steel track, traveling through a variety of inversions
 STR_6159    :Smooth Nearest Neighbor
 STR_6166    :{SMALLFONT}{BLACK}Synchronizes each frame displayed to the monitor's refresh rate, preventing screen tearing.
+STR_6206    :Gray stucco
+STR_6212    :Gray sandstone
+STR_6274    :Can't set color scheme...
 
 #############
 # Scenarios #
@@ -1024,7 +1048,7 @@ STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :Central to this large developing park is a giant triple-track racing/dueling steel coaster
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
@@ -1225,7 +1249,7 @@ STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
 <Crazy Craters>
 STR_SCNR    :Crazy Craters
 STR_PARK    :Crazy Craters
-STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment center to keep the people happy
 
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
@@ -1250,7 +1274,7 @@ STR_DTLS    :This well-themed amusement park already has several rides, but has 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
 STR_PARK    :Frightmare Hills
-STR_DTLS    :A scary park with a giant centrepiece coaster
+STR_DTLS    :A scary park with a giant centerpiece coaster
 
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
@@ -1480,7 +1504,7 @@ STR_DTLS    :Build the missing Six Flags rides, or create your own designs to im
 <Africa - African Diamond Mine>
 STR_SCNR    :Africa - African Diamond Mine
 STR_PARK    :Mines of Africa
-STR_DTLS    :You inherited a disused diamond mine, and find a valuable diamond.  You decide to invest that money to build a world-famous theme park.
+STR_DTLS    :You inherited a disused diamond mine, and find a valuable diamond. You decide to invest that money to build a world-famous theme park.
 
 <Africa - Oasis>
 STR_SCNR    :Africa - Oasis
@@ -1578,7 +1602,7 @@ STR_DTLS    :To liberate wealth from the rich and distribute it to the needy, yo
 <Future - First Encounters>
 STR_SCNR    :Future - First Encounters
 STR_PARK    :Extraterrestrial Extravaganza
-STR_DTLS    :Life has been discovered on a distant planet Build an alien theme park to cash in on the unprecedented wave of interest.
+STR_DTLS    :Life has been discovered on a distant planet. Build an alien theme park to cash in on the unprecedented wave of interest.
 
 <Future - Future World>
 STR_SCNR    :Future - Future World
@@ -1613,12 +1637,12 @@ STR_DTLS    :To thwart the highway developers and preserve the mysterious ancien
 <Roaring Twenties - Prison Island>
 STR_SCNR    :Roaring Twenties - Prison Island
 STR_PARK    :Alcatraz
-STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You've decided to convert it into a top tourist attraction, and money is no object
+STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You've decided to convert it into a top tourist attraction, and money is no object.
 
 <Roaring Twenties - Schneider Cup>
 STR_SCNR    :Roaring Twenties - Schneider Cup
 STR_PARK    :Schneider Shores
-STR_DTLS    :The 75th anniversary of your grandfather's Schneider Cup victory is coming up in a few years. You're going to honour his achievement by building a theme park based on the famous seaplane race.
+STR_DTLS    :The 75th anniversary of your grandfather's Schneider Cup victory is coming up in a few years. You're going to honor his achievement by building a theme park based on the famous seaplane race.
 
 <Roaring Twenties - Skyscrapers>
 STR_SCNR    :Roaring Twenties - Skyscrapers
