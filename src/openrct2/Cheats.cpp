@@ -492,6 +492,17 @@ static void cheat_own_all_land()
     map_count_remaining_land_rights();
 }
 
+
+static void cheat_force_highest_intensity()
+{
+    uint16_t spriteIndex;
+    Peep* peep;
+
+    FOR_ALL_GUESTS(spriteIndex, peep)
+    {
+        peep->intensity = 240;
+    }
+}
 #pragma endregion
 
 void game_command_cheat(
@@ -651,6 +662,9 @@ void game_command_cheat(
                 break;
             case CHEAT_ENABLEALLDRAWABLETRACKPIECES:
                 gCheatsEnableAllDrawableTrackPieces = *edx != 0;
+                break;
+            case CHEAT_FORCEHIGHESTINTENSITY:
+                cheat_force_highest_intensity();
                 break;
         }
         if (network_get_mode() == NETWORK_MODE_NONE)
@@ -989,6 +1003,8 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi)
             return language_get_string(STR_CHEAT_IGNORE_RESEARCH_STATUS);
         case CHEAT_ENABLEALLDRAWABLETRACKPIECES:
             return language_get_string(STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES);
+        case CHEAT_FORCEHIGHESTINTENSITY:
+            return "Set Highest Intensity For Guests. OWO";
     }
 
     return "";
