@@ -100,34 +100,34 @@ private:
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
             {
                 TileElement* tileElement = map_get_surface_element_at(x / 32, y / 32);
-                if (tileElement != nullptr)
+                if (tileElement == nullptr)
+                    continue;
+
+                SurfaceElement* surfaceElement = tileElement->AsSurface();
+                uint8_t height = surfaceElement->base_height;
+
+                if (height > minHeight)
+                    continue;
+
+                uint8_t currentSlope = surfaceElement->GetSlope();
+                uint8_t newSlope = tile_element_raise_styles[tableRow][currentSlope];
+                if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
+                    height += 2;
+
+                newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
+
+                auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
+                landSetHeightAction.SetFlags(GetFlags());
+                auto result = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
+                                          : GameActions::QueryNested(&landSetHeightAction);
+                if (result->Error == GA_ERROR::OK)
                 {
-                    SurfaceElement* surfaceElement = tileElement->AsSurface();
-                    uint8_t height = surfaceElement->base_height;
-
-                    if (height <= minHeight)
-                    {
-                        uint8_t currentSlope = surfaceElement->GetSlope();
-                        uint8_t newSlope = tile_element_raise_styles[tableRow][currentSlope];
-                        if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
-                            height += 2;
-
-                        newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
-
-                        auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
-                        landSetHeightAction.SetFlags(GetFlags());
-                        auto result = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
-                                                  : GameActions::QueryNested(&landSetHeightAction);
-                        if (result->Error == GA_ERROR::OK)
-                        {
-                            res->Cost += result->Cost;
-                        }
-                        else
-                        {
-                            result->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
-                            return result;
-                        }
-                    }
+                    res->Cost += result->Cost;
+                }
+                else
+                {
+                    result->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
+                    return result;
                 }
             }
         }
