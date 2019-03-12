@@ -304,8 +304,6 @@ private:
     SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
     uint32_t last_ping_sent_time = 0;
     uint32_t server_tick = 0;
-    uint32_t server_srand0 = 0;
-    std::string server_sprite_hash;
     uint8_t player_id = 0;
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
     std::multiset<GameCommand> game_command_queue;
@@ -2882,8 +2880,6 @@ void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection,
     tickData.srand0 = srand0;
     tickData.tick = server_tick;
 
-    server_srand0 = srand0;
-    server_sprite_hash.resize(0);
     if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
     {
         const char* text = packet.ReadString();
