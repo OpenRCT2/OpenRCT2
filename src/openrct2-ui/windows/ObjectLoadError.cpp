@@ -34,6 +34,7 @@ private:
     std::vector<rct_object_entry> _downloadedEntries;
     size_t _currentDownloadIndex{};
     std::mutex _downloadedEntriesMutex;
+    std::mutex _queueMutex;
     bool _nextDownloadQueued{};
 
     // TODO static due to INTENT_EXTRA_CALLBACK not allowing a std::function
@@ -61,6 +62,7 @@ public:
 
     void Update()
     {
+        std::lock_guard guard(_queueMutex);
         if (_nextDownloadQueued)
         {
             _nextDownloadQueued = false;
@@ -87,6 +89,7 @@ private:
 
     void QueueNextDownload()
     {
+        std::lock_guard guard(_queueMutex);
         _nextDownloadQueued = true;
     }
 
