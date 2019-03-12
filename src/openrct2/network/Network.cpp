@@ -293,11 +293,9 @@ private:
     std::unique_ptr<INetworkServerAdvertiser> _advertiser;
     uint16_t listening_port = 0;
     SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
-    uint32_t last_tick_sent_time = 0;
     uint32_t last_ping_sent_time = 0;
     uint32_t server_tick = 0;
     uint32_t server_srand0 = 0;
-    uint32_t server_srand0_tick = 0;
     std::string server_sprite_hash;
     uint8_t player_id = 0;
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
@@ -307,7 +305,6 @@ private:
     bool _desynchronised = false;
     uint32_t server_connect_time = 0;
     uint8_t default_group = 0;
-    uint32_t game_commands_processed_this_tick = 0;
     uint32_t _commandId;
     uint32_t _actionId;
     std::string _chatLogPath;
@@ -361,7 +358,6 @@ Network::Network()
     wsa_initialized = false;
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
-    last_tick_sent_time = 0;
     last_ping_sent_time = 0;
     _commandId = 0;
     _actionId = 0;
@@ -926,24 +922,8 @@ void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCm
 
 bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
 {
-    if (server_srand0_tick == 0)
-        return true;
-
-    if (tick > server_srand0_tick)
+    if (tick == server_tick)
     {
-        server_srand0_tick = 0;
-        return true;
-    }
-
-    if (game_commands_processed_this_tick != 0)
-    {
-        // SRAND/sprite hash is only updated once at beginning of tick so it is invalid otherwise
-        return true;
-    }
-
-    if (tick == server_srand0_tick)
-    {
-        server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
         rct_sprite_checksum checksum = sprite_checksum();
         std::string client_sprite_hash = checksum.ToString();
@@ -1618,14 +1598,6 @@ void Network::Server_Send_GAME_ACTION(const GameAction* action)
 
 void Network::Server_Send_TICK()
 {
-    uint32_t ticks = platform_get_ticks();
-    if (ticks < last_tick_sent_time + 25)
-    {
-        return;
-    }
-
-    last_tick_sent_time = ticks;
-
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_TICK << gCurrentTicks << scenario_rand_state().s0;
     uint32_t flags = 0;
@@ -1924,7 +1896,6 @@ void Network::ProcessGameCommands()
             GameActionResult::Ptr result = GameActions::Execute(action);
             if (result->Error == GA_ERROR::OK)
             {
-                game_commands_processed_this_tick++;
                 Server_Send_GAME_ACTION(action);
             }
         }
@@ -1946,7 +1917,6 @@ void Network::ProcessGameCommands()
 
             if (cost != MONEY32_UNDEFINED)
             {
-                game_commands_processed_this_tick++;
                 NetworkPlayer* player = GetPlayerByID(gc.playerid);
                 if (!player)
                     return;
@@ -2546,7 +2516,6 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
             game_load_init();
             game_command_queue.clear();
             server_tick = gCurrentTicks;
-            server_srand0_tick = 0;
             // window_network_status_open("Loaded new map from network");
             _desynchronised = false;
             gFirstTimeSaving = true;
@@ -2887,27 +2856,20 @@ void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection,
 {
     uint32_t srand0;
     uint32_t flags;
-    // Note: older server version may not advertise flags at all.
-    // NetworkPacket will return 0, if trying to read past end of buffer,
-    // so flags == 0 is expected in such cases.
     packet >> server_tick >> srand0 >> flags;
-    if (server_srand0_tick == 0)
+
+    server_srand0 = srand0;
+    server_sprite_hash.resize(0);
+    if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
     {
-        server_srand0 = srand0;
-        server_srand0_tick = server_tick;
-        server_sprite_hash.resize(0);
-        if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
+        const char* text = packet.ReadString();
+        if (text != nullptr)
         {
-            const char* text = packet.ReadString();
-            if (text != nullptr)
-            {
-                auto textLen = std::strlen(text);
-                server_sprite_hash.resize(textLen);
-                std::memcpy(server_sprite_hash.data(), text, textLen);
-            }
+            auto textLen = std::strlen(text);
+            server_sprite_hash.resize(textLen);
+            std::memcpy(server_sprite_hash.data(), text, textLen);
         }
     }
-    game_commands_processed_this_tick = 0;
 }
 
 void Network::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
