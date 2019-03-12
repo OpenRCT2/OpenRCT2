@@ -4722,7 +4722,12 @@ void Guest::UpdateRideMazePathfinding()
 
     } while (!(tileElement++)->IsLastForTile());
 
-    uint16_t mazeEntry = tileElement->AsTrack()->GetMazeEntry();
+    auto trackMazeEntry = tileElement->AsTrack();
+    if (trackMazeEntry == nullptr)
+    {
+        return;
+    }
+    uint16_t mazeEntry = trackMazeEntry->GetMazeEntry();
     uint16_t openHedges = 0;
     // var_37 is 3, 7, 11 or 15
 
