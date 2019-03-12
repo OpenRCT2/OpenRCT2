@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../management/Finance.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(TrackSetBrakeSpeedAction, GAME_COMMAND_SET_BRAKES_SPEED, GameActionResult)

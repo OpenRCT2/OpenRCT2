@@ -49,9 +49,9 @@
 #include "StaffSetOrdersAction.hpp"
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
+#include "TrackSetBrakeSpeedAction.hpp"
 #include "WallRemoveAction.hpp"
 #include "WaterSetHeightAction.hpp"
-#include "TrackSetBrakeSpeedAction.hpp"
 
 namespace GameActions
 {
@@ -96,6 +96,7 @@ namespace GameActions
         Register<LandSetHeightAction>();
         Register<TrackPlaceAction>();
         Register<TrackRemoveAction>();
+        Register<TrackSetBrakeSpeedAction>();
         Register<ClearAction>();
         Register<PauseToggleAction>();
         Register<LoadOrQuitAction>();
