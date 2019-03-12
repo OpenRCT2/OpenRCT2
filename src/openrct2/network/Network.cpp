@@ -288,6 +288,7 @@ private:
     bool _closeLock = false;
     bool _requireClose = false;
     bool wsa_initialized = false;
+    bool _clientMapLoaded = false;
     std::unique_ptr<ITcpSocket> _listenSocket;
     std::unique_ptr<NetworkConnection> _serverConnection;
     std::unique_ptr<INetworkServerAdvertiser> _advertiser;
@@ -483,6 +484,7 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
     _serverConnection->Socket->ConnectAsync(host, port);
     status = NETWORK_STATUS_CONNECTING;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    _clientMapLoaded = false;
 
     BeginChatLog();
     BeginServerLog();
@@ -922,6 +924,10 @@ void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCm
 
 bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
 {
+    // We have to wait for the map to be loaded first, ticks may match current loaded map.
+    if (_clientMapLoaded == false)
+        return true;
+
     if (tick == server_tick)
     {
         // Check that the server and client sprite hashes match
@@ -2518,6 +2524,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
             server_tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _desynchronised = false;
+            _clientMapLoaded = true;
             gFirstTimeSaving = true;
 
             // Notify user he is now online and which shortcut key enables chat
