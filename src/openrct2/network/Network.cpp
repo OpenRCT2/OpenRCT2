@@ -195,7 +195,6 @@ public:
     std::vector<uint8_t> _challenge;
     std::map<uint32_t, GameAction::Callback_t> _gameActionCallbacks;
     NetworkUserManager _userManager;
-
     std::string ServerName;
     std::string ServerDescription;
     std::string ServerGreeting;
@@ -282,6 +281,15 @@ private:
     };
 
     PlayerListUpdate _pendingPlayerList;
+
+    struct ServerTickData_t
+    {
+        uint32_t srand0;
+        uint32_t tick;
+        std::string spriteHash;
+    };
+
+    std::map<uint32_t, ServerTickData_t> _serverTickData;
 
     int32_t mode = NETWORK_MODE_NONE;
     int32_t status = NETWORK_STATUS_NONE;
@@ -485,6 +493,7 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
     status = NETWORK_STATUS_CONNECTING;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
     _clientMapLoaded = false;
+    _serverTickData.clear();
 
     BeginChatLog();
     BeginServerLog();
@@ -928,18 +937,22 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
     if (_clientMapLoaded == false)
         return true;
 
-    if (tick == server_tick)
+    auto itTickData = _serverTickData.find(tick);
+    if (itTickData == std::end(_serverTickData))
+        return true;
+
+    const ServerTickData_t storedTick = itTickData->second;
+    _serverTickData.erase(itTickData);
+
+    if (storedTick.srand0 != srand0)
+        return false;
+
+    if (storedTick.spriteHash.empty() == false)
     {
-        // Check that the server and client sprite hashes match
         rct_sprite_checksum checksum = sprite_checksum();
-        std::string client_sprite_hash = checksum.ToString();
-        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && client_sprite_hash != server_sprite_hash;
-        // Check PRNG values and sprite hashes, if exist
-        if ((srand0 != server_srand0) || sprites_mismatch)
+        std::string clientSpriteHash = checksum.ToString();
+        if (clientSpriteHash != storedTick.spriteHash)
         {
-#    ifdef DEBUG_DESYNC
-            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash.c_str(), server_sprite_hash.c_str());
-#    endif
             return false;
         }
     }
@@ -2865,6 +2878,10 @@ void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection,
     uint32_t flags;
     packet >> server_tick >> srand0 >> flags;
 
+    ServerTickData_t tickData;
+    tickData.srand0 = srand0;
+    tickData.tick = server_tick;
+
     server_srand0 = srand0;
     server_sprite_hash.resize(0);
     if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
@@ -2872,11 +2889,17 @@ void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection,
         const char* text = packet.ReadString();
         if (text != nullptr)
         {
-            auto textLen = std::strlen(text);
-            server_sprite_hash.resize(textLen);
-            std::memcpy(server_sprite_hash.data(), text, textLen);
+            tickData.spriteHash = text;
         }
     }
+
+    // Don't let the history grow too much.
+    while (_serverTickData.size() >= 100)
+    {
+        _serverTickData.erase(_serverTickData.begin());
+    }
+
+    _serverTickData.emplace(server_tick, tickData);
 }
 
 void Network::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
