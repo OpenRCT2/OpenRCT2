@@ -81,31 +81,32 @@ private:
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
             {
                 TileElement* tileElement = map_get_surface_element_at(x / 32, y / 32);
-                if (tileElement != nullptr)
+                if (tileElement == nullptr)
+                    continue;
+
+                SurfaceElement* surfaceElement = tileElement->AsSurface();
+                uint8_t height = surfaceElement->GetWaterHeight();
+                if (height == 0)
+                    continue;
+
+                height *= 2;
+                if (height < minHeight)
+                    continue;
+
+                height -= 2;
+                auto waterSetHeightAction = WaterSetHeightAction({ x, y }, height);
+                waterSetHeightAction.SetFlags(GetFlags());
+                auto result = isExecuting ? GameActions::ExecuteNested(&waterSetHeightAction)
+                                          : GameActions::QueryNested(&waterSetHeightAction);
+                if (result->Error == GA_ERROR::OK)
                 {
-                    SurfaceElement* surfaceElement = tileElement->AsSurface();
-                    uint8_t height = surfaceElement->GetWaterHeight();
-                    if (height != 0)
-                    {
-                        height *= 2;
-                        if (height < minHeight)
-                            continue;
-                        height -= 2;
-                        auto waterSetHeightAction = WaterSetHeightAction({ x, y }, height);
-                        waterSetHeightAction.SetFlags(GetFlags());
-                        auto result = isExecuting ? GameActions::ExecuteNested(&waterSetHeightAction)
-                                                  : GameActions::QueryNested(&waterSetHeightAction);
-                        if (result->Error == GA_ERROR::OK)
-                        {
-                            res->Cost += result->Cost;
-                            hasChanged = true;
-                        }
-                        else
-                        {
-                            result->ErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
-                            return result;
-                        }
-                    }
+                    res->Cost += result->Cost;
+                    hasChanged = true;
+                }
+                else
+                {
+                    result->ErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
+                    return result;
                 }
             }
         }
@@ -129,15 +130,17 @@ private:
             for (int32_t x = _range.GetLeft(); x <= _range.GetRight(); x += 32)
             {
                 TileElement* tile_element = map_get_surface_element_at({ x, y });
-                if (tile_element != nullptr)
+                if (tile_element == nullptr)
+                    continue;
+
+                uint8_t height = tile_element->AsSurface()->GetWaterHeight();
+                if (height == 0)
+                    continue;
+
+                height *= 2;
+                if (height > minHeight)
                 {
-                    uint8_t height = tile_element->AsSurface()->GetWaterHeight();
-                    if (height != 0)
-                    {
-                        height *= 2;
-                        if (height > minHeight)
-                            minHeight = height;
-                    }
+                    minHeight = height;
                 }
             }
         }
