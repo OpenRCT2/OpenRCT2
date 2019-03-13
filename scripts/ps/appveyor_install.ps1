@@ -12,19 +12,6 @@ function Check-ExitCode
     }
 }
 
-if ($env:ENCKEY -and -not $testing)
-{
-    if (-not (Test-Path "secure-file"))
-    {
-        Write-Host "Downloading secure-file from NuGet..." -ForegroundColor Cyan
-        nuget install secure-file -ExcludeVersion
-    }
-    
-    Write-Host "Decrypting code signing key..."            -ForegroundColor Cyan
-    secure-file\tools\secure-file -decrypt distribution\windows\code-sign-key-openrct2.org.pfx.enc -secret $env:ENCKEY
-    Check-ExitCode
-}
-
 # Check if OpenRCT2.org API security token is available
 if (${env:OPENRCT2_ORG_TOKEN} -and -not $testing)
 {
@@ -44,6 +31,14 @@ if (${env:OPENRCT2_ORG_TOKEN} -and -not $testing)
         7z x nsisxtra.zip > $null
         Check-ExitCode
         cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
+
+        Write-Host "Downloading UAC plugin for NSIS..."   -ForegroundColor Cyan
+        curl "http://nsis.sourceforge.net/mediawiki/images/8/8f/UAC.zip" -OutFile uac.zip
+        Check-ExitCode
+        7z x uac.zip > $null
+        Check-ExitCode
+        cp UAC.nsh "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Include"
+        cp Plugins "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1" -Recurse -Force
     }
 }
 else
@@ -52,6 +47,10 @@ else
     ${env:NO_NSIS} = "true"
 }
 
-$env:GIT_TAG            = $env:APPVEYOR_REPO_TAG_NAME
-$env:GIT_BRANCH         = $env:APPVEYOR_REPO_BRANCH
-$env:GIT_COMMIT_SHA1    = $env:APPVEYOR_REPO_COMMIT
+$env:GIT_TAG = $env:APPVEYOR_REPO_TAG_NAME
+if (${env:APPVEYOR_REPO_TAG} -ne "true")
+{
+    $env:GIT_BRANCH = $env:APPVEYOR_REPO_BRANCH
+}
+$env:GIT_COMMIT_SHA1 = $env:APPVEYOR_REPO_COMMIT
+$env:GIT_DESCRIBE = (git describe HEAD | sed -E "s/-g.+$//")

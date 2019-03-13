@@ -1,26 +1,24 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "SideTunnelCall.hpp"
 
-sint16 SideTunnelCall::GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3]) {
-    for (sint16 offset = -56; offset <= 56; offset += 8) {
-        if (calls[0].height != (baseHeight - 8 + offset) / 16) continue;
-        if (calls[1].height != (baseHeight + 0 + offset) / 16) continue;
-        if (calls[2].height != (baseHeight + 8 + offset) / 16) continue;
+int16_t SideTunnelCall::GetTunnelOffset(uint32_t baseHeight, tunnel_entry calls[3])
+{
+    for (int16_t offset = -56; offset <= 56; offset += 8)
+    {
+        if (calls[0].height != (baseHeight - 8 + offset) / 16)
+            continue;
+        if (calls[1].height != (baseHeight + 0 + offset) / 16)
+            continue;
+        if (calls[2].height != (baseHeight + 8 + offset) / 16)
+            continue;
 
         return offset;
     }
@@ -29,16 +27,18 @@ sint16 SideTunnelCall::GetTunnelOffset(uint32 baseHeight, tunnel_entry calls[3])
     return 0;
 }
 
+TunnelCall SideTunnelCall::ExtractTunnelCalls(tunnel_entry* calls, uint8_t count, uint16_t baseHeight, bool* error)
+{
+    TunnelCall tunnelCall = {};
 
-TunnelCall SideTunnelCall::ExtractTunnelCalls(tunnel_entry *calls, uint8 count, uint16 baseHeight, bool *error) {
-    TunnelCall tunnelCall = {0};
-
-    if (count == 0) {
+    if (count == 0)
+    {
         tunnelCall.call = TUNNELCALL_NONE;
         return tunnelCall;
     }
 
-    if (count == 3) {
+    if (count == 3)
+    {
         tunnelCall.call = TUNNELCALL_CALL;
         tunnelCall.offset = GetTunnelOffset(baseHeight, calls);
         tunnelCall.type = calls[0].type;
@@ -49,26 +49,33 @@ TunnelCall SideTunnelCall::ExtractTunnelCalls(tunnel_entry *calls, uint8 count, 
     return tunnelCall;
 }
 
-
 bool SideTunnelCall::TunnelCallsLineUp(TunnelCall tunnelCalls[4][4])
 {
-    for (int side = 0; side < 4; ++side) {
-        TunnelCall * referenceCall = nullptr;
-        for (int direction = 0; direction < 4; ++direction) {
-            if (tunnelCalls[direction][side].call == TUNNELCALL_SKIPPED) {
+    for (int side = 0; side < 4; ++side)
+    {
+        TunnelCall* referenceCall = nullptr;
+        for (int direction = 0; direction < 4; ++direction)
+        {
+            if (tunnelCalls[direction][side].call == TUNNELCALL_SKIPPED)
+            {
                 continue;
             }
 
-            if (referenceCall == nullptr) {
+            if (referenceCall == nullptr)
+            {
                 referenceCall = &tunnelCalls[direction][side];
                 continue;
             }
 
-            if (referenceCall->call != tunnelCalls[direction][side].call) return false;
+            if (referenceCall->call != tunnelCalls[direction][side].call)
+                return false;
 
-            if (referenceCall->call == TUNNELCALL_CALL) {
-                if (referenceCall->type != tunnelCalls[direction][side].type) return false;
-                if (referenceCall->offset != tunnelCalls[direction][side].offset) return false;
+            if (referenceCall->call == TUNNELCALL_CALL)
+            {
+                if (referenceCall->type != tunnelCalls[direction][side].type)
+                    return false;
+                if (referenceCall->offset != tunnelCalls[direction][side].offset)
+                    return false;
             }
         }
     }
@@ -78,9 +85,12 @@ bool SideTunnelCall::TunnelCallsLineUp(TunnelCall tunnelCalls[4][4])
 
 void SideTunnelCall::GetTunnelCallReferencePattern(TunnelCall tunnelCalls[4][4], TunnelCall (*out)[4])
 {
-    for (int side = 0; side < 4; ++side) {
-        for (int direction = 0; direction < 4; ++direction) {
-            if (tunnelCalls[direction][side].call == TUNNELCALL_SKIPPED) {
+    for (int side = 0; side < 4; ++side)
+    {
+        for (int direction = 0; direction < 4; ++direction)
+        {
+            if (tunnelCalls[direction][side].call == TUNNELCALL_SKIPPED)
+            {
                 continue;
             }
 
@@ -93,12 +103,17 @@ void SideTunnelCall::GetTunnelCallReferencePattern(TunnelCall tunnelCalls[4][4],
 
 bool SideTunnelCall::TunnelPatternsMatch(TunnelCall expected[4], TunnelCall actual[4])
 {
-    for (int side = 0; side < 4; side++) {
-        if (expected[side].call != actual[side].call) return false;
+    for (int side = 0; side < 4; side++)
+    {
+        if (expected[side].call != actual[side].call)
+            return false;
 
-        if (expected[side].call == TUNNELCALL_CALL) {
-            if (expected[side].type != actual[side].type) return false;
-            if (expected[side].offset != actual[side].offset) return false;
+        if (expected[side].call == TUNNELCALL_CALL)
+        {
+            if (expected[side].type != actual[side].type)
+                return false;
+            if (expected[side].offset != actual[side].offset)
+                return false;
         }
     }
 

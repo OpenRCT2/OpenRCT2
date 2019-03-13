@@ -5,7 +5,7 @@
 
 string inputDirectory = @"resources\logo";
 string outputPath = Path.Combine(inputDirectory, "icon.ico");
-int[] imageSizes = new int[] { 256, 128, 64, 40, 32, 16, 8, 4 };
+int[] imageSizes = new int[] { 256, 128, 96, 64, 48, 40, 32, 24, 16, 8, 4 };
 using (FileStream fs = new FileStream(outputPath, FileMode.Create)) {
 	BinaryWriter bw = new BinaryWriter(fs);
 	bw.Write((short)0);

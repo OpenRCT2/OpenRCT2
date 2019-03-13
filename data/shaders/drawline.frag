@@ -1,20 +1,10 @@
 #version 150
 
-uniform ivec2   uScreenSize;
-uniform ivec4   uClip;
-uniform vec4    uColour;
+flat in uint fColour;
 
-in vec2 fPosition;
-
-out vec4 oColour;
+out uint oColour;
 
 void main()
 {
-    if (fPosition.x < uClip.x || fPosition.x > uClip.z ||
-        fPosition.y < uClip.y || fPosition.y > uClip.w)
-    {
-        discard;
-    }
-
-    oColour = uColour;
+    oColour = fColour;
 }

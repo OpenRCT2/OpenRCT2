@@ -1,20 +1,15 @@
-version: 0.0.5.{build}
+version: 0.2.1.{build}
 image:
-  - Visual Studio 2015
-  - Visual Studio 2017 RC
+  - Visual Studio 2017
 cache:
 - C:\ProgramData\chocolatey\bin -> scripts\ps\appveyor_install.ps1
 - C:\ProgramData\chocolatey\lib -> scripts\ps\appveyor_install.ps1
 - secure-file -> scripts\ps\appveyor_install.ps1
 environment:
-  ENCKEY:
-    secure: saYAIpqXzpq0U+JH+MNi/isRQ6Y51PZhm4BrnePDiAPptFO5htxFOLegrYqxdy67
-  SIGN_PASSWORD:
-    secure: bzYmf0ElxisSGyZnIjUOYQ==
   OPENRCT2_ORG_TOKEN:
     secure: leQX3xCQpmBLGuMqrxjFlzexDt96ypNRMM5TTRVHbGE8PwVg9crgeykLc2BIZU6HDHveJCHqh2cGMdHtHYJYcw==
   BUILD_SERVER: AppVeyor
-  PATH: $(PATH);C:\Program Files (x86)\Windows Kits\10\bin\x86
+  PATH: C:\ProgramData\chocolatey\bin;$(PATH);C:\Program Files (x86)\Windows Kits\10\bin\x86;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin
 install:
 - ps: >-
     .\scripts\ps\appveyor_install.ps1
@@ -23,9 +18,12 @@ platform:
   - x64
 configuration: Release
 build:
+  parallel: true
   project: openrct2.proj
 test_script:
-- ps: msbuild openrct2.proj /t:test /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- ps: msbuild openrct2.proj /t:Test /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+after_test:
+- ps: (new-object net.webclient).UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\artifacts\test-results.xml))
 artifacts:
 - path: .\artifacts\openrct2-portable*.zip
   name: OpenRCT2-portable

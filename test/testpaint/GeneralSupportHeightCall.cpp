@@ -1,53 +1,58 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
-
-#include <map>
 
 #include "GeneralSupportHeightCall.hpp"
 
-bool GeneralSupportHeightCall::CallsMatch(SupportCall tileSupportCalls[4]) {
+#include <map>
+
+bool GeneralSupportHeightCall::CallsMatch(SupportCall tileSupportCalls[4])
+{
     SupportCall baseCall = tileSupportCalls[0];
-    for (int i = 1; i < 4; i++) {
-        if (tileSupportCalls[i] != baseCall) return false;
+    for (int i = 1; i < 4; i++)
+    {
+        if (tileSupportCalls[i] != baseCall)
+            return false;
     }
 
     return true;
 }
 
-bool GeneralSupportHeightCall::FindMostCommonSupportCall(SupportCall calls[4], SupportCall *out) {
+bool GeneralSupportHeightCall::FindMostCommonSupportCall(SupportCall calls[4], SupportCall* out)
+{
     std::map<SupportCall, int> map;
 
-    for (int i = 0; i < 4; ++i) {
-        if (map.count(calls[i]) == 0) {
+    for (int i = 0; i < 4; ++i)
+    {
+        if (map.count(calls[i]) == 0)
+        {
             map[calls[i]] = 1;
-        } else {
+        }
+        else
+        {
             map[calls[i]] += 1;
         }
     }
 
-    if (map.size() == 1) {
+    if (map.size() == 1)
+    {
         (*out) = calls[0];
         return true;
     }
 
-    if (map.size() == 2) {
-        for (auto &&item : map) {
-            if (item.second == 3) {
-				(*out) = item.first;
-				return true;
+    if (map.size() == 2)
+    {
+        for (auto&& item : map)
+        {
+            if (item.second == 3)
+            {
+                (*out) = item.first;
+                return true;
             }
         }
 
@@ -57,12 +62,17 @@ bool GeneralSupportHeightCall::FindMostCommonSupportCall(SupportCall calls[4], S
     return false;
 }
 
-bool GeneralSupportHeightCall::AssertEquals(const SupportCall *lhs, const SupportCall *rhs) {
-    if (lhs == nullptr && rhs == nullptr) return true;
-    if (lhs == nullptr || rhs == nullptr) return false;
+bool GeneralSupportHeightCall::AssertEquals(const SupportCall* lhs, const SupportCall* rhs)
+{
+    if (lhs == nullptr && rhs == nullptr)
+        return true;
+    if (lhs == nullptr || rhs == nullptr)
+        return false;
 
-    if (lhs->height != rhs->height) return false;
-    if (lhs->slope != rhs->slope) return false;
+    if (lhs->height != rhs->height)
+        return false;
+    if (lhs->slope != rhs->slope)
+        return false;
 
     return true;
 }
