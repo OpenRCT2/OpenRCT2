@@ -1,4 +1,4 @@
-0.2.1+ (in development)
+0.2.2 (2019-03-13)
 ------------------------------------------------------------------------
 - Feature: [#4418] Allow steep slopes on the side-friction roller coaster.
 - Feature: [#7726] Add shortcut to advance one tick.
