@@ -19,7 +19,22 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(TrackPlaceAction, GAME_COMMAND_PLACE_TRACK, GameActionResult)
+class TrackPlaceActionResult final : public GameActionResult
+{
+public:
+    TrackPlaceActionResult()
+    : GameActionResult(GA_ERROR::OK, 0)
+    {
+    }
+    TrackPlaceActionResult(GA_ERROR error, rct_string_id message)
+    : GameActionResult(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message)
+    {
+    }
+    uint8_t GroundFlagCount;
+
+};
+
+DEFINE_GAME_ACTION(TrackPlaceAction, GAME_COMMAND_PLACE_TRACK, TrackPlaceActionResult)
 {
 private:
     NetworkRideId_t _rideIndex;
