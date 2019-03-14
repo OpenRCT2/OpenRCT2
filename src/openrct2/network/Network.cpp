@@ -31,7 +31,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "0"
+#define NETWORK_STREAM_VERSION "1"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -195,7 +195,6 @@ public:
     std::vector<uint8_t> _challenge;
     std::map<uint32_t, GameAction::Callback_t> _gameActionCallbacks;
     NetworkUserManager _userManager;
-
     std::string ServerName;
     std::string ServerDescription;
     std::string ServerGreeting;
@@ -283,22 +282,28 @@ private:
 
     PlayerListUpdate _pendingPlayerList;
 
+    struct ServerTickData_t
+    {
+        uint32_t srand0;
+        uint32_t tick;
+        std::string spriteHash;
+    };
+
+    std::map<uint32_t, ServerTickData_t> _serverTickData;
+
     int32_t mode = NETWORK_MODE_NONE;
     int32_t status = NETWORK_STATUS_NONE;
     bool _closeLock = false;
     bool _requireClose = false;
     bool wsa_initialized = false;
+    bool _clientMapLoaded = false;
     std::unique_ptr<ITcpSocket> _listenSocket;
     std::unique_ptr<NetworkConnection> _serverConnection;
     std::unique_ptr<INetworkServerAdvertiser> _advertiser;
     uint16_t listening_port = 0;
     SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
-    uint32_t last_tick_sent_time = 0;
     uint32_t last_ping_sent_time = 0;
     uint32_t server_tick = 0;
-    uint32_t server_srand0 = 0;
-    uint32_t server_srand0_tick = 0;
-    std::string server_sprite_hash;
     uint8_t player_id = 0;
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
     std::multiset<GameCommand> game_command_queue;
@@ -307,7 +312,6 @@ private:
     bool _desynchronised = false;
     uint32_t server_connect_time = 0;
     uint8_t default_group = 0;
-    uint32_t game_commands_processed_this_tick = 0;
     uint32_t _commandId;
     uint32_t _actionId;
     std::string _chatLogPath;
@@ -361,7 +365,6 @@ Network::Network()
     wsa_initialized = false;
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
-    last_tick_sent_time = 0;
     last_ping_sent_time = 0;
     _commandId = 0;
     _actionId = 0;
@@ -487,6 +490,8 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
     _serverConnection->Socket->ConnectAsync(host, port);
     status = NETWORK_STATUS_CONNECTING;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    _clientMapLoaded = false;
+    _serverTickData.clear();
 
     BeginChatLog();
     BeginServerLog();
@@ -926,34 +931,26 @@ void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCm
 
 bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
 {
-    if (server_srand0_tick == 0)
+    // We have to wait for the map to be loaded first, ticks may match current loaded map.
+    if (_clientMapLoaded == false)
         return true;
 
-    if (tick > server_srand0_tick)
-    {
-        server_srand0_tick = 0;
+    auto itTickData = _serverTickData.find(tick);
+    if (itTickData == std::end(_serverTickData))
         return true;
-    }
 
-    if (game_commands_processed_this_tick != 0)
-    {
-        // SRAND/sprite hash is only updated once at beginning of tick so it is invalid otherwise
-        return true;
-    }
+    const ServerTickData_t storedTick = itTickData->second;
+    _serverTickData.erase(itTickData);
 
-    if (tick == server_srand0_tick)
+    if (storedTick.srand0 != srand0)
+        return false;
+
+    if (storedTick.spriteHash.empty() == false)
     {
-        server_srand0_tick = 0;
-        // Check that the server and client sprite hashes match
         rct_sprite_checksum checksum = sprite_checksum();
-        std::string client_sprite_hash = checksum.ToString();
-        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && client_sprite_hash != server_sprite_hash;
-        // Check PRNG values and sprite hashes, if exist
-        if ((srand0 != server_srand0) || sprites_mismatch)
+        std::string clientSpriteHash = checksum.ToString();
+        if (clientSpriteHash != storedTick.spriteHash)
         {
-#    ifdef DEBUG_DESYNC
-            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash.c_str(), server_sprite_hash.c_str());
-#    endif
             return false;
         }
     }
@@ -1618,14 +1615,6 @@ void Network::Server_Send_GAME_ACTION(const GameAction* action)
 
 void Network::Server_Send_TICK()
 {
-    uint32_t ticks = platform_get_ticks();
-    if (ticks < last_tick_sent_time + 25)
-    {
-        return;
-    }
-
-    last_tick_sent_time = ticks;
-
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_TICK << gCurrentTicks << scenario_rand_state().s0;
     uint32_t flags = 0;
@@ -1924,7 +1913,6 @@ void Network::ProcessGameCommands()
             GameActionResult::Ptr result = GameActions::Execute(action);
             if (result->Error == GA_ERROR::OK)
             {
-                game_commands_processed_this_tick++;
                 Server_Send_GAME_ACTION(action);
             }
         }
@@ -1946,7 +1934,6 @@ void Network::ProcessGameCommands()
 
             if (cost != MONEY32_UNDEFINED)
             {
-                game_commands_processed_this_tick++;
                 NetworkPlayer* player = GetPlayerByID(gc.playerid);
                 if (!player)
                     return;
@@ -2546,9 +2533,9 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
             game_load_init();
             game_command_queue.clear();
             server_tick = gCurrentTicks;
-            server_srand0_tick = 0;
             // window_network_status_open("Loaded new map from network");
             _desynchronised = false;
+            _clientMapLoaded = true;
             gFirstTimeSaving = true;
 
             // Notify user he is now online and which shortcut key enables chat
@@ -2887,27 +2874,28 @@ void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection,
 {
     uint32_t srand0;
     uint32_t flags;
-    // Note: older server version may not advertise flags at all.
-    // NetworkPacket will return 0, if trying to read past end of buffer,
-    // so flags == 0 is expected in such cases.
     packet >> server_tick >> srand0 >> flags;
-    if (server_srand0_tick == 0)
+
+    ServerTickData_t tickData;
+    tickData.srand0 = srand0;
+    tickData.tick = server_tick;
+
+    if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
     {
-        server_srand0 = srand0;
-        server_srand0_tick = server_tick;
-        server_sprite_hash.resize(0);
-        if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
+        const char* text = packet.ReadString();
+        if (text != nullptr)
         {
-            const char* text = packet.ReadString();
-            if (text != nullptr)
-            {
-                auto textLen = std::strlen(text);
-                server_sprite_hash.resize(textLen);
-                std::memcpy(server_sprite_hash.data(), text, textLen);
-            }
+            tickData.spriteHash = text;
         }
     }
-    game_commands_processed_this_tick = 0;
+
+    // Don't let the history grow too much.
+    while (_serverTickData.size() >= 100)
+    {
+        _serverTickData.erase(_serverTickData.begin());
+    }
+
+    _serverTickData.emplace(server_tick, tickData);
 }
 
 void Network::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
