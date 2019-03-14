@@ -7,8 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include ".."
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -49,7 +49,7 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
-#include "../Diagnostic.h"
+#include <algorithm>
 
 /**
  * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
