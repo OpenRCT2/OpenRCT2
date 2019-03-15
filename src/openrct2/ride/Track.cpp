@@ -1264,55 +1264,6 @@ void game_command_remove_track(
         *edx & 0xFF, (*edx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edi & 0xFFFF, (*ebx >> 8) & 0xFF, *ebx & 0xFF);
 }
 
-/**
- *
- *  rct2: 0x006C5AE9
- */
-void game_command_set_brakes_speed(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    int32_t x = (*eax & 0xFFFF);
-    int32_t y = (*ecx & 0xFFFF);
-    int32_t z = (*edi & 0xFFFF);
-    int32_t trackType = (*edx & 0xFF);
-    int32_t brakesSpeed = ((*ebx >> 8) & 0xFF);
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z;
-
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        *ebx = 0;
-        return;
-    }
-
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    if (tileElement == nullptr)
-    {
-        log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", x, y);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-    do
-    {
-        if (tileElement->base_height * 8 != z)
-            continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-            continue;
-        if (tileElement->AsTrack()->GetTrackType() != trackType)
-            continue;
-
-        tileElement->AsTrack()->SetBrakeBoosterSpeed(brakesSpeed);
-
-        break;
-    } while (!(tileElement++)->IsLastForTile());
-
-    *ebx = 0;
-}
-
 void track_circuit_iterator_begin(track_circuit_iterator* it, CoordsXYE first)
 {
     it->last = first;
