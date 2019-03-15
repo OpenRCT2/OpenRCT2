@@ -55,25 +55,6 @@ void game_command_callback_pickup_guest(
     }
 }
 
-void game_command_callback_hire_new_staff_member(
-    [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi, int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    int32_t sprite_index = edi;
-    if (sprite_index == SPRITE_INDEX_NULL)
-    {
-        rct_window* window = window_find_by_class(WC_STAFF_LIST);
-        window_invalidate(window);
-    }
-    else
-    {
-        Peep* peep = &get_sprite(sprite_index)->peep;
-        auto intent = Intent(WC_PEEP);
-        intent.putExtra(INTENT_EXTRA_PEEP, peep);
-        context_open_intent(&intent);
-    }
-}
-
 void game_command_callback_pickup_staff(
     int32_t eax, int32_t ebx, int32_t ecx, [[maybe_unused]] int32_t edx, [[maybe_unused]] int32_t esi,
     [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)

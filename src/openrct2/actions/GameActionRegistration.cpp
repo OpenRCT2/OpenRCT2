@@ -46,6 +46,7 @@
 #include "SignSetStyleAction.hpp"
 #include "SmallSceneryPlaceAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
+#include "StaffHireNewAction.hpp"
 #include "StaffSetColourAction.hpp"
 #include "StaffSetCostumeAction.hpp"
 #include "StaffSetNameAction.hpp"
@@ -91,6 +92,7 @@ namespace GameActions
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
         Register<SignSetStyleAction>();
+        Register<StaffHireNewAction>();
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
         Register<StaffSetOrdersAction>();

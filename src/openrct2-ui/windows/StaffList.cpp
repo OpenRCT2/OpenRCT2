@@ -206,13 +206,13 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_STAFF_LIST_HIRE_BUTTON:
         {
-            int32_t staffType = _windowStaffListSelectedTab;
+            STAFF_TYPE staffType = static_cast<STAFF_TYPE>(_windowStaffListSelectedTab);
+            ENTERTAINER_COSTUME costume = ENTERTAINER_COSTUME_COUNT;
             if (staffType == STAFF_TYPE_ENTERTAINER)
             {
-                uint8_t costume = window_staff_list_get_random_entertainer_costume();
-                staffType += costume;
+                costume = static_cast<ENTERTAINER_COSTUME>(window_staff_list_get_random_entertainer_costume());
             }
-            hire_new_staff_member(staffType);
+            staff_hire_new_member(staffType, costume);
             break;
         }
         case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
