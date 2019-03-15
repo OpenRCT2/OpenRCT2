@@ -1304,6 +1304,10 @@
 		C6E96E341E0408A80076A04F /* zipconf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zipconf.h; sourceTree = "<group>"; };
 		C6E96E351E0408B40076A04F /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzip.dylib; sourceTree = "<group>"; };
 		C9C630BD2235A9C6009AD16E /* FootpathPlaceFromTrackAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FootpathPlaceFromTrackAction.hpp; sourceTree = "<group>"; };
+		C9C630B92235A7E7009AD16E /* LandRaiseAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandRaiseAction.hpp; sourceTree = "<group>"; };
+		C9C630BA2235A7E7009AD16E /* LandLowerAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandLowerAction.hpp; sourceTree = "<group>"; };
+		C9C630BB2235A7F9009AD16E /* WaterLowerAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterLowerAction.hpp; sourceTree = "<group>"; };
+		C9C630BC2235A7F9009AD16E /* WaterRaiseAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterRaiseAction.hpp; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
@@ -2036,6 +2040,10 @@
 			isa = PBXGroup;
 			children = (
 				C9C630BD2235A9C6009AD16E /* FootpathPlaceFromTrackAction.hpp */,
+				C9C630BB2235A7F9009AD16E /* WaterLowerAction.hpp */,
+				C9C630BC2235A7F9009AD16E /* WaterRaiseAction.hpp */,
+				C9C630BA2235A7E7009AD16E /* LandLowerAction.hpp */,
+				C9C630B92235A7E7009AD16E /* LandRaiseAction.hpp */,
 				2A61CAFA2229E5C50095AD67 /* RideEntranceExitPlaceAction.hpp */,
 				2A61CAF82229E59F0095AD67 /* WaterSetHeightAction.hpp */,
 				2A61CAF42229E5720095AD67 /* FootpathPlaceAction.hpp */,

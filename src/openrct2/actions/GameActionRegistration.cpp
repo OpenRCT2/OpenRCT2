@@ -17,6 +17,8 @@
 #include "FootpathSceneryRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
+#include "LandLowerAction.hpp"
+#include "LandRaiseAction.hpp"
 #include "LandSetHeightAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
 #include "LoadOrQuitAction.hpp"
@@ -44,13 +46,17 @@
 #include "SignSetStyleAction.hpp"
 #include "SmallSceneryPlaceAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
+#include "StaffHireNewAction.hpp"
 #include "StaffSetColourAction.hpp"
 #include "StaffSetCostumeAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "StaffSetOrdersAction.hpp"
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
+#include "TrackSetBrakeSpeedAction.hpp"
 #include "WallRemoveAction.hpp"
+#include "WaterLowerAction.hpp"
+#include "WaterRaiseAction.hpp"
 #include "WaterSetHeightAction.hpp"
 
 namespace GameActions
@@ -86,6 +92,7 @@ namespace GameActions
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
         Register<SignSetStyleAction>();
+        Register<StaffHireNewAction>();
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
         Register<StaffSetOrdersAction>();
@@ -94,12 +101,17 @@ namespace GameActions
         Register<SmallSceneryPlaceAction>();
         Register<SmallSceneryRemoveAction>();
         Register<LargeSceneryRemoveAction>();
+        Register<LandLowerAction>();
+        Register<LandRaiseAction>();
         Register<LandSetHeightAction>();
         Register<TrackPlaceAction>();
         Register<TrackRemoveAction>();
+        Register<TrackSetBrakeSpeedAction>();
         Register<ClearAction>();
         Register<PauseToggleAction>();
         Register<LoadOrQuitAction>();
         Register<WaterSetHeightAction>();
+        Register<WaterLowerAction>();
+        Register<WaterRaiseAction>();
     }
 } // namespace GameActions

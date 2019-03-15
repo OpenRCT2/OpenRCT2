@@ -20,6 +20,7 @@
 #include <openrct2/actions/RideEntranceExitPlaceAction.hpp>
 #include <openrct2/actions/TrackPlaceAction.hpp>
 #include <openrct2/actions/TrackRemoveAction.hpp>
+#include <openrct2/actions/TrackSetBrakeSpeedAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
@@ -3458,9 +3459,13 @@ static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
     z = _currentTrackBegin.z;
     if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &tileElement, 0))
     {
-        game_do_command(
-            _currentTrackBegin.x, GAME_COMMAND_FLAG_APPLY | ((brakesSpeed) << 8), _currentTrackBegin.y,
-            tileElement->AsTrack()->GetTrackType(), GAME_COMMAND_SET_BRAKES_SPEED, _currentTrackBegin.z, 0);
+        auto trackSetBrakeSpeed = TrackSetBrakeSpeedAction(
+            { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z }, tileElement->AsTrack()->GetTrackType(),
+            brakesSpeed);
+        trackSetBrakeSpeed.SetCallback(
+            [](const GameAction* ga, const GameActionResult* result) { window_ride_construction_update_active_elements(); });
+        GameActions::Execute(&trackSetBrakeSpeed);
+        return;
     }
     window_ride_construction_update_active_elements();
 }
