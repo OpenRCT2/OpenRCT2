@@ -16,6 +16,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/FootpathSceneryRemoveAction.hpp>
 #include <openrct2/actions/LargeSceneryRemoveAction.hpp>
 #include <openrct2/actions/SmallSceneryRemoveAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
@@ -41,7 +42,7 @@ static void viewport_interaction_remove_footpath_item(TileElement* tileElement, 
 static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y);
 static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y);
 static void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y);
-static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance);
+static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance);
 
 /**
  *
@@ -366,7 +367,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
             sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-            if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+            if (tileElement->AsPath()->IsBroken())
             {
                 set_map_tooltip_format_arg(2, rct_string_id, STR_BROKEN);
                 set_map_tooltip_format_arg(4, rct_string_id, sceneryEntry->name);
@@ -507,16 +508,8 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, int32
  */
 static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y)
 {
-    int32_t type = tileElement->AsPath()->GetPathEntryIndex();
-    if (tileElement->AsPath()->IsQueue())
-        type |= 0x80;
-
-    int32_t slopeData = tileElement->AsPath()->GetSlopeDirection();
-    if (tileElement->AsPath()->IsSloped())
-        slopeData |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
-
-    gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-    game_do_command(x, (slopeData << 8) | 1, y, (type << 8) | tileElement->base_height, GAME_COMMAND_PLACE_PATH, 0, 0);
+    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ x, y, tileElement->base_height * 8 });
+    GameActions::Execute(&footpathSceneryRemoveAction);
 }
 
 /**
@@ -581,13 +574,13 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     }
 }
 
-static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance)
+static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance)
 {
     int32_t distance, closestDistance;
     uint16_t spriteIndex;
     rct_window* w;
     rct_viewport* viewport;
-    rct_peep *peep, *closestPeep;
+    Peep *peep, *closestPeep;
 
     w = window_find_from_point(x, y);
     if (w == nullptr)

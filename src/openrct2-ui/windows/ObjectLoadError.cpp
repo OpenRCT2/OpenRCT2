@@ -34,6 +34,7 @@ private:
     std::vector<rct_object_entry> _downloadedEntries;
     size_t _currentDownloadIndex{};
     std::mutex _downloadedEntriesMutex;
+    bool _nextDownloadQueued{};
 
     // TODO static due to INTENT_EXTRA_CALLBACK not allowing a std::function
     inline static bool _downloadingObjects;
@@ -44,7 +45,7 @@ public:
         _entries = entries;
         _currentDownloadIndex = 0;
         _downloadingObjects = true;
-        NextDownload();
+        QueueNextDownload();
     }
 
     bool IsDownloading() const
@@ -58,20 +59,35 @@ public:
         return _downloadedEntries;
     }
 
+    void Update()
+    {
+        if (_nextDownloadQueued)
+        {
+            _nextDownloadQueued = false;
+            NextDownload();
+        }
+    }
+
 private:
     void UpdateProgress(const std::string& name, size_t count, size_t total)
     {
-        char str_downloading_objects[256];
-        set_format_arg(0, int16_t, count);
-        set_format_arg(2, int16_t, total);
-        set_format_arg(4, char*, name.c_str());
+        char str_downloading_objects[256]{};
+        uint8_t args[32]{};
+        set_format_arg_on(args, 0, int16_t, count);
+        set_format_arg_on(args, 2, int16_t, total);
+        set_format_arg_on(args, 4, char*, name.c_str());
 
-        format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, gCommonFormatArgs);
+        format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, args);
 
         auto intent = Intent(WC_NETWORK_STATUS);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
         context_open_intent(&intent);
+    }
+
+    void QueueNextDownload()
+    {
+        _nextDownloadQueued = true;
     }
 
     void DownloadObject(const rct_object_entry& entry, const std::string name, const std::string_view url)
@@ -102,13 +118,13 @@ private:
                 {
                     throw std::runtime_error("Non 200 status");
                 }
-                NextDownload();
+                QueueNextDownload();
             });
         }
         catch (const std::exception&)
         {
             std::printf("  Failed to download %s\n", name.c_str());
-            NextDownload();
+            QueueNextDownload();
         }
     }
 
@@ -152,12 +168,12 @@ private:
                 else if (response.status == Http::Status::NotFound)
                 {
                     std::printf("  %s not found\n", name.c_str());
-                    NextDownload();
+                    QueueNextDownload();
                 }
                 else
                 {
                     std::printf("  %s query failed (status %d)\n", name.c_str(), (int32_t)response.status);
-                    NextDownload();
+                    QueueNextDownload();
                 }
             });
         }
@@ -339,7 +355,7 @@ static void copy_object_names_to_clipboard(rct_window* w)
         }
 
         strncat(buffer, _invalid_entries[i].name, nameLength);
-        strncat(buffer, PLATFORM_NEWLINE, line_sep_len);
+        strncat(buffer, PLATFORM_NEWLINE, buffer_len - strlen(buffer) - 1);
     }
 
     platform_place_string_on_clipboard(buffer);
@@ -392,6 +408,8 @@ static void window_object_load_error_update(rct_window* w)
     }
 
 #ifndef DISABLE_HTTP
+    _objDownloader.Update();
+
     // Remove downloaded objects from our invalid entry list
     if (_objDownloader.IsDownloading())
     {

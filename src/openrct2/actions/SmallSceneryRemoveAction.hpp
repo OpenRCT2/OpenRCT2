@@ -104,8 +104,7 @@ public:
         TileElement* tileElement = FindSceneryElement();
         if (tileElement == nullptr)
         {
-            res->Cost = 0;
-            return res;
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         return res;
@@ -130,8 +129,7 @@ public:
         TileElement* tileElement = FindSceneryElement();
         if (tileElement == nullptr)
         {
-            res->Cost = 0;
-            return res;
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res->Position.z = tile_element_height(res->Position.x, res->Position.y);

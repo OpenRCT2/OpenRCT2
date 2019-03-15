@@ -331,15 +331,67 @@ template<> struct DataSerializerTraits<CoordsXY>
     }
     static void decode(IStream* stream, CoordsXY& coords)
     {
-        auto x = ByteSwapBE(stream->ReadValue<int16_t>());
-        auto y = ByteSwapBE(stream->ReadValue<int16_t>());
-        coords = CoordsXY(x, y);
+        auto x = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+        coords = CoordsXY{ x, y };
     }
     static void log(IStream* stream, const CoordsXY& coords)
     {
         char msg[128] = {};
         snprintf(msg, sizeof(msg), "CoordsXY(x = %d, y = %d)", coords.x, coords.y);
+        stream->Write(msg, strlen(msg));
+    }
+};
 
+template<> struct DataSerializerTraits<CoordsXYZ>
+{
+    static void encode(IStream* stream, const CoordsXYZ& coord)
+    {
+        stream->WriteValue(ByteSwapBE(coord.x));
+        stream->WriteValue(ByteSwapBE(coord.y));
+        stream->WriteValue(ByteSwapBE(coord.z));
+    }
+
+    static void decode(IStream* stream, CoordsXYZ& coord)
+    {
+        auto x = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto z = ByteSwapBE(stream->ReadValue<int32_t>());
+        coord = CoordsXYZ{ x, y, z };
+    }
+
+    static void log(IStream* stream, const CoordsXYZ& coord)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "CoordsXYZ(x = %d, y = %d, z = %d)", coord.x, coord.y, coord.z);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits<CoordsXYZD>
+{
+    static void encode(IStream* stream, const CoordsXYZD& coord)
+    {
+        stream->WriteValue(ByteSwapBE(coord.x));
+        stream->WriteValue(ByteSwapBE(coord.y));
+        stream->WriteValue(ByteSwapBE(coord.z));
+        stream->WriteValue(ByteSwapBE(coord.direction));
+    }
+
+    static void decode(IStream* stream, CoordsXYZD& coord)
+    {
+        auto x = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto z = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto d = ByteSwapBE(stream->ReadValue<uint8_t>());
+        coord = CoordsXYZD{ x, y, z, d };
+    }
+
+    static void log(IStream* stream, const CoordsXYZD& coord)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "CoordsXYZD(x = %d, y = %d, z = %d, direction = %d)", coord.x, coord.y, coord.z, coord.direction);
         stream->Write(msg, strlen(msg));
     }
 };

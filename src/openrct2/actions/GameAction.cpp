@@ -126,23 +126,12 @@ namespace GameActions
         return false;
     }
 
-    static bool CheckActionAffordability(const GameActionResult* result)
-    {
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
-            return true;
-        if (result->Cost <= 0)
-            return true;
-        if (result->Cost <= gCash)
-            return true;
-        return false;
-    }
-
     static GameActionResult::Ptr QueryInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
-        if (!CheckActionInPausedMode(actionFlags))
+        if (topLevel == true && !CheckActionInPausedMode(actionFlags))
         {
             GameActionResult::Ptr result = std::make_unique<GameActionResult>();
 
@@ -165,7 +154,7 @@ namespace GameActions
 
         if (result->Error == GA_ERROR::OK)
         {
-            if (!CheckActionAffordability(result.get()))
+            if (finance_check_affordability(result->Cost, action->GetFlags()) == false)
             {
                 result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
@@ -261,7 +250,7 @@ namespace GameActions
             }
         }
 
-        GameActionResult::Ptr result = Query(action);
+        GameActionResult::Ptr result = QueryInternal(action, topLevel);
         if (result->Error == GA_ERROR::OK)
         {
             if (topLevel)
@@ -309,8 +298,7 @@ namespace GameActions
             gCommandPosition.z = result->Position.z;
 
             // Update money balance
-            if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5)
-                && result->Cost != 0)
+            if (result->Error == GA_ERROR::OK && finance_check_money_required(flags) && result->Cost != 0)
             {
                 finance_payment(result->Cost, result->ExpenditureType);
                 money_effect_create(result->Cost);
@@ -329,6 +317,11 @@ namespace GameActions
                     if (result->Cost != 0)
                     {
                         network_add_player_money_spent(playerIndex, result->Cost);
+                    }
+
+                    if (result->Position.x != LOCATION_NULL)
+                    {
+                        network_set_player_last_action_coord(playerId, gCommandPosition);
                     }
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)

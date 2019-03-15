@@ -12,6 +12,7 @@
 #include "../common.h"
 
 #include <memory>
+#include <string>
 
 enum SOCKET_STATUS
 {
@@ -45,11 +46,11 @@ public:
     virtual const char* GetHostName() const abstract;
 
     virtual void Listen(uint16_t port) abstract;
-    virtual void Listen(const char* address, uint16_t port) abstract;
+    virtual void Listen(const std::string& address, uint16_t port) abstract;
     virtual std::unique_ptr<ITcpSocket> Accept() abstract;
 
-    virtual void Connect(const char* address, uint16_t port) abstract;
-    virtual void ConnectAsync(const char* address, uint16_t port) abstract;
+    virtual void Connect(const std::string& address, uint16_t port) abstract;
+    virtual void ConnectAsync(const std::string& address, uint16_t port) abstract;
 
     virtual size_t SendData(const void* buffer, size_t size) abstract;
     virtual NETWORK_READPACKET ReceiveData(void* buffer, size_t size, size_t* sizeReceived) abstract;

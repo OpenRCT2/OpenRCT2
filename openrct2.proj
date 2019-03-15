@@ -18,7 +18,7 @@
     <Platform Condition="'$(PLATFORM)'==''">x64</Platform>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
-    <Version>0.2.1</Version>
+    <Version>0.2.2</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
     <TargetLibsVersion>16</TargetLibsVersion>
@@ -70,8 +70,8 @@
     <GtestSha1>058b9df80244c03f1633cb06e9f70471a29ebb8e</GtestSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2/title-sequence-v0.1.2.zip</TitleSequencesUrl>
     <TitleSequencesSha1>1136ef92bfb05cd1cba9831ba6dc4a653d87a246</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.8/objects.zip</ObjectsUrl>
-    <ObjectsSha1>23dffc0335d9324cfb95adf09169df6e97e3bcf6</ObjectsSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.9/objects.zip</ObjectsUrl>
+    <ObjectsSha1>be0bcb454505e4f7c56d21d6804f81faf8a0a652</ObjectsSha1>
   </PropertyGroup>
 
   <ItemGroup>

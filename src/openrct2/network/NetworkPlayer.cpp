@@ -26,13 +26,15 @@ void NetworkPlayer::Read(NetworkPacket& packet)
 {
     const utf8* name = packet.ReadString();
     SetName(name);
-    packet >> Id >> Flags >> Group;
+    packet >> Id >> Flags >> Group >> LastAction >> LastActionCoord.x >> LastActionCoord.y >> LastActionCoord.z >> MoneySpent
+        >> CommandsRan;
 }
 
 void NetworkPlayer::Write(NetworkPacket& packet)
 {
     packet.WriteString((const char*)Name.c_str());
-    packet << Id << Flags << Group;
+    packet << Id << Flags << Group << LastAction << LastActionCoord.x << LastActionCoord.y << LastActionCoord.z << MoneySpent
+           << CommandsRan;
 }
 
 void NetworkPlayer::AddMoneySpent(money32 cost)

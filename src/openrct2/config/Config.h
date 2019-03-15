@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+#include <string>
+
 struct GeneralConfiguration
 {
     // Paths
@@ -135,20 +137,20 @@ struct TwitchConfiguration
 
 struct NetworkConfiguration
 {
-    utf8* player_name;
+    std::string player_name;
     int32_t default_port;
-    char* listen_address;
-    utf8* default_password;
+    std::string listen_address;
+    std::string default_password;
     bool stay_connected;
     bool advertise;
     int32_t maxplayers;
-    utf8* server_name;
-    utf8* server_description;
-    utf8* server_greeting;
-    utf8* master_server_url;
-    utf8* provider_name;
-    utf8* provider_email;
-    utf8* provider_website;
+    std::string server_name;
+    std::string server_description;
+    std::string server_greeting;
+    std::string master_server_url;
+    std::string provider_name;
+    std::string provider_email;
+    std::string provider_website;
     bool known_keys_only;
     bool log_chat;
     bool log_server_actions;

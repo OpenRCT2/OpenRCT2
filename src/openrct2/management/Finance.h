@@ -63,6 +63,8 @@ extern money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_
 
 extern uint8_t gCommandExpenditureType;
 
+bool finance_check_money_required(uint32_t flags);
+bool finance_check_affordability(money32 cost, uint32_t flags);
 void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();
 void finance_pay_research();

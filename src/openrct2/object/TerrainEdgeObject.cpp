@@ -51,4 +51,5 @@ void TerrainEdgeObject::ReadJson(IReadObjectContext* context, const json_t* root
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    NumImagesLoaded = GetImageTable().GetCount();
 }

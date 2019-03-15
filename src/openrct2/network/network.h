@@ -20,7 +20,7 @@
 #include <string>
 
 struct GameAction;
-struct rct_peep;
+struct Peep;
 struct LocationXYZ16;
 
 namespace OpenRCT2
@@ -31,8 +31,8 @@ namespace OpenRCT2
 void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 void network_close();
 void network_shutdown_client();
-int32_t network_begin_client(const char* host, int32_t port);
-int32_t network_begin_server(int32_t port, const char* address);
+int32_t network_begin_client(const std::string& host, int32_t port);
+int32_t network_begin_server(int32_t port, const std::string& address);
 
 int32_t network_get_mode();
 int32_t network_get_status();
@@ -75,8 +75,8 @@ int32_t network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32_t index);
 int32_t network_can_perform_action(uint32_t groupindex, uint32_t index);
 int32_t network_can_perform_command(uint32_t groupindex, int32_t index);
-void network_set_pickup_peep(uint8_t playerid, rct_peep* peep);
-rct_peep* network_get_pickup_peep(uint8_t playerid);
+void network_set_pickup_peep(uint8_t playerid, Peep* peep);
+Peep* network_get_pickup_peep(uint8_t playerid);
 void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x);
 int32_t network_get_pickup_peep_old_x(uint8_t playerid);
 
@@ -86,7 +86,7 @@ void network_send_gamecmd(
     uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi, uint32_t ebp, uint8_t callback);
 void network_send_game_action(const GameAction* action);
 void network_enqueue_game_action(const GameAction* action);
-void network_send_password(const char* password);
+void network_send_password(const std::string& password);
 
 void network_set_password(const char* password);
 

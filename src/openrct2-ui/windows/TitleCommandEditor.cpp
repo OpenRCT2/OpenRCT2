@@ -251,7 +251,8 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
     viewport_create(
         window, window->x + viewportWidget->left + 1, window->y + viewportWidget->top + 1,
-        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, 0, 0, 0, 0, -1);
+        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, 0, 0, 0, 0,
+        SPRITE_INDEX_NULL);
 
     _window_title_command_editor_index = index;
     _window_title_command_editor_insert = insert;
@@ -622,7 +623,7 @@ static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex
         if (spriteIdentifier == SPRITE_IDENTIFIER_PEEP)
         {
             validSprite = true;
-            rct_peep* peep = GET_PEEP(spriteIndex);
+            Peep* peep = GET_PEEP(spriteIndex);
             format_string(command.SpriteName, USER_STRING_MAX_LENGTH, peep->name_string_idx, &peep->id);
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_VEHICLE)

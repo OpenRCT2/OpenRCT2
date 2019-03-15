@@ -19,6 +19,7 @@
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
+#include "../actions/WaterSetHeightAction.hpp"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
@@ -283,7 +284,7 @@ TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z)
     // Find the path element at known z
     do
     {
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
@@ -413,7 +414,7 @@ void map_strip_ghost_flag_from_elements()
 {
     for (auto& element : gTileElements)
     {
-        element.flags &= ~TILE_ELEMENT_FLAG_GHOST;
+        element.SetGhost(false);
     }
 }
 
@@ -821,7 +822,7 @@ void game_command_set_large_scenery_colour(
         return;
     }
 
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST))
+    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tile_element->IsGhost()))
     {
         *ebx = 0;
         return;
@@ -1402,12 +1403,18 @@ money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
                         height = tile_element->base_height + 2;
                     }
 
-                    money32 tileCost = game_do_command(
-                        xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
-                    if (tileCost == MONEY32_UNDEFINED)
+                    auto waterSetHeightAction = WaterSetHeightAction({ xi, yi }, height);
+                    waterSetHeightAction.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&waterSetHeightAction)
+                                                               : GameActions::QueryNested(&waterSetHeightAction);
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        gGameCommandErrorText = res->ErrorMessage;
+                        // set gCommonFormatArguments to res->ErrorArgs
                         return MONEY32_UNDEFINED;
+                    }
 
-                    cost += tileCost;
+                    cost += res->Cost;
                     waterHeightChanged = true;
                 }
             }
@@ -1422,7 +1429,7 @@ money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
         int16_t water_height_z = z >> 16;
         int16_t base_height_z = z;
         z = water_height_z;
-        if (z != 0)
+        if (z == 0)
             z = base_height_z;
 
         LocationXYZ16 coord;
@@ -1490,11 +1497,18 @@ money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
                     if (height < min_height)
                         continue;
                     height -= 2;
-                    int32_t tileCost = game_do_command(
-                        xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
-                    if (tileCost == MONEY32_UNDEFINED)
+                    auto waterSetHeightAction = WaterSetHeightAction({ xi, yi }, height);
+                    waterSetHeightAction.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&waterSetHeightAction)
+                                                               : GameActions::QueryNested(&waterSetHeightAction);
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        gGameCommandErrorText = res->ErrorMessage;
+                        // set gCommonFormatArguments to res->ErrorArgs
                         return MONEY32_UNDEFINED;
-                    cost += tileCost;
+                    }
+
+                    cost += res->Cost;
                     waterHeightChanged = true;
                 }
             }
@@ -2135,116 +2149,6 @@ void game_command_lower_water(
         (int16_t)(*eax & 0xFFFF), (int16_t)(*ecx & 0xFFFF), (int16_t)(*edi & 0xFFFF), (int16_t)(*ebp & 0xFFFF), (uint8_t)*ebx);
 }
 
-/**
- *
- *  rct2: 0x006E650F
- */
-void game_command_set_water_height(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    int32_t x = *eax;
-    int32_t y = *ecx;
-    uint8_t base_height = *edx;
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = base_height * 8;
-    if (game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-        && gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
-    {
-        gGameCommandErrorText = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (base_height < 2)
-    {
-        gGameCommandErrorText = STR_TOO_LOW;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (base_height >= 58)
-    {
-        gGameCommandErrorText = STR_TOO_HIGH;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (x >= gMapSizeUnits || y >= gMapSizeUnits)
-    {
-        gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_in_park({ x, y }))
-    {
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
-    {
-        int32_t element_height = tile_element_height(x, y);
-        footpath_remove_litter(x, y, element_height);
-        if (!gCheatsDisableClearanceChecks)
-            wall_remove_at_z(x, y, element_height);
-    }
-
-    TileElement* tile_element = map_get_surface_element_at({ x, y });
-    int32_t zHigh = tile_element->base_height;
-    int32_t zLow = base_height;
-    if (tile_element->AsSurface()->GetWaterHeight() > 0)
-    {
-        zHigh = tile_element->AsSurface()->GetWaterHeight() * 2;
-    }
-    if (zLow > zHigh)
-    {
-        int32_t temp = zHigh;
-        zHigh = zLow;
-        zLow = temp;
-    }
-
-    if (gCheatsDisableClearanceChecks || map_can_construct_at(x, y, zLow, zHigh, 0xFF))
-    {
-        if (tile_element->AsSurface()->HasTrackThatNeedsWater())
-        {
-            gGameCommandErrorText = 0;
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-        if (*ebx & GAME_COMMAND_FLAG_APPLY)
-        {
-            if (base_height > tile_element->base_height)
-            {
-                tile_element->AsSurface()->SetWaterHeight(base_height / 2);
-            }
-            else
-            {
-                tile_element->AsSurface()->SetWaterHeight(0);
-            }
-            map_invalidate_tile_full(x, y);
-        }
-        *ebx = 250;
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        {
-            *ebx = 0;
-        }
-    }
-    else
-    {
-        *ebx = MONEY32_UNDEFINED;
-    }
-}
-
 bool map_is_location_at_edge(int32_t x, int32_t y)
 {
     return x < 32 || y < 32 || x >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32) || y >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
@@ -2388,18 +2292,10 @@ void game_command_place_large_scenery(
         int32_t zLow = (tile->z_offset + maxHeight) / 8;
         int32_t zHigh = (tile->z_clearance / 8) + zLow;
 
-        int32_t bx = tile->flags >> 12;
-        bx <<= rotation;
-        uint8_t bl = bx;
-        uint8_t bh = bl >> 4;
-        bl &= 0xF;
-        bl |= bh;
-        uint8_t F43887 = bl;
-
-        if (!gCheatsDisableClearanceChecks
-            && !map_can_construct_with_clear_at(
-                   curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &supportsCost,
-                   CREATE_CROSSING_MODE_NONE))
+        QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(rotation);
+        if (!map_can_construct_with_clear_at(
+                curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, flags, &supportsCost,
+                CREATE_CROSSING_MODE_NONE))
         {
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -2456,7 +2352,8 @@ void game_command_place_large_scenery(
                 network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
             }
 
-            TileElement* new_tile_element = tile_element_insert(curTile.x / 32, curTile.y / 32, zLow, F43887);
+            TileElement* new_tile_element = tile_element_insert(
+                curTile.x / 32, curTile.y / 32, zLow, quarterTile.GetBaseQuarterOccupied());
             assert(new_tile_element != nullptr);
             map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
 
@@ -2478,7 +2375,7 @@ void game_command_place_large_scenery(
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                new_tile_element->flags |= TILE_ELEMENT_FLAG_GHOST;
+                new_tile_element->SetGhost(true);
             }
 
             if (tile_num == 0)
@@ -2788,7 +2685,7 @@ TileElement* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags)
             originalTileElement->base_height = 255;
             originalTileElement++;
             newTileElement++;
-        } while (!((newTileElement - 1)->flags & TILE_ELEMENT_FLAG_LAST_TILE));
+        } while (!((newTileElement - 1)->IsLastForTile()));
     }
 
     gNextFreeTileElement = newTileElement;
@@ -2865,7 +2762,7 @@ void map_obstruction_set_error_text(TileElement* tileElement)
  *  bl = bl
  */
 bool map_can_construct_with_clear_at(
-    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, uint8_t bl, uint8_t flags, money32* price,
+    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile bl, uint8_t flags, money32* price,
     uint8_t crossingMode)
 {
     int32_t al, ah, bh, cl, ch, water_height;
@@ -2890,10 +2787,9 @@ bool map_can_construct_with_clear_at(
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
         {
-            if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height
-                && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height && !(tileElement->IsGhost()))
             {
-                if (tileElement->flags & (bl & 0x0F))
+                if (tileElement->flags & (bl.GetBaseQuarterOccupied()))
                 {
                     goto loc_68BABC;
                 }
@@ -2930,7 +2826,7 @@ bool map_can_construct_with_clear_at(
             canBuildCrossing = true;
         }
 
-        if ((bl & 0xF0) != 0xF0)
+        if (bl.GetZQuarterOccupied() != 0b1111)
         {
             if (tileElement->base_height >= zHigh)
             {
@@ -2970,12 +2866,16 @@ bool map_can_construct_with_clear_at(
                         ch += 2;
                 }
                 bh = zLow + 4;
-                if ((!(bl & 1) || ((bl & 0x10 || zLow >= al) && bh >= al))
-                    && (!(bl & 2) || ((bl & 0x20 || zLow >= ah) && bh >= ah))
-                    && (!(bl & 4) || ((bl & 0x40 || zLow >= cl) && bh >= cl))
-                    && (!(bl & 8) || ((bl & 0x80 || zLow >= ch) && bh >= ch)))
                 {
-                    continue;
+                    auto baseQuarter = bl.GetBaseQuarterOccupied();
+                    auto zQuarter = bl.GetZQuarterOccupied();
+                    if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || zLow >= al) && bh >= al))
+                        && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || zLow >= ah) && bh >= ah))
+                        && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || zLow >= cl) && bh >= cl))
+                        && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || zLow >= ch) && bh >= ch)))
+                    {
+                        continue;
+                    }
                 }
             loc_68BABC:
                 if (clearFunc != nullptr)
@@ -3034,10 +2934,9 @@ bool map_can_construct_with_clear_at(
  *
  *  rct2: 0x0068B93A
  */
-int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, uint8_t bl)
+int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, QuarterTile bl)
 {
-    return gCheatsDisableClearanceChecks
-        || map_can_construct_with_clear_at(x, y, zLow, zHigh, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
+    return map_can_construct_with_clear_at(x, y, zLow, zHigh, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
 }
 
 /**
@@ -3374,7 +3273,7 @@ EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((ghost == false) && (tileElement->IsGhost()))
                 continue;
 
             return tileElement->AsEntrance();
@@ -3399,7 +3298,7 @@ EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((ghost == false) && (tileElement->IsGhost()))
                 continue;
 
             return tileElement->AsEntrance();
@@ -3424,7 +3323,7 @@ EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, b
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
-            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if ((ghost == false) && (tileElement->IsGhost()))
                 continue;
 
             return tileElement->AsEntrance();

@@ -120,10 +120,11 @@ public:
                 }
             }
             if (!map_can_construct_with_clear_at(
-                    _coords.x, _coords.y, _height, zCorner, &map_set_land_height_clear_func, 0xF, 0, nullptr,
+                    _coords.x, _coords.y, _height, zCorner, &map_set_land_height_clear_func, { 0b1111, 0 }, 0, nullptr,
                     CREATE_CROSSING_MODE_NONE))
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, gGameCommandErrorText);
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::DISALLOWED, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
             }
 
             tileElement = CheckUnremovableObstructions(surfaceElement, zCorner);
@@ -134,11 +135,7 @@ public:
             }
         }
         auto res = std::make_unique<GameActionResult>();
-        res->Cost = 0;
-        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
-        {
-            res->Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
-        }
+        res->Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         return res;
     }
@@ -159,12 +156,6 @@ public:
         TileElement* surfaceElement = map_get_surface_element_at(_coords);
         cost += GetSurfaceHeightChangeCost(surfaceElement);
         SetSurfaceHeight(surfaceElement);
-
-        LocationXYZ16 coord;
-        coord.x = _coords.x + 16;
-        coord.y = _coords.y + 16;
-        coord.z = surfaceHeight;
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
         auto res = std::make_unique<GameActionResult>();
         res->Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };

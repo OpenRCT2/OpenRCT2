@@ -23,7 +23,7 @@ static int8_t _peepPathFindMaxJunctions;
 static int32_t _peepPathFindTilesChecked;
 static uint8_t _peepPathFindFewestNumSteps;
 
-static int32_t guest_surface_path_finding(rct_peep* peep);
+static int32_t guest_surface_path_finding(Peep* peep);
 
 /* A junction history for the peep pathfinding heuristic search
  * The magic number 16 is the largest value returned by
@@ -104,7 +104,7 @@ static int32_t path_get_permitted_edges(TileElement* tileElement)
  *
  *  rct2: 0x0069524E
  */
-static int32_t peep_move_one_tile(uint8_t direction, rct_peep* peep)
+static int32_t peep_move_one_tile(uint8_t direction, Peep* peep)
 {
     assert(direction <= 3);
     int16_t x = peep->next_x;
@@ -133,7 +133,7 @@ static int32_t peep_move_one_tile(uint8_t direction, rct_peep* peep)
  *
  *  rct2: 0x00694C41
  */
-static int32_t guest_surface_path_finding(rct_peep* peep)
+static int32_t guest_surface_path_finding(Peep* peep)
 {
     int16_t x = peep->next_x;
     int16_t y = peep->next_y;
@@ -238,7 +238,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, TileElement
     nextTileElement = map_get_first_element_at(loc.x, loc.y);
     do
     {
-        if (nextTileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (nextTileElement->IsGhost())
             continue;
         if (nextTileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
@@ -292,7 +292,7 @@ static uint8_t footpath_element_dest_in_dir(
     }
     do
     {
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
 
         switch (tileElement->GetType())
@@ -411,7 +411,7 @@ static uint8_t footpath_element_destination_in_direction(
  *
  *  rct2: 0x00695225
  */
-static int32_t guest_path_find_aimless(rct_peep* peep, uint8_t edges)
+static int32_t guest_path_find_aimless(Peep* peep, uint8_t edges)
 {
     if (scenario_rand() & 1)
     {
@@ -437,7 +437,7 @@ static int32_t guest_path_find_aimless(rct_peep* peep, uint8_t edges)
  *
  *  rct2: 0x0069A60A
  */
-static uint8_t peep_pathfind_get_max_number_junctions(rct_peep* peep)
+static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
 {
     if (peep->type == PEEP_TYPE_STAFF)
         return 8;
@@ -582,7 +582,7 @@ static bool path_is_thin_junction(TileElement* path, TileCoordsXYZ loc)
  *  rct2: 0x0069A997
  */
 static void peep_pathfind_heuristic_search(
-    TileCoordsXYZ loc, rct_peep* peep, TileElement* currentTileElement, bool inPatrolArea, uint8_t counter, uint16_t* endScore,
+    TileCoordsXYZ loc, Peep* peep, TileElement* currentTileElement, bool inPatrolArea, uint8_t counter, uint16_t* endScore,
     int32_t test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16], TileCoordsXYZ* endXYZ,
     uint8_t* endSteps)
 {
@@ -643,7 +643,7 @@ static void peep_pathfind_heuristic_search(
         /* Look for all map elements that the peep could walk onto while
          * navigating to the goal, including the goal tile. */
 
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->IsGhost())
             continue;
 
         ride_id_t rideIndex = RIDE_ID_NULL;
@@ -1157,7 +1157,7 @@ static void peep_pathfind_heuristic_search(
  *
  *  rct2: 0x0069A5F0
  */
-int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
+int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep)
 {
     // The max number of thin junctions searched - a per-search-path limit.
     _peepPathFindMaxJunctions = peep_pathfind_get_max_number_junctions(peep);
@@ -1556,7 +1556,7 @@ static uint8_t get_nearest_park_entrance_index(uint16_t x, uint16_t y)
  *
  *  rct2: 0x006952C0
  */
-static int32_t guest_path_find_entering_park(rct_peep* peep, [[maybe_unused]] TileElement* tile_element, uint8_t edges)
+static int32_t guest_path_find_entering_park(Peep* peep, [[maybe_unused]] TileElement* tile_element, uint8_t edges)
 {
     // Send peeps to the nearest park entrance.
     uint8_t chosenEntrance = get_nearest_park_entrance_index(peep->next_x, peep->next_y);
@@ -1609,7 +1609,7 @@ static uint8_t get_nearest_peep_spawn_index(uint16_t x, uint16_t y)
  *
  *  rct2: 0x0069536C
  */
-static int32_t guest_path_find_leaving_park(rct_peep* peep, [[maybe_unused]] TileElement* tile_element, uint8_t edges)
+static int32_t guest_path_find_leaving_park(Peep* peep, [[maybe_unused]] TileElement* tile_element, uint8_t edges)
 {
     // Send peeps to the nearest spawn point.
     uint8_t chosenSpawn = get_nearest_peep_spawn_index(peep->next_x, peep->next_y);
@@ -1644,7 +1644,7 @@ static int32_t guest_path_find_leaving_park(rct_peep* peep, [[maybe_unused]] Til
  *
  *  rct2: 0x00695161
  */
-static int32_t guest_path_find_park_entrance(rct_peep* peep, [[maybe_unused]] TileElement* tile_element, uint8_t edges)
+static int32_t guest_path_find_park_entrance(Peep* peep, [[maybe_unused]] TileElement* tile_element, uint8_t edges)
 {
     // If entrance no longer exists, choose a new one
     if ((peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->current_ride >= gParkEntrances.size())
@@ -1846,7 +1846,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
  *
  *  rct2: 0x00694C35
  */
-int32_t guest_path_finding(rct_peep* peep)
+int32_t guest_path_finding(Guest* peep)
 {
     // int16_t x, y, z;
 

@@ -14,7 +14,11 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
+#include "actions/FootpathPlaceAction.hpp"
 #include "actions/GameAction.h"
+#include "actions/RideEntranceExitPlaceAction.hpp"
+#include "actions/RideSetSetting.hpp"
+#include "actions/TrackPlaceAction.hpp"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
@@ -156,9 +160,6 @@ namespace OpenRCT2
             args[6] = ebp;
 
             _currentRecording->commands.emplace(gCurrentTicks, args, callback, _commandId++);
-
-            // Force a checksum record the next tick.
-            _nextChecksumTick = tick + 1;
         }
 
         virtual void AddGameAction(uint32_t tick, const GameAction* action) override
@@ -169,9 +170,6 @@ namespace OpenRCT2
             auto ga = GameActions::Clone(action);
 
             _currentRecording->commands.emplace(gCurrentTicks, std::move(ga), _commandId++);
-
-            // Force a checksum record the next tick.
-            _nextChecksumTick = tick + 1;
         }
 
         void AddChecksum(uint32_t tick, rct_sprite_checksum&& checksum)
@@ -190,16 +188,7 @@ namespace OpenRCT2
                 rct_sprite_checksum checksum = sprite_checksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
 
-                if (_mode == ReplayMode::RECORDING)
-                {
-                    // Record checksums every ~200ms.
-                    _nextChecksumTick = gCurrentTicks + 5;
-                }
-                else
-                {
-                    // Wait for next command.
-                    _nextChecksumTick = 0;
-                }
+                _nextChecksumTick = gCurrentTicks + 1;
             }
 
             if (_mode == ReplayMode::RECORDING)
@@ -231,7 +220,7 @@ namespace OpenRCT2
                 ReplayCommands();
 
                 // If we run out of commands we can just stop
-                if (_currentReplay->commands.empty() && _nextChecksumTick == 0)
+                if (_currentReplay->commands.empty())
                 {
                     StopPlayback();
                     StopRecording();
@@ -490,6 +479,53 @@ namespace OpenRCT2
             {
                 case GAME_COMMAND_COUNT: // prevent default without case warning.
                     break;
+                case GAME_COMMAND_PLACE_TRACK:
+                {
+                    ride_id_t rideId = command.edx & 0xFF;
+                    int32_t trackType = (command.edx >> 8) & 0xFF;
+                    CoordsXYZD origin = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF),
+                                          (int32_t)(command.edi & 0xFFFF), (uint8_t)((command.ebx >> 8) & 0xFF) };
+                    int32_t brakeSpeed = (command.edi >> 16) & 0xFF;
+                    int32_t colour = (command.edi >> 24) & 0x0F;
+                    int32_t seatRotation = (command.edi >> 28) & 0x0F;
+                    int32_t liftHillAndAlternativeState = (command.edx >> 16);
+
+                    result.action = std::make_unique<TrackPlaceAction>(
+                        rideId, trackType, origin, brakeSpeed, colour, seatRotation, liftHillAndAlternativeState);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_SET_RIDE_SETTING:
+                {
+                    ride_id_t rideId = command.edx & 0xFF;
+                    RideSetSetting setting = static_cast<RideSetSetting>((command.edx >> 8) & 0xFF);
+                    uint8_t value = (command.ebx >> 8) & 0xFF;
+
+                    result.action = std::make_unique<RideSetSettingAction>(rideId, setting, value);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT:
+                {
+                    CoordsXY loc = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF) };
+                    Direction direction = (command.ebx >> 8) & 0xFF;
+                    ride_id_t rideId = command.edx & 0xFF;
+                    uint8_t stationNum = command.edi & 0xFF;
+                    bool isExit = ((command.edx >> 8) & 0xFF) != 0;
+                    result.action = std::make_unique<RideEntranceExitPlaceAction>(loc, direction, rideId, stationNum, isExit);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_PLACE_PATH:
+                {
+                    CoordsXYZ loc = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF),
+                                      (int32_t)(command.edx & 0xFF) * 8 };
+                    uint8_t slope = (command.ebx >> 8) & 0xFF;
+                    uint8_t type = (command.edx >> 8) & 0xFF;
+                    result.action = std::make_unique<FootpathPlaceAction>(loc, slope, type);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
                 default:
                     throw std::runtime_error("Deprecated game command requires replay translation.");
             }
@@ -819,6 +855,9 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         void CheckState()
         {
+            if (_nextChecksumTick != gCurrentTicks)
+                return;
+
             uint32_t checksumIndex = _currentReplay->checksumIndex;
 
             if (checksumIndex >= _currentReplay->checksums.size())
@@ -830,10 +869,12 @@ namespace OpenRCT2
                 rct_sprite_checksum checksum = sprite_checksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
+                    uint32_t replayTick = gCurrentTicks - _currentReplay->tickStart;
+
                     // Detected different game state.
-                    log_verbose(
-                        "Different sprite checksum at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
-                        savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
+                    log_warning(
+                        "Different sprite checksum at tick %u (Replay Tick: %u) ; Saved: %s, Current: %s", gCurrentTicks,
+                        replayTick, savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
 
                     _faultyChecksumIndex = checksumIndex;
                 }

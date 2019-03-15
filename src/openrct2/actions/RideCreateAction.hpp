@@ -34,7 +34,7 @@ public:
     {
     }
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message)
-        : GameActionResult(error, message)
+        : GameActionResult(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message)
     {
     }
 
@@ -128,7 +128,7 @@ public:
             log_warning("Invalid request for ride %u", rideIndex);
             res->Error = GA_ERROR::UNKNOWN;
             res->ErrorMessage = STR_UNKNOWN_OBJECT_TYPE;
-            return std::move(res);
+            return res;
         }
 
         ride->id = rideIndex;
@@ -307,8 +307,7 @@ public:
         window_invalidate_by_class(WC_RIDE_LIST);
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        res->Position.x = 0x8000;
 
-        return std::move(res);
+        return res;
     }
 };

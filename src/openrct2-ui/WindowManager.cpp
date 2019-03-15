@@ -207,9 +207,9 @@ public:
         switch (intent->GetWindowClass())
         {
             case WC_PEEP:
-                return window_guest_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
+                return window_guest_open((Peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
             case WC_FIRE_PROMPT:
-                return window_staff_fire_prompt_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
+                return window_staff_fire_prompt_open((Peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
             case WC_INSTALL_TRACK:
                 return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_PATH).c_str());
             case WC_GUEST_LIST:

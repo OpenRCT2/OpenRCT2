@@ -64,6 +64,7 @@
     <ClCompile Include="IniWriterTest.cpp" />
     <ClCompile Include="Localisation.cpp" />
     <ClCompile Include="MultiLaunch.cpp" />
+    <ClCompile Include="NetworkLoadSave.cpp" />
     <ClCompile Include="ReplayTests.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="RideRatings.cpp" />

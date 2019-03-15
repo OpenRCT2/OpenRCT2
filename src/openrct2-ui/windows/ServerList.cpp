@@ -181,7 +181,7 @@ rct_window* window_server_list_open()
 
     window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-    safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
+    safe_strcpy(_playerName, gConfigNetwork.player_name.c_str(), sizeof(_playerName));
 
     server_list_load_server_entries();
     window->no_list_items = (uint16_t)_serverEntries.size();
@@ -378,8 +378,7 @@ static void window_server_list_textinput(rct_window* w, rct_widgetindex widgetIn
 
             if (strlen(_playerName) > 0)
             {
-                SafeFree(gConfigNetwork.player_name);
-                gConfigNetwork.player_name = _strdup(_playerName);
+                gConfigNetwork.player_name = _playerName;
                 config_save_default();
             }
 
@@ -639,8 +638,8 @@ static void join_server(std::string address)
 #ifndef DISABLE_HTTP
 static void fetch_servers()
 {
-    const char* masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
-    if (!str_is_null_or_empty(gConfigNetwork.master_server_url))
+    std::string masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
+    if (gConfigNetwork.master_server_url.empty() == false)
     {
         masterServerUrl = gConfigNetwork.master_server_url;
     }

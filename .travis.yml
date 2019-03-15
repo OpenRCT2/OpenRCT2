@@ -10,11 +10,16 @@ before_install:
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; export OPENRCT_MAKE_OPTS="-k 10 all openrct2-cli" ; fi
     - if [[ $TRAVIS_OS_NAME == "osx" ]]; then sudo gem install xcpretty-travis-formatter; fi
 
+install:
+    - if [[ $TRAVIS_JOB_NAME != "clang-format" ]]; then git config remote.origin.fetch +refs/heads/*:refs/remotes/origin/*; fi
+    - if [[ $TRAVIS_JOB_NAME != "clang-format" ]]; then git config remote.origin.fetch +refs/tags/*:refs/tags/*; fi
+    - if [[ $TRAVIS_JOB_NAME != "clang-format" ]]; then git fetch --tags; fi
+
 sudo: required
 dist: trusty
 env:
     global:
-        - OPENRCT2_VERSION="0.2.1"
+        - OPENRCT2_VERSION="0.2.2"
         # CURL timeouts in [seconds] (https://ec.haxx.se/usingcurl-timeouts.html)
         - CURL_MAX_TIME=300
         - CURL_CONNECT_TIMEOUT=5
@@ -99,7 +104,7 @@ matrix:
         - os: osx
           name: macOS Clang Xcode
           if: type != cron
-          osx_image: xcode9.3
+          osx_image: xcode10.1
           env:
             - secure: "OXn/i72FxW/oh6RGlaN+gHSbkt1ToFe36etaiDOsJQznt6fe9CpFdnE8U1XBHlGokcEjbGNErRU7CFDKYHQuGrPZyHXwgqG2/0emIqFaFt5ti5ypyYKf5qH9x1LLLfdZxDyHkxXdlJ7Etxbp3G7qrV8CGRQiYRNHm1f98AmuufE="
           after_success:
@@ -196,7 +201,7 @@ script:
     # Android jobs are triggered from cron and overwrite `script` part
     - if [[ "$OPENRCT2_ANDROID" == "true" ]] ; then exit 0 ; fi
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/build.sh ; fi
-    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild | xcpretty -f `xcpretty-travis-formatter`; fi
+    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild ; fi
 
 notifications:
     on_failure: change

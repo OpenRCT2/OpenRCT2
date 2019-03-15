@@ -1,4 +1,4 @@
-0.2.1+ (in development)
+0.2.2 (2019-03-13)
 ------------------------------------------------------------------------
 - Feature: [#4418] Allow steep slopes on the side-friction roller coaster.
 - Feature: [#7726] Add shortcut to advance one tick.
@@ -22,7 +22,11 @@
 - Feature: [#8670] Add ability to download missing objects when loading a park.
 - Change: [#7961] Add new object types: station, terrain surface, and terrain edge.
 - Change: [#8222] The climate setting has been moved from objective options to scenario options.
+- Change: [#8718] Allow TARMAC object to be removed when running the `remove_unused_objects` command.
+- Change: [#8718] No longer require the generic scenery groups and tarmac footpath to be checked when creating a scenario.
+- Change: [#8734] Disable kick button in multiplayer window when unable to use it.
 - Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.
+- Fix: [#4094] Coasters with long flat-to-steep pieces offer them in diagonal mode (original bug).
 - Fix: [#5684] Player list can desync between clients and server and can crash.
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
 - Fix: [#7439] Placement messages have mixed strings
@@ -33,9 +37,10 @@
 - Fix: [#7945] Client IP address is logged as `(null)` in server logs.
 - Fix: [#7952] Performance drop caused by code refactor.
 - Fix: [#7954] Key validation fails on Windows due to non-ASCII user / player name.
-- Fix: [#7975] Inspection flag not cleared for rides which are set to never be inspected (Original bug).
+- Fix: [#7975] Inspection flag not cleared for rides which are set to never be inspected (original bug).
 - Fix: [#7985] Giant Screenshot ignores 'Map rendering' settings.
 - Fix: [#7987] Broken track designs increase money by MONEY32_UNDEFINED.
+- Fix: [#7991] Scenery and footpaths on Construction Rights tiles can be deleted using Clear Scenery.
 - Fix: [#8034] Vanilla sprites are broken when making screenshots from command line.
 - Fix: [#8045] Crash when switching between languages.
 - Fix: [#8062] In multiplayer warnings for unstable cheats are shown when disabling them.
@@ -43,11 +48,13 @@
 - Fix: [#8101] Title sequences window flashes after opening.
 - Fix: [#8120] Crash trying to place peep spawn outside of map.
 - Fix: [#8121] Crash Renaming park with server logging enabled.
+- Fix: [#8139] Buying land costs money when the game is in "no money" mode.
 - Fix: [#8141] Attempting to build entrance/exit on station 2 does not work.
 - Fix: [#8142] Reliability of mazes and crooked houses can go below 100%.
 - Fix: [#8187] Cannot set land ownership over ride entrances or exits in sandbox mode.
 - Fix: [#8200] Incorrect behaviour when removing entrances and exits that are on the same tile.
 - Fix: [#8204] Crash when tile element has no surface elements.
+- Fix: [#8264] Rides and scenery placeable outside of map with ZC and Sandbox mode enabled.
 - Fix: [#8335] Rides with arbitrary ride types can crash the game when they break down.
 - Fix: [#8358] Infinite loop when changing vehicle count on stopped ride.
 - Fix: [#8402] Crash closing a window in some cases.
@@ -61,12 +68,17 @@
 - Fix: [#8508] Underground roto-drop is not going up.
 - Fix: [#8555] Multiplayer window text limits are not computed properly.
 - Fix: [#8572] Steel Twister track pieces ID 64 and 65 drawn incorrectly.
-- Fix: [#8584] Duck spawning function does not check tiles with x or y coordinate of 0..63 (original bug).
 - Fix: [#8585] Part of track missing on air powered vertical coaster.
 - Fix: [#8588] Guest list scrolling breaks above ~2000 guests.
 - Fix: [#8591] Game loop does not run at a consistent tick rate of 40 Hz.
 - Fix: [#8647] Marketing campaigns check for entry fees below £1 (original bug). 
 - Fix: [#8653] Crash when peeps attempt to enter a ride with no vehicles.
+- Fix: [#8720] Desync due to boats colliding with ghost pieces.
+- Fix: [#8739] Savegame from original game crashes when cruising through map.
+- Fix: [#8742] Access violation in vehicle_update_sound_params.
+- Fix: [#8804] Raising water shows money effect at the bottom rather than new height.
+- Fix: [#8811] Some fields in the sv6 save file not being copied correctly.
+- Fix: [#8824] Invalid read in footpath_chain_ride_queue.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
 - Improved: [#7930] Automatically create folders for custom content.

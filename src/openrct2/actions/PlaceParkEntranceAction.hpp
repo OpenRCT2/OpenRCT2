@@ -62,11 +62,9 @@ public:
                 GA_ERROR::NOT_IN_EDITOR_MODE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
         }
 
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-        gCommandPosition.x = _x;
-        gCommandPosition.y = _y;
-        gCommandPosition.z = _z * 16;
+        auto res = std::make_unique<GameActionResult>();
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Position = CoordsXYZ{ _x, _y, _z * 16 };
 
         if (!map_check_free_elements_and_reorganise(3))
         {
@@ -101,13 +99,10 @@ public:
                 entranceLoc.y += CoordsDirectionDelta[(_direction + 1) & 0x3].y * 2;
             }
 
-            if (!gCheatsDisableClearanceChecks)
+            if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, { 0b1111, 0 }))
             {
-                if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, 0xF))
-                {
-                    return std::make_unique<GameActionResult>(
-                        GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
-                }
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, gGameCommandErrorText, gCommonFormatArgs);
             }
 
             // Check that entrance element does not already exist at this location
@@ -119,18 +114,16 @@ public:
             }
         }
 
-        return std::make_unique<GameActionResult>();
+        return res;
     }
 
     GameActionResult::Ptr Execute() const override
     {
+        auto res = std::make_unique<GameActionResult>();
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Position = CoordsXYZ{ _x, _y, _z * 16 };
+
         uint32_t flags = GetFlags();
-
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-        gCommandPosition.x = _x;
-        gCommandPosition.y = _y;
-        gCommandPosition.z = _z * 16;
 
         CoordsXYZD parkEntrance;
         parkEntrance.x = _x;
@@ -174,7 +167,7 @@ public:
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                newElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                newElement->SetGhost(true);
             }
 
             entranceElement->SetDirection(_direction);
@@ -201,6 +194,6 @@ public:
             }
         }
 
-        return std::make_unique<GameActionResult>();
+        return res;
     }
 };
