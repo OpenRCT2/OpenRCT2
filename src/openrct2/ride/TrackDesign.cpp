@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../actions/FootpathPlaceFromTrackAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
@@ -1098,15 +1099,15 @@ static int32_t track_design_place_scenery(
                                 flags = 0;
                             }
 
-                            gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-                            cost = game_do_command(
-                                mapCoord.x, flags | (bh << 8), mapCoord.y, z | (entry_index << 8),
-                                GAME_COMMAND_PLACE_PATH_FROM_TRACK, 0, 0);
-
-                            if (cost == MONEY32_UNDEFINED)
-                            {
-                                cost = 0;
-                            }
+                            uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
+                            uint8_t edges = bh & 0xF;
+                            auto footpathPlaceAction = FootpathPlaceFromTrackAction(
+                                { mapCoord.x, mapCoord.y, z * 8 }, slope, entry_index, edges);
+                            footpathPlaceAction.SetFlags(flags);
+                            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
+                                                                       : GameActions::QueryNested(&footpathPlaceAction);
+                            // Ignore failures
+                            cost = res->Error == GA_ERROR::OK ? res->Cost : 0;
                         }
                         else
                         {
