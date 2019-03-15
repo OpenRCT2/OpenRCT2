@@ -620,7 +620,7 @@ void game_command_cheat(
                 gCheatsNeverendingMarketing = *edx != 0;
                 break;
             case CHEAT_OPENCLOSEPARK:
-                park_set_open(park_is_open() ? 0 : 1);
+                park_set_open(!park_is_open());
                 break;
             case CHEAT_HAVEFUN:
                 gScenarioObjectiveType = OBJECTIVE_HAVE_FUN;

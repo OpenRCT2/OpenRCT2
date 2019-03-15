@@ -23,6 +23,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/GameAction.h>
+#include <openrct2/actions/ParkSetParameterAction.hpp>
 #include <openrct2/actions/RideSetAppearanceAction.hpp>
 #include <openrct2/actions/RideSetColourScheme.hpp>
 #include <openrct2/actions/RideSetPriceAction.hpp>
@@ -6157,11 +6158,13 @@ static void update_same_price_throughout_flags(uint32_t shop_item)
     {
         newFlags = gSamePriceThroughoutParkA;
         newFlags ^= (1 << SHOP_ITEM_PHOTO);
-        game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+        auto parkSetParameterA = ParkSetParameterAction(ParkParameter::SamePriceInParkA, shop_item);
+        GameActions::Execute(&parkSetParameterA);
 
         newFlags = gSamePriceThroughoutParkB;
         newFlags ^= (1 << (SHOP_ITEM_PHOTO2 - 32)) | (1 << (SHOP_ITEM_PHOTO3 - 32)) | (1 << (SHOP_ITEM_PHOTO4 - 32));
-        game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+        auto parkSetParameterB = ParkSetParameterAction(ParkParameter::SamePriceInParkB, shop_item);
+        GameActions::Execute(&parkSetParameterB);
     }
     else
     {
@@ -6169,13 +6172,15 @@ static void update_same_price_throughout_flags(uint32_t shop_item)
         {
             newFlags = gSamePriceThroughoutParkA;
             newFlags ^= (1u << shop_item);
-            game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+            auto parkSetParameterA = ParkSetParameterAction(ParkParameter::SamePriceInParkA, shop_item);
+            GameActions::Execute(&parkSetParameterA);
         }
         else
         {
             newFlags = gSamePriceThroughoutParkB;
             newFlags ^= (1u << (shop_item - 32));
-            game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+            auto parkSetParameterB = ParkSetParameterAction(ParkParameter::SamePriceInParkB, shop_item);
+            GameActions::Execute(&parkSetParameterB);
         }
     }
 }

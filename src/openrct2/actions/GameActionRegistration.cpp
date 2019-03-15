@@ -26,6 +26,7 @@
 #include "ParkMarketingAction.hpp"
 #include "ParkSetLoanAction.hpp"
 #include "ParkSetNameAction.hpp"
+#include "ParkSetParameterAction.hpp"
 #include "ParkSetResearchFundingAction.hpp"
 #include "PauseToggleAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
@@ -75,6 +76,7 @@ namespace GameActions
         Register<ParkMarketingAction>();
         Register<ParkSetLoanAction>();
         Register<ParkSetNameAction>();
+        Register<ParkSetParameterAction>();
         Register<ParkSetResearchFundingAction>();
         Register<PlaceParkEntranceAction>();
         Register<PlacePeepSpawnAction>();

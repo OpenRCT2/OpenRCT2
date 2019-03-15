@@ -132,7 +132,7 @@ void update_park_fences_around_tile(CoordsXY coords);
 
 uint8_t calculate_guest_initial_happiness(uint8_t percentage);
 
-void park_set_open(int32_t open);
+void park_set_open(bool open);
 int32_t park_entrance_get_index(int32_t x, int32_t y, int32_t z);
 void park_set_name(const char* name);
 void park_set_entrance_fee(money32 value);
@@ -140,8 +140,6 @@ void park_set_entrance_fee(money32 value);
 int32_t map_buy_land_rights(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t setting, int32_t flags);
 
 void game_command_set_park_entrance_fee(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_set_park_open(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_buy_land_rights(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
