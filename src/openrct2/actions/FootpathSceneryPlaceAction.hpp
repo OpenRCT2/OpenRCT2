@@ -75,13 +75,13 @@ public:
         }
 
         auto tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, _loc.z / 8);
-        auto pathElement = tileElement->AsPath();
-
-        if (pathElement == nullptr)
+        if (tileElement == nullptr)
         {
             log_error("Could not find path element.");
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
+
+        auto pathElement = tileElement->AsPath();
 
         // No change
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType

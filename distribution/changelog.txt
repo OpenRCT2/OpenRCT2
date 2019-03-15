@@ -1,6 +1,7 @@
 0.2.2+ (in development)
 ------------------------------------------------------------------------
 - Fix: [#5579] Network desync immediately after connecting.
+- Fix: [#8873] Potential crash when placing footpaths.
 
 0.2.2 (2019-03-13)
 ------------------------------------------------------------------------
