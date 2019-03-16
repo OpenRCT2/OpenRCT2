@@ -36,12 +36,12 @@ enum class RailingEntrySupportType : uint8_t
 #pragma pack(push, 1)
 struct rct_footpath_entry
 {
-    rct_string_id string_idx; // 0x00
-    uint32_t image;           // 0x02
-    uint32_t bridge_image;    // 0x06
+    rct_string_id string_idx;             // 0x00
+    uint32_t image;                       // 0x02
+    uint32_t bridge_image;                // 0x06
     RailingEntrySupportType support_type; // 0x0A
-    uint8_t flags;            // 0x0B
-    uint8_t scrolling_mode;   // 0x0C
+    uint8_t flags;                        // 0x0B
+    uint8_t scrolling_mode;               // 0x0C
 };
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
