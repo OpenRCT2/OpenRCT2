@@ -112,11 +112,11 @@ static bool entrance_has_direction(TileElement* tileElement, int32_t direction)
 
 TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
+        if (tileElement == nullptr)
+            break;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z)
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
