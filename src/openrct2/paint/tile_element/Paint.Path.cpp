@@ -932,7 +932,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     if (footpathEntry != nullptr && railingEntry != nullptr)
     {
-        if (railingEntry->support_type == RAILING_ENTRY_SUPPORT_TYPE_POLE)
+        if (railingEntry->support_type == RailingEntrySupportType::Pole)
         {
             path_paint_pole_support(
                 session, tile_element, height, footpathEntry, railingEntry, hasSupports, imageFlags, sceneryImageFlags);

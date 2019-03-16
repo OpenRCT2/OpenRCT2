@@ -18,7 +18,7 @@
 void FootpathObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
     stream->Seek(10, STREAM_SEEK_CURRENT);
-    _legacyType.support_type = stream->ReadValue<uint8_t>();
+    _legacyType.support_type = static_cast<RailingEntrySupportType>(stream->ReadValue<uint8_t>());
     _legacyType.flags = stream->ReadValue<uint8_t>();
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
@@ -27,9 +27,9 @@ void FootpathObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     GetImageTable().Read(context, stream);
 
     // Validate properties
-    if (_legacyType.support_type >= RAILING_ENTRY_SUPPORT_TYPE_COUNT)
+    if (_legacyType.support_type >= RailingEntrySupportType::Count)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "SUPPORT_TYPE not supported.");
+        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "RailingEntrySupportType not supported.");
     }
 }
 
@@ -76,12 +76,12 @@ void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t 
     gfx_draw_sprite(dpi, _queueEntry.preview, x + 4, y - 17, 0);
 }
 
-static uint8_t ParseSupportType(const std::string& s)
+static RailingEntrySupportType ParseSupportType(const std::string& s)
 {
     if (s == "pole")
-        return RAILING_ENTRY_SUPPORT_TYPE_POLE;
+        return RailingEntrySupportType::Pole;
     else /* if (s == "box") */
-        return RAILING_ENTRY_SUPPORT_TYPE_BOX;
+        return RailingEntrySupportType::Box;
 }
 
 void FootpathObject::ReadJson(IReadObjectContext* context, const json_t* root)
