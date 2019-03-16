@@ -2966,7 +2966,7 @@ EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, b
     return nullptr;
 }
 
-TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant)
+SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement != nullptr)
@@ -2982,7 +2982,7 @@ TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, i
             if (tileElement->AsSmallScenery()->GetEntryIndex() != type)
                 continue;
 
-            return tileElement;
+            return tileElement->AsSmallScenery();
         } while (!(tileElement++)->IsLastForTile());
     }
     return nullptr;

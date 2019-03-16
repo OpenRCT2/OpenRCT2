@@ -147,7 +147,7 @@ TileElement* map_get_surface_element_at(int32_t x, int32_t y);
 TileElement* map_get_surface_element_at(CoordsXY coords);
 TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z);
 TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
-TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
+SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
