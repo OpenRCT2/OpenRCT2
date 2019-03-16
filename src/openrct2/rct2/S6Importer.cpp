@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -1412,10 +1413,11 @@ void load_from_sv6(const char* path)
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
     }
-    catch (const IOException&)
+    catch (const IOException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s\n", loadError.what());
     }
     catch (const std::exception&)
     {
@@ -1443,15 +1445,17 @@ void load_from_sc6(const char* path)
         sprite_position_tween_reset();
         return;
     }
-    catch (const ObjectLoadException&)
+    catch (const ObjectLoadException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s\n", loadError.what());
     }
-    catch (const IOException&)
+    catch (const IOException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s\n", loadError.what());
     }
     catch (const std::exception&)
     {
