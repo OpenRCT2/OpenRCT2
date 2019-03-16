@@ -3253,7 +3253,8 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_DISABLE_SUPPORT_LIMITS;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, TOP_TOOLBAR_CHEATS_COUNT);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        TOP_TOOLBAR_CHEATS_COUNT);
 
     // Disable items that are not yet available in multiplayer
     if (network_get_mode() != NETWORK_MODE_NONE)
@@ -3299,18 +3300,16 @@ static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
             break;
         case DDIDX_DISABLE_CLEARANCE_CHECKS:
             game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks,
-                GAME_COMMAND_CHEAT, 0, 0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks, GAME_COMMAND_CHEAT, 0,
+                0);
             break;
         case DDIDX_DISABLE_SUPPORT_LIMITS:
             game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits,
-                GAME_COMMAND_CHEAT, 0, 0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits, GAME_COMMAND_CHEAT, 0, 0);
             break;
     }
 }
