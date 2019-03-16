@@ -34,9 +34,12 @@ struct GameStateSpriteChange_t
         size_t length;
         const char* structname;
         const char* fieldname;
+        uint64_t valueA;
+        uint64_t valueB;
     };
 
     uint8_t changeType;
+    uint8_t spriteIdentifier;
     uint32_t spriteIndex;
 
     std::vector<Diff_t> diffs;

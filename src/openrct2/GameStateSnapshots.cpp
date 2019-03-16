@@ -162,8 +162,31 @@ struct GameStateSnapshots : public IGameStateSnapshots
 #define COMPARE_FIELD(struc, field)                                                                                            \
     if (std::memcmp(&spriteBase.field, &spriteCmp.field, sizeof(struc::field)) != 0)                                           \
     {                                                                                                                          \
+        uint64_t valA = 0;                                                                                                     \
+        uint64_t valB = 0;                                                                                                     \
+        if constexpr (sizeof(struc::field) == 1)                                                                               \
+        {                                                                                                                      \
+            valA = (uint64_t) * (uint8_t*)(&spriteBase.field);                                                                 \
+            valB = (uint64_t) * (uint8_t*)(&spriteCmp.field);                                                                  \
+        }                                                                                                                      \
+        else if constexpr (sizeof(struc::field) == 2)                                                                          \
+        {                                                                                                                      \
+            valA = (uint64_t) * (uint16_t*)(&spriteBase.field);                                                                \
+            valB = (uint64_t) * (uint16_t*)(&spriteCmp.field);                                                                 \
+        }                                                                                                                      \
+        else if constexpr (sizeof(struc::field) == 4)                                                                          \
+        {                                                                                                                      \
+            valA = (uint64_t) * (uint32_t*)(&spriteBase.field);                                                                \
+            valB = (uint64_t) * (uint32_t*)(&spriteCmp.field);                                                                 \
+        }                                                                                                                      \
+        else if constexpr (sizeof(struc::field) == 8)                                                                          \
+        {                                                                                                                      \
+            valA = (uint64_t) * (uint64_t*)(&spriteBase.field);                                                                \
+            valB = (uint64_t) * (uint64_t*)(&spriteCmp.field);                                                                 \
+        }                                                                                                                      \
         uintptr_t offset = reinterpret_cast<uintptr_t>(&spriteBase.field) - reinterpret_cast<uintptr_t>(&spriteBase);          \
-        changeData.diffs.push_back(GameStateSpriteChange_t::Diff_t{ (size_t)offset, sizeof(struc::field), #struc, #field });   \
+        changeData.diffs.push_back(                                                                                            \
+            GameStateSpriteChange_t::Diff_t{ (size_t)offset, sizeof(struc::field), #struc, #field, valA, valB });              \
     }
 
     void CompareSpriteDataCommon(
@@ -413,11 +436,14 @@ struct GameStateSnapshots : public IGameStateSnapshots
             const rct_sprite& spriteBase = spritesBase[i];
             const rct_sprite& spriteCmp = spritesCmp[i];
 
+            changeData.spriteIdentifier = spriteBase.generic.sprite_identifier;
+
             if (spriteBase.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL
                 && spriteCmp.generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
             {
                 // Sprite was added.
                 changeData.changeType = GameStateSpriteChange_t::ADDED;
+                changeData.spriteIdentifier = spriteCmp.generic.sprite_identifier;
             }
             else if (
                 spriteBase.generic.sprite_identifier != SPRITE_IDENTIFIER_NULL
@@ -425,6 +451,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
             {
                 // Sprite was removed.
                 changeData.changeType = GameStateSpriteChange_t::REMOVED;
+                changeData.spriteIdentifier = spriteBase.generic.sprite_identifier;
             }
             else if (
                 spriteBase.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL
@@ -452,6 +479,24 @@ struct GameStateSnapshots : public IGameStateSnapshots
         return res;
     }
 
+    static const char* GetSpriteIdentifierName(uint32_t spriteIdentifier)
+    {
+        switch (spriteIdentifier)
+        {
+            case SPRITE_IDENTIFIER_NULL:
+                return "Null";
+            case SPRITE_IDENTIFIER_PEEP:
+                return "Peep";
+            case SPRITE_IDENTIFIER_VEHICLE:
+                return "Vehicle";
+            case SPRITE_IDENTIFIER_LITTER:
+                return "Litter";
+            case SPRITE_IDENTIFIER_MISC:
+                return "Misc";
+        }
+        return "Unknown";
+    }
+
     virtual bool LogCompareDataToFile(const std::string& fileName, const GameStateCompareData_t& cmpData) const override
     {
         std::string outputBuffer;
@@ -462,25 +507,30 @@ struct GameStateSnapshots : public IGameStateSnapshots
             if (change.changeType == GameStateSpriteChange_t::EQUAL)
                 continue;
 
+            const char* typeName = GetSpriteIdentifierName(change.spriteIdentifier);
+
             if (change.changeType == GameStateSpriteChange_t::ADDED)
             {
-                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite added, index: %u\n", change.spriteIndex);
+                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite added (%s), index: %u\n", typeName, change.spriteIndex);
                 outputBuffer += tempBuffer;
             }
             else if (change.changeType == GameStateSpriteChange_t::REMOVED)
             {
-                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite removed, index: %u\n", change.spriteIndex);
+                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite removed (%s), index: %u\n", typeName, change.spriteIndex);
                 outputBuffer += tempBuffer;
             }
             else if (change.changeType == GameStateSpriteChange_t::MODIFIED)
             {
-                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite modifications, index: %u\n", change.spriteIndex);
+                snprintf(
+                    tempBuffer, sizeof(tempBuffer), "Sprite modifications (%s), index: %u\n", typeName, change.spriteIndex);
                 outputBuffer += tempBuffer;
                 for (auto& diff : change.diffs)
                 {
                     snprintf(
-                        tempBuffer, sizeof(tempBuffer), "  %s::%s, len = %u, offset = %u\n", diff.structname, diff.fieldname,
-                        (uint32_t)diff.length, (uint32_t)diff.offset);
+                        tempBuffer, sizeof(tempBuffer),
+                        "  %s::%s, len = %u, offset = %u, left = 0x%.16llX, right = 0x%.16llX\n", diff.structname,
+                        diff.fieldname, (uint32_t)diff.length, (uint32_t)diff.offset, (unsigned long long)diff.valueA,
+                        (unsigned long long)diff.valueB);
                     outputBuffer += tempBuffer;
                 }
             }
