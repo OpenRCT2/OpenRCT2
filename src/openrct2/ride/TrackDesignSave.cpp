@@ -306,19 +306,19 @@ static void track_design_save_add_scenery(int32_t x, int32_t y, TileElement* til
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, primaryColour, secondaryColour);
 }
 
-static void track_design_save_add_large_scenery(int32_t x, int32_t y, TileElement* tileElement)
+static void track_design_save_add_large_scenery(int32_t x, int32_t y, LargeSceneryElement* tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t x0, y0, z0, z;
     int32_t direction, sequence;
 
-    int32_t entryType = tileElement->AsLargeScenery()->GetEntryIndex();
+    int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
     direction = tileElement->GetDirection();
-    sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
+    sequence = tileElement->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {
@@ -336,18 +336,18 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, TileElemen
         x = x0 + offsetX;
         y = y0 + offsetY;
         z = (z0 + tile->z_offset) / 8;
-        tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
-        if (tileElement != nullptr)
+        auto largeElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+        if (largeElement != nullptr)
         {
             if (sequence == 0)
             {
-                uint8_t flags = tileElement->GetDirection();
-                uint8_t primaryColour = tileElement->AsLargeScenery()->GetPrimaryColour();
-                uint8_t secondaryColour = tileElement->AsLargeScenery()->GetSecondaryColour();
+                uint8_t flags = largeElement->GetDirection();
+                uint8_t primaryColour = largeElement->GetPrimaryColour();
+                uint8_t secondaryColour = largeElement->GetSecondaryColour();
 
                 track_design_save_push_tile_element_desc(entry, x, y, z, flags, primaryColour, secondaryColour);
             }
-            track_design_save_push_tile_element(x, y, tileElement);
+            track_design_save_push_tile_element(x, y, reinterpret_cast<TileElement*>(largeElement));
         }
     }
 }
@@ -402,7 +402,7 @@ static bool track_design_save_add_tile_element(int32_t interactionType, int32_t 
             track_design_save_add_scenery(x, y, tileElement);
             return true;
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            track_design_save_add_large_scenery(x, y, tileElement);
+            track_design_save_add_large_scenery(x, y, tileElement->AsLargeScenery());
             return true;
         case VIEWPORT_INTERACTION_ITEM_WALL:
             track_design_save_add_wall(x, y, tileElement);
@@ -499,19 +499,19 @@ static void track_design_save_remove_scenery(int32_t x, int32_t y, TileElement* 
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags);
 }
 
-static void track_design_save_remove_large_scenery(int32_t x, int32_t y, TileElement* tileElement)
+static void track_design_save_remove_large_scenery(int32_t x, int32_t y, LargeSceneryElement* tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t x0, y0, z0, z;
     int32_t direction, sequence;
 
-    int32_t entryType = tileElement->AsLargeScenery()->GetEntryIndex();
+    int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
     direction = tileElement->GetDirection();
-    sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
+    sequence = tileElement->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {
@@ -529,15 +529,15 @@ static void track_design_save_remove_large_scenery(int32_t x, int32_t y, TileEle
         x = x0 + offsetX;
         y = y0 + offsetY;
         z = (z0 + tile->z_offset) / 8;
-        tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
-        if (tileElement != nullptr)
+        auto largeElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+        if (largeElement != nullptr)
         {
             if (sequence == 0)
             {
-                uint8_t flags = tileElement->GetDirection();
+                uint8_t flags = largeElement->GetDirection();
                 track_design_save_pop_tile_element_desc(entry, x, y, z, flags);
             }
-            track_design_save_pop_tile_element(x, y, tileElement);
+            track_design_save_pop_tile_element(x, y, reinterpret_cast<TileElement*>(largeElement));
         }
     }
 }
@@ -584,7 +584,7 @@ static void track_design_save_remove_tile_element(int32_t interactionType, int32
             track_design_save_remove_scenery(x, y, tileElement);
             break;
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            track_design_save_remove_large_scenery(x, y, tileElement);
+            track_design_save_remove_large_scenery(x, y, tileElement->AsLargeScenery());
             break;
         case VIEWPORT_INTERACTION_ITEM_WALL:
             track_design_save_remove_wall(x, y, tileElement);
