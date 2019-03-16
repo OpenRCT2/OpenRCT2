@@ -932,7 +932,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     if (footpathEntry != nullptr && railingEntry != nullptr)
     {
-        if (railingEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE)
+        if (railingEntry->support_type == RAILING_ENTRY_SUPPORT_TYPE_POLE)
         {
             path_paint_pole_support(
                 session, tile_element, height, footpathEntry, railingEntry, hasSupports, imageFlags, sceneryImageFlags);
@@ -1008,14 +1008,7 @@ void path_paint_box_support(
         imageId = byte_98D6E0[edi];
     }
 
-    if (pathElement->IsQueue())
-    {
-        imageId += footpathEntry->queue_image;
-    }
-    else
-    {
-        imageId += footpathEntry->image;
-    }
+    imageId += footpathEntry->image;
 
     if (!session->DidPassSurface)
     {
@@ -1164,14 +1157,7 @@ void path_paint_pole_support(
         imageId = byte_98D6E0[edi];
     }
 
-    if (pathElement->IsQueue())
-    {
-        imageId += footpathEntry->queue_image;
-    }
-    else
-    {
-        imageId += footpathEntry->image;
-    }
+    imageId += footpathEntry->image;
 
     // Below Surface
     if (!session->DidPassSurface)
