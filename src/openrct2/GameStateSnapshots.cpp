@@ -164,26 +164,8 @@ struct GameStateSnapshots : public IGameStateSnapshots
     {                                                                                                                          \
         uint64_t valA = 0;                                                                                                     \
         uint64_t valB = 0;                                                                                                     \
-        if constexpr (sizeof(struc::field) == 1)                                                                               \
-        {                                                                                                                      \
-            valA = (uint64_t) * (uint8_t*)(&spriteBase.field);                                                                 \
-            valB = (uint64_t) * (uint8_t*)(&spriteCmp.field);                                                                  \
-        }                                                                                                                      \
-        else if constexpr (sizeof(struc::field) == 2)                                                                          \
-        {                                                                                                                      \
-            valA = (uint64_t) * (uint16_t*)(&spriteBase.field);                                                                \
-            valB = (uint64_t) * (uint16_t*)(&spriteCmp.field);                                                                 \
-        }                                                                                                                      \
-        else if constexpr (sizeof(struc::field) == 4)                                                                          \
-        {                                                                                                                      \
-            valA = (uint64_t) * (uint32_t*)(&spriteBase.field);                                                                \
-            valB = (uint64_t) * (uint32_t*)(&spriteCmp.field);                                                                 \
-        }                                                                                                                      \
-        else if constexpr (sizeof(struc::field) == 8)                                                                          \
-        {                                                                                                                      \
-            valA = (uint64_t) * (uint64_t*)(&spriteBase.field);                                                                \
-            valB = (uint64_t) * (uint64_t*)(&spriteCmp.field);                                                                 \
-        }                                                                                                                      \
+        std::memcpy(&valA, &spriteBase.field, sizeof(struc::field));                                                           \
+        std::memcpy(&valB, &spriteCmp.field, sizeof(struc::field));                                                            \
         uintptr_t offset = reinterpret_cast<uintptr_t>(&spriteBase.field) - reinterpret_cast<uintptr_t>(&spriteBase);          \
         changeData.diffs.push_back(                                                                                            \
             GameStateSpriteChange_t::Diff_t{ (size_t)offset, sizeof(struc::field), #struc, #field, valA, valB });              \

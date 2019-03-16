@@ -83,11 +83,10 @@ enum NETWORK_SERVER_STATE
 struct NetworkServerState_t
 {
     NETWORK_SERVER_STATE state = NETWORK_SERVER_STATE_OK;
-    uint32_t desync_tick = 0;
-    uint32_t server_tick = 0;
-    uint32_t server_srand0 = 0;
-    uint32_t server_srand0_tick = 0;
-    bool desync_debugging = false;
+    uint32_t desyncTick = 0;
+    uint32_t tick = 0;
+    uint32_t srand0 = 0;
+    bool desyncDebug = false;
 };
 
 // Structure is used for networking specific fields with meaning,

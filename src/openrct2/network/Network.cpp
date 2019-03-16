@@ -317,7 +317,6 @@ private:
     uint16_t listening_port = 0;
     SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
     uint32_t last_ping_sent_time = 0;
-    uint32_t server_tick = 0;
     uint8_t player_id = 0;
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
     std::multiset<GameCommand> game_command_queue;
@@ -545,7 +544,7 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
     _serverConnection = std::make_unique<NetworkConnection>();
     _serverConnection->Socket = CreateTcpSocket();
     _serverConnection->Socket->ConnectAsync(host, port);
-    _serverState.desync_debugging = false;
+    _serverState.desyncDebug = false;
 
     status = NETWORK_STATUS_CONNECTING;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
@@ -679,7 +678,7 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
 
     status = NETWORK_STATUS_CONNECTED;
     listening_port = port;
-    _serverState.desync_debugging = gConfigNetwork.desync_debugging;
+    _serverState.desyncDebug = gConfigNetwork.desync_debugging;
 
     if (gConfigNetwork.advertise)
     {
@@ -720,7 +719,7 @@ int32_t Network::GetAuthStatus()
 
 uint32_t Network::GetServerTick()
 {
-    return _serverState.server_tick;
+    return _serverState.tick;
 }
 
 uint8_t Network::GetPlayerID()
@@ -1041,7 +1040,7 @@ bool Network::CheckDesynchronizaton()
         && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
     {
         _serverState.state = NETWORK_SERVER_STATE_DESYNCED;
-        _serverState.desync_tick = gCurrentTicks;
+        _serverState.desyncTick = gCurrentTicks;
 
         char str_desync[256];
         format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
@@ -1063,9 +1062,9 @@ bool Network::CheckDesynchronizaton()
 
 void Network::RequestDesyncedState()
 {
-    log_info("Requesting game state for tick %u", _serverState.desync_tick);
+    log_info("Requesting game state for tick %u", _serverState.desyncTick);
 
-    Client_Send_RequestGameState(_serverState.desync_tick);
+    Client_Send_RequestGameState(_serverState.desyncTick);
 }
 
 NetworkServerState_t Network::GetServerState() const
@@ -1440,7 +1439,7 @@ void Network::CloseServerLog()
 
 void Network::Client_Send_RequestGameState(uint32_t tick)
 {
-    if (_serverState.desync_debugging == false)
+    if (_serverState.desyncDebug == false)
     {
         log_verbose("Server does not store a gamestate history");
         return;
@@ -1833,7 +1832,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
     json_object_set_new(obj, "provider", jsonProvider);
 
     packet->WriteString(json_dumps(obj, 0));
-    *packet << _serverState.desync_debugging;
+    *packet << _serverState.desyncDebug;
 
     json_decref(obj);
 #    endif
@@ -2369,7 +2368,7 @@ void Network::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, Net
     uint32_t tick;
     packet >> tick;
 
-    if (_serverState.desync_debugging == false)
+    if (_serverState.desyncDebug == false)
     {
         // Ignore this if this is off.
         return;
@@ -2804,7 +2803,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
             game_load_init();
             game_command_queue.clear();
             _serverTickData.clear();
-            server_tick = gCurrentTicks;
+            _serverState.tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NETWORK_SERVER_STATE_OK;
             _clientMapLoaded = true;
@@ -3137,11 +3136,13 @@ void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection,
 {
     uint32_t srand0;
     uint32_t flags;
-    packet >> server_tick >> srand0 >> flags;
+    uint32_t serverTick;
+
+    packet >> serverTick >> srand0 >> flags;
 
     ServerTickData_t tickData;
     tickData.srand0 = srand0;
-    tickData.tick = server_tick;
+    tickData.tick = serverTick;
 
     if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
     {
@@ -3158,7 +3159,8 @@ void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection,
         _serverTickData.erase(_serverTickData.begin());
     }
 
-    _serverTickData.emplace(server_tick, tickData);
+    _serverState.tick = serverTick;
+    _serverTickData.emplace(serverTick, tickData);
 }
 
 void Network::Client_Handle_PLAYERINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
@@ -3314,7 +3316,7 @@ static std::string json_stdstring_value(const json_t* string)
 void Network::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     const char* jsonString = packet.ReadString();
-    packet >> _serverState.desync_debugging;
+    packet >> _serverState.desyncDebug;
 
     json_error_t error;
     json_t* root = json_loads(jsonString, 0, &error);
@@ -4168,7 +4170,7 @@ NetworkServerState_t network_get_server_state()
 
 bool network_desync_debugging_enabled()
 {
-    return network_get_server_state().desync_debugging;
+    return network_get_server_state().desyncDebug;
 }
 
 #else
