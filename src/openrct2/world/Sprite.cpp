@@ -251,7 +251,10 @@ rct_sprite_checksum sprite_checksum()
                 && sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_MISC)
             {
                 auto copy = *sprite;
+
+                // Only required for rendering/invalidation, has no meaning to the game state.
                 copy.generic.sprite_left = copy.generic.sprite_right = copy.generic.sprite_top = copy.generic.sprite_bottom = 0;
+                copy.generic.sprite_width = copy.generic.sprite_height_negative = copy.generic.sprite_height_positive = 0;
 
                 if (copy.generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
                 {
