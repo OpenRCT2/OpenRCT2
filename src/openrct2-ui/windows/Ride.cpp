@@ -6152,36 +6152,22 @@ static utf8 _moneyInputText[MONEY_STRING_MAXLENGTH];
 
 static void update_same_price_throughout_flags(uint32_t shop_item)
 {
-    uint32_t newFlags;
+    uint64_t newFlags;
 
     if (shop_item_is_photo(shop_item))
     {
-        newFlags = gSamePriceThroughoutParkA;
-        newFlags ^= (1 << SHOP_ITEM_PHOTO);
-        auto parkSetParameterA = ParkSetParameterAction(ParkParameter::SamePriceInParkA, shop_item);
-        GameActions::Execute(&parkSetParameterA);
-
-        newFlags = gSamePriceThroughoutParkB;
-        newFlags ^= (1 << (SHOP_ITEM_PHOTO2 - 32)) | (1 << (SHOP_ITEM_PHOTO3 - 32)) | (1 << (SHOP_ITEM_PHOTO4 - 32));
-        auto parkSetParameterB = ParkSetParameterAction(ParkParameter::SamePriceInParkB, shop_item);
-        GameActions::Execute(&parkSetParameterB);
+        newFlags = gSamePriceThroughoutPark;
+        newFlags ^= (1ULL << SHOP_ITEM_PHOTO) | (1ULL << SHOP_ITEM_PHOTO2) | (1ULL << SHOP_ITEM_PHOTO3)
+            | (1ULL << SHOP_ITEM_PHOTO4);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, shop_item);
+        GameActions::Execute(&parkSetParameter);
     }
     else
     {
-        if (shop_item < 32)
-        {
-            newFlags = gSamePriceThroughoutParkA;
-            newFlags ^= (1u << shop_item);
-            auto parkSetParameterA = ParkSetParameterAction(ParkParameter::SamePriceInParkA, shop_item);
-            GameActions::Execute(&parkSetParameterA);
-        }
-        else
-        {
-            newFlags = gSamePriceThroughoutParkB;
-            newFlags ^= (1u << (shop_item - 32));
-            auto parkSetParameterB = ParkSetParameterAction(ParkParameter::SamePriceInParkB, shop_item);
-            GameActions::Execute(&parkSetParameterB);
-        }
+        newFlags = gSamePriceThroughoutPark;
+        newFlags ^= (1ULL << shop_item);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, shop_item);
+        GameActions::Execute(&parkSetParameter);
     }
 }
 

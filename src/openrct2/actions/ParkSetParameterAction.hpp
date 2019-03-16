@@ -18,8 +18,7 @@ enum class ParkParameter : uint8_t
 {
     Close,
     Open,
-    SamePriceInParkA,
-    SamePriceInParkB,
+    SamePriceInPark,
     Count
 };
 
@@ -27,7 +26,7 @@ DEFINE_GAME_ACTION(ParkSetParameterAction, GAME_COMMAND_SET_PARK_OPEN, GameActio
 {
 private:
     uint8_t _parameter;
-    uint32_t _value;
+    uint64_t _value;
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_CLOSE_PARK, STR_CANT_OPEN_PARK, STR_NONE, STR_NONE };
 
@@ -35,7 +34,7 @@ public:
     ParkSetParameterAction()
     {
     }
-    ParkSetParameterAction(ParkParameter parameter, uint32_t value = 0)
+    ParkSetParameterAction(ParkParameter parameter, uint64_t value = 0)
         : _parameter(static_cast<uint8_t>(parameter))
         , _value(value)
     {
@@ -82,12 +81,8 @@ public:
                     window_invalidate_by_class(WC_PARK_INFORMATION);
                 }
                 break;
-            case ParkParameter::SamePriceInParkA:
-                gSamePriceThroughoutParkA = _value;
-                window_invalidate_by_class(WC_RIDE);
-                break;
-            case ParkParameter::SamePriceInParkB:
-                gSamePriceThroughoutParkB = _value;
+            case ParkParameter::SamePriceInPark:
+                gSamePriceThroughoutPark = _value;
                 window_invalidate_by_class(WC_RIDE);
                 break;
             default:
