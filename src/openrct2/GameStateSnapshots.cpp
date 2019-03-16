@@ -198,18 +198,20 @@ struct GameStateSnapshots : public IGameStateSnapshots
         COMPARE_FIELD(rct_sprite_common, next);
         COMPARE_FIELD(rct_sprite_common, previous);
         COMPARE_FIELD(rct_sprite_common, linked_list_type_offset);
-        COMPARE_FIELD(rct_sprite_common, sprite_height_negative);
         COMPARE_FIELD(rct_sprite_common, sprite_index);
         COMPARE_FIELD(rct_sprite_common, flags);
         COMPARE_FIELD(rct_sprite_common, x);
         COMPARE_FIELD(rct_sprite_common, y);
         COMPARE_FIELD(rct_sprite_common, z);
+        /* Only relevant for rendering, does not affect game state.
         COMPARE_FIELD(rct_sprite_common, sprite_width);
+        COMPARE_FIELD(rct_sprite_common, sprite_height_negative);
         COMPARE_FIELD(rct_sprite_common, sprite_height_positive);
         COMPARE_FIELD(rct_sprite_common, sprite_left);
         COMPARE_FIELD(rct_sprite_common, sprite_top);
         COMPARE_FIELD(rct_sprite_common, sprite_right);
         COMPARE_FIELD(rct_sprite_common, sprite_bottom);
+        */
         COMPARE_FIELD(rct_sprite_common, sprite_direction);
     }
 
