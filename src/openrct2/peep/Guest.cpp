@@ -4772,7 +4772,7 @@ void Guest::UpdateRideMazePathfinding()
     };
     maze_type mazeType = maze_type::invalid;
 
-    tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
+    auto tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
     do
     {
         if (stationHeight != tileElement->base_height)

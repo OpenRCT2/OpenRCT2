@@ -4969,7 +4969,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
 
     outXYElement->x = firstX;
     outXYElement->y = firstY;
-    outXYElement->element = firstElement;
+    outXYElement->element = reinterpret_cast<TileElement*>(firstElement);
 }
 
 /**
