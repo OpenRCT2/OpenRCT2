@@ -334,7 +334,8 @@ public:
         gMapSizeMinus2 = _s6.map_size_minus_2;
         gMapSize = _s6.map_size;
         gMapSizeMaxXY = _s6.map_max_xy;
-        gSamePriceThroughoutPark = _s6.same_price_throughout | (static_cast<uint64_t>(_s6.same_price_throughout_extended) << 32);
+        gSamePriceThroughoutPark = _s6.same_price_throughout
+            | (static_cast<uint64_t>(_s6.same_price_throughout_extended) << 32);
         _suggestedGuestMaximum = _s6.suggested_max_guests;
         gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
         gLastEntranceStyle = _s6.last_entrance_style;

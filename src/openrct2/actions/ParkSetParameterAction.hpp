@@ -25,7 +25,7 @@ enum class ParkParameter : uint8_t
 DEFINE_GAME_ACTION(ParkSetParameterAction, GAME_COMMAND_SET_PARK_OPEN, GameActionResult)
 {
 private:
-    uint8_t _parameter;
+    uint8_t _parameter{ static_cast<uint8_t>(ParkParameter::Count) };
     uint64_t _value;
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_CLOSE_PARK, STR_CANT_OPEN_PARK, STR_NONE, STR_NONE };
