@@ -1862,7 +1862,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
             // Iterate through each tile_element.
         } while (!(tile_element++)->IsLastForTile());
 
-        if (cover_found == false)
+        if (!cover_found)
         {
             ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
             return;
@@ -2544,7 +2544,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
         }
     }
 
-    if (skipCheck == false)
+    if (!skipCheck)
     {
         if (!(ride->stations[vehicle->current_station].Depart & STATION_DEPART_FLAG))
             return;
@@ -3414,7 +3414,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
         }
     }
 
-    if (vehicle_current_tower_element_is_top(vehicle) == false)
+    if (!vehicle_current_tower_element_is_top(vehicle))
     {
         if (ride->mode == RIDE_MODE_FREEFALL_DROP)
             vehicle_invalidate(vehicle);
@@ -7669,10 +7669,7 @@ static bool vehicle_update_motion_collision_detection(
             return false;
 
         uint8_t direction = (vehicle->sprite_direction - collideVehicle->sprite_direction + 7) & 0x1F;
-        if (direction >= 0xF)
-            return false;
-
-        return true;
+        return direction < 0xF;
     }
 
     LocationXY8 location = { static_cast<uint8_t>(x / 32), static_cast<uint8_t>(y / 32) };
@@ -7760,7 +7757,7 @@ static bool vehicle_update_motion_collision_detection(
         }
     }
 
-    if (mayCollide == false)
+    if (!mayCollide)
     {
         vehicle->var_C4 = 0;
         return false;

@@ -639,7 +639,7 @@ static void join_server(std::string address)
 static void fetch_servers()
 {
     std::string masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
-    if (gConfigNetwork.master_server_url.empty() == false)
+    if (!gConfigNetwork.master_server_url.empty())
     {
         masterServerUrl = gConfigNetwork.master_server_url;
     }

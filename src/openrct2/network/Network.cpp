@@ -961,7 +961,7 @@ void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCm
 bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
 {
     // We have to wait for the map to be loaded first, ticks may match current loaded map.
-    if (_clientMapLoaded == false)
+    if (!_clientMapLoaded)
         return true;
 
     auto itTickData = _serverTickData.find(tick);
@@ -974,7 +974,7 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
     if (storedTick.srand0 != srand0)
         return false;
 
-    if (storedTick.spriteHash.empty() == false)
+    if (!storedTick.spriteHash.empty())
     {
         rct_sprite_checksum checksum = sprite_checksum();
         std::string clientSpriteHash = checksum.ToString();
@@ -2168,7 +2168,7 @@ NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& ke
             if (networkUser == nullptr)
             {
                 player->Group = GetDefaultGroup();
-                if (name.empty() == false)
+                if (!name.empty())
                 {
                     player->SetName(MakePlayerNameUnique(String::Trim(name)));
                 }

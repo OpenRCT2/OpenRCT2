@@ -781,7 +781,7 @@ static void viewport_surface_draw_tile_side_top(
             return;
     }
 
-    if (isWater == false)
+    if (!isWater)
         dl = height;
 
     // save ecx

@@ -732,12 +732,9 @@ int32_t map_height_from_slope(const CoordsXY coords, int32_t slope, bool isSlope
 
 bool map_is_location_valid(const CoordsXY coords)
 {
-    if (coords.x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.x >= 0 && coords.y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32)
-        && coords.y >= 0)
-    {
-        return true;
-    }
-    return false;
+    const bool is_x_valid = coords.x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.x >= 0;
+    const bool is_y_valid = coords.y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.y >= 0;
+    return is_x_valid && is_y_valid;
 }
 
 bool map_is_edge(const CoordsXY coords)
@@ -1902,7 +1899,7 @@ EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->IsGhost()))
+            if (!ghost && tileElement->IsGhost())
                 continue;
 
             return tileElement->AsEntrance();
@@ -1927,7 +1924,7 @@ EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->IsGhost()))
+            if (!ghost && tileElement->IsGhost())
                 continue;
 
             return tileElement->AsEntrance();
@@ -1952,7 +1949,7 @@ EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, b
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
-            if ((ghost == false) && (tileElement->IsGhost()))
+            if (!ghost && tileElement->IsGhost())
                 continue;
 
             return tileElement->AsEntrance();

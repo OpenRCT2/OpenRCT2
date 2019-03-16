@@ -5884,12 +5884,7 @@ bool Guest::ShouldFindBench()
         return false;
     }
 
-    if (!GetNextIsSurface() && !GetNextIsSloped())
-    {
-        return true;
-    }
-
-    return false;
+    return !GetNextIsSurface() && !GetNextIsSloped();
 }
 
 /**
