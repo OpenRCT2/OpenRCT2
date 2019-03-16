@@ -90,6 +90,9 @@ public:
                 gSamePriceThroughoutParkB = _value;
                 window_invalidate_by_class(WC_RIDE);
                 break;
+            default:
+                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                break;
         }
 
         auto res = MakeResult();
