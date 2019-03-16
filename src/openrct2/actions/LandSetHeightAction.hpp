@@ -19,6 +19,7 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
@@ -207,7 +208,7 @@ private:
             if (_height + 4 < tileElement->base_height)
                 continue;
             rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-            if (sceneryEntry->small_scenery.height > 64)
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE))
             {
                 return tileElement;
             }

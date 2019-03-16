@@ -94,7 +94,7 @@ int32_t map_place_scenery_clear_func(TileElement** tile_element, int32_t x, int3
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
-        if (scenery->small_scenery.height > 64)
+        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
@@ -128,7 +128,7 @@ int32_t map_place_non_scenery_clear_func(TileElement** tile_element, int32_t x, 
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
-        if (scenery->small_scenery.height > 64)
+        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
