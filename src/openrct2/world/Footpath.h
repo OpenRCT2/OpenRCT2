@@ -26,13 +26,20 @@ constexpr auto FootpathMinHeight = 2;
 
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 
+enum class RailingEntrySupportType : uint8_t
+{
+    Box = 0,
+    Pole = 1,
+    Count
+};
+
 #pragma pack(push, 1)
 struct rct_footpath_entry
 {
     rct_string_id string_idx; // 0x00
     uint32_t image;           // 0x02
     uint32_t bridge_image;    // 0x06
-    uint8_t support_type;     // 0x0A
+    RailingEntrySupportType support_type; // 0x0A
     uint8_t flags;            // 0x0B
     uint8_t scrolling_mode;   // 0x0C
 };
@@ -53,7 +60,7 @@ struct PathRailingsEntry
     uint32_t preview;
     uint32_t bridge_image;
     uint32_t railings_image;
-    uint8_t support_type;
+    RailingEntrySupportType support_type;
     uint8_t flags;
     uint8_t scrolling_mode;
 };
@@ -89,13 +96,6 @@ enum
     // The most significant bit in this mask will always be zero, since rides can only have 4 stations
     FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = (1 << 4) | (1 << 5) | (1 << 6),
     FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST = (1 << 7),
-};
-
-enum
-{
-    RAILING_ENTRY_SUPPORT_TYPE_BOX = 0,
-    RAILING_ENTRY_SUPPORT_TYPE_POLE = 1,
-    RAILING_ENTRY_SUPPORT_TYPE_COUNT
 };
 
 enum
