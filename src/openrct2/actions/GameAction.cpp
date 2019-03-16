@@ -357,7 +357,19 @@ namespace GameActions
             cb(action, result.get());
         }
 
-        if (result->Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5))
+        // Only show errors when its not a ghost and not a preview and also top level action.
+        bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5) && topLevel == true;
+
+        // In network mode the error should be only shown to the issuer of the action.
+        if (network_get_mode() != NETWORK_MODE_NONE)
+        {
+            if (action->GetPlayer() != network_get_current_player_id())
+            {
+                shouldShowError = false;
+            }
+        }
+
+        if (result->Error != GA_ERROR::OK && shouldShowError == true)
         {
             // Show the error box
             std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);
