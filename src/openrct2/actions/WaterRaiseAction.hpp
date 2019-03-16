@@ -136,14 +136,15 @@ private:
                 if (tile_element == nullptr)
                     continue;
 
-                uint8_t height = tile_element->AsSurface()->GetWaterHeight();
-                if (height != 0)
+                uint8_t height = tile_element->base_height;
+                if (tile_element->AsSurface()->GetWaterHeight() > 0)
                 {
-                    height *= 2;
-                    if (maxHeight > height)
-                    {
-                        maxHeight = height;
-                    }
+                    height = tile_element->AsSurface()->GetWaterHeight() * 2;
+                }
+
+                if (maxHeight > height)
+                {
+                    maxHeight = height;
                 }
             }
         }
