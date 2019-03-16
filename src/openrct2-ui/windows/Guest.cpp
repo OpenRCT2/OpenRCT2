@@ -13,6 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/GuestSetFlagsAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
@@ -636,8 +637,13 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             window_scroll_to_viewport(w);
             break;
         case WIDX_TRACK:
-            get_sprite(w->number)->peep.peep_flags ^= PEEP_FLAGS_TRACKING;
-            break;
+        {
+            uint32_t flags = peep->peep_flags ^ PEEP_FLAGS_TRACKING;
+
+            auto guestSetFlagsAction = GuestSetFlagsAction(w->number, flags);
+            GameActions::Execute(&guestSetFlagsAction);
+        }
+        break;
     }
 }
 

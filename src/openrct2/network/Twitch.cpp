@@ -24,6 +24,7 @@ void twitch_update()
 #    include "../Context.h"
 #    include "../Game.h"
 #    include "../OpenRCT2.h"
+#    include "../actions/GuestSetFlagsAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/Json.hpp"
 #    include "../core/String.hpp"
@@ -442,30 +443,41 @@ namespace Twitch
                     if (member == nullptr)
                     {
                         // Member no longer peep name worthy
-                        peep->peep_flags &= ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
+                        uint32_t flags = peep->peep_flags & ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
+
+                        auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
+                        GameActions::Execute(&guestSetFlagsAction);
 
                         // TODO set peep name back to number / real name
                     }
                     else
                     {
+                        uint32_t flags = peep->peep_flags;
                         if (member->ShouldTrack)
                         {
-                            peep->peep_flags |= (PEEP_FLAGS_TRACKING);
+                            flags |= (PEEP_FLAGS_TRACKING);
                         }
                         else if (!member->ShouldTrack)
                         {
-                            peep->peep_flags &= ~(PEEP_FLAGS_TRACKING);
+                            flags &= ~(PEEP_FLAGS_TRACKING);
+                        }
+                        if (flags != peep->peep_flags)
+                        {
+                            auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
+                            GameActions::Execute(&guestSetFlagsAction);
                         }
                     }
                 }
                 else if (member != nullptr && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // Peep with same name already exists but not twitch
-                    peep->peep_flags |= PEEP_FLAGS_TWITCH;
+                    uint32_t flags = peep->peep_flags | PEEP_FLAGS_TWITCH;
                     if (member->ShouldTrack)
                     {
-                        peep->peep_flags |= PEEP_FLAGS_TRACKING;
+                        flags |= PEEP_FLAGS_TRACKING;
                     }
+                    auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
+                    GameActions::Execute(&guestSetFlagsAction);
                 }
             }
         }
@@ -498,11 +510,15 @@ namespace Twitch
                     if (newStringId != 0)
                     {
                         peep->name_string_idx = newStringId;
-                        peep->peep_flags |= PEEP_FLAGS_TWITCH;
+
+                        uint32_t flags = peep->peep_flags | PEEP_FLAGS_TWITCH;
                         if (member->ShouldTrack)
                         {
-                            peep->peep_flags |= PEEP_FLAGS_TRACKING;
+                            flags |= PEEP_FLAGS_TRACKING;
                         }
+
+                        auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
+                        GameActions::Execute(&guestSetFlagsAction);
                     }
                 }
                 else
