@@ -4714,20 +4714,12 @@ void Guest::UpdateRideMazePathfinding()
     int16_t stationHeight = ride->stations[0].Height;
 
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
-    do
-    {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && stationHeight == tileElement->base_height)
-            break;
-
-    } while (!(tileElement++)->IsLastForTile());
-
-    auto trackMazeEntry = tileElement->AsTrack();
-    if (trackMazeEntry == nullptr)
+    auto trackElement = map_get_track_element_at(actionX, actionY, stationHeight);
+    if (trackElement == nullptr)
     {
         return;
     }
-    uint16_t mazeEntry = trackMazeEntry->GetMazeEntry();
+    uint16_t mazeEntry = trackElement->GetMazeEntry();
     uint16_t openHedges = 0;
     // var_37 is 3, 7, 11 or 15
 
@@ -4780,7 +4772,7 @@ void Guest::UpdateRideMazePathfinding()
     };
     maze_type mazeType = maze_type::invalid;
 
-    tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
+    auto tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
     do
     {
         if (stationHeight != tileElement->base_height)

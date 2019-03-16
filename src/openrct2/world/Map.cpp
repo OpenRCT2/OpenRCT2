@@ -3454,7 +3454,7 @@ void game_command_modify_tile(
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
+TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -3464,7 +3464,7 @@ TileElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
         if (tileElement->base_height != z)
             continue;
 
-        return tileElement;
+        return tileElement->AsTrack();
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
