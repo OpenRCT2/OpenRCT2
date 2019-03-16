@@ -35,7 +35,7 @@ public:
     {
         return &_pathSurfaceEntry;
     }
-    
+
     PathSurfaceEntry* GetQueueEntry()
     {
         return &_queueEntry;
