@@ -4939,22 +4939,16 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
             case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
                 if (trackElement->HasChain())
                 {
-                    TileElement* tileElement = map_get_first_element_at(trackBeginEnd.begin_x >> 5, trackBeginEnd.begin_y >> 5);
-                    do
+                    TileElement* tileElement = map_get_track_element_at_of_type_seq(
+                        trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z / 8, trackType, 0);
+
+                    if (tileElement != nullptr)
                     {
-                        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-                            continue;
-                        if (tileElement->AsTrack()->GetTrackType() != trackType)
-                            continue;
-                        if (tileElement->AsTrack()->GetSequenceIndex() != 0)
-                            continue;
-                        if (tileElement->base_height != trackBeginEnd.begin_z / 8)
-                            continue;
                         outXYElement->x = trackBeginEnd.begin_x;
                         outXYElement->y = trackBeginEnd.begin_y;
                         outXYElement->element = tileElement;
                         return;
-                    } while (!(tileElement++)->IsLastForTile());
+                    }
                 }
                 break;
             case TRACK_ELEM_END_STATION:
@@ -5009,15 +5003,7 @@ static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApply
         x = element->x - CoordsDirectionDelta[direction].x;
         y = element->y - CoordsDirectionDelta[direction].y;
 
-        tileElement = map_get_first_element_at(x >> 5, y >> 5);
-        do
-        {
-            if (tileElement->base_height != z)
-                continue;
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-                continue;
-            break;
-        } while (!(tileElement++)->IsLastForTile());
+        tileElement = reinterpret_cast<TileElement*>(map_get_track_element_at(x, y, z));
 
         z = tileElement->base_height;
         direction = tileElement->GetDirection();
@@ -5275,15 +5261,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
     int32_t x = ride->cable_lift_x;
     int32_t y = ride->cable_lift_y;
     int32_t z = ride->cable_lift_z;
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    do
-    {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-            continue;
-        if (tileElement->base_height != z)
-            continue;
-        break;
-    } while (!(tileElement++)->IsLastForTile());
+    auto tileElement = map_get_track_element_at(x, y, z);
     int32_t direction = tileElement->GetDirection();
 
     rct_vehicle* head = nullptr;
