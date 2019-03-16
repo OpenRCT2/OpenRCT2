@@ -61,7 +61,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE && _modifyType == RIDE_MODIFY_DEMOLISH)
+        if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+            && _modifyType == RIDE_MODIFY_DEMOLISH)
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::NO_CLEARANCE, STR_CANT_DEMOLISH_RIDE,
