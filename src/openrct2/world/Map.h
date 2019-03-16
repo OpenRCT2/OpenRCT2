@@ -146,8 +146,8 @@ BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_
 TileElement* map_get_surface_element_at(int32_t x, int32_t y);
 TileElement* map_get_surface_element_at(CoordsXY coords);
 TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z);
-TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
-TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
+WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
+SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
@@ -260,10 +260,10 @@ int32_t tile_element_get_corner_height(const TileElement* tileElement, int32_t d
 
 void map_clear_all_elements();
 
-TileElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence);
+LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence);
 bool map_large_scenery_get_origin(
     int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
-    TileElement** outElement);
+    LargeSceneryElement** outElement);
 
 void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t offsetY, uint8_t rotation);
 CoordsXY translate_3d_to_2d_with_z(int32_t rotation, CoordsXYZ pos);

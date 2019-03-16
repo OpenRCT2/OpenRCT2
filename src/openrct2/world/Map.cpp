@@ -816,7 +816,7 @@ void game_command_set_large_scenery_colour(
     gCommandPosition.y = y + 16;
     gCommandPosition.z = z;
 
-    TileElement* tile_element = map_get_large_scenery_segment(x, y, base_height, tile_element_direction, tileIndex);
+    auto tile_element = map_get_large_scenery_segment(x, y, base_height, tile_element_direction, tileIndex);
 
     if (tile_element == nullptr)
     {
@@ -830,7 +830,7 @@ void game_command_set_large_scenery_colour(
         return;
     }
 
-    rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
+    rct_scenery_entry* scenery_entry = tile_element->GetEntry();
 
     // Work out the base tile coordinates (Tile with index 0)
     LocationXYZ16 baseTile = {
@@ -865,11 +865,11 @@ void game_command_set_large_scenery_colour(
 
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            TileElement* tileElement = map_get_large_scenery_segment(
+            auto tileElement = map_get_large_scenery_segment(
                 currentTile.x, currentTile.y, base_height, tile_element_direction, i);
 
-            tileElement->AsLargeScenery()->SetPrimaryColour(colour1);
-            tileElement->AsLargeScenery()->SetSecondaryColour(colour2);
+            tileElement->SetPrimaryColour(colour1);
+            tileElement->SetSecondaryColour(colour2);
 
             map_invalidate_tile_full(currentTile.x, currentTile.y);
         }
@@ -2868,7 +2868,7 @@ int32_t map_get_highest_z(int32_t tileX, int32_t tileY)
     return z;
 }
 
-TileElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence)
+LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement == nullptr)
@@ -2886,7 +2886,7 @@ TileElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int3
         if ((tileElement->GetDirection()) != direction)
             continue;
 
-        return tileElement;
+        return tileElement->AsLargeScenery();
     } while (!(tileElement++)->IsLastForTile());
     return nullptr;
 }
@@ -2966,7 +2966,7 @@ EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, b
     return nullptr;
 }
 
-TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant)
+SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement != nullptr)
@@ -2982,7 +2982,7 @@ TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, i
             if (tileElement->AsSmallScenery()->GetEntryIndex() != type)
                 continue;
 
-            return tileElement;
+            return tileElement->AsSmallScenery();
         } while (!(tileElement++)->IsLastForTile());
     }
     return nullptr;
@@ -2990,18 +2990,17 @@ TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, i
 
 bool map_large_scenery_get_origin(
     int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
-    TileElement** outElement)
+    LargeSceneryElement** outElement)
 {
-    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile* tile;
     int16_t offsetX, offsetY;
 
-    tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+    auto tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
     if (tileElement == nullptr)
         return false;
 
-    sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+    sceneryEntry = tileElement->GetEntry();
     tile = &sceneryEntry->large_scenery.tiles[sequence];
 
     offsetX = tile->x_offset;
@@ -3023,7 +3022,7 @@ bool map_large_scenery_get_origin(
 bool sign_set_colour(
     int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
-    TileElement* tileElement;
+    LargeSceneryElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile *sceneryTiles, *tile;
     int16_t offsetX, offsetY;
@@ -3034,7 +3033,7 @@ bool sign_set_colour(
         return false;
     }
 
-    sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+    sceneryEntry = tileElement->GetEntry();
     sceneryTiles = sceneryEntry->large_scenery.tiles;
 
     // Iterate through each tile of the large scenery element
@@ -3051,8 +3050,8 @@ bool sign_set_colour(
         tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
         if (tileElement != nullptr)
         {
-            tileElement->AsLargeScenery()->SetPrimaryColour(mainColour);
-            tileElement->AsLargeScenery()->SetSecondaryColour(textColour);
+            tileElement->SetPrimaryColour(mainColour);
+            tileElement->SetSecondaryColour(textColour);
 
             map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         }
@@ -3623,7 +3622,7 @@ void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t o
     }
 }
 
-TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction)
+WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -3635,7 +3634,7 @@ TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t di
         if (tileElement->GetDirection() != direction)
             continue;
 
-        return tileElement;
+        return tileElement->AsWall();
     } while (!(tileElement++)->IsLastForTile());
     return nullptr;
 }

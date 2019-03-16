@@ -42,7 +42,7 @@ static money32 SmallScenerySetColour(
         }
     }
 
-    TileElement* tileElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
+    auto tileElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
 
     if (tileElement == nullptr)
     {
@@ -56,8 +56,8 @@ static money32 SmallScenerySetColour(
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        tileElement->AsSmallScenery()->SetPrimaryColour(primaryColour);
-        tileElement->AsSmallScenery()->SetSecondaryColour(secondaryColour);
+        tileElement->SetPrimaryColour(primaryColour);
+        tileElement->SetSecondaryColour(secondaryColour);
 
         map_invalidate_tile_full(x, y);
     }
