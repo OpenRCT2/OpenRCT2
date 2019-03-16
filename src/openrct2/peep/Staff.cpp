@@ -2472,7 +2472,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
         uint16_t stationX = stationPosition.x * 32;
         uint16_t stationY = stationPosition.y * 32;
 
-        TileElement* tileElement = map_get_track_element_at(stationX, stationY, stationZ);
+        auto tileElement = map_get_track_element_at(stationX, stationY, stationZ);
         if (tileElement == nullptr)
         {
             log_error("Couldn't find tile_element");

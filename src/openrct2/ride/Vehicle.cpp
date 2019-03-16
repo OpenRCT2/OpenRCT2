@@ -2836,7 +2836,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
     int32_t y = location.y * 32;
     int32_t z = ride->stations[station].Height;
 
-    TileElement* tileElement = map_get_track_element_at(x, y, z);
+    auto tileElement = map_get_track_element_at(x, y, z);
     if (tileElement == nullptr)
     {
         return false;
@@ -3989,14 +3989,14 @@ loc_6D8E36:
         return;
     }
 
-    TileElement* tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
+    auto trackElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
 
-    if (tileElement == nullptr)
+    if (trackElement == nullptr)
     {
         return;
     }
 
-    vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
+    vehicle->current_station = trackElement->GetStationIndex();
     vehicle->num_laps++;
 
     if (vehicle->sub_state != 0)
@@ -4270,10 +4270,10 @@ static void loc_6DA9F9(rct_vehicle* vehicle, int32_t x, int32_t y, int32_t bx, i
         vehicle->track_x = bx;
         vehicle->track_y = dx;
 
-        TileElement* tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
+        auto trackElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
 
         Ride* ride = get_ride(vehicle->ride);
-        vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
+        vehicle->track_type = (trackElement->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
 
         vehicle->track_progress = 0;
         vehicle->status = VEHICLE_STATUS_TRAVELLING;
@@ -6762,15 +6762,15 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
     x = trackBeginEnd.begin_x;
     y = trackBeginEnd.begin_y;
     z = trackBeginEnd.begin_z;
-    tileElement = map_get_track_element_at(x, y, z >> 3);
-    if (tileElement == nullptr)
+    auto trackElement = map_get_track_element_at(x, y, z >> 3);
+    if (trackElement == nullptr)
     {
         return;
     }
-    tileElement->AsTrack()->SetBlockBrakeClosed(false);
-    map_invalidate_element(x, y, tileElement);
+    trackElement->SetBlockBrakeClosed(false);
+    map_invalidate_element(x, y, reinterpret_cast<TileElement*>(trackElement));
 
-    int32_t trackType = tileElement->AsTrack()->GetTrackType();
+    int32_t trackType = trackElement->GetTrackType();
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
     {
         Ride* ride = get_ride(vehicle->ride);
