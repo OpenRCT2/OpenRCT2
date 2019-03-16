@@ -3622,7 +3622,7 @@ void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t o
     }
 }
 
-TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction)
+WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -3634,7 +3634,7 @@ TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t di
         if (tileElement->GetDirection() != direction)
             continue;
 
-        return tileElement;
+        return tileElement->AsWall();
     } while (!(tileElement++)->IsLastForTile());
     return nullptr;
 }
