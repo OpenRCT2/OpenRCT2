@@ -12,6 +12,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/actions/StaffFireAction.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Sprite.h>
 
@@ -103,12 +104,13 @@ rct_window* window_staff_fire_prompt_open(Peep* peep)
 */
 static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    Peep* peep = &get_sprite(w->number)->peep;
-
     switch (widgetIndex){
     case WIDX_YES:
-        game_do_command(peep->x, 1, peep->y, w->number, GAME_COMMAND_FIRE_STAFF_MEMBER, 0, 0);
+    {
+        auto staffFireAction = StaffFireAction(w->number);
+        GameActions::Execute(&staffFireAction);
         break;
+    }
     case WIDX_CANCEL:
     case WIDX_CLOSE:
         window_close(w);

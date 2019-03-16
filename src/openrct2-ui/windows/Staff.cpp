@@ -18,6 +18,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/actions/StaffSetCostumeAction.hpp>
 #include <openrct2/actions/StaffSetOrdersAction.hpp>
+#include <openrct2/actions/StaffSetPatrolAreaAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
@@ -1225,7 +1226,8 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
         }
-        game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
+        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, { dest_x, dest_y });
+        GameActions::Execute(&staffSetPatrolAreaAction);
     }
 }
 
@@ -1263,7 +1265,8 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && patrolAreaValue == false)
         return; // Since area is already the value we want, skip...
 
-    game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
+    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, { dest_x, dest_y });
+    GameActions::Execute(&staffSetPatrolAreaAction);
 }
 
 void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
