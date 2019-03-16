@@ -17,6 +17,7 @@ class FootpathObject final : public Object
 private:
     rct_footpath_entry _legacyType = {};
     PathSurfaceEntry _pathSurfaceEntry = {};
+    PathSurfaceEntry _queueEntry = {};
     PathRailingsEntry _pathRailingsEntry = {};
 
 public:
@@ -33,6 +34,11 @@ public:
     PathSurfaceEntry* GetPathSurfaceEntry()
     {
         return &_pathSurfaceEntry;
+    }
+    
+    PathSurfaceEntry* GetQueueEntry()
+    {
+        return &_queueEntry;
     }
 
     PathRailingsEntry* GetPathRailingsEntry()

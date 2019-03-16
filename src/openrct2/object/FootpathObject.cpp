@@ -42,10 +42,14 @@ void FootpathObject::Load()
 
     _pathSurfaceEntry.string_idx = _legacyType.string_idx;
     _pathSurfaceEntry.image = _legacyType.image;
-    _pathSurfaceEntry.queue_image = _legacyType.image + 51;
     _pathSurfaceEntry.preview = _legacyType.image + 71;
     _pathSurfaceEntry.flags = _legacyType.flags;
 
+    _queueEntry.string_idx = _legacyType.string_idx;
+    _queueEntry.image = _legacyType.image + 51;
+    _queueEntry.preview = _legacyType.image + 72;
+    _queueEntry.flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
+    
     _pathRailingsEntry.string_idx = _legacyType.string_idx;
     _pathRailingsEntry.bridge_image = _legacyType.bridge_image;
     _pathRailingsEntry.preview = _legacyType.image + 71;
@@ -69,7 +73,7 @@ void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t 
     int32_t x = width / 2;
     int32_t y = height / 2;
     gfx_draw_sprite(dpi, _pathSurfaceEntry.preview, x - 49, y - 17, 0);
-    gfx_draw_sprite(dpi, _pathSurfaceEntry.preview + 1, x + 4, y - 17, 0);
+    gfx_draw_sprite(dpi, _queueEntry.preview, x + 4, y - 17, 0);
 }
 
 static uint8_t ParseSupportType(const std::string& s)

@@ -1008,14 +1008,7 @@ void path_paint_box_support(
         imageId = byte_98D6E0[edi];
     }
 
-    if (pathElement->IsQueue())
-    {
-        imageId += footpathEntry->queue_image;
-    }
-    else
-    {
-        imageId += footpathEntry->image;
-    }
+    imageId += footpathEntry->image;
 
     if (!session->DidPassSurface)
     {
@@ -1164,14 +1157,7 @@ void path_paint_pole_support(
         imageId = byte_98D6E0[edi];
     }
 
-    if (pathElement->IsQueue())
-    {
-        imageId += footpathEntry->queue_image;
-    }
-    else
-    {
-        imageId += footpathEntry->image;
-    }
+    imageId += footpathEntry->image;
 
     // Below Surface
     if (!session->DidPassSurface)

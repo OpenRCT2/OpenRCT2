@@ -43,7 +43,6 @@ struct PathSurfaceEntry
 {
     rct_string_id string_idx;
     uint32_t image;
-    uint32_t queue_image;
     uint32_t preview;
     uint8_t flags;
 };
@@ -102,6 +101,7 @@ enum
 enum
 {
     FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
+    FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
 };
 
 enum

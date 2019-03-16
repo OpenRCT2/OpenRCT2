@@ -613,14 +613,7 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         int32_t selectedPath = gFootpathSelectedId;
         PathSurfaceEntry* pathType = get_path_surface_entry(selectedPath);
-        if (gFootpathSelectedType == SELECTED_PATH_TYPE_NORMAL)
-        {
-            image += pathType->image;
-        }
-        else
-        {
-            image += pathType->queue_image;
-        }
+        image += pathType->image;
 
         // Draw construction image
         int32_t x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;

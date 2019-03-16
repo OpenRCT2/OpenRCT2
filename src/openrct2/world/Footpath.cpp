@@ -1568,7 +1568,10 @@ uint8_t PathElement::GetRailingEntryIndex() const
 
 PathSurfaceEntry* PathElement::GetPathEntry() const
 {
-    return get_path_surface_entry(GetPathEntryIndex());
+    if (!IsQueue())
+        return get_path_surface_entry(GetPathEntryIndex());
+    else
+        return get_path_surface_entry(GetPathEntryIndex() + 32);
 }
 
 PathRailingsEntry* PathElement::GetRailingEntry() const
@@ -2159,10 +2162,14 @@ PathSurfaceEntry* get_path_surface_entry(int32_t entryIndex)
 {
     PathSurfaceEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
+    // TODO: Change when moving to the new save format.
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex % MAX_PATH_OBJECTS);
     if (obj != nullptr)
     {
-        result = ((FootpathObject*)obj)->GetPathSurfaceEntry();
+        if (entryIndex < MAX_PATH_OBJECTS)
+            result = ((FootpathObject*)obj)->GetPathSurfaceEntry();
+        else
+            result = ((FootpathObject*)obj)->GetQueueEntry();
     }
     return result;
 }
