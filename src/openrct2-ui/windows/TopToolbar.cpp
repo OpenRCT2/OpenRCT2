@@ -29,6 +29,7 @@
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
 #include <openrct2/actions/LandLowerAction.hpp>
 #include <openrct2/actions/LandRaiseAction.hpp>
+#include <openrct2/actions/LandSmoothAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
@@ -2892,13 +2893,15 @@ static money32 selection_raise_land(uint8_t flags)
     centreX += 16;
     centreY += 16;
 
-    uint32_t xBounds = (gMapSelectPositionA.x & 0xFFFF) | (gMapSelectPositionB.x << 16);
-    uint32_t yBounds = (gMapSelectPositionA.y & 0xFFFF) | (gMapSelectPositionB.y << 16);
-
-    gGameCommandErrorTitle = STR_CANT_RAISE_LAND_HERE;
     if (gLandMountainMode)
     {
-        return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, gMapSelectType, yBounds);
+        auto landSmoothAction = LandSmoothAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType,
+            false);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
+                                                     : GameActions::Query(&landSmoothAction);
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
     else
     {
@@ -2923,14 +2926,15 @@ static money32 selection_lower_land(uint8_t flags)
     centreX += 16;
     centreY += 16;
 
-    uint32_t xBounds = (gMapSelectPositionA.x & 0xFFFF) | (gMapSelectPositionB.x << 16);
-    uint32_t yBounds = (gMapSelectPositionA.y & 0xFFFF) | (gMapSelectPositionB.y << 16);
-
-    gGameCommandErrorTitle = STR_CANT_LOWER_LAND_HERE;
     if (gLandMountainMode)
     {
-        return game_do_command(
-            centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 0x8000 + gMapSelectType, yBounds);
+        auto landSmoothAction = LandSmoothAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType,
+            true);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
+                                                     : GameActions::Query(&landSmoothAction);
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
     else
     {
