@@ -4,6 +4,7 @@
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#8873] Potential crash when placing footpaths.
 - Change: [#8688] Move common actions from debug menu into cheats menu.
+- Fix: [#8900] Synchronize peep tracking to prevent desyncs.
 
 0.2.2 (2019-03-13)
 ------------------------------------------------------------------------
