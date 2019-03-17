@@ -23,15 +23,19 @@ class TrackPlaceActionResult final : public GameActionResult // this class is wh
 {
 public:
     TrackPlaceActionResult()
-    : GameActionResult(GA_ERROR::OK, STR_CANT_CREATE_NEW_RIDE_ATTRACTION)
+    : GameActionResult(GA_ERROR::OK, 0)
+    {
+    }
+    TrackPlaceActionResult(GA_ERROR error)
+        : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
     {
     }
     TrackPlaceActionResult(GA_ERROR error, rct_string_id message)   
-    : GameActionResult(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message)
+    : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
     {
     }
      TrackPlaceActionResult(GA_ERROR error, rct_string_id message, uint8_t* args)   //believe this is what needs to be modified to include error args in the parameters
-    : GameActionResult(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message, args)
+        : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message, args)
     {
     }
 
@@ -109,7 +113,7 @@ public:
         {
             log_warning("Invalid direction for track placement, direction = %d", _origin.direction);
             return std::make_unique<TrackPlaceActionResult>(
-                GA_ERROR::INVALID_PARAMETERS,  STR_NONE);
+                GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         auto res = std::make_unique<TrackPlaceActionResult>();
