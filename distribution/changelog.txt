@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Fix: [#5579] Network desync immediately after connecting.
 - Fix: [#8873] Potential crash when placing footpaths.
+- Change: [#8688] Move common actions from debug menu into cheats menu.
 
 0.2.2 (2019-03-13)
 ------------------------------------------------------------------------
