@@ -125,6 +125,7 @@ public:
     void Flush();
     void ProcessPending();
     void ProcessPlayerList();
+    void ProcessPlayerInfo();
     void ProcessGameCommands();
     void EnqueueGameAction(const GameAction* action);
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
@@ -173,6 +174,7 @@ public:
     void Client_Send_GAME_ACTION(const GameAction* action);
     void Server_Send_GAME_ACTION(const GameAction* action);
     void Server_Send_TICK();
+    void Server_Send_PLAYERINFO(int32_t playerId);
     void Server_Send_PLAYERLIST();
     void Client_Send_PING();
     void Server_Send_PING();
@@ -290,7 +292,7 @@ private:
     };
 
     std::map<uint32_t, ServerTickData_t> _serverTickData;
-
+    std::multimap<uint32_t, NetworkPlayer> _pendingPlayerInfo;
     int32_t mode = NETWORK_MODE_NONE;
     int32_t status = NETWORK_STATUS_NONE;
     bool _closeLock = false;
@@ -337,6 +339,7 @@ private:
     void Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_PLAYERINFO(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
@@ -376,6 +379,7 @@ Network::Network()
     client_command_handlers[NETWORK_COMMAND_GAME_ACTION] = &Network::Client_Handle_GAME_ACTION;
     client_command_handlers[NETWORK_COMMAND_TICK] = &Network::Client_Handle_TICK;
     client_command_handlers[NETWORK_COMMAND_PLAYERLIST] = &Network::Client_Handle_PLAYERLIST;
+    client_command_handlers[NETWORK_COMMAND_PLAYERINFO] = &Network::Client_Handle_PLAYERINFO;
     client_command_handlers[NETWORK_COMMAND_PING] = &Network::Client_Handle_PING;
     client_command_handlers[NETWORK_COMMAND_PINGLIST] = &Network::Client_Handle_PINGLIST;
     client_command_handlers[NETWORK_COMMAND_SETDISCONNECTMSG] = &Network::Client_Handle_SETDISCONNECTMSG;
@@ -444,6 +448,7 @@ void Network::Close()
         player_list.clear();
         group_list.clear();
         _pendingPlayerList.reset();
+        _pendingPlayerInfo.clear();
 
         gfx_invalidate_screen();
 
@@ -1640,6 +1645,19 @@ void Network::Server_Send_TICK()
     SendPacketToClients(*packet);
 }
 
+void Network::Server_Send_PLAYERINFO(int32_t playerId)
+{
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    *packet << (uint32_t)NETWORK_COMMAND_PLAYERINFO << gCurrentTicks;
+
+    auto* player = GetPlayerByID(playerId);
+    if (player == nullptr)
+        return;
+
+    player->Write(*packet);
+    SendPacketToClients(*packet);
+}
+
 void Network::Server_Send_PLAYERLIST()
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
@@ -1829,6 +1847,7 @@ void Network::ProcessPending()
 {
     ProcessGameCommands();
     ProcessPlayerList();
+    ProcessPlayerInfo();
 }
 
 void Network::ProcessPlayerList()
@@ -1844,9 +1863,12 @@ void Network::ProcessPlayerList()
     for (auto&& pendingPlayer : _pendingPlayerList.players)
     {
         activePlayerIds.push_back(pendingPlayer.Id);
-        if (!GetPlayerByID(pendingPlayer.Id))
+
+        auto* player = GetPlayerByID(pendingPlayer.Id);
+        if (player == nullptr)
         {
-            NetworkPlayer* player = AddPlayer("", "");
+            // Add new player.
+            player = AddPlayer("", "");
             if (player)
             {
                 *player = pendingPlayer;
@@ -1855,6 +1877,11 @@ void Network::ProcessPlayerList()
                     _serverConnection->Player = player;
                 }
             }
+        }
+        else
+        {
+            // Update.
+            *player = pendingPlayer;
         }
     }
 
@@ -1873,6 +1900,20 @@ void Network::ProcessPlayerList()
     }
 
     _pendingPlayerList.reset();
+}
+
+void Network::ProcessPlayerInfo()
+{
+    auto range = _pendingPlayerInfo.equal_range(gCurrentTicks);
+    for (auto it = range.first; it != range.second; it++)
+    {
+        auto* player = GetPlayerByID(it->second.Id);
+        if (player != nullptr)
+        {
+            *player = it->second;
+        }
+    }
+    _pendingPlayerInfo.erase(gCurrentTicks);
 }
 
 void Network::ProcessGameCommands()
@@ -1914,6 +1955,7 @@ void Network::ProcessGameCommands()
             if (result->Error == GA_ERROR::OK)
             {
                 Server_Send_GAME_ACTION(action);
+                Server_Send_PLAYERINFO(action->GetPlayer());
             }
         }
         else
@@ -1955,6 +1997,7 @@ void Network::ProcessGameCommands()
                     }
 
                     Server_Send_GAMECMD(gc.eax, gc.ebx, gc.ecx, gc.edx, gc.esi, gc.edi, gc.ebp, gc.playerid, gc.callback);
+                    Server_Send_PLAYERINFO(gc.playerid);
                 }
             }
         }
@@ -2896,6 +2939,17 @@ void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection,
     }
 
     _serverTickData.emplace(server_tick, tickData);
+}
+
+void Network::Client_Handle_PLAYERINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
+{
+    uint32_t tick;
+    packet >> tick;
+
+    NetworkPlayer playerInfo;
+    playerInfo.Read(packet);
+
+    _pendingPlayerInfo.emplace(tick, playerInfo);
 }
 
 void Network::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
