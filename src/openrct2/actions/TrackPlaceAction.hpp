@@ -26,8 +26,16 @@ public:
     : GameActionResult(GA_ERROR::OK, STR_CANT_CREATE_NEW_RIDE_ATTRACTION)
     {
     }
-    TrackPlaceActionResult(GA_ERROR error, rct_string_id message)   //believe this is what needs to be modified to include error args in the parameters
+    TrackPlaceActionResult(GA_ERROR error, rct_string_id message)   
     : GameActionResult(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message)
+    {
+    }
+    TrackPlaceActionResult(GA_ERROR error, rct_string_id title, rct_string_id message)
+        : GameActionResult(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message)
+    {
+    }
+     TrackPlaceActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t* args)   //believe this is what needs to be modified to include error args in the parameters
+    : GameActionResult(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message, args)
     {
     }
 
