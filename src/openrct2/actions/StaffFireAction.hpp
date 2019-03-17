@@ -17,7 +17,7 @@
 DEFINE_GAME_ACTION(StaffFireAction, GAME_COMMAND_FIRE_STAFF_MEMBER, GameActionResult)
 {
 private:
-    uint16_t _spriteId;
+    uint16_t _spriteId{ SPRITE_INDEX_NULL };
 
 public:
     StaffFireAction()
@@ -43,14 +43,14 @@ public:
     {
         if (_spriteId >= MAX_SPRITES)
         {
-            log_error("Invalid spriteId.");
+            log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         auto peep = GET_PEEP(_spriteId);
         if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
         {
-            log_error("Invalid spriteId.");
+            log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -62,7 +62,7 @@ public:
         auto peep = GET_PEEP(_spriteId);
         if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
         {
-            log_error("Invalid spriteId.");
+            log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
         window_close_by_class(WC_FIRE_PROMPT);

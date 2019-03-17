@@ -18,7 +18,7 @@
 DEFINE_GAME_ACTION(StaffSetPatrolAreaAction, GAME_COMMAND_SET_STAFF_PATROL, GameActionResult)
 {
 private:
-    uint16_t _spriteId;
+    uint16_t _spriteId{ SPRITE_INDEX_NULL };
     CoordsXY _loc;
 
 public:
@@ -46,14 +46,14 @@ public:
     {
         if (_spriteId >= MAX_SPRITES)
         {
-            log_error("Invalid spriteId.");
+            log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         auto peep = GET_PEEP(_spriteId);
         if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
         {
-            log_error("Invalid spriteId.");
+            log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -65,7 +65,7 @@ public:
         auto peep = GET_PEEP(_spriteId);
         if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
         {
-            log_error("Invalid spriteId.");
+            log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -73,14 +73,18 @@ public:
 
         staff_toggle_patrol_area(peep->staff_id, _loc.x, _loc.y);
 
-        int32_t ispatrolling = 0;
+        bool isPatrolling = false;
         for (int32_t i = 0; i < 128; i++)
         {
-            ispatrolling |= gStaffPatrolAreas[patrolOffset + i];
+            if (gStaffPatrolAreas[patrolOffset + i])
+            {
+                isPatrolling = true;
+                break;
+            }
         }
 
         gStaffModes[peep->staff_id] &= ~(1 << 1);
-        if (ispatrolling)
+        if (isPatrolling)
         {
             gStaffModes[peep->staff_id] |= (1 << 1);
         }
