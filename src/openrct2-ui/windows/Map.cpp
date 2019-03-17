@@ -20,6 +20,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/audio/audio.h>
+#include <openrct2/actions/LandSetRightsAction.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/Entrance.h>
@@ -505,10 +506,10 @@ static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int3
         case WIDX_SET_LAND_RIGHTS:
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
-                gGameCommandErrorTitle = 0;
-                game_do_command(
-                    gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y, _activeTool,
-                    GAME_COMMAND_SET_LAND_OWNERSHIP, gMapSelectPositionB.x, gMapSelectPositionB.y);
+                auto landSetRightsAction = LandSetRightsAction(
+                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                    LandSetRightSetting::SetOwnershipWithChecks, _activeTool << 4);
+                GameActions::Execute(&landSetRightsAction);
             }
             break;
     }
@@ -614,10 +615,10 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
         gMapSelectPositionB.y = mapY + size;
         map_invalidate_selection_rect();
 
-        gGameCommandErrorTitle = 0;
-        game_do_command(
-            gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y, _activeTool, GAME_COMMAND_SET_LAND_OWNERSHIP,
-            gMapSelectPositionB.x, gMapSelectPositionB.y);
+        auto landSetRightsAction = LandSetRightsAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+            LandSetRightSetting::SetOwnershipWithChecks, _activeTool << 4);
+        GameActions::Execute(&landSetRightsAction);
     }
 }
 

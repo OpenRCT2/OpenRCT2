@@ -188,8 +188,6 @@ void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation);
 LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, int32_t rotation);
 money32 map_clear_scenery(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t clear, int32_t flags);
 
-void game_command_set_land_ownership(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_place_park_entrance(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_set_banner_name(

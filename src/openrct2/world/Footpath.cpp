@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../actions/LandSetRightsAction.hpp"
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
@@ -1238,7 +1239,9 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         ownership = OWNERSHIP_UNOWNED;
     }
 
-    map_buy_land_rights(x, y, x, y, BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, (ownership << 4) | GAME_COMMAND_FLAG_APPLY);
+    auto landSetRightsAction = LandSetRightsAction({ x, y }, LandSetRightSetting::SetOwnershipWithChecks, ownership);
+    landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+    GameActions::Execute(&landSetRightsAction);
 }
 
 static bool get_next_direction(int32_t edges, int32_t* direction)
