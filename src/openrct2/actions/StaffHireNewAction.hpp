@@ -256,7 +256,7 @@ private:
 
             peep_update_name_sort(newPeep);
 
-            newPeep->staff_id = newStaffId;
+            newPeep->staff_id = staffIndex;
 
             gStaffModes[staffIndex] = STAFF_MODE_WALK;
 
