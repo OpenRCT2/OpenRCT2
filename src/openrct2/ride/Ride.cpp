@@ -216,6 +216,7 @@ static void ride_shop_connected(Ride* ride);
 static void ride_spiral_slide_update(Ride* ride);
 static void ride_update(Ride* ride);
 void loc_6DDF9C(Ride* ride, TileElement* tileElement);
+static bool ride_is_ride(Ride* ride);
 
 Ride* get_ride(int32_t index)
 {
@@ -5898,7 +5899,17 @@ void ride_set_colour_preset(Ride* ride, uint8_t index)
 {
     const track_colour_preset_list* colourPresets = &RideColourPresets[ride->type];
     TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
-    if (index < colourPresets->count)
+    // Stalls save their default colour in the vehicle settings (since they share a common ride type)
+    if (!ride_is_ride(ride))
+    {
+        auto rideEntry = get_ride_entry(ride->subtype);
+        if (rideEntry != nullptr && rideEntry->vehicle_preset_list->count > 0)
+        {
+            auto list = rideEntry->vehicle_preset_list->list[0];
+            colours = { list.main, list.additional_1, list.additional_2 };
+        }
+    }
+    else if (index < colourPresets->count)
     {
         colours = colourPresets->list[index];
     }

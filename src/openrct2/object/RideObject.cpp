@@ -550,6 +550,8 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
     _legacyType.shop_item = SHOP_ITEM_NONE;
     _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
 
+    _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
+
     if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
     {
         // Standard car info for a shop
@@ -623,7 +625,6 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
         }
 
         auto availableTrackPieces = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "availableTrackPieces"));
-        _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
     }
 
     _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(
