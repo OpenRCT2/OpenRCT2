@@ -1,6 +1,7 @@
 0.2.2+ (in development)
 ------------------------------------------------------------------------
 - Fix: [#5579] Network desync immediately after connecting.
+- Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#8873] Potential crash when placing footpaths.
 - Change: [#8688] Move common actions from debug menu into cheats menu.
 
