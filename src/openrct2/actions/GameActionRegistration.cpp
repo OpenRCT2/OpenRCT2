@@ -48,11 +48,13 @@
 #include "SignSetStyleAction.hpp"
 #include "SmallSceneryPlaceAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
+#include "StaffFireAction.hpp"
 #include "StaffHireNewAction.hpp"
 #include "StaffSetColourAction.hpp"
 #include "StaffSetCostumeAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "StaffSetOrdersAction.hpp"
+#include "StaffSetPatrolAreaAction.hpp"
 #include "SurfaceSetStyleAction.hpp"
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
@@ -96,11 +98,13 @@ namespace GameActions
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
         Register<SignSetStyleAction>();
+        Register<StaffFireAction>();
         Register<StaffHireNewAction>();
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
         Register<StaffSetOrdersAction>();
         Register<StaffSetCostumeAction>();
+        Register<StaffSetPatrolAreaAction>();
         Register<SurfaceSetStyleAction>();
         Register<WallRemoveAction>();
         Register<SmallSceneryPlaceAction>();

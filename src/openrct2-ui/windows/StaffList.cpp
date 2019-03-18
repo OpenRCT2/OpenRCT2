@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/StaffFireAction.hpp>
 #include <openrct2/actions/StaffSetColourAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
@@ -465,7 +466,10 @@ void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
         if (i == 0)
         {
             if (_quick_fire_mode)
-                game_do_command(peep->x, 1, peep->y, spriteIndex, GAME_COMMAND_FIRE_STAFF_MEMBER, 0, 0);
+            {
+                auto staffFireAction = StaffFireAction(spriteIndex);
+                GameActions::Execute(&staffFireAction);
+            }
             else
             {
                 auto intent = Intent(WC_PEEP);
