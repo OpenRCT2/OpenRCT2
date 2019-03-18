@@ -16,6 +16,7 @@
 #include "FootpathSceneryPlaceAction.hpp"
 #include "FootpathSceneryRemoveAction.hpp"
 #include "GameAction.h"
+#include "GuestSetFlagsAction.hpp"
 #include "GuestSetNameAction.hpp"
 #include "LandLowerAction.hpp"
 #include "LandRaiseAction.hpp"
@@ -113,5 +114,6 @@ namespace GameActions
         Register<WaterSetHeightAction>();
         Register<WaterLowerAction>();
         Register<WaterRaiseAction>();
+        Register<GuestSetFlagsAction>();
     }
 } // namespace GameActions
