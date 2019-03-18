@@ -87,8 +87,7 @@ struct rct_shop_item_string_types
     rct_string_id display;     // "Diamond Heights" Balloon
 };
 
-extern uint32_t gSamePriceThroughoutParkA;
-extern uint32_t gSamePriceThroughoutParkB;
+extern uint64_t gSamePriceThroughoutPark;
 
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];

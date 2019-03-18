@@ -611,24 +611,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
         network_append_server_log(log_msg);
     }
-    else if (command == GAME_COMMAND_SET_PARK_OPEN)
-    {
-        // Log change in park open/close
-        char* args[1] = {
-            (char*)player_name,
-        };
-
-        if (*edx >> 8 == 0)
-        {
-            format_string(log_msg, 256, STR_LOG_PARK_OPEN, args);
-        }
-        else if (*edx >> 8 == 1)
-        {
-            format_string(log_msg, 256, STR_LOG_PARK_CLOSED, args);
-        }
-
-        network_append_server_log(log_msg);
-    }
     else if (
         command == GAME_COMMAND_PLACE_WALL || command == GAME_COMMAND_PLACE_LARGE_SCENERY
         || command == GAME_COMMAND_PLACE_BANNER)
@@ -1280,7 +1262,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_change_surface_style,
+    nullptr,
     nullptr,
     game_command_set_guest_name,
     game_command_set_staff_name,
@@ -1291,11 +1273,11 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_set_staff_patrol,
-    game_command_fire_staff_member,
     nullptr,
     nullptr,
-    game_command_set_park_open,
+    nullptr,
+    nullptr,
+    nullptr,
     game_command_buy_land_rights,
     game_command_place_park_entrance,
     game_command_remove_park_entrance,

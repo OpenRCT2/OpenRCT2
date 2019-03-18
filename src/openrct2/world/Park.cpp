@@ -15,6 +15,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../actions/ParkSetParameterAction.hpp"
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
 #include "../interface/Colour.h"
@@ -104,55 +105,10 @@ static PeepSpawn* get_random_peep_spawn()
     }
 }
 
-void park_set_open(int32_t open)
+void park_set_open(bool open)
 {
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, open << 8, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
-}
-
-/**
- *
- *  rct2: 0x00669D4A
- */
-void game_command_set_park_open(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
-    int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
-    {
-        *ebx = 0;
-        return;
-    }
-
-    int32_t dh = (*edx >> 8) & 0xFF;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
-    switch (dh)
-    {
-        case 0:
-            if (gParkFlags & PARK_FLAGS_PARK_OPEN)
-            {
-                gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
-                window_invalidate_by_class(WC_PARK_INFORMATION);
-            }
-            break;
-        case 1:
-            if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
-            {
-                gParkFlags |= PARK_FLAGS_PARK_OPEN;
-                window_invalidate_by_class(WC_PARK_INFORMATION);
-            }
-            break;
-        case 2:
-            gSamePriceThroughoutParkA = *edi;
-            window_invalidate_by_class(WC_RIDE);
-            break;
-        case 3:
-            gSamePriceThroughoutParkB = *edi;
-            window_invalidate_by_class(WC_RIDE);
-            break;
-    }
-
-    *ebx = 0;
+    auto parkSetParameter = ParkSetParameterAction(open ? ParkParameter::Open : ParkParameter::Close);
+    GameActions::Execute(&parkSetParameter);
 }
 
 /**

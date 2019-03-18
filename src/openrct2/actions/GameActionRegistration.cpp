@@ -16,6 +16,7 @@
 #include "FootpathSceneryPlaceAction.hpp"
 #include "FootpathSceneryRemoveAction.hpp"
 #include "GameAction.h"
+#include "GuestSetFlagsAction.hpp"
 #include "GuestSetNameAction.hpp"
 #include "LandLowerAction.hpp"
 #include "LandRaiseAction.hpp"
@@ -26,6 +27,7 @@
 #include "ParkMarketingAction.hpp"
 #include "ParkSetLoanAction.hpp"
 #include "ParkSetNameAction.hpp"
+#include "ParkSetParameterAction.hpp"
 #include "ParkSetResearchFundingAction.hpp"
 #include "PauseToggleAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
@@ -46,11 +48,14 @@
 #include "SignSetStyleAction.hpp"
 #include "SmallSceneryPlaceAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
+#include "StaffFireAction.hpp"
 #include "StaffHireNewAction.hpp"
 #include "StaffSetColourAction.hpp"
 #include "StaffSetCostumeAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "StaffSetOrdersAction.hpp"
+#include "StaffSetPatrolAreaAction.hpp"
+#include "SurfaceSetStyleAction.hpp"
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "TrackSetBrakeSpeedAction.hpp"
@@ -75,6 +80,7 @@ namespace GameActions
         Register<ParkMarketingAction>();
         Register<ParkSetLoanAction>();
         Register<ParkSetNameAction>();
+        Register<ParkSetParameterAction>();
         Register<ParkSetResearchFundingAction>();
         Register<PlaceParkEntranceAction>();
         Register<PlacePeepSpawnAction>();
@@ -92,11 +98,14 @@ namespace GameActions
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
         Register<SignSetStyleAction>();
+        Register<StaffFireAction>();
         Register<StaffHireNewAction>();
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
         Register<StaffSetOrdersAction>();
         Register<StaffSetCostumeAction>();
+        Register<StaffSetPatrolAreaAction>();
+        Register<SurfaceSetStyleAction>();
         Register<WallRemoveAction>();
         Register<SmallSceneryPlaceAction>();
         Register<SmallSceneryRemoveAction>();
@@ -113,5 +122,6 @@ namespace GameActions
         Register<WaterSetHeightAction>();
         Register<WaterLowerAction>();
         Register<WaterRaiseAction>();
+        Register<GuestSetFlagsAction>();
     }
 } // namespace GameActions

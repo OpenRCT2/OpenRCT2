@@ -316,7 +316,7 @@ void S6Exporter::Export()
     _s6.map_size_minus_2 = gMapSizeMinus2;
     _s6.map_size = gMapSize;
     _s6.map_max_xy = gMapSizeMaxXY;
-    _s6.same_price_throughout = gSamePriceThroughoutParkA;
+    _s6.same_price_throughout = gSamePriceThroughoutPark & 0xFFFFFFFF;
     _s6.suggested_max_guests = _suggestedGuestMaximum;
     _s6.park_rating_warning_days = gScenarioParkRatingWarningDays;
     _s6.last_entrance_style = gLastEntranceStyle;
@@ -328,7 +328,7 @@ void S6Exporter::Export()
     String::Set(_s6.scenario_description, sizeof(_s6.scenario_description), gScenarioDetails.c_str());
     _s6.current_interest_rate = gBankLoanInterestRate;
     // pad_0135934B
-    _s6.same_price_throughout_extended = gSamePriceThroughoutParkB;
+    _s6.same_price_throughout_extended = gSamePriceThroughoutPark >> 32;
     // Preserve compatibility with vanilla RCT2's save format.
     for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
     {

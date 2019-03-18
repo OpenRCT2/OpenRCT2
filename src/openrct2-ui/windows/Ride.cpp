@@ -23,6 +23,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/GameAction.h>
+#include <openrct2/actions/ParkSetParameterAction.hpp>
 #include <openrct2/actions/RideSetAppearanceAction.hpp>
 #include <openrct2/actions/RideSetColourScheme.hpp>
 #include <openrct2/actions/RideSetPriceAction.hpp>
@@ -6151,32 +6152,22 @@ static utf8 _moneyInputText[MONEY_STRING_MAXLENGTH];
 
 static void update_same_price_throughout_flags(uint32_t shop_item)
 {
-    uint32_t newFlags;
+    uint64_t newFlags;
 
     if (shop_item_is_photo(shop_item))
     {
-        newFlags = gSamePriceThroughoutParkA;
-        newFlags ^= (1 << SHOP_ITEM_PHOTO);
-        game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-
-        newFlags = gSamePriceThroughoutParkB;
-        newFlags ^= (1 << (SHOP_ITEM_PHOTO2 - 32)) | (1 << (SHOP_ITEM_PHOTO3 - 32)) | (1 << (SHOP_ITEM_PHOTO4 - 32));
-        game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+        newFlags = gSamePriceThroughoutPark;
+        newFlags ^= (1ULL << SHOP_ITEM_PHOTO) | (1ULL << SHOP_ITEM_PHOTO2) | (1ULL << SHOP_ITEM_PHOTO3)
+            | (1ULL << SHOP_ITEM_PHOTO4);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, shop_item);
+        GameActions::Execute(&parkSetParameter);
     }
     else
     {
-        if (shop_item < 32)
-        {
-            newFlags = gSamePriceThroughoutParkA;
-            newFlags ^= (1u << shop_item);
-            game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-        }
-        else
-        {
-            newFlags = gSamePriceThroughoutParkB;
-            newFlags ^= (1u << (shop_item - 32));
-            game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-        }
+        newFlags = gSamePriceThroughoutPark;
+        newFlags ^= (1ULL << shop_item);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, shop_item);
+        GameActions::Execute(&parkSetParameter);
     }
 }
 
