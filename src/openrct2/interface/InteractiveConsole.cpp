@@ -170,7 +170,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     console.WriteFormatLine("rides set excitement <ride id> <excitement value>");
                     console.WriteFormatLine("rides set intensity <ride id> <intensity value>");
                     console.WriteFormatLine("rides set nausea <ride id> <nausea value>");
-                    console.WriteFormatLine("rides set price <ride id|all> [type] <price>");
+                    console.WriteFormatLine("rides set price <ride id / all> [type] <price>");
                 }
                 return 0;
             }
