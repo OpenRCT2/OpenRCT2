@@ -81,7 +81,7 @@ public:
             if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 // Check for obstructing large trees
-                TileElement* tileElement = CheckTallTreeObstructions();
+                TileElement* tileElement = CheckTreeObstructions();
                 if (tileElement != nullptr)
                 {
                     map_obstruction_set_error_text(tileElement);
@@ -196,7 +196,7 @@ private:
         return STR_NONE;
     }
 
-    TileElement* CheckTallTreeObstructions() const
+    TileElement* CheckTreeObstructions() const
     {
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
