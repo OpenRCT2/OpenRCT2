@@ -417,8 +417,11 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     {
                         console.WriteFormatLine("This command expects the string all or two integer arguments");
                     }
-                    auto rideSetPrice = RideSetPriceAction(rideId, price, true);
-                    GameActions::Execute(&rideSetPrice);
+                    else
+                    {
+                        auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                        GameActions::Execute(&rideSetPrice);
+                    }
                 }
             }
         }
