@@ -16,6 +16,7 @@
 #include "../ReplayManager.h"
 #include "../Version.h"
 #include "../actions/ClimateSetAction.hpp"
+#include "../actions/RideSetPriceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
 #include "../actions/StaffSetCostumeAction.hpp"
 #include "../config/Config.h"
@@ -169,6 +170,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     console.WriteFormatLine("rides set excitement <ride id> <excitement value>");
                     console.WriteFormatLine("rides set intensity <ride id> <intensity value>");
                     console.WriteFormatLine("rides set nausea <ride id> <nausea value>");
+                    console.WriteFormatLine("rides set price <ride id|all> [type] <price>");
                 }
                 return 0;
             }
@@ -356,6 +358,67 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     {
                         ride->nausea = nausea;
                     }
+                }
+            }
+            else if (argv[1] == "price")
+            {
+                bool int_valid[2] = { false };
+                if (argv[2] == "all")
+                {
+                    auto arg1 = console_parse_int(argv[3], &int_valid[0]);
+                    if (argv.size() <= 4)
+                    {
+                        auto price = arg1;
+                        if (int_valid[0])
+                        {
+                            uint16_t rideId{};
+                            Ride* ride;
+                            FOR_ALL_RIDES (rideId, ride)
+                            {
+                                auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                                GameActions::Execute(&rideSetPrice);
+                            }
+                        }
+                        else
+                        {
+                            console.WriteFormatLine("This command expects one or two integer arguments");
+                        }
+                    }
+                    else
+                    {
+                        auto rideType = arg1;
+                        auto price = console_parse_int(argv[4], &int_valid[1]);
+
+                        if (int_valid[0] && int_valid[1])
+                        {
+                            uint16_t rideId{};
+                            Ride* ride;
+                            FOR_ALL_RIDES (rideId, ride)
+                            {
+                                if (ride->type == rideType)
+                                {
+                                    auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                                    GameActions::Execute(&rideSetPrice);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            console.WriteFormatLine("This command expects one or two integer arguments");
+                        }
+                    }
+                }
+                else
+                {
+                    int32_t rideId = console_parse_int(argv[2], &int_valid[0]);
+                    money16 price = console_parse_int(argv[3], &int_valid[1]);
+
+                    if (!int_valid[0] || !int_valid[1])
+                    {
+                        console.WriteFormatLine("This command expects the string all or two integer arguments");
+                    }
+                    auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                    GameActions::Execute(&rideSetPrice);
                 }
             }
         }
