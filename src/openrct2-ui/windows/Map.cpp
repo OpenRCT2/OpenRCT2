@@ -18,6 +18,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
@@ -590,11 +591,10 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
         gMapSelectPositionB.y = mapY + size;
         map_invalidate_selection_rect();
 
-        gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-        game_do_command(
-            gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y,
-            gLandToolTerrainSurface | (gLandToolTerrainEdge << 8), GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
+        auto surfaceSetStyleAction = SurfaceSetStyleAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+            gLandToolTerrainSurface, gLandToolTerrainEdge);
+        GameActions::Execute(&surfaceSetStyleAction);
     }
     else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
     {
