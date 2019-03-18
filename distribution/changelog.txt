@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Change: [#8688] Move common actions from debug menu into cheats menu.
 - Fix: [#5579] Network desync immediately after connecting.
+- Fix: [#6006] Objects higher than 6 metres are considered trees (original bug).
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#8873] Potential crash when placing footpaths.
 - Fix: [#8900] Peep tracking is not synchronized.
