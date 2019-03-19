@@ -85,6 +85,13 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         _presetColours.list[i] = stream->ReadValue<vehicle_colour>();
     }
 
+    if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
+    {
+        // This used to be hard-coded. JSON objects set this themselves.
+        _presetColours.count = 1;
+        _presetColours.list[0] = { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED };
+    }
+
     // Read peep loading positions
     for (int32_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
