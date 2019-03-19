@@ -707,6 +707,7 @@ public:
             dst->track_colour[i].additional = src->track_colour_additional[i];
             dst->track_colour[i].supports = src->track_colour_supports[i];
         }
+        // This stall was not colourable in RCT2.
         if (dst->type == RIDE_TYPE_FOOD_STALL)
         {
             auto entry = object_entry_get_entry(OBJECT_TYPE_RIDE, dst->subtype);
