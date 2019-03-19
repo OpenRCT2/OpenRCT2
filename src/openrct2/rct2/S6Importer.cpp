@@ -707,6 +707,19 @@ public:
             dst->track_colour[i].additional = src->track_colour_additional[i];
             dst->track_colour[i].supports = src->track_colour_supports[i];
         }
+        if (dst->type == RIDE_TYPE_FOOD_STALL)
+        {
+            auto entry = object_entry_get_entry(OBJECT_TYPE_RIDE, dst->subtype);
+            if (entry != nullptr)
+            {
+                char name[DAT_NAME_LENGTH + 1];
+                object_entry_get_name_fixed(name, sizeof(name), entry);
+                if (strncmp(name, "ICECR1  ", DAT_NAME_LENGTH) == 0)
+                {
+                    dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
+                }
+            }
+        }
 
         dst->music = src->music;
         dst->entrance_style = src->entrance_style;
