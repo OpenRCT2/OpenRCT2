@@ -90,6 +90,12 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         // This used to be hard-coded. JSON objects set this themselves.
         _presetColours.count = 1;
         _presetColours.list[0] = { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED };
+
+        if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL || _legacyType.ride_type[0] == RIDE_TYPE_DRINK_STALL)
+        {
+            // In RCT2, no food or drink stall could be recoloured.
+            _legacyType.flags |= RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB;
+        }
     }
 
     // Read peep loading positions
