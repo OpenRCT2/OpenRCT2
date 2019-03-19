@@ -23,14 +23,6 @@ void EntranceObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     GetImageTable().Read(context, stream);
-
-    // Fix issue #1705: The Medieval entrance from Time Twister has a straight banner,
-    // but scrolls its text as if it a curved one.
-    if (String::Equals(GetIdentifier(), "MEDIENTR"))
-    {
-        _legacyType.scrolling_mode = 32;
-        _legacyType.text_height += 1;
-    }
 }
 
 void EntranceObject::Load()
