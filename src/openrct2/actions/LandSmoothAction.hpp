@@ -63,12 +63,12 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        return smooth_land(false);
+        return SmoothLand(false);
     }
 
     GameActionResult::Ptr Execute() const override
     {
-        return smooth_land(true);
+        return SmoothLand(true);
     }
 
 private:
@@ -79,10 +79,11 @@ private:
         return res;
     }
 
-    money32 smooth_land_tile(int32_t direction, bool isExecuting, int32_t x, int32_t y, TileElement* tileElement) const
+    GameActionResult::Ptr SmoothLandTile(int32_t direction, bool isExecuting, int32_t x, int32_t y, TileElement* surfaceElement)
+        const
     {
-        int32_t targetBaseZ = tileElement->base_height;
-        int32_t slope = tileElement->AsSurface()->GetSlope();
+        int32_t targetBaseZ = surfaceElement->base_height;
+        int32_t slope = surfaceElement->AsSurface()->GetSlope();
         if (_isLowering)
         {
             slope = tile_element_lower_styles[direction][slope];
@@ -107,92 +108,85 @@ private:
         auto res = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
                                : GameActions::QueryNested(&landSetHeightAction);
 
-        if (res->Error == GA_ERROR::OK)
-        {
-            return res->Cost;
-        }
-        else
-        {
-            return MONEY32_UNDEFINED;
-        }
+        return res;
     }
 
-    money32 smooth_land_row_by_edge(
-        bool isExecuting, int32_t x, int32_t y, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
-        int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const
+    money32 SmoothLandRowByEdge(
+        bool isExecuting, CoordsXY loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX, int32_t stepY,
+        int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const
     {
         uint8_t shouldContinue = 0xF;
         int32_t landChangePerTile = _isLowering ? 2 : -2;
-        TileElement *tileElement, *nextTileElement;
         money32 totalCost = 0;
 
         // check if we need to start at all
-        if (!map_is_location_valid({ x, y }) || !map_is_location_valid({ x + stepX, y + stepY }))
+        if (!map_is_location_valid(loc) || !map_is_location_valid({ loc.x + stepX, loc.y + stepY }))
         {
             return 0;
         }
-        tileElement = map_get_surface_element_at({ x, y });
-        nextTileElement = map_get_surface_element_at({ x + stepX, y + stepY });
-        if (tileElement == nullptr || nextTileElement == nullptr)
+        auto surfaceElement = map_get_surface_element_at(loc);
+        auto nextSurfaceElement = map_get_surface_element_at({ loc.x + stepX, loc.y + stepY });
+        if (surfaceElement == nullptr || nextSurfaceElement == nullptr)
         {
             return 0;
         }
-        if (tile_element_get_corner_height(tileElement, checkDirection1) != expectedLandHeight1 + landChangePerTile)
+        if (tile_element_get_corner_height(surfaceElement, checkDirection1) != expectedLandHeight1 + landChangePerTile)
         {
             shouldContinue &= ~0x1;
         }
-        if (tile_element_get_corner_height(tileElement, checkDirection2) != expectedLandHeight2 + landChangePerTile)
+        if (tile_element_get_corner_height(surfaceElement, checkDirection2) != expectedLandHeight2 + landChangePerTile)
         {
             shouldContinue &= ~0x2;
         }
-        if (tile_element_get_corner_height(tileElement, checkDirection1)
-            != tile_element_get_corner_height(nextTileElement, direction1))
+        if (tile_element_get_corner_height(surfaceElement, checkDirection1)
+            != tile_element_get_corner_height(nextSurfaceElement, direction1))
         {
             shouldContinue &= ~0x1;
         }
-        if (tile_element_get_corner_height(tileElement, checkDirection2)
-            != tile_element_get_corner_height(nextTileElement, direction2))
+        if (tile_element_get_corner_height(surfaceElement, checkDirection2)
+            != tile_element_get_corner_height(nextSurfaceElement, direction2))
         {
             shouldContinue &= ~0x2;
         }
+        auto nextLoc = loc;
         while ((shouldContinue & 0x3) != 0)
         {
             shouldContinue = ((shouldContinue << 2) | 0x3) & shouldContinue;
-            x += stepX;
-            y += stepY;
+            nextLoc.x += stepX;
+            nextLoc.y += stepY;
             // check if we need to continue after raising the current tile
             // this needs to be checked before the tile is changed
-            if (!map_is_location_valid({ x + stepX, y + stepY }))
+            if (!map_is_location_valid({ nextLoc.x + stepX, nextLoc.y + stepY }))
             {
                 shouldContinue &= ~0x3;
             }
             else
             {
-                tileElement = nextTileElement;
-                nextTileElement = map_get_surface_element_at({ x + stepX, y + stepY });
-                if (nextTileElement == nullptr)
+                surfaceElement = nextSurfaceElement;
+                nextSurfaceElement = map_get_surface_element_at({ nextLoc.x + stepX, nextLoc.y + stepY });
+                if (nextSurfaceElement == nullptr)
                 {
                     shouldContinue &= ~0x3;
                 }
-                if (tile_element_get_corner_height(tileElement, direction1) + landChangePerTile
-                    != tile_element_get_corner_height(tileElement, checkDirection1))
+                if (tile_element_get_corner_height(surfaceElement, direction1) + landChangePerTile
+                    != tile_element_get_corner_height(surfaceElement, checkDirection1))
                 {
                     shouldContinue &= ~0x1;
                 }
-                if (tile_element_get_corner_height(tileElement, direction2) + landChangePerTile
-                    != tile_element_get_corner_height(tileElement, checkDirection2))
+                if (tile_element_get_corner_height(surfaceElement, direction2) + landChangePerTile
+                    != tile_element_get_corner_height(surfaceElement, checkDirection2))
                 {
                     shouldContinue &= ~0x2;
                 }
                 if ((shouldContinue & 0x1)
-                    && tile_element_get_corner_height(tileElement, checkDirection1)
-                        != tile_element_get_corner_height(nextTileElement, direction1))
+                    && tile_element_get_corner_height(surfaceElement, checkDirection1)
+                        != tile_element_get_corner_height(nextSurfaceElement, direction1))
                 {
                     shouldContinue &= ~0x1;
                 }
                 if ((shouldContinue & 0x2)
-                    && tile_element_get_corner_height(tileElement, checkDirection2)
-                        != tile_element_get_corner_height(nextTileElement, direction2))
+                    && tile_element_get_corner_height(surfaceElement, checkDirection2)
+                        != tile_element_get_corner_height(nextSurfaceElement, direction2))
                 {
                     shouldContinue &= ~0x2;
                 }
@@ -200,8 +194,8 @@ private:
             expectedLandHeight1 += landChangePerTile;
 
             // change land of current tile
-            int32_t targetBaseZ = tileElement->base_height;
-            int32_t slope = tileElement->AsSurface()->GetSlope();
+            int32_t targetBaseZ = surfaceElement->base_height;
+            int32_t slope = surfaceElement->AsSurface()->GetSlope();
             int32_t oldSlope = slope;
             if (_isLowering)
             {
@@ -215,7 +209,7 @@ private:
                     }
                 }
                 if ((shouldContinue & 0x8)
-                    && map_get_corner_height(tileElement->base_height, oldSlope, direction2)
+                    && map_get_corner_height(surfaceElement->base_height, oldSlope, direction2)
                         == map_get_corner_height(targetBaseZ, slope, direction2))
                 {
                     slope = tile_element_lower_styles[direction2][slope];
@@ -238,7 +232,7 @@ private:
                     }
                 }
                 if ((shouldContinue & 0x8)
-                    && map_get_corner_height(tileElement->base_height, oldSlope, direction2)
+                    && map_get_corner_height(surfaceElement->base_height, oldSlope, direction2)
                         == map_get_corner_height(targetBaseZ, slope, direction2))
                 {
                     slope = tile_element_raise_styles[direction2][slope];
@@ -249,7 +243,7 @@ private:
                     }
                 }
             }
-            auto landSetHeightAction = LandSetHeightAction({ x, y }, targetBaseZ, slope);
+            auto landSetHeightAction = LandSetHeightAction(nextLoc, targetBaseZ, slope);
             landSetHeightAction.SetFlags(GetFlags());
             auto res = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
                                    : GameActions::QueryNested(&landSetHeightAction);
@@ -261,14 +255,12 @@ private:
         return totalCost;
     }
 
-    money32 smooth_land_row_by_corner(
-        bool isExecuting, int32_t x, int32_t y, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
+    money32 SmoothLandRowByCorner(
+        bool isExecuting, CoordsXY loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
         int32_t checkDirection) const
     {
         bool shouldContinue = true;
-        TileElement *tileElement, *nextTileElement;
         money32 totalCost = 0;
-        money32 result;
         int32_t landChangePerTile;
         if (stepX == 0 || stepY == 0)
         {
@@ -280,74 +272,78 @@ private:
         }
 
         // check if we need to start at all
-        if (!map_is_location_valid({ x, y }) || !map_is_location_valid({ x + stepX, y + stepY }))
+        if (!map_is_location_valid(loc) || !map_is_location_valid({ loc.x + stepX, loc.y + stepY }))
         {
             return 0;
         }
-        tileElement = map_get_surface_element_at({ x, y });
-        nextTileElement = map_get_surface_element_at((x + stepX) >> 5, (y + stepY) >> 5);
-        if (tileElement == nullptr || nextTileElement == nullptr)
+        auto surfaceElement = map_get_surface_element_at(loc);
+        auto nextSurfaceElement = map_get_surface_element_at({ loc.x + stepX, loc.y + stepY });
+        if (surfaceElement == nullptr || nextSurfaceElement == nullptr)
         {
             return 0;
         }
-        if (tile_element_get_corner_height(tileElement, checkDirection) != expectedLandHeight + (_isLowering ? 2 : -2))
+        if (tile_element_get_corner_height(surfaceElement, checkDirection) != expectedLandHeight + (_isLowering ? 2 : -2))
         {
             return 0;
         }
-        if (tile_element_get_corner_height(tileElement, checkDirection)
-            != tile_element_get_corner_height(nextTileElement, direction))
+        if (tile_element_get_corner_height(surfaceElement, checkDirection)
+            != tile_element_get_corner_height(nextSurfaceElement, direction))
         {
             return 0;
         }
+
+        auto nextLoc = loc;
         while (shouldContinue)
         {
-            x += stepX;
-            y += stepY;
+            nextLoc.x += stepX;
+            nextLoc.y += stepY;
             // check if we need to continue after raising the current tile
             // this needs to be checked before the tile is changed
-            if (!map_is_location_valid({ x + stepX, y + stepY }))
+            if (!map_is_location_valid({ nextLoc.x + stepX, nextLoc.y + stepY }))
             {
                 shouldContinue = false;
             }
             else
             {
-                tileElement = nextTileElement;
-                nextTileElement = map_get_surface_element_at((x + stepX) >> 5, (y + stepY) >> 5);
-                if (nextTileElement == nullptr)
+                surfaceElement = nextSurfaceElement;
+                nextSurfaceElement = map_get_surface_element_at({ nextLoc.x + stepX, nextLoc.y + stepY });
+                if (nextSurfaceElement == nullptr)
                 {
                     shouldContinue = false;
                 }
-                if (tile_element_get_corner_height(tileElement, direction) + landChangePerTile
-                    != tile_element_get_corner_height(tileElement, checkDirection))
+                if (tile_element_get_corner_height(surfaceElement, direction) + landChangePerTile
+                    != tile_element_get_corner_height(surfaceElement, checkDirection))
                 {
                     shouldContinue = false;
                 }
                 if (shouldContinue
-                    && tile_element_get_corner_height(tileElement, checkDirection)
-                        != tile_element_get_corner_height(nextTileElement, direction))
+                    && tile_element_get_corner_height(surfaceElement, checkDirection)
+                        != tile_element_get_corner_height(nextSurfaceElement, direction))
                 {
                     shouldContinue = false;
                 }
             }
             if (stepX * stepY != 0)
             {
-                totalCost += smooth_land_row_by_corner(
-                    isExecuting, x, y, expectedLandHeight + (landChangePerTile / 2), 0, stepY, direction, checkDirection ^ 3);
-                totalCost += smooth_land_row_by_corner(
-                    isExecuting, x, y, expectedLandHeight + (landChangePerTile / 2), stepX, 0, direction, checkDirection ^ 1);
+                totalCost += SmoothLandRowByCorner(
+                    isExecuting, nextLoc, expectedLandHeight + (landChangePerTile / 2), 0, stepY, direction,
+                    checkDirection ^ 3);
+                totalCost += SmoothLandRowByCorner(
+                    isExecuting, nextLoc, expectedLandHeight + (landChangePerTile / 2), stepX, 0, direction,
+                    checkDirection ^ 1);
             }
             expectedLandHeight += landChangePerTile;
             // change land of current tile
-            result = smooth_land_tile(direction, isExecuting, x, y, tileElement);
-            if (result != MONEY32_UNDEFINED)
+            auto result = SmoothLandTile(direction, isExecuting, nextLoc.x, nextLoc.y, surfaceElement);
+            if (result->Error == GA_ERROR::OK)
             {
-                totalCost += result;
+                totalCost += result->Cost;
             }
         }
         return totalCost;
     }
 
-    GameActionResult::Ptr smooth_land(bool isExecuting) const
+    GameActionResult::Ptr SmoothLand(bool isExecuting) const
     {
         // break up information in command
         const bool raiseLand = !_isLowering;
@@ -385,57 +381,57 @@ private:
 
                 // Smooth the 4 corners
                 { // top-left
-                    TileElement* tileElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
-                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 2), minHeight, maxHeight);
-                    res->Cost += smooth_land_row_by_corner(
-                        isExecuting, validRange.GetLeft(), validRange.GetTop(), z, -32, -32, 0, 2);
+                    auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
+                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
+                    res->Cost += SmoothLandRowByCorner(
+                        isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, -32, 0, 2);
                 }
                 { // bottom-left
-                    TileElement* tileElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetBottom() });
-                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 3), minHeight, maxHeight);
-                    res->Cost += smooth_land_row_by_corner(
-                        isExecuting, validRange.GetLeft(), validRange.GetBottom(), z, -32, 32, 1, 3);
+                    auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetBottom() });
+                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
+                    res->Cost += SmoothLandRowByCorner(
+                        isExecuting, { validRange.GetLeft(), validRange.GetBottom() }, z, -32, 32, 1, 3);
                 }
                 { // bottom-right
-                    TileElement* tileElement = map_get_surface_element_at({ validRange.GetRight(), validRange.GetBottom() });
-                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 0), minHeight, maxHeight);
-                    res->Cost += smooth_land_row_by_corner(
-                        isExecuting, validRange.GetRight(), validRange.GetBottom(), z, 32, 32, 2, 0);
+                    auto surfaceElement = map_get_surface_element_at({ validRange.GetRight(), validRange.GetBottom() });
+                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
+                    res->Cost += SmoothLandRowByCorner(
+                        isExecuting, { validRange.GetRight(), validRange.GetBottom() }, z, 32, 32, 2, 0);
                 }
                 { // top-right
-                    TileElement* tileElement = map_get_surface_element_at({ validRange.GetRight(), validRange.GetTop() });
-                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 1), minHeight, maxHeight);
-                    res->Cost += smooth_land_row_by_corner(
-                        isExecuting, validRange.GetRight(), validRange.GetTop(), z, 32, -32, 3, 1);
+                    auto surfaceElement = map_get_surface_element_at({ validRange.GetRight(), validRange.GetTop() });
+                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
+                    res->Cost += SmoothLandRowByCorner(
+                        isExecuting, { validRange.GetRight(), validRange.GetTop() }, z, 32, -32, 3, 1);
                 }
 
                 // Smooth the edges
-                TileElement* tileElement = nullptr;
+                TileElement* surfaceElement = nullptr;
                 int32_t z1, z2;
                 for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
                 {
-                    tileElement = map_get_surface_element_at({ validRange.GetLeft(), y });
-                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 3), minHeight, maxHeight);
-                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 2), minHeight, maxHeight);
-                    res->Cost += smooth_land_row_by_edge(isExecuting, validRange.GetLeft(), y, z1, z2, -32, 0, 0, 1, 3, 2);
+                    surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), y });
+                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
+                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
+                    res->Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetLeft(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
 
-                    tileElement = map_get_surface_element_at({ validRange.GetRight(), y });
-                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 1), minHeight, maxHeight);
-                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 0), minHeight, maxHeight);
-                    res->Cost += smooth_land_row_by_edge(isExecuting, validRange.GetRight(), y, z1, z2, 32, 0, 2, 3, 1, 0);
+                    surfaceElement = map_get_surface_element_at({ validRange.GetRight(), y });
+                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
+                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
+                    res->Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetRight(), y }, z1, z2, 32, 0, 2, 3, 1, 0);
                 }
 
                 for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
                 {
-                    tileElement = map_get_surface_element_at({ x, validRange.GetTop() });
-                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 1), minHeight, maxHeight);
-                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 2), minHeight, maxHeight);
-                    res->Cost += smooth_land_row_by_edge(isExecuting, x, validRange.GetTop(), z1, z2, 0, -32, 0, 3, 1, 2);
+                    surfaceElement = map_get_surface_element_at({ x, validRange.GetTop() });
+                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
+                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
+                    res->Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetTop() }, z1, z2, 0, -32, 0, 3, 1, 2);
 
-                    tileElement = map_get_surface_element_at({ x, validRange.GetBottom() });
-                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 0), minHeight, maxHeight);
-                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 3), minHeight, maxHeight);
-                    res->Cost += smooth_land_row_by_edge(isExecuting, x, validRange.GetBottom(), z1, z2, 0, 32, 1, 2, 0, 3);
+                    surfaceElement = map_get_surface_element_at({ x, validRange.GetBottom() });
+                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
+                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
+                    res->Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetBottom() }, z1, z2, 0, 32, 1, 2, 0, 3);
                 }
                 break;
             }
@@ -444,9 +440,9 @@ private:
             case MAP_SELECT_TYPE_CORNER_2:
             case MAP_SELECT_TYPE_CORNER_3:
             {
-                TileElement* tileElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
-                uint8_t newBaseZ = tileElement->base_height;
-                uint8_t newSlope = tileElement->AsSurface()->GetSlope();
+                auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
+                uint8_t newBaseZ = surfaceElement->base_height;
+                uint8_t newSlope = surfaceElement->AsSurface()->GetSlope();
 
                 if (raiseLand)
                 {
@@ -465,71 +461,71 @@ private:
 
                 // Smooth the corners
                 int32_t z = map_get_corner_height(newBaseZ, newSlope, 2);
-                res->Cost += smooth_land_row_by_corner(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z, -32, -32, 0, 2);
+                res->Cost += SmoothLandRowByCorner(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, -32, 0, 2);
                 z = map_get_corner_height(newBaseZ, newSlope, 0);
-                res->Cost += smooth_land_row_by_corner(isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 32, 32, 2, 0);
+                res->Cost += SmoothLandRowByCorner(isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, 32, 2, 0);
                 z = map_get_corner_height(newBaseZ, newSlope, 3);
-                res->Cost += smooth_land_row_by_corner(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z, -32, 32, 1, 3);
+                res->Cost += SmoothLandRowByCorner(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, 32, 1, 3);
                 z = map_get_corner_height(newBaseZ, newSlope, 1);
-                res->Cost += smooth_land_row_by_corner(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 32, -32, 3, 1);
+                res->Cost += SmoothLandRowByCorner(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, -32, 3, 1);
 
                 // Smooth the edges
                 switch (selectionType)
                 {
                     case MAP_SELECT_TYPE_CORNER_0:
                         z = map_get_corner_height(newBaseZ, newSlope, 0);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 32, 0, 3, 0);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 0, 32, 1, 0);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, 0, 3, 0);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, 32, 1, 0);
                         z = map_get_corner_height(newBaseZ, newSlope, 3);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, -32, 0, 0, 3);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, 0, 0, 3);
                         z = map_get_corner_height(newBaseZ, newSlope, 1);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 0, -32, 0, 1);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, -32, 0, 1);
                         break;
                     case MAP_SELECT_TYPE_CORNER_1:
                         z = map_get_corner_height(newBaseZ, newSlope, 1);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 32, 0, 2, 1);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 0, -32, 0, 1);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, 0, 2, 1);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, -32, 0, 1);
                         z = map_get_corner_height(newBaseZ, newSlope, 2);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, -32, 0, 1, 2);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, 0, 1, 2);
                         z = map_get_corner_height(newBaseZ, newSlope, 0);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 0, 32, 1, 0);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, 32, 1, 0);
                         break;
                     case MAP_SELECT_TYPE_CORNER_2:
                         z = map_get_corner_height(newBaseZ, newSlope, 2);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, -32, 0, 1, 2);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 0, -32, 3, 2);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, 0, 1, 2);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, -32, 3, 2);
                         z = map_get_corner_height(newBaseZ, newSlope, 1);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 32, 0, 2, 1);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, 0, 2, 1);
                         z = map_get_corner_height(newBaseZ, newSlope, 3);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 0, 32, 2, 3);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, 32, 2, 3);
                         break;
                     case MAP_SELECT_TYPE_CORNER_3:
                         z = map_get_corner_height(newBaseZ, newSlope, 3);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, -32, 0, 0, 3);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 0, 32, 2, 3);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, 0, 0, 3);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, 32, 2, 3);
                         z = map_get_corner_height(newBaseZ, newSlope, 0);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 32, 0, 3, 0);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, 0, 3, 0);
                         z = map_get_corner_height(newBaseZ, newSlope, 2);
-                        res->Cost += smooth_land_row_by_corner(
-                            isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 0, -32, 3, 2);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 0, -32, 3, 2);
                         break;
                 }
                 break;
@@ -541,7 +537,7 @@ private:
             {
                 // TODO: Handle smoothing by edge
                 // Get the two corners to raise
-                TileElement* surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
+                auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
                 uint8_t newBaseZ = surfaceElement->base_height;
                 uint8_t oldSlope = surfaceElement->AsSurface()->GetSlope();
                 uint8_t newSlope = oldSlope;
@@ -565,8 +561,8 @@ private:
 
                 const uint8_t edge = selectionType - MAP_SELECT_TYPE_EDGE_0;
 
-                // Table with corners for each edge selection. The first two are the selected corners, the latter two are the
-                // opposites
+                // Table with corners for each edge selection. The first two are the selected corners, the latter
+                // two are the opposites
                 static constexpr uint8_t cornerIndices[][4] = {
                     { 2, 3, 1, 0 }, // MAP_SELECT_TYPE_EDGE_0
                     { 3, 0, 2, 1 }, // MAP_SELECT_TYPE_EDGE_1
@@ -591,32 +587,32 @@ private:
                 uint8_t z3 = map_get_corner_height(newBaseZ, newSlope, c3);
                 uint8_t z4 = map_get_corner_height(newBaseZ, newSlope, c4);
                 // Smooth the edge at the top of the new slope
-                res->Cost += smooth_land_row_by_edge(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z1, z2, stepOffsets[edge].x, stepOffsets[edge].y,
-                    c3, c4, c1, c2);
+                res->Cost += SmoothLandRowByEdge(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z1, z2, stepOffsets[edge].x,
+                    stepOffsets[edge].y, c3, c4, c1, c2);
                 // Smooth the edge at the bottom of the new slope
-                res->Cost += smooth_land_row_by_edge(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z3, z4, -stepOffsets[edge].x, -stepOffsets[edge].y,
-                    c1, c2, c3, c4);
+                res->Cost += SmoothLandRowByEdge(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z3, z4, -stepOffsets[edge].x,
+                    -stepOffsets[edge].y, c1, c2, c3, c4);
 
                 // Smooth corners
-                res->Cost += smooth_land_row_by_corner(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z1, -stepOffsets[edge].y, stepOffsets[edge].x, c2,
-                    c1);
-                res->Cost += smooth_land_row_by_corner(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z2, stepOffsets[edge].y, -stepOffsets[edge].x, c1,
-                    c2);
+                res->Cost += SmoothLandRowByCorner(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z1, -stepOffsets[edge].y, stepOffsets[edge].x,
+                    c2, c1);
+                res->Cost += SmoothLandRowByCorner(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z2, stepOffsets[edge].y, -stepOffsets[edge].x,
+                    c1, c2);
                 int32_t z = map_get_corner_height(newBaseZ, newSlope, 2);
-                res->Cost += smooth_land_row_by_corner(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z, -32, -32, 0, 2);
+                res->Cost += SmoothLandRowByCorner(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, -32, 0, 2);
                 z = map_get_corner_height(newBaseZ, newSlope, 0);
-                res->Cost += smooth_land_row_by_corner(isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 32, 32, 2, 0);
+                res->Cost += SmoothLandRowByCorner(isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, 32, 2, 0);
                 z = map_get_corner_height(newBaseZ, newSlope, 3);
-                res->Cost += smooth_land_row_by_corner(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z, -32, 32, 1, 3);
+                res->Cost += SmoothLandRowByCorner(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, 32, 1, 3);
                 z = map_get_corner_height(newBaseZ, newSlope, 1);
-                res->Cost += smooth_land_row_by_corner(
-                    isExecuting, validRange.GetLeft(), validRange.GetTop(), z, 32, -32, 3, 1);
+                res->Cost += SmoothLandRowByCorner(
+                    isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, -32, 3, 1);
                 break;
             }
         } // switch selectionType
