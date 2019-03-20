@@ -19,7 +19,7 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-class TrackPlaceActionResult final : public GameActionResult // this class is what currently needs work
+class TrackPlaceActionResult final : public GameActionResult 
 {
 public:
     TrackPlaceActionResult()
@@ -27,15 +27,15 @@ public:
     {
     }
     TrackPlaceActionResult(GA_ERROR error)
-        : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
+    : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
     {
     }
     TrackPlaceActionResult(GA_ERROR error, rct_string_id message)   
     : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
     {
     }
-     TrackPlaceActionResult(GA_ERROR error, rct_string_id message, uint8_t* args)   //believe this is what needs to be modified to include error args in the parameters
-        : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message, args)
+     TrackPlaceActionResult(GA_ERROR error, rct_string_id message, uint8_t* args)  
+    : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message, args)
     {
     }
 
