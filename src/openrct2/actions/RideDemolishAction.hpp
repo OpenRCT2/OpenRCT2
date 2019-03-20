@@ -350,7 +350,7 @@ private:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->Cost = GetRefurbishPrice(ride);
 
-        ride_renew(ride);
+        ride->Renew();
 
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
         ride->last_crash_type = RIDE_CRASH_TYPE_NONE;

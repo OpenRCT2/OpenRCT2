@@ -682,7 +682,7 @@ public:
                         mapLoc.x, mapLoc.y, baseZ, _origin.direction, _rideIndex, GAME_COMMAND_FLAG_APPLY);
                 }
                 sub_6CB945(ride);
-                ride_update_max_vehicles(ride);
+                ride->UpdateMaxVehicles();
             }
 
             if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)

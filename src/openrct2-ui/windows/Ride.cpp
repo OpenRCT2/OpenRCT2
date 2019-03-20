@@ -2871,20 +2871,20 @@ static void window_ride_vehicle_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_VEHICLE_TRAINS_INCREASE:
             if (ride->num_vehicles < 32)
-                ride_set_num_vehicles(ride, ride->num_vehicles + 1);
+                ride->SetNumVehicles(ride->num_vehicles + 1);
             break;
         case WIDX_VEHICLE_TRAINS_DECREASE:
             if (ride->num_vehicles > 1)
-                ride_set_num_vehicles(ride, ride->num_vehicles - 1);
+                ride->SetNumVehicles(ride->num_vehicles - 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
             if (ride->num_cars_per_train < 255)
-                ride_set_num_cars_per_vehicle(ride, ride->num_cars_per_train + 1);
+                ride->SetNumCarsPerVehicle(ride->num_cars_per_train + 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
             rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
             if (ride->num_cars_per_train > rideEntry->zero_cars + 1)
-                ride_set_num_cars_per_vehicle(ride, ride->num_cars_per_train - 1);
+                ride->SetNumCarsPerVehicle(ride->num_cars_per_train - 1);
             break;
     }
 }
@@ -2907,7 +2907,7 @@ static void window_ride_vehicle_dropdown(rct_window* w, rct_widgetindex widgetIn
                 if (ride != nullptr)
                 {
                     auto newRideType = VehicleDropdownData[dropdownIndex].subtype_id;
-                    ride_set_ride_entry(ride, newRideType);
+                    ride->SetRideEntry(newRideType);
                 }
             }
             break;
