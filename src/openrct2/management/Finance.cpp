@@ -192,7 +192,7 @@ void finance_pay_ride_upkeep()
     {
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
         {
-            ride_renew(ride);
+            ride->Renew();
         }
 
         if (ride->status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY))

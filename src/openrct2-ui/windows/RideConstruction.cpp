@@ -625,7 +625,7 @@ static void window_ride_construction_close(rct_window* w)
             }
         }
 
-        ride_set_to_default_inspection_interval(ride);
+        ride->SetToDefaultInspectionInterval();
         auto intent = Intent(WC_RIDE);
         intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
         context_open_intent(&intent);

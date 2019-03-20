@@ -1178,7 +1178,7 @@ static money32 track_remove(
         sub_6CB945(ride);
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            ride_update_max_vehicles(ride);
+            ride->UpdateMaxVehicles();
         }
     }
 

@@ -1662,7 +1662,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
     if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
     {
         sub_6CB945(ride);
-        ride_delete(ride);
+        ride->Delete();
     }
     return true;
 }
@@ -1995,7 +1995,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
         num_circuits = 1;
     }
     set_operating_setting_nested(ride->id, RideSetSetting::NumCircuits, num_circuits, flags);
-    ride_set_to_default_inspection_interval(ride);
+    ride->SetToDefaultInspectionInterval();
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = td6->version_and_colour_scheme & 3;
 
@@ -2300,7 +2300,7 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels)
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
     }
 
-    ride_delete(ride);
+    ride->Delete();
     track_design_preview_restore_map(mapBackup);
 }
 
