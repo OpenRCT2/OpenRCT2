@@ -1662,7 +1662,7 @@ void window_relocate_windows(int32_t width, int32_t height)
  */
 void window_resize_gui(int32_t width, int32_t height)
 {
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
         window_resize_gui_scenario_editor(width, height);
         return;
