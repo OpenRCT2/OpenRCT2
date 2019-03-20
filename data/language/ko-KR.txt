@@ -2627,9 +2627,9 @@ STR_5125    :모두 파괴 가능
 STR_5126    :무작위 타이틀 음악
 STR_5127    :{SMALLFONT}{BLACK}땅을 올리거나 내리지 않고 지형을 편집합니다
 STR_5128    :선택 도구 크기
-STR_5129    :{COMMA16}에서 {COMMA16} 사이의 값을 입력하세요
+STR_5129    :{COMMA16}∼{COMMA16} 사이의 값을 입력하세요
 STR_5130    :지도 크기
-STR_5131    :지도 크기를 {COMMA16}에서 {COMMA16} 사이의 값으로 입력하세요
+STR_5131    :{COMMA16}∼{COMMA16} 사이의 지도 크기 값을 입력하세요
 STR_5132    :모든 놀이기구 수리
 STR_5133    :{SMALLFONT}{BLACK}땅 구입 도구 크기 줄이기
 STR_5134    :{SMALLFONT}{BLACK}땅 구입 도구 크기 늘이기
@@ -2681,9 +2681,9 @@ STR_5180    :{SMALLFONT}{BLACK}공원 치트를 보여줍니다
 STR_5181    :{SMALLFONT}{BLACK}놀이기구 치트를 보여줍니다
 STR_5182    :{INT32}
 STR_5183    :기본 땅 높이
-STR_5184    :기본 땅 높이를 {COMMA16} 사이의 {COMMA16} 사이의 값으로 입력하세요
+STR_5184    :{COMMA16}∼{COMMA16} 사이의 기본 땅 높이 값을 입력하세요
 STR_5185    :물 높이
-STR_5186    :물 높이를 {COMMA16}에서 {COMMA16} 사이의 값으로 입력하세요
+STR_5186    :{COMMA16}∼{COMMA16} 사이의 물 높이 값을 입력하세요
 STR_5187    :재정
 STR_5188    :새 광고
 STR_5189    :연구
