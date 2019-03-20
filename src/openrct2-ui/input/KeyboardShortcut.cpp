@@ -770,34 +770,29 @@ static void shortcut_advance_to_next_tick()
 
 static void shortcut_open_scenery_picker()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if ((gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR))
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    rct_window* window_scenery = window_find_by_class(WC_SCENERY);
+    if (window_scenery == nullptr)
     {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+        rct_window* window_toolbar = window_find_by_class(WC_TOP_TOOLBAR);
+        if (window_toolbar != nullptr)
         {
-            rct_window* window_scenery = window_find_by_class(WC_SCENERY);
-            if (window_scenery == nullptr)
-            {
-                rct_window* window_toolbar = window_find_by_class(WC_TOP_TOOLBAR);
-                if (window_toolbar != nullptr)
-                {
-                    window_invalidate(window_toolbar);
-                    window_event_mouse_up_call(window_toolbar, WC_TOP_TOOLBAR__WIDX_SCENERY);
-                }
-            }
-
-            window_scenery = window_find_by_class(WC_SCENERY);
-            if (window_scenery != nullptr && !widget_is_disabled(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
-                && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WWT_EMPTY
-                && !gWindowSceneryEyedropperEnabled)
-            {
-                window_event_mouse_up_call(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
-                return;
-            }
+            window_invalidate(window_toolbar);
+            window_event_mouse_up_call(window_toolbar, WC_TOP_TOOLBAR__WIDX_SCENERY);
         }
     }
+
+    window_scenery = window_find_by_class(WC_SCENERY);
+    if (window_scenery != nullptr && !widget_is_disabled(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
+        && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WWT_EMPTY
+        && !gWindowSceneryEyedropperEnabled)
+    {
+        window_event_mouse_up_call(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
+        return;
+    }      
 }
 
 namespace
