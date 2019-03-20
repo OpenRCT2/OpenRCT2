@@ -6,7 +6,7 @@
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#8873] Potential crash when placing footpaths.
 - Fix: [#8900] Peep tracking is not synchronized.
-- Improved: [#] Allow assigning a keyboard shortcut for the scenery picker.
+- Improved: [#7296] Allow assigning a keyboard shortcut for the scenery picker.
 
 0.2.2 (2019-03-13)
 ------------------------------------------------------------------------
