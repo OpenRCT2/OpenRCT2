@@ -3751,6 +3751,7 @@ STR_6300    :{SMALLFONT}{BLACK}Download all missing objects if available online.
 STR_6301    :{SMALLFONT}{BLACK}Copy the selected object name to the clipboard.
 STR_6302    :{SMALLFONT}{BLACK}Copy the entire list of missing objects to the clipboard.
 STR_6303    :Downloading object ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Open scenery picker
 
 #############
 # Scenarios #

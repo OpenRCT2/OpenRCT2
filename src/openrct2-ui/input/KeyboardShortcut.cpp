@@ -33,6 +33,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Scenery.h>
 
 uint8_t gKeyboardShortcutChangeId;
 
@@ -767,6 +768,38 @@ static void shortcut_advance_to_next_tick()
     gDoSingleUpdate = true;
 }
 
+static void shortcut_open_scenery_picker()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    {
+        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+        {
+            rct_window* window_scenery = window_find_by_class(WC_SCENERY);
+            if (window_scenery == nullptr)
+            {
+                rct_window* window_toolbar = window_find_by_class(WC_TOP_TOOLBAR);
+                if (window_toolbar != nullptr)
+                {
+                    window_invalidate(window_toolbar);
+                    window_event_mouse_up_call(window_toolbar, WC_TOP_TOOLBAR__WIDX_SCENERY);
+                }
+            }
+
+            window_scenery = window_find_by_class(WC_SCENERY);
+            if (window_scenery != nullptr && !widget_is_disabled(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
+                && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WWT_EMPTY
+                && !gWindowSceneryEyedropperEnabled)
+            {
+                window_event_mouse_up_call(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
+                return;
+            }
+        }
+    }
+}
+
 namespace
 {
     const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
@@ -841,6 +874,7 @@ namespace
         shortcut_highlight_path_issues_toggle,
         shortcut_open_tile_inspector,
         shortcut_advance_to_next_tick,
+        shortcut_open_scenery_picker,
     };
 } // anonymous namespace
 

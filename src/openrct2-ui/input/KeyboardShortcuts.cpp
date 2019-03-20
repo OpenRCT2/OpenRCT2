@@ -317,4 +317,6 @@ const uint16_t KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] = {
     SHORTCUT_UNDEFINED,                       // SHORTCUT_VIEW_CLIPPING
     SDL_SCANCODE_I,                           // SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE
     SHORTCUT_UNDEFINED,                       // SHORTCUT_TILE_INSPECTOR
+    SHORTCUT_UNDEFINED,                       // SHORTCUT_ADVANCE_TO_NEXT_TICK
+    SHORTCUT_UNDEFINED,                       // SHORTCUT_SCENERY_PICKER
 };
