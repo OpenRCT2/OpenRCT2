@@ -792,7 +792,7 @@ static void shortcut_open_scenery_picker()
     {
         window_event_mouse_up_call(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
         return;
-    }      
+    }
 }
 
 namespace
