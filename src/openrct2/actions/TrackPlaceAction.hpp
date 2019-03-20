@@ -23,7 +23,7 @@ class TrackPlaceActionResult final : public GameActionResult
 {
 public:
     TrackPlaceActionResult()
-    : GameActionResult(GA_ERROR::OK, 0)
+    : GameActionResult(GA_ERROR::OK, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
     {
     }
     TrackPlaceActionResult(GA_ERROR error)
@@ -39,7 +39,7 @@ public:
     {
     }
 
-    uint8_t GroundFlagCount;
+    uint8_t GroundFlag{ 0 };
 
 };
 
@@ -122,7 +122,7 @@ public:
         res->Position.y = _origin.y + 16;
         res->Position.z = _origin.z;
 
-        gTrackGroundFlags = 0;
+        res->GroundFlag = 0;
 
         uint32_t rideTypeFlags = RideProperties[ride->type].flags;
 
@@ -269,18 +269,18 @@ public:
             }
 
             uint8_t mapGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-            if (gTrackGroundFlags != 0 && (gTrackGroundFlags & mapGroundFlags) == 0)
+            if (res->GroundFlag != 0 && (res->GroundFlag & mapGroundFlags) == 0)
             {
                 return std::make_unique<TrackPlaceActionResult>(
                     GA_ERROR::DISALLOWED, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
             }
 
-            gTrackGroundFlags = mapGroundFlags;
+            res->GroundFlag = mapGroundFlags;
             if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE)
             {
                 if (FlatTrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
                 {
-                    if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
+                    if (res->GroundFlag & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
                     {
                         return std::make_unique<TrackPlaceActionResult>(
                             GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -291,7 +291,7 @@ public:
             {
                 if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
                 {
-                    if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
+                    if (res->GroundFlag & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
                     {
                         return std::make_unique<TrackPlaceActionResult>(
                             GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -448,7 +448,7 @@ public:
         res->Position.y = _origin.y + 16;
         res->Position.z = _origin.z;
 
-        gTrackGroundFlags = 0;
+        res->GroundFlag = 0;
 
         uint32_t rideTypeFlags = RideProperties[ride->type].flags;
 
@@ -526,13 +526,13 @@ public:
             }
 
             uint8_t mapGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-            if (gTrackGroundFlags != 0 && (gTrackGroundFlags & mapGroundFlags) == 0)
+            if (res->GroundFlag != 0 && (res->GroundFlag & mapGroundFlags) == 0)
             {
                 return std::make_unique<TrackPlaceActionResult>(
                     GA_ERROR::DISALLOWED, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
             }
 
-            gTrackGroundFlags = mapGroundFlags;
+            res->GroundFlag = mapGroundFlags;
 
             // 6c5648 12 push
             tileElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
