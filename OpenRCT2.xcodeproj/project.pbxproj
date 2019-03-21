@@ -82,6 +82,7 @@
 		2ADE2F3222441905002598AF /* DiscordService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2ADE2F3022441905002598AF /* DiscordService.cpp */; };
 		2ADE2F342244191E002598AF /* VirtualFloor.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F332244191E002598AF /* VirtualFloor.h */; };
 		2ADE2F3622441960002598AF /* RideTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F352244195F002598AF /* RideTypes.h */; };
+		2ADE2F382244198B002598AF /* SpriteBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F372244198A002598AF /* SpriteBase.h */; };
 		2AF7893D220B253E0072754A /* RideSetAppearanceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
@@ -731,6 +732,7 @@
 		2ADE2F3022441905002598AF /* DiscordService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiscordService.cpp; sourceTree = "<group>"; };
 		2ADE2F332244191E002598AF /* VirtualFloor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VirtualFloor.h; sourceTree = "<group>"; };
 		2ADE2F352244195F002598AF /* RideTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideTypes.h; sourceTree = "<group>"; };
+		2ADE2F372244198A002598AF /* SpriteBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBase.h; sourceTree = "<group>"; };
 		2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetAppearanceAction.hpp; sourceTree = "<group>"; };
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
@@ -3219,6 +3221,7 @@
 		F76C855B1EC4E7CD00FA49E2 /* world */ = {
 			isa = PBXGroup;
 			children = (
+				2ADE2F372244198A002598AF /* SpriteBase.h */,
 				4C7B541D2007646A00A52E21 /* Balloon.cpp */,
 				4C7B541E2007646A00A52E21 /* Banner.cpp */,
 				4C7B541F2007646A00A52E21 /* Banner.h */,
@@ -3507,6 +3510,7 @@
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				2ADE2F0B2244187B002598AF /* RideSetColourScheme.hpp in Headers */,
 				2ADE2F29224418B2002598AF /* Numerics.hpp in Headers */,
+				2ADE2F382244198B002598AF /* SpriteBase.h in Headers */,
 				2AAFD7FE220DD374002461A4 /* PauseToggleAction.hpp in Headers */,
 				2ADE2F192244187B002598AF /* ParkMarketingAction.hpp in Headers */,
 				2ADE2F0A2244187B002598AF /* ParkSetResearchFundingAction.hpp in Headers */,
