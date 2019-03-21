@@ -521,8 +521,6 @@ struct track_circuit_iterator
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
-extern uint8_t gTrackGroundFlags;
-
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 
 const rct_preview_track* get_track_def_from_ride(Ride* ride, int32_t trackType);

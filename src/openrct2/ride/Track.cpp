@@ -35,8 +35,6 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 
-uint8_t gTrackGroundFlags;
-
 /**  rct2: 0x00997C9D */
 // clang-format off
 const rct_trackdefinition TrackDefinitions[256] =
