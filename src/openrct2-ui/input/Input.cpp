@@ -36,6 +36,7 @@ static void input_handle_console(int32_t key)
             input = CONSOLE_INPUT_LINE_CLEAR;
             break;
         case SDL_SCANCODE_RETURN:
+        case SDL_SCANCODE_KP_ENTER:
             input = CONSOLE_INPUT_LINE_EXECUTE;
             break;
         case SDL_SCANCODE_UP:
@@ -67,6 +68,7 @@ static void input_handle_chat(int32_t key)
             input = CHAT_INPUT_CLOSE;
             break;
         case SDL_SCANCODE_RETURN:
+        case SDL_SCANCODE_KP_ENTER:
             input = CHAT_INPUT_SEND;
             break;
     }
