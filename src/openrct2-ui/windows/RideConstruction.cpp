@@ -1726,7 +1726,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
 static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result)
 {
     if (result->Error != GA_ERROR::OK)
-    {   
+    {
         window_ride_construction_update_active_elements();
         return;
     }
