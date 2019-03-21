@@ -1790,7 +1790,6 @@ static void window_ride_construction_construct(rct_window* w)
     auto trackPlaceAction = TrackPlaceAction(
         rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, (properties)&0xFF, (properties >> 8) & 0x0F,
         (properties >> 12) & 0x0F, liftHillAndAlternativeState);
-    
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         trackPlaceAction.SetCallback(RideConstructPlacedBackwardGameActionCallback);
