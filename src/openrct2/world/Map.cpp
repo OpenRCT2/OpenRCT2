@@ -20,6 +20,7 @@
 #include "../actions/LandSetHeightAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
+#include "../actions/ParkEntranceRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../actions/WaterSetHeightAction.hpp"
 #include "../audio/audio.h"
@@ -2655,8 +2656,8 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
                     y -= CoordsDirectionDelta[rotation].y;
                     break;
             }
-            gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-            game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, element->base_height / 2, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 0, 0);
+            auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ x, y, element->base_height * 8 });
+            GameActions::Execute(&parkEntranceRemoveAction);
             break;
         }
         case TILE_ELEMENT_TYPE_WALL:
