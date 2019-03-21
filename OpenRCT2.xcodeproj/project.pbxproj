@@ -80,6 +80,7 @@
 		2ADE2F2E224418E7002598AF /* ConversionTables.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F2D224418E7002598AF /* ConversionTables.h */; };
 		2ADE2F3122441905002598AF /* DiscordService.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F2F22441905002598AF /* DiscordService.h */; };
 		2ADE2F3222441905002598AF /* DiscordService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2ADE2F3022441905002598AF /* DiscordService.cpp */; };
+		2ADE2F342244191E002598AF /* VirtualFloor.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F332244191E002598AF /* VirtualFloor.h */; };
 		2AF7893D220B253E0072754A /* RideSetAppearanceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
@@ -727,6 +728,7 @@
 		2ADE2F2D224418E7002598AF /* ConversionTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversionTables.h; sourceTree = "<group>"; };
 		2ADE2F2F22441905002598AF /* DiscordService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscordService.h; sourceTree = "<group>"; };
 		2ADE2F3022441905002598AF /* DiscordService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiscordService.cpp; sourceTree = "<group>"; };
+		2ADE2F332244191E002598AF /* VirtualFloor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VirtualFloor.h; sourceTree = "<group>"; };
 		2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetAppearanceAction.hpp; sourceTree = "<group>"; };
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
@@ -2868,6 +2870,7 @@
 		F76C843A1EC4E7CC00FA49E2 /* paint */ = {
 			isa = PBXGroup;
 			children = (
+				2ADE2F332244191E002598AF /* VirtualFloor.h */,
 				F76C84491EC4E7CC00FA49E2 /* sprite */,
 				F76C843B1EC4E7CC00FA49E2 /* tile_element */,
 				4C6A66AE1FE278C900694CB6 /* Paint.cpp */,
@@ -3542,6 +3545,7 @@
 				2ADE2F102244187B002598AF /* TrackSetBrakeSpeedAction.hpp in Headers */,
 				C6352B961F477032006CCEE3 /* RideSetStatus.hpp in Headers */,
 				2A43D2BB2225B8D900E8F73B /* SmallSceneryPlaceAction.hpp in Headers */,
+				2ADE2F342244191E002598AF /* VirtualFloor.h in Headers */,
 				2ADE2F072244187B002598AF /* MazeSetTrackAction.hpp in Headers */,
 				2AAFD800220DD3D2002461A4 /* LandSetHeightAction.hpp in Headers */,
 			);
