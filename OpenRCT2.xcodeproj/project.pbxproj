@@ -78,6 +78,8 @@
 		2ADE2F2B224418B2002598AF /* JobPool.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F25224418B2002598AF /* JobPool.hpp */; };
 		2ADE2F2C224418B2002598AF /* FileIndex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F26224418B2002598AF /* FileIndex.hpp */; };
 		2ADE2F2E224418E7002598AF /* ConversionTables.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F2D224418E7002598AF /* ConversionTables.h */; };
+		2ADE2F3122441905002598AF /* DiscordService.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F2F22441905002598AF /* DiscordService.h */; };
+		2ADE2F3222441905002598AF /* DiscordService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2ADE2F3022441905002598AF /* DiscordService.cpp */; };
 		2AF7893D220B253E0072754A /* RideSetAppearanceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
@@ -723,6 +725,8 @@
 		2ADE2F25224418B2002598AF /* JobPool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JobPool.hpp; sourceTree = "<group>"; };
 		2ADE2F26224418B2002598AF /* FileIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileIndex.hpp; sourceTree = "<group>"; };
 		2ADE2F2D224418E7002598AF /* ConversionTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversionTables.h; sourceTree = "<group>"; };
+		2ADE2F2F22441905002598AF /* DiscordService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscordService.h; sourceTree = "<group>"; };
+		2ADE2F3022441905002598AF /* DiscordService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DiscordService.cpp; sourceTree = "<group>"; };
 		2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetAppearanceAction.hpp; sourceTree = "<group>"; };
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
@@ -2774,6 +2778,8 @@
 		F76C83F51EC4E7CC00FA49E2 /* network */ = {
 			isa = PBXGroup;
 			children = (
+				2ADE2F3022441905002598AF /* DiscordService.cpp */,
+				2ADE2F2F22441905002598AF /* DiscordService.h */,
 				F76C83F61EC4E7CC00FA49E2 /* Http.cpp */,
 				F76C83F71EC4E7CC00FA49E2 /* http.h */,
 				F76C83F81EC4E7CC00FA49E2 /* Network.cpp */,
@@ -3461,6 +3467,7 @@
 			files = (
 				2A43D2C12225B91A00E8F73B /* RideEntranceExitRemoveAction.hpp in Headers */,
 				2ADE2F172244187B002598AF /* RideDemolishAction.hpp in Headers */,
+				2ADE2F3122441905002598AF /* DiscordService.h in Headers */,
 				C67B28172002D67A00109C93 /* Viewport.h in Headers */,
 				939A359C20C12FC800630B3F /* Paint.Sprite.h in Headers */,
 				9308DA04209908090079EE96 /* TileElement.h in Headers */,
@@ -4217,6 +4224,7 @@
 				C688790E20289B9B0084B384 /* CrookedHouse.cpp in Sources */,
 				C68878F520289B9B0084B384 /* InvertedImpulseCoaster.cpp in Sources */,
 				C688793020289B9B0084B384 /* LogFlume.cpp in Sources */,
+				2ADE2F3222441905002598AF /* DiscordService.cpp in Sources */,
 				C688786620289A430084B384 /* Intent.cpp in Sources */,
 				C68878E520289B9B0084B384 /* Platform.Android.cpp in Sources */,
 				C68878EA20289B9B0084B384 /* Shared.cpp in Sources */,
