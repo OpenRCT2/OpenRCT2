@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include "../world/Park.h"
-#include "../world/Entrance.h"
+#include "../OpenRCT2.h"
 #include "../management/Finance.h"
+#include "../world/Entrance.h"
+#include "../world/Park.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(ParkEntranceRemoveAction, GAME_COMMAND_REMOVE_PARK_ENTRANCE, GameActionResult)
@@ -94,7 +95,7 @@ public:
 private:
     void ParkEntranceRemoveSegment(CoordsXYZ loc) const
     {
-        auto entranceElement = map_get_park_entrance_element_at(loc.x, loc.y, loc.z / 16, true);
+        auto entranceElement = map_get_park_entrance_element_at(loc.x, loc.y, loc.z / 8, true);
         if (entranceElement == nullptr)
         {
             return;
