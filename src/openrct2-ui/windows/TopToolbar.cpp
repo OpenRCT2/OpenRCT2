@@ -712,7 +712,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_CHAT].type = WWT_EMPTY;
     }
 
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
         window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
@@ -721,7 +721,6 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 
@@ -3268,6 +3267,15 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
         dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
     }
 
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        dropdown_set_disabled(DDIDX_CHEATS, true);
+        dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
+        dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
+        dropdown_set_disabled(DDIDX_SCENARIO_OPTIONS, true);
+        dropdown_set_disabled(DDIDX_ENABLE_SANDBOX_MODE, true);
+    }
+
     if (gCheatsSandboxMode)
     {
         dropdown_set_checked(DDIDX_ENABLE_SANDBOX_MODE, true);
@@ -3281,7 +3289,10 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
         dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
     }
 
-    gDropdownDefaultIndex = DDIDX_CHEATS;
+    if (!dropdown_is_disabled(DDIDX_CHEATS))
+        gDropdownDefaultIndex = DDIDX_CHEATS;
+    else
+        gDropdownDefaultIndex = DDIDX_TILE_INSPECTOR;
 }
 
 static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)

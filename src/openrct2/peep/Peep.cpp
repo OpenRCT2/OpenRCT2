@@ -435,7 +435,7 @@ void peep_update_all()
     uint16_t spriteIndex;
     Peep* peep;
 
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
     spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP];

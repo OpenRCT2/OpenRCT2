@@ -262,7 +262,7 @@ void GameState::UpdateLogic()
     sprite_misc_update_all();
     ride_update_all();
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         _park->Update(_date);
     }
