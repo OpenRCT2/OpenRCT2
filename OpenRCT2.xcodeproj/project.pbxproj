@@ -77,6 +77,7 @@
 		2ADE2F2A224418B2002598AF /* Meta.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F24224418B2002598AF /* Meta.hpp */; };
 		2ADE2F2B224418B2002598AF /* JobPool.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F25224418B2002598AF /* JobPool.hpp */; };
 		2ADE2F2C224418B2002598AF /* FileIndex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F26224418B2002598AF /* FileIndex.hpp */; };
+		2ADE2F2E224418E7002598AF /* ConversionTables.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F2D224418E7002598AF /* ConversionTables.h */; };
 		2AF7893D220B253E0072754A /* RideSetAppearanceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
@@ -721,6 +722,7 @@
 		2ADE2F24224418B2002598AF /* Meta.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Meta.hpp; sourceTree = "<group>"; };
 		2ADE2F25224418B2002598AF /* JobPool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JobPool.hpp; sourceTree = "<group>"; };
 		2ADE2F26224418B2002598AF /* FileIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileIndex.hpp; sourceTree = "<group>"; };
+		2ADE2F2D224418E7002598AF /* ConversionTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversionTables.h; sourceTree = "<group>"; };
 		2AF7893C220B253E0072754A /* RideSetAppearanceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetAppearanceAction.hpp; sourceTree = "<group>"; };
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
@@ -2726,6 +2728,7 @@
 		F76C83D71EC4E7CC00FA49E2 /* localisation */ = {
 			isa = PBXGroup;
 			children = (
+				2ADE2F2D224418E7002598AF /* ConversionTables.h */,
 				4C7B53C61FFF94F900A52E21 /* ConversionTables.cpp */,
 				4C7B53AA1FFF935B00A52E21 /* Convert.cpp */,
 				4C7B53AB1FFF935B00A52E21 /* Currency.cpp */,
@@ -3481,6 +3484,7 @@
 				2AAFD7FA220DD2DC002461A4 /* TrackPlaceAction.hpp in Headers */,
 				2ADE2F1D2244187B002598AF /* StaffSetColourAction.hpp in Headers */,
 				2A61CAF92229E59F0095AD67 /* WaterSetHeightAction.hpp in Headers */,
+				2ADE2F2E224418E7002598AF /* ConversionTables.h in Headers */,
 				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
 				2A5C1368221E9F9000F8C245 /* TrackRemoveAction.hpp in Headers */,
 				2A61CAFB2229E5C50095AD67 /* RideEntranceExitPlaceAction.hpp in Headers */,
