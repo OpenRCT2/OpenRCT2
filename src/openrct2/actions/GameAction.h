@@ -189,6 +189,15 @@ public:
     }
 
     /**
+     * Override this to specify the wait time in milliseconds the player is required to wait before
+     * being able to execute it again.
+     */
+    virtual uint32_t GetCooldownTime() const
+    {
+        return 0;
+    }
+
+    /**
      * Query the result of the game action without changing the game state.
      */
     virtual GameActionResult::Ptr Query() const abstract;
