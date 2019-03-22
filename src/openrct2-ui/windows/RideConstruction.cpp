@@ -1813,7 +1813,7 @@ static void window_ride_construction_construct(rct_window* w)
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
     }
 
-    if (dynamic_cast<TrackPlaceActionResult*>(res.get())->GroundFlag & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
+    if (dynamic_cast<TrackPlaceActionResult*>(res.get())->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
     {
         viewport_set_visibility(1);
     }
