@@ -6159,14 +6159,14 @@ static void update_same_price_throughout_flags(uint32_t shop_item)
         newFlags = gSamePriceThroughoutPark;
         newFlags ^= (1ULL << SHOP_ITEM_PHOTO) | (1ULL << SHOP_ITEM_PHOTO2) | (1ULL << SHOP_ITEM_PHOTO3)
             | (1ULL << SHOP_ITEM_PHOTO4);
-        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, shop_item);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
         GameActions::Execute(&parkSetParameter);
     }
     else
     {
         newFlags = gSamePriceThroughoutPark;
         newFlags ^= (1ULL << shop_item);
-        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, shop_item);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
         GameActions::Execute(&parkSetParameter);
     }
 }
