@@ -1425,11 +1425,7 @@ static void sub_6E1F34(
 
                 gSceneryPlaceZ = 0;
                 uint16_t water_height = tile_element->AsSurface()->GetWaterHeight();
-                if (water_height != 0)
-                {
-                    gSceneryPlaceZ = water_height * 16;
-                }
-
+                
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
