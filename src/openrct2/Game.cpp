@@ -1280,7 +1280,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     game_command_buy_land_rights,
     game_command_place_park_entrance,
-    game_command_remove_park_entrance,
+    nullptr,
     game_command_set_maze_track,
     game_command_set_park_entrance_fee,
     nullptr,

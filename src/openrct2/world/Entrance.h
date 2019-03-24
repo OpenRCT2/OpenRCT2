@@ -26,9 +26,6 @@ struct rct_entrance_type
 assert_struct_size(rct_entrance_type, 8);
 #pragma pack(pop)
 
-void game_command_remove_park_entrance(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-
 struct TileElement;
 
 extern bool gParkEntranceGhostExists;
