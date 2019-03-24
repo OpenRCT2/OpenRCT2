@@ -45,6 +45,11 @@ public:
     {
     }
 
+    uint32_t GetCooldownTime() const override
+    {
+        return 1000;
+    }
+
     void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);

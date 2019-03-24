@@ -116,6 +116,11 @@ The following people are not part of the development team, but have been contrib
 * Øystein Dale (oystedal)
 * Christian Schubert (Osmodium)
 * James Lord (RCTMASTA)
+* Brian Massino (Nazey)
+* Lauren Watson (lwatson2016)
+* Jason Myre (jmyre1999)
+* Nicole Wright (nicolewright)
+* Josh Tucker (joshtucker132)
 
 ## Toolchain
 * (Balletie) - macOS
