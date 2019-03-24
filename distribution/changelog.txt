@@ -7,6 +7,7 @@
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#8873] Potential crash when placing footpaths.
 - Fix: [#8900] Peep tracking is not synchronized.
+- Fix: [#8947] Detection of AVX2 support.
 - Improved: Allow the use of numpad enter key for console and chat.
 
 0.2.2 (2019-03-13)
