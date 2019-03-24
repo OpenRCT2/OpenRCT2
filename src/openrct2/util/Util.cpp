@@ -225,8 +225,8 @@ bool avx2_available()
 #ifdef OPENRCT2_X86
     // For GCC and similar use the builtin function, as cpuid changed its semantics in
     // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
-    // which causes it to ignore subleafs, but the new function is unavailable on Ubuntu's
-    // prehistoric toolchains
+    // which causes it to ignore subleafs, but the new function is unavailable on 
+    // Ubuntu 18.04's toolchains.
 #    if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
     return __builtin_cpu_supports("avx2");
 #    else
