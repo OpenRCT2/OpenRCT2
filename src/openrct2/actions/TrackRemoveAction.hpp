@@ -450,7 +450,7 @@ public:
             sub_6CB945(ride);
             if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
-                ride_update_max_vehicles(ride);
+                ride->UpdateMaxVehicles();
             }
         }
 

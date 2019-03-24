@@ -216,7 +216,6 @@ static void ride_shop_connected(Ride* ride);
 static void ride_spiral_slide_update(Ride* ride);
 static void ride_update(Ride* ride);
 void loc_6DDF9C(Ride* ride, TileElement* tileElement);
-static bool ride_is_ride(Ride* ride);
 
 Ride* get_ride(int32_t index)
 {
@@ -4973,7 +4972,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
  */
 static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApplying)
 {
-    ride_update_max_vehicles(ride);
+    ride->UpdateMaxVehicles();
     if (ride->subtype == RIDE_ENTRY_INDEX_NULL)
     {
         return true;
@@ -5900,7 +5899,7 @@ void ride_set_colour_preset(Ride* ride, uint8_t index)
     const track_colour_preset_list* colourPresets = &RideColourPresets[ride->type];
     TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
     // Stalls save their default colour in the vehicle settings (since they share a common ride type)
-    if (!ride_is_ride(ride))
+    if (!ride->IsRide())
     {
         auto rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry != nullptr && rideEntry->vehicle_preset_list->count > 0)
@@ -6980,12 +6979,12 @@ static int32_t ride_get_track_length(Ride* ride)
  *
  *  rct2: 0x006DD57D
  */
-void ride_update_max_vehicles(Ride* ride)
+void Ride::UpdateMaxVehicles()
 {
-    if (ride->subtype == RIDE_ENTRY_INDEX_NULL)
+    if (subtype == RIDE_ENTRY_INDEX_NULL)
         return;
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    rct_ride_entry* rideEntry = get_ride_entry(subtype);
     if (rideEntry == nullptr)
     {
         return;
@@ -6997,16 +6996,16 @@ void ride_update_max_vehicles(Ride* ride)
     if (rideEntry->cars_per_flat_ride == 0xFF)
     {
         int32_t trainLength;
-        ride->num_cars_per_train = std::max(rideEntry->min_cars_in_train, ride->num_cars_per_train);
-        ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+        num_cars_per_train = std::max(rideEntry->min_cars_in_train, num_cars_per_train);
+        min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
 
         // Calculate maximum train length based on smallest station length
-        int32_t stationLength = ride_get_smallest_station_length(ride);
+        int32_t stationLength = ride_get_smallest_station_length(this);
         if (stationLength == -1)
             return;
 
         stationLength = (stationLength * 0x44180) - 0x16B2A;
-        int32_t maxMass = RideData5[ride->type].max_mass << 8;
+        int32_t maxMass = RideData5[type].max_mass << 8;
         int32_t maxCarsPerTrain = 1;
         for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
         {
@@ -7014,7 +7013,7 @@ void ride_update_max_vehicles(Ride* ride)
             int32_t totalMass = 0;
             for (int32_t i = 0; i < numCars; i++)
             {
-                vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, numCars, i)];
+                vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(subtype, numCars, i)];
                 trainLength += vehicleEntry->spacing;
                 totalMass += vehicleEntry->car_mass;
             }
@@ -7025,19 +7024,19 @@ void ride_update_max_vehicles(Ride* ride)
                 break;
             }
         }
-        int32_t newCarsPerTrain = std::max(ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train);
+        int32_t newCarsPerTrain = std::max(proposed_num_cars_per_train, rideEntry->min_cars_in_train);
         maxCarsPerTrain = std::max(maxCarsPerTrain, (int32_t)rideEntry->min_cars_in_train);
         if (!gCheatsDisableTrainLengthLimit)
         {
             newCarsPerTrain = std::min(maxCarsPerTrain, newCarsPerTrain);
         }
-        ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
+        min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
 
-        switch (ride->mode)
+        switch (mode)
         {
             case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
             case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
-                maxNumTrains = std::clamp(ride->num_stations + ride->num_block_brakes - 1, 1, 31);
+                maxNumTrains = std::clamp(num_stations + num_block_brakes - 1, 1, 31);
                 break;
             case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
             case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
@@ -7051,7 +7050,7 @@ void ride_update_max_vehicles(Ride* ride)
                 trainLength = 0;
                 for (int32_t i = 0; i < newCarsPerTrain; i++)
                 {
-                    vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, i)];
+                    vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
                     trainLength += vehicleEntry->spacing;
                 }
 
@@ -7066,31 +7065,30 @@ void ride_update_max_vehicles(Ride* ride)
                     totalLength += trainLength;
                 } while (totalLength <= stationLength);
 
-                if ((ride->mode != RIDE_MODE_STATION_TO_STATION && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT)
-                    || !(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS))
+                if ((mode != RIDE_MODE_STATION_TO_STATION && mode != RIDE_MODE_CONTINUOUS_CIRCUIT)
+                    || !(RideData4[type].flags & RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS))
                 {
                     maxNumTrains = std::min(maxNumTrains, 31);
                 }
                 else
                 {
-                    vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, 0)];
-                    int32_t speed = vehicleEntry->powered_max_speed;
+                    vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, 0)];
+                    int32_t poweredMaxSpeed = vehicleEntry->powered_max_speed;
 
                     int32_t totalSpacing = 0;
                     for (int32_t i = 0; i < newCarsPerTrain; i++)
                     {
-                        vehicleEntry = &rideEntry
-                                            ->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, i)];
+                        vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
                         totalSpacing += vehicleEntry->spacing;
                     }
 
                     totalSpacing >>= 13;
-                    int32_t trackLength = ride_get_track_length(ride) / 4;
-                    if (speed > 10)
+                    int32_t trackLength = ride_get_track_length(this) / 4;
+                    if (poweredMaxSpeed > 10)
                         trackLength = (trackLength * 3) / 4;
-                    if (speed > 25)
+                    if (poweredMaxSpeed > 25)
                         trackLength = (trackLength * 3) / 4;
-                    if (speed > 40)
+                    if (poweredMaxSpeed > 40)
                         trackLength = (trackLength * 3) / 4;
 
                     maxNumTrains = 0;
@@ -7103,14 +7101,14 @@ void ride_update_max_vehicles(Ride* ride)
                 }
                 break;
         }
-        ride->max_trains = maxNumTrains;
+        max_trains = maxNumTrains;
 
-        numCarsPerTrain = std::min(ride->proposed_num_cars_per_train, (uint8_t)newCarsPerTrain);
+        numCarsPerTrain = std::min(proposed_num_cars_per_train, (uint8_t)newCarsPerTrain);
     }
     else
     {
-        ride->max_trains = rideEntry->cars_per_flat_ride;
-        ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+        max_trains = rideEntry->cars_per_flat_ride;
+        min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
         numCarsPerTrain = rideEntry->max_cars_in_train;
         maxNumTrains = rideEntry->cars_per_flat_ride;
     }
@@ -7119,33 +7117,33 @@ void ride_update_max_vehicles(Ride* ride)
     {
         maxNumTrains = 31;
     }
-    numVehicles = std::min(ride->proposed_num_vehicles, (uint8_t)maxNumTrains);
+    numVehicles = std::min(proposed_num_vehicles, (uint8_t)maxNumTrains);
 
     // Refresh new current num vehicles / num cars per vehicle
-    if (numVehicles != ride->num_vehicles || numCarsPerTrain != ride->num_cars_per_train)
+    if (numVehicles != num_vehicles || numCarsPerTrain != num_cars_per_train)
     {
-        ride->num_cars_per_train = numCarsPerTrain;
-        ride->num_vehicles = numVehicles;
-        window_invalidate_by_number(WC_RIDE, ride->id);
+        num_cars_per_train = numCarsPerTrain;
+        num_vehicles = numVehicles;
+        window_invalidate_by_number(WC_RIDE, id);
     }
 }
 
-void ride_set_ride_entry(Ride* ride, int32_t rideEntry)
+void Ride::SetRideEntry(int32_t rideEntry)
 {
     auto colour = ride_get_unused_preset_vehicle_colour(rideEntry);
-    auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, rideEntry, colour);
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::RideEntry, rideEntry, colour);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
-void ride_set_num_vehicles(Ride* ride, int32_t numVehicles)
+void Ride::SetNumVehicles(int32_t numVehicles)
 {
-    auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, numVehicles);
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumTrains, numVehicles);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
-void ride_set_num_cars_per_vehicle(Ride* ride, int32_t numCarsPerVehicle)
+void Ride::SetNumCarsPerVehicle(int32_t numCarsPerVehicle)
 {
-    auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
@@ -7377,14 +7375,14 @@ void sub_6CB945(Ride* ride)
     }
 }
 
-void ride_set_to_default_inspection_interval(Ride* ride)
+void Ride::SetToDefaultInspectionInterval()
 {
     uint8_t defaultInspectionInterval = gConfigGeneral.default_inspection_interval;
-    if (ride->inspection_interval != defaultInspectionInterval)
+    if (inspection_interval != defaultInspectionInterval)
     {
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
         {
-            set_operating_setting(ride->id, RideSetSetting::InspectionInterval, defaultInspectionInterval);
+            set_operating_setting(id, RideSetSetting::InspectionInterval, defaultInspectionInterval);
         }
     }
 }
@@ -7393,9 +7391,9 @@ void ride_set_to_default_inspection_interval(Ride* ride)
  *
  *  rct2: 0x006B752C
  */
-void ride_crash(Ride* ride, uint8_t vehicleIndex)
+void Ride::Crash(uint8_t vehicleIndex)
 {
-    rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
+    rct_vehicle* vehicle = GET_VEHICLE(vehicles[vehicleIndex]);
 
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
@@ -7411,11 +7409,11 @@ void ride_crash(Ride* ride, uint8_t vehicleIndex)
         }
     }
 
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    set_format_arg(0, rct_string_id, name);
+    set_format_arg(2, uint32_t, name_arguments);
     if (gConfigNotifications.ride_crashed)
     {
-        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, ride->id);
+        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, id);
     }
 }
 
@@ -7508,22 +7506,22 @@ rct_vehicle* ride_get_broken_vehicle(Ride* ride)
  *
  *  rct2: 0x006D235B
  */
-void ride_delete(Ride* ride)
+void Ride::Delete()
 {
-    user_string_free(ride->name);
-    ride->type = RIDE_TYPE_NULL;
+    user_string_free(name);
+    type = RIDE_TYPE_NULL;
 }
 
-void ride_renew(Ride* ride)
+void Ride::Renew()
 {
     // Set build date to current date (so the ride is brand new)
-    ride->build_date = gDateMonthsElapsed;
-    ride->reliability = RIDE_INITIAL_RELIABILITY;
+    build_date = gDateMonthsElapsed;
+    reliability = RIDE_INITIAL_RELIABILITY;
 }
 
-static bool ride_is_ride(Ride* ride)
+bool Ride::IsRide() const
 {
-    switch (ride->type)
+    switch (type)
     {
         case RIDE_TYPE_FOOD_STALL:
         case RIDE_TYPE_1D:
@@ -7545,7 +7543,7 @@ money16 ride_get_price(Ride* ride)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return 0;
-    if (ride_is_ride(ride))
+    if (ride->IsRide())
     {
         if (!park_ride_prices_unlocked())
         {

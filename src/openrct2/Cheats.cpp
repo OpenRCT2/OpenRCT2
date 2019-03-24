@@ -173,7 +173,7 @@ static void cheat_renew_rides()
 
     FOR_ALL_RIDES (i, ride)
     {
-        ride_renew(ride);
+        ride->Renew();
     }
     window_invalidate_by_class(WC_RIDE);
 }

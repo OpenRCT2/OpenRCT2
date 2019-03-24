@@ -24,6 +24,7 @@
 #include "LargeSceneryRemoveAction.hpp"
 #include "LoadOrQuitAction.hpp"
 #include "MazeSetTrackAction.hpp"
+#include "ParkEntranceRemoveAction.hpp"
 #include "ParkMarketingAction.hpp"
 #include "ParkSetLoanAction.hpp"
 #include "ParkSetNameAction.hpp"
@@ -78,6 +79,7 @@ namespace GameActions
         Register<GuestSetNameAction>();
         Register<MazeSetTrackAction>();
         Register<ParkMarketingAction>();
+        Register<ParkEntranceRemoveAction>();
         Register<ParkSetLoanAction>();
         Register<ParkSetNameAction>();
         Register<ParkSetParameterAction>();

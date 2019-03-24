@@ -3532,7 +3532,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
             return;
         }
 
-        ride_crash(ride, trainIndex);
+        ride->Crash(trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
@@ -5270,7 +5270,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
             return;
         }
 
-        ride_crash(ride, trainIndex);
+        ride->Crash(trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
@@ -5324,7 +5324,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
             return;
         }
 
-        ride_crash(ride, trainIndex);
+        ride->Crash(trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {

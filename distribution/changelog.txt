@@ -1,12 +1,15 @@
 0.2.2+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#7296] Allow assigning a keyboard shortcut for the scenery picker.
+- Feature: [#8919] Allow setting ride price from console.
 - Change: [#8688] Move common actions from debug menu into cheats menu.
 - Fix: [#5579] Network desync immediately after connecting.
 - Fix: [#6006] Objects higher than 6 metres are considered trees (original bug).
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#8873] Potential crash when placing footpaths.
 - Fix: [#8900] Peep tracking is not synchronized.
-- Improved: [#7296] Allow assigning a keyboard shortcut for the scenery picker.
+- Fix: [#8947] Detection of AVX2 support.
+- Improved: Allow the use of numpad enter key for console and chat.
 
 0.2.2 (2019-03-13)
 ------------------------------------------------------------------------

@@ -35,8 +35,6 @@
 #include "TrackData.h"
 #include "TrackDesign.h"
 
-uint8_t gTrackGroundFlags;
-
 /**  rct2: 0x00997C9D */
 // clang-format off
 const rct_trackdefinition TrackDefinitions[256] =
@@ -1178,7 +1176,7 @@ static money32 track_remove(
         sub_6CB945(ride);
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            ride_update_max_vehicles(ride);
+            ride->UpdateMaxVehicles();
         }
     }
 
