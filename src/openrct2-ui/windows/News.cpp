@@ -318,7 +318,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                         break;
                     }
 
-                    rct_peep* peep = GET_PEEP(newsItem->Assoc);
+                    Peep* peep = GET_PEEP(newsItem->Assoc);
                     int32_t clip_x = 10, clip_y = 19;
 
                     // If normal peep set sprite to normal (no food)

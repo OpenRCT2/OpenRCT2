@@ -62,6 +62,11 @@ public:
         }
 
         TileElement* footpathElement = GetFootpathElement();
+        if (footpathElement == nullptr)
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
+        }
+
         res->Cost = GetRefundPrice(footpathElement);
 
         return res;
@@ -89,6 +94,10 @@ public:
             map_invalidate_tile_full(_x, _y);
             tile_element_remove(footpathElement);
             footpath_update_queue_chains();
+        }
+        else
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
         }
 
         res->Cost = GetRefundPrice(footpathElement);
@@ -129,16 +138,6 @@ private:
     money32 GetRefundPrice(TileElement * footpathElement) const
     {
         money32 cost = -MONEY(10, 00);
-
-        bool isNotOwnedByPark = (GetFlags() & GAME_COMMAND_FLAG_5);
-        bool moneyDisabled = (gParkFlags & PARK_FLAGS_NO_MONEY);
-        bool isGhost = (footpathElement == nullptr) || (footpathElement->IsGhost());
-
-        if (isNotOwnedByPark || moneyDisabled || isGhost)
-        {
-            cost = 0;
-        }
-
         return cost;
     }
 };

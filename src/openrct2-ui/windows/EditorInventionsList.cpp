@@ -198,48 +198,6 @@ static void research_rides_setup()
 
 /**
  *
- *  rct2: 0x0068590C
- * Sets the critical scenery sets to always researched
- */
-static void research_scenery_groups_setup()
-{
-    for (size_t i = 0; i < std::size(RequiredSelectedObjects); i++)
-    {
-        const rct_object_entry* object = &RequiredSelectedObjects[i];
-
-        uint8_t entry_type, entryIndex;
-        if (!find_object_in_entry_group(object, &entry_type, &entryIndex))
-            continue;
-
-        if (entry_type != OBJECT_TYPE_SCENERY_GROUP)
-            continue;
-
-        rct_research_item* research = gResearchItems;
-        for (; research->rawValue != RESEARCHED_ITEMS_END; research++)
-        {
-            if ((research->rawValue & 0xFFFFFF) != entryIndex)
-                continue;
-
-            research->flags |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
-            _editorInventionsListDraggedItem = research;
-            move_research_item(gResearchItems);
-            _editorInventionsListDraggedItem = nullptr;
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x00685901
- */
-static void research_always_researched_setup()
-{
-    research_rides_setup();
-    research_scenery_groups_setup();
-}
-
-/**
- *
  *  rct2: 0x006855E7
  */
 static void move_research_item(rct_research_item* beforeItem)
@@ -383,7 +341,7 @@ rct_window* window_editor_inventions_list_open()
     if (w != nullptr)
         return w;
 
-    research_always_researched_setup();
+    research_rides_setup();
 
     w = window_create_centred(
         WW, WH, &window_editor_inventions_list_events, WC_EDITOR_INVENTION_LIST, WF_NO_SCROLLING | WF_RESIZABLE);

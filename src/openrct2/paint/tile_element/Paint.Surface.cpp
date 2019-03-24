@@ -1040,7 +1040,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
         if (!is_staff_list)
         {
-            rct_peep* staff = GET_PEEP(staffIndex);
+            Peep* staff = GET_PEEP(staffIndex);
             if (!staff_is_patrol_area_set(staff->staff_id, x, y))
             {
                 patrolColour = COLOUR_GREY;

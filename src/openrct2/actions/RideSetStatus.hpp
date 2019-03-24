@@ -65,7 +65,7 @@ public:
 
         if (_rideIndex >= MAX_RIDES || _rideIndex < 0)
         {
-            log_warning("Invalid game command for ride %u", _rideIndex);
+            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             res->Error = GA_ERROR::INVALID_PARAMETERS;
             res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
@@ -75,7 +75,7 @@ public:
         {
             if (_status == RIDE_STATUS_TESTING)
             {
-                if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
+                if (!ride_is_valid_for_test(ride, _status == RIDE_STATUS_OPEN, 0))
                 {
                     res->Error = GA_ERROR::UNKNOWN;
                     res->ErrorMessage = gGameCommandErrorText;
@@ -84,7 +84,7 @@ public:
             }
             else if (_status == RIDE_STATUS_OPEN)
             {
-                if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
+                if (!ride_is_valid_for_open(ride, _status == RIDE_STATUS_OPEN, 0))
                 {
                     res->Error = GA_ERROR::UNKNOWN;
                     res->ErrorMessage = gGameCommandErrorText;
@@ -107,7 +107,7 @@ public:
 
         if (ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid game command for ride %u", _rideIndex);
+            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             res->Error = GA_ERROR::INVALID_PARAMETERS;
             res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
@@ -157,14 +157,14 @@ public:
 
                 if (_status == RIDE_STATUS_TESTING)
                 {
-                    if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
+                    if (!ride_is_valid_for_test(ride, _status == RIDE_STATUS_OPEN, 1))
                     {
                         res->Error = GA_ERROR::UNKNOWN;
                         res->ErrorMessage = gGameCommandErrorText;
                         return res;
                     }
                 }
-                else if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
+                else if (!ride_is_valid_for_open(ride, _status == RIDE_STATUS_OPEN, 1))
                 {
                     res->Error = GA_ERROR::UNKNOWN;
                     res->ErrorMessage = gGameCommandErrorText;
@@ -175,7 +175,7 @@ public:
                 ride->status = _status;
                 ride->current_issues = 0;
                 ride->last_issue_time = 0;
-                ride_get_measurement(_rideIndex, nullptr);
+                ride_get_measurement(ride, nullptr);
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;

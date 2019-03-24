@@ -248,7 +248,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
             image_id |= dword_F4387C;
         }
     }
-    if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+    if (tileElement->IsGhost())
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         sequenceNum = CONSTRUCTION_MARKER;
@@ -277,7 +277,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     boxlength.y = s98E3C4[esi].length.y;
     boxlength.z = ah;
     sub_98197C(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z);
-    if (entry->large_scenery.scrolling_mode == 0xFF || direction == 1 || direction == 2)
+    if (entry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE || direction == 1 || direction == 2)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;

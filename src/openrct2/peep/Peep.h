@@ -12,8 +12,12 @@
 
 #include "../common.h"
 #include "../rct12/RCT12.h"
+#include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
+#include "../world/SpriteBase.h"
+
+#include <bitset>
 
 #define PEEP_MAX_THOUGHTS 5
 #define PEEP_THOUGHT_ITEM_NONE 255
@@ -516,7 +520,6 @@ enum PeepRideDecision
     PEEP_RIDE_DECISION_THINKING = 1 << 2,
 };
 
-#pragma pack(push, 1)
 struct rct_peep_thought
 {
     PeepThoughtType type;  // 0
@@ -524,33 +527,12 @@ struct rct_peep_thought
     uint8_t freshness;     // 2 larger is less fresh
     uint8_t fresh_timeout; // 3 updates every tick
 };
-assert_struct_size(rct_peep_thought, 4);
 
-struct rct_peep
+struct Guest;
+struct Staff;
+
+struct Peep : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative; // 0x09
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    // Width from centre of sprite to edge
-    uint8_t sprite_width; // 0x14
-    // Height from centre of sprite to top
-    uint8_t sprite_height_positive; // 0x15
-    int16_t sprite_left;            // 0x16
-    int16_t sprite_top;             // 0x18
-    int16_t sprite_right;           // 0x1A
-    int16_t sprite_bottom;          // 0x1C
-    uint8_t sprite_direction;       // 0x1E
-    uint8_t pad_1F[3];
     rct_string_id name_string_idx; // 0x22
     uint16_t next_x;               // 0x24
     uint16_t next_y;               // 0x26
@@ -592,7 +574,6 @@ struct rct_peep
     uint8_t photo2_ride_ref;         // 0x5C
     uint8_t photo3_ride_ref;         // 0x5D
     uint8_t photo4_ride_ref;         // 0x5E
-    uint8_t pad_5F[0x09];            // 0x5F
     uint8_t current_ride;            // 0x68
     uint8_t current_ride_station;    // 0x69
     uint8_t current_train;           // 0x6A
@@ -625,8 +606,6 @@ struct rct_peep
         uint16_t mechanic_time_since_call; // time getting to ride to fix
         uint16_t next_in_queue;            // 0x74
     };
-    uint8_t pad_76; // Previously this was set to 0 but never used.
-    uint8_t pad_77;
     union
     {
         uint8_t maze_last_edge; // 0x78
@@ -707,10 +686,12 @@ struct rct_peep
     uint8_t hat_colour;                   // 0xF8
     uint8_t favourite_ride;               // 0xF9
     uint8_t favourite_ride_rating;        // 0xFA
-    uint8_t pad_FB;
-    uint32_t item_standard_flags; // 0xFC
+    uint32_t item_standard_flags;         // 0xFC
 
 public: // Peep
+    Guest* AsGuest();
+    Staff* AsStaff();
+
     void Update();
     bool UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance);
     bool UpdateAction();
@@ -728,30 +709,66 @@ public: // Peep
     void Pickup();
     void PickupAbort(int32_t old_x);
     bool Place(TileCoordsXYZ location, bool apply);
-
-public: // Guest
-    void Tick128UpdateGuest(int32_t index);
     void RemoveFromQueue();
+    void RemoveFromRide();
+
+    // TODO: Make these private again when done refactoring
+public: // Peep
+    bool CheckForPath();
+    void PerformNextAction(uint8_t& pathing_result);
+    void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
+    int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
+    void SwitchNextActionSpriteType();
+    PeepActionSpriteType GetActionSpriteType();
+
+private:
+    void UpdateFalling();
+    void Update1();
+    void UpdatePicked();
+};
+
+struct Guest : Peep
+{
+public:
+    void UpdateGuest();
+    void Tick128UpdateGuest(int32_t index);
     bool HasItem(int32_t peepItem) const;
     bool HasFood() const;
     bool HasDrink() const;
     bool HasEmptyContainer() const;
     void OnEnterRide(ride_id_t rideIndex);
     void OnExitRide(ride_id_t rideIndex);
-    void RemoveFromRide();
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
+    void StopPurchaseThought(uint8_t ride_type);
+    void TryGetUpFromSitting();
+    void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
+    void PickRideToGoOn();
+    void ReadMap();
+    bool ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool thinking);
+    bool ShouldGoToShop(Ride* ride, bool peepAtShop);
+    bool ShouldFindBench();
+    bool UpdateWalkingFindBench();
+    bool UpdateWalkingFindBin();
+    void SpendMoney(money16& peep_expend_type, money32 amount);
+    void SpendMoney(money32 amount);
+    void SetHasRidden(Ride* ride);
+    bool HasRidden(Ride* ride) const;
+    void SetHasRiddenRideType(int32_t rideType);
+    bool HasRiddenRideType(int32_t rideType) const;
+    int32_t HasFoodStandardFlag() const;
+    int32_t HasFoodExtraFlag() const;
+    bool HasDrinkStandardFlag() const;
+    bool HasDrinkExtraFlag() const;
+    int32_t HasEmptyContainerStandardFlag() const;
+    int32_t HasEmptyContainerExtraFlag() const;
+    void CheckIfLost();
+    void CheckCantFindRide();
+    void CheckCantFindExit();
+    bool DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price);
+    void SetSpriteType(PeepSpriteType new_sprite_type);
 
-public: // Staff
-    void Tick128UpdateStaff();
-    bool IsMechanic() const;
-
-private: // Peep update
-    void UpdateFalling();
-    void Update1();
-    void UpdatePicked();
-
-private: // Guest update
+private:
     void UpdateRide();
     void UpdateOnRide(){}; // TODO
     void UpdateWalking();
@@ -782,7 +799,18 @@ private: // Guest update
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
 
-private: // Staff update
+    Ride* FindBestRideToGoOn();
+    std::bitset<MAX_RIDES> FindRidesToGoOn();
+};
+
+struct Staff : Peep
+{
+public:
+    void UpdateStaff(uint32_t stepsToTake);
+    void Tick128UpdateStaff();
+    bool IsMechanic() const;
+
+private:
     void UpdatePatrolling();
     void UpdateMowing();
     void UpdateSweeping();
@@ -804,47 +832,7 @@ private: // Staff update
     bool UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride);
     void UpdateRideInspected(ride_id_t rideIndex);
     void UpdateHeadingToInspect();
-
-    // TODO: Make these private again when done refactoring
-public: // Peep
-    bool CheckForPath();
-    void PerformNextAction(uint8_t& pathing_result);
-    void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
-    int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
-    void SwitchNextActionSpriteType();
-    PeepActionSpriteType GetActionSpriteType();
-
-public: // Guest
-    void StopPurchaseThought(uint8_t ride_type);
-    void TryGetUpFromSitting();
-    void ChoseNotToGoOnRide(ride_id_t rideIndex, bool peepAtRide, bool updateLastRide);
-    void PickRideToGoOn();
-    void ReadMap();
-    bool ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQueue, bool thinking);
-    bool ShouldGoToShop(ride_id_t rideIndex, bool peepAtShop);
-    bool ShouldFindBench();
-    bool UpdateWalkingFindBench();
-    bool UpdateWalkingFindBin();
-    void SpendMoney(money16& peep_expend_type, money32 amount);
-    void SpendMoney(money32 amount);
-    void SetHasRidden(ride_id_t rideIndex);
-    bool HasRidden(ride_id_t rideIndex) const;
-    void SetHasRiddenRideType(int32_t rideType);
-    bool HasRiddenRideType(int32_t rideType) const;
-    int32_t HasFoodStandardFlag() const;
-    int32_t HasFoodExtraFlag() const;
-    bool HasDrinkStandardFlag() const;
-    bool HasDrinkExtraFlag() const;
-    int32_t HasEmptyContainerStandardFlag() const;
-    int32_t HasEmptyContainerExtraFlag() const;
-    void CheckIfLost();
-    void CheckCantFindRide();
-    void CheckCantFindExit();
-    bool DecideAndBuyItem(ride_id_t rideIndex, int32_t shopItem, money32 price);
-    void SetSpriteType(PeepSpriteType new_sprite_type);
 };
-assert_struct_size(rct_peep, 0x100);
-#pragma pack(pop)
 
 struct rct_sprite_bounds
 {
@@ -943,54 +931,54 @@ extern TileCoordsXYZ gPeepPathFindGoalPosition;
 extern bool gPeepPathFindIgnoreForeignQueues;
 extern ride_id_t gPeepPathFindQueueRideIndex;
 
-rct_peep* try_get_guest(uint16_t spriteIndex);
+Peep* try_get_guest(uint16_t spriteIndex);
 int32_t peep_get_staff_count();
-bool peep_can_be_picked_up(rct_peep* peep);
+bool peep_can_be_picked_up(Peep* peep);
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-rct_peep* peep_generate(int32_t x, int32_t y, int32_t z);
-void get_arguments_from_action(rct_peep* peep, uint32_t* argument_1, uint32_t* argument_2);
+Peep* peep_generate(int32_t x, int32_t y, int32_t z);
+void get_arguments_from_action(Peep* peep, uint32_t* argument_1, uint32_t* argument_2);
 void peep_thought_set_format_args(rct_peep_thought* thought);
-int32_t get_peep_face_sprite_small(rct_peep* peep);
-int32_t get_peep_face_sprite_large(rct_peep* peep);
-int32_t peep_check_easteregg_name(int32_t index, rct_peep* peep);
-int32_t peep_get_easteregg_name_id(rct_peep* peep);
+int32_t get_peep_face_sprite_small(Peep* peep);
+int32_t get_peep_face_sprite_large(Peep* peep);
+int32_t peep_check_easteregg_name(int32_t index, Peep* peep);
+int32_t peep_get_easteregg_name_id(Peep* peep);
 bool peep_pickup_command(uint32_t peepnum, int32_t x, int32_t y, int32_t z, int32_t action, bool apply);
 void game_command_pickup_guest(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void peep_sprite_remove(rct_peep* peep);
+void peep_sprite_remove(Peep* peep);
 
-void peep_window_state_update(rct_peep* peep);
-void peep_decrement_num_riders(rct_peep* peep);
+void peep_window_state_update(Peep* peep);
+void peep_decrement_num_riders(Peep* peep);
 /**
  * rct2: 0x699F5A
  * al:thought_type
  * ah:thought_arguments
  * esi: peep
  */
-void peep_insert_new_thought(rct_peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
+void peep_insert_new_thought(Peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
 
-void peep_set_map_tooltip(rct_peep* peep);
+void peep_set_map_tooltip(Peep* peep);
 
-void SwitchToSpecialSprite(rct_peep* peep, uint8_t special_sprite_id);
-void peep_update_name_sort(rct_peep* peep);
+void SwitchToSpecialSprite(Peep* peep, uint8_t special_sprite_id);
+void peep_update_name_sort(Peep* peep);
 void peep_sort();
 void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
-void peep_handle_easteregg_name(rct_peep* peep);
+void peep_handle_easteregg_name(Peep* peep);
 void game_command_set_guest_name(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
-int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep);
-void peep_reset_pathfind_goal(rct_peep* peep);
+int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep);
+void peep_reset_pathfind_goal(Peep* peep);
 
 bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
-int32_t guest_path_finding(rct_peep* peep);
+int32_t guest_path_finding(Guest* peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 #    define PATHFIND_DEBUG                                                                                                     \
@@ -1002,7 +990,7 @@ extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log 
 
 // The following calls set the above two variables for a peep.
 // ... when PATHFIND_DEBUG is 1 (nonzero)
-void pathfind_logging_enable(rct_peep* peep);
+void pathfind_logging_enable(Peep* peep);
 void pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 

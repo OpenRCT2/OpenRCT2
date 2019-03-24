@@ -308,8 +308,11 @@ namespace Editor
         //
         for (int32_t i = 0; i < MAX_SPRITES; i++)
         {
-            rct_sprite* sprite = get_sprite(i);
-            user_string_free(sprite->generic.name_string_idx);
+            auto peep = get_sprite(i)->AsPeep();
+            if (peep != nullptr)
+            {
+                user_string_free(peep->name_string_idx);
+            }
         }
 
         reset_sprite_list();

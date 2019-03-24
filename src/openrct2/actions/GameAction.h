@@ -39,6 +39,9 @@ enum class GA_ERROR : uint16_t
     NO_CLEARANCE,
     ITEM_ALREADY_PLACED,
 
+    NOT_CLOSED,
+    BROKEN,
+
     NO_FREE_ELEMENTS,
 
     UNKNOWN = UINT16_MAX,
@@ -244,8 +247,15 @@ namespace GameActions
     bool IsValidId(uint32_t id);
     GameAction::Ptr Create(uint32_t id);
     GameAction::Ptr Clone(const GameAction* action);
+
+    // This should be used if a round trip is to be expected.
     GameActionResult::Ptr Query(const GameAction* action);
     GameActionResult::Ptr Execute(const GameAction* action);
+
+    // This should be used from within game actions.
+    GameActionResult::Ptr QueryNested(const GameAction* action);
+    GameActionResult::Ptr ExecuteNested(const GameAction* action);
+
     GameActionFactory Register(uint32_t id, GameActionFactory action);
 
     template<typename T> static GameActionFactory Register()

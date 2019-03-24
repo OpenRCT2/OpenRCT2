@@ -96,7 +96,7 @@ public:
         if (!map_check_free_elements_and_reorganise(1))
         {
             res->Error = GA_ERROR::NO_FREE_ELEMENTS;
-            res->ErrorMessage = STR_NONE;
+            res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
 
@@ -110,7 +110,7 @@ public:
         if (!map_is_location_owned(floor2(_x, 32), floor2(_y, 32), _z) && !gCheatsSandboxMode)
         {
             res->Error = GA_ERROR::NOT_OWNED;
-            res->ErrorMessage = STR_NONE;
+            res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
             return res;
         }
 
@@ -148,11 +148,9 @@ public:
                 return res;
             }
 
-            if (!map_can_construct_at(floor2(_x, 32), floor2(_y, 32), baseHeight, clearanceHeight, 0x0F))
+            if (!map_can_construct_at(floor2(_x, 32), floor2(_y, 32), baseHeight, clearanceHeight, { 0b1111, 0 }))
             {
-                res->Error = GA_ERROR::NO_CLEARANCE;
-                res->ErrorMessage = STR_NONE;
-                return res;
+                return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
             }
 
             if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
@@ -217,7 +215,7 @@ public:
         if (tileElement == nullptr)
         {
             Ride* ride = get_ride(_rideIndex);
-            openrct2_assert(ride != nullptr, "Invalid ride index: %d\n", _rideIndex);
+            openrct2_assert(ride != nullptr, "Invalid ride index: %d\n", uint32_t(_rideIndex));
 
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
@@ -237,7 +235,7 @@ public:
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                tileElement->SetGhost(true);
             }
 
             map_invalidate_tile_full(flooredX, flooredY);
@@ -348,7 +346,7 @@ public:
         {
             Ride* ride = get_ride(_rideIndex);
             tile_element_remove(tileElement);
-            sub_6CB945(_rideIndex);
+            sub_6CB945(ride);
             ride->maze_tiles--;
         }
 

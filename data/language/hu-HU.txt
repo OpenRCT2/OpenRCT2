@@ -2971,8 +2971,8 @@ STR_6125    :Objektum típusa
 STR_6126    :Ismeretlen típus
 STR_6127    :Fájl: {STRING}
 STR_6128    :A fájl nem tölthető be, mert néhány általa hivatkozott objektum hiányzik vagy sérült. Lentebb láthatod a problémás objektumok listáját.
-STR_6129    :Kiválasztott elem vágólapra másolása
-STR_6130    :Teljes lista vágólapra másolása
+STR_6129    :Másolás
+STR_6130    :Összes másolása
 STR_6131    :Objektum forrása
 STR_6132    :Kutatási állapot figyelmen kívül hagyása
 STR_6133    :{SMALLFONT}{BLACK}Hozzáférés a még fel nem fedezett játékokhoz és díszletekhez
@@ -3110,6 +3110,30 @@ STR_6276    :A vendégek beragadnak itt: {RED}{STRINGID}. Lehet, hogy érvényte
 STR_6277    :{WINDOW_COLOUR_2}Állomás index: {BLACK}{COMMA16}
 STR_6278    :Automentések mennyisége
 STR_6279    :{SMALLFONT}{BLACK}A megőrzendő automentések száma
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Külön chat gomb mutatása az eszköztáron
+STR_6282    :Chat
+STR_6283    :A chat jelenleg nem elérhető. Csatlakozva vagy szerverhez?
+STR_6284    :Hálózat
+STR_6285    :Hálózati információ
+STR_6286    :Küldés
+STR_6287    :Fogadás
+STR_6288    :Összes fogadott
+STR_6289    :Összes küldött
+STR_6290    :Alap protokoll
+STR_6291    :Parancsok
+STR_6292    :Térkép
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/mp
+STR_6299    :Összes letöltése
+STR_6300    :{SMALLFONT}{BLACK}Az összes hiányzó objektum letöltése, ha elérhetőek online.
+STR_6301    :{SMALLFONT}{BLACK}A kiválasztott objektumnév vágólapra másolása.
+STR_6302    :{SMALLFONT}{BLACK}A hiányzó objektumok teljes listájának vágólapra másolása.
+STR_6303    :Objektum letöltése ({COMMA16} / {COMMA16}): [{STRING}]
 
 #############
 # Scenarios #

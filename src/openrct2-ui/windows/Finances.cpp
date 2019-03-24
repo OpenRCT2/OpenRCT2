@@ -1127,8 +1127,6 @@ static void window_finances_marketing_update(rct_window* w)
  */
 static void window_finances_marketing_invalidate(rct_window* w)
 {
-    int32_t i;
-
     if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING])
     {
         w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING];
@@ -1138,11 +1136,7 @@ static void window_finances_marketing_invalidate(rct_window* w)
     window_finances_set_pressed_tab(w);
 
     // Count number of active campaigns
-    int32_t numActiveCampaigns = 0;
-    for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
-        if (gMarketingCampaignDaysLeft[i] != 0)
-            numActiveCampaigns++;
-
+    int32_t numActiveCampaigns = (int32_t)gMarketingCampaigns.size();
     int32_t y = std::max(1, numActiveCampaigns) * LIST_ROW_HEIGHT + 92;
 
     // Update group box positions
@@ -1151,22 +1145,21 @@ static void window_finances_marketing_invalidate(rct_window* w)
 
     // Update new campaign button visibility
     y += 3;
-    for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
+    for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
     {
-        rct_widget* campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
-
-        campaignButton->type = WWT_EMPTY;
-
-        if (gMarketingCampaignDaysLeft[i] != 0)
-            continue;
-
-        if (!marketing_is_campaign_type_applicable(i))
-            continue;
-
-        campaignButton->type = WWT_BUTTON;
-        campaignButton->top = y;
-        campaignButton->bottom = y + BUTTON_FACE_HEIGHT + 1;
-        y += BUTTON_FACE_HEIGHT + 2;
+        auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
+        auto campaign = marketing_get_campaign(i);
+        if (campaign == nullptr && marketing_is_campaign_type_applicable(i))
+        {
+            campaignButton->type = WWT_BUTTON;
+            campaignButton->top = y;
+            campaignButton->bottom = y + BUTTON_FACE_HEIGHT + 1;
+            y += BUTTON_FACE_HEIGHT + 2;
+        }
+        else
+        {
+            campaignButton->type = WWT_EMPTY;
+        }
     }
 }
 
@@ -1176,19 +1169,16 @@ static void window_finances_marketing_invalidate(rct_window* w)
  */
 static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t i, x, y, weeksRemaining;
-    Ride* ride;
-
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
-    x = w->x + 8;
-    y = w->y + 62;
-
+    int32_t x = w->x + 8;
+    int32_t y = w->y + 62;
     int32_t noCampaignsActive = 1;
-    for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
+    for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
     {
-        if (gMarketingCampaignDaysLeft[i] == 0)
+        auto campaign = marketing_get_campaign(i);
+        if (campaign == nullptr)
             continue;
 
         noCampaignsActive = 0;
@@ -1200,12 +1190,14 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         {
             case ADVERTISING_CAMPAIGN_RIDE_FREE:
             case ADVERTISING_CAMPAIGN_RIDE:
-                ride = get_ride(gMarketingCampaignRideIndex[i]);
+            {
+                auto ride = get_ride(campaign->RideId);
                 set_format_arg(0, rct_string_id, ride->name);
                 set_format_arg(2, uint32_t, ride->name_arguments);
                 break;
+            }
             case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                set_format_arg(0, rct_string_id, ShopItemStringIds[gMarketingCampaignRideIndex[i]].plural);
+                set_format_arg(0, rct_string_id, ShopItemStringIds[campaign->ShopItemType].plural);
                 break;
         }
 
@@ -1213,7 +1205,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         gfx_draw_string_left_clipped(dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, COLOUR_BLACK, x + 4, y, 296);
 
         // Duration
-        weeksRemaining = (gMarketingCampaignDaysLeft[i] % 128);
+        uint16_t weeksRemaining = campaign->WeeksLeft;
         gfx_draw_string_left(
             dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, COLOUR_BLACK, x + 304, y);
 
@@ -1228,20 +1220,18 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
     y += 34;
 
     // Draw campaign button text
-    for (i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
+    for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
     {
-        rct_widget* campaginButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
+        auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
+        if (campaignButton->type != WWT_EMPTY)
+        {
+            // Draw button text
+            money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
+            gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], nullptr, COLOUR_BLACK, x + 4, y);
+            gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x + 310, y);
 
-        if (campaginButton->type == WWT_EMPTY)
-            continue;
-
-        money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
-
-        // Draw button text
-        gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], nullptr, COLOUR_BLACK, x + 4, y);
-        gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x + 310, y);
-
-        y += BUTTON_FACE_HEIGHT + 2;
+            y += BUTTON_FACE_HEIGHT + 2;
+        }
     }
 }
 

@@ -63,7 +63,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER);
         }
 
-        rct_peep* peep = GET_PEEP(_spriteIndex);
+        Peep* peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_STAFF)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
@@ -95,7 +95,7 @@ public:
                 GA_ERROR::UNKNOWN, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, gGameCommandErrorText);
         }
 
-        rct_peep* peep = GET_PEEP(_spriteIndex);
+        Peep* peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_STAFF)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);

@@ -154,7 +154,7 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
     TileElement* tileElementAbove = (TileElement*)this;
     for (;;)
     {
-        if (tileElementAbove->flags & TILE_ELEMENT_FLAG_LAST_TILE)
+        if (tileElementAbove->IsLastForTile())
         {
             // Grow grass
 

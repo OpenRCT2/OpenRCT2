@@ -73,6 +73,9 @@ int32_t NetworkConnection::ReadPacket()
         if (InboundPacket.BytesTransferred == sizeof(InboundPacket.Size) + InboundPacket.Size)
         {
             _lastPacketTime = platform_get_ticks();
+
+            RecordPacketStats(InboundPacket, false);
+
             return NETWORK_READPACKET_SUCCESS;
         }
     }
@@ -94,7 +97,13 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     {
         packet.BytesTransferred += sent;
     }
-    return packet.BytesTransferred == tosend.size();
+
+    bool sendComplete = packet.BytesTransferred == tosend.size();
+    if (sendComplete)
+    {
+        RecordPacketStats(packet, true);
+    }
+    return sendComplete;
 }
 
 void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front)
@@ -173,6 +182,34 @@ void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, v
     char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
     format_string(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);
     SetLastDisconnectReason(buffer);
+}
+
+void NetworkConnection::RecordPacketStats(const NetworkPacket& packet, bool sending)
+{
+    uint32_t packetSize = (uint32_t)packet.BytesTransferred;
+    uint32_t trafficGroup = NETWORK_STATISTICS_GROUP_BASE;
+
+    switch (packet.GetCommand())
+    {
+        case NETWORK_COMMAND_GAMECMD:
+        case NETWORK_COMMAND_GAME_ACTION:
+            trafficGroup = NETWORK_STATISTICS_GROUP_COMMANDS;
+            break;
+        case NETWORK_COMMAND_MAP:
+            trafficGroup = NETWORK_STATISTICS_GROUP_MAPDATA;
+            break;
+    }
+
+    if (sending)
+    {
+        Stats.bytesSent[trafficGroup] += packetSize;
+        Stats.bytesSent[NETWORK_STATISTICS_GROUP_TOTAL] += packetSize;
+    }
+    else
+    {
+        Stats.bytesReceived[trafficGroup] += packetSize;
+        Stats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL] += packetSize;
+    }
 }
 
 #endif

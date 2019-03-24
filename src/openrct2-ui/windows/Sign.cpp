@@ -14,6 +14,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/actions/LargeSceneryRemoveAction.hpp>
 #include <openrct2/actions/SignSetNameAction.hpp>
+#include <openrct2/actions/SignSetStyleAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
@@ -162,7 +163,7 @@ rct_window* window_sign_open(rct_windownumber number)
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
-            if (scenery_entry != nullptr && scenery_entry->large_scenery.scrolling_mode != 0xFF)
+            if (scenery_entry != nullptr && scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
                 BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
 
@@ -221,7 +222,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 {
                     rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
-                    if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+                    if (scenery_entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
                         if (bannerIndex == w->number)
@@ -280,18 +281,23 @@ static void window_sign_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
     switch (widgetIndex)
     {
         case WIDX_MAIN_COLOUR:
+        {
             if (dropdownIndex == -1)
                 return;
             w->list_information_type = dropdownIndex;
-            game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 1);
+            auto signSetStyleAction = SignSetStyleAction(w->number, dropdownIndex, w->var_492, true);
+            GameActions::Execute(&signSetStyleAction);
             break;
+        }
         case WIDX_TEXT_COLOUR:
+        {
             if (dropdownIndex == -1)
                 return;
             w->var_492 = dropdownIndex;
-            game_do_command(
-                1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 1);
+            auto signSetStyleAction = SignSetStyleAction(w->number, w->list_information_type, dropdownIndex, true);
+            GameActions::Execute(&signSetStyleAction);
             break;
+        }
         default:
             return;
     }
@@ -416,7 +422,7 @@ rct_window* window_sign_small_open(rct_windownumber number)
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
         {
             rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
-            if (scenery_entry->wall.scrolling_mode != 0xFF)
+            if (scenery_entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
             {
                 if (tile_element->AsWall()->GetBannerIndex() == w->number)
                     break;
@@ -474,7 +480,7 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
                 {
                     rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
-                    if (scenery_entry->wall.scrolling_mode != 0xFF)
+                    if (scenery_entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
                     {
                         if (tile_element->AsWall()->GetBannerIndex() == w->number)
                             break;
@@ -512,18 +518,23 @@ static void window_sign_small_dropdown(rct_window* w, rct_widgetindex widgetInde
     switch (widgetIndex)
     {
         case WIDX_MAIN_COLOUR:
+        {
             if (dropdownIndex == -1)
                 return;
             w->list_information_type = dropdownIndex;
-            game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 0);
+            auto signSetStyleAction = SignSetStyleAction(w->number, dropdownIndex, w->var_492, false);
+            GameActions::Execute(&signSetStyleAction);
             break;
+        }
         case WIDX_TEXT_COLOUR:
+        {
             if (dropdownIndex == -1)
                 return;
             w->var_492 = dropdownIndex;
-            game_do_command(
-                1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 0);
+            auto signSetStyleAction = SignSetStyleAction(w->number, w->list_information_type, dropdownIndex, false);
+            GameActions::Execute(&signSetStyleAction);
             break;
+        }
         default:
             return;
     }

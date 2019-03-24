@@ -56,7 +56,8 @@ static void ride_update_station_blocksection(Ride* ride, int32_t stationIndex)
 {
     TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
 
-    if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (tileElement != nullptr && tileElement->flags & 0x20))
+    if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0)
+        || (tileElement != nullptr && tileElement->AsTrack()->BlockBrakeClosed()))
     {
         ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
 
@@ -206,7 +207,7 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
                 // Found a winner
                 if (vehicle->num_peeps != 0)
                 {
-                    rct_peep* peep = GET_PEEP(vehicle->peep[0]);
+                    Peep* peep = GET_PEEP(vehicle->peep[0]);
                     ride->race_winner = peep->sprite_index;
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 }
@@ -281,7 +282,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
 
         if (vehicle->num_peeps != 0)
         {
-            rct_peep* peep = &get_sprite(vehicle->peep[0])->peep;
+            Peep* peep = &get_sprite(vehicle->peep[0])->peep;
 
             switch (peep_get_easteregg_name_id(peep))
             {
@@ -390,18 +391,6 @@ int8_t ride_get_first_empty_station_start(const Ride* ride)
         }
     }
     return -1;
-}
-
-TileCoordsXYZD ride_get_entrance_location(const ride_id_t rideIndex, const int32_t stationIndex)
-{
-    const Ride* ride = get_ride(rideIndex);
-    return ride->stations[stationIndex].Entrance;
-}
-
-TileCoordsXYZD ride_get_exit_location(const ride_id_t rideIndex, const int32_t stationIndex)
-{
-    const Ride* ride = get_ride(rideIndex);
-    return ride->stations[stationIndex].Exit;
 }
 
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)

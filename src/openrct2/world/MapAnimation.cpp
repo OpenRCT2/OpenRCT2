@@ -17,6 +17,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../world/Wall.h"
+#include "Banner.h"
 #include "Footpath.h"
 #include "LargeScenery.h"
 #include "Map.h"
@@ -172,7 +173,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_sprite* sprite;
-    rct_peep* peep;
+    Peep* peep;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -181,10 +182,13 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
-        if (tileElement->flags & (1 << 4))
+        if (tileElement->IsGhost())
             continue;
 
         sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+        if (sceneryEntry == nullptr)
+            continue;
+
         if (scenery_small_entry_has_flag(
                 sceneryEntry,
                 SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
@@ -558,7 +562,8 @@ static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
         sceneryEntry = tileElement->AsWall()->GetEntry();
 
         if (!sceneryEntry
-            || (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED) && sceneryEntry->wall.scrolling_mode == 255))
+            || (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED)
+                && sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE))
             continue;
 
         int32_t z = tileElement->base_height * 8;

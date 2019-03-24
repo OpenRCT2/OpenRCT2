@@ -164,9 +164,14 @@ typedef uint8_t Direction;
  * Given a direction, return the direction that points the other way,
  * on the same axis.
  */
-constexpr Direction direction_reverse(Direction dir)
+[[maybe_unused]] static constexpr Direction direction_reverse(Direction dir)
 {
     return dir ^ 2;
+}
+
+[[maybe_unused]] static constexpr bool direction_valid(Direction dir)
+{
+    return dir < 4;
 }
 
 struct CoordsXYZD

@@ -418,7 +418,7 @@ namespace Twitch
     {
         // Check what followers are already in the park
         uint16_t spriteIndex;
-        rct_peep* peep;
+        Peep* peep;
         FOR_ALL_GUESTS (spriteIndex, peep)
         {
             if (is_user_string_id(peep->name_string_idx))

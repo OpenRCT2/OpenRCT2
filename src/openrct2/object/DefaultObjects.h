@@ -11,5 +11,4 @@
 
 #include "Object.h"
 
-extern const rct_object_entry RequiredSelectedObjects[7];
-extern const rct_object_entry DefaultSelectedObjects[26];
+extern const rct_object_entry DefaultSelectedObjects[33];

@@ -158,12 +158,12 @@ static uint8_t _window_guest_list_group_index[240];
 
 static char _window_guest_list_filter_name[32];
 
-static int32_t window_guest_list_is_peep_in_filter(rct_peep* peep);
+static int32_t window_guest_list_is_peep_in_filter(Peep* peep);
 static void window_guest_list_find_groups();
 
-static void get_arguments_from_peep(rct_peep* peep, uint32_t* argument_1, uint32_t* argument_2);
+static void get_arguments_from_peep(Peep* peep, uint32_t* argument_1, uint32_t* argument_2);
 
-static bool guest_should_be_visible(rct_peep* peep);
+static bool guest_should_be_visible(Peep* peep);
 
 void window_guest_list_init_vars()
 {
@@ -471,7 +471,7 @@ static void window_guest_list_update(rct_window* w)
 static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     int32_t i, y, numGuests, spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     switch (_window_guest_list_selected_tab)
     {
@@ -538,7 +538,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
 static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     int32_t i, spriteIndex;
-    rct_peep* peep;
+    Peep* peep;
 
     switch (_window_guest_list_selected_tab)
     {
@@ -717,7 +717,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
 {
     int32_t spriteIndex, numGuests, i, j, y;
     rct_string_id format;
-    rct_peep* peep;
+    Peep* peep;
     rct_peep_thought* thought;
     uint32_t argument_1, argument_2;
 
@@ -863,7 +863,7 @@ static void window_guest_list_textinput(rct_window* w, rct_widgetindex widgetInd
  * returns 0 for in filter and 1 for not in filter
  *  rct2: 0x0069B865
  */
-static int32_t window_guest_list_is_peep_in_filter(rct_peep* peep)
+static int32_t window_guest_list_is_peep_in_filter(Peep* peep)
 {
     char temp;
 
@@ -893,7 +893,7 @@ static int32_t window_guest_list_is_peep_in_filter(rct_peep* peep)
  * argument_1 (0x013CE952) gCommonFormatArgs
  * argument_2 (0x013CE954) gCommonFormatArgs + 2
  */
-static void get_arguments_from_peep(rct_peep* peep, uint32_t* argument_1, uint32_t* argument_2)
+static void get_arguments_from_peep(Peep* peep, uint32_t* argument_1, uint32_t* argument_2)
 {
     switch (_window_guest_list_selected_view)
     {
@@ -933,7 +933,7 @@ static void get_arguments_from_peep(rct_peep* peep, uint32_t* argument_1, uint32
 static void window_guest_list_find_groups()
 {
     int32_t spriteIndex, spriteIndex2, groupIndex, faceIndex;
-    rct_peep *peep, *peep2;
+    Peep *peep, *peep2;
 
     uint32_t tick256 = floor2(gScenarioTicks, 256);
     if (_window_guest_list_selected_view == _window_guest_list_last_find_groups_selected_view)
@@ -1061,7 +1061,7 @@ static void window_guest_list_find_groups()
     }
 }
 
-static bool guest_should_be_visible(rct_peep* peep)
+static bool guest_should_be_visible(Peep* peep)
 {
     if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
         return false;

@@ -743,16 +743,9 @@ uint8_t lerp(uint8_t a, uint8_t b, float t)
     return (uint8_t)(a + amount);
 }
 
-float flerp(float a, float b, float t)
+float flerp(float a, float b, float f)
 {
-    if (t <= 0)
-        return a;
-    if (t >= 1)
-        return b;
-
-    float range = b - a;
-    float amount = range * t;
-    return a + amount;
+    return (a * (1.0f - f)) + (b * f);
 }
 
 uint8_t soft_light(uint8_t a, uint8_t b)

@@ -661,7 +661,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     }
     else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
     {
-        rct_peep* peep = GET_PEEP(window->viewport_smart_follow_sprite);
+        Peep* peep = GET_PEEP(window->viewport_smart_follow_sprite);
 
         if (peep->type == PEEP_TYPE_GUEST)
             viewport_update_smart_guest_follow(window, peep);
@@ -686,7 +686,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     }
 }
 
-void viewport_update_smart_guest_follow(rct_window* window, rct_peep* peep)
+void viewport_update_smart_guest_follow(rct_window* window, Peep* peep)
 {
     union
     {
@@ -748,7 +748,7 @@ void viewport_update_smart_guest_follow(rct_window* window, rct_peep* peep)
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
 }
 
-void viewport_update_smart_staff_follow(rct_window* window, rct_peep* peep)
+void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
 {
     sprite_focus focus = {};
 
@@ -1285,7 +1285,8 @@ static bool pixel_is_present_bmp(uint32_t imageType, const rct_g1_element* g1, c
  */
 static bool is_pixel_present_rle(const uint8_t* esi, int16_t x_start_point, int16_t y_start_point, int32_t round)
 {
-    const uint8_t* ebx = esi + ((uint16_t*)esi)[y_start_point];
+    uint16_t start_offset = esi[y_start_point * 2] | (esi[y_start_point * 2 + 1] << 8);
+    const uint8_t* ebx = esi + start_offset;
 
     uint8_t last_data_line = 0;
     while (!last_data_line)

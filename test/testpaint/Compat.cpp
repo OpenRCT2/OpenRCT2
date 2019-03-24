@@ -165,6 +165,16 @@ uint8_t TileElementBase::GetType() const
     return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
+bool TileElementBase::IsGhost() const
+{
+    return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
+}
+
+bool TrackElement::BlockBrakeClosed() const
+{
+    return (flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+}
+
 TileElement* map_get_first_element_at(int x, int y)
 {
     if (x < 0 || y < 0 || x > 255 || y > 255)
@@ -175,7 +185,7 @@ TileElement* map_get_first_element_at(int x, int y)
     return gTileElementTilePointers[x + y * 256];
 }
 
-bool ride_type_has_flag(int rideType, int flag)
+bool ride_type_has_flag(int rideType, uint32_t flag)
 {
     return (RideProperties[rideType].flags & flag) != 0;
 }

@@ -622,7 +622,7 @@ static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex
         if (spriteIdentifier == SPRITE_IDENTIFIER_PEEP)
         {
             validSprite = true;
-            rct_peep* peep = GET_PEEP(spriteIndex);
+            Peep* peep = GET_PEEP(spriteIndex);
             format_string(command.SpriteName, USER_STRING_MAX_LENGTH, peep->name_string_idx, &peep->id);
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_VEHICLE)

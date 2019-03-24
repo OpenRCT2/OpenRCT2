@@ -2330,18 +2330,6 @@ STR_3074    :{RED}ADVERTENCIA: ¡La valoración del parque ha caído por debajo 
 STR_3075    :{RED}ADVERTENCIA: ¡La valoración del parque ha caído por debajo de 700!{NEWLINE}Tienes sólo 2 semanas para subir la valoración o el parque cerrará.
 STR_3076    :{RED}ADVERTENCIA FINAL: ¡La valoración del parque ha caído por debajo de 700!{NEWLINE}En 7 días tu parque estará cerrado a menos que subas la valoración.
 STR_3077    :{RED}CLAUSURA: ¡Tu parque ha sido cerrado!
-STR_3078    :Entrada típica
-STR_3079    :Entrada de madera
-STR_3080    :Entrada estilo carpa de circo
-STR_3081    :Entrada estilo castillo (gris)
-STR_3082    :Entrada estilo castillo (marrón)
-STR_3083    :Entrada estilo jungla
-STR_3084    :Entrada estilo troncos de madera
-STR_3085    :Entrada estilo clásico/romano
-STR_3086    :Entrada estilo abstracto
-STR_3087    :Entrada estilo hielo/nieve
-STR_3088    :Entrada estilo pagoda
-STR_3089    :Entrada estilo espacial
 STR_3090    :{SMALLFONT}{BLACK}Seleccionar estilo de la entrada, salida y estación
 STR_3091    :¡No estas autorizado para remover esta sección!
 STR_3092    :¡No estas autorizado para modificar la estación de esta atracción!
@@ -3598,8 +3586,8 @@ STR_6125    :Tipo objeto
 STR_6126    :Tipo desconocido
 STR_6127    :Archivo: {STRING}
 STR_6128    :El archivo no se puede cargar ya que algunos de los objetos a los que hace referencia en él faltan o están corruptos. Se muestra un listado de estos objetos:
-STR_6129    :Copiar elemento seleccionado
-STR_6130    :Copiar todos los elementos
+STR_6129    :Copiar
+STR_6130    :Copiar todo
 STR_6131    :Origen
 STR_6132    :Ignorar estado de investigación
 STR_6133    :{SMALLFONT}{BLACK}Acceder a atracciones y escenarios que aún no han sido inventados
@@ -3745,6 +3733,34 @@ STR_6272    :Estaciones
 STR_6273    :Música
 STR_6274    :No se puede establecer colores...
 STR_6275    :{WINDOW_COLOUR_2}Estilo de estación:
+STR_6276    :{RED}Hay invitados atascandose en {STRINGID}, probablemente debido a un tipo de atracción o modo de operación no válido.
+STR_6277    :{WINDOW_COLOUR_2}Índice de estación: {BLACK}{COMMA16}
+STR_6278    :Cantidad de autoguardado
+STR_6279    :{SMALLFONT}{BLACK}Número de partidas guardadas automáticamente a conservar.
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Muestra un botón para la ventana de Chat en la barra de herramientas.
+STR_6282    :Chat
+STR_6283    :Chat no disponible en este momento. ¿Estás conectado a un servidor?
+STR_6284    :Red
+STR_6285    :Información de Red
+STR_6286    :Recibir
+STR_6287    :Enviar
+STR_6288    :Total recibido
+STR_6289    :Total enviado
+STR_6290    :Protocolo base
+STR_6291    :Comandos
+STR_6292    :Mapa
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/seg
+STR_6299    :Descargar todo
+STR_6300    :{SMALLFONT}{BLACK}Descargar todos los objetos faltantes si están disponibles en línea.
+STR_6301    :{SMALLFONT}{BLACK}Copia el nombre del objeto seleccionado al portapapeles.
+STR_6302    :{SMALLFONT}{BLACK}Copia la lista completa de objetos faltantes en el portapapeles.
+STR_6303    :Descargando objeto ({COMMA16} / {COMMA16}): [{STRING}]
 
 ##############
 # Escenarios #

@@ -128,6 +128,8 @@ public:
                 return window_viewport_open();
             case WC_WATER:
                 return window_water_open();
+            case WC_NETWORK:
+                return window_network_open();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -177,9 +179,9 @@ public:
             case WD_BANNER:
                 return window_banner_open(id);
             case WD_DEMOLISH_RIDE:
-                return window_ride_demolish_prompt_open(id);
+                return window_ride_demolish_prompt_open(get_ride(id));
             case WD_REFURBISH_RIDE:
-                return window_ride_refurbish_prompt_open(id);
+                return window_ride_refurbish_prompt_open(get_ride(id));
             case WD_NEW_CAMPAIGN:
                 return window_new_campaign_open(id);
             case WD_SIGN:
@@ -205,9 +207,9 @@ public:
         switch (intent->GetWindowClass())
         {
             case WC_PEEP:
-                return window_guest_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
+                return window_guest_open((Peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
             case WC_FIRE_PROMPT:
-                return window_staff_fire_prompt_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
+                return window_staff_fire_prompt_open((Peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
             case WC_INSTALL_TRACK:
                 return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_PATH).c_str());
             case WC_GUEST_LIST:
@@ -240,7 +242,10 @@ public:
                 return nullptr;
             }
             case WC_RIDE:
-                return window_ride_main_open(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+            {
+                auto ride = get_ride(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+                return window_ride_main_open(ride);
+            }
             case WC_TRACK_DESIGN_PLACE:
                 return window_track_place_open((track_design_file_ref*)intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
             case WC_TRACK_DESIGN_LIST:

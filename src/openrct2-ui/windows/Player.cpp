@@ -17,6 +17,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/NetworkAction.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -445,6 +446,12 @@ void window_player_overview_invalidate(rct_window* w)
         viewport->view_width = viewport->width << viewport->zoom;
         viewport->view_height = viewport->height << viewport->zoom;
     }
+
+    // Only enable kick button for other players
+    const bool canKick = network_can_perform_action(network_get_current_player_group_index(), NETWORK_PERMISSION_KICK_PLAYER);
+    const bool isServer = network_get_player_flags(w->number) & NETWORK_PLAYER_FLAG_ISSERVER;
+    const bool isOwnWindow = (network_get_current_player_id() == w->number);
+    widget_set_enabled(w, WIDX_KICK, canKick && !isOwnWindow && !isServer);
 }
 
 void window_player_statistics_close(rct_window* w)

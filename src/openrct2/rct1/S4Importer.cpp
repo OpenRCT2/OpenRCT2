@@ -1150,7 +1150,7 @@ private:
                     ImportVehicle(vehicle, srcVehicle);
 
                     // If vehicle is the first car on a train add to train list
-                    if (!vehicle->is_child)
+                    if (vehicle->IsHead())
                     {
                         move_sprite_to_list((rct_sprite*)vehicle, SPRITE_LIST_TRAIN * 2);
                     }
@@ -1174,7 +1174,7 @@ private:
         dst->ride_subtype = ride->subtype;
 
         dst->vehicle_type = vehicleEntryIndex;
-        dst->is_child = src->is_child;
+        dst->type = src->type;
         dst->var_44 = src->var_44;
         dst->remaining_distance = src->remaining_distance;
 
@@ -1343,7 +1343,7 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
-                rct_peep* peep = (rct_peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
+                Peep* peep = (Peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
                 move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
                 spriteIndexMap[i] = peep->sprite_index;
 
@@ -1362,7 +1362,7 @@ private:
 
         int i;
         Ride* ride;
-        rct_peep* peep;
+        Peep* peep;
 
         FOR_ALL_RIDES (i, ride)
         {
@@ -1399,7 +1399,7 @@ private:
         staff_update_greyed_patrol_areas();
     }
 
-    void ImportPeep(rct_peep* dst, rct1_peep* src)
+    void ImportPeep(Peep* dst, rct1_peep* src)
     {
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
@@ -1536,9 +1536,14 @@ private:
 
         dst->photo1_ride_ref = src->photo1_ride_ref;
 
-        for (size_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
+        for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
-            dst->thoughts[i] = src->thoughts[i];
+            auto srcThought = &src->thoughts[i];
+            auto dstThought = &dst->thoughts[i];
+            dstThought->type = (PeepThoughtType)srcThought->type;
+            dstThought->item = srcThought->type;
+            dstThought->freshness = srcThought->freshness;
+            dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
 
         dst->previous_ride = src->previous_ride;
@@ -1600,12 +1605,12 @@ private:
         }
     }
 
-    void FixPeepNextInQueue(rct_peep* peep, const uint16_t* spriteIndexMap)
+    void FixPeepNextInQueue(Peep* peep, const uint16_t* spriteIndexMap)
     {
         peep->next_in_queue = MapSpriteIndex(peep->next_in_queue, spriteIndexMap);
     }
 
-    void ImportStaffPatrolArea(rct_peep* staffmember)
+    void ImportStaffPatrolArea(Peep* staffmember)
     {
         // The patrol areas in RCT1 are encoded as follows, for coordinates x and y, separately for every staff member:
         // - Chop off the 7 lowest bits of the x and y coordinates, which leaves 5 bits per coordinate.
@@ -1652,7 +1657,7 @@ private:
         {
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
             {
-                rct_litter* srcLitter = &sprite.litter;
+                const auto* srcLitter = &sprite.litter;
 
                 rct_litter* litter = (rct_litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
                 move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER * 2);
@@ -1685,7 +1690,7 @@ private:
                 move_sprite_to_list((rct_sprite*)dst, SPRITE_LIST_MISC * 2);
 
                 dst->sprite_identifier = src->sprite_identifier;
-                dst->type = src->misc_identifier;
+                dst->type = src->type;
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;
                 dst->sprite_width = src->sprite_width;
@@ -1694,7 +1699,7 @@ private:
 
                 sprite_move(src->x, src->y, src->z, (rct_sprite*)dst);
 
-                switch (src->misc_identifier)
+                switch (src->type)
                 {
                     case SPRITE_MISC_STEAM_PARTICLE:
                         ImportSteamParticle((rct_steam_particle*)dst, (rct_steam_particle*)src);
@@ -1849,10 +1854,23 @@ private:
         gTotalIncomeFromAdmissions = _s4.admission_total_income;
 
         // TODO marketing campaigns not working
-        for (size_t i = 0; i < 6; i++)
+        for (size_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
-            gMarketingCampaignDaysLeft[i] = _s4.marketing_status[i];
-            gMarketingCampaignRideIndex[i] = _s4.marketing_assoc[i];
+            if (_s4.marketing_status[i] & CAMPAIGN_ACTIVE_FLAG)
+            {
+                MarketingCampaign campaign;
+                campaign.Type = (uint8_t)i;
+                campaign.WeeksLeft = _s4.marketing_status[i] & ~CAMPAIGN_ACTIVE_FLAG;
+                if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+                {
+                    campaign.RideId = _s4.marketing_assoc[i];
+                }
+                else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+                {
+                    campaign.ShopItemType = _s4.marketing_assoc[i];
+                }
+                gMarketingCampaigns.push_back(campaign);
+            }
         }
     }
 
@@ -2062,7 +2080,8 @@ private:
                 uint8_t entryIndex = _pathTypeToEntryMap[pathType];
 
                 dst2->SetDirection(0);
-                dst2->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
+                dst2->SetIsBroken(false);
+                dst2->SetIsBlockedByVehicle(false);
 
                 dst2->SetPathEntryIndex(entryIndex);
                 dst2->SetShouldDrawPathOverSupports(true);
@@ -2103,7 +2122,7 @@ private:
                     entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
                     if (additionType != normalisedType)
                     {
-                        dst2->flags |= TILE_ELEMENT_FLAG_BROKEN;
+                        dst2->SetIsBroken(true);
                     }
                     dst2->SetAddition(entryIndex + 1);
                 }
@@ -2451,8 +2470,7 @@ private:
     {
         // Date and srand
         gScenarioTicks = _s4.ticks;
-        gScenarioSrand0 = _s4.random_a;
-        gScenarioSrand1 = _s4.random_b;
+        scenario_rand_seed(_s4.random_a, _s4.random_b);
         gDateMonthsElapsed = _s4.month;
         gDateMonthTicks = _s4.day;
 

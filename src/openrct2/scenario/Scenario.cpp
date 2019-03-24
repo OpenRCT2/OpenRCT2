@@ -18,6 +18,7 @@
 #include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/Random.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -66,8 +67,7 @@ uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
 uint32_t gScenarioTicks;
-uint32_t gScenarioSrand0;
-uint32_t gScenarioSrand1;
+random_engine_t gScenarioRand;
 
 uint8_t gScenarioObjectiveType;
 uint8_t gScenarioObjectiveYear;
@@ -90,8 +90,8 @@ void scenario_begin()
     game_load_init();
 
     // Set the scenario pseudo-random seeds
-    gScenarioSrand0 ^= platform_get_ticks();
-    gScenarioSrand1 ^= platform_get_ticks();
+    Random::Rct2::Seed s{ 0x1234567F ^ platform_get_ticks(), 0x789FABCD ^ platform_get_ticks() };
+    gScenarioRand.seed(s);
 
     gParkFlags &= ~PARK_FLAGS_NO_MONEY;
     if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
@@ -162,7 +162,7 @@ void scenario_begin()
     map_count_remaining_land_rights();
     staff_reset_stats();
     gLastEntranceStyle = 0;
-    std::fill_n(gMarketingCampaignDaysLeft, sizeof(gMarketingCampaignDaysLeft), 0x00);
+    gMarketingCampaigns.clear();
     gParkRatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
@@ -476,6 +476,17 @@ static int32_t scenario_create_ducks()
     return 1;
 }
 
+const random_engine_t::state_type& scenario_rand_state()
+{
+    return gScenarioRand.state();
+};
+
+void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1)
+{
+    Random::Rct2::Seed s{ s0, s1 };
+    gScenarioRand.seed(s);
+}
+
 /**
  *
  *  rct2: 0x006E37D2
@@ -483,7 +494,7 @@ static int32_t scenario_create_ducks()
  * @return eax
  */
 #ifndef DEBUG_DESYNC
-uint32_t scenario_rand()
+random_engine_t::result_type scenario_rand()
 #else
 static FILE* fp = nullptr;
 static const char* realm = "LC";
@@ -491,10 +502,6 @@ static const char* realm = "LC";
 uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data)
 #endif
 {
-    uint32_t originalSrand0 = gScenarioSrand0;
-    gScenarioSrand0 += ror32(gScenarioSrand1 ^ 0x1234567F, 7);
-    gScenarioSrand1 = ror32(originalSrand0, 3);
-
 #ifdef DEBUG_DESYNC
     if (fp == nullptr)
     {
@@ -527,7 +534,7 @@ uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_
     }
 #endif
 
-    return gScenarioSrand1;
+    return gScenarioRand();
 }
 
 #ifdef DEBUG_DESYNC
@@ -626,14 +633,7 @@ static bool scenario_prepare_rides_for_save()
                 }
             }
 
-            if (markTrackAsIndestructible)
-            {
-                it.element->flags |= TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
-            }
-            else
-            {
-                it.element->flags &= ~TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
-            }
+            it.element->AsTrack()->SetIsIndestructible(markTrackAsIndestructible);
         }
     } while (tile_element_iterator_next(&it));
 
@@ -688,7 +688,7 @@ void scenario_fix_ghosts(rct_s6_data* s6)
             RCT12TileElement* originalElement = reinterpret_cast<RCT12TileElement*>(map_get_first_element_at(x, y));
             do
             {
-                if (originalElement->flags & TILE_ELEMENT_FLAG_GHOST)
+                if (originalElement->IsGhost())
                 {
                     BannerIndex bannerIndex = tile_element_get_banner_index(reinterpret_cast<TileElement*>(originalElement));
                     if (bannerIndex != BANNER_INDEX_NULL)

@@ -14,7 +14,11 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
+#include "actions/FootpathPlaceAction.hpp"
 #include "actions/GameAction.h"
+#include "actions/RideEntranceExitPlaceAction.hpp"
+#include "actions/RideSetSetting.hpp"
+#include "actions/TrackPlaceAction.hpp"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
@@ -23,8 +27,10 @@
 #include "object/ObjectRepository.h"
 #include "rct2/S6Exporter.h"
 #include "world/Park.h"
+#include "zlib.h"
 
 #include <chrono>
+#include <memory>
 #include <vector>
 
 namespace OpenRCT2
@@ -77,6 +83,14 @@ namespace OpenRCT2
         }
     };
 
+    struct ReplayRecordFile
+    {
+        uint32_t magic;
+        uint16_t version;
+        uint64_t uncompressedSize;
+        MemoryStream data;
+    };
+
     struct ReplayRecordData
     {
         uint32_t magic;
@@ -97,8 +111,9 @@ namespace OpenRCT2
 
     class ReplayManager final : public IReplayManager
     {
-        static constexpr uint16_t ReplayVersion = 1;
+        static constexpr uint16_t ReplayVersion = 2;
         static constexpr uint32_t ReplayMagic = 0x5243524F; // ORCR.
+        static constexpr int ReplayCompressionLevel = 9;
 
         enum class ReplayMode
         {
@@ -145,9 +160,6 @@ namespace OpenRCT2
             args[6] = ebp;
 
             _currentRecording->commands.emplace(gCurrentTicks, args, callback, _commandId++);
-
-            // Force a checksum record the next tick.
-            _nextChecksumTick = tick + 1;
         }
 
         virtual void AddGameAction(uint32_t tick, const GameAction* action) override
@@ -158,9 +170,6 @@ namespace OpenRCT2
             auto ga = GameActions::Clone(action);
 
             _currentRecording->commands.emplace(gCurrentTicks, std::move(ga), _commandId++);
-
-            // Force a checksum record the next tick.
-            _nextChecksumTick = tick + 1;
         }
 
         void AddChecksum(uint32_t tick, rct_sprite_checksum&& checksum)
@@ -179,16 +188,7 @@ namespace OpenRCT2
                 rct_sprite_checksum checksum = sprite_checksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
 
-                if (_mode == ReplayMode::RECORDING)
-                {
-                    // Record checksums every ~200ms.
-                    _nextChecksumTick = gCurrentTicks + 5;
-                }
-                else
-                {
-                    // Wait for next command.
-                    _nextChecksumTick = 0;
-                }
+                _nextChecksumTick = gCurrentTicks + 1;
             }
 
             if (_mode == ReplayMode::RECORDING)
@@ -220,7 +220,7 @@ namespace OpenRCT2
                 ReplayCommands();
 
                 // If we run out of commands we can just stop
-                if (_currentReplay->commands.empty() && _nextChecksumTick == 0)
+                if (_currentReplay->commands.empty())
                 {
                     StopPlayback();
                     StopRecording();
@@ -284,19 +284,38 @@ namespace OpenRCT2
             _currentRecording->tickEnd = gCurrentTicks;
 
             // Serialise Body.
-            DataSerialiser serialiser(true);
-            Serialise(serialiser, *_currentRecording);
+            DataSerialiser recSerialiser(true);
+            Serialise(recSerialiser, *_currentRecording);
 
-            bool result = true;
+            const auto& stream = recSerialiser.GetStream();
+            unsigned long streamLength = static_cast<unsigned long>(stream.GetLength());
+            unsigned long compressLength = compressBound(streamLength);
+
+            MemoryStream data(compressLength);
+
+            ReplayRecordFile file{ _currentRecording->magic, _currentRecording->version, streamLength, data };
+
+            auto compressBuf = std::make_unique<unsigned char[]>(compressLength);
+            compress2(
+                compressBuf.get(), &compressLength, (unsigned char*)stream.GetData(), stream.GetLength(),
+                ReplayCompressionLevel);
+            file.data.Write(compressBuf.get(), compressLength);
+
+            DataSerialiser fileSerialiser(true);
+            fileSerialiser << file.magic;
+            fileSerialiser << file.version;
+            fileSerialiser << file.uncompressedSize;
+            fileSerialiser << file.data;
+
+            bool result = false;
 
             const std::string& outFile = _currentRecording->filePath;
 
             FILE* fp = fopen(outFile.c_str(), "wb");
             if (fp)
             {
-                const auto& stream = serialiser.GetStream();
-                fwrite(stream.GetData(), 1, stream.GetLength(), fp);
-
+                const auto& fileStream = fileSerialiser.GetStream();
+                fwrite(fileStream.GetData(), 1, fileStream.GetLength(), fp);
                 fclose(fp);
 
                 result = true;
@@ -460,6 +479,53 @@ namespace OpenRCT2
             {
                 case GAME_COMMAND_COUNT: // prevent default without case warning.
                     break;
+                case GAME_COMMAND_PLACE_TRACK:
+                {
+                    ride_id_t rideId = command.edx & 0xFF;
+                    int32_t trackType = (command.edx >> 8) & 0xFF;
+                    CoordsXYZD origin = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF),
+                                          (int32_t)(command.edi & 0xFFFF), (uint8_t)((command.ebx >> 8) & 0xFF) };
+                    int32_t brakeSpeed = (command.edi >> 16) & 0xFF;
+                    int32_t colour = (command.edi >> 24) & 0x0F;
+                    int32_t seatRotation = (command.edi >> 28) & 0x0F;
+                    int32_t liftHillAndAlternativeState = (command.edx >> 16);
+
+                    result.action = std::make_unique<TrackPlaceAction>(
+                        rideId, trackType, origin, brakeSpeed, colour, seatRotation, liftHillAndAlternativeState);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_SET_RIDE_SETTING:
+                {
+                    ride_id_t rideId = command.edx & 0xFF;
+                    RideSetSetting setting = static_cast<RideSetSetting>((command.edx >> 8) & 0xFF);
+                    uint8_t value = (command.ebx >> 8) & 0xFF;
+
+                    result.action = std::make_unique<RideSetSettingAction>(rideId, setting, value);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT:
+                {
+                    CoordsXY loc = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF) };
+                    Direction direction = (command.ebx >> 8) & 0xFF;
+                    ride_id_t rideId = command.edx & 0xFF;
+                    uint8_t stationNum = command.edi & 0xFF;
+                    bool isExit = ((command.edx >> 8) & 0xFF) != 0;
+                    result.action = std::make_unique<RideEntranceExitPlaceAction>(loc, direction, rideId, stationNum, isExit);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_PLACE_PATH:
+                {
+                    CoordsXYZ loc = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF),
+                                      (int32_t)(command.edx & 0xFF) * 8 };
+                    uint8_t slope = (command.ebx >> 8) & 0xFF;
+                    uint8_t type = (command.edx >> 8) & 0xFF;
+                    result.action = std::make_unique<FootpathPlaceAction>(loc, slope, type);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
                 default:
                     throw std::runtime_error("Deprecated game command requires replay translation.");
             }
@@ -556,10 +622,42 @@ namespace OpenRCT2
             return true;
         }
 
+        /**
+         * Returns true if decompression was not needed or succeeded
+         * @param stream
+         * @return
+         */
+        bool TryDecompress(MemoryStream& stream)
+        {
+            ReplayRecordFile recFile;
+            stream.SetPosition(0);
+            DataSerialiser fileSerializer(false, stream);
+            fileSerializer << recFile.magic;
+            fileSerializer << recFile.version;
+
+            if (recFile.version >= 2)
+            {
+                fileSerializer << recFile.uncompressedSize;
+                fileSerializer << recFile.data;
+
+                auto buff = std::make_unique<unsigned char[]>(recFile.uncompressedSize);
+                unsigned long outSize = recFile.uncompressedSize;
+                uncompress(
+                    (unsigned char*)buff.get(), &outSize, (unsigned char*)recFile.data.GetData(), recFile.data.GetLength());
+                if (outSize != recFile.uncompressedSize)
+                {
+                    return false;
+                }
+                stream.SetPosition(0);
+                stream.Write(buff.get(), outSize);
+            }
+
+            return true;
+        }
+
         bool ReadReplayData(const std::string& file, ReplayRecordData& data)
         {
             MemoryStream stream;
-            DataSerialiser serialiser(false, stream);
 
             std::string fileName = file;
             if (fileName.size() < 5 || fileName.substr(fileName.size() - 5) != ".sv6r")
@@ -584,8 +682,11 @@ namespace OpenRCT2
             if (!loaded)
                 return false;
 
-            stream.SetPosition(0);
+            if (!TryDecompress(stream))
+                return false;
 
+            stream.SetPosition(0);
+            DataSerialiser serialiser(false, stream);
             if (!Serialise(serialiser, data))
             {
                 return false;
@@ -671,6 +772,14 @@ namespace OpenRCT2
             return true;
         }
 
+        bool Compatible(ReplayRecordData& data)
+        {
+            if (data.version == 1 && ReplayVersion == 2)
+                return true;
+
+            return false;
+        }
+
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)
         {
             serialiser << data.magic;
@@ -680,7 +789,7 @@ namespace OpenRCT2
                 return false;
             }
             serialiser << data.version;
-            if (data.version != ReplayVersion)
+            if (data.version != ReplayVersion && !Compatible(data))
             {
                 log_error("Invalid version detected %04X, expected: %04X", data.version, ReplayVersion);
                 return false;
@@ -746,6 +855,9 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         void CheckState()
         {
+            if (_nextChecksumTick != gCurrentTicks)
+                return;
+
             uint32_t checksumIndex = _currentReplay->checksumIndex;
 
             if (checksumIndex >= _currentReplay->checksums.size())
@@ -757,10 +869,12 @@ namespace OpenRCT2
                 rct_sprite_checksum checksum = sprite_checksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
+                    uint32_t replayTick = gCurrentTicks - _currentReplay->tickStart;
+
                     // Detected different game state.
-                    log_verbose(
-                        "Different sprite checksum at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
-                        savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
+                    log_warning(
+                        "Different sprite checksum at tick %u (Replay Tick: %u) ; Saved: %s, Current: %s", gCurrentTicks,
+                        replayTick, savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
 
                     _faultyChecksumIndex = checksumIndex;
                 }

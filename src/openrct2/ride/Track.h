@@ -35,7 +35,7 @@ struct rct_preview_track
     int16_t y;     // 0x03
     int16_t z;     // 0x05
     uint8_t var_07;
-    uint8_t var_08;
+    QuarterTile var_08;
     uint8_t var_09;
 };
 
@@ -521,8 +521,6 @@ struct track_circuit_iterator
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
-extern uint8_t gTrackGroundFlags;
-
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 
 const rct_preview_track* get_track_def_from_ride(Ride* ride, int32_t trackType);
@@ -545,7 +543,9 @@ int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank);
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank);
 int32_t track_get_actual_bank_3(rct_vehicle* vehicle, TileElement* tileElement);
 
-void game_command_place_track(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
+bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
+
 void game_command_remove_track(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 

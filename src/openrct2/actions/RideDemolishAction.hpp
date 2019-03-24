@@ -25,6 +25,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 #include "MazeSetTrackAction.hpp"
+#include "TrackRemoveAction.hpp"
 
 using namespace OpenRCT2;
 
@@ -56,7 +57,7 @@ public:
         Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid game command for ride %u", _rideIndex);
+            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
@@ -90,7 +91,7 @@ public:
             }
 
             result->ErrorTitle = STR_CANT_REFURBISH_RIDE;
-            result->Cost = GetRefurbishPrice();
+            result->Cost = GetRefurbishPrice(ride);
         }
 
         return result;
@@ -101,7 +102,7 @@ public:
         Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid game command for ride %u", _rideIndex);
+            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
@@ -123,10 +124,10 @@ private:
 
         ride_clear_for_construction(ride);
         ride_remove_peeps(ride);
-        ride_stop_peeps_queuing(_rideIndex);
+        ride_stop_peeps_queuing(ride);
 
-        sub_6CB945(_rideIndex);
-        ride_clear_leftover_entrances(_rideIndex);
+        sub_6CB945(ride);
+        ride_clear_leftover_entrances(ride);
         news_item_disable_news(NEWS_ITEM_RIDE, _rideIndex);
 
         for (auto& banner : gBanners)
@@ -139,7 +140,7 @@ private:
         }
 
         uint16_t spriteIndex;
-        rct_peep* peep;
+        Peep* peep;
         FOR_ALL_GUESTS (spriteIndex, peep)
         {
             uint8_t ride_id_bit = _rideIndex % 8;
@@ -264,14 +265,10 @@ private:
         auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
-        auto queryRes = setMazeTrack.Query();
-        if (queryRes->Error == GA_ERROR::OK)
+        auto execRes = GameActions::ExecuteNested(&setMazeTrack);
+        if (execRes->Error == GA_ERROR::OK)
         {
-            auto execRes = setMazeTrack.Execute();
-            if (execRes->Error == GA_ERROR::OK)
-            {
-                return execRes->Cost;
-            }
+            return execRes->Cost;
         }
 
         return MONEY32_UNDEFINED;
@@ -303,14 +300,20 @@ private:
 
             if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
             {
-                money32 removePrice = game_do_command(
-                    x, GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8), y,
-                    type | (it.element->AsTrack()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_TRACK, z, 0);
+                auto trackRemoveAction = TrackRemoveAction(
+                    type, it.element->AsTrack()->GetSequenceIndex(), { x, y, z, rotation });
+                trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_5);
 
-                if (removePrice == MONEY32_UNDEFINED)
+                auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
+
+                if (removRes->Error != GA_ERROR::OK)
+                {
                     tile_element_remove(it.element);
+                }
                 else
-                    refundPrice += removePrice;
+                {
+                    refundPrice += removRes->Cost;
+                }
 
                 tile_element_iterator_restart_for_tile(&it);
                 continue;
@@ -344,7 +347,7 @@ private:
     {
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        res->Cost = GetRefurbishPrice();
+        res->Cost = GetRefurbishPrice(ride);
 
         ride_renew(ride);
 
@@ -367,13 +370,13 @@ private:
         return res;
     }
 
-    money32 GetRefurbishPrice() const
+    money32 GetRefurbishPrice(const Ride* ride) const
     {
-        return -GetRefundPrice() / 2;
+        return -GetRefundPrice(ride) / 2;
     }
 
-    money32 GetRefundPrice() const
+    money32 GetRefundPrice(const Ride* ride) const
     {
-        return ride_get_refund_price(_rideIndex);
+        return ride_get_refund_price(ride);
     }
 };

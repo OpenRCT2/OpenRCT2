@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../OpenRCT2.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -65,6 +66,39 @@ money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_TYPE_CO
 uint8_t gCommandExpenditureType;
 
 /**
+ * Checks the condition if the game is required to use money.
+ * @param flags game command flags.
+ */
+bool finance_check_money_required(uint32_t flags)
+{
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+        return false;
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+        return false;
+    if (flags & GAME_COMMAND_FLAG_5)
+        return false;
+    if (flags & GAME_COMMAND_FLAG_GHOST)
+        return false;
+    return true;
+}
+
+/**
+ * Checks if enough money is available.
+ * @param cost.
+ * @param flags game command flags.
+ */
+bool finance_check_affordability(money32 cost, uint32_t flags)
+{
+    if (cost <= 0)
+        return true;
+    if (finance_check_money_required(flags) == false)
+        return true;
+    if (cost > gCash)
+        return false;
+    return true;
+}
+
+/**
  * Pay an amount of money.
  *  rct2: 0x069C674
  * @param amount (eax)
@@ -92,7 +126,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
  */
 void finance_pay_wages()
 {
-    rct_peep* peep;
+    Peep* peep;
     uint16_t spriteIndex;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -239,7 +273,7 @@ void finance_update_daily_profit()
     {
         // Staff costs
         uint16_t sprite_index;
-        rct_peep* peep;
+        Peep* peep;
 
         FOR_ALL_STAFF (sprite_index, peep)
         {

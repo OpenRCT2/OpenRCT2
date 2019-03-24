@@ -28,7 +28,7 @@ public:
     static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
 
     uint8_t* GetData();
-    int32_t GetCommand();
+    int32_t GetCommand() const;
 
     void Clear();
     bool CommandRequiresAuth();
@@ -47,7 +47,9 @@ public:
         }
         else
         {
-            value = ByteSwapBE(*((T*)&GetData()[BytesRead]));
+            T local;
+            std::memcpy(&local, &GetData()[BytesRead], sizeof(local));
+            value = ByteSwapBE(local);
             BytesRead += sizeof(value);
         }
         return *this;

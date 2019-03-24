@@ -198,7 +198,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         }
     }
 
-    if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST)
+    if (tile_element->IsGhost())
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         dword_141F710 = CONSTRUCTION_MARKER;
@@ -401,7 +401,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         session, frameNum, sceneryEntry, dword_141F710, imageColourFlags, dword_141F718, tertiaryColour, imageOffset, offset,
         bounds, boundsOffset);
 
-    if (sceneryEntry->wall.scrolling_mode == 0xFF)
+    if (sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
     {
         return;
     }

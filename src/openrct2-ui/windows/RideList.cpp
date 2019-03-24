@@ -451,10 +451,11 @@ static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex,
         return;
 
     // Open ride window
-    ride_id_t rideIndex = w->list_item_positions[index];
+    auto rideIndex = w->list_item_positions[index];
+    auto ride = get_ride(rideIndex);
     if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
     {
-        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         window_ride_list_refresh_list(w);
     }
     else
@@ -616,7 +617,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         switch (_window_ride_list_information_type)
         {
             case INFORMATION_TYPE_STATUS:
-                ride_get_status(w->list_item_positions[i], &formatSecondary, &argument);
+                ride_get_status(ride, &formatSecondary, &argument);
                 set_format_arg(2, int32_t, argument);
                 break;
             case INFORMATION_TYPE_POPULARITY:
@@ -787,7 +788,7 @@ void window_ride_list_refresh_list(rct_window* w)
     FOR_ALL_RIDES (i, ride)
     {
         if (w->page != gRideClassifications[ride->type]
-            || (ride->status == RIDE_STATUS_CLOSED && !ride_has_any_track_elements(i)))
+            || (ride->status == RIDE_STATUS_CLOSED && !ride_has_any_track_elements(ride)))
             continue;
 
         if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST)
@@ -972,7 +973,7 @@ static void window_ride_list_close_all(rct_window* w)
             continue;
         if (ride->status == RIDE_STATUS_CLOSED)
             continue;
-        ride_set_status(i, RIDE_STATUS_CLOSED);
+        ride_set_status(ride, RIDE_STATUS_CLOSED);
     }
 }
 
@@ -987,6 +988,6 @@ static void window_ride_list_open_all(rct_window* w)
             continue;
         if (ride->status == RIDE_STATUS_OPEN)
             continue;
-        ride_set_status(i, RIDE_STATUS_OPEN);
+        ride_set_status(ride, RIDE_STATUS_OPEN);
     }
 }

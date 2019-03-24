@@ -27,6 +27,7 @@
 #include <ctime>
 #include <iterator>
 #include <memory>
+#include <string>
 
 #ifdef USE_BREAKPAD
 #    define IMPLIES_SILENT_BREAKPAD ", implies --silent-breakpad"
@@ -36,9 +37,9 @@
 
 #ifndef DISABLE_NETWORK
 int32_t gNetworkStart = NETWORK_MODE_NONE;
-char gNetworkStartHost[128];
+std::string gNetworkStartHost;
 int32_t gNetworkStartPort = NETWORK_DEFAULT_PORT;
-char* gNetworkStartAddress = nullptr;
+std::string gNetworkStartAddress;
 
 static uint32_t _port = 0;
 static char* _address = nullptr;
@@ -304,7 +305,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
 
     gNetworkStart = NETWORK_MODE_SERVER;
     gNetworkStartPort = _port;
-    gNetworkStartAddress = _address;
+    gNetworkStartAddress = String::ToStd(_address);
 
     return EXITCODE_CONTINUE;
 }
@@ -326,7 +327,7 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator* enumerator)
 
     gNetworkStart = NETWORK_MODE_CLIENT;
     gNetworkStartPort = _port;
-    String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname);
+    gNetworkStartHost = hostname;
     return EXITCODE_CONTINUE;
 }
 
