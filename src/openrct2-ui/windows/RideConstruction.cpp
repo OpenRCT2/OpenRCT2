@@ -1654,8 +1654,8 @@ static void window_ride_construction_dropdown(rct_window* w, rct_widgetindex wid
     _currentTrackCurve = trackPiece | 0x100;
     window_ride_construction_update_active_elements();
 }
-static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActionResult* result);
-static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActionResult* result);
+static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result);
+static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result);
 static void CloseConstructWindowOnCompletion(Ride* ride);
 
 static void CloseConstructWindowOnCompletion(Ride* ride)
@@ -1677,7 +1677,7 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
     }
 }
 
-static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActionResult* result)
+static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result)
 {
     if (result->Error != GA_ERROR::OK)
     {
@@ -1724,7 +1724,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
     CloseConstructWindowOnCompletion(ride);
 }
 
-static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActionResult* result)
+static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result)
 {
     if (result->Error != GA_ERROR::OK)
     {
@@ -1791,7 +1791,6 @@ static void window_ride_construction_construct(rct_window* w)
     auto trackPlaceAction = TrackPlaceAction(
         rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, (properties)&0xFF, (properties >> 8) & 0x0F,
         (properties >> 12) & 0x0F, liftHillAndAlternativeState);
-
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         trackPlaceAction.SetCallback(RideConstructPlacedBackwardGameActionCallback);
@@ -1815,7 +1814,7 @@ static void window_ride_construction_construct(rct_window* w)
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
     }
 
-    if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
+    if (dynamic_cast<TrackPlaceActionResult*>(res.get())->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
     {
         viewport_set_visibility(1);
     }

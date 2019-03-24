@@ -205,6 +205,7 @@ public:
     std::string ServerProviderWebsite;
 
 private:
+    void DecayCooldown(NetworkPlayer* player);
     void CloseConnection();
 
     bool ProcessConnection(NetworkConnection& connection);
@@ -316,6 +317,8 @@ private:
     uint8_t default_group = 0;
     uint32_t _commandId;
     uint32_t _actionId;
+    uint32_t _lastUpdateTime = 0;
+    uint32_t _currentDeltaTime = 0;
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;
@@ -453,6 +456,21 @@ void Network::Close()
         gfx_invalidate_screen();
 
         _requireClose = false;
+    }
+}
+
+void Network::DecayCooldown(NetworkPlayer* player)
+{
+    if (player == nullptr)
+        return; // No valid connection yet.
+
+    for (auto it = std::begin(player->CooldownTime); it != std::end(player->CooldownTime);)
+    {
+        it->second -= _currentDeltaTime;
+        if (it->second <= 0)
+            it = player->CooldownTime.erase(it);
+        else
+            it++;
     }
 }
 
@@ -676,6 +694,11 @@ void Network::Update()
 {
     _closeLock = true;
 
+    // Update is not necessarily called per game tick, maintain our own delta time
+    uint32_t ticks = platform_get_ticks();
+    _currentDeltaTime = std::max<uint32_t>(ticks - _lastUpdateTime, 1);
+    _lastUpdateTime = ticks;
+
     switch (GetMode())
     {
         case NETWORK_MODE_SERVER:
@@ -721,6 +744,7 @@ void Network::UpdateServer()
         }
         else
         {
+            DecayCooldown((*it)->Player);
             it++;
         }
     }
@@ -2780,58 +2804,29 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     uint32_t tick;
     uint32_t actionType;
 
-    if (!connection.Player)
+    NetworkPlayer* player = connection.Player;
+    if (player == nullptr)
     {
         return;
     }
 
     packet >> tick >> actionType;
 
-    // tick count is different by time last_action_time is set, keep same value
+    // Don't let clients send pause or quit
+    if (actionType == GAME_COMMAND_TOGGLE_PAUSE || actionType == GAME_COMMAND_LOAD_OR_QUIT)
+    {
+        return;
+    }
+
     // Check if player's group permission allows command to run
-    uint32_t ticks = platform_get_ticks();
     NetworkGroup* group = GetGroupByID(connection.Player->Group);
-    if (!group || !group->CanPerformCommand(actionType))
+    if (group == nullptr || group->CanPerformCommand(actionType) == false)
     {
         Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
         return;
     }
 
-    // In case someone modifies the code / memory to enable cluster build,
-    // require a small delay in between placing scenery to provide some security, as
-    // cluster mode is a for loop that runs the place_scenery code multiple times.
-    if (actionType == GAME_COMMAND_PLACE_SCENERY)
-    {
-        if (ticks - connection.Player->LastPlaceSceneryTime < ACTION_COOLDOWN_TIME_PLACE_SCENERY &&
-            // Incase platform_get_ticks() wraps after ~49 days, ignore larger logged times.
-            ticks > connection.Player->LastPlaceSceneryTime)
-        {
-            if (!(group->CanPerformCommand(MISC_COMMAND_TOGGLE_SCENERY_CLUSTER)))
-            {
-                Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
-                return;
-            }
-        }
-    }
-    // This is to prevent abuse of demolishing rides. Anyone that is not the server
-    // host will have to wait a small amount of time in between deleting rides.
-    else if (actionType == GAME_COMMAND_DEMOLISH_RIDE)
-    {
-        if (ticks - connection.Player->LastDemolishRideTime < ACTION_COOLDOWN_TIME_DEMOLISH_RIDE &&
-            // Incase platform_get_ticks()() wraps after ~49 days, ignore larger logged times.
-            ticks > connection.Player->LastDemolishRideTime)
-        {
-            Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
-            return;
-        }
-    }
-    // Don't let clients send pause or quit
-    else if (actionType == GAME_COMMAND_TOGGLE_PAUSE || actionType == GAME_COMMAND_LOAD_OR_QUIT)
-    {
-        return;
-    }
-
-    // Run game command, and if it is successful send to clients
+    // Create and enqueue the action.
     GameAction::Ptr ga = GameActions::Create(actionType);
     if (ga == nullptr)
     {
@@ -2839,6 +2834,26 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
             "Received unregistered game action type: 0x%08X from player: (%d) %s", actionType, connection.Player->Id,
             connection.Player->Name.c_str());
         return;
+    }
+
+    // Player who is hosting is not affected by cooldowns.
+    if ((player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) == 0)
+    {
+        auto cooldownIt = player->CooldownTime.find(actionType);
+        if (cooldownIt != std::end(player->CooldownTime))
+        {
+            if (cooldownIt->second > 0)
+            {
+                Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_NETWORK_ACTION_RATE_LIMIT_MESSAGE);
+                return;
+            }
+        }
+
+        uint32_t cooldownTime = ga->GetCooldownTime();
+        if (cooldownTime > 0)
+        {
+            player->CooldownTime[actionType] = cooldownTime;
+        }
     }
 
     DataSerialiser stream(false);

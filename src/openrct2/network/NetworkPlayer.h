@@ -15,6 +15,7 @@
 #include "../world/Sprite.h"
 
 #include <string>
+#include <unordered_map>
 
 class NetworkPacket;
 
@@ -36,7 +37,7 @@ public:
     std::string KeyHash;
     uint32_t LastDemolishRideTime = 0;
     uint32_t LastPlaceSceneryTime = 0;
-
+    std::unordered_map<uint32_t, int32_t> CooldownTime;
     NetworkPlayer() = default;
 
     void SetName(const std::string& name);

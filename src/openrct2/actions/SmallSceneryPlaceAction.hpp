@@ -49,6 +49,11 @@ public:
     {
     }
 
+    uint32_t GetCooldownTime() const override
+    {
+        return 20;
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();
