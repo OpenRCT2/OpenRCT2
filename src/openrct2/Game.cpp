@@ -409,7 +409,7 @@ int32_t game_do_command_p(
 
     // Remove ghost scenery so it doesn't interfere with incoming network command
     if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST)
-        && (command == GAME_COMMAND_PLACE_WALL || command == GAME_COMMAND_PLACE_SCENERY
+        && (command == GAME_COMMAND_PLACE_SCENERY
             || command == GAME_COMMAND_PLACE_LARGE_SCENERY || command == GAME_COMMAND_PLACE_BANNER
             || command == GAME_COMMAND_PLACE_PATH))
     {
@@ -611,8 +611,7 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
         network_append_server_log(log_msg);
     }
-    else if (
-        command == GAME_COMMAND_PLACE_WALL || command == GAME_COMMAND_PLACE_LARGE_SCENERY
+    else if (command == GAME_COMMAND_PLACE_LARGE_SCENERY
         || command == GAME_COMMAND_PLACE_BANNER)
     {
         uint8_t flags = *ebx & 0xFF;
@@ -1284,7 +1283,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_maze_track,
     game_command_set_park_entrance_fee,
     nullptr,
-    game_command_place_wall,
+    nullptr,
     nullptr,
     game_command_place_large_scenery,
     nullptr,

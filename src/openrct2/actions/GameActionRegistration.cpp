@@ -62,6 +62,7 @@
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "TrackSetBrakeSpeedAction.hpp"
+#include "WallPlaceAction.hpp"
 #include "WallRemoveAction.hpp"
 #include "WaterLowerAction.hpp"
 #include "WaterRaiseAction.hpp"
@@ -110,6 +111,7 @@ namespace GameActions
         Register<StaffSetCostumeAction>();
         Register<StaffSetPatrolAreaAction>();
         Register<SurfaceSetStyleAction>();
+        Register<WallPlaceAction>();
         Register<WallRemoveAction>();
         Register<SmallSceneryPlaceAction>();
         Register<SmallSceneryRemoveAction>();
