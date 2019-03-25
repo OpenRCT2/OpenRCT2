@@ -32,8 +32,8 @@ DEFINE_GAME_ACTION(LandSmoothAction, GAME_COMMAND_EDIT_LAND_SMOOTH, GameActionRe
 private:
     CoordsXY _coords;
     MapRange _range;
-    uint8_t _selectionType;
-    bool _isLowering;
+    uint8_t _selectionType{ 0 };
+    bool _isLowering{ false };
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_LOWER_LAND_HERE, STR_CANT_RAISE_LAND_HERE };
 
@@ -72,13 +72,6 @@ public:
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
-    {
-        auto res = MakeResult();
-
-        return res;
-    }
-
     GameActionResult::Ptr SmoothLandTile(int32_t direction, bool isExecuting, int32_t x, int32_t y, TileElement* surfaceElement)
         const
     {
@@ -345,7 +338,6 @@ private:
 
     GameActionResult::Ptr SmoothLand(bool isExecuting) const
     {
-        // break up information in command
         const bool raiseLand = !_isLowering;
         const int32_t selectionType = _selectionType;
         const int32_t heightOffset = raiseLand ? 2 : -2;
@@ -358,11 +350,11 @@ private:
         auto b = std::clamp(normRange.GetBottom(), 0, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
         auto validRange = MapRange{ l, t, r, b };
 
-        // Play sound (only once)
         int32_t centreZ = tile_element_height(_coords.x, _coords.y) & 0xFFFF;
 
         auto res = MakeResult();
         res->ErrorTitle = _ErrorTitles[_isLowering ? 0 : 1];
+        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Position = { _coords.x, _coords.y, centreZ };
 
         // Do the smoothing
@@ -615,6 +607,9 @@ private:
                     isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, 32, -32, 3, 1);
                 break;
             }
+            default:
+                log_error("Invalid map selection %u", _selectionType);
+                return MakeResult(GA_ERROR::INVALID_PARAMETERS, res->ErrorTitle);
         } // switch selectionType
 
         // Raise / lower the land tool selection area
@@ -640,10 +635,7 @@ private:
         {
             audio_play_sound_at_location(SOUND_PLACE_ITEM, _coords.x, _coords.y, centreZ);
         }
-        res->Cost += res->Cost;
-
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-
+        res->Cost += result->Cost;
         return res;
     }
 };
