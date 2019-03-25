@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -363,21 +363,27 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 auto handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
                 auto stream = (IStream*)handle->Stream;
                 auto hintPath = String::ToStd(handle->HintPath);
-
                 bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
-                auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-                auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
-                auto result = parkImporter->LoadFromStream(stream, isScenario);
-                objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
-                parkImporter->Import();
+                try
+                {
+                    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+                    auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
+                    auto result = parkImporter->LoadFromStream(stream, isScenario);
+                    objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                    parkImporter->Import();
 
-                if (isScenario)
-                    scenario_begin();
-                else
-                    game_load_init();
+                    if (isScenario)
+                        scenario_begin();
+                    else
+                        game_load_init();
 
-                TitleSequenceCloseParkHandle(handle);
-                window_title_editor_open(WINDOW_TITLE_EDITOR_TAB_SAVES);
+                    TitleSequenceCloseParkHandle(handle);
+                    window_title_editor_open(WINDOW_TITLE_EDITOR_TAB_SAVES);
+                }
+                catch (const std::exception&)
+                {
+                    context_show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
+                }
             }
             break;
 

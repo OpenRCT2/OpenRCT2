@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -672,7 +672,7 @@ public:
                         mapLoc.x, mapLoc.y, baseZ, _origin.direction, _rideIndex, GAME_COMMAND_FLAG_APPLY);
                 }
                 sub_6CB945(ride);
-                ride_update_max_vehicles(ride);
+                ride->UpdateMaxVehicles();
             }
 
             if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)

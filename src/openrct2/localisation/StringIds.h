@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -3932,6 +3932,8 @@ enum
     STR_COPY_SELECTED_TIP = 6301,
     STR_COPY_ALL_TIP = 6302,
     STR_DOWNLOADING_OBJECTS = 6303,
+
+    STR_SHORTCUT_OPEN_SCENERY_PICKER = 6304,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

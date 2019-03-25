@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -334,7 +335,8 @@ public:
         gMapSizeMinus2 = _s6.map_size_minus_2;
         gMapSize = _s6.map_size;
         gMapSizeMaxXY = _s6.map_max_xy;
-        gSamePriceThroughoutParkA = _s6.same_price_throughout;
+        gSamePriceThroughoutPark = _s6.same_price_throughout
+            | (static_cast<uint64_t>(_s6.same_price_throughout_extended) << 32);
         _suggestedGuestMaximum = _s6.suggested_max_guests;
         gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
         gLastEntranceStyle = _s6.last_entrance_style;
@@ -346,7 +348,6 @@ public:
         gScenarioDetails = std::string_view(_s6.scenario_description, sizeof(_s6.scenario_description));
         gBankLoanInterestRate = _s6.current_interest_rate;
         // pad_0135934B
-        gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
         // Preserve compatibility with vanilla RCT2's save format.
         gParkEntrances.clear();
         for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
@@ -705,6 +706,20 @@ public:
             dst->track_colour[i].main = src->track_colour_main[i];
             dst->track_colour[i].additional = src->track_colour_additional[i];
             dst->track_colour[i].supports = src->track_colour_supports[i];
+        }
+        // This stall was not colourable in RCT2.
+        if (dst->type == RIDE_TYPE_FOOD_STALL)
+        {
+            auto entry = object_entry_get_entry(OBJECT_TYPE_RIDE, dst->subtype);
+            if (entry != nullptr)
+            {
+                char name[DAT_NAME_LENGTH + 1];
+                object_entry_get_name_fixed(name, sizeof(name), entry);
+                if (strncmp(name, "ICECR1  ", DAT_NAME_LENGTH) == 0)
+                {
+                    dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
+                }
+            }
         }
 
         dst->music = src->music;
@@ -1412,10 +1427,11 @@ void load_from_sv6(const char* path)
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
     }
-    catch (const IOException&)
+    catch (const IOException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s\n", loadError.what());
     }
     catch (const std::exception&)
     {
@@ -1443,15 +1459,17 @@ void load_from_sc6(const char* path)
         sprite_position_tween_reset();
         return;
     }
-    catch (const ObjectLoadException&)
+    catch (const ObjectLoadException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s\n", loadError.what());
     }
-    catch (const IOException&)
+    catch (const IOException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s\n", loadError.what());
     }
     catch (const std::exception&)
     {

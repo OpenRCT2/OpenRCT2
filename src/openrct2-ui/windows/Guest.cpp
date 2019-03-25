@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/GuestSetFlagsAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
@@ -636,8 +637,13 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             window_scroll_to_viewport(w);
             break;
         case WIDX_TRACK:
-            get_sprite(w->number)->peep.peep_flags ^= PEEP_FLAGS_TRACKING;
-            break;
+        {
+            uint32_t flags = peep->peep_flags ^ PEEP_FLAGS_TRACKING;
+
+            auto guestSetFlagsAction = GuestSetFlagsAction(w->number, flags);
+            GameActions::Execute(&guestSetFlagsAction);
+        }
+        break;
     }
 }
 
@@ -701,98 +707,38 @@ void window_guest_viewport_init(rct_window* w)
     if (w->page != WINDOW_GUEST_OVERVIEW)
         return;
 
-    union
+    auto peep = GET_PEEP(w->number);
+    if (peep != nullptr)
     {
-        sprite_focus sprite;
-        coordinate_focus coordinate;
-    } focus = {}; // The focus will be either a sprite or a coordinate.
-
-    focus.sprite.sprite_id = w->number;
-
-    Peep* peep = GET_PEEP(w->number);
-
-    if (peep->state == PEEP_STATE_PICKED)
-    {
-        focus.sprite.sprite_id = SPRITE_INDEX_NULL;
-    }
-    else
-    {
-        uint8_t final_check = 1;
-        if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE
-            || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
+        auto focus = viewport_update_smart_guest_follow(w, peep);
+        bool reCreateViewport = false;
+        uint16_t origViewportFlags{};
+        if (w->viewport != nullptr)
         {
-            Ride* ride = get_ride(peep->current_ride);
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
-            {
-                rct_vehicle* train = GET_VEHICLE(ride->vehicles[peep->current_train]);
-                int32_t car = peep->current_car;
+            // Check all combos, for now skipping y and rot
+            if (focus.coordinate.x == w->viewport_focus_coordinates.x
+                && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
+                && focus.coordinate.z == w->viewport_focus_coordinates.z
+                && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation)
+                return;
 
-                for (; car != 0; car--)
-                {
-                    train = GET_VEHICLE(train->next_vehicle_on_train);
-                }
+            origViewportFlags = w->viewport->flags;
 
-                focus.sprite.sprite_id = train->sprite_index;
-                final_check = 0;
-            }
+            reCreateViewport = true;
+            w->viewport->width = 0;
+            w->viewport = nullptr;
         }
-        if (peep->x == LOCATION_NULL && final_check)
+
+        window_event_invalidate_call(w);
+
+        w->viewport_focus_coordinates.x = focus.coordinate.x;
+        w->viewport_focus_coordinates.y = focus.coordinate.y;
+        w->viewport_focus_coordinates.z = focus.coordinate.z;
+        w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
+
+        if (peep->state != PEEP_STATE_PICKED && w->viewport == nullptr)
         {
-            Ride* ride = get_ride(peep->current_ride);
-            int32_t x = ride->overall_view.x * 32 + 16;
-            int32_t y = ride->overall_view.y * 32 + 16;
-            int32_t height = tile_element_height(x, y);
-            height += 32;
-            focus.coordinate.x = x;
-            focus.coordinate.y = y;
-            focus.coordinate.z = height;
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
-        }
-        else
-        {
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-            focus.sprite.pad_486 &= 0xFFFF;
-        }
-        focus.coordinate.rotation = get_current_rotation();
-    }
-
-    uint16_t viewport_flags;
-
-    if (w->viewport)
-    {
-        // Check all combos, for now skipping y and rot
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x
-            && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
-            && focus.coordinate.z == w->viewport_focus_coordinates.z
-            && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation)
-            return;
-
-        viewport_flags = w->viewport->flags;
-        w->viewport->width = 0;
-        w->viewport = nullptr;
-    }
-    else
-    {
-        viewport_flags = 0;
-        if (gConfigGeneral.always_show_gridlines)
-        {
-            viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
-        }
-    }
-
-    window_event_invalidate_call(w);
-
-    w->viewport_focus_coordinates.x = focus.coordinate.x;
-    w->viewport_focus_coordinates.y = focus.coordinate.y;
-    w->viewport_focus_coordinates.z = focus.coordinate.z;
-    w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
-
-    if (peep->state != PEEP_STATE_PICKED)
-    {
-        if (!(w->viewport))
-        {
-            rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
-
+            auto view_widget = &w->widgets[WIDX_VIEWPORT];
             int32_t x = view_widget->left + 1 + w->x;
             int32_t y = view_widget->top + 1 + w->y;
             int32_t width = view_widget->right - view_widget->left - 1;
@@ -801,15 +747,15 @@ void window_guest_viewport_init(rct_window* w)
             viewport_create(
                 w, x, y, width, height, 0, focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, focus.coordinate.z,
                 focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
-
+            if (w->viewport != nullptr && reCreateViewport)
+            {
+                w->viewport->flags = origViewportFlags;
+            }
             w->flags |= WF_NO_SCROLLING;
             window_invalidate(w);
         }
+        window_invalidate(w);
     }
-
-    if (w->viewport)
-        w->viewport->flags = viewport_flags;
-    window_invalidate(w);
 }
 
 /**

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -317,4 +317,6 @@ const uint16_t KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] = {
     SHORTCUT_UNDEFINED,                       // SHORTCUT_VIEW_CLIPPING
     SDL_SCANCODE_I,                           // SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE
     SHORTCUT_UNDEFINED,                       // SHORTCUT_TILE_INSPECTOR
+    SHORTCUT_UNDEFINED,                       // SHORTCUT_ADVANCE_TO_NEXT_TICK
+    SHORTCUT_UNDEFINED,                       // SHORTCUT_SCENERY_PICKER
 };

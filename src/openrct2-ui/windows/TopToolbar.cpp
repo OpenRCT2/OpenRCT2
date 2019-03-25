@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,9 +27,14 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
+#include <openrct2/actions/LandLowerAction.hpp>
+#include <openrct2/actions/LandRaiseAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
+#include <openrct2/actions/SurfaceSetStyleAction.hpp>
+#include <openrct2/actions/WaterLowerAction.hpp>
+#include <openrct2/actions/WaterRaiseAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
@@ -132,11 +137,7 @@ enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
 
 enum TOP_TOOLBAR_DEBUG_DDIDX {
     DDIDX_CONSOLE = 0,
-    DDIDX_TILE_INSPECTOR = 1,
-    DDIDX_OBJECT_SELECTION = 2,
-    DDIDX_INVENTIONS_LIST = 3,
-    DDIDX_SCENARIO_OPTIONS = 4,
-    DDIDX_DEBUG_PAINT = 5,
+    DDIDX_DEBUG_PAINT = 1,
 
     TOP_TOOLBAR_DEBUG_COUNT
 };
@@ -148,9 +149,16 @@ enum TOP_TOOLBAR_NETWORK_DDIDX {
 
 enum {
     DDIDX_CHEATS,
-    DDIDX_ENABLE_SANDBOX_MODE = 2,
-    DDIDX_DISABLE_CLEARANCE_CHECKS,
-    DDIDX_DISABLE_SUPPORT_LIMITS
+    DDIDX_TILE_INSPECTOR = 1,
+    DDIDX_OBJECT_SELECTION = 2,
+    DDIDX_INVENTIONS_LIST = 3,
+    DDIDX_SCENARIO_OPTIONS = 4,
+    // 5 is a separator
+    DDIDX_ENABLE_SANDBOX_MODE = 6,
+    DDIDX_DISABLE_CLEARANCE_CHECKS = 7,
+    DDIDX_DISABLE_SUPPORT_LIMITS = 8,
+
+    TOP_TOOLBAR_CHEATS_COUNT
 };
 
 enum {
@@ -289,6 +297,8 @@ static void top_toolbar_init_fastforward_menu(rct_window* window, rct_widget* wi
 static void top_toolbar_fastforward_menu_dropdown(int16_t dropdownIndex);
 static void top_toolbar_init_rotate_menu(rct_window* window, rct_widget* widget);
 static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex);
+static void top_toolbar_init_cheats_menu(rct_window* window, rct_widget* widget);
+static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex);
 static void top_toolbar_init_debug_menu(rct_window* window, rct_widget* widget);
 static void top_toolbar_debug_menu_dropdown(int16_t dropdownIndex);
 static void top_toolbar_init_network_menu(rct_window* window, rct_widget* widget);
@@ -492,30 +502,7 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
 #endif
             break;
         case WIDX_CHEATS:
-            gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
-            gDropdownItemsFormat[1] = STR_EMPTY;
-            gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
-            gDropdownItemsFormat[3] = STR_TOGGLE_OPTION;
-            gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
-            gDropdownItemsArgs[0] = STR_CHEAT_TITLE;
-            gDropdownItemsArgs[2] = STR_ENABLE_SANDBOX_MODE;
-            gDropdownItemsArgs[3] = STR_DISABLE_CLEARANCE_CHECKS;
-            gDropdownItemsArgs[4] = STR_DISABLE_SUPPORT_LIMITS;
-            window_dropdown_show_text(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, 5);
-            if (gCheatsSandboxMode)
-            {
-                dropdown_set_checked(DDIDX_ENABLE_SANDBOX_MODE, true);
-            }
-            if (gCheatsDisableClearanceChecks)
-            {
-                dropdown_set_checked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
-            }
-            if (gCheatsDisableSupportLimits)
-            {
-                dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
-            }
-            gDropdownDefaultIndex = DDIDX_CHEATS;
+            top_toolbar_init_cheats_menu(w, widget);
             break;
         case WIDX_VIEW_MENU:
             top_toolbar_init_view_menu(w, widget);
@@ -644,26 +631,7 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
             }
             break;
         case WIDX_CHEATS:
-            switch (dropdownIndex)
-            {
-                case DDIDX_CHEATS:
-                    context_open_window(WC_CHEATS);
-                    break;
-                case DDIDX_ENABLE_SANDBOX_MODE:
-                    game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
-                    break;
-                case DDIDX_DISABLE_CLEARANCE_CHECKS:
-                    game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks,
-                        GAME_COMMAND_CHEAT, 0, 0);
-                    break;
-                case DDIDX_DISABLE_SUPPORT_LIMITS:
-                    game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits,
-                        GAME_COMMAND_CHEAT, 0, 0);
-                    break;
-            }
+            top_toolbar_cheats_menu_dropdown(dropdownIndex);
             break;
         case WIDX_VIEW_MENU:
             top_toolbar_view_menu_dropdown(dropdownIndex);
@@ -744,7 +712,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_CHAT].type = WWT_EMPTY;
     }
 
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
         window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
@@ -753,7 +721,6 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 
@@ -2331,16 +2298,21 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
             return;
 
-        money32 lower_cost = lower_water(
-            gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+        auto waterLowerAction = WaterLowerAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+        auto waterRaiseAction = WaterRaiseAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
-        money32 raise_cost = raise_water(
-            gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+        auto res = GameActions::Query(&waterLowerAction);
+        money32 lowerCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
 
-        if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost)
+        res = GameActions::Query(&waterRaiseAction);
+        money32 raiseCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+
+        if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
         {
-            gWaterToolRaiseCost = raise_cost;
-            gWaterToolLowerCost = lower_cost;
+            gWaterToolRaiseCost = raiseCost;
+            gWaterToolLowerCost = lowerCost;
             window_invalidate_by_class(WC_WATER);
         }
         return;
@@ -2422,16 +2394,21 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
     if (!state_changed)
         return;
 
-    money32 lower_cost = lower_water(
-        gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+    auto waterLowerAction = WaterLowerAction(
+        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+    auto waterRaiseAction = WaterRaiseAction(
+        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
-    money32 raise_cost = raise_water(
-        gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+    auto res = GameActions::Query(&waterLowerAction);
+    money32 lowerCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
 
-    if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost)
+    res = GameActions::Query(&waterRaiseAction);
+    money32 raiseCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+
+    if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
     {
-        gWaterToolRaiseCost = raise_cost;
-        gWaterToolLowerCost = lower_cost;
+        gWaterToolRaiseCost = raiseCost;
+        gWaterToolLowerCost = lowerCost;
         window_invalidate_by_class(WC_WATER);
     }
 }
@@ -2887,10 +2864,12 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
         case WIDX_LAND:
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
-                gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-                game_do_command(
-                    gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
-                    GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
+                auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                    gLandToolTerrainSurface, gLandToolTerrainEdge);
+
+                GameActions::Execute(&surfaceSetStyleAction);
+
                 gCurrentToolId = TOOL_UP_DOWN_ARROW;
             }
             break;
@@ -2927,7 +2906,13 @@ static money32 selection_raise_land(uint8_t flags)
     }
     else
     {
-        return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_RAISE_LAND, gMapSelectType, yBounds);
+        auto landRaiseAction = LandRaiseAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
+                                                     : GameActions::Query(&landRaiseAction);
+
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
 }
 
@@ -2953,7 +2938,13 @@ static money32 selection_lower_land(uint8_t flags)
     }
     else
     {
-        return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_LOWER_LAND, gMapSelectType, yBounds);
+        auto landLowerAction = LandLowerAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
+                                                     : GameActions::Query(&landLowerAction);
+
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
 }
 
@@ -3028,11 +3019,10 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
     {
         gInputDragLastY += dx;
 
-        gGameCommandErrorTitle = STR_CANT_RAISE_WATER_LEVEL_HERE;
+        auto waterRaiseAction = WaterRaiseAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+        GameActions::Execute(&waterRaiseAction);
 
-        game_do_command(
-            gMapSelectPositionA.x, 1, gMapSelectPositionA.y, dx, GAME_COMMAND_RAISE_WATER, gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
         gWaterToolRaiseCost = MONEY32_UNDEFINED;
         gWaterToolLowerCost = MONEY32_UNDEFINED;
 
@@ -3045,11 +3035,9 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
     {
         gInputDragLastY += dx;
 
-        gGameCommandErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
-
-        game_do_command(
-            gMapSelectPositionA.x, 1, gMapSelectPositionA.y, dx, GAME_COMMAND_LOWER_WATER, gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
+        auto waterLowerAction = WaterLowerAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+        GameActions::Execute(&waterLowerAction);
         gWaterToolRaiseCost = MONEY32_UNDEFINED;
         gWaterToolLowerCost = MONEY32_UNDEFINED;
 
@@ -3079,10 +3067,12 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             {
                 if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                 {
-                    gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-                    game_do_command(
-                        gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
-                        GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
+                    auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                        gLandToolTerrainSurface, gLandToolTerrainEdge);
+
+                    GameActions::Execute(&surfaceSetStyleAction);
+
                     // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
                     // cursor
                     gCurrentToolId = TOOL_CROSSHAIR;
@@ -3238,24 +3228,37 @@ static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex)
     }
 }
 
-static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
+static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[DDIDX_CONSOLE] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_CONSOLE] = STR_DEBUG_DROPDOWN_CONSOLE;
+    gDropdownItemsFormat[DDIDX_CHEATS] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_CHEATS] = STR_CHEAT_TITLE;
+
     gDropdownItemsFormat[DDIDX_TILE_INSPECTOR] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_TILE_INSPECTOR] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+
     gDropdownItemsFormat[DDIDX_OBJECT_SELECTION] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_OBJECT_SELECTION] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
+
     gDropdownItemsFormat[DDIDX_INVENTIONS_LIST] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_INVENTIONS_LIST] = STR_DEBUG_DROPDOWN_INVENTIONS_LIST;
+
     gDropdownItemsFormat[DDIDX_SCENARIO_OPTIONS] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_SCENARIO_OPTIONS] = STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS;
-    gDropdownItemsFormat[DDIDX_DEBUG_PAINT] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
+
+    gDropdownItemsFormat[5] = STR_EMPTY;
+
+    gDropdownItemsFormat[DDIDX_ENABLE_SANDBOX_MODE] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_ENABLE_SANDBOX_MODE] = STR_ENABLE_SANDBOX_MODE;
+
+    gDropdownItemsFormat[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_DISABLE_CLEARANCE_CHECKS;
+
+    gDropdownItemsFormat[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_DISABLE_SUPPORT_LIMITS;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
-        DROPDOWN_FLAG_STAY_OPEN, TOP_TOOLBAR_DEBUG_COUNT);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        TOP_TOOLBAR_CHEATS_COUNT);
 
     // Disable items that are not yet available in multiplayer
     if (network_get_mode() != NETWORK_MODE_NONE)
@@ -3263,6 +3266,80 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
         dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
         dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
     }
+
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        dropdown_set_disabled(DDIDX_CHEATS, true);
+        dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
+        dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
+        dropdown_set_disabled(DDIDX_SCENARIO_OPTIONS, true);
+        dropdown_set_disabled(DDIDX_ENABLE_SANDBOX_MODE, true);
+    }
+
+    if (gCheatsSandboxMode)
+    {
+        dropdown_set_checked(DDIDX_ENABLE_SANDBOX_MODE, true);
+    }
+    if (gCheatsDisableClearanceChecks)
+    {
+        dropdown_set_checked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
+    }
+    if (gCheatsDisableSupportLimits)
+    {
+        dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
+    }
+
+    if (!dropdown_is_disabled(DDIDX_CHEATS))
+        gDropdownDefaultIndex = DDIDX_CHEATS;
+    else
+        gDropdownDefaultIndex = DDIDX_TILE_INSPECTOR;
+}
+
+static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)
+{
+    switch (dropdownIndex)
+    {
+        case DDIDX_CHEATS:
+            context_open_window(WC_CHEATS);
+            break;
+        case DDIDX_TILE_INSPECTOR:
+            context_open_window(WC_TILE_INSPECTOR);
+            break;
+        case DDIDX_OBJECT_SELECTION:
+            window_close_all();
+            context_open_window(WC_EDITOR_OBJECT_SELECTION);
+            break;
+        case DDIDX_INVENTIONS_LIST:
+            context_open_window(WC_EDITOR_INVENTION_LIST);
+            break;
+        case DDIDX_SCENARIO_OPTIONS:
+            context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+            break;
+        case DDIDX_ENABLE_SANDBOX_MODE:
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
+            break;
+        case DDIDX_DISABLE_CLEARANCE_CHECKS:
+            game_do_command(
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks, GAME_COMMAND_CHEAT, 0,
+                0);
+            break;
+        case DDIDX_DISABLE_SUPPORT_LIMITS:
+            game_do_command(
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits, GAME_COMMAND_CHEAT, 0, 0);
+            break;
+    }
+}
+
+static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
+{
+    gDropdownItemsFormat[DDIDX_CONSOLE] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_CONSOLE] = STR_DEBUG_DROPDOWN_CONSOLE;
+    gDropdownItemsFormat[DDIDX_DEBUG_PAINT] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
+
+    window_dropdown_show_text(
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
+        DROPDOWN_FLAG_STAY_OPEN, TOP_TOOLBAR_DEBUG_COUNT);
 
     dropdown_set_checked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != nullptr);
 }
@@ -3293,19 +3370,6 @@ static void top_toolbar_debug_menu_dropdown(int16_t dropdownIndex)
                 console.Open();
                 break;
             }
-            case DDIDX_TILE_INSPECTOR:
-                context_open_window(WC_TILE_INSPECTOR);
-                break;
-            case DDIDX_OBJECT_SELECTION:
-                window_close_all();
-                context_open_window(WC_EDITOR_OBJECT_SELECTION);
-                break;
-            case DDIDX_INVENTIONS_LIST:
-                context_open_window(WC_EDITOR_INVENTION_LIST);
-                break;
-            case DDIDX_SCENARIO_OPTIONS:
-                context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
-                break;
             case DDIDX_DEBUG_PAINT:
                 if (window_find_by_class(WC_DEBUG_PAINT) == nullptr)
                 {

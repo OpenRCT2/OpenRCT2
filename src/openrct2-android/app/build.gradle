@@ -10,7 +10,7 @@ android {
         targetSdkVersion 25
 
         versionCode 2
-        versionName '0.2.1'
+        versionName '0.2.2'
 
         externalNativeBuild {
             cmake {
@@ -98,7 +98,7 @@ android.applicationVariants.all { variant ->
             into "$variant.mergeAssets.outputDir/data/title"
         }
         download {
-            src 'https://github.com/OpenRCT2/objects/releases/download/v1.0.9/objects.zip'
+            src 'https://github.com/OpenRCT2/objects/releases/download/v1.0.10/objects.zip'
             dest new File(buildDir, 'objects.zip')
         }
         copy {

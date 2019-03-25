@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../actions/FootpathPlaceFromTrackAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
@@ -1098,15 +1099,15 @@ static int32_t track_design_place_scenery(
                                 flags = 0;
                             }
 
-                            gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-                            cost = game_do_command(
-                                mapCoord.x, flags | (bh << 8), mapCoord.y, z | (entry_index << 8),
-                                GAME_COMMAND_PLACE_PATH_FROM_TRACK, 0, 0);
-
-                            if (cost == MONEY32_UNDEFINED)
-                            {
-                                cost = 0;
-                            }
+                            uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
+                            uint8_t edges = bh & 0xF;
+                            auto footpathPlaceAction = FootpathPlaceFromTrackAction(
+                                { mapCoord.x, mapCoord.y, z * 8 }, slope, entry_index, edges);
+                            footpathPlaceAction.SetFlags(flags);
+                            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
+                                                                       : GameActions::QueryNested(&footpathPlaceAction);
+                            // Ignore failures
+                            cost = res->Error == GA_ERROR::OK ? res->Cost : 0;
                         }
                         else
                         {
@@ -1661,7 +1662,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
     if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
     {
         sub_6CB945(ride);
-        ride_delete(ride);
+        ride->Delete();
     }
     return true;
 }
@@ -1994,7 +1995,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
         num_circuits = 1;
     }
     set_operating_setting_nested(ride->id, RideSetSetting::NumCircuits, num_circuits, flags);
-    ride_set_to_default_inspection_interval(ride);
+    ride->SetToDefaultInspectionInterval();
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = td6->version_and_colour_scheme & 3;
 
@@ -2299,7 +2300,7 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels)
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
     }
 
-    ride_delete(ride);
+    ride->Delete();
     track_design_preview_restore_map(mapBackup);
 }
 

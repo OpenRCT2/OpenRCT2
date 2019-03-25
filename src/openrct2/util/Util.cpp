@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -223,10 +223,10 @@ bool sse41_available()
 bool avx2_available()
 {
 #ifdef OPENRCT2_X86
-// For GCC and similar use the builtin function, as cpuid changed its semantics in
-// https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
-// which causes it to ignore subleafs, but the new function is unavailable on Ubuntu's
-// prehistoric toolchains
+    // For GCC and similar use the builtin function, as cpuid changed its semantics in
+    // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
+    // which causes it to ignore subleafs, but the new function is unavailable on
+    // Ubuntu 18.04's toolchains.
 #    if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
     return __builtin_cpu_supports("avx2");
 #    else
@@ -234,7 +234,15 @@ bool avx2_available()
     uint32_t regs[4] = { 0 };
     if (cpuid_x86(regs, 7))
     {
-        return (regs[1] & (1 << 5));
+        bool avxCPUSupport = (regs[1] & (1 << 5)) != 0;
+        if (avxCPUSupport)
+        {
+            // Need to check if OS also supports the register of xmm/ymm
+            // This check has to be conditional, otherwise INVALID_INSTRUCTION exception.
+            uint64_t xcrFeatureMask = _xgetbv(_XCR_XFEATURE_ENABLED_MASK);
+            avxCPUSupport = (xcrFeatureMask & 0x6) || false;
+        }
+        return avxCPUSupport;
     }
 #    endif
 #endif

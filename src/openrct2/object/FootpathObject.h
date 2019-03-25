@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@ class FootpathObject final : public Object
 private:
     rct_footpath_entry _legacyType = {};
     PathSurfaceEntry _pathSurfaceEntry = {};
+    PathSurfaceEntry _queueEntry = {};
     PathRailingsEntry _pathRailingsEntry = {};
 
 public:
@@ -33,6 +34,11 @@ public:
     PathSurfaceEntry* GetPathSurfaceEntry()
     {
         return &_pathSurfaceEntry;
+    }
+
+    PathSurfaceEntry* GetQueueEntry()
+    {
+        return &_queueEntry;
     }
 
     PathRailingsEntry* GetPathRailingsEntry()

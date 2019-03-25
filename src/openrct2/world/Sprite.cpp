@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -80,6 +80,10 @@ rct_sprite* try_get_sprite(size_t spriteIndex)
 
 rct_sprite* get_sprite(size_t sprite_idx)
 {
+    if (sprite_idx == SPRITE_INDEX_NULL)
+    {
+        return nullptr;
+    }
     openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
     return &_spriteList[sprite_idx];
 }
@@ -247,7 +251,10 @@ rct_sprite_checksum sprite_checksum()
                 && sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_MISC)
             {
                 auto copy = *sprite;
+
+                // Only required for rendering/invalidation, has no meaning to the game state.
                 copy.generic.sprite_left = copy.generic.sprite_right = copy.generic.sprite_top = copy.generic.sprite_bottom = 0;
+                copy.generic.sprite_width = copy.generic.sprite_height_negative = copy.generic.sprite_height_positive = 0;
 
                 if (copy.generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
                 {

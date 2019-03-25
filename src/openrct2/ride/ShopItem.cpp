@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,8 +13,7 @@
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
 
-uint32_t gSamePriceThroughoutParkA;
-uint32_t gSamePriceThroughoutParkB;
+uint64_t gSamePriceThroughoutPark;
 
 /** rct2: 0x00982164 */
 static const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] = {
@@ -313,14 +312,7 @@ bool shop_item_is_photo(int32_t shopItem)
 
 bool shop_item_has_common_price(int32_t shopItem)
 {
-    if (shopItem < 32)
-    {
-        return (gSamePriceThroughoutParkA & (1u << shopItem)) != 0;
-    }
-    else
-    {
-        return (gSamePriceThroughoutParkB & (1u << (shopItem - 32))) != 0;
-    }
+    return (gSamePriceThroughoutPark & (1ULL << shopItem)) != 0;
 }
 
 bool shop_item_is_food_or_drink(int32_t shopItem)

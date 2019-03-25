@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,7 @@
 void FootpathObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
     stream->Seek(10, STREAM_SEEK_CURRENT);
-    _legacyType.support_type = stream->ReadValue<uint8_t>();
+    _legacyType.support_type = static_cast<RailingEntrySupportType>(stream->ReadValue<uint8_t>());
     _legacyType.flags = stream->ReadValue<uint8_t>();
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
@@ -27,9 +27,9 @@ void FootpathObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     GetImageTable().Read(context, stream);
 
     // Validate properties
-    if (_legacyType.support_type >= FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT)
+    if (_legacyType.support_type >= RailingEntrySupportType::Count)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "SUPPORT_TYPE not supported.");
+        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "RailingEntrySupportType not supported.");
     }
 }
 
@@ -42,9 +42,13 @@ void FootpathObject::Load()
 
     _pathSurfaceEntry.string_idx = _legacyType.string_idx;
     _pathSurfaceEntry.image = _legacyType.image;
-    _pathSurfaceEntry.queue_image = _legacyType.image + 51;
     _pathSurfaceEntry.preview = _legacyType.image + 71;
     _pathSurfaceEntry.flags = _legacyType.flags;
+
+    _queueEntry.string_idx = _legacyType.string_idx;
+    _queueEntry.image = _legacyType.image + 51;
+    _queueEntry.preview = _legacyType.image + 72;
+    _queueEntry.flags = _legacyType.flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
 
     _pathRailingsEntry.string_idx = _legacyType.string_idx;
     _pathRailingsEntry.bridge_image = _legacyType.bridge_image;
@@ -69,15 +73,15 @@ void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t 
     int32_t x = width / 2;
     int32_t y = height / 2;
     gfx_draw_sprite(dpi, _pathSurfaceEntry.preview, x - 49, y - 17, 0);
-    gfx_draw_sprite(dpi, _pathSurfaceEntry.preview + 1, x + 4, y - 17, 0);
+    gfx_draw_sprite(dpi, _queueEntry.preview, x + 4, y - 17, 0);
 }
 
-static uint8_t ParseSupportType(const std::string& s)
+static RailingEntrySupportType ParseSupportType(const std::string& s)
 {
     if (s == "pole")
-        return FOOTPATH_ENTRY_SUPPORT_TYPE_POLE;
+        return RailingEntrySupportType::Pole;
     else /* if (s == "box") */
-        return FOOTPATH_ENTRY_SUPPORT_TYPE_BOX;
+        return RailingEntrySupportType::Box;
 }
 
 void FootpathObject::ReadJson(IReadObjectContext* context, const json_t* root)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -173,7 +173,7 @@ static void cheat_renew_rides()
 
     FOR_ALL_RIDES (i, ride)
     {
-        ride_renew(ride);
+        ride->Renew();
     }
     window_invalidate_by_class(WC_RIDE);
 }
@@ -620,7 +620,7 @@ void game_command_cheat(
                 gCheatsNeverendingMarketing = *edx != 0;
                 break;
             case CHEAT_OPENCLOSEPARK:
-                park_set_open(park_is_open() ? 0 : 1);
+                park_set_open(!park_is_open());
                 break;
             case CHEAT_HAVEFUN:
                 gScenarioObjectiveType = OBJECTIVE_HAVE_FUN;

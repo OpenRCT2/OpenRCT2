@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -153,7 +153,7 @@ rct_window* window_banner_open(rct_windownumber number)
     viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
         w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 2,
-        (viewportWidget->bottom - viewportWidget->top) - 2, 0, view_x, view_y, view_z, 0, -1);
+        (viewportWidget->bottom - viewportWidget->top) - 2, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
@@ -345,7 +345,7 @@ static void window_banner_viewport_rotate(rct_window* w)
     rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
         w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, -1);
+        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -98,7 +98,7 @@ void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8
     for (size_t i = 0; i < MAX_TERRAIN_EDGE_OBJECTS; i++)
     {
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, i));
-        if (edgeObj != nullptr)
+        if (edgeObj != nullptr && edgeObj->NumImagesLoaded > 1)
         {
             gDropdownItemsFormat[itemIndex] = DROPDOWN_FORMAT_LAND_PICKER;
             gDropdownItemsArgs[itemIndex] = edgeObj->IconImageId;

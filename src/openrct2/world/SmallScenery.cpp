@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,7 +42,7 @@ static money32 SmallScenerySetColour(
         }
     }
 
-    TileElement* tileElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
+    auto tileElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
 
     if (tileElement == nullptr)
     {
@@ -56,8 +56,8 @@ static money32 SmallScenerySetColour(
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        tileElement->AsSmallScenery()->SetPrimaryColour(primaryColour);
-        tileElement->AsSmallScenery()->SetSecondaryColour(secondaryColour);
+        tileElement->SetPrimaryColour(primaryColour);
+        tileElement->SetSecondaryColour(secondaryColour);
 
         map_invalidate_tile_full(x, y);
     }
@@ -94,7 +94,7 @@ int32_t map_place_scenery_clear_func(TileElement** tile_element, int32_t x, int3
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
-        if (scenery->small_scenery.height > 64)
+        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
@@ -128,7 +128,7 @@ int32_t map_place_non_scenery_clear_func(TileElement** tile_element, int32_t x, 
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
-        if (scenery->small_scenery.height > 64)
+        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 

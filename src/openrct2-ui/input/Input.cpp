@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,6 +36,7 @@ static void input_handle_console(int32_t key)
             input = CONSOLE_INPUT_LINE_CLEAR;
             break;
         case SDL_SCANCODE_RETURN:
+        case SDL_SCANCODE_KP_ENTER:
             input = CONSOLE_INPUT_LINE_EXECUTE;
             break;
         case SDL_SCANCODE_UP:
@@ -67,6 +68,7 @@ static void input_handle_chat(int32_t key)
             input = CHAT_INPUT_CLOSE;
             break;
         case SDL_SCANCODE_RETURN:
+        case SDL_SCANCODE_KP_ENTER:
             input = CHAT_INPUT_SEND;
             break;
     }

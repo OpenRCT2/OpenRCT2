@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,17 +21,27 @@ enum
     PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
+constexpr auto FootpathMaxHeight = 248;
+constexpr auto FootpathMinHeight = 2;
+
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
+
+enum class RailingEntrySupportType : uint8_t
+{
+    Box = 0,
+    Pole = 1,
+    Count
+};
 
 #pragma pack(push, 1)
 struct rct_footpath_entry
 {
-    rct_string_id string_idx; // 0x00
-    uint32_t image;           // 0x02
-    uint32_t bridge_image;    // 0x06
-    uint8_t support_type;     // 0x0A
-    uint8_t flags;            // 0x0B
-    uint8_t scrolling_mode;   // 0x0C
+    rct_string_id string_idx;             // 0x00
+    uint32_t image;                       // 0x02
+    uint32_t bridge_image;                // 0x06
+    RailingEntrySupportType support_type; // 0x0A
+    uint8_t flags;                        // 0x0B
+    uint8_t scrolling_mode;               // 0x0C
 };
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
@@ -40,7 +50,6 @@ struct PathSurfaceEntry
 {
     rct_string_id string_idx;
     uint32_t image;
-    uint32_t queue_image;
     uint32_t preview;
     uint8_t flags;
 };
@@ -51,7 +60,7 @@ struct PathRailingsEntry
     uint32_t preview;
     uint32_t bridge_image;
     uint32_t railings_image;
-    uint8_t support_type;
+    RailingEntrySupportType support_type;
     uint8_t flags;
     uint8_t scrolling_mode;
 };
@@ -91,14 +100,8 @@ enum
 
 enum
 {
-    FOOTPATH_ENTRY_SUPPORT_TYPE_BOX = 0,
-    FOOTPATH_ENTRY_SUPPORT_TYPE_POLE = 1,
-    FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT
-};
-
-enum
-{
     FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
+    FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
 };
 
 enum
@@ -173,8 +176,6 @@ TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z);
 struct PathElement;
 PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope);
 void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z);
-void game_command_place_footpath_from_track(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_remove_footpath(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags);

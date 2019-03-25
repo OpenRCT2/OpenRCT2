@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,8 +87,7 @@ struct rct_shop_item_string_types
     rct_string_id display;     // "Diamond Heights" Balloon
 };
 
-extern uint32_t gSamePriceThroughoutParkA;
-extern uint32_t gSamePriceThroughoutParkB;
+extern uint64_t gSamePriceThroughoutPark;
 
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];

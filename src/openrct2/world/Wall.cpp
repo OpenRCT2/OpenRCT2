@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -571,7 +571,7 @@ static money32 WallSetColour(
         return MONEY32_UNDEFINED;
     }
 
-    TileElement* wallElement = map_get_wall_element_at(x, y, baseHeight, direction);
+    auto wallElement = map_get_wall_element_at(x, y, baseHeight, direction);
     if (wallElement == nullptr)
     {
         return 0;
@@ -584,13 +584,13 @@ static money32 WallSetColour(
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_scenery_entry* scenery_entry = wallElement->AsWall()->GetEntry();
-        wallElement->AsWall()->SetPrimaryColour(primaryColour);
-        wallElement->AsWall()->SetSecondaryColour(secondaryColour);
+        rct_scenery_entry* scenery_entry = wallElement->GetEntry();
+        wallElement->SetPrimaryColour(primaryColour);
+        wallElement->SetSecondaryColour(secondaryColour);
 
         if (scenery_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
         {
-            wallElement->AsWall()->SetTertiaryColour(tertiaryColour);
+            wallElement->SetTertiaryColour(tertiaryColour);
         }
         map_invalidate_tile_zoom1(x, y, z, z + 72);
     }

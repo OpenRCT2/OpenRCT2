@@ -204,7 +204,7 @@ public:
         }
 
         ride->num_circuits = 1;
-        ride_update_max_vehicles(ride);
+        ride->UpdateMaxVehicles();
 
         auto res = std::make_unique<GameActionResult>();
         if (ride->overall_view.xy != RCT_XY8_UNDEFINED)

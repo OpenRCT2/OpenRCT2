@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/world/Footpath.h>
+#include <openrct2/world/Sprite.h>
 
 static void window_editor_main_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
@@ -65,7 +66,7 @@ rct_window* window_editor_main_open()
         WC_MAIN_WINDOW, WF_STICK_TO_BACK);
     window->widgets = window_editor_main_widgets;
 
-    viewport_create(window, window->x, window->y, window->width, window->height, 0, 0x0FFF, 0x0FFF, 0, 0x1, -1);
+    viewport_create(window, window->x, window->y, window->width, window->height, 0, 0x0FFF, 0x0FFF, 0, 0x1, SPRITE_INDEX_NULL);
     window->viewport->flags |= 0x0400;
 
     gCurrentRotation = 0;

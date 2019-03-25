@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -2836,7 +2836,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
     int32_t y = location.y * 32;
     int32_t z = ride->stations[station].Height;
 
-    TileElement* tileElement = map_get_track_element_at(x, y, z);
+    auto tileElement = map_get_track_element_at(x, y, z);
     if (tileElement == nullptr)
     {
         return false;
@@ -3532,7 +3532,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
             return;
         }
 
-        ride_crash(ride, trainIndex);
+        ride->Crash(trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
@@ -3989,14 +3989,14 @@ loc_6D8E36:
         return;
     }
 
-    TileElement* tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
+    auto trackElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
 
-    if (tileElement == nullptr)
+    if (trackElement == nullptr)
     {
         return;
     }
 
-    vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
+    vehicle->current_station = trackElement->GetStationIndex();
     vehicle->num_laps++;
 
     if (vehicle->sub_state != 0)
@@ -4270,10 +4270,10 @@ static void loc_6DA9F9(rct_vehicle* vehicle, int32_t x, int32_t y, int32_t bx, i
         vehicle->track_x = bx;
         vehicle->track_y = dx;
 
-        TileElement* tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
+        auto trackElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
 
         Ride* ride = get_ride(vehicle->ride);
-        vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
+        vehicle->track_type = (trackElement->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
 
         vehicle->track_progress = 0;
         vehicle->status = VEHICLE_STATUS_TRAVELLING;
@@ -5270,7 +5270,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
             return;
         }
 
-        ride_crash(ride, trainIndex);
+        ride->Crash(trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
@@ -5324,7 +5324,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
             return;
         }
 
-        ride_crash(ride, trainIndex);
+        ride->Crash(trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
@@ -6762,15 +6762,15 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
     x = trackBeginEnd.begin_x;
     y = trackBeginEnd.begin_y;
     z = trackBeginEnd.begin_z;
-    tileElement = map_get_track_element_at(x, y, z >> 3);
-    if (tileElement == nullptr)
+    auto trackElement = map_get_track_element_at(x, y, z >> 3);
+    if (trackElement == nullptr)
     {
         return;
     }
-    tileElement->AsTrack()->SetBlockBrakeClosed(false);
-    map_invalidate_element(x, y, tileElement);
+    trackElement->SetBlockBrakeClosed(false);
+    map_invalidate_element(x, y, reinterpret_cast<TileElement*>(trackElement));
 
-    int32_t trackType = tileElement->AsTrack()->GetTrackType();
+    int32_t trackType = trackElement->GetTrackType();
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
     {
         Ride* ride = get_ride(vehicle->ride);
@@ -7382,9 +7382,9 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
  *
  *  rct2: 0x006DEDB1
  */
-static void vehicle_play_scenery_door_open_sound(rct_vehicle* vehicle, TileElement* tileElement)
+static void vehicle_play_scenery_door_open_sound(rct_vehicle* vehicle, WallElement* tileElement)
 {
-    rct_scenery_entry* wallEntry = tileElement->AsWall()->GetEntry();
+    rct_scenery_entry* wallEntry = tileElement->GetEntry();
     int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
     if (doorSoundType != 0)
     {
@@ -7400,9 +7400,9 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle* vehicle, TileEleme
  *
  *  rct2: 0x006DED7A
  */
-static void vehicle_play_scenery_door_close_sound(rct_vehicle* vehicle, TileElement* tileElement)
+static void vehicle_play_scenery_door_close_sound(rct_vehicle* vehicle, WallElement* tileElement)
 {
-    rct_scenery_entry* wallEntry = tileElement->AsWall()->GetEntry();
+    rct_scenery_entry* wallEntry = tileElement->GetEntry();
     int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
     if (doorSoundType != 0)
     {
@@ -7432,7 +7432,7 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
     int32_t z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_end) >> 3;
     int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
 
-    TileElement* tileElement = map_get_wall_element_at(x, y, z, direction);
+    auto tileElement = map_get_wall_element_at(x, y, z, direction);
     if (tileElement == nullptr)
     {
         return;
@@ -7440,15 +7440,15 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
 
     if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
     {
-        tileElement->AsWall()->SetAnimationIsBackwards(false);
-        tileElement->AsWall()->SetAnimationFrame(1);
+        tileElement->SetAnimationIsBackwards(false);
+        tileElement->SetAnimationFrame(1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
     else
     {
-        tileElement->AsWall()->SetAnimationIsBackwards(false);
-        tileElement->AsWall()->SetAnimationFrame(6);
+        tileElement->SetAnimationIsBackwards(false);
+        tileElement->SetAnimationFrame(6);
         vehicle_play_scenery_door_close_sound(vehicle, tileElement);
     }
 }
@@ -7512,7 +7512,7 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
     int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
 
-    TileElement* tileElement = map_get_wall_element_at(x, y, z, direction);
+    auto tileElement = map_get_wall_element_at(x, y, z, direction);
     if (tileElement == nullptr)
     {
         return;
@@ -7520,15 +7520,15 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
 
     if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
     {
-        tileElement->AsWall()->SetAnimationIsBackwards(true);
-        tileElement->AsWall()->SetAnimationFrame(1);
+        tileElement->SetAnimationIsBackwards(true);
+        tileElement->SetAnimationFrame(1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
     else
     {
-        tileElement->AsWall()->SetAnimationIsBackwards(true);
-        tileElement->AsWall()->SetAnimationFrame(6);
+        tileElement->SetAnimationIsBackwards(true);
+        tileElement->SetAnimationFrame(6);
         vehicle_play_scenery_door_close_sound(vehicle, tileElement);
     }
 }
@@ -10001,4 +10001,14 @@ rct_vehicle* rct_vehicle::GetHead()
 const rct_vehicle* rct_vehicle::GetHead() const
 {
     return ((rct_vehicle*)this)->GetHead();
+}
+
+const rct_vehicle* rct_vehicle::GetCar(size_t carIndex) const
+{
+    auto car = this;
+    for (; carIndex != 0; carIndex--)
+    {
+        car = GET_VEHICLE(car->next_vehicle_on_train);
+    }
+    return car;
 }

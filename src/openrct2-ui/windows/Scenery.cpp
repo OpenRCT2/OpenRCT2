@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -140,6 +140,7 @@ enum WINDOW_SCENERY_LIST_WIDGET_IDX {
 
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_TAB_1);
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
+validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
 static rct_widget window_scenery_widgets[] = {
     { WWT_FRAME, 0, 0, 633, 0, 141, 0xFFFFFFFF, STR_NONE },                             // 1                0x009DE298
@@ -579,6 +580,7 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             gWindowSceneryPaintEnabled = 0;
             gWindowSceneryClusterEnabled = 0;
             gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
+            scenery_remove_ghost_tool_placement();
             window_invalidate(w);
             break;
         case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:

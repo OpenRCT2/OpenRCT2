@@ -355,7 +355,7 @@ static void copy_object_names_to_clipboard(rct_window* w)
         }
 
         strncat(buffer, _invalid_entries[i].name, nameLength);
-        strncat(buffer, PLATFORM_NEWLINE, line_sep_len);
+        strncat(buffer, PLATFORM_NEWLINE, buffer_len - strlen(buffer) - 1);
     }
 
     platform_place_string_on_clipboard(buffer);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -122,11 +122,11 @@ void viewport_init_all();
 void centre_2d_coordinates(int32_t x, int32_t y, int32_t z, int32_t* out_x, int32_t* out_y, rct_viewport* viewport);
 void viewport_create(
     rct_window* w, int32_t x, int32_t y, int32_t width, int32_t height, int32_t zoom, int32_t centre_x, int32_t centre_y,
-    int32_t centre_z, char flags, int16_t sprite);
+    int32_t centre_z, char flags, uint16_t sprite);
 void viewport_update_position(rct_window* window);
 void viewport_update_sprite_follow(rct_window* window);
 void viewport_update_smart_sprite_follow(rct_window* window);
-void viewport_update_smart_guest_follow(rct_window* window, Peep* peep);
+viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep);
 void viewport_update_smart_staff_follow(rct_window* window, Peep* peep);
 void viewport_update_smart_vehicle_follow(rct_window* window);
 void viewport_render(

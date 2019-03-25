@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -251,7 +251,8 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
     viewport_create(
         window, window->x + viewportWidget->left + 1, window->y + viewportWidget->top + 1,
-        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, 0, 0, 0, 0, -1);
+        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, 0, 0, 0, 0,
+        SPRITE_INDEX_NULL);
 
     _window_title_command_editor_index = index;
     _window_title_command_editor_insert = insert;

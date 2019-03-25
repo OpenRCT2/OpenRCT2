@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -354,6 +354,16 @@ struct Ride
     RideStation stations[MAX_STATIONS];
 
     bool CanBreakDown() const;
+    bool IsRide() const;
+    void Renew();
+    void Delete();
+    void Crash(uint8_t vehicleIndex);
+    void SetToDefaultInspectionInterval();
+    void SetRideEntry(int32_t rideEntry);
+
+    void SetNumVehicles(int32_t numVehicles);
+    void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
+    void UpdateMaxVehicles();
 };
 
 #pragma pack(push, 1)
@@ -1129,13 +1139,8 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
 
 void ride_entry_get_train_layout(int32_t rideEntryIndex, int32_t numCarsPerTrain, uint8_t* trainLayout);
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
-void ride_update_max_vehicles(Ride* ride);
 void ride_update_vehicle_colours(Ride* ride);
 uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
-
-void ride_set_ride_entry(Ride* ride, int32_t rideEntry);
-void ride_set_num_vehicles(Ride* ride, int32_t numVehicles);
-void ride_set_num_cars_per_vehicle(Ride* ride, int32_t numCarsPerVehicle);
 
 enum class RideSetSetting : uint8_t;
 money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t value);
@@ -1147,10 +1152,7 @@ void game_command_set_ride_vehicles(
 void game_command_place_ride_entrance_or_exit(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
-void ride_set_to_default_inspection_interval(Ride* ride);
-
 void sub_6CB945(Ride* ride);
-void ride_crash(Ride* ride, uint8_t vehicleIndex);
 
 void sub_6C94D8();
 
@@ -1167,8 +1169,6 @@ rct_vehicle* ride_get_broken_vehicle(Ride* ride);
 void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();
 
-void ride_delete(Ride* ride);
-void ride_renew(Ride* ride);
 money16 ride_get_price(Ride* ride);
 
 TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tolerance);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -563,9 +563,6 @@ static void window_footpath_update(rct_window* w)
  */
 static void window_footpath_invalidate(rct_window* w)
 {
-    int32_t selectedPath;
-    PathSurfaceEntry* pathType;
-
     // Press / unpress footpath and queue type buttons
     w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);
     w->pressed_widgets &= ~(1 << WIDX_QUEUELINE_TYPE);
@@ -578,12 +575,15 @@ static void window_footpath_invalidate(rct_window* w)
         : WWT_EMPTY;
 
     // Set footpath and queue type button images
-    selectedPath = gFootpathSelectedId;
-    pathType = get_path_surface_entry(selectedPath);
-
-    int32_t pathImage = pathType->preview;
-    // Editor-only paths might lack a queue image
-    int32_t queueImage = (pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) ? pathImage : pathImage + 1;
+    auto pathImage = (uint32_t)SPR_NONE;
+    auto queueImage = (uint32_t)SPR_NONE;
+    auto pathEntry = get_path_surface_entry(gFootpathSelectedId);
+    if (pathEntry != nullptr)
+    {
+        pathImage = pathEntry->preview;
+        // Editor-only paths might lack a queue image
+        queueImage = (pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) ? pathImage : pathImage + 1;
+    }
     window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
     window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
 }
@@ -613,14 +613,7 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         int32_t selectedPath = gFootpathSelectedId;
         PathSurfaceEntry* pathType = get_path_surface_entry(selectedPath);
-        if (gFootpathSelectedType == SELECTED_PATH_TYPE_NORMAL)
-        {
-            image += pathType->image;
-        }
-        else
-        {
-            image += pathType->queue_image;
-        }
+        image += pathType->image;
 
         // Draw construction image
         int32_t x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -148,12 +148,22 @@ struct sprite_focus
 };
 
 #define VIEWPORT_FOCUS_TYPE_MASK 0xC0
-enum
+enum VIEWPORT_FOCUS_TYPE : uint8_t
 {
     VIEWPORT_FOCUS_TYPE_COORDINATE = (1 << 6),
     VIEWPORT_FOCUS_TYPE_SPRITE = (1 << 7)
 };
 #define VIEWPORT_FOCUS_Y_MASK 0x3FFF
+
+struct viewport_focus
+{
+    VIEWPORT_FOCUS_TYPE type{};
+    union
+    {
+        sprite_focus sprite;
+        coordinate_focus coordinate;
+    };
+};
 
 struct rct_window_event_list
 {
@@ -477,6 +487,7 @@ enum
 #define WC_RIDE_CONSTRUCTION__WIDX_ROTATE 32
 #define WC_SCENERY__WIDX_SCENERY_TAB_1 4
 #define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 25
+#define WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON 30
 #define WC_PEEP__WIDX_PATROL 11
 #define WC_PEEP__WIDX_ACTION_LBL 12
 #define WC_PEEP__WIDX_PICKUP 13

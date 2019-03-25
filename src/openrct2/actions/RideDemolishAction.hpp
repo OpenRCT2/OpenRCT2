@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,6 +45,11 @@ public:
     {
     }
 
+    uint32_t GetCooldownTime() const override
+    {
+        return 1000;
+    }
+
     void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
@@ -61,7 +66,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE && _modifyType == RIDE_MODIFY_DEMOLISH)
+        if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+            && _modifyType == RIDE_MODIFY_DEMOLISH)
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::NO_CLEARANCE, STR_CANT_DEMOLISH_RIDE,
@@ -349,7 +355,7 @@ private:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->Cost = GetRefurbishPrice(ride);
 
-        ride_renew(ride);
+        ride->Renew();
 
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
         ride->last_crash_type = RIDE_CRASH_TYPE_NONE;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/StaffFireAction.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
@@ -103,12 +104,13 @@ rct_window* window_staff_fire_prompt_open(Peep* peep)
 */
 static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    Peep* peep = &get_sprite(w->number)->peep;
-
     switch (widgetIndex){
     case WIDX_YES:
-        game_do_command(peep->x, 1, peep->y, w->number, GAME_COMMAND_FIRE_STAFF_MEMBER, 0, 0);
+    {
+        auto staffFireAction = StaffFireAction(w->number);
+        GameActions::Execute(&staffFireAction);
         break;
+    }
     case WIDX_CANCEL:
     case WIDX_CLOSE:
         window_close(w);

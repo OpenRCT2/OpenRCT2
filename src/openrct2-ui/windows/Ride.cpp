@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,6 +23,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/GameAction.h>
+#include <openrct2/actions/ParkSetParameterAction.hpp>
 #include <openrct2/actions/RideSetAppearanceAction.hpp>
 #include <openrct2/actions/RideSetColourScheme.hpp>
 #include <openrct2/actions/RideSetPriceAction.hpp>
@@ -2870,20 +2871,20 @@ static void window_ride_vehicle_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_VEHICLE_TRAINS_INCREASE:
             if (ride->num_vehicles < 32)
-                ride_set_num_vehicles(ride, ride->num_vehicles + 1);
+                ride->SetNumVehicles(ride->num_vehicles + 1);
             break;
         case WIDX_VEHICLE_TRAINS_DECREASE:
             if (ride->num_vehicles > 1)
-                ride_set_num_vehicles(ride, ride->num_vehicles - 1);
+                ride->SetNumVehicles(ride->num_vehicles - 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
             if (ride->num_cars_per_train < 255)
-                ride_set_num_cars_per_vehicle(ride, ride->num_cars_per_train + 1);
+                ride->SetNumCarsPerVehicle(ride->num_cars_per_train + 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
             rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
             if (ride->num_cars_per_train > rideEntry->zero_cars + 1)
-                ride_set_num_cars_per_vehicle(ride, ride->num_cars_per_train - 1);
+                ride->SetNumCarsPerVehicle(ride->num_cars_per_train - 1);
             break;
     }
 }
@@ -2906,7 +2907,7 @@ static void window_ride_vehicle_dropdown(rct_window* w, rct_widgetindex widgetIn
                 if (ride != nullptr)
                 {
                     auto newRideType = VehicleDropdownData[dropdownIndex].subtype_id;
-                    ride_set_ride_entry(ride, newRideType);
+                    ride->SetRideEntry(newRideType);
                 }
             }
             break;
@@ -6151,32 +6152,22 @@ static utf8 _moneyInputText[MONEY_STRING_MAXLENGTH];
 
 static void update_same_price_throughout_flags(uint32_t shop_item)
 {
-    uint32_t newFlags;
+    uint64_t newFlags;
 
     if (shop_item_is_photo(shop_item))
     {
-        newFlags = gSamePriceThroughoutParkA;
-        newFlags ^= (1 << SHOP_ITEM_PHOTO);
-        game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-
-        newFlags = gSamePriceThroughoutParkB;
-        newFlags ^= (1 << (SHOP_ITEM_PHOTO2 - 32)) | (1 << (SHOP_ITEM_PHOTO3 - 32)) | (1 << (SHOP_ITEM_PHOTO4 - 32));
-        game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+        newFlags = gSamePriceThroughoutPark;
+        newFlags ^= (1ULL << SHOP_ITEM_PHOTO) | (1ULL << SHOP_ITEM_PHOTO2) | (1ULL << SHOP_ITEM_PHOTO3)
+            | (1ULL << SHOP_ITEM_PHOTO4);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
+        GameActions::Execute(&parkSetParameter);
     }
     else
     {
-        if (shop_item < 32)
-        {
-            newFlags = gSamePriceThroughoutParkA;
-            newFlags ^= (1u << shop_item);
-            game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-        }
-        else
-        {
-            newFlags = gSamePriceThroughoutParkB;
-            newFlags ^= (1u << (shop_item - 32));
-            game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-        }
+        newFlags = gSamePriceThroughoutPark;
+        newFlags ^= (1ULL << shop_item);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
+        GameActions::Execute(&parkSetParameter);
     }
 }
 

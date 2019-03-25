@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -233,6 +233,7 @@ struct rct_vehicle : rct_sprite_common
     }
     rct_vehicle* GetHead();
     const rct_vehicle* GetHead() const;
+    const rct_vehicle* GetCar(size_t carIndex) const;
 };
 
 struct train_ref

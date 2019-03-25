@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,6 +55,7 @@ enum NETWORK_COMMAND
     NETWORK_COMMAND_GAMECMD,
     NETWORK_COMMAND_TICK,
     NETWORK_COMMAND_PLAYERLIST,
+    NETWORK_COMMAND_PLAYERINFO,
     NETWORK_COMMAND_PING,
     NETWORK_COMMAND_PINGLIST,
     NETWORK_COMMAND_SETDISCONNECTMSG,

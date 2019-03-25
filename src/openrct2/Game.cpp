@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,7 +94,7 @@ static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     nullptr,
     game_command_callback_place_banner,
     nullptr,
-    game_command_callback_hire_new_staff_member,
+    nullptr,
     game_command_callback_pickup_guest,
     game_command_callback_pickup_staff
 };
@@ -609,24 +609,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
             ride_name,
         };
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
-        network_append_server_log(log_msg);
-    }
-    else if (command == GAME_COMMAND_SET_PARK_OPEN)
-    {
-        // Log change in park open/close
-        char* args[1] = {
-            (char*)player_name,
-        };
-
-        if (*edx >> 8 == 0)
-        {
-            format_string(log_msg, 256, STR_LOG_PARK_OPEN, args);
-        }
-        else if (*edx >> 8 == 1)
-        {
-            format_string(log_msg, 256, STR_LOG_PARK_CLOSED, args);
-        }
-
         network_append_server_log(log_msg);
     }
     else if (
@@ -1278,27 +1260,27 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_place_footpath_from_track,
     nullptr,
-    game_command_change_surface_style,
+    nullptr,
+    nullptr,
     nullptr,
     game_command_set_guest_name,
     game_command_set_staff_name,
-    game_command_raise_land,
-    game_command_lower_land,
+    nullptr,
+    nullptr,
     game_command_smooth_land,
-    game_command_raise_water,
-    game_command_lower_water,
-    game_command_set_brakes_speed,
-    game_command_hire_new_staff_member,
-    game_command_set_staff_patrol,
-    game_command_fire_staff_member,
     nullptr,
     nullptr,
-    game_command_set_park_open,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     game_command_buy_land_rights,
     game_command_place_park_entrance,
-    game_command_remove_park_entrance,
+    nullptr,
     game_command_set_maze_track,
     game_command_set_park_entrance_fee,
     nullptr,

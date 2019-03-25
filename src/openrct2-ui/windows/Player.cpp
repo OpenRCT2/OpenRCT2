@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -400,6 +400,12 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 void window_player_overview_invalidate(rct_window* w)
 {
+    int32_t playerIndex = network_get_player_index((uint8_t)w->number);
+    if (playerIndex == -1)
+    {
+        return;
+    }
+
     if (window_player_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_player_page_widgets[w->page];
@@ -449,7 +455,7 @@ void window_player_overview_invalidate(rct_window* w)
 
     // Only enable kick button for other players
     const bool canKick = network_can_perform_action(network_get_current_player_group_index(), NETWORK_PERMISSION_KICK_PLAYER);
-    const bool isServer = network_get_player_flags(w->number) & NETWORK_PLAYER_FLAG_ISSERVER;
+    const bool isServer = network_get_player_flags(playerIndex) & NETWORK_PLAYER_FLAG_ISSERVER;
     const bool isOwnWindow = (network_get_current_player_id() == w->number);
     widget_set_enabled(w, WIDX_KICK, canKick && !isOwnWindow && !isServer);
 }
@@ -565,7 +571,7 @@ static void window_player_set_page(rct_window* w, int32_t page)
     {
         if (w->viewport == nullptr)
         {
-            viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);
+            viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, SPRITE_INDEX_NULL);
             w->flags |= WF_NO_SCROLLING;
             window_event_invalidate_call(w);
             window_player_update_viewport(w, false);

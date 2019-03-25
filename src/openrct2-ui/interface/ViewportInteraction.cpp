@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/FootpathSceneryRemoveAction.hpp>
 #include <openrct2/actions/LargeSceneryRemoveAction.hpp>
+#include <openrct2/actions/ParkEntranceRemoveAction.hpp>
 #include <openrct2/actions/SmallSceneryRemoveAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/localisation/Localisation.h>
@@ -530,8 +531,8 @@ void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t
             y -= CoordsDirectionDelta[rotation].y;
             break;
     }
-    gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-    game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, tileElement->base_height / 2, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 0, 0);
+    auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ x, y, tileElement->base_height * 8 });
+    GameActions::Execute(&parkEntranceRemoveAction);
 }
 
 /**

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -4389,11 +4389,14 @@ void Guest::UpdateRideApproachExitWaypoints()
 
     int16_t shift_multiplier = 20;
 
-    rct_ride_entry* ride_type = get_ride_entry(ride->subtype);
-    rct_ride_entry_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
-    if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+    auto rideEntry = get_ride_entry(ride->subtype);
+    if (rideEntry != nullptr)
     {
-        shift_multiplier = 32;
+        auto vehicleEntry = &rideEntry->vehicles[rideEntry->default_vehicle];
+        if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+        {
+            shift_multiplier = 32;
+        }
     }
 
     x_shift *= shift_multiplier;
@@ -4711,15 +4714,12 @@ void Guest::UpdateRideMazePathfinding()
     int16_t stationHeight = ride->stations[0].Height;
 
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
-    do
+    auto trackElement = map_get_track_element_at(actionX, actionY, stationHeight);
+    if (trackElement == nullptr)
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && stationHeight == tileElement->base_height)
-            break;
-
-    } while (!(tileElement++)->IsLastForTile());
-
-    uint16_t mazeEntry = tileElement->AsTrack()->GetMazeEntry();
+        return;
+    }
+    uint16_t mazeEntry = trackElement->GetMazeEntry();
     uint16_t openHedges = 0;
     // var_37 is 3, 7, 11 or 15
 
@@ -4772,7 +4772,7 @@ void Guest::UpdateRideMazePathfinding()
     };
     maze_type mazeType = maze_type::invalid;
 
-    tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
+    auto tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
     do
     {
         if (stationHeight != tileElement->base_height)
