@@ -821,6 +821,18 @@
         "forceBmp": true
     },
     {
+        "path": "font/latin/s-caron-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/rouble-small.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1249,6 +1261,18 @@
     },
     {
         "path": "font/latin/r-caron-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
@@ -1690,6 +1714,18 @@
     },
     {
         "path": "font/latin/r-caron-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-tiny.png",
         "y_offset": -1,
         "palette": "keep",
         "forceBmp": true

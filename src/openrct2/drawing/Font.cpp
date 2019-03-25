@@ -67,6 +67,8 @@ static const std::map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::s_acute, CSChar::s_acute - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::s_cedilla_uc, SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START },
     { UnicodeChar::s_cedilla, SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::s_caron_uc, SPR_G2_S_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::s_caron, SPR_G2_S_CARON_LOWER - SPR_CHAR_START },
     { UnicodeChar::u_double_acute_uc, SPR_G2_U_DOUBLE_ACUTE_UPPER - SPR_CHAR_START },
     { UnicodeChar::u_double_acute, SPR_G2_U_DOUBLE_ACUTE_LOWER - SPR_CHAR_START },
     { UnicodeChar::z_acute_uc, CSChar::z_acute_uc - CS_SPRITE_FONT_OFFSET },
