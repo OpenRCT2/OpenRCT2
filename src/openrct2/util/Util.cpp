@@ -304,11 +304,6 @@ int32_t bitcount(uint32_t source)
     return bitcount_fn(source);
 }
 
-bool strequals(const char* a, const char* b, int32_t length, bool caseInsensitive)
-{
-    return caseInsensitive ? _strnicmp(a, b, length) == 0 : strncmp(a, b, length) == 0;
-}
-
 /* case insensitive compare */
 int32_t strcicmp(char const* a, char const* b)
 {
@@ -480,15 +475,6 @@ char* safe_strcat_path(char* destination, const char* source, size_t size)
         source = source + 1;
     }
     return safe_strcat(destination, source, size);
-}
-
-char* safe_strtrimleft(char* destination, const char* source, size_t size)
-{
-    while (*source == ' ')
-    {
-        source++;
-    }
-    return safe_strcpy(destination, source, size);
 }
 
 #if defined(_WIN32)
