@@ -87,7 +87,7 @@ private:
                 SurfaceElement* surfaceElement = tileElement->AsSurface();
                 uint8_t height = surfaceElement->GetWaterHeight();
 
-                if(surfaceElement->base_height > maxHeight)
+                if (surfaceElement->base_height > maxHeight)
                     continue;
 
                 if (height != 0)
