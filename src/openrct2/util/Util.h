@@ -37,14 +37,12 @@ bool avx2_available();
 int32_t bitscanforward(int32_t source);
 void bitcount_init();
 int32_t bitcount(uint32_t source);
-bool strequals(const char* a, const char* b, int32_t length, bool caseInsensitive);
 int32_t strcicmp(char const* a, char const* b);
 int32_t strlogicalcmp(char const* a, char const* b);
 utf8* safe_strtrunc(utf8* text, size_t size);
 char* safe_strcpy(char* destination, const char* source, size_t num);
 char* safe_strcat(char* destination, const char* source, size_t size);
 char* safe_strcat_path(char* destination, const char* source, size_t size);
-char* safe_strtrimleft(char* destination, const char* source, size_t size);
 #if defined(_WIN32)
 char* strcasestr(const char* haystack, const char* needle);
 #endif
