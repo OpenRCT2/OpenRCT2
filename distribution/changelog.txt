@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#7296] Allow assigning a keyboard shortcut for the scenery picker.
 - Feature: [#8919] Allow setting ride price from console.
+- Feature: [#8963] Add missing Czech letters to sprite font, use sprite font for Czech.
 - Change: [#8688] Move common actions from debug menu into cheats menu.
 - Fix: [#5579] Network desync immediately after connecting.
 - Fix: [#6006] Objects higher than 6 metres are considered trees (original bug).
