@@ -775,7 +775,7 @@ static int32_t track_design_place_scenery(
                 }
             }
 
-            if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES && mode == 0)
+            if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST && mode == 0)
             {
                 uint8_t entry_type, entry_index;
                 if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
@@ -1363,7 +1363,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
         }
     }
 
-    if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
+    if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST)
     {
         ride_action_modify(
             ride, RIDE_MODIFY_DEMOLISH,
@@ -1420,7 +1420,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                     track_design_add_selection_tile(tile.x, tile.y);
                 }
                 break;
-            case PTD_OPERATION_CLEAR_OUTLINES:
+            case PTD_OPERATION_REMOVE_GHOST:
             {
                 const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
                 const rct_preview_track* trackBlock = trackBlockArray[trackType];
@@ -1659,7 +1659,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
         }
     }
 
-    if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
+    if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST)
     {
         sub_6CB945(ride);
         ride->Delete();
