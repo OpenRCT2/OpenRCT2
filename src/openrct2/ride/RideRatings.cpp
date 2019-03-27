@@ -1171,7 +1171,7 @@ static rating_tuple get_sloped_turns_rating(Ride* ride)
  *
  *  rct2: 0x0065E0F2
  */
-static rating_tuple get_inversions_ratings(uint8_t inversions)
+static rating_tuple get_inversions_ratings(uint16_t inversions)
 {
     rating_tuple rating;
 
