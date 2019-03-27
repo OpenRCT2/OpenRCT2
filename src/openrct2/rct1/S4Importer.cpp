@@ -944,7 +944,11 @@ private:
         dst->drops = src->num_drops;
         dst->start_drop_height = src->start_drop_height / 2;
         dst->highest_drop_height = src->highest_drop_height / 2;
-        dst->inversions = src->num_inversions;
+        if (dst->type == RIDE_TYPE_MINI_GOLF)
+            dst->holes = src->num_inversions & 0x1F;
+        else
+            dst->inversions = src->num_inversions & 0x1F;
+        dst->sheltered_eighths = src->num_inversions >> 5;
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
         dst->boat_hire_return_position = src->boat_hire_return_position;
         dst->measurement_index = src->data_logging_index;

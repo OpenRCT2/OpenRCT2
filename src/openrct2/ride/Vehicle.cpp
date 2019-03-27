@@ -1783,12 +1783,11 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
 
         if (track_flags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
         {
-            uint8_t inversions = ride->inversions & 0x1F;
-            if (inversions != 0x1F)
+            uint8_t inversions = ride->inversions;
+            if (inversions != 255)
                 inversions++;
 
-            ride->inversions &= ~0x1F;
-            ride->inversions |= inversions;
+            ride->inversions = inversions;
         }
 
         if (track_flags & TRACK_ELEM_FLAG_HELIX)
@@ -3105,6 +3104,8 @@ void vehicle_test_reset(rct_vehicle* vehicle)
     ride->turn_count_banked = 0;
     ride->turn_count_sloped = 0;
     ride->inversions = 0;
+    ride->holes = 0;
+    ride->sheltered_eighths = 0;
     ride->drops = 0;
     ride->sheltered_length = 0;
     ride->var_11C = 0;
