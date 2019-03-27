@@ -5,6 +5,7 @@
 - Feature: [#8963] Add missing Czech letters to sprite font, use sprite font for Czech.
 - Change: [#8688] Move common actions from debug menu into cheats menu.
 - Fix: [#5579] Network desync immediately after connecting.
+- Fix: [#5905] Urban Park merry-go-round has entrance and exit swapped (original bug).
 - Fix: [#6006] Objects higher than 6 metres are considered trees (original bug).
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#8537] Imported RCT1 rides/shops are all numbered 1.

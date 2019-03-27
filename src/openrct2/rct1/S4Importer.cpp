@@ -103,6 +103,7 @@ private:
     rct1_s4 _s4 = {};
     uint8_t _gameVersion = 0;
     uint8_t _parkValueConversionFactor = 0;
+    bool _isScenario = false;
 
     // Lists of dynamic object entries
     EntryList _rideEntries;
@@ -168,6 +169,7 @@ public:
     {
         _s4 = *ReadAndDecodeS4(stream, isScenario);
         _s4Path = path;
+        _isScenario = isScenario;
 
         // Only determine what objects we required to import this saved game
         InitialiseEntryMaps();
@@ -197,6 +199,7 @@ public:
         ImportScenarioObjective();
         ImportSavedView();
         FixLandOwnership();
+        FixUrbanPark();
         CountBlockSections();
         SetDefaultNames();
         determine_ride_entrance_and_exit_locations();
@@ -2934,6 +2937,50 @@ private:
             case SC_URBAN_PARK:
                 FixLandOwnershipTiles({ { 64, 77 }, { 61, 66 }, { 61, 67 }, { 39, 20 } });
                 break;
+        }
+    }
+
+    /**
+     * In Urban Park, the entrance and exit of the merry-go-round are the wrong way round. This code fixes that.
+     * To avoid messing up saves (in which this problem is most likely solved by the user), only carry out this
+     * fix when loading from a scenario.
+     */
+    void FixUrbanPark()
+    {
+        if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
+        {
+            // First, make the queuing peep exit
+            int32_t i;
+            Peep* peep;
+            FOR_ALL_GUESTS (i, peep)
+            {
+                if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->current_ride == 0)
+                {
+                    peep->RemoveFromQueue();
+                    peep->SetState(PEEP_STATE_FALLING);
+                    break;
+                }
+            }
+
+            // Now, swap the entrance and exit.
+            Ride* ride = get_ride(0);
+            auto entranceCoords = ride->stations[0].Exit;
+            auto exitCoords = ride->stations[0].Entrance;
+            ride->stations[0].Entrance = entranceCoords;
+            ride->stations[0].Exit = exitCoords;
+
+            auto entranceElement = map_get_ride_exit_element_at(
+                entranceCoords.x * 32, entranceCoords.y * 32, entranceCoords.z, false);
+            entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
+            auto exitElement = map_get_ride_entrance_element_at(exitCoords.x * 32, exitCoords.y * 32, exitCoords.z, false);
+            exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
+
+            // Trigger footpath update
+            footpath_queue_chain_reset();
+            footpath_connect_edges(
+                entranceCoords.x * 32, (entranceCoords.y) * 32, (TileElement*)entranceElement,
+                GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            footpath_update_queue_chains();
         }
     }
 
