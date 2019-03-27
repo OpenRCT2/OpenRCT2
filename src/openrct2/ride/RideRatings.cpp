@@ -1895,7 +1895,7 @@ static void ride_ratings_calculate_miniature_railway(Ride* ride)
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
     auto shelteredEighths = get_num_of_sheltered_eighths(ride);
-    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 4)
+    if (shelteredEighths.TrackShelteredEighths >= 4)
         ride->excitement /= 4;
 
     ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
@@ -1930,7 +1930,7 @@ static void ride_ratings_calculate_monorail(Ride* ride)
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
     auto shelteredEighths = get_num_of_sheltered_eighths(ride);
-    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 4)
+    if (shelteredEighths.TrackShelteredEighths >= 4)
         ride->excitement /= 4;
 
     ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
@@ -2237,7 +2237,7 @@ static void ride_ratings_calculate_observation_tower(Ride* ride)
     ride->sheltered_eighths = 7;
 
     auto shelteredEighths = get_num_of_sheltered_eighths(ride);
-    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 5)
+    if (shelteredEighths.TrackShelteredEighths >= 5)
         ride->excitement /= 4;
 }
 
@@ -2401,7 +2401,7 @@ static void ride_ratings_calculate_chairlift(Ride* ride)
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
     auto shelteredEighths = get_num_of_sheltered_eighths(ride);
-    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 4)
+    if (shelteredEighths.TrackShelteredEighths >= 4)
         ride->excitement /= 4;
 
     ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
@@ -2545,7 +2545,7 @@ static void ride_ratings_calculate_go_karts(Ride* ride)
     auto shelteredEighths = get_num_of_sheltered_eighths(ride);
     ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 
-    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 6)
+    if (shelteredEighths.TrackShelteredEighths >= 6)
         ride->excitement /= 2;
 }
 
@@ -3290,7 +3290,7 @@ static void ride_ratings_calculate_suspended_monorail(Ride* ride)
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
     auto shelteredEighths = get_num_of_sheltered_eighths(ride);
-    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 4)
+    if (shelteredEighths.TrackShelteredEighths >= 4)
         ride->excitement /= 4;
 
     ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
