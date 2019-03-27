@@ -344,8 +344,8 @@ struct Ride
     uint8_t current_issues;
     uint32_t last_issue_time;
     RideStation stations[MAX_STATIONS];
-    uint8_t inversions;
-    uint8_t holes;
+    uint16_t inversions;
+    uint16_t holes;
     uint8_t sheltered_eighths;
 
     bool CanBreakDown() const;
