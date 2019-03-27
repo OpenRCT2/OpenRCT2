@@ -364,6 +364,22 @@ struct Ride
     void SetNumVehicles(int32_t numVehicles);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
     void UpdateMaxVehicles();
+
+    bool HasSpinningTunnel() const;
+    bool HasWaterSplash() const;
+    bool HasRapids() const;
+    bool HasLogReverser() const;
+    bool HasWaterfall() const;
+    bool HasWhirlpool() const;
+
+    bool IsPoweredLaunched() const;
+    bool IsBlockSectioned() const;
+
+    void StopGuestsQueuing();
+
+    uint8_t GetDefaultMode() const;
+
+    void SetColourPreset(uint8_t index);
 };
 
 #pragma pack(push, 1)
@@ -638,7 +654,10 @@ enum
     RIDE_MODE_FREEFALL_DROP,
     RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
     RIDE_MODE_POWERED_LAUNCH, // RCT1 style, don't pass through station
-    RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
+    RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED,
+
+    RIDE_MOUNT_COUNT,
+    RIDE_MODE_NULL = 255,
 };
 
 enum
@@ -1005,7 +1024,6 @@ extern bool gGotoStartPlacementMode;
 extern uint8_t gLastEntranceStyle;
 
 ride_id_t ride_get_empty_slot();
-int32_t ride_get_default_mode(Ride* ride);
 int32_t ride_get_count();
 int32_t ride_get_total_queue_length(Ride* ride);
 int32_t ride_get_max_queue_time(Ride* ride);
@@ -1065,7 +1083,6 @@ void game_command_set_ride_name(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
-void ride_set_colour_preset(Ride* ride, uint8_t index);
 money32 ride_get_common_price(Ride* forRide);
 rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
 void game_command_create_ride(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
@@ -1098,16 +1115,8 @@ int32_t get_turn_count_3_elements(Ride* ride, uint8_t type);
 int32_t get_turn_count_4_plus_elements(Ride* ride, uint8_t type);
 
 uint8_t ride_get_helix_sections(Ride* ride);
-bool ride_has_spinning_tunnel(Ride* ride);
-bool ride_has_water_splash(Ride* ride);
-bool ride_has_rapids(Ride* ride);
-bool ride_has_log_reverser(Ride* ride);
-bool ride_has_waterfall(Ride* ride);
-bool ride_has_whirlpool(Ride* ride);
 
 bool ride_type_has_flag(int32_t rideType, uint32_t flag);
-bool ride_is_powered_launched(Ride* ride);
-bool ride_is_block_sectioned(Ride* ride);
 bool ride_has_any_track_elements(const Ride* ride);
 void ride_all_has_any_track_elements(bool* rideIndexArray);
 
@@ -1188,7 +1197,6 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
 StationObject* ride_get_station_object(const Ride* ride);
 
 void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
-void ride_stop_peeps_queuing(Ride* ride);
 
 LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z);
 

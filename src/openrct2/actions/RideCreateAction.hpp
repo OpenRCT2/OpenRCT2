@@ -134,7 +134,7 @@ public:
         ride->id = rideIndex;
         ride->type = _rideType;
         ride->subtype = rideEntryIndex;
-        ride_set_colour_preset(ride, _colour1);
+        ride->SetColourPreset(_colour1);
         ride->overall_view.xy = RCT_XY8_UNDEFINED;
 
         // Ride name
@@ -301,7 +301,7 @@ public:
         ride->guests_favourite = 0;
 
         ride->num_circuits = 1;
-        ride->mode = ride_get_default_mode(ride);
+        ride->mode = ride->GetDefaultMode();
         ride->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
         ride_set_vehicle_colours_to_random_preset(ride, _colour2);
         window_invalidate_by_class(WC_RIDE_LIST);
