@@ -1800,7 +1800,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
 
                 // Peeps won't go on rides that aren't sufficiently undercover while it's raining.
                 // The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-                if (climate_is_raining() && (ride->sheltered_eighths & 0x7) < 3)
+                if (climate_is_raining() && (ride->sheltered_eighths) < 3)
                 {
                     if (peepAtRide)
                     {

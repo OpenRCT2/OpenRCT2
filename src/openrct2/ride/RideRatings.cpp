@@ -65,6 +65,12 @@ enum
     PROXIMITY_COUNT
 };
 
+struct ShelteredEights
+{
+    uint8_t TrackShelteredEighths;
+    uint8_t TotalShelteredEighths;
+};
+
 using ride_ratings_calculation = void (*)(Ride* ride);
 
 rct_ride_rating_calc_data gRideRatingsCalcData;
@@ -1062,13 +1068,13 @@ static uint32_t ride_ratings_get_proximity_score()
  * Calculates how much of the track is sheltered in eighths.
  *  rct2: 0x0065E72D
  */
-static int32_t get_num_of_sheltered_eighths(Ride* ride)
+static ShelteredEights get_num_of_sheltered_eighths(Ride* ride)
 {
     int32_t totalLength = ride_get_total_length(ride);
     int32_t shelteredLength = ride->sheltered_length;
     int32_t lengthEighth = totalLength / 8;
     int32_t lengthCounter = lengthEighth;
-    int32_t numShelteredEighths = 0;
+    uint8_t numShelteredEighths = 0;
     for (int32_t i = 0; i < 7; i++)
     {
         if (shelteredLength >= lengthCounter)
@@ -1078,16 +1084,16 @@ static int32_t get_num_of_sheltered_eighths(Ride* ride)
         }
     }
 
-    int32_t trackShelteredEighths = numShelteredEighths;
+    uint8_t trackShelteredEighths = numShelteredEighths;
     rct_ride_entry* rideType = get_ride_entry(ride->subtype);
     if (rideType == nullptr)
     {
-        return 0;
+        return { 0, 0 };
     }
     if (rideType->flags & RIDE_ENTRY_FLAG_COVERED_RIDE)
         numShelteredEighths = 7;
 
-    return (trackShelteredEighths << 8) | numShelteredEighths;
+    return { trackShelteredEighths, numShelteredEighths };
 }
 
 static rating_tuple get_flat_turns_rating(Ride* ride)
@@ -1698,7 +1704,7 @@ static void ride_ratings_calculate_spiral_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_stand_up_roller_coaster(Ride* ride)
@@ -1736,7 +1742,7 @@ static void ride_ratings_calculate_stand_up_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_suspended_swinging_coaster(Ride* ride)
@@ -1776,7 +1782,7 @@ static void ride_ratings_calculate_suspended_swinging_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_inverted_roller_coaster(Ride* ride)
@@ -1819,7 +1825,7 @@ static void ride_ratings_calculate_inverted_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_junior_roller_coaster(Ride* ride)
@@ -1857,7 +1863,7 @@ static void ride_ratings_calculate_junior_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_miniature_railway(Ride* ride)
@@ -1888,11 +1894,11 @@ static void ride_ratings_calculate_miniature_railway(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    int32_t edx = get_num_of_sheltered_eighths(ride);
-    if (((edx >> 8) & 0xFF) >= 4)
+    auto shelteredEighths = get_num_of_sheltered_eighths(ride);
+    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 4)
         ride->excitement /= 4;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_monorail(Ride* ride)
@@ -1923,11 +1929,11 @@ static void ride_ratings_calculate_monorail(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    int32_t edx = get_num_of_sheltered_eighths(ride);
-    if (((edx >> 8) & 0xFF) >= 4)
+    auto shelteredEighths = get_num_of_sheltered_eighths(ride);
+    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 4)
         ride->excitement /= 4;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_mini_suspended_coaster(Ride* ride)
@@ -1966,7 +1972,7 @@ static void ride_ratings_calculate_mini_suspended_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_boat_hire(Ride* ride)
@@ -2039,7 +2045,7 @@ static void ride_ratings_calculate_wooden_wild_mouse(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_steeplechase(Ride* ride)
@@ -2079,7 +2085,7 @@ static void ride_ratings_calculate_steeplechase(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_car_ride(Ride* ride)
@@ -2113,7 +2119,7 @@ static void ride_ratings_calculate_car_ride(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_launched_freefall(Ride* ride)
@@ -2164,7 +2170,7 @@ static void ride_ratings_calculate_launched_freefall(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_bobsleigh_coaster(Ride* ride)
@@ -2202,7 +2208,7 @@ static void ride_ratings_calculate_bobsleigh_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_observation_tower(Ride* ride)
@@ -2230,8 +2236,8 @@ static void ride_ratings_calculate_observation_tower(Ride* ride)
 
     ride->sheltered_eighths = 7;
 
-    int32_t edx = get_num_of_sheltered_eighths(ride);
-    if (((edx >> 8) & 0xFF) >= 5)
+    auto shelteredEighths = get_num_of_sheltered_eighths(ride);
+    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 5)
         ride->excitement /= 4;
 }
 
@@ -2278,7 +2284,7 @@ static void ride_ratings_calculate_looping_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_dinghy_slide(Ride* ride)
@@ -2316,7 +2322,7 @@ static void ride_ratings_calculate_dinghy_slide(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_mine_train_coaster(Ride* ride)
@@ -2356,7 +2362,7 @@ static void ride_ratings_calculate_mine_train_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_chairlift(Ride* ride)
@@ -2394,11 +2400,11 @@ static void ride_ratings_calculate_chairlift(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    int32_t shelteredEighths = get_num_of_sheltered_eighths(ride);
-    if (((shelteredEighths >> 8) & 0xFF) >= 4)
+    auto shelteredEighths = get_num_of_sheltered_eighths(ride);
+    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 4)
         ride->excitement /= 4;
 
-    ride->sheltered_eighths = shelteredEighths;
+    ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_corkscrew_roller_coaster(Ride* ride)
@@ -2444,7 +2450,7 @@ static void ride_ratings_calculate_corkscrew_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_maze(Ride* ride)
@@ -2536,11 +2542,10 @@ static void ride_ratings_calculate_go_karts(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    int32_t shelteredEighths = get_num_of_sheltered_eighths(ride);
+    auto shelteredEighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 
-    ride->sheltered_eighths = shelteredEighths;
-
-    if (((shelteredEighths >> 8) & 0xFF) >= 6)
+    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 6)
         ride->excitement /= 2;
 }
 
@@ -2573,7 +2578,7 @@ static void ride_ratings_calculate_log_flume(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_river_rapids(Ride* ride)
@@ -2606,7 +2611,7 @@ static void ride_ratings_calculate_river_rapids(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_dodgems(Ride* ride)
@@ -2932,7 +2937,7 @@ static void ride_ratings_calculate_reverse_freefall_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_lift(Ride* ride)
@@ -2964,7 +2969,7 @@ static void ride_ratings_calculate_lift(Ride* ride)
 
     ride->sheltered_eighths = 7;
 
-    if ((get_num_of_sheltered_eighths(ride) >> 8) >= 5)
+    if ((get_num_of_sheltered_eighths(ride).TrackShelteredEighths) >= 5)
         ride->excitement /= 4;
 }
 
@@ -3003,7 +3008,7 @@ static void ride_ratings_calculate_vertical_drop_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_cash_machine(Ride* ride)
@@ -3100,7 +3105,7 @@ static void ride_ratings_calculate_flying_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_virginia_reel(Ride* ride)
@@ -3137,7 +3142,7 @@ static void ride_ratings_calculate_virginia_reel(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_splash_boats(Ride* ride)
@@ -3169,7 +3174,7 @@ static void ride_ratings_calculate_splash_boats(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_mini_helicopters(Ride* ride)
@@ -3253,7 +3258,7 @@ static void ride_ratings_calculate_lay_down_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_suspended_monorail(Ride* ride)
@@ -3284,11 +3289,11 @@ static void ride_ratings_calculate_suspended_monorail(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    int32_t shelteredEighths = get_num_of_sheltered_eighths(ride);
-    if (((shelteredEighths >> 8) & 0xFF) >= 4)
+    auto shelteredEighths = get_num_of_sheltered_eighths(ride);
+    if ((shelteredEighths.TrackShelteredEighths & 0xFF) >= 4)
         ride->excitement /= 4;
 
-    ride->sheltered_eighths = shelteredEighths;
+    ride->sheltered_eighths = shelteredEighths.TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
@@ -3336,7 +3341,7 @@ static void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_heartline_twister_coaster(Ride* ride)
@@ -3376,7 +3381,7 @@ static void ride_ratings_calculate_heartline_twister_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_mini_golf(Ride* ride)
@@ -3414,7 +3419,7 @@ static void ride_ratings_calculate_mini_golf(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_first_aid(Ride* ride)
@@ -3477,7 +3482,7 @@ static void ride_ratings_calculate_ghost_train(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_twister_roller_coaster(Ride* ride)
@@ -3523,7 +3528,7 @@ static void ride_ratings_calculate_twister_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_wooden_roller_coaster(Ride* ride)
@@ -3563,7 +3568,7 @@ static void ride_ratings_calculate_wooden_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_side_friction_roller_coaster(Ride* ride)
@@ -3602,7 +3607,7 @@ static void ride_ratings_calculate_side_friction_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_wild_mouse(Ride* ride)
@@ -3642,7 +3647,7 @@ static void ride_ratings_calculate_wild_mouse(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_multi_dimension_roller_coaster(Ride* ride)
@@ -3687,7 +3692,7 @@ static void ride_ratings_calculate_multi_dimension_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_giga_coaster(Ride* ride)
@@ -3733,7 +3738,7 @@ static void ride_ratings_calculate_giga_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_roto_drop(Ride* ride)
@@ -3761,7 +3766,7 @@ static void ride_ratings_calculate_roto_drop(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_flying_saucers(Ride* ride)
@@ -3857,7 +3862,7 @@ static void ride_ratings_calculate_monorail_cycles(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_compact_inverted_coaster(Ride* ride)
@@ -3900,7 +3905,7 @@ static void ride_ratings_calculate_compact_inverted_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_water_coaster(Ride* ride)
@@ -3941,7 +3946,7 @@ static void ride_ratings_calculate_water_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride)
@@ -3972,7 +3977,7 @@ static void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_inverted_hairpin_coaster(Ride* ride)
@@ -4013,7 +4018,7 @@ static void ride_ratings_calculate_inverted_hairpin_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_magic_carpet(Ride* ride)
@@ -4063,7 +4068,7 @@ static void ride_ratings_calculate_submarine_ride(Ride* ride)
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
     // Originally, this was always to zero, even though the default vehicle is completely enclosed.
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_river_rafts(Ride* ride)
@@ -4093,7 +4098,7 @@ static void ride_ratings_calculate_river_rafts(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_enterprise(Ride* ride)
@@ -4159,7 +4164,7 @@ static void ride_ratings_calculate_inverted_impulse_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_mini_roller_coaster(Ride* ride)
@@ -4198,7 +4203,7 @@ static void ride_ratings_calculate_mini_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_mine_ride(Ride* ride)
@@ -4234,7 +4239,7 @@ static void ride_ratings_calculate_mine_ride(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 static void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride)
@@ -4280,7 +4285,7 @@ static void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride);
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
 #pragma endregion
