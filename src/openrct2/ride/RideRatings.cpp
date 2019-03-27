@@ -4127,7 +4127,8 @@ static void ride_ratings_calculate_submarine_ride(Ride* ride)
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
     ride->inversions &= 0x1F;
-    ride->inversions |= 0 << 5;
+    // Originally, this was always to zero, even though the default vehicle is completely enclosed.
+    ride->inversions |= get_num_of_sheltered_eighths(ride) << 5;
 }
 
 static void ride_ratings_calculate_river_rafts(Ride* ride)
