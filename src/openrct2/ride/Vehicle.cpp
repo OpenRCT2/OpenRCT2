@@ -2906,7 +2906,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
         {
             if (sv_ride->status != RIDE_STATUS_CLOSED)
             {
-                if (ride_is_block_sectioned(sv_ride))
+                if (sv_ride->IsBlockSectioned())
                 {
                     if (!(sv_ride->stations[sv->station_id].Depart & STATION_DEPART_FLAG))
                     {
@@ -6655,7 +6655,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
     switch (trackType)
     {
         case TRACK_ELEM_BLOCK_BRAKES:
-            if (ride_is_block_sectioned(ride))
+            if (ride->IsBlockSectioned())
                 apply_block_brakes(vehicle, trackElement->AsTrack()->BlockBrakeClosed());
             else
                 apply_non_stop_block_brake(vehicle, true);
@@ -6671,7 +6671,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
         case TRACK_ELEM_CABLE_LIFT_HILL:
         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            if (ride_is_block_sectioned(ride))
+            if (ride->IsBlockSectioned())
             {
                 if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackElement->AsTrack()->HasChain())
                 {
@@ -6774,7 +6774,7 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
     {
         Ride* ride = get_ride(vehicle->ride);
-        if (ride_is_block_sectioned(ride))
+        if (ride->IsBlockSectioned())
         {
             audio_play_sound_at_location(SOUND_48, x, y, z);
         }

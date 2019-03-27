@@ -1181,7 +1181,7 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
     int32_t excitement = 0, intensity = 0, nausea = 0;
     if (type == RIDE_TYPE_GHOST_TRAIN)
     {
-        if (ride_has_spinning_tunnel(ride))
+        if (ride->HasSpinningTunnel())
         {
             excitement += 40;
             intensity += 25;
@@ -1190,8 +1190,7 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
     }
     else if (type == RIDE_TYPE_LOG_FLUME)
     {
-        // Reverser for log flume
-        if (ride_has_log_reverser(ride))
+        if (ride->HasLogReverser())
         {
             excitement += 48;
             intensity += 55;
@@ -1200,18 +1199,18 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
     }
     else
     {
-        if (ride_has_water_splash(ride))
+        if (ride->HasWaterSplash())
         {
             excitement += 50;
             intensity += 30;
             nausea += 20;
         }
-        if (ride_has_waterfall(ride))
+        if (ride->HasWaterfall())
         {
             excitement += 55;
             intensity += 30;
         }
-        if (ride_has_whirlpool(ride))
+        if (ride->HasWhirlpool())
         {
             excitement += 35;
             intensity += 20;
@@ -2254,7 +2253,7 @@ static void ride_ratings_calculate_looping_roller_coaster(Ride* ride)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
 
-    ride->unreliability_factor = ride_is_powered_launched(ride) ? 20 : 15;
+    ride->unreliability_factor = ride->IsPoweredLaunched() ? 20 : 15;
     set_unreliability_factor(ride);
 
     rating_tuple ratings;

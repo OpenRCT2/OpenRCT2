@@ -130,7 +130,7 @@ private:
 
         ride_clear_for_construction(ride);
         ride_remove_peeps(ride);
-        ride_stop_peeps_queuing(ride);
+        ride->StopGuestsQueuing();
 
         sub_6CB945(ride);
         ride_clear_leftover_entrances(ride);
