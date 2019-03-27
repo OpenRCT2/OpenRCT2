@@ -7,6 +7,7 @@
 - Fix: [#5579] Network desync immediately after connecting.
 - Fix: [#6006] Objects higher than 6 metres are considered trees (original bug).
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
+- Fix: [#7913] RCT1/RCT2 title sequence timing is off.
 - Fix: [#8537] Imported RCT1 rides/shops are all numbered 1.
 - Fix: [#8873] Potential crash when placing footpaths.
 - Fix: [#8882] Submarine Ride does not count as indoors (original bug).
