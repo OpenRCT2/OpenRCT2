@@ -1,0 +1,4398 @@
+# STR_XXXX part is read and XXXX becomes the string id number.
+# Everything after the colon and before the new line will be saved as the string.
+# Use # at the beginning of a line to leave a comment.
+STR_0000    :
+STR_0001    :{STRINGID} {COMMA16}
+STR_0002    :スパイラルコースター
+STR_0003    :スタンディングコースター
+STR_0004    :サスペンデッド・スイング・コースター
+STR_0005    :インバーテッド・コースター
+STR_0006    :ジュニア・ジェットコースター
+STR_0007    :ミニ列車
+STR_0008    :モノレール
+STR_0009    :ミニサスペンデッドコースター
+STR_0010    :漕ぎボート
+STR_0011    :木製ワイルドマウス
+STR_0012    :障害物競馬
+STR_0013    :ドライブ
+STR_0014    :打ち上げフリーフォール
+STR_0015    :ボブスレーコースター
+STR_0016    :展望台
+STR_0017    :ループコースター
+STR_0018    :ディンジー・スライド
+STR_0019    :マイン・トレイン
+STR_0020    :スキーリフト
+STR_0021    :コルクスクリューコースター
+STR_0022    :迷路
+STR_0023    :スパイラル滑り台
+STR_0024    :ゴーカート
+STR_0025    :ログ・フリューム
+STR_0026    :リバー・ラピッド
+STR_0027    :バンパーカー
+STR_0028    :パイレーツシップ
+STR_0029    :スイング・インバータ・シップ
+STR_0030    :食べ物の店
+STR_0031    :Unknown Stall (1D)
+STR_0032    :飲料の店
+STR_0033    :Unknown Stall (1F)
+STR_0034    :ショップ
+STR_0035    :メリーゴーラウンド
+STR_0036    :Unknown Stall (22)
+STR_0037    :インフォーメーションセンター
+STR_0038    :トイレ
+STR_0039    :観覧車
+STR_0040    :モーションシミュレーター
+STR_0041    :3Dシネマ
+STR_0042    :トップスピン
+STR_0043    :スペースリング
+STR_0044    :リバースフリーフォールコースター
+STR_0045    :エレベーター
+STR_0046    :バーティカルドロップジェットコースター
+STR_0047    :ATM
+STR_0048    :ツイスト
+STR_0049    :お化け屋敷
+STR_0050    :救護所
+STR_0051    :サーカス
+STR_0052    :幻の列車
+STR_0053    :鋼鉄ツイスタージェットコースター
+STR_0054    :木製ジェットコースター
+STR_0055    :サイドフリクションジェットコースター
+STR_0056    :ワイルドマウス
+STR_0057    :四次元コースター
+STR_0058    :Unknown Ride (38)
+STR_0059    :フライングコースター
+STR_0060    :Unknown Ride (3A)
+STR_0061    :バージニア・リール
+STR_0062    :スプラッシュ・ボート
+STR_0063    :ミニヘリコプター
+STR_0064    :レイダウンコースター
+STR_0065    :サスペンデッドモノレール
+STR_0066    :Unknown Ride (40)
+STR_0067    :リバーサージェットコースター
+STR_0068    :ハートラインツイスターコースター
+STR_0069    :ミニチュアゴルフ
+STR_0070    :ギガコースター
+STR_0071    :ロトドロップ
+STR_0072    :空飛ぶ円盤
+STR_0073    :ねじれた家
+STR_0074    :モノレールサイクル
+STR_0075    :コンパクト倒立コースター
+STR_0076    :ウォーターコースター
+STR_0077    :エアパワード垂直コースター
+STR_0078    :インバーテッドヘアピンコースター
+STR_0079    :空飛ぶじゅうたん
+STR_0080    :潜水艦ライド
+STR_0081    :川いかだ
+STR_0082    :Unknown Ride (50)
+STR_0083    :エンタープライズ
+STR_0084    :Unknown Ride (52)
+STR_0085    :Unknown Ride (53)
+STR_0086    :Unknown Ride (54)
+STR_0087    :Unknown Ride (55)
+STR_0088    :インバーテッドインパルスコースター
+STR_0089    :ミニジェットコースター
+STR_0090    :鉱山ライド
+STR_0091    :Unknown Ride (59)
+STR_0092    :リニアモーターコースター
+STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
+STR_0513    :A looping roller coaster where the riders ride in a standing position
+STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
+STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
+STR_0516    :まだ大きなライドに挑戦する勇気がない人々のための、穏やかなローラーコースターです。
+STR_0517    :狭い軌間の線路に沿って移動するミニチュア電車に乗客を乗せる。
+STR_0518    :モノレールトラックを移動する電車。
+STR_0519    :乗客はう特別にデザインされた車両に乗り、コーナーで制限なく振られる。
+STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
+STR_0521    :小さなネズミ型の車両がヘアピンコーナーと急な落下を横断して不安定に身を乗り出す。強烈度が高いはずです。
+STR_0522    :単線のコースタートラックに沿って走る、馬の形をした車両に乗客を乗せる。
+STR_0523    :Riders travel slowly in powered vehicles along a track-based route
+STR_0524    :車両は圧搾空気で発車されて高い鉄塔の上まで運ばれ、それから自由落下する。
+STR_0525    :半円形パイプのカーブとバンクに沿って自動的に滑り落ちる小型のボブスレーそりがトラックを滑り降りる。
+STR_0526    :高い塔の上方まで回転するキャビンが移動する。
+STR_0527    :垂直ループを含むことのできるスムースな金属製コースターです。
+STR_0528    :ねじれた半円（あるいは完全に覆われた）パイプのコースを、薄汚れたゴムボートに乗って下る。
+STR_0529    :古い鉄道を模して作られた金属のコースタートラックを鉱山電車テーマのローラーコースターが疾走する。
+STR_0530    :車両は鋼のケーブルに吊られてライドの端からもう一方の端まで行き、そして戻ってくる。
+STR_0531    :コークスクリューやループを伴う金属製トラックの小型ローラーコースター。
+STR_0532    :Maze is constructed from 6-foot tall hedges or walls, and guests wander around the maze leaving only when they find the exit
+STR_0533    :内部に階段を、外部に螺旋滑り台とマットを有する木造の建築物。
+STR_0534    :乗客が自分で運転するガソリンエンジンのゴーカート。
+STR_0535    :丸太の形のボードが溝に沿って移動し、急斜面で乗客を水浸しにする。
+STR_0536    :滝の水しぶきや急流部分を通る広い溝に沿って流れる円形のボート。
+STR_0537    :Self-drive electric dodgem cars
+STR_0538    :Large swinging pirate ship
+STR_0539    :Ship is attached to an arm with a counterweight at the opposite end, and swings through a complete 360 degrees
+STR_0540    :食べ物を売ります店です。
+STR_0542    :飲み物を売ります店です。
+STR_0544    :お土産を売ります店です。
+STR_0545    :木彫りの馬との伝統的な回転カルーセルです。
+STR_0547    :パークの地図や傘が買える店です。
+STR_0548    :トイレ用個室です。
+STR_0549    :巨大なホイールが客を乗せてゆっくり回転する
+STR_0550    :中で乗客に映像を見せながら、ポッドが油圧アームにより回ったり揺られたりする。
+STR_0551    :ジオデシック・ドームの中で3D映画が放映されている。
+STR_0552    :星の形を形成して回転するゴンドラにさらに回転アームが接続。
+STR_0553    :同心上の旋回リングが乗客をあらゆる方向に振り回す。
+STR_0554    :リニア誘導モーターで加速された車両が垂直トラックを上昇し、それから乗り場まで自由落下する
+STR_0555    :Guests ride in a lift up or down a vertical tower to get from one level to another
+STR_0556    :究極の自由落下体験のために、完全な垂直軌道を降下するとても広幅の車両を持つコースターです。
+STR_0557    :お金が無くなったゲストが使うキャッシュ機です。
+STR_0558    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
+STR_0559    :Large themed building containing scary corridors and spooky rooms
+STR_0560    :気分が悪くなったピープや怪我をしたピープを救護するための施設。
+STR_0561    :サーカステントの中でサーカス用動物とピエロがショーを行う。
+STR_0562    :特別なエフェクトと景観を有する多段トラックを移動するエンジン付き車両。
+STR_0563    :乗客はひざだけを押さえられて快適な座席に座り、巨大なドロップやツイストを有するトラックを滑走することで、丘の上での「エアタイム」を体験する。
+STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
+STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
+STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
+STR_0567    :車両は両サイドのトラックで支えられ、乗客は真っ逆さまになって急降下や様々な回転に飛び込む。
+STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
+STR_0571    :木でできたジグザグのトラックを運行する間、円形の車両が回転する。
+STR_0572    :ベルトコンベヤーで斜面を引き上げられ、急降下して大飛沫で乗客を水浸しにする、広い溝に沿って移動する積載容量の高いボート。
+STR_0573    :ヘリコプターの形をしたペダルによって動く車両。
+STR_0574    :乗客は寝転んだ姿勢のまま座席にハーネスで固定され、ツイスト・回転のあるトラックを背に、地面と向かい合って滑走する。
+STR_0575    :Powered trains hanging from a single rail transport people around the park
+STR_0577    :特別な部分で反転するボギー車が木のトラックを走る。
+STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0579    :優しいなミニアチュール・ゴルフのゲームです。
+STR_0580    :300フィート以上のリフトアップとドロップが可能な、巨大な金属製ローラーコースターです。
+STR_0581    :座席のリングが穏やかに回転しながら塔の最上部まで持ち上げられ、それから自由落下し、磁器ブレーキにより最下部でゆっくり停止する。
+STR_0582    :自分で運転するホバークラフトです。
+STR_0583    :その家の中は通路も部屋も曲がりくねっており、訪れた人々の方向感覚を狂わせる。
+STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
+STR_0585    :トラックに吊り下げられた席に座り、乗客は休む間もなくループやツイストを体験する。
+STR_0586    :ボート型の車両がねじれたカーブや急降下を含むトラックを滑走し、穏やかな川のセクションに着水する。
+STR_0587    :車両は空圧により勢いよく発車して垂直トラックを駆け上がり、トップに達して別方向を垂直落下して乗り場に帰還する。
+STR_0588    :連結していない個々の車両が、ヘアピンターンと急降下のあるジグザグのトラックを滑走する。
+STR_0589    :４本のアームにより周期的に上下する、空飛ぶじゅうたんをテーマにした車。
+STR_0590    :ミニ潜水艦に乗って水中のコースを走る。
+STR_0591    :Raft-shaped boats gently meander around a river track
+STR_0593    :ポッドを吊した回転ホイールが、回転を始めた後に支持アームによって上に傾けられる。
+STR_0598    :乗り場から一気に加速される車両が、トラックを垂直に上昇して、もう一方の垂直トラックを戻る。
+STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
+STR_0600    :動力を持つ鉱山の列車が、スムースなツイスト・トラック・レイアウトに沿って走る。
+STR_0602    :ローラーコースター車両はリニア誘導モーター(LIM)で加速され、ツイストや回転のあるコースを疾走する。
+STR_0767    :来客{INT32}
+STR_0768    :清掃員{INT32}
+STR_0769    :整備士{INT32}
+STR_0770    :警備員{INT32}
+STR_0771    :エンターテイナー{INT32}
+STR_0777    :Unnamed park{POP16}{POP16}
+STR_0778    :バナー
+STR_0779    :1日
+STR_0780    :2日
+STR_0781    :3日
+STR_0782    :4日
+STR_0783    :5日
+STR_0784    :6日
+STR_0785    :7日
+STR_0786    :8日
+STR_0787    :9日
+STR_0788    :10日
+STR_0789    :11日
+STR_0790    :12日
+STR_0791    :13日
+STR_0792    :14日
+STR_0793    :15日
+STR_0794    :16日
+STR_0795    :17日
+STR_0796    :18日
+STR_0797    :19日
+STR_0798    :20日
+STR_0799    :21日
+STR_0800    :22日
+STR_0801    :23日
+STR_0802    :24日
+STR_0803    :25日
+STR_0804    :26日
+STR_0805    :27日
+STR_0806    :28日
+STR_0807    :29日
+STR_0808    :30日
+STR_0809    :31日
+STR_0810    :1月
+STR_0811    :2月
+STR_0812    :3月
+STR_0813    :4月
+STR_0814    :5月
+STR_0815    :6月
+STR_0816    :7月
+STR_0817    :8月
+STR_0818    :9月
+STR_0819    :10月
+STR_0820    :11月
+STR_0821    :12月
+STR_0822    :Unable to access graphic data file
+STR_0823    :Missing or inaccessible data file
+STR_0824    :{BLACK}❌
+STR_0825    :Chosen name in use already
+STR_0826    :Too many names defined
+STR_0827    :資金不足です！{CURRENCY2DP}が必要です。
+STR_0828    :{SMALLFONT}{BLACK}ウィンドウを閉める
+STR_0829    :{SMALLFONT}{BLACK}ウィンドウのタイトル - これをドラッグさせる
+STR_0830    :{SMALLFONT}{BLACK}ズームアウト
+STR_0831    :{SMALLFONT}{BLACK}ズームイン
+STR_0832    :{SMALLFONT}{BLACK}時計回90°りに移動させる
+STR_0833    :{SMALLFONT}{BLACK}ゲームをポーズする
+STR_0834    :{SMALLFONT}{BLACK}Disk and game options
+STR_0839    :{UINT16} x {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+# The following six strings were used for display resolutions, but have been replaced.
+STR_0847    :OpenRCT2について
+STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
+STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
+STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
+STR_0856    :{WINDOW_COLOUR_2}Thanks to:
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
+STR_0865    :{STRINGID}
+STR_0866    :{POP16}{STRINGID}
+STR_0867    :{POP16}{POP16}{STRINGID}
+STR_0868    :{POP16}{POP16}{POP16}{STRINGID}
+STR_0869    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0870    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_0876    :{BLACK}▼
+STR_0877    :低すぎる!
+STR_0878    :高すぎる!
+STR_0879    :ここに地形を下げられません…
+STR_0880    :ここに地形を上げられません…
+STR_0881    :オブジェクトが途中
+STR_0882    :ゲームをロードする
+STR_0883    :ゲームをセーブする
+STR_0884    :地形をロードする
+STR_0885    :地形をセーブする
+STR_0887    :シナリオエディタを閉じる
+STR_0888    :トラックデザイナーを閉める
+STR_0889    :トラックデザインマネージャを閉じる
+STR_0891    :スクリーンショット
+STR_0892    :スクリーンショットが「{STRINGID}」でセーブしました。
+STR_0893    :スクリーンショット失敗しました!
+STR_0894    :Landscape data area full !
+STR_0895    :Can't build partly above and partly below ground
+STR_0896    :{POP16}{POP16}{STRINGID}の建設
+STR_0897    :方向
+STR_0898    :{SMALLFONT}{BLACK}左手にカーブ
+STR_0899    :{SMALLFONT}{BLACK}右手にカーブ
+STR_0900    :{SMALLFONT}{BLACK}左手にカーブ (小さい半径)
+STR_0901    :{SMALLFONT}{BLACK}右手にカーブ (小さい半径)
+STR_0902    :{SMALLFONT}{BLACK}左手にカーブ (非常に小さい半径)
+STR_0903    :{SMALLFONT}{BLACK}右手にカーブ (非常に小さい半径)
+STR_0904    :{SMALLFONT}{BLACK}左手にカーブ (大きい半径)
+STR_0905    :{SMALLFONT}{BLACK}右手にカーブ (大きい半径)
+STR_0906    :{SMALLFONT}{BLACK}直線トラック
+STR_0907    :傾斜
+STR_0908    :カーブとバンク
+STR_0909    :席の回転角
+STR_0910    :{SMALLFONT}{BLACK}左手にカーブのロール
+STR_0911    :{SMALLFONT}{BLACK}右手にカーブのロール
+STR_0912    :{SMALLFONT}{BLACK}ロールなし
+STR_0913    :{SMALLFONT}{BLACK}前のセクションに進む
+STR_0914    :{SMALLFONT}{BLACK}次のセクションに進む
+STR_0915    :{SMALLFONT}{BLACK}選んだセクションを建設する
+STR_0916    :{SMALLFONT}{BLACK}選んだセクションを削除する
+STR_0917    :{SMALLFONT}{BLACK}バーティカル・ドロップ
+STR_0918    :{SMALLFONT}{BLACK}下り急なスロープ
+STR_0919    :{SMALLFONT}{BLACK}下りスロープ
+STR_0920    :{SMALLFONT}{BLACK}平準
+STR_0921    :{SMALLFONT}{BLACK}上りスロープ
+STR_0922    :{SMALLFONT}{BLACK}上り急なスロープ
+STR_0923    :{SMALLFONT}{BLACK}垂直ライズ
+STR_0924    :{SMALLFONT}{BLACK}下り螺旋
+STR_0925    :{SMALLFONT}{BLACK}上り螺旋
+STR_0926    :それを削除できません。
+STR_0927    :ここでそれを建設できません。
+STR_0928    :{SMALLFONT}{BLACK}チェーン・リフト、スロープに上るために
+STR_0929    :S字カーブ (左)
+STR_0930    :S字カーブ (右)
+STR_0931    :垂直ループ (左)
+STR_0932    :垂直ループ (右)
+STR_0933    :土地を上げたり下げたりするが必要です。
+STR_0934    :途中でライドの入り口があります！
+STR_0935    :途中でライドの出口があります！
+STR_0936    :途中でパークの入口があります！
+STR_0937    :{SMALLFONT}{BLACK}設定の表示
+STR_0938    :{SMALLFONT}{BLACK}土地の高さと勾配を調整する
+STR_0939    :地形の穴を表示する
+STR_0940    :地形透明度の切り替え
+STR_0941    :垂直面透明度の切り替え
+STR_0942    :ライド透明度の切り替え
+STR_0943    :景色透明度の切り替え
+STR_0944    :保存する
+STR_0945    :保存しない
+STR_0946    :キャンセル
+STR_0947    :ロードする前に保存しますか？
+STR_0948    :終了する前に保存しますか？
+STR_0949    :終了する前に保存しますか？
+STR_0950    :ゲームをロードする
+STR_0951    :ゲームを閉じる
+STR_0952    :ゲームを閉じる
+STR_0953    :景色をロードする
+STR_0954    :
+STR_0955    :{SMALLFONT}{BLACK}このトラックセクションの席の回転角を選択する
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
+STR_0972    :キャンセル
+STR_0973    :OK
+STR_0974    :乗り物
+STR_0975    :軽食店と雑貨屋
+STR_0976    :トイレと案内所
+STR_0977    :新しい輸送ライド
+STR_0978    :新しいゲンタレライド
+STR_0979    :新しいローラーコースター
+STR_0980    :新しいスリルライド
+STR_0981    :新しいウォーターライド
+STR_0982    :新しいショップ
+STR_0983    :研究開発
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
+STR_0986    :{BLACK}{CURRENCY2DP}
+STR_0987    :Too many rides/attractions
+STR_0988    :Can't create new ride/attraction...
+STR_0989    :{STRINGID}
+STR_0990    :{SMALLFONT}{BLACK}建設
+STR_0991    :乗り場
+STR_0992    :{SMALLFONT}{BLACK}全てのライドを解体する
+STR_0993    :ライド/アトラクションを解体します
+STR_0994    :解体する
+STR_0995    :{WINDOW_COLOUR_1}{STRINGID}を全て解体したいですか?
+STR_0996    :全体を見る
+STR_0997    :{SMALLFONT}{BLACK}View selection
+STR_0998    :No more stations allowed on this ride
+STR_0999    :乗り場が必要です。
+STR_1000    :Track is not a complete circuit
+STR_1001    :Track unsuitable for type of train
+STR_1002    :開ことができません {POP16}{POP16}{POP16}{STRINGID}...
+STR_1003    :テストことができません {POP16}{POP16}{POP16}{STRINGID}...
+STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
+STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
+STR_1006    :Must be closed first
+STR_1007    :Unable to create enough vehicles
+STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
+STR_1009    :{SMALLFONT}{BLACK}全ライド／アトラクションの稼動/閉鎖
+STR_1010    :{SMALLFONT}{BLACK}パークの稼動/閉鎖
+STR_1011    :全てを閉める
+STR_1012    :全てを開ける
+STR_1013    :遊園地を閉める
+STR_1014    :遊園地を開ける
+STR_1015    :Unable to operate with more than one station platform in this mode
+STR_1016    :Unable to operate with less than two stations in this mode
+STR_1017    :Can't change operating mode...
+STR_1018    :Can't make changes...
+STR_1019    :Can't make changes...
+STR_1020    :Can't make changes...
+STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
+STR_1022    :列車ごとの{POP16}{POP16}{POP16}{COMMA16}台
+STR_1023    :列車ごと{POP16}{POP16}{POP16}{COMMA16}台
+STR_1024    :列車ごと{COMMA16}台
+STR_1025    :列車ごと{COMMA16}台
+STR_1026    :乗り場は長すぎです！
+STR_1027    :{SMALLFONT}{BLACK}画面の中央に移動
+STR_1028    :Off edge of map!
+STR_1029    :Cannot build partly above and partly below water!
+STR_1030    :Can only build this underwater!
+STR_1031    :Can't build this underwater!
+STR_1032    :Can only build this on water!
+STR_1033    :Can only build this above ground!
+STR_1034    :Can only build this on land!
+STR_1035    :Local authority won't allow construction above tree-height!
+STR_1036    :ゲームをロードする
+STR_1037    :景色をロードする
+STR_1038    :ゲームセーブをシナリオに変換する
+STR_1039    :トラックディサインをインストールする
+STR_1040    :ゲームをセーブする
+STR_1041    :シナリオをセーブする
+STR_1042    :景色ををセーブする
+STR_1043    :OpenRCT2のゲームセーブ
+STR_1044    :OpenRCT2のシナリオファイル
+STR_1045    :OpenRCT2の景色ファイル
+STR_1046    :OpenRCT2のトラックディサインファイル
+STR_1047    :ゲームをセーブが失敗しました！
+STR_1048    :シナリオをセーブが失敗しました！
+STR_1049    :地形をセーブが失敗しました！
+STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
+STR_1051    :支柱の切り替え
+STR_1052    :ゲストの切替え
+STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
+STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
+STR_1055    :{SMALLFONT}{BLACK}Name person
+STR_1056    :{SMALLFONT}{BLACK}Name staff member
+STR_1057    :ライド／アトラクションの名
+STR_1058    :ライド／アトラクションの名を入力して下さい。
+STR_1059    :このライド／アトラクションの名がリネームできません。
+STR_1060    :無効なライド／アトラクション名です。
+STR_1061    :通常モード
+STR_1062    :周回コースモード
+STR_1063    :逆方向発車モード
+STR_1064    :動力発車（乗り場を通過する）
+STR_1065    :往復モード
+STR_1066    :ボートモード
+STR_1067    :上方向に発射
+STR_1068    :Rotating lift mode
+STR_1069    :Station to station mode
+STR_1070    :Single ride per admission
+STR_1071    :Unlimited rides per admission
+STR_1072    :迷路モード
+STR_1073    :レースモード
+STR_1074    :バンパー・カー・モード
+STR_1075    :スイングモード
+STR_1076    :ショップモード
+STR_1077    :回転モード
+STR_1078    :正回転モード
+STR_1079    :後方回転モード
+STR_1080    :「飛行家のアベンジャー」の映画
+STR_1081    :「鼠の物語」の３D映画
+STR_1082    :スペースリングモード
+STR_1083    :初心者モード
+STR_1084    :リニアモーター
+STR_1085    :「スリルシーか」の映画
+STR_1086    :「ストームチェーサー」の３D映画
+STR_1087    :「スペースレーダー」の３D映画
+STR_1088    :強烈なモード
+STR_1089    :ベルジェルクモード
+STR_1090    :お化け屋敷モード
+STR_1091    :サーカスモード
+STR_1092    :下り発車
+STR_1093    :ねじれた家モード
+STR_1094    :自由落下モード
+STR_1095    :周回コース(排他的セクション)モード
+STR_1096    :動力発車 (without passing station)
+STR_1097    :動力発車(排他的セクション)モード
+STR_1098    :{POP16}{STRINGID}の終わりに移動中
+STR_1099    :{POP16}{STRINGID}で乗客をロード待機中
+STR_1100    :{POP16}{STRINGID}を出発を待機中
+STR_1101    :{POP16}{STRINGID}を出発中
+STR_1102    :{VELOCITY}で走行中
+STR_1103    :{POP16}{STRINGID}に到着中
+STR_1104    :{POP16}{STRINGID}にアンロード中
+STR_1105    :{VELOCITY}で走行中
+STR_1106    :クラッシュ中！
+STR_1107    :クラッシュしました！
+STR_1108    :{VELOCITY}で走行中
+STR_1109    :スイング中
+STR_1110    :回転中
+STR_1111    :回転中
+STR_1112    :操作中
+STR_1113    :上映中
+STR_1114    :回転中
+STR_1115    :操作中
+STR_1116    :操作中
+STR_1117    :サーカスショー中
+STR_1118    :操作中
+STR_1119    :ケーブル・リフト待機中
+STR_1120    :{VELOCITY}で走行中
+STR_1121    :停車中
+STR_1122    :乗客をロード待機中
+STR_1123    :スタート待機中
+STR_1124    :始動中
+STR_1125    :操作中
+STR_1126    :停車中
+STR_1127    :乗客をアンロード中
+STR_1128    :ブロック・ブレーキで停車した
+STR_1129    :全ての乗り物に同じ色を塗ります
+STR_1130    :{STRINGID}ごとに異なる色
+STR_1131    :乗り物ごとに異なる色
+STR_1132    :乗り物 {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1133    :乗り物 {POP16}{COMMA16}
+STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
+STR_1135    :{STRINGID} {COMMA16}
+STR_1136    :{SMALLFONT}{BLACK}Select main colour
+STR_1137    :{SMALLFONT}{BLACK}Select additional colour 1
+STR_1138    :{SMALLFONT}{BLACK}Select additional colour 2
+STR_1139    :{SMALLFONT}{BLACK}Select support structure colour
+STR_1140    :{SMALLFONT}{BLACK}Select vehicle colour scheme option
+STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
+STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1144    :Can't build/move entrance for this ride/attraction...
+STR_1145    :Can't build/move exit for this ride/attraction...
+STR_1146    :入口はまだ建てせんでした。
+STR_1147    :出口はまだ建てせんでした。
+STR_1148    :乗車率1/4
+STR_1149    :乗車率1/2
+STR_1150    :乗車率3/4
+STR_1151    :満員
+STR_1152    :指定なし
+STR_1153    :ライドの高さ表示の切り替え
+STR_1154    :地形の高さ表示の切り替え
+STR_1155    :歩道の高さ表示の切り替え
+STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1158    :これを削除できません…
+STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
+STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
+STR_1161    :Can't position this here...
+STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
+STR_1163    :{STRINGID}{NEWLINE}(右クリックして変更します)
+STR_1164    :{STRINGID}{NEWLINE}(右クリックして削除します)
+STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
+STR_1166    :Can't lower water level here...
+STR_1167    :Can't raise water level here...
+STR_1168    :設定
+STR_1169    :(なし)
+STR_1170    :{STRING}
+STR_1171    :{RED}閉鎖中 - - 
+STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
+STR_1174    :バナーがあります
+STR_1175    :Can't build this on sloped footpath
+STR_1176    :Can't build footpath here...
+STR_1177    :Can't remove footpath from here...
+STR_1178    :Land slope unsuitable
+STR_1179    :Footpath in the way
+STR_1180    :Can't build this underwater!
+STR_1181    :歩道
+STR_1182    :種類
+STR_1183    :方向
+STR_1184    :傾斜
+STR_1185    :{SMALLFONT}{BLACK}方向
+STR_1186    :{SMALLFONT}{BLACK}下り階段
+STR_1187    :{SMALLFONT}{BLACK}平準
+STR_1188    :{SMALLFONT}{BLACK}上り階段
+STR_1189    :{SMALLFONT}{BLACK}Construct the selected footpath section
+STR_1190    :{SMALLFONT}{BLACK}前の歩道を破壊する
+STR_1191    :{BLACK}{STRINGID}
+STR_1192    :{OUTLINE}{RED}{STRINGID}
+STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
+STR_1194    :閉鎖中
+STR_1195    :試験中
+STR_1196    :稼働中
+STR_1197    :故障中
+STR_1198    :クラッシュ！
+STR_1199    :{COMMA16}人の乗客
+STR_1200    :{COMMA16}人の乗客
+STR_1201    :待ち行列の誰もいない
+STR_1202    :1人の行列
+STR_1203    :{COMMA16}人の行列
+STR_1204    :{COMMA16}分　行列の待ち時間
+STR_1205    :{COMMA16}分　行列の待ち時間
+STR_1206    :{WINDOW_COLOUR_2}発車待ち:
+STR_1207    :{WINDOW_COLOUR_2}別の列車が到着したら発車
+STR_1208    :{WINDOW_COLOUR_2}別のボートが到着したら発車
+STR_1209    :{SMALLFONT}{BLACK}別の列車が到着したら発車するように設定
+STR_1210    :{SMALLFONT}{BLACK}全ての直接隣接する乗り場と出発タイミングを同期するかどうか選択。
+STR_1211    :{WINDOW_COLOUR_2}最低待機時間:
+STR_1212    :{WINDOW_COLOUR_2}最大待機時間:
+STR_1213    :{SMALLFONT}{BLACK}Select minimum length of time to wait before departing
+STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before departing
+STR_1215    :{WINDOW_COLOUR_2}全ての直接隣接する乗り場と出発タイミングを同期する
+STR_1216    :{SMALLFONT}{BLACK}レースのために全ての直接隣接する乗り場と出発タイミングを同期するかどうか選択。
+STR_1217    :{COMMA16}分
+STR_1218    :{BLACK}➕
+STR_1219    :{BLACK}➖
+STR_1220    :出口のみ
+STR_1221    :入口がない
+STR_1222    :出口がない
+STR_1223    :{SMALLFONT}{BLACK}輸送ライド
+STR_1224    :{SMALLFONT}{BLACK}ゲントルライド
+STR_1225    :{SMALLFONT}{BLACK}ロラーコースター
+STR_1226    :{SMALLFONT}{BLACK}スリルライド
+STR_1227    :{SMALLFONT}{BLACK}ウォターライド
+STR_1228    :{SMALLFONT}{BLACK}ショップ
+STR_1229    :列車
+STR_1230    :列車
+STR_1231    :列車
+STR_1232    :列車
+STR_1233    :{COMMA16} 列車
+STR_1234    :{COMMA16} 列車
+STR_1235    :列車 {COMMA16}
+STR_1236    :ボート
+STR_1237    :ボート
+STR_1238    :ボート
+STR_1239    :ボート
+STR_1240    :{COMMA16} ボート
+STR_1241    :{COMMA16} ボート
+STR_1242    :ボート {COMMA16}
+STR_1243    :トラック
+STR_1244    :トラック
+STR_1245    :トラック
+STR_1246    :トラック
+STR_1247    :{COMMA16} トラック
+STR_1248    :{COMMA16} トラック
+STR_1249    :トラック {COMMA16}
+STR_1250    :docking platform
+STR_1251    :docking platforms
+STR_1252    :Docking platform
+STR_1253    :Docking platforms
+STR_1254    :{COMMA16} docking platform
+STR_1255    :{COMMA16} docking platforms
+STR_1256    :Docking platform {COMMA16}
+STR_1257    :乗り場
+STR_1258    :乗り場
+STR_1259    :乗り場
+STR_1260    :乗り場
+STR_1261    :{COMMA16} 乗り場
+STR_1262    :{COMMA16} 乗り場
+STR_1263    :乗り場 {COMMA16}
+STR_1264    :カー
+STR_1265    :カー
+STR_1266    :カー
+STR_1267    :カー
+STR_1268    :{COMMA16} カー
+STR_1269    :{COMMA16} カー
+STR_1270    :カー {COMMA16}
+STR_1271    :建物
+STR_1272    :建物
+STR_1273    :建物
+STR_1274    :建物
+STR_1275    :{COMMA16} 建物
+STR_1276    :{COMMA16} 建物
+STR_1277    :建物 {COMMA16}
+STR_1278    :構造
+STR_1279    :構造
+STR_1280    :構造
+STR_1281    :構造
+STR_1282    :{COMMA16} 構造
+STR_1283    :{COMMA16} 構造
+STR_1284    :構造 {COMMA16}
+STR_1285    :シップ
+STR_1286    :シップ
+STR_1287    :シップ
+STR_1288    :シップ
+STR_1289    :{COMMA16} シップ
+STR_1290    :{COMMA16} シップ
+STR_1291    :シップ {COMMA16}
+STR_1292    :キャビン
+STR_1293    :キャビン
+STR_1294    :キャビン
+STR_1295    :キャビン
+STR_1296    :{COMMA16} キャビン
+STR_1297    :{COMMA16} キャビン
+STR_1298    :キャビン {COMMA16}
+STR_1299    :wheel
+STR_1300    :wheels
+STR_1301    :Wheel
+STR_1302    :Wheels
+STR_1303    :{COMMA16} wheel
+STR_1304    :{COMMA16} wheels
+STR_1305    :Wheel {COMMA16}
+STR_1306    :リング
+STR_1307    :リング
+STR_1308    :リング
+STR_1309    :リング
+STR_1310    :{COMMA16} リング
+STR_1311    :{COMMA16} リング
+STR_1312    :リング {COMMA16}
+STR_1313    :プレーヤー
+STR_1314    :プレーヤー
+STR_1315    :プレーヤー
+STR_1316    :プレーヤー
+STR_1317    :{COMMA16} プレーヤー
+STR_1318    :{COMMA16} プレーヤー
+STR_1319    :プレーヤー {COMMA16}
+STR_1320    :コース
+STR_1321    :コース
+STR_1322    :コース
+STR_1323    :コース
+STR_1324    :{COMMA16} コース
+STR_1325    :{COMMA16} コース
+STR_1326    :コース {COMMA16}
+STR_1327    :{SMALLFONT}{BLACK}Rotate objects by 90°
+STR_1328    :平地が必要
+STR_1329    :{WINDOW_COLOUR_2}発車スピード:
+STR_1330    :{SMALLFONT}{BLACK}Maximum speed when leaving station
+STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
+STR_1332    :{VELOCITY}
+STR_1333    :{STRINGID} - {STRINGID}{POP16}
+STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
+STR_1335    :{STRINGID} - 入口{POP16}{POP16}
+STR_1336    :{STRINGID} - 乗り場 {POP16}{COMMA16} 入口
+STR_1337    :{STRINGID} - 出口{POP16}{POP16}
+STR_1338    :{STRINGID} - 乗り場 {POP16}{COMMA16} 出口
+STR_1339    :{BLACK}未だに試験結果がない
+STR_1340    :{WINDOW_COLOUR_2}最高速度: {BLACK}{VELOCITY}
+STR_1341    :{WINDOW_COLOUR_2}乗車時間: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1342    :{DURATION}
+STR_1343    :{DURATION} / 
+STR_1344    :{WINDOW_COLOUR_2}レール長: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1345    :{LENGTH}
+STR_1346    :{LENGTH} / 
+STR_1347    :{WINDOW_COLOUR_2}平均速度: {BLACK}{VELOCITY}
+STR_1348    :{WINDOW_COLOUR_2}最大垂直プラスG: {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}最大垂直プラスG: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}最大垂直マイナスG: {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}最大垂直マイナスG: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}最大横G: {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}最大横G: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1354    :{WINDOW_COLOUR_2}最高落下高度: {BLACK}{LENGTH}
+STR_1355    :{WINDOW_COLOUR_2}急降下: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}回転数: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}穴数: {BLACK}{COMMA16}
+STR_1358    :{WINDOW_COLOUR_2}全滞空時間: {BLACK}{COMMA2DP32}秒
+STR_1359    :{WINDOW_COLOUR_2}待ち時間: {BLACK}{COMMA16} 分
+STR_1360    :{WINDOW_COLOUR_2}待ち時間: {BLACK}{COMMA16} 分
+STR_1361    :Can't change speed...
+STR_1362    :Can't change launch speed...
+STR_1363    :支柱には高すぎます！
+STR_1364    :Supports for track above can't be extended any further!
+STR_1365    :インライン・ツイスト (左)
+STR_1366    :インライン・ツイスト (右)
+STR_1367    :ハーフ・ループ
+STR_1368    :ハーフ・コークスクリュー (左)
+STR_1369    :ハーフ・コークスクリュー (右)
+STR_1370    :バレルロール (左)
+STR_1371    :バレルロール (右)
+STR_1372    :ランチ・リフト・ヒル
+STR_1373    :大きなハーフ・ループ (左)
+STR_1374    :大きなハーフ・ループ (右)
+STR_1375    :トランスファー（上）
+STR_1376    :トランスファー（下）
+STR_1377    :ハートライン・ロール (左)
+STR_1378    :ハートライン・ロール (右)
+STR_1379    :リバーサー・ロール (左)
+STR_1380    :リバーサー・ロール (右)
+STR_1381    :カバー付・リフト・ヒル (左)
+STR_1382    :カバー付・リフト・ヒル (右)
+STR_1383    :4分の1ループ
+STR_1384    :{YELLOW}{STRINGID}
+STR_1385    :{SMALLFONT}{BLACK}Other track configurations
+STR_1386    :特別...
+STR_1387    :Can't change land type...
+STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
+STR_1389    :{OUTLINE}{RED}- {CURRENCY}
+STR_1390    :{CURRENCY2DP}
+STR_1391    :{RED}{CURRENCY2DP}
+STR_1392    :{SMALLFONT}{BLACK}乗り物・アトラクションの視界
+STR_1393    :{SMALLFONT}{BLACK}車両の詳細とオプション
+STR_1394    :{SMALLFONT}{BLACK}操作オプション
+STR_1395    :{SMALLFONT}{BLACK}メンテナンスオプション
+STR_1396    :{SMALLFONT}{BLACK}色構成オプション
+STR_1397    :{SMALLFONT}{BLACK}音響と音楽オプション
+STR_1398    :{SMALLFONT}{BLACK}測定と試験値
+STR_1399    :{SMALLFONT}{BLACK}グラフ
+STR_1400    :入口
+STR_1401    :出口
+STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
+STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
+STR_1404    :{SMALLFONT}{BLACK}90°で回転
+STR_1405    :{SMALLFONT}{BLACK}Mirror image
+STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
+STR_1407    :{WINDOW_COLOUR_2}これを建設
+STR_1408    :{WINDOW_COLOUR_2}コスト: {BLACK}{CURRENCY}
+STR_1409    :Entry/Exit Platform
+STR_1410    :垂直の塔
+STR_1411    :{STRINGID} in the way
+STR_1412    :{WINDOW_COLOUR_3}データロギングはこのライドには利用できません。
+STR_1413    :{WINDOW_COLOUR_3}{STRINGID}が{STRINGID}出発時にデータロギングが始まります。
+STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1415    :{WINDOW_COLOUR_2}速度
+STR_1416    :{WINDOW_COLOUR_2}高度
+STR_1417    :{WINDOW_COLOUR_2}垂直G
+STR_1418    :{WINDOW_COLOUR_2}側方G
+STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
+STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
+STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1422    :{SMALLFONT}{BLACK}{POP16}{STRINGID}からのデータのロギング中
+STR_1423    :{SMALLFONT}{BLACK}行列の歩道
+STR_1424    :{SMALLFONT}{BLACK}歩道
+STR_1425    :歩道
+STR_1426    :行列
+STR_1427    :{WINDOW_COLOUR_2}顧客: {BLACK}{COMMA32}（時間あたり）
+STR_1428    :{WINDOW_COLOUR_2}入場料:
+STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
+STR_1430    :無料
+STR_1431    :歩き回っている
+STR_1432    :{STRINGID}に行っている
+STR_1433    :{STRINGID}に並んでいる
+STR_1434    :溺れている
+STR_1435    :{STRINGID}に乗っている
+STR_1436    :{STRINGID}に乗っている
+STR_1437    :{STRINGID}に乗っている
+STR_1438    :座っている
+STR_1439    :(場所を選択してください)
+STR_1440    :草刈りしている
+STR_1441    :歩道を掃除中
+STR_1442    :ゴミ箱を空にしている
+STR_1443    :水をやっている
+STR_1444    :{STRINGID}を見っている
+STR_1445    :{STRINGID}の建設を見ている
+STR_1446    :景色を見ている
+STR_1447    :パークを去って行く
+STR_1448    :新しいライドの建設を見ている
+STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
+STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
+STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
+STR_1452    :来客の名前
+STR_1453    :来客の名前を入力してください:
+STR_1454    :Can't name guest...
+STR_1455    :Invalid name for guest
+STR_1456    :{WINDOW_COLOUR_2}使ったお金: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}ポケットマネー: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}パーク滞在時間: {BLACK}{REALTIME}
+STR_1459    :Track style
+STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
+STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
+STR_1462    :Too steep for lift hill
+STR_1463    :来客
+STR_1464    :小さい螺旋 (上)
+STR_1465    :大きい螺旋 (上)
+STR_1466    :小さい螺旋 (下)
+STR_1467    :大きい螺旋 (下)
+STR_1468    :スタッフ
+STR_1469    :ライドは乗り場で始まり、乗り場で終わらなければなりません。
+STR_1470    :乗り場が十分に長くない
+STR_1471    :{WINDOW_COLOUR_2}速度:
+STR_1472    :{SMALLFONT}{BLACK}ライドの速度
+STR_1473    :{WINDOW_COLOUR_2}興奮度: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}興奮度: {BLACK}まだ結果がない
+STR_1475    :{WINDOW_COLOUR_2}強烈度: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}強烈度: {BLACK}まだ結果がない
+STR_1477    :{WINDOW_COLOUR_2}強烈度: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}ゲロ度: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}ゲロ度: {BLACK}まだ結果がない
+STR_1480    :{SMALLFONT}「{STRINGID}には手が出ない」
+STR_1481    :{SMALLFONT}「お金をすべて使っちゃった…」
+STR_1482    :{SMALLFONT}「気分が悪い…」
+STR_1483    :{SMALLFONT}「ひどく気分が悪い！」
+STR_1484    :{SMALLFONT}「{STRINGID}よりももっとスリルのあるのに乗りたい」
+STR_1485    :{SMALLFONT}「{STRINGID}は私には激しすぎる！」
+STR_1486    :{SMALLFONT}「{STRINGID}がまだ終わってない」
+STR_1487    :{SMALLFONT}「{STRINGID}を見て気分が悪くなった」
+STR_1488    :{SMALLFONT}「{STRINGID}に乗るのにそんなに払えないよ！」
+STR_1489    :{SMALLFONT}「家に帰りたい」
+STR_1490    :{SMALLFONT}「{STRINGID}の値段は本当にお得だよ」
+STR_1491    :{SMALLFONT}「{STRINGID}の一つはもう持ってるよ」
+STR_1492    :{SMALLFONT}「 {STRINGID}には手が出ない」
+STR_1493    :{SMALLFONT}「お腹は空いてないよ」
+STR_1494    :{SMALLFONT}「喉は渇いてないよ]
+STR_1495    :{SMALLFONT}「助けて！溺れている！」
+STR_1496    :{SMALLFONT}「迷っちゃった！」
+STR_1497    :{SMALLFONT}「{STRINGID}はすごいだった！」
+STR_1498    :{SMALLFONT}「{STRINGID}にもう何年も並んでるよ」
+STR_1499    :{SMALLFONT}「疲れた」
+STR_1500    :{SMALLFONT}「お腹が減った」
+STR_1501    :{SMALLFONT}「喉が渇いた」
+STR_1502    :{SMALLFONT}「トイレに行きたい」
+STR_1503    :{SMALLFONT}「{STRINGID}はどこにあるの？」
+STR_1504    :{SMALLFONT}「{STRINGID}を使うのにそんなに払えないよ！」
+STR_1505    :{SMALLFONT}「雨が降ってる間は{STRINGID}には乗りたくない」
+STR_1506    :{SMALLFONT}「この場所はゴミであふれてる」
+STR_1507    :{SMALLFONT}「パークの出口はどこ？」
+STR_1508    :{SMALLFONT}「{STRINGID}を降りたい」
+STR_1509    :{SMALLFONT}「{STRINGID}から出たい」
+STR_1510    :{SMALLFONT}「{STRINGID}には乗りたくない――危ないよ！」
+STR_1511    :{SMALLFONT}「この道は胸が悪くなるな！」
+STR_1512    :{SMALLFONT}「ここはは混雑しすぎ…」
+STR_1513    :{SMALLFONT}「この道は壊れてる」
+STR_1514    :{SMALLFONT}「いい景色だな！」
+STR_1515    :{SMALLFONT}「このパークは本当に綺麗です！」
+STR_1516    :{SMALLFONT}「すごいジャンプ噴水だ！」
+STR_1517    :{SMALLFONT}「この音楽はいいな」
+STR_1518    :{SMALLFONT}「この{STRINGID}で買った風船の値段は本当にお得だよ」
+STR_1519    :{SMALLFONT}「この{STRINGID}で買った縫い包みの値段は本当にお得だよ」
+STR_1520    :{SMALLFONT}「この{STRINGID}で買った地図の値段は本当にお得だよ」
+STR_1521    :{SMALLFONT}「{STRINGID}のライドフォトの値段は本当にお得だよ」
+STR_1522    :{SMALLFONT}「この{STRINGID}で買った傘の値段は本当にお得だよ」
+STR_1523    :{SMALLFONT}「この{STRINGID}で買った飲み物の値段は本当にお得だよ」
+STR_1524    :{SMALLFONT}「この{STRINGID}で買ったハンバーガーの値段は本当にお得だよ」
+STR_1525    :{SMALLFONT}「この{STRINGID}で買ったポテトフライの値段は本当にお得だよ」
+STR_1526    :{SMALLFONT}「この{STRINGID}で買ったソフトクリームの値段は本当にお得だよ」
+STR_1527    :{SMALLFONT}「この{STRINGID}で買った綿菓子の値段は本当にお得だよ」
+STR_1528    :
+STR_1529    :
+STR_1530    :
+STR_1531    :{SMALLFONT}「この{STRINGID}で買ったピザの値段は本当にお得だよ」
+STR_1532    :
+STR_1533    :{SMALLFONT}「この{STRINGID}で買ったポップコーンの値段は本当にお得だよ」
+STR_1534    :{SMALLFONT}「この{STRINGID}で買ったホットドッグの値段は本当にお得だよ」
+STR_1535    :{SMALLFONT}「この{STRINGID}で買った触手の値段は本当にお得だよ」
+STR_1536    :{SMALLFONT}「この{STRINGID}で買った帽子の値段は本当にお得だよ」
+STR_1537    :{SMALLFONT}「この{STRINGID}で買ったリンゴ飴の値段は本当にお得だよ」
+STR_1538    :{SMALLFONT}「この{STRINGID}で買ったTシャツの値段は本当にお得だよ」
+STR_1539    :{SMALLFONT}「この{STRINGID}で買ったドーナツの値段は本当にお得だよ」
+STR_1540    :{SMALLFONT}「この{STRINGID}で買ったコーヒの値段は本当にお得だよ」
+STR_1541    :
+STR_1542    :{SMALLFONT}「この{STRINGID}で買ったフライドチキンの値段は本当にお得だよ」
+STR_1543    :{SMALLFONT}「この{STRINGID}で買ったレモネードの値段は本当にお得だよ」
+STR_1544    :
+STR_1545    :
+STR_1546    :
+STR_1547    :
+STR_1548    :
+STR_1549    :
+STR_1550    :{SMALLFONT}「すごい!」
+STR_1551    :{SMALLFONT}「不思議な気持ちがある…誰かが私を見ているというかも？」
+STR_1518    :{SMALLFONT}「{STRINGID}の風船にそんなに払えないよ！」
+STR_1519    :{SMALLFONT}「{STRINGID}の縫い包みにそんなに払えないよ！」
+STR_1520    :{SMALLFONT}「{STRINGID}の地図にそんなに払えないよ！」
+STR_1521    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
+STR_1522    :{SMALLFONT}「{STRINGID}の傘にそんなに払えないよ！」
+STR_1523    :{SMALLFONT}「{STRINGID}の飲み物にそんなに払えないよ！」
+STR_1524    :{SMALLFONT}「{STRINGID}のハンバーガーにそんなに払えないよ！」
+STR_1525    :{SMALLFONT}「{STRINGID}のポテトフライにそんなに払えないよ！」
+STR_1526    :{SMALLFONT}「{STRINGID}のソフトクリームにそんなに払えないよ！」
+STR_1527    :{SMALLFONT}「{STRINGID}の綿菓子にそんなに払えないよ！」
+STR_1528    :
+STR_1529    :
+STR_1530    :
+STR_1531    :{SMALLFONT}「{STRINGID}のピザにそんなに払えないよ！」
+STR_1532    :
+STR_1533    :{SMALLFONT}「{STRINGID}のポップコーンにそんなに払えないよ！」
+STR_1534    :{SMALLFONT}「{STRINGID}のホットドッグにそんなに払えないよ！」
+STR_1535    :{SMALLFONT}「{STRINGID}の触手にそんなに払えないよ！」
+STR_1536    :{SMALLFONT}「{STRINGID}の帽子にそんなに払えないよ！」
+STR_1537    :{SMALLFONT}「{STRINGID}のリンゴ飴にそんなに払えないよ！」
+STR_1538    :{SMALLFONT}「{STRINGID}のTシャツにそんなに払えないよ！」
+STR_1539    :{SMALLFONT}「{STRINGID}のドーナツにそんなに払えないよ！」
+STR_1540    :{SMALLFONT}「{STRINGID}のコーヒにそんなに払えないよ！」
+STR_1541    :
+STR_1542    :{SMALLFONT}「{STRINGID}のフライドチキンにそんなに払えないよ！」
+STR_1543    :{SMALLFONT}「{STRINGID}のレモネードにそんなに払えないよ！」
+STR_1578    :
+STR_1579    :
+STR_1580    :
+STR_1581    :
+STR_1582    :
+STR_1583    :
+STR_1584    :{SMALLFONT}「{STRINGID}のライドフォトの値段は本当にお得だよ」
+STR_1585    :{SMALLFONT}「{STRINGID}のライドフォトの値段は本当にお得だよ」
+STR_1586    :{SMALLFONT}「{STRINGID}のライドフォトの値段は本当にお得だよ」
+STR_1587    :{SMALLFONT}「{STRINGID}のプレッツェルの値段は本当にお得だよ」
+STR_1588    :{SMALLFONT}「{STRINGID}のホットココアの値段は本当にお得だよ」
+STR_1589    :{SMALLFONT}「{STRINGID}のアイスティーの値段は本当にお得だよ」
+STR_1590    :{SMALLFONT}「{STRINGID}のファンネルケーキの値段は本当にお得だよ」
+STR_1591    :{SMALLFONT}「{STRINGID}のサングラスの値段は本当にお得だよ」
+STR_1592    :{SMALLFONT}「{STRINGID}の牛肉ヌードルの値段は本当にお得だよ」
+STR_1593    :{SMALLFONT}「{STRINGID}の焼飯ヌードルの値段は本当にお得だよ」
+STR_1594    :{SMALLFONT}「{STRINGID}のワンタンスープの値段は本当にお得だよ」
+STR_1595    :{SMALLFONT}「{STRINGID}の肉団子スープの値段は本当にお得だよ」
+STR_1596    :{SMALLFONT}「{STRINGID}のフルーツジュースの値段は本当にお得だよ」
+STR_1597    :{SMALLFONT}「{STRINGID}の豆乳の値段は本当にお得だよ」
+STR_1598    :{SMALLFONT}「{STRINGID}のスジョングァの値段は本当にお得だよ」
+STR_1599    :{SMALLFONT}「{STRINGID}のサンドイッチの値段は本当にお得だよ」
+STR_1600    :{SMALLFONT}「{STRINGID}のクッキーの値段は本当にお得だよ」
+STR_1601    :
+STR_1602    :
+STR_1603    :
+STR_1604    :{SMALLFONT}「{STRINGID}のローストソーセージの値段は本当にお得だよ」
+STR_1605    :
+STR_1606    :
+STR_1607    :
+STR_1608    :
+STR_1609    :
+STR_1610    :
+STR_1611    :
+STR_1612    :
+STR_1613    :
+STR_1614    :
+STR_1615    :
+STR_1616    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
+STR_1617    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
+STR_1618    :{SMALLFONT}「{STRINGID}のライドフォトにそんなに払えないよ！」
+STR_1619    :{SMALLFONT}「{STRINGID}のプレッツェルにそんなに払えないよ！」
+STR_1620    :{SMALLFONT}「{STRINGID}のホットココアにそんなに払えないよ！」
+STR_1621    :{SMALLFONT}「{STRINGID}のアイスティーにそんなに払えないよ！」
+STR_1622    :{SMALLFONT}「{STRINGID}のファンネルケーキにそんなに払えないよ！」
+STR_1623    :{SMALLFONT}「{STRINGID}のサングラスにそんなに払えないよ！」
+STR_1624    :{SMALLFONT}「{STRINGID}の牛肉ヌードルにそんなに払えないよ！」
+STR_1625    :{SMALLFONT}「{STRINGID}の焼飯ヌードルにそんなに払えないよ！」
+STR_1626    :{SMALLFONT}「{STRINGID}のワンタンスープにそんなに払えないよ！」
+STR_1627    :{SMALLFONT}「{STRINGID}の肉団子スープにそんなに払えないよ！」
+STR_1628    :{SMALLFONT}「{STRINGID}のフルーツジュースにそんなに払えないよ！」
+STR_1629    :{SMALLFONT}「{STRINGID}の豆乳にそんなに払えないよ！」
+STR_1630    :{SMALLFONT}「{STRINGID}のスジョングァにそんなに払えないよ！」
+STR_1631    :{SMALLFONT}「{STRINGID}のサンドイッチにそんなに払えないよ！」
+STR_1632    :{SMALLFONT}「{STRINGID}のクッキーにそんなに払えないよ！」
+STR_1633    :
+STR_1634    :
+STR_1635    :
+STR_1636    :{SMALLFONT}「{STRINGID}のローストソーセージにそんなに払えないよ！」
+STR_1637    :
+STR_1638    :
+STR_1639    :
+STR_1640    :
+STR_1641    :
+STR_1642    :
+STR_1643    :
+STR_1644    :
+STR_1645    :
+STR_1646    :
+STR_1647    :
+STR_1648    :{SMALLFONT}「助けて！地上に降ろして！」
+STR_1649    :{SMALLFONT}“I'm running out of cash!”
+STR_1650    :{SMALLFONT}“Wow! A new ride being built!”
+STR_1653    :{SMALLFONT}“...and here we are on {STRINGID}!”
+STR_1654    :{WINDOW_COLOUR_2}最近の思考:
+STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
+STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
+STR_1657    :{WINDOW_COLOUR_2}好みのライド
+STR_1658    :{WINDOW_COLOUR_2}強烈度: {BLACK}{COMMA16}未満
+STR_1659    :{WINDOW_COLOUR_2}強烈度: {BLACK}{COMMA16}と{COMMA16}の間
+STR_1660    :{WINDOW_COLOUR_2}強烈度: {BLACK}{COMMA16}以上
+STR_1661    :{WINDOW_COLOUR_2}乗り物酔い耐性: {BLACK}{STRINGID}
+STR_1662    :{WINDOW_COLOUR_2}幸福度:
+STR_1663    :{WINDOW_COLOUR_2}ゲロ度:
+STR_1664    :{WINDOW_COLOUR_2}体力度:
+STR_1665    :{WINDOW_COLOUR_2}空腹度:
+STR_1666    :{WINDOW_COLOUR_2}喉の渇き度:
+STR_1667    :{WINDOW_COLOUR_2}トイレ度:
+STR_1668    :{WINDOW_COLOUR_2}満足度: {BLACK}未知
+STR_1669    :{WINDOW_COLOUR_2}満足度: {BLACK}{COMMA16}%
+STR_1670    :{WINDOW_COLOUR_2}顧客総数: {BLACK}{COMMA32}
+STR_1671    :{WINDOW_COLOUR_2}総収益: {BLACK}{CURRENCY2DP}
+STR_1672    :ブレーキ
+STR_1673    :スピン・コントロール・スイッチ・トラック
+STR_1674    :ブレーキのスピード
+STR_1675    :{POP16}{VELOCITY}
+STR_1676    :{SMALLFONT}{BLACK}ブレーキ速度の設定
+STR_1677    :{WINDOW_COLOUR_2}人気度: {BLACK}未知
+STR_1678    :{WINDOW_COLOUR_2}人気度: {BLACK}{COMMA16}%
+STR_1679    :上の螺旋 (左)
+STR_1680    :上の螺旋 (右)
+STR_1681    :下の螺旋 (左)
+STR_1682    :下の螺旋 (右)
+STR_1683    :2x2ベース
+STR_1684    :4x4ベース
+STR_1685    :2x4ベース
+STR_1686    :5x1ベース
+STR_1687    :ウォーター・スプラッシュ
+STR_1688    :4x1ベース
+STR_1689    :ブロックブレーキ
+STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
+STR_1691    :{WINDOW_COLOUR_2}  コスト: {BLACK}{CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  コスト: {BLACK}{CURRENCY}以上
+STR_1693    :{SMALLFONT}{BLACK}来客
+STR_1694    :{SMALLFONT}{BLACK}スタッフ
+STR_1695    :{SMALLFONT}{BLACK}収入とコスト
+STR_1696    :{SMALLFONT}{BLACK}顧客インフォメーション
+STR_1697    :Cannot place these on queue line area
+STR_1698    :Can only place these on queue area
+STR_1699    :ゲームにゲストが多すぎる
+STR_1700    :清掃員を雇う
+STR_1701    :整備士を雇う
+STR_1702    :警備員を雇う
+STR_1703    :エンタテイナーを雇う
+STR_1704    :新規スタッフを雇うことができません
+STR_1705    :{SMALLFONT}{BLACK}このスタッフをクビにする
+STR_1706    :{SMALLFONT}{BLACK}このスタッフを新しい場所に移動させる
+STR_1707    :ゲームにスタッフが多すぎる
+STR_1708    :{SMALLFONT}{BLACK}クリックしてスタッフを移動
+STR_1709    :解雇する
+STR_1710    :はい
+STR_1711    :{WINDOW_COLOUR_1}{STRINGID}を解雇してほしい?
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}歩道を掃除する
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}庭木に水をやる
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}ゴミ箱を空にする
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}草刈りする
+STR_1716    :Invalid name for park
+STR_1717    :パーク名を変えません。
+STR_1718    :パーク名
+STR_1719    :パーク名を入力してください:
+STR_1720    :{SMALLFONT}{BLACK}パーク名
+STR_1721    :パークが閉園中
+STR_1722    :パークが開園中
+STR_1723    :パークは開園ができません…
+STR_1724    :パークは閉園ができません…
+STR_1725    :敷地を購入できません。
+STR_1726    :Land not for sale!
+STR_1727    :Construction rights not for sale!
+STR_1728    :Can't buy construction rights here...
+STR_1729    :Land not owned by park!
+STR_1730    :{RED}閉鎖中 - - 
+STR_1731    :{WHITE}{STRINGID} - - 
+STR_1732    :建設
+STR_1733    :モード
+STR_1734    :{WINDOW_COLOUR_2}ラップ数:
+STR_1735    :{SMALLFONT}{BLACK}コースのラップ数
+STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1738    :ラップ数が変更することはできません。
+STR_1739    :来客 {INT32} はレースに勝ちました!
+STR_1740    :{STRINGID} はレースに勝ちました!
+STR_1741    :まだ建設しませんでした！
+STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
+STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
+STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1746    :これを変更することはできません。
+STR_1747    :{WINDOW_COLOUR_2}達成期限:
+STR_1748    :{SMALLFONT}{BLACK}ライドの達成期限
+STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
+STR_1751    :Can't change time limit for ride...
+STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
+STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
+STR_1754    :{BLACK}{COMMA16} 来客
+STR_1755    :{BLACK}{COMMA16} 来客
+STR_1756    :{WINDOW_COLOUR_2}入場料:
+STR_1757    :{WINDOW_COLOUR_2}信頼度: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1758    :{SMALLFONT}{BLACK}建設モード
+STR_1759    :{SMALLFONT}{BLACK}動くモード
+STR_1760    :{SMALLFONT}{BLACK}埋めるモード
+STR_1761    :{SMALLFONT}{BLACK}この方向に建設する
+STR_1762    :ウォーター・フォール
+STR_1763    :急流
+STR_1764    :丸太の衝突
+STR_1765    :フォト・セクション
+STR_1766    :リバーサ・ターンテーブル
+STR_1767    :スピン・トンネル
+STR_1768    :スイング回数を変更するはできません。
+STR_1769    :{WINDOW_COLOUR_2}スイング回数:
+STR_1770    :{SMALLFONT}{BLACK}スイング回数の設定
+STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1773    :Only one on-ride photo section allowed per ride
+STR_1774    :Only one cable lift hill allowed per ride
+STR_1777    :音楽
+STR_1778    :{STRINGID} - - 
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} パンダのコスチューム
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} トラのコスチューム
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} 象のコスチューム
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} ローマのコスチューム
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} ゴリラのコスチューム
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} 雪だるまのコスチューム
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} ナイトのコスチューム
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} 宇宙飛行士のコスチューム
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} 泥棒のコスチューム
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} シェリフのコスチューム
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} 海賊のコスチューム
+STR_1790    :{SMALLFONT}{BLACK}このスタッフのタイプの制服の色を選択：
+STR_1791    :{WINDOW_COLOUR_2}制服の色:
+STR_1792    :{STRINGID}の故障の電話を返事中
+STR_1793    :点検のために{STRINGID}に向かっています
+STR_1794    :{STRINGID}を修理している
+STR_1795    :電話を返事中
+STR_1796    :故障中、修理するはず
+STR_1798    :回転プール
+STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
+STR_1800    :非常停止
+STR_1801    :制限　稼働に失敗
+STR_1802    :制限　閉鎖に失敗
+STR_1803    :ドアを開くことに失敗した
+STR_1804    :ドアを閉めることに失敗した
+STR_1805    :車両が失敗した
+STR_1806    :ブレーキが故障した
+STR_1807    :コントロールが故障した
+STR_1808    :{WINDOW_COLOUR_2}最後の故障: {BLACK}{STRINGID}
+STR_1809    :{WINDOW_COLOUR_2}今の故障: {OUTLINE}{RED}{STRINGID}
+STR_1810    :{WINDOW_COLOUR_2}所持品:
+STR_1811    :ここで建てることはできません。
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1813    :雑貨のオブジェックト
+STR_1814    :活動
+STR_1815    :思考
+STR_1816    :{SMALLFONT}{BLACK}Select information type to show in guest list
+STR_1817    :({COMMA16})
+STR_1818    :{WINDOW_COLOUR_2}全てのゲスト
+STR_1819    :{WINDOW_COLOUR_2}全てのゲスト (要約)
+STR_1820    :{WINDOW_COLOUR_2}{STRINGID}のゲスト
+STR_1821    :{WINDOW_COLOUR_2}{STRINGID}を考えるのゲスト
+STR_1822    :{WINDOW_COLOUR_2}{POP16}{STRINGID}を考えるのゲスト
+STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
+STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
+STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
+STR_1826    :ステータス
+STR_1827    :人気度
+STR_1828    :満足度
+STR_1829    :利益
+STR_1830    :列の長さ
+STR_1831    :待ち時間
+STR_1832    :信頼度
+STR_1833    :停車時間
+STR_1834    :来客のお気に入り
+STR_1835    :人気度: 未知
+STR_1836    :人気度: {COMMA16}%
+STR_1837    :満足度: 未知
+STR_1838    :満足度: {COMMA16}%
+STR_1839    :信頼度: {COMMA16}%
+STR_1840    :ダウンタイム: {COMMA16}%
+STR_1841    :利益: {CURRENCY2DP}/時間
+STR_1842    :{COMMA16}人の来客のお気に入り
+STR_1843    :{COMMA16}人の来客のお気に入り
+STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
+STR_1845    :{MONTHYEAR}
+STR_1846    :{COMMA16}人の来客
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16}人の来客
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16}人の来客
+STR_1849    :{WINDOW_COLOUR_2}音楽を流す
+STR_1850    :{SMALLFONT}{BLACK}このライドで流す音楽の選択
+STR_1851    :{WINDOW_COLOUR_2}維持費: {BLACK}{CURRENCY2DP} 時間あたり
+STR_1852    :{WINDOW_COLOUR_2}維持費: {BLACK}未知
+STR_1853    :{WINDOW_COLOUR_2}建設: {BLACK}今年
+STR_1854    :{WINDOW_COLOUR_2}建設: {BLACK}昨年
+STR_1855    :{WINDOW_COLOUR_2}建設: {BLACK}{COMMA16}年前
+STR_1856    :{WINDOW_COLOUR_2}売るべき品物からの収益: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}売るべき品物からの損失: {BLACK}{CURRENCY2DP}
+STR_1858    :{WINDOW_COLOUR_2}毎月コスト: {BLACK}{CURRENCY2DP}
+STR_1859    :清掃員
+STR_1860    :整備士
+STR_1861    :警備員
+STR_1862    :エンターテイナー
+STR_1863    :清掃員
+STR_1864    :整備士
+STR_1865    :警備員
+STR_1866    :エンターテイナー
+STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1868    :回転数が変更できない...
+STR_1869    :{WINDOW_COLOUR_2}回転数:
+STR_1870    :{SMALLFONT}{BLACK}ライドの回転の数です。
+STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1873    :{WINDOW_COLOUR_2}毎時収入: {BLACK}{CURRENCY2DP}
+STR_1874    :{WINDOW_COLOUR_2}毎時利潤: {BLACK}{CURRENCY2DP}
+STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}ライドを点検する
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}ライドを修理する
+STR_1878    :{WINDOW_COLOUR_2}点検時間:
+STR_1879    :毎10分
+STR_1880    :毎20分
+STR_1881    :毎30分
+STR_1882    :毎45分
+STR_1883    :毎1時間
+STR_1884    :毎2時間
+STR_1885    :点検なし
+STR_1886    :{STRINGID}を点検中
+STR_1887    :{WINDOW_COLOUR_2}最後の点検からの経過時間: {BLACK}{COMMA16}分
+STR_1888    :{WINDOW_COLOUR_2}最後の点検からの経過時間: {BLACK}4時間以外
+STR_1889    :{WINDOW_COLOUR_2}停止時間: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1890    :{SMALLFONT}{BLACK}整備士が点検する時間の選定
+STR_1891    :パークで{STRINGID}がまだいません！
+# The following two strings were used to display an error when the disc was missing.
+# This has been replaced in OpenRCT2.
+STR_1894    :{WINDOW_COLOUR_2}売上{STRINGID}: {BLACK}{COMMA32}
+STR_1895    :{SMALLFONT}{BLACK}ライド建設費
+STR_1896    :{WINDOW_COLOUR_2}支出／収入
+STR_1897    :{WINDOW_COLOUR_2}ライド建設費
+STR_1898    :{WINDOW_COLOUR_2}ライド運営費
+STR_1899    :{WINDOW_COLOUR_2}土地購入費
+STR_1900    :{WINDOW_COLOUR_2}整地費
+STR_1901    :{WINDOW_COLOUR_2}入場券売上
+STR_1902    :{WINDOW_COLOUR_2}ライド利用料
+STR_1903    :{WINDOW_COLOUR_2}ショップ売上
+STR_1904    :{WINDOW_COLOUR_2}ショップ仕入費
+STR_1905    :{WINDOW_COLOUR_2}飲食売上
+STR_1906    :{WINDOW_COLOUR_2}飲食仕入費
+STR_1907    :{WINDOW_COLOUR_2}スタッフ月給
+STR_1908    :{WINDOW_COLOUR_2}広告宣伝費
+STR_1909    :{WINDOW_COLOUR_2}研究開発
+STR_1910    :{WINDOW_COLOUR_2}借入金利
+STR_1911    :{BLACK} ({COMMA16}% 1年当たり)
+STR_1912    :{MONTH}
+STR_1913    :{BLACK}+{CURRENCY2DP}
+STR_1914    :{BLACK}{CURRENCY2DP}
+STR_1915    :{RED}{CURRENCY2DP}
+STR_1916    :{WINDOW_COLOUR_2}借入額:
+STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
+STR_1918    :もうお金を借りることはできません！
+STR_1919    :十分な資金がありません！
+STR_1920    :貸金を返済することはできません！
+STR_1921    :{SMALLFONT}{BLACK}新しいゲームを始める
+STR_1922    :{SMALLFONT}{BLACK}ゲームを再開する
+STR_1924    :{SMALLFONT}{BLACK}終了
+STR_1925    :ここに人を置けない...
+STR_1926    :{SMALLFONT}
+STR_1927    :{YELLOW}{STRINGID}は壊れています。
+STR_1928    :{RED}{STRINGID}がクラッシュしました！
+STR_1929    :{RED}{STRINGID}はまだ修理しませんでした。{NEWLINE}整備士がどこにいるのかを確認し、それらを整理することを検討して下さい。
+STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
+STR_1931    :{STRINGID}は{STRINGID}の行列に入れました。
+STR_1932    :{STRINGID}は{STRINGID}を乗っています。
+STR_1933    :{STRINGID}は{STRINGID}を入っています。
+STR_1934    :{STRINGID}は{STRINGID}を降りました。
+STR_1935    :{STRINGID}はパークを立ち去りました。
+STR_1936    :{STRINGID}は{STRINGID}を買いました。
+STR_1937    :{SMALLFONT}{BLACK}このメッセージの話題にインフォメーションの表示する
+STR_1938    :{SMALLFONT}{BLACK}ゲストの表示
+STR_1939    :{SMALLFONT}{BLACK}スタッフの表示
+STR_1940    :{SMALLFONT}{BLACK}ゲストの幸福度・体力・空腹度などの表示
+STR_1941    :{SMALLFONT}{BLACK}Show which rides this guest has been on
+STR_1942    :{SMALLFONT}{BLACK}Show financial information about this guest
+STR_1943    :{SMALLFONT}{BLACK}ゲストの最近の思い出の表示
+STR_1944    :{SMALLFONT}{BLACK}ゲストの持っている物の表示
+STR_1945    :{SMALLFONT}{BLACK}Show orders and options for this staff member
+STR_1946    :{SMALLFONT}{BLACK}Select costume for this entertainer
+STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
+STR_1948    :{SMALLFONT}{BLACK}Hire a new staff member of the selected type
+STR_1949    :財務の報告
+STR_1950    :財務のグラフ
+STR_1951    :パーク評価額グラフ
+STR_1952    :収益グラフ
+STR_1953    :広告宣伝費
+STR_1954    :費用合計
+STR_1955    :{WINDOW_COLOUR_2}周回数:
+STR_1956    :{SMALLFONT}{BLACK}ライドのトラックの周回数です。
+STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1958    :{COMMA16}
+STR_1959    :周回数が変更できません…
+STR_1960    :{WINDOW_COLOUR_2}風船の価格:
+STR_1961    :{WINDOW_COLOUR_2}縫い包みの価格:
+STR_1962    :{WINDOW_COLOUR_2}パークの地図の価格:
+STR_1963    :{WINDOW_COLOUR_2}ライドフォトの価格:
+STR_1964    :{WINDOW_COLOUR_2}傘の価格:
+STR_1965    :{WINDOW_COLOUR_2}飲み物の価格:
+STR_1966    :{WINDOW_COLOUR_2}ハンバーガーの価格:
+STR_1967    :{WINDOW_COLOUR_2}フライドポテトの価格:
+STR_1968    :{WINDOW_COLOUR_2}ソフトクリームの価格:
+STR_1969    :{WINDOW_COLOUR_2}綿菓子の価格:
+STR_1970    :{WINDOW_COLOUR_2}
+STR_1971    :{WINDOW_COLOUR_2}
+STR_1972    :{WINDOW_COLOUR_2}
+STR_1973    :{WINDOW_COLOUR_2}ピザの価格:
+STR_1974    :{WINDOW_COLOUR_2}
+STR_1975    :{WINDOW_COLOUR_2}ポップコーンの価格:
+STR_1976    :{WINDOW_COLOUR_2}ホットドッグの価格:
+STR_1977    :{WINDOW_COLOUR_2}触手の価格:
+STR_1978    :{WINDOW_COLOUR_2}帽子の価格:
+STR_1979    :{WINDOW_COLOUR_2}リンゴ飴の価格:
+STR_1980    :{WINDOW_COLOUR_2}Tシャツの価格:
+STR_1981    :{WINDOW_COLOUR_2}ドーナツの価格:
+STR_1982    :{WINDOW_COLOUR_2}コーヒーの価格:
+STR_1983    :{WINDOW_COLOUR_2}
+STR_1984    :{WINDOW_COLOUR_2}フライドチキンの価格:
+STR_1985    :{WINDOW_COLOUR_2}レモネードの価格:
+STR_1986    :{WINDOW_COLOUR_2}
+STR_1987    :{WINDOW_COLOUR_2}
+STR_1988    :風船
+STR_1989    :縫い包み
+STR_1990    :パークの地図
+STR_1991    :ライドフォト
+STR_1992    :傘
+STR_1993    :飲み物
+STR_1994    :ハンバーガー
+STR_1995    :フライドポテト
+STR_1996    :ソフトクリーム
+STR_1997    :綿菓子
+STR_1998    :空き缶
+STR_1999    :ゴミ
+STR_2000    :空のバーガーボックス
+STR_2001    :ピザ
+STR_2002    :クーポン
+STR_2003    :ポップコーン
+STR_2004    :ホットドッグ
+STR_2005    :触手
+STR_2006    :帽子
+STR_2007    :リンゴ飴
+STR_2008    :Tシャツ
+STR_2009    :ドーナツ
+STR_2010    :コーヒー
+STR_2011    :空のカップ
+STR_2012    :フライドチキン
+STR_2013    :レモネード
+STR_2014    :空の箱
+STR_2015    :空き瓶
+STR_2016    :風船
+STR_2017    :縫い包み
+STR_2018    :地図
+STR_2019    :ライドフォト
+STR_2020    :傘
+STR_2021    :ドリンク
+STR_2022    :バーガー
+STR_2023    :フライ
+STR_2024    :ソフトクリーム
+STR_2025    :綿菓子
+STR_2026    :空き缶
+STR_2027    :ごみ
+STR_2028    :空のバーガーボックス
+STR_2029    :ピザ
+STR_2030    :無料券
+STR_2031    :ポップコーン
+STR_2032    :ホットドッグ
+STR_2033    :触手
+STR_2034    :帽子
+STR_2035    :リンゴ飴
+STR_2036    :ティーシャツ
+STR_2037    :ドーナツ
+STR_2038    :コーヒー
+STR_2039    :空のカップ
+STR_2040    :フライドチキン
+STR_2041    :レモネード
+STR_2042    :空のボックス
+STR_2043    :空き瓶
+STR_2044    :風船
+STR_2045    :縫い包み
+STR_2046    :パークの地図
+STR_2047    :ライドフォト
+STR_2048    :傘
+STR_2049    :ドリンク
+STR_2050    :バーガー
+STR_2051    :ポテトフライ
+STR_2052    :アイスクリーム
+STR_2053    :綿菓子
+STR_2054    :空のキャン
+STR_2055    :くず
+STR_2056    :空のバーガーボックス
+STR_2057    :ピザ
+STR_2058    :クーポン
+STR_2059    :ポップコーン
+STR_2060    :ホットドッグ
+STR_2061    :触手
+STR_2062    :帽子
+STR_2063    :リンゴ飴
+STR_2064    :Tシャツ
+STR_2065    :ドーナツ
+STR_2066    :コーヒー
+STR_2067    :空のカップ
+STR_2068    :フライドチキン
+STR_2069    :レモネード
+STR_2070    :空のボックス
+STR_2071    :空き瓶
+STR_2072    :「{STRINGID}」の風船
+STR_2073    :「{STRINGID}」の縫い包み
+STR_2074    :「{STRINGID}」の地図
+STR_2075    :「{STRINGID}」のライドフォト
+STR_2076    :「{STRINGID}」の傘
+STR_2077    :飲み物
+STR_2078    :ハンバーガー
+STR_2079    :フライドポテト
+STR_2080    :ソフトクリーム
+STR_2081    :綿菓子
+STR_2082    :空き缶
+STR_2083    :ゴミ
+STR_2084    :空のボックス
+STR_2085    :ピザ
+STR_2086    :{STRINGID}の無料券
+STR_2087    :ポップコーン
+STR_2088    :ホットドッグ
+STR_2089    :触手
+STR_2090    :「{STRINGID}」の帽
+STR_2091    :リンゴ飴
+STR_2092    :「{STRINGID}」のTシャツ
+STR_2093    :ドーナツ
+STR_2094    :コーヒー
+STR_2095    :空のカップ
+STR_2096    :フライドチキン
+STR_2097    :レモネード
+STR_2098    :空の箱
+STR_2099    :空き瓶
+STR_2103    :{WINDOW_COLOUR_2}プレッツェルの価格:
+STR_2104    :{WINDOW_COLOUR_2}ホットココアの価格:
+STR_2105    :{WINDOW_COLOUR_2}アイスティーの価格:
+STR_2106    :{WINDOW_COLOUR_2}ファンネルケーキの価格:
+STR_2107    :{WINDOW_COLOUR_2}サングラスの価格:
+STR_2108    :{WINDOW_COLOUR_2}牛肉ヌードルの価格:
+STR_2109    :{WINDOW_COLOUR_2}焼飯ヌードルの価格:
+STR_2110    :{WINDOW_COLOUR_2}ワンタンスープの価格:
+STR_2111    :{WINDOW_COLOUR_2}肉団子スープの価格:
+STR_2112    :{WINDOW_COLOUR_2}フルーツジュースの価格:
+STR_2113    :{WINDOW_COLOUR_2}豆乳の価格:
+STR_2114    :{WINDOW_COLOUR_2}スジョングァの価格:
+STR_2115    :{WINDOW_COLOUR_2}サンドイッチの価格:
+STR_2116    :{WINDOW_COLOUR_2}クッキーの価格:
+STR_2117    :{WINDOW_COLOUR_2}
+STR_2118    :{WINDOW_COLOUR_2}
+STR_2119    :{WINDOW_COLOUR_2}
+STR_2120    :{WINDOW_COLOUR_2}ローストソーセージの価格:
+STR_2121    :{WINDOW_COLOUR_2}
+STR_2125    :プレッツェル
+STR_2126    :ホットココア
+STR_2127    :アイスティー
+STR_2128    :ファンネルケーキ
+STR_2129    :サングラス
+STR_2130    :牛肉ヌードル
+STR_2131    :焼飯ヌードル
+STR_2132    :ワンタンスープ
+STR_2133    :肉団子スープ
+STR_2134    :フルーツジュース
+STR_2135    :豆乳
+STR_2136    :スジョングァ
+STR_2137    :サンドイッチ
+STR_2138    :クッキー
+STR_2139    :空のボウル
+STR_2140    :空のドリンクカートン
+STR_2141    :空のジュースカップ
+STR_2142    :ローストソーセージ
+STR_2143    :空のボウル
+STR_2147    :プレッツェル
+STR_2148    :ホットココア
+STR_2149    :アイスティー
+STR_2150    :ファンネルケーキ
+STR_2151    :サングラス
+STR_2152    :牛肉ヌードル
+STR_2153    :焼飯ヌードル
+STR_2154    :ワンタンスープ
+STR_2155    :肉団子スープ
+STR_2156    :フルーツジュース
+STR_2157    :豆乳
+STR_2158    :スジョングァ
+STR_2159    :サンドイッチ
+STR_2160    :クッキー
+STR_2161    :空のボウル
+STR_2162    :空のドリンクカートン
+STR_2163    :空のジュースカップ
+STR_2164    :ローストソーセージ
+STR_2165    :空のボウル
+STR_2169    :プレッツェル
+STR_2170    :ホットココア
+STR_2171    :アイスティー
+STR_2172    :ファンネルケーキ
+STR_2173    :サングラス
+STR_2174    :牛肉ヌードル
+STR_2175    :焼飯ヌードル
+STR_2176    :ワンタンスープ
+STR_2177    :肉団子スープ
+STR_2178    :フルーツジュース
+STR_2179    :豆乳
+STR_2180    :スジョングァ
+STR_2181    :サンドイッチ
+STR_2182    :クッキー
+STR_2183    :空のボウル
+STR_2184    :空のドリンクカートン
+STR_2185    :空のジュースカップ
+STR_2186    :ローストソーセージ
+STR_2187    :空のボウル
+STR_2191    :プレッツェル
+STR_2192    :ホットココア
+STR_2193    :アイスティー
+STR_2194    :ファンネルケーキ
+STR_2195    :サングラス
+STR_2196    :牛肉ヌードル
+STR_2197    :焼飯ヌードル
+STR_2198    :ワンタンスープ
+STR_2199    :肉団子スープ
+STR_2200    :フルーツジュース
+STR_2201    :豆乳
+STR_2202    :スジョングァ
+STR_2203    :サンドイッチ
+STR_2204    :クッキー
+STR_2205    :空のボウル
+STR_2206    :空のドリンクカートン
+STR_2207    :空のジュースカップ
+STR_2208    :ローストソーセージ
+STR_2209    :空のボウル
+STR_2210    :{SMALLFONT}{BLACK}パークの清掃員の表示
+STR_2211    :{SMALLFONT}{BLACK}パークの整備士の表示
+STR_2212    :{SMALLFONT}{BLACK}パークの警備員の表示
+STR_2213    :{SMALLFONT}{BLACK}パークのエンターテイナーの表示
+STR_2214    :ゲームが一時停止中で建設はできません。
+STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}℃
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}℉
+STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
+STR_2219    :{RED}{COMMA16}人の来客は{STRINGID}上の事故で死亡してしまいました。
+STR_2220    :{WINDOW_COLOUR_2}パーク評価値: {BLACK}{COMMA16}
+STR_2221    :{SMALLFONT}{BLACK}パーク評価値: {COMMA16}
+STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2223    :{WINDOW_COLOUR_2}パーク内の人: {BLACK}{COMMA16}
+STR_2224    :{WINDOW_COLOUR_2}現金: {BLACK}{CURRENCY2DP}
+STR_2225    :{WINDOW_COLOUR_2}現金: {RED}{CURRENCY2DP}
+STR_2226    :{WINDOW_COLOUR_2}パーク評価額: {BLACK}{CURRENCY}
+STR_2227    :{WINDOW_COLOUR_2}会社評価額: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}先月の飲食とお土産の{NEWLINE}売ることの利益: {BLACK}{CURRENCY}
+STR_2229    :急な坂から垂直
+STR_2230    :垂直
+STR_2231    :ドロップに・ホールド・ブレーキ
+STR_2232    :ケーブル・リフト・ヒル
+STR_2233    :{SMALLFONT}{BLACK}パーク・インフォメーション
+STR_2234    :最近のメッセージ
+STR_2235    :{SMALLFONT}{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_2236    :1月
+STR_2237    :2月
+STR_2238    :3月
+STR_2239    :4月
+STR_2240    :5月
+STR_2241    :6月
+STR_2242    :7月
+STR_2243    :8月
+STR_2244    :9月
+STR_2245    :10月
+STR_2246    :11月
+STR_2247    :12月
+STR_2248    :ライド／アトラクションが解体できません。
+STR_2249    :{BABYBLUE}新しいアトラクション:{NEWLINE}{STRINGID}
+STR_2250    :{BABYBLUE}新しい発明品:{NEWLINE}{STRINGID}
+STR_2251    :歩道でだけ建設できます！
+STR_2252    :歩道の上だけに建設できます！
+STR_2253    :トランスポートライド
+STR_2254    :ジェントルライド
+STR_2255    :ジェットコースター
+STR_2256    :スリルライド
+STR_2257    :ウォーターライド
+STR_2258    :ショップと施設
+STR_2259    :景観アイテム
+STR_2260    :なしの資金調達
+STR_2261    :最低の資金調達
+STR_2262    :通常の資金調達
+STR_2263    :最大の資金調達
+STR_2264    :月毎の費用合計
+STR_2265    :{WINDOW_COLOUR_2}毎月コスト: {BLACK}{CURRENCY}
+STR_2266    :研究優先度
+STR_2267    :現在の研究
+STR_2268    :最後の開発
+STR_2269    :{WINDOW_COLOUR_2}タイプ: {BLACK}{STRINGID}
+STR_2270    :{WINDOW_COLOUR_2}進歩: {BLACK}{STRINGID}
+STR_2271    :{WINDOW_COLOUR_2}予定: {BLACK}{STRINGID}
+STR_2272    :{WINDOW_COLOUR_2}ライド／アトラクション:{NEWLINE}{BLACK}{STRINGID}
+STR_2273    :{WINDOW_COLOUR_2}景観とテーマ:{NEWLINE}{BLACK}{STRINGID}
+STR_2274    :{SMALLFONT}{BLACK}この発明の詳細の表示
+STR_2275    :{SMALLFONT}{BLACK}研究資金の設定の表示
+STR_2276    :{SMALLFONT}{BLACK}研究ステータスの表示
+STR_2277    :未知
+STR_2278    :輸送ライド
+STR_2279    :ゲントルライド
+STR_2280    :ローラーコースター
+STR_2281    :スリルライド
+STR_2282    :ウォターライド
+STR_2283    :ショップ
+STR_2284    :景色／テーマー
+STR_2285    :初期の研究
+STR_2286    :デサイン中
+STR_2287    :デサインを終わる
+STR_2288    :未知
+STR_2289    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_2291    :新しいシナリオを始める
+STR_2292    :{WINDOW_COLOUR_2}参加したライド:
+STR_2293    :{BLACK} なし
+STR_2294    :{SMALLFONT}{BLACK}Change base land style
+STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
+STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}でパークに入った
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}で{BLACK}ライドを{COMMA16}つ{WINDOW_COLOUR_2}入った
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}で{BLACK}ライドを{COMMA16}つ{WINDOW_COLOUR_2}入った
+STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}で{BLACK}食べ物を{COMMA16}つ{WINDOW_COLOUR_2}買った
+STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}で{BLACK}食べ物を{COMMA16}つ{WINDOW_COLOUR_2}買った
+STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}で{BLACK}飲み物を{COMMA16}つ{WINDOW_COLOUR_2}買った
+STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}で{BLACK}飲み物を{COMMA16}つ{WINDOW_COLOUR_2}買った
+STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}で{BLACK}お土産を{COMMA16}つ{WINDOW_COLOUR_2}買った
+STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}で{BLACK}お土産を{COMMA16}つ{WINDOW_COLOUR_2}買った
+STR_2305    :トラックデサインファイル
+STR_2306    :トラックデサインをセーブする
+STR_2307    :{STRINGID}のデザインを選択する
+STR_2308    :{STRINGID}のトラックデザイン
+STR_2309    :トラックデサインをインストールする
+STR_2310    :カストムデサインを建てる
+STR_2311    :{WINDOW_COLOUR_2}興奮度: {BLACK}{COMMA2DP32}ぐらい
+STR_2312    :{WINDOW_COLOUR_2}強烈度: {BLACK}{COMMA2DP32}ぐらい
+STR_2313    :{WINDOW_COLOUR_2}ゲロ度: {BLACK}{COMMA2DP32}ぐらい
+STR_2314    :{WINDOW_COLOUR_2}レール長: {BLACK}{STRINGID}
+STR_2315    :{WINDOW_COLOUR_2}コスト: {BLACK} {CURRENCY}くらい
+STR_2316    :{WINDOW_COLOUR_2}必要なスペース: {BLACK}{COMMA16} x {COMMA16} ブロック
+STR_2321    :{WINDOW_COLOUR_2}ライド／アトラクションの数: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}スタッフ: {BLACK}{COMMA16}
+STR_2323    :{WINDOW_COLOUR_2}パークサイズ: {BLACK}{COMMA32}m²
+STR_2324    :{WINDOW_COLOUR_2}パークサイズ: {BLACK}{COMMA32}sq.ft.
+STR_2325    :{SMALLFONT}{BLACK}パーク敷地を購入する
+STR_2326    :{SMALLFONT}{BLACK}土地の上または下に建設を許可するために、土地利用権を購入する
+STR_2327    :設定
+STR_2328    :{WINDOW_COLOUR_2}通貨:
+STR_2329    :{WINDOW_COLOUR_2}距離と速力:
+STR_2330    :{WINDOW_COLOUR_2}温度:
+STR_2331    :{WINDOW_COLOUR_2}高さのマーカー:
+STR_2332    :単位
+STR_2333    :効果音
+STR_2334    :パウンド (£)
+STR_2335    :ドル ($)
+STR_2336    :フラン (F)
+STR_2337    :ドイツマルク (DM)
+STR_2338    :円 (¥)
+STR_2339    :ペセタ (Pts)
+STR_2340    :リラ (L)
+STR_2341    :フローリン (ƒ)
+STR_2342    :クローナ (kr)
+STR_2343    :ユーロ (€)
+STR_2344    :ポンド法
+STR_2345    :メートル法
+STR_2347    :{RED}{STRINGID}が溺れてしまいました。
+STR_2348    :{SMALLFONT}{BLACK}このスタッフの統計データの表示
+STR_2349    :{WINDOW_COLOUR_2}毎月給: {BLACK}{CURRENCY}
+STR_2350    :{WINDOW_COLOUR_2}雇用した日: {BLACK}{MONTHYEAR}
+STR_2351    :{WINDOW_COLOUR_2}草を刈った回数: {BLACK}{COMMA16}
+STR_2352    :{WINDOW_COLOUR_2}庭木に水をやった回数: {BLACK}{COMMA16}
+STR_2353    :{WINDOW_COLOUR_2}ゴミを掃除した回数: {BLACK}{COMMA16}
+STR_2354    :{WINDOW_COLOUR_2}ゴミ箱を空にした回数: {BLACK}{COMMA16}
+STR_2355    :{WINDOW_COLOUR_2}ライドを修理した回数: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}ライドを点検した回数: {BLACK}{COMMA16}
+STR_2358    :単位
+STR_2359    :高さの単位
+STR_2360    :ウィンドウ解像度:
+STR_2361    :地形タイルをならす
+STR_2362    :{SMALLFONT}{BLACK}地形タイルをならすの切り替え
+STR_2363    :工事中の標識
+STR_2364    :{SMALLFONT}{BLACK}地形グリッドの切り替え
+STR_2365    :銀行は借入額を増やす事を拒否します！
+STR_2366    :摂氏 ℃
+STR_2367    :華氏 ℉
+STR_2368    :なし
+STR_2369    :低い
+STR_2370    :平均的
+STR_2371    :高い
+STR_2372    :低い
+STR_2373    :普通
+STR_2374    :高い
+STR_2375    :非常に高い
+STR_2376    :最高
+STR_2377    :超究極
+STR_2378    :{SMALLFONT}{BLACK}地形のもっと小量の調整
+STR_2379    :{SMALLFONT}{BLACK}地形のもっと大量の調整
+STR_2380    :{SMALLFONT}{BLACK}水のもっと小量の調整
+STR_2381    :{SMALLFONT}{BLACK}水のもっと大量の調整
+STR_2382    :地形
+STR_2383    :水
+STR_2384    :{WINDOW_COLOUR_2}あなたの目標:
+STR_2385    :{BLACK}なし
+STR_2386    :{BLACK}{POP16}{MONTHYEAR}の終わりに、 パークの内に{PUSH16}{PUSH16}{COMMA16}以上人の来客し、600以上のパーク評価値を取得する必要があります。
+STR_2387    :{BLACK}{POP16}{MONTHYEAR}の終わりに、 {CURRENCY}以上のパーク評価額を取得する必要があります。
+STR_2388    :{BLACK}楽しんで下さい！
+STR_2389    :{BLACK}最高の{STRINGID}を建設してください！
+STR_2390    :{BLACK}パークで10タイプのジェットコースターを稼働させるには、それぞれ少なくとも6.00以上の興奮度が必要です。
+STR_2391    :{BLACK}パークに少なくとも{COMMA16}ゲストを入れてを取得する必要があります。パークの評価額がいつでも700以下にならないようにしてはいけません！
+STR_2392    :{BLACK}ライドの月次総収入の{POP16}{POP16}{CURRENCY}を取得する必要があります。
+STR_2393    :{BLACK}パークで10タイプのジェットコースターを操作しますし、それぞれ所定の長さの{LENGTH}し, 7.00以上の興奮度が必要です。
+STR_2394    :{BLACK}パークであるの5ジェットコースターの建設を仕上げますし、 それぞれ{POP16}{POP16}{COMMA2DP32}以上の興奮度が必要です。
+STR_2395    :{BLACK}借金完済を取得するし、パーク評価額{CURRENCY}以上を取得する必要があります。
+STR_2396    :{BLACK}飲食やお土産の売ることで、月利益を{POP16}{POP16}{CURRENCY}以上を得ります。
+STR_2397    :なし
+STR_2398    :指定された日付のゲスト数
+STR_2399    :指定された日付のパーク評価額
+STR_2400    :楽しんで下さい
+STR_2401    :最高のライドの建設
+STR_2402    :10タイプのコースター
+STR_2403    :パークにいるゲスト数
+STR_2404    :ライドの月次総収入
+STR_2405    :所定の長さの10コースターの建設
+STR_2406    :5コースターの建設を仕上げる
+STR_2407    :借金完済と所定なパーク評価額
+STR_2408    :飲食とお土産の売ることの月利益
+STR_2409    :{WINDOW_COLOUR_2}広告宣伝活動
+STR_2410    :{BLACK}なし
+STR_2411    :{WINDOW_COLOUR_2}実施可能なキャンペーン
+STR_2412    :{SMALLFONT}{BLACK}この広告キャンペーンを開始する
+STR_2413    :{BLACK}({CURRENCY2DP} 週あたり)
+STR_2414    :(選択して下さい)
+STR_2415    :{WINDOW_COLOUR_2}ライド:
+STR_2416    :{WINDOW_COLOUR_2}品物:
+STR_2417    :{WINDOW_COLOUR_2}期間:
+STR_2418    :{STRINGID}に無料の立入
+STR_2419    :{STRINGID}に無料の立入
+STR_2420    :{STRINGID}に半額の立入
+STR_2421    :無料の{STRINGID}
+STR_2424    :{WINDOW_COLOUR_2}パークの無料券のクーポン
+STR_2425    :{WINDOW_COLOUR_2}ライドの無料券のクーポン
+STR_2426    :{WINDOW_COLOUR_2}パークの半額クーポン
+STR_2427    :{WINDOW_COLOUR_2}飲み物の無料券のクーポン
+STR_2428    :{WINDOW_COLOUR_2}パークの広告キャンペーン
+STR_2429    :{WINDOW_COLOUR_2}ライドの広告キャンペーン
+STR_2430    :{BLACK}{STRINGID}に無料の立入のクーポン
+STR_2431    :{BLACK}{STRINGID}に無料の立入のクーポン
+STR_2432    :{BLACK}{STRINGID}に半額の立入のクーポン
+STR_2433    :{BLACK}無料の{STRINGID}のクーポン
+STR_2434    :{BLACK}{STRINGID}の広告キャンペーン
+STR_2435    :{BLACK}{STRINGID}の広告キャンペーン
+STR_2436    :1週間
+STR_2443    :{WINDOW_COLOUR_2}毎週のコスト: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}総コスト: {BLACK}{CURRENCY2DP}
+STR_2445    :この広告キャンペーンを開始します
+STR_2446    :{YELLOW}パークに無料の立入の広告キャンペーンが終わりました。
+STR_2447    :{YELLOW}{STRINGID}に無料の立入の広告キャンペーンが終わりました。
+STR_2448    :{YELLOW}パークに半額の立入の広告キャンペーンが終わりました。
+STR_2449    :{YELLOW}無料の{STRINGID}の広告キャンペーンが終わりました。
+STR_2450    :{YELLOW}パークの広告キャンペーンが終わりました。
+STR_2451    :{YELLOW}{STRINGID}の広告キャンペーンが終わりました。
+STR_2452    :{WINDOW_COLOUR_2}資金／借入: {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}資金／借入: {RED}{CURRENCY2DP}
+STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2457    :{SMALLFONT}{BLACK}Show financial accounts
+STR_2458    :{SMALLFONT}{BLACK}Show graph of cash (less loan) over time
+STR_2459    :{SMALLFONT}{BLACK}Show graph of park value over time
+STR_2460    :{SMALLFONT}{BLACK}Show graph of weekly profit
+STR_2461    :{SMALLFONT}{BLACK}Show marketing campaigns
+STR_2462    :{SMALLFONT}{BLACK}Show view of park entrance
+STR_2463    :{SMALLFONT}{BLACK}Show graph of park ratings over time
+STR_2464    :{SMALLFONT}{BLACK}Show graph of guest numbers over time
+STR_2465    :{SMALLFONT}{BLACK}Show park entrance price and information
+STR_2466    :{SMALLFONT}{BLACK}Show park statistics
+STR_2467    :{SMALLFONT}{BLACK}Show objectives for this game
+STR_2468    :{SMALLFONT}{BLACK}Show recent awards this park has received
+STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
+STR_2470    :{SMALLFONT}{BLACK}新しい輸送ライドを研究する
+STR_2471    :{SMALLFONT}{BLACK}新しいジェントルライドを研究する
+STR_2472    :{SMALLFONT}{BLACK}新しいローラーコースターを研究する
+STR_2473    :{SMALLFONT}{BLACK}新しいスリルライドを研究する
+STR_2474    :{SMALLFONT}{BLACK}新しいウォーターライドを研究する
+STR_2475    :{SMALLFONT}{BLACK}新しい軽食店と雑貨屋を研究する
+STR_2476    :{SMALLFONT}{BLACK}新しい景観とテーマを研究する
+STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this ride/attraction
+STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
+STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
+STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
+STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
+STR_2482    :{SMALLFONT}{BLACK}週収: {CURRENCY},  パーク評価額: {CURRENCY}
+STR_2483    :{WINDOW_COLOUR_2}週収: {BLACK}+{CURRENCY2DP}
+STR_2484    :{WINDOW_COLOUR_2}週収: {RED}{CURRENCY2DP}
+STR_2487    :ゲストの名前は現実的な
+STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
+STR_2489    :キーバインドの確認…
+STR_2490    :キーバインドの確認
+STR_2491    :キーバインドをリセットする
+STR_2492    :{SMALLFONT}{BLACK}全てのキーバインドをデフォルトにリセットする
+STR_2493    :一番上のウィンドウを閉じる
+STR_2494    :全てのウィンドウを閉じる
+STR_2495    :建設モードをキャンセルする
+STR_2496    :進行／一時停止
+STR_2497    :ズームアウト
+STR_2498    :ズームイン
+STR_2499    :マップを右へ回転する
+STR_2500    :現在のオブジェクトを回転する
+STR_2501    :地形の穴を表示する
+STR_2502    :地形透明度の切り替え
+STR_2503    :垂直面透明度の切り替え
+STR_2504    :ライド透明度の切り替え
+STR_2505    :景色透明度の切り替え
+STR_2506    :支柱の切り替え
+STR_2507    :ゲストの切替え
+STR_2508    :地形の高さ表示の切り替え
+STR_2509    :ライドの高さ表示の切り替え
+STR_2510    :歩道の高さ表示の切り替え
+STR_2511    :Adjust land
+STR_2512    :Adjust water
+STR_2513    :景色物建設
+STR_2514    :歩道建設
+STR_2515    :ライド建設
+STR_2516    :財務表の表示
+STR_2517    :研究の表示
+STR_2518    :ライドリストの表示
+STR_2519    :パーク・インフォメーションの表示
+STR_2520    :ゲスト名鑑の表示
+STR_2521    :スタッフ名鑑の表示
+STR_2522    :最近のメッセージを見る
+STR_2523    :地図を見る
+STR_2524    :スクリーンショット
+### The following need to be reordered to match SDL_keycode layout.
+STR_2525    :???
+STR_2526    :???
+STR_2527    :???
+STR_2528    :???
+STR_2529    :???
+STR_2530    :???
+STR_2531    :???
+STR_2532    :???
+STR_2533    :Backspace
+STR_2534    :Tab
+STR_2535    :???
+STR_2536    :???
+STR_2537    :Clear
+STR_2538    :Return
+STR_2539    :???
+STR_2540    :???
+STR_2541    :???
+STR_2542    :???
+STR_2543    :Alt/Menu
+STR_2544    :Pause
+STR_2545    :Caps
+STR_2546    :???
+STR_2547    :???
+STR_2548    :???
+STR_2549    :???
+STR_2550    :???
+STR_2551    :???
+STR_2552    :Escape
+STR_2553    :???
+STR_2554    :???
+STR_2555    :???
+STR_2556    :???
+STR_2557    :Spacebar
+STR_2558    :PgUp
+STR_2559    :PgDn
+STR_2560    :End
+STR_2561    :Home
+STR_2562    :Left
+STR_2563    :Up
+STR_2564    :Right
+STR_2565    :Down
+STR_2566    :Select
+STR_2567    :Print
+STR_2568    :Execute
+STR_2569    :Snapshot
+STR_2570    :Insert
+STR_2571    :Delete
+STR_2572    :ヘルプ
+STR_2573    :0
+STR_2574    :1
+STR_2575    :2
+STR_2576    :3
+STR_2577    :4
+STR_2578    :5
+STR_2579    :6
+STR_2580    :7
+STR_2581    :8
+STR_2582    :9
+STR_2583    :???
+STR_2584    :???
+STR_2585    :???
+STR_2586    :???
+STR_2587    :???
+STR_2588    :???
+STR_2589    :???
+STR_2590    :A
+STR_2591    :B
+STR_2592    :C
+STR_2593    :D
+STR_2594    :E
+STR_2595    :F
+STR_2596    :G
+STR_2597    :H
+STR_2598    :I
+STR_2599    :J
+STR_2600    :K
+STR_2601    :L
+STR_2602    :M
+STR_2603    :N
+STR_2604    :O
+STR_2605    :P
+STR_2606    :Q
+STR_2607    :R
+STR_2608    :S
+STR_2609    :T
+STR_2610    :U
+STR_2611    :V
+STR_2612    :W
+STR_2613    :X
+STR_2614    :Y
+STR_2615    :Z
+STR_2616    :???
+STR_2617    :???
+STR_2618    :Menu
+STR_2619    :???
+STR_2620    :???
+STR_2621    :NumPad 0
+STR_2622    :NumPad 1
+STR_2623    :NumPad 2
+STR_2624    :NumPad 3
+STR_2625    :NumPad 4
+STR_2626    :NumPad 5
+STR_2627    :NumPad 6
+STR_2628    :NumPad 7
+STR_2629    :NumPad 8
+STR_2630    :NumPad 9
+STR_2631    :NumPad *
+STR_2632    :NumPad +
+STR_2633    :???
+STR_2634    :NumPad -
+STR_2635    :NumPad .
+STR_2636    :NumPad /
+STR_2637    :F1
+STR_2638    :F2
+STR_2639    :F3
+STR_2640    :F4
+STR_2641    :F5
+STR_2642    :F6
+STR_2643    :F7
+STR_2644    :F8
+STR_2645    :F9
+STR_2646    :F10
+STR_2647    :F11
+STR_2648    :F12
+STR_2649    :F13
+STR_2650    :F14
+STR_2651    :F15
+STR_2652    :F16
+STR_2653    :F17
+STR_2654    :F18
+STR_2655    :F19
+STR_2656    :F20
+STR_2657    :F21
+STR_2658    :F22
+STR_2659    :F23
+STR_2660    :F24
+STR_2661    :???
+STR_2662    :???
+STR_2663    :???
+STR_2664    :???
+STR_2665    :???
+STR_2666    :???
+STR_2667    :???
+STR_2668    :???
+STR_2669    :NumLock
+STR_2670    :Scroll
+STR_2671    :???
+STR_2672    :???
+STR_2673    :???
+STR_2674    :???
+STR_2675    :???
+STR_2676    :???
+STR_2677    :???
+STR_2678    :???
+STR_2679    :???
+STR_2680    :All research complete
+STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
+STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
+STR_2685    :Simplex Noise Parameters
+STR_2686    :Low:
+STR_2687    :High:
+STR_2688    :Base Frequency:
+STR_2689    :Octaves:
+STR_2690    :Map Generation
+STR_2691    :ベースの高さ:
+STR_2692    :Water level:
+STR_2693    :Terrain:
+STR_2694    :Generate
+STR_2695    :Random terrain
+STR_2696    :Place trees
+STR_2697    :???
+STR_2698    :???
+STR_2699    :???
+STR_2700    :自動セーブ頻度:
+STR_2701    :毎1分
+STR_2702    :毎5分
+STR_2703    :毎15分
+STR_2704    :毎30分
+STR_2705    :毎時間
+STR_2706    :なし
+STR_2707    :システムファイルブラウザを使う
+STR_2708    :{WINDOW_COLOUR_1}{STRINGID}に上書きしてもいいですか？
+STR_2709    :上書き
+STR_2710    :新しいファイルの名を入力して下さい。
+STR_2711    :;
+STR_2712    :=
+STR_2713    :,
+STR_2714    :-
+STR_2715    :.
+STR_2716    :/
+STR_2717    :'
+STR_2718    :親フォルダ
+STR_2719    :新しいファイル
+STR_2720    :{UINT16}秒
+STR_2721    :{UINT16}秒
+STR_2722    :{UINT16}分{UINT16}秒
+STR_2723    :{UINT16}分{UINT16}秒
+STR_2724    :{UINT16}分{UINT16}秒
+STR_2725    :{UINT16}分{UINT16}秒
+STR_2726    :{UINT16}分
+STR_2727    :{UINT16}分
+STR_2728    :{UINT16}時{UINT16}分
+STR_2729    :{UINT16}時{UINT16}分
+STR_2730    :{UINT16}時{UINT16}分
+STR_2731    :{UINT16}時{UINT16}分
+STR_2732    :{COMMA16}ft
+STR_2733    :{COMMA16}m
+STR_2734    :{COMMA16}mph
+STR_2735    :{COMMA16}km/h
+STR_2736    :{POP16}{COMMA16}年{PUSH16}{PUSH16}{MONTH}
+STR_2737    :{STRINGID} {POP16}{COMMA16}年 {PUSH16}{PUSH16}{MONTH}
+STR_2738    :タイトルの音楽:
+STR_2739    :なし
+STR_2740    :RollerCoaster Tycoon 1
+STR_2741    :RollerCoaster Tycoon 2
+STR_2742    :css50.dat not found
+STR_2743    :Copy 'data/css17.dat' from your RCT1 installation to 'data/css50.dat' in your RCT2 installation, or make sure the path to RCT1 in the Miscellaneous tab is correct.
+STR_2744    :[
+STR_2745    :\
+STR_2746    :]
+STR_2747    :”
+STR_2749    :題名なしのシナリオ
+# New strings used in the cheats window previously these were ???
+STR_2750    :全てのオブジェクト上に移動する
+STR_2751    :全てのオブジェクト下に移動する
+STR_2752    :草をクリアする
+STR_2753    :草を刈る
+STR_2754    :庭木に水をやる
+STR_2755    :壊れた物を補修する
+STR_2756    :ゴミを削除する
+STR_2763    :???
+STR_2765    :たくさん人を招く
+STR_2766    :シナリオを勝つ
+STR_2767    :天気を停める
+STR_2768    :天気を停めない
+STR_2769    :閉園する
+STR_2770    :開園する
+STR_2773    :ウィンドウ付き
+STR_2774    :フルスクリーン
+STR_2775    :フルスクリーン(デスクトップ)
+STR_2776    :言語:
+STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2779    :ビューポート {COMMA16}号
+STR_2780    :ビューポートを開く
+# End of new strings
+STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2782    :SHIFT + 
+STR_2783    :CTRL + 
+STR_2784    :キーバインドを変更する
+STR_2785    :{WINDOW_COLOUR_2}新しいキーバインドを押して下さい。{NEWLINE}「{STRINGID}」
+STR_2786    :{SMALLFONT}{BLACK}新しいキーバインディングを設定するためにクリックして下さい。
+STR_2787    :{WINDOW_COLOUR_2}会社評価額: {BLACK}{CURRENCY}
+STR_2788    :{WINDOW_COLOUR_2}おめでとう！{NEWLINE}{BLACK}会社評価額の{CURRENCY}と目的に成功しました！
+STR_2789    :{WINDOW_COLOUR_2}残念！目的に失敗しました！
+STR_2790    :シナリオリストに名前を入力
+STR_2791    :名前の入力
+STR_2792    :シナリオリストのために名前を入力して下さい。
+STR_2793    :{SMALLFONT}({STRINGID}の勝利)
+STR_2794    :{WINDOW_COLOUR_2}勝者の名前: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2}会社評価額: {BLACK}{CURRENCY}
+STR_2795    :並べ替える
+STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
+STR_2797    :Scroll view when pointer at screen edge
+STR_2798    :{SMALLFONT}{BLACK}Scroll the view when the mouse pointer is at the screen edge
+STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
+STR_2800    :{WINDOW_COLOUR_2}入場者数: {BLACK}{COMMA32}
+STR_2801    :{WINDOW_COLOUR_2}入場の収入: {BLACK}{CURRENCY2DP}
+STR_2802    :地図
+STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
+STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
+STR_2805    :{SMALLFONT}{BLACK}パークの地図を見る
+STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organising them better
+STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organising them better
+STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organising them better
+STR_2809    :{RED}Guests are hungry and can't find anywhere to buy food
+STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
+STR_2811    :{RED}Guests are complaining because they can't find the toilets in your park
+STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
+STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
+STR_2814    :{WINDOW_COLOUR_2}最悪に汚いパーク罰
+STR_2815    :{WINDOW_COLOUR_2}最高に清潔なパーク賞
+STR_2816    :{WINDOW_COLOUR_2}ベストローラーコースター賞
+STR_2817    :{WINDOW_COLOUR_2}最高にお得なパーク賞
+STR_2818    :{WINDOW_COLOUR_2}最高に美しいパーク賞
+STR_2819    :{WINDOW_COLOUR_2}最悪に損なパーク罰
+STR_2820    :{WINDOW_COLOUR_2}最高に安全なパーク賞
+STR_2821    :{WINDOW_COLOUR_2}最高に安全なパーク賞
+STR_2822    :{WINDOW_COLOUR_2}最高のフード賞
+STR_2823    :{WINDOW_COLOUR_2}最悪なフード罰
+STR_2824    :{WINDOW_COLOUR_2}最高のトイレ賞
+STR_2825    :{WINDOW_COLOUR_2}最悪にガッカリさせられるパーク罰
+STR_2826    :{WINDOW_COLOUR_2}最高のウォーターライド賞
+STR_2827    :{WINDOW_COLOUR_2}ベスト・カスタムデザイン賞
+STR_2828    :{WINDOW_COLOUR_2}カラフル・スタイル賞
+STR_2829    :{WINDOW_COLOUR_2}混乱のレイアウト罰
+STR_2830    :{WINDOW_COLOUR_2}最高にジェントルライド賞
+STR_2831    :{TOPAZ}「最悪に汚いパーク」罰を授与されました
+STR_2832    :{TOPAZ}「最高に清潔なパーク」賞を授与されました
+STR_2833    :{TOPAZ}「ベストローラーコースター」賞を授与されました
+STR_2834    :{TOPAZ}「最高にお得なパーク」賞を授与されました
+STR_2835    :{TOPAZ}「最高に美しいパーク」賞を授与されました
+STR_2836    :{TOPAZ}「最悪に損なパーク」罰を授与されました
+STR_2837    :{TOPAZ}「最高に安全なパーク」賞を授与されました
+STR_2838    :{TOPAZ}「最高に安全なパーク」賞を授与されました
+STR_2839    :{TOPAZ}「最高のフード」賞を授与されました
+STR_2840    :{TOPAZ}「最悪なフード」罰を授与されました
+STR_2841    :{TOPAZ}「最高のトイレ」賞を授与されました
+STR_2842    :{TOPAZ}「最悪にガッカリさせられるパーク」罰を授与されました
+STR_2843    :{TOPAZ}「最高のウォーターライド」賞を授与されました
+STR_2844    :{TOPAZ}「ベスト・カスタムデザイン」賞を授与されました
+STR_2845    :{TOPAZ}「カラフル・スタイル」賞を授与されました
+STR_2846    :{TOPAZ}「混乱のレイアウト」罰を授与されました
+STR_2847    :{TOPAZ}「最高にジェントルライド」賞を授与されました
+STR_2848    :{WINDOW_COLOUR_2}賞罰なし
+STR_2849    :New scenario installed successfully
+STR_2850    :New track design installed successfully
+STR_2851    :Scenario already installed
+STR_2852    :Track design already installed
+STR_2853    :Forbidden by the local authority!
+STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
+STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
+STR_2858    :Can't start marketing campaign...
+STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
+STR_2862    :Music acknowledgements...
+STR_2863    :Music acknowledgements
+STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
+STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) non copyright
+STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
+STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) non copyright
+STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
+STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Traditional)
+STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Traditional)
+STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyright
+STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
+STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
+STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
+STR_2971    :主な配色
+STR_2972    :１番目の別の配色
+STR_2973    :２番目の別の配色
+STR_2974    :３番目の別の配色
+STR_2975    :{SMALLFONT}{BLACK}Select which colour scheme to change, or paint ride with
+STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected colour scheme
+STR_2977    :スタッフの名前
+STR_2978    :新しい名前を入力してください:
+STR_2979    :スタッフに名前を付けられません
+STR_2980    :Too many banners in game
+STR_2981    :{RED}立入り禁止 - - 
+STR_2982    :バナーのテキト
+STR_2983    :テキトを入力してください:
+STR_2984    :Can't set new text for banner...
+STR_2985    :バナー
+STR_2986    :{SMALLFONT}{BLACK}Change text on banner
+STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
+STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
+STR_2989    :{SMALLFONT}{BLACK}Select main colour
+STR_2990    :{SMALLFONT}{BLACK}Select text colour
+STR_2991    :バナー標識
+STR_2992    :バナーのテキト
+STR_2993    :テキトを入力してください:
+STR_2994    :{SMALLFONT}{BLACK}Change text on sign
+STR_2995    :{SMALLFONT}{BLACK}Demolish this sign
+STR_2996    :{BLACK}ABC
+STR_2997    :{GREY}ABC
+STR_2998    :{WHITE}ABC
+STR_2999    :{RED}ABC
+STR_3000    :{GREEN}ABC
+STR_3001    :{YELLOW}ABC
+STR_3002    :{TOPAZ}ABC
+STR_3003    :{CELADON}ABC
+STR_3004    :{BABYBLUE}ABC
+STR_3005    :{PALELAVENDER}ABC
+STR_3006    :{PALEGOLD}ABC
+STR_3007    :{LIGHTPINK}ABC
+STR_3008    :{PEARLAQUA}ABC
+STR_3009    :{PALESILVER}ABC
+STR_3010    :Unable to load file...
+STR_3011    :File contains invalid data
+STR_3012    :ダージャムズ・ビート・スタイル
+STR_3013    :フェアグラウンドオルガン・スタイル
+STR_3014    :ローマンファンファーレ・スタイル
+STR_3015    :オリエンタル・スタイル
+STR_3016    :火星スタイル
+STR_3017    :ジャングルドラム・スタイル
+STR_3018    :エジプト・スタイル
+STR_3019    :トイランド・スタイル
+STR_3020    :
+STR_3021    :スペース・スタイル
+STR_3022    :ホラー・スタイル
+STR_3023    :テクノ・スタイル
+STR_3024    :ジェントル・スタイル
+STR_3025    :サマー・スタイル
+STR_3026    :ウォーター・スタイル
+STR_3027    :ワイルドウエスト・スタイル
+STR_3028    :ジュラ紀・スタイル
+STR_3029    :ロック・スタイル
+STR_3030    :ラグタイム・スタイル
+STR_3031    :ファンタジー・スタイル
+STR_3032    :ロック・スタイル ２番
+STR_3033    :アイス・スタイル
+STR_3034    :スノー・スタイル
+STR_3035    :カスタム・スタイル １番
+STR_3036    :カスタム・スタイル ２番
+STR_3037    :中世・スタイル
+STR_3038    :都市・スタイル
+STR_3039    :オルガン・スタイル
+STR_3040    :メカニカル・スタイル
+STR_3041    :モダン・スタイル
+STR_3042    :パイレーツ・スタイル
+STR_3043    :ロック・スタイル ３番
+STR_3044    :キャンディ・スタイル
+STR_3045    :{SMALLFONT}{BLACK}音楽のスタイルの選定
+STR_3047    :Local authority forbids demolition or modifications to this ride
+STR_3048    :Marketing campaigns forbidden by local authority
+STR_3049    :ゴルフホール A
+STR_3050    :ゴルフホール B
+STR_3051    :ゴルフホール C
+STR_3052    :ゴルフホール D
+STR_3053    :ゴルフホール E
+STR_3054    :ローディング中…
+STR_3058    :煉瓦塀
+STR_3059    :生け垣
+STR_3060    :アイスブロック
+STR_3061    :木の柵
+STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
+STR_3063    :{SMALLFONT}{BLACK}ウォーターチャンネル (水中のトラック)
+STR_3064    :初心者のパーク
+STR_3065    :挑戦のパーク
+STR_3066    :名手のパーク
+STR_3067    :現実のパーク
+STR_3068    :外のパーク
+STR_3069    :トップの部分
+STR_3070    :Slope to Level
+STR_3071    :{WINDOW_COLOUR_2}パーク中で同一価格
+STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
+STR_3073    :{RED}WARNING: Your park rating has dropped below 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
+STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have 3 weeks to raise the park rating
+STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
+STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
+STR_3077    :{RED}CLOSURE NOTICE: Your park has been closed down !
+STR_3078    :普通の入口
+STR_3079    :木の入口
+STR_3080    :カンバスの入口
+STR_3081    :城の入口 (灰色)
+STR_3082    :城の入口 (褐色)
+STR_3083    :ジャングルの入口
+STR_3084    :丸太小屋の入口
+STR_3085    :ローマの入口
+STR_3086    :抽象の入口
+STR_3087    :雪の入口
+STR_3088    :パゴダの入口
+STR_3089    :スペースの入口
+STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
+STR_3091    :You are not allowed to remove this section!
+STR_3092    :You are not allowed to move or modify the station for this ride!
+STR_3093    :{WINDOW_COLOUR_2}お気に入り: {BLACK}{STRINGID}
+STR_3094    :N/A
+STR_3095    :{WINDOW_COLOUR_2}リフト巻き上げ速度:
+STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
+STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
+STR_3099    :{SMALLFONT}{BLACK}Select colour
+STR_3100    :{SMALLFONT}{BLACK}Select second colour
+STR_3101    :{SMALLFONT}{BLACK}Select third colour
+STR_3102    :{SMALLFONT}{BLACK}Re-paint coloured scenery on landscape
+STR_3103    :Can't re-paint this...
+STR_3104    :{SMALLFONT}{BLACK}List rides
+STR_3105    :{SMALLFONT}{BLACK}軽食店と雑貨屋を表示する
+STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
+STR_3107    :閉鎖
+STR_3108    :テスト
+STR_3109    :稼働
+STR_3110    :{WINDOW_COLOUR_2}排他的セクション: {BLACK}{COMMA16}
+STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
+STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
+STR_3113    :他のデサインを選ぶ
+STR_3114    :{SMALLFONT}{BLACK}デサイン選定スクリーンに戻る
+STR_3115    :{SMALLFONT}{BLACK}トラックデザインをセーブする
+STR_3116    :{SMALLFONT}{BLACK}トラックデザインをセーブする (Not possible until ride has been tested and statistics have been generated)
+STR_3117    :{BLACK}整備士を連絡中…
+STR_3118    :{BLACK}{STRINGID}はライドに向かっています
+STR_3119    :{BLACK}{STRINGID}はライドを修理中
+STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
+STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
+STR_3122    :{WINDOW_COLOUR_2}お気に入りのライド: {BLACK}{COMMA16}ゲスト
+STR_3123    :{WINDOW_COLOUR_2}お気に入りのライド: {BLACK}{COMMA16}ゲスト
+STR_3124    :壊れた{STRINGID}
+STR_3125    :{WINDOW_COLOUR_2}興奮倍率: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}強烈倍率: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}ゲロ倍率: {BLACK}+{COMMA16}%
+STR_3128    :トラックデザインをセーブする
+STR_3129    :トラックデザインと景観物をセーブする
+STR_3130    :セーブ
+STR_3131    :キャンセル
+STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
+STR_3133    :Unable to build this on a slope
+STR_3134    :{RED}(Design includes scenery which is unavailable)
+STR_3135    :{RED}(Vehicle design unavailable - Ride performance may be affected)
+STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
+STR_3137    :近くの景観物を選択する
+STR_3138    :選定をリセットする
+STR_3139    :Cable lift unable to work in this operating mode
+STR_3140    :Cable lift hill must start immediately after station
+STR_3141    :Multi-circuit per ride not possible with cable lift hill
+STR_3142    :{WINDOW_COLOUR_2}収容能力: {BLACK}{STRINGID}
+STR_3143    :{SMALLFONT}{BLACK}Show people on map
+STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
+STR_3158    :graph
+STR_3159    :list
+STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
+STR_3162    :Unable to allocate enough memory
+STR_3163    :Installing new data: 
+STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
+STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
+STR_3169    :Data for the following object not found: 
+STR_3170    :Not enough space for graphics
+STR_3171    :Too many objects of this type selected
+STR_3172    :The following object must be selected first: {STRING}
+STR_3173    :This object is currently in use
+STR_3174    :This object is required by another object
+STR_3175    :This object is always required
+STR_3176    :Unable to select this object
+STR_3177    :Unable to de-select this object
+STR_3178    :At least one path object must be selected
+STR_3179    :At least one ride vehicle/attraction object must be selected
+STR_3180    :Invalid selection of objects
+STR_3181    :オブジェクト選択 - {STRINGID}
+STR_3182    :パーク入口タイプを選択する必要があります。
+STR_3183    :ウォタータイプを選択する必要があります。
+STR_3184    :ライド乗り物/アトラクション
+STR_3185    :小さな景観物
+STR_3186    :大きな景観物
+STR_3187    :壁とフェンス
+STR_3188    :歩道のバナー
+STR_3189    :歩道
+STR_3190    :歩道の余分
+STR_3191    :景色物グループ
+STR_3192    :パークの入口
+STR_3193    :水
+STR_3194    :シナリオの説明
+STR_3195    :発明品リスト
+STR_3196    :{WINDOW_COLOUR_2}研究開発グループ: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}ゲームの開始時に事前に発明されたオブジェクト:
+STR_3198    :{WINDOW_COLOUR_2}ゲーム中に発明されたオブジェクト:
+STR_3199    :ランダムシャッフル
+STR_3200    :{SMALLFONT}{BLACK}オブジェクトのリストをランダムシャッフルするにクリックして下さい。
+STR_3201    :オブジェクト選択
+STR_3202    :地形エディター
+STR_3203    :発明品リスト設定
+STR_3204    :設定の選択
+STR_3205    :目標の選択
+STR_3206    :シナリオをセーブする
+STR_3207    :トラックデザイナー
+STR_3208    :トラックデザインマネージャー
+STR_3209    :前のステップに戻る:
+STR_3210    :次のステップに進む:
+STR_3211    :マップサイズ:
+STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3213    :Can't decrease map size any further
+STR_3214    :Can't increase map size any further
+STR_3215    :Too close to edge of map
+STR_3216    :{SMALLFONT}{BLACK}Select park-owned land etc.
+STR_3217    :Land Owned
+STR_3218    :Construction Rights Owned
+STR_3219    :Land For Sale
+STR_3220    :Construction Rights For Sale
+STR_3221    :{SMALLFONT}{BLACK}Set land to be owned by the park
+STR_3222    :{SMALLFONT}{BLACK}Set construction rights only to be owned by the park
+STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
+STR_3224    :{SMALLFONT}{BLACK}Set construction rights to be available to purchase by the park
+STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
+STR_3226    :{SMALLFONT}{BLACK}Build park entrance
+STR_3227    :Too many park entrances!
+STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
+STR_3229    :Block Brakes cannot be used directly after station
+STR_3230    :Block Brakes cannot be used directly after each other
+STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
+STR_3232    :財務の設定
+STR_3233    :ゲストの設定
+STR_3234    :パークの設定
+STR_3235    :{SMALLFONT}{BLACK}財務の設定の表示
+STR_3236    :{SMALLFONT}{BLACK}ゲストの設定の表示
+STR_3237    :{SMALLFONT}{BLACK}パークの設定の表示
+STR_3238    :資金無制限
+STR_3239    :{SMALLFONT}{BLACK}パークは資金無制限の設定です。
+STR_3240    :{WINDOW_COLOUR_2}金銭 初期値:
+STR_3241    :{WINDOW_COLOUR_2}借金 初期値:
+STR_3242    :{WINDOW_COLOUR_2}借入上限額:
+STR_3243    :{WINDOW_COLOUR_2}年利息:
+STR_3244    :広告宣伝キャンペーンを禁止する
+STR_3245    :{SMALLFONT}{BLACK}広告宣伝キャンペーンを禁止の設定です。
+STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
+STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3248    :Can't increase initial cash any further!
+STR_3249    :Can't reduce initial cash any further!
+STR_3250    :Can't increase initial loan any further!
+STR_3251    :Can't reduce initial loan any further!
+STR_3252    :Can't increase maximum loan size any further!
+STR_3253    :Can't reduce maximum loan size any further!
+STR_3254    :Can't increase interest rate any further!
+STR_3255    :Can't reduce interest rate any further!
+STR_3256    :ゲストは低いライドの強烈度が好きです。
+STR_3257    :{SMALLFONT}{BLACK}ゲストは低いライドの強烈度が好きの設定です。
+STR_3258    :ゲストは高いライドの強烈度が好きです。
+STR_3259    :{SMALLFONT}{BLACK}ゲストは高いライドの強烈度が好きの設定です。
+STR_3260    :{WINDOW_COLOUR_2}ゲストの平均所持金:
+STR_3261    :{WINDOW_COLOUR_2}ゲストの幸福度　初期値:
+STR_3262    :{WINDOW_COLOUR_2}ゲストの空腹度　初期値:
+STR_3263    :{WINDOW_COLOUR_2}ゲストの喉の渇き　初期値:
+STR_3264    :Can't increase this any further!
+STR_3265    :Can't reduce this any further!
+STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and rides
+STR_3267    :樹木の伐採を禁止する
+STR_3268    :{SMALLFONT}{BLACK}樹木の伐採を禁止の設定です。
+STR_3269    :地形編集を禁止する
+STR_3270    :{SMALLFONT}{BLACK}地形編集を禁止の設定です。
+STR_3271    :高い建物の建造を禁止する
+STR_3272    :{SMALLFONT}{BLACK}高い建物の建造を禁止の設定です。
+STR_3273    :パーク評価値の算定を厳しくする
+STR_3274    :{SMALLFONT}{BLACK}パーク評価値の算定を厳しくの設定です。
+STR_3275    :Guests are more difficult to attract
+STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
+STR_3277    :{WINDOW_COLOUR_2}土地購入費用:
+STR_3278    :{WINDOW_COLOUR_2}土地利用権費用:
+STR_3279    :無料入園／ライド利用料
+STR_3280    :料入園／ライド利用料なし
+STR_3281    :{WINDOW_COLOUR_2}入場料:
+STR_3282    :{SMALLFONT}{BLACK}目標とパーク名を選定する
+STR_3283    :{SMALLFONT}{BLACK}保全ライドを選定する
+STR_3284    :目標を選定する
+STR_3285    :保全ライド
+STR_3286    :{SMALLFONT}{BLACK}目標の選定
+STR_3287    :{WINDOW_COLOUR_2}目標:
+STR_3288    :{SMALLFONT}{BLACK}気候の選定
+STR_3289    :{WINDOW_COLOUR_2}気候:
+STR_3290    :質素
+STR_3291    :南国
+STR_3292    :砂漠
+STR_3293    :冬
+STR_3294    :変更する...
+STR_3295    :{SMALLFONT}{BLACK}パーク名を変更する
+STR_3296    :{SMALLFONT}{BLACK}シナリオ名を変更する
+STR_3297    :{SMALLFONT}{BLACK}シナリオ設定を変更する
+STR_3298    :{WINDOW_COLOUR_2}パーク名: {BLACK}{STRINGID}
+STR_3299    :{WINDOW_COLOUR_2}パーク／シナリオの説明:
+STR_3300    :{WINDOW_COLOUR_2}シナリオ名: {BLACK}{STRINGID}
+STR_3301    :{WINDOW_COLOUR_2}目標の日付:
+STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
+STR_3303    :{WINDOW_COLOUR_2}ゲストの数:
+STR_3304    :{WINDOW_COLOUR_2}パーク評価額:
+STR_3305    :{WINDOW_COLOUR_2}月売上:
+STR_3306    :{WINDOW_COLOUR_2}月利益:
+STR_3307    :{WINDOW_COLOUR_2}最小長:
+STR_3308    :{WINDOW_COLOUR_2}興奮度:
+STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
+STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
+STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
+STR_3312    :{WINDOW_COLOUR_2}保全命令のライド:
+STR_3313    :シナリオ名
+STR_3314    :シナリオ名を入力して下さい。
+STR_3315    :パーク／シナリオの説明
+STR_3316    :シナリオの説明を入力して下さい。
+STR_3317    :説明がなし
+STR_3318    :{SMALLFONT}{BLACK}シナリオグループを選択する
+STR_3319    :{WINDOW_COLOUR_2}シナリオグループ:
+STR_3320    :シナリオのセーブが失敗しました…
+STR_3321    :新しいオブジェクトが正常にインストールされました。
+STR_3322    :{WINDOW_COLOUR_2}目標: {BLACK}{STRINGID}
+STR_3326    :{WINDOW_COLOUR_2}(プレービューがない)
+STR_3327    :Starting positions for people not set
+STR_3328    :次のステップに進めません…
+STR_3329    :Park entrance not yet built
+STR_3330    :Park must own some land
+STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
+STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
+STR_3333    :Export plug-in objects with saved games
+STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
+STR_3335    :トラックデザイナー・乗り型と乗り物選択
+STR_3336    :トラックデザインマネージャー・乗り型を選ぶ
+STR_3338    :{BLACK}カスタムデザイン
+STR_3339    :{BLACK}{COMMA16}デザインまたはカスタムデザイン
+STR_3340    :{BLACK}{COMMA16}デザインまたはカスタムデザイン
+STR_3341    :{SMALLFONT}{BLACK}ゲームツール
+STR_3342    :シナリオエディター
+STR_3343    :ゲームセーブをシナリオに変換する
+STR_3344    :トラックデザイナー
+STR_3345    :トラックデザインマネージャー
+STR_3346    :トラックデサインをセーブできません…
+STR_3347    :ライドが大きすぎるか、要素が多すぎるか、景色物が多すぎるか
+STR_3348    :名前を変更
+STR_3349    :削除
+STR_3350    :トラックデサイン名
+STR_3351    :トラックデサイン名を入力して下さい。
+STR_3352    :トラックデサイン名の変更はできません。
+STR_3353    :New name contains invalid characters
+STR_3354    :Another file exists with this name, or file is write-protected
+STR_3355    :File is write-protected or locked
+STR_3356    :ファイルの削除
+STR_3357    :{WINDOW_COLOUR_2}「{STRING}」を削除してほしいですか？
+STR_3358    :トラックデサインの削除はできません。
+STR_3359    :{BLACK}No track designs of this type
+STR_3360    :ご注意！
+STR_3361    :Too many track designs of this type - Some will not be listed.
+STR_3364    :上級
+STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
+STR_3366    :{BLACK}= ライド
+STR_3367    :{BLACK}= 食べ物ショップ
+STR_3368    :{BLACK}= 飲み物ショップ
+STR_3369    :{BLACK}= お土産ショップ
+STR_3370    :{BLACK}= インフォメーション
+STR_3371    :{BLACK}= 救護所
+STR_3372    :{BLACK}= ATM
+STR_3373    :{BLACK}= トイレ
+STR_3374    :Warning: Too many objects selected!
+STR_3375    :Not all objects in this scenery group could be selected
+STR_3376    :インストール
+STR_3377    :{SMALLFONT}{BLACK}新しいトラックデサインをインストールため
+STR_3378    :インストール
+STR_3379    :キャンセル
+STR_3380    :Unable to install this track design...
+STR_3381    :File is not compatible or contains invalid data
+STR_3382    :File copy failed
+STR_3383    :Select new name for track design
+STR_3384    :An existing track design already has this name - Please select a new name for this design:
+STR_3389    :Unable to select additional item of scenery...
+STR_3390    :Too many items selected
+STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
+STR_3438    :Unable to remove all scenery from here...
+STR_3439    :景色物をクリアする
+STR_3440    :1ページ目
+STR_3441    :2ページ目
+STR_3442    :3ページ目
+STR_3443    :4ページ目
+STR_3444    :5ページ目
+STR_3445    :巡回エリアにセットする
+STR_3446    :巡回エリアをキャンセル
+
+# New strings, cleaner
+STR_5120    :財務表
+STR_5121    :研究
+STR_5122    :RCT1のようにライドタイプ選定
+STR_5123    :Renew rides
+STR_5125    :All destructible
+STR_5126    :ランダムのタイトル音楽
+STR_5127    :{SMALLFONT}{BLACK}While dragging, paint landscape instead of changing elevation
+STR_5128    :選択範囲
+STR_5129    :{COMMA16}と{COMMA16}の間に選択範囲を入力して下さい。
+STR_5130    :マップサイズ
+STR_5131    :{COMMA16}と{COMMA16}の間にマップサイズを入力して下さい。
+STR_5132    :Fix all rides
+STR_5133    :{SMALLFONT}{BLACK}パーク敷地のもっと小量の調整
+STR_5134    :{SMALLFONT}{BLACK}パーク敷地のもっと大量の調整
+STR_5135    :{SMALLFONT}{BLACK}パーク敷地や土地利用権を購入する
+STR_5136    :パーク敷地
+STR_5137    :Unlock operating limits
+STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5139    :{WHITE}{STRINGID}
+STR_5140    :Disable brakes failure
+STR_5141    :Disable all breakdowns
+STR_5142    :通常スピード
+STR_5143    :クイックスピード
+STR_5144    :高速スピード
+STR_5145    :ターボスピード
+STR_5146    :ハイパースピード
+STR_5147    :カンニング
+STR_5148    :{SMALLFONT}{BLACK}ゲーム速度の変更
+STR_5149    :{SMALLFONT}{BLACK}カンニングの表示
+STR_5150    :デバッグツールを有効にする
+STR_5151    :,
+STR_5152    :.
+STR_5153    :テーマを変更する
+STR_5154    :ハードウェア表示
+STR_5155    :Allow testing of unfinished tracks
+STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5158    :メニューに戻る
+STR_5159    :OpenRCT2終了
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID} {POP16}{COMMA16}年
+STR_5161    :日付形式:
+STR_5162    :日月年
+STR_5163    :月日年
+STR_5164    :Twitchのチャンネル名
+STR_5165    :Name guests after followers
+STR_5166    :{SMALLFONT}{BLACK}Name guests after channel's{NEWLINE}Twitch followers
+STR_5167    :Track follower guests
+STR_5168    :{SMALLFONT}{BLACK}Enable tracking information for guests named after channel's Twitch followers
+STR_5169    :Name guests after people in Twitch chat
+STR_5170    :{SMALLFONT}{BLACK}Name guests after people in Twitch chat
+STR_5171    :Track chat guests
+STR_5172    :{SMALLFONT}{BLACK}Enable tracking information for guests named after Twitch chat participants
+STR_5173    :Pull Twitch chat as news
+STR_5174    :{SMALLFONT}{BLACK}Use Twitch chat messages preceded by !news for in game notifications
+STR_5175    :Input the name of your Twitch channel
+STR_5176    :Enable Twitch integration
+STR_5177    :スクリーンモード:
+STR_5178    :{SMALLFONT}{BLACK}財務表のカニング
+STR_5179    :{SMALLFONT}{BLACK}ゲストのカニング
+STR_5180    :{SMALLFONT}{BLACK}パクのカニング
+STR_5181    :{SMALLFONT}{BLACK}ライドのカニング
+STR_5182    :{INT32}
+STR_5183    :基地の高さ
+STR_5184    :{COMMA16}と{COMMA16}の間基地の高さを入力して下さい。
+STR_5185    :水位
+STR_5186    :{COMMA16}と{COMMA16}の間水位を入力して下さい。
+STR_5187    :財務表
+STR_5188    :新しいキャンペーン
+STR_5189    :研究
+STR_5190    :地図
+STR_5191    :ビューポート
+STR_5192    :最近のメッセージ
+STR_5193    :地形
+STR_5194    :水
+STR_5195    :景色物をクリアする
+STR_5196    :土地購入
+STR_5197    :景観物
+STR_5198    :歩道
+STR_5199    :ライドの建設
+STR_5200    :トラックデサイン位置付け
+STR_5201    :新しいライド
+STR_5202    :トラックデサイン選択
+STR_5203    :ライド
+STR_5204    :ライドリスト
+STR_5205    :ゲスト
+STR_5206    :ゲストリスト
+STR_5207    :スタッフ
+STR_5208    :スタッフ一覧
+STR_5209    :バナー
+STR_5210    :オブジェクト選択
+STR_5211    :発明品リスト
+STR_5212    :シナリオ設定
+STR_5213    :目標の設定
+STR_5214    :地図の生成
+STR_5215    :トラックデサインマネージャー
+STR_5216    :トラックデサインマネージャーリスト
+STR_5217    :カンニング
+STR_5218    :スタイル
+STR_5219    :設定
+STR_5220    :ショートカット
+STR_5221    :ショートカットをセットする
+STR_5222    :ロード／セーブ
+STR_5223    :セーブのプロンプト
+STR_5224    :ライド破壊のプロンプト
+STR_5225    :スタフ解雇のプロンプト
+STR_5226    :トラック削除のプロンプト
+STR_5227    :セーブ保存のプロンプト
+STR_5228    :{SMALLFONT}{BLACK}メインUI
+STR_5229    :{SMALLFONT}{BLACK}パーク
+STR_5230    :{SMALLFONT}{BLACK}ツール
+STR_5231    :{SMALLFONT}{BLACK}ライドとゲスト
+STR_5232    :{SMALLFONT}{BLACK}エディター
+STR_5233    :{SMALLFONT}{BLACK}雑貨
+STR_5234    :{SMALLFONT}{BLACK}プロンプト
+STR_5235    :{SMALLFONT}{BLACK}設定
+STR_5236    :ウインドウ
+STR_5237    :パレット
+STR_5238    :現行のスタイル:
+STR_5239    :複写
+STR_5240    :スタイルの名を入力してください。
+STR_5241    :このスタイルを変更できません。
+STR_5242    :スタイルの名はもう存在します。
+STR_5243    :無効な文字が使用されました
+STR_5244    :スタイル
+STR_5245    :上のツールバー
+STR_5246    :下のツールバー
+STR_5247    :トラックエディターの下のツールバー
+STR_5248    :シナリオエディターの下のツールバー
+STR_5249    :タイトルメニューのボタン
+STR_5250    :タイトルの終了ボタン
+STR_5251    :タイトルの設定ボタン
+STR_5252    :タイトルのシナリオ選択
+STR_5253    :パーク・インフォメーション
+STR_5254    :新規
+STR_5255    :{SMALLFONT}{BLACK}新しいタイトルシーケンスを造るために
+STR_5256    :新しいテーマを造る
+STR_5257    :{SMALLFONT}{BLACK}いまのテーマてき新しいテーマを造る
+STR_5258    :{SMALLFONT}{BLACK}いまのテーマを削除する
+STR_5259    :{SMALLFONT}{BLACK}いまのテーマの名前を変更する
+STR_5260    :莫大スクリーンショット
+STR_5261    :フィルター
+STR_5262    :ワッキーワールド
+STR_5263    :タイムツイスター
+STR_5264    :カスタム
+STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
+STR_5266    :{SMALLFONT}{BLACK}表示
+STR_5267    :{SMALLFONT}{BLACK}文化と単位
+STR_5268    :{SMALLFONT}{BLACK}音楽
+STR_5269    :{SMALLFONT}{BLACK}コントロールとインターフェイス
+STR_5270    :{SMALLFONT}{BLACK}雑貨
+STR_5271    :{SMALLFONT}{BLACK}Twitch
+STR_5272    :{SMALLFONT}{BLACK}小さな景観物
+STR_5273    :{SMALLFONT}{BLACK}大きな景観物
+STR_5274    :{SMALLFONT}{BLACK}歩道
+STR_5275    :オブジェクトを調べる
+STR_5276    :オブジェクトの名を入力して下さい。
+STR_5277    :クリア
+STR_5278    :サンドボックスモード
+STR_5279    :サンドボックスモードを切る
+STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
+STR_5281    :{SMALLFONT}{BLACK}Features
+STR_5282    :RCT1のライド「稼動／閉鎖」信号機
+STR_5283    :RCT1のパーク「稼動／閉鎖」信号機
+STR_5284    :RCT1ののシナリオ選定フォント
+STR_5285    :爆発する！
+STR_5286    :{SMALLFONT}{BLACK}全てのゲストを爆発するのボタンです。
+STR_5287    :Ride is already broken down
+STR_5288    :Ride is closed
+STR_5289    :No breakdowns available for this ride
+STR_5290    :Fix ride
+STR_5291    :故障を強制できません
+STR_5292    :{SMALLFONT}{BLACK}故障を強制する
+STR_5293    :{SMALLFONT}{BLACK}ライド/アトラクションの閉鎖
+STR_5294    :{SMALLFONT}{BLACK}ライド/アトラクションのテスト
+STR_5295    :{SMALLFONT}{BLACK}ライド/アトラクションの稼働
+STR_5296    :{SMALLFONT}{BLACK}遊園地を閉める
+STR_5297    :{SMALLFONT}{BLACK}遊園地を開ける
+STR_5298    :{RED}{STRINGID}
+STR_5299    :{LIGHTPINK}{STRINGID}
+STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
+STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
+STR_5302    :借入額をクリアする
+STR_5303    :Allow building in pause mode
+STR_5304    :タイトルシーケンス:
+STR_5305    :RollerCoaster Tycoon 1
+STR_5306    :RollerCoaster Tycoon 1 (AA)
+STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
+STR_5308    :RollerCoaster Tycoon 2
+STR_5309    :OpenRCT2
+STR_5310    :ランダム
+STR_5311    :{SMALLFONT}{BLACK}デバグツール
+STR_5312    :コンソールの表示
+STR_5313    :タイルインスペクターの表示
+STR_5314    :タイルインスペクター
+STR_5315    :草
+STR_5316    :砂
+STR_5317    :土
+STR_5318    :石
+STR_5319    :火星
+STR_5320    :市松
+STR_5321    :草の塊
+STR_5322    :氷
+STR_5323    :グリッド (赤)
+STR_5324    :グリッド (黄)
+STR_5325    :グリッド (青)
+STR_5326    :グリッド (緑)
+STR_5327    :濃い色の砂
+STR_5328    :淡い色の砂
+STR_5329    :チェッカーボード (インバーテッド)
+STR_5330    :地形の穴を表示する
+STR_5331    :岩
+STR_5332    :木製 (赤)
+STR_5333    :木製 (黒)
+STR_5334    :氷
+STR_5335    :ライド入口
+STR_5336    :ライド出口
+STR_5337    :パーク入口
+STR_5338    :Element type
+STR_5339    :{SMALLFONT}{BLACK}ベースの高さ
+STR_5340    :{SMALLFONT}{BLACK}クリアランス高さ
+STR_5343    :自動的にスタッフを配置する
+STR_5344    :変更履歴
+STR_5345    :財務のカンニング
+STR_5346    :ゲストのカンニング
+STR_5347    :パークのカンニング
+STR_5348    :ライドのカンニング
+STR_5349    :{SMALLFONT}{BLACK}全てのライド
+STR_5350    :最大限
+STR_5351    :最小限
+STR_5352    :{BLACK}幸福度:
+STR_5353    :{BLACK}体力:
+STR_5354    :{BLACK}空腹度:
+STR_5355    :{BLACK}喉の渇き:
+STR_5356    :{BLACK}ゲロ度:
+STR_5357    :{BLACK}乗り物酔い耐性:
+STR_5358    :{BLACK}トイレ度:
+STR_5359    :全てのゲストを外す
+STR_5360    :{SMALLFONT}{BLACK}全てのゲストを外すのカンニングです。
+STR_5361    :全てのゲストに上げる:
+STR_5362    :{BLACK}ゲストのいライド強烈度は○○に設定する:
+STR_5363    :1以上
+STR_5364    :15以下
+STR_5365    :{BLACK}スタッフのスピード:
+STR_5366    :普通
+STR_5367    :速い
+STR_5368    :Reset crash status
+STR_5369    :Park parameters...
+STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
+STR_5371    :オブジェクト選定
+STR_5372    :Invert right mouse dragging
+STR_5373    :名前 {STRINGID}
+STR_5374    :日時 {STRINGID}
+STR_5375    :▲
+STR_5376    :▼
+STR_5377    :{SMALLFONT}{BLACK}Saves
+STR_5378    :{SMALLFONT}{BLACK}Script
+STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command
+STR_5380    :{SMALLFONT}{BLACK}Start playing title sequence
+STR_5381    :{SMALLFONT}{BLACK}Stop playing title sequence
+STR_5382    :{SMALLFONT}{BLACK}Restart title sequence
+STR_5383    :{SMALLFONT}{BLACK}Create a new title sequence based on the current one
+STR_5384    :{SMALLFONT}{BLACK}Delete the current title sequence
+STR_5385    :{SMALLFONT}{BLACK}Rename the current title sequence
+STR_5386    :{SMALLFONT}{BLACK}Insert a new command
+STR_5387    :{SMALLFONT}{BLACK}Edit the selected command
+STR_5388    :{SMALLFONT}{BLACK}Delete the selected command
+STR_5389    :{SMALLFONT}{BLACK}Skip to the selected command in the title sequence
+STR_5390    :{SMALLFONT}{BLACK}Move the selected command down
+STR_5391    :{SMALLFONT}{BLACK}Move the selected command up
+STR_5392    :{SMALLFONT}{BLACK}Add a save to the title sequence
+STR_5393    :{SMALLFONT}{BLACK}Remove the selected save from the title sequence
+STR_5394    :{SMALLFONT}{BLACK}Rename the selected save
+STR_5395    :{SMALLFONT}{BLACK}Load the selected save in game
+STR_5396    :{SMALLFONT}{BLACK}Reload the title sequence if changes have been made to it outside of the game
+STR_5397    :Can only be used on the title screen
+STR_5398    :Cannot edit title sequence while it's playing
+STR_5399    :Press the stop button to continue editing
+STR_5400    :Can't change this title sequence
+STR_5401    :Create a new title sequence to make changes to
+STR_5402    :Failed to load title sequence
+STR_5403    :There may be no Load or Wait command or a save may be invalid
+STR_5404    :Name already exists
+STR_5405    :Enter a name for the save
+STR_5406    :Enter a name for the title sequence
+STR_5407    :追加
+STR_5408    :削除
+STR_5409    :挿入
+STR_5410    :編集
+STR_5411    :リロード
+STR_5412    :スキップ
+STR_5413    :ロード
+STR_5414    :ロード{MOVE_X}{87}Six Flags Magic Mountain.SC6
+STR_5415    :ロード{MOVE_X}{87}{STRING}
+STR_5416    :ロード{MOVE_X}{87}セーブ選定なし
+STR_5417    :場所
+STR_5418    :場所{MOVE_X}{87}{COMMA16}   {COMMA16}
+STR_5419    :回転
+STR_5420    :回転{MOVE_X}{87}{COMMA16}
+STR_5421    :ズーム
+STR_5422    :ズーム{MOVE_X}{87}{COMMA16}
+STR_5423    :待機
+STR_5424    :待機{MOVE_X}{87}{UINT16}
+STR_5425    :再起動
+STR_5426    :お仕舞い
+STR_5427    :場所:
+STR_5428    :Anticlockwise rotations:
+STR_5429    :Zoom level:
+STR_5430    :Milliseconds to wait:
+STR_5431    :Save to load:
+STR_5432    :Command:
+STR_5433    :タイトルシーケンス
+STR_5434    :Command Editor
+STR_5435    :セーブの名を変える
+STR_5436    :タイトルシーケンスを変更する...
+STR_5437    :No save selected
+STR_5438    :Can't make changes while command editor is open
+STR_5439    :A wait command with at least 4 seconds is required with a restart command
+STR_5440    :フォーカス損失時に全画面を最小化
+STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
+STR_5442    :Force park rating:
+STR_5443    :スピード{MOVE_X}{87}{STRINGID}
+STR_5444    :スピード:
+STR_5445    :スピード
+STR_5446    :ゲット
+STR_5447    :タイプ {STRINGID}
+STR_5448    :ライド／乗り物 {STRINGID}
+STR_5449    :ゲームのスピードを下げる
+STR_5450    :ゲームのスピードを上げる
+STR_5451    :カニングウィンドウの表示
+STR_5452    :ツールバーの表示を切り替える
+STR_5453    :他のライドを選択する
+STR_5454    :FPS限界なし
+STR_5455    :サンドボックスモードを有効にする
+STR_5456    :クリアランスチェックを無効にする
+STR_5457    :サポート制限を無効にする
+STR_5458    :右へ回転する
+STR_5459    :左へ回転する
+STR_5460    :ビュウを左へ回転する
+STR_5461    :Set guests' parameters
+STR_5462    :{CURRENCY}
+STR_5463    :楽しむの目的
+STR_5464    :General
+STR_5465    :天気
+STR_5466    :スタッフ
+STR_5467    :ALT + 
+STR_5468    :最近のメッセージ
+STR_5469    :地図を上にスクロールする
+STR_5470    :地図を左にスクロールする
+STR_5471    :地図を下にスクロールする
+STR_5472    :地図を右にスクロールする
+STR_5473    :昼/夜のモード切替
+STR_5474    :バナーのテキストは大文字で表示する
+STR_5475    :{COMMA16} 週間
+STR_5476    :ハードウェア
+STR_5477    :地図のレンダリング
+STR_5478    :コントロール
+STR_5479    :ツールバー
+STR_5480    :ツールバーにボタンの表示:
+STR_5481    :スタイル
+STR_5482    :{WINDOW_COLOUR_2}最後の点検からの経過時間: {BLACK}1分
+STR_5483    :{BLACK}(残り{COMMA16}週間)
+STR_5484    :{BLACK}(残り{COMMA16}週間)
+STR_5485    :{SMALLFONT}{STRING}
+STR_5486    :{BLACK}{COMMA16}
+STR_5487    :{SMALLFONT}{BLACK}最近のメッセージの表示
+STR_5488    :入口なし (OpenRCT2だけ!)
+STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
+STR_5490    :フォーカス損失時に音を切る
+STR_5491    :発明品リスト
+STR_5492    :シナリオ設定
+STR_5493    :メッセージを送る
+STR_5495    :プレイヤー 名鑑
+STR_5496    :プレイヤー
+STR_5497    :ピング
+STR_5498    :サーバリスト
+STR_5499    :プレイヤー 名:
+STR_5500    :新しいサーバ
+STR_5501    :サーバをスタートする
+STR_5502    :マルチプレイ
+STR_5503    :ホスト名またはIPアドレスを入力してください:
+STR_5504    :{SMALLFONT}{BLACK}マルチプレイのステイタスの表示
+STR_5505    :サーバに接続できない
+STR_5506    :Guests ignore intensities
+STR_5508    :Allow loading files with incorrect checksums
+STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
+STR_5510    :デフォルトのサウンドデバイス
+STR_5511    :(未知)
+STR_5512    :名前を保存
+STR_5513    :早いゲームセーブ
+STR_5514    :破壊行為を無効にする
+STR_5515    :{SMALLFONT}{BLACK}破壊行為を無効にすると、怒っているのゲストが破壊行為しません。
+STR_5516    :{SMALLFONT}{BLACK}黒色
+STR_5517    :{SMALLFONT}{BLACK}灰色
+STR_5518    :{SMALLFONT}{BLACK}白色
+STR_5519    :{SMALLFONT}{BLACK}ダーク紫色
+STR_5520    :{SMALLFONT}{BLACK}ライト紫色
+STR_5521    :{SMALLFONT}{BLACK}明るい紫色
+STR_5522    :{SMALLFONT}{BLACK}紺色
+STR_5523    :{SMALLFONT}{BLACK}水色
+STR_5524    :{SMALLFONT}{BLACK}氷青色
+STR_5525    :{SMALLFONT}{BLACK}ダーク水色
+STR_5526    :{SMALLFONT}{BLACK}ライト水色
+STR_5527    :{SMALLFONT}{BLACK}飽和緑色
+STR_5528    :{SMALLFONT}{BLACK}ダーク緑色
+STR_5529    :{SMALLFONT}{BLACK}モス緑色
+STR_5530    :{SMALLFONT}{BLACK}明るい緑色
+STR_5531    :{SMALLFONT}{BLACK}オリーブ緑色
+STR_5532    :{SMALLFONT}{BLACK}ダークオリーブ緑色
+STR_5533    :{SMALLFONT}{BLACK}明るい黄色
+STR_5534    :{SMALLFONT}{BLACK}黄色
+STR_5535    :{SMALLFONT}{BLACK}ダーク黄色
+STR_5536    :{SMALLFONT}{BLACK}ライトオレンジ色
+STR_5537    :{SMALLFONT}{BLACK}ダークオレンジ色
+STR_5538    :{SMALLFONT}{BLACK}明るい褐色
+STR_5539    :{SMALLFONT}{BLACK}飽和褐色
+STR_5540    :{SMALLFONT}{BLACK}ダーク褐色
+STR_5541    :{SMALLFONT}{BLACK}鮭のピンク色
+STR_5542    :{SMALLFONT}{BLACK}ボルドー赤色
+STR_5543    :{SMALLFONT}{BLACK}飽和赤色
+STR_5544    :{SMALLFONT}{BLACK}明るい赤色
+STR_5545    :{SMALLFONT}{BLACK}ダークピンク色
+STR_5546    :{SMALLFONT}{BLACK}明るいピンク色
+STR_5547    :{SMALLFONT}{BLACK}ライトピンク色
+STR_5548    :全て操作方式を見える
+STR_5549    :年月日
+STR_5550    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :年日月
+STR_5552    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5553    :Steamオーバーレイが開いている時に一時停止する
+STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
+STR_5555    :Show vehicles from other track types
+STR_5556    :{SMALLFONT}{BLACK}プレイヤーを蹴る
+STR_5557    :非同期化後に接続を維持する（マルチプレイ）
+STR_5558    :A restart is required for this setting to take effect
+STR_5559    :10 min. inspections
+STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
+STR_5561    :Failed to load language
+STR_5562    :ご注意！
+STR_5563    :This feature is currently unstable, take extra caution.
+STR_5564    :Insert Corrupt Element
+STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
+STR_5566    :パスワード:
+STR_5567    :発表する
+STR_5568    :パスワードが必要
+STR_5569    :このサーバはパスワードが必要
+STR_5570    :リストを更新する
+STR_5571    :Join Game
+STR_5572    :Add To Favourites
+STR_5573    :Remove From Favourites
+STR_5574    :サーバの名前:
+STR_5575    :プレイヤーの制限:
+STR_5576    :ポート:
+STR_5577    :大韓民国ウォン (₩)
+STR_5578    :ロシア・ルーブル (₽)
+STR_5579    :ウインドウのスケール:
+STR_5580    :チェコ・コルナ (Kč)
+STR_5581    :FPSを表示する
+STR_5582    :Trap mouse cursor in window
+STR_5583    :{COMMA1DP16}m/s
+STR_5584    :SI
+STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
+STR_5586    :Automatically open shops and stalls
+STR_5587    :{SMALLFONT}{BLACK}Shops and stalls will be automatically opened after building them
+STR_5588    :{SMALLFONT}{BLACK}他のプレイヤーと一緒にゲームする
+STR_5589    :知らせ設定
+STR_5590    :パークの賞罰
+STR_5591    :広告宣伝が終わる
+STR_5592    :パークの警告
+STR_5593    :パーク評価値の警告
+STR_5594    :ライドが壊れる
+STR_5595    :ライドがクラッシュする
+STR_5596    :ライドが警告
+STR_5597    :ライドや景色物の研究
+STR_5598    :ゲストの警告
+STR_5599    :ゲストが迷い込む
+STR_5600    :ゲストがパークを立ち去る
+STR_5601    :ゲストがライドの行列に入る
+STR_5602    :ゲストがライドを乗る
+STR_5603    :ゲストがライドを出る
+STR_5604    :ゲストが売り物を買った
+STR_5605    :ゲストが設備を使った
+STR_5606    :ゲストが死んだ
+STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
+STR_5608    :BH
+STR_5609    :CH
+STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
+STR_5611    :化
+STR_5612    :{SMALLFONT}{BLACK}お化けを示すフラグ
+STR_5613    :壊
+STR_5614    :{SMALLFONT}{BLACK}破損を示すフラグ
+STR_5615    :L
+STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
+STR_5617    :{SMALLFONT}{BLACK}選択された要素を上に移動する
+STR_5618    :{SMALLFONT}{BLACK}選択された要素を下に移動する
+STR_5619    :ローラーコースタータイクーン
+STR_5620    :追加アトラクションキット
+STR_5621    :おもしろ景観キット
+STR_5622    :ローラーコースタータイクーン 2
+STR_5623    :ワッキーワールド
+STR_5624    :タイムツイスター
+STR_5625    :現実のパーク
+STR_5626    :他のパーク
+STR_5627    :シナリオリストのタブ設定:
+STR_5628    :ゲーム
+STR_5629    :難易度
+STR_5630    :シナリオのロック解除モード
+STR_5631    :オリジナルDLCパーク
+STR_5632    :自分だけのビルド…
+STR_5633    :CMD + 
+STR_5634    :OPTION + 
+STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
+STR_5637    :それはできません…
+STR_5638    :アクセス拒否
+STR_5639    :{SMALLFONT}{BLACK}Show list of players
+STR_5640    :{SMALLFONT}{BLACK}Manage groups
+STR_5641    :デファルトのグループ:
+STR_5642    :グループ
+STR_5643    :新しいグループ
+STR_5644    :グループを退ける
+STR_5645    :チャット
+STR_5646    :テラフォーム
+STR_5647    :Toggle Pause
+STR_5648    :Set Water Level
+STR_5649    :Create Ride
+STR_5650    :Remove Ride
+STR_5651    :Build Ride
+STR_5652    :Ride Properties
+STR_5653    :景色物
+STR_5654    :歩道
+STR_5655    :ゲスト
+STR_5656    :スタッフ
+STR_5657    :パーク設定
+STR_5658    :パーク資金
+STR_5659    :プレイヤーを蹴る
+STR_5660    :グループを変更する
+STR_5661    :プレイヤーのグループに設定する
+STR_5662    :N/A
+STR_5663    :Clear Landscape
+STR_5664    :カンニング
+STR_5665    :Toggle Scenery Cluster
+STR_5666    :Passwordless Login
+STR_5701    :{WINDOW_COLOUR_2}最後のアクション: {BLACK}{STRINGID}
+STR_5702    :{SMALLFONT}{BLACK}プレイヤーの最後のアクションをに移動
+STR_5703    :ホストを蹴られません
+STR_5704    :最後のアクション
+STR_5705    :Can't set to this group
+STR_5706    :Can't remove group that players belong to
+STR_5707    :This group cannot be modified
+STR_5708    :Can't change the group that the host belongs to
+STR_5709    :グループ名を変える
+STR_5710    :グループ名
+STR_5711    :グループ名を入力してください。
+STR_5712    :Can't modify permission that you do not have yourself
+STR_5713    :プレイヤーを蹴る
+STR_5714    :設定ウィンドウの表示
+STR_5715    :新しいゲーム
+STR_5716    :マルチプレイモードではできません
+# For identifying client network version in server list window
+STR_5717    :ネットワーク・バージョン: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}ネットワーク・バージョン: {STRING}
+STR_5719    :晴れ
+STR_5720    :晴れ/曇り
+STR_5721    :曇り
+STR_5722    :小雨
+STR_5723    :大雨
+STR_5724    :雷雨
+STR_5725    :{BLACK}天気を設定する:
+STR_5726    :{SMALLFONT}{BLACK}パークの天気を設定する
+STR_5727    :スケーリング質
+STR_5728    :ハードウェア表示が必要です。
+STR_5729    :{SMALLFONT}{BLACK}ハードウェア表示が必要です。
+STR_5731    :線形補間
+# tooltip for tab in options window
+STR_5734    :{SMALLFONT}{BLACK}レンダリング
+STR_5735    :ネットワーク・ステータス
+STR_5736    :プレイヤー
+STR_5737    :閉鎖中, まだ{COMMA16}人の乗客
+STR_5738    :閉鎖中, まだ{COMMA16}人の乗客
+STR_5739    :{WINDOW_COLOUR_2}人の乗客: {BLACK}{COMMA16}
+STR_5740    :終わりのないの広告宣伝キャンペーン
+STR_5741    :{SMALLFONT}{BLACK}広告宣伝キャンペーンが終わりのないの設定です。
+STR_5742    :認証中 ...
+STR_5743    :接続中 ...
+STR_5744    :解決中...
+STR_5745    :ネットワークの同期解除が検出されました。
+STR_5746    :切断されました
+STR_5747    :切断されました: {STRING}
+STR_5748    :蹴られました
+STR_5749    :サーバから出ていけ！
+STR_5750    :接続が切断されました。
+STR_5751    :データなし
+STR_5752    :{OUTLINE}{RED}{STRING}が切断されました
+STR_5753    :{OUTLINE}{RED}{STRING}が切断されました ({STRING})
+STR_5754    :Bad Player Name
+STR_5755    :不適切なソフトウェアバージョン（サーバは{STRING}を使用しています）
+STR_5756    :Bad Password
+STR_5757    :サーバがいっぱいです
+STR_5758    :{OUTLINE}{GREEN}{STRING}がゲームに参加しました。
+STR_5759    :地図をダウンロード中... ({INT32} / {INT32}) KiB
+STR_5760    :香港ドル (HK$)
+STR_5761    :ニュー台湾ドル (NT$)
+STR_5762    :人民元 (CN¥)
+STR_5763    :全てのファイル
+STR_5764    :Invalid ride type
+STR_5765    :Cannot edit rides of invalid type
+STR_5767    :収入
+STR_5768    :顧客総数
+STR_5769    :総収益
+STR_5770    :顧客（時間あたり）
+STR_5771    :維持費
+STR_5772    :年齢
+STR_5773    :顧客総数: {COMMA32}
+STR_5774    :総収益: {CURRENCY2DP}
+STR_5775    :顧客: {COMMA32} 時あり
+STR_5776    :建設: 今年
+STR_5777    :建設: 去年
+STR_5778    :建設: {COMMA16}年前
+STR_5779    :収入: {CURRENCY2DP} 時あり
+STR_5780    :維持費: {CURRENCY2DP} 時あり
+STR_5781    :維持費: 未知
+STR_5782    :今から接続中です。「{STRING}」でチャットできます。
+STR_5783    :{WINDOW_COLOUR_2}シナリオがロック中
+STR_5784    :{BLACK}このシナリオのロックを解除するために前のシナリオを完了して下さい。
+STR_5785    :グループの名を変えません。
+STR_5786    :Invalid group name
+STR_5787    :{COMMA32} players online
+STR_5788    :Default inspection interval:
+STR_5789    :電光効果を無効にする
+STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
+STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
+STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides
+STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
+STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
+STR_5795    :{SMALLFONT}{BLACK}Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
+STR_5796    :{SMALLFONT}{BLACK}Forces the park to close or open
+STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the selected weather
+STR_5798    :{SMALLFONT}{BLACK}Allows building actions in pause mode
+STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure
+STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
+STR_5801    :Disable littering
+STR_5802    :{SMALLFONT}{BLACK}Stops guests from littering and vomiting
+STR_5803    :{SMALLFONT}{BLACK}Rotate selected map element
+STR_5804    :音をミュートする
+STR_5805    :{SMALLFONT}{BLACK}If checked, your server will be added to the{NEWLINE}public server list so everyone can find it
+STR_5806    :Toggle windowed mode
+STR_5807    :{WINDOW_COLOUR_2}ライドの数: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}ショップの数: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}インフォメーションキオスクと設備などの数: {BLACK}{COMMA16}
+STR_5810    :Disable vehicle limits
+STR_5811    :{SMALLFONT}{BLACK}If checked, you can have up to{NEWLINE}255 cars per train and 31{NEWLINE}trains per ride
+STR_5812    :Show multiplayer window
+STR_5813    :「{STRING}」
+STR_5814    :{WINDOW_COLOUR_1}「{STRING}」
+
+#tooltips
+STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
+STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
+STR_5817    :UIのスケーリングタイプの設定です。 ハードウェアディスプレイを使用するが必要です。{NEWLINE}線形スケーリングはスムーズですが、ぼやけています。 スムース近傍法スケーリングはシャープですが、線形より計算量の多いがあります。
+STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
+STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
+STR_5822    :{SMALLFONT}{BLACK}Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
+STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behaviour)
+STR_5824    :{SMALLFONT}{BLACK}雷雨時に電光効果を無効にする
+STR_5825    :{SMALLFONT}{BLACK}Keep the mouse cursor in the window
+STR_5826    :{SMALLFONT}{BLACK}Invert right mouse dragging of the viewport
+STR_5827    :{SMALLFONT}{BLACK}Sets the colour scheme used for the GUI
+STR_5828    :{SMALLFONT}{BLACK}Changes what measurement format is used for distances, speed, etc.
+STR_5829    :{SMALLFONT}{BLACK}Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
+STR_5830    :{SMALLFONT}{BLACK}Changes what language is used
+STR_5831    :{SMALLFONT}{BLACK}Changes what format the{NEWLINE}temperature is displayed in
+STR_5832    :{SMALLFONT}{BLACK}Show height as generic units instead of measurement format set under "Distance and Speed"
+STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
+STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
+STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
+STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder, or set the path to RCT1 in the Miscellaneous tab.
+STR_5837    :{SMALLFONT}{BLACK}Create and manage custom UI themes
+STR_5838    :{SMALLFONT}{BLACK}ツールバーで財務表のボタンを表示する
+STR_5839    :{SMALLFONT}{BLACK}ツールバーで研究設定のボタンを表示する
+STR_5840    :{SMALLFONT}{BLACK}ツールバーでカンニングのボタンを表示する
+STR_5841    :{SMALLFONT}{BLACK}ツールバーで最近のメッセージのボタンを表示する
+STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
+STR_5843    :{SMALLFONT}{BLACK}Enable scenario unlocking (RCT1 behaviour)
+STR_5844    :{SMALLFONT}{BLACK}Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
+STR_5845    :{SMALLFONT}{BLACK}Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
+STR_5846    :{SMALLFONT}{BLACK}Set often OpenRCT2 automatically saves
+STR_5847    :{SMALLFONT}{BLACK}Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
+STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
+STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
+STR_5850    :<removed string - do not use>
+STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
+STR_5852    :{SMALLFONT}{BLACK}Set the name of the TwitchTV channel that will be used for Twitch integration
+STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
+STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
+STR_5855    :{SMALLFONT}{BLACK}Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
+STR_5856    :{SMALLFONT}{BLACK}Set game resolution when in fullscreen mode
+STR_5857    :{SMALLFONT}{BLACK}ゲーム設定
+STR_5858    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
+STR_5859    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
+STR_5860    :Toggle original/decompiled track drawing
+STR_5861    :Key verification failure.
+STR_5862    :Block unknown players.
+STR_5863    :{SMALLFONT}{BLACK}Only allow players with known keys to join.
+STR_5864    :This server only allows whitelisted players to connect.
+STR_5865    :Log chat history
+STR_5866    :{SMALLFONT}{BLACK}Logs all chat history to files in your user directory.
+STR_5867    :{WINDOW_COLOUR_2}プロバイダ名： {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}プロバイダのメール： {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}プロバイダのウェブサイト： {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}サーバ報知の表示
+STR_5871    :Plants don't age
+STR_5872    :{SMALLFONT}{BLACK}Disable plant ageing such that they don't wilt.
+STR_5873    :Allow chain lifts on all track pieces
+STR_5874    :{SMALLFONT}{BLACK}Allows any piece of track to be made into a chain lift
+STR_5875    :レンダリングエンジン:
+STR_5876    :{SMALLFONT}{BLACK}ゲームのレンダリングに使用するエンジン。
+STR_5877    :ソフトウェア
+STR_5878    :ソフトウェア（ハードウェア表示）
+STR_5879    :OpenGL（試験的）
+STR_5880    :選定だけ
+STR_5881    :選定ないだけ
+STR_5882    :カスタム通貨記号
+STR_5883    :カスタム通貨記号設定
+STR_5884    :{WINDOW_COLOUR_2}円相場:
+STR_5885    :{WINDOW_COLOUR_2}は{COMMA32}GBP(£)と等価です。
+STR_5886    :{WINDOW_COLOUR_2}通貨記号:
+STR_5887    :接頭辞
+STR_5888    :接尾辞
+STR_5889    :カスタム通貨記号
+STR_5890    :通貨記号を入力して下さい。
+STR_5891    :デフォルト
+STR_5892    :{SMALLFONT}{BLACK}デフォルト・ディレクトリに移動
+STR_5893    :円相場
+STR_5894    :円相場を入力して下さい。
+STR_5895    :トラックをセーブする
+STR_5896    :Track save failed!
+STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
+STR_5899    :Toggle paint debug window
+STR_5900    :Use original drawing code
+STR_5901    :Show segment heights
+STR_5902    :Show bounding boxes
+STR_5903    :Show paint debug window
+STR_5904    :Reset date
+STR_5905    :{SMALLFONT}{BLACK}A map generation tool that automatically creates a custom landscape
+STR_5906    :マウスカーソルにズームする
+STR_5907    :{SMALLFONT}{BLACK}このオプションを有効にすると、ズームがマウスカーソルに中央します。
+STR_5908    :Allow arbitrary ride type changes
+STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crashes.
+STR_5910    :Apply
+STR_5911    :歩道透明度の切り替え
+STR_5912    :歩道透明度の切り替え
+STR_5913    :チャット
+STR_5914    :Unknown ride
+STR_5915    :プレイヤー
+STR_5916    :{COMMA16}プレイヤー
+STR_5917    :{COMMA16}プレイヤー
+STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_5919    :{COMMA16}
+STR_5920    :天気効果をレンダリングする
+STR_5921    :{SMALLFONT}{BLACK}このオプションを有効にすると、暴風雨ある時に雨と湿っぽい色でレンダリングします。
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per train
+STR_5924    :面ディテール
+STR_5925    :歩道ディテール
+STR_5926    :トラック・ディテール
+STR_5927    :景色物ディテール
+STR_5928    :入口ディテール
+STR_5929    :壁ディテール
+STR_5930    :大景色物ディテール
+STR_5931    :バナー・ディテール
+STR_5932    :破損要素ディテール
+STR_5933    :Properties
+STR_5934    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Land ownership: {BLACK}{STRINGID}
+STR_5937    :Not owned and not for sale
+STR_5938    :{WINDOW_COLOUR_2}Water level: {BLACK}{COMMA16}
+STR_5939    :Remove park fences
+STR_5940    :Restore park fences
+STR_5941    :{WINDOW_COLOUR_2}Base height:
+STR_5942    :{WINDOW_COLOUR_2}Path name: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Additions: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Additions: {BLACK}None
+STR_5945    :{WINDOW_COLOUR_2}Connected edges:
+STR_5946    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Chain lift
+STR_5950    :{WINDOW_COLOUR_2}Apply changes to entire track piece
+STR_5951    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Sort the map elements on the current tile based on their base height.
+STR_5954    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
+STR_5956    :南西
+STR_5957    :北西
+STR_5958    :北東
+STR_5959    :南東
+STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
+STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Collision detection:
+STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
+STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5965    :{WINDOW_COLOUR_2}Entrance type: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Park entrance part: {BLACK}{STRINGID}
+STR_5967    :中
+STR_5968    :左
+STR_5969    :右
+STR_5970    :{WINDOW_COLOUR_2}入口のID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}出口のID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}ライドのID: {BLACK}{COMMA16}
+STR_5973    :Clamp to next
+STR_5974    :{SMALLFONT}{BLACK}Changes the base- and clearance height so that it's at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
+STR_5975    :Slope:
+STR_5976    :Flat
+STR_5977    :Right side up
+STR_5978    :Left side up
+STR_5979    :{WINDOW_COLOUR_2}Wall type: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Banner text: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}Not a banner
+STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}Large scenery piece ID: {BLACK}{COMMA16}
+STR_5984    :Blocked paths:
+STR_5985    :新しフォルダ
+STR_5986    :新しフォルダの名を入力して下さい。
+STR_5987    :Unable to create folder
+STR_5988    :{SMALLFONT}{BLACK}No remaining land rights for sale
+STR_5989    :{SMALLFONT}{BLACK}No remaining construction rights for sale
+STR_5990    :{SMALLFONT}{BLACK}No remaining land rights or construction rights for sale
+STR_5991    :Can't paste element...
+STR_5992    :The map elements limit has been reached
+STR_5993    :{SMALLFONT}{BLACK}Copy selected element
+STR_5994    :{SMALLFONT}{BLACK}Paste copied element
+STR_5995    :ブースター
+STR_5996    :ブースターのスピード
+STR_5997    :Add/set money
+STR_5998    :Add money
+STR_5999    :Set money
+STR_6000    :Enter new value
+STR_6001    :電灯効果を表示にする（試験的）
+STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
+STR_6003    :切り欠きビュー
+STR_6004    :切り欠きビュー
+STR_6005    :切り欠きビューを使う
+STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height (vertical clipping) and in the selected area (horizontal clipping).
+STR_6007    :切り高さ
+STR_6008    :{SMALLFONT}{BLACK}Click to toggle raw value<->value in measurement units
+STR_6009    :{SMALLFONT}{BLACK}切り高さに選定
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
+STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
+STR_6014    :{SMALLFONT}{BLACK}Guests will only pay entrance tickets for rides and services.{NEWLINE}They won't pay anything to enter the park.
+STR_6015    :斜面
+STR_6016    :Modify Tile
+STR_6017    :ゆっくりして下さい。
+STR_6018    :ライドの建設 - 左折
+STR_6019    :ライドの建設 - 右折
+STR_6020    :ライドの建設 - 直進
+STR_6021    :ライドの建設 - 下り斜面
+STR_6022    :ライドの建設 - 上り斜面
+STR_6023    :ライドの建設 - チェーンリフト
+STR_6024    :ライドの建設 - 左の傾斜
+STR_6025    :ライドの建設 - 右の傾斜
+STR_6026    :ライドの建設 - 前のトラック
+STR_6027    :ライドの建設 - 次のトラック
+STR_6028    :ライドの建設 - 現在のアイテムを建てる
+STR_6029    :ライドの建設 - 削除
+STR_6030    :{SMALLFONT}{BLACK}Scenery picker. Click any scenery on the map to select the same piece for construction.
+STR_6031    :サーバの説明:
+STR_6032    :サーバの挨拶:
+STR_6033    :RCT1インストールのパス:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6035    :RCT1のダイレクトリーを選定します。
+STR_6036    :{SMALLFONT}{BLACK}クリア
+STR_6037    :Please select a valid RCT1 directory
+STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
+STR_6039    :{SMALLFONT}{BLACK}Quick demolish ride
+STR_6040    :シナリオ設定
+STR_6041    :{BLACK}No mechanics are hired!
+STR_6042    :ハイトマップをロード
+STR_6043    :ハイトマップを選ぶ
+STR_6044    :地形の滑らか
+STR_6045    :Strength
+STR_6046    :Normalise height map
+STR_6047    :Smooth tiles
+STR_6048    :Height map error
+STR_6049    :Error reading PNG
+STR_6050    :Error reading bitmap
+STR_6051    :The width and height need to match
+STR_6052    :The heightmap is too big, and will be cut off
+STR_6053    :The heightmap cannot be normalised
+STR_6054    :Only 24-bit bitmaps are supported
+STR_6055    :OpenRCT2ハイトマップファイル
+STR_6056    :{SMALLFONT}{BLACK}ミュート
+STR_6057    :{SMALLFONT}{BLACK}ツールバーでミュートのボタンを表示する
+STR_6058    :ミュート
+STR_6059    :»
+STR_6060    :Show guest purchases as animation
+STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests make purchases.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Own all land
+STR_6065    :Log user actions
+STR_6066    :{SMALLFONT}{BLACK}Logs all user actions to files in your user directory.
+STR_6067    :Server started.
+STR_6068    :Server shutdown.
+STR_6069    :{STRING} was kicked from the server by {STRING}.
+STR_6070    :{STRING} was set to group '{STRING}' by {STRING}.
+STR_6071    :{STRING} created new player group '{STRING}'.
+STR_6072    :{STRING} deleted player group '{String}'.
+STR_6073    :{STRING} edited permissions for player group '{String}'.
+STR_6074    :{STRING} changed player group name from '{String}' to '{String}'.
+STR_6075    :{STRING} changed the default player group to '{String}'.
+STR_6076    :{STRING} used/toggled cheat '{STRING}'.
+STR_6077    :Add Money
+STR_6078    :{STRING} created ride '{STRING}'.
+STR_6079    :{STRING} demolished ride '{STRING}'.
+STR_6080    :{STRING} changed the appearance of ride '{STRING}'.
+STR_6081    :{STRING} changed the status of ride '{STRING}' to closed.
+STR_6082    :{STRING} changed the status of ride '{STRING}' to open.
+STR_6083    :{STRING} changed the status of ride '{STRING}' to testing.
+STR_6084    :{STRING} changed the vehicle settings of ride '{STRING}'.
+STR_6085    :{STRING} changed the ride settings of ride '{STRING}'.
+STR_6086    :{STRING} renamed the ride '{STRING}' to '{STRING}'.
+STR_6087    :{STRING} changed the price of ride '{STRING}' to {STRING}
+STR_6088    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
+STR_6089    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
+STR_6090    :{STRING} opened the park.
+STR_6091    :{STRING} closed the park.
+STR_6092    :{STRING} changed the park entrance fee to {STRING}
+STR_6093    :{STRING} placed new scenery.
+STR_6094    :{STRING} removed scenery.
+STR_6095    :{STRING} edited scenery.
+STR_6096    :{STRING} set sign name to '{STRING}'.
+STR_6097    :{STRING} placed a track of ride '{STRING}'.
+STR_6098    :{STRING} removed a track of ride.
+STR_6099    :You connected to the server.
+STR_6100    :You disconnected from the server.
+STR_6101    :Rides don't decrease in value over time
+STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over time, so guests will not suddenly think that a ride is too expensive.
+STR_6103    :{SMALLFONT}{BLACK}This option is disabled during network play.
+STR_6104    :コークスクリュー・ジェットコースター
+STR_6105    :ハイパーコースター
+STR_6106    :カーライド
+STR_6107    :モンスタートラック
+STR_6108    :スチール・ツイスター
+STR_6109    :ハイパー・ツイスター
+STR_6110    :子供用ローラーコースター
+STR_6111    :クラシック・ミニ・ジェットコースター
+STR_6112    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
+STR_6114    :Riders travel slowly in powered vehicles along a track-based route
+STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
+STR_6116    :Wide roller coaster trains glide along smooth steel track, travelling through a variety of inversions
+STR_6117    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
+STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
+STR_6119    :A cheap and easy to build roller coaster, but with a limited height
+STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Extends the park's land rights all the way to the edges of the map
+STR_6122    :There are not enough roller coasters in this scenario!
+STR_6123    :Error loading objects for park
+STR_6124    :オブジェクトの名
+STR_6125    :オブジェクトのタイプ
+STR_6126    :タイプ未知
+STR_6127    :ファイル: {STRING}
+STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
+STR_6129    :このアイテムをクリップボードにコッピーする
+STR_6130    :全てをクリップボードにコッピーする
+STR_6131    :オブジェクト源
+STR_6132    :研究のステータスを無視する
+STR_6133    :{SMALLFONT}{BLACK}Access rides and scenery that have not yet been invented
+STR_6134    :景色物をクリアする
+STR_6135    :Client sent invalid request
+STR_6136    :Server sent invalid request
+STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in “contributors.md”. For more information, visit http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
+STR_6140    :変更履歴...
+STR_6141    :RCT1の下のツールバー
+STR_6142    :{WINDOW_COLOUR_2}トラックの名: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}ラウドの名: {BLACK}{STRINGID}
+STR_6144    :汚いビジュアルを表示する
+STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
+STR_6146    :Enable all drawable track pieces
+STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
+STR_6148    :マスターサーバに接続中...
+STR_6149    :マスターサーバに接続が失敗しました。
+STR_6150    :マスターサーバから無効な返事をいただきました。(JSON整数がありません)
+STR_6151    :マスターサーバがサーバリッストを送りませんでした。
+STR_6152    :マスターサーバから無効な返事をいただきました。(JSON配列がありません)
+STR_6153    :パークの価格／ライドの価格
+STR_6154    :高い権限でOpenRCT2を実行することは推奨されません。
+STR_6155    :KDialogやZenityがインストールしませんでした。どれかがインストールして下さい又は、コマンドラインから設定して下さい。
+STR_6156    :その名が残しました。
+STR_6157    :コンソール
+STR_6158    :ファイルのロードことが失敗しました…{NEWLINE}互換性なしのRCTCバージョン: {COMMA16}
+STR_6159    :スムース近傍法
+STR_6160    :{WINDOW_COLOUR_2}可能な車両: {BLACK}{STRING}
+STR_6161    :地形グリッドの切り替え
+STR_6162    :スピニング・ワイルド・マウス
+STR_6163    :タイトなコーナーや小さなドロップにより、ネズミの形の車両が穏やかに回転して乗客の方向感覚を失わせる。
+STR_6164    :{WHITE}❌
+STR_6165    :垂直同期信号を使う
+STR_6166    :{SMALLFONT}{BLACK}表示された各フレームをモニターのリフレッシュレートに同期させ、スクリーンテアリングを防ぎます。
+STR_6167    :{SMALLFONT}{BLACK}先行制御
+STR_6168    :タイトルシーケンス
+STR_6169    :シナリオ選択
+STR_6170    :インターフェースの微調整
+STR_6171    :検索
+STR_6172    :{SMALLFONT}{BLACK}検索
+STR_6173    :検索の名を入力して下さい。
+STR_6174    :セーブのロード
+STR_6175    :シナリオのロード
+STR_6176    :シナリオを選ぶ:
+STR_6177    :ロード{MOVE_X}{87}シナリオ選択なし
+STR_6178    :ロード{MOVE_X}{87}{RED}シナリオがない
+STR_6179    :選ぶ
+STR_6180    :シナリオ選択なし
+STR_6181    :{RED}シナリオがない
+STR_6182    :Follow{MOVE_X}{87}{STRING}
+STR_6183    :Follow{MOVE_X}{87}スプライト選択なし
+STR_6184    :スプライトのフォロー
+STR_6185    :スプライトを選ぶ
+STR_6186    :スプライト選択なし
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :嘔吐物
+STR_6189    :鴨
+STR_6190    :{SMALLFONT}{BLACK}タイトルスクリーンからスプライトに選択はでしかせん。
+STR_6191    :面
+STR_6192    :壁
+STR_6193    :{COMMA16}人の来客
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16}人の来客
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16}人の来客
+STR_6196    :{BLACK}年:
+STR_6197    :{BLACK}月:
+STR_6198    :{BLACK}日:
+STR_6199    :日付に設定
+STR_6200    :日付のリセット
+STR_6201    :{MONTH}
+STR_6202    :仮想フロアスタイル
+STR_6203    :{SMALLFONT}{BLACK}有効にすると、要素の垂直配置を容易にするためにCtrlまたはShiftキーを押しながら仮想床がレンダリングされます。
+STR_6204    :煉瓦
+STR_6205    :鉄
+STR_6206    :灰色なスタッコ
+STR_6207    :黄なスタッコ
+STR_6208    :赤いスタッコ
+STR_6209    :紫スタッコ
+STR_6210    :青いスタッコ
+STR_6211    :茶色の砂岩
+STR_6212    :灰色の砂岩
+STR_6213    :高層ビル A
+STR_6214    :高層ビル B
+STR_6215    :建設
+STR_6216    :操作
+STR_6217    :ライドやトラックの可用性
+STR_6218    :OpenRCT2オフィシャル
+STR_6219    :歩道の問題表示の切り替え
+STR_6220    :Make Usable
+STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per station.
+STR_6222    :Can't place guest entry point here...
+STR_6223    :Must be outside park boundaries!
+STR_6224    :{STRING} placed a guest entry point.
+STR_6225    :Not supported with OpenGL renderer
+STR_6226    :Enable early scenario completion
+STR_6227    :{SMALLFONT}{BLACK}Triggers scenario completion when all scenario goals are met before the target date.
+STR_6228    :シナリオ設定
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :停止
+STR_6233    :切り欠きビュー
+STR_6234    :歩道の問題を表示する
+STR_6235    :サーバ報知
+STR_6236    :プレーヤー
+STR_6237    :グループ
+STR_6238    :マルチプレイ設定
+STR_6239    :垂直クリッピング
+STR_6240    :水平クリッピング
+STR_6241    :地帯を選ぶ
+STR_6242    :選択をクリアする
+STR_6243    :{SMALLFONT}{BLACK}ライドに修復する
+STR_6244    :ライドに修復できません…
+STR_6245    :{SMALLFONT}{BLACK}ライドが修復必要ではない。
+STR_6246    :修復する
+STR_6247    :ライドの修復
+STR_6248    :{WINDOW_COLOUR_1}{STRINGID}のライド{CURRENCY}で修復よろしいですか？
+STR_6249    :{WINDOW_COLOUR_1}{STRINGID}のライド修復よろしいですか？
+STR_6250    :{WINDOW_COLOUR_1}{STRINGID}を完全に破棄して{CURRENCY}を獲得してもよろしいですか？
+STR_6251    :ライドはまだ空ではありません
+STR_6252    :Twitch API URL
+STR_6253    :{SMALLFONT}{BLACK}Provide URL of Twitch integration API. Required in order to enable Twitch integration.
+STR_6254    :URL of Twitch integration API:
+STR_6255    :URL is not valid
+STR_6256    :レンダリング・エフェクト
+STR_6257    :ガラス質（半透明）
+STR_6258    :クリア（透明）
+STR_6259    :使用禁止
+STR_6260    :ブロックされたタイルの表示
+STR_6261    :広い歩道の表示
+STR_6262    :マスター音量
+STR_6263    :{SMALLFONT}{BLACK}全ての音の切り替え
+STR_6264    :常にシステムファイルブラウザを使う
+STR_6265    :{SMALLFONT}{BLACK}有効にすると、オーエスのファイルブラウザがOpenRCT2の代わりに使用されます。
+STR_6266    :カスタムコンテンツフォルダを開く
+STR_6267    :タイルインスペクターを開く
+
+#############
+# Scenarios #
+################
+# RCT Original #
+################
+<Forest Frontiers>
+STR_SCNR    :フォレスト・フロンティア
+STR_PARK    :Forest Frontiers
+STR_DTLS    :Deep in the forest, build a thriving theme park in a large cleared area
+
+<Dynamite Dunes>
+STR_SCNR    :ダイナマイト・デューンス
+STR_PARK    :Dynamite Dunes
+STR_DTLS    :Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion
+
+<Leafy Lake>
+STR_SCNR    :リーフィー・レーク
+STR_PARK    :Leafy Lake
+STR_DTLS    :Starting from scratch, build a theme park around a large lake
+
+<Diamond Heights>
+STR_SCNR    :ダイヤモンド・ハイツ
+STR_PARK    :Diamond Heights
+STR_DTLS    :Diamond Heights is already a successful theme park with great rides - develop it to double its value
+
+<Evergreen Gardens>
+STR_SCNR    :エバーグリーン・ガーデンズ
+STR_PARK    :Evergreen Gardens
+STR_DTLS    :Convert the beautiful Evergreen Gardens into a thriving theme park
+
+<Bumbly Beach>
+STR_SCNR    :バンブリー・ビーチ
+STR_PARK    :Bumbly Beach
+STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+
+<Trinity Islands>
+STR_SCNR    :トリニティ島
+STR_PARK    :トリニティ島
+STR_DTLS    :Several islands form the basis for this new park
+
+<Katie's Dreamland>
+STR_SCNR    :ケイティーズ・ドリームランド
+STR_PARK    :Katie's Dreamland
+STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+
+<Pokey Park>
+STR_SCNR    :ポキー・パーク
+STR_PARK    :Pokey Park
+STR_DTLS    :A small, cramped amusement park which requires major expansion
+
+<White Water Park>
+STR_SCNR    :ホワイト・ウォーター・パーク
+STR_PARK    :White Water Park
+STR_DTLS    :A park with some excellent water-based rides requires expansion
+
+<Millennium Mines>
+STR_SCNR    :ミレニアム鉱山
+STR_PARK    :ミレニアム鉱山
+STR_DTLS    :Convert a large abandoned mine from a tourist attraction into a theme park
+
+<Karts & Coasters>
+STR_SCNR    :カートとコースター
+STR_PARK    :カートとコースター
+STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
+
+<Mel's World>
+STR_SCNR    :メルの世界
+STR_PARK    :メルの世界
+STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
+
+<Mystic Mountain>
+STR_SCNR    :ミスティック・マウンテン
+STR_PARK    :Mystic Mountain
+STR_DTLS    :In the hilly forests of Mystic Mountain, build a theme park from scratch
+
+<Pacific Pyramids>
+STR_SCNR    :パシフィック・ピラミッド
+STR_PARK    :Pacific Pyramids
+STR_DTLS    :Convert the Egyptian Ruins tourist attraction into a thriving theme park
+
+<Crumbly Woods>
+STR_SCNR    :クランブリ・ウッズ
+STR_PARK    :Crumbly Woods
+STR_DTLS    :A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular
+
+<Paradise Pier>
+STR_SCNR    :パラダイス・ピア
+STR_PARK    :Paradise Pier
+STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+
+<Lightning Peaks>
+STR_SCNR    :ライトニング・ピーク
+STR_PARK    :Lightning Peaks
+STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele
+
+<Ivory Towers>
+STR_SCNR    :アイボリー・タワーズ
+STR_PARK    :Ivory Towers
+STR_DTLS    :A well-established park, which has a few problems
+
+<Rainbow Valley>
+STR_SCNR    :レインボー・バレー
+STR_PARK    :Rainbow Valley
+STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+
+<Thunder Rock>
+STR_SCNR    :サンダー・ロック
+STR_PARK    :Thunder Rock
+STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+
+<Mega Park>
+STR_SCNR    :メガ・パーク
+STR_PARK    :Mega Park
+STR_DTLS    :楽しみだけ！
+
+
+## Added Attractions
+<Whispering Cliffs>
+STR_SCNR    :ウィスペリング・クリフス
+STR_PARK    :Whispering Cliffs
+STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+
+<Three Monkeys Park>
+STR_SCNR    :スリー・モンキー・パーク
+STR_PARK    :Three Monkeys Park
+STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+
+<Canary Mines>
+STR_SCNR    :カナリー鉱山
+STR_PARK    :カナリー鉱山
+STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its miniature railway and a pair of vertical drop roller coasters
+
+<Barony Bridge>
+STR_SCNR    :バリー・ブリッジ
+STR_PARK    :Barony Bridge
+STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+
+<Funtopia>
+STR_SCNR    :ファントピア
+STR_PARK    :ファントピア
+STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+
+<Haunted Harbour>
+STR_SCNR    :ホーンテッド・ハーバー
+STR_PARK    :Haunted Harbour
+STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition　that certain rides are preserved
+
+<Fun Fortress>
+STR_SCNR    :ファン・フォートレス
+STR_PARK    :Fun Fortress
+STR_DTLS    :This castle is all yours to turn into a theme park
+
+<Future World>
+STR_SCNR    :未来世界
+STR_PARK    :未来世界
+STR_DTLS    :This futuristic park has plenty of space for new rides on its alien landscape
+
+<Gentle Glen>
+STR_SCNR    :ジェントル・グレン
+STR_PARK    :Gentle Glen
+STR_DTLS    :The local population prefer gentle and relaxing rides, so it is your job to expand this park to suit their tastes
+
+<Jolly Jungle>
+STR_SCNR    :ジョリー・ジャングル
+STR_PARK    :Jolly Jungle
+STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+
+<Hydro Hills>
+STR_SCNR    :ハイドロ・ヒルズ
+STR_PARK    :Hydro Hills
+STR_DTLS    :A series of stepped lakes form the basis for this new park
+
+<Sprightly Park>
+STR_SCNR    :スポライトリー・パーク
+STR_PARK    :Sprightly Park
+STR_DTLS    :This elderly park has many historical rides but is badly in debt
+
+<Magic Quarters>
+STR_SCNR    :マジック・クォーターズ
+STR_PARK    :Magic Quarters
+STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+
+<Fruit Farm>
+STR_SCNR    :フルーツ・ファーム
+STR_PARK    :Fruit Farm
+STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+
+<Butterfly Dam>
+STR_SCNR    :バタフライダム
+STR_PARK    :Butterfly Dam
+STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+
+<Coaster Canyon>
+STR_SCNR    :コースター・キャニオン
+STR_PARK    :Coaster Canyon
+STR_DTLS    :A vast canyon is yours to turn into a theme park
+
+<Thunderstorm Park>
+STR_SCNR    :サンダーストーム・パーク
+STR_PARK    :Thunderstorm Park
+STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+
+<Harmonic Hills>
+STR_SCNR    :ハーモニック・ヒルズ
+STR_PARK    :Harmonic Hills
+STR_DTLS    :The local authority won't allow you to build above tree height in this park
+
+<Roman Village>
+STR_SCNR    :ローマン・ビレッジ
+STR_PARK    :Roman Village
+STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
+
+<Swamp Cove>
+STR_SCNR    :スワンプ・コーブ
+STR_PARK    :Swamp Cove
+STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centrepiece
+
+<Adrenaline Heights>
+STR_SCNR    :アドレナリン・ハイツ
+STR_PARK    :Adrenaline Heights
+STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+
+<Utopia Park>
+STR_SCNR    :ユートピア・パーク
+STR_PARK    :Utopia
+STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+
+<Rotting Heights>
+STR_SCNR    :ロッティングハイツ
+STR_PARK    :Rotting Heights
+STR_DTLS    :Overgrown and dilapidated, can you resurrect this once-great amusement park?
+
+<Fiasco Forest>
+STR_SCNR    :フィアスコ・フォレスト
+STR_PARK    :Fiasco Forest
+STR_DTLS    :Full of badly designed and dangerous rides, you have a very limited budget and time to fix the problems and turn the park around
+
+<Pickle Park>
+STR_SCNR    :ピクル・パーク
+STR_PARK    :Pickle Park
+STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+
+<Giggle Downs>
+STR_SCNR    :ギゴル・ダウンズ
+STR_PARK    :Giggle Downs
+STR_DTLS    :A four lane steeplechase ride is the centrepiece of this expanding park
+
+<Mineral Park>
+STR_SCNR    :ミネラル・パーク
+STR_PARK    :Mineral Park
+STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+
+<Coaster Crazy>
+STR_SCNR    :コースター・クレイジー
+STR_PARK    :Coaster Crazy
+STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+
+<Urban Park>
+STR_SCNR    :アーバン・パーク
+STR_PARK    :Urban Park
+STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+
+<Geoffrey Gardens>
+STR_SCNR    :ジェフリー・ガーデンズ
+STR_PARK    :Geoffrey Gardens
+STR_DTLS    :A large garden park needs turning into a thriving theme park
+
+
+## Loopy Landscapes
+<Iceberg Islands>
+STR_SCNR    :アイスベルグ・アイランド
+STR_PARK    :Iceberg Islands
+STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+
+<Volcania>
+STR_SCNR    :ボルカニア
+STR_PARK    :Volcania
+STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+
+<Arid Heights>
+STR_SCNR    :アリド・ハイツ
+STR_PARK    :Arid Heights
+STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+
+<Razor Rocks>
+STR_SCNR    :レーザー・ロック
+STR_PARK    :Razor Rocks
+STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+
+<Crater Lake>
+STR_SCNR    :クレーター・レーク
+STR_PARK    :Crater Lake
+STR_DTLS    :A large lake in an ancient crater is the setting for this park
+
+<Vertigo Views>
+STR_SCNR    :バーチゴ・ビューズ
+STR_PARK    :Vertigo Views
+STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+
+<Paradise Pier 2>
+STR_SCNR    :パラダイス・ピアー・２
+STR_PARK    :Paradise Pier 2
+STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+
+<Dragon's Cove>
+STR_SCNR    :ドラゴンス・コーブ
+STR_PARK    :Dragon's Cove
+STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+
+<Good Knight Park>
+STR_SCNR    :グッド・ナイト・パーク
+STR_PARK    :Good Knight Park
+STR_DTLS    :A castle with a pair of roller coasters needs developing into a larger theme park
+
+<Wacky Warren>
+STR_SCNR    :ウェッキー・ウォレン
+STR_PARK    :Wacky Warren
+STR_DTLS    :A park which has much of its footpaths and coasters underground
+
+<Grand Glacier>
+STR_SCNR    :グランド・グレーシアー
+STR_PARK    :Grand Glacier
+STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+
+<Crazy Craters>
+STR_SCNR    :クレージ・クレーター
+STR_PARK    :Crazy Craters
+STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+
+<Dusty Desert>
+STR_SCNR    :ダスティー・デザルト
+STR_PARK    :Dusty Desert
+STR_DTLS    :Five coasters require completion in this desert park
+
+<Woodworm Park>
+STR_SCNR    :ウードウォーム・パーク
+STR_PARK    :Woodworm Park
+STR_DTLS    :This historical park is only allowed to build older-styled rides
+
+<Icarus Park>
+STR_SCNR    :イカラス・パーク
+STR_PARK    :Icarus Park
+STR_DTLS    :Develop this alien park to maximise its profit
+
+<Sunny Swamps>
+STR_SCNR    :サニー・スワンプ
+STR_PARK    :Sunny Swamps
+STR_DTLS    :This well-themed amusement park already has several rides, but has plenty of space for expansion
+
+<Frightmare Hills>
+STR_SCNR    :フライトメア・ヒルズ
+STR_PARK    :Frightmare Hills
+STR_DTLS    :A scary park with a giant centrepiece coaster
+
+<Thunder Rocks>
+STR_SCNR    :サンダー・ロック
+STR_PARK    :Thunder Rocks
+STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+
+<Octagon Park>
+STR_SCNR    :オクタゴン・パーク
+STR_PARK    :Octagon Park
+STR_DTLS    :In this large park you must design and build ten large coasters
+
+<Pleasure Island>
+STR_SCNR    :プレジャー・アイランド
+STR_PARK    :Pleasure Island
+STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+
+<Icicle Worlds>
+STR_SCNR    :アイシクル・ワールド
+STR_PARK    :Icicle Worlds
+STR_DTLS    :An icy landscape needs turning into a thriving theme park
+
+<Southern Sands>
+STR_SCNR    :サザーン・サンド
+STR_PARK    :Southern Sands
+STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+
+<Tiny Towers>
+STR_SCNR    :タイニー・タワーズ
+STR_PARK    :Tiny Towers
+STR_DTLS    :In this tiny park you must finish building the five existing coasters
+
+<Nevermore Park>
+STR_SCNR    :ネヴァーモア・パーク
+STR_PARK    :Nevermore Park
+STR_DTLS    :A large park with a novel transportation system around its edge
+
+<Pacifica>
+STR_SCNR    :パシフィカ
+STR_PARK    :Pacifica
+STR_DTLS    :This large island is all yours to develop as an amusement park
+
+<Urban Jungle>
+STR_SCNR    :アーバン・ジャングル
+STR_PARK    :Urban Jungle
+STR_DTLS    :A giant abandoned skyscraper is a unique opportunity for a theme park developer
+
+<Terror Town>
+STR_SCNR    :タッラー・タウン
+STR_PARK    :Terror Town
+STR_DTLS    :This urban area is all yours to develop into an amusement park
+
+<Megaworld Park>
+STR_SCNR    :メガワールド・パーク
+STR_PARK    :Megaworld Park
+STR_DTLS    :A giant park already packed full of rides needs improving
+
+<Venus Ponds>
+STR_SCNR    :ビーナス・ポンド
+STR_PARK    :Venus Ponds
+STR_DTLS    :On a far-away planet this area of land needs turning into a theme park
+
+<Micro Park>
+STR_SCNR    :マイクロ・パーク
+STR_PARK    :Micro Park
+STR_DTLS    :Try to create the world's smallest profitable park
+
+## Real Parks from RCT1
+# None of them had details
+<Alton Towers>
+STR_SCNR    :アルトン・タワーズ
+STR_PARK    :Alton Towers
+STR_DTLS    :
+
+<Heide-Park>
+STR_SCNR    :ハイデ・パーク
+STR_PARK    :Heide-Park
+STR_DTLS    :
+
+<Blackpool Pleasure Beach>
+STR_SCNR    :ブラックプール・プレジャー・ビーチ
+STR_PARK    :Blackpool Pleasure Beach
+STR_DTLS    :
+
+## Misc parks from RCT1
+# Had no details
+<Fort Anachronism>
+STR_SCNR    :フォート・アナクロニズム
+STR_PARK    :Fort Anachronism
+STR_DTLS    :
+
+###########
+# Scenery #
+###########
+
+## Start OpenRCT2 Official
+[XXBBBR01]
+STR_NAME    :ベースブロック
+
+[TTRFTL02]
+STR_NAME    :屋根
+
+[TTRFTL03]
+STR_NAME    :屋根
+
+[TTRFTL04]
+STR_NAME    :屋根
+
+[TTRFTL07]
+STR_NAME    :屋根
+
+[TTRFTL08]
+STR_NAME    :屋根
+
+[TTPIRF02]
+STR_NAME    :屋根
+
+[TTPIRF03]
+STR_NAME    :屋根
+
+[TTPIRF04]
+STR_NAME    :屋根
+
+[TTPIRF05]
+STR_NAME    :屋根
+
+[TTPIRF07]
+STR_NAME    :屋根
+
+[TTPIRF08]
+STR_NAME    :屋根
+
+[MG-PRAR]
+STR_NAME    :通路のある壁
+
+[TTRFWD01]
+STR_NAME    :屋根
+
+[TTRFWD02]
+STR_NAME    :屋根
+
+[TTRFWD03]
+STR_NAME    :屋根
+
+[TTRFWD04]
+STR_NAME    :屋根
+
+[TTRFWD05]
+STR_NAME    :屋根
+
+[TTRFWD06]
+STR_NAME    :屋根
+
+[TTRFWD07]
+STR_NAME    :屋根
+
+[TTRFWD08]
+STR_NAME    :屋根
+
+[TTRFGL01]
+STR_NAME    :ガラス屋根
+
+[TTRFGL02]
+STR_NAME    :ガラス屋根
+
+[TTRFGL03]
+STR_NAME    :ガラス屋根
+
+[ACWW33]
+STR_NAME    :木製のポスト壁
+
+[ACWWF32]
+STR_NAME    :木製のポスト壁
+
+## End OpenRCT2 Official
+
+###############################################################################
+## RCT2 Scenarios
+###############################################################################
+<Alpine Adventures>
+STR_SCNR    :高山アドベンチャー
+STR_PARK    :Alpine Adventures
+STR_DTLS    :山あいの小さなスキーリゾート地を、雪をテーマにした遊園地に造り替えてください
+
+<Amity Airfield>
+STR_SCNR    :アミティ・エアフィールド
+STR_PARK    :Amity Airfield
+STR_DTLS    :この放置された空港を、飛行をテーマにした遊園地に造り替えてください
+
+<Botany Breakers>
+STR_SCNR    :ボタニー・ブレイカーズ
+STR_PARK    :Botany Breakers
+STR_DTLS    :この楽園のような島に、高い収益を生み出す遊園地を建設するのがあなたに与えられた課題です
+
+<Build your own Six Flags Belgium>
+STR_SCNR    :自身のシックス・フラッグス・ベルギー
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :このヨーロパであるテーマパークに自身のシックス・フラッグス・パークを作って下さい。
+
+<Build your own Six Flags Great Adventure>
+STR_SCNR    :自身のシックス・フラッグス・グレート・アドベンチャー
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :このテーマパークに自身のシックス・フラッグス・パークを作って下さい。
+
+<Build your own Six Flags Holland>
+STR_SCNR    :自身のシックス・フラッグス・オランダ
+STR_PARK    :Six Flags Holland
+STR_DTLS    :このヨーロパであるテーマパークに自身のシックス・フラッグス・パークを作って下さい。
+
+<Build your own Six Flags Magic Mountain>
+STR_SCNR    :自身のシックス・フラッグス・マジック・マウンテン
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :この大きなパークで自身のシックス・フラッグス・パークを作って下さい。
+
+<Build your own Six Flags over Texas>
+STR_SCNR    :自身のシックス・フラッグス・オバー・テキサス
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :このテーマパークに自身のシックス・フラッグス・パークを作って下さい。
+
+<Build your own Six Flags Park>
+STR_SCNR    :自身のシックス・フラッグス・パーク
+STR_PARK    :Six Flags
+STR_DTLS    :このテーマパークに自身シックス・フラッグス・パークを作って下さい。
+
+<Bumbly Bazaar>
+STR_SCNR    :バンブリー商店街
+STR_PARK    :Bumbly Bazaar
+STR_DTLS    : 小さな商店街からスタートし、乗物やローラーコースターで来園客を呼び寄せ、店や売店の利益を増やしてください
+
+<Crazy Castle>
+STR_SCNR    :クレイジーキャッスル
+STR_PARK    :Crazy Castle
+STR_DTLS    :あなたは、大きな城を相続しました - ここを、小さなテーマパークに造り替えてください.
+
+<Dusty Greens>
+STR_SCNR    :ダスティ・グリーン
+STR_PARK    :Dusty Greens
+STR_DTLS    :砂漠の中の、高速道路のジャンクションに近いダスティ・グリーンゴルフ場。ここを、人気遊園地にすることができますか
+
+<Electric Fields>
+STR_SCNR    :エレクトリック・フィールド
+STR_PARK    :Electric Fields
+STR_DTLS    :小さな農場を相続したあなたに与えられた課題は、畑や農場の建物の間に、小さなテーマパークを造ることです
+
+<Extreme Heights>
+STR_SCNR    :超高層
+STR_PARK    :Extreme Heights
+STR_DTLS    :財政上の制限なしで、この砂漠の遊園地を拡張し、究極のスリルを求める人々を呼び寄せてください
+
+<Factory Capers>
+STR_SCNR    :ファクトリー・ケイパーズ
+STR_PARK    :Factory Capers
+STR_DTLS    :放置された工業コンビナートは、機械風のテーマの遊園地を造るのにうってつけです
+
+<Fungus Woods>
+STR_SCNR    :キノコの森
+STR_PARK    :Fungus Woods
+STR_DTLS    :この「キノコの森」では、乗物は昔風の木造のものしか造れません。果たして、あなたはここを人気遊園地にできるでしょうか
+
+<Ghost Town>
+STR_SCNR    :ゴーストタウン
+STR_PARK    :Ghost Town
+STR_DTLS    :大遊園地チェーンに雇われたあなたは、この古ぼけた鉱山の町の周りに巨大ローラーコースター遊園地を造らなければなりません
+
+<Gravity Gardens>
+STR_SCNR    :グラビティー・ガーデン
+STR_PARK    :Gravity Gardens
+STR_DTLS    :あなたに与えられた課題は、この美しいグラビティー・ガーデンにローラーコースター遊園地を造ることです - ローラーコースターだけですよ、他の乗物はなしです!
+
+<Infernal Views>
+STR_SCNR    :地獄絵図
+STR_PARK    :Infernal Views
+STR_DTLS    :すぐ近くを溶岩とマグマが流れる、危険な遊園地です
+
+<Lucky Lake>
+STR_SCNR    :ラッキー・レイク
+STR_PARK    :Lucky Lake
+STR_DTLS    :この遊園地では資金は使い放題ですが、湖畔に位置しているので、拡張と経営はきっと困難なものとなるでしょう
+
+<Rainbow Summit>
+STR_SCNR    :レインボーサミット
+STR_PARK    :Rainbow Summit
+STR_DTLS    :丘の中腹にあるこの遊園地では、いかなる高層建築物も禁止されています。遊園地を拡張し、成功に導くことができるでしょうか
+
+<Six Flags Belgium>
+STR_SCNR    :シックスフラッグス・ベルギー
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :このシックスフラッグス遊園地で、あなたの経営と改良の手腕を見せてください
+
+<Six Flags Great Adventure>
+STR_SCNR    :シックスフラッグス・グレートアドベンチャー
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :不足しているシックスフラッグスの乗物を設置するか、またはご自分でオリジナルデザインの乗物を作成して遊園地を改良してください!しかし、本来の最終目標である、遊園地
+
+<Six Flags Holland>
+STR_SCNR    :シックスフラッグス・オランダ
+STR_PARK    :Six Flags Holland
+STR_DTLS    :このシックスフラッグス遊園地で、あなたの経営と改良の手腕を見せてください
+
+<Six Flags Magic Mountain>
+STR_SCNR    :シックスフラッグス・マジックマウンテン
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :不足しているシックスフラッグスの乗物を設置するか、またはご自分でオリジナルデザインの乗物を作成して遊園地を改良してください!しかし、本来の最終目標である、遊園地
+
+<Six Flags over Texas>
+STR_SCNR    :シックスフラッグス・オーバーテキサス
+STR_PARK    :Six Flags over Texas
+STR_DTLS    : 不足しているシックスフラッグスの乗物を設置するか、またはご自分でオリジナルデザインの乗物を作成して遊園地を改良してください!しかし、本来の最終目標である、遊園地
