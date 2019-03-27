@@ -1261,7 +1261,8 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
     intensity += var_112_rating.intensity;
     nausea += var_112_rating.nausea;
 
-    rating_tuple inversions_rating = get_inversions_ratings(ride->inversions);
+    auto inversions = (ride->type == RIDE_TYPE_MINI_GOLF) ? ride->holes : ride->inversions;
+    rating_tuple inversions_rating = get_inversions_ratings(inversions);
     excitement += inversions_rating.excitement;
     intensity += inversions_rating.intensity;
     nausea += inversions_rating.nausea;

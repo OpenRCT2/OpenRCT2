@@ -1781,13 +1781,21 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
             ride->start_drop_height = vehicle->z / 8;
         }
 
-        if (track_flags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+        if (ride->type == RIDE_TYPE_MINI_GOLF)
         {
-            uint8_t inversions = ride->inversions;
-            if (inversions != 255)
-                inversions++;
-
-            ride->inversions = inversions;
+            if (track_flags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
+            {
+                if (ride->holes < 255)
+                    ride->holes++;
+            }
+        }
+        else
+        {
+            if (track_flags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+            {
+                if (ride->inversions < 255)
+                    ride->inversions++;
+            }
         }
 
         if (track_flags & TRACK_ELEM_FLAG_HELIX)
