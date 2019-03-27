@@ -363,7 +363,8 @@ namespace GameActions
         // In network mode the error should be only shown to the issuer of the action.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (action->GetPlayer() != network_get_current_player_id())
+            // Non-networked actions have the player id -1.
+            if (action->GetPlayer() != -1 && action->GetPlayer() != network_get_current_player_id())
             {
                 shouldShowError = false;
             }
