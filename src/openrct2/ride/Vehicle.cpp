@@ -1785,7 +1785,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         {
             if (track_flags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
             {
-                if (ride->holes < 255)
+                if (ride->holes < MAX_GOLF_HOLES)
                     ride->holes++;
             }
         }
@@ -1793,7 +1793,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         {
             if (track_flags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
             {
-                if (ride->inversions < 255)
+                if (ride->inversions < MAX_INVERSIONS)
                     ride->inversions++;
             }
         }
@@ -1801,7 +1801,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         if (track_flags & TRACK_ELEM_FLAG_HELIX)
         {
             uint8_t helixes = ride_get_helix_sections(ride);
-            if (helixes != 0x1F)
+            if (helixes != MAX_HELICES)
                 helixes++;
 
             ride->special_track_elements &= ~0x1F;
