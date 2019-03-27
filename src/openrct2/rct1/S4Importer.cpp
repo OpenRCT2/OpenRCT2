@@ -198,6 +198,7 @@ public:
         ImportSavedView();
         FixLandOwnership();
         CountBlockSections();
+        SetDefaultNames();
         determine_ride_entrance_and_exit_locations();
 
         // Importing the strings is done later on, although that approach needs looking at.
@@ -788,10 +789,6 @@ private:
                     dst->name = rideNameStringId;
                 }
             }
-        }
-        if (dst->name == 0)
-        {
-            ride_set_name_to_default(dst, rideEntry);
         }
 
         dst->status = src->status;
@@ -2976,6 +2973,24 @@ private:
                         ride->num_block_brakes++;
                     }
                 } while (!(tileElement++)->IsLastForTile());
+            }
+        }
+    }
+
+    /**
+     * This has to be done after importing tile elements, because it needs those to detect if a pre-existing ride
+     * name should be considered reserved.
+     */
+    void SetDefaultNames()
+    {
+        ride_id_t i;
+        Ride* ride;
+        FOR_ALL_RIDES (i, ride)
+        {
+            if (ride->name == 0)
+            {
+                auto rideEntry = get_ride_entry(ride->subtype);
+                ride_set_name_to_default(ride, rideEntry);
             }
         }
     }
