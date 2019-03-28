@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceFromTrackAction.hpp"
+#include "../actions/FootpathRemoveAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
@@ -702,70 +703,22 @@ static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_
     gTrackPreviewMax.z = std::max(gTrackPreviewMax.z, z);
 }
 
-static bool TrackDesignPlaceSceneryTileDrawOutline(LocationXY8 tile)
-{
-    uint8_t new_tile = 1;
-    LocationXY16* selectionTile = gMapSelectionTiles;
-    for (; selectionTile->x != -1; selectionTile++)
-    {
-        if (selectionTile->x == tile.x && selectionTile->y == tile.y)
-        {
-            new_tile = 0;
-            break;
-        }
-        // Need to subtract one because selectionTile in following block is incremented
-        if (selectionTile + 1 >= &gMapSelectionTiles[std::size(gMapSelectionTiles) - 1])
-        {
-            new_tile = 0;
-            break;
-        }
-    }
-    if (new_tile)
-    {
-        selectionTile->x = tile.x;
-        selectionTile->y = tile.y;
-        selectionTile++;
-        selectionTile->x = -1;
-    }
-    return true;
-}
-
 static bool TrackDesignPlaceSceneryTileRemoveGhost(
     CoordsXY mapCoord, rct_td6_scenery_element* scenery, uint8_t rotation, int32_t originZ)
 {
     uint8_t entry_type, entry_index;
-    if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
+    if (TrackDesignPlaceSceneryTileGetEntry(entry_type, entry_index, scenery))
     {
-        entry_type = object_entry_get_type(&scenery->scenery_object);
-        if (entry_type != OBJECT_TYPE_PATHS)
-        {
-            entry_type = 0xFF;
-        }
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-        {
-            entry_type = 0xFF;
-        }
-
-        entry_index = 0;
-        for (PathSurfaceEntry* path = get_path_surface_entry(0); entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-             path = get_path_surface_entry(entry_index), entry_index++)
-        {
-            if (path == nullptr)
-            {
-                return true;
-            }
-            if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
-            {
-                return true;
-            }
-        }
-
-        if (entry_index == object_entry_group_counts[OBJECT_TYPE_PATHS])
-        {
-            entry_type = 0xFF;
-        }
+        return true;
     }
-    int32_t z;
+
+    if (_trackDesignPlaceStateSceneryUnavailable)
+    {
+        return true;
+    }
+
+    int32_t z = (scenery->z * 8 + originZ) / 8;
+    uint8_t sceneryRotation = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
         | GAME_COMMAND_FLAG_GHOST;
 
@@ -773,11 +726,6 @@ static bool TrackDesignPlaceSceneryTileRemoveGhost(
     {
         case OBJECT_TYPE_SMALL_SCENERY:
         {
-            // bl
-            rotation += scenery->flags;
-            rotation &= 3;
-
-            // bh
             uint8_t quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
             quadrant &= 3;
 
@@ -791,43 +739,34 @@ static bool TrackDesignPlaceSceneryTileRemoveGhost(
                 quadrant = 0;
             }
 
-            z = (scenery->z * 8 + originZ) / 8;
-
             auto removeSceneryAction = SmallSceneryRemoveAction(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
             removeSceneryAction.SetFlags(flags);
-            removeSceneryAction.Execute();
-
+            GameActions::ExecuteNested(&removeSceneryAction);
             break;
         }
         case OBJECT_TYPE_LARGE_SCENERY:
         {
-            z = (scenery->z * 8 + originZ) / 8;
-
-            auto removeSceneryAction = LargeSceneryRemoveAction(
-                mapCoord.x, mapCoord.y, z, (rotation + scenery->flags) & 0x3, 0);
+            auto removeSceneryAction = LargeSceneryRemoveAction(mapCoord.x, mapCoord.y, z, sceneryRotation, 0);
             removeSceneryAction.SetFlags(flags);
-            removeSceneryAction.Execute();
-
+            GameActions::ExecuteNested(&removeSceneryAction);
             break;
         }
         case OBJECT_TYPE_WALLS:
         {
-            z = (scenery->z * 8 + originZ) / 8;
-
-            uint8_t direction = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
-
-            TileCoordsXYZD wallLocation = { mapCoord.x / 32, mapCoord.y / 32, z, direction };
+            TileCoordsXYZD wallLocation = { mapCoord.x / 32, mapCoord.y / 32, z, sceneryRotation };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             wallRemoveAction.SetFlags(flags);
 
-            GameActions::Execute(&wallRemoveAction);
-
+            GameActions::ExecuteNested(&wallRemoveAction);
             break;
         }
         case OBJECT_TYPE_PATHS:
-            z = (scenery->z * 8 + originZ) / 8;
-            footpath_remove(mapCoord.x, mapCoord.y, z, flags);
+            {
+            auto removeSceneryAction = FootpathRemoveAction(mapCoord.x, mapCoord.y, z);
+            removeSceneryAction.SetFlags(flags);
+            GameActions::ExecuteNested(&removeSceneryAction);
             break;
+            }
     }
     return true;
 }
@@ -892,7 +831,8 @@ static bool TrackDesignPlaceSceneryTile(
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
-        return TrackDesignPlaceSceneryTileDrawOutline(tile);
+        track_design_add_selection_tile(tile.x, tile.y);
+        return true;
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST && mode == 0)
