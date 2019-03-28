@@ -240,7 +240,7 @@ static const char* getFilterPatternByType(const int32_t type, const bool isSave)
 static int32_t window_loadsave_get_dir(const int32_t type, char* path, size_t pathSize)
 {
     const char* last_save = getLastDirectoryByType(type);
-    if (last_save!=nullptr && platform_directory_exists(last_save))
+    if (last_save != nullptr && platform_directory_exists(last_save))
         safe_strcpy(path, last_save, pathSize);
     else
         getInitialDirectoryByType(type, path, pathSize);

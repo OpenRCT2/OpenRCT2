@@ -40,6 +40,10 @@ struct Staff;
 #define RIDE_ID_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
+constexpr uint16_t const MAX_INVERSIONS = RCT12_MAX_INVERSIONS;
+constexpr uint16_t const MAX_GOLF_HOLES = RCT12_MAX_GOLF_HOLES;
+constexpr uint16_t const MAX_HELICES = RCT12_MAX_HELICES;
+
 #pragma pack(push, 1)
 
 /**
@@ -233,14 +237,6 @@ struct Ride
     uint16_t turn_count_default; // X = current turn count
     uint16_t turn_count_banked;
     uint16_t turn_count_sloped; // X = number turns > 3 elements
-    union
-    {
-        uint8_t inversions; // (???X XXXX)
-        uint8_t holes;      // (???X XXXX)
-        // This is a very rough approximation of how much of the ride is undercover.
-        // It reaches the maximum value of 7 at about 50% undercover and doesn't increase beyond that.
-        uint8_t sheltered_eighths; // (XXX?-????)
-    };
     // Y is number of powered lifts, X is drops
     uint8_t drops; // (YYXX XXXX)
     uint8_t start_drop_height;
@@ -352,6 +348,9 @@ struct Ride
     uint8_t current_issues;
     uint32_t last_issue_time;
     RideStation stations[MAX_STATIONS];
+    uint16_t inversions;
+    uint16_t holes;
+    uint8_t sheltered_eighths;
 
     bool CanBreakDown() const;
     bool IsRide() const;

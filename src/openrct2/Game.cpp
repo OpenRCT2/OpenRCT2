@@ -1268,7 +1268,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_staff_name,
     nullptr,
     nullptr,
-    game_command_smooth_land,
+    nullptr,
     nullptr,
     nullptr,
     nullptr,

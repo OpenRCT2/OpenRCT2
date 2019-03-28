@@ -5583,7 +5583,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 if (ride->type == RIDE_TYPE_MINI_GOLF)
                 {
                     // Holes
-                    holes = ride->holes & 0x1F;
+                    holes = ride->holes;
                     gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
                     y += LIST_ROW_HEIGHT;
                 }
@@ -5707,7 +5707,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 if (ride->type != RIDE_TYPE_MINI_GOLF)
                 {
                     // Inversions
-                    inversions = ride->inversions & 0x1F;
+                    inversions = ride->inversions;
                     if (inversions != 0)
                     {
                         gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, COLOUR_BLACK, x, y);
