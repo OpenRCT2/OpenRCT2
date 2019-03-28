@@ -21,6 +21,7 @@
 #include "LandLowerAction.hpp"
 #include "LandRaiseAction.hpp"
 #include "LandSetHeightAction.hpp"
+#include "LandSmoothAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
 #include "LoadOrQuitAction.hpp"
 #include "MazeSetTrackAction.hpp"
@@ -115,6 +116,7 @@ namespace GameActions
         Register<LandLowerAction>();
         Register<LandRaiseAction>();
         Register<LandSetHeightAction>();
+        Register<LandSmoothAction>();
         Register<TrackPlaceAction>();
         Register<TrackRemoveAction>();
         Register<TrackSetBrakeSpeedAction>();
