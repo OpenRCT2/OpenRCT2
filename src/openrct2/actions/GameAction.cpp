@@ -309,8 +309,13 @@ namespace GameActions
                 if (network_get_mode() == NETWORK_MODE_SERVER)
                 {
                     NetworkPlayerId_t playerId = action->GetPlayer();
+                    int32_t playerIndex = -1;
 
-                    int32_t playerIndex = network_get_player_index(playerId.id);
+                    if (playerId == -1)
+                        playerIndex = 0; // Executed as host.
+                    else
+                        playerIndex = network_get_player_index(playerId.id);
+
                     Guard::Assert(playerIndex != -1);
 
                     network_set_player_last_action(playerIndex, action->GetType());
