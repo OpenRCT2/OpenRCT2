@@ -244,7 +244,6 @@ static int32_t window_loadsave_get_dir(const int32_t type, char* path, size_t pa
         safe_strcpy(path, last_save, pathSize);
     else
         getInitialDirectoryByType(type, path, pathSize);
-    
     return 1;
 }
 
