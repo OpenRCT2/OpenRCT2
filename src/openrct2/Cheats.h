@@ -34,7 +34,7 @@ extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
 
-enum
+enum class CheatType : int32_t
 {
     CHEAT_SANDBOXMODE,
     CHEAT_DISABLECLEARANCECHECKS,
@@ -83,6 +83,7 @@ enum
     CHEAT_DISABLERIDEVALUEAGING,
     CHEAT_IGNORERESEARCHSTATUS,
     CHEAT_ENABLEALLDRAWABLETRACKPIECES,
+    CHEAT_MAX,
 };
 
 enum
@@ -111,15 +112,8 @@ enum
 #define CHEATS_STAFF_NORMAL_SPEED 0x60
 #define CHEATS_STAFF_FREEZE_SPEED 0
 
-extern int32_t park_rating_spinner_value;
-extern int32_t year_spinner_value;
-extern int32_t month_spinner_value;
-extern int32_t day_spinner_value;
-
-void game_command_cheat(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-
 void cheats_reset();
 
-const char* cheats_get_cheat_string(int cheat, int edx, int edi);
+const char* cheats_get_cheat_string(CheatType cheatType);
 
 #endif

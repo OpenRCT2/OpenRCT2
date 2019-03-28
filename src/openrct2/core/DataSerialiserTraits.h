@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Cheats.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/Localisation.h"
 #include "../network/NetworkTypes.h"
@@ -393,5 +394,25 @@ template<> struct DataSerializerTraits<CoordsXYZD>
         snprintf(
             msg, sizeof(msg), "CoordsXYZD(x = %d, y = %d, z = %d, direction = %d)", coord.x, coord.y, coord.z, coord.direction);
         stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits<NetworkCheatType_t>
+{
+    static void encode(IStream* stream, const NetworkCheatType_t& val)
+    {
+        uint32_t temp = ByteSwapBE(val.id);
+        stream->Write(&temp);
+    }
+    static void decode(IStream* stream, NetworkCheatType_t& val)
+    {
+        uint32_t temp;
+        stream->Read(&temp);
+        val.id = ByteSwapBE(temp);
+    }
+    static void log(IStream* stream, const NetworkCheatType_t& val)
+    {
+        const char* cheatName = cheats_get_cheat_string(static_cast<CheatType>(val.id));
+        stream->Write(cheatName, strlen(cheatName));
     }
 };

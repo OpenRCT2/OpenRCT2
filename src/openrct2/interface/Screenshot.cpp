@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
+#include "../actions/SetCheatAction.hpp"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/Imaging.h"
@@ -607,27 +608,32 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
 
         if (options->mowed_grass)
         {
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGRASSLENGTH, GRASS_LENGTH_MOWED, GAME_COMMAND_CHEAT, 0, 0);
+            auto setCheatAction = SetCheatAction(CheatType::CHEAT_SETGRASSLENGTH, GRASS_LENGTH_MOWED);
+            setCheatAction.Execute();
         }
 
         if (options->clear_grass || options->tidy_up_park)
         {
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGRASSLENGTH, GRASS_LENGTH_CLEAR_0, GAME_COMMAND_CHEAT, 0, 0);
+            auto setCheatAction = SetCheatAction(CheatType::CHEAT_SETGRASSLENGTH, GRASS_LENGTH_CLEAR_0);
+            setCheatAction.Execute();
         }
 
         if (options->water_plants || options->tidy_up_park)
         {
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_WATERPLANTS, 0, GAME_COMMAND_CHEAT, 0, 0);
+            auto setCheatAction = SetCheatAction(CheatType::CHEAT_WATERPLANTS);
+            setCheatAction.Execute();
         }
 
         if (options->fix_vandalism || options->tidy_up_park)
         {
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FIXVANDALISM, 0, GAME_COMMAND_CHEAT, 0, 0);
+            auto setCheatAction = SetCheatAction(CheatType::CHEAT_FIXVANDALISM);
+            setCheatAction.Execute();
         }
 
         if (options->remove_litter || options->tidy_up_park)
         {
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_REMOVELITTER, 0, GAME_COMMAND_CHEAT, 0, 0);
+            auto setCheatAction = SetCheatAction(CheatType::CHEAT_REMOVELITTER);
+            setCheatAction.Execute();
         }
 
         viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);

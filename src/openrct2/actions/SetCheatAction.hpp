@@ -1,0 +1,677 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2019 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#pragma once
+
+#include "../Cheats.h"
+#include "../Context.h"
+#include "../GameState.h"
+#include "../config/Config.h"
+#include "../core/String.hpp"
+#include "../drawing/Drawing.h"
+#include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
+#include "../network/network.h"
+#include "../ride/Ride.h"
+#include "../scenario/Scenario.h"
+#include "../ui/UiContext.h"
+#include "../util/Util.h"
+#include "../windows/Intent.h"
+#include "../world/Banner.h"
+#include "../world/Climate.h"
+#include "../world/Footpath.h"
+#include "../world/Map.h"
+#include "../world/Park.h"
+#include "../world/Scenery.h"
+#include "../world/Sprite.h"
+#include "../world/Surface.h"
+#include "GameAction.h"
+#include "ParkSetLoanAction.hpp"
+#include "ParkSetParameterAction.hpp"
+
+DEFINE_GAME_ACTION(SetCheatAction, GAME_COMMAND_CHEAT, GameActionResult)
+{
+private:
+    NetworkCheatType_t _cheatType;
+    int32_t _param1 = 0;
+    int32_t _param2 = 0;
+
+public:
+    SetCheatAction() = default;
+    SetCheatAction(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0)
+        : _cheatType(static_cast<int32_t>(cheatType))
+        , _param1(param1)
+        , _param2(param2)
+    {
+    }
+
+    uint16_t GetActionFlags() const override
+    {
+        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+    }
+
+    void Serialise(DataSerialiser & stream) override
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_cheatType) << DS_TAG(_param1) << DS_TAG(_param2);
+    }
+
+    GameActionResult::Ptr Query() const override
+    {
+        if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::CHEAT_MAX))
+        {
+            MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+        return MakeResult();
+    }
+
+    GameActionResult::Ptr Execute() const override
+    {
+        switch (static_cast<CheatType>(_cheatType.id))
+        {
+            case CheatType::CHEAT_SANDBOXMODE:
+                gCheatsSandboxMode = _param1 != 0;
+                window_invalidate_by_class(WC_MAP);
+                window_invalidate_by_class(WC_FOOTPATH);
+                break;
+            case CheatType::CHEAT_DISABLECLEARANCECHECKS:
+                gCheatsDisableClearanceChecks = _param1 != 0;
+                break;
+            case CheatType::CHEAT_DISABLESUPPORTLIMITS:
+                gCheatsDisableSupportLimits = _param1 != 0;
+                break;
+            case CheatType::CHEAT_SHOWALLOPERATINGMODES:
+                gCheatsShowAllOperatingModes = _param1 != 0;
+                break;
+            case CheatType::CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES:
+                gCheatsShowVehiclesFromOtherTrackTypes = _param1 != 0;
+                break;
+            case CheatType::CHEAT_FASTLIFTHILL:
+                gCheatsFastLiftHill = _param1 != 0;
+                break;
+            case CheatType::CHEAT_DISABLEBRAKESFAILURE:
+                gCheatsDisableBrakesFailure = _param1 != 0;
+                break;
+            case CheatType::CHEAT_DISABLEALLBREAKDOWNS:
+                gCheatsDisableAllBreakdowns = _param1 != 0;
+                break;
+            case CheatType::CHEAT_DISABLETRAINLENGTHLIMIT:
+                gCheatsDisableTrainLengthLimit = _param1 != 0;
+                break;
+            case CheatType::CHEAT_ENABLECHAINLIFTONALLTRACK:
+                gCheatsEnableChainLiftOnAllTrack = _param1 != 0;
+                break;
+            case CheatType::CHEAT_BUILDINPAUSEMODE:
+                gCheatsBuildInPauseMode = _param1 != 0;
+                break;
+            case CheatType::CHEAT_IGNORERIDEINTENSITY:
+                gCheatsIgnoreRideIntensity = _param1 != 0;
+                break;
+            case CheatType::CHEAT_DISABLEVANDALISM:
+                gCheatsDisableVandalism = _param1 != 0;
+                break;
+            case CheatType::CHEAT_DISABLELITTERING:
+                gCheatsDisableLittering = _param1 != 0;
+                break;
+            case CheatType::CHEAT_NOMONEY:
+                SetScenarioNoMoney(_param1 != 0);
+                break;
+            case CheatType::CHEAT_ADDMONEY:
+                AddMoney(_param1);
+                break;
+            case CheatType::CHEAT_SETMONEY:
+                SetMoney(_param1);
+                break;
+            case CheatType::CHEAT_CLEARLOAN:
+                ClearLoan();
+                break;
+            case CheatType::CHEAT_SETGUESTPARAMETER:
+                SetGuestParameter(_param1, _param2);
+                break;
+            case CheatType::CHEAT_GENERATEGUESTS:
+                GenerateGuests(_param1);
+                break;
+            case CheatType::CHEAT_REMOVEALLGUESTS:
+                RemoveAllGuests();
+                break;
+            case CheatType::CHEAT_EXPLODEGUESTS:
+                ExplodeGuests();
+                break;
+            case CheatType::CHEAT_GIVEALLGUESTS:
+                GiveObjectToGuests(_param1);
+                break;
+            case CheatType::CHEAT_SETGRASSLENGTH:
+                SetGrassLength(_param1);
+                break;
+            case CheatType::CHEAT_WATERPLANTS:
+                WaterPlants();
+                break;
+            case CheatType::CHEAT_FIXVANDALISM:
+                FixVandalism();
+                break;
+            case CheatType::CHEAT_REMOVELITTER:
+                RemoveLitter();
+                break;
+            case CheatType::CHEAT_DISABLEPLANTAGING:
+                gCheatsDisablePlantAging = _param1 != 0;
+                break;
+            case CheatType::CHEAT_SETSTAFFSPEED:
+                SetStaffSpeed(_param1);
+                break;
+            case CheatType::CHEAT_RENEWRIDES:
+                RenewRides();
+                break;
+            case CheatType::CHEAT_MAKEDESTRUCTIBLE:
+                MakeDestructible();
+                break;
+            case CheatType::CHEAT_FIXRIDES:
+                FixBrokenRides();
+                break;
+            case CheatType::CHEAT_RESETCRASHSTATUS:
+                ResetRideCrashStatus();
+                break;
+            case CheatType::CHEAT_10MINUTEINSPECTIONS:
+                Set10MinuteInspection();
+                break;
+            case CheatType::CHEAT_WINSCENARIO:
+                scenario_success();
+                break;
+            case CheatType::CHEAT_FORCEWEATHER:
+                climate_force_weather(_param1);
+                break;
+            case CheatType::CHEAT_FREEZEWEATHER:
+                gCheatsFreezeWeather = _param1 != 0;
+                break;
+            case CheatType::CHEAT_NEVERENDINGMARKETING:
+                gCheatsNeverendingMarketing = _param1 != 0;
+                break;
+            case CheatType::CHEAT_OPENCLOSEPARK:
+                ParkSetOpen(!park_is_open());
+                break;
+            case CheatType::CHEAT_HAVEFUN:
+                gScenarioObjectiveType = OBJECTIVE_HAVE_FUN;
+                break;
+            case CheatType::CHEAT_SETFORCEDPARKRATING:
+                set_forced_park_rating(_param1);
+                break;
+            case CheatType::CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES:
+                gCheatsAllowArbitraryRideTypeChanges = _param1 != 0;
+                window_invalidate_by_class(WC_RIDE);
+                break;
+            case CheatType::CHEAT_OWNALLLAND:
+                OwnAllLand();
+                break;
+            case CheatType::CHEAT_DISABLERIDEVALUEAGING:
+                gCheatsDisableRideValueAging = _param1 != 0;
+                break;
+            case CheatType::CHEAT_IGNORERESEARCHSTATUS:
+                gCheatsIgnoreResearchStatus = _param1 != 0;
+                break;
+            case CheatType::CHEAT_ENABLEALLDRAWABLETRACKPIECES:
+                gCheatsEnableAllDrawableTrackPieces = _param1 != 0;
+                break;
+            default: {
+                log_error("Unabled cheat: %d", _cheatType.id);
+                MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            }
+            break;
+        }
+
+        if (network_get_mode() == NETWORK_MODE_NONE)
+        {
+            config_save_default();
+        }
+
+        window_invalidate_by_class(WC_CHEATS);
+        return MakeResult();
+    }
+
+private:
+    void SetGrassLength(int32_t length) const
+    {
+        int32_t x, y;
+
+        for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+        {
+            for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+            {
+                auto surfaceElement = map_get_surface_element_at(x, y)->AsSurface();
+                if (surfaceElement != nullptr && (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
+                    && surfaceElement->GetWaterHeight() == 0 && surfaceElement->CanGrassGrow())
+                {
+                    surfaceElement->SetGrassLength(length);
+                }
+            }
+        }
+
+        gfx_invalidate_screen();
+    }
+
+    void WaterPlants() const
+    {
+        tile_element_iterator it;
+
+        tile_element_iterator_begin(&it);
+        do
+        {
+            if (it.element->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            {
+                it.element->AsSmallScenery()->SetAge(0);
+            }
+        } while (tile_element_iterator_next(&it));
+
+        gfx_invalidate_screen();
+    }
+
+    void FixVandalism() const
+    {
+        tile_element_iterator it;
+
+        tile_element_iterator_begin(&it);
+        do
+        {
+            if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
+                continue;
+
+            if (!(it.element)->AsPath()->HasAddition())
+                continue;
+
+            it.element->AsPath()->SetIsBroken(false);
+        } while (tile_element_iterator_next(&it));
+
+        gfx_invalidate_screen();
+    }
+
+    void RemoveLitter() const
+    {
+        rct_litter* litter;
+        uint16_t spriteIndex, nextSpriteIndex;
+
+        for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+        {
+            litter = &(get_sprite(spriteIndex)->litter);
+            nextSpriteIndex = litter->next;
+            sprite_remove((rct_sprite*)litter);
+        }
+
+        tile_element_iterator it;
+        rct_scenery_entry* sceneryEntry;
+
+        tile_element_iterator_begin(&it);
+        do
+        {
+            if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
+                continue;
+
+            if (!(it.element)->AsPath()->HasAddition())
+                continue;
+
+            sceneryEntry = it.element->AsPath()->GetAdditionEntry();
+            if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
+                it.element->AsPath()->SetAdditionStatus(0xFF);
+
+        } while (tile_element_iterator_next(&it));
+
+        gfx_invalidate_screen();
+    }
+
+    void FixBrokenRides() const
+    {
+        ride_id_t rideIndex;
+        Ride* ride;
+
+        FOR_ALL_RIDES (rideIndex, ride)
+        {
+            if ((ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING)
+                && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+            {
+                auto mechanic = ride_get_assigned_mechanic(ride);
+                if (mechanic != nullptr)
+                {
+                    mechanic->RemoveFromRide();
+                }
+
+                ride_fix_breakdown(ride, 0);
+                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            }
+        }
+    }
+
+    void RenewRides() const
+    {
+        int32_t i;
+        Ride* ride;
+
+        FOR_ALL_RIDES (i, ride)
+        {
+            ride->Renew();
+        }
+        window_invalidate_by_class(WC_RIDE);
+    }
+
+    void MakeDestructible() const
+    {
+        int32_t i;
+        Ride* ride;
+        FOR_ALL_RIDES (i, ride)
+        {
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+        }
+        window_invalidate_by_class(WC_RIDE);
+    }
+
+    void ResetRideCrashStatus() const
+    {
+        int32_t i;
+        Ride* ride;
+
+        FOR_ALL_RIDES (i, ride)
+        {
+            // Reset crash status
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
+            // Reset crash history
+            ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
+        }
+        window_invalidate_by_class(WC_RIDE);
+    }
+
+    void Set10MinuteInspection() const
+    {
+        int32_t i;
+        Ride* ride;
+
+        FOR_ALL_RIDES (i, ride)
+        {
+            // Set inspection interval to 10 minutes
+            ride->inspection_interval = RIDE_INSPECTION_EVERY_10_MINUTES;
+        }
+        window_invalidate_by_class(WC_RIDE);
+    }
+
+    void SetScenarioNoMoney(bool enabled) const
+    {
+        if (enabled)
+        {
+            gParkFlags |= PARK_FLAGS_NO_MONEY;
+        }
+        else
+        {
+            gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+        }
+        // Invalidate all windows that have anything to do with finance
+        window_invalidate_by_class(WC_RIDE);
+        window_invalidate_by_class(WC_PEEP);
+        window_invalidate_by_class(WC_PARK_INFORMATION);
+        window_invalidate_by_class(WC_FINANCES);
+        window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+        window_invalidate_by_class(WC_TOP_TOOLBAR);
+        window_invalidate_by_class(WC_CHEATS);
+    }
+
+    void SetMoney(money32 amount) const
+    {
+        gCash = amount;
+
+        window_invalidate_by_class(WC_FINANCES);
+        window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+    }
+
+    void AddMoney(money32 amount) const
+    {
+        gCash = add_clamp_money32(gCash, amount);
+
+        window_invalidate_by_class(WC_FINANCES);
+        window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+    }
+
+    void ClearLoan() const
+    {
+        // First give money
+        AddMoney(gBankLoan);
+
+        // Then pay the loan
+        auto gameAction = ParkSetLoanAction(MONEY(0, 00));
+        GameActions::ExecuteNested(&gameAction);
+    }
+
+    void GenerateGuests(int32_t count) const
+    {
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        for (int32_t i = 0; i < count; i++)
+        {
+            park.GenerateGuest();
+        }
+        window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+    }
+
+    void SetGuestParameter(int32_t parameter, int32_t value) const
+    {
+        int32_t spriteIndex;
+        Peep* p;
+        FOR_ALL_GUESTS (spriteIndex, p)
+        {
+            auto peep = p->AsGuest();
+            assert(peep != nullptr);
+            switch (parameter)
+            {
+                case GUEST_PARAMETER_HAPPINESS:
+                    peep->happiness = value;
+                    peep->happiness_target = value;
+                    // Clear the 'red-faced with anger' status if we're making the guest happy
+                    if (value > 0)
+                    {
+                        peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
+                        peep->angriness = 0;
+                    }
+                    break;
+                case GUEST_PARAMETER_ENERGY:
+                    peep->energy = value;
+                    peep->energy_target = value;
+                    break;
+                case GUEST_PARAMETER_HUNGER:
+                    peep->hunger = value;
+                    break;
+                case GUEST_PARAMETER_THIRST:
+                    peep->thirst = value;
+                    break;
+                case GUEST_PARAMETER_NAUSEA:
+                    peep->nausea = value;
+                    peep->nausea_target = value;
+                    break;
+                case GUEST_PARAMETER_NAUSEA_TOLERANCE:
+                    peep->nausea_tolerance = value;
+                    break;
+                case GUEST_PARAMETER_BATHROOM:
+                    peep->toilet = value;
+                    break;
+                case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
+                    peep->intensity = (15 << 4) | value;
+                    break;
+            }
+            peep->UpdateSpriteType();
+        }
+    }
+
+    void GiveObjectToGuests(int32_t object) const
+    {
+        int32_t spriteIndex;
+        Peep* p;
+        FOR_ALL_GUESTS (spriteIndex, p)
+        {
+            auto peep = p->AsGuest();
+            assert(peep != nullptr);
+            switch (object)
+            {
+                case OBJECT_MONEY:
+                    peep->cash_in_pocket = MONEY(1000, 00);
+                    break;
+                case OBJECT_PARK_MAP:
+                    peep->item_standard_flags |= PEEP_ITEM_MAP;
+                    break;
+                case OBJECT_BALLOON:
+                    peep->item_standard_flags |= PEEP_ITEM_BALLOON;
+                    peep->balloon_colour = scenario_rand_max(COLOUR_COUNT - 1);
+                    peep->UpdateSpriteType();
+                    break;
+                case OBJECT_UMBRELLA:
+                    peep->item_standard_flags |= PEEP_ITEM_UMBRELLA;
+                    peep->umbrella_colour = scenario_rand_max(COLOUR_COUNT - 1);
+                    peep->UpdateSpriteType();
+                    break;
+            }
+        }
+        window_invalidate_by_class(WC_PEEP);
+    }
+
+    void RemoveAllGuests() const
+    {
+        Peep* peep;
+        rct_vehicle* vehicle;
+        uint16_t spriteIndex, nextSpriteIndex;
+        ride_id_t rideIndex;
+        Ride* ride;
+
+        FOR_ALL_RIDES (rideIndex, ride)
+        {
+            ride->num_riders = 0;
+
+            for (size_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
+            {
+                ride->stations[stationIndex].QueueLength = 0;
+                ride->stations[stationIndex].LastPeepInQueue = SPRITE_INDEX_NULL;
+            }
+
+            for (auto trainIndex : ride->vehicles)
+            {
+                spriteIndex = trainIndex;
+                while (spriteIndex != SPRITE_INDEX_NULL)
+                {
+                    vehicle = GET_VEHICLE(spriteIndex);
+                    for (size_t i = 0, offset = 0; i < vehicle->num_peeps; i++)
+                    {
+                        while (vehicle->peep[i + offset] == SPRITE_INDEX_NULL)
+                        {
+                            offset++;
+                        }
+                        peep = GET_PEEP(vehicle->peep[i + offset]);
+                        vehicle->mass -= peep->mass;
+                    }
+
+                    for (auto& peepInTrainIndex : vehicle->peep)
+                    {
+                        peepInTrainIndex = SPRITE_INDEX_NULL;
+                    }
+
+                    vehicle->num_peeps = 0;
+                    vehicle->next_free_seat = 0;
+
+                    spriteIndex = vehicle->next_vehicle_on_train;
+                }
+            }
+        }
+
+        for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+        {
+            peep = &(get_sprite(spriteIndex)->peep);
+            nextSpriteIndex = peep->next;
+            if (peep->type == PEEP_TYPE_GUEST)
+            {
+                peep->Remove();
+            }
+        }
+
+        window_invalidate_by_class(WC_RIDE);
+        gfx_invalidate_screen();
+    }
+
+    void ExplodeGuests() const
+    {
+        int32_t sprite_index;
+        Peep* peep;
+
+        FOR_ALL_GUESTS (sprite_index, peep)
+        {
+            if (scenario_rand_max(6) == 0)
+            {
+                peep->peep_flags |= PEEP_FLAGS_EXPLODE;
+            }
+        }
+    }
+
+    void SetStaffSpeed(uint8_t value) const
+    {
+        uint16_t spriteIndex;
+        Peep* peep;
+
+        FOR_ALL_STAFF (spriteIndex, peep)
+        {
+            peep->energy = value;
+            peep->energy_target = value;
+        }
+    }
+
+    void OwnAllLand() const
+    {
+        const int32_t min = 32;
+        const int32_t max = gMapSizeUnits - 32;
+
+        for (CoordsXY coords = { min, min }; coords.y <= max; coords.y += 32)
+        {
+            for (coords.x = min; coords.x <= max; coords.x += 32)
+            {
+                TileElement* surfaceElement = map_get_surface_element_at(coords);
+                if (surfaceElement == nullptr)
+                    continue;
+
+                // Ignore already owned tiles.
+                if (surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
+                    continue;
+
+                int32_t base_z = surfaceElement->base_height;
+                int32_t destOwnership = check_max_allowable_land_rights_for_tile(coords.x >> 5, coords.y >> 5, base_z);
+
+                // only own tiles that were not set to 0
+                if (destOwnership != OWNERSHIP_UNOWNED)
+                {
+                    surfaceElement->AsSurface()->SetOwnership(destOwnership);
+                    update_park_fences_around_tile(coords);
+                    uint16_t baseHeight = surfaceElement->base_height * 8;
+                    map_invalidate_tile(coords.x, coords.y, baseHeight, baseHeight + 16);
+                }
+            }
+        }
+
+        // Completely unown peep spawn points
+        for (const auto& spawn : gPeepSpawns)
+        {
+            int32_t x = spawn.x;
+            int32_t y = spawn.y;
+            if (x != PEEP_SPAWN_UNDEFINED)
+            {
+                TileElement* surfaceElement = map_get_surface_element_at({ x, y });
+                surfaceElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+                update_park_fences_around_tile({ x, y });
+                uint16_t baseHeight = surfaceElement->base_height * 8;
+                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+            }
+        }
+
+        map_count_remaining_land_rights();
+    }
+
+    void ParkSetOpen(bool isOpen) const
+    {
+        auto parkSetParameter = ParkSetParameterAction(isOpen ? ParkParameter::Open : ParkParameter::Close);
+        GameActions::ExecuteNested(&parkSetParameter);
+    }
+};

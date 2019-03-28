@@ -51,6 +51,7 @@
 #include "RideSetSetting.hpp"
 #include "RideSetStatus.hpp"
 #include "RideSetVehiclesAction.hpp"
+#include "SetCheatAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
 #include "SignSetStyleAction.hpp"
@@ -145,5 +146,6 @@ namespace GameActions
         Register<WaterRaiseAction>();
         Register<GuestSetFlagsAction>();
         Register<ParkSetDateAction>();
+        Register<SetCheatAction>();
     }
 } // namespace GameActions

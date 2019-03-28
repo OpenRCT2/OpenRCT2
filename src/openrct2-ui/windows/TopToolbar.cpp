@@ -35,6 +35,7 @@
 #include <openrct2/actions/LargeScenerySetColourAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
+#include <openrct2/actions/SetCheatAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
 #include <openrct2/actions/SmallScenerySetColourAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
@@ -3380,17 +3381,23 @@ static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
-            break;
+        {
+            auto setCheatAction = SetCheatAction(CheatType::CHEAT_SANDBOXMODE, !gCheatsSandboxMode);
+            GameActions::Execute(&setCheatAction);
+        }
+        break;
         case DDIDX_DISABLE_CLEARANCE_CHECKS:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks, GAME_COMMAND_CHEAT, 0,
-                0);
-            break;
+        {
+            auto setCheatAction = SetCheatAction(CheatType::CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks);
+            GameActions::Execute(&setCheatAction);
+        }
+        break;
         case DDIDX_DISABLE_SUPPORT_LIMITS:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits, GAME_COMMAND_CHEAT, 0, 0);
-            break;
+        {
+            auto setCheatAction = SetCheatAction(CheatType::CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits);
+            GameActions::Execute(&setCheatAction);
+        }
+        break;
     }
 }
 
