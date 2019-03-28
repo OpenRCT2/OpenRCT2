@@ -1823,7 +1823,10 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     break;
                 }
 
-                gSceneryPlaceZ += 8;
+                if (zAttemptRange != 1)
+                {
+                    gSceneryPlaceZ += 8;
+                }
             }
 
             auto primaryColour = (parameter_2 >> 8) & 0xFF;
@@ -2511,8 +2514,9 @@ static money32 try_place_ghost_scenery(
             auto type = (parameter_1 >> 8) & 0xFF;
             auto wallPlaceAction = WallPlaceAction(
                 type, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
-            wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result){
+            wallPlaceAction.SetFlags(
+                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_PATH_SCENERY);
+            wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error != GA_ERROR::OK)
                     return;
 

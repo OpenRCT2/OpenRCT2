@@ -558,6 +558,8 @@ private:
             int32_t elementType = tileElement->GetType();
             if (elementType == TILE_ELEMENT_TYPE_SURFACE)
                 continue;
+            if (tileElement->IsGhost())
+                continue;
             if (z0 >= tileElement->clearance_height)
                 continue;
             if (z1 <= tileElement->base_height)
