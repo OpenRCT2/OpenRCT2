@@ -673,24 +673,14 @@ void track_design_mirror(rct_track_td6* td6)
 
 static void track_design_add_selection_tile(int16_t x, int16_t y)
 {
-    LocationXY16* selectionTile = gMapSelectionTiles;
-    // Subtract 2 because the tile gets incremented later on
-    for (; (selectionTile < gMapSelectionTiles + std::size(gMapSelectionTiles) - 2) && (selectionTile->x != -1);
-         selectionTile++)
+    for (const auto tile:gMapSelectionTiles)
     {
-        if (selectionTile->x == x && selectionTile->y == y)
-        {
-            return;
-        }
-        if (selectionTile + 1 >= &gMapSelectionTiles[300])
+        if (tile.x == x && tile.y == y)
         {
             return;
         }
     }
-    selectionTile->x = x;
-    selectionTile->y = y;
-    selectionTile++;
-    selectionTile->x = -1;
+    gMapSelectionTiles.push_back(CoordsXY{x,y});
 }
 
 static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_t z)
@@ -703,11 +693,51 @@ static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_
     gTrackPreviewMax.z = std::max(gTrackPreviewMax.z, z);
 }
 
-static bool TrackDesignPlaceSceneryTileRemoveGhost(
+static bool TrackDesignPlaceSceneryElementGetEntry(uint8_t& entry_type, uint8_t& entry_index, rct_td6_scenery_element* scenery)
+{
+    if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
+    {
+        entry_type = object_entry_get_type(&scenery->scenery_object);
+        if (entry_type != OBJECT_TYPE_PATHS)
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return true;
+        }
+
+        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return true;
+        }
+
+        entry_index = 0;
+        for (PathSurfaceEntry* path = get_path_surface_entry(0); entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
+             path = get_path_surface_entry(entry_index), entry_index++)
+        {
+            if (path == nullptr)
+            {
+                return true;
+            }
+            if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+            {
+                return true;
+            }
+        }
+
+        if (entry_index == object_entry_group_counts[OBJECT_TYPE_PATHS])
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool TrackDesignPlaceSceneryElementRemoveGhost(
     CoordsXY mapCoord, rct_td6_scenery_element* scenery, uint8_t rotation, int32_t originZ)
 {
     uint8_t entry_type, entry_index;
-    if (TrackDesignPlaceSceneryTileGetEntry(entry_type, entry_index, scenery))
+    if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
     {
         return true;
     }
@@ -771,48 +801,7 @@ static bool TrackDesignPlaceSceneryTileRemoveGhost(
     return true;
 }
 
-static bool TrackDesignPlaceSceneryTileGetEntry(uint8_t& entry_type, uint8_t& entry_index, rct_td6_scenery_element* scenery)
-{
-    uint8_t entry_type, entry_index;
-    if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
-    {
-        entry_type = object_entry_get_type(&scenery->scenery_object);
-        if (entry_type != OBJECT_TYPE_PATHS)
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return true;
-        }
-
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return true;
-        }
-
-        entry_index = 0;
-        for (PathSurfaceEntry* path = get_path_surface_entry(0); entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-             path = get_path_surface_entry(entry_index), entry_index++)
-        {
-            if (path == nullptr)
-            {
-                return true;
-            }
-            if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
-            {
-                return true;
-            }
-        }
-
-        if (entry_index == object_entry_group_counts[OBJECT_TYPE_PATHS])
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return true;
-        }
-    }
-    return false;
-}
-
-static bool TrackDesignPlaceSceneryTileGetPlaceZ(rct_td6_scenery_element* scenery)
+static bool TrackDesignPlaceSceneryElementGetPlaceZ(rct_td6_scenery_element* scenery)
 {
     int32_t z = scenery->z * 8 + _trackDesignPlaceZ;
     if (z < _trackDesignPlaceSceneryZ)
@@ -821,28 +810,28 @@ static bool TrackDesignPlaceSceneryTileGetPlaceZ(rct_td6_scenery_element* scener
     }
 
     uint8_t entry_type, entry_index;
-    TrackDesignPlaceSceneryTileGetEntry(entry_type, entry_index, scenery);
+    TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery);
 
     return true;
 }
 
-static bool TrackDesignPlaceSceneryTile(
+static bool TrackDesignPlaceSceneryElement(
     CoordsXY mapCoord, LocationXY8 tile, uint8_t mode, rct_td6_scenery_element* scenery, uint8_t rotation, int32_t originZ)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
-        track_design_add_selection_tile(tile.x, tile.y);
+        track_design_add_selection_tile(mapCoord.x, mapCoord.y);
         return true;
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST && mode == 0)
     {
-        return TrackDesignPlaceSceneryTileRemoveGhost(mapCoord, scenery, rotation, originZ);
+        return TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ);
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
     {
-        return TrackDesignPlaceSceneryTileGetPlaceZ(scenery);
+        return TrackDesignPlaceSceneryElementGetPlaceZ(scenery);
     }
 
     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY || _trackDesignPlaceOperation == PTD_OPERATION_PLACE
@@ -850,7 +839,7 @@ static bool TrackDesignPlaceSceneryTile(
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
     {
         uint8_t entry_type, entry_index;
-        if (TrackDesignPlaceSceneryTileGetEntry(entry_type, entry_index, scenery))
+        if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
         {
             return true;
         }
@@ -1097,7 +1086,7 @@ static bool TrackDesignPlaceSceneryTile(
  *
  *  rct2: 0x006D0964
  */
-static int32_t track_design_place_scenery(
+static int32_t track_design_place_all_scenery(
     rct_td6_scenery_element* scenery_start, int32_t originX, int32_t originY, int32_t originZ)
 {
     for (uint8_t mode = 0; mode <= 1; mode++)
@@ -1139,7 +1128,7 @@ static int32_t track_design_place_scenery(
             CoordsXY mapCoord = { tile.x * 32, tile.y * 32 };
             track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
 
-            if (!TrackDesignPlaceSceneryTile(mapCoord, tile, mode, scenery, rotation, originZ))
+            if (!TrackDesignPlaceSceneryElement(mapCoord, tile, mode, scenery, rotation, originZ))
             {
                 return 0;
             }
@@ -1152,7 +1141,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
-        gMapSelectionTiles->x = -1;
+        gMapSelectionTiles.clear();
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
         gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
@@ -1366,7 +1355,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
     gTrackPreviewOrigin.z = z;
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
-        gMapSelectionTiles->x = -1;
+        gMapSelectionTiles.clear();
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
         gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
@@ -1698,7 +1687,7 @@ int32_t place_virtual_track(
     rct_td6_scenery_element* scenery = td6->scenery_elements;
     if (track_place_success && scenery != nullptr)
     {
-        if (!track_design_place_scenery(scenery, gTrackPreviewOrigin.x, gTrackPreviewOrigin.y, gTrackPreviewOrigin.z))
+        if (!track_design_place_all_scenery(scenery, gTrackPreviewOrigin.x, gTrackPreviewOrigin.y, gTrackPreviewOrigin.z))
         {
             return _trackDesignPlaceCost;
         }

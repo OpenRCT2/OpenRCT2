@@ -107,7 +107,7 @@ extern uint8_t gMapGroundFlags;
 extern TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
-extern LocationXY16 gMapSelectionTiles[300];
+extern std::vector<CoordsXY> gMapSelectionTiles;
 extern std::vector<PeepSpawn> gPeepSpawns;
 
 extern TileElement* gNextFreeTileElement;

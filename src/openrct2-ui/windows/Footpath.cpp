@@ -1165,9 +1165,9 @@ static void window_footpath_set_enabled_and_pressed_widgets()
         gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
         int32_t direction = gFootpathConstructDirection;
-        gMapSelectionTiles[0].x = gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;
-        gMapSelectionTiles[0].y = gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y;
-        gMapSelectionTiles[1].x = -1;
+        gMapSelectionTiles.clear();
+        gMapSelectionTiles.push_back({ gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
+                                       gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
         map_invalidate_map_selection_tiles();
     }
 

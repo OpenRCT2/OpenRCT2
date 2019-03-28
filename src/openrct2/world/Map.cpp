@@ -88,7 +88,7 @@ int16_t gMapBaseZ;
 
 TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
-LocationXY16 gMapSelectionTiles[300];
+std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
 
 TileElement* gNextFreeTileElement;
@@ -1394,13 +1394,11 @@ void map_remove_all_rides()
  */
 void map_invalidate_map_selection_tiles()
 {
-    LocationXY16* position;
-
     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT))
         return;
 
-    for (position = gMapSelectionTiles; position->x != -1; position++)
-        map_invalidate_tile_full(position->x, position->y);
+    for (const auto& position : gMapSelectionTiles)
+        map_invalidate_tile_full(position.x, position.y);
 }
 
 void map_get_bounding_box(
