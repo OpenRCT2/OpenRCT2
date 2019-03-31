@@ -49,6 +49,12 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
+        // Months start at 1, not 0.
+        if (_year > MAX_YEAR || _month > MONTH_COUNT || _day > 31)
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+
         return MakeResult();
     }
 

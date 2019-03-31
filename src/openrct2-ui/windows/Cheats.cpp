@@ -637,12 +637,12 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_YEAR_UP:
             year_spinner_value++;
-            year_spinner_value = std::clamp(year_spinner_value, 1, 8192);
+            year_spinner_value = std::clamp(year_spinner_value, 1, MAX_YEAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_YEAR_DOWN:
             year_spinner_value--;
-            year_spinner_value = std::clamp(year_spinner_value, 1, 8192);
+            year_spinner_value = std::clamp(year_spinner_value, 1, MAX_YEAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_MONTH_UP:
