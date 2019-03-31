@@ -632,10 +632,6 @@ void game_command_cheat(
                 }
                 set_forced_park_rating(*edx);
                 break;
-            case CHEAT_RESETDATE:
-                date_reset();
-                window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-                break;
             case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES:
                 gCheatsAllowArbitraryRideTypeChanges = *edx != 0;
                 window_invalidate_by_class(WC_RIDE);
@@ -975,8 +971,6 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi)
 
             return cheat_string;
         }
-        case CHEAT_RESETDATE:
-            return language_get_string(STR_CHEAT_RESET_DATE);
         case CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES:
             return language_get_string(STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES);
         case CHEAT_SETMONEY:
