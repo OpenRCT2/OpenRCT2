@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/ParkSetDateAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
@@ -636,12 +637,12 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_YEAR_UP:
             year_spinner_value++;
-            year_spinner_value = std::clamp(year_spinner_value, 1, 8192);
+            year_spinner_value = std::clamp(year_spinner_value, 1, MAX_YEAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_YEAR_DOWN:
             year_spinner_value--;
-            year_spinner_value = std::clamp(year_spinner_value, 1, 8192);
+            year_spinner_value = std::clamp(year_spinner_value, 1, MAX_YEAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_MONTH_UP:
@@ -669,16 +670,22 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DATE_SET:
-            date_set(year_spinner_value, month_spinner_value, day_spinner_value);
+        {
+            auto setDateAction = ParkSetDateAction(year_spinner_value, month_spinner_value, day_spinner_value);
+            GameActions::Execute(&setDateAction);
             window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
             break;
+        }
         case WIDX_DATE_RESET:
-            date_set(1, 1, 1);
+        {
+            auto setDateAction = ParkSetDateAction(1, 1, 1);
+            GameActions::Execute(&setDateAction);
             window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
+        }
     }
 }
 

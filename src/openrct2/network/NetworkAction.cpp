@@ -237,6 +237,7 @@ const std::array<NetworkAction, NETWORK_PERMISSION_COUNT> NetworkActions::Action
         "PERMISSION_CHEAT",
         {
             GAME_COMMAND_CHEAT,
+            GAME_COMMAND_SET_DATE,
         },
     },
     NetworkAction{
