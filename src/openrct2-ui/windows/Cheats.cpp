@@ -23,6 +23,7 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
+#include <openrct2/actions/ParkSetDateAction.hpp>
 
 #define CHEATS_MONEY_DEFAULT MONEY(10000, 00)
 #define CHEATS_MONEY_INCREMENT_DIV MONEY(5000, 00)
@@ -669,16 +670,22 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DATE_SET:
-            date_set(year_spinner_value, month_spinner_value, day_spinner_value);
+        {
+            auto setDateAction = ParkSetDateAction(year_spinner_value, month_spinner_value, day_spinner_value);
+            GameActions::Execute(&setDateAction);
             window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
             break;
+        }
         case WIDX_DATE_RESET:
-            date_set(1, 1, 1);
+        {
+            auto setDateAction = ParkSetDateAction(1, 1, 1);
+            GameActions::Execute(&setDateAction);
             window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
+        }
     }
 }
 

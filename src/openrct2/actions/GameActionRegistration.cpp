@@ -65,6 +65,7 @@
 #include "WaterLowerAction.hpp"
 #include "WaterRaiseAction.hpp"
 #include "WaterSetHeightAction.hpp"
+#include "ParkSetDateAction.hpp"
 
 namespace GameActions
 {
@@ -127,5 +128,6 @@ namespace GameActions
         Register<WaterLowerAction>();
         Register<WaterRaiseAction>();
         Register<GuestSetFlagsAction>();
+        Register<ParkSetDateAction>();
     }
 } // namespace GameActions
