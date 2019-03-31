@@ -17,6 +17,7 @@
 - Fix: [#8909] Potential crash when invoking game actions as server.
 - Fix: [#8947] Detection of AVX2 support.
 - Fix: [#8988] Character sprite lookup noticeably slows down drawing.
+- Fix: [#9000] Show correct error message if not enough money available.
 - Improved: Allow the use of numpad enter key for console and chat.
 
 0.2.2 (2019-03-13)
