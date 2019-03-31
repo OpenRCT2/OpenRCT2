@@ -2420,7 +2420,6 @@ STR_3190    :Suppléments allées
 STR_3191    :Groupes de décor
 STR_3192    :Entrée du parc
 STR_3193    :Etendue d'eau
-STR_3194    :Description du scénario
 STR_3195    :Liste d'inventions
 STR_3196    :{WINDOW_COLOUR_2}Groupe de recherche : {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Eléments pré-inventés au début d'une partie :
