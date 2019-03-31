@@ -14,6 +14,7 @@
 - Fix: [#8873] Potential crash when placing footpaths.
 - Fix: [#8882] Submarine Ride does not count as indoors (original bug).
 - Fix: [#8900] Peep tracking is not synchronized.
+- Fix: [#8909] Potential crash when invoking game actions as server.
 - Fix: [#8947] Detection of AVX2 support.
 - Fix: [#8988] Character sprite lookup noticeably slows down drawing.
 - Improved: Allow the use of numpad enter key for console and chat.

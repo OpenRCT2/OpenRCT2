@@ -2031,16 +2031,13 @@ void Network::ProcessGameCommands()
 
 void Network::EnqueueGameAction(const GameAction* action)
 {
-    MemoryStream stream;
-    DataSerialiser dsOut(true, stream);
-    action->Serialise(dsOut);
-
-    std::unique_ptr<GameAction> ga = GameActions::Create(action->GetType());
-    ga->SetCallback(action->GetCallback());
-
-    stream.SetPosition(0);
-    DataSerialiser dsIn(false, stream);
-    ga->Serialise(dsIn);
+    std::unique_ptr<GameAction> ga = GameActions::Clone(action);
+    if (ga->GetPlayer() == -1 && GetMode() != NETWORK_MODE_NONE)
+    {
+        // Server can directly invoke actions and will have no player id assigned
+        // as that normally happens when receiving them over network.
+        ga->SetPlayer(network_get_current_player_id());
+    }
 
     game_command_queue.emplace(gCurrentTicks, std::move(ga), _commandId++);
 }
