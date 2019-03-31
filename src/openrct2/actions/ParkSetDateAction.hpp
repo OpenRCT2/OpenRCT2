@@ -21,9 +21,9 @@
 DEFINE_GAME_ACTION(ParkSetDateAction, GAME_COMMAND_SET_DATE, GameActionResult)
 {
 private:
-    int32_t _year;
-    int32_t _month;
-    int32_t _day;
+    int32_t _year = 0;
+    int32_t _month = 0;
+    int32_t _day = 0;
 
 public:
     ParkSetDateAction()
@@ -50,7 +50,7 @@ public:
     GameActionResult::Ptr Query() const override
     {
         // Months start at 1, not 0.
-        if (_year > MAX_YEAR || _month > MONTH_COUNT || _day > 31)
+        if (_year <= 0 || _year > MAX_YEAR || _month <= 0 || _month > MONTH_COUNT || _day <= 0 || _day > 31)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
