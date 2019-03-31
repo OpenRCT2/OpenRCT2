@@ -1801,7 +1801,16 @@ static void window_ride_construction_construct(rct_window* w)
     }
     auto res = GameActions::Execute(&trackPlaceAction);
     // Used by some functions
-    _trackPlaceCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+    if (res->Error != GA_ERROR::OK)
+    {
+        gGameCommandErrorText = res->ErrorMessage;
+        _trackPlaceCost = MONEY32_UNDEFINED;
+    }
+    else
+    {
+        gGameCommandErrorText = STR_NONE;
+        _trackPlaceCost = res->Cost;
+    }
 
     if (res->Error != GA_ERROR::OK)
     {
