@@ -27,6 +27,7 @@
 #include "MazeSetTrackAction.hpp"
 #include "ParkEntranceRemoveAction.hpp"
 #include "ParkMarketingAction.hpp"
+#include "ParkSetDateAction.hpp"
 #include "ParkSetLoanAction.hpp"
 #include "ParkSetNameAction.hpp"
 #include "ParkSetParameterAction.hpp"
@@ -65,7 +66,6 @@
 #include "WaterLowerAction.hpp"
 #include "WaterRaiseAction.hpp"
 #include "WaterSetHeightAction.hpp"
-#include "ParkSetDateAction.hpp"
 
 namespace GameActions
 {

@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/ParkSetDateAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
@@ -23,7 +24,6 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
-#include <openrct2/actions/ParkSetDateAction.hpp>
 
 #define CHEATS_MONEY_DEFAULT MONEY(10000, 00)
 #define CHEATS_MONEY_INCREMENT_DIV MONEY(5000, 00)

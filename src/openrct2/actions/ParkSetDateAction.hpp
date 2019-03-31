@@ -30,7 +30,9 @@ public:
     {
     }
     ParkSetDateAction(int32_t year, int32_t month, int32_t day)
-        : _year(year), _month(month), _day(day)
+        : _year(year)
+        , _month(month)
+        , _day(day)
     {
     }
 
