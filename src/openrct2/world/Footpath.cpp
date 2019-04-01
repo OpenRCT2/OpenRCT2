@@ -1571,7 +1571,7 @@ PathSurfaceEntry* PathElement::GetPathEntry() const
     if (!IsQueue())
         return get_path_surface_entry(GetPathEntryIndex());
     else
-        return get_path_surface_entry(GetPathEntryIndex() + 32);
+        return get_path_surface_entry(GetPathEntryIndex() + MAX_PATH_OBJECTS);
 }
 
 PathRailingsEntry* PathElement::GetRailingEntry() const
