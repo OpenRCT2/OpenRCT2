@@ -126,7 +126,7 @@ public:
         // Make sure we execute some things only on the client.
         uint16_t flags = 0;
 
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_5) != 0)
+        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_NO_SPEND) != 0)
         {
             flags |= GA_FLAGS::CLIENT_ONLY;
         }

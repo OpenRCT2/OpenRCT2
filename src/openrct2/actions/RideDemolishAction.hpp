@@ -308,7 +308,7 @@ private:
             {
                 auto trackRemoveAction = TrackRemoveAction(
                     type, it.element->AsTrack()->GetSequenceIndex(), { x, y, z, rotation });
-                trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_5);
+                trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
 
                 auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
 

@@ -749,7 +749,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
 
     int32_t z = (scenery->z * 8 + originZ) / 8;
     uint8_t sceneryRotation = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
-    const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+    const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
     std::unique_ptr<GameAction> ga;
     switch (entry_type)
@@ -859,12 +859,12 @@ static bool TrackDesignPlaceSceneryElement(
                 if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                 {
                     flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_5;
+                        | GAME_COMMAND_FLAG_NO_SPEND;
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                 {
                     flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5;
+                        | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                 {
@@ -903,12 +903,12 @@ static bool TrackDesignPlaceSceneryElement(
                 if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                 {
                     flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_5;
+                        | GAME_COMMAND_FLAG_NO_SPEND;
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                 {
                     flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5;
+                        | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                 {
@@ -943,11 +943,11 @@ static bool TrackDesignPlaceSceneryElement(
                 if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                 {
                     flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                        | GAME_COMMAND_FLAG_5;
+                        | GAME_COMMAND_FLAG_NO_SPEND;
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                 {
-                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                         | GAME_COMMAND_FLAG_GHOST;
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
@@ -990,11 +990,11 @@ static bool TrackDesignPlaceSceneryElement(
                     flags = GAME_COMMAND_FLAG_APPLY;
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                     {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
                     }
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                     {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                             | GAME_COMMAND_FLAG_GHOST;
                     }
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
@@ -1032,11 +1032,11 @@ static bool TrackDesignPlaceSceneryElement(
                     flags = GAME_COMMAND_FLAG_APPLY;
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                     {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
                     }
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                     {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                             | GAME_COMMAND_FLAG_GHOST;
                     }
 
@@ -1183,11 +1183,11 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                     {
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
                         }
                         else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, false);
@@ -1217,11 +1217,11 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                     {
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
                         }
                         else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, true);
@@ -1239,11 +1239,11 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                     {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
                     }
                     else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                     {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                             | GAME_COMMAND_FLAG_GHOST;
                     }
                     else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
@@ -1324,7 +1324,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
     {
         ride_action_modify(
             ride, RIDE_MODIFY_DEMOLISH,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
     }
 
     gTrackPreviewOrigin.x = x;
@@ -1384,7 +1384,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                 int32_t tempZ = z - trackCoordinates->z_begin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(trackType, 0, { x, y, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
-                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                 GameActions::ExecuteNested(&trackRemoveAction);
                 break;
             }
@@ -1415,12 +1415,12 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                 if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                 {
                     flags |= GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
-                    flags |= GAME_COMMAND_FLAG_5;
+                    flags |= GAME_COMMAND_FLAG_NO_SPEND;
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                 {
                     flags |= GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
-                    flags |= GAME_COMMAND_FLAG_5;
+                    flags |= GAME_COMMAND_FLAG_NO_SPEND;
                     flags |= GAME_COMMAND_FLAG_GHOST;
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
@@ -1563,11 +1563,11 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                         uint8_t flags = GAME_COMMAND_FLAG_APPLY;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
                         }
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
@@ -1718,7 +1718,7 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, Ride**
 
     ride_id_t rideIndex;
     uint8_t colour;
-    uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+    uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
     if (ride_create_command(td6->type, entry_index, rideCreateFlags, &rideIndex, &colour) == MONEY32_UNDEFINED)
     {
         return false;

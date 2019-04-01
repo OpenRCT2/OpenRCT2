@@ -283,7 +283,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         for (int32_t i = 0; i < 7; i++)
         {
             ride_id_t rideIndex;
-            uint16_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
+            uint16_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
             window_track_place_attempt_placement(_trackDesign, mapX, mapY, mapZ, flags, &cost, &rideIndex);
             if (cost != MONEY32_UNDEFINED)
             {

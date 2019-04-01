@@ -445,7 +445,7 @@ int32_t game_do_command_p(
     {
         // Check funds
         int32_t insufficientFunds = 0;
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
+        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && cost != 0)
             insufficientFunds = game_check_affordability(cost, flags);
 
         if (insufficientFunds != MONEY32_UNDEFINED)
@@ -464,7 +464,7 @@ int32_t game_do_command_p(
             }
 
             if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED)
-                && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5)
+                && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND)
                 && gGameCommandNestLevel == 1) /* Send only top-level commands */
             {
                 network_send_gamecmd(
@@ -487,7 +487,7 @@ int32_t game_do_command_p(
             {
                 bool recordCommand = false;
                 bool commandExecutes = (flags & GAME_COMMAND_FLAG_APPLY) && (flags & GAME_COMMAND_FLAG_GHOST) == 0
-                    && (flags & GAME_COMMAND_FLAG_5) == 0;
+                    && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
                 if (replayManager->IsRecording() && commandExecutes)
                     recordCommand = true;

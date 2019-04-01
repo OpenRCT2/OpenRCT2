@@ -566,7 +566,7 @@ public:
             int32_t entranceDirections = 0;
             if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
             {
-                if (!(GetFlags() & GAME_COMMAND_FLAG_5))
+                if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
                 {
                     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                     {
