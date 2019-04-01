@@ -3757,7 +3757,6 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
     highestZ = 0;
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
-
         for (const auto& selectedTile : gMapSelectionTiles)
         {
             if (selectedTile.x >= (256 * 32) || selectedTile.y >= (256 * 32))

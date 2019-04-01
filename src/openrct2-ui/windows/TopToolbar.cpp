@@ -2769,7 +2769,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
                 tileLocation.x += mapTile.x;
                 tileLocation.y += mapTile.y;
 
-                gMapSelectionTiles.push_back({tileLocation.x, tileLocation.y});
+                gMapSelectionTiles.push_back({ tileLocation.x, tileLocation.y });
             }
 
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
