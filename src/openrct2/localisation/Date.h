@@ -12,6 +12,8 @@
 
 #include "../common.h"
 
+constexpr int32_t MAX_YEAR = 8192;
+
 enum
 {
     MONTH_MARCH,

@@ -560,8 +560,11 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->turn_count_default = src->turn_count_default;
     dst->turn_count_banked = src->turn_count_banked;
     dst->turn_count_sloped = src->turn_count_sloped;
-    // Includes holes and (for some strange reason?!) sheltered_eights
-    dst->inversions = src->inversions;
+    if (dst->type == RIDE_TYPE_MINI_GOLF)
+        dst->inversions = (uint8_t)std::min(src->holes, RCT12_MAX_GOLF_HOLES);
+    else
+        dst->inversions = (uint8_t)std::min(src->inversions, RCT12_MAX_INVERSIONS);
+    dst->inversions |= (src->sheltered_eighths << 5);
     dst->drops = src->drops;
     dst->start_drop_height = src->start_drop_height;
     dst->highest_drop_height = src->highest_drop_height;

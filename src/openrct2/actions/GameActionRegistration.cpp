@@ -21,11 +21,13 @@
 #include "LandLowerAction.hpp"
 #include "LandRaiseAction.hpp"
 #include "LandSetHeightAction.hpp"
+#include "LandSmoothAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
 #include "LoadOrQuitAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkEntranceRemoveAction.hpp"
 #include "ParkMarketingAction.hpp"
+#include "ParkSetDateAction.hpp"
 #include "ParkSetLoanAction.hpp"
 #include "ParkSetNameAction.hpp"
 #include "ParkSetParameterAction.hpp"
@@ -115,6 +117,7 @@ namespace GameActions
         Register<LandLowerAction>();
         Register<LandRaiseAction>();
         Register<LandSetHeightAction>();
+        Register<LandSmoothAction>();
         Register<TrackPlaceAction>();
         Register<TrackRemoveAction>();
         Register<TrackSetBrakeSpeedAction>();
@@ -125,5 +128,6 @@ namespace GameActions
         Register<WaterLowerAction>();
         Register<WaterRaiseAction>();
         Register<GuestSetFlagsAction>();
+        Register<ParkSetDateAction>();
     }
 } // namespace GameActions

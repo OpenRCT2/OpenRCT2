@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/ParkSetDateAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
@@ -121,8 +122,6 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
     WIDX_OPEN_CLOSE_PARK,
     WIDX_PARK_PARAMETERS,
-    WIDX_SANDBOX_MODE,
-    WIDX_RESET_DATE,
     WIDX_OWN_ALL_LAND,
     WIDX_FORCE_PARK_RATING,
     WIDX_PARK_RATING_SPINNER,
@@ -266,8 +265,6 @@ static rct_widget window_cheats_misc_widgets[] =
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(0),         HPL(7.25),      STR_CHEAT_GENERAL_GROUP,            STR_NONE },                             // General group
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(1),         HPL(1),         STR_CHEAT_OPEN_PARK,                STR_CHEAT_OPEN_PARK_TIP },              // open / close park
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(1),         HPL(1),         STR_CHEAT_PARK_PARAMETERS,          STR_CHEAT_PARK_PARAMETERS_TIP },        // Park parameters
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(2),         HPL(2),         STR_CHEAT_SANDBOX_MODE,             STR_CHEAT_SANDBOX_MODE_TIP },           // Sandbox mode (edit land ownership in-game)
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(2),         HPL(2),         STR_CHEAT_RESET_DATE,               STR_NONE },                             // Reset date
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },           // Own all land
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_FORCE_PARK_RATING,              STR_NONE },                             // Force park rating
       SPINNER_WIDGETS      (1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE),                              // park rating (3 widgets)
@@ -545,8 +542,6 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_HAVE_FUN) |
     (1ULL << WIDX_OWN_ALL_LAND) |
     (1ULL << WIDX_NEVERENDING_MARKETING) |
-    (1ULL << WIDX_SANDBOX_MODE) |
-    (1ULL << WIDX_RESET_DATE) |
     (1ULL << WIDX_STAFF_SPEED) |
     (1ULL << WIDX_STAFF_SPEED_DROPDOWN_BUTTON) |
     (1ULL << WIDX_PARK_PARAMETERS) |
@@ -642,12 +637,12 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_YEAR_UP:
             year_spinner_value++;
-            year_spinner_value = std::clamp(year_spinner_value, 1, 8192);
+            year_spinner_value = std::clamp(year_spinner_value, 1, MAX_YEAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_YEAR_DOWN:
             year_spinner_value--;
-            year_spinner_value = std::clamp(year_spinner_value, 1, 8192);
+            year_spinner_value = std::clamp(year_spinner_value, 1, MAX_YEAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_MONTH_UP:
@@ -675,16 +670,22 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DATE_SET:
-            date_set(year_spinner_value, month_spinner_value, day_spinner_value);
+        {
+            auto setDateAction = ParkSetDateAction(year_spinner_value, month_spinner_value, day_spinner_value);
+            GameActions::Execute(&setDateAction);
             window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
             break;
+        }
         case WIDX_DATE_RESET:
-            date_set(1, 1, 1);
+        {
+            auto setDateAction = ParkSetDateAction(1, 1, 1);
+            GameActions::Execute(&setDateAction);
             window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
+        }
     }
 }
 
@@ -975,14 +976,6 @@ static void window_cheats_misc_mouseup(rct_window* w, rct_widgetindex widgetInde
             game_do_command(
                 0, GAME_COMMAND_FLAG_APPLY, CHEAT_NEVERENDINGMARKETING, !gCheatsNeverendingMarketing, GAME_COMMAND_CHEAT, 0, 0);
             break;
-        case WIDX_SANDBOX_MODE:
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
-            // To prevent tools from staying active after disabling cheat
-            // tool_cancel();
-            break;
-        case WIDX_RESET_DATE:
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_RESETDATE, 0, GAME_COMMAND_CHEAT, 0, 0);
-            break;
         case WIDX_PARK_PARAMETERS:
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
             break;
@@ -1174,7 +1167,6 @@ static void window_cheats_invalidate(rct_window* w)
             w->widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
                                                                                         : STR_CHEAT_OPEN_PARK;
             widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
-            w->widgets[WIDX_SANDBOX_MODE].text = gCheatsSandboxMode ? STR_CHEAT_SANDBOX_MODE_DISABLE : STR_CHEAT_SANDBOX_MODE;
             w->widgets[WIDX_FREEZE_WEATHER].text = gCheatsFreezeWeather ? STR_CHEAT_UNFREEZE_WEATHER : STR_CHEAT_FREEZE_WEATHER;
             widget_set_checkbox_value(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
             widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);

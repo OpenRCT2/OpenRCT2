@@ -93,8 +93,8 @@ public:
 private:
     uint32_t const _type;
 
-    NetworkPlayerId_t _playerId = { 0 }; // Callee
-    uint32_t _flags = 0;                 // GAME_COMMAND_FLAGS
+    NetworkPlayerId_t _playerId = { -1 }; // Callee
+    uint32_t _flags = 0;                  // GAME_COMMAND_FLAGS
     uint32_t _networkId = 0;
     Callback_t _callback;
 

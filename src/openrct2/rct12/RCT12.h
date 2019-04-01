@@ -39,6 +39,10 @@
 
 #define RCT12_PEEP_MAX_THOUGHTS 5
 
+constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
+constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
+constexpr uint16_t const RCT12_MAX_HELICES = 31;
+
 #pragma pack(push, 1)
 
 struct rct12_award
