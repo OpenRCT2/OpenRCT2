@@ -1,4 +1,4 @@
-# Contributors to OpenRCT2
+﻿# Contributors to OpenRCT2
 Includes all git commit authors. Aliases are GitHub user names.
 
 ## Development team
@@ -121,6 +121,10 @@ The following people are not part of the development team, but have been contrib
 * Jason Myre (jmyre1999)
 * Nicole Wright (nicolewright)
 * Josh Tucker (joshtucker132)
+* Hussein Okasha (Hokasha2016)
+* Brandon Dupree (Bdupree5)
+* Zetao Ye (ZbrettonYe)
+* Jordan Arevalos (Jarevalos2017)
 
 ## Toolchain
 * (Balletie) - macOS
