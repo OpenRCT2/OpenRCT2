@@ -3774,6 +3774,7 @@ STR_6300    :{SMALLFONT}{BLACK}Hent alle manglende objekter hvis de er tilgænge
 STR_6301    :{SMALLFONT}{BLACK}Kopier det valgte objekt til udklipsholder.
 STR_6302    :{SMALLFONT}{BLACK}Kopier hele listen af manglende objekter til udklipsholderen.
 STR_6303    :Henter objekt ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Åben scenarie vælger
 
 #############
 # Scenarios #

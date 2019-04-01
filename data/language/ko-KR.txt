@@ -3761,6 +3761,7 @@ STR_6300    :{SMALLFONT}{BLACK}빠진 오브젝트를 온라인에서 다운로�
 STR_6301    :{SMALLFONT}{BLACK}선택한 오브젝트의 이름을 클립보드에 복사합니다.
 STR_6302    :{SMALLFONT}{BLACK}빠진 오브젝트의 전체 목록을 클립보드에 복사합니다.
 STR_6303    :오브젝트 다운로드 중 ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :오브젝트 스포이드
 
 
 #############

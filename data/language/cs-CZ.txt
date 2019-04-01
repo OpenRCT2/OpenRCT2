@@ -2433,7 +2433,6 @@ STR_3190    :Doplňky cest
 STR_3191    :Skupiny kulis
 STR_3192    :Vstup do parku
 STR_3193    :Voda
-STR_3194    :Popis scénáře
 STR_3195    :Seznam výzkumů
 STR_3196    :{WINDOW_COLOUR_2}Skupina výzkumu: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Položky vyzkoumané před začátkem hry:
@@ -3772,6 +3771,7 @@ STR_6300    :{SMALLFONT}{BLACK}Stáhnout všechny chybějící objekty dostupné
 STR_6301    :{SMALLFONT}{BLACK}Kopírovat název vybraného objektu do schránky.
 STR_6302    :{SMALLFONT}{BLACK}Kopírovat seznam objektů do schránky
 STR_6303    :Stahování objektu ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Otevřít výběr kulis
 
 ###############################################################################
 ## RCT2 Scenarios

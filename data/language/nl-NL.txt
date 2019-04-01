@@ -3766,6 +3766,7 @@ STR_6300    :{SMALLFONT}{BLACK}Download alle ontbrekende objecten, mits ze onlin
 STR_6301    :{SMALLFONT}{BLACK}Kopieert de naam van het geselecteerde object naar het klembord.
 STR_6302    :{SMALLFONT}{BLACK}Kopieert de lijst van ontbrekende objecten naar het klembord.
 STR_6303    :Bezig met downloaden van object ({COMMA16} van {COMMA16}): [{STRING}]
+STR_6304    :Decorselector openen
 
 #############
 # Scenarios #
