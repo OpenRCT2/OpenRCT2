@@ -1080,6 +1080,366 @@ uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, in
     return max_height;
 }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+static money32 raise_land(
+    int32_t flags, int32_t x, int32_t y, int32_t z, int32_t point_a_x, int32_t point_a_y, int32_t point_b_x, int32_t point_b_y,
+    int32_t selectionType)
+{
+    money32 cost = 0;
+    size_t tableRow = selectionType;
+
+    // The selections between MAP_SELECT_TYPE_FULL and MAP_SELECT_TYPE_EDGE_0 are not included in the tables
+    if (selectionType >= MAP_SELECT_TYPE_EDGE_0 && selectionType <= MAP_SELECT_TYPE_EDGE_3)
+        tableRow -= MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1;
+
+    if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1)
+    {
+        audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
+    }
+
+    // Keep big coordinates within map boundaries
+    point_a_x = std::max<decltype(point_a_x)>(32, point_a_x);
+    point_b_x = std::min<decltype(point_b_x)>(gMapSizeMaxXY, point_b_x);
+    point_a_y = std::max<decltype(point_a_y)>(32, point_a_y);
+    point_b_y = std::min<decltype(point_b_y)>(gMapSizeMaxXY, point_b_y);
+
+    uint8_t min_height = map_get_lowest_land_height(point_a_x, point_b_x, point_a_y, point_b_y);
+
+    for (int32_t y_coord = point_a_y; y_coord <= point_b_y; y_coord += 32)
+    {
+        for (int32_t x_coord = point_a_x; x_coord <= point_b_x; x_coord += 32)
+        {
+            TileElement* tile_element = map_get_surface_element_at(x_coord / 32, y_coord / 32);
+            if (tile_element != nullptr)
+            {
+                uint8_t height = tile_element->base_height;
+                if (height <= min_height)
+                {
+                    uint8_t raisedCorners = tile_element->AsSurface()->GetSlope();
+                    uint8_t slope = tile_element_raise_styles[tableRow][raisedCorners];
+
+                    if (slope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
+                        height += 2;
+
+                    slope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
+                    auto landSetHeightAction = LandSetHeightAction({ x_coord, y_coord }, height, slope);
+                    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? landSetHeightAction.Execute() : landSetHeightAction.Query();
+
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        return MONEY32_UNDEFINED;
+                    }
+                    cost += res->Cost;
+                }
+            }
+        }
+    }
+
+    // Force ride construction to recheck area
+    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+
+    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+    gCommandPosition.x = x;
+    gCommandPosition.y = y;
+    gCommandPosition.z = z;
+    return cost;
+}
+
+static money32 lower_land(
+    int32_t flags, int32_t x, int32_t y, int32_t z, int32_t point_a_x, int32_t point_a_y, int32_t point_b_x, int32_t point_b_y,
+    int32_t selectionType)
+{
+    money32 cost = 0;
+    size_t tableRow = selectionType;
+
+    // The selections between MAP_SELECT_TYPE_FULL and MAP_SELECT_TYPE_EDGE_0 are not included in the tables
+    if (selectionType >= MAP_SELECT_TYPE_EDGE_0 && selectionType <= MAP_SELECT_TYPE_EDGE_3)
+        tableRow -= MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1;
+
+    // Keep big coordinates within map boundaries
+    point_a_x = std::max<decltype(point_a_x)>(32, point_a_x);
+    point_b_x = std::min<decltype(point_b_x)>(gMapSizeMaxXY, point_b_x);
+    point_a_y = std::max<decltype(point_a_y)>(32, point_a_y);
+    point_b_y = std::min<decltype(point_b_y)>(gMapSizeMaxXY, point_b_y);
+
+    if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1)
+    {
+        audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
+    }
+
+    uint8_t max_height = map_get_highest_land_height(point_a_x, point_b_x, point_a_y, point_b_y);
+
+    for (int32_t y_coord = point_a_y; y_coord <= point_b_y; y_coord += 32)
+    {
+        for (int32_t x_coord = point_a_x; x_coord <= point_b_x; x_coord += 32)
+        {
+            TileElement* tile_element = map_get_surface_element_at(x_coord / 32, y_coord / 32);
+            if (tile_element != nullptr)
+            {
+                uint8_t height = tile_element->base_height;
+                if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)
+                    height += 2;
+                if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG)
+                    height += 2;
+
+                if (height >= max_height)
+                {
+                    height = tile_element->base_height;
+                    uint8_t currentSlope = tile_element->AsSurface()->GetSlope();
+                    uint8_t newSlope = tile_element_lower_styles[tableRow][currentSlope];
+                    if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
+                        height -= 2;
+
+                    newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
+
+                    auto landSetHeightAction = LandSetHeightAction({ x_coord, y_coord }, height, newSlope);
+                    landSetHeightAction.SetFlags(flags);
+
+                    auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::ExecuteNested(&landSetHeightAction)
+                                                                 : GameActions::QueryNested(&landSetHeightAction);
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        return MONEY32_UNDEFINED;
+                    }
+                    cost += res->Cost;
+                }
+            }
+        }
+    }
+
+    // Force ride construction to recheck area
+    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+
+    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+    gCommandPosition.x = x;
+    gCommandPosition.y = y;
+    gCommandPosition.z = z;
+    return cost;
+}
+
+money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flags)
+{
+    money32 cost = 0;
+    bool waterHeightChanged = false;
+
+    uint8_t max_height = 0xFF;
+
+    x0 = std::max(x0, (int16_t)32);
+    y0 = std::max(y0, (int16_t)32);
+    x1 = std::min(x1, gMapSizeMaxXY);
+    y1 = std::min(y1, gMapSizeMaxXY);
+
+    for (int32_t yi = y0; yi <= y1; yi += 32)
+    {
+        for (int32_t xi = x0; xi <= x1; xi += 32)
+        {
+            TileElement* tile_element = map_get_surface_element_at({ xi, yi });
+            if (tile_element != nullptr)
+            {
+                uint8_t height = tile_element->base_height;
+                if (tile_element->AsSurface()->GetWaterHeight() > 0)
+                    height = tile_element->AsSurface()->GetWaterHeight() * 2;
+                if (max_height > height)
+                    max_height = height;
+            }
+        }
+    }
+
+    for (int32_t yi = y0; yi <= y1; yi += 32)
+    {
+        for (int32_t xi = x0; xi <= x1; xi += 32)
+        {
+            TileElement* tile_element = map_get_surface_element_at({ xi, yi });
+            if (tile_element != nullptr)
+            {
+                if (tile_element->base_height <= max_height)
+                {
+                    uint8_t height = tile_element->AsSurface()->GetWaterHeight();
+                    if (height != 0)
+                    {
+                        height *= 2;
+                        if (height > max_height)
+                            continue;
+                        height += 2;
+                    }
+                    else
+                    {
+                        height = tile_element->base_height + 2;
+                    }
+
+                    auto waterSetHeightAction = WaterSetHeightAction({ xi, yi }, height);
+                    waterSetHeightAction.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&waterSetHeightAction)
+                                                               : GameActions::QueryNested(&waterSetHeightAction);
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        gGameCommandErrorText = res->ErrorMessage;
+                        // set gCommonFormatArguments to res->ErrorArgs
+                        return MONEY32_UNDEFINED;
+                    }
+
+                    cost += res->Cost;
+                    waterHeightChanged = true;
+                }
+            }
+        }
+    }
+
+    if (flags & GAME_COMMAND_FLAG_APPLY)
+    {
+        int32_t x = ((x0 + x1) / 2) + 16;
+        int32_t y = ((y0 + y1) / 2) + 16;
+        int32_t z = tile_element_height(x, y);
+        int16_t water_height_z = tile_element_water_height(x, y);
+        int16_t base_height_z = z;
+        z = water_height_z;
+        if (z == 0)
+            z = base_height_z;
+
+        LocationXYZ16 coord;
+        coord.x = x;
+        coord.y = y;
+        coord.z = z;
+        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+
+        gCommandPosition.x = x;
+        gCommandPosition.y = y;
+        gCommandPosition.z = z;
+        if (waterHeightChanged)
+        {
+            audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, x, y, z);
+        }
+    }
+
+    // Force ride construction to recheck area
+    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+
+    return cost;
+}
+
+money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flags)
+{
+    money32 cost = 0;
+    bool waterHeightChanged = false;
+
+    uint8_t min_height = 0;
+
+    x0 = std::max(x0, (int16_t)32);
+    y0 = std::max(y0, (int16_t)32);
+    x1 = std::min(x1, gMapSizeMaxXY);
+    y1 = std::min(y1, gMapSizeMaxXY);
+
+    for (int32_t yi = y0; yi <= y1; yi += 32)
+    {
+        for (int32_t xi = x0; xi <= x1; xi += 32)
+        {
+            TileElement* tile_element = map_get_surface_element_at({ xi, yi });
+            if (tile_element != nullptr)
+            {
+                uint8_t height = tile_element->AsSurface()->GetWaterHeight();
+                if (height != 0)
+                {
+                    height *= 2;
+                    if (height > min_height)
+                        min_height = height;
+                }
+            }
+        }
+    }
+
+    for (int32_t yi = y0; yi <= y1; yi += 32)
+    {
+        for (int32_t xi = x0; xi <= x1; xi += 32)
+        {
+            TileElement* tile_element = map_get_surface_element_at({ xi, yi });
+            if (tile_element != nullptr)
+            {
+                uint8_t height = tile_element->AsSurface()->GetWaterHeight();
+                if (height != 0)
+                {
+                    height *= 2;
+                    if (height < min_height)
+                        continue;
+                    height -= 2;
+                    auto waterSetHeightAction = WaterSetHeightAction({ xi, yi }, height);
+                    waterSetHeightAction.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&waterSetHeightAction)
+                                                               : GameActions::QueryNested(&waterSetHeightAction);
+                    if (res->Error != GA_ERROR::OK)
+                    {
+                        gGameCommandErrorText = res->ErrorMessage;
+                        // set gCommonFormatArguments to res->ErrorArgs
+                        return MONEY32_UNDEFINED;
+                    }
+
+                    cost += res->Cost;
+                    waterHeightChanged = true;
+                }
+            }
+        }
+    }
+
+    if (flags & GAME_COMMAND_FLAG_APPLY)
+    {
+        int32_t x = ((x0 + x1) / 2) + 16;
+        int32_t y = ((y0 + y1) / 2) + 16;
+        int32_t z = tile_element_height(x, y);
+        int16_t water_height_z = z >> 16;
+        int16_t base_height_z = z;
+        z = water_height_z;
+        if (z == 0)
+            z = base_height_z;
+
+        LocationXYZ16 coord;
+        coord.x = x;
+        coord.y = y;
+        coord.z = z;
+        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+
+        gCommandPosition.x = x;
+        gCommandPosition.y = y;
+        gCommandPosition.z = z;
+        if (waterHeightChanged)
+        {
+            audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, x, y, z);
+        }
+    }
+
+    // Force ride construction to recheck area
+    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+
+    return cost;
+}
+
+/**
+ *
+ *  rct2: 0x0068C542
+ */
+void game_command_raise_land(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
+{
+    *ebx = raise_land(
+        *ebx, *eax, *ecx, tile_element_height(*eax, *ecx), (int16_t)(*edx & 0xFFFF), (int16_t)(*ebp & 0xFFFF), *edx >> 16,
+        *ebp >> 16, *edi & 0xFFFF);
+}
+
+/**
+ *
+ *  rct2: 0x0068C6D1
+ */
+void game_command_lower_land(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
+{
+    *ebx = lower_land(
+        *ebx, *eax, *ecx, tile_element_height(*eax, *ecx), (int16_t)(*edx & 0xFFFF), (int16_t)(*ebp & 0xFFFF), *edx >> 16,
+        *ebp >> 16, *edi & 0xFFFF);
+}
+
+=======
+>>>>>>> 3564e078e18a43e4b4a0bf8b89730fe7fe114a9e
+>>>>>>> Stashed changes
 static money32 smooth_land_tile(
     int32_t direction, uint8_t flags, int32_t x, int32_t y, TileElement* tileElement, bool raiseLand)
 {
