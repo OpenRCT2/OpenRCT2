@@ -751,7 +751,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
     uint8_t sceneryRotation = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
         | GAME_COMMAND_FLAG_GHOST;
-
+    std::unique_ptr<GameAction> ga;
     switch (entry_type)
     {
         case OBJECT_TYPE_SMALL_SCENERY:
@@ -763,41 +763,29 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             if (!(!scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_FULL_TILE)
                   && scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_DIAGONAL))
                 && scenery_small_entry_has_flag(
-                    small_scenery,
-                    SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
+                       small_scenery,
+                       SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
             {
                 quadrant = 0;
             }
 
-            auto removeSceneryAction = SmallSceneryRemoveAction(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
-            removeSceneryAction.SetFlags(flags);
-            GameActions::ExecuteNested(&removeSceneryAction);
+            ga = std::make_unique<SmallSceneryRemoveAction>(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
             break;
         }
         case OBJECT_TYPE_LARGE_SCENERY:
-        {
-            auto removeSceneryAction = LargeSceneryRemoveAction(mapCoord.x, mapCoord.y, z, sceneryRotation, 0);
-            removeSceneryAction.SetFlags(flags);
-            GameActions::ExecuteNested(&removeSceneryAction);
+            ga = std::make_unique<LargeSceneryRemoveAction>(mapCoord.x, mapCoord.y, z, sceneryRotation, 0);
             break;
-        }
         case OBJECT_TYPE_WALLS:
-        {
-            TileCoordsXYZD wallLocation = { mapCoord.x / 32, mapCoord.y / 32, z, sceneryRotation };
-            auto wallRemoveAction = WallRemoveAction(wallLocation);
-            wallRemoveAction.SetFlags(flags);
-
-            GameActions::ExecuteNested(&wallRemoveAction);
+            ga = std::make_unique<WallRemoveAction>(TileCoordsXYZD{ mapCoord.x / 32, mapCoord.y / 32, z, sceneryRotation });
             break;
-        }
         case OBJECT_TYPE_PATHS:
-        {
-            auto removeSceneryAction = FootpathRemoveAction(mapCoord.x, mapCoord.y, z);
-            removeSceneryAction.SetFlags(flags);
-            GameActions::ExecuteNested(&removeSceneryAction);
+            ga = std::make_unique<FootpathRemoveAction>(mapCoord.x, mapCoord.y, z);
             break;
-        }
+        default:
+            return true;
     }
+    ga->SetFlags(flags);
+    GameActions::ExecuteNested(ga.get());
     return true;
 }
 
