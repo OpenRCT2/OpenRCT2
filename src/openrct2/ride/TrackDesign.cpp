@@ -1183,7 +1183,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                     {
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                                | GAME_COMMAND_FLAG_NO_SPEND;
                         }
                         else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                         {
@@ -1217,7 +1218,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                     {
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                                | GAME_COMMAND_FLAG_NO_SPEND;
                         }
                         else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                         {
@@ -1324,7 +1326,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
     {
         ride_action_modify(
             ride, RIDE_MODIFY_DEMOLISH,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                | GAME_COMMAND_FLAG_GHOST);
     }
 
     gTrackPreviewOrigin.x = x;
@@ -1563,7 +1566,8 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                         uint8_t flags = GAME_COMMAND_FLAG_APPLY;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                                | GAME_COMMAND_FLAG_NO_SPEND;
                         }
                         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                         {

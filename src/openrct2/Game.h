@@ -103,9 +103,9 @@ enum GAME_COMMAND
 
 enum : uint32_t
 {
-    GAME_COMMAND_FLAG_APPLY = (1 << 0),               // If this flag is set, the command is applied, otherwise only the cost is retrieved
-    GAME_COMMAND_FLAG_REPLAY = (1 << 1),              // Command was issued from replay manager.
-    GAME_COMMAND_FLAG_2 = (1 << 2),                   // Unused
+    GAME_COMMAND_FLAG_APPLY = (1 << 0),  // If this flag is set, the command is applied, otherwise only the cost is retrieved
+    GAME_COMMAND_FLAG_REPLAY = (1 << 1), // Command was issued from replay manager.
+    GAME_COMMAND_FLAG_2 = (1 << 2),      // Unused
     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED = (1 << 3), // Allow while paused
     GAME_COMMAND_FLAG_4 = (1 << 4),                   // Unused
     GAME_COMMAND_FLAG_NO_SPEND = (1 << 5),            // Game command is not networked
