@@ -494,7 +494,7 @@ static void track_design_mirror_scenery(rct_track_td6* td6)
     rct_td6_scenery_element* scenery = td6->scenery_elements;
     for (; scenery != nullptr && scenery->scenery_object.end_flag != 0xFF; scenery++)
     {
-        uint8_t entry_type, entry_index;
+        uint8_t entry_type{ 0 }, entry_index{ 0 };
         if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
         {
             entry_type = object_entry_get_type(&scenery->scenery_object);
@@ -502,6 +502,8 @@ static void track_design_mirror_scenery(rct_track_td6* td6)
             {
                 continue;
             }
+
+            entry_index = 0;
         }
 
         rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_get_chunk(entry_type, entry_index);
