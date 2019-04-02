@@ -25,9 +25,9 @@
 DEFINE_GAME_ACTION(WallPlaceAction, GAME_COMMAND_PLACE_WALL, GameActionResult)
 {
 private:
-    int32_t _wallType;
+    int32_t _wallType{ -1 };
     CoordsXYZ _loc;
-    uint8_t _edge;
+    uint8_t _edge{ std::numeric_limits<uint8_t>::max() };
     int32_t _primaryColour;
     int32_t _secondaryColour;
     int32_t _tertiaryColour;
@@ -90,6 +90,16 @@ public:
             {
                 return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_BUILD_PARK_ENTRANCE_HERE);
             }
+        }
+        else if ((_loc.x > gMapSizeMaxXY || _loc.y > gMapSizeMaxXY))
+        {
+            log_error("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE);
+        }
+
+        if (_edge > 3)
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE);
         }
 
         uint8_t edgeSlope = 0;
@@ -448,6 +458,10 @@ private:
         int32_t sequence = trackElement->GetSequenceIndex();
         int32_t direction = (_edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
         Ride* ride = get_ride(trackElement->GetRideIndex());
+        if (ride == nullptr)
+        {
+            return false;
+        }
 
         if (TrackIsAllowedWallEdges(ride->type, trackType, sequence, direction))
         {
@@ -461,7 +475,16 @@ private:
 
         if (RideGroupManager::RideTypeHasRideGroups(ride->type))
         {
-            auto rideGroup = RideGroupManager::GetRideGroup(ride->type, get_ride_entry(ride->subtype));
+            auto rideEntry = get_ride_entry(ride->subtype);
+            if (rideEntry == nullptr)
+            {
+                return false;
+            }
+            auto rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
+            if (rideGroup == nullptr)
+            {
+                return false;
+            }
             if (!(rideGroup->Flags & RIDE_GROUP_FLAG_ALLOW_DOORS_ON_TRACK))
             {
                 return false;
