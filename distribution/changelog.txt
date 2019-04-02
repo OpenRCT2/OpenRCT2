@@ -1,6 +1,7 @@
 0.2.2+ (in development)
 ------------------------------------------------------------------------
 - Feature: [#7296] Allow assigning a keyboard shortcut for the scenery picker.
+- Feature: [#8029] Adds the Hungarian Forint (HUF) to the list of available currencies.
 - Feature: [#8481] Multi-threaded rendering.
 - Feature: [#8919] Allow setting ride price from console.
 - Feature: [#8963] Add missing Czech letters to sprite font, use sprite font for Czech.
