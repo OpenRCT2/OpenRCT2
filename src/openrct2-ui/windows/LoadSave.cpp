@@ -786,15 +786,15 @@ static bool list_item_sort(LoadSaveListItem& a, LoadSaveListItem& b)
     switch (gConfigGeneral.load_save_sort)
     {
         case SORT_NAME_ASCENDING:
-            return strcicmp(a.name.c_str(), b.name.c_str()) < 0;
+            return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
         case SORT_NAME_DESCENDING:
-            return -strcicmp(a.name.c_str(), b.name.c_str()) < 0;
+            return -strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
         case SORT_DATE_DESCENDING:
             return -difftime(a.date_modified, b.date_modified) < 0;
         case SORT_DATE_ASCENDING:
             return difftime(a.date_modified, b.date_modified) < 0;
         default:
-            return strcicmp(a.name.c_str(), b.name.c_str()) < 0;
+            return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
     }
 }
 
