@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../ParkImporter.h"
+#include "../actions/WallPlaceAction.hpp"
 #include "../audio/audio.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
@@ -2773,10 +2774,13 @@ private:
                                 ConvertWall(&type, &colourA, &colourB);
 
                                 type = _wallTypeToEntryMap[type];
-                                const uint8_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                                    | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_PATH_SCENERY;
 
-                                wall_place(type, x * 32, y * 32, 0, edge, colourA, colourB, colourC, flags);
+                                auto wallPlaceAction = WallPlaceAction(
+                                    type, { x * 32, y * 32, 0 }, edge, colourA, colourB, colourC);
+                                wallPlaceAction.SetFlags(
+                                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                                    | GAME_COMMAND_FLAG_PATH_SCENERY);
+                                GameActions::Execute(&wallPlaceAction);
                             }
                         }
                         break;

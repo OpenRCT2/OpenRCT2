@@ -21,6 +21,7 @@
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/TrackPlaceAction.hpp"
 #include "../actions/TrackRemoveAction.hpp"
+#include "../actions/WallPlaceAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../core/File.h"
@@ -1021,6 +1022,7 @@ static int32_t track_design_place_scenery(
                         }
                         break;
                     case OBJECT_TYPE_WALLS:
+                    {
                         if (mode != 0)
                         {
                             continue;
@@ -1050,17 +1052,15 @@ static int32_t track_design_place_scenery(
                             flags = 0;
                         }
 
-                        gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+                        auto wallPlaceAction = WallPlaceAction(
+                            entry_index, { mapCoord.x, mapCoord.y, z }, rotation, scenery->primary_colour,
+                            scenery->secondary_colour, scenery->flags & 0xFC);
+                        auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::Execute(&wallPlaceAction)
+                                                                   : GameActions::Query(&wallPlaceAction);
 
-                        cost = game_do_command(
-                            mapCoord.x, flags | (entry_index << 8), mapCoord.y, rotation | (scenery->primary_colour << 8),
-                            GAME_COMMAND_PLACE_WALL, z, scenery->secondary_colour | ((scenery->flags & 0xFC) << 6));
-
-                        if (cost == MONEY32_UNDEFINED)
-                        {
-                            cost = 0;
-                        }
+                        cost = res->Cost;
                         break;
+                    }
                     case OBJECT_TYPE_PATHS:
                         if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                         {

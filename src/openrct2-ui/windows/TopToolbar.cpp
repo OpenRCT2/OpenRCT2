@@ -34,6 +34,7 @@
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
+#include <openrct2/actions/WallPlaceAction.hpp>
 #include <openrct2/actions/WaterLowerAction.hpp>
 #include <openrct2/actions/WaterRaiseAction.hpp>
 #include <openrct2/audio/audio.h>
@@ -1805,32 +1806,42 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
 
             for (; zAttemptRange != 0; zAttemptRange--)
             {
-                int32_t flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+                auto primaryColour = (parameter_2 >> 8) & 0xFF;
+                auto edges = parameter_2 & 0xFF;
+                auto type = (parameter_1 >> 8) & 0xFF;
+                auto wallPlaceAction = WallPlaceAction(
+                    type, { gridX, gridY, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
 
-                gDisableErrorWindowSound = true;
-                gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-                int32_t cost = game_do_command(
-                    gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ,
-                    _secondaryColour | (_tertiaryColour << 8));
-                gDisableErrorWindowSound = false;
-
-                if (cost != MONEY32_UNDEFINED)
-                {
-                    window_close_by_class(WC_ERROR);
-                    audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-                    return;
-                }
-
-                if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES
-                    || gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                auto res = GameActions::Query(&wallPlaceAction);
+                if (res->Error == GA_ERROR::OK)
                 {
                     break;
                 }
 
-                gSceneryPlaceZ += 8;
+                if (res->ErrorMessage == STR_NOT_ENOUGH_CASH_REQUIRES || res->ErrorMessage == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                {
+                    break;
+                }
+
+                if (zAttemptRange != 1)
+                {
+                    gSceneryPlaceZ += 8;
+                }
             }
 
-            audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+            auto primaryColour = (parameter_2 >> 8) & 0xFF;
+            auto edges = parameter_2 & 0xFF;
+            auto type = (parameter_1 >> 8) & 0xFF;
+            auto wallPlaceAction = WallPlaceAction(
+                type, { gridX, gridY, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+
+            wallPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error == GA_ERROR::OK)
+                {
+                    audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                }
+            });
+            auto res = GameActions::Execute(&wallPlaceAction);
             break;
         }
         case SCENERY_TYPE_LARGE:
@@ -2495,24 +2506,34 @@ static money32 try_place_ghost_scenery(
             break;
         }
         case 2:
+        {
             // Walls
             // 6e26b0
-            cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ,
-                _secondaryColour | (_tertiaryColour << 8));
+            auto primaryColour = (parameter_2 >> 8) & 0xFF;
+            auto edges = parameter_2 & 0xFF;
+            auto type = (parameter_1 >> 8) & 0xFF;
+            auto wallPlaceAction = WallPlaceAction(
+                type, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+            wallPlaceAction.SetFlags(
+                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_PATH_SCENERY);
+            wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error != GA_ERROR::OK)
+                    return;
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
+                gSceneryGhostPosition.x = map_tile.x;
+                gSceneryGhostPosition.y = map_tile.y;
+                gSceneryGhostWallRotation = edges;
+                gSceneryGhostPosition.z = gSceneryTileElement->base_height;
 
-            gSceneryGhostPosition.x = map_tile.x;
-            gSceneryGhostPosition.y = map_tile.y;
-            gSceneryGhostWallRotation = (parameter_2 & 0xFF);
+                gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
+            });
 
-            tileElement = gSceneryTileElement;
-            gSceneryGhostPosition.z = tileElement->base_height;
-
-            gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
+            auto res = GameActions::Execute(&wallPlaceAction);
+            if (res->Error != GA_ERROR::OK)
+                return MONEY32_UNDEFINED;
+            cost = res->Cost;
             break;
+        }
         case 3:
             // Large Scenery
             // 6e25a7
