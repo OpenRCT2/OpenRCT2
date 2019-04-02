@@ -133,6 +133,7 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
+            , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
@@ -218,6 +219,11 @@ namespace OpenRCT2
         IDrawingEngine* GetDrawingEngine() override
         {
             return _drawingEngine.get();
+        }
+
+        virtual Paint::Painter* GetPainter() override
+        {
+            return _painter.get();
         }
 
         int32_t RunOpenRCT2(int argc, const char** argv) override
@@ -410,6 +416,7 @@ namespace OpenRCT2
                 lightfx_init();
 #endif
             }
+
             gScenarioTicks = 0;
             util_srand((uint32_t)time(nullptr));
             input_reset_place_obj_modifier();
@@ -425,7 +432,6 @@ namespace OpenRCT2
         void InitialiseDrawingEngine() final override
         {
             assert(_drawingEngine == nullptr);
-            assert(_painter == nullptr);
 
             _drawingEngineType = gConfigGeneral.drawing_engine;
 
@@ -452,7 +458,6 @@ namespace OpenRCT2
             }
             else
             {
-                _painter = std::make_unique<Painter>(_uiContext);
                 try
                 {
                     drawingEngine->Initialise();
@@ -461,7 +466,6 @@ namespace OpenRCT2
                 }
                 catch (const std::exception& ex)
                 {
-                    _painter = nullptr;
                     if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
                     {
                         _drawingEngineType = DRAWING_ENGINE_NONE;
@@ -486,7 +490,6 @@ namespace OpenRCT2
         void DisposeDrawingEngine() final override
         {
             _drawingEngine = nullptr;
-            _painter = nullptr;
         }
 
         bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail) final override

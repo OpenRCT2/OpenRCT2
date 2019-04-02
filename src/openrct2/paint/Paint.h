@@ -139,7 +139,7 @@ struct tunnel_entry
 
 struct paint_session
 {
-    rct_drawpixelinfo* DPI;
+    rct_drawpixelinfo DPI;
     paint_entry PaintStructs[4000];
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     paint_struct PaintHead;

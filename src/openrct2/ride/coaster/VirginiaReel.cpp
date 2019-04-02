@@ -199,7 +199,7 @@ void vehicle_visual_virginia_reel(
     sub_98197C(
         session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z);
 
-    if (session->DPI->zoom_level < 2 && vehicle->num_peeps > 0)
+    if (session->DPI.zoom_level < 2 && vehicle->num_peeps > 0)
     {
         uint8_t riding_peep_sprites[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
         for (int32_t i = 0; i < vehicle->num_peeps; i++)

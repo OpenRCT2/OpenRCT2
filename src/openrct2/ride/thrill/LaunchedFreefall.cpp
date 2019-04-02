@@ -47,7 +47,7 @@ void vehicle_visual_launched_freefall(
     sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
 
     // Draw peeps:
-    if (session->DPI->zoom_level < 2)
+    if (session->DPI.zoom_level < 2)
     {
         if (vehicle->num_peeps > 0)
         {

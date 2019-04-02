@@ -682,7 +682,7 @@ static void sub_6A3F61(
 
     // Probably drawing benches etc.
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if (dpi->zoom_level <= 1)
     {

@@ -195,6 +195,7 @@ namespace Config
             model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
             model->scale_quality = reader->GetEnum<int32_t>("scale_quality", SCALE_QUALITY_SMOOTH_NN, Enum_ScaleQuality);
             model->show_fps = reader->GetBoolean("show_fps", false);
+            model->multithreading = reader->GetBoolean("multithreading", true);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);
             model->auto_open_shops = reader->GetBoolean("auto_open_shops", false);
             model->scenario_select_mode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
@@ -268,6 +269,7 @@ namespace Config
         writer->WriteFloat("window_scale", model->window_scale);
         writer->WriteEnum<int32_t>("scale_quality", model->scale_quality, Enum_ScaleQuality);
         writer->WriteBoolean("show_fps", model->show_fps);
+        writer->WriteBoolean("multithreading", model->multithreading);
         writer->WriteBoolean("trap_cursor", model->trap_cursor);
         writer->WriteBoolean("auto_open_shops", model->auto_open_shops);
         writer->WriteInt32("scenario_select_mode", model->scenario_select_mode);
