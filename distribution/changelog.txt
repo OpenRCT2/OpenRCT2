@@ -3,6 +3,7 @@
 - Feature: [#7296] Allow assigning a keyboard shortcut for the scenery picker.
 - Feature: [#8919] Allow setting ride price from console.
 - Feature: [#8963] Add missing Czech letters to sprite font, use sprite font for Czech.
+- Change: [#7877] Files are now sorted in logical rather than dictionary order.
 - Change: [#8688] Move common actions from debug menu into cheats menu.
 - Fix: [#5579] Network desync immediately after connecting.
 - Fix: [#5905] Urban Park merry-go-round has entrance and exit swapped (original bug).
