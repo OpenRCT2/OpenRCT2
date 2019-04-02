@@ -3214,6 +3214,7 @@ STR_5762    :Chinese Yuan (CN¥)
 STR_5763    :All files
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
+STR_5766    :Hungarian Forint (Ft)
 STR_5767    :Income
 STR_5768    :Total customers
 STR_5769    :Total profit
