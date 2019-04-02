@@ -578,6 +578,8 @@ private:
         TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             int32_t elementType = tileElement->GetType();
             if (elementType == TILE_ELEMENT_TYPE_SURFACE)
                 continue;
