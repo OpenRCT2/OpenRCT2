@@ -306,7 +306,7 @@ static money32 WallPlace(
 
     if (position.z == 0)
     {
-        gCommandPosition.z = tile_element_height(position.x, position.y) & 0xFFFF;
+        gCommandPosition.z = tile_element_height(position.x, position.y);
     }
 
     if (game_is_paused() && !gCheatsBuildInPauseMode)

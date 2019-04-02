@@ -1202,7 +1202,7 @@ void Staff::UpdateMowing()
         int16_t xy_distance;
         if (UpdateAction(&actionX, &actionY, &xy_distance))
         {
-            int16_t checkZ = tile_element_height(actionX, actionY) & 0xFFFF;
+            int16_t checkZ = tile_element_height(actionX, actionY);
             MoveTo(actionX, actionY, checkZ);
             Invalidate();
             return;

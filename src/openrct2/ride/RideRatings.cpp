@@ -1408,7 +1408,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         y = location.y;
     }
 
-    int32_t z = tile_element_height(x * 32, y * 32) & 0xFFFF;
+    int32_t z = tile_element_height(x * 32, y * 32);
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
     if (z > ride->stations[i].Height * 8)

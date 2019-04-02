@@ -75,7 +75,8 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t baseHeight = tile_element_height(_loc.x, _loc.y);
+        int32_t baseHeight = tile_element_height(_loc.x, _loc.y); // this is really just land height now
+        int16_t waterHeight = tile_element_water_height(_loc.x, _loc.y);
         // If on water
         if (baseHeight & 0xFFFF0000)
         {

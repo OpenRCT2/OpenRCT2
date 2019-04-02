@@ -1176,7 +1176,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
         gMapSelectionTiles->x = -1;
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
-        gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
+        gMapSelectArrowPosition.z = tile_element_height(x, y);
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1389,7 +1389,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
         gMapSelectionTiles->x = -1;
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
-        gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
+        gMapSelectArrowPosition.z = tile_element_height(x, y);
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 

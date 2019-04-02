@@ -457,7 +457,7 @@ void map_update_tile_pointers()
  * dx: return remember to & with 0xFFFF if you don't want water affecting results
  *  rct2: 0x00662783
  */
-int32_t tile_element_height(int32_t x, int32_t y)
+int16_t tile_element_height(int32_t x, int32_t y)
 {
     TileElement* tileElement;
 
@@ -477,7 +477,7 @@ int32_t tile_element_height(int32_t x, int32_t y)
         return 16;
     }
 
-    uint32_t height = (tileElement->AsSurface()->GetWaterHeight() << 20) | (tileElement->base_height << 3);
+    uint16_t height = (tileElement->base_height << 3);
 
     uint32_t slope = tileElement->AsSurface()->GetSlope();
     uint8_t extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height
@@ -607,6 +607,32 @@ int32_t tile_element_height(int32_t x, int32_t y)
     }
 
     return height;
+}
+
+int16_t tile_element_water_height(int32_t x, int32_t y)
+{
+    TileElement* tileElement;
+    
+    // Off the map
+    if ((unsigned)x >= 8192 || (unsigned)y >= 8192)
+        return 0;
+    
+    // Truncate subtile coordinates
+    int32_t x_tile = x & 0xFFFFFFE0;
+    int32_t y_tile = y & 0xFFFFFFE0;
+    
+    // Get the surface element for the tile
+    tileElement = map_get_surface_element_at({ x_tile, y_tile });
+    
+    if (tileElement == nullptr)
+    {
+        return 0;
+    }
+    
+    uint16_t height = (tileElement->AsSurface()->GetWaterHeight() << 4);
+    
+    return height;
+    
 }
 
 /**
@@ -1008,7 +1034,7 @@ static money32 map_set_land_ownership(uint8_t flags, int16_t x1, int16_t y1, int
     x += 16;
     y += 16;
 
-    int16_t z = tile_element_height(x, y) & 0xFFFF;
+    int16_t z = tile_element_height(x, y);
     audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
     return 0;
 }
@@ -1080,9 +1106,7 @@ uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, in
     return max_height;
 }
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
+
 static money32 raise_land(
     int32_t flags, int32_t x, int32_t y, int32_t z, int32_t point_a_x, int32_t point_a_y, int32_t point_b_x, int32_t point_b_y,
     int32_t selectionType)
@@ -1386,7 +1410,7 @@ money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
         int32_t x = ((x0 + x1) / 2) + 16;
         int32_t y = ((y0 + y1) / 2) + 16;
         int32_t z = tile_element_height(x, y);
-        int16_t water_height_z = z >> 16;
+        int16_t water_height_z = tile_element_water_height(x, y);
         int16_t base_height_z = z;
         z = water_height_z;
         if (z == 0)
@@ -1437,9 +1461,7 @@ void game_command_lower_land(
         *ebp >> 16, *edi & 0xFFFF);
 }
 
-=======
->>>>>>> 3564e078e18a43e4b4a0bf8b89730fe7fe114a9e
->>>>>>> Stashed changes
+
 static money32 smooth_land_tile(
     int32_t direction, uint8_t flags, int32_t x, int32_t y, TileElement* tileElement, bool raiseLand)
 {

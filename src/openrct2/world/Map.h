@@ -151,18 +151,12 @@ SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int3
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
-int32_t tile_element_height(int32_t x, int32_t y);
-<<<<<<< Updated upstream
+int16_t tile_element_height(int32_t x, int32_t y);
 uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax);
 uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax);
-=======
-<<<<<<< HEAD
 int16_t tile_element_water_height(int32_t x, int32_t y);
-=======
 uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax);
 uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax);
->>>>>>> 3564e078e18a43e4b4a0bf8b89730fe7fe114a9e
->>>>>>> Stashed changes
 bool map_coord_is_connected(int32_t x, int32_t y, int32_t z, uint8_t faceDirection);
 void map_remove_provisional_elements();
 void map_restore_provisional_elements();

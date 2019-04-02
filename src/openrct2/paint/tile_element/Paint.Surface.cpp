@@ -976,7 +976,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         const int16_t x = session->MapPosition.x;
         const int16_t y = session->MapPosition.y;
 
-        int32_t dx = tile_element_height(x + 16, y + 16) & 0xFFFF;
+        int32_t dx = tile_element_height(x + 16, y + 16);
         dx += 3;
 
         int32_t image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
@@ -1087,7 +1087,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_AVAILABLE)
         {
             const LocationXY16& pos = session->MapPosition;
-            const int32_t height2 = (tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
+            const int32_t height2 = (tile_element_height(pos.x + 16, pos.y + 16)) + 3;
             paint_struct* backup = session->LastRootPS;
             sub_98196C(session, SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2);
             session->LastRootPS = backup;
@@ -1104,7 +1104,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
         {
             const LocationXY16& pos = session->MapPosition;
-            const int32_t height2 = tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
+            const int32_t height2 = tile_element_height(pos.x + 16, pos.y + 16);
             paint_struct* backup = session->LastRootPS;
             sub_98196C(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3);
             session->LastRootPS = backup;

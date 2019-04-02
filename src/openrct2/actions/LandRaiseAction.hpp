@@ -83,13 +83,13 @@ private:
 
         MapRange validRange = MapRange{ aX, aY, bX, bY };
 
-        res->Position = { _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y) & 0xFFFF };
+        res->Position = { _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y)};
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
         if (isExecuting)
         {
             audio_play_sound_at_location(
-                SOUND_PLACE_ITEM, _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y) & 0xFFFF);
+                SOUND_PLACE_ITEM, _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y));
         }
 
         uint8_t minHeight = map_get_lowest_land_height(
