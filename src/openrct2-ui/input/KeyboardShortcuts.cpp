@@ -169,27 +169,19 @@ void KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState, int32_t* 
         if (!keysState[scancode])
             continue;
 
-        if (shortcutKey & SHIFT)
-        {
-            if (!keysState[SDL_SCANCODE_LSHIFT] && !keysState[SDL_SCANCODE_RSHIFT])
-                continue;
-        }
-        if (shortcutKey & CTRL)
-        {
-            if (!keysState[SDL_SCANCODE_LCTRL] && !keysState[SDL_SCANCODE_RCTRL])
-                continue;
-        }
-        if (shortcutKey & ALT)
-        {
-            if (!keysState[SDL_SCANCODE_LALT] && !keysState[SDL_SCANCODE_RALT])
-                continue;
-        }
+        if ((bool)(shortcutKey & SHIFT) !=
+            (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]))
+            continue;
+        if ((bool)(shortcutKey & CTRL) !=
+            (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]))
+            continue;
+        if ((bool)(shortcutKey & ALT) !=
+            (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]))
+            continue;
 #ifdef __MACOSX__
-        if (shortcutKey & CMD)
-        {
-            if (!keysState[SDL_SCANCODE_LGUI] && !keysState[SDL_SCANCODE_RGUI])
-                continue;
-        }
+        if ((bool)(shortcutKey & CMD) !=
+            (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]))
+            continue;
 #endif
         switch (shortcutId)
         {
