@@ -169,18 +169,14 @@ void KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState, int32_t* 
         if (!keysState[scancode])
             continue;
 
-        if ((bool)(shortcutKey & SHIFT) !=
-            (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]))
+        if ((bool)(shortcutKey & SHIFT) != (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]))
             continue;
-        if ((bool)(shortcutKey & CTRL) !=
-            (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]))
+        if ((bool)(shortcutKey & CTRL) != (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]))
             continue;
-        if ((bool)(shortcutKey & ALT) !=
-            (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]))
+        if ((bool)(shortcutKey & ALT) != (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]))
             continue;
 #ifdef __MACOSX__
-        if ((bool)(shortcutKey & CMD) !=
-            (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]))
+        if ((bool)(shortcutKey & CMD) != (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]))
             continue;
 #endif
         switch (shortcutId)
