@@ -960,6 +960,7 @@ static bool TrackDesignPlaceSceneryElement(
                 auto wallPlaceAction = WallPlaceAction(
                     entry_index, { mapCoord.x, mapCoord.y, z }, rotation, scenery->primary_colour, scenery->secondary_colour,
                     scenery->flags & 0xFC);
+                wallPlaceAction.SetFlags(flags);
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::Execute(&wallPlaceAction)
                                                            : GameActions::Query(&wallPlaceAction);
 
