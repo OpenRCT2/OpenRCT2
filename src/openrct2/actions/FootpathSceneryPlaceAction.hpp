@@ -87,9 +87,6 @@ public:
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType
             && !(pathElement->IsBroken()))
         {
-            if (GetFlags() & GAME_COMMAND_FLAG_4)
-                return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_POSITION_THIS_HERE);
-
             return res;
         }
 
@@ -128,9 +125,6 @@ public:
 
             res->Cost = sceneryEntry->path_bit.price;
         }
-
-        if (GetFlags() & GAME_COMMAND_FLAG_4)
-            return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_POSITION_THIS_HERE);
 
         // Should place a ghost?
         if (GetFlags() & GAME_COMMAND_FLAG_GHOST)

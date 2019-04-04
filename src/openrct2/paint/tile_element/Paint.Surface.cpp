@@ -1193,9 +1193,9 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     {
         const LocationXY16& pos = session->MapPosition;
 
-        for (const LocationXY16* tile = gMapSelectionTiles; tile->x != -1; tile++)
+        for (const auto& tile : gMapSelectionTiles)
         {
-            if (tile->x != pos.x || tile->y != pos.y)
+            if (tile.x != pos.x || tile.y != pos.y)
             {
                 continue;
             }

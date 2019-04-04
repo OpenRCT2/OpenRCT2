@@ -2778,7 +2778,7 @@ private:
                                 auto wallPlaceAction = WallPlaceAction(
                                     type, { x * 32, y * 32, 0 }, edge, colourA, colourB, colourC);
                                 wallPlaceAction.SetFlags(
-                                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                     | GAME_COMMAND_FLAG_PATH_SCENERY);
                                 GameActions::Execute(&wallPlaceAction);
                             }

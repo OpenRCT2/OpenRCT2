@@ -3345,7 +3345,7 @@ static void window_ride_construction_select_map_tiles(
 
     trackBlock = get_track_def_from_ride(ride, trackType);
     trackDirection &= 3;
-    int32_t selectionTileIndex = 0;
+    gMapSelectionTiles.clear();
     while (trackBlock->index != 255)
     {
         switch (trackDirection)
@@ -3368,13 +3368,10 @@ static void window_ride_construction_select_map_tiles(
                 offsetY = trackBlock->x;
                 break;
         }
-        gMapSelectionTiles[selectionTileIndex].x = x + offsetX;
-        gMapSelectionTiles[selectionTileIndex].y = y + offsetY;
-        selectionTileIndex++;
+
+        gMapSelectionTiles.push_back({ x + offsetX, y + offsetY });
         trackBlock++;
     }
-    gMapSelectionTiles[selectionTileIndex].x = -1;
-    gMapSelectionTiles[selectionTileIndex].y = -1;
 }
 
 /**
@@ -3510,10 +3507,8 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
     gMapSelectArrowPosition.x = x;
     gMapSelectArrowPosition.y = y;
     gMapSelectArrowPosition.z = z;
-    gMapSelectionTiles[0].x = x;
-    gMapSelectionTiles[0].y = y;
-    gMapSelectionTiles[1].x = -1;
-    gMapSelectionTiles[1].y = -1;
+    gMapSelectionTiles.clear();
+    gMapSelectionTiles.push_back({ x, y });
 
     ride_id_t rideIndex;
     int32_t trackType, trackDirection, liftHillAndAlternativeState;
@@ -3539,16 +3534,14 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
         if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
         {
             int32_t highestZ = 0;
-            LocationXY16* selectedTile = gMapSelectionTiles;
-            while (selectedTile->x != -1)
+            for (const auto& selectedTile : gMapSelectionTiles)
             {
-                if (selectedTile->x < (256 * 32) && selectedTile->y < (256 * 32))
+                if (selectedTile.x < (256 * 32) && selectedTile.y < (256 * 32))
                 {
-                    z = map_get_highest_z(selectedTile->x >> 5, selectedTile->y >> 5);
+                    z = map_get_highest_z(selectedTile.x / 32, selectedTile.y / 32);
                     if (z > highestZ)
                         highestZ = z;
                 }
-                selectedTile++;
             }
         }
         // loc_6CC8BF:
@@ -3764,17 +3757,14 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
     highestZ = 0;
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
-        LocationXY16* selectedTile = gMapSelectionTiles;
-        while (selectedTile->x != -1)
+        for (const auto& selectedTile : gMapSelectionTiles)
         {
-            if (selectedTile->x >= (256 * 32) || selectedTile->y >= (256 * 32))
+            if (selectedTile.x >= (256 * 32) || selectedTile.y >= (256 * 32))
                 continue;
 
-            z = map_get_highest_z(selectedTile->x >> 5, selectedTile->y >> 5);
+            z = map_get_highest_z(selectedTile.x / 32, selectedTile.y / 32);
             if (z > highestZ)
                 highestZ = z;
-
-            selectedTile++;
         }
     }
 

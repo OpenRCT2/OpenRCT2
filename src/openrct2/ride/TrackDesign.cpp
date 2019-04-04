@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceFromTrackAction.hpp"
+#include "../actions/FootpathRemoveAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
@@ -493,7 +494,7 @@ static void track_design_mirror_scenery(rct_track_td6* td6)
     rct_td6_scenery_element* scenery = td6->scenery_elements;
     for (; scenery != nullptr && scenery->scenery_object.end_flag != 0xFF; scenery++)
     {
-        uint8_t entry_type, entry_index;
+        uint8_t entry_type{ 0 }, entry_index{ 0 };
         if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
         {
             entry_type = object_entry_get_type(&scenery->scenery_object);
@@ -501,6 +502,8 @@ static void track_design_mirror_scenery(rct_track_td6* td6)
             {
                 continue;
             }
+
+            entry_index = 0;
         }
 
         rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_get_chunk(entry_type, entry_index);
@@ -672,24 +675,14 @@ void track_design_mirror(rct_track_td6* td6)
 
 static void track_design_add_selection_tile(int16_t x, int16_t y)
 {
-    LocationXY16* selectionTile = gMapSelectionTiles;
-    // Subtract 2 because the tile gets incremented later on
-    for (; (selectionTile < gMapSelectionTiles + std::size(gMapSelectionTiles) - 2) && (selectionTile->x != -1);
-         selectionTile++)
+    for (const auto tile : gMapSelectionTiles)
     {
-        if (selectionTile->x == x && selectionTile->y == y)
-        {
-            return;
-        }
-        if (selectionTile + 1 >= &gMapSelectionTiles[300])
+        if (tile.x == x && tile.y == y)
         {
             return;
         }
     }
-    selectionTile->x = x;
-    selectionTile->y = y;
-    selectionTile++;
-    selectionTile->x = -1;
+    gMapSelectionTiles.push_back(CoordsXY{ x, y });
 }
 
 static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_t z)
@@ -702,11 +695,389 @@ static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_
     gTrackPreviewMax.z = std::max(gTrackPreviewMax.z, z);
 }
 
+static bool TrackDesignPlaceSceneryElementGetEntry(uint8_t& entry_type, uint8_t& entry_index, rct_td6_scenery_element* scenery)
+{
+    if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
+    {
+        entry_type = object_entry_get_type(&scenery->scenery_object);
+        if (entry_type != OBJECT_TYPE_PATHS)
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return true;
+        }
+
+        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return true;
+        }
+
+        entry_index = 0;
+        for (PathSurfaceEntry* path = get_path_surface_entry(0); entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
+             path = get_path_surface_entry(entry_index), entry_index++)
+        {
+            if (path == nullptr)
+            {
+                return true;
+            }
+            if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+            {
+                return true;
+            }
+        }
+
+        if (entry_index == object_entry_group_counts[OBJECT_TYPE_PATHS])
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool TrackDesignPlaceSceneryElementRemoveGhost(
+    CoordsXY mapCoord, rct_td6_scenery_element* scenery, uint8_t rotation, int32_t originZ)
+{
+    uint8_t entry_type, entry_index;
+    if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
+    {
+        return true;
+    }
+
+    if (_trackDesignPlaceStateSceneryUnavailable)
+    {
+        return true;
+    }
+
+    int32_t z = (scenery->z * 8 + originZ) / 8;
+    uint8_t sceneryRotation = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
+    const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+        | GAME_COMMAND_FLAG_GHOST;
+    std::unique_ptr<GameAction> ga;
+    switch (entry_type)
+    {
+        case OBJECT_TYPE_SMALL_SCENERY:
+        {
+            uint8_t quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
+            quadrant &= 3;
+
+            rct_scenery_entry* small_scenery = get_small_scenery_entry(entry_index);
+            if (!(!scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_FULL_TILE)
+                  && scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_DIAGONAL))
+                && scenery_small_entry_has_flag(
+                       small_scenery,
+                       SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
+            {
+                quadrant = 0;
+            }
+
+            ga = std::make_unique<SmallSceneryRemoveAction>(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
+            break;
+        }
+        case OBJECT_TYPE_LARGE_SCENERY:
+            ga = std::make_unique<LargeSceneryRemoveAction>(mapCoord.x, mapCoord.y, z, sceneryRotation, 0);
+            break;
+        case OBJECT_TYPE_WALLS:
+            ga = std::make_unique<WallRemoveAction>(TileCoordsXYZD{ mapCoord.x / 32, mapCoord.y / 32, z, sceneryRotation });
+            break;
+        case OBJECT_TYPE_PATHS:
+            ga = std::make_unique<FootpathRemoveAction>(mapCoord.x, mapCoord.y, z);
+            break;
+        default:
+            return true;
+    }
+    ga->SetFlags(flags);
+    GameActions::ExecuteNested(ga.get());
+    return true;
+}
+
+static bool TrackDesignPlaceSceneryElementGetPlaceZ(rct_td6_scenery_element* scenery)
+{
+    int32_t z = scenery->z * 8 + _trackDesignPlaceZ;
+    if (z < _trackDesignPlaceSceneryZ)
+    {
+        _trackDesignPlaceSceneryZ = z;
+    }
+
+    uint8_t entry_type, entry_index;
+    TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery);
+
+    return true;
+}
+
+static bool TrackDesignPlaceSceneryElement(
+    CoordsXY mapCoord, LocationXY8 tile, uint8_t mode, rct_td6_scenery_element* scenery, uint8_t rotation, int32_t originZ)
+{
+    if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
+    {
+        track_design_add_selection_tile(mapCoord.x, mapCoord.y);
+        return true;
+    }
+
+    if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST && mode == 0)
+    {
+        return TrackDesignPlaceSceneryElementRemoveGhost(mapCoord, scenery, rotation, originZ);
+    }
+
+    if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
+    {
+        return TrackDesignPlaceSceneryElementGetPlaceZ(scenery);
+    }
+
+    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY || _trackDesignPlaceOperation == PTD_OPERATION_PLACE
+        || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST
+        || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+    {
+        uint8_t entry_type, entry_index;
+        if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
+        {
+            return true;
+        }
+
+        money32 cost;
+        int16_t z;
+        uint8_t flags;
+        uint8_t quadrant;
+
+        switch (entry_type)
+        {
+            case OBJECT_TYPE_SMALL_SCENERY:
+            {
+                if (mode != 0)
+                {
+                    return true;
+                }
+                if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
+                {
+                    return true;
+                }
+
+                rotation += scenery->flags;
+                rotation &= 3;
+                z = scenery->z * 8 + originZ;
+                quadrant = ((scenery->flags >> 2) + _currentTrackPieceDirection) & 3;
+
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
+                if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                        | GAME_COMMAND_FLAG_NO_SPEND;
+                }
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                        | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
+                }
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
+                {
+                    flags = GAME_COMMAND_FLAG_PATH_SCENERY;
+                }
+
+                gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
+
+                auto smallSceneryPlace = SmallSceneryPlaceAction(
+                    { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entry_index, scenery->primary_colour,
+                    scenery->secondary_colour);
+
+                smallSceneryPlace.SetFlags(flags);
+                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace)
+                                                           : GameActions::QueryNested(&smallSceneryPlace);
+
+                cost = res->Error == GA_ERROR::OK ? res->Cost : 0;
+                break;
+            }
+            case OBJECT_TYPE_LARGE_SCENERY:
+                if (mode != 0)
+                {
+                    return true;
+                }
+                if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
+                {
+                    return true;
+                }
+
+                rotation += scenery->flags;
+                rotation &= 3;
+
+                z = scenery->z * 8 + originZ;
+
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
+                if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                        | GAME_COMMAND_FLAG_NO_SPEND;
+                }
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                        | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
+                }
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
+                {
+                    flags = GAME_COMMAND_FLAG_PATH_SCENERY;
+                }
+
+                cost = game_do_command(
+                    mapCoord.x, flags | (rotation << 8), mapCoord.y, scenery->primary_colour | (scenery->secondary_colour << 8),
+                    GAME_COMMAND_PLACE_LARGE_SCENERY, entry_index, z);
+
+                if (cost == MONEY32_UNDEFINED)
+                {
+                    cost = 0;
+                }
+                break;
+            case OBJECT_TYPE_WALLS:
+            {
+                if (mode != 0)
+                {
+                    return true;
+                }
+                if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
+                {
+                    return true;
+                }
+
+                z = scenery->z * 8 + originZ;
+                rotation += scenery->flags;
+                rotation &= 3;
+
+                flags = GAME_COMMAND_FLAG_APPLY;
+                if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                        | GAME_COMMAND_FLAG_NO_SPEND;
+                }
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
+                {
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                        | GAME_COMMAND_FLAG_GHOST;
+                }
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
+                {
+                    flags = 0;
+                }
+
+                auto wallPlaceAction = WallPlaceAction(
+                    entry_index, { mapCoord.x, mapCoord.y, z }, rotation, scenery->primary_colour, scenery->secondary_colour,
+                    scenery->flags & 0xFC);
+                wallPlaceAction.SetFlags(flags);
+                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::Execute(&wallPlaceAction)
+                                                           : GameActions::Query(&wallPlaceAction);
+
+                cost = res->Cost;
+                break;
+            }
+            case OBJECT_TYPE_PATHS:
+                if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
+                {
+                    return true;
+                }
+
+                z = (scenery->z * 8 + originZ) / 8;
+                if (mode == 0)
+                {
+                    if (scenery->flags & (1 << 7))
+                    {
+                        // dh
+                        entry_index |= (1 << 7);
+                    }
+
+                    uint8_t bh = ((scenery->flags & 0xF) << rotation);
+                    flags = bh >> 4;
+                    bh = (bh | flags) & 0xF;
+                    flags = (((scenery->flags >> 5) + rotation) & 3) << 5;
+                    bh |= flags;
+
+                    bh |= scenery->flags & 0x90;
+
+                    flags = GAME_COMMAND_FLAG_APPLY;
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+                    {
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+                    }
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
+                    {
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                            | GAME_COMMAND_FLAG_GHOST;
+                    }
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
+                    {
+                        flags = 0;
+                    }
+
+                    uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
+                    uint8_t edges = bh & 0xF;
+                    auto footpathPlaceAction = FootpathPlaceFromTrackAction(
+                        { mapCoord.x, mapCoord.y, z * 8 }, slope, entry_index, edges);
+                    footpathPlaceAction.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
+                                                               : GameActions::QueryNested(&footpathPlaceAction);
+                    // Ignore failures
+                    cost = res->Error == GA_ERROR::OK ? res->Cost : 0;
+                }
+                else
+                {
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
+                    {
+                        return true;
+                    }
+
+                    TileElement* tile_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
+
+                    if (tile_element == nullptr)
+                    {
+                        return true;
+                    }
+
+                    footpath_queue_chain_reset();
+                    footpath_remove_edges_at(mapCoord.x, mapCoord.y, tile_element);
+
+                    flags = GAME_COMMAND_FLAG_APPLY;
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+                    {
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
+                    }
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
+                    {
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                            | GAME_COMMAND_FLAG_GHOST;
+                    }
+
+                    footpath_connect_edges(mapCoord.x, mapCoord.y, tile_element, flags);
+                    footpath_update_queue_chains();
+                    return true;
+                }
+                break;
+            default:
+                _trackDesignPlaceStateSceneryUnavailable = true;
+                return true;
+        }
+        _trackDesignPlaceCost = add_clamp_money32(_trackDesignPlaceCost, cost);
+        if (_trackDesignPlaceOperation != PTD_OPERATION_PLACE)
+        {
+            if (cost == MONEY32_UNDEFINED)
+            {
+                _trackDesignPlaceCost = MONEY32_UNDEFINED;
+            }
+        }
+        if (_trackDesignPlaceCost != MONEY32_UNDEFINED)
+        {
+            return true;
+        }
+        if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE)
+        {
+            return true;
+        }
+        return false;
+    }
+    return true;
+}
+
 /**
  *
  *  rct2: 0x006D0964
  */
-static int32_t track_design_place_scenery(
+static int32_t track_design_place_all_scenery(
     rct_td6_scenery_element* scenery_start, int32_t originX, int32_t originY, int32_t originZ)
 {
     for (uint8_t mode = 0; mode <= 1; mode++)
@@ -745,423 +1116,11 @@ static int32_t track_design_place_scenery(
                     break;
             }
 
-            LocationXY16 mapCoord = { (int16_t)(tile.x * 32), (int16_t)(tile.y * 32) };
+            CoordsXY mapCoord = { tile.x * 32, tile.y * 32 };
             track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
 
-            if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
+            if (!TrackDesignPlaceSceneryElement(mapCoord, tile, mode, scenery, rotation, originZ))
             {
-                uint8_t new_tile = 1;
-                LocationXY16* selectionTile = gMapSelectionTiles;
-                for (; selectionTile->x != -1; selectionTile++)
-                {
-                    if (selectionTile->x == tile.x && selectionTile->y == tile.y)
-                    {
-                        new_tile = 0;
-                        break;
-                    }
-                    // Need to subtract one because selectionTile in following block is incremented
-                    if (selectionTile + 1 >= &gMapSelectionTiles[std::size(gMapSelectionTiles) - 1])
-                    {
-                        new_tile = 0;
-                        break;
-                    }
-                }
-                if (new_tile)
-                {
-                    selectionTile->x = tile.x;
-                    selectionTile->y = tile.y;
-                    selectionTile++;
-                    selectionTile->x = -1;
-                }
-            }
-
-            if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES && mode == 0)
-            {
-                uint8_t entry_type, entry_index;
-                if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
-                {
-                    entry_type = object_entry_get_type(&scenery->scenery_object);
-                    if (entry_type != OBJECT_TYPE_PATHS)
-                    {
-                        entry_type = 0xFF;
-                    }
-                    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    {
-                        entry_type = 0xFF;
-                    }
-
-                    entry_index = 0;
-                    for (PathSurfaceEntry* path = get_path_surface_entry(0);
-                         entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-                         path = get_path_surface_entry(entry_index), entry_index++)
-                    {
-                        if (path == nullptr)
-                        {
-                            continue;
-                        }
-                        if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (entry_index == object_entry_group_counts[OBJECT_TYPE_PATHS])
-                    {
-                        entry_type = 0xFF;
-                    }
-                }
-                int32_t z;
-                const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-                    | GAME_COMMAND_FLAG_GHOST;
-
-                switch (entry_type)
-                {
-                    case OBJECT_TYPE_SMALL_SCENERY:
-                    {
-                        // bl
-                        rotation += scenery->flags;
-                        rotation &= 3;
-
-                        // bh
-                        uint8_t quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
-                        quadrant &= 3;
-
-                        rct_scenery_entry* small_scenery = get_small_scenery_entry(entry_index);
-                        if (!(!scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_FULL_TILE)
-                              && scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_DIAGONAL))
-                            && scenery_small_entry_has_flag(
-                                   small_scenery,
-                                   SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE
-                                       | SMALL_SCENERY_FLAG_THREE_QUARTERS))
-                        {
-                            quadrant = 0;
-                        }
-
-                        z = (scenery->z * 8 + originZ) / 8;
-
-                        auto removeSceneryAction = SmallSceneryRemoveAction(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
-                        removeSceneryAction.SetFlags(flags);
-                        removeSceneryAction.Execute();
-
-                        break;
-                    }
-                    case OBJECT_TYPE_LARGE_SCENERY:
-                    {
-                        z = (scenery->z * 8 + originZ) / 8;
-
-                        auto removeSceneryAction = LargeSceneryRemoveAction(
-                            mapCoord.x, mapCoord.y, z, (rotation + scenery->flags) & 0x3, 0);
-                        removeSceneryAction.SetFlags(flags);
-                        removeSceneryAction.Execute();
-
-                        break;
-                    }
-                    case OBJECT_TYPE_WALLS:
-                    {
-                        z = (scenery->z * 8 + originZ) / 8;
-
-                        uint8_t direction = (rotation + scenery->flags) & TILE_ELEMENT_DIRECTION_MASK;
-
-                        TileCoordsXYZD wallLocation = { tile.x, tile.y, z, direction };
-                        auto wallRemoveAction = WallRemoveAction(wallLocation);
-                        wallRemoveAction.SetFlags(flags);
-
-                        GameActions::Execute(&wallRemoveAction);
-
-                        break;
-                    }
-                    case OBJECT_TYPE_PATHS:
-                        z = (scenery->z * 8 + originZ) / 8;
-                        footpath_remove(mapCoord.x, mapCoord.y, z, flags);
-                        break;
-                }
-            }
-
-            if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
-            {
-                int32_t z = scenery->z * 8 + _trackDesignPlaceZ;
-                if (z < _trackDesignPlaceSceneryZ)
-                {
-                    _trackDesignPlaceSceneryZ = z;
-                }
-            }
-
-            if (_trackDesignPlaceOperation == PTD_OPERATION_1 || _trackDesignPlaceOperation == PTD_OPERATION_2
-                || _trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z || _trackDesignPlaceOperation == PTD_OPERATION_4
-                || _trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
-            {
-                uint8_t entry_type, entry_index;
-                if (!find_object_in_entry_group(&scenery->scenery_object, &entry_type, &entry_index))
-                {
-                    entry_type = object_entry_get_type(&scenery->scenery_object);
-                    if (entry_type != OBJECT_TYPE_PATHS)
-                    {
-                        _trackDesignPlaceStateSceneryUnavailable = true;
-                        continue;
-                    }
-
-                    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    {
-                        _trackDesignPlaceStateSceneryUnavailable = true;
-                        continue;
-                    }
-
-                    entry_index = 0;
-                    for (PathSurfaceEntry* path = get_path_surface_entry(0);
-                         entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-                         path = get_path_surface_entry(entry_index), entry_index++)
-                    {
-                        if (path == nullptr)
-                        {
-                            continue;
-                        }
-                        if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (entry_index == object_entry_group_counts[OBJECT_TYPE_PATHS])
-                    {
-                        _trackDesignPlaceStateSceneryUnavailable = true;
-                        continue;
-                    }
-                }
-
-                money32 cost;
-                int16_t z;
-                uint8_t flags;
-                uint8_t quadrant;
-
-                switch (entry_type)
-                {
-                    case OBJECT_TYPE_SMALL_SCENERY:
-                    {
-                        if (mode != 0)
-                        {
-                            continue;
-                        }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
-                        {
-                            continue;
-                        }
-
-                        rotation += scenery->flags;
-                        rotation &= 3;
-                        z = scenery->z * 8 + originZ;
-                        quadrant = ((scenery->flags >> 2) + _currentTrackPieceDirection) & 3;
-
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
-                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
-                        }
-                        else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
-                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5;
-                        }
-                        else if (_trackDesignPlaceOperation == PTD_OPERATION_1)
-                        {
-                            flags = GAME_COMMAND_FLAG_PATH_SCENERY;
-                        }
-
-                        gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-
-                        auto smallSceneryPlace = SmallSceneryPlaceAction(
-                            { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entry_index, scenery->primary_colour,
-                            scenery->secondary_colour);
-
-                        smallSceneryPlace.SetFlags(flags);
-                        auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace)
-                                                                   : GameActions::QueryNested(&smallSceneryPlace);
-
-                        cost = res->Error == GA_ERROR::OK ? res->Cost : 0;
-                        break;
-                    }
-                    case OBJECT_TYPE_LARGE_SCENERY:
-                        if (mode != 0)
-                        {
-                            continue;
-                        }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
-                        {
-                            continue;
-                        }
-
-                        rotation += scenery->flags;
-                        rotation &= 3;
-
-                        z = scenery->z * 8 + originZ;
-
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
-                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
-                        }
-                        else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
-                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5;
-                        }
-                        else if (_trackDesignPlaceOperation == PTD_OPERATION_1)
-                        {
-                            flags = GAME_COMMAND_FLAG_PATH_SCENERY;
-                        }
-
-                        cost = game_do_command(
-                            mapCoord.x, flags | (rotation << 8), mapCoord.y,
-                            scenery->primary_colour | (scenery->secondary_colour << 8), GAME_COMMAND_PLACE_LARGE_SCENERY,
-                            entry_index, z);
-
-                        if (cost == MONEY32_UNDEFINED)
-                        {
-                            cost = 0;
-                        }
-                        break;
-                    case OBJECT_TYPE_WALLS:
-                    {
-                        if (mode != 0)
-                        {
-                            continue;
-                        }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
-                        {
-                            continue;
-                        }
-
-                        z = scenery->z * 8 + originZ;
-                        rotation += scenery->flags;
-                        rotation &= 3;
-
-                        flags = GAME_COMMAND_FLAG_APPLY;
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
-                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
-                        }
-                        else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-                                | GAME_COMMAND_FLAG_GHOST;
-                        }
-                        else if (_trackDesignPlaceOperation == PTD_OPERATION_1)
-                        {
-                            flags = 0;
-                        }
-
-                        auto wallPlaceAction = WallPlaceAction(
-                            entry_index, { mapCoord.x, mapCoord.y, z }, rotation, scenery->primary_colour,
-                            scenery->secondary_colour, scenery->flags & 0xFC);
-                        auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::Execute(&wallPlaceAction)
-                                                                   : GameActions::Query(&wallPlaceAction);
-
-                        cost = res->Cost;
-                        break;
-                    }
-                    case OBJECT_TYPE_PATHS:
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
-                        {
-                            continue;
-                        }
-
-                        z = (scenery->z * 8 + originZ) / 8;
-                        if (mode == 0)
-                        {
-                            if (scenery->flags & (1 << 7))
-                            {
-                                // dh
-                                entry_index |= (1 << 7);
-                            }
-
-                            uint8_t bh = ((scenery->flags & 0xF) << rotation);
-                            flags = bh >> 4;
-                            bh = (bh | flags) & 0xF;
-                            flags = (((scenery->flags >> 5) + rotation) & 3) << 5;
-                            bh |= flags;
-
-                            bh |= scenery->flags & 0x90;
-
-                            flags = GAME_COMMAND_FLAG_APPLY;
-                            if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
-                            {
-                                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
-                            }
-                            if (_trackDesignPlaceOperation == PTD_OPERATION_4)
-                            {
-                                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-                                    | GAME_COMMAND_FLAG_GHOST;
-                            }
-                            if (_trackDesignPlaceOperation == PTD_OPERATION_1)
-                            {
-                                flags = 0;
-                            }
-
-                            uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
-                            uint8_t edges = bh & 0xF;
-                            auto footpathPlaceAction = FootpathPlaceFromTrackAction(
-                                { mapCoord.x, mapCoord.y, z * 8 }, slope, entry_index, edges);
-                            footpathPlaceAction.SetFlags(flags);
-                            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
-                                                                       : GameActions::QueryNested(&footpathPlaceAction);
-                            // Ignore failures
-                            cost = res->Error == GA_ERROR::OK ? res->Cost : 0;
-                        }
-                        else
-                        {
-                            if (_trackDesignPlaceOperation == PTD_OPERATION_1)
-                            {
-                                continue;
-                            }
-
-                            TileElement* tile_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
-
-                            if (tile_element == nullptr)
-                            {
-                                continue;
-                            }
-
-                            footpath_queue_chain_reset();
-                            footpath_remove_edges_at(mapCoord.x, mapCoord.y, tile_element);
-
-                            flags = GAME_COMMAND_FLAG_APPLY;
-                            if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
-                            {
-                                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
-                            }
-                            if (_trackDesignPlaceOperation == PTD_OPERATION_4)
-                            {
-                                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-                                    | GAME_COMMAND_FLAG_GHOST;
-                            }
-
-                            footpath_connect_edges(mapCoord.x, mapCoord.y, tile_element, flags);
-                            footpath_update_queue_chains();
-                            continue;
-                        }
-                        break;
-                    default:
-                        _trackDesignPlaceStateSceneryUnavailable = true;
-                        continue;
-                }
-                _trackDesignPlaceCost = add_clamp_money32(_trackDesignPlaceCost, cost);
-                if (_trackDesignPlaceOperation != PTD_OPERATION_2)
-                {
-                    if (cost == MONEY32_UNDEFINED)
-                    {
-                        _trackDesignPlaceCost = MONEY32_UNDEFINED;
-                    }
-                }
-                if (_trackDesignPlaceCost != MONEY32_UNDEFINED)
-                {
-                    continue;
-                }
-                if (_trackDesignPlaceOperation == PTD_OPERATION_2)
-                {
-                    continue;
-                }
                 return 0;
             }
         }
@@ -1173,7 +1132,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
-        gMapSelectionTiles->x = -1;
+        gMapSelectionTiles.clear();
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
         gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
@@ -1201,8 +1160,9 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
             track_design_add_selection_tile(mapCoord.x, mapCoord.y);
         }
 
-        if (_trackDesignPlaceOperation == PTD_OPERATION_1 || _trackDesignPlaceOperation == PTD_OPERATION_2
-            || _trackDesignPlaceOperation == PTD_OPERATION_4 || _trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
+        if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY || _trackDesignPlaceOperation == PTD_OPERATION_PLACE
+            || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST
+            || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
         {
             uint8_t flags;
             money32 cost = 0;
@@ -1217,20 +1177,21 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                     flags = GAME_COMMAND_FLAG_APPLY;
                     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-                    if (_trackDesignPlaceOperation == PTD_OPERATION_1)
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
                         auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord.x, mapCoord.y, z }, false);
                         cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     }
                     else
                     {
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
+                        if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                                | GAME_COMMAND_FLAG_NO_SPEND;
                         }
-                        else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                        else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, false);
@@ -1251,20 +1212,21 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                     flags = GAME_COMMAND_FLAG_APPLY;
                     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-                    if (_trackDesignPlaceOperation == PTD_OPERATION_1)
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
                         auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord.x, mapCoord.y, z }, true);
                         cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     }
                     else
                     {
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
+                        if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                                | GAME_COMMAND_FLAG_NO_SPEND;
                         }
-                        else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                        else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, true);
@@ -1280,16 +1242,16 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                 default:
                     maze_entry = rol16(maze_element->maze_entry, rotation * 4);
 
-                    if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
+                    if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                     {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
                     }
-                    else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                    else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                     {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                             | GAME_COMMAND_FLAG_GHOST;
                     }
-                    else if (_trackDesignPlaceOperation == PTD_OPERATION_1)
+                    else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
                         flags = 0;
                     }
@@ -1363,11 +1325,12 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
         }
     }
 
-    if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
+    if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST)
     {
         ride_action_modify(
             ride, RIDE_MODIFY_DEMOLISH,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                | GAME_COMMAND_FLAG_GHOST);
     }
 
     gTrackPreviewOrigin.x = x;
@@ -1386,7 +1349,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
     gTrackPreviewOrigin.z = z;
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
-        gMapSelectionTiles->x = -1;
+        gMapSelectionTiles.clear();
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
         gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
@@ -1420,21 +1383,21 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                     track_design_add_selection_tile(tile.x, tile.y);
                 }
                 break;
-            case PTD_OPERATION_CLEAR_OUTLINES:
+            case PTD_OPERATION_REMOVE_GHOST:
             {
                 const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
                 const rct_preview_track* trackBlock = trackBlockArray[trackType];
                 int32_t tempZ = z - trackCoordinates->z_begin + trackBlock->z;
                 auto trackRemoveAction = TrackRemoveAction(trackType, 0, { x, y, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
-                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                 GameActions::ExecuteNested(&trackRemoveAction);
                 break;
             }
-            case PTD_OPERATION_1:
-            case PTD_OPERATION_2:
-            case PTD_OPERATION_4:
-            case PTD_OPERATION_GET_COST:
+            case PTD_OPERATION_PLACE_QUERY:
+            case PTD_OPERATION_PLACE:
+            case PTD_OPERATION_PLACE_GHOST:
+            case PTD_OPERATION_PLACE_TRACK_PREVIEW:
             {
                 const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
 
@@ -1455,18 +1418,18 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                 }
 
                 uint8_t flags = GAME_COMMAND_FLAG_APPLY;
-                if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
+                if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                 {
                     flags |= GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
-                    flags |= GAME_COMMAND_FLAG_5;
+                    flags |= GAME_COMMAND_FLAG_NO_SPEND;
                 }
-                else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                 {
                     flags |= GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
-                    flags |= GAME_COMMAND_FLAG_5;
+                    flags |= GAME_COMMAND_FLAG_NO_SPEND;
                     flags |= GAME_COMMAND_FLAG_GHOST;
                 }
-                else if (_trackDesignPlaceOperation == PTD_OPERATION_1)
+                else if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                 {
                     flags = 0;
                 }
@@ -1569,10 +1532,10 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
             case PTD_OPERATION_DRAW_OUTLINES:
                 track_design_add_selection_tile(x, y);
                 break;
-            case PTD_OPERATION_1:
-            case PTD_OPERATION_2:
-            case PTD_OPERATION_4:
-            case PTD_OPERATION_GET_COST:
+            case PTD_OPERATION_PLACE_QUERY:
+            case PTD_OPERATION_PLACE:
+            case PTD_OPERATION_PLACE_GHOST:
+            case PTD_OPERATION_PLACE_TRACK_PREVIEW:
             {
                 rotation = (rotation + entrance->direction) & 3;
                 bool isExit = false;
@@ -1581,7 +1544,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                     isExit = true;
                 }
 
-                if (_trackDesignPlaceOperation != PTD_OPERATION_1)
+                if (_trackDesignPlaceOperation != PTD_OPERATION_PLACE_QUERY)
                 {
                     LocationXY16 tile = {
                         (int16_t)(x + CoordsDirectionDelta[rotation].x),
@@ -1604,16 +1567,17 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
 
                         int32_t stationIndex = tile_element->AsTrack()->GetStationIndex();
                         uint8_t flags = GAME_COMMAND_FLAG_APPLY;
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
+                        if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                                | GAME_COMMAND_FLAG_NO_SPEND;
                         }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                        if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST)
                         {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_1)
+                        if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                         {
                             flags = 0;
                         }
@@ -1659,7 +1623,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
         }
     }
 
-    if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
+    if (_trackDesignPlaceOperation == PTD_OPERATION_REMOVE_GHOST)
     {
         sub_6CB945(ride);
         ride->Delete();
@@ -1718,7 +1682,7 @@ int32_t place_virtual_track(
     rct_td6_scenery_element* scenery = td6->scenery_elements;
     if (track_place_success && scenery != nullptr)
     {
-        if (!track_design_place_scenery(scenery, gTrackPreviewOrigin.x, gTrackPreviewOrigin.y, gTrackPreviewOrigin.z))
+        if (!track_design_place_all_scenery(scenery, gTrackPreviewOrigin.x, gTrackPreviewOrigin.y, gTrackPreviewOrigin.z))
         {
             return _trackDesignPlaceCost;
         }
@@ -1761,7 +1725,7 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, Ride**
 
     ride_id_t rideIndex;
     uint8_t colour;
-    uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+    uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
     if (ride_create_command(td6->type, entry_index, rideCreateFlags, &rideIndex, &colour) == MONEY32_UNDEFINED)
     {
         return false;
@@ -1820,7 +1784,7 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, Ride**
         *flags |= TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE;
     }
 
-    money32 resultCost = place_virtual_track(td6, PTD_OPERATION_GET_COST, placeScenery, ride, mapSize, mapSize, z);
+    money32 resultCost = place_virtual_track(td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, ride, mapSize, mapSize, z);
     gParkFlags = backup_park_flags;
 
     if (resultCost != MONEY32_UNDEFINED)
@@ -1935,11 +1899,11 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
     {
         _trackDesignDontPlaceScenery = false;
-        cost = place_virtual_track(td6, PTD_OPERATION_1, true, ride, x, y, z);
+        cost = place_virtual_track(td6, PTD_OPERATION_PLACE_QUERY, true, ride, x, y, z);
         if (_trackDesignPlaceStateSceneryUnavailable)
         {
             _trackDesignDontPlaceScenery = true;
-            cost = place_virtual_track(td6, PTD_OPERATION_1, false, ride, x, y, z);
+            cost = place_virtual_track(td6, PTD_OPERATION_PLACE_QUERY, false, ride, x, y, z);
         }
     }
     else
@@ -1947,11 +1911,11 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
         uint8_t operation;
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
-            operation = PTD_OPERATION_4;
+            operation = PTD_OPERATION_PLACE_GHOST;
         }
         else
         {
-            operation = PTD_OPERATION_2;
+            operation = PTD_OPERATION_PLACE;
         }
 
         cost = place_virtual_track(td6, operation, !_trackDesignDontPlaceScenery, ride, x, y, z);

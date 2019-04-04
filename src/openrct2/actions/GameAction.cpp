@@ -326,7 +326,7 @@ namespace GameActions
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)
                 {
-                    bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_5) == 0;
+                    bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
                     bool recordAction = false;
                     if (replayManager)
@@ -358,7 +358,7 @@ namespace GameActions
         }
 
         // Only show errors when its not a ghost and not a preview and also top level action.
-        bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5) && topLevel == true;
+        bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && topLevel == true;
 
         // In network mode the error should be only shown to the issuer of the action.
         if (network_get_mode() != NETWORK_MODE_NONE)

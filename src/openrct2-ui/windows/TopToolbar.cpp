@@ -2757,7 +2757,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
         case SCENERY_TYPE_LARGE:
         {
             scenery = get_large_scenery_entry(selected_scenery);
-            LocationXY16* selectedTile = gMapSelectionTiles;
+            gMapSelectionTiles.clear();
 
             for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (int16_t)(uint16_t)0xFFFF;
                  tile++)
@@ -2769,11 +2769,8 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
                 tileLocation.x += mapTile.x;
                 tileLocation.y += mapTile.y;
 
-                selectedTile->x = tileLocation.x;
-                selectedTile->y = tileLocation.y;
-                selectedTile++;
+                gMapSelectionTiles.push_back({ tileLocation.x, tileLocation.y });
             }
-            selectedTile->x = -1;
 
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             map_invalidate_map_selection_tiles();

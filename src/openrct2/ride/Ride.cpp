@@ -1451,7 +1451,7 @@ void ride_remove_provisional_track_piece()
     ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST;
         maze_set_track(x, y, z, flags, false, 0, rideIndex, GC_SET_MAZE_TRACK_FILL);
         maze_set_track(x, y + 16, z, flags, false, 1, rideIndex, GC_SET_MAZE_TRACK_FILL);
@@ -1474,7 +1474,8 @@ void ride_remove_provisional_track_piece()
             auto trackRemoveAction = TrackRemoveAction{ trackType,
                                                         trackSequence,
                                                         { next_track.x, next_track.y, z, static_cast<Direction>(direction) } };
-            trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+            trackRemoveAction.SetFlags(
+                GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&trackRemoveAction);
         }
     }
