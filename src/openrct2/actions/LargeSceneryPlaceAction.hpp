@@ -129,15 +129,14 @@ public:
                     GA_ERROR::NO_CLEARANCE, STR_CANT_POSITION_THIS_HERE, gGameCommandErrorText, gCommonFormatArgs);
             }
 
-            if ((gMapGroundFlags & ELEMENT_IS_UNDERWATER) || (gMapGroundFlags & ELEMENT_IS_UNDERGROUND))
-            {
-                log_error("Can't place object underwater / underground.");
-                return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE);
-            }
 
             int32_t tempSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
             if (!gCheatsDisableClearanceChecks)
             {
+                if ((gMapGroundFlags & ELEMENT_IS_UNDERWATER) || (gMapGroundFlags & ELEMENT_IS_UNDERGROUND))
+                {
+                    return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+                }
                 if (gSceneryGroundFlags && !(gSceneryGroundFlags & tempSceneryGroundFlags))
                 {
                     return MakeResult(
@@ -154,8 +153,7 @@ public:
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(curTile.x, curTile.y, zLow * 8)
                 && !gCheatsSandboxMode)
             {
-                log_error("Location not owned.");
-                return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE);
+                return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 

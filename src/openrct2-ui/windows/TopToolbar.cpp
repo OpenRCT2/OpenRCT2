@@ -1889,14 +1889,14 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, (parameter_1 & 0xFF00) >> 8 };
 
             auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, largeSceneryType, primaryColour, secondaryColour);
-            sceneryPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+            sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
                     audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
                 }
                 else
                 {
-                    audio_play_sound_at_location(SOUND_ERROR, result->Position.x, result->Position.y, result->Position.z);
+                    audio_play_sound_at_location(SOUND_ERROR, loc.x, loc.y, gSceneryPlaceZ);
                 }
             });
             auto res = GameActions::Execute(&sceneryPlaceAction);
