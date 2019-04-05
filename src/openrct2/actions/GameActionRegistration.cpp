@@ -24,6 +24,7 @@
 #include "LandRaiseAction.hpp"
 #include "LandSetHeightAction.hpp"
 #include "LandSmoothAction.hpp"
+#include "LargeSceneryPlaceAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
 #include "LargeScenerySetColourAction.hpp"
 #include "LoadOrQuitAction.hpp"
@@ -124,6 +125,7 @@ namespace GameActions
         Register<SmallSceneryPlaceAction>();
         Register<SmallSceneryRemoveAction>();
         Register<SmallScenerySetColourAction>();
+        Register<LargeSceneryPlaceAction>();
         Register<LargeSceneryRemoveAction>();
         Register<LargeScenerySetColourAction>();
         Register<LandLowerAction>();
