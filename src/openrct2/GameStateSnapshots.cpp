@@ -421,6 +421,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
             const rct_sprite& spriteCmp = spritesCmp[i];
 
             changeData.spriteIdentifier = spriteBase.generic.sprite_identifier;
+            changeData.miscIdentifier = spriteBase.generic.type;
 
             if (spriteBase.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL
                 && spriteCmp.generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
@@ -463,7 +464,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
         return res;
     }
 
-    static const char* GetSpriteIdentifierName(uint32_t spriteIdentifier)
+    static const char* GetSpriteIdentifierName(uint32_t spriteIdentifier, uint8_t miscIdentifier)
     {
         switch (spriteIdentifier)
         {
@@ -476,6 +477,29 @@ struct GameStateSnapshots : public IGameStateSnapshots
             case SPRITE_IDENTIFIER_LITTER:
                 return "Litter";
             case SPRITE_IDENTIFIER_MISC:
+                switch (miscIdentifier)
+                {
+                    case SPRITE_MISC_STEAM_PARTICLE:
+                        return "Misc: Steam Particle";
+                    case SPRITE_MISC_MONEY_EFFECT:
+                        return "Misc: Money effect";
+                    case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                        return "Misc: Crash Vehicle Particle";
+                    case SPRITE_MISC_EXPLOSION_CLOUD:
+                        return "Misc: Explosion Cloud";
+                    case SPRITE_MISC_CRASH_SPLASH:
+                        return "Misc: Crash Splash";
+                    case SPRITE_MISC_EXPLOSION_FLARE:
+                        return "Misc: Explosion Flare";
+                    case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                        return "Misc: Jumping fountain water";
+                    case SPRITE_MISC_BALLOON:
+                        return "Misc: Balloon";
+                    case SPRITE_MISC_DUCK:
+                        return "Misc: Duck";
+                    case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+                        return "Misc: Jumping fountain snow";
+                }
                 return "Misc";
         }
         return "Unknown";
@@ -491,7 +515,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
             if (change.changeType == GameStateSpriteChange_t::EQUAL)
                 continue;
 
-            const char* typeName = GetSpriteIdentifierName(change.spriteIdentifier);
+            const char* typeName = GetSpriteIdentifierName(change.spriteIdentifier, change.miscIdentifier);
 
             if (change.changeType == GameStateSpriteChange_t::ADDED)
             {
