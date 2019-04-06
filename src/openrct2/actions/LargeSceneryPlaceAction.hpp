@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
