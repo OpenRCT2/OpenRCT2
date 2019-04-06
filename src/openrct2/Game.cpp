@@ -92,7 +92,7 @@ static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_callback_place_banner,
+    nullptr,
     nullptr,
     nullptr,
     game_command_callback_pickup_guest,
@@ -407,12 +407,6 @@ int32_t game_do_command_p(
     // Increment nest count
     gGameCommandNestLevel++;
 
-    // Remove ghost scenery so it doesn't interfere with incoming network command
-    if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) && (command == GAME_COMMAND_PLACE_BANNER))
-    {
-        scenery_remove_ghost_tool_placement();
-    }
-
     if (game_command_playerid == -1)
     {
         game_command_playerid = network_get_current_player_id();
@@ -606,39 +600,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
             ride_name,
         };
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
-        network_append_server_log(log_msg);
-    }
-    else if (command == GAME_COMMAND_PLACE_BANNER)
-    {
-        uint8_t flags = *ebx & 0xFF;
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            // Don't log ghost previews being removed
-            return;
-        }
-
-        // Log placing scenery
-        char* args[1] = {
-            (char*)player_name,
-        };
-
-        format_string(log_msg, 256, STR_LOG_PLACE_SCENERY, args);
-        network_append_server_log(log_msg);
-    }
-    else if (command == GAME_COMMAND_REMOVE_BANNER)
-    {
-        uint8_t flags = *ebx & 0xFF;
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            // Don't log ghost previews being removed
-            return;
-        }
-
-        // Log removing scenery
-        char* args[1] = {
-            (char*)player_name,
-        };
-        format_string(log_msg, 256, STR_LOG_REMOVE_SCENERY, args);
         network_append_server_log(log_msg);
     }
 }
@@ -1252,8 +1213,8 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_place_track_design,
     nullptr,
     game_command_place_maze_design,
-    game_command_place_banner,
-    game_command_remove_banner,
+    nullptr,
+    nullptr,
     nullptr,
     nullptr,
     nullptr,

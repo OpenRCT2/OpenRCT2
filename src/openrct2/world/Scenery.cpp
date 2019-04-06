@@ -16,6 +16,7 @@
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
+#include "../actions/BannerRemoveAction.hpp"
 #include "../common.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
@@ -235,9 +236,11 @@ void scenery_remove_ghost_tool_placement()
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_4)
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_4;
-        constexpr uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-            | GAME_COMMAND_FLAG_NO_SPEND;
-        game_do_command(x, flags, y, z | (gSceneryPlaceRotation << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
+
+        auto removeSceneryAction = BannerRemoveAction({ x, y, z * 8, gSceneryPlaceRotation });
+        removeSceneryAction.SetFlags(
+            GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+        GameActions::Execute(&removeSceneryAction);
     }
 }
 

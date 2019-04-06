@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2/actions/BannerRemoveAction.hpp>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/BannerSetColourAction.hpp>
@@ -188,10 +189,12 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_BANNER_DEMOLISH:
-            game_do_command(
-                x, 1, y, tile_element->base_height | (tile_element->AsBanner()->GetPosition() << 8), GAME_COMMAND_REMOVE_BANNER,
-                0, 0);
+        {
+            auto bannerRemoveAction = BannerRemoveAction(
+                { x, y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() });
+            GameActions::Execute(&bannerRemoveAction);
             break;
+        }
         case WIDX_BANNER_TEXT:
             window_text_input_open(
                 w, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, gBanners[w->number].string_idx, 0, 32);

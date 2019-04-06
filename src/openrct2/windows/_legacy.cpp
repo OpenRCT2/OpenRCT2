@@ -593,19 +593,6 @@ void window_ride_construction_update_active_elements()
     context_broadcast_intent(&intent);
 }
 
-void game_command_callback_place_banner(
-    [[maybe_unused]] int32_t eax, int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi, int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    if (ebx != MONEY32_UNDEFINED)
-    {
-        int32_t bannerId = edi;
-
-        audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-        context_open_detail_window(WD_BANNER, bannerId);
-    }
-}
-
 /**
  *
  *  rct2: 0x0066DB3D

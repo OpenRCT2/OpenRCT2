@@ -23,6 +23,7 @@
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../actions/WaterSetHeightAction.hpp"
+#include "../actions/BannerRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
@@ -1808,11 +1809,12 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         }
         break;
         case TILE_ELEMENT_TYPE_BANNER:
-            gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-            game_do_command(
-                x, GAME_COMMAND_FLAG_APPLY, y, (element->base_height) | ((element->AsBanner()->GetPosition() & 3) << 8),
-                GAME_COMMAND_REMOVE_BANNER, 0, 0);
+        {
+            auto bannerRemoveAction = BannerRemoveAction(
+                { x, y, element->base_height * 8, element->AsBanner()->GetPosition() });
+            GameActions::Execute(&bannerRemoveAction);
             break;
+        }
         default:
             tile_element_remove(element);
             break;
