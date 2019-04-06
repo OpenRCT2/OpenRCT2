@@ -644,8 +644,8 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         network_append_server_log(log_msg);
     }
     else if (
-        command == GAME_COMMAND_SET_WALL_COLOUR || command == GAME_COMMAND_SET_LARGE_SCENERY_COLOUR
-        || command == GAME_COMMAND_SET_BANNER_COLOUR || command == GAME_COMMAND_SET_BANNER_STYLE)
+        command == GAME_COMMAND_SET_LARGE_SCENERY_COLOUR || command == GAME_COMMAND_SET_BANNER_COLOUR
+        || command == GAME_COMMAND_SET_BANNER_STYLE)
     {
         // Log editing scenery
         char* args[1] = {
@@ -1292,7 +1292,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_place_banner,
     game_command_remove_banner,
     nullptr,
-    game_command_set_wall_colour,
+    nullptr,
     game_command_set_large_scenery_colour,
     game_command_set_banner_colour,
     game_command_set_land_ownership,

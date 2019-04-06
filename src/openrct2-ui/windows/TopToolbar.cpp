@@ -36,6 +36,7 @@
 #include <openrct2/actions/SmallScenerySetColourAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/actions/WallPlaceAction.hpp>
+#include <openrct2/actions/WallSetColourAction.hpp>
 #include <openrct2/actions/WaterLowerAction.hpp>
 #include <openrct2/actions/WaterRaiseAction.hpp>
 #include <openrct2/audio/audio.h>
@@ -1026,11 +1027,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             if (!(scenery_entry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
                 return;
 
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, 1 | (gWindowSceneryPrimaryColour << 8), grid_y,
-                tile_element->GetDirection() | (tile_element->base_height << 8), GAME_COMMAND_SET_WALL_COLOUR, 0,
-                gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
+            auto repaintScenery = WallSetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() }, gWindowSceneryPrimaryColour,
+                gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
