@@ -9,10 +9,13 @@
 
 #pragma once
 
+#include "../management/Finance.h"
+#include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
 #include "../world/LargeScenery.h"
 #include "../world/MapAnimation.h"
+#include "../world/Scenery.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GAME_COMMAND_PLACE_LARGE_SCENERY, GameActionResult)
@@ -62,7 +65,9 @@ public:
 
         if (_primaryColour > TILE_ELEMENT_COLOUR_MASK || _secondaryColour > TILE_ELEMENT_COLOUR_MASK)
         {
-            log_error("Invalid game command for scenery placement, primaryColour = %u, secondaryColour = %u", _primaryColour, _secondaryColour);
+            log_error(
+                "Invalid game command for scenery placement, primaryColour = %u, secondaryColour = %u", _primaryColour,
+                _secondaryColour);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
@@ -128,7 +133,6 @@ public:
                 return MakeResult(
                     GA_ERROR::NO_CLEARANCE, STR_CANT_POSITION_THIS_HERE, gGameCommandErrorText, gCommonFormatArgs);
             }
-
 
             int32_t tempSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
             if (!gCheatsDisableClearanceChecks)

@@ -14,8 +14,8 @@
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceFromTrackAction.hpp"
 #include "../actions/FootpathRemoveAction.hpp"
-#include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/LargeSceneryPlaceAction.hpp"
+#include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
@@ -888,7 +888,7 @@ static bool TrackDesignPlaceSceneryElement(
                 break;
             }
             case OBJECT_TYPE_LARGE_SCENERY:
-                {
+            {
                 if (mode != 0)
                 {
                     return true;
@@ -927,7 +927,7 @@ static bool TrackDesignPlaceSceneryElement(
 
                 cost = res->Cost;
                 break;
-                }
+            }
             case OBJECT_TYPE_WALLS:
             {
                 if (mode != 0)

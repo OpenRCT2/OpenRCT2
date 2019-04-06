@@ -1863,7 +1863,8 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 auto primaryColour = parameter_2 & 0xFF;
                 auto secondaryColour = (parameter_2 >> 8) & 0xFF;
                 auto largeSceneryType = parameter_3 & 0xFF;
-                CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, (parameter_1 & 0xFF00) >> 8 };
+                uint8_t direction = (parameter_1 & 0xFF00) >> 8;
+                CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, direction };
 
                 auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, largeSceneryType, primaryColour, secondaryColour);
 
@@ -1886,7 +1887,8 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             auto primaryColour = parameter_2 & 0xFF;
             auto secondaryColour = (parameter_2 >> 8) & 0xFF;
             auto largeSceneryType = parameter_3 & 0xFF;
-            CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, (parameter_1 & 0xFF00) >> 8 };
+            uint8_t direction = (parameter_1 & 0xFF00) >> 8;
+            CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, direction };
 
             auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, largeSceneryType, primaryColour, secondaryColour);
             sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
@@ -2562,7 +2564,8 @@ static money32 try_place_ghost_scenery(
             auto primaryColour = parameter_2 & 0xFF;
             auto secondaryColour = (parameter_2 >> 8) & 0xFF;
             auto sceneryType = parameter_3 & 0xFF;
-            CoordsXYZD loc = { map_tile.x, map_tile.y, gSceneryPlaceZ, (parameter_1 & 0xFF00) >> 8 };
+            uint8_t direction = (parameter_1 & 0xFF00) >> 8;
+            CoordsXYZD loc = { map_tile.x, map_tile.y, gSceneryPlaceZ, direction };
 
             auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, sceneryType, primaryColour, secondaryColour);
             sceneryPlaceAction.SetFlags(

@@ -408,8 +408,7 @@ int32_t game_do_command_p(
     gGameCommandNestLevel++;
 
     // Remove ghost scenery so it doesn't interfere with incoming network command
-    if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST)
-        && (command == GAME_COMMAND_PLACE_BANNER))
+    if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) && (command == GAME_COMMAND_PLACE_BANNER))
     {
         scenery_remove_ghost_tool_placement();
     }
