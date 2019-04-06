@@ -1922,7 +1922,8 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         case SCENERY_TYPE_BANNER:
         {
             uint8_t direction = (parameter_2 >> 8) & 0xFF;
-            CoordsXYZD loc{ gridX, gridY, (parameter_2 & 0xFF) * 16, direction };
+            int32_t z = (parameter_2 & 0xFF) * 16;
+            CoordsXYZD loc{ gridX, gridY, z, direction };
             auto primaryColour = gWindowSceneryPrimaryColour;
             auto bannerType = (parameter_1 & 0xFF00) >> 8;
             auto bannerIndex = create_new_banner(0);
@@ -2629,7 +2630,8 @@ static money32 try_place_ghost_scenery(
             // Banners
             // 6e2612
             uint8_t direction = (parameter_2 >> 8) & 0xFF;
-            CoordsXYZD loc{ map_tile.x, map_tile.y, (parameter_2 & 0xFF) * 16, direction };
+            int32_t z = (parameter_2 & 0xFF) * 16;
+            CoordsXYZD loc{ map_tile.x, map_tile.y, z, direction };
             auto primaryColour = gWindowSceneryPrimaryColour;
             auto bannerType = (parameter_1 & 0xFF00) >> 8;
             auto bannerIndex = create_new_banner(0);

@@ -10,9 +10,9 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2/actions/BannerRemoveAction.hpp>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/BannerRemoveAction.hpp>
 #include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/BannerSetNameAction.hpp>
 #include <openrct2/actions/BannerSetStyleAction.hpp>
