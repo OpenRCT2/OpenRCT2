@@ -51,6 +51,7 @@
 #include "SignSetStyleAction.hpp"
 #include "SmallSceneryPlaceAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
+#include "SmallScenerySetColourAction.hpp"
 #include "StaffFireAction.hpp"
 #include "StaffHireNewAction.hpp"
 #include "StaffSetColourAction.hpp"
@@ -115,6 +116,7 @@ namespace GameActions
         Register<WallRemoveAction>();
         Register<SmallSceneryPlaceAction>();
         Register<SmallSceneryRemoveAction>();
+        Register<SmallScenerySetColourAction>();
         Register<LargeSceneryRemoveAction>();
         Register<LandLowerAction>();
         Register<LandRaiseAction>();

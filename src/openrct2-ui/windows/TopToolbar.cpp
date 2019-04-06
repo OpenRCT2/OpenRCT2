@@ -33,6 +33,7 @@
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
+#include <openrct2/actions/SmallScenerySetColourAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/actions/WallPlaceAction.hpp>
 #include <openrct2/actions/WaterLowerAction.hpp>
@@ -1010,11 +1011,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 return;
 
             uint8_t quadrant = tile_element->AsSmallScenery()->GetSceneryQuadrant();
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, GAME_COMMAND_FLAG_APPLY | quadrant << 8, grid_y,
-                tile_element->base_height | (tile_element->AsSmallScenery()->GetEntryIndex() << 8),
-                GAME_COMMAND_SET_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+            auto repaintScenery = SmallScenerySetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8 }, quadrant, tile_element->AsSmallScenery()->GetEntryIndex(),
+                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
