@@ -14,6 +14,7 @@
 #include "../ride/RideGroupManager.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ride/TrackDesign.h"
 #include "../world/Banner.h"
 #include "../world/LargeScenery.h"
 #include "../world/MapAnimation.h"
@@ -71,7 +72,7 @@ public:
         res->Position.x += 16;
         res->Position.y += 16;
 
-        if (res->Position.z == 0)
+        if (_loc.z == 0)
         {
             res->Position.z = tile_element_height(res->Position.x, res->Position.y) & 0xFFFF;
         }
@@ -91,7 +92,7 @@ public:
                 return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_BUILD_PARK_ENTRANCE_HERE);
             }
         }
-        else if ((_loc.x > gMapSizeMaxXY || _loc.y > gMapSizeMaxXY))
+        else if (!byte_9D8150 && (_loc.x > gMapSizeMaxXY || _loc.y > gMapSizeMaxXY))
         {
             log_error("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE);
