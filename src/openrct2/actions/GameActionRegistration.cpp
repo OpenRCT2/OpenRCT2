@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "BannerSetColourAction.hpp"
 #include "BannerSetNameAction.hpp"
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
@@ -75,6 +76,7 @@ namespace GameActions
 {
     void Register()
     {
+        Register<BannerSetColourAction>();
         Register<BannerSetNameAction>();
         Register<ClimateSetAction>();
         Register<FootpathPlaceAction>();

@@ -25,6 +25,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
 #include <openrct2/actions/LandLowerAction.hpp>
@@ -1056,10 +1057,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
             if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
             {
-                gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-                game_do_command(
-                    grid_x, 1, grid_y, tile_element->base_height | ((tile_element->AsBanner()->GetPosition() & 0x3) << 8),
-                    GAME_COMMAND_SET_BANNER_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+                auto repaintScenery = BannerSetColourAction(
+                    { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition()},
+                    gWindowSceneryPrimaryColour);
+
+                GameActions::Execute(&repaintScenery);
             }
             break;
         }

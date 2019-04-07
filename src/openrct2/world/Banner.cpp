@@ -117,52 +117,6 @@ static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t di
     return refund;
 }
 
-static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t colour, uint8_t flags)
-{
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    int32_t z = (baseHeight * 8);
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z;
-
-    if (!map_can_build_at(x, y, z - 16))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
-
-        bool found = false;
-        do
-        {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
-                continue;
-
-            if (tileElement->AsBanner()->GetPosition() != direction)
-                continue;
-
-            found = true;
-            break;
-        } while (!(tileElement++)->IsLastForTile());
-
-        if (!found)
-        {
-            return MONEY32_UNDEFINED;
-        }
-
-        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, tileElement->AsBanner()->GetIndex());
-        context_broadcast_intent(&intent);
-
-        gBanners[tileElement->AsBanner()->GetIndex()].colour = colour;
-        map_invalidate_tile_zoom1(x, y, z, z + 32);
-    }
-
-    return 0;
-}
-
 static money32 BannerPlace(
     int16_t x, int16_t y, uint8_t pathBaseHeight, uint8_t direction, uint8_t colour, uint8_t type, BannerIndex* bannerIndex,
     uint8_t flags)
@@ -538,17 +492,6 @@ void game_command_remove_banner(
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = BannerRemove(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebx & 0xFF);
-}
-
-/**
- *
- *  rct2: 0x006BA16A
- */
-void game_command_set_banner_colour(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    int32_t* ebp)
-{
-    *ebx = BannerSetColour(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebp & 0xFF, *ebx & 0xFF);
 }
 
 /**

@@ -643,7 +643,7 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         format_string(log_msg, 256, STR_LOG_REMOVE_SCENERY, args);
         network_append_server_log(log_msg);
     }
-    else if (command == GAME_COMMAND_SET_BANNER_COLOUR || command == GAME_COMMAND_SET_BANNER_STYLE)
+    else if (command == GAME_COMMAND_SET_BANNER_STYLE)
     {
         // Log editing scenery
         char* args[1] = {
@@ -651,30 +651,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         };
         format_string(log_msg, 256, STR_LOG_EDIT_SCENERY, args);
         network_append_server_log(log_msg);
-        if (command == GAME_COMMAND_SET_BANNER_NAME || command == GAME_COMMAND_SET_SIGN_NAME)
-        {
-            static char banner_name[128];
-
-            std::fill_n(banner_name, sizeof(banner_name), ' ');
-            int nameChunkIndex = *eax & 0xFFFF;
-
-            int nameChunkOffset = nameChunkIndex - 1;
-            if (nameChunkOffset < 0)
-                nameChunkOffset = 2;
-            nameChunkOffset *= 12;
-            nameChunkOffset = std::min(nameChunkOffset, (int32_t)(std::size(banner_name) - 12));
-            std::memcpy(banner_name + nameChunkOffset + 0, edx, 4);
-            std::memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
-            std::memcpy(banner_name + nameChunkOffset + 8, edi, 4);
-            banner_name[sizeof(banner_name) - 1] = '\0';
-
-            char* args_sign[2] = {
-                (char*)player_name,
-                (char*)banner_name,
-            };
-            format_string(log_msg, 256, STR_LOG_SET_SIGN_NAME, args_sign);
-            network_append_server_log(log_msg);
-        }
     }
 }
 
@@ -1292,7 +1268,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_set_banner_colour,
+    nullptr,
     game_command_set_land_ownership,
     nullptr,
     nullptr,
