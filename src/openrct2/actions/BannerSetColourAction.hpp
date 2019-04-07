@@ -89,7 +89,7 @@ private:
         }
 
         auto index = bannerElement->GetIndex();
-        if (index > MAX_BANNERS || index == BANNER_INDEX_NULL)
+        if (index >= MAX_BANNERS || index == BANNER_INDEX_NULL)
         {
             log_error("Invalid banner index: index = %u", index);
             return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_REPAINT_THIS);

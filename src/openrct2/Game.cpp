@@ -643,15 +643,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         format_string(log_msg, 256, STR_LOG_REMOVE_SCENERY, args);
         network_append_server_log(log_msg);
     }
-    else if (command == GAME_COMMAND_SET_BANNER_STYLE)
-    {
-        // Log editing scenery
-        char* args[1] = {
-            (char*)player_name,
-        };
-        format_string(log_msg, 256, STR_LOG_EDIT_SCENERY, args);
-        network_append_server_log(log_msg);
-    }
 }
 
 void pause_toggle()
@@ -1273,7 +1264,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_set_banner_style,
+    nullptr,
     nullptr,
     game_command_set_player_group,
     game_command_modify_groups,

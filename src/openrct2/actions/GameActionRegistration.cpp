@@ -9,6 +9,7 @@
 
 #include "BannerSetColourAction.hpp"
 #include "BannerSetNameAction.hpp"
+#include "BannerSetStyleAction.hpp"
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
 #include "FootpathPlaceAction.hpp"
@@ -78,6 +79,7 @@ namespace GameActions
     {
         Register<BannerSetColourAction>();
         Register<BannerSetNameAction>();
+        Register<BannerSetStyleAction>();
         Register<ClimateSetAction>();
         Register<FootpathPlaceAction>();
         Register<FootpathPlaceFromTrackAction>();
