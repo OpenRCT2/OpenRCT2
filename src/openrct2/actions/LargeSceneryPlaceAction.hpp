@@ -324,25 +324,25 @@ private:
             }
 
             TileElement* tileElement = map_get_surface_element_at({ curTile.x, curTile.y });
-            if (tileElement != nullptr)
-            {
-                SurfaceElement* surfaceElement = tileElement->AsSurface();
-                int32_t height = surfaceElement->base_height * 8;
-                int32_t slope = surfaceElement->GetSlope();
+            if (tileElement == nullptr)
+                continue;
+            
+            SurfaceElement* surfaceElement = tileElement->AsSurface();
+            int32_t height = surfaceElement->base_height * 8;
+            int32_t slope = surfaceElement->GetSlope();
 
-                if (slope & 0xF)
+            if (slope & 0xF)
+            {
+                height += 16;
+                if (slope & 0x10)
                 {
                     height += 16;
-                    if (slope & 0x10)
-                    {
-                        height += 16;
-                    }
                 }
+            }
 
-                if (height > maxHeight)
-                {
-                    maxHeight = height;
-                }
+            if (height > maxHeight)
+            {
+                maxHeight = height;
             }
         }
         return maxHeight;
