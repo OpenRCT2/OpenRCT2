@@ -25,16 +25,20 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
 #include <openrct2/actions/LandLowerAction.hpp>
 #include <openrct2/actions/LandRaiseAction.hpp>
 #include <openrct2/actions/LandSmoothAction.hpp>
+#include <openrct2/actions/LargeScenerySetColourAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
+#include <openrct2/actions/SmallScenerySetColourAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/actions/WallPlaceAction.hpp>
+#include <openrct2/actions/WallSetColourAction.hpp>
 #include <openrct2/actions/WaterLowerAction.hpp>
 #include <openrct2/actions/WaterRaiseAction.hpp>
 #include <openrct2/audio/audio.h>
@@ -1010,11 +1014,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 return;
 
             uint8_t quadrant = tile_element->AsSmallScenery()->GetSceneryQuadrant();
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, GAME_COMMAND_FLAG_APPLY | quadrant << 8, grid_y,
-                tile_element->base_height | (tile_element->AsSmallScenery()->GetEntryIndex() << 8),
-                GAME_COMMAND_SET_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+            auto repaintScenery = SmallScenerySetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8 }, quadrant, tile_element->AsSmallScenery()->GetEntryIndex(),
+                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
@@ -1025,11 +1029,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             if (!(scenery_entry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
                 return;
 
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, 1 | (gWindowSceneryPrimaryColour << 8), grid_y,
-                tile_element->GetDirection() | (tile_element->base_height << 8), GAME_COMMAND_SET_WALL_COLOUR, 0,
-                gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
+            auto repaintScenery = WallSetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() }, gWindowSceneryPrimaryColour,
+                gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
@@ -1040,11 +1044,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             if (!(scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 return;
 
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, 1 | (tile_element->GetDirection() << 8), grid_y,
-                tile_element->base_height | (tile_element->AsLargeScenery()->GetSequenceIndex() << 8),
-                GAME_COMMAND_SET_LARGE_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+            auto repaintScenery = LargeScenerySetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() },
+                tile_element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
@@ -1053,10 +1057,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
             if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
             {
-                gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-                game_do_command(
-                    grid_x, 1, grid_y, tile_element->base_height | ((tile_element->AsBanner()->GetPosition() & 0x3) << 8),
-                    GAME_COMMAND_SET_BANNER_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+                auto repaintScenery = BannerSetColourAction(
+                    { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
+                    gWindowSceneryPrimaryColour);
+
+                GameActions::Execute(&repaintScenery);
             }
             break;
         }

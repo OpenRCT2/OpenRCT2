@@ -117,52 +117,6 @@ static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t di
     return refund;
 }
 
-static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t colour, uint8_t flags)
-{
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    int32_t z = (baseHeight * 8);
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z;
-
-    if (!map_can_build_at(x, y, z - 16))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
-
-        bool found = false;
-        do
-        {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
-                continue;
-
-            if (tileElement->AsBanner()->GetPosition() != direction)
-                continue;
-
-            found = true;
-            break;
-        } while (!(tileElement++)->IsLastForTile());
-
-        if (!found)
-        {
-            return MONEY32_UNDEFINED;
-        }
-
-        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, tileElement->AsBanner()->GetIndex());
-        context_broadcast_intent(&intent);
-
-        gBanners[tileElement->AsBanner()->GetIndex()].colour = colour;
-        map_invalidate_tile_zoom1(x, y, z, z + 32);
-    }
-
-    return 0;
-}
-
 static money32 BannerPlace(
     int16_t x, int16_t y, uint8_t pathBaseHeight, uint8_t direction, uint8_t colour, uint8_t type, BannerIndex* bannerIndex,
     uint8_t flags)
@@ -271,73 +225,6 @@ static money32 BannerPlace(
         return 0;
     }
     return bannerEntry->banner.price;
-}
-
-static money32 BannerSetStyle(BannerIndex bannerIndex, uint8_t colour, uint8_t textColour, uint8_t bannerFlags, uint8_t flags)
-{
-    if (bannerIndex >= MAX_BANNERS)
-    {
-        gGameCommandErrorText = STR_INVALID_SELECTION_OF_OBJECTS;
-        return MONEY32_UNDEFINED;
-    }
-
-    rct_banner* banner = &gBanners[bannerIndex];
-
-    TileElement* tileElement = banner_get_tile_element(bannerIndex);
-
-    if (tileElement == nullptr)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
-    {
-        return 0;
-    }
-
-    banner->colour = colour;
-    banner->text_colour = textColour;
-    banner->flags = bannerFlags;
-
-    uint8_t allowedEdges = 0xF;
-    if (banner->flags & BANNER_FLAG_NO_ENTRY)
-    {
-        allowedEdges &= ~(1 << tileElement->AsBanner()->GetPosition());
-    }
-    tileElement->AsBanner()->SetAllowedEdges(allowedEdges);
-
-    int32_t colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
-
-    utf8 buffer[256];
-    format_string(buffer, 256, banner->string_idx, nullptr);
-    int32_t firstCodepoint = utf8_get_next(buffer, nullptr);
-    if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END)
-    {
-        utf8_write_codepoint(buffer, colourCodepoint);
-    }
-    else
-    {
-        utf8_insert_codepoint(buffer, colourCodepoint);
-    }
-
-    rct_string_id stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-    if (stringId != 0)
-    {
-        rct_string_id prevStringId = banner->string_idx;
-        banner->string_idx = stringId;
-        user_string_free(prevStringId);
-
-        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, bannerIndex);
-        context_broadcast_intent(&intent);
-    }
-    else
-    {
-        gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
-        return MONEY32_UNDEFINED;
-    }
-
-    return 0;
 }
 
 static BannerIndex BannerGetNewIndex()
@@ -542,17 +429,6 @@ void game_command_remove_banner(
 
 /**
  *
- *  rct2: 0x006BA16A
- */
-void game_command_set_banner_colour(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    int32_t* ebp)
-{
-    *ebx = BannerSetColour(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebp & 0xFF, *ebx & 0xFF);
-}
-
-/**
- *
  *  rct2: 0x006B9E6D
  */
 void game_command_place_banner(
@@ -561,13 +437,6 @@ void game_command_place_banner(
     *ebx = BannerPlace(
         *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebp & 0xFF, (*ebx >> 8) & 0xFF, (BannerIndex*)edi,
         *ebx & 0xFF);
-}
-
-void game_command_set_banner_style(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
-    int32_t* ebp)
-{
-    *ebx = BannerSetStyle(*ecx & 0xFF, *edx & 0xFF, *edi & 0xFF, *ebp & 0xFF, *ebx & 0xFF);
 }
 
 BannerIndex BannerElement::GetIndex() const

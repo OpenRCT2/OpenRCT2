@@ -29,49 +29,6 @@
 #include "Surface.h"
 #include "Wall.h"
 
-static money32 WallSetColour(
-    int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t primaryColour, uint8_t secondaryColour,
-    uint8_t tertiaryColour, uint8_t flags)
-{
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    int32_t z = baseHeight * 8;
-
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z;
-
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_in_park({ x, y }) && !gCheatsSandboxMode)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    auto wallElement = map_get_wall_element_at(x, y, baseHeight, direction);
-    if (wallElement == nullptr)
-    {
-        return 0;
-    }
-
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(wallElement->IsGhost()))
-    {
-        return 0;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        rct_scenery_entry* scenery_entry = wallElement->GetEntry();
-        wallElement->SetPrimaryColour(primaryColour);
-        wallElement->SetSecondaryColour(secondaryColour);
-
-        if (scenery_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
-        {
-            wallElement->SetTertiaryColour(tertiaryColour);
-        }
-        map_invalidate_tile_zoom1(x, y, z, z + 72);
-    }
-
-    return 0;
-}
-
 /**
  *
  *  rct2: 0x006E588E
@@ -134,19 +91,6 @@ void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1
         tile_element_remove(tileElement);
         tileElement--;
     } while (!(tileElement++)->IsLastForTile());
-}
-
-/**
- *
- *  rct2: 0x006E56B5
- */
-void game_command_set_wall_colour(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    int32_t* ebp)
-{
-    *ebx = WallSetColour(
-        *eax & 0xFFFF, *ecx & 0xFFFF, (*edx >> 8) & 0xFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebp & 0xFF, (*ebp >> 8) & 0xFF,
-        *ebx & 0xFF);
 }
 
 uint8_t WallElement::GetSlope() const
