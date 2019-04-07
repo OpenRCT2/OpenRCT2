@@ -23,6 +23,7 @@
 #include "LandSetHeightAction.hpp"
 #include "LandSmoothAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
+#include "LargeScenerySetColourAction.hpp"
 #include "LoadOrQuitAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkEntranceRemoveAction.hpp"
@@ -120,6 +121,7 @@ namespace GameActions
         Register<SmallSceneryRemoveAction>();
         Register<SmallScenerySetColourAction>();
         Register<LargeSceneryRemoveAction>();
+        Register<LargeScenerySetColourAction>();
         Register<LandLowerAction>();
         Register<LandRaiseAction>();
         Register<LandSetHeightAction>();

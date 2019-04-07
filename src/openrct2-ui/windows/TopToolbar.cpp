@@ -30,6 +30,7 @@
 #include <openrct2/actions/LandLowerAction.hpp>
 #include <openrct2/actions/LandRaiseAction.hpp>
 #include <openrct2/actions/LandSmoothAction.hpp>
+#include <openrct2/actions/LargeScenerySetColourAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
@@ -1042,11 +1043,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             if (!(scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 return;
 
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, 1 | (tile_element->GetDirection() << 8), grid_y,
-                tile_element->base_height | (tile_element->AsLargeScenery()->GetSequenceIndex() << 8),
-                GAME_COMMAND_SET_LARGE_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+            auto repaintScenery = LargeScenerySetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() },
+                tile_element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
