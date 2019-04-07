@@ -1058,7 +1058,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
             {
                 auto repaintScenery = BannerSetColourAction(
-                    { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition()},
+                    { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
                     gWindowSceneryPrimaryColour);
 
                 GameActions::Execute(&repaintScenery);

@@ -130,10 +130,17 @@ private:
                 }
             }
 
+            auto tileElement = map_get_large_scenery_segment(currentTile.x, currentTile.y, _loc.z / 8, _loc.direction, i);
+
+            if (tileElement == nullptr)
+            {
+                log_error(
+                    "Large scenery element not found at: x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z,
+                    _loc.direction);
+                return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_REPAINT_THIS);
+            }
             if (isExecuting)
             {
-                auto tileElement = map_get_large_scenery_segment(currentTile.x, currentTile.y, _loc.z / 8, _loc.direction, i);
-
                 tileElement->SetPrimaryColour(_primaryColour);
                 tileElement->SetSecondaryColour(_secondaryColour);
 

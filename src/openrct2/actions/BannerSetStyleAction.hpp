@@ -161,8 +161,8 @@ public:
             case BannerSetStyleType::NoEntry:
             {
                 BannerElement* bannerElement = tileElement->AsBanner();
-                banner->flags &= BANNER_FLAG_NO_ENTRY;
-                banner->flags |= BANNER_FLAG_NO_ENTRY & (_parameter != 0);
+                banner->flags &= ~BANNER_FLAG_NO_ENTRY;
+                banner->flags |= (_parameter != 0) ? BANNER_FLAG_NO_ENTRY : 0;
                 uint8_t allowedEdges = 0xF;
                 if (banner->flags & BANNER_FLAG_NO_ENTRY)
                 {
