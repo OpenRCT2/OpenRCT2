@@ -39,6 +39,7 @@
 #include "PauseToggleAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
+#include "PlayerSetGroupAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
 #include "RideEntranceExitPlaceAction.hpp"
@@ -97,6 +98,7 @@ namespace GameActions
         Register<ParkSetResearchFundingAction>();
         Register<PlaceParkEntranceAction>();
         Register<PlacePeepSpawnAction>();
+        Register<PlayerSetGroupAction>();
         Register<RideCreateAction>();
         Register<RideDemolishAction>();
         Register<RideEntranceExitPlaceAction>();
