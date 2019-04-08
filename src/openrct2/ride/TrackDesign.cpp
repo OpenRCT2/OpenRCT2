@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceFromTrackAction.hpp"
 #include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/LargeSceneryPlaceAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
@@ -887,6 +888,7 @@ static bool TrackDesignPlaceSceneryElement(
                 break;
             }
             case OBJECT_TYPE_LARGE_SCENERY:
+            {
                 if (mode != 0)
                 {
                     return true;
@@ -917,15 +919,15 @@ static bool TrackDesignPlaceSceneryElement(
                     flags = GAME_COMMAND_FLAG_PATH_SCENERY;
                 }
 
-                cost = game_do_command(
-                    mapCoord.x, flags | (rotation << 8), mapCoord.y, scenery->primary_colour | (scenery->secondary_colour << 8),
-                    GAME_COMMAND_PLACE_LARGE_SCENERY, entry_index, z);
+                auto sceneryPlaceAction = LargeSceneryPlaceAction(
+                    { mapCoord.x, mapCoord.y, z, rotation }, entry_index, scenery->primary_colour, scenery->secondary_colour);
+                sceneryPlaceAction.SetFlags(flags);
+                auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::Execute(&sceneryPlaceAction)
+                                                           : GameActions::Query(&sceneryPlaceAction);
 
-                if (cost == MONEY32_UNDEFINED)
-                {
-                    cost = 0;
-                }
+                cost = res->Cost;
                 break;
+            }
             case OBJECT_TYPE_WALLS:
             {
                 if (mode != 0)
