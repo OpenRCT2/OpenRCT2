@@ -3364,61 +3364,51 @@ void network_chat_show_server_greeting()
     }
 }
 
-void game_command_set_player_group(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
+GameActionResult::Ptr network_set_player_group(
+    NetworkPlayerId_t actionPlayerId, uint8_t playerId, uint8_t groupId, bool isExecuting)
 {
-    uint8_t playerid = (uint8_t)*ecx;
-    uint8_t groupid = (uint8_t)*edx;
-    NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
-    NetworkGroup* fromgroup = gNetwork.GetGroupByID(game_command_playerid);
-    if (!player)
+    NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
+
+    NetworkGroup* fromgroup = gNetwork.GetGroupByID(actionPlayerId);
+    if (player == nullptr)
     {
-        gGameCommandErrorTitle = STR_CANT_DO_THIS;
-        gGameCommandErrorText = STR_NONE;
-        *ebx = MONEY32_UNDEFINED;
-        return;
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
     }
-    if (!gNetwork.GetGroupByID(groupid))
+
+    if (!gNetwork.GetGroupByID(groupId))
     {
-        gGameCommandErrorTitle = STR_CANT_DO_THIS;
-        gGameCommandErrorText = STR_NONE;
-        *ebx = MONEY32_UNDEFINED;
-        return;
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
     }
+
     if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
     {
-        gGameCommandErrorTitle = STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO;
-        gGameCommandErrorText = STR_NONE;
-        *ebx = MONEY32_UNDEFINED;
-        return;
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
     }
-    if (groupid == 0 && fromgroup && fromgroup->Id != 0)
+
+    if (groupId == 0 && fromgroup && fromgroup->Id != 0)
     {
-        gGameCommandErrorTitle = STR_CANT_SET_TO_THIS_GROUP;
-        gGameCommandErrorText = STR_NONE;
-        *ebx = MONEY32_UNDEFINED;
-        return;
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_SET_TO_THIS_GROUP);
     }
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
+
+    if (isExecuting)
     {
-        player->Group = groupid;
+        player->Group = groupId;
 
         if (network_get_mode() == NETWORK_MODE_SERVER)
         {
             // Add or update saved user
             NetworkUserManager* userManager = &gNetwork._userManager;
             NetworkUser* networkUser = userManager->GetOrAddUser(player->KeyHash);
-            networkUser->GroupId = groupid;
+            networkUser->GroupId = groupId;
             networkUser->Name = player->Name;
             userManager->Save();
         }
 
-        window_invalidate_by_number(WC_PLAYER, playerid);
+        window_invalidate_by_number(WC_PLAYER, playerId);
 
         // Log set player group event
-        NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(game_command_playerid);
-        NetworkGroup* new_player_group = gNetwork.GetGroupByID(groupid);
+        NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(actionPlayerId);
+        NetworkGroup* new_player_group = gNetwork.GetGroupByID(groupId);
         char log_msg[256];
         const char* args[3] = {
             player->Name.c_str(),
@@ -3428,7 +3418,7 @@ void game_command_set_player_group(
         format_string(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
         network_append_server_log(log_msg);
     }
-    *ebx = 0;
+    return std::make_unique<GameActionResult>();
 }
 
 void game_command_modify_groups(
@@ -4089,9 +4079,11 @@ const char* network_get_group_name(uint32_t index)
 {
     return "";
 };
-void game_command_set_player_group(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp)
+
+GameActionResult::Ptr
+    network_set_player_group(NetworkPlayerId_t actionPlayerId, uint8_t playerId, uint8_t groupId, bool isExecuting)
 {
+    return std::make_unique<GameActionResult>();
 }
 void game_command_modify_groups(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp)
