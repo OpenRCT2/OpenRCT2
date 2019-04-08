@@ -822,10 +822,10 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
             }
         }
 
-        if (!track_design_save_contains_tile_element(tile_element))
-        {
-            imageFlags = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
-        }
+        //if (!track_design_save_contains_tile_element(tile_element))
+        //{
+        //    imageFlags = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
+        //}
     }
 
     if (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)

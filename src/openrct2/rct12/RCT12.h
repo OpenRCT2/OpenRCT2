@@ -49,6 +49,14 @@ constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
 constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
 constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
+enum class RCT12TrackDesignVersion : uint8_t
+{
+    TD4,
+    TD4_AA,
+    TD6,
+    unknown
+};
+
 #pragma pack(push, 1)
 
 struct rct12_award

@@ -1082,7 +1082,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
         {
             path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
-            int32_t success = track_design_save_to_file(pathBuffer);
+            int32_t success = 0; // track_design_save_to_file(pathBuffer);
 
             if (success)
             {

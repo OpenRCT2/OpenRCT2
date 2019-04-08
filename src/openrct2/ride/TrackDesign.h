@@ -164,6 +164,62 @@ assert_struct_size(rct_track_td6, 0xbf);
 #endif
 #pragma pack(pop)
 
+/**
+ * Track design structure.
+ * size: 0x4E72B
+ */
+struct TrackDesign
+{
+    uint8_t type;
+    uint8_t vehicle_type;
+    money32 cost;
+    uint32_t flags;
+    uint8_t ride_mode;
+    uint8_t track_flags;
+    uint8_t colour_scheme;
+    rct_vehicle_colour vehicle_colours[RCT2_MAX_CARS_PER_TRAIN];
+    uint8_t pad_48;
+    uint8_t entrance_style;
+    uint8_t total_air_time;
+    uint8_t depart_flags;
+    uint8_t number_of_trains;
+    uint8_t number_of_cars_per_train;
+    uint8_t min_waiting_time;
+    uint8_t max_waiting_time;
+    uint8_t operation_setting;
+    int8_t max_speed;
+    int8_t average_speed;
+    uint16_t ride_length;
+    uint8_t max_positive_vertical_g;
+    int8_t max_negative_vertical_g;
+    uint8_t max_lateral_g;
+    uint8_t inversions;
+    uint8_t holes;
+    uint8_t drops;
+    uint8_t highest_drop_height;
+    uint8_t excitement;
+    uint8_t intensity;
+    uint8_t nausea;
+    money16 upkeep_cost;
+    uint8_t track_spine_colour[RCT12_NUM_COLOUR_SCHEMES];
+    uint8_t track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];
+    uint8_t track_support_colour[RCT12_NUM_COLOUR_SCHEMES];
+    uint32_t flags2;
+    rct_object_entry vehicle_object;
+    uint8_t space_required_x;
+    uint8_t space_required_y;
+    uint8_t vehicle_additional_colour[RCT2_MAX_CARS_PER_TRAIN];
+    uint8_t lift_hill_speed;
+    uint8_t num_circuits;
+
+    std::vector<rct_td6_maze_element> maze_elements;
+    std::vector<rct_td6_track_element> track_elements;
+    std::vector<rct_td6_entrance_element> entrance_elements;
+    std::vector<rct_td6_scenery_element> scenery_elements;
+
+    std::unique_ptr<const utf8> name;
+};
+
 // Only written to in RCT2, not used in OpenRCT2. All of these are elements that had to be invented in RCT1.
 enum : uint32_t
 {
@@ -213,7 +269,7 @@ enum
     MAZE_ELEMENT_TYPE_EXIT = (1 << 7)
 };
 
-extern rct_track_td6* gActiveTrackDesign;
+extern TrackDesign* gActiveTrackDesign;
 extern bool gTrackDesignSceneryToggle;
 extern LocationXYZ16 gTrackPreviewMin;
 extern LocationXYZ16 gTrackPreviewMax;
@@ -224,13 +280,13 @@ extern bool byte_9D8150;
 extern bool gTrackDesignSaveMode;
 extern ride_id_t gTrackDesignSaveRideIndex;
 
-rct_track_td6* track_design_open(const utf8* path);
+std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
 void track_design_dispose(rct_track_td6* td6);
 
-void track_design_mirror(rct_track_td6* td6);
+void track_design_mirror(TrackDesign* td6);
 
 int32_t place_virtual_track(
-    rct_track_td6* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, int16_t x, int16_t y, int16_t z);
+    TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, int16_t x, int16_t y, int16_t z);
 
 void game_command_place_track_design(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
@@ -240,20 +296,20 @@ void game_command_place_maze_design(
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels);
+void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving
 ///////////////////////////////////////////////////////////////////////////////
-void track_design_save_init();
-void track_design_save_reset_scenery();
-bool track_design_save_contains_tile_element(const TileElement* tileElement);
-void track_design_save_select_nearby_scenery(ride_id_t rideIndex);
-void track_design_save_select_tile_element(
-    int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement, bool collect);
-bool track_design_save(ride_id_t rideIndex);
-bool track_design_save_to_file(const utf8* path);
-
-bool track_design_are_entrance_and_exit_placed();
+// void track_design_save_init();
+// void track_design_save_reset_scenery();
+// bool track_design_save_contains_tile_element(const TileElement* tileElement);
+// void track_design_save_select_nearby_scenery(ride_id_t rideIndex);
+// void track_design_save_select_tile_element(
+//    int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement, bool collect);
+// bool track_design_save(ride_id_t rideIndex);
+// bool track_design_save_to_file(const utf8* path);
+//
+// bool track_design_are_entrance_and_exit_placed();
 
 #endif

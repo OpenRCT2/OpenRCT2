@@ -88,7 +88,6 @@ public:
             {
                 item.Flags |= TRIF_READ_ONLY;
             }
-            track_design_dispose(td6);
             return std::make_tuple(true, item);
         }
         else

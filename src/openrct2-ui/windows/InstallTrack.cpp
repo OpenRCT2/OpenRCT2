@@ -90,7 +90,7 @@ static rct_window_event_list window_install_track_events = {
 };
 // clang-format on
 
-static rct_track_td6* _trackDesign;
+static std::unique_ptr<TrackDesign> _trackDesign;
 static std::string _trackPath;
 static std::string _trackName;
 static std::vector<uint8_t> _trackDesignPreviewPixels;
@@ -162,7 +162,6 @@ static void window_install_track_close(rct_window* w)
     _trackName.clear();
     _trackDesignPreviewPixels.clear();
     _trackDesignPreviewPixels.shrink_to_fit();
-    track_design_dispose(_trackDesign);
     _trackDesign = nullptr;
 }
 
@@ -245,7 +244,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y = w->y + widget->bottom - 12;
 
     // Warnings
-    rct_track_td6* td6 = _trackDesign;
+    const TrackDesign* td6 = _trackDesign.get();
     if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
     {
         if (!gTrackDesignSceneryToggle)
@@ -393,7 +392,8 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (td6->cost != 0)
     {
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, &td6->cost, COLOUR_BLACK, x, y);
+        set_format_arg(0, uint32_t, td6->cost);
+        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 }
 
@@ -415,7 +415,7 @@ static void window_install_track_text_input(rct_window* w, rct_widgetindex widge
 
 static void window_install_track_update_preview()
 {
-    track_design_draw_preview(_trackDesign, _trackDesignPreviewPixels.data());
+    track_design_draw_preview(_trackDesign.get(), _trackDesignPreviewPixels.data());
 }
 
 static void window_install_track_design(rct_window* w)

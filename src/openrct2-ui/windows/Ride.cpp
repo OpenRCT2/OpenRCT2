@@ -5357,7 +5357,7 @@ static void setup_scenery_selection(rct_window* w)
 
     gTrackDesignSaveRideIndex = (uint8_t)w->number;
 
-    track_design_save_init();
+    // track_design_save_init();
     gGamePaused |= GAME_PAUSED_SAVING_TRACK;
     gTrackDesignSaveMode = true;
 
@@ -5379,7 +5379,7 @@ static void setup_scenery_selection(rct_window* w)
  */
 static void window_ride_measurements_design_reset()
 {
-    track_design_save_reset_scenery();
+    // track_design_save_reset_scenery();
 }
 
 /**
@@ -5388,7 +5388,7 @@ static void window_ride_measurements_design_reset()
  */
 static void window_ride_measurements_design_select_nearby_scenery()
 {
-    track_design_save_select_nearby_scenery(gTrackDesignSaveRideIndex);
+    // track_design_save_select_nearby_scenery(gTrackDesignSaveRideIndex);
 }
 
 /**
@@ -5409,7 +5409,7 @@ void window_ride_measurements_design_cancel()
  */
 static void window_ride_measurements_design_save(rct_window* w)
 {
-    track_design_save((uint8_t)w->number);
+    // track_design_save((uint8_t)w->number);
 }
 
 /**
@@ -5512,7 +5512,9 @@ static void window_ride_measurements_dropdown(rct_window* w, rct_widgetindex wid
         dropdownIndex = gDropdownHighlightedIndex;
 
     if (dropdownIndex == 0)
-        track_design_save((uint8_t)w->number);
+    {
+    }
+    // track_design_save((uint8_t)w->number);
     else
         setup_scenery_selection(w);
 }
@@ -5549,8 +5551,8 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            _collectTrackDesignScenery = !track_design_save_contains_tile_element(tileElement);
-            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            //_collectTrackDesignScenery = !track_design_save_contains_tile_element(tileElement);
+            //track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
             break;
     }
 }
@@ -5573,7 +5575,7 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            //track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
             break;
     }
 }
