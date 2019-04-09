@@ -96,6 +96,11 @@ public:
                 }
                 break;
             case BannerSetStyleType::NoEntry:
+                if (tileElement->AsBanner() == nullptr)
+                {
+                    log_error("Tile element was not a banner.");
+                    return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
+                }
                 break;
             default:
                 log_error("Invalid type: %u", _type);
@@ -161,6 +166,12 @@ public:
             case BannerSetStyleType::NoEntry:
             {
                 BannerElement* bannerElement = tileElement->AsBanner();
+                if (bannerElement == nullptr)
+                {
+                    log_error("Tile element was not a banner.");
+                    return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
+                }
+
                 banner->flags &= ~BANNER_FLAG_NO_ENTRY;
                 banner->flags |= (_parameter != 0) ? BANNER_FLAG_NO_ENTRY : 0;
                 uint8_t allowedEdges = 0xF;
