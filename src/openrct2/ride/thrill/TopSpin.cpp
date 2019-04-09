@@ -167,7 +167,7 @@ static void top_spin_paint_vehicle(
         session, image_id, (int8_t)seatCoords.x, (int8_t)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX,
         boundBoxOffsetY, boundBoxOffsetZ);
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level < 2 && vehicle != nullptr && vehicle->num_peeps != 0)
     {
         image_id = (seatImageId + (1 * 76))

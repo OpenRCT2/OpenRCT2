@@ -229,7 +229,8 @@ void footpath_provisional_remove()
 
         footpath_remove(
             gFootpathProvisionalPosition.x, gFootpathProvisionalPosition.y, gFootpathProvisionalPosition.z,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                | GAME_COMMAND_FLAG_GHOST);
     }
 }
 
@@ -1571,7 +1572,7 @@ PathSurfaceEntry* PathElement::GetPathEntry() const
     if (!IsQueue())
         return get_path_surface_entry(GetPathEntryIndex());
     else
-        return get_path_surface_entry(GetPathEntryIndex() + 32);
+        return get_path_surface_entry(GetPathEntryIndex() + MAX_PATH_OBJECTS);
 }
 
 PathRailingsEntry* PathElement::GetRailingEntry() const

@@ -105,12 +105,12 @@ void virtual_floor_invalidate()
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
-        for (LocationXY16* tile = gMapSelectionTiles; tile->x != -1; tile++)
+        for (const auto& tile : gMapSelectionTiles)
         {
-            min_position.x = std::min(min_position.x, tile->x);
-            min_position.y = std::min(min_position.y, tile->y);
-            max_position.x = std::max(max_position.x, tile->x);
-            max_position.y = std::max(max_position.y, tile->y);
+            min_position.x = std::min<int16_t>(min_position.x, tile.x);
+            min_position.y = std::min<int16_t>(min_position.y, tile.y);
+            max_position.x = std::max<int16_t>(max_position.x, tile.x);
+            max_position.y = std::max<int16_t>(max_position.y, tile.y);
         }
     }
 
@@ -186,10 +186,10 @@ bool virtual_floor_tile_is_floor(int16_t x, int16_t y)
     else if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
         // Check if we are anywhere near the selection tiles (larger scenery / rides)
-        for (LocationXY16* tile = gMapSelectionTiles; tile->x != -1; tile++)
+        for (const auto& tile : gMapSelectionTiles)
         {
-            if (x >= tile->x - _virtualFloorBaseSize && y >= tile->y - _virtualFloorBaseSize
-                && x <= tile->x + _virtualFloorBaseSize && y <= tile->y + _virtualFloorBaseSize)
+            if (x >= tile.x - _virtualFloorBaseSize && y >= tile.y - _virtualFloorBaseSize
+                && x <= tile.x + _virtualFloorBaseSize && y <= tile.y + _virtualFloorBaseSize)
             {
                 return true;
             }
@@ -223,9 +223,9 @@ static void virtual_floor_get_tile_properties(
     // See if we are on top of the selection tiles
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
-        for (LocationXY16* tile = gMapSelectionTiles; tile->x != -1; tile++)
+        for (const auto& tile : gMapSelectionTiles)
         {
-            if (x == tile->x && y == tile->y)
+            if (x == tile.x && y == tile.y)
             {
                 *outLit = true;
                 break;

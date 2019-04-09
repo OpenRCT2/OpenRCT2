@@ -118,6 +118,7 @@
 		9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DC208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DD208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
+		937A92152242CDAA00B09278 /* LandSmoothAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 937A92142242CDAA00B09278 /* LandSmoothAction.hpp */; };
 		939A359A20C12FC800630B3F /* Paint.Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 939A359720C12FC700630B3F /* Paint.Litter.cpp */; };
 		939A359B20C12FC800630B3F /* Paint.Misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 939A359820C12FC700630B3F /* Paint.Misc.cpp */; };
 		939A359C20C12FC800630B3F /* Paint.Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359920C12FC700630B3F /* Paint.Sprite.h */; };
@@ -1240,6 +1241,7 @@
 		9350B52720B46E0900897BC5 /* ftbdf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftbdf.h; sourceTree = "<group>"; };
 		9350B52820B46E0900897BC5 /* ftrender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftrender.h; sourceTree = "<group>"; };
 		9350B52920B46E0900897BC5 /* ft2build.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ft2build.h; sourceTree = "<group>"; };
+		937A92142242CDAA00B09278 /* LandSmoothAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSmoothAction.hpp; sourceTree = "<group>"; };
 		939A359720C12FC700630B3F /* Paint.Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Litter.cpp; sourceTree = "<group>"; };
 		939A359820C12FC700630B3F /* Paint.Misc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Misc.cpp; sourceTree = "<group>"; };
 		939A359920C12FC700630B3F /* Paint.Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.Sprite.h; sourceTree = "<group>"; };
@@ -2152,6 +2154,7 @@
 				C9C630BC2235A7F9009AD16E /* WaterRaiseAction.hpp */,
 				C9C630BA2235A7E7009AD16E /* LandLowerAction.hpp */,
 				C9C630B92235A7E7009AD16E /* LandRaiseAction.hpp */,
+				937A92142242CDAA00B09278 /* LandSmoothAction.hpp */,
 				2A61CAFA2229E5C50095AD67 /* RideEntranceExitPlaceAction.hpp */,
 				2A61CAF82229E59F0095AD67 /* WaterSetHeightAction.hpp */,
 				2A61CAF42229E5720095AD67 /* FootpathPlaceAction.hpp */,
@@ -3520,6 +3523,7 @@
 				2ADE2F0A2244187B002598AF /* ParkSetResearchFundingAction.hpp in Headers */,
 				2ADE2F142244187B002598AF /* FootpathRemoveAction.hpp in Headers */,
 				2ADE2F1F2244187B002598AF /* BannerSetNameAction.hpp in Headers */,
+				937A92152242CDAA00B09278 /* LandSmoothAction.hpp in Headers */,
 				C6352B941F477032006CCEE3 /* PlaceParkEntranceAction.hpp in Headers */,
 				C6352B911F477032006CCEE3 /* GameAction.h in Headers */,
 				2A43D2BA2225B8D900E8F73B /* RideSetVehiclesAction.hpp in Headers */,

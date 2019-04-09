@@ -797,7 +797,11 @@ static rct_track_td6* track_design_save_to_td6(ride_id_t rideIndex)
     td6->max_positive_vertical_g = ride->max_positive_vertical_g / 32;
     td6->max_negative_vertical_g = ride->max_negative_vertical_g / 32;
     td6->max_lateral_g = ride->max_lateral_g / 32;
-    td6->inversions = ride->inversions;
+    if (ride->type == RIDE_TYPE_MINI_GOLF)
+        td6->inversions = ride->holes & 0x1F;
+    else
+        td6->inversions = ride->inversions & 0x1F;
+    td6->inversions |= (ride->sheltered_eighths << 5);
     td6->drops = ride->drops;
     td6->highest_drop_height = ride->highest_drop_height;
 

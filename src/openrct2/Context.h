@@ -88,6 +88,11 @@ namespace OpenRCT2
         interface IUiContext;
     }
 
+    namespace Paint
+    {
+        interface Painter;
+    }
+
     /**
      * Represents an instance of OpenRCT2 and can be used to get various services.
      */
@@ -107,6 +112,7 @@ namespace OpenRCT2
         virtual IReplayManager* GetReplayManager() abstract;
         virtual int32_t GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
+        virtual Paint::Painter* GetPainter() abstract;
 
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 

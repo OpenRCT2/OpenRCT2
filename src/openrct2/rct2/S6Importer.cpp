@@ -608,8 +608,11 @@ public:
         dst->turn_count_default = src->turn_count_default;
         dst->turn_count_banked = src->turn_count_banked;
         dst->turn_count_sloped = src->turn_count_sloped;
-        // Includes holes and (for some strange reason?!) sheltered_eights
-        dst->inversions = src->inversions;
+        if (dst->type == RIDE_TYPE_MINI_GOLF)
+            dst->holes = src->inversions & 0x1F;
+        else
+            dst->inversions = src->inversions & 0x1F;
+        dst->sheltered_eighths = src->inversions >> 5;
         dst->drops = src->drops;
         dst->start_drop_height = src->start_drop_height;
         dst->highest_drop_height = src->highest_drop_height;

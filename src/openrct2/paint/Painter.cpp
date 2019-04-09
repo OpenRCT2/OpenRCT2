@@ -20,6 +20,7 @@
 #include "../interface/InteractiveConsole.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
+#include "../paint/Paint.h"
 #include "../title/TitleScreen.h"
 #include "../ui/UiContext.h"
 
@@ -139,4 +140,50 @@ void Painter::MeasureFPS()
         _frames = 0;
     }
     _lastSecond = currentTime;
+}
+
+paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags)
+{
+    paint_session* session = nullptr;
+
+    if (_freePaintSessions.empty() == false)
+    {
+        // Re-use.
+        const size_t idx = _freePaintSessions.size() - 1;
+        session = _freePaintSessions[idx];
+
+        // Shrink by one.
+        _freePaintSessions.pop_back();
+    }
+    else
+    {
+        // Create new one in pool.
+        _paintSessionPool.emplace_back(std::make_unique<paint_session>());
+        session = _paintSessionPool.back().get();
+    }
+
+    session->DPI = *dpi;
+    session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
+    session->NextFreePaintStruct = session->PaintStructs;
+    session->LastRootPS = nullptr;
+    session->UnkF1AD2C = nullptr;
+    session->ViewFlags = viewFlags;
+    for (auto& quadrant : session->Quadrants)
+    {
+        quadrant = nullptr;
+    }
+    session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
+    session->QuadrantFrontIndex = 0;
+    session->PSStringHead = nullptr;
+    session->LastPSString = nullptr;
+    session->WoodenSupportsPrependTo = nullptr;
+    session->CurrentlyDrawnItem = nullptr;
+    session->SurfaceElement = nullptr;
+
+    return session;
+}
+
+void Painter::ReleaseSession(paint_session* session)
+{
+    _freePaintSessions.push_back(session);
 }

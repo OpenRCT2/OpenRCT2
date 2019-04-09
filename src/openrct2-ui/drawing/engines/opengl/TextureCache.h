@@ -15,7 +15,11 @@
 #include <SDL_pixels.h>
 #include <algorithm>
 #include <array>
+#include <mutex>
 #include <openrct2/common.h>
+#ifndef __MACOSX__
+#    include <shared_mutex>
+#endif
 #include <unordered_map>
 #include <vector>
 
@@ -198,6 +202,16 @@ private:
     std::array<uint32_t, 0x7FFFF> _indexMap;
 
     GLuint _paletteTexture = 0;
+
+#ifndef __MACOSX__
+    std::shared_mutex _mutex;
+    typedef std::shared_lock<std::shared_mutex> shared_lock;
+    typedef std::unique_lock<std::shared_mutex> unique_lock;
+#else
+    std::mutex _mutex;
+    typedef std::unique_lock<std::mutex> shared_lock;
+    typedef std::unique_lock<std::mutex> unique_lock;
+#endif
 
 public:
     TextureCache();

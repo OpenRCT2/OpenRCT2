@@ -23,8 +23,6 @@
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
-static uint32_t _unk9E32BC;
-
 /**
  *
  *  rct2: 0x0066508C, 0x00665540
@@ -89,13 +87,13 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     image_id = (colour_1 << 19) | (colour_2 << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-    _unk9E32BC = 0;
+    uint32_t entranceImageId = 0;
 
     if (tile_element->IsGhost())
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         image_id = CONSTRUCTION_MARKER;
-        _unk9E32BC = image_id;
+        entranceImageId = image_id;
         if (transparant_image_id)
             transparant_image_id = image_id;
     }
@@ -193,7 +191,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
             height + stationObj->Height, 2, 2, height + stationObj->Height);
     }
 
-    image_id = _unk9E32BC;
+    image_id = entranceImageId;
     if (image_id == 0)
     {
         image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
@@ -223,13 +221,11 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
 #endif
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
-    _unk9E32BC = 0;
     uint32_t image_id, ghost_id = 0;
     if (tile_element->IsGhost())
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         ghost_id = CONSTRUCTION_MARKER;
-        _unk9E32BC = ghost_id;
     }
 
     // Index to which part of the entrance
@@ -334,7 +330,7 @@ void entrance_paint(paint_session* session, uint8_t direction, int32_t height, c
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS && dpi->zoom_level == 0)
     {

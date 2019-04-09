@@ -197,6 +197,7 @@ enum
     TRACK_ELEM_FLAG_DOWN = (1 << 5),
     TRACK_ELEM_FLAG_UP = (1 << 6),
     TRACK_ELEM_FLAG_NORMAL_TO_INVERSION = (1 << 7),
+    TRACK_ELEM_FLAG_IS_GOLF_HOLE = (1 << 7),
     TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT = (1 << 8),
     TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND = (1 << 9),
     TRACK_ELEM_FLAG_IS_STEEP_UP = (1 << 10), // Used to allow steep backwards lifts on roller coasters that do not allow steep

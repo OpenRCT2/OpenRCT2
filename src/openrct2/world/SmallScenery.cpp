@@ -24,60 +24,6 @@
 #include "Scenery.h"
 #include "Surface.h"
 
-static money32 SmallScenerySetColour(
-    int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour,
-    uint8_t secondaryColour, uint8_t flags)
-{
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    int32_t z = baseHeight * 8;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z;
-
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
-    {
-        if (!map_is_location_owned(x, y, z))
-        {
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    auto tileElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
-
-    if (tileElement == nullptr)
-    {
-        return 0;
-    }
-
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tileElement->IsGhost()))
-    {
-        return 0;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        tileElement->SetPrimaryColour(primaryColour);
-        tileElement->SetSecondaryColour(secondaryColour);
-
-        map_invalidate_tile_full(x, y);
-    }
-
-    return 0;
-}
-
-/**
- *
- *  rct2: 0x006E0F26
- */
-void game_command_set_scenery_colour(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    int32_t* ebp)
-{
-    *ebx = SmallScenerySetColour(
-        *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 8) & 0xFF), (*edx >> 8) & 0xFF, *ebp & 0xFF, (*ebp >> 8) & 0xFF,
-        *ebx & 0xFF);
-}
-
 /**
  *
  *  rct2: 0x006E0D6E, 0x006B8D88

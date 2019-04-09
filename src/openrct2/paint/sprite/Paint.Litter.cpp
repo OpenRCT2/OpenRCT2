@@ -69,7 +69,7 @@ void litter_paint(paint_session* session, const rct_litter* litter, int32_t imag
 {
     rct_drawpixelinfo* dpi;
 
-    dpi = session->DPI;
+    dpi = &session->DPI;
     if (dpi->zoom_level != 0)
         return; // If zoomed at all no litter drawn
 
