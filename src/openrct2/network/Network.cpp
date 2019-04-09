@@ -1934,7 +1934,13 @@ void Network::ProcessPlayerInfo()
         auto* player = GetPlayerByID(it->second.Id);
         if (player != nullptr)
         {
-            *player = it->second;
+            const NetworkPlayer& networkedInfo = it->second;
+            player->Flags = networkedInfo.Flags;
+            player->Group = networkedInfo.Group;
+            player->LastAction = networkedInfo.LastAction;
+            player->LastActionCoord = networkedInfo.LastActionCoord;
+            player->MoneySpent = networkedInfo.MoneySpent;
+            player->CommandsRan = networkedInfo.CommandsRan;
         }
     }
     _pendingPlayerInfo.erase(gCurrentTicks);
