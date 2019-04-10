@@ -26,6 +26,7 @@ private:
     uint8_t _sceneryType{ std::numeric_limits<uint8_t>::max() };
     uint8_t _primaryColour;
     uint8_t _secondaryColour;
+    BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
     LargeSceneryPlaceAction() = default;
@@ -36,6 +37,14 @@ public:
         , _primaryColour(primaryColour)
         , _secondaryColour(secondaryColour)
     {
+        rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
+        if (sceneryEntry != nullptr)
+        {
+            if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+            {
+                _bannerId = create_new_banner(0);
+            }
+        }
     }
 
     uint16_t GetActionFlags() const override
@@ -47,7 +56,8 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_loc) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
+        stream << DS_TAG(_loc) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour)
+               << DS_TAG(_bannerId);
     }
 
     GameActionResult::Ptr Query() const override
@@ -61,7 +71,6 @@ public:
         res->Position.z = surfaceHeight;
 
         gSceneryGroundFlags = 0;
-        BannerIndex bannerId = BANNER_INDEX_NULL;
         money32 supportsCost = 0;
 
         if (_primaryColour > TILE_ELEMENT_COLOUR_MASK || _secondaryColour > TILE_ELEMENT_COLOUR_MASK)
@@ -97,9 +106,13 @@ public:
 
         if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
         {
-            bannerId = create_new_banner(0);
+            if (_bannerId == BANNER_INDEX_NULL)
+            {
+                log_error("Banner Index not specified.");
+                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME, STR_CANT_POSITION_THIS_HERE);
+            }
 
-            if (bannerId == BANNER_INDEX_NULL)
+            if (gBanners[_bannerId].type != BANNER_NULL)
             {
                 log_error("No free banners available");
                 return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
@@ -180,7 +193,6 @@ public:
         res->Position.z = surfaceHeight;
 
         gSceneryGroundFlags = 0;
-        BannerIndex bannerId = BANNER_INDEX_NULL;
         money32 supportsCost = 0;
 
         rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
@@ -208,16 +220,23 @@ public:
 
         if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
         {
-            bannerId = create_new_banner(GAME_COMMAND_FLAG_APPLY);
+            if (_bannerId == BANNER_INDEX_NULL)
+            {
+                log_error("No free banners available");
+                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_BANNERS_IN_GAME, STR_CANT_POSITION_THIS_HERE);
+            }
 
-            if (bannerId == BANNER_INDEX_NULL)
+            if (gBanners[_bannerId].type != BANNER_NULL)
             {
                 log_error("No free banners available");
                 return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
             }
 
-            rct_banner* banner = &gBanners[bannerId];
-            banner->flags |= BANNER_FLAG_IS_LARGE_SCENERY;
+            rct_banner* banner = &gBanners[_bannerId];
+            banner->string_idx = STR_DEFAULT_SIGN;
+            banner->colour = 2;
+            banner->text_colour = 2;
+            banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
             banner->type = 0;
             banner->x = _loc.x / 32;
             banner->y = _loc.y / 32;
@@ -278,7 +297,7 @@ public:
             newTileElement->clearance_height = zHigh;
             auto newSceneryElement = newTileElement->AsLargeScenery();
 
-            SetNewLargeSceneryElement(*newSceneryElement, tileNum, bannerId);
+            SetNewLargeSceneryElement(*newSceneryElement, tileNum, _bannerId);
 
             if (tileNum == 0)
             {

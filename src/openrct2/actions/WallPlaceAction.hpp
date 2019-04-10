@@ -32,6 +32,7 @@ private:
     int32_t _primaryColour;
     int32_t _secondaryColour;
     int32_t _tertiaryColour;
+    BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
     WallPlaceAction()
@@ -47,6 +48,14 @@ public:
         , _secondaryColour(secondaryColour)
         , _tertiaryColour(tertiaryColour)
     {
+        rct_scenery_entry* sceneryEntry = get_wall_entry(_wallType);
+        if (sceneryEntry != nullptr)
+        {
+            if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+            {
+                _bannerId = create_new_banner(0);
+            }
+        }
     }
 
     uint16_t GetActionFlags() const override
@@ -59,7 +68,7 @@ public:
         GameAction::Serialise(stream);
 
         stream << DS_TAG(_wallType) << DS_TAG(_loc) << DS_TAG(_edge) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour)
-               << DS_TAG(_tertiaryColour);
+               << DS_TAG(_tertiaryColour) << DS_TAG(_bannerId);
     }
 
     GameActionResult::Ptr Query() const override
@@ -222,11 +231,17 @@ public:
 
         if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
         {
-            auto bannerIndex = create_new_banner(0);
-
-            if (bannerIndex == 0xFF)
+            if (_bannerId == BANNER_INDEX_NULL)
             {
-                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                log_error("Banner Index not specified.");
+                return MakeResult(
+                    GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME, STR_CANT_BUILD_PARK_ENTRANCE_HERE);
+            }
+
+            if (gBanners[_bannerId].type != BANNER_NULL)
+            {
+                log_error("No free banners available");
+                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_BUILD_PARK_ENTRANCE_HERE);
             }
         }
 
@@ -297,7 +312,6 @@ public:
             }
         }
 
-        BannerIndex bannerIndex = BANNER_INDEX_NULL;
         rct_scenery_entry* wallEntry = get_wall_entry(_wallType);
 
         if (wallEntry == nullptr)
@@ -308,15 +322,24 @@ public:
 
         if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
         {
-            bannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
-
-            if (bannerIndex == 0xFF)
+            if (_bannerId == BANNER_INDEX_NULL)
             {
-                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                log_error("Banner Index not specified.");
+                return MakeResult(
+                    GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME, STR_CANT_BUILD_PARK_ENTRANCE_HERE);
             }
 
-            rct_banner* banner = &gBanners[bannerIndex];
-            banner->flags |= BANNER_FLAG_IS_WALL;
+            if (gBanners[_bannerId].type != BANNER_NULL)
+            {
+                log_error("No free banners available");
+                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_BUILD_PARK_ENTRANCE_HERE);
+            }
+
+            rct_banner* banner = &gBanners[_bannerId];
+            banner->string_idx = STR_DEFAULT_SIGN;
+            banner->colour = 2;
+            banner->text_colour = 2;
+            banner->flags = BANNER_FLAG_IS_WALL;
             banner->type = 0;
             banner->x = _loc.x / 32;
             banner->y = _loc.y / 32;
@@ -372,9 +395,9 @@ public:
         }
 
         wallElement->SetEntryIndex(_wallType);
-        if (bannerIndex != 0xFF)
+        if (_bannerId != BANNER_INDEX_NULL)
         {
-            wallElement->SetBannerIndex(bannerIndex);
+            wallElement->SetBannerIndex(_bannerId);
         }
 
         if (wallEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
