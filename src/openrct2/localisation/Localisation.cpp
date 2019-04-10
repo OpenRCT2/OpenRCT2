@@ -35,9 +35,9 @@
 #include <iterator>
 #include <limits.h>
 
-thread_local char gCommonStringFormatBuffer[512];
-thread_local uint8_t gCommonFormatArgs[80];
-thread_local uint8_t gMapTooltipFormatArgs[40];
+char gCommonStringFormatBuffer[512];
+uint8_t gCommonFormatArgs[80];
+uint8_t gMapTooltipFormatArgs[40];
 
 #ifdef DEBUG
 // Set to true before a string format call to see details of the formatting.
@@ -1512,8 +1512,9 @@ money32 string_to_money(const char* string_to_monetise)
 
     auto number = std::stod(processedString, nullptr);
     number /= (currencyDesc->rate / 10.0);
-    auto whole = static_cast<uint16_t>(number);
-    auto fraction = static_cast<uint8_t>((number - whole) * 100);
+    auto whole = static_cast<int32_t>(number);
+    auto rounded = (static_cast<uint32_t>(number * 100 + .5) - (whole * 100)) / 100.0;
+    auto fraction = static_cast<uint8_t>(rounded * 100);
 
     money32 result = MONEY(whole, fraction);
     // Check if MONEY resulted in overflow
