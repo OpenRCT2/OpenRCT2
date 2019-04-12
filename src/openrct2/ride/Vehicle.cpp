@@ -1781,20 +1781,27 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
             ride->start_drop_height = vehicle->z / 8;
         }
 
-        if (track_flags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+        if (ride->type == RIDE_TYPE_MINI_GOLF)
         {
-            uint8_t inversions = ride->inversions & 0x1F;
-            if (inversions != 0x1F)
-                inversions++;
-
-            ride->inversions &= ~0x1F;
-            ride->inversions |= inversions;
+            if (track_flags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
+            {
+                if (ride->holes < MAX_GOLF_HOLES)
+                    ride->holes++;
+            }
+        }
+        else
+        {
+            if (track_flags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+            {
+                if (ride->inversions < MAX_INVERSIONS)
+                    ride->inversions++;
+            }
         }
 
         if (track_flags & TRACK_ELEM_FLAG_HELIX)
         {
             uint8_t helixes = ride_get_helix_sections(ride);
-            if (helixes != 0x1F)
+            if (helixes != MAX_HELICES)
                 helixes++;
 
             ride->special_track_elements &= ~0x1F;
@@ -2906,7 +2913,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
         {
             if (sv_ride->status != RIDE_STATUS_CLOSED)
             {
-                if (ride_is_block_sectioned(sv_ride))
+                if (sv_ride->IsBlockSectioned())
                 {
                     if (!(sv_ride->stations[sv->station_id].Depart & STATION_DEPART_FLAG))
                     {
@@ -3105,6 +3112,8 @@ void vehicle_test_reset(rct_vehicle* vehicle)
     ride->turn_count_banked = 0;
     ride->turn_count_sloped = 0;
     ride->inversions = 0;
+    ride->holes = 0;
+    ride->sheltered_eighths = 0;
     ride->drops = 0;
     ride->sheltered_length = 0;
     ride->var_11C = 0;
@@ -6654,7 +6663,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
     switch (trackType)
     {
         case TRACK_ELEM_BLOCK_BRAKES:
-            if (ride_is_block_sectioned(ride))
+            if (ride->IsBlockSectioned())
                 apply_block_brakes(vehicle, trackElement->AsTrack()->BlockBrakeClosed());
             else
                 apply_non_stop_block_brake(vehicle, true);
@@ -6670,7 +6679,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
         case TRACK_ELEM_CABLE_LIFT_HILL:
         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            if (ride_is_block_sectioned(ride))
+            if (ride->IsBlockSectioned())
             {
                 if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackElement->AsTrack()->HasChain())
                 {
@@ -6773,7 +6782,7 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
     {
         Ride* ride = get_ride(vehicle->ride);
-        if (ride_is_block_sectioned(ride))
+        if (ride->IsBlockSectioned())
         {
             audio_play_sound_at_location(SOUND_48, x, y, z);
         }

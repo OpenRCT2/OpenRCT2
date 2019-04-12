@@ -97,11 +97,10 @@ static int32_t large_scenery_sign_text_height(const utf8* str, rct_large_scenery
     return height;
 }
 
-static const utf8* large_scenery_sign_fit_text(const utf8* str, rct_large_scenery_text* text, bool height)
+static void large_scenery_sign_fit_text(const utf8* str, rct_large_scenery_text* text, bool height, utf8* fitStr, size_t bufLen)
 {
-    static utf8 fitStr[32];
     utf8* fitStrEnd = fitStr;
-    safe_strcpy(fitStr, str, sizeof(fitStr));
+    safe_strcpy(fitStr, str, bufLen);
     int32_t w = 0;
     uint32_t codepoint;
     while (w <= text->max_width && (codepoint = utf8_get_next(fitStrEnd, (const utf8**)&fitStrEnd)) != 0)
@@ -116,7 +115,6 @@ static const utf8* large_scenery_sign_fit_text(const utf8* str, rct_large_scener
         }
     }
     *fitStrEnd = 0;
-    return fitStr;
 }
 
 static int32_t div_to_minus_infinity(int32_t a, int32_t b)
@@ -128,7 +126,8 @@ static void large_scenery_sign_paint_line(
     paint_session* session, const utf8* str, rct_large_scenery_text* text, int32_t textImage, int32_t textColour,
     uint8_t direction, int32_t y_offset)
 {
-    const utf8* fitStr = large_scenery_sign_fit_text(str, text, false);
+    utf8 fitStr[32];
+    large_scenery_sign_fit_text(str, text, false, fitStr, sizeof(fitStr));
     int32_t width = large_scenery_sign_text_width(fitStr, text);
     int32_t x_offset = text->offset[(direction & 1)].x;
     int32_t acc = y_offset * ((direction & 1) ? -1 : 1);
@@ -139,7 +138,8 @@ static void large_scenery_sign_paint_line(
         acc -= (width / 2);
     }
     uint32_t codepoint;
-    while ((codepoint = utf8_get_next(fitStr, &fitStr)) != 0)
+    const utf8* fitStrPtr = fitStr;
+    while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0)
     {
         int32_t glyph_offset = large_scenery_sign_get_glyph(text, codepoint)->image_offset;
         uint8_t glyph_type = direction & 1;
@@ -293,7 +293,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
                 return;
             }
         }
-        rct_drawpixelinfo* dpi = session->DPI;
+        rct_drawpixelinfo* dpi = &session->DPI;
         if (dpi->zoom_level > 1)
         {
             large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
@@ -327,8 +327,9 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
             // Draw vertical sign:
             y_offset += 1;
             utf8 fitStr[32];
+            large_scenery_sign_fit_text(signString, text, true, fitStr, sizeof(fitStr));
+            safe_strcpy(fitStr, fitStr, sizeof(fitStr));
             const utf8* fitStrPtr = fitStr;
-            safe_strcpy(fitStr, large_scenery_sign_fit_text(signString, text, true), sizeof(fitStr));
             int32_t height2 = large_scenery_sign_text_height(fitStr, text);
             uint32_t codepoint;
             while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0)
@@ -400,7 +401,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         }
         return;
     }
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level > 0)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);

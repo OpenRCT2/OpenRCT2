@@ -25,14 +25,21 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
 #include <openrct2/actions/LandLowerAction.hpp>
 #include <openrct2/actions/LandRaiseAction.hpp>
+#include <openrct2/actions/LandSmoothAction.hpp>
+#include <openrct2/actions/LargeSceneryPlaceAction.hpp>
+#include <openrct2/actions/LargeScenerySetColourAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
+#include <openrct2/actions/SmallScenerySetColourAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
+#include <openrct2/actions/WallPlaceAction.hpp>
+#include <openrct2/actions/WallSetColourAction.hpp>
 #include <openrct2/actions/WaterLowerAction.hpp>
 #include <openrct2/actions/WaterRaiseAction.hpp>
 #include <openrct2/audio/audio.h>
@@ -1008,11 +1015,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 return;
 
             uint8_t quadrant = tile_element->AsSmallScenery()->GetSceneryQuadrant();
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, GAME_COMMAND_FLAG_APPLY | quadrant << 8, grid_y,
-                tile_element->base_height | (tile_element->AsSmallScenery()->GetEntryIndex() << 8),
-                GAME_COMMAND_SET_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+            auto repaintScenery = SmallScenerySetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8 }, quadrant, tile_element->AsSmallScenery()->GetEntryIndex(),
+                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
@@ -1023,11 +1030,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             if (!(scenery_entry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
                 return;
 
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, 1 | (gWindowSceneryPrimaryColour << 8), grid_y,
-                tile_element->GetDirection() | (tile_element->base_height << 8), GAME_COMMAND_SET_WALL_COLOUR, 0,
-                gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
+            auto repaintScenery = WallSetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() }, gWindowSceneryPrimaryColour,
+                gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
@@ -1038,11 +1045,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             if (!(scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 return;
 
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, 1 | (tile_element->GetDirection() << 8), grid_y,
-                tile_element->base_height | (tile_element->AsLargeScenery()->GetSequenceIndex() << 8),
-                GAME_COMMAND_SET_LARGE_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+            auto repaintScenery = LargeScenerySetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() },
+                tile_element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
@@ -1051,10 +1058,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
             if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
             {
-                gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-                game_do_command(
-                    grid_x, 1, grid_y, tile_element->base_height | ((tile_element->AsBanner()->GetPosition() & 0x3) << 8),
-                    GAME_COMMAND_SET_BANNER_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+                auto repaintScenery = BannerSetColourAction(
+                    { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
+                    gWindowSceneryPrimaryColour);
+
+                GameActions::Execute(&repaintScenery);
             }
             break;
         }
@@ -1804,32 +1812,42 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
 
             for (; zAttemptRange != 0; zAttemptRange--)
             {
-                int32_t flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+                auto primaryColour = (parameter_2 >> 8) & 0xFF;
+                auto edges = parameter_2 & 0xFF;
+                auto type = (parameter_1 >> 8) & 0xFF;
+                auto wallPlaceAction = WallPlaceAction(
+                    type, { gridX, gridY, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
 
-                gDisableErrorWindowSound = true;
-                gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-                int32_t cost = game_do_command(
-                    gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ,
-                    _secondaryColour | (_tertiaryColour << 8));
-                gDisableErrorWindowSound = false;
-
-                if (cost != MONEY32_UNDEFINED)
-                {
-                    window_close_by_class(WC_ERROR);
-                    audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-                    return;
-                }
-
-                if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES
-                    || gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                auto res = GameActions::Query(&wallPlaceAction);
+                if (res->Error == GA_ERROR::OK)
                 {
                     break;
                 }
 
-                gSceneryPlaceZ += 8;
+                if (res->ErrorMessage == STR_NOT_ENOUGH_CASH_REQUIRES || res->ErrorMessage == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                {
+                    break;
+                }
+
+                if (zAttemptRange != 1)
+                {
+                    gSceneryPlaceZ += 8;
+                }
             }
 
-            audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+            auto primaryColour = (parameter_2 >> 8) & 0xFF;
+            auto edges = parameter_2 & 0xFF;
+            auto type = (parameter_1 >> 8) & 0xFF;
+            auto wallPlaceAction = WallPlaceAction(
+                type, { gridX, gridY, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+
+            wallPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error == GA_ERROR::OK)
+                {
+                    audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                }
+            });
+            auto res = GameActions::Execute(&wallPlaceAction);
             break;
         }
         case SCENERY_TYPE_LARGE:
@@ -1842,31 +1860,48 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
 
             for (; zAttemptRange != 0; zAttemptRange--)
             {
-                int32_t flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+                auto primaryColour = parameter_2 & 0xFF;
+                auto secondaryColour = (parameter_2 >> 8) & 0xFF;
+                auto largeSceneryType = parameter_3 & 0xFF;
+                uint8_t direction = (parameter_1 & 0xFF00) >> 8;
+                CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, direction };
 
-                gDisableErrorWindowSound = true;
-                gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-                int32_t cost = game_do_command(
-                    gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, gSceneryPlaceZ);
-                gDisableErrorWindowSound = false;
+                auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, largeSceneryType, primaryColour, secondaryColour);
 
-                if (cost != MONEY32_UNDEFINED)
-                {
-                    window_close_by_class(WC_ERROR);
-                    audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-                    return;
-                }
-
-                if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES
-                    || gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                auto res = GameActions::Query(&sceneryPlaceAction);
+                if (res->Error == GA_ERROR::OK)
                 {
                     break;
                 }
 
-                gSceneryPlaceZ += 8;
-            }
+                if (res->ErrorMessage == STR_NOT_ENOUGH_CASH_REQUIRES || res->ErrorMessage == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                {
+                    break;
+                }
 
-            audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+                if (zAttemptRange != 1)
+                {
+                    gSceneryPlaceZ += 8;
+                }
+            }
+            auto primaryColour = parameter_2 & 0xFF;
+            auto secondaryColour = (parameter_2 >> 8) & 0xFF;
+            auto largeSceneryType = parameter_3 & 0xFF;
+            uint8_t direction = (parameter_1 & 0xFF00) >> 8;
+            CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, direction };
+
+            auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, largeSceneryType, primaryColour, secondaryColour);
+            sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error == GA_ERROR::OK)
+                {
+                    audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                }
+                else
+                {
+                    audio_play_sound_at_location(SOUND_ERROR, loc.x, loc.y, gSceneryPlaceZ);
+                }
+            });
+            auto res = GameActions::Execute(&sceneryPlaceAction);
             break;
         }
         case SCENERY_TYPE_BANNER:
@@ -2494,37 +2529,55 @@ static money32 try_place_ghost_scenery(
             break;
         }
         case 2:
+        {
             // Walls
             // 6e26b0
-            cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ,
-                _secondaryColour | (_tertiaryColour << 8));
+            auto primaryColour = (parameter_2 >> 8) & 0xFF;
+            auto edges = parameter_2 & 0xFF;
+            auto type = (parameter_1 >> 8) & 0xFF;
+            auto wallPlaceAction = WallPlaceAction(
+                type, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+            wallPlaceAction.SetFlags(
+                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error != GA_ERROR::OK)
+                    return;
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
+                gSceneryGhostPosition.x = map_tile.x;
+                gSceneryGhostPosition.y = map_tile.y;
+                gSceneryGhostWallRotation = edges;
+                gSceneryGhostPosition.z = gSceneryTileElement->base_height;
 
-            gSceneryGhostPosition.x = map_tile.x;
-            gSceneryGhostPosition.y = map_tile.y;
-            gSceneryGhostWallRotation = (parameter_2 & 0xFF);
+                gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
+            });
 
-            tileElement = gSceneryTileElement;
-            gSceneryGhostPosition.z = tileElement->base_height;
-
-            gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
+            auto res = GameActions::Execute(&wallPlaceAction);
+            if (res->Error != GA_ERROR::OK)
+                return MONEY32_UNDEFINED;
+            cost = res->Cost;
             break;
+        }
         case 3:
+        {
             // Large Scenery
             // 6e25a7
-            cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3,
-                gSceneryPlaceZ);
+            auto primaryColour = parameter_2 & 0xFF;
+            auto secondaryColour = (parameter_2 >> 8) & 0xFF;
+            auto sceneryType = parameter_3 & 0xFF;
+            uint8_t direction = (parameter_1 & 0xFF00) >> 8;
+            CoordsXYZD loc = { map_tile.x, map_tile.y, gSceneryPlaceZ, direction };
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
+            auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, sceneryType, primaryColour, secondaryColour);
+            sceneryPlaceAction.SetFlags(
+                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            auto res = GameActions::Execute(&sceneryPlaceAction);
+
+            if (res->Error != GA_ERROR::OK)
+                return res->Cost;
 
             gSceneryGhostPosition.x = map_tile.x;
             gSceneryGhostPosition.y = map_tile.y;
-            gSceneryPlaceRotation = ((parameter_1 >> 8) & 0xFF);
+            gSceneryPlaceRotation = loc.direction;
 
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
@@ -2542,6 +2595,7 @@ static money32 try_place_ghost_scenery(
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
             break;
+        }
         case 4:
             // Banners
             // 6e2612
@@ -2735,7 +2789,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
         case SCENERY_TYPE_LARGE:
         {
             scenery = get_large_scenery_entry(selected_scenery);
-            LocationXY16* selectedTile = gMapSelectionTiles;
+            gMapSelectionTiles.clear();
 
             for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (int16_t)(uint16_t)0xFFFF;
                  tile++)
@@ -2747,11 +2801,8 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
                 tileLocation.x += mapTile.x;
                 tileLocation.y += mapTile.y;
 
-                selectedTile->x = tileLocation.x;
-                selectedTile->y = tileLocation.y;
-                selectedTile++;
+                gMapSelectionTiles.push_back({ tileLocation.x, tileLocation.y });
             }
-            selectedTile->x = -1;
 
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             map_invalidate_map_selection_tiles();
@@ -2892,13 +2943,15 @@ static money32 selection_raise_land(uint8_t flags)
     centreX += 16;
     centreY += 16;
 
-    uint32_t xBounds = (gMapSelectPositionA.x & 0xFFFF) | (gMapSelectPositionB.x << 16);
-    uint32_t yBounds = (gMapSelectPositionA.y & 0xFFFF) | (gMapSelectPositionB.y << 16);
-
-    gGameCommandErrorTitle = STR_CANT_RAISE_LAND_HERE;
     if (gLandMountainMode)
     {
-        return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, gMapSelectType, yBounds);
+        auto landSmoothAction = LandSmoothAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType,
+            false);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
+                                                     : GameActions::Query(&landSmoothAction);
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
     else
     {
@@ -2923,14 +2976,15 @@ static money32 selection_lower_land(uint8_t flags)
     centreX += 16;
     centreY += 16;
 
-    uint32_t xBounds = (gMapSelectPositionA.x & 0xFFFF) | (gMapSelectPositionB.x << 16);
-    uint32_t yBounds = (gMapSelectPositionA.y & 0xFFFF) | (gMapSelectPositionB.y << 16);
-
-    gGameCommandErrorTitle = STR_CANT_LOWER_LAND_HERE;
     if (gLandMountainMode)
     {
-        return game_do_command(
-            centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 0x8000 + gMapSelectType, yBounds);
+        auto landSmoothAction = LandSmoothAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType,
+            true);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
+                                                     : GameActions::Query(&landSmoothAction);
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
     else
     {

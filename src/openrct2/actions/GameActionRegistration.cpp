@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "BannerSetColourAction.hpp"
 #include "BannerSetNameAction.hpp"
+#include "BannerSetStyleAction.hpp"
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
 #include "FootpathPlaceAction.hpp"
@@ -21,11 +23,15 @@
 #include "LandLowerAction.hpp"
 #include "LandRaiseAction.hpp"
 #include "LandSetHeightAction.hpp"
+#include "LandSmoothAction.hpp"
+#include "LargeSceneryPlaceAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
+#include "LargeScenerySetColourAction.hpp"
 #include "LoadOrQuitAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkEntranceRemoveAction.hpp"
 #include "ParkMarketingAction.hpp"
+#include "ParkSetDateAction.hpp"
 #include "ParkSetLoanAction.hpp"
 #include "ParkSetNameAction.hpp"
 #include "ParkSetParameterAction.hpp"
@@ -49,6 +55,7 @@
 #include "SignSetStyleAction.hpp"
 #include "SmallSceneryPlaceAction.hpp"
 #include "SmallSceneryRemoveAction.hpp"
+#include "SmallScenerySetColourAction.hpp"
 #include "StaffFireAction.hpp"
 #include "StaffHireNewAction.hpp"
 #include "StaffSetColourAction.hpp"
@@ -60,7 +67,9 @@
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "TrackSetBrakeSpeedAction.hpp"
+#include "WallPlaceAction.hpp"
 #include "WallRemoveAction.hpp"
+#include "WallSetColourAction.hpp"
 #include "WaterLowerAction.hpp"
 #include "WaterRaiseAction.hpp"
 #include "WaterSetHeightAction.hpp"
@@ -69,7 +78,9 @@ namespace GameActions
 {
     void Register()
     {
+        Register<BannerSetColourAction>();
         Register<BannerSetNameAction>();
+        Register<BannerSetStyleAction>();
         Register<ClimateSetAction>();
         Register<FootpathPlaceAction>();
         Register<FootpathPlaceFromTrackAction>();
@@ -108,13 +119,19 @@ namespace GameActions
         Register<StaffSetCostumeAction>();
         Register<StaffSetPatrolAreaAction>();
         Register<SurfaceSetStyleAction>();
+        Register<WallPlaceAction>();
         Register<WallRemoveAction>();
+        Register<WallSetColourAction>();
         Register<SmallSceneryPlaceAction>();
         Register<SmallSceneryRemoveAction>();
+        Register<SmallScenerySetColourAction>();
+        Register<LargeSceneryPlaceAction>();
         Register<LargeSceneryRemoveAction>();
+        Register<LargeScenerySetColourAction>();
         Register<LandLowerAction>();
         Register<LandRaiseAction>();
         Register<LandSetHeightAction>();
+        Register<LandSmoothAction>();
         Register<TrackPlaceAction>();
         Register<TrackRemoveAction>();
         Register<TrackSetBrakeSpeedAction>();
@@ -125,5 +142,6 @@ namespace GameActions
         Register<WaterLowerAction>();
         Register<WaterRaiseAction>();
         Register<GuestSetFlagsAction>();
+        Register<ParkSetDateAction>();
     }
 } // namespace GameActions

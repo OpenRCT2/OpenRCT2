@@ -93,8 +93,8 @@ public:
 private:
     uint32_t const _type;
 
-    NetworkPlayerId_t _playerId = { 0 }; // Callee
-    uint32_t _flags = 0;                 // GAME_COMMAND_FLAGS
+    NetworkPlayerId_t _playerId = { -1 }; // Callee
+    uint32_t _flags = 0;                  // GAME_COMMAND_FLAGS
     uint32_t _networkId = 0;
     Callback_t _callback;
 
@@ -126,7 +126,7 @@ public:
         // Make sure we execute some things only on the client.
         uint16_t flags = 0;
 
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_5) != 0)
+        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_NO_SPEND) != 0)
         {
             flags |= GA_FLAGS::CLIENT_ONLY;
         }

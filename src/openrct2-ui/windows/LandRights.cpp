@@ -365,7 +365,7 @@ static void window_land_rights_tool_update_land_rights(int16_t x, int16_t y)
         return;
 
     _landRightsCost = game_do_command(
-        gMapSelectPositionA.x, GAME_COMMAND_FLAG_2, gMapSelectPositionA.y,
+        gMapSelectPositionA.x, GAME_COMMAND_FLAG_NO_SPEND, gMapSelectPositionA.y,
         (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? BUY_LAND_RIGHTS_FLAG_BUY_LAND
                                                        : BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS,
         GAME_COMMAND_BUY_LAND_RIGHTS, gMapSelectPositionB.x, gMapSelectPositionB.y);

@@ -30,7 +30,7 @@ const uint32_t vehicle_particle_base_sprites[] = {
  */
 void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDirection)
 {
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     switch (misc->steam_particle.type)
     {

@@ -2425,7 +2425,6 @@ STR_3190    :额外的道路对象
 STR_3191    :景物组别
 STR_3192    :乐园入口
 STR_3193    :水塘
-STR_3194    :剧情简介
 STR_3195    :研发列表
 STR_3196    :{WINDOW_COLOUR_2}研发组别: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}游戏开始时已研发好的项目:
@@ -3594,8 +3593,8 @@ STR_6125    :对象类型
 STR_6126    :未知类型
 STR_6127    :文件: {STRING}
 STR_6128    :文件不能被加载, 因为其中一部分引用的对象丢失或错误. 以下是这些对象的列表.
-STR_6129    :将选中的项目复制到剪贴板
-STR_6130    :将整个列表复制到剪贴板
+STR_6129    :复制
+STR_6130    :复制全部
 STR_6131    :对象源
 STR_6132    :忽略研究状态
 STR_6133    :{SMALLFONT}{BLACK}使用还未被研究出的游乐设施和景观
@@ -3741,6 +3740,37 @@ STR_6272    :站台
 STR_6273    :音乐
 STR_6274    :无法设置配色方案...
 STR_6275    :{WINDOW_COLOUR_2}车站类型:
+STR_6276    :{RED}{STRINGID} 有游客被困住了，这可能是因为无效的设施类型或者运行模式
+STR_6277    :{WINDOW_COLOUR_2}车站编号: {BLACK}{COMMA16}
+STR_6278    :自动保存数量
+STR_6279    :{SMALLFONT}{BLACK}应该保留的自动保存数量
+STR_6284    :网络
+STR_6285    :网络信息
+STR_6286    :接收
+STR_6287    :发送
+STR_6288    :已接收
+STR_6289    :已发生
+STR_6290    :基础协议
+STR_6291    :指令
+STR_6292    :测绘
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/秒
+STR_6280    :{SMALLFONT}{BLACK}聊天室
+STR_6281    :{SMALLFONT}{BLACK}在工具栏中加入激活聊天窗口的按钮
+STR_6282    :聊天室
+STR_6283    :暂时无法聊天。你连接到服务器了吗？
+STR_6299    :下载全部
+STR_6300    :{SMALLFONT}{BLACK}从网络上下载可下载缺失文件
+STR_6301    :{SMALLFONT}{BLACK}将所选文件名称复制到剪贴板
+STR_6302    :{SMALLFONT}{BLACK}将整个缺失文件列表复制到剪贴板
+STR_6303    :下载文件 ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :打开景物选择器
+STR_6305    :多线程
+STR_6306    :{SMALLFONT}{BLACK}使用多个线程进行渲染的实验选项可能会导致游戏不稳定
 
 
 #############

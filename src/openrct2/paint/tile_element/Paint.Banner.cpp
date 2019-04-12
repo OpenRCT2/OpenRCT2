@@ -34,7 +34,7 @@ const LocationXY16 BannerBoundBoxes[][2] = {
 void banner_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
     uint16_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
 

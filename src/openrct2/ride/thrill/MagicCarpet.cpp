@@ -155,7 +155,7 @@ static void paint_magic_carpet_vehicle(
         bbOffset.x, bbOffset.y, bbOffset.z);
 
     // Riders
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
         rct_vehicle* vehicle = get_first_vehicle(ride);

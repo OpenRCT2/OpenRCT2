@@ -40,7 +40,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         return;
     }
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level > 2)
     {
         return;
@@ -89,7 +89,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
             }
         }
 
-        dpi = session->DPI;
+        dpi = &session->DPI;
 
         if (dpi->y + dpi->height <= spr->generic.sprite_top || spr->generic.sprite_bottom <= dpi->y
             || dpi->x + dpi->width <= spr->generic.sprite_left || spr->generic.sprite_right <= dpi->x)

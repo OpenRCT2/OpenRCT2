@@ -237,8 +237,8 @@ struct rct_size16
 
 #define MAX_SCROLLING_TEXT_MODES 38
 
-extern int16_t gCurrentFontSpriteBase;
-extern uint16_t gCurrentFontFlags;
+extern thread_local int16_t gCurrentFontSpriteBase;
+extern thread_local uint16_t gCurrentFontFlags;
 
 extern rct_palette_entry gPalette[256];
 extern uint8_t gGamePalette[256 * 4];
@@ -250,8 +250,8 @@ extern uint8_t gOtherPalette[256];
 extern uint8_t text_palette[];
 extern const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT];
 
-extern int32_t gLastDrawStringX;
-extern int32_t gLastDrawStringY;
+extern thread_local int32_t gLastDrawStringX;
+extern thread_local int32_t gLastDrawStringY;
 
 extern uint32_t gPickupPeepImage;
 extern int32_t gPickupPeepX;

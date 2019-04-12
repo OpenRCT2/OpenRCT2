@@ -3214,6 +3214,7 @@ STR_5762    :Chinese Yuan (CN¥)
 STR_5763    :All files
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
+STR_5766    :Hungarian Forint (Ft)
 STR_5767    :Income
 STR_5768    :Total customers
 STR_5769    :Total profit
@@ -3751,6 +3752,8 @@ STR_6301    :{SMALLFONT}{BLACK}Copy the selected object name to the clipboard.
 STR_6302    :{SMALLFONT}{BLACK}Copy the entire list of missing objects to the clipboard.
 STR_6303    :Downloading object ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :Open scenery picker
+STR_6305    :Multithreading
+STR_6306    :{SMALLFONT}{BLACK}Experimental option to use multiple threads to render, may cause instability.
 
 #############
 # Scenarios #

@@ -1451,7 +1451,7 @@ void ride_remove_provisional_track_piece()
     ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST;
         maze_set_track(x, y, z, flags, false, 0, rideIndex, GC_SET_MAZE_TRACK_FILL);
         maze_set_track(x, y + 16, z, flags, false, 1, rideIndex, GC_SET_MAZE_TRACK_FILL);
@@ -1474,7 +1474,8 @@ void ride_remove_provisional_track_piece()
             auto trackRemoveAction = TrackRemoveAction{ trackType,
                                                         trackSequence,
                                                         { next_track.x, next_track.y, z, static_cast<Direction>(direction) } };
-            trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+            trackRemoveAction.SetFlags(
+                GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&trackRemoveAction);
         }
     }
@@ -4569,7 +4570,7 @@ static void ride_set_start_finish_points(ride_id_t rideIndex, CoordsXYE* startEl
             break;
     }
 
-    if (ride_is_block_sectioned(ride) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    if (ride->IsBlockSectioned() && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
         ride_set_block_points(startElement);
     }
@@ -4843,7 +4844,7 @@ static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int
 
     for (int32_t vehicleIndex = 0; vehicleIndex < ride->num_vehicles; vehicleIndex++)
     {
-        if (ride_is_block_sectioned(ride))
+        if (ride->IsBlockSectioned())
         {
             remainingDistance = 0;
         }
@@ -5023,7 +5024,7 @@ static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApply
     //
     if (ride->type != RIDE_TYPE_SPACE_RINGS && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16))
     {
-        if (ride_is_block_sectioned(ride))
+        if (ride->IsBlockSectioned())
         {
             CoordsXYE firstBlock;
             ride_create_vehicles_find_first_block(ride, &firstBlock);
@@ -5776,7 +5777,7 @@ int32_t ride_get_refund_price(const Ride* ride)
  *
  *  rct2: 0x00696707
  */
-void ride_stop_peeps_queuing(Ride* ride)
+void Ride::StopGuestsQueuing()
 {
     uint16_t spriteIndex;
     Peep* peep;
@@ -5785,7 +5786,7 @@ void ride_stop_peeps_queuing(Ride* ride)
     {
         if (peep->state != PEEP_STATE_QUEUING)
             continue;
-        if (peep->current_ride != ride->id)
+        if (peep->current_ride != id)
             continue;
 
         peep->RemoveFromQueue();
@@ -5806,14 +5807,14 @@ ride_id_t ride_get_empty_slot()
     return RIDE_ID_NULL;
 }
 
-int32_t ride_get_default_mode(Ride* ride)
+uint8_t Ride::GetDefaultMode() const
 {
-    const rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    const rct_ride_entry* rideEntry = get_ride_entry(subtype);
     const uint8_t* availableModes = RideAvailableModes;
 
-    for (int32_t i = 0; i < ride->type; i++)
+    for (int32_t i = 0; i < type; i++)
     {
-        while (*(availableModes++) != 255)
+        while (*(availableModes++) != RIDE_MODE_NULL)
         {
         }
     }
@@ -5894,14 +5895,14 @@ int32_t ride_get_random_colour_preset_index(uint8_t ride_type)
  *
  *  Based on rct2: 0x006B4776
  */
-void ride_set_colour_preset(Ride* ride, uint8_t index)
+void Ride::SetColourPreset(uint8_t index)
 {
-    const track_colour_preset_list* colourPresets = &RideColourPresets[ride->type];
+    const track_colour_preset_list* colourPresets = &RideColourPresets[type];
     TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
     // Stalls save their default colour in the vehicle settings (since they share a common ride type)
-    if (!ride->IsRide())
+    if (!IsRide())
     {
-        auto rideEntry = get_ride_entry(ride->subtype);
+        auto rideEntry = get_ride_entry(subtype);
         if (rideEntry != nullptr && rideEntry->vehicle_preset_list->count > 0)
         {
             auto list = rideEntry->vehicle_preset_list->list[0];
@@ -5914,11 +5915,11 @@ void ride_set_colour_preset(Ride* ride, uint8_t index)
     }
     for (int32_t i = 0; i < NUM_COLOUR_SCHEMES; i++)
     {
-        ride->track_colour[i].main = colours.main;
-        ride->track_colour[i].additional = colours.additional;
-        ride->track_colour[i].supports = colours.supports;
+        track_colour[i].main = colours.main;
+        track_colour[i].additional = colours.additional;
+        track_colour[i].supports = colours.supports;
     }
-    ride->colour_scheme_type = 0;
+    colour_scheme_type = 0;
 }
 
 money32 ride_get_common_price(Ride* forRide)
@@ -6228,34 +6229,34 @@ int32_t get_turn_count_4_plus_elements(Ride* ride, uint8_t type)
     return ((*turn_count) & TURN_MASK_4_PLUS_ELEMENTS) >> 11;
 }
 
-bool ride_has_spinning_tunnel(Ride* ride)
+bool Ride::HasSpinningTunnel() const
 {
-    return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+    return special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
 }
 
-bool ride_has_water_splash(Ride* ride)
+bool Ride::HasWaterSplash() const
 {
-    return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+    return special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
 }
 
-bool ride_has_rapids(Ride* ride)
+bool Ride::HasRapids() const
 {
-    return ride->special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+    return special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
 }
 
-bool ride_has_log_reverser(Ride* ride)
+bool Ride::HasLogReverser() const
 {
-    return ride->special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+    return special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
 }
 
-bool ride_has_waterfall(Ride* ride)
+bool Ride::HasWaterfall() const
 {
-    return ride->special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+    return special_track_elements & RIDE_ELEMENT_REVERSER_OR_WATERFALL;
 }
 
-bool ride_has_whirlpool(Ride* ride)
+bool Ride::HasWhirlpool() const
 {
-    return ride->special_track_elements & RIDE_ELEMENT_WHIRLPOOL;
+    return special_track_elements & RIDE_ELEMENT_WHIRLPOOL;
 }
 
 uint8_t ride_get_helix_sections(Ride* ride)
@@ -6264,15 +6265,15 @@ uint8_t ride_get_helix_sections(Ride* ride)
     return ride->special_track_elements & 0x1F;
 }
 
-bool ride_is_powered_launched(Ride* ride)
+bool Ride::IsPoweredLaunched() const
 {
-    return ride->mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH || ride->mode == RIDE_MODE_POWERED_LAUNCH
-        || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
+    return mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH || mode == RIDE_MODE_POWERED_LAUNCH
+        || mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
 }
 
-bool ride_is_block_sectioned(Ride* ride)
+bool Ride::IsBlockSectioned() const
 {
-    return ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
+    return mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
 }
 
 bool ride_has_any_track_elements(const Ride* ride)

@@ -2426,7 +2426,6 @@ STR_3190    :Extra's voor paden
 STR_3191    :Decorgroepen
 STR_3192    :Parkingang
 STR_3193    :Water
-STR_3194    :Scenariobeschrijving
 STR_3195    :Lijst van uitvindingen
 STR_3196    :{WINDOW_COLOUR_2}Onderzoeksgroep: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Items die aan het begin al zijn uitgevonden:
@@ -3767,6 +3766,7 @@ STR_6300    :{SMALLFONT}{BLACK}Download alle ontbrekende objecten, mits ze onlin
 STR_6301    :{SMALLFONT}{BLACK}Kopieert de naam van het geselecteerde object naar het klembord.
 STR_6302    :{SMALLFONT}{BLACK}Kopieert de lijst van ontbrekende objecten naar het klembord.
 STR_6303    :Bezig met downloaden van object ({COMMA16} van {COMMA16}): [{STRING}]
+STR_6304    :Decorselector openen
 
 #############
 # Scenarios #

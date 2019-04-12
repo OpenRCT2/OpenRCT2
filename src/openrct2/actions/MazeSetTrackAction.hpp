@@ -202,7 +202,7 @@ public:
         }
 
         uint32_t flags = GetFlags();
-        if (!(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_2))
+        if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
             footpath_remove_litter(_x, _y, _z);
             wall_remove_at(floor2(_x, 32), floor2(_y, 32), _z, _z + 32);

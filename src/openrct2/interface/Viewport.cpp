@@ -14,6 +14,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
+#include "../core/JobPool.hpp"
 #include "../drawing/Drawing.h"
 #include "../paint/Paint.h"
 #include "../peep/Staff.h"
@@ -42,6 +43,7 @@ rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport* g_music_tracking_viewport;
 
 static TileElement* _interaction_element = nullptr;
+static std::unique_ptr<JobPool> _paintJobs;
 
 int16_t gSavedViewX;
 int16_t gSavedViewY;
@@ -60,7 +62,6 @@ static int16_t _interactionMapX;
 static int16_t _interactionMapY;
 static uint16_t _unk9AC154;
 
-static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags, std::vector<paint_session>* sessions);
 static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi);
 
 /**
@@ -833,6 +834,41 @@ void viewport_render(
 #endif
 }
 
+static void viewport_fill_column(paint_session* session)
+{
+    paint_session_generate(session);
+    paint_session_arrange(session);
+}
+
+static void viewport_paint_column(paint_session* session)
+{
+    if (session->ViewFlags
+        & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_CLIP_VIEW))
+    {
+        uint8_t colour = 10;
+        if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+        {
+            colour = 0;
+        }
+        gfx_clear(&session->DPI, colour);
+    }
+
+    paint_draw_structs(session);
+
+    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+        && !(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    {
+        viewport_paint_weather_gloom(&session->DPI);
+    }
+
+    if (session->PSStringHead != nullptr)
+    {
+        paint_draw_money_structs(&session->DPI, session->PSStringHead);
+    }
+
+    paint_session_free(session);
+}
+
 /**
  *
  *  rct2: 0x00685CBF
@@ -880,82 +916,65 @@ void viewport_paint(
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
     int16_t rightBorder = dpi1.x + dpi1.width;
 
-    // Splits the area into 32 pixel columns and renders them
-    int16_t start_x = floor2(dpi1.x, 32);
-    if (sessions != nullptr)
+    std::vector<paint_session*> columns;
+
+    bool useMultithreading = gConfigGeneral.multithreading;
+    if (window_get_main() != nullptr && viewport != window_get_main()->viewport)
+        useMultithreading = false;
+
+    if (useMultithreading == true && _paintJobs == nullptr)
     {
-        sessions->reserve((rightBorder - start_x) / 32);
+        _paintJobs = std::make_unique<JobPool>();
     }
-    for (int16_t columnx = start_x; columnx < rightBorder; columnx += 32)
+    else if (useMultithreading == false && _paintJobs != nullptr)
     {
-        rct_drawpixelinfo dpi2 = dpi1;
-        if (columnx >= dpi2.x)
+        _paintJobs.reset();
+    }
+
+    // Splits the area into 32 pixel columns and renders them
+    size_t index = 0;
+    for (x = floor2(dpi1.x, 32); x < rightBorder; x += 32, index++)
+    {
+        paint_session* session = paint_session_alloc(&dpi1, viewFlags);
+        columns.push_back(session);
+
+        rct_drawpixelinfo& dpi2 = session->DPI;
+        if (x >= dpi2.x)
         {
-            int16_t leftPitch = columnx - dpi2.x;
+            int16_t leftPitch = x - dpi2.x;
             dpi2.width -= leftPitch;
             dpi2.bits += leftPitch >> dpi2.zoom_level;
             dpi2.pitch += leftPitch >> dpi2.zoom_level;
-            dpi2.x = columnx;
+            dpi2.x = x;
         }
 
         int16_t paintRight = dpi2.x + dpi2.width;
-        if (paintRight >= columnx + 32)
+        if (paintRight >= x + 32)
         {
-            int16_t rightPitch = paintRight - columnx - 32;
+            int16_t rightPitch = paintRight - x - 32;
             paintRight -= rightPitch;
             dpi2.pitch += rightPitch >> dpi2.zoom_level;
         }
         dpi2.width = paintRight - dpi2.x;
 
-        viewport_paint_column(&dpi2, viewFlags, sessions);
-    }
-}
-
-static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags, std::vector<paint_session>* sessions)
-{
-    if (viewFlags
-        & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_CLIP_VIEW))
-    {
-        uint8_t colour = 10;
-        if (viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+        if (useMultithreading)
         {
-            colour = 0;
+            _paintJobs->AddTask([session]() -> void { viewport_fill_column(session); });
         }
-        gfx_clear(dpi, colour);
-    }
-
-    paint_session* session = paint_session_alloc(dpi, viewFlags);
-    paint_session_generate(session);
-    // Perform a deep copy of the paint session, use relative offsets.
-    // This is done to extract the session for benchmark.
-    if (sessions != nullptr)
-    {
-        sessions->push_back(*session);
-        paint_session* session_copy = &sessions->at(sessions->size() - 1);
-
-        // Mind the offset needs to be calculated against the original `session`, not `session_copy`
-        for (auto& ps : session_copy->PaintStructs)
+        else
         {
-            ps.basic.next_quadrant_ps = (paint_struct*)(ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic) : std::size(session->PaintStructs));
-        }
-        for (auto& quad : session_copy->Quadrants)
-        {
-            quad = (paint_struct*)(quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
+            viewport_fill_column(session);
         }
     }
-    paint_session_arrange(session);
-    paint_draw_structs(session);
-    paint_session_free(session);
 
-    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
-        && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (useMultithreading)
     {
-        viewport_paint_weather_gloom(dpi);
+        _paintJobs->Join();
     }
 
-    if (session->PSStringHead != nullptr)
+    for (auto&& column : columns)
     {
-        paint_draw_money_structs(dpi, session->PSStringHead);
+        viewport_paint_column(column);
     }
 }
 
@@ -1590,7 +1609,7 @@ static bool sub_679023(rct_drawpixelinfo* dpi, int32_t imageId, int32_t x, int32
 static void sub_68862C(paint_session* session)
 {
     paint_struct* ps = &session->PaintHead;
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     while ((ps = ps->next_quadrant_ps) != nullptr)
     {
