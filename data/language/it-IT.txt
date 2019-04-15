@@ -2418,7 +2418,6 @@ STR_3190    :Percorsi (extra)
 STR_3191    :Gruppi di scenari
 STR_3192    :Entrata del parco
 STR_3193    :Acqua
-STR_3194    :Descrizione dello scenario
 STR_3195    :Lista delle invenzioni
 STR_3196    :{WINDOW_COLOUR_2}Gruppo di ricerca: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Oggetti già inventati all'avvio della partita
@@ -3587,8 +3586,8 @@ STR_6125    :Tipo oggetto
 STR_6126    :Tipo sconosciuto
 STR_6127    :File: {STRING}
 STR_6128    :Non è stato possibile caricare il file perché alcuni riferimenti ad oggetti presenti sono corrotti o mancanti. Una lista di tali oggetti è riportata qui di seguito.
-STR_6129    :Copia oggetto selezionato
-STR_6130    :Copia l'intera lista di oggetti
+STR_6129    :Copia
+STR_6130    :Copia tutti
 STR_6131    :Origine oggetto
 STR_6132    :Ignora stato di ricerca
 STR_6133    :{SMALLFONT}{BLACK}Permette di accedere ad attrazioni e scenari non ancora inventati
@@ -3736,6 +3735,35 @@ STR_6274    :Impossibile impostare schema colore...
 STR_6275    :{WINDOW_COLOUR_2}Stile stazione:
 STR_6276    :{RED}{STRINGID} ha ospiti bloccati, probabilmente a causa di un errato tipo di attrazione o modalità operativa.
 STR_6277    :{WINDOW_COLOUR_2}Indice stazione: {BLACK}{COMMA16}
+STR_6278    :Numero autosalvataggi
+STR_6279    :{SMALLFONT}{BLACK}Numero di autosalvataggi da mantenere
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Mostra un tasto separato nella barra degli strumenti per la finestra di chat
+STR_6282    :Chat
+STR_6283    :La chat non è disponibile al momento. Si è connessi a un server?
+STR_6284    :Rete
+STR_6285    :Informazioni di rete
+STR_6286    :Ricevi
+STR_6287    :Invia
+STR_6288    :Totale ricevuto
+STR_6289    :Totale inviato
+STR_6290    :Protocollo di base
+STR_6291    :Comandi
+STR_6292    :Mappa
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/sec
+STR_6299    :Scarica tutti
+STR_6300    :{SMALLFONT}{BLACK}Scarica tutti gli oggetti mancanti se sono disponibili online.
+STR_6301    :{SMALLFONT}{BLACK}Copia il nome dell'oggetto selezionato negli appunti.
+STR_6302    :{SMALLFONT}{BLACK}Copia l'intera lista degli oggetti mancanti negli appunti.
+STR_6303    :Scaricamento oggetto ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Apri selezione scenario
+STR_6305    :Multithreading
+STR_6306    :{SMALLFONT}{BLACK}Opzione sperimentale per utilizzare più thread per il rendering, potrebbe causare instabilità.
 
 #############
 # Scenarios #
