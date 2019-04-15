@@ -281,7 +281,7 @@ int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, 
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-    gfx_draw_string(dpi, (char*)"", TEXT_COLOUR_255, dpi->x, dpi->y);
+    gfx_draw_string(dpi, (char*)"", TEXT_COLOUR_255, dpi->x, dpi->y, FONT_MEDIUM);
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, STR_STRING, args);
 
@@ -300,7 +300,7 @@ int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, 
     lineY = y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x, lineY - (numLines * lineHeight));
+        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x, lineY - (numLines * lineHeight), FONT_MEDIUM);
         buffer = get_string_end(buffer) + 1;
         lineY += lineHeight;
     }

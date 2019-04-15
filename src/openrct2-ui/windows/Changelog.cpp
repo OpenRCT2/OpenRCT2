@@ -186,10 +186,7 @@ static void window_changelog_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t scrollIndex)
 {
-    gCurrentFontFlags = 0;
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    const int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     int32_t x = 3;
     int32_t y = 3 - lineHeight;
@@ -199,7 +196,7 @@ static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         if (y + lineHeight < dpi->y || y >= dpi->y + dpi->height)
             continue;
 
-        gfx_draw_string(dpi, (char*)line, w->colours[0], x, y);
+        gfx_draw_string(dpi, (char*)line, w->colours[0], x, y, FONT_MEDIUM);
     }
 }
 

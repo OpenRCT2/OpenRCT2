@@ -54,6 +54,21 @@ struct TTFFontSetDescriptor
 
 extern TTFFontSetDescriptor* gCurrentTTFFontSet;
 
+struct TextFont
+{
+    constexpr TextFont(uint16_t base, uint16_t flags = 0)
+        : fontBase(base)
+        , fontFlags(flags)
+    {
+    }
+    uint16_t fontBase = FONT_SPRITE_BASE_MEDIUM;
+    uint16_t fontFlags = 0;
+};
+
+static constexpr TextFont FONT_TINY = TextFont(FONT_SPRITE_BASE_TINY);
+static constexpr TextFont FONT_SMALL = TextFont(FONT_SPRITE_BASE_SMALL);
+static constexpr TextFont FONT_MEDIUM = TextFont(FONT_SPRITE_BASE_MEDIUM);
+
 #endif // NO_TTF
 
 void font_sprite_initialise_characters();

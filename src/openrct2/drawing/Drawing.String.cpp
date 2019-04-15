@@ -251,7 +251,7 @@ void gfx_draw_string_left_centred(
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
     int32_t height = string_get_height_raw(buffer);
-    gfx_draw_string(dpi, buffer, colour, x, y - (height / 2));
+    gfx_draw_string(dpi, buffer, colour, x, y - (height / 2), FONT_MEDIUM);
 }
 
 /**

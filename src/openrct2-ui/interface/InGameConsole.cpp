@@ -262,8 +262,11 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         return;
 
     // Set font
+    TextFont font = (gConfigInterface.console_small_font ? FONT_SMALL : FONT_MEDIUM);
+
     gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
     gCurrentFontFlags = 0;
+
     uint8_t textColour = NOT_TRANSLUCENT(theme_get_colour(WC_CONSOLE, 1));
     const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
     const int32_t maxLines = GetNumVisibleLines();
@@ -309,7 +312,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = colourFormatStr + _consoleLines[index];
-        gfx_draw_string(dpi, lineBuffer.c_str(), textColour, x, y);
+        gfx_draw_string(dpi, lineBuffer.c_str(), textColour, x, y, font);
         y += lineHeight;
     }
 
@@ -317,7 +320,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // Draw current line
     lineBuffer = colourFormatStr + _consoleCurrentLine;
-    gfx_draw_string(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, x, y);
+    gfx_draw_string(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, x, y, font);
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)

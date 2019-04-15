@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "../interface/Colour.h"
+#include "Font.h"
 
 namespace OpenRCT2
 {
@@ -324,7 +325,7 @@ void FASTCALL
     gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);
 
 // string
-void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, int32_t x, int32_t y);
+void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, int32_t x, int32_t y, TextFont font);
 
 void gfx_draw_string_left(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y);
 void gfx_draw_string_centred(rct_drawpixelinfo* dpi, rct_string_id format, int32_t x, int32_t y, uint8_t colour, void* args);
