@@ -1089,8 +1089,6 @@ void window_guest_overview_invalidate(rct_window* w)
  */
 void window_guest_overview_update(rct_window* w)
 {
-    Peep* peep = GET_PEEP(w->number);
-
     int32_t var_496 = w->var_496;
     var_496++;
     var_496 %= 24;
@@ -1099,7 +1097,8 @@ void window_guest_overview_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_1);
     widget_invalidate(w, WIDX_TAB_2);
 
-    if (peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_ACTION)
+    Peep* peep = GET_PEEP(w->number);
+    if (peep != nullptr && peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_ACTION)
     {
         peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_ACTION;
         widget_invalidate(w, WIDX_ACTION_LBL);
