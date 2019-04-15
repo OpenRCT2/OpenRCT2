@@ -62,7 +62,6 @@ enum WINDOW_GUEST_WIDGET_IDX {
     WIDX_RIDE_SCROLL = 10
 };
 
-validate_global_widx(WC_PEEP, WIDX_ACTION_LBL);
 validate_global_widx(WC_PEEP, WIDX_PICKUP);
 
 static rct_widget window_guest_overview_widgets[] = {
@@ -1098,6 +1097,13 @@ void window_guest_overview_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_1);
     widget_invalidate(w, WIDX_TAB_2);
 
+    Peep* peep = GET_PEEP(w->number);
+    if (peep != nullptr && peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_ACTION)
+    {
+        peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_ACTION;
+        widget_invalidate(w, WIDX_ACTION_LBL);
+    }
+
     w->list_information_type += 2;
 
     if ((w->highlighted_item & 0xFFFF) == 0xFFFF)
@@ -1116,7 +1122,6 @@ void window_guest_overview_update(rct_window* w)
                 int32_t random = util_rand() & 0xFFFF;
                 if (random <= 0x2AAA)
                 {
-                    Peep* peep = GET_PEEP(w->number);
                     peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, PEEP_THOUGHT_ITEM_NONE);
                 }
             }
