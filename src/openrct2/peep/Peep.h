@@ -511,6 +511,7 @@ enum PeepInvalidate
     PEEP_INVALIDATE_PEEP_2 = 1 << 2,
     PEEP_INVALIDATE_PEEP_INVENTORY = 1 << 3,
     PEEP_INVALIDATE_STAFF_STATS = 1 << 4,
+    PEEP_INVALIDATE_PEEP_ACTION = 1 << 5     // Currently set only when guest_heading_to_ride_id is changed
 };
 
 // Flags used by peep_should_go_on_ride()
