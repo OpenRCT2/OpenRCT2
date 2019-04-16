@@ -301,15 +301,18 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels);
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving
 ///////////////////////////////////////////////////////////////////////////////
-// void track_design_save_init();
-// void track_design_save_reset_scenery();
-// bool track_design_save_contains_tile_element(const TileElement* tileElement);
-// void track_design_save_select_nearby_scenery(ride_id_t rideIndex);
-// void track_design_save_select_tile_element(
-//    int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement, bool collect);
+void track_design_save_init();
+void track_design_save_reset_scenery();
+bool track_design_save_contains_tile_element(const TileElement* tileElement);
+void track_design_save_select_nearby_scenery(ride_id_t rideIndex);
+void track_design_save_select_tile_element(
+    int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement, bool collect);
 // bool track_design_save(ride_id_t rideIndex);
 // bool track_design_save_to_file(const utf8* path);
-//
-// bool track_design_are_entrance_and_exit_placed();
+
+bool track_design_are_entrance_and_exit_placed();
+
+extern std::vector<rct_td6_scenery_element> _trackSavedTileElementsDesc;
+extern std::vector<const TileElement*> _trackSavedTileElements;
 
 #endif

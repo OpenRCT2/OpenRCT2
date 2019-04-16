@@ -341,7 +341,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
             audio_play_sound_at_location(SoundId::PlaceItem, mapX, mapY, mapZ);
 
             _currentRideIndex = rideIndex;
-            if (false)//track_design_are_entrance_and_exit_placed())
+            if (track_design_are_entrance_and_exit_placed())
             {
                 auto intent = Intent(WC_RIDE);
                 intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);

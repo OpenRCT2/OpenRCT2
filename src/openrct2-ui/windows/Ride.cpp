@@ -41,6 +41,7 @@
 #include <openrct2/object/StationObject.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/rct1/RCT1.h>
+#include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/ride/ShopItem.h>
@@ -51,7 +52,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-
 using namespace OpenRCT2;
 
 enum
@@ -5357,7 +5357,7 @@ static void setup_scenery_selection(rct_window* w)
 
     gTrackDesignSaveRideIndex = (uint8_t)w->number;
 
-    // track_design_save_init();
+    track_design_save_init();
     gGamePaused |= GAME_PAUSED_SAVING_TRACK;
     gTrackDesignSaveMode = true;
 
@@ -5379,7 +5379,7 @@ static void setup_scenery_selection(rct_window* w)
  */
 static void window_ride_measurements_design_reset()
 {
-    // track_design_save_reset_scenery();
+    track_design_save_reset_scenery();
 }
 
 /**
@@ -5388,7 +5388,7 @@ static void window_ride_measurements_design_reset()
  */
 static void window_ride_measurements_design_select_nearby_scenery()
 {
-    // track_design_save_select_nearby_scenery(gTrackDesignSaveRideIndex);
+    track_design_save_select_nearby_scenery(gTrackDesignSaveRideIndex);
 }
 
 /**
@@ -5409,6 +5409,9 @@ void window_ride_measurements_design_cancel()
  */
 static void window_ride_measurements_design_save(rct_window* w)
 {
+    T6Exporter t6Exporter;
+    t6Exporter.Save((ride_id_t)w->number);
+    t6Exporter.SaveTrack("test.td6");
     // track_design_save((uint8_t)w->number);
 }
 
@@ -5551,8 +5554,8 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            //_collectTrackDesignScenery = !track_design_save_contains_tile_element(tileElement);
-            //track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            _collectTrackDesignScenery = !track_design_save_contains_tile_element(tileElement);
+            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
             break;
     }
 }
@@ -5575,7 +5578,7 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            //track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
             break;
     }
 }

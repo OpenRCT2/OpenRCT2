@@ -344,16 +344,13 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
 
-        // If .TD6
-        if (td6->version_and_colour_scheme / 4 >= 2)
+
+        if (td6->total_air_time != 0)
         {
-            if (td6->total_air_time != 0)
-            {
-                // Total air time
-                int32_t airTime = td6->total_air_time * 25;
-                gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
-                y += LIST_ROW_HEIGHT;
-            }
+            // Total air time
+            int32_t airTime = td6->total_air_time * 25;
+            gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
+            y += LIST_ROW_HEIGHT;
         }
     }
 

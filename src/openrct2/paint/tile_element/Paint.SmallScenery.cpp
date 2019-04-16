@@ -48,10 +48,10 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     const int32_t rotation = session->CurrentRotation;
     if (gTrackDesignSaveMode)
     {
-        //if (!track_design_save_contains_tile_element(tileElement))
-        //{
-        //    baseImageid = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
-        //}
+        if (!track_design_save_contains_tile_element(tileElement))
+        {
+            baseImageid = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
+        }
     }
     if (tileElement->IsGhost())
     {
