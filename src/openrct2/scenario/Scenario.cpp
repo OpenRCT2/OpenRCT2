@@ -447,7 +447,7 @@ static int32_t scenario_create_ducks()
     {
         for (j = 0; j < 7; j++)
         {
-            waterZ = (tile_element_height(x2, y2) >> 16);
+            waterZ = (tile_element_water_height(x2, y2));
             if (waterZ == centreWaterZ)
                 c++;
 
