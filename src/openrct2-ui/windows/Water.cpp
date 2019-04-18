@@ -12,9 +12,9 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/world/Park.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/world/Park.h>
 
 // clang-format off
 enum WINDOW_WATER_WIDGET_IDX {
@@ -234,6 +234,4 @@ static void window_water_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
             gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolLowerCost);
     }
-
-    
 }
