@@ -4,6 +4,7 @@
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
+ *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
@@ -83,13 +84,12 @@ private:
 
         MapRange validRange = MapRange{ aX, aY, bX, bY };
 
-        res->Position = { _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y)};
+        res->Position = { _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y) };
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(
-                SOUND_PLACE_ITEM, _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y));
+            audio_play_sound_at_location(SOUND_PLACE_ITEM, _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y));
         }
 
         uint8_t minHeight = map_get_lowest_land_height(

@@ -612,27 +612,26 @@ int16_t tile_element_height(int32_t x, int32_t y)
 int16_t tile_element_water_height(int32_t x, int32_t y)
 {
     TileElement* tileElement;
-    
+
     // Off the map
     if ((unsigned)x >= 8192 || (unsigned)y >= 8192)
         return 0;
-    
+
     // Truncate subtile coordinates
     int32_t x_tile = x & 0xFFFFFFE0;
     int32_t y_tile = y & 0xFFFFFFE0;
-    
+
     // Get the surface element for the tile
     tileElement = map_get_surface_element_at({ x_tile, y_tile });
-    
+
     if (tileElement == nullptr)
     {
         return 0;
     }
-    
+
     uint16_t height = (tileElement->AsSurface()->GetWaterHeight() << 4);
-    
+
     return height;
-    
 }
 
 /**

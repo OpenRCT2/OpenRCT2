@@ -77,7 +77,7 @@ public:
         }
         int32_t landHeight = tile_element_height(_loc.x, _loc.y); // this is really just land height now
         int16_t waterHeight = tile_element_water_height(_loc.x, _loc.y);
-        
+
         int32_t surfaceHeight = landHeight;
         // If on water
         if (waterHeight > 0)
@@ -137,7 +137,7 @@ public:
         }
         landHeight = tile_element_height(x2, y2);
         waterHeight = tile_element_water_height(x2, y2);
-        
+
         surfaceHeight = landHeight;
         // If on water
         if (waterHeight > 0)
@@ -278,7 +278,7 @@ public:
         }
         int32_t landHeight = tile_element_height(_loc.x, _loc.y);
         int16_t waterHeight = tile_element_water_height(_loc.x, _loc.y);
-        
+
         int32_t surfaceHeight = landHeight;
         // If on water
         if (waterHeight > 0)
@@ -328,7 +328,7 @@ public:
         }
         landHeight = tile_element_height(x2, y2);
         waterHeight = tile_element_water_height(x2, y2);
-        
+
         surfaceHeight = landHeight;
         // If on water
         if (waterHeight > 0)
