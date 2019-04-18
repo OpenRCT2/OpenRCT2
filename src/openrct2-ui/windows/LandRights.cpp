@@ -281,10 +281,10 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw cost amount
-    x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2 + w->x;
-    y = window_land_rights_widgets[WIDX_PREVIEW].bottom + w->y + 32;
-    if (_landRightsCost != MONEY32_UNDEFINED && _landRightsCost != 0)
+    if (_landRightsCost != MONEY32_UNDEFINED && _landRightsCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
+        x = (window_land_rights_widgets[WIDX_PREVIEW].left + window_land_rights_widgets[WIDX_PREVIEW].right) / 2 + w->x;
+        y = window_land_rights_widgets[WIDX_PREVIEW].bottom + w->y + 32;
         gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &_landRightsCost);
     }
 }
