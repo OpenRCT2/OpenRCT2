@@ -27,7 +27,7 @@
 #include "../world/TileElement.h"
 #include "GameAction.h"
 
-class SmallSceneryPlaceActionResult final : public GameActionResult // new class to be changed
+class SmallSceneryPlaceActionResult final : public GameActionResult
 {
 public:
     SmallSceneryPlaceActionResult()

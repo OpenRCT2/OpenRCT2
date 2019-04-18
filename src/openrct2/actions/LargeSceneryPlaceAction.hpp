@@ -19,7 +19,7 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
-class LargeSceneryPlaceActionResult final : public GameActionResult // new class to be changed
+class LargeSceneryPlaceActionResult final : public GameActionResult
 {
 public:
     LargeSceneryPlaceActionResult()
