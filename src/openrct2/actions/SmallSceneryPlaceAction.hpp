@@ -200,7 +200,8 @@ public:
             {
                 if (static_cast<int32_t>((surfaceElement->AsSurface()->GetWaterHeight() * 16)) > targetHeight)
                 {
-                    return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+                    return std::make_unique<SmallSceneryPlaceActionResult>(
+                        GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
                 }
             }
         }
