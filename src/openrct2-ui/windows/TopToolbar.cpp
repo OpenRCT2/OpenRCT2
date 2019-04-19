@@ -2581,7 +2581,7 @@ static money32 try_place_ghost_scenery(
 
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
-            
+
             if (dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on

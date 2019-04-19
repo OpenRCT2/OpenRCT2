@@ -32,7 +32,7 @@ class SmallSceneryPlaceActionResult final : public GameActionResult
 public:
     SmallSceneryPlaceActionResult()
         : GameActionResult(GA_ERROR::OK, STR_CANT_POSITION_THIS_HERE)
-    { 
+    {
     }
     SmallSceneryPlaceActionResult(GA_ERROR error)
         : GameActionResult(error, STR_CANT_POSITION_THIS_HERE)
@@ -193,7 +193,7 @@ public:
         {
             if (isOnWater)
             {
-                 return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+                return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
             }
 
             if (surfaceElement != nullptr && surfaceElement->AsSurface()->GetWaterHeight() > 0)
@@ -209,7 +209,7 @@ public:
             && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE)) && !supportsRequired
             && !isOnWater && surfaceElement != nullptr && (surfaceElement->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
         {
-             return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LEVEL_LAND_REQUIRED);
+            return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LEVEL_LAND_REQUIRED);
         }
 
         if (!gCheatsDisableSupportLimits && !(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_STACKABLE))
@@ -275,7 +275,8 @@ public:
                 _loc.x, _loc.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
                 CREATE_CROSSING_MODE_NONE))
         {
-             return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, gGameCommandErrorText, gCommonFormatArgs);
+            return std::make_unique<SmallSceneryPlaceActionResult>(
+                GA_ERROR::DISALLOWED, gGameCommandErrorText, gCommonFormatArgs);
         }
 
         res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
@@ -312,7 +313,7 @@ public:
         rct_scenery_entry* sceneryEntry = get_small_scenery_entry(_sceneryType);
         if (sceneryEntry == nullptr)
         {
-             return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
+            return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
         auto quadrant = _quadrant;
@@ -406,7 +407,8 @@ public:
                 _loc.x, _loc.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
                 &clearCost, CREATE_CROSSING_MODE_NONE))
         {
-            return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, gGameCommandErrorText, gCommonFormatArgs);
+            return std::make_unique<SmallSceneryPlaceActionResult>(
+                GA_ERROR::DISALLOWED, gGameCommandErrorText, gCommonFormatArgs);
         }
 
         res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);

@@ -24,7 +24,7 @@ class LargeSceneryPlaceActionResult final : public GameActionResult
 public:
     LargeSceneryPlaceActionResult()
         : GameActionResult(GA_ERROR::OK, STR_CANT_POSITION_THIS_HERE)
-    { 
+    {
     }
     LargeSceneryPlaceActionResult(GA_ERROR error)
         : GameActionResult(error, STR_CANT_POSITION_THIS_HERE)
@@ -84,7 +84,7 @@ public:
         res->Position.z = surfaceHeight;
 
         res->GroundFlags = 0;
-        
+
         BannerIndex bannerId = BANNER_INDEX_NULL;
         money32 supportsCost = 0;
 
@@ -170,7 +170,7 @@ public:
                 if (res->GroundFlags && !(res->GroundFlags & tempSceneryGroundFlags))
                 {
                     return std::make_unique<LargeSceneryPlaceActionResult>(
-                        GA_ERROR::DISALLOWED, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);                    
+                        GA_ERROR::DISALLOWED, STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND);
                 }
             }
 
@@ -178,15 +178,13 @@ public:
 
             if (curTile.x >= gMapSizeUnits || curTile.y >= gMapSizeUnits)
             {
-                return std::make_unique<LargeSceneryPlaceActionResult>(
-                    GA_ERROR::DISALLOWED, STR_OFF_EDGE_OF_MAP);
+                return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_OFF_EDGE_OF_MAP);
             }
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(curTile.x, curTile.y, zLow * 8)
                 && !gCheatsSandboxMode)
             {
-                return std::make_unique<LargeSceneryPlaceActionResult>(
-                    GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
+                return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
