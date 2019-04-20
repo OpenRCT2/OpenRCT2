@@ -184,9 +184,9 @@ namespace String
     {
         if (ignoreCase)
         {
-            while (*str != '\0' && *match != '\0')
+            while (*match != '\0')
             {
-                if (tolower(*str++) != tolower(*match++))
+                if (*str == '\0' || tolower(*str++) != tolower(*match++))
                 {
                     return false;
                 }
@@ -195,9 +195,9 @@ namespace String
         }
         else
         {
-            while (*str != '\0' && *match != '\0')
+            while (*match != '\0')
             {
-                if (*str++ != *match++)
+                if (*str == '\0' || *str++ != *match++)
                 {
                     return false;
                 }
