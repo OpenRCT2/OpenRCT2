@@ -34,6 +34,7 @@
 #include <ctype.h>
 #include <iterator>
 #include <limits.h>
+#include <cmath>
 
 char gCommonStringFormatBuffer[512];
 uint8_t gCommonFormatArgs[80];
@@ -1513,7 +1514,7 @@ money32 string_to_money(const char* string_to_monetise)
     auto number = std::stod(processedString, nullptr);
     number /= (currencyDesc->rate / 10.0);
     auto whole = static_cast<uint16_t>(number);
-    auto fraction = static_cast<uint8_t>((number - whole) * 100);
+    auto fraction = static_cast<uint8_t>(ceil((number - whole) * 100.0));
 
     money32 result = MONEY(whole, fraction);
     // Check if MONEY resulted in overflow
