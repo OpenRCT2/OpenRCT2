@@ -2109,7 +2109,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
             [connection_player](std::unique_ptr<NetworkPlayer>& player) { return player.get() == connection_player; }),
         player_list.end());
     client_connection_list.remove(connection);
-    if (gConfigNetwork.pause_server_if_no_clients && game_is_not_paused() && client_connection_list.size() == 0)
+    if (gConfigNetwork.pause_server_if_no_clients && game_is_not_paused() && client_connection_list.empty())
     {
         auto pauseToggleAction = PauseToggleAction();
         GameActions::Execute(&pauseToggleAction);

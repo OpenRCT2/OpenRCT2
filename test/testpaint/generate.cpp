@@ -606,7 +606,7 @@ private:
             WriteLine(tabs, "switch (direction) {");
             for (int direction = 0; direction < 4; direction++)
             {
-                if (calls[direction].size() == 0)
+                if (calls[direction].empty())
                     continue;
 
                 WriteLine(tabs, "case %d:", direction);
@@ -720,7 +720,7 @@ private:
             function_call lastCall = calls[0].back();
             for (int i = 0; i < 4; i++)
             {
-                if (calls[i].size() == 0 || !CompareFunctionCall(calls[i].back(), lastCall))
+                if (calls[i].empty() || !CompareFunctionCall(calls[i].back(), lastCall))
                 {
                     goto finished;
                 }

@@ -197,7 +197,7 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
     {
         // Retrieve current array data, growing buffer.
         oldPixels.resize(_atlasesTextureDimensions * _atlasesTextureDimensions * _atlasesTextureCapacity);
-        if (oldPixels.size() > 0)
+        if (!oldPixels.empty())
         {
             glGetTexImage(GL_TEXTURE_2D_ARRAY, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
         }
@@ -212,7 +212,7 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
         GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
 
     // Restore old data
-    if (oldPixels.size() > 0)
+    if (!oldPixels.empty())
     {
         glTexSubImage3D(
             GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices,

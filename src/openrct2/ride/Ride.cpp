@@ -7362,7 +7362,7 @@ void sub_6CB945(Ride* ride)
                 shouldRemove = false;
             } while (!(trackElement++)->IsLastForTile());
 
-            if (shouldRemove == true)
+            if (shouldRemove)
             {
                 footpath_queue_chain_reset();
                 maze_entrance_hedge_replacement(location.x, location.y, tileElement);

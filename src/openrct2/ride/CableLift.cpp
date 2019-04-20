@@ -423,7 +423,7 @@ int32_t cable_lift_update_track_motion(rct_vehicle* cableLift)
             {
                 if (vehicle->remaining_distance < 0)
                 {
-                    if (sub_6DF21B_loop(vehicle) == true)
+                    if (sub_6DF21B_loop(vehicle))
                     {
                         break;
                     }
@@ -439,7 +439,7 @@ int32_t cable_lift_update_track_motion(rct_vehicle* cableLift)
                 }
                 else
                 {
-                    if (sub_6DF01A_loop(vehicle) == true)
+                    if (sub_6DF01A_loop(vehicle))
                     {
                         break;
                     }

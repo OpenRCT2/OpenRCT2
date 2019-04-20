@@ -238,7 +238,7 @@ static void scenario_entrance_fee_too_high_check()
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
     {
-        if (gParkEntrances.size() > 0)
+        if (!gParkEntrances.empty())
         {
             const auto& entrance = gParkEntrances[0];
             auto x = entrance.x + 16;

@@ -225,7 +225,7 @@ private:
             newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
             newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
-            if (_autoPosition == true)
+            if (_autoPosition)
             {
                 AutoPositionNewStaff(newPeep);
             }
@@ -320,7 +320,7 @@ private:
         else
         {
             // No walking guests; pick random park entrance
-            if (gParkEntrances.size() > 0)
+            if (!gParkEntrances.empty())
             {
                 auto rand = scenario_rand_max((uint32_t)gParkEntrances.size());
                 const auto& entrance = gParkEntrances[rand];
