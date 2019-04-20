@@ -695,7 +695,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 }
                 break;
             case INFORMATION_TYPE_QUEUE_LENGTH:
-                set_format_arg(2, uint16_t, ride_get_total_queue_length(ride));
+                set_format_arg(2, uint16_t, ride->GetTotalQueueLength());
                 formatSecondary = STR_QUEUE_EMPTY;
                 {
                     uint16_t arg;
@@ -708,7 +708,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 }
                 break;
             case INFORMATION_TYPE_QUEUE_TIME:
-                set_format_arg(2, uint16_t, ride_get_max_queue_time(ride));
+                set_format_arg(2, uint16_t, ride->GetMaxQueueTime());
                 formatSecondary = STR_QUEUE_TIME_LABEL;
                 {
                     uint16_t arg;
@@ -906,7 +906,7 @@ void window_ride_list_refresh_list(rct_window* w)
                 while (--current_list_position >= 0)
                 {
                     otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride_get_total_queue_length(ride) <= ride_get_total_queue_length(otherRide))
+                    if (ride->GetTotalQueueLength() <= otherRide->GetTotalQueueLength())
                         break;
 
                     window_bubble_list_item(w, current_list_position);
@@ -916,7 +916,7 @@ void window_ride_list_refresh_list(rct_window* w)
                 while (--current_list_position >= 0)
                 {
                     otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride_get_max_queue_time(ride) <= ride_get_max_queue_time(otherRide))
+                    if (ride->GetMaxQueueTime() <= otherRide->GetMaxQueueTime())
                         break;
 
                     window_bubble_list_item(w, current_list_position);
