@@ -352,6 +352,14 @@ struct Ride
     uint16_t holes;
     uint8_t sheltered_eighths;
 
+private:
+    void Update();
+    void UpdateChairlift();
+    void UpdateSpiralSlide();
+    void UpdateQueueLength(int32_t stationIndex);
+    money32 CalculateIncomePerHour() const;
+
+public:
     bool CanBreakDown() const;
     bool IsRide() const;
     void Renew();
@@ -373,12 +381,23 @@ struct Ride
 
     bool IsPoweredLaunched() const;
     bool IsBlockSectioned() const;
+    bool CanHaveMultipleCircuits() const;
 
     void StopGuestsQueuing();
 
     uint8_t GetDefaultMode() const;
 
     void SetColourPreset(uint8_t index);
+
+    rct_ride_entry* GetRideEntry() const;
+
+    int32_t GetTotalQueueLength() const;
+    int32_t GetMaxQueueTime() const;
+
+    void QueueInsertGuestAtFront(int32_t stationIndex, Peep* peep);
+    Peep* GetQueueHeadGuest(int32_t stationIndex) const;
+
+    static void UpdateAll();
 };
 
 #pragma pack(push, 1)
@@ -1024,14 +1043,9 @@ extern uint8_t gLastEntranceStyle;
 
 ride_id_t ride_get_empty_slot();
 int32_t ride_get_count();
-int32_t ride_get_total_queue_length(Ride* ride);
-int32_t ride_get_max_queue_time(Ride* ride);
-Peep* ride_get_queue_head_guest(Ride* ride, int32_t stationIndex);
-void ride_queue_insert_guest_at_front(Ride* ride, int32_t stationIndex, Peep* peep);
 void ride_init_all();
 void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
-void ride_update_all();
 void ride_check_all_reachable();
 void ride_update_satisfaction(Ride* ride, uint8_t happiness);
 void ride_update_popularity(Ride* ride, uint8_t pop_amount);
@@ -1047,12 +1061,10 @@ Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);
 int32_t ride_get_total_length(Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
-int32_t ride_can_have_multiple_circuits(Ride* ride);
 TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
-rct_ride_entry* get_ride_entry_by_ride(const Ride* ride);
 uint8_t* get_ride_entry_indices_for_ride_type(uint8_t rideType);
 void reset_type_to_ride_entry_index_map(IObjectManager& objectManager);
 void ride_measurement_clear(Ride* ride);
@@ -1177,7 +1189,7 @@ rct_vehicle* ride_get_broken_vehicle(Ride* ride);
 void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();
 
-money16 ride_get_price(Ride* ride);
+money16 ride_get_price(const Ride* ride);
 
 TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tolerance);
 bool ride_has_adjacent_station(Ride* ride);

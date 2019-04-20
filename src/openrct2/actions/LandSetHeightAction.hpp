@@ -260,7 +260,7 @@ private:
                 Ride* ride = get_ride(rideIndex);
                 if (ride != nullptr)
                 {
-                    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+                    rct_ride_entry* rideEntry = ride->GetRideEntry();
                     if (rideEntry != nullptr)
                     {
                         int32_t maxHeight = rideEntry->max_height;

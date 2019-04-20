@@ -3736,7 +3736,7 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride
     peep->SetState(PEEP_STATE_QUEUING_FRONT);
     peep->sub_state = PEEP_RIDE_AT_ENTRANCE;
 
-    ride_queue_insert_guest_at_front(ride, peep->current_ride_station, peep);
+    ride->QueueInsertGuestAtFront(peep->current_ride_station, peep);
 }
 
 /**
