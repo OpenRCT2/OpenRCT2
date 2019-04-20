@@ -329,7 +329,7 @@ private:
 
     void SetNewLoadedObjectList(const std::vector<Object*>& newLoadedObjects)
     {
-        if (newLoadedObjects.size() == 0)
+        if (newLoadedObjects.empty())
         {
             UnloadAll();
         }
@@ -530,7 +530,7 @@ private:
             requiredObjects.push_back(ori);
         }
 
-        if (missingObjects.size() > 0)
+        if (!missingObjects.empty())
         {
             throw ObjectLoadException(std::move(missingObjects));
         }
@@ -605,7 +605,7 @@ private:
             obj->Load();
         }
 
-        if (badObjects.size() > 0)
+        if (!badObjects.empty())
         {
             // Unload all the new objects we loaded
             for (auto object : loadedObjects)

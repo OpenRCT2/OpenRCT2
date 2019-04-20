@@ -499,7 +499,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t listItemIndex = w->selected_list_item;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        if (_trackDesigns.size() == 0 || listItemIndex == -1)
+        if (_trackDesigns.empty() || listItemIndex == -1)
             return;
     }
     else
@@ -718,7 +718,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
     size_t listIndex = 0;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        if (_trackDesigns.size() == 0)
+        if (_trackDesigns.empty())
         {
             // No track designs
             gfx_draw_string_left(dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, nullptr, COLOUR_BLACK, x, y - 1);

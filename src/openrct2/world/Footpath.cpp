@@ -1469,7 +1469,7 @@ bool PathElement::IsBroken() const
 
 void PathElement::SetIsBroken(bool isBroken)
 {
-    if (isBroken == true)
+    if (isBroken)
     {
         flags |= TILE_ELEMENT_FLAG_BROKEN;
     }
@@ -1486,7 +1486,7 @@ bool PathElement::IsBlockedByVehicle() const
 
 void PathElement::SetIsBlockedByVehicle(bool isBlocked)
 {
-    if (isBlocked == true)
+    if (isBlocked)
     {
         flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
     }

@@ -836,7 +836,7 @@ void game_fix_save_vars()
         }
     }
 
-    if (peepsToRemove.size() > 0)
+    if (!peepsToRemove.empty())
     {
         // Some broken saves have broken spatial indexes
         reset_sprite_spatial_index();
