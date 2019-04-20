@@ -14,6 +14,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/world/Park.h>
 
 // clang-format off
 enum WINDOW_WATER_WIDGET_IDX {
@@ -220,14 +221,17 @@ static void window_water_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
     }
 
-    // Draw raise cost amount
-    x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;
-    y = window_water_widgets[WIDX_PREVIEW].bottom + w->y + 5;
-    if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
-        gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolRaiseCost);
-    y += 10;
+    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    {
+        // Draw raise cost amount
+        x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;
+        y = window_water_widgets[WIDX_PREVIEW].bottom + w->y + 5;
+        if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
+            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolRaiseCost);
+        y += 10;
 
-    // Draw lower cost amount
-    if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
-        gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolLowerCost);
+        // Draw lower cost amount
+        if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
+            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolLowerCost);
+    }
 }
