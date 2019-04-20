@@ -4028,22 +4028,26 @@ void Guest::UpdateRideLeaveVehicle()
         platformLocation.x = vehicle->x + word_981D6C[platformLocation.direction].x * 12;
         platformLocation.y = vehicle->y + word_981D6C[platformLocation.direction].y * 12;
 
-        int8_t loadPosition = vehicle_entry->peep_loading_positions[current_seat];
-
-        switch (vehicle->sprite_direction / 8)
+        // This can evaluate to false with buggy custom rides.
+        if (current_seat < vehicle_entry->peep_loading_positions.size())
         {
-            case 0:
-                platformLocation.x -= loadPosition;
-                break;
-            case 1:
-                platformLocation.y += loadPosition;
-                break;
-            case 2:
-                platformLocation.x += loadPosition;
-                break;
-            case 3:
-                platformLocation.y -= loadPosition;
-                break;
+            int8_t loadPosition = vehicle_entry->peep_loading_positions[current_seat];
+
+            switch (vehicle->sprite_direction / 8)
+            {
+                case 0:
+                    platformLocation.x -= loadPosition;
+                    break;
+                case 1:
+                    platformLocation.y += loadPosition;
+                    break;
+                case 2:
+                    platformLocation.x += loadPosition;
+                    break;
+                case 3:
+                    platformLocation.y -= loadPosition;
+                    break;
+            }
         }
 
         platformLocation.z = ride->stations[current_ride_station].Height * 8;
