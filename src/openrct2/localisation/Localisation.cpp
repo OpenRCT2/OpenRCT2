@@ -30,11 +30,11 @@
 #include "Localisation.h"
 
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <ctype.h>
 #include <iterator>
 #include <limits.h>
-#include <cmath>
 
 char gCommonStringFormatBuffer[512];
 uint8_t gCommonFormatArgs[80];
