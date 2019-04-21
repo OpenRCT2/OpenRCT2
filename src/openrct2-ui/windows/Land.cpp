@@ -360,35 +360,39 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     x = w->x + (previewWidget->left + previewWidget->right) / 2;
     y = w->y + previewWidget->bottom + 5;
 
-    // Draw raise cost amount
-    if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
-        gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolRaiseCost);
-    y += 10;
-
-    // Draw lower cost amount
-    if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
-        gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolLowerCost);
-    y += 50;
-
-    // Draw paint price
-    numTiles = gLandToolSize * gLandToolSize;
-    price = 0;
-    if (gLandToolTerrainSurface != 255)
+    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        auto& objManager = GetContext()->GetObjectManager();
-        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-            objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, gLandToolTerrainSurface));
-        if (surfaceObj != nullptr)
+        // Draw raise cost amount
+        if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
+            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolRaiseCost);
+        y += 10;
+
+        // Draw lower cost amount
+        if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
+            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolLowerCost);
+        y += 50;
+
+        // Draw paint price
+        numTiles = gLandToolSize * gLandToolSize;
+        price = 0;
+        if (gLandToolTerrainSurface != 255)
         {
-            price += numTiles * surfaceObj->Price;
+            auto& objManager = GetContext()->GetObjectManager();
+            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+                objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, gLandToolTerrainSurface));
+            if (surfaceObj != nullptr)
+            {
+                price += numTiles * surfaceObj->Price;
+            }
         }
-    }
-    if (gLandToolTerrainEdge != 255)
-        price += numTiles * 100;
 
-    if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
-    {
-        set_format_arg(0, money32, price);
-        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, gCommonFormatArgs);
+        if (gLandToolTerrainEdge != 255)
+            price += numTiles * 100;
+
+        if (price != 0)
+        {
+            set_format_arg(0, money32, price);
+            gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, gCommonFormatArgs);
+        }
     }
 }

@@ -1758,7 +1758,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 }
 
                 // Actually place
-                if (success == GA_ERROR::OK || ((q + 1 == quantity) && (forceError == true)))
+                if (success == GA_ERROR::OK || ((q + 1 == quantity) && forceError))
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, type, primaryColour,

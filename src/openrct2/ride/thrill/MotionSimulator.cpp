@@ -34,7 +34,7 @@ static void paint_motionsimulator_vehicle(
     paint_session* session, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height, const TileElement* tileElement)
 {
     Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+    rct_ride_entry* rideEntry = ride->GetRideEntry();
 
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 

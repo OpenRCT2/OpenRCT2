@@ -366,7 +366,7 @@ namespace ObjectJsonHelpers
             if (is_csg_loaded())
             {
                 auto range = ParseRange(s.substr(4));
-                if (range.size() > 0)
+                if (!range.empty())
                 {
                     for (auto i : range)
                     {
@@ -380,7 +380,7 @@ namespace ObjectJsonHelpers
         else if (String::StartsWith(s, "$G1"))
         {
             auto range = ParseRange(s.substr(3));
-            if (range.size() > 0)
+            if (!range.empty())
             {
                 for (auto i : range)
                 {

@@ -876,7 +876,7 @@ static void window_park_init_viewport(rct_window* w)
     if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
         return;
 
-    if (gParkEntrances.size() > 0)
+    if (!gParkEntrances.empty())
     {
         const auto& entrance = gParkEntrances[0];
         x = entrance.x + 16;

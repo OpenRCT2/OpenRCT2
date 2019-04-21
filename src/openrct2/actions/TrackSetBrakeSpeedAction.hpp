@@ -66,7 +66,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        if (isExecuting == true)
+        if (isExecuting)
         {
             tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
         }

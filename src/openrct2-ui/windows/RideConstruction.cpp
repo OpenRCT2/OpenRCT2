@@ -2526,7 +2526,7 @@ void window_ride_construction_update_active_elements_impl()
 void window_ride_construction_update_enabled_track_pieces()
 {
     Ride* ride = get_ride(_currentRideIndex);
-    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+    rct_ride_entry* rideEntry = ride->GetRideEntry();
     int32_t rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type
                                                                                      : ride->type;
 

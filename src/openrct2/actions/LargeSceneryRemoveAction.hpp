@@ -121,7 +121,7 @@ public:
             }
         }
 
-        if (calculate_cost == true)
+        if (calculate_cost)
             res->Cost = scenery_entry->large_scenery.removal_price * 10;
 
         return res;
