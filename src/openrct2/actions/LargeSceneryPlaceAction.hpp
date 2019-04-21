@@ -94,7 +94,6 @@ public:
         res->Position.z = surfaceHeight;
         res->GroundFlags = 0;
 
-        BannerIndex bannerId = BANNER_INDEX_NULL;
         money32 supportsCost = 0;
 
         if (_primaryColour > TILE_ELEMENT_COLOUR_MASK || _secondaryColour > TILE_ELEMENT_COLOUR_MASK)
@@ -219,7 +218,6 @@ public:
         res->Position.z = surfaceHeight;
         res->GroundFlags = 0;
 
-        BannerIndex bannerId = BANNER_INDEX_NULL;
         money32 supportsCost = 0;
 
         rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
@@ -324,7 +322,7 @@ public:
             newTileElement->clearance_height = zHigh;
             auto newSceneryElement = newTileElement->AsLargeScenery();
 
-            SetNewLargeSceneryElement(*newSceneryElement, tileNum, _bannerId);
+            SetNewLargeSceneryElement(*newSceneryElement, tileNum);
 
             if (tileNum == 0)
             {
@@ -394,7 +392,7 @@ private:
         return maxHeight;
     }
 
-    void SetNewLargeSceneryElement(LargeSceneryElement & sceneryElement, uint8_t tileNum, BannerIndex bannerId) const
+    void SetNewLargeSceneryElement(LargeSceneryElement & sceneryElement, uint8_t tileNum) const
     {
         sceneryElement.SetDirection(_loc.direction);
         sceneryElement.SetEntryIndex(_sceneryType);
@@ -402,9 +400,9 @@ private:
         sceneryElement.SetPrimaryColour(_primaryColour);
         sceneryElement.SetSecondaryColour(_secondaryColour);
 
-        if (bannerId != BANNER_INDEX_NULL)
+        if (_bannerId != BANNER_INDEX_NULL)
         {
-            sceneryElement.SetBannerIndex(bannerId);
+            sceneryElement.SetBannerIndex(_bannerId);
         }
 
         if (GetFlags() & GAME_COMMAND_FLAG_GHOST)

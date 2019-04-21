@@ -4028,6 +4028,12 @@ void Guest::UpdateRideLeaveVehicle()
         platformLocation.x = vehicle->x + word_981D6C[platformLocation.direction].x * 12;
         platformLocation.y = vehicle->y + word_981D6C[platformLocation.direction].y * 12;
 
+        if (vehicle_entry->peep_loading_positions.empty())
+        {
+            
+            log_error("Failed seating. %s", language_get_string(rideEntry->naming.name));
+        }
+
         int8_t loadPosition = vehicle_entry->peep_loading_positions[current_seat];
 
         switch (vehicle->sprite_direction / 8)
