@@ -31,7 +31,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "18"
+#define NETWORK_STREAM_VERSION "19"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -1976,6 +1976,17 @@ void Network::ProcessGameCommands()
 
         if (gc.action != nullptr)
         {
+            // Remove ghost scenery so it doesn't interfere with incoming network command
+            switch (gc.action->GetType())
+            {
+                case GAME_COMMAND_PLACE_WALL:
+                case GAME_COMMAND_PLACE_LARGE_SCENERY:
+                case GAME_COMMAND_PLACE_BANNER:
+                case GAME_COMMAND_PLACE_SCENERY:
+                    scenery_remove_ghost_tool_placement();
+                    break;
+            }
+
             GameAction* action = gc.action.get();
             action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_NETWORKED);
 
