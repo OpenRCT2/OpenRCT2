@@ -132,7 +132,7 @@ public:
             if (_bannerId == BANNER_INDEX_NULL)
             {
                 log_error("Banner Index not specified.");
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME, STR_CANT_POSITION_THIS_HERE);
+                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
             if (gBanners[_bannerId].type != BANNER_NULL)
@@ -248,7 +248,7 @@ public:
             if (_bannerId == BANNER_INDEX_NULL)
             {
                 log_error("No free banners available");
-                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_BANNERS_IN_GAME, STR_CANT_POSITION_THIS_HERE);
+                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
             if (gBanners[_bannerId].type != BANNER_NULL)
