@@ -50,7 +50,7 @@ public:
     uint8_t GroundFlags{ 0 };
 };
 
-DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, GameActionResult)
+DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, SmallSceneryPlaceActionResult)
 {
 private:
     CoordsXYZD _loc;
