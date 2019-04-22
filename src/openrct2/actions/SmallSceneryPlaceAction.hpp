@@ -75,7 +75,7 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t landHeight = tile_element_height(_loc.x, _loc.y); // this is really just land height now
+        int32_t landHeight = tile_element_height(_loc.x, _loc.y);
         int16_t waterHeight = tile_element_water_height(_loc.x, _loc.y);
 
         int32_t surfaceHeight = landHeight;
