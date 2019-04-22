@@ -994,6 +994,7 @@ extern money16 gTotalRideValueForMoney;
 extern const uint8_t gRideClassifications[MAX_RIDES];
 
 extern Ride gRideList[MAX_RIDES];
+extern const rct_string_id ColourSchemeNames[4];
 
 extern rct_ride_measurement gRideMeasurements[MAX_RIDE_MEASUREMENTS];
 extern uint16_t gRideCount;
