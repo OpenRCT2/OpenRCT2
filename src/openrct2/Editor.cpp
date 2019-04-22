@@ -491,7 +491,7 @@ namespace Editor
             return false;
         }
 
-        if (gParkEntrances.size() == 0)
+        if (gParkEntrances.empty())
         {
             gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
             return false;
@@ -520,7 +520,7 @@ namespace Editor
             }
         }
 
-        if (gPeepSpawns.size() == 0)
+        if (gPeepSpawns.empty())
         {
             gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
             return false;

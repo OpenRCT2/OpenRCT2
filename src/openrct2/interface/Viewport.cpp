@@ -922,7 +922,7 @@ void viewport_paint(
     if (window_get_main() != nullptr && viewport != window_get_main()->viewport)
         useMultithreading = false;
 
-    if (useMultithreading == true && _paintJobs == nullptr)
+    if (useMultithreading && _paintJobs == nullptr)
     {
         _paintJobs = std::make_unique<JobPool>();
     }

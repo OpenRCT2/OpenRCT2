@@ -2499,7 +2499,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
     }
 
     bool skipCheck = false;
-    if (shouldBreak == true || ride->status != RIDE_STATUS_OPEN)
+    if (shouldBreak || ride->status != RIDE_STATUS_OPEN)
     {
         if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
         {
@@ -3756,7 +3756,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle)
         }
         else
         {
-            if (vehicle_current_tower_element_is_top(vehicle) == true)
+            if (vehicle_current_tower_element_is_top(vehicle))
             {
                 vehicle->velocity = 0;
                 vehicle->sub_state = 2;
@@ -4665,7 +4665,7 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
     TileElement* tileElement = map_get_first_element_at(location.x, location.y);
     do
     {
-        if (tileElement->IsGhost() == true)
+        if (tileElement->IsGhost())
             continue;
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
@@ -4940,7 +4940,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle)
                 shouldStop = false;
         }
 
-        if (shouldStop == true)
+        if (shouldStop)
         {
             if (vehicle->sub_state == 2)
             {
@@ -7755,7 +7755,7 @@ static bool vehicle_update_motion_collision_detection(
                 break;
             }
         }
-        if (mayCollide == true)
+        if (mayCollide)
         {
             break;
         }
@@ -8407,7 +8407,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
             break;
     }
 
-    if (nextTileBackwards == true)
+    if (nextTileBackwards)
     {
         // loc_6DBB7E:;
         track_begin_end trackBeginEnd;

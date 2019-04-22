@@ -279,8 +279,6 @@ extern int16_t gSceneryShiftPressZOffset;
 extern int16_t gSceneryCtrlPressed;
 extern int16_t gSceneryCtrlPressZ;
 
-extern uint8_t gSceneryGroundFlags;
-
 extern const LocationXY8 ScenerySubTileOffsets[];
 
 extern money32 gClearSceneryCost;

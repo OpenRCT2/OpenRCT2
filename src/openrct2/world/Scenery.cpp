@@ -63,8 +63,6 @@ int16_t gSceneryShiftPressZOffset;
 int16_t gSceneryCtrlPressed;
 int16_t gSceneryCtrlPressZ;
 
-uint8_t gSceneryGroundFlags;
-
 money32 gClearSceneryCost;
 
 // rct2: 0x009A3E74

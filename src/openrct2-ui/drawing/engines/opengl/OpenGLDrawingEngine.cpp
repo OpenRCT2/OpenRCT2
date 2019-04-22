@@ -881,7 +881,7 @@ void OpenGLDrawingContext::FlushCommandBuffers()
 
 void OpenGLDrawingContext::FlushLines()
 {
-    if (_commandBuffers.lines.size() == 0)
+    if (_commandBuffers.lines.empty())
         return;
 
     _drawLineShader->Use();
@@ -892,7 +892,7 @@ void OpenGLDrawingContext::FlushLines()
 
 void OpenGLDrawingContext::FlushRectangles()
 {
-    if (_commandBuffers.rects.size() == 0)
+    if (_commandBuffers.rects.empty())
         return;
 
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());

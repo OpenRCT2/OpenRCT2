@@ -1758,7 +1758,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 }
 
                 // Actually place
-                if (success == GA_ERROR::OK || ((q + 1 == quantity) && (forceError == true)))
+                if (success == GA_ERROR::OK || ((q + 1 == quantity) && forceError))
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, type, primaryColour,
@@ -2487,7 +2487,7 @@ static money32 try_place_ghost_scenery(
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
             gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-            if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
                 viewport_set_visibility(4);
@@ -2582,7 +2582,7 @@ static money32 try_place_ghost_scenery(
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
 
-            if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
                 viewport_set_visibility(4);

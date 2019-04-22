@@ -1485,13 +1485,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
         guest_heading_to_ride_id = rideIndex;
         peep_is_lost_countdown = 200;
         peep_reset_pathfind_goal(this);
-
-        rct_window* w = window_find_by_number(WC_PEEP, sprite_index);
-        if (w != nullptr)
-        {
-            window_event_invalidate_call(w);
-            widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
-        }
+        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
     }
 
     if (peep_should_preferred_intensity_increase(this))
@@ -1550,14 +1544,7 @@ void Guest::PickRideToGoOn()
         guest_heading_to_ride_id = ride->id;
         peep_is_lost_countdown = 200;
         peep_reset_pathfind_goal(this);
-
-        // Invalidate windows
-        auto w = window_find_by_number(WC_PEEP, sprite_index);
-        if (w != nullptr)
-        {
-            window_event_invalidate_call(w);
-            widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
-        }
+        window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
         if (item_standard_flags & PEEP_ITEM_MAP)
@@ -2133,15 +2120,8 @@ static void peep_tried_to_enter_full_queue(Peep* peep, Ride* ride)
 
 static void peep_reset_ride_heading(Peep* peep)
 {
-    rct_window* w;
-
     peep->guest_heading_to_ride_id = RIDE_ID_NULL;
-    w = window_find_by_number(WC_PEEP, peep->sprite_index);
-    if (w != nullptr)
-    {
-        window_event_invalidate_call(w);
-        widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
-    }
+    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
 }
 
 static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
@@ -2956,14 +2936,7 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
     peep->guest_heading_to_ride_id = closestRideIndex;
     peep->peep_is_lost_countdown = 200;
     peep_reset_pathfind_goal(peep);
-
-    // Invalidate windows
-    rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
-    if (w != nullptr)
-    {
-        window_event_invalidate_call(w);
-        widget_invalidate(w, WC_PEEP__WIDX_ACTION_LBL);
-    }
+    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
 
     peep->time_lost = 0;
 }
@@ -3763,7 +3736,7 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride
     peep->SetState(PEEP_STATE_QUEUING_FRONT);
     peep->sub_state = PEEP_RIDE_AT_ENTRANCE;
 
-    ride_queue_insert_guest_at_front(ride, peep->current_ride_station, peep);
+    ride->QueueInsertGuestAtFront(peep->current_ride_station, peep);
 }
 
 /**

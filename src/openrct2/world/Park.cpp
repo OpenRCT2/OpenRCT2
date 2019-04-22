@@ -95,7 +95,7 @@ void reset_park_entry()
  */
 static PeepSpawn* get_random_peep_spawn()
 {
-    if (gPeepSpawns.size() > 0)
+    if (!gPeepSpawns.empty())
     {
         return &gPeepSpawns[scenario_rand() % gPeepSpawns.size()];
     }

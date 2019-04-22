@@ -260,7 +260,7 @@ void GameState::UpdateLogic()
     map_restore_provisional_elements();
     vehicle_update_all();
     sprite_misc_update_all();
-    ride_update_all();
+    Ride::UpdateAll();
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {

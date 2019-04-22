@@ -668,7 +668,7 @@ static void viewport_surface_draw_tile_side_bottom(
                 tunnelIndex++;
             }
 
-            if (isWater == true || curHeight != tunnelArray[tunnelIndex].height)
+            if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
                 sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16);
 

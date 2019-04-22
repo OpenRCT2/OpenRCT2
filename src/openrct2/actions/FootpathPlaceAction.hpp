@@ -399,7 +399,7 @@ private:
             }
         }
 
-        if (gPeepSpawns.size() == 0)
+        if (gPeepSpawns.empty())
         {
             gPeepSpawns.emplace_back();
         }

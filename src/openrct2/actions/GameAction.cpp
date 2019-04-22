@@ -131,7 +131,7 @@ namespace GameActions
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
-        if (topLevel == true && !CheckActionInPausedMode(actionFlags))
+        if (topLevel && !CheckActionInPausedMode(actionFlags))
         {
             GameActionResult::Ptr result = std::make_unique<GameActionResult>();
 
@@ -358,7 +358,7 @@ namespace GameActions
         }
 
         // Only show errors when its not a ghost and not a preview and also top level action.
-        bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && topLevel == true;
+        bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && topLevel;
 
         // In network mode the error should be only shown to the issuer of the action.
         if (network_get_mode() != NETWORK_MODE_NONE)
@@ -369,7 +369,7 @@ namespace GameActions
             }
         }
 
-        if (result->Error != GA_ERROR::OK && shouldShowError == true)
+        if (result->Error != GA_ERROR::OK && shouldShowError)
         {
             // Show the error box
             std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);

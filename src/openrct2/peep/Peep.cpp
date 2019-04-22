@@ -2736,7 +2736,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     // Advance the vandalised tiles by 1
     uint8_t vandalisedTiles = (peep->vandalism_seen * 2) & 0x3F;
 
-    if (vandalism == true)
+    if (vandalism)
     {
         // Add one more to the vandalised tiles
         vandalisedTiles |= 1;

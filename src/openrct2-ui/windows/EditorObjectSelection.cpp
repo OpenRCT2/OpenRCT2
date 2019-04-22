@@ -324,7 +324,7 @@ static void visible_list_refresh(rct_window* w)
         }
     }
 
-    if (_listItems.size() == 0)
+    if (_listItems.empty())
     {
         visible_list_dispose();
     }
