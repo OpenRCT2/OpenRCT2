@@ -33,7 +33,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "30"
+#define NETWORK_STREAM_VERSION "31"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -133,6 +133,7 @@ public:
     void ProcessPending();
     void ProcessPlayerList();
     void ProcessPlayerInfo();
+    void ProcessDisconnectedClients();
     void ProcessGameCommands();
     void EnqueueGameAction(const GameAction* action);
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
@@ -148,7 +149,7 @@ public:
     NetworkServerState_t GetServerState() const;
     void KickPlayer(int32_t playerId);
     void SetPassword(const char* password);
-    void ShutdownClient();
+    void ServerClientDisconnected();
     NetworkGroup* AddGroup();
     void RemoveGroup(uint8_t id);
     uint8_t GetDefaultGroup();
@@ -224,8 +225,9 @@ private:
     bool ProcessConnection(NetworkConnection& connection);
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
     void AddClient(std::unique_ptr<ITcpSocket>&& socket);
-    void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
+    void ServerClientDisconnected(std::unique_ptr<NetworkConnection>& connection);
 
+    void RemovePlayer(std::unique_ptr<NetworkConnection>& connection);
     NetworkPlayer* AddPlayer(const std::string& name, const std::string& keyhash);
     std::string MakePlayerNameUnique(const std::string& name);
 
@@ -286,17 +288,8 @@ private:
 
     struct PlayerListUpdate
     {
-        uint32_t tick = 0;
         std::vector<NetworkPlayer> players;
-
-        void reset()
-        {
-            tick = 0;
-            players.clear();
-        }
     };
-
-    PlayerListUpdate _pendingPlayerList;
 
     struct ServerTickData_t
     {
@@ -306,7 +299,9 @@ private:
     };
 
     std::map<uint32_t, ServerTickData_t> _serverTickData;
+    std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
     std::multimap<uint32_t, NetworkPlayer> _pendingPlayerInfo;
+    bool _playerListInvalidated = false;
     int32_t mode = NETWORK_MODE_NONE;
     int32_t status = NETWORK_STATUS_NONE;
     bool _closeLock = false;
@@ -484,7 +479,8 @@ void Network::Close()
         game_command_queue.clear();
         player_list.clear();
         group_list.clear();
-        _pendingPlayerList.reset();
+        _serverTickData.clear();
+        _pendingPlayerLists.clear();
         _pendingPlayerInfo.clear();
 
         gfx_invalidate_screen();
@@ -774,18 +770,19 @@ void Network::Flush()
 
 void Network::UpdateServer()
 {
-    auto it = client_connection_list.begin();
-    while (it != client_connection_list.end())
+    for (auto& connection : client_connection_list)
     {
-        if (!ProcessConnection(*(*it)))
+        // This can be called multiple times before the connection is removed.
+        if (connection->IsDisconnected)
+            continue;
+
+        if (!ProcessConnection(*connection))
         {
-            RemoveClient((*it));
-            it = client_connection_list.begin();
+            connection->IsDisconnected = true;
         }
         else
         {
-            DecayCooldown((*it)->Player);
-            it++;
+            DecayCooldown(connection->Player);
         }
     }
 
@@ -983,6 +980,12 @@ void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCm
 {
     for (auto& client_connection : client_connection_list)
     {
+        if (client_connection->IsDisconnected)
+        {
+            // Client will be removed at the end of the tick, don't bother.
+            continue;
+        }
+
         if (gameCmd)
         {
             // If marked as game command we can not send the packet to connections that are not fully connected.
@@ -1097,7 +1100,7 @@ void Network::SetPassword(const char* password)
     _password = password == nullptr ? "" : password;
 }
 
-void Network::ShutdownClient()
+void Network::ServerClientDisconnected()
 {
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
@@ -1956,63 +1959,89 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
     packet.Clear();
 }
 
+// This is called at the end of each game tick, this where things should be processed that affects the game state.
 void Network::ProcessPending()
 {
     ProcessGameCommands();
+    if (GetMode() == NETWORK_MODE_SERVER)
+    {
+        ProcessDisconnectedClients();
+    }
+    else if (GetMode() == NETWORK_MODE_CLIENT)
+    {
+        ProcessPlayerInfo();
+    }
     ProcessPlayerList();
-    ProcessPlayerInfo();
 }
 
 void Network::ProcessPlayerList()
 {
-    if (_pendingPlayerList.tick == 0 || _pendingPlayerList.tick < gCurrentTicks)
+    if (GetMode() == NETWORK_MODE_SERVER)
     {
-        return;
-    }
-
-    // List of active players found in the list.
-    std::vector<uint8_t> activePlayerIds;
-
-    for (auto&& pendingPlayer : _pendingPlayerList.players)
-    {
-        activePlayerIds.push_back(pendingPlayer.Id);
-
-        auto* player = GetPlayerByID(pendingPlayer.Id);
-        if (player == nullptr)
+        // Avoid sending multiple times the player list, we mark the list invalidated on modifications
+        // and then send at the end of the tick the final player list.
+        if (_playerListInvalidated)
         {
-            // Add new player.
-            player = AddPlayer("", "");
-            if (player)
+            _playerListInvalidated = false;
+            Server_Send_PLAYERLIST();
+        }
+    }
+    else
+    {
+        // As client we have to keep things in order so the update is tick bound.
+        // Commands/Actions reference players and so this list needs to be in sync with those.
+        auto itPending = _pendingPlayerLists.begin();
+        while (itPending != _pendingPlayerLists.end())
+        {
+            if (itPending->first > gCurrentTicks)
+                break;
+
+            // List of active players found in the list.
+            std::vector<uint8_t> activePlayerIds;
+
+            for (auto&& pendingPlayer : itPending->second.players)
             {
-                *player = pendingPlayer;
-                if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
+                activePlayerIds.push_back(pendingPlayer.Id);
+
+                auto* player = GetPlayerByID(pendingPlayer.Id);
+                if (player == nullptr)
                 {
-                    _serverConnection->Player = player;
+                    // Add new player.
+                    player = AddPlayer("", "");
+                    if (player)
+                    {
+                        *player = pendingPlayer;
+                        if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
+                        {
+                            _serverConnection->Player = player;
+                        }
+                    }
+                }
+                else
+                {
+                    // Update.
+                    *player = pendingPlayer;
                 }
             }
-        }
-        else
-        {
-            // Update.
-            *player = pendingPlayer;
+
+            // Remove any players that are not in newly received list
+            auto it = player_list.begin();
+            while (it != player_list.end())
+            {
+                if (std::find(activePlayerIds.begin(), activePlayerIds.end(), (*it)->Id) == activePlayerIds.end())
+                {
+                    it = player_list.erase(it);
+                }
+                else
+                {
+                    it++;
+                }
+            }
+
+            _pendingPlayerLists.erase(itPending);
+            itPending = _pendingPlayerLists.begin();
         }
     }
-
-    // Remove any players that are not in newly received list
-    auto it = player_list.begin();
-    while (it != player_list.end())
-    {
-        if (std::find(activePlayerIds.begin(), activePlayerIds.end(), (*it)->Id) == activePlayerIds.end())
-        {
-            it = player_list.erase(it);
-        }
-        else
-        {
-            it++;
-        }
-    }
-
-    _pendingPlayerList.reset();
 }
 
 void Network::ProcessPlayerInfo()
@@ -2033,6 +2062,31 @@ void Network::ProcessPlayerInfo()
         }
     }
     _pendingPlayerInfo.erase(gCurrentTicks);
+}
+
+void Network::ProcessDisconnectedClients()
+{
+    for (auto it = client_connection_list.begin(); it != client_connection_list.end();)
+    {
+        auto& connection = *it;
+        if (connection->IsDisconnected)
+        {
+            ServerClientDisconnected(connection);
+            RemovePlayer(connection);
+
+            it = client_connection_list.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+
+    if (gConfigNetwork.pause_server_if_no_clients && game_is_not_paused() && client_connection_list.empty())
+    {
+        auto pauseToggleAction = PauseToggleAction();
+        GameActions::Execute(&pauseToggleAction);
+    }
 }
 
 void Network::ProcessGameCommands()
@@ -2168,53 +2222,57 @@ void Network::AddClient(std::unique_ptr<ITcpSocket>&& socket)
     client_connection_list.push_back(std::move(connection));
 }
 
-void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
+void Network::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& connection)
 {
     NetworkPlayer* connection_player = connection->Player;
-    if (connection_player)
+    if (connection_player == nullptr)
+        return;
+
+    char text[256];
+    const char* has_disconnected_args[2] = {
+        connection_player->Name.c_str(),
+        connection->GetLastDisconnectReason(),
+    };
+    if (has_disconnected_args[1])
     {
-        char text[256];
-        const char* has_disconnected_args[2] = {
-            connection_player->Name.c_str(),
-            connection->GetLastDisconnectReason(),
-        };
-        if (has_disconnected_args[1])
-        {
-            format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
-        }
-        else
-        {
-            format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, &(has_disconnected_args[0]));
-        }
-
-        chat_history_add(text);
-        Peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
-        if (pickup_peep)
-        {
-            game_command_playerid = connection_player->Id;
-            game_do_command(
-                pickup_peep->sprite_index, GAME_COMMAND_FLAG_APPLY, 1, 0,
-                pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF,
-                network_get_pickup_peep_old_x(connection_player->Id), 0);
-        }
-        gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED(
-            (char*)connection_player->Name.c_str(), connection->GetLastDisconnectReason());
-
-        // Log player disconnected event
-        AppendServerLog(text);
+        format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
     }
+    else
+    {
+        format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, &(has_disconnected_args[0]));
+    }
+
+    chat_history_add(text);
+    Peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
+    if (pickup_peep)
+    {
+        game_command_playerid = connection_player->Id;
+        game_do_command(
+            pickup_peep->sprite_index, GAME_COMMAND_FLAG_APPLY, 1, 0,
+            pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF,
+            network_get_pickup_peep_old_x(connection_player->Id), 0);
+    }
+    gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED(
+        (char*)connection_player->Name.c_str(), connection->GetLastDisconnectReason());
+
+    // Log player disconnected event
+    AppendServerLog(text);
+}
+
+void Network::RemovePlayer(std::unique_ptr<NetworkConnection>& connection)
+{
+    NetworkPlayer* connection_player = connection->Player;
+    if (connection_player == nullptr)
+        return;
+
     player_list.erase(
         std::remove_if(
             player_list.begin(), player_list.end(),
             [connection_player](std::unique_ptr<NetworkPlayer>& player) { return player.get() == connection_player; }),
         player_list.end());
-    client_connection_list.remove(connection);
-    if (gConfigNetwork.pause_server_if_no_clients && game_is_not_paused() && client_connection_list.empty())
-    {
-        auto pauseToggleAction = PauseToggleAction();
-        GameActions::Execute(&pauseToggleAction);
-    }
-    Server_Send_PLAYERLIST();
+
+    // Send new player list.
+    _playerListInvalidated = true;
 }
 
 NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& keyhash)
@@ -2267,6 +2325,9 @@ NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& ke
                 player->Group = networkUser->GroupId.GetValueOrDefault(GetDefaultGroup());
                 player->SetName(networkUser->Name);
             }
+
+            // Send new player list.
+            _playerListInvalidated = true;
         }
         else
         {
@@ -2482,8 +2543,6 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         player_name = (const char*)playerNameHash.c_str();
         format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
         AppendServerLog(text);
-
-        Server_Send_PLAYERLIST();
     }
 }
 
@@ -2645,7 +2704,6 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
     Server_Send_MAP(&connection);
     Server_Send_EVENT_PLAYER_JOINED(player_name);
     Server_Send_GROUPLIST(connection);
-    Server_Send_PLAYERLIST();
 }
 
 void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
@@ -3190,15 +3248,15 @@ void Network::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& conne
     uint8_t size;
     packet >> tick >> size;
 
-    _pendingPlayerList.reset();
-    _pendingPlayerList.tick = tick;
+    auto& pending = _pendingPlayerLists[tick];
+    pending.players.clear();
 
     for (uint32_t i = 0; i < size; i++)
     {
         NetworkPlayer tempplayer;
         tempplayer.Read(packet);
 
-        _pendingPlayerList.players.push_back(tempplayer);
+        pending.players.push_back(tempplayer);
     }
 }
 
@@ -3364,7 +3422,7 @@ void network_reconnect()
 
 void network_shutdown_client()
 {
-    gNetwork.ShutdownClient();
+    gNetwork.ServerClientDisconnected();
 }
 
 int32_t network_begin_client(const std::string& host, int32_t port)
