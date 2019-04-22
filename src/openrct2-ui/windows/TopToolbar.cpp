@@ -2539,7 +2539,7 @@ static money32 try_place_ghost_scenery(
                 type, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
             wallPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-            wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult *result) {
+            wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
                 if (result->Error != GA_ERROR::OK)
                     return;
 

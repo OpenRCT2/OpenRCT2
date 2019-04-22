@@ -191,8 +191,8 @@ public:
             {
                 if (targetHeight / 8 < newBaseHeight)
                 {
-                    return std::make_unique<WallPlaceActionResult>(
-                        GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                    return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED,
+                    STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
                 if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
@@ -208,8 +208,7 @@ public:
                             if (targetHeight / 8 < newBaseHeight)
                             {
                                 return std::make_unique<WallPlaceActionResult>(
-                                    GA_ERROR::DISALLOWED,
-                                    STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                                    GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                             }
                             newBaseHeight -= 2;
                         }
@@ -222,8 +221,8 @@ public:
             {
                 if (targetHeight / 8 < newBaseHeight)
                 {
-                    return std::make_unique<WallPlaceActionResult>(
-                        GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                    return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED,
+                    STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
                 if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
@@ -239,8 +238,7 @@ public:
                             if (targetHeight / 8 < newBaseHeight)
                             {
                                 return std::make_unique<WallPlaceActionResult>(
-                                    GA_ERROR::DISALLOWED,
-                                    STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                                    GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                             }
                         }
                     }
@@ -261,8 +259,8 @@ public:
             if (_bannerId == BANNER_INDEX_NULL)
             {
                 log_error("Banner Index not specified.");
-                return std::make_unique<WallPlaceActionResult>(
-                    GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS,
+                STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
             if (gBanners[_bannerId].type != BANNER_NULL)
@@ -277,8 +275,8 @@ public:
         {
             if (wallEntry->wall.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
             {
-                return std::make_unique<WallPlaceActionResult>(
-                    GA_ERROR::DISALLOWED, STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED,
+                STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
             }
             clearanceHeight += 2;
         }
@@ -352,8 +350,8 @@ public:
             if (_bannerId == BANNER_INDEX_NULL)
             {
                 log_error("Banner Index not specified.");
-                return std::make_unique<WallPlaceActionResult>(
-                    GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS,
+                STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
             if (gBanners[_bannerId].type != BANNER_NULL)
