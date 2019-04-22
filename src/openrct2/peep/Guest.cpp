@@ -4049,6 +4049,12 @@ void Guest::UpdateRideLeaveVehicle()
                     break;
             }
         }
+        else
+        {
+            log_verbose(
+                "current_seat %d is too large! (Vehicle entry has room for %d.)", current_seat,
+                vehicle_entry->peep_loading_positions.size());
+        }
 
         platformLocation.z = ride->stations[current_ride_station].Height * 8;
 
