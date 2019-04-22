@@ -127,6 +127,8 @@ The following people are not part of the development team, but have been contrib
 * Zetao Ye (ZbrettonYe)
 * Jordan Arevalos (Jarevalos2017)
 * Florian Will (w-flo)
+* Trevor Harkness (tharkne)
+* Steve Xu (stevexu-umich)
 
 ## Toolchain
 * (Balletie) - macOS

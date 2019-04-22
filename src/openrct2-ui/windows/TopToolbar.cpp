@@ -2487,7 +2487,7 @@ static money32 try_place_ghost_scenery(
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
             gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-            if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
                 viewport_set_visibility(4);
@@ -2582,7 +2582,7 @@ static money32 try_place_ghost_scenery(
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
 
-            if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
                 viewport_set_visibility(4);
