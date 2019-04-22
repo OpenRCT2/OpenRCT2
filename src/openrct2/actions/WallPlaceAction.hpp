@@ -23,7 +23,6 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-
 class WallPlaceActionResult final : public GameActionResult
 {
 public:
@@ -191,8 +190,7 @@ public:
             {
                 if (targetHeight / 8 < newBaseHeight)
                 {
-                    return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED,
-STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                    return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
                 if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
@@ -221,8 +219,7 @@ STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             {
                 if (targetHeight / 8 < newBaseHeight)
                 {
-                    return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED,
-STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
+                    return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
                 if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
@@ -259,8 +256,7 @@ STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
             if (_bannerId == BANNER_INDEX_NULL)
             {
                 log_error("Banner Index not specified.");
-                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS,
-STR_TOO_MANY_BANNERS_IN_GAME);
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
             if (gBanners[_bannerId].type != BANNER_NULL)
