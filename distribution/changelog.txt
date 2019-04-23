@@ -13,6 +13,7 @@
 - Fix: [#6006] Objects higher than 6 metres are considered trees (original bug).
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#7913] RCT1/RCT2 title sequence timing is off.
+- Fix: [#7700, #8079, #8969] Crash when unloading buggy custom rides.
 - Fix: [#8219] Faulty folder recreation in "save" folder.
 - Fix: [#8537] Imported RCT1 rides/shops are all numbered 1.
 - Fix: [#8649] Setting date does not work in multiplayer.
