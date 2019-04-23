@@ -67,7 +67,7 @@ uint8_t network_get_group_id(uint32_t index);
 int32_t network_get_num_groups();
 const char* network_get_group_name(uint32_t index);
 std::unique_ptr<GameActionResult> network_set_player_group(
-    NetworkPlayerId_t actionPlayerId, uint8_t playerId, uint8_t groupId, bool isExecuting);
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
 void game_command_modify_groups(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_kick_player(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);

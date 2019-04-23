@@ -3365,7 +3365,7 @@ void network_chat_show_server_greeting()
 }
 
 GameActionResult::Ptr network_set_player_group(
-    NetworkPlayerId_t actionPlayerId, uint8_t playerId, uint8_t groupId, bool isExecuting)
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
 
@@ -4080,8 +4080,8 @@ const char* network_get_group_name(uint32_t index)
     return "";
 };
 
-GameActionResult::Ptr
-    network_set_player_group(NetworkPlayerId_t actionPlayerId, uint8_t playerId, uint8_t groupId, bool isExecuting)
+GameActionResult::Ptr network_set_player_group(
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
     return std::make_unique<GameActionResult>();
 }
