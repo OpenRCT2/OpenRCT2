@@ -457,7 +457,7 @@ void map_update_tile_pointers()
  * dx: return remember to & with 0xFFFF if you don't want water affecting results
  *  rct2: 0x00662783
  */
-int32_t tile_element_height(int32_t x, int32_t y)
+int16_t tile_element_height(int32_t x, int32_t y)
 {
     TileElement* tileElement;
 
@@ -477,7 +477,7 @@ int32_t tile_element_height(int32_t x, int32_t y)
         return 16;
     }
 
-    uint32_t height = (tileElement->AsSurface()->GetWaterHeight() << 20) | (tileElement->base_height << 3);
+    uint16_t height = (tileElement->base_height << 3);
 
     uint32_t slope = tileElement->AsSurface()->GetSlope();
     uint8_t extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height
@@ -605,6 +605,31 @@ int32_t tile_element_height(int32_t x, int32_t y)
             height += quad / 2;
         }
     }
+
+    return height;
+}
+
+int16_t tile_element_water_height(int32_t x, int32_t y)
+{
+    TileElement* tileElement;
+
+    // Off the map
+    if ((unsigned)x >= 8192 || (unsigned)y >= 8192)
+        return 0;
+
+    // Truncate subtile coordinates
+    int32_t x_tile = x & 0xFFFFFFE0;
+    int32_t y_tile = y & 0xFFFFFFE0;
+
+    // Get the surface element for the tile
+    tileElement = map_get_surface_element_at({ x_tile, y_tile });
+
+    if (tileElement == nullptr)
+    {
+        return 0;
+    }
+
+    uint16_t height = (tileElement->AsSurface()->GetWaterHeight() << 4);
 
     return height;
 }
@@ -925,7 +950,7 @@ static money32 map_set_land_ownership(uint8_t flags, int16_t x1, int16_t y1, int
     x += 16;
     y += 16;
 
-    int16_t z = tile_element_height(x, y) & 0xFFFF;
+    int16_t z = tile_element_height(x, y);
     audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
     return 0;
 }

@@ -255,7 +255,7 @@ void screenshot_giant()
     int32_t centreY = (mapSize / 2) * 32 + 16;
 
     int32_t x = 0, y = 0;
-    int32_t z = tile_element_height(centreX, centreY) & 0xFFFF;
+    int32_t z = tile_element_height(centreX, centreY);
     switch (rotation)
     {
         case 0:
@@ -348,7 +348,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     int32_t customY = (gMapSize / 2) * 32 + 16;
 
     int32_t x = 0, y = 0;
-    int32_t z = tile_element_height(customX, customY) & 0xFFFF;
+    int32_t z = tile_element_height(customX, customY);
     x = customY - customX;
     y = ((customX + customY) / 2) - z;
 
@@ -531,7 +531,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
                 customY = (mapSize / 2) * 32 + 16;
 
             int32_t x = 0, y = 0;
-            int32_t z = tile_element_height(customX, customY) & 0xFFFF;
+            int32_t z = tile_element_height(customX, customY);
             switch (customRotation)
             {
                 case 0:

@@ -350,7 +350,7 @@ private:
         auto b = std::clamp(normRange.GetBottom(), 0, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
         auto validRange = MapRange{ l, t, r, b };
 
-        int32_t centreZ = tile_element_height(_coords.x, _coords.y) & 0xFFFF;
+        int32_t centreZ = tile_element_height(_coords.x, _coords.y);
 
         auto res = MakeResult();
         res->ErrorTitle = _ErrorTitles[_isLowering ? 0 : 1];

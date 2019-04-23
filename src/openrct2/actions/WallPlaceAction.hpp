@@ -83,7 +83,7 @@ public:
 
         if (_loc.z == 0)
         {
-            res->Position.z = tile_element_height(res->Position.x, res->Position.y) & 0xFFFF;
+            res->Position.z = tile_element_height(res->Position.x, res->Position.y);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY)
@@ -288,7 +288,7 @@ public:
 
         if (res->Position.z == 0)
         {
-            res->Position.z = tile_element_height(res->Position.x, res->Position.y) & 0xFFFF;
+            res->Position.z = tile_element_height(res->Position.x, res->Position.y);
         }
 
         uint8_t edgeSlope = 0;
