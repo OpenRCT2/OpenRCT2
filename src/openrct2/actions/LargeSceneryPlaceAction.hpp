@@ -40,7 +40,7 @@ public:
     }
 
     uint8_t GroundFlags{ 0 };
-    TileElement* tileElement;
+    TileElement* tileElement = nullptr;
 };
 
 DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GAME_COMMAND_PLACE_LARGE_SCENERY, LargeSceneryPlaceActionResult)

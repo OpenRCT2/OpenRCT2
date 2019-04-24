@@ -46,7 +46,7 @@ public:
     {
     }
 
-    TileElement* tileElement;
+    TileElement* tileElement = nullptr;
 };
 
 DEFINE_GAME_ACTION(WallPlaceAction, GAME_COMMAND_PLACE_WALL, WallPlaceActionResult)
