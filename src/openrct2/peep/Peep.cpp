@@ -2054,11 +2054,11 @@ void peep_thought_set_format_args(rct_peep_thought* thought)
     }
     else if (flags & 2)
     {
-        set_format_arg(2, rct_string_id, ShopItemStringIds[thought->item].singular);
+        set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Singular);
     }
     else if (flags & 4)
     {
-        set_format_arg(2, rct_string_id, ShopItemStringIds[thought->item].indefinite);
+        set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Indefinite);
     }
 }
 

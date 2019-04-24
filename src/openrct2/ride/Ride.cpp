@@ -450,7 +450,7 @@ money32 Ride::CalculateIncomePerHour() const
     int32_t currentShopItem = entry->shop_item;
     if (currentShopItem != SHOP_ITEM_NONE)
     {
-        priceMinusCost -= get_shop_item_cost(currentShopItem);
+        priceMinusCost -= ShopItems[currentShopItem].Cost;
     }
 
     currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RidePhotoItems[type] : entry->shop_item_secondary;
@@ -458,7 +458,7 @@ money32 Ride::CalculateIncomePerHour() const
     if (currentShopItem != SHOP_ITEM_NONE)
     {
         priceMinusCost += price_secondary;
-        priceMinusCost -= get_shop_item_cost(currentShopItem);
+        priceMinusCost -= ShopItems[currentShopItem].Cost;
 
         if (entry->shop_item != SHOP_ITEM_NONE)
             priceMinusCost /= 2;
