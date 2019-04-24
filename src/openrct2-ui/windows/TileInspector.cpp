@@ -314,7 +314,7 @@ static rct_widget PathWidgets[] = {
 #define TRA_GBPB PADDING_BOTTOM                 // Track group box properties bottom
 #define TRA_GBPT (TRA_GBPB + 16 + 3 * 21)       // Track group box properties top
 #define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)  // Track group box info bottom
-#define TRA_GBDT (TRA_GBDB + 20 + 6 * 11)       // Track group box info top
+#define TRA_GBDT (TRA_GBDB + 20 + 7 * 11)       // Track group box info top
 static rct_widget TrackWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 0),  STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,    STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
@@ -1858,8 +1858,22 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (track_element_is_station(tileElement))
                 {
                     int16_t stationIndex = trackElement->GetStationIndex();
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_STATION_INDEX, &stationIndex, COLOUR_DARK_GREEN, x, y + 55);
+                    set_format_arg(0, rct_string_id, STR_COMMA16);
+                    set_format_arg(2, int16_t, stationIndex);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 55);
                 }
+                else
+                {
+                    const char* stationNone = "-";
+                    set_format_arg(0, rct_string_id, STR_STRING);
+                    set_format_arg(2, char*, stationNone);
+                    gfx_draw_string_left(
+                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 55);
+                }
+
+                rct_string_id colourScheme = ColourSchemeNames[trackElement->GetColourScheme()];
+                gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_COLOUR_SCHEME, &colourScheme, COLOUR_DARK_GREEN, x, y + 66);
 
                 // Properties
                 // Raise / lower label
