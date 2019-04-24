@@ -40,7 +40,6 @@ colour_t gWindowScenerySecondaryColour;
 colour_t gWindowSceneryTertiaryColour;
 bool gWindowSceneryEyedropperEnabled;
 
-TileElement* gSceneryTileElement;
 uint8_t gSceneryQuadrant;
 
 money32 gSceneryPlaceCost;

@@ -48,6 +48,7 @@ public:
     }
 
     uint8_t GroundFlags{ 0 };
+    TileElement* tileElement = nullptr;
 };
 
 DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, SmallSceneryPlaceActionResult)
@@ -431,7 +432,7 @@ public:
 
         TileElement* newElement = tile_element_insert(_loc.x / 32, _loc.y / 32, zLow, quarterTile.GetBaseQuarterOccupied());
         assert(newElement != nullptr);
-        gSceneryTileElement = newElement;
+        res->tileElement = newElement;
         newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
         newElement->SetDirection(_loc.direction);
         SmallSceneryElement* sceneryElement = newElement->AsSmallScenery();
