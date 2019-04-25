@@ -40,7 +40,7 @@ STR_0035    :Körhinta
 STR_0036    :Ismeretlen bódé (22)
 STR_0037    :Információs bódé
 STR_0038    :WC
-STR_0039    :Óriáskerék 
+STR_0039    :Óriáskerék
 STR_0040    :Mozgásszimulátor
 STR_0041    :3D mozi
 STR_0042    :Top Spin
@@ -143,7 +143,7 @@ STR_0560    :Egy hely, ahol a rosszul lett vendégek gyorsabban összeszedhetik 
 STR_0561    :Cirkuszi állatprodukció egy nagy sátorban
 STR_0562    :Motoros autók utaznak egy többszintes pálya mentén, miközben kísérteties díszletek és speciális effektusok mellett haladnak el
 STR_0563    :Kényelmes, egyszerű biztonsági rudas vonatokban ülve élvezhetik az utasok a hatalmas, sima eséseket és csavaros pályákat, valamint a bőséges „légi időt” az emelkedők után
-STR_0564    :Ez a fa pályán futó hullámvasút gyors, durva, hangos és „kontroll nélküli” utazási élményt nyújt, bőséges „légi idővel”
+STR_0564    :Ez a fa pályán futó hullámvasút gyors, durva, hangos és „kontrollvesztett” utazási élményt nyújt, bőséges „légi idővel”
 STR_0578    :A kocsik egy abroncsokkal körbefogott, meredek esésekkel és palástorsókkal teli pálya mentén haladnak
 STR_0579    :Egy enyhe minigolf-játék
 STR_0582    :Önvezető légpárnás járművek
@@ -524,6 +524,9 @@ STR_1154    :Magasságjelek a talajon
 STR_1155    :Magasságjelek az utakon
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1159    :{SMALLFONT}{BLACK}Díszletek, kertek és egyéb kiegészítők lerakása
+STR_1160    :{SMALLFONT}{BLACK}Tavak és vizek létrehozása/módosítása
+STR_1173    :{SMALLFONT}{BLACK}Utak és várósorok építése
 STR_1158    :Nem távolítható el...
 STR_1161    :Nem rakhatod ide...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
@@ -539,6 +542,7 @@ STR_1174    :Egy hirdetőtábla útban van
 STR_1175    :Nem építhető lejtős úton
 STR_1176    :Nem építhető ide út...
 STR_1177    :Nem távolítható el az út...
+STR_1179    :Az út akadályozza
 STR_1180    :Nem építhető víz alá!
 STR_1181    :Utak
 STR_1182    :Típus
@@ -799,6 +803,9 @@ STR_1455    :Érvénytelen vendégnév
 STR_1456    :{WINDOW_COLOUR_2}Elköltött pénz: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Pénz a zsebében: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Parkban töltött idő: {BLACK}{REALTIME}
+STR_1459    :Pálya stílusa
+STR_1460    :{SMALLFONT}{BLACK}’U’ alakú nyílt pálya
+STR_1461    :{SMALLFONT}{BLACK}’O’ alakú zárt pálya
 STR_1462    :Túl meredek a felvonószakaszhoz
 STR_1463    :Vendégek
 STR_1464    :Spirálpálya felfelé (kicsi)
@@ -1213,17 +1220,17 @@ STR_1906    :{WINDOW_COLOUR_2}Étel/ital készletek
 STR_1907    :{WINDOW_COLOUR_2}Alkalmazottak bére
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Kutatás
-STR_1910    :{WINDOW_COLOUR_2}Hitelkamat
+STR_1910    :{WINDOW_COLOUR_2}Kölcsön kamat:
 STR_1911    :{BLACK} {COMMA16}%-os éves kamattal
 STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
-STR_1916    :{WINDOW_COLOUR_2}Hitel:
+STR_1916    :{WINDOW_COLOUR_2}Kölcsön:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Nem vehetsz fel több pénzt!
 STR_1919    :Nincs elég pénz!
-STR_1920    :Nem tudod visszafizetni a hitelt!
+STR_1920    :Nem tudod visszafizetni a kölcsönt!
 STR_1921    :{SMALLFONT}{BLACK}Új játék indítása
 STR_1922    :{SMALLFONT}{BLACK}Mentett játék folytatása
 STR_1924    :{SMALLFONT}{BLACK}Kilépés
@@ -1709,8 +1716,8 @@ STR_2449    :{YELLOW}Az ingyen {STRINGID} marketingkampánya befejeződött
 STR_2450    :{YELLOW}A park reklámkampánya befejeződött
 STR_2451    :{YELLOW}{STRINGID} reklámkampánya befejeződött
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2452    :{WINDOW_COLOUR_2}Pénz (hitel nélkül): {BLACK}{CURRENCY2DP}
-STR_2453    :{WINDOW_COLOUR_2}Pénz (hitel nélkül): {RED}{CURRENCY2DP}
+STR_2452    :{WINDOW_COLOUR_2}Pénz (kölcsön nélkül): {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}Pénz (kölcsön nélkül): {RED}{CURRENCY2DP}
 STR_2457    :{SMALLFONT}{BLACK}A pénzügyi számlák adatai
 STR_2458    :{SMALLFONT}{BLACK}Grafikon a pénz (kölcsön nélküli) alakulásáról
 STR_2459    :{SMALLFONT}{BLACK}Grafikon a park értékének alakulásáról
@@ -1736,6 +1743,7 @@ STR_2482    :{SMALLFONT}{BLACK}Nyereség: {CURRENCY} hetente,  Park értéke: {C
 STR_2483    :{WINDOW_COLOUR_2}Heti nyereség: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Heti nyereség: {RED}{CURRENCY2DP}
 STR_2487    :Vendégek „igazi” nevének mutatása
+STR_2488    :{SMALLFONT}{BLACK}Váltás a vendégek „igazi” nevének és a vendégek számának mutatása között
 STR_2489    :Gyorsbillentyűk...
 STR_2490    :Gyorsbillentyűk
 STR_2491    :Alapértékek visszaállítása 
@@ -1770,7 +1778,7 @@ STR_2519    :Park információk
 STR_2520    :Vendéglista
 STR_2521    :Alkalmazottak listája
 STR_2522    :Legutóbbi üzenetek megjelenítése
-STR_2523    :Térkép megjelenítése
+STR_2523    :Térkép
 STR_2524    :Képmentés
 ### The following need to be reordered to match SDL_keycode layout.
 STR_2525    :???
@@ -1954,6 +1962,7 @@ STR_2704    :Minden 30. percben
 STR_2705    :Minden órában
 STR_2706    :Soha
 STR_2707    :Rendszer fájlkezelőjének használata
+STR_2708    :{WINDOW_COLOUR_1}Biztos, hogy felül akarod írni ezt: {STRINGID}?
 STR_2709    :Felülírás
 STR_2710    :Írd be a fájl nevét.
 STR_2711    :;
@@ -2097,7 +2106,49 @@ STR_2858    :Nem indítható marketingkampány...
 STR_2861    :{WINDOW_COLOUR_2}Az Infogrames Interactive Inc. számára licencelve
 STR_2862    :Zenei köszönetnyilvánítások...
 STR_2863    :Zenei köszönetnyilvánítások
+STR_2864    :{WINDOW_COLOUR_2}Induló - Die Regimentskinder:   (Fucik) copyright nélküli
+STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) copyright nélküli
+STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Tradicionális)
+STR_2868    :{WINDOW_COLOUR_2}Mesél a bécsi erdő:   (JohannSTRauss) copyright nélküli
+STR_2869    :{WINDOW_COLOUR_2}Szláv tánc:   (Tradicionális)
+STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Tradicionális)
+STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Tradicionális)
+STR_2872    :{WINDOW_COLOUR_2}Nyitány -  Költő és paraszt:   (Franz von Suppé) copyright nélküli
+STR_2873    :{WINDOW_COLOUR_2}Keringő egyveleg:   (JohannSTRauss) copyright nélküli
+STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Tradicionális)
+STR_2875    :{WINDOW_COLOUR_2}Eredeti felvételek (P) 1976 C.J.Mears Organization,  engedéllyel használva
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 főcímzene:   (Allister Brimble) copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
 STR_2901    :{WINDOW_COLOUR_2}(A minták a Spectrasonics „Liquid Grooves”-ának köszönhetőek)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, Előadja:  Peter James Adcock) felvétel © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}Baj van a részeg tengerésszel:   (Névtelen/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Fő színséma
 STR_2972    :Alternatív színséma 1
 STR_2973    :Alternatív színséma 2
@@ -2239,6 +2290,8 @@ STR_3133    :Nem építhető lejtőre
 STR_3142    :{WINDOW_COLOUR_2}Befogadóképesség: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Emberek megjelenítése a térképen
 STR_3144    :{SMALLFONT}{BLACK}Játékok és bódék megjelenítése a térképen
+STR_3162    :Nem lehet elég memóriát lefoglalni
+STR_3163    :Új adat telepítése:
 STR_3164    :{BLACK}{COMMA16} kiválasztva (maximum {COMMA16})
 STR_3184    :Játékok és járműveik
 STR_3185    :Kis díszletek
@@ -2280,9 +2333,12 @@ STR_3237    :{SMALLFONT}{BLACK}A park beállításai
 STR_3238    :Nem kell pénz
 STR_3239    :{SMALLFONT}{BLACK}Legyen ez a park egy pénzügyi korlátok nélküli, ’nem kell pénz’ park
 STR_3240    :{WINDOW_COLOUR_2}Kezdőtöke:
-STR_3241    :{WINDOW_COLOUR_2}Kezdeti hitel:
-STR_3242    :{WINDOW_COLOUR_2}Maximális hitelösszeg:
+STR_3241    :{WINDOW_COLOUR_2}Kezdeti kölcsön:
+STR_3242    :{WINDOW_COLOUR_2}Maximális kölcsönösszeg:
 STR_3243    :{WINDOW_COLOUR_2}Éves kamatláb:
+STR_3264    :Nem növelhető jobban!
+STR_3265    :Nem csökkenthető jobban!
+STR_3266    :{SMALLFONT}{BLACK}Válaszd ki a park belépőjének és játékainak fizetési módját
 STR_3279    :Ingyenes parkbelépő / Fizetős játékok
 STR_3280    :Fizetős parkbelépő / Ingyenes játékok
 STR_3281    :{WINDOW_COLOUR_2}Belépési díj:
@@ -2424,10 +2480,15 @@ STR_5164    :Twitch csatorna neve
 STR_5165    :Vendégek követők utáni elnevezése
 STR_5166    :{SMALLFONT}{BLACK}A vendégek a csatorna Twitch követői{NEWLINE}után kapják a nevüket
 STR_5167    :Követőkről elnevezett vendégek követése
+STR_5168    :{SMALLFONT}{BLACK}A csatorna Twitch követőiről elnevezett vendégek követési információinak bekapcsolása
 STR_5169    :Vendégek Twitch chat résztvevők utáni elnevezése
 STR_5170    :{SMALLFONT}{BLACK}A vendégek Twitch chat résztvevők utáni elnevezése
 STR_5171    :Chat résztvevőkről elnevezett vendégek követése
+STR_5172    :{SMALLFONT}{BLACK}A Twitch chat résztvevőiről elnevezett vendégek követési információinak bekapcsolása
 STR_5173    :Twitch chat hírként történő megjelenítése
+STR_5174    :{SMALLFONT}{BLACK}A !news előtagú Twitch chat üzenetek játékbeli üzenetként történő használata
+STR_5175    :Add meg a Twitch csatornád nevét
+STR_5176    :Twitch integráció engedélyezése
 STR_5177    :Képernyőmód:
 STR_5178    :{SMALLFONT}{BLACK}Pénzügyi csalások
 STR_5179    :{SMALLFONT}{BLACK}Vendég-csalások
@@ -2485,6 +2546,10 @@ STR_5276    :Add meg a keresendő objektum nevét
 STR_5277    :Törlés
 STR_5278    :Homokozó mód
 STR_5279    :Homokozó mód ki
+STR_5281    :{SMALLFONT}{BLACK}Jellemzők
+STR_5282    :RCT1 játék nyitva/zárva lámpák
+STR_5283    :RCT1 park nyitva/zárva lámpák
+STR_5284    :RCT1 pályaválasztó betütípus
 STR_5285    :ROBBANJANAK!!!
 STR_5286    :{SMALLFONT}{BLACK}Néhány vendéget felrobbant
 STR_5287    :A játék már meghibásodott
@@ -2501,6 +2566,9 @@ STR_5297    :{SMALLFONT}{BLACK}A park megnyitása
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :{SMALLFONT}{BLACK}Az alkalmazottak gyors kirúgása
+STR_5301    :{MEDIUMFONT}{BLACK}A kölcsönöd törlése
+STR_5302    :Kölcsön törlése
+STR_5303    :Szünet alatti építkezés engedélyezése
 STR_5304    :Főcím:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
@@ -2509,9 +2577,35 @@ STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :Véletlenszerű
 STR_5311    :{SMALLFONT}{BLACK}Hibakereső eszközök
-STR_5313    :Mezővizsgáló megjelenítése
+STR_5312    :Konzol
+STR_5313    :Mezővizsgáló
 STR_5314    :Mezővizsgáló
+STR_5315    :Fű
+STR_5316    :Homok
+STR_5317    :Sár
+STR_5318    :Kavics
+STR_5319    :Marsi
+STR_5320    :Sakktábla
+STR_5321    :Fűcsomók
+STR_5322    :Jég
+STR_5323    :Rács (piros)
+STR_5324    :Rács (sárga)
+STR_5325    :Rács (kék)
+STR_5326    :Rács (zöld)
+STR_5327    :Homok (sötét)
+STR_5328    :Homok (világos)
+STR_5329    :Sakktábla (fordított)
+STR_5330    :Földalatti nézet
+STR_5331    :Kavics
+STR_5332    :Fa (piros)
+STR_5333    :Fa (fekete)
 STR_5334    :Jég
+STR_5335    :Játék bejárata
+STR_5336    :Játék kijárata
+STR_5337    :Park bejárata
+STR_5338    :Elem típusa
+STR_5339    :{SMALLFONT}{BLACK}Alapmagsság
+STR_5340    :{SMALLFONT}{BLACK}Felszín feletti magasság
 STR_5343    :Alkalmazottak automatikus lerakása
 STR_5344    :Változási napló
 STR_5345    :Pénzügyi csalások
@@ -2529,14 +2623,18 @@ STR_5356    :{BLACK}Émelygés:
 STR_5357    :{BLACK}Émelygéstűrés:
 STR_5358    :{BLACK}WC:
 STR_5359    :Vendégek eltávolítása
+STR_5360    :{SMALLFONT}{BLACK}Eltávolít minden vendéget a térképről
 STR_5361    :Minden vendég kapjon:
+STR_5362    :{BLACK}A vendégek preferált játékintenzitása legyen:
 STR_5363    :Több mint 1
 STR_5364    :Kevesebb mint 15
 STR_5365    :{BLACK}Személyzet gyors.:
 STR_5366    :Normál
 STR_5367    :Gyors
+STR_5368    :Visszaállítás ütközött állapotból
 STR_5369    :Park paraméterei...
 STR_5370    :{SMALLFONT}{BLACK}Kattints erre a gombra, hogy módosítsd{NEWLINE}a park olyan paramétereit, mint{NEWLINE}a vendégek generálása és a pénz.
+STR_5371    :Objektum választás
 STR_5372    :Jobb egeres húzás invertálása
 STR_5373    :Név {STRINGID}
 STR_5374    :Dátum {STRINGID}
@@ -2850,7 +2948,7 @@ STR_5816    :{SMALLFONT}{BLACK}A játék méretezési tényezőjének beállít�
 STR_5820    :{SMALLFONT}{BLACK}A játék minimalizálása, ha elveszti a fókuszt{NEWLINE}teljes képernyős módban
 STR_5822    :{SMALLFONT}{BLACK}A nap és az éjszaka váltakozásának bekapcsolása.{NEWLINE}A teljes ciklus egy játékbeli hónapig tart
 STR_5823    :{SMALLFONT}{BLACK}Nagybetűs megjelenítés a hirdetőtáblákon (RCT1-beli viselkedés)
-STR_5824    :{SMALLFONT}{BLACK}A  villámhatás kikapcsolása{NEWLINE}a viharok alatt
+STR_5824    :{SMALLFONT}{BLACK}A viharok alatti villámhatás{NEWLINE}kikapcsolása
 STR_5825    :{SMALLFONT}{BLACK}Az egérmutató maradjon az ablakon belül
 STR_5826    :{SMALLFONT}{BLACK}A látkép jobb egeres húzásának invertálása
 STR_5835    :{SMALLFONT}{BLACK}A játék némítása, ha az ablak elveszti a fókuszt
@@ -2963,6 +3061,9 @@ STR_6035    :Kérlek válaszd ki az RCT1 mappádat
 STR_6036    :{SMALLFONT}{BLACK}Törlés
 STR_6037    :Kérlek válassz egy érvényes RCT1 mappát
 STR_6041    :{BLACK}Nem vettél fel gépészt!
+STR_6052    :A magasságtérkép túl nagy és le lesz vágva
+STR_6053    :A magasságtérkép nem normalizálható 
+STR_6054    :Csak a 24 bites bitmapek támogatottak
 STR_6055    :OpenRCT2 magasságtérkép fájl
 STR_6056    :{SMALLFONT}{BLACK}Némítás
 STR_6057    :{SMALLFONT}{BLACK}Külön gomb a némítási opció számára az eszköztáron
@@ -2972,6 +3073,9 @@ STR_6060    :Vendégek vásárlásainak animálása
 STR_6061    :{SMALLFONT}{BLACK}Animált pénzhatás megjelenítése,{NEWLINE}mikor a vendégek vásárolnak valamit.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Minden föld birtoklása
+STR_6065    :Felhasználói tevékenységek naplózása
+STR_6066    :{SMALLFONT}{BLACK}Minden felhasználói tevékenységet naplóz a felhasználói mappádban lévő fájlokba
 STR_6067    :Szerver elindítva.
 STR_6068    :Szerver leállítva.
 STR_6099    :Kapcsolódtál a szerverhez.
@@ -3136,7 +3240,7 @@ STR_6274    :Nem állítható be színséma...
 STR_6275    :{WINDOW_COLOUR_2}Állomás stílusa:
 STR_6276    :A vendégek beragadnak itt: {RED}{STRINGID}. Lehet, hogy érvénytelen játéktípus vagy működési mód okozza.
 STR_6277    :{WINDOW_COLOUR_2}Állomás index: {BLACK}{COMMA16}
-STR_6278    :Automentések mennyisége
+STR_6278    :Automentések száma
 STR_6279    :{SMALLFONT}{BLACK}A megőrzendő automentések száma
 STR_6280    :{SMALLFONT}{BLACK}Chat
 STR_6281    :{SMALLFONT}{BLACK}Külön gomb a chat ablak számára az eszköztáron
