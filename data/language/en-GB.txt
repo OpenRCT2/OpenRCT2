@@ -3353,7 +3353,7 @@ STR_5902    :Show bounding boxes
 STR_5903    :Show paint debug window
 STR_5904    :Reset date
 STR_5905    :{SMALLFONT}{BLACK}A map generation tool that automatically creates a custom landscape
-STR_5906    :Zoom to cursor position
+STR_5906    :Zoom from cursor position
 STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will centre around the cursor, as opposed to the screen centre.
 STR_5908    :Allow arbitrary ride type changes
 STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crashes.
@@ -3755,8 +3755,11 @@ STR_6304    :Open scenery picker
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Experimental option to use multiple threads to render, may cause instability.
 STR_6307    :Colour scheme: {BLACK}{STRINGID}
-STR_6308    :Trackpad Mode
-STR_6309    :When enabled, scrollling up/down will not zoom in/out
+STR_6308    :Scroll wheel behaviour:
+STR_6309    :Zoom From Centere of Screen
+STR_6310    :Disabled
+STR_6311    :{SMALLFONT}{BLACK}When zooming in/out with the scroll wheel, whether to zoom at the cursor or screen centre. If set to "Disabled", scrolling will not zoom in/out (reccommended for trackpad users).
+
 
 #############
 # Scenarios #

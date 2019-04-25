@@ -137,10 +137,10 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     // Controls and interface
     WIDX_CONTROLS_GROUP = WIDX_PAGE_START,
     WIDX_SCREEN_EDGE_SCROLLING,
-    WIDX_DISABLE_SCROLL_ZOOM,
     WIDX_TRAP_CURSOR,
     WIDX_INVERT_DRAG,
-    WIDX_ZOOM_TO_CURSOR,
+    WIDX_SCROLL_MODE,
+    WIDX_SCROLL_MODE_DROPDOWN,
     WIDX_HOTKEY_DROPDOWN,
     WIDX_THEMES_GROUP,
     WIDX_THEMES,
@@ -303,21 +303,21 @@ static rct_widget window_options_audio_widgets[] = {
 static rct_widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define CONTROLS_GROUP_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    CONTROLS_GROUP_START + 0,    CONTROLS_GROUP_START + 104,   STR_CONTROLS_GROUP,                     STR_NONE },                                 // Controls group
+    { WWT_GROUPBOX,         1,  5,      304,    CONTROLS_GROUP_START + 0,    CONTROLS_GROUP_START + 90,   STR_CONTROLS_GROUP,                     STR_NONE },                                 // Controls group
     { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 13,   CONTROLS_GROUP_START + 26,   STR_SCREEN_EDGE_SCROLLING,              STR_SCREEN_EDGE_SCROLLING_TIP },            // Edge scrolling
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 30, CONTROLS_GROUP_START + 41, STR_DISABLE_SCROLL_ZOOM, STR_DISABLE_SCROLL_ZOOM_TIP },                             //Trackpad Mode
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 45,   CONTROLS_GROUP_START + 56,   STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 60,   CONTROLS_GROUP_START + 71,   STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 75,   CONTROLS_GROUP_START + 87,   STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },                   // Zoom to cursor
-    { WWT_BUTTON,           1,  155,    299,    CONTROLS_GROUP_START + 90,   CONTROLS_GROUP_START + 100,   STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 30,   CONTROLS_GROUP_START + 41,   STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 45,   CONTROLS_GROUP_START + 56,   STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
+    { WWT_DROPDOWN,         1,  135,    299,    CONTROLS_GROUP_START + 60,  CONTROLS_GROUP_START + 71, STR_SCROLL_MODE,                             STR_NONE},
+    { WWT_BUTTON,           1,  288,    298,    CONTROLS_GROUP_START + 61,  CONTROLS_GROUP_START + 70, STR_DROPDOWN_GLYPH,                     STR_SCROLL_MODE_TIP },
+    { WWT_BUTTON,           1,  155,    299,    CONTROLS_GROUP_START + 74,   CONTROLS_GROUP_START + 86,   STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
 #undef CONTROLS_GROUP_START
-#define THEMES_GROUP_START 159
-    { WWT_GROUPBOX,         1,  5,      304,    THEMES_GROUP_START + 0,      THEMES_GROUP_START + 47,     STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
+#define THEMES_GROUP_START 147
+    { WWT_GROUPBOX,         1,  5,      304,    THEMES_GROUP_START + 0,      THEMES_GROUP_START + 46,     STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
     { WWT_DROPDOWN,         1,  155,    299,    THEMES_GROUP_START + 14,     THEMES_GROUP_START + 25,     STR_STRING,                             STR_NONE },                                 // Themes
     { WWT_BUTTON,           1,  288,    298,    THEMES_GROUP_START + 15,     THEMES_GROUP_START + 24,     STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
     { WWT_BUTTON,           1,  155,    299,    THEMES_GROUP_START + 30,     THEMES_GROUP_START + 42,     STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
 #undef THEMES_GROUP_START
-#define TOOLBAR_GROUP_START 209
+#define TOOLBAR_GROUP_START 197
     { WWT_GROUPBOX,         1,  5,      304,    TOOLBAR_GROUP_START + 0,     TOOLBAR_GROUP_START + 75,    STR_TOOLBAR_BUTTONS_GROUP,              STR_NONE },                                 // Toolbar buttons group
     { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 31,    TOOLBAR_GROUP_START + 42,    STR_FINANCES_BUTTON_ON_TOOLBAR,         STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },       // Finances
     { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 46,    TOOLBAR_GROUP_START + 57,    STR_RESEARCH_BUTTON_ON_TOOLBAR,         STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },       // Research
@@ -425,6 +425,11 @@ static constexpr const rct_string_id window_options_fullscreen_mode_names[] = {
     STR_OPTIONS_DISPLAY_WINDOWED,
     STR_OPTIONS_DISPLAY_FULLSCREEN,
     STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
+};
+static constexpr const rct_string_id window_options_scroll_mode_names[] = {
+    STR_SCROLL_MODE_STANDARD,
+    STR_ZOOM_TO_CURSOR,
+    STR_SCROLL_MODE_DISABLED,
 };
 
 const int32_t window_options_tab_animation_divisor[] =
@@ -573,10 +578,10 @@ static uint64_t window_options_page_enabled_widgets[] = {
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_SCREEN_EDGE_SCROLLING) |
-    (1 << WIDX_DISABLE_SCROLL_ZOOM) |
     (1 << WIDX_TRAP_CURSOR) |
     (1 << WIDX_INVERT_DRAG) |
-    (1 << WIDX_ZOOM_TO_CURSOR) |
+    (1 << WIDX_SCROLL_MODE) |
+    (1 << WIDX_SCROLL_MODE_DROPDOWN) |
     (1 << WIDX_HOTKEY_DROPDOWN) |
     (1 << WIDX_TOOLBAR_SHOW_FINANCES) |
     (1 << WIDX_TOOLBAR_SHOW_RESEARCH) |
@@ -825,20 +830,10 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     config_save_default();
                     window_invalidate(w);
                     break;
-                case WIDX_DISABLE_SCROLL_ZOOM:
-                    gConfigGeneral.disable_scroll_zoom ^=1;
-                    config_save_default();
-                    window_invalidate(w);
-                    break;
                 case WIDX_TRAP_CURSOR:
                     gConfigGeneral.trap_cursor ^= 1;
                     config_save_default();
                     context_set_cursor_trap(gConfigGeneral.trap_cursor);
-                    window_invalidate(w);
-                    break;
-                case WIDX_ZOOM_TO_CURSOR:
-                    gConfigGeneral.zoom_to_cursor ^= 1;
-                    config_save_default();
                     window_invalidate(w);
                     break;
                 case WIDX_TOOLBAR_SHOW_FINANCES:
@@ -1274,6 +1269,20 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
             switch (widgetIndex)
             {
+                case WIDX_SCROLL_MODE_DROPDOWN:
+                    num_items = 3;
+                    for (size_t i = 0; i < num_items; i++)
+                    {
+                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                        gDropdownItemsArgs[i] = window_options_scroll_mode_names[i];
+                    }
+                    
+                    window_options_show_dropdown(w, widget, num_items);
+                    
+                   // dropdown_set_checked(gConfigSound.title_music, true);
+                    
+                   // dropdown_set_checked((int32_t)theme_manager_get_active_available_theme_index(), true);
+                    break;
                 case WIDX_THEMES_DROPDOWN:
                     num_items = (uint32_t)theme_manager_get_num_available_themes();
 
@@ -1578,6 +1587,26 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
             switch (widgetIndex)
             {
+                case WIDX_SCROLL_MODE_DROPDOWN :
+                    if (dropdownIndex == 0)
+                    {
+                        gConfigGeneral.zoom_to_cursor = false;
+                        gConfigGeneral.disable_scroll_zoom = false;
+                        
+                    }
+                    if (dropdownIndex == 1)
+                    {
+                        gConfigGeneral.zoom_to_cursor = true;
+                        gConfigGeneral.disable_scroll_zoom = false;
+                    }
+                    if (dropdownIndex == 2)
+                    {
+                        gConfigGeneral.zoom_to_cursor = false;
+                        gConfigGeneral.disable_scroll_zoom = true;
+                    }
+                    config_save_default();
+                    window_invalidate(w);
+                    break;
                 case WIDX_THEMES_DROPDOWN:
                     if (dropdownIndex != -1)
                     {
@@ -1875,17 +1904,30 @@ static void window_options_invalidate(rct_window* w)
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         {
             widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
-            widget_set_checkbox_value(w, WIDX_DISABLE_SCROLL_ZOOM, gConfigGeneral.disable_scroll_zoom);
             widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
             widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
-            widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
-
+            
+            if (gConfigGeneral.zoom_to_cursor == false && gConfigGeneral.disable_scroll_zoom == false)
+            {
+                window_options_controls_and_interface_widgets[WIDX_SCROLL_MODE].text = STR_SCROLL_MODE_STANDARD;
+            }
+            if (gConfigGeneral.zoom_to_cursor == true && gConfigGeneral.disable_scroll_zoom == false)
+            {
+                window_options_controls_and_interface_widgets[WIDX_SCROLL_MODE].text = STR_ZOOM_TO_CURSOR;
+            }
+            if (gConfigGeneral.disable_scroll_zoom == true)
+            {
+                window_options_controls_and_interface_widgets[WIDX_SCROLL_MODE].text = STR_SCROLL_MODE_DISABLED;
+            }
+            
+            //window_options_controls_and_interface_widgets[WIDX_SCROLL_MODE].text = STR_SCROLL_MODE;
+            
             size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
             const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
             set_format_arg(0, uintptr_t, (uintptr_t)activeThemeName);
@@ -2087,6 +2129,9 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_string_left(
                 dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1], w->x + 10,
                 w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1);
+            gfx_draw_string_left(
+             dpi, STR_SCROLL_MODE, w, w->colours[1], w->x+10,
+             w->y + window_options_controls_and_interface_widgets[WIDX_CONTROLS_GROUP].top + 61);
             break;
         }
 

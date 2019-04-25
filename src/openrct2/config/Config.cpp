@@ -146,7 +146,7 @@ namespace Config
             model->custom_currency_symbol = reader->GetCString("custom_currency_symbol", "Ctm");
             model->edge_scrolling = reader->GetBoolean("edge_scrolling", true);
             model->edge_scrolling_speed = reader->GetInt32("edge_scrolling_speed", 12);
-            model->disable_scroll_zoom = reader->GetBoolean("scroll_zoom", true);
+            model->disable_scroll_zoom = reader->GetBoolean("scroll_zoom", false);
             model->fullscreen_mode = reader->GetInt32("fullscreen_mode", 0);
             model->fullscreen_height = reader->GetInt32("fullscreen_height", -1);
             model->fullscreen_width = reader->GetInt32("fullscreen_width", -1);
