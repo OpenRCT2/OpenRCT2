@@ -108,7 +108,9 @@ static void game_handle_key_scroll()
     {
         window_unfollow_sprite(mainWindow);
     }
+    //scrollZOOM
     input_scroll_viewport(scrollX, scrollY);
+    //printf("scroll");
 }
 
 static int32_t input_scancode_to_rct_keycode(int32_t sdl_key)

@@ -146,6 +146,7 @@ namespace Config
             model->custom_currency_symbol = reader->GetCString("custom_currency_symbol", "Ctm");
             model->edge_scrolling = reader->GetBoolean("edge_scrolling", true);
             model->edge_scrolling_speed = reader->GetInt32("edge_scrolling_speed", 12);
+            model->disable_scroll_zoom = reader->GetBoolean("scroll_zoom", true);
             model->fullscreen_mode = reader->GetInt32("fullscreen_mode", 0);
             model->fullscreen_height = reader->GetInt32("fullscreen_height", -1);
             model->fullscreen_width = reader->GetInt32("fullscreen_width", -1);
@@ -229,6 +230,7 @@ namespace Config
         writer->WriteEnum<int32_t>("custom_currency_affix", model->custom_currency_affix, Enum_CurrencySymbolAffix);
         writer->WriteString("custom_currency_symbol", model->custom_currency_symbol);
         writer->WriteBoolean("edge_scrolling", model->edge_scrolling);
+        writer->WriteBoolean("disable_scroll_zoom", model->disable_scroll_zoom);
         writer->WriteInt32("edge_scrolling_speed", model->edge_scrolling_speed);
         writer->WriteInt32("fullscreen_mode", model->fullscreen_mode);
         writer->WriteInt32("fullscreen_height", model->fullscreen_height);

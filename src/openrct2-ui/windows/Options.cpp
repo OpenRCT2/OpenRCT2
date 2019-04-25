@@ -137,6 +137,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     // Controls and interface
     WIDX_CONTROLS_GROUP = WIDX_PAGE_START,
     WIDX_SCREEN_EDGE_SCROLLING,
+    WIDX_DISABLE_SCROLL_ZOOM,
     WIDX_TRAP_CURSOR,
     WIDX_INVERT_DRAG,
     WIDX_ZOOM_TO_CURSOR,
@@ -302,20 +303,21 @@ static rct_widget window_options_audio_widgets[] = {
 static rct_widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define CONTROLS_GROUP_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    CONTROLS_GROUP_START + 0,    CONTROLS_GROUP_START + 91,   STR_CONTROLS_GROUP,                     STR_NONE },                                 // Controls group
+    { WWT_GROUPBOX,         1,  5,      304,    CONTROLS_GROUP_START + 0,    CONTROLS_GROUP_START + 104,   STR_CONTROLS_GROUP,                     STR_NONE },                                 // Controls group
     { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 13,   CONTROLS_GROUP_START + 26,   STR_SCREEN_EDGE_SCROLLING,              STR_SCREEN_EDGE_SCROLLING_TIP },            // Edge scrolling
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 30,   CONTROLS_GROUP_START + 41,   STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 45,   CONTROLS_GROUP_START + 56,   STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 60,   CONTROLS_GROUP_START + 71,   STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },                   // Zoom to cursor
-    { WWT_BUTTON,           1,  155,    299,    CONTROLS_GROUP_START + 75,   CONTROLS_GROUP_START + 87,   STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 30, CONTROLS_GROUP_START + 41, STR_DISABLE_SCROLL_ZOOM, STR_DISABLE_SCROLL_ZOOM_TIP },                             //Trackpad Mode
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 45,   CONTROLS_GROUP_START + 56,   STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 60,   CONTROLS_GROUP_START + 71,   STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 75,   CONTROLS_GROUP_START + 87,   STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },                   // Zoom to cursor
+    { WWT_BUTTON,           1,  155,    299,    CONTROLS_GROUP_START + 90,   CONTROLS_GROUP_START + 100,   STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
 #undef CONTROLS_GROUP_START
-#define THEMES_GROUP_START 148
+#define THEMES_GROUP_START 159
     { WWT_GROUPBOX,         1,  5,      304,    THEMES_GROUP_START + 0,      THEMES_GROUP_START + 47,     STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
     { WWT_DROPDOWN,         1,  155,    299,    THEMES_GROUP_START + 14,     THEMES_GROUP_START + 25,     STR_STRING,                             STR_NONE },                                 // Themes
     { WWT_BUTTON,           1,  288,    298,    THEMES_GROUP_START + 15,     THEMES_GROUP_START + 24,     STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
     { WWT_BUTTON,           1,  155,    299,    THEMES_GROUP_START + 30,     THEMES_GROUP_START + 42,     STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
 #undef THEMES_GROUP_START
-#define TOOLBAR_GROUP_START 200
+#define TOOLBAR_GROUP_START 209
     { WWT_GROUPBOX,         1,  5,      304,    TOOLBAR_GROUP_START + 0,     TOOLBAR_GROUP_START + 75,    STR_TOOLBAR_BUTTONS_GROUP,              STR_NONE },                                 // Toolbar buttons group
     { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 31,    TOOLBAR_GROUP_START + 42,    STR_FINANCES_BUTTON_ON_TOOLBAR,         STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },       // Finances
     { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 46,    TOOLBAR_GROUP_START + 57,    STR_RESEARCH_BUTTON_ON_TOOLBAR,         STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },       // Research
@@ -571,6 +573,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_SCREEN_EDGE_SCROLLING) |
+    (1 << WIDX_DISABLE_SCROLL_ZOOM) |
     (1 << WIDX_TRAP_CURSOR) |
     (1 << WIDX_INVERT_DRAG) |
     (1 << WIDX_ZOOM_TO_CURSOR) |
@@ -819,6 +822,11 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     break;
                 case WIDX_SCREEN_EDGE_SCROLLING:
                     gConfigGeneral.edge_scrolling ^= 1;
+                    config_save_default();
+                    window_invalidate(w);
+                    break;
+                case WIDX_DISABLE_SCROLL_ZOOM:
+                    gConfigGeneral.disable_scroll_zoom ^=1;
                     config_save_default();
                     window_invalidate(w);
                     break;
@@ -1867,6 +1875,7 @@ static void window_options_invalidate(rct_window* w)
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         {
             widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
+            widget_set_checkbox_value(w, WIDX_DISABLE_SCROLL_ZOOM, gConfigGeneral.disable_scroll_zoom);
             widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
             widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
             widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);

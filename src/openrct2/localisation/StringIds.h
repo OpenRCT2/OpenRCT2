@@ -3938,9 +3938,12 @@ enum
     STR_MULTITHREADING_TIP = 6306,
 
     STR_TILE_INSPECTOR_COLOUR_SCHEME = 6307,
+    
+    STR_DISABLE_SCROLL_ZOOM = 6308,
+    STR_DISABLE_SCROLL_ZOOM_TIP = 6309,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
-    STR_COUNT = 32768
+    STR_COUNT = 32770
 };
 
 #endif

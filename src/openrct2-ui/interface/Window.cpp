@@ -435,10 +435,9 @@ static void window_viewport_wheel_input(rct_window* w, int32_t wheel)
 {
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))
         return;
-
-    if (wheel < 0)
+    if (wheel < 0 && !gConfigGeneral.disable_scroll_zoom)
         window_zoom_in(w, true);
-    else if (wheel > 0)
+    else if (wheel > 0 && !gConfigGeneral.disable_scroll_zoom)
         window_zoom_out(w, true);
 }
 
