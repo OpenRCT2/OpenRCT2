@@ -435,10 +435,13 @@ static void window_viewport_wheel_input(rct_window* w, int32_t wheel)
 {
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))
         return;
-    if (wheel < 0 && !gConfigGeneral.scroll_wheel_behaviour == 0)
+    if (gConfigGeneral.scroll_wheel_behaviour != 0 )
+    {
+    if (wheel < 0)
         window_zoom_in(w, true);
-    else if (wheel > 0 && !gConfigGeneral.scroll_wheel_behaviour == 0)
+    else if (wheel > 0)
         window_zoom_out(w, true);
+    }
 }
 
 static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex, int32_t wheel)

@@ -205,7 +205,7 @@ namespace Config
             model->last_save_landscape_directory = reader->GetCString("last_landscape_directory", nullptr);
             model->last_save_scenario_directory = reader->GetCString("last_scenario_directory", nullptr);
             model->last_save_track_directory = reader->GetCString("last_track_directory", nullptr);
-            model->scroll_wheel_behaviour = reader->GetInt32("scroll_wheel_behaviour", 1);
+            model->scroll_wheel_behaviour = reader->GetInt32("scroll_wheel_behaviour", 2);
             model->use_native_browse_dialog = reader->GetBoolean("use_native_browse_dialog", false);
             model->window_limit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
