@@ -924,11 +924,6 @@ STR_6206    :Gray stucco
 STR_6212    :Gray sandstone
 STR_6274    :Can't set color scheme...
 
-STR_6308    :Scroll wheel behavior:
-STR_6309    :Zoom from center of screen
-STR_6310    :Disabled
-STR_6311    :{SMALLFONT}{BLACK}When zooming in/out with the scroll wheel, whether to zoom at the cursor or screen center. If set to "Disabled", scrolling will not zoom in/out (reccommended for trackpad users).
-
 #############
 # Scenarios #
 #############
