@@ -146,7 +146,6 @@ namespace Config
             model->custom_currency_symbol = reader->GetCString("custom_currency_symbol", "Ctm");
             model->edge_scrolling = reader->GetBoolean("edge_scrolling", true);
             model->edge_scrolling_speed = reader->GetInt32("edge_scrolling_speed", 12);
-            model->disable_scroll_zoom = reader->GetBoolean("scroll_zoom", false);
             model->fullscreen_mode = reader->GetInt32("fullscreen_mode", 0);
             model->fullscreen_height = reader->GetInt32("fullscreen_height", -1);
             model->fullscreen_width = reader->GetInt32("fullscreen_width", -1);
@@ -206,9 +205,9 @@ namespace Config
             model->last_save_landscape_directory = reader->GetCString("last_landscape_directory", nullptr);
             model->last_save_scenario_directory = reader->GetCString("last_scenario_directory", nullptr);
             model->last_save_track_directory = reader->GetCString("last_track_directory", nullptr);
+            model->scroll_wheel_behaviour = reader->GetInt32("scroll_wheel_behaviour", 1);
             model->use_native_browse_dialog = reader->GetBoolean("use_native_browse_dialog", false);
             model->window_limit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
-            model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
             model->render_weather_gloom = reader->GetBoolean("render_weather_gloom", true);
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
@@ -230,7 +229,6 @@ namespace Config
         writer->WriteEnum<int32_t>("custom_currency_affix", model->custom_currency_affix, Enum_CurrencySymbolAffix);
         writer->WriteString("custom_currency_symbol", model->custom_currency_symbol);
         writer->WriteBoolean("edge_scrolling", model->edge_scrolling);
-        writer->WriteBoolean("disable_scroll_zoom", model->disable_scroll_zoom);
         writer->WriteInt32("edge_scrolling_speed", model->edge_scrolling_speed);
         writer->WriteInt32("fullscreen_mode", model->fullscreen_mode);
         writer->WriteInt32("fullscreen_height", model->fullscreen_height);
@@ -281,9 +279,9 @@ namespace Config
         writer->WriteString("last_landscape_directory", model->last_save_landscape_directory);
         writer->WriteString("last_scenario_directory", model->last_save_scenario_directory);
         writer->WriteString("last_track_directory", model->last_save_track_directory);
+        writer->WriteInt32("scroll_wheel_behaviour", model->scroll_wheel_behaviour);
         writer->WriteBoolean("use_native_browse_dialog", model->use_native_browse_dialog);
         writer->WriteInt32("window_limit", model->window_limit);
-        writer->WriteBoolean("zoom_to_cursor", model->zoom_to_cursor);
         writer->WriteBoolean("render_weather_effects", model->render_weather_effects);
         writer->WriteBoolean("render_weather_gloom", model->render_weather_gloom);
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);

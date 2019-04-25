@@ -427,9 +427,9 @@ static constexpr const rct_string_id window_options_fullscreen_mode_names[] = {
     STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
 };
 static constexpr const rct_string_id window_options_scroll_mode_names[] = {
+    STR_SCROLL_MODE_DISABLED,
     STR_SCROLL_MODE_STANDARD,
     STR_ZOOM_TO_CURSOR,
-    STR_SCROLL_MODE_DISABLED,
 };
 
 const int32_t window_options_tab_animation_divisor[] =
@@ -1588,21 +1588,16 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             switch (widgetIndex)
             {
                 case WIDX_SCROLL_MODE_DROPDOWN :
-                    if (dropdownIndex == 0)
-                    {
-                        gConfigGeneral.zoom_to_cursor = false;
-                        gConfigGeneral.disable_scroll_zoom = false;
-                        
-                    }
-                    if (dropdownIndex == 1)
-                    {
-                        gConfigGeneral.zoom_to_cursor = true;
-                        gConfigGeneral.disable_scroll_zoom = false;
-                    }
-                    if (dropdownIndex == 2)
-                    {
-                        gConfigGeneral.zoom_to_cursor = false;
-                        gConfigGeneral.disable_scroll_zoom = true;
+                    switch (dropdownIndex) {
+                        case 0:
+                            gConfigGeneral.scroll_wheel_behaviour = 0;
+                            break;
+                        case 1:
+                            gConfigGeneral.scroll_wheel_behaviour = 1;
+                            break;
+                        case 2:
+                            gConfigGeneral.scroll_wheel_behaviour = 2;
+                            break;
                     }
                     config_save_default();
                     window_invalidate(w);
@@ -1913,18 +1908,7 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
             widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
             
-            if (gConfigGeneral.zoom_to_cursor == false && gConfigGeneral.disable_scroll_zoom == false)
-            {
-                window_options_controls_and_interface_widgets[WIDX_SCROLL_MODE].text = STR_SCROLL_MODE_STANDARD;
-            }
-            if (gConfigGeneral.zoom_to_cursor == true && gConfigGeneral.disable_scroll_zoom == false)
-            {
-                window_options_controls_and_interface_widgets[WIDX_SCROLL_MODE].text = STR_ZOOM_TO_CURSOR;
-            }
-            if (gConfigGeneral.disable_scroll_zoom == true)
-            {
-                window_options_controls_and_interface_widgets[WIDX_SCROLL_MODE].text = STR_SCROLL_MODE_DISABLED;
-            }
+            window_options_controls_and_interface_widgets[WIDX_SCROLL_MODE].text = window_options_scroll_mode_names[gConfigGeneral.scroll_wheel_behaviour];
             
             //window_options_controls_and_interface_widgets[WIDX_SCROLL_MODE].text = STR_SCROLL_MODE;
             

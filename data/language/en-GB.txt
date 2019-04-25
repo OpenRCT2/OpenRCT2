@@ -3756,7 +3756,7 @@ STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Experimental option to use multiple threads to render, may cause instability.
 STR_6307    :Colour scheme: {BLACK}{STRINGID}
 STR_6308    :Scroll wheel behaviour:
-STR_6309    :Zoom From Centere of Screen
+STR_6309    :Zoom from centre of screen
 STR_6310    :Disabled
 STR_6311    :{SMALLFONT}{BLACK}When zooming in/out with the scroll wheel, whether to zoom at the cursor or screen centre. If set to "Disabled", scrolling will not zoom in/out (reccommended for trackpad users).
 

@@ -61,10 +61,9 @@ struct GeneralConfiguration
     // Controls
     bool edge_scrolling;
     int32_t edge_scrolling_speed;
-    bool disable_scroll_zoom;
+    int32_t scroll_wheel_behaviour;
     bool trap_cursor;
     bool invert_viewport_drag;
-    bool zoom_to_cursor;
 
     // Miscellaneous
     bool play_intro;
