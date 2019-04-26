@@ -1247,11 +1247,11 @@ loc_69B119:
         }
 
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = get_shop_hot_value(shopItem);
+            itemValue = ShopItems[shopItem].HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = get_shop_cold_value(shopItem);
+            itemValue = ShopItems[shopItem].ColdValue;
         else
-            itemValue = get_shop_base_value(shopItem);
+            itemValue = ShopItems[shopItem].BaseValue;
 
         if (itemValue < price)
         {
@@ -1306,11 +1306,11 @@ loc_69B221:
     if (!hasVoucher)
     {
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = get_shop_hot_value(shopItem);
+            itemValue = ShopItems[shopItem].HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = get_shop_cold_value(shopItem);
+            itemValue = ShopItems[shopItem].ColdValue;
         else
-            itemValue = get_shop_base_value(shopItem);
+            itemValue = ShopItems[shopItem].BaseValue;
 
         itemValue -= price;
         uint8_t satisfaction = 0;
@@ -1371,7 +1371,7 @@ loc_69B221:
     {
         set_format_arg(0, rct_string_id, name_string_idx);
         set_format_arg(2, uint32_t, id);
-        set_format_arg(6, rct_string_id, ShopItemStringIds[shopItem].indefinite);
+        set_format_arg(6, rct_string_id, ShopItems[shopItem].Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
             news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index);
@@ -1403,7 +1403,7 @@ loc_69B221:
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        finance_payment(get_shop_item_cost(shopItem), gCommandExpenditureType);
+        finance_payment(ShopItems[shopItem].Cost, gCommandExpenditureType);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     gCommandExpenditureType--;
@@ -1416,7 +1416,7 @@ loc_69B221:
     {
         SpendMoney(*expend_type, price);
     }
-    ride->total_profit += (price - get_shop_item_cost(shopItem));
+    ride->total_profit += (price - ShopItems[shopItem].Cost);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride->cur_num_customers++;
     ride->total_customers++;

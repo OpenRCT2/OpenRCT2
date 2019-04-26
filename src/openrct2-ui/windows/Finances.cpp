@@ -1197,7 +1197,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
                 break;
             }
             case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                set_format_arg(0, rct_string_id, ShopItemStringIds[campaign->ShopItemType].plural);
+                set_format_arg(0, rct_string_id, ShopItems[campaign->ShopItemType].Naming.Plural);
                 break;
         }
 
