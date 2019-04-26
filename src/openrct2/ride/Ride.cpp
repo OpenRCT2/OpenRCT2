@@ -2593,6 +2593,12 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
                 ride_mechanic_status_update(ride, RIDE_MECHANIC_STATUS_CALLING);
             }
+            else if (
+                mechanic->state == PEEP_STATE_HEADING_TO_INSPECTION && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            {
+                // Ride has broken down while mechanic was HEADING_TO_INSPECTION, upgrade to ANSWERING.
+                ride_call_mechanic(ride, mechanic, false);
+            }
             break;
         }
         case RIDE_MECHANIC_STATUS_FIXING:
