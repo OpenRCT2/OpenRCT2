@@ -2632,7 +2632,7 @@ static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection
  */
 static void ride_call_closest_mechanic(Ride* ride)
 {
-    auto forInspection = (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) == 0;
+    auto forInspection = (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) == 0;
     auto mechanic = ride_find_closest_mechanic(ride, forInspection);
     if (mechanic != nullptr)
         ride_call_mechanic(ride, mechanic, forInspection);

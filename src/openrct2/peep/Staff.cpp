@@ -2067,8 +2067,7 @@ void Staff::UpdateFixing(int32_t steps)
     bool progressToNextSubstate = true;
     bool firstRun = true;
 
-    if ((state == PEEP_STATE_INSPECTING)
-        && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+    if (state == PEEP_STATE_INSPECTING && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         // Ride has broken down since Mechanic was called to inspect it.
         // Mechanic identifies the breakdown and switches to fixing it.
@@ -2616,16 +2615,20 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
 {
     if (!firstRun)
     {
-        ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
-
         if (state == PEEP_STATE_INSPECTING)
         {
             UpdateRideInspected(current_ride);
-
             staff_rides_inspected++;
-            window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
-            return true;
+            // If there is no pending breakdown, we're done and leave without the stats update & call animation
+            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING))
+            {
+                ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
+                window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
+
+                return true;
+            }
+            // If there is a pending breakdown, assume mechanic fixed it while inspecting and continue below
         }
 
         staff_rides_fixed++;
@@ -2646,6 +2649,9 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         return false;
     }
 
+    // Reset the mechanic status at the same time as fixing the ride (or a 2nd mechanic could be called inadvertedly if this was
+    // an inspection, and a pending breakdown turns into an actual breakdown during the final call animation)
+    ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
     ride_fix_breakdown(ride, steps);
 
     return true;
