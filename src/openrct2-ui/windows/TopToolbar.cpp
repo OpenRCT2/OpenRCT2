@@ -947,7 +947,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (widget_is_pressed(w, WIDX_MAP))
             y++;
 
-        static int32_t imageIdByRotation[] = {
+        static const int32_t imageIdByRotation[] = {
             SPR_G2_MAP_NORTH,
             SPR_G2_MAP_EAST,
             SPR_G2_MAP_SOUTH,
