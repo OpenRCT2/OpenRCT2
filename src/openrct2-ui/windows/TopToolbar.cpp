@@ -939,6 +939,25 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_sprite(dpi, imgId, x, y, 3);
     }
 
+    // Draw map button overlay
+    if (window_top_toolbar_widgets[WIDX_MAP].type != WWT_EMPTY)
+    {
+        x = w->x + window_top_toolbar_widgets[WIDX_MAP].left + 4;
+        y = w->y + window_top_toolbar_widgets[WIDX_MAP].top + 1;
+        if (widget_is_pressed(w, WIDX_MAP))
+            y++;
+
+        static int32_t imageIdByRotation[] = {
+            SPR_G2_MAP_NORTH,
+            SPR_G2_MAP_EAST,
+            SPR_G2_MAP_SOUTH,
+            SPR_G2_MAP_WEST,
+        };
+
+        imgId = imageIdByRotation[get_current_rotation()];
+        gfx_draw_sprite(dpi, imgId, x, y, 0);
+    }
+
     // Draw research button
     if (window_top_toolbar_widgets[WIDX_RESEARCH].type != WWT_EMPTY)
     {
