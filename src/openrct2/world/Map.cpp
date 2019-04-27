@@ -2373,6 +2373,20 @@ void game_command_modify_tile(
             *ebx = tile_inspector_track_set_chain(x, y, elementIndex, entireTrackBlock, setChain, flags);
             break;
         }
+        case TILE_INSPECTOR_TRACK_SET_BLOCK_BRAKE:
+        {
+            const int32_t elementIndex = *edx;
+            const bool blockBrake = *edi;
+            *ebx = tile_inspector_track_set_block_brake(x, y, elementIndex, blockBrake, flags);
+            break;
+        }
+        case TILE_INSPECTOR_TRACK_SET_INDESTRUCTIBLE:
+        {
+            const int32_t elementIndex = *edx;
+            const bool isIndestructible = *edi;
+            *ebx = tile_inspector_track_set_indestructible(x, y, elementIndex, isIndestructible, flags);
+            break;
+        }
         case TILE_INSPECTOR_SCENERY_SET_QUARTER_LOCATION:
         {
             const int32_t elementIndex = *edx;
