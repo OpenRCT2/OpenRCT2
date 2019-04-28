@@ -849,6 +849,24 @@ static void window_top_toolbar_invalidate(rct_window* w)
     else
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
 
+    // Set map button to the right image.
+    if (window_top_toolbar_widgets[WIDX_MAP].type != WWT_EMPTY)
+    {
+        static constexpr uint32_t imageIdByRotation[] = {
+            SPR_G2_MAP_NORTH,
+            SPR_G2_MAP_NORTH_PRESSED,
+            SPR_G2_MAP_WEST,
+            SPR_G2_MAP_WEST_PRESSED,
+            SPR_G2_MAP_SOUTH,
+            SPR_G2_MAP_SOUTH_PRESSED,
+            SPR_G2_MAP_EAST,
+            SPR_G2_MAP_EAST_PRESSED,
+        };
+
+        uint32_t mapImageId = imageIdByRotation[get_current_rotation() * 2];
+        window_top_toolbar_widgets[WIDX_MAP].image = IMAGE_TYPE_REMAP | mapImageId;
+    }
+
     // Zoomed out/in disable. Not sure where this code is in the original.
     if (window_get_main()->viewport->zoom == 0)
     {
@@ -937,25 +955,6 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             y++;
         imgId = SPR_TAB_GEARS_0;
         gfx_draw_sprite(dpi, imgId, x, y, 3);
-    }
-
-    // Draw map button overlay
-    if (window_top_toolbar_widgets[WIDX_MAP].type != WWT_EMPTY)
-    {
-        x = w->x + window_top_toolbar_widgets[WIDX_MAP].left + 4;
-        y = w->y + window_top_toolbar_widgets[WIDX_MAP].top + 1;
-        if (widget_is_pressed(w, WIDX_MAP))
-            y++;
-
-        static const int32_t imageIdByRotation[] = {
-            SPR_G2_MAP_NORTH,
-            SPR_G2_MAP_EAST,
-            SPR_G2_MAP_SOUTH,
-            SPR_G2_MAP_WEST,
-        };
-
-        imgId = imageIdByRotation[get_current_rotation()];
-        gfx_draw_sprite(dpi, imgId, x, y, 0);
     }
 
     // Draw research button
