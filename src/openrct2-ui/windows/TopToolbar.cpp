@@ -854,16 +854,12 @@ static void window_top_toolbar_invalidate(rct_window* w)
     {
         static constexpr uint32_t imageIdByRotation[] = {
             SPR_G2_MAP_NORTH,
-            SPR_G2_MAP_NORTH_PRESSED,
             SPR_G2_MAP_WEST,
-            SPR_G2_MAP_WEST_PRESSED,
             SPR_G2_MAP_SOUTH,
-            SPR_G2_MAP_SOUTH_PRESSED,
             SPR_G2_MAP_EAST,
-            SPR_G2_MAP_EAST_PRESSED,
         };
 
-        uint32_t mapImageId = imageIdByRotation[get_current_rotation() * 2];
+        uint32_t mapImageId = imageIdByRotation[get_current_rotation()];
         window_top_toolbar_widgets[WIDX_MAP].image = IMAGE_TYPE_REMAP | mapImageId;
     }
 
