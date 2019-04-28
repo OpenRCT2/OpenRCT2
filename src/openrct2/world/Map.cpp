@@ -2338,6 +2338,13 @@ void game_command_modify_tile(
             *ebx = tile_inspector_path_set_sloped(x, y, elementIndex, sloped, flags);
             break;
         }
+        case TILE_INSPECTOR_PATH_SET_BROKEN:
+        {
+            const int32_t elementIndex = *edx;
+            const bool broken = *edi;
+            *ebx = tile_inspector_path_set_broken(x, y, elementIndex, broken, flags);
+            break;
+        }
         case TILE_INSPECTOR_PATH_TOGGLE_EDGE:
         {
             const int32_t elementIndex = *edx;

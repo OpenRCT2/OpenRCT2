@@ -1399,7 +1399,7 @@ static void sub_6E1F34(
                 }
 
                 // If CTRL and SHIFT not pressed
-                gSceneryPlaceZ = 0;
+                gSceneryPlaceZ = 0; 
 
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)

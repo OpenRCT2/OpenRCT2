@@ -39,6 +39,7 @@ enum TILE_INSPECTOR_INSTRUCTION_TYPE
     TILE_INSPECTOR_SURFACE_TOGGLE_CORNER,
     TILE_INSPECTOR_SURFACE_TOGGLE_DIAGONAL,
     TILE_INSPECTOR_PATH_SET_SLOPE,
+    TILE_INSPECTOR_PATH_SET_BROKEN,
     TILE_INSPECTOR_PATH_TOGGLE_EDGE,
     TILE_INSPECTOR_ENTRANCE_MAKE_USABLE,
     TILE_INSPECTOR_WALL_SET_SLOPE,
@@ -63,6 +64,7 @@ int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool enabl
 int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t cornerIndex, int32_t flags);
 int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t flags);
 int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementIndex, bool sloped, int32_t flags);
+int32_t tile_inspector_path_set_broken(int32_t x, int32_t y, int32_t elementIndex, bool broken, int32_t flags);
 int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t cornerIndex, int32_t flags);
 int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elementIndex, int32_t flags);
 int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex, int32_t slopeValue, int32_t flags);
