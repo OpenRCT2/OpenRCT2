@@ -170,8 +170,7 @@ void lightfx_update_buffers(rct_drawpixelinfo* info)
 {
     _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info->width * info->height);
     _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info->width * info->height);
-
-    std::memcpy(&_pixelInfo, info, sizeof(rct_drawpixelinfo));
+    _pixelInfo = *info;
 }
 
 extern void viewport_paint_setup();

@@ -28,6 +28,7 @@
 #include "../audio/audio.h"
 #include "../core/File.h"
 #include "../core/String.hpp"
+#include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -53,6 +54,9 @@
 
 #include <algorithm>
 #include <iterator>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 struct map_backup
 {
@@ -2244,6 +2248,9 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels)
     dpi.height = 217;
     dpi.pitch = 0;
     dpi.bits = pixels;
+
+    auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
+    dpi.DrawingEngine = drawingEngine.get();
 
     CoordsXY offset = { size_x / 2, size_y / 2 };
     for (uint8_t i = 0; i < 4; i++)

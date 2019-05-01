@@ -148,6 +148,7 @@ public:
     {
         _window = (SDL_Window*)_uiContext->GetWindow();
         _drawingContext = new OpenGLDrawingContext(this);
+        _bitsDPI.DrawingEngine = this;
 #    ifdef __ENABLE_LIGHTFX__
         lightfx_set_available(false);
 #    endif

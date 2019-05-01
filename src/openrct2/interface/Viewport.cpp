@@ -903,7 +903,7 @@ void viewport_paint(
     y >>= viewport->zoom;
     y += viewport->y;
 
-    rct_drawpixelinfo dpi1;
+    rct_drawpixelinfo dpi1 = *dpi;
     dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
     dpi1.x = left;
     dpi1.y = top;
