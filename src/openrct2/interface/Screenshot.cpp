@@ -17,6 +17,7 @@
 #include "../core/Console.hpp"
 #include "../core/Imaging.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
@@ -31,6 +32,7 @@
 #include <memory>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 uint8_t gScreenshotCountdown = 0;
 
@@ -292,6 +294,9 @@ void screenshot_giant()
     dpi.pitch = 0;
     dpi.zoom_level = 0;
     dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
+
+    auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
+    dpi.DrawingEngine = drawingEngine.get();
 
     viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
 
