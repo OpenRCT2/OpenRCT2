@@ -317,8 +317,11 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             sceneryEntry = tileElement->AsWall()->GetEntry();
             if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
+                banner = &gBanners[tileElement->AsWall()->GetBannerIndex()];
+                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
+                set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                set_map_tooltip_format_arg(6, rct_string_id, sceneryEntry->name);
                 return info->type;
             }
             break;
@@ -327,8 +330,11 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
+                banner = &gBanners[tileElement->AsLargeScenery()->GetBannerIndex()];
+                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
+                set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                set_map_tooltip_format_arg(6, rct_string_id, sceneryEntry->name);
                 return info->type;
             }
             break;
@@ -337,8 +343,15 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             banner = &gBanners[tileElement->AsBanner()->GetIndex()];
             sceneryEntry = get_banner_entry(banner->type);
 
-            set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-            set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
+            set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+
+            if (banner->flags & BANNER_FLAG_NO_ENTRY)
+                set_map_tooltip_format_arg(2, rct_string_id, STR_NO_ENTRY);
+            else
+                set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
+
+            set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+            set_map_tooltip_format_arg(6, rct_string_id, sceneryEntry->name);
             return info->type;
     }
 
