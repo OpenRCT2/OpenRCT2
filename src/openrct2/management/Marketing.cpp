@@ -79,7 +79,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            set_format_arg(0, rct_string_id, ShopItemStringIds[campaign.ShopItemType].plural);
+            set_format_arg(0, rct_string_id, ShopItems[campaign.ShopItemType].Naming.Plural);
         }
 
         news_item_add_to_queue(NEWS_ITEM_MONEY, MarketingCampaignNames[campaign.Type][2], 0);

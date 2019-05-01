@@ -1086,7 +1086,7 @@ void Peep::UpdateFalling()
                         return;
                     }
                 }
-                int32_t map_height = tile_element_height(0xFFFF & x, 0xFFFF & y) & 0xFFFF;
+                int32_t map_height = tile_element_height(0xFFFF & x, 0xFFFF & y);
                 if (map_height < z || map_height - 4 > z)
                     continue;
                 saved_height = map_height;
@@ -2054,11 +2054,11 @@ void peep_thought_set_format_args(rct_peep_thought* thought)
     }
     else if (flags & 2)
     {
-        set_format_arg(2, rct_string_id, ShopItemStringIds[thought->item].singular);
+        set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Singular);
     }
     else if (flags & 4)
     {
-        set_format_arg(2, rct_string_id, ShopItemStringIds[thought->item].indefinite);
+        set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Indefinite);
     }
 }
 
@@ -3444,7 +3444,7 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 
     if (GetNextIsSurface())
     {
-        return tile_element_height(tile_x, tile_y) & 0xFFFF;
+        return tile_element_height(tile_x, tile_y);
     }
 
     int32_t height = next_z * 8;

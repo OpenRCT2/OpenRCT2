@@ -3937,6 +3937,8 @@ enum
     STR_MULTITHREADING = 6305,
     STR_MULTITHREADING_TIP = 6306,
 
+    STR_TILE_INSPECTOR_COLOUR_SCHEME = 6307,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

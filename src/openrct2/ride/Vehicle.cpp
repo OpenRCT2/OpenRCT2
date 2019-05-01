@@ -5418,9 +5418,8 @@ static void vehicle_update_crash(rct_vehicle* vehicle)
             continue;
         }
 
-        int32_t z = tile_element_height(curVehicle->x, curVehicle->y);
-        int16_t waterHeight = (z >> 16) & 0xFFFF;
-        z = (int16_t)(z & 0xFFFF);
+        int16_t z = tile_element_height(curVehicle->x, curVehicle->y);
+        int16_t waterHeight = tile_element_water_height(curVehicle->x, curVehicle->y);
         int16_t zDiff;
         if (waterHeight != 0)
         {

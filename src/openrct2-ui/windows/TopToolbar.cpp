@@ -2484,7 +2484,7 @@ static money32 try_place_ghost_scenery(
             gSceneryPlaceRotation = (uint16_t)(parameter_3 & 0xFF);
             gSceneryPlaceObject = selected_tab;
 
-            tileElement = gSceneryTileElement;
+            tileElement = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->tileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
             gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
             if (dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
@@ -2539,14 +2539,14 @@ static money32 try_place_ghost_scenery(
                 type, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
             wallPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-            wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+            wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
                 if (result->Error != GA_ERROR::OK)
                     return;
 
                 gSceneryGhostPosition.x = map_tile.x;
                 gSceneryGhostPosition.y = map_tile.y;
                 gSceneryGhostWallRotation = edges;
-                gSceneryGhostPosition.z = gSceneryTileElement->base_height;
+                gSceneryGhostPosition.z = result->tileElement->base_height;
 
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
             });
@@ -2579,7 +2579,7 @@ static money32 try_place_ghost_scenery(
             gSceneryGhostPosition.y = map_tile.y;
             gSceneryPlaceRotation = loc.direction;
 
-            tileElement = gSceneryTileElement;
+            tileElement = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->tileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
 
             if (dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)

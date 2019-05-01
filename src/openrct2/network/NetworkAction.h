@@ -13,6 +13,7 @@
 
 #include <array>
 #include <string>
+#include <vector>
 
 enum MISC_COMMAND
 {
@@ -55,7 +56,7 @@ class NetworkAction final
 public:
     rct_string_id Name;
     std::string PermissionName;
-    std::array<int32_t, NETWORK_PERMISSION_COUNT> Commands;
+    std::vector<int32_t> Commands;
 };
 
 class NetworkActions final

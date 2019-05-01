@@ -978,7 +978,7 @@ static constexpr const rct_string_id RideBreakdownReasonNames[] = {
     STR_RIDE_BREAKDOWN_CONTROL_FAILURE
 };
 
-static constexpr const rct_string_id ColourSchemeNames[] = {
+const rct_string_id ColourSchemeNames[4] = {
     STR_MAIN_COLOUR_SCHEME,
     STR_ALTERNATIVE_COLOUR_SCHEME_1,
     STR_ALTERNATIVE_COLOUR_SCHEME_2,
@@ -4900,7 +4900,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         uint8_t shopItem = rideEntry->shop_item_secondary == SHOP_ITEM_NONE ? rideEntry->shop_item
                                                                             : rideEntry->shop_item_secondary;
-        int32_t spriteIndex = ShopItemImage[shopItem];
+        int32_t spriteIndex = ShopItems[shopItem].Image;
         spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[0].main);
 
         gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
@@ -6500,7 +6500,7 @@ static void window_ride_income_invalidate(rct_window* w)
         if (shop_item_has_common_price(primaryItem))
             w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
-        window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = ShopItemStringIds[primaryItem].price_label;
+        window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = ShopItems[primaryItem].Naming.PriceLabel;
     }
 
     // Get secondary item
@@ -6509,7 +6509,7 @@ static void window_ride_income_invalidate(rct_window* w)
     {
         if ((secondaryItem = rideEntry->shop_item_secondary) != SHOP_ITEM_NONE)
         {
-            window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = ShopItemStringIds[secondaryItem].price_label;
+            window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = ShopItems[secondaryItem].Naming.PriceLabel;
         }
     }
 
@@ -6575,7 +6575,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
         profit = ride->price;
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
-        profit -= get_shop_item_cost(primaryItem);
+        profit -= ShopItems[primaryItem].Cost;
         if (profit < 0)
         {
             profit *= -1;
@@ -6596,7 +6596,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
         profit = ride->price_secondary;
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
-        profit -= get_shop_item_cost(secondaryItem);
+        profit -= ShopItems[secondaryItem].Cost;
         if (profit < 0)
         {
             profit *= -1;
@@ -6830,7 +6830,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     shopItem = ride->GetRideEntry()->shop_item;
     if (shopItem != SHOP_ITEM_NONE)
     {
-        set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
+        set_format_arg(0, rct_string_id, ShopItems[shopItem].Naming.Plural);
         set_format_arg(2, uint32_t, ride->no_primary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
@@ -6841,7 +6841,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
                                                                       : ride->GetRideEntry()->shop_item_secondary;
     if (shopItem != SHOP_ITEM_NONE)
     {
-        set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
+        set_format_arg(0, rct_string_id, ShopItems[shopItem].Naming.Plural);
         set_format_arg(2, uint32_t, ride->no_secondary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;

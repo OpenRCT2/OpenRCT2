@@ -206,11 +206,11 @@ public:
             }
             else
             {
-                ride->price = DefaultShopItemPrice[rideEntry->shop_item];
+                ride->price = ShopItems[rideEntry->shop_item].DefaultPrice;
             }
             if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE)
             {
-                ride->price_secondary = DefaultShopItemPrice[rideEntry->shop_item_secondary];
+                ride->price_secondary = ShopItems[rideEntry->shop_item_secondary].DefaultPrice;
             }
 
             if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)

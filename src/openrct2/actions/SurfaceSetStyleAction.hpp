@@ -99,7 +99,7 @@ public:
 
         auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
         auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
-        auto heightMid = tile_element_height(xMid, yMid) & 0xFFFF;
+        auto heightMid = tile_element_height(xMid, yMid);
 
         res->Position.x = xMid;
         res->Position.y = yMid;
@@ -178,7 +178,7 @@ public:
 
         auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
         auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
-        auto heightMid = tile_element_height(xMid, yMid) & 0xFFFF;
+        auto heightMid = tile_element_height(xMid, yMid);
 
         res->Position.x = xMid;
         res->Position.y = yMid;

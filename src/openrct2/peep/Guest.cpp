@@ -1247,11 +1247,11 @@ loc_69B119:
         }
 
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = get_shop_hot_value(shopItem);
+            itemValue = ShopItems[shopItem].HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = get_shop_cold_value(shopItem);
+            itemValue = ShopItems[shopItem].ColdValue;
         else
-            itemValue = get_shop_base_value(shopItem);
+            itemValue = ShopItems[shopItem].BaseValue;
 
         if (itemValue < price)
         {
@@ -1306,11 +1306,11 @@ loc_69B221:
     if (!hasVoucher)
     {
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = get_shop_hot_value(shopItem);
+            itemValue = ShopItems[shopItem].HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = get_shop_cold_value(shopItem);
+            itemValue = ShopItems[shopItem].ColdValue;
         else
-            itemValue = get_shop_base_value(shopItem);
+            itemValue = ShopItems[shopItem].BaseValue;
 
         itemValue -= price;
         uint8_t satisfaction = 0;
@@ -1371,7 +1371,7 @@ loc_69B221:
     {
         set_format_arg(0, rct_string_id, name_string_idx);
         set_format_arg(2, uint32_t, id);
-        set_format_arg(6, rct_string_id, ShopItemStringIds[shopItem].indefinite);
+        set_format_arg(6, rct_string_id, ShopItems[shopItem].Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
             news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index);
@@ -1403,7 +1403,7 @@ loc_69B221:
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        finance_payment(get_shop_item_cost(shopItem), gCommandExpenditureType);
+        finance_payment(ShopItems[shopItem].Cost, gCommandExpenditureType);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     gCommandExpenditureType--;
@@ -1416,7 +1416,7 @@ loc_69B221:
     {
         SpendMoney(*expend_type, price);
     }
-    ride->total_profit += (price - get_shop_item_cost(shopItem));
+    ride->total_profit += (price - ShopItems[shopItem].Cost);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride->cur_num_customers++;
     ride->total_customers++;
@@ -2616,7 +2616,7 @@ static bool peep_really_liked_ride(Peep* peep, Ride* ride)
  */
 static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z)
 {
-    if ((tile_element_height(centre_x, centre_y) & 0xFFFF) > centre_z)
+    if ((tile_element_height(centre_x, centre_y)) > centre_z)
         return PEEP_THOUGHT_TYPE_NONE;
 
     uint16_t num_scenery = 0;
@@ -4028,22 +4028,32 @@ void Guest::UpdateRideLeaveVehicle()
         platformLocation.x = vehicle->x + word_981D6C[platformLocation.direction].x * 12;
         platformLocation.y = vehicle->y + word_981D6C[platformLocation.direction].y * 12;
 
-        int8_t loadPosition = vehicle_entry->peep_loading_positions[current_seat];
-
-        switch (vehicle->sprite_direction / 8)
+        // This can evaluate to false with buggy custom rides.
+        if (current_seat < vehicle_entry->peep_loading_positions.size())
         {
-            case 0:
-                platformLocation.x -= loadPosition;
-                break;
-            case 1:
-                platformLocation.y += loadPosition;
-                break;
-            case 2:
-                platformLocation.x += loadPosition;
-                break;
-            case 3:
-                platformLocation.y -= loadPosition;
-                break;
+            int8_t loadPosition = vehicle_entry->peep_loading_positions[current_seat];
+
+            switch (vehicle->sprite_direction / 8)
+            {
+                case 0:
+                    platformLocation.x -= loadPosition;
+                    break;
+                case 1:
+                    platformLocation.y += loadPosition;
+                    break;
+                case 2:
+                    platformLocation.x += loadPosition;
+                    break;
+                case 3:
+                    platformLocation.y -= loadPosition;
+                    break;
+            }
+        }
+        else
+        {
+            log_verbose(
+                "current_seat %d is too large! (Vehicle entry has room for %d.)", current_seat,
+                vehicle_entry->peep_loading_positions.size());
         }
 
         platformLocation.z = ride->stations[current_ride_station].Height * 8;
