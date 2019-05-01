@@ -5,6 +5,7 @@
 - Feature: [#8481] Multi-threaded rendering.
 - Feature: [#8919] Allow setting ride price from console.
 - Feature: [#8963] Add missing Czech letters to sprite font, use sprite font for Czech.
+- Feature: [#9154] Change map toolbar icon with current viewport rotation.
 - Change: [#7877] Files are now sorted in logical rather than dictionary order.
 - Change: [#8688] Move common actions from debug menu into cheats menu.
 - Fix: [#5579] Network desync immediately after connecting.

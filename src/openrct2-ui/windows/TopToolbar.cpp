@@ -849,6 +849,20 @@ static void window_top_toolbar_invalidate(rct_window* w)
     else
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
 
+    // Set map button to the right image.
+    if (window_top_toolbar_widgets[WIDX_MAP].type != WWT_EMPTY)
+    {
+        static constexpr uint32_t imageIdByRotation[] = {
+            SPR_G2_MAP_NORTH,
+            SPR_G2_MAP_WEST,
+            SPR_G2_MAP_SOUTH,
+            SPR_G2_MAP_EAST,
+        };
+
+        uint32_t mapImageId = imageIdByRotation[get_current_rotation()];
+        window_top_toolbar_widgets[WIDX_MAP].image = IMAGE_TYPE_REMAP | mapImageId;
+    }
+
     // Zoomed out/in disable. Not sure where this code is in the original.
     if (window_get_main()->viewport->zoom == 0)
     {
