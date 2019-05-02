@@ -35,7 +35,7 @@ public:
 namespace TrackImporter
 {
     std::unique_ptr<ITrackImporter> Create(const std::string& hintPath);
-    //std::unique_ptr<ITrackImporter> CreateTD4();
+    std::unique_ptr<ITrackImporter> CreateTD4();
     std::unique_ptr<ITrackImporter> CreateTD6();
 
     bool ExtensionIsRCT1(const std::string& extension);

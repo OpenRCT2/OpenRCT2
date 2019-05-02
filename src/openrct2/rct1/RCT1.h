@@ -712,7 +712,7 @@ struct rct1_s4
 assert_struct_size(rct1_s4, 0x1F850C);
 
 /**
- * Track design structure.
+ * Track design structure. Only for base RCT1
  * size: 0x2006
  */
 struct rct_track_td4
@@ -755,18 +755,25 @@ struct rct_track_td4
     uint8_t intensity;           // 0x34
     uint8_t nausea;              // 0x35
     money16 upkeep_cost;         // 0x36
+};
 
-    // Added Attractions / Loopy Landscapes only
+assert_struct_size(rct_track_td4, 0x38);
+
+/**
+ * Track design structure for Added Attractions / Loopy Landscapes
+ * size: 0x2006
+ */
+struct rct_track_td4_aa : public rct_track_td4
+{
     uint8_t track_spine_colour[RCT12_NUM_COLOUR_SCHEMES];   // 0x38
     uint8_t track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];    // 0x3C
     uint8_t track_support_colour[RCT12_NUM_COLOUR_SCHEMES]; // 0x40
     uint8_t flags2;                                         // 0x44
 
-    uint8_t var_45[0x7F]; // 0x45
-
-    void* elements; // 0xC4 (data starts here in file, 38 for original RCT1)
-    size_t elementsSize;
+    uint8_t pad_45[0x7F]; // 0x45
 };
+
+assert_struct_size(rct_track_td4_aa, 0xC4);
 #pragma pack(pop)
 
 enum

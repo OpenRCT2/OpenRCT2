@@ -22,7 +22,7 @@ namespace TrackImporter
         std::string extension = Path::GetExtension(hintPath);
         if (ExtensionIsRCT1(extension))
         {
-            //trackImporter = CreateTD4();
+            trackImporter = CreateTD4();
         }
         else
         {
