@@ -2304,7 +2304,7 @@ void window_guest_debug_invalidate(rct_window* w)
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-    rct_peep* peep = GET_PEEP(w->number);
+    auto peep = GET_PEEP(w->number);
 
     set_format_arg(0, rct_string_id, peep->name_string_idx);
     set_format_arg(2, uint32_t, peep->id);
@@ -2334,7 +2334,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_guest_inventory_tab_paint(w, dpi);
     window_guest_debug_tab_paint(w, dpi);
 
-    rct_peep* peep = GET_PEEP(w->number);
+    auto peep = GET_PEEP(w->number);
 
     // cx
     int32_t x = w->x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
