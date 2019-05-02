@@ -20,12 +20,12 @@ DEFINE_GAME_ACTION(BannerPlaceAction, GAME_COMMAND_PLACE_BANNER, GameActionResul
 private:
     CoordsXYZD _loc;
     uint8_t _bannerType{ std::numeric_limits<uint8_t>::max() };
-    uint8_t _bannerIndex{ BANNER_INDEX_NULL };
+    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
     uint8_t _primaryColour;
 
 public:
     BannerPlaceAction() = default;
-    BannerPlaceAction(CoordsXYZD loc, uint8_t bannerType, uint8_t bannerIndex, uint8_t primaryColour)
+    BannerPlaceAction(CoordsXYZD loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour)
         : _loc(loc)
         , _bannerType(bannerType)
         , _bannerIndex(bannerIndex)
