@@ -153,6 +153,9 @@ enum TOP_TOOLBAR_DEBUG_DDIDX {
 enum TOP_TOOLBAR_NETWORK_DDIDX {
     DDIDX_MULTIPLAYER = 0,
     DDIDX_NETWORK = 1,
+    DDIDX_MULTIPLAYER_RECONNECT = 2,
+
+    TOP_TOOLBAR_NETWORK_COUNT
 };
 
 enum {
@@ -249,7 +252,7 @@ static rct_widget window_top_toolbar_widgets[] = {
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_FINANCES_RESEARCH_TIP },        // Research
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_RECENT_MESSAGES_TIP },     // News
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
+    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MULTIPLAYER,    STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
     { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_TOOLBAR_CHAT_TIP },             // Chat
 
     { WWT_EMPTY,    0,  0,      10-1,   0,                      0,                      0xFFFFFFFF,                                 STR_NONE },                         // Artificial widget separator
@@ -994,8 +997,15 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y = w->y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
         if (widget_is_pressed(w, WIDX_NETWORK))
             y++;
-        imgId = SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION;
-        gfx_draw_sprite(dpi, imgId, x, y, 0);
+
+        // Draw (de)sync icon.
+        imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
+        gfx_draw_sprite(dpi, imgId, x + 3, y + 11, 0);
+
+        // Draw number of players.
+        int32_t player_count = network_get_num_players();
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+        gfx_draw_string_right(dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, x + 23, y + 1);
     }
 }
 
@@ -3441,13 +3451,15 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 
 static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_MULTIPLAYER;
-
     gDropdownItemsFormat[DDIDX_MULTIPLAYER] = STR_MULTIPLAYER;
     gDropdownItemsFormat[DDIDX_NETWORK] = STR_NETWORK;
+    gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, 2);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        TOP_TOOLBAR_NETWORK_COUNT);
+
+    dropdown_set_disabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
 
     gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
@@ -3491,6 +3503,9 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
                 break;
             case DDIDX_NETWORK:
                 context_open_window(WC_NETWORK);
+                break;
+            case DDIDX_MULTIPLAYER_RECONNECT:
+                network_reconnect();
                 break;
         }
     }

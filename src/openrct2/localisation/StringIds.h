@@ -3941,6 +3941,8 @@ enum
 
     STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID = 6308,
 
+    STR_MULTIPLAYER_RECONNECT = 6309,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

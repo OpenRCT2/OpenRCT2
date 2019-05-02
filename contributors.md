@@ -77,6 +77,7 @@ The following people are not part of the development team, but have been contrib
 * Albert Morgese (Fusxfaranto) - Shop auto-rotation, unicode uppercasing.
 * Olivier Wervers (oli414) - Remove unused objects command, various bugfixes
 * Christian Schubert (Osmodium) - Ensuring custom user content folders, incl. open folder.
+* (Xkeeper0) - Improved banner tooltips; multiplayer status in toolbar.
 
 ## Bug fixes
 * (halfbro)

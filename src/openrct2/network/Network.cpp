@@ -113,6 +113,7 @@ public:
 
     void SetEnvironment(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
     bool Init();
+    void Reconnect();
     void Close();
     bool BeginClient(const std::string& host, uint16_t port);
     bool BeginServer(uint16_t port, const std::string& address);
@@ -135,6 +136,7 @@ public:
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
     void SendPacketToClients(NetworkPacket& packet, bool front = false, bool gameCmd = false);
     bool CheckSRAND(uint32_t tick, uint32_t srand0);
+    bool IsDesynchronised();
     void CheckDesynchronizaton();
     void KickPlayer(int32_t playerId);
     void SetPassword(const char* password);
@@ -298,6 +300,7 @@ private:
     int32_t status = NETWORK_STATUS_NONE;
     bool _closeLock = false;
     bool _requireClose = false;
+    bool _requireReconnect = false;
     bool wsa_initialized = false;
     bool _clientMapLoaded = false;
     std::unique_ptr<ITcpSocket> _listenSocket;
@@ -311,6 +314,8 @@ private:
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
     std::multiset<GameCommand> game_command_queue;
     std::vector<uint8_t> chunk_buffer;
+    std::string _host;
+    uint16_t _port = 0;
     std::string _password;
     bool _desynchronised = false;
     uint32_t server_connect_time = 0;
@@ -429,6 +434,20 @@ bool Network::Init()
     return true;
 }
 
+void Network::Reconnect()
+{
+    if (status != NETWORK_STATUS_NONE)
+    {
+        Close();
+    }
+    if (_requireClose)
+    {
+        _requireReconnect = true;
+        return;
+    }
+    BeginClient(_host, _port);
+}
+
 void Network::Close()
 {
     if (status != NETWORK_STATUS_NONE)
@@ -507,6 +526,8 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
     mode = NETWORK_MODE_CLIENT;
 
     log_info("Connecting to %s:%u\n", host.c_str(), port);
+    _host = host;
+    _port = port;
 
     _serverConnection = std::make_unique<NetworkConnection>();
     _serverConnection->Socket = CreateTcpSocket();
@@ -714,6 +735,10 @@ void Network::Update()
     if (_requireClose)
     {
         Close();
+        if (_requireReconnect)
+        {
+            Reconnect();
+        }
     }
 }
 
@@ -985,6 +1010,11 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
     }
 
     return true;
+}
+
+bool Network::IsDesynchronised()
+{
+    return gNetwork._desynchronised;
 }
 
 void Network::CheckDesynchronizaton()
@@ -3153,6 +3183,11 @@ void network_close()
     gNetwork.Close();
 }
 
+void network_reconnect()
+{
+    gNetwork.Reconnect();
+}
+
 void network_shutdown_client()
 {
     gNetwork.ShutdownClient();
@@ -3191,6 +3226,11 @@ int32_t network_get_mode()
 int32_t network_get_status()
 {
     return gNetwork.GetStatus();
+}
+
+bool network_is_desynchronised()
+{
+    return gNetwork.IsDesynchronised();
 }
 
 void network_check_desynchronization()
@@ -3977,6 +4017,10 @@ void network_flush()
 void network_send_tick()
 {
 }
+bool network_is_desynchronised()
+{
+    return false;
+}
 void network_check_desynchronization()
 {
 }
@@ -4135,6 +4179,9 @@ void network_send_password(const std::string& password)
 {
 }
 void network_close()
+{
+}
+void network_reconnect()
 {
 }
 void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>&)
