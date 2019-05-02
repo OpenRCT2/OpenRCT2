@@ -124,25 +124,6 @@ TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
     return nullptr;
 }
 
-/**
- *
- *  rct2: 0x006BA23E
- */
-void remove_banners_at_element(int32_t x, int32_t y, TileElement* tileElement)
-{
-    while (!(tileElement++)->IsLastForTile())
-    {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-            return;
-        else if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
-            continue;
-
-        game_do_command(
-            x, 1, y, tileElement->base_height | tileElement->AsBanner()->GetPosition() << 8, GAME_COMMAND_REMOVE_BANNER, 0, 0);
-        tileElement--;
-    }
-}
-
 money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags)
 {
     auto action = FootpathRemoveAction(x, y, z);

@@ -182,7 +182,6 @@ money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags);
 money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope);
 void footpath_provisional_remove();
 void footpath_provisional_update();
-void remove_banners_at_element(int32_t x, int32_t y, TileElement* tileElement);
 void footpath_get_coordinates_from_pos(
     int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
 void footpath_bridge_get_info_from_pos(

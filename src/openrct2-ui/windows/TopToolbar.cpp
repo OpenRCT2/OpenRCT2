@@ -25,6 +25,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/actions/BannerPlaceAction.hpp>
 #include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
@@ -1920,12 +1921,26 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         }
         case SCENERY_TYPE_BANNER:
         {
-            int32_t flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
-
-            gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-            game_command_callback = game_command_callback_place_banner;
-            game_do_command(
-                gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, gWindowSceneryPrimaryColour);
+            uint8_t direction = (parameter_2 >> 8) & 0xFF;
+            int32_t z = (parameter_2 & 0xFF) * 16;
+            CoordsXYZD loc{ gridX, gridY, z, direction };
+            auto primaryColour = gWindowSceneryPrimaryColour;
+            auto bannerType = (parameter_1 & 0xFF00) >> 8;
+            auto bannerIndex = create_new_banner(0);
+            if (bannerIndex == BANNER_INDEX_NULL)
+            {
+                context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                break;
+            }
+            auto bannerPlaceAction = BannerPlaceAction(loc, bannerType, bannerIndex, primaryColour);
+            bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error == GA_ERROR::OK)
+                {
+                    audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                    context_open_detail_window(WD_BANNER, bannerIndex);
+                }
+            });
+            GameActions::Execute(&bannerPlaceAction);
             break;
         }
     }
@@ -2611,20 +2626,36 @@ static money32 try_place_ghost_scenery(
             break;
         }
         case 4:
+        {
             // Banners
             // 6e2612
-            cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, 0);
+            uint8_t direction = (parameter_2 >> 8) & 0xFF;
+            int32_t z = (parameter_2 & 0xFF) * 16;
+            CoordsXYZD loc{ map_tile.x, map_tile.y, z, direction };
+            auto primaryColour = gWindowSceneryPrimaryColour;
+            auto bannerType = (parameter_1 & 0xFF00) >> 8;
+            auto bannerIndex = create_new_banner(0);
+            if (bannerIndex == BANNER_INDEX_NULL)
+            {
+                // Silently fail as this is just for the ghost
+                break;
+            }
+            auto bannerPlaceAction = BannerPlaceAction(loc, bannerType, bannerIndex, primaryColour);
+            bannerPlaceAction.SetFlags(
+                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            auto res = GameActions::Execute(&bannerPlaceAction);
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
+            if (res->Error != GA_ERROR::OK)
+                return MONEY32_UNDEFINED;
 
-            gSceneryGhostPosition.x = map_tile.x;
-            gSceneryGhostPosition.y = map_tile.y;
-            gSceneryGhostPosition.z = (parameter_2 & 0xFF) * 2 + 2;
-            gSceneryPlaceRotation = ((parameter_2 >> 8) & 0xFF);
+            gSceneryGhostPosition.x = loc.x;
+            gSceneryGhostPosition.y = loc.y;
+            gSceneryGhostPosition.z = loc.z / 8 + 2;
+            gSceneryPlaceRotation = direction;
             gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
+            cost = res->Cost;
             break;
+        }
     }
 
     return cost;
