@@ -9766,17 +9766,14 @@ int32_t vehicle_update_track_motion(rct_vehicle* vehicle, int32_t* outStation)
     {
         vehicle_update_track_motion_powered_ride_acceleration(vehicle, vehicleEntry, totalMass, &acceleration);
     }
-    else
+    else if (acceleration <= 0 && acceleration >= -500)
     {
-        if (acceleration <= 0)
+        // Probably moving slowly on a flat track piece, low rolling resistance and drag.
+
+        if (vehicle->velocity <= 0x8000 && vehicle->velocity >= 0)
         {
-            if (acceleration >= -500)
-            {
-                if (vehicle->velocity <= 0x8000)
-                {
-                    acceleration += 400;
-                }
-            }
+            // Vehicle is creeping forwards very slowly (less than ~2km/h), boost speed a bit.
+            acceleration += 400;
         }
     }
 
