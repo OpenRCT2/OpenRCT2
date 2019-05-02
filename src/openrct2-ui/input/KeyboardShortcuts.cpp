@@ -169,7 +169,7 @@ void KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState, int32_t* 
         if (!keysState[scancode])
             continue;
 
-        // Check if SHIFT is either set in the shortcut key and currently, 
+        // Check if SHIFT is either set in the shortcut key and currently pressed,
         // or not set in the shortcut key and not currently pressed (in other words: check if they match).
         if ((bool)(shortcutKey & SHIFT) != (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]))
             continue;
