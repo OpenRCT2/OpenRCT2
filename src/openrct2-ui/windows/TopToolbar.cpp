@@ -251,7 +251,7 @@ static rct_widget window_top_toolbar_widgets[] = {
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_FINANCES_RESEARCH_TIP },        // Research
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_RECENT_MESSAGES_TIP },     // News
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
+    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MULTIPLAYER,    STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
     { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_TOOLBAR_CHAT_TIP },             // Chat
 
     { WWT_EMPTY,    0,  0,      10-1,   0,                      0,                      0xFFFFFFFF,                                 STR_NONE },                         // Artificial widget separator
@@ -996,13 +996,14 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y = w->y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
         if (widget_is_pressed(w, WIDX_NETWORK))
             y++;
-        imgId = SPR_G2_MULTIPLAYER_TOOLBAR;
-        gfx_draw_sprite(dpi, imgId, x - 2, y - 2, 0);
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+
+        // Draw (de)sync icon.
         imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
         gfx_draw_sprite(dpi, imgId, x + 3, y + 11, 0);
 
+        // Draw number of players.
         int32_t player_count = network_get_num_players();
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         gfx_draw_string_right(dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, x + 23, y + 1);
     }
 }
