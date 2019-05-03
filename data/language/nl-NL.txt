@@ -549,8 +549,8 @@ STR_1167    :Kan het waterniveau hier niet verhogen…
 STR_1168    :Opties
 STR_1169    :(Geen)
 STR_1170    :{STRING}
-STR_1171    :{RED}Gesloten - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Gesloten
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Voetpaden en wachtrijen aanleggen
 STR_1174    :Lichtkrant in de weg
 STR_1175    :Kan dit niet op hellend voetpad neerzetten
@@ -1107,7 +1107,7 @@ STR_1726    :Dit land is niet te koop!
 STR_1727    :Voor dit land zijn geen bouwrechten te koop!
 STR_1728    :Kan hier geen bouwrechten kopen…
 STR_1729    :Land is geen eigendom van het park!
-STR_1730    :{RED}Gesloten - - 
+STR_1730    :{RED}Gesloten
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bouwen
 STR_1733    :Modus
@@ -2235,7 +2235,7 @@ STR_2977    :Naam werknemer
 STR_2978    :Voer een nieuwe naam in voor deze werknemer:
 STR_2979    :Kan de naam van deze werknemer niet veranderen…
 STR_2980    :Teveel lichtkranten in dit park
-STR_2981    :{RED}Geen toegang - - 
+STR_2981    :{RED}Geen toegang
 STR_2982    :Lichtkranttekst
 STR_2983    :Voer een nieuwe tekst in voer deze lichtkrant:
 STR_2984    :Kan de tekst op deze lichtkrant niet veranderen…
@@ -3767,6 +3767,10 @@ STR_6301    :{SMALLFONT}{BLACK}Kopieert de naam van het geselecteerde object naa
 STR_6302    :{SMALLFONT}{BLACK}Kopieert de lijst van ontbrekende objecten naar het klembord.
 STR_6303    :Bezig met downloaden van object ({COMMA16} van {COMMA16}): [{STRING}]
 STR_6304    :Decorselector openen
+STR_6305    :Multithreading
+STR_6306    :{SMALLFONT}{BLACK}Experimentele optie om met meerdere threads te renderen. Dit kan de snelheid verhogen, maar ook instabiliteit veroorzaken.
+STR_6307    :Kleurenschema: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 
 #############
 # Scenarios #

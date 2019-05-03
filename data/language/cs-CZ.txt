@@ -552,8 +552,8 @@ STR_1167    :Tady nelze zvýšit hladinu vody...
 STR_1168    :Nastavení
 STR_1169    :(None)
 STR_1170    :{STRING}
-STR_1171    :{RED}Zavřeno - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Zavřeno
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Nástroj pro cesty a fronty
 STR_1174    :Banner v cestě
 STR_1175    :Toto nelze postavit na strmé cestě
@@ -1111,8 +1111,8 @@ STR_1726    :Pozemek není na prodej!
 STR_1727    :Stavební práva nejsou na prodej!
 STR_1728    :Tyto stavební práva nelze zakoupit...
 STR_1729    :Pozemek není ve vlastnictví parku!
-STR_1730    :{RED}Zavřeno - - 
-STR_1731    :{WHITE}{STRINGID} - - 
+STR_1730    :{RED}Zavřeno
+STR_1731    :{WHITE}{STRINGID}
 STR_1732    :Stavět
 STR_1733    :Mód
 STR_1734    :{WINDOW_COLOUR_2}Počet kol:
@@ -2242,7 +2242,7 @@ STR_2977    :Přejmenovat zaměstnance
 STR_2978    :Zadejte nové jméno tohoto zaměstnance:
 STR_2979    :Nelze přejmenovat zaměstnance...
 STR_2980    :Příliš mnoho bannerů ve hře
-STR_2981    :{RED}Zákaz vstupu - - 
+STR_2981    :{RED}Zákaz vstupu
 STR_2982    :Text banneru
 STR_2983    :Zadejte nový text banneru:
 STR_2984    :Nelze změnit text banneru...
@@ -3774,6 +3774,8 @@ STR_6303    :Stahování objektu ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :Otevřít výběr kulis
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Experimentální podpora více vláken pro vykreslování obrazu, může způsobit nestabilitu.
+STR_6307    :Barevné schéma: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 
 ###############################################################################
 ## RCT2 Scenarios
