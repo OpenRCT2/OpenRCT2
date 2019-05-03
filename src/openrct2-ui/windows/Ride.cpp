@@ -2435,7 +2435,6 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                 {
                     set_operating_setting(w->number, RideSetSetting::RideType, rideType);
                 }
-                window_invalidate_all();
             }
     }
 }
