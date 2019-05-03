@@ -2323,6 +2323,12 @@ void window_guest_debug_invalidate(rct_window* w)
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 }
 
+static void draw_debug_label(rct_drawpixelinfo* dpi, int32_t x, int32_t y, const char* label, const char* value)
+{
+    const char* args[2] = { label, value };
+    gfx_draw_string_left(dpi, STR_PEEP_DEBUG_LABEL, args, 0, x, y);
+}
+
 void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
@@ -2335,49 +2341,47 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_guest_debug_tab_paint(w, dpi);
 
     auto peep = GET_PEEP(w->number);
+    auto x = w->x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    auto y = w->y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
-    // cx
-    int32_t x = w->x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    // dx
-    int32_t y = w->y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
-
-    char buffer[512];
-    snprintf(buffer, sizeof(buffer), "Position: %i, %i, %i", peep->x, peep->y, peep->z);
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
+    char buffer[512]{};
+    snprintf(buffer, sizeof(buffer), "%i, %i, %i", peep->x, peep->y, peep->z);
+    draw_debug_label(dpi, x, y, "Position", buffer);
     y += LIST_ROW_HEIGHT;
 
-    snprintf(buffer, sizeof(buffer), "Next: %u, %u, %u", peep->next_x, peep->next_y, peep->next_z);
+    snprintf(buffer, sizeof(buffer), "%u, %u, %u", peep->next_x, peep->next_y, peep->next_z);
     if (peep->GetNextIsSurface())
         safe_strcat(buffer, " (surface)", sizeof(buffer));
     if (peep->GetNextIsSloped())
     {
-        char slopeBuf[32];
+        char slopeBuf[32]{};
         snprintf(slopeBuf, sizeof(slopeBuf), " (slope %u)", peep->GetNextDirection());
         safe_strcat(buffer, slopeBuf, sizeof(buffer));
     }
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
+    draw_debug_label(dpi, x, y, "Next", buffer);
     y += LIST_ROW_HEIGHT;
 
     snprintf(
-        buffer, sizeof(buffer), "Dest: %u, %u, tolerance %u", peep->destination_x, peep->destination_y,
+        buffer, sizeof(buffer), "%u, %u, tolerance %u", peep->destination_x, peep->destination_y,
         peep->destination_tolerance);
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
+    draw_debug_label(dpi, x, y, "Dest", buffer);
     y += LIST_ROW_HEIGHT;
 
     snprintf(
-        buffer, sizeof(buffer), "Pathfind Goal: %u, %u, %u dir %u", peep->pathfind_goal.x, peep->pathfind_goal.y,
+        buffer, sizeof(buffer), "%u, %u, %u dir %u", peep->pathfind_goal.x, peep->pathfind_goal.y,
         peep->pathfind_goal.z, peep->pathfind_goal.direction);
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
+    draw_debug_label(dpi, x, y, "Pathfind Goal", buffer);
     y += LIST_ROW_HEIGHT;
 
-    gfx_draw_string(dpi, "Pathfind history:", COLOUR_BLACK, x, y);
+    draw_debug_label(dpi, x, y, "Pathfind history", nullptr);
     y += LIST_ROW_HEIGHT;
 
     x += 10;
     for (auto& point : peep->pathfind_history)
     {
-        snprintf(buffer, sizeof(buffer), "%u, %u, %u dir %u", point.x, point.y, point.z, point.direction);
-        gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
+        auto o = utf8_insert_codepoint(buffer, FORMAT_BLACK);
+        snprintf(buffer + o, sizeof(buffer) - o, "%u, %u, %u dir %u", point.x, point.y, point.z, point.direction);
+        gfx_draw_string(dpi, buffer, PALETTE_INDEX_10, x, y);
         y += LIST_ROW_HEIGHT;
     }
     x -= 10;

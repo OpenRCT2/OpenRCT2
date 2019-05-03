@@ -3943,6 +3943,8 @@ enum
 
     STR_MULTIPLAYER_RECONNECT = 6309,
 
+    STR_PEEP_DEBUG_LABEL = 6310,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

@@ -3757,6 +3757,7 @@ STR_6306    :{SMALLFONT}{BLACK}Experimental option to use multiple threads to re
 STR_6307    :Colour scheme: {BLACK}{STRINGID}
 STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Reconnect
+STR_6310    :{WINDOW_COLOUR_2}{STRING}: {BLACK}{STRING}
 
 #############
 # Scenarios #
