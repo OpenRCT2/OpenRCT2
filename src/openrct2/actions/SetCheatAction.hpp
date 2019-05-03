@@ -37,6 +37,8 @@
 
 DEFINE_GAME_ACTION(SetCheatAction, GAME_COMMAND_CHEAT, GameActionResult)
 {
+    using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
+
 private:
     NetworkCheatType_t _cheatType;
     int32_t _param1 = 0;
@@ -64,10 +66,22 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::CHEAT_MAX))
+        if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::Count))
         {
             MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
+
+        ParametersRange validRange = GetParameterRange(static_cast<CheatType>(_cheatType.id));
+
+        if (_param1 < validRange.first.first || _param1 > validRange.first.second)
+        {
+            MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+        if (_param2 < validRange.second.first || _param2 > validRange.second.second)
+        {
+            MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+
         return MakeResult();
     }
 
@@ -75,148 +89,149 @@ public:
     {
         switch (static_cast<CheatType>(_cheatType.id))
         {
-            case CheatType::CHEAT_SANDBOXMODE:
+            case CheatType::SandboxMode:
                 gCheatsSandboxMode = _param1 != 0;
                 window_invalidate_by_class(WC_MAP);
                 window_invalidate_by_class(WC_FOOTPATH);
                 break;
-            case CheatType::CHEAT_DISABLECLEARANCECHECKS:
+            case CheatType::DisableClearanceChecks:
                 gCheatsDisableClearanceChecks = _param1 != 0;
                 break;
-            case CheatType::CHEAT_DISABLESUPPORTLIMITS:
+            case CheatType::DisableSupportLimits:
                 gCheatsDisableSupportLimits = _param1 != 0;
                 break;
-            case CheatType::CHEAT_SHOWALLOPERATINGMODES:
+            case CheatType::ShowAllOperatingModes:
                 gCheatsShowAllOperatingModes = _param1 != 0;
                 break;
-            case CheatType::CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES:
+            case CheatType::ShowVehiclesFromOtherTrackTypes:
                 gCheatsShowVehiclesFromOtherTrackTypes = _param1 != 0;
                 break;
-            case CheatType::CHEAT_FASTLIFTHILL:
+            case CheatType::FastLiftHill:
                 gCheatsFastLiftHill = _param1 != 0;
                 break;
-            case CheatType::CHEAT_DISABLEBRAKESFAILURE:
+            case CheatType::DisableBrakesFailure:
                 gCheatsDisableBrakesFailure = _param1 != 0;
                 break;
-            case CheatType::CHEAT_DISABLEALLBREAKDOWNS:
+            case CheatType::DisableAllBreakdowns:
                 gCheatsDisableAllBreakdowns = _param1 != 0;
                 break;
-            case CheatType::CHEAT_DISABLETRAINLENGTHLIMIT:
+            case CheatType::DisableTrainLengthLimit:
                 gCheatsDisableTrainLengthLimit = _param1 != 0;
                 break;
-            case CheatType::CHEAT_ENABLECHAINLIFTONALLTRACK:
+            case CheatType::EnableChainLiftOnAllTrack:
                 gCheatsEnableChainLiftOnAllTrack = _param1 != 0;
                 break;
-            case CheatType::CHEAT_BUILDINPAUSEMODE:
+            case CheatType::BuildInPauseMode:
                 gCheatsBuildInPauseMode = _param1 != 0;
                 break;
-            case CheatType::CHEAT_IGNORERIDEINTENSITY:
+            case CheatType::IgnoreRideIntensity:
                 gCheatsIgnoreRideIntensity = _param1 != 0;
                 break;
-            case CheatType::CHEAT_DISABLEVANDALISM:
+            case CheatType::DisableVandalism:
                 gCheatsDisableVandalism = _param1 != 0;
                 break;
-            case CheatType::CHEAT_DISABLELITTERING:
+            case CheatType::DisableLittering:
                 gCheatsDisableLittering = _param1 != 0;
                 break;
-            case CheatType::CHEAT_NOMONEY:
+            case CheatType::NoMoney:
                 SetScenarioNoMoney(_param1 != 0);
                 break;
-            case CheatType::CHEAT_ADDMONEY:
+            case CheatType::AddMoney:
                 AddMoney(_param1);
                 break;
-            case CheatType::CHEAT_SETMONEY:
+            case CheatType::SetMoney:
                 SetMoney(_param1);
                 break;
-            case CheatType::CHEAT_CLEARLOAN:
+            case CheatType::ClearLoan:
                 ClearLoan();
                 break;
-            case CheatType::CHEAT_SETGUESTPARAMETER:
+            case CheatType::SetGuestParameter:
                 SetGuestParameter(_param1, _param2);
                 break;
-            case CheatType::CHEAT_GENERATEGUESTS:
+            case CheatType::GenerateGuests:
                 GenerateGuests(_param1);
                 break;
-            case CheatType::CHEAT_REMOVEALLGUESTS:
+            case CheatType::RemoveAllGuests:
                 RemoveAllGuests();
                 break;
-            case CheatType::CHEAT_EXPLODEGUESTS:
+            case CheatType::ExplodeGuests:
                 ExplodeGuests();
                 break;
-            case CheatType::CHEAT_GIVEALLGUESTS:
+            case CheatType::GiveAllGuests:
                 GiveObjectToGuests(_param1);
                 break;
-            case CheatType::CHEAT_SETGRASSLENGTH:
+            case CheatType::SetGrassLength:
                 SetGrassLength(_param1);
                 break;
-            case CheatType::CHEAT_WATERPLANTS:
+            case CheatType::WaterPlants:
                 WaterPlants();
                 break;
-            case CheatType::CHEAT_FIXVANDALISM:
+            case CheatType::FixVandalism:
                 FixVandalism();
                 break;
-            case CheatType::CHEAT_REMOVELITTER:
+            case CheatType::RemoveLitter:
                 RemoveLitter();
                 break;
-            case CheatType::CHEAT_DISABLEPLANTAGING:
+            case CheatType::DisablePlantAging:
                 gCheatsDisablePlantAging = _param1 != 0;
                 break;
-            case CheatType::CHEAT_SETSTAFFSPEED:
+            case CheatType::SetStaffSpeed:
                 SetStaffSpeed(_param1);
                 break;
-            case CheatType::CHEAT_RENEWRIDES:
+            case CheatType::RenewRides:
                 RenewRides();
                 break;
-            case CheatType::CHEAT_MAKEDESTRUCTIBLE:
+            case CheatType::MakeDestructible:
                 MakeDestructible();
                 break;
-            case CheatType::CHEAT_FIXRIDES:
+            case CheatType::FixRides:
                 FixBrokenRides();
                 break;
-            case CheatType::CHEAT_RESETCRASHSTATUS:
+            case CheatType::ResetCrashStatus:
                 ResetRideCrashStatus();
                 break;
-            case CheatType::CHEAT_10MINUTEINSPECTIONS:
+            case CheatType::TenMinuteInspections:
                 Set10MinuteInspection();
                 break;
-            case CheatType::CHEAT_WINSCENARIO:
+            case CheatType::WinScenario:
                 scenario_success();
                 break;
-            case CheatType::CHEAT_FORCEWEATHER:
+            case CheatType::ForceWeather:
                 climate_force_weather(_param1);
                 break;
-            case CheatType::CHEAT_FREEZEWEATHER:
+            case CheatType::FreezeWeather:
                 gCheatsFreezeWeather = _param1 != 0;
                 break;
-            case CheatType::CHEAT_NEVERENDINGMARKETING:
+            case CheatType::NeverEndingMarketing:
                 gCheatsNeverendingMarketing = _param1 != 0;
                 break;
-            case CheatType::CHEAT_OPENCLOSEPARK:
+            case CheatType::OpenClosePark:
                 ParkSetOpen(!park_is_open());
                 break;
-            case CheatType::CHEAT_HAVEFUN:
+            case CheatType::HaveFun:
                 gScenarioObjectiveType = OBJECTIVE_HAVE_FUN;
                 break;
-            case CheatType::CHEAT_SETFORCEDPARKRATING:
+            case CheatType::SetForcedParkRating:
                 set_forced_park_rating(_param1);
                 break;
-            case CheatType::CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES:
+            case CheatType::AllowArbitraryRideTypeChanges:
                 gCheatsAllowArbitraryRideTypeChanges = _param1 != 0;
                 window_invalidate_by_class(WC_RIDE);
                 break;
-            case CheatType::CHEAT_OWNALLLAND:
+            case CheatType::OwnAllLand:
                 OwnAllLand();
                 break;
-            case CheatType::CHEAT_DISABLERIDEVALUEAGING:
+            case CheatType::DisableRideValueAging:
                 gCheatsDisableRideValueAging = _param1 != 0;
                 break;
-            case CheatType::CHEAT_IGNORERESEARCHSTATUS:
+            case CheatType::IgnoreResearchStatus:
                 gCheatsIgnoreResearchStatus = _param1 != 0;
                 break;
-            case CheatType::CHEAT_ENABLEALLDRAWABLETRACKPIECES:
+            case CheatType::EnableAllDrawableTrackPieces:
                 gCheatsEnableAllDrawableTrackPieces = _param1 != 0;
                 break;
-            default: {
+            default:
+            {
                 log_error("Unabled cheat: %d", _cheatType.id);
                 MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }
@@ -233,6 +248,106 @@ public:
     }
 
 private:
+    ParametersRange GetParameterRange(CheatType cheatType) const
+    {
+        switch (static_cast<CheatType>(_cheatType.id))
+        {
+            case CheatType::SandboxMode:
+                [[fallthrough]];
+            case CheatType::DisableClearanceChecks:
+                [[fallthrough]];
+            case CheatType::DisableSupportLimits:
+                [[fallthrough]];
+            case CheatType::ShowAllOperatingModes:
+                [[fallthrough]];
+            case CheatType::ShowVehiclesFromOtherTrackTypes:
+                [[fallthrough]];
+            case CheatType::FastLiftHill:
+                [[fallthrough]];
+            case CheatType::DisableBrakesFailure:
+                [[fallthrough]];
+            case CheatType::DisableAllBreakdowns:
+                [[fallthrough]];
+            case CheatType::DisableTrainLengthLimit:
+                [[fallthrough]];
+            case CheatType::EnableChainLiftOnAllTrack:
+                [[fallthrough]];
+            case CheatType::BuildInPauseMode:
+                [[fallthrough]];
+            case CheatType::IgnoreRideIntensity:
+                [[fallthrough]];
+            case CheatType::DisableVandalism:
+                [[fallthrough]];
+            case CheatType::DisableLittering:
+                [[fallthrough]];
+            case CheatType::NoMoney:
+                [[fallthrough]];
+            case CheatType::DisablePlantAging:
+                [[fallthrough]];
+            case CheatType::FreezeWeather:
+                [[fallthrough]];
+            case CheatType::NeverEndingMarketing:
+                [[fallthrough]];
+            case CheatType::AllowArbitraryRideTypeChanges:
+                [[fallthrough]];
+            case CheatType::DisableRideValueAging:
+                [[fallthrough]];
+            case CheatType::IgnoreResearchStatus:
+                [[fallthrough]];
+            case CheatType::EnableAllDrawableTrackPieces:
+                [[fallthrough]];
+            case CheatType::OpenClosePark:
+                return { { 0, 1 }, { 0, 0 } };
+            case CheatType::AddMoney:
+                [[fallthrough]];
+            case CheatType::SetMoney:
+                return { { std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max() }, { 0, 0 } };
+            case CheatType::SetGuestParameter:
+                switch (_param1)
+                {
+                    case GUEST_PARAMETER_HAPPINESS:
+                        return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
+                                 { 0, PEEP_MAX_HAPPINESS } };
+                    case GUEST_PARAMETER_ENERGY:
+                        return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
+                                 { PEEP_MIN_ENERGY, PEEP_MAX_ENERGY } };
+                    case GUEST_PARAMETER_HUNGER:
+                        return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
+                                 { 0, PEEP_MAX_HUNGER } };
+                    case GUEST_PARAMETER_THIRST:
+                        return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
+                                 { 0, PEEP_MAX_THIRST } };
+                    case GUEST_PARAMETER_NAUSEA:
+                        return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
+                                 { 0, PEEP_MAX_NAUSEA } };
+                    case GUEST_PARAMETER_NAUSEA_TOLERANCE:
+                        return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
+                                 { PEEP_NAUSEA_TOLERANCE_NONE, PEEP_NAUSEA_TOLERANCE_HIGH } };
+                    case GUEST_PARAMETER_BATHROOM:
+                        return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
+                                 { 0, PEEP_MAX_BATHROOM } };
+                    case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
+                        return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, 255 } };
+                    default:
+                        return { { 0, 0 }, { 0, 0 } };
+                }
+            case CheatType::GenerateGuests:
+                return { { 1, 10000 }, { 0, 0 } };
+            case CheatType::GiveAllGuests:
+                return { { OBJECT_MONEY, OBJECT_UMBRELLA }, { 0, 0 } };
+            case CheatType::SetGrassLength:
+                return { { 0, 7 }, { 0, 0 } };
+            case CheatType::SetStaffSpeed:
+                return { { 0, 255 }, { 0, 0 } };
+            case CheatType::ForceWeather:
+                return { { 0, 5 }, { 0, 0 } };
+            case CheatType::SetForcedParkRating:
+                return { { 0, 999 }, { 0, 0 } };
+            default:
+                return { { 0, 0 }, { 0, 0 } };
+        }
+    }
+
     void SetGrassLength(int32_t length) const
     {
         int32_t x, y;

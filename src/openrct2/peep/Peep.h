@@ -35,6 +35,10 @@
 #define PEEP_MIN_ENERGY 32
 #define PEEP_MAX_ENERGY 128
 #define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
+#define PEEP_MAX_HUNGER 255
+#define PEEP_MAX_BATHROOM 255
+#define PEEP_MAX_NAUSEA 255
+#define PEEP_MAX_THIRST 255
 
 struct TileElement;
 struct Ride;

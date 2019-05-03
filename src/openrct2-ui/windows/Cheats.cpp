@@ -623,12 +623,6 @@ rct_window* window_cheats_open()
     return window;
 }
 
-static void SetCheat(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0)
-{
-    auto setCheatAction = SetCheatAction(cheatType, param1, param2);
-    GameActions::Execute(&setCheatAction);
-}
-
 static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget* widget)
 {
     switch (widgetIndex)
@@ -644,16 +638,16 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             widget_invalidate_by_class(WC_CHEATS, WIDX_MONEY_SPINNER);
             break;
         case WIDX_ADD_MONEY:
-            SetCheat(CheatType::CHEAT_ADDMONEY, _moneySpinnerValue);
+            CheatsSet(CheatType::AddMoney, _moneySpinnerValue);
             break;
         case WIDX_YEAR_UP:
             _yearSpinnerValue++;
-            _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, 8192);
+            _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, MAX_YEAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_YEAR_DOWN:
             _yearSpinnerValue--;
-            _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, 8192);
+            _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, MAX_YEAR);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_MONTH_UP:
@@ -709,7 +703,7 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
             widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
             if (get_forced_park_rating() >= 0)
             {
-                auto setCheatAction = SetCheatAction(CheatType::CHEAT_SETFORCEDPARKRATING, _parkRatingSpinnerValue);
+                auto setCheatAction = SetCheatAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                 GameActions::Execute(&setCheatAction);
             }
             break;
@@ -718,7 +712,7 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
             widget_invalidate_by_class(WC_CHEATS, WIDX_PARK_RATING_SPINNER);
             if (get_forced_park_rating() >= 0)
             {
-                SetCheat(CheatType::CHEAT_SETFORCEDPARKRATING, _parkRatingSpinnerValue);
+                CheatsSet(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
             }
             break;
         case WIDX_WEATHER_DROPDOWN_BUTTON:
@@ -769,7 +763,7 @@ static void window_cheats_misc_dropdown([[maybe_unused]] rct_window* w, rct_widg
     }
     else if (widgetIndex == WIDX_WEATHER_DROPDOWN_BUTTON)
     {
-        SetCheat(CheatType::CHEAT_FORCEWEATHER, dropdownIndex);
+        CheatsSet(CheatType::ForceWeather, dropdownIndex);
     }
     else if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
     {
@@ -783,7 +777,7 @@ static void window_cheats_misc_dropdown([[maybe_unused]] rct_window* w, rct_widg
                 speed = CHEATS_STAFF_NORMAL_SPEED;
         }
 
-        SetCheat(CheatType::CHEAT_SETSTAFFSPEED, speed);
+        CheatsSet(CheatType::SetStaffSpeed, speed);
         _selectedStaffSpeed = dropdownIndex;
     }
 }
@@ -802,7 +796,7 @@ static void window_cheats_money_mouseup(rct_window* w, rct_widgetindex widgetInd
             window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_NO_MONEY:
-            SetCheat(CheatType::CHEAT_NOMONEY, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1);
+            CheatsSet(CheatType::NoMoney, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1);
             break;
         case WIDX_MONEY_SPINNER:
             money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
@@ -810,10 +804,10 @@ static void window_cheats_money_mouseup(rct_window* w, rct_widgetindex widgetInd
                 w, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, _moneySpinnerText, MONEY_STRING_MAXLENGTH);
             break;
         case WIDX_SET_MONEY:
-            SetCheat(CheatType::CHEAT_SETMONEY, _moneySpinnerValue);
+            CheatsSet(CheatType::SetMoney, _moneySpinnerValue);
             break;
         case WIDX_CLEAR_LOAN:
-            SetCheat(CheatType::CHEAT_CLEARLOAN, CHEATS_MONEY_DEFAULT);
+            CheatsSet(CheatType::ClearLoan, CHEATS_MONEY_DEFAULT);
             break;
     }
 }
@@ -832,82 +826,82 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
             window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_GUEST_HAPPINESS_MAX:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_HAPPINESS, PEEP_MAX_HAPPINESS);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HAPPINESS, PEEP_MAX_HAPPINESS);
             break;
         case WIDX_GUEST_HAPPINESS_MIN:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_HAPPINESS, 0);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HAPPINESS, 0);
             break;
         case WIDX_GUEST_ENERGY_MAX:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_ENERGY, PEEP_MAX_ENERGY);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_ENERGY, PEEP_MAX_ENERGY);
             break;
         case WIDX_GUEST_ENERGY_MIN:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_ENERGY, PEEP_MIN_ENERGY);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_ENERGY, PEEP_MIN_ENERGY);
             break;
         case WIDX_GUEST_HUNGER_MAX:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_HUNGER, 0);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HUNGER, 0);
             break;
         case WIDX_GUEST_HUNGER_MIN:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_HUNGER, 255);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_HUNGER, PEEP_MAX_HUNGER);
             break;
         case WIDX_GUEST_THIRST_MAX:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_THIRST, 0);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_THIRST, 0);
             break;
         case WIDX_GUEST_THIRST_MIN:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_THIRST, 255);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_THIRST, PEEP_MAX_THIRST);
             break;
         case WIDX_GUEST_NAUSEA_MAX:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_NAUSEA, 255);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, PEEP_MAX_NAUSEA);
             break;
         case WIDX_GUEST_NAUSEA_MIN:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_NAUSEA, 0);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, 0);
             break;
         case WIDX_GUEST_NAUSEA_TOLERANCE_MAX:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_HIGH);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_HIGH);
             break;
         case WIDX_GUEST_NAUSEA_TOLERANCE_MIN:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_NONE);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_NONE);
             break;
         case WIDX_GUEST_BATHROOM_MAX:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_BATHROOM, 255);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_BATHROOM, PEEP_MAX_BATHROOM);
             break;
         case WIDX_GUEST_BATHROOM_MIN:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_BATHROOM, 0);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_BATHROOM, 0);
             break;
         case WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY, 1);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY, 1);
             break;
         case WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15:
-            SetCheat(CheatType::CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY, 0);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY, 0);
             break;
         case WIDX_TRAM_GUESTS:
-            SetCheat(CheatType::CHEAT_GENERATEGUESTS, CHEATS_TRAM_INCREMENT);
+            CheatsSet(CheatType::GenerateGuests, CHEATS_TRAM_INCREMENT);
             break;
         case WIDX_REMOVE_ALL_GUESTS:
-            SetCheat(CheatType::CHEAT_REMOVEALLGUESTS);
+            CheatsSet(CheatType::RemoveAllGuests);
             break;
         case WIDX_EXPLODE_GUESTS:
-            SetCheat(CheatType::CHEAT_EXPLODEGUESTS);
+            CheatsSet(CheatType::ExplodeGuests);
             break;
         case WIDX_GIVE_GUESTS_MONEY:
-            SetCheat(CheatType::CHEAT_GIVEALLGUESTS, OBJECT_MONEY);
+            CheatsSet(CheatType::GiveAllGuests, OBJECT_MONEY);
             break;
         case WIDX_GIVE_GUESTS_PARK_MAPS:
-            SetCheat(CheatType::CHEAT_GIVEALLGUESTS, OBJECT_PARK_MAP);
+            CheatsSet(CheatType::GiveAllGuests, OBJECT_PARK_MAP);
             break;
         case WIDX_GIVE_GUESTS_BALLOONS:
-            SetCheat(CheatType::CHEAT_GIVEALLGUESTS, OBJECT_BALLOON);
+            CheatsSet(CheatType::GiveAllGuests, OBJECT_BALLOON);
             break;
         case WIDX_GIVE_GUESTS_UMBRELLAS:
-            SetCheat(CheatType::CHEAT_GIVEALLGUESTS, OBJECT_UMBRELLA);
+            CheatsSet(CheatType::GiveAllGuests, OBJECT_UMBRELLA);
             break;
         case WIDX_GUEST_IGNORE_RIDE_INTENSITY:
-            SetCheat(CheatType::CHEAT_IGNORERIDEINTENSITY, !gCheatsIgnoreRideIntensity);
+            CheatsSet(CheatType::IgnoreRideIntensity, !gCheatsIgnoreRideIntensity);
             break;
         case WIDX_DISABLE_VANDALISM:
-            SetCheat(CheatType::CHEAT_DISABLEVANDALISM, !gCheatsDisableVandalism);
+            CheatsSet(CheatType::DisableVandalism, !gCheatsDisableVandalism);
             break;
         case WIDX_DISABLE_LITTERING:
-            SetCheat(CheatType::CHEAT_DISABLELITTERING, !gCheatsDisableLittering);
+            CheatsSet(CheatType::DisableLittering, !gCheatsDisableLittering);
             break;
     }
 }
@@ -926,40 +920,40 @@ static void window_cheats_misc_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_FREEZE_WEATHER:
-            SetCheat(CheatType::CHEAT_FREEZEWEATHER, !gCheatsFreezeWeather);
+            CheatsSet(CheatType::FreezeWeather, !gCheatsFreezeWeather);
             break;
         case WIDX_OPEN_CLOSE_PARK:
-            SetCheat(CheatType::CHEAT_OPENCLOSEPARK);
+            CheatsSet(CheatType::OpenClosePark);
             break;
         case WIDX_CLEAR_GRASS:
-            SetCheat(CheatType::CHEAT_SETGRASSLENGTH, GRASS_LENGTH_CLEAR_0);
+            CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_CLEAR_0);
             break;
         case WIDX_MOWED_GRASS:
-            SetCheat(CheatType::CHEAT_SETGRASSLENGTH, GRASS_LENGTH_MOWED);
+            CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_MOWED);
             break;
         case WIDX_WATER_PLANTS:
-            SetCheat(CheatType::CHEAT_WATERPLANTS);
+            CheatsSet(CheatType::WaterPlants);
             break;
         case WIDX_FIX_VANDALISM:
-            SetCheat(CheatType::CHEAT_FIXVANDALISM);
+            CheatsSet(CheatType::FixVandalism);
             break;
         case WIDX_REMOVE_LITTER:
-            SetCheat(CheatType::CHEAT_REMOVELITTER);
+            CheatsSet(CheatType::RemoveLitter);
             break;
         case WIDX_DISABLE_PLANT_AGING:
-            SetCheat(CheatType::CHEAT_DISABLEPLANTAGING, !gCheatsDisablePlantAging);
+            CheatsSet(CheatType::DisablePlantAging, !gCheatsDisablePlantAging);
             break;
         case WIDX_WIN_SCENARIO:
-            SetCheat(CheatType::CHEAT_WINSCENARIO);
+            CheatsSet(CheatType::WinScenario);
             break;
         case WIDX_HAVE_FUN:
-            SetCheat(CheatType::CHEAT_HAVEFUN);
+            CheatsSet(CheatType::HaveFun);
             break;
         case WIDX_OWN_ALL_LAND:
-            SetCheat(CheatType::CHEAT_OWNALLLAND);
+            CheatsSet(CheatType::OwnAllLand);
             break;
         case WIDX_NEVERENDING_MARKETING:
-            SetCheat(CheatType::CHEAT_NEVERENDINGMARKETING, !gCheatsNeverendingMarketing);
+            CheatsSet(CheatType::NeverEndingMarketing, !gCheatsNeverendingMarketing);
             break;
         case WIDX_PARK_PARAMETERS:
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
@@ -967,11 +961,11 @@ static void window_cheats_misc_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_FORCE_PARK_RATING:
             if (get_forced_park_rating() >= 0)
             {
-                SetCheat(CheatType::CHEAT_SETFORCEDPARKRATING, -1);
+                CheatsSet(CheatType::SetForcedParkRating, -1);
             }
             else
             {
-                SetCheat(CheatType::CHEAT_SETFORCEDPARKRATING, _parkRatingSpinnerValue);
+                CheatsSet(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
             }
             break;
     }
@@ -991,32 +985,32 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_RENEW_RIDES:
-            SetCheat(CheatType::CHEAT_RENEWRIDES);
+            CheatsSet(CheatType::RenewRides);
             break;
         case WIDX_MAKE_DESTRUCTIBLE:
-            SetCheat(CheatType::CHEAT_MAKEDESTRUCTIBLE);
+            CheatsSet(CheatType::MakeDestructible);
             break;
         case WIDX_FIX_ALL:
-            SetCheat(CheatType::CHEAT_FIXRIDES);
+            CheatsSet(CheatType::FixRides);
             break;
         case WIDX_FAST_LIFT_HILL:
-            SetCheat(CheatType::CHEAT_FASTLIFTHILL, !gCheatsFastLiftHill);
+            CheatsSet(CheatType::FastLiftHill, !gCheatsFastLiftHill);
 
             break;
         case WIDX_DISABLE_BRAKES_FAILURE:
-            SetCheat(CheatType::CHEAT_DISABLEBRAKESFAILURE, !gCheatsDisableBrakesFailure);
+            CheatsSet(CheatType::DisableBrakesFailure, !gCheatsDisableBrakesFailure);
             break;
         case WIDX_DISABLE_ALL_BREAKDOWNS:
-            SetCheat(CheatType::CHEAT_DISABLEALLBREAKDOWNS, !gCheatsDisableAllBreakdowns);
+            CheatsSet(CheatType::DisableAllBreakdowns, !gCheatsDisableAllBreakdowns);
             break;
         case WIDX_BUILD_IN_PAUSE_MODE:
-            SetCheat(CheatType::CHEAT_BUILDINPAUSEMODE, !gCheatsBuildInPauseMode);
+            CheatsSet(CheatType::BuildInPauseMode, !gCheatsBuildInPauseMode);
             break;
         case WIDX_RESET_CRASH_STATUS:
-            SetCheat(CheatType::CHEAT_RESETCRASHSTATUS);
+            CheatsSet(CheatType::ResetCrashStatus);
             break;
         case WIDX_10_MINUTE_INSPECTIONS:
-            SetCheat(CheatType::CHEAT_10MINUTEINSPECTIONS);
+            CheatsSet(CheatType::TenMinuteInspections);
             break;
         case WIDX_SHOW_ALL_OPERATING_MODES:
         {
@@ -1024,7 +1018,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
             }
-            SetCheat(CheatType::CHEAT_SHOWALLOPERATINGMODES, !gCheatsShowAllOperatingModes);
+            CheatsSet(CheatType::ShowAllOperatingModes, !gCheatsShowAllOperatingModes);
         }
         break;
         case WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES:
@@ -1033,7 +1027,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
             }
-            SetCheat(CheatType::CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES, !gCheatsShowVehiclesFromOtherTrackTypes);
+            CheatsSet(CheatType::ShowVehiclesFromOtherTrackTypes, !gCheatsShowVehiclesFromOtherTrackTypes);
         }
         break;
         case WIDX_DISABLE_TRAIN_LENGTH_LIMITS:
@@ -1042,11 +1036,11 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
             }
-            SetCheat(CheatType::CHEAT_DISABLETRAINLENGTHLIMIT, !gCheatsDisableTrainLengthLimit);
+            CheatsSet(CheatType::DisableTrainLengthLimit, !gCheatsDisableTrainLengthLimit);
         }
         break;
         case WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK:
-            SetCheat(CheatType::CHEAT_ENABLECHAINLIFTONALLTRACK, !gCheatsEnableChainLiftOnAllTrack);
+            CheatsSet(CheatType::EnableChainLiftOnAllTrack, !gCheatsEnableChainLiftOnAllTrack);
             break;
         case WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES:
         {
@@ -1054,17 +1048,17 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
             }
-            SetCheat(CheatType::CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES, !gCheatsAllowArbitraryRideTypeChanges);
+            CheatsSet(CheatType::AllowArbitraryRideTypeChanges, !gCheatsAllowArbitraryRideTypeChanges);
         }
         break;
         case WIDX_DISABLE_RIDE_VALUE_AGING:
-            SetCheat(CheatType::CHEAT_DISABLERIDEVALUEAGING, !gCheatsDisableRideValueAging);
+            CheatsSet(CheatType::DisableRideValueAging, !gCheatsDisableRideValueAging);
             break;
         case WIDX_IGNORE_RESEARCH_STATUS:
-            SetCheat(CheatType::CHEAT_IGNORERESEARCHSTATUS, !gCheatsIgnoreResearchStatus);
+            CheatsSet(CheatType::IgnoreResearchStatus, !gCheatsIgnoreResearchStatus);
             break;
         case WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES:
-            SetCheat(CheatType::CHEAT_ENABLEALLDRAWABLETRACKPIECES, !gCheatsEnableAllDrawableTrackPieces);
+            CheatsSet(CheatType::EnableAllDrawableTrackPieces, !gCheatsEnableAllDrawableTrackPieces);
             break;
     }
 }

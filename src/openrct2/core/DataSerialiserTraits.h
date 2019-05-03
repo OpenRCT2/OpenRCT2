@@ -412,7 +412,7 @@ template<> struct DataSerializerTraits<NetworkCheatType_t>
     }
     static void log(IStream* stream, const NetworkCheatType_t& val)
     {
-        const char* cheatName = cheats_get_cheat_string(static_cast<CheatType>(val.id));
+        const char* cheatName = CheatsGetName(static_cast<CheatType>(val.id));
         stream->Write(cheatName, strlen(cheatName));
     }
 };

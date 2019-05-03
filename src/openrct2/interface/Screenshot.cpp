@@ -608,32 +608,27 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
 
         if (options->mowed_grass)
         {
-            auto setCheatAction = SetCheatAction(CheatType::CHEAT_SETGRASSLENGTH, GRASS_LENGTH_MOWED);
-            setCheatAction.Execute();
+            CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_MOWED);
         }
 
         if (options->clear_grass || options->tidy_up_park)
         {
-            auto setCheatAction = SetCheatAction(CheatType::CHEAT_SETGRASSLENGTH, GRASS_LENGTH_CLEAR_0);
-            setCheatAction.Execute();
+            CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_CLEAR_0);
         }
 
         if (options->water_plants || options->tidy_up_park)
         {
-            auto setCheatAction = SetCheatAction(CheatType::CHEAT_WATERPLANTS);
-            setCheatAction.Execute();
+            CheatsSet(CheatType::WaterPlants);
         }
 
         if (options->fix_vandalism || options->tidy_up_park)
         {
-            auto setCheatAction = SetCheatAction(CheatType::CHEAT_FIXVANDALISM);
-            setCheatAction.Execute();
+            CheatsSet(CheatType::FixVandalism);
         }
 
         if (options->remove_litter || options->tidy_up_park)
         {
-            auto setCheatAction = SetCheatAction(CheatType::CHEAT_REMOVELITTER);
-            setCheatAction.Execute();
+            CheatsSet(CheatType::RemoveLitter);
         }
 
         viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);

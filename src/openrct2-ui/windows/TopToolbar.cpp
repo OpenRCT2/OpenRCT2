@@ -3381,23 +3381,14 @@ static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
-        {
-            auto setCheatAction = SetCheatAction(CheatType::CHEAT_SANDBOXMODE, !gCheatsSandboxMode);
-            GameActions::Execute(&setCheatAction);
-        }
-        break;
+            CheatsSet(CheatType::SandboxMode, !gCheatsSandboxMode);
+            break;
         case DDIDX_DISABLE_CLEARANCE_CHECKS:
-        {
-            auto setCheatAction = SetCheatAction(CheatType::CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks);
-            GameActions::Execute(&setCheatAction);
-        }
-        break;
+            CheatsSet(CheatType::DisableClearanceChecks, !gCheatsDisableClearanceChecks);
+            break;
         case DDIDX_DISABLE_SUPPORT_LIMITS:
-        {
-            auto setCheatAction = SetCheatAction(CheatType::CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits);
-            GameActions::Execute(&setCheatAction);
-        }
-        break;
+            CheatsSet(CheatType::DisableSupportLimits, !gCheatsDisableSupportLimits);
+            break;
     }
 }
 

@@ -618,7 +618,7 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
     ServerProviderEmail = gConfigNetwork.provider_email;
     ServerProviderWebsite = gConfigNetwork.provider_website;
 
-    cheats_reset();
+    CheatsReset();
     LoadGroups();
     BeginChatLog();
     BeginServerLog();
