@@ -714,6 +714,7 @@ public: // Peep
     void Pickup();
     void PickupAbort(int32_t old_x);
     bool Place(TileCoordsXYZ location, bool apply);
+    static Peep* Generate(int32_t x, int32_t y, int32_t z);
     void RemoveFromQueue();
     void RemoveFromRide();
 
@@ -945,7 +946,6 @@ void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-Peep* peep_generate(int32_t x, int32_t y, int32_t z);
 void get_arguments_from_action(Peep* peep, uint32_t* argument_1, uint32_t* argument_2);
 void peep_thought_set_format_args(rct_peep_thought* thought);
 int32_t get_peep_face_sprite_small(Peep* peep);

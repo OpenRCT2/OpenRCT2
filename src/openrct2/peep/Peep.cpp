@@ -1708,7 +1708,7 @@ static constexpr const uint8_t tshirt_colours[] = {
  *
  *  rct2: 0x0069A05D
  */
-Peep* peep_generate(int32_t x, int32_t y, int32_t z)
+Peep* Peep::Generate(int32_t x, int32_t y, int32_t z)
 {
     if (gSpriteListCount[SPRITE_LIST_NULL] < 400)
         return nullptr;
