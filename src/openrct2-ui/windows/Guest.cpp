@@ -604,6 +604,31 @@ rct_window* window_guest_open(Peep* peep)
     return window;
 }
 
+static void window_guest_common_invalidate(rct_window* w)
+{
+    if (window_guest_page_widgets[w->page] != w->widgets)
+    {
+        w->widgets = window_guest_page_widgets[w->page];
+        window_init_scroll_widgets(w);
+    }
+
+    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
+
+    auto peep = GET_PEEP(w->number);
+    set_format_arg(0, rct_string_id, peep->name_string_idx);
+    set_format_arg(2, uint32_t, peep->id);
+
+    w->widgets[WIDX_BACKGROUND].right = w->width - 1;
+    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
+    w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+    w->widgets[WIDX_TITLE].right = w->width - 2;
+    w->widgets[WIDX_CLOSE].left = w->width - 13;
+    w->widgets[WIDX_CLOSE].right = w->width - 3;
+
+    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
+}
+
 /**
  * Disables the finance tab when no money.
  * Disables peep pickup when in certain no pickup states.
@@ -1134,37 +1159,14 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_guest_overview_invalidate(rct_window* w)
 {
-    if (window_guest_page_widgets[w->page] != w->widgets)
-    {
-        w->widgets = window_guest_page_widgets[w->page];
-        window_init_scroll_widgets(w);
-    }
+    window_guest_common_invalidate(w);
 
-    w->pressed_widgets &= ~(
-        (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_TAB_5)
-        | (1ULL << WIDX_TAB_6) | (1ULL << WIDX_TAB_7));
-    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
-
-    Peep* peep = GET_PEEP(w->number);
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
-
+    auto peep = GET_PEEP(w->number);
     w->pressed_widgets &= ~(1 << WIDX_TRACK);
     if (peep->peep_flags & PEEP_FLAGS_TRACKING)
     {
         w->pressed_widgets |= (1 << WIDX_TRACK);
     }
-
-    window_guest_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_guest_overview_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_overview_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    window_guest_overview_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_overview_widgets[WIDX_TITLE].right = w->width - 2;
-
-    window_guest_overview_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_guest_overview_widgets[WIDX_CLOSE].right = w->width - 3;
 
     window_guest_overview_widgets[WIDX_VIEWPORT].right = w->width - 26;
     window_guest_overview_widgets[WIDX_VIEWPORT].bottom = w->height - 14;
@@ -1184,8 +1186,6 @@ void window_guest_overview_invalidate(rct_window* w)
     window_guest_overview_widgets[WIDX_RENAME].left = w->width - 25;
     window_guest_overview_widgets[WIDX_LOCATE].left = w->width - 25;
     window_guest_overview_widgets[WIDX_TRACK].left = w->width - 25;
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 }
 
 /**
@@ -1391,30 +1391,7 @@ void window_guest_stats_update(rct_window* w)
  */
 void window_guest_stats_invalidate(rct_window* w)
 {
-    if (w->widgets != window_guest_page_widgets[w->page])
-    {
-        w->widgets = window_guest_page_widgets[w->page];
-        window_init_scroll_widgets(w);
-    }
-
-    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
-
-    Peep* peep = GET_PEEP(w->number);
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
-
-    window_guest_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_guest_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_stats_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    window_guest_stats_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_stats_widgets[WIDX_TITLE].right = w->width - 2;
-
-    window_guest_stats_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_guest_stats_widgets[WIDX_CLOSE].right = w->width - 3;
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
+    window_guest_common_invalidate(w);
 }
 
 /**
@@ -1748,33 +1725,10 @@ void window_guest_rides_scroll_mouse_over(rct_window* w, int32_t scrollIndex, in
  */
 void window_guest_rides_invalidate(rct_window* w)
 {
-    if (window_guest_page_widgets[w->page] != w->widgets)
-    {
-        w->widgets = window_guest_page_widgets[w->page];
-        window_init_scroll_widgets(w);
-    }
-
-    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
-
-    Peep* peep = GET_PEEP(w->number);
-    set_format_arg(0, uint16_t, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
-
-    window_guest_rides_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_guest_rides_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_rides_widgets[WIDX_TITLE].right = w->width - 2;
-
-    window_guest_rides_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_guest_rides_widgets[WIDX_CLOSE].right = w->width - 3;
+    window_guest_common_invalidate(w);
 
     window_guest_rides_widgets[WIDX_RIDE_SCROLL].right = w->width - 4;
     window_guest_rides_widgets[WIDX_RIDE_SCROLL].bottom = w->height - 15;
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 }
 
 /**
@@ -1882,31 +1836,7 @@ void window_guest_finance_update(rct_window* w)
  */
 void window_guest_finance_invalidate(rct_window* w)
 {
-    if (window_guest_page_widgets[w->page] != w->widgets)
-    {
-        w->widgets = window_guest_page_widgets[w->page];
-        window_init_scroll_widgets(w);
-    }
-
-    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
-
-    Peep* peep = GET_PEEP(w->number);
-
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
-
-    window_guest_finance_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_guest_finance_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_finance_widgets[WIDX_TITLE].right = w->width - 2;
-
-    window_guest_finance_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_guest_finance_widgets[WIDX_CLOSE].right = w->width - 3;
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
+    window_guest_common_invalidate(w);
 }
 
 /**
@@ -2034,31 +1964,7 @@ void window_guest_thoughts_update(rct_window* w)
  */
 void window_guest_thoughts_invalidate(rct_window* w)
 {
-    if (window_guest_page_widgets[w->page] != w->widgets)
-    {
-        w->widgets = window_guest_page_widgets[w->page];
-        window_init_scroll_widgets(w);
-    }
-
-    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
-
-    Peep* peep = GET_PEEP(w->number);
-
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
-
-    window_guest_thoughts_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_guest_thoughts_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_thoughts_widgets[WIDX_TITLE].right = w->width - 2;
-
-    window_guest_thoughts_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_guest_thoughts_widgets[WIDX_CLOSE].right = w->width - 3;
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
+    window_guest_common_invalidate(w);
 }
 
 /**
@@ -2139,31 +2045,7 @@ void window_guest_inventory_update(rct_window* w)
  */
 void window_guest_inventory_invalidate(rct_window* w)
 {
-    if (window_guest_page_widgets[w->page] != w->widgets)
-    {
-        w->widgets = window_guest_page_widgets[w->page];
-        window_init_scroll_widgets(w);
-    }
-
-    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
-
-    Peep* peep = GET_PEEP(w->number);
-
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
-
-    window_guest_inventory_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_guest_inventory_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_inventory_widgets[WIDX_TITLE].right = w->width - 2;
-
-    window_guest_inventory_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_guest_inventory_widgets[WIDX_CLOSE].right = w->width - 3;
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
+    window_guest_common_invalidate(w);
 }
 
 static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item)
@@ -2296,31 +2178,7 @@ void window_guest_debug_resize(rct_window* w)
 
 void window_guest_debug_invalidate(rct_window* w)
 {
-    if (window_guest_page_widgets[w->page] != w->widgets)
-    {
-        w->widgets = window_guest_page_widgets[w->page];
-        window_init_scroll_widgets(w);
-    }
-
-    w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
-
-    auto peep = GET_PEEP(w->number);
-
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
-
-    window_guest_debug_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_guest_debug_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-
-    window_guest_debug_widgets[WIDX_TITLE].right = w->width - 2;
-
-    window_guest_debug_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_guest_debug_widgets[WIDX_CLOSE].right = w->width - 3;
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
+    window_guest_common_invalidate(w);
 }
 
 static void draw_debug_label(rct_drawpixelinfo* dpi, int32_t x, int32_t y, const char* label, const char* value)
