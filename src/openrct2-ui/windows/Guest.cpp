@@ -68,117 +68,60 @@ validate_global_widx(WC_PEEP, WIDX_PICKUP);
 
 static constexpr int32_t TabWidth = 30;
 
+#define MAIN_GUEST_WIDGETS \
+    { WWT_FRAME,    0, 0,   191,            0,   156, 0xFFFFFFFF,                   STR_NONE },                         /* Panel / Background */    \
+    { WWT_CAPTION,  0, 1,   190,            1,   14,  STR_STRINGID,                 STR_WINDOW_TITLE_TIP },             /* Title */                 \
+    { WWT_CLOSEBOX, 0, 179, 189,            2,   13,  STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP },             /* Close x button */        \
+    { WWT_RESIZE,   1, 0,   191,            43,  156, 0xFFFFFFFF,                   STR_NONE },                         /* Resize */                \
+    { WWT_TAB,      1, 3,   TabWidth + 3,   17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_VIEW_TIP },          /* Tab 1 */                 \
+    { WWT_TAB,      1, 34,  TabWidth + 34,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_NEEDS_TIP },         /* Tab 2 */                 \
+    { WWT_TAB,      1, 65,  TabWidth + 65,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_VISITED_RIDES_TIP }, /* Tab 3 */                 \
+    { WWT_TAB,      1, 96,  TabWidth + 96,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_FINANCE_TIP },       /* Tab 4 */                 \
+    { WWT_TAB,      1, 127, TabWidth + 127, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_THOUGHTS_TIP },      /* Tab 5 */                 \
+    { WWT_TAB,      1, 158, TabWidth + 158, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_ITEMS_TIP },         /* Tab 6 */                 \
+    { WWT_TAB,      1, 189, TabWidth + 189, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_DEBUG_TIP }                     /* Tab 7 */
+
 static rct_widget window_guest_overview_widgets[] = {
-    {WWT_FRAME,    0, 0,   191, 0,   156, 0xFFFFFFFF, STR_NONE},                            // Panel / Background
-    {WWT_CAPTION,  0, 1,   190, 1,   14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},      // Title
-    {WWT_CLOSEBOX, 0, 179, 189, 2,   13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},      // Close x button
-    {WWT_RESIZE,   1, 0,   191, 43,  156, 0xFFFFFFFF, STR_NONE},                            // Resize
-    {WWT_TAB,      1, 3,   TabWidth + 3,   17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},           // Tab 1
-    {WWT_TAB,      1, 34,  TabWidth + 34,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},          // Tab 2
-    {WWT_TAB,      1, 65,  TabWidth + 65,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},  // Tab 3
-    {WWT_TAB,      1, 96,  TabWidth + 96,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},        // Tab 4
-    {WWT_TAB,      1, 127, TabWidth + 127, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},       // Tab 5
-    {WWT_TAB,      1, 158, TabWidth + 158, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},          // Tab 6
-    {WWT_TAB,      1, 189, TabWidth + 189, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_DEBUG_TIP},                     // Tab 7
-    {WWT_LABEL_CENTRED,    1, 3,   166, 45,  56,  0xFFFFFFFF, STR_NONE},                            // Label Thought marquee
-    {WWT_VIEWPORT,         1, 3,   166, 57,  143, 0xFFFFFFFF, STR_NONE},                            // Viewport
-    {WWT_LABEL_CENTRED,    1, 3,   166, 144, 154, 0xFFFFFFFF, STR_NONE},                            // Label Action
-    {WWT_FLATBTN,  1, 167, 190, 45,  68,  SPR_PICKUP_BTN,       STR_PICKUP_TIP},                    // Pickup Button
-    {WWT_FLATBTN,  1, 167, 190, 69,  92,  SPR_RENAME,           STR_NAME_GUEST_TIP},                // Rename Button
-    {WWT_FLATBTN,  1, 167, 190, 93,  116, SPR_LOCATE,           STR_LOCATE_SUBJECT_TIP},            // Locate Button
-    {WWT_FLATBTN,  1, 167, 190, 117, 140, SPR_TRACK_PEEP,       STR_TOGGLE_GUEST_TRACKING_TIP},     // Track Button
+    MAIN_GUEST_WIDGETS,
+    { WWT_LABEL_CENTRED,    1, 3,   166, 45,  56,  0xFFFFFFFF,      STR_NONE                        },  // Label Thought marquee
+    { WWT_VIEWPORT,         1, 3,   166, 57,  143, 0xFFFFFFFF,      STR_NONE                        },  // Viewport
+    { WWT_LABEL_CENTRED,    1, 3,   166, 144, 154, 0xFFFFFFFF,      STR_NONE                        },  // Label Action
+    { WWT_FLATBTN,          1, 167, 190, 45,  68,  SPR_PICKUP_BTN,  STR_PICKUP_TIP                  },  // Pickup Button
+    { WWT_FLATBTN,          1, 167, 190, 69,  92,  SPR_RENAME,      STR_NAME_GUEST_TIP              },  // Rename Button
+    { WWT_FLATBTN,          1, 167, 190, 93,  116, SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP          },  // Locate Button
+    { WWT_FLATBTN,          1, 167, 190, 117, 140, SPR_TRACK_PEEP,  STR_TOGGLE_GUEST_TRACKING_TIP   },  // Track Button
     { WIDGETS_END },
 };
 
 static rct_widget window_guest_stats_widgets[] = {
-    {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-    {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-    {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-    {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   TabWidth + 3,   17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  TabWidth + 34,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  TabWidth + 65,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  TabWidth + 96,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, TabWidth + 127, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, TabWidth + 158, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
-    {WWT_TAB,      1, 189, TabWidth + 189, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_DEBUG_TIP},
-    {WIDGETS_END},
+    MAIN_GUEST_WIDGETS,
+    { WIDGETS_END },
 };
 
 static rct_widget window_guest_rides_widgets[] = {
-    {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-    {WWT_CAPTION,  0, 1,   190, 1,  14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-    {WWT_CLOSEBOX, 0, 179, 189, 2,  13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-    {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   TabWidth + 3,   17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  TabWidth + 34,  17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  TabWidth + 65,  17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  TabWidth + 96,  17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, TabWidth + 127, 17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, TabWidth + 158, 17, 43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
-    {WWT_TAB,      1, 189, TabWidth + 189, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_DEBUG_TIP},
-    {WWT_SCROLL,   1, 3,   188, 57, 143, SCROLL_VERTICAL,  STR_NONE},
-    {WIDGETS_END},
+    MAIN_GUEST_WIDGETS,
+    { WWT_SCROLL,           1, 3,   188, 57, 143, SCROLL_VERTICAL,  STR_NONE },
+    { WIDGETS_END },
 };
 
 static rct_widget window_guest_finance_widgets[] = {
-    {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-    {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-    {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-    {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   TabWidth + 3,   17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  TabWidth + 34,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  TabWidth + 65,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  TabWidth + 96,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, TabWidth + 127, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, TabWidth + 158, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
-    {WWT_TAB,      1, 189, TabWidth + 189, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_DEBUG_TIP},
-    {WIDGETS_END},
+    MAIN_GUEST_WIDGETS,
+    { WIDGETS_END },
 };
 
 static rct_widget window_guest_thoughts_widgets[] = {
-    {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-    {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-    {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-    {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   TabWidth + 3,   17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  TabWidth + 34,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  TabWidth + 65,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  TabWidth + 96,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, TabWidth + 127, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, TabWidth + 158, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
-    {WWT_TAB,      1, 189, TabWidth + 189, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_DEBUG_TIP},
-    {WIDGETS_END},
+    MAIN_GUEST_WIDGETS,
+    { WIDGETS_END },
 };
 
 static rct_widget window_guest_inventory_widgets[] = {
-    {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-    {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-    {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-    {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   TabWidth + 3,   17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  TabWidth + 34,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  TabWidth + 65,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  TabWidth + 96,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, TabWidth + 127, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, TabWidth + 158, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
-    {WWT_TAB,      1, 189, TabWidth + 189, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_DEBUG_TIP},
-    {WIDGETS_END},
+    MAIN_GUEST_WIDGETS,
+    { WIDGETS_END },
 };
 
 static rct_widget window_guest_debug_widgets[] = {
-    {WWT_FRAME,    0, 0,   191, 0,  156, STR_NONE, STR_NONE},
-    {WWT_CAPTION,  0, 1,   190, 1,  14, STR_STRINGID,         STR_WINDOW_TITLE_TIP},
-    {WWT_CLOSEBOX, 0, 179, 189, 2,  13, STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},
-    {WWT_RESIZE,   1, 0,   191, 43, 156, STR_NONE, STR_NONE},
-    {WWT_TAB,      1, 3,   TabWidth + 3,   17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},
-    {WWT_TAB,      1, 34,  TabWidth + 34,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},
-    {WWT_TAB,      1, 65,  TabWidth + 65,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},
-    {WWT_TAB,      1, 96,  TabWidth + 96,  17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},
-    {WWT_TAB,      1, 127, TabWidth + 127, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},
-    {WWT_TAB,      1, 158, TabWidth + 158, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},
-    {WWT_TAB,      1, 189, TabWidth + 189, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB, STR_DEBUG_TIP},
-    {WIDGETS_END},
+    MAIN_GUEST_WIDGETS,
+    { WIDGETS_END },
 };
 
 // 0x981D0C
@@ -2221,14 +2164,13 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     snprintf(
-        buffer, sizeof(buffer), "%u, %u, tolerance %u", peep->destination_x, peep->destination_y,
-        peep->destination_tolerance);
+        buffer, sizeof(buffer), "%u, %u, tolerance %u", peep->destination_x, peep->destination_y, peep->destination_tolerance);
     draw_debug_label(dpi, x, y, "Dest", buffer);
     y += LIST_ROW_HEIGHT;
 
     snprintf(
-        buffer, sizeof(buffer), "%u, %u, %u dir %u", peep->pathfind_goal.x, peep->pathfind_goal.y,
-        peep->pathfind_goal.z, peep->pathfind_goal.direction);
+        buffer, sizeof(buffer), "%u, %u, %u dir %u", peep->pathfind_goal.x, peep->pathfind_goal.y, peep->pathfind_goal.z,
+        peep->pathfind_goal.direction);
     draw_debug_label(dpi, x, y, "Pathfind Goal", buffer);
     y += LIST_ROW_HEIGHT;
 
