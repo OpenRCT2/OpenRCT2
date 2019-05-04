@@ -209,7 +209,6 @@ static void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widge
 static void window_guest_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 
 static void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
-static void window_guest_unknown_05(rct_window *w);
 
 static void window_guest_stats_resize(rct_window *w);
 static void window_guest_stats_update(rct_window *w);
@@ -241,6 +240,7 @@ static void window_guest_inventory_invalidate(rct_window *w);
 static void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_guest_debug_resize(rct_window *w);
+static void window_guest_debug_update(rct_window *w);
 static void window_guest_debug_invalidate(rct_window *w);
 static void window_guest_debug_paint(rct_window *w, rct_drawpixelinfo* dpi);
 
@@ -281,7 +281,7 @@ static rct_window_event_list window_guest_stats_events = {
     window_guest_stats_resize,
     nullptr,
     nullptr,
-    window_guest_unknown_05,
+    nullptr,
     window_guest_stats_update,
     nullptr,
     nullptr,
@@ -312,7 +312,7 @@ static rct_window_event_list window_guest_rides_events = {
     window_guest_rides_resize,
     nullptr,
     nullptr,
-    window_guest_unknown_05,
+    nullptr,
     window_guest_rides_update,
     nullptr,
     nullptr,
@@ -343,7 +343,7 @@ static rct_window_event_list window_guest_finance_events = {
     window_guest_finance_resize,
     nullptr,
     nullptr,
-    window_guest_unknown_05,
+    nullptr,
     window_guest_finance_update,
     nullptr,
     nullptr,
@@ -374,7 +374,7 @@ static rct_window_event_list window_guest_thoughts_events = {
     window_guest_thoughts_resize,
     nullptr,
     nullptr,
-    window_guest_unknown_05,
+    nullptr,
     window_guest_thoughts_update,
     nullptr,
     nullptr,
@@ -405,7 +405,7 @@ static rct_window_event_list window_guest_inventory_events = {
     window_guest_inventory_resize,
     nullptr,
     nullptr,
-    window_guest_unknown_05,
+    nullptr,
     window_guest_inventory_update,
     nullptr,
     nullptr,
@@ -431,34 +431,34 @@ static rct_window_event_list window_guest_inventory_events = {
 };
 
 static rct_window_event_list window_guest_debug_events = {
-    nullptr, // void (*close)(struct rct_window*);
-    window_guest_mouse_up, // void (*mouse_up)(struct rct_window*, rct_widgetindex);
-    window_guest_debug_resize, // void (*resize)(struct rct_window*);
-    nullptr, // void (*mouse_down)(struct rct_window*, rct_widgetindex, rct_widget*);
-    nullptr, // void (*dropdown)(struct rct_window*, rct_widgetindex, int32_t);
-    window_guest_unknown_05, // void (*unknown_05)(struct rct_window*);
-    nullptr, // void (*update)(struct rct_window*);
-    nullptr, // void (*unknown_07)(struct rct_window*);
-    nullptr, // void (*unknown_08)(struct rct_window*);
-    nullptr, // void (*tool_update)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
-    nullptr, // void (*tool_down)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
-    nullptr, // void (*tool_drag)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
-    nullptr, // void (*tool_up)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
-    nullptr, // void (*tool_abort)(struct rct_window*, rct_widgetindex);
-    nullptr, // void (*unknown_0E)(struct rct_window*);
-    nullptr, // void (*get_scroll_size)(struct rct_window*, int32_t, int32_t*, int32_t*);
-    nullptr, // void (*scroll_mousedown)(struct rct_window*, int32_t, int32_t, int32_t);
-    nullptr, // void (*scroll_mousedrag)(struct rct_window*, int32_t, int32_t, int32_t);
-    nullptr, // void (*scroll_mouseover)(struct rct_window*, int32_t, int32_t, int32_t);
-    nullptr, // void (*text_input)(struct rct_window*, rct_widgetindex, char*);
-    nullptr, // void (*viewport_rotate)(struct rct_window*);
-    nullptr, // void (*unknown_15)(struct rct_window*, int32_t, int32_t);
-    nullptr, // void (*tooltip)(struct rct_window*, rct_widgetindex, rct_string_id*);
-    nullptr, // void (*cursor)(struct rct_window*, rct_widgetindex, int32_t, int32_t, int32_t*);
-    nullptr, // void (*moved)(struct rct_window*, int32_t, int32_t);
-    window_guest_debug_invalidate, // void (*invalidate)(struct rct_window*);
-    window_guest_debug_paint, // void (*paint)(struct rct_window*, rct_drawpixelinfo*);
-    nullptr  // void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int32_t);
+    nullptr,
+    window_guest_mouse_up,
+    window_guest_debug_resize,
+    nullptr,
+    nullptr,
+    nullptr,
+    window_guest_debug_update,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    window_guest_debug_invalidate,
+    window_guest_debug_paint,
+    nullptr
 };
 
 // 0x981D24
@@ -1364,15 +1364,6 @@ void window_guest_stats_resize(rct_window* w)
 }
 
 /**
- * This is a combination of 5 functions that were identical
- *  rct2: 0x6974ED, 0x00697959, 0x00697C7B, 0x00697ED2, 0x00698333
- */
-void window_guest_unknown_05(rct_window* w)
-{
-    widget_invalidate(w, WIDX_TAB_1);
-}
-
-/**
  *
  *  rct2: 0x69746A
  */
@@ -2174,6 +2165,16 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
 void window_guest_debug_resize(rct_window* w)
 {
     window_set_resize(w, 192 + TabWidth, 159, 500, 450);
+}
+
+/**
+ *
+ *  rct2: 0x00698315
+ */
+void window_guest_debug_update(rct_window* w)
+{
+    w->frame_no++;
+    window_invalidate(w);
 }
 
 void window_guest_debug_invalidate(rct_window* w)
