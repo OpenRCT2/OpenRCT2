@@ -18,6 +18,7 @@
 #include "actions/GameAction.h"
 #include "actions/RideEntranceExitPlaceAction.hpp"
 #include "actions/RideSetSetting.hpp"
+#include "actions/SetCheatAction.hpp"
 #include "actions/TrackPlaceAction.hpp"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
@@ -523,6 +524,16 @@ namespace OpenRCT2
                     uint8_t slope = (command.ebx >> 8) & 0xFF;
                     uint8_t type = (command.edx >> 8) & 0xFF;
                     result.action = std::make_unique<FootpathPlaceAction>(loc, slope, type);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_CHEAT:
+                {
+                    int32_t param1 = command.edx;
+                    int32_t param2 = command.edi;
+                    CheatType cheatType = static_cast<CheatType>(command.ecx);
+
+                    result.action = std::make_unique<SetCheatAction>(cheatType, param1, param2);
                     result.action->SetFlags(command.ebx & 0xFF);
                     break;
                 }

@@ -577,18 +577,7 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
     }
 
     char log_msg[256];
-    if (command == GAME_COMMAND_CHEAT)
-    {
-        // Get cheat name
-        const char* cheat = cheats_get_cheat_string(*ecx, *edx, *edi);
-        char* args[2] = {
-            (char*)player_name,
-            (char*)cheat,
-        };
-        format_string(log_msg, 256, STR_LOG_CHEAT_USED, args);
-        network_append_server_log(log_msg);
-    }
-    else if (command == GAME_COMMAND_DEMOLISH_RIDE && (*ebp == 1 || *ebp == 0))
+    if (command == GAME_COMMAND_DEMOLISH_RIDE && (*ebp == 1 || *ebp == 0))
     { // ebp is 1 if command comes from ride window prompt, so we don't log "demolishing" ride previews
         // Get ride name
         Ride* ride = get_ride(*edx);
@@ -1228,7 +1217,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     game_command_modify_groups,
     game_command_kick_player,
-    game_command_cheat,
+    nullptr,
     game_command_pickup_guest,
     game_command_pickup_staff,
     game_command_balloon_press,
