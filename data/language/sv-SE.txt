@@ -3738,6 +3738,7 @@ STR_6267    :Öppna rutinspekteraren
 
 STR_6307    :Färgschema: {BLACK}{STRINGID}
 STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :Återanslut
 
 
 

@@ -3764,6 +3764,7 @@ STR_6305    :멀티스레딩
 STR_6306    :{SMALLFONT}{BLACK}렌더링을 하기 위해 여러 개의 스레드를 사용합니다. 실험적인 기능이므로 불안정할 수 있습니다.
 STR_6307    :색상 조합: {BLACK}{STRINGID}
 STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :재접속
 
 
 #############
