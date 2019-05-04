@@ -594,6 +594,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         dpi.pitch = 0;
         dpi.zoom_level = 0;
         dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
+        dpi.DrawingEngine = context->GetDrawingEngine();
 
         if (options->hide_guests)
         {
