@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 enum SOCKET_STATUS
 {
@@ -29,6 +30,18 @@ enum NETWORK_READPACKET
     NETWORK_READPACKET_NO_DATA,
     NETWORK_READPACKET_MORE_DATA,
     NETWORK_READPACKET_DISCONNECTED
+};
+
+/**
+ * Represents an address and port.
+ */
+interface INetworkEndpoint
+{
+    virtual ~INetworkEndpoint()
+    {
+    }
+
+    virtual std::string GetHostname() const abstract;
 };
 
 /**
@@ -59,10 +72,36 @@ public:
     virtual void Close() abstract;
 };
 
-std::unique_ptr<ITcpSocket> CreateTcpSocket();
+/**
+ * Represents a UDP socket / listener.
+ */
+interface IUdpSocket
+{
+public:
+    virtual ~IUdpSocket()
+    {
+    }
+
+    virtual SOCKET_STATUS GetStatus() abstract;
+    virtual const char* GetError() abstract;
+    virtual const char* GetHostName() const abstract;
+
+    virtual void Listen(uint16_t port) abstract;
+    virtual void Listen(const std::string& address, uint16_t port) abstract;
+
+    virtual size_t SendData(const std::string& address, uint16_t port, const void* buffer, size_t size) abstract;
+    virtual size_t SendData(const INetworkEndpoint& destination, const void* buffer, size_t size) abstract;
+    virtual NETWORK_READPACKET ReceiveData(
+        void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender) abstract;
+
+    virtual void Close() abstract;
+};
 
 bool InitialiseWSA();
 void DisposeWSA();
+std::unique_ptr<ITcpSocket> CreateTcpSocket();
+std::unique_ptr<IUdpSocket> CreateUdpSocket();
+std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses();
 
 namespace Convert
 {

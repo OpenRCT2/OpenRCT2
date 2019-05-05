@@ -19,7 +19,7 @@
 #include "../core/String.hpp"
 #include "../network/Http.h"
 #include "../platform/platform.h"
-#include "UdpSocket.h"
+#include "Socket.h"
 #include "network.h"
 
 #include <algorithm>

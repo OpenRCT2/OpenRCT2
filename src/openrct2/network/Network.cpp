@@ -75,7 +75,7 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include "NetworkPlayer.h"
 #    include "NetworkServerAdvertiser.h"
 #    include "NetworkUser.h"
-#    include "TcpSocket.h"
+#    include "Socket.h"
 
 #    include <algorithm>
 #    include <array>
