@@ -18,6 +18,7 @@
 #include <vector>
 
 struct json_t;
+struct INetworkEndpoint;
 
 struct ServerListEntry
 {
@@ -45,6 +46,7 @@ private:
     void Sort();
     std::vector<ServerListEntry> ReadFavourites();
     bool WriteFavourites(const std::vector<ServerListEntry>& entries);
+    std::future<std::vector<ServerListEntry>> FetchLocalServerListAsync(const INetworkEndpoint& broadcastEndpoint);
 
 public:
     ServerListEntry& GetServer(size_t index);

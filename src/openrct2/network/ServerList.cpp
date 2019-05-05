@@ -233,16 +233,16 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries)
     }
 }
 
-std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync()
+std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(const INetworkEndpoint& broadcastEndpoint)
 {
-    return std::async([] {
+    auto broadcastAddress = broadcastEndpoint.GetHostname();
+    return std::async([broadcastAddress] {
         constexpr auto RECV_DELAY_MS = 10;
         constexpr auto RECV_WAIT_MS = 2000;
 
-        auto broadcastAddress = "192.168.1.255";
-
         std::string msg = "Are you an OpenRCT2 server?";
         auto udpSocket = CreateUdpSocket();
+
         log_verbose("Broadcasting %zu bytes to the LAN (%s)", msg.size(), broadcastAddress);
         auto len = udpSocket->SendData(broadcastAddress, NETWORK_LAN_BROADCAST_PORT, msg.data(), msg.size());
         if (len != msg.size())
@@ -280,8 +280,39 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
             }
             platform_sleep(RECV_DELAY_MS);
         }
-
         return entries;
+    });
+}
+
+std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync()
+{
+    return std::async([&] {
+        // Get all possible LAN broadcast addresses
+        auto broadcastEndpoints = GetBroadcastAddresses();
+
+        // Spin off a fetch for each broadcast address
+        std::vector<std::future<std::vector<ServerListEntry>>> futures;
+        for (const auto& broadcastEndpoint : broadcastEndpoints)
+        {
+            auto f = FetchLocalServerListAsync(*broadcastEndpoint);
+            futures.push_back(std::move(f));
+        }
+
+        // Wait and merge all results
+        std::vector<ServerListEntry> mergedEntries;
+        for (auto& f : futures)
+        {
+            try
+            {
+                auto entries = std::move(f.get());
+                mergedEntries.insert(mergedEntries.begin(), entries.begin(), entries.end());
+            }
+            catch (...)
+            {
+                // Ignore any exceptions from a particular broadcast fetch
+            }
+        }
+        return mergedEntries;
     });
 }
 

@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 enum SOCKET_STATUS
 {
@@ -40,7 +41,7 @@ interface INetworkEndpoint
     {
     }
 
-    virtual std::string GetHostname() abstract;
+    virtual std::string GetHostname() const abstract;
 };
 
 /**
@@ -69,3 +70,4 @@ public:
 };
 
 std::unique_ptr<IUdpSocket> CreateUdpSocket();
+std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses();

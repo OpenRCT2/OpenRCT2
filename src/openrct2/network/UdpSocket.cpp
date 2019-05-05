@@ -36,13 +36,15 @@
     #endif
     #define FLAG_NO_PIPE 0
 #else
-    #include <cerrno>
     #include <arpa/inet.h>
-    #include <netdb.h>
-    #include <netinet/tcp.h>
-    #include <netinet/in.h>
-    #include <sys/socket.h>
+    #include <cerrno>
     #include <fcntl.h>
+    #include <net/if.h>
+    #include <netdb.h>
+    #include <netinet/in.h>
+    #include <netinet/tcp.h>
+    #include <sys/ioctl.h>
+    #include <sys/socket.h>
     #include "../common.h"
     using SOCKET = int32_t;
     #define SOCKET_ERROR -1
@@ -116,7 +118,7 @@ public:
         }
     }
 
-    std::string GetHostname() override
+    std::string GetHostname() const override
     {
         char hostname[256];
         int res = getnameinfo(&_address, _addressLen, hostname, sizeof(hostname), nullptr, 0, NI_NUMERICHOST);
@@ -393,6 +395,101 @@ private:
 std::unique_ptr<IUdpSocket> CreateUdpSocket()
 {
     return std::make_unique<UdpSocket>();
+}
+
+#    ifdef _WIN32
+std::vector<INTERFACE_INFO> GetNetworkInterfaces()
+{
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock == -1)
+    {
+        printf("socket returned -1\n");
+        return {};
+    }
+
+    DWORD len = 0;
+    size_t capacity = 2;
+    std::vector<INTERFACE_INFO> interfaces;
+    for (;;)
+    {
+        interfaces.resize(capacity);
+        if (WSAIoctl(
+                sock, SIO_GET_INTERFACE_LIST, nullptr, 0, interfaces.data(), capacity * sizeof(INTERFACE_INFO), &len, nullptr,
+                nullptr)
+            == 0)
+        {
+            break;
+        }
+        if (WSAGetLastError() != WSAEFAULT)
+        {
+            closesocket(sock);
+            return {};
+        }
+        capacity *= 2;
+    }
+    interfaces.resize(len / sizeof(INTERFACE_INFO));
+    interfaces.shrink_to_fit();
+    return interfaces;
+}
+#    endif
+
+std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
+{
+    std::vector<std::unique_ptr<INetworkEndpoint>> baddresses;
+#    ifdef _WIN32
+    auto interfaces = GetNetworkInterfaces();
+    for (const auto& ifo : interfaces)
+    {
+        if (ifo.iiFlags & IFF_LOOPBACK)
+            continue;
+        if (!(ifo.iiFlags & IFF_BROADCAST))
+            continue;
+
+        // iiBroadcast is unusable, because it always seems to be set to 255.255.255.255.
+        sockaddr_storage address{};
+        memcpy(&address, &ifo.iiAddress.Address, sizeof(sockaddr));
+        ((sockaddr_in*)&address)->sin_addr.s_addr = ifo.iiAddress.AddressIn.sin_addr.s_addr
+            | ~ifo.iiNetmask.AddressIn.sin_addr.s_addr;
+        baddresses.push_back(std::make_unique<NetworkEndpoint>(address, sizeof(sockaddr)));
+    }
+#    else
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sock == -1)
+    {
+        return baddresses;
+    }
+
+    char buf[4 * 1024]{};
+    ifconf ifconfx{};
+    ifconfx.ifc_len = sizeof(buf);
+    ifconfx.ifc_buf = buf;
+    if (ioctl(sock, SIOCGIFCONF, &ifconfx) == -1)
+    {
+        close(sock);
+        return baddresses;
+    }
+
+    const char* buf_end = buf + ifconfx.ifc_len;
+    for (const char* p = buf; p < buf_end;)
+    {
+        auto req = (const ifreq*)p;
+        if (req->ifr_addr.sa_family == AF_INET)
+        {
+            ifreq r;
+            strcpy(r.ifr_name, req->ifr_name);
+            if (ioctl(sock, SIOCGIFFLAGS, &r) != -1 && (r.ifr_flags & IFF_BROADCAST) && ioctl(sock, SIOCGIFBRDADDR, &r) != -1)
+            {
+                baddresses.push_back(std::make_unique<NetworkEndpoint>(&r.ifr_broadaddr, sizeof(sockaddr)));
+            }
+        }
+        p += sizeof(ifreq);
+#        if defined(AF_LINK) && !defined(SUNOS)
+        p += req->ifr_addr.sa_len - sizeof(struct sockaddr);
+#        endif
+    }
+    close(sock);
+#    endif
+    return baddresses;
 }
 
 #endif
