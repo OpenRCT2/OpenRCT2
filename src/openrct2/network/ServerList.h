@@ -10,21 +10,62 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/Optional.hpp"
 
+#include <future>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
-struct server_entry
+struct json_t;
+
+struct ServerListEntry
 {
     std::string address;
     std::string name;
     std::string description;
     std::string version;
-    bool requiresPassword = false;
-    bool favourite = false;
-    uint8_t players = 0;
-    uint8_t maxplayers = 0;
+    bool requiresPassword{};
+    bool favourite{};
+    uint8_t players{};
+    uint8_t maxplayers{};
+
+    int32_t CompareTo(const ServerListEntry& other) const;
+    bool IsVersionValid() const;
+
+    static std::optional<ServerListEntry> FromJson(const json_t* root);
 };
 
-std::vector<server_entry> server_list_read();
-bool server_list_write(const std::vector<server_entry>& entries);
+class ServerList
+{
+private:
+    std::vector<ServerListEntry> _serverEntries;
+
+    void Sort();
+    std::vector<ServerListEntry> ReadFavourites();
+    bool WriteFavourites(const std::vector<ServerListEntry>& entries);
+
+public:
+    ServerListEntry& GetServer(size_t index);
+    size_t GetCount() const;
+    void Add(const ServerListEntry& entry);
+    void AddRange(const std::vector<ServerListEntry>& entries);
+
+    void ReadAndAddFavourites();
+    void WriteFavourites();
+
+    std::future<std::vector<ServerListEntry>> FetchLocalServerListAsync();
+    std::future<std::vector<ServerListEntry>> FetchOnlineServerListAsync();
+    uint32_t GetTotalPlayerCount() const;
+};
+
+class MasterServerException : public std::exception
+{
+public:
+    rct_string_id StatusText;
+
+    MasterServerException(rct_string_id statusText)
+        : StatusText(statusText)
+    {
+    }
+};
