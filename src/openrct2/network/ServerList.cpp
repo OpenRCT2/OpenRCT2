@@ -42,7 +42,7 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
     // Order by local
     if (a.local != b.local)
     {
-        return a.local ? 1 : -1;
+        return a.local ? -1 : 1;
     }
 
     // Then by version
@@ -50,13 +50,19 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
     bool serverBCompatible = b.version == network_get_version();
     if (serverACompatible != serverBCompatible)
     {
-        return serverACompatible ? 1 : -1;
+        return serverACompatible ? -1 : 1;
     }
 
     // Then by password protection
     if (a.requiresPassword != b.requiresPassword)
     {
-        return a.requiresPassword ? -1 : 1;
+        return a.requiresPassword ? 1 : -1;
+    }
+
+    // Then by number of players
+    if (a.players != b.players)
+    {
+        return a.players > b.players ? -1 : 1;
     }
 
     // Then by name
@@ -102,8 +108,19 @@ std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
 
 void ServerList::Sort()
 {
+    _serverEntries.erase(
+        std::unique(
+            _serverEntries.begin(), _serverEntries.end(),
+            [](const ServerListEntry& a, const ServerListEntry& b) {
+                if (a.favourite == b.favourite)
+                {
+                    return String::Equals(a.address, b.address, true);
+                }
+                return false;
+            }),
+        _serverEntries.end());
     std::sort(_serverEntries.begin(), _serverEntries.end(), [](const ServerListEntry& a, const ServerListEntry& b) {
-        return a.CompareTo(b) > 0;
+        return a.CompareTo(b) < 0;
     });
 }
 
@@ -127,6 +144,11 @@ void ServerList::AddRange(const std::vector<ServerListEntry>& entries)
 {
     _serverEntries.insert(_serverEntries.end(), entries.begin(), entries.end());
     Sort();
+}
+
+void ServerList::Clear()
+{
+    _serverEntries.clear();
 }
 
 std::vector<ServerListEntry> ServerList::ReadFavourites()

@@ -51,6 +51,7 @@ public:
     size_t GetCount() const;
     void Add(const ServerListEntry& entry);
     void AddRange(const std::vector<ServerListEntry>& entries);
+    void Clear();
 
     void ReadAndAddFavourites();
     void WriteFavourites();

@@ -26,6 +26,7 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <tuple>
 
 #ifndef DISABLE_HTTP
 using namespace OpenRCT2::Network;
@@ -39,9 +40,9 @@ using namespace OpenRCT2::Network;
 
 static char _playerName[32 + 1];
 static ServerList _serverList;
-static std::future<std::vector<ServerListEntry>> _fetchFuture;
+static std::future<std::tuple<std::vector<ServerListEntry>, rct_string_id>> _fetchFuture;
 static uint32_t _numPlayersOnline = 0;
-static rct_string_id status_text = STR_SERVER_LIST_CONNECTING;
+static rct_string_id _statusText = STR_SERVER_LIST_CONNECTING;
 
 // clang-format off
 enum {
@@ -416,7 +417,7 @@ static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(
         dpi, STR_NETWORK_VERSION, (void*)&versionCStr, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top + 1);
 
-    gfx_draw_string_left(dpi, status_text, (void*)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
+    gfx_draw_string_left(dpi, _statusText, (void*)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
 }
 
 static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -543,6 +544,10 @@ static void server_list_fetch_servers_begin()
         return;
     }
 
+    _serverList.Clear();
+    _serverList.ReadAndAddFavourites();
+    _statusText = STR_SERVER_LIST_CONNECTING;
+
     _fetchFuture = std::async([] {
         // Spin off background fetches
         auto lanF = _serverList.FetchLocalServerListAsync();
@@ -559,16 +564,21 @@ static void server_list_fetch_servers_begin()
         {
         }
 
+        auto status = STR_NONE;
         try
         {
             auto entries = wanF.get();
             allEntries.insert(allEntries.end(), entries.begin(), entries.end());
         }
+        catch (const MasterServerException& e)
+        {
+            status = e.StatusText;
+        }
         catch (const std::exception& e)
         {
+            status = STR_SERVER_LIST_NO_CONNECTION;
         }
-
-        return allEntries;
+        return std::make_tuple(allEntries, status);
     });
 }
 
@@ -581,18 +591,22 @@ static void server_list_fetch_servers_check(rct_window* w)
         {
             try
             {
-                auto entries = _fetchFuture.get();
+                auto [entries, statusText] = std::move(_fetchFuture.get());
                 _serverList.AddRange(entries);
                 _numPlayersOnline = _serverList.GetTotalPlayerCount();
-                status_text = STR_X_PLAYERS_ONLINE;
+                _statusText = STR_X_PLAYERS_ONLINE;
+                if (statusText != STR_NONE)
+                {
+                    _statusText = statusText;
+                }
             }
             catch (const MasterServerException& e)
             {
-                status_text = e.StatusText;
+                _statusText = e.StatusText;
             }
             catch (const std::exception& e)
             {
-                status_text = STR_SERVER_LIST_NO_CONNECTION;
+                _statusText = STR_SERVER_LIST_NO_CONNECTION;
                 log_warning("Unable to connect to master server: %s", e.what());
             }
             _fetchFuture = {};
