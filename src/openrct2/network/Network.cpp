@@ -201,6 +201,7 @@ public:
     void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
 
     NetworkStats_t GetStats() const;
+    json_t* GetServerInfoAsJson() const;
 
     std::vector<std::unique_ptr<NetworkPlayer>> player_list;
     std::vector<std::unique_ptr<NetworkGroup>> group_list;
@@ -1810,11 +1811,8 @@ void Network::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const 
     connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
+json_t* Network::GetServerInfoAsJson() const
 {
-    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32_t)NETWORK_COMMAND_GAMEINFO;
-#    ifndef DISABLE_HTTP
     json_t* obj = json_object();
     json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name.c_str()));
     json_object_set_new(obj, "requiresPassword", json_boolean(_password.size() > 0));
@@ -1824,6 +1822,15 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
     json_object_set_new(obj, "description", json_string(gConfigNetwork.server_description.c_str()));
     json_object_set_new(obj, "greeting", json_string(gConfigNetwork.server_greeting.c_str()));
     json_object_set_new(obj, "dedicated", json_boolean(gOpenRCT2Headless));
+    return obj;
+}
+
+void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
+{
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    *packet << (uint32_t)NETWORK_COMMAND_GAMEINFO;
+#    ifndef DISABLE_HTTP
+    json_t* obj = GetServerInfoAsJson();
 
     // Provider details
     json_t* jsonProvider = json_object();
@@ -4175,6 +4182,10 @@ bool network_gamestate_snapshots_enabled()
     return network_get_server_state().gamestateSnapshotsEnabled;
 }
 
+json_t* network_get_server_info_as_json()
+{
+    return gNetwork.GetServerInfoAsJson();
+}
 #else
 int32_t network_get_mode()
 {
@@ -4431,5 +4442,9 @@ NetworkStats_t network_get_stats()
 NetworkServerState_t network_get_server_state()
 {
     return NetworkServerState_t{};
+}
+json_t* network_get_server_info_as_json()
+{
+    return nullptr;
 }
 #endif /* DISABLE_NETWORK */

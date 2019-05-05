@@ -289,7 +289,7 @@ public:
         void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender) override
     {
         sockaddr_in senderAddr{};
-        socklen_t senderAddrLen{};
+        socklen_t senderAddrLen = sizeof(sockaddr_in);
         if (_status != SOCKET_STATUS_LISTENING)
         {
             senderAddrLen = _endpoint.GetAddressLen();
@@ -345,7 +345,7 @@ private:
         std::string serviceName = std::to_string(port);
 
         addrinfo hints = {};
-        hints.ai_family = AF_UNSPEC;
+        hints.ai_family = AF_INET;
         if (address.empty())
         {
             hints.ai_flags = AI_PASSIVE;

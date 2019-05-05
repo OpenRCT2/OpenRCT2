@@ -26,6 +26,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <thread>
 #include <vector>
 
 #ifndef DISABLE_HTTP
@@ -147,8 +148,10 @@ static void sort_servers();
 static void join_server(std::string address);
 #ifndef DISABLE_HTTP
 static void fetch_servers();
+static uint32_t get_total_player_count();
 static void fetch_servers_callback(Http::Response& response);
 static void RefreshServersFromJson(const json_t* jsonServers);
+static void AddServerFromJson(const json_t* server);
 #endif
 static bool is_version_valid(const std::string& version);
 
@@ -638,28 +641,41 @@ static void join_server(std::string address)
 
 #ifndef DISABLE_HTTP
 
-static void fetch_lan_servers()
+static void fetch_lan_servers_worker()
 {
     std::string msg = "Are you an OpenRCT2 server?";
     auto udpSocket = CreateUdpSocket();
     auto len = udpSocket->SendData("192.168.1.255", 11754, msg.data(), msg.size());
     if (len == msg.size())
     {
-        char buffer[256]{};
+        char buffer[1024]{};
         size_t recievedLen{};
         std::unique_ptr<INetworkEndpoint> endpoint;
         for (int i = 0; i < 5 * 10; i++)
         {
-            auto p = udpSocket->ReceiveData(buffer, sizeof(buffer), &recievedLen, &endpoint);
+            auto p = udpSocket->ReceiveData(buffer, sizeof(buffer) - 1, &recievedLen, &endpoint);
             if (p == NETWORK_READPACKET_SUCCESS)
             {
                 auto sender = endpoint->GetHostname();
                 std::printf(">> Recieved packet from %s\n", sender.c_str());
-                std::printf(">>   %s\n", buffer);
+                auto jinfo = Json::FromString(std::string_view(buffer));
+                AddServerFromJson(jinfo);
+                json_decref(jinfo);
             }
             usleep(100 * 1000);
         }
     }
+
+    sort_servers();
+    _numPlayersOnline = get_total_player_count();
+    status_text = STR_X_PLAYERS_ONLINE;
+    window_invalidate_by_class(WC_SERVER_LIST);
+}
+
+static void fetch_lan_servers()
+{
+    std::thread worker(fetch_lan_servers_worker);
+    worker.detach();
 }
 
 static void fetch_servers()
@@ -757,28 +773,38 @@ static void RefreshServersFromJson(const json_t* jsonServers)
     for (int32_t i = 0; i < count; i++)
     {
         auto server = json_array_get(jsonServers, i);
-        if (!json_is_object(server))
+        if (json_is_object(server))
         {
-            continue;
+            AddServerFromJson(server);
         }
+    }
 
-        auto port = json_object_get(server, "port");
-        auto name = json_object_get(server, "name");
-        auto description = json_object_get(server, "description");
-        auto requiresPassword = json_object_get(server, "requiresPassword");
-        auto version = json_object_get(server, "version");
-        auto players = json_object_get(server, "players");
-        auto maxPlayers = json_object_get(server, "maxPlayers");
-        auto ip = json_object_get(server, "ip");
-        auto ip4 = json_object_get(ip, "v4");
-        auto addressIp = json_array_get(ip4, 0);
+    sort_servers();
+    _numPlayersOnline = get_total_player_count();
 
-        if (name == nullptr || version == nullptr)
-        {
-            log_verbose("Cowardly refusing to add server without name or version specified.");
-            continue;
-        }
+    status_text = STR_X_PLAYERS_ONLINE;
+    window_invalidate_by_class(WC_SERVER_LIST);
+}
 
+static void AddServerFromJson(const json_t* server)
+{
+    auto port = json_object_get(server, "port");
+    auto name = json_object_get(server, "name");
+    auto description = json_object_get(server, "description");
+    auto requiresPassword = json_object_get(server, "requiresPassword");
+    auto version = json_object_get(server, "version");
+    auto players = json_object_get(server, "players");
+    auto maxPlayers = json_object_get(server, "maxPlayers");
+    auto ip = json_object_get(server, "ip");
+    auto ip4 = json_object_get(ip, "v4");
+    auto addressIp = json_array_get(ip4, 0);
+
+    if (name == nullptr || version == nullptr)
+    {
+        log_verbose("Cowardly refusing to add server without name or version specified.");
+    }
+    else
+    {
         auto address = String::StdFormat("%s:%d", json_string_value(addressIp), (int32_t)json_integer_value(port));
         {
             std::lock_guard<std::mutex> guard(_mutex);
@@ -791,12 +817,6 @@ static void RefreshServersFromJson(const json_t* jsonServers)
             newserver.maxplayers = (uint8_t)json_integer_value(maxPlayers);
         }
     }
-
-    sort_servers();
-    _numPlayersOnline = get_total_player_count();
-
-    status_text = STR_X_PLAYERS_ONLINE;
-    window_invalidate_by_class(WC_SERVER_LIST);
 }
 
 #endif

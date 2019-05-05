@@ -103,7 +103,7 @@ public:
                     std::string sender = endpoint->GetHostname();
                     std::printf("\r>> Received %zu bytes from %s\n", recievedBytes, sender.c_str());
 
-                    auto body = GetHeartbeatJson();
+                    auto body = GetBroadcastJson();
                     auto bodyDump = json_dumps(body, JSON_COMPACT);
                     size_t sendLen = strlen(bodyDump) + 1;
                     std::printf("\r>> Sending %zu bytes back to %s\n", sendLen, sender.c_str());
@@ -277,6 +277,11 @@ private:
         json_object_set_new(root, "gameInfo", gameInfo);
 
         return root;
+    }
+
+    json_t* GetBroadcastJson()
+    {
+        return network_get_server_info_as_json();
     }
 
     static std::string GenerateAdvertiseKey()

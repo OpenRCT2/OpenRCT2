@@ -53,11 +53,11 @@ namespace Json
         fs.Write(jsonOutput, jsonOutputSize);
     }
 
-    json_t* FromString(const std::string& raw)
+    json_t* FromString(const std::string_view& raw)
     {
         json_t* root;
         json_error_t error;
-        root = json_loads(raw.c_str(), 0, &error);
+        root = json_loadb(raw.data(), raw.size(), 0, &error);
         if (root == nullptr)
         {
             throw JsonException(&error);

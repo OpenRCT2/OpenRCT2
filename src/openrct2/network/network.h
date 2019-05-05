@@ -19,6 +19,7 @@
 #include <memory>
 #include <string>
 
+struct json_t;
 struct GameAction;
 struct Peep;
 struct LocationXYZ16;
@@ -109,3 +110,4 @@ std::string network_get_version();
 
 NetworkStats_t network_get_stats();
 NetworkServerState_t network_get_server_state();
+json_t* network_get_server_info_as_json();
