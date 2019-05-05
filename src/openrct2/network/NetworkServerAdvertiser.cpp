@@ -18,13 +18,16 @@
 #    include "../localisation/Date.h"
 #    include "../management/Finance.h"
 #    include "../peep/Peep.h"
+#    include "../platform/Platform2.h"
 #    include "../platform/platform.h"
 #    include "../util/Util.h"
 #    include "../world/Map.h"
 #    include "../world/Park.h"
 #    include "Http.h"
+#    include "UdpSocket.h"
 #    include "network.h"
 
+#    include <cstring>
 #    include <iterator>
 #    include <memory>
 #    include <string>
@@ -44,6 +47,8 @@ enum MASTER_SERVER_STATUS
 constexpr int32_t MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
 constexpr int32_t MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
 
+constexpr int32_t LAN_BROADCAST_PORT = 11754;
+
 class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
 private:
@@ -62,11 +67,15 @@ private:
     // See https://github.com/OpenRCT2/OpenRCT2/issues/6277 and 4953
     bool _forceIPv4 = false;
 
+    std::unique_ptr<IUdpSocket> _lanListener;
+    uint32_t _lastListenTime{};
+
 public:
     explicit NetworkServerAdvertiser(uint16_t port)
     {
         _port = port;
         _key = GenerateAdvertiseKey();
+        _lanListener = CreateUdpSocket();
     }
 
     ADVERTISE_STATUS GetStatus() const override
@@ -76,23 +85,58 @@ public:
 
     void Update() override
     {
-        switch (_status)
+        auto ticks = Platform::GetTicks();
+        if (ticks > _lastListenTime + 500)
         {
-            case ADVERTISE_STATUS::UNREGISTERED:
-                if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
+            if (_lanListener->GetStatus() != SOCKET_STATUS_LISTENING)
+            {
+                _lanListener->Listen(LAN_BROADCAST_PORT);
+            }
+            else
+            {
+                char buffer[256];
+                size_t recievedBytes;
+                std::unique_ptr<INetworkEndpoint> endpoint;
+                auto p = _lanListener->ReceiveData(buffer, sizeof(buffer), &recievedBytes, &endpoint);
+                if (p == NETWORK_READPACKET_SUCCESS)
                 {
-                    SendRegistration(_forceIPv4);
+                    std::string sender = endpoint->GetHostname();
+                    std::printf("\r>> Received %zu bytes from %s\n", recievedBytes, sender.c_str());
+
+                    auto body = GetHeartbeatJson();
+                    auto bodyDump = json_dumps(body, JSON_COMPACT);
+                    size_t sendLen = strlen(bodyDump) + 1;
+                    std::printf("\r>> Sending %zu bytes back to %s\n", sendLen, sender.c_str());
+                    _lanListener->SendData(*endpoint, bodyDump, sendLen);
+                    free(bodyDump);
+                    json_decref(body);
                 }
-                break;
-            case ADVERTISE_STATUS::REGISTERED:
-                if (platform_get_ticks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
-                {
-                    SendHeartbeat();
-                }
-                break;
-            // exhaust enum values to satisfy clang
-            case ADVERTISE_STATUS::DISABLED:
-                break;
+            }
+            _lastListenTime = ticks;
+        }
+
+        if (gConfigNetwork.advertise)
+        {
+            /*
+            switch (_status)
+            {
+                case ADVERTISE_STATUS::UNREGISTERED:
+                    if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
+                    {
+                        SendRegistration(_forceIPv4);
+                    }
+                    break;
+                case ADVERTISE_STATUS::REGISTERED:
+                    if (platform_get_ticks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
+                    {
+                        SendHeartbeat();
+                    }
+                    break;
+                // exhaust enum values to satisfy clang
+                case ADVERTISE_STATUS::DISABLED:
+                    break;
+            }
+            */
         }
     }
 

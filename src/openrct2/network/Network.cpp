@@ -680,11 +680,7 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
     status = NETWORK_STATUS_CONNECTED;
     listening_port = port;
     _serverState.gamestateSnapshotsEnabled = gConfigNetwork.desync_debugging;
-
-    if (gConfigNetwork.advertise)
-    {
-        _advertiser = CreateServerAdvertiser(listening_port);
-    }
+    _advertiser = CreateServerAdvertiser(listening_port);
 
     if (gConfigNetwork.pause_server_if_no_clients)
     {

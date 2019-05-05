@@ -77,12 +77,64 @@ public:
     }
 };
 
+class NetworkEndpoint final : public INetworkEndpoint
+{
+private:
+    sockaddr _address{};
+    socklen_t _addressLen{};
+
+public:
+    NetworkEndpoint()
+    {
+    }
+
+    NetworkEndpoint(const sockaddr* address, socklen_t addressLen)
+    {
+        std::memcpy(&_address, address, addressLen);
+        _addressLen = addressLen;
+    }
+
+    const sockaddr& GetAddress() const
+    {
+        return _address;
+    }
+
+    socklen_t GetAddressLen() const
+    {
+        return _addressLen;
+    }
+
+    int32_t GetPort() const
+    {
+        if (_address.sa_family == AF_INET)
+        {
+            return ((sockaddr_in*)&_address)->sin_port;
+        }
+        else
+        {
+            return ((sockaddr_in6*)&_address)->sin6_port;
+        }
+    }
+
+    std::string GetHostname() override
+    {
+        char hostname[256];
+        int res = getnameinfo(&_address, _addressLen, hostname, sizeof(hostname), nullptr, 0, NI_NUMERICHOST);
+        if (res == 0)
+        {
+            return hostname;
+        }
+        return {};
+    }
+};
+
 class UdpSocket final : public IUdpSocket
 {
 private:
     SOCKET_STATUS _status = SOCKET_STATUS_CLOSED;
     uint16_t _listeningPort = 0;
     SOCKET _socket = INVALID_SOCKET;
+    NetworkEndpoint _endpoint;
 
     std::string _hostName;
     std::string _error;
@@ -118,30 +170,34 @@ public:
         }
 
         sockaddr_storage ss{};
-        int32_t ss_len;
+        socklen_t ss_len;
         if (!ResolveAddress(address, port, &ss, &ss_len))
         {
             throw SocketException("Unable to resolve address.");
         }
 
         // Create the listening socket
-        _socket = socket(ss.ss_family, SOCK_STREAM, IPPROTO_TCP);
+        _socket = socket(ss.ss_family, SOCK_DGRAM, IPPROTO_UDP);
         if (_socket == INVALID_SOCKET)
         {
             throw SocketException("Unable to create socket.");
         }
 
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
-        int32_t value = 0;
-        if (setsockopt(_socket, IPPROTO_IPV6, IPV6_V6ONLY, (const char*)&value, sizeof(value)) != 0)
+        if (!SetOption(_socket, IPPROTO_IPV6, IPV6_V6ONLY, false))
         {
             log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
         }
 
-        value = 1;
-        if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, (const char*)&value, sizeof(value)) != 0)
+        if (!SetOption(_socket, SOL_SOCKET, SO_REUSEADDR, true))
         {
             log_error("SO_REUSEADDR failed. %d", LAST_SOCKET_ERROR());
+        }
+
+        // Enable send and receiving of broadcast messages
+        if (!SetOption(_socket, SOL_SOCKET, SO_BROADCAST, true))
+        {
+            log_error("SO_BROADCAST failed. %d", LAST_SOCKET_ERROR());
         }
 
         try
@@ -150,10 +206,6 @@ public:
             if (bind(_socket, (sockaddr*)&ss, ss_len) != 0)
             {
                 throw SocketException("Unable to bind to socket.");
-            }
-            if (listen(_socket, SOMAXCONN) != 0)
-            {
-                throw SocketException("Unable to listen on socket.");
             }
 
             if (!SetNonBlocking(_socket, true))
@@ -173,9 +225,49 @@ public:
 
     size_t SendData(const std::string& address, uint16_t port, const void* buffer, size_t size) override
     {
-        if (_status != SOCKET_STATUS_CONNECTED)
+        sockaddr_storage ss{};
+        socklen_t ss_len;
+        if (!ResolveAddress(address, port, &ss, &ss_len))
         {
-            throw std::runtime_error("Socket not connected.");
+            throw SocketException("Unable to resolve address.");
+        }
+        NetworkEndpoint endpoint((const sockaddr*)&ss, ss_len);
+        return SendData(endpoint, buffer, size);
+    }
+
+    size_t SendData(const INetworkEndpoint& destination, const void* buffer, size_t size) override
+    {
+        if (_socket == INVALID_SOCKET)
+        {
+            _socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+            if (_socket == INVALID_SOCKET)
+            {
+                throw SocketException("Unable to create socket.");
+            }
+
+            // Enable send and receiving of broadcast messages
+            if (!SetOption(_socket, SOL_SOCKET, SO_BROADCAST, true))
+            {
+                log_error("SO_BROADCAST failed. %d", LAST_SOCKET_ERROR());
+            }
+
+            if (!SetNonBlocking(_socket, true))
+            {
+                throw SocketException("Failed to set non-blocking mode.");
+            }
+        }
+
+        const auto& dest = dynamic_cast<const NetworkEndpoint*>(&destination);
+        if (dest == nullptr)
+        {
+            throw std::invalid_argument("destination is not compatible.");
+        }
+        auto ss = &dest->GetAddress();
+        auto ss_len = dest->GetAddressLen();
+
+        if (_status != SOCKET_STATUS_LISTENING)
+        {
+            _endpoint = *dest;
         }
 
         size_t totalSent = 0;
@@ -183,7 +275,7 @@ public:
         {
             const char* bufferStart = (const char*)buffer + totalSent;
             size_t remainingSize = size - totalSent;
-            int32_t sentBytes = send(_socket, bufferStart, (int32_t)remainingSize, FLAG_NO_PIPE);
+            int32_t sentBytes = sendto(_socket, bufferStart, (int32_t)remainingSize, FLAG_NO_PIPE, (const sockaddr*)ss, ss_len);
             if (sentBytes == SOCKET_ERROR)
             {
                 return totalSent;
@@ -193,46 +285,29 @@ public:
         return totalSent;
     }
 
-    NETWORK_READPACKET ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
+    NETWORK_READPACKET ReceiveData(
+        void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender) override
     {
-        if (_status != SOCKET_STATUS_CONNECTED)
+        sockaddr_in senderAddr{};
+        socklen_t senderAddrLen{};
+        if (_status != SOCKET_STATUS_LISTENING)
         {
-            throw std::runtime_error("Socket not connected.");
+            senderAddrLen = _endpoint.GetAddressLen();
+            std::memcpy(&senderAddr, &_endpoint.GetAddress(), senderAddrLen);
         }
-
-        int32_t readBytes = recv(_socket, (char*)buffer, (int32_t)size, 0);
-        if (readBytes == 0)
+        auto readBytes = recvfrom(_socket, (char*)buffer, (int32_t)size, 0, (sockaddr*)&senderAddr, &senderAddrLen);
+        if (readBytes <= 0)
         {
             *sizeReceived = 0;
-            return NETWORK_READPACKET_DISCONNECTED;
-        }
-        else if (readBytes == SOCKET_ERROR)
-        {
-            *sizeReceived = 0;
-#    ifndef _WIN32
-            // Removing the check for EAGAIN and instead relying on the values being the same allows turning on of
-            // -Wlogical-op warning.
-            // This is not true on Windows, see:
-            // * https://msdn.microsoft.com/en-us/library/windows/desktop/ms737828(v=vs.85).aspx
-            // * https://msdn.microsoft.com/en-us/library/windows/desktop/ms741580(v=vs.85).aspx
-            // * https://msdn.microsoft.com/en-us/library/windows/desktop/ms740668(v=vs.85).aspx
-            static_assert(
-                EWOULDBLOCK == EAGAIN,
-                "Portability note: your system has different values for EWOULDBLOCK "
-                "and EAGAIN, please extend the condition below");
-#    endif // _WIN32
-            if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
-            {
-                return NETWORK_READPACKET_DISCONNECTED;
-            }
-            else
-            {
-                return NETWORK_READPACKET_NO_DATA;
-            }
+            return NETWORK_READPACKET_NO_DATA;
         }
         else
         {
             *sizeReceived = readBytes;
+            if (sender != nullptr)
+            {
+                *sender = std::make_unique<NetworkEndpoint>((sockaddr*)&senderAddr, senderAddrLen);
+            }
             return NETWORK_READPACKET_SUCCESS;
         }
     }
@@ -265,7 +340,7 @@ private:
         _status = SOCKET_STATUS_CLOSED;
     }
 
-    bool ResolveAddress(const std::string& address, uint16_t port, sockaddr_storage* ss, int32_t* ss_len)
+    bool ResolveAddress(const std::string& address, uint16_t port, sockaddr_storage* ss, socklen_t* ss_len)
     {
         std::string serviceName = std::to_string(port);
 
@@ -291,7 +366,7 @@ private:
         else
         {
             std::memcpy(ss, result->ai_addr, result->ai_addrlen);
-            *ss_len = (int32_t)result->ai_addrlen;
+            *ss_len = result->ai_addrlen;
             freeaddrinfo(result);
             return true;
         }
@@ -308,9 +383,10 @@ private:
 #    endif
     }
 
-    static bool SetSOBroadcast(SOCKET socket, bool enabled)
+    static bool SetOption(SOCKET socket, int32_t a, int32_t b, bool value)
     {
-        return setsockopt(socket, SOL_SOCKET, SO_BROADCAST, (const char*)&enabled, sizeof(enabled)) == 0;
+        int32_t ivalue = value ? 1 : 0;
+        return setsockopt(socket, a, b, (const char*)&ivalue, sizeof(ivalue)) == 0;
     }
 };
 

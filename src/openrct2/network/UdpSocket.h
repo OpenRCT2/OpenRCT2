@@ -32,6 +32,18 @@ enum NETWORK_READPACKET
 };
 
 /**
+ * Represents an address and port.
+ */
+interface INetworkEndpoint
+{
+    virtual ~INetworkEndpoint()
+    {
+    }
+
+    virtual std::string GetHostname() abstract;
+};
+
+/**
  * Represents a UDP socket / listener.
  */
 interface IUdpSocket
@@ -49,7 +61,9 @@ public:
     virtual void Listen(const std::string& address, uint16_t port) abstract;
 
     virtual size_t SendData(const std::string& address, uint16_t port, const void* buffer, size_t size) abstract;
-    virtual NETWORK_READPACKET ReceiveData(void* buffer, size_t size, size_t* sizeReceived) abstract;
+    virtual size_t SendData(const INetworkEndpoint& destination, const void* buffer, size_t size) abstract;
+    virtual NETWORK_READPACKET ReceiveData(
+        void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender) abstract;
 
     virtual void Close() abstract;
 };

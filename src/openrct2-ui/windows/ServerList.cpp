@@ -22,6 +22,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/Http.h>
 #include <openrct2/network/ServerList.h>
+#include <openrct2/network/UdpSocket.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -636,29 +637,61 @@ static void join_server(std::string address)
 }
 
 #ifndef DISABLE_HTTP
+
+static void fetch_lan_servers()
+{
+    std::string msg = "Are you an OpenRCT2 server?";
+    auto udpSocket = CreateUdpSocket();
+    auto len = udpSocket->SendData("192.168.1.255", 11754, msg.data(), msg.size());
+    if (len == msg.size())
+    {
+        char buffer[256]{};
+        size_t recievedLen{};
+        std::unique_ptr<INetworkEndpoint> endpoint;
+        for (int i = 0; i < 5 * 10; i++)
+        {
+            auto p = udpSocket->ReceiveData(buffer, sizeof(buffer), &recievedLen, &endpoint);
+            if (p == NETWORK_READPACKET_SUCCESS)
+            {
+                auto sender = endpoint->GetHostname();
+                std::printf(">> Recieved packet from %s\n", sender.c_str());
+                std::printf(">>   %s\n", buffer);
+            }
+            usleep(100 * 1000);
+        }
+    }
+}
+
 static void fetch_servers()
 {
-    std::string masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
-    if (!gConfigNetwork.master_server_url.empty())
+    if (1 == 1)
     {
-        masterServerUrl = gConfigNetwork.master_server_url;
+        fetch_lan_servers();
     }
-
+    else
     {
-        std::lock_guard<std::mutex> guard(_mutex);
-        _serverEntries.erase(
-            std::remove_if(
-                _serverEntries.begin(), _serverEntries.end(), [](const server_entry& server) { return !server.favourite; }),
-            _serverEntries.end());
-        sort_servers();
-    }
+        std::string masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
+        if (gConfigNetwork.master_server_url.empty() == false)
+        {
+            masterServerUrl = gConfigNetwork.master_server_url;
+        }
 
-    Http::Request request;
-    request.url = masterServerUrl;
-    request.method = Http::Method::GET;
-    request.header["Accept"] = "application/json";
-    status_text = STR_SERVER_LIST_CONNECTING;
-    Http::DoAsync(request, fetch_servers_callback);
+        {
+            std::lock_guard<std::mutex> guard(_mutex);
+            _serverEntries.erase(
+                std::remove_if(
+                    _serverEntries.begin(), _serverEntries.end(), [](const server_entry& server) { return !server.favourite; }),
+                _serverEntries.end());
+            sort_servers();
+        }
+
+        Http::Request request;
+        request.url = masterServerUrl;
+        request.method = Http::Method::GET;
+        request.header["Accept"] = "application/json";
+        status_text = STR_SERVER_LIST_CONNECTING;
+        Http::DoAsync(request, fetch_servers_callback);
+    }
 }
 
 static uint32_t get_total_player_count()
