@@ -660,6 +660,13 @@ static void fetch_lan_servers_worker()
                 auto sender = endpoint->GetHostname();
                 std::printf(">> Recieved packet from %s\n", sender.c_str());
                 auto jinfo = Json::FromString(std::string_view(buffer));
+                
+                auto ip4 = json_array();
+                json_array_append_new(ip4, json_string(sender.c_str()));
+                auto ip = json_object();
+                json_object_set_new(ip, "v4", ip4);
+                json_object_set_new(jinfo, "ip", ip);
+
                 AddServerFromJson(jinfo);
                 json_decref(jinfo);
             }

@@ -281,7 +281,9 @@ private:
 
     json_t* GetBroadcastJson()
     {
-        return network_get_server_info_as_json();
+        auto root = network_get_server_info_as_json();
+        json_object_set(root, "port", json_integer(_port));
+        return root;
     }
 
     static std::string GenerateAdvertiseKey()
