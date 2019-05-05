@@ -39,6 +39,12 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
         return a.favourite ? -1 : 1;
     }
 
+    // Order by local
+    if (a.local != b.local)
+    {
+        return a.local ? 1 : -1;
+    }
+
     // Then by version
     bool serverACompatible = a.version == network_get_version();
     bool serverBCompatible = b.version == network_get_version();
@@ -241,6 +247,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
                 auto entry = ServerListEntry::FromJson(jinfo);
                 if (entry.has_value())
                 {
+                    entry.value().local = true;
                     entries.push_back(entry.value());
                 }
 

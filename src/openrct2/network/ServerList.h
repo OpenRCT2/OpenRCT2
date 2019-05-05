@@ -29,6 +29,7 @@ struct ServerListEntry
     bool favourite{};
     uint8_t players{};
     uint8_t maxplayers{};
+    bool local{};
 
     int32_t CompareTo(const ServerListEntry& other) const;
     bool IsVersionValid() const;
