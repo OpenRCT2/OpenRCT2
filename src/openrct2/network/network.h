@@ -10,6 +10,7 @@
 #pragma once
 
 #define NETWORK_DEFAULT_PORT 11753
+#define NETWORK_LAN_BROADCAST_PORT 11754
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #include "../common.h"

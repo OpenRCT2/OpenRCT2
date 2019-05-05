@@ -47,8 +47,6 @@ enum MASTER_SERVER_STATUS
 constexpr int32_t MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
 constexpr int32_t MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
 
-constexpr int32_t LAN_BROADCAST_PORT = 11754;
-
 class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
 private:
@@ -85,12 +83,22 @@ public:
 
     void Update() override
     {
+        UpdateLAN();
+        if (gConfigNetwork.advertise)
+        {
+            UpdateWAN();
+        }
+    }
+
+private:
+    void UpdateLAN()
+    {
         auto ticks = Platform::GetTicks();
         if (ticks > _lastListenTime + 500)
         {
             if (_lanListener->GetStatus() != SOCKET_STATUS_LISTENING)
             {
-                _lanListener->Listen(LAN_BROADCAST_PORT);
+                _lanListener->Listen(NETWORK_LAN_BROADCAST_PORT);
             }
             else
             {
@@ -101,12 +109,12 @@ public:
                 if (p == NETWORK_READPACKET_SUCCESS)
                 {
                     std::string sender = endpoint->GetHostname();
-                    std::printf("\r>> Received %zu bytes from %s\n", recievedBytes, sender.c_str());
+                    log_verbose("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
 
                     auto body = GetBroadcastJson();
                     auto bodyDump = json_dumps(body, JSON_COMPACT);
                     size_t sendLen = strlen(bodyDump) + 1;
-                    std::printf("\r>> Sending %zu bytes back to %s\n", sendLen, sender.c_str());
+                    log_verbose("Sending %zu bytes back to %s", sendLen, sender.c_str());
                     _lanListener->SendData(*endpoint, bodyDump, sendLen);
                     free(bodyDump);
                     json_decref(body);
@@ -114,33 +122,30 @@ public:
             }
             _lastListenTime = ticks;
         }
+    }
 
-        if (gConfigNetwork.advertise)
+    void UpdateWAN()
+    {
+        switch (_status)
         {
-            /*
-            switch (_status)
-            {
-                case ADVERTISE_STATUS::UNREGISTERED:
-                    if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
-                    {
-                        SendRegistration(_forceIPv4);
-                    }
-                    break;
-                case ADVERTISE_STATUS::REGISTERED:
-                    if (platform_get_ticks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
-                    {
-                        SendHeartbeat();
-                    }
-                    break;
-                // exhaust enum values to satisfy clang
-                case ADVERTISE_STATUS::DISABLED:
-                    break;
-            }
-            */
+            case ADVERTISE_STATUS::UNREGISTERED:
+                if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
+                {
+                    SendRegistration(_forceIPv4);
+                }
+                break;
+            case ADVERTISE_STATUS::REGISTERED:
+                if (platform_get_ticks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
+                {
+                    SendHeartbeat();
+                }
+                break;
+            // exhaust enum values to satisfy clang
+            case ADVERTISE_STATUS::DISABLED:
+                break;
         }
     }
 
-private:
     void SendRegistration(bool forceIPv4)
     {
         _lastAdvertiseTime = platform_get_ticks();

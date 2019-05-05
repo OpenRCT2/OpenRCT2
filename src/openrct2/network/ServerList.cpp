@@ -217,15 +217,18 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
         constexpr auto RECV_DELAY_MS = 10;
         constexpr auto RECV_WAIT_MS = 2000;
 
-        std::vector<ServerListEntry> entries;
+        auto broadcastAddress = "192.168.1.255";
+
         std::string msg = "Are you an OpenRCT2 server?";
         auto udpSocket = CreateUdpSocket();
-        auto len = udpSocket->SendData("192.168.1.255", 11754, msg.data(), msg.size());
+        log_verbose("Broadcasting %zu bytes to the LAN (%s)", msg.size(), broadcastAddress);
+        auto len = udpSocket->SendData(broadcastAddress, NETWORK_LAN_BROADCAST_PORT, msg.data(), msg.size());
         if (len != msg.size())
         {
             throw std::runtime_error("Unable to broadcast server query.");
         }
 
+        std::vector<ServerListEntry> entries;
         char buffer[1024]{};
         size_t recievedLen{};
         std::unique_ptr<INetworkEndpoint> endpoint;
@@ -235,7 +238,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
             if (p == NETWORK_READPACKET_SUCCESS)
             {
                 auto sender = endpoint->GetHostname();
-                std::printf(">> Recieved packet from %s\n", sender.c_str());
+                log_verbose("Received %zu bytes back from %s", recievedLen, sender.c_str());
                 auto jinfo = Json::FromString(std::string_view(buffer));
 
                 auto ip4 = json_array();
