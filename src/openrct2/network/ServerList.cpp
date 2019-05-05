@@ -240,7 +240,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
         constexpr auto RECV_DELAY_MS = 10;
         constexpr auto RECV_WAIT_MS = 2000;
 
-        std::string msg = "Are you an OpenRCT2 server?";
+        std::string_view msg = NETWORK_LAN_BROADCAST_MSG;
         auto udpSocket = CreateUdpSocket();
 
         log_verbose("Broadcasting %zu bytes to the LAN (%s)", msg.size(), broadcastAddress);
