@@ -557,7 +557,7 @@ static void server_list_fetch_servers_begin()
             auto entries = lanF.get();
             allEntries.insert(allEntries.end(), entries.begin(), entries.end());
         }
-        catch (const std::exception& e)
+        catch (...)
         {
         }
 
@@ -571,7 +571,7 @@ static void server_list_fetch_servers_begin()
         {
             status = e.StatusText;
         }
-        catch (const std::exception& e)
+        catch (...)
         {
             status = STR_SERVER_LIST_NO_CONNECTION;
         }

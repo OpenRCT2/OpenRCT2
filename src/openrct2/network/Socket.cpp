@@ -819,7 +819,7 @@ std::unique_ptr<IUdpSocket> CreateUdpSocket()
 }
 
 #    ifdef _WIN32
-std::vector<INTERFACE_INFO> GetNetworkInterfaces()
+static std::vector<INTERFACE_INFO> GetNetworkInterfaces()
 {
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock == -1)
@@ -834,8 +834,8 @@ std::vector<INTERFACE_INFO> GetNetworkInterfaces()
     {
         interfaces.resize(capacity);
         if (WSAIoctl(
-                sock, SIO_GET_INTERFACE_LIST, nullptr, 0, interfaces.data(), capacity * sizeof(INTERFACE_INFO), &len, nullptr,
-                nullptr)
+                sock, SIO_GET_INTERFACE_LIST, nullptr, 0, interfaces.data(), (DWORD)(capacity * sizeof(INTERFACE_INFO)), &len,
+                nullptr, nullptr)
             == 0)
         {
             break;
@@ -870,7 +870,7 @@ std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
         memcpy(&address, &ifo.iiAddress.Address, sizeof(sockaddr));
         ((sockaddr_in*)&address)->sin_addr.s_addr = ifo.iiAddress.AddressIn.sin_addr.s_addr
             | ~ifo.iiNetmask.AddressIn.sin_addr.s_addr;
-        baddresses.push_back(std::make_unique<NetworkEndpoint>(address, sizeof(sockaddr)));
+        baddresses.push_back(std::make_unique<NetworkEndpoint>((const sockaddr*)&address, (socklen_t)sizeof(sockaddr)));
     }
 #    else
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
