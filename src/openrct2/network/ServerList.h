@@ -35,7 +35,7 @@ struct ServerListEntry
     int32_t CompareTo(const ServerListEntry& other) const;
     bool IsVersionValid() const;
 
-    static std::optional<ServerListEntry> FromJson(const json_t* root);
+    static opt::optional<ServerListEntry> FromJson(const json_t* root);
 };
 
 class ServerList

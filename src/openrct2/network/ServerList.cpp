@@ -75,7 +75,7 @@ bool ServerListEntry::IsVersionValid() const
     return version.empty() || version == network_get_version();
 }
 
-std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
+opt::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
 {
     auto port = json_object_get(server, "port");
     auto name = json_object_get(server, "name");
