@@ -7,35 +7,33 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <chrono>
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/core/Json.hpp>
-#include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/interface/Colour.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/network/Http.h>
-#include <openrct2/network/ServerList.h>
-#include <openrct2/network/network.h>
-#include <openrct2/platform/platform.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
-#include <tuple>
+#ifndef DISABLE_NETWORK
 
-#ifndef DISABLE_HTTP
-using namespace OpenRCT2::Network;
-#endif
+#    include <algorithm>
+#    include <chrono>
+#    include <openrct2-ui/interface/Dropdown.h>
+#    include <openrct2-ui/interface/Widget.h>
+#    include <openrct2-ui/windows/Window.h>
+#    include <openrct2/Context.h>
+#    include <openrct2/config/Config.h>
+#    include <openrct2/core/Json.hpp>
+#    include <openrct2/core/String.hpp>
+#    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/interface/Colour.h>
+#    include <openrct2/localisation/Localisation.h>
+#    include <openrct2/network/Http.h>
+#    include <openrct2/network/ServerList.h>
+#    include <openrct2/network/network.h>
+#    include <openrct2/platform/platform.h>
+#    include <openrct2/sprites.h>
+#    include <openrct2/util/Util.h>
+#    include <tuple>
 
-#define WWIDTH_MIN 500
-#define WHEIGHT_MIN 300
-#define WWIDTH_MAX 1200
-#define WHEIGHT_MAX 800
-#define ITEM_HEIGHT (3 + 9 + 3)
+#    define WWIDTH_MIN 500
+#    define WHEIGHT_MIN 300
+#    define WWIDTH_MAX 1200
+#    define WHEIGHT_MAX 800
+#    define ITEM_HEIGHT (3 + 9 + 3)
 
 static char _playerName[32 + 1];
 static ServerList _serverList;
@@ -613,3 +611,5 @@ static void server_list_fetch_servers_check(rct_window* w)
         }
     }
 }
+
+#endif

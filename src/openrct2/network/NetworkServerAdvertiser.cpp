@@ -32,10 +32,6 @@
 #    include <memory>
 #    include <string>
 
-#    ifndef DISABLE_HTTP
-
-using namespace OpenRCT2::Network;
-
 enum MASTER_SERVER_STATUS
 {
     MASTER_SERVER_STATUS_OK = 200,
@@ -52,7 +48,12 @@ class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 private:
     uint16_t _port;
 
+    std::unique_ptr<IUdpSocket> _lanListener;
+    uint32_t _lastListenTime{};
+
     ADVERTISE_STATUS _status = ADVERTISE_STATUS::UNREGISTERED;
+
+#    ifndef DISABLE_HTTP
     uint32_t _lastAdvertiseTime = 0;
     uint32_t _lastHeartbeatTime = 0;
 
@@ -64,16 +65,16 @@ private:
 
     // See https://github.com/OpenRCT2/OpenRCT2/issues/6277 and 4953
     bool _forceIPv4 = false;
-
-    std::unique_ptr<IUdpSocket> _lanListener;
-    uint32_t _lastListenTime{};
+#    endif
 
 public:
     explicit NetworkServerAdvertiser(uint16_t port)
     {
         _port = port;
-        _key = GenerateAdvertiseKey();
         _lanListener = CreateUdpSocket();
+#    ifndef DISABLE_HTTP
+        _key = GenerateAdvertiseKey();
+#    endif
     }
 
     ADVERTISE_STATUS GetStatus() const override
@@ -84,10 +85,12 @@ public:
     void Update() override
     {
         UpdateLAN();
+#    ifndef DISABLE_HTTP
         if (gConfigNetwork.advertise)
         {
             UpdateWAN();
         }
+#    endif
     }
 
 private:
@@ -106,24 +109,34 @@ private:
                 size_t recievedBytes{};
                 std::unique_ptr<INetworkEndpoint> endpoint;
                 auto p = _lanListener->ReceiveData(buffer, sizeof(buffer) - 1, &recievedBytes, &endpoint);
-                if (p == NETWORK_READPACKET_SUCCESS && String::Equals(buffer, NETWORK_LAN_BROADCAST_MSG))
+                if (p == NETWORK_READPACKET_SUCCESS)
                 {
                     std::string sender = endpoint->GetHostname();
                     log_verbose("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
-
-                    auto body = GetBroadcastJson();
-                    auto bodyDump = json_dumps(body, JSON_COMPACT);
-                    size_t sendLen = strlen(bodyDump) + 1;
-                    log_verbose("Sending %zu bytes back to %s", sendLen, sender.c_str());
-                    _lanListener->SendData(*endpoint, bodyDump, sendLen);
-                    free(bodyDump);
-                    json_decref(body);
+                    if (String::Equals(buffer, NETWORK_LAN_BROADCAST_MSG))
+                    {
+                        auto body = GetBroadcastJson();
+                        auto bodyDump = json_dumps(body, JSON_COMPACT);
+                        size_t sendLen = strlen(bodyDump) + 1;
+                        log_verbose("Sending %zu bytes back to %s", sendLen, sender.c_str());
+                        _lanListener->SendData(*endpoint, bodyDump, sendLen);
+                        free(bodyDump);
+                        json_decref(body);
+                    }
                 }
             }
             _lastListenTime = ticks;
         }
     }
 
+    json_t* GetBroadcastJson()
+    {
+        auto root = network_get_server_info_as_json();
+        json_object_set(root, "port", json_integer(_port));
+        return root;
+    }
+
+#    ifndef DISABLE_HTTP
     void UpdateWAN()
     {
         switch (_status)
@@ -148,6 +161,8 @@ private:
 
     void SendRegistration(bool forceIPv4)
     {
+        using namespace OpenRCT2::Network;
+
         _lastAdvertiseTime = platform_get_ticks();
 
         // Send the registration request
@@ -181,6 +196,8 @@ private:
 
     void SendHeartbeat()
     {
+        using namespace OpenRCT2::Network;
+
         Http::Request request;
         request.url = GetMasterServerUrl();
         request.method = Http::Method::PUT;
@@ -284,13 +301,6 @@ private:
         return root;
     }
 
-    json_t* GetBroadcastJson()
-    {
-        auto root = network_get_server_info_as_json();
-        json_object_set(root, "port", json_integer(_port));
-        return root;
-    }
-
     static std::string GenerateAdvertiseKey()
     {
         // Generate a string of 16 random hex characters (64-integer key as a hex formatted string)
@@ -316,30 +326,12 @@ private:
         }
         return result;
     }
+#    endif
 };
 
 std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port)
 {
     return std::make_unique<NetworkServerAdvertiser>(port);
 }
-
-#    else // DISABLE_HTTP
-
-class DummyNetworkServerAdvertiser final : public INetworkServerAdvertiser
-{
-public:
-    virtual ADVERTISE_STATUS GetStatus() const override
-    {
-        return ADVERTISE_STATUS::DISABLED;
-    };
-    virtual void Update() override{};
-};
-
-std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port)
-{
-    return std::make_unique<DummyNetworkServerAdvertiser>();
-}
-
-#    endif // DISABLE_HTTP
 
 #endif // DISABLE_NETWORK

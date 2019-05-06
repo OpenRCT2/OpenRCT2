@@ -7,26 +7,27 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ServerList.h"
+#ifndef DISABLE_NETWORK
 
-#include "../Context.h"
-#include "../PlatformEnvironment.h"
-#include "../config/Config.h"
-#include "../core/FileStream.hpp"
-#include "../core/Json.hpp"
-#include "../core/Memory.hpp"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../network/Http.h"
-#include "../platform/platform.h"
-#include "Socket.h"
-#include "network.h"
+#    include "ServerList.h"
 
-#include <algorithm>
-#include <numeric>
+#    include "../Context.h"
+#    include "../PlatformEnvironment.h"
+#    include "../config/Config.h"
+#    include "../core/FileStream.hpp"
+#    include "../core/Json.hpp"
+#    include "../core/Memory.hpp"
+#    include "../core/Path.hpp"
+#    include "../core/String.hpp"
+#    include "../network/Http.h"
+#    include "../platform/platform.h"
+#    include "Socket.h"
+#    include "network.h"
+
+#    include <algorithm>
+#    include <numeric>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Network;
 
 int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
 {
@@ -243,7 +244,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
         std::string_view msg = NETWORK_LAN_BROADCAST_MSG;
         auto udpSocket = CreateUdpSocket();
 
-        log_verbose("Broadcasting %zu bytes to the LAN (%s)", msg.size(), broadcastAddress);
+        log_verbose("Broadcasting %zu bytes to the LAN (%s)", msg.size(), broadcastAddress.c_str());
         auto len = udpSocket->SendData(broadcastAddress, NETWORK_LAN_BROADCAST_PORT, msg.data(), msg.size());
         if (len != msg.size())
         {
@@ -318,9 +319,11 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
 
 std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync()
 {
-#ifdef DISABLE_HTTP
+#    ifdef DISABLE_HTTP
     return std::async(std::launch::deferred, [] { return std::vector<ServerListEntry>(); });
-#else
+#    else
+    using namespace OpenRCT2::Network;
+
     auto p = std::make_shared<std::promise<std::vector<ServerListEntry>>>();
     auto f = p->get_future();
 
@@ -386,7 +389,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
         json_decref(root);
     });
     return f;
-#endif
+#    endif
 }
 
 uint32_t ServerList::GetTotalPlayerCount() const
@@ -395,3 +398,5 @@ uint32_t ServerList::GetTotalPlayerCount() const
         return acc + entry.players;
     });
 }
+
+#endif
