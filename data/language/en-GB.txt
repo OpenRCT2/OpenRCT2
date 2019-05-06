@@ -3757,6 +3757,14 @@ STR_6306    :{SMALLFONT}{BLACK}Experimental option to use multiple threads to re
 STR_6307    :Colour scheme: {BLACK}{STRINGID}
 STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Reconnect
+STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Next: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(surface)
+STR_6313    :(slope {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerance {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Pathfind Goal: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Pathfind history:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 
 #############
 # Scenarios #

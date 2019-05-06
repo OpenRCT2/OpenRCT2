@@ -3943,6 +3943,15 @@ enum
 
     STR_MULTIPLAYER_RECONNECT = 6309,
 
+    STR_PEEP_DEBUG_POSITION = 6310,
+    STR_PEEP_DEBUG_NEXT = 6311,
+    STR_PEEP_DEBUG_NEXT_SURFACE = 6312,
+    STR_PEEP_DEBUG_NEXT_SLOPE = 6313,
+    STR_PEEP_DEBUG_DEST = 6314,
+    STR_PEEP_DEBUG_PATHFIND_GOAL = 6315,
+    STR_PEEP_DEBUG_PATHFIND_HISTORY = 6316,
+    STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM = 6317,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
