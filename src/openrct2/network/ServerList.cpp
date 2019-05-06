@@ -305,7 +305,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
         {
             try
             {
-                auto entries = std::move(f.get());
+                auto entries = f.get();
                 mergedEntries.insert(mergedEntries.begin(), entries.begin(), entries.end());
             }
             catch (...)

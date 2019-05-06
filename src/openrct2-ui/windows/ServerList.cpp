@@ -588,7 +588,7 @@ static void server_list_fetch_servers_check(rct_window* w)
         {
             try
             {
-                auto [entries, statusText] = std::move(_fetchFuture.get());
+                auto [entries, statusText] = _fetchFuture.get();
                 _serverList.AddRange(entries);
                 _numPlayersOnline = _serverList.GetTotalPlayerCount();
                 _statusText = STR_X_PLAYERS_ONLINE;
