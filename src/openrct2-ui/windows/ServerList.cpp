@@ -545,7 +545,7 @@ static void server_list_fetch_servers_begin()
     _serverList.ReadAndAddFavourites();
     _statusText = STR_SERVER_LIST_CONNECTING;
 
-    _fetchFuture = std::async([] {
+    _fetchFuture = std::async(std::launch::async, [] {
         // Spin off background fetches
         auto lanF = _serverList.FetchLocalServerListAsync();
         auto wanF = _serverList.FetchOnlineServerListAsync();

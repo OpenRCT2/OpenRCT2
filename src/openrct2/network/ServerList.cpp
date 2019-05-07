@@ -237,7 +237,7 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries)
 std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(const INetworkEndpoint& broadcastEndpoint)
 {
     auto broadcastAddress = broadcastEndpoint.GetHostname();
-    return std::async([broadcastAddress] {
+    return std::async(std::launch::async, [broadcastAddress] {
         constexpr auto RECV_DELAY_MS = 10;
         constexpr auto RECV_WAIT_MS = 2000;
 
@@ -287,7 +287,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
 
 std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync()
 {
-    return std::async([&] {
+    return std::async(std::launch::async, [&] {
         // Get all possible LAN broadcast addresses
         auto broadcastEndpoints = GetBroadcastAddresses();
 
