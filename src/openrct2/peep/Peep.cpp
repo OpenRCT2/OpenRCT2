@@ -1742,9 +1742,9 @@ Peep* Peep::Generate(const CoordsXYZ coords)
 
     peep->mass = (scenario_rand() & 0x1F) + 45;
     peep->path_check_optimisation = 0;
-    peep->interaction_ride_index = 0xFF;
+    peep->interaction_ride_index = RIDE_ID_NULL;
     peep->type = PEEP_TYPE_GUEST;
-    peep->previous_ride = 0xFF;
+    peep->previous_ride = RIDE_ID_NULL;
     peep->thoughts->type = PEEP_THOUGHT_TYPE_NONE;
     peep->window_invalidate_flags = 0;
 
@@ -1808,7 +1808,7 @@ Peep* Peep::Generate(const CoordsXYZ coords)
     /* Initial value will vary by -15..16 */
     int8_t hungerDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->hunger = std::clamp(peep->hunger + hungerDelta, 0, 255);
+    peep->hunger = std::clamp(peep->hunger + hungerDelta, 0, PEEP_MAX_HUNGER);
 
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
@@ -1817,7 +1817,7 @@ Peep* Peep::Generate(const CoordsXYZ coords)
     /* Initial value will vary by -15..16 */
     int8_t thirstDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->thirst = std::clamp(peep->thirst + thirstDelta, 0, 0xFF);
+    peep->thirst = std::clamp(peep->thirst + thirstDelta, 0, PEEP_MAX_THIRST);
 
     peep->toilet = 0;
     peep->time_to_consume = 0;
@@ -1842,7 +1842,7 @@ Peep* Peep::Generate(const CoordsXYZ coords)
         cash = 0;
     }
 
-    if (gGuestInitialCash == (money16)(uint16_t)0xFFFF)
+    if (gGuestInitialCash == MONEY16_UNDEFINED)
     {
         cash = 0;
     }
@@ -1856,7 +1856,7 @@ Peep* Peep::Generate(const CoordsXYZ coords)
     peep->pathfind_goal.direction = 0xFF;
     peep->item_standard_flags = 0;
     peep->item_extra_flags = 0;
-    peep->guest_heading_to_ride_id = 0xFF;
+    peep->guest_heading_to_ride_id = RIDE_ID_NULL;
     peep->litter_count = 0;
     peep->disgusting_count = 0;
     peep->vandalism_seen = 0;
