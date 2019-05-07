@@ -346,7 +346,7 @@ void sprite_clear_all_unused()
  */
 rct_sprite* create_sprite(uint8_t bl)
 {
-    size_t linkedListTypeOffset = SPRITE_LIST_UNKNOWN * 2;
+    SPRITE_LIST linkedListTypeOffset = SPRITE_LIST_UNKNOWN;
     if ((bl & 2) != 0)
     {
         // 69EC96;
@@ -355,7 +355,7 @@ rct_sprite* create_sprite(uint8_t bl)
         {
             return nullptr;
         }
-        linkedListTypeOffset = SPRITE_LIST_MISC * 2;
+        linkedListTypeOffset = SPRITE_LIST_MISC;
     }
     else if (gSpriteListCount[SPRITE_LIST_NULL] == 0)
     {
@@ -364,7 +364,7 @@ rct_sprite* create_sprite(uint8_t bl)
 
     rct_sprite_generic* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_NULL]))->generic;
 
-    move_sprite_to_list((rct_sprite*)sprite, (uint8_t)linkedListTypeOffset);
+    move_sprite_to_list((rct_sprite*)sprite, linkedListTypeOffset);
 
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
@@ -392,12 +392,12 @@ rct_sprite* create_sprite(uint8_t bl)
  * of the desired linked list in a uint16_t array. Known valid values are
  * 2, 4, 6, 8 or 10 (SPRITE_LIST_... * 2)
  */
-void move_sprite_to_list(rct_sprite* sprite, uint8_t newListOffset)
+void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newList)
 {
     rct_sprite_generic* unkSprite = &sprite->generic;
     uint8_t oldListOffset = unkSprite->linked_list_type_offset;
     int32_t oldList = oldListOffset >> 1;
-    int32_t newList = newListOffset >> 1;
+    int32_t newListOffset = newList * 2;
 
     // No need to move if the sprite is already in the desired list
     if (oldListOffset == newListOffset)
@@ -684,7 +684,7 @@ void sprite_remove(rct_sprite* sprite)
         user_string_free(peep->name_string_idx);
     }
 
-    move_sprite_to_list(sprite, SPRITE_LIST_NULL * 2);
+    move_sprite_to_list(sprite, SPRITE_LIST_NULL);
     sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
     _spriteFlashingList[sprite->generic.sprite_index] = false;
 
@@ -765,7 +765,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
     if (litter == nullptr)
         return;
 
-    move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER * 2);
+    move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER);
     litter->sprite_direction = direction;
     litter->sprite_width = 6;
     litter->sprite_height_negative = 6;

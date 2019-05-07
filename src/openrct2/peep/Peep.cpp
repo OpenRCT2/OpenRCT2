@@ -1715,7 +1715,7 @@ Peep* peep_generate(int32_t x, int32_t y, int32_t z)
 
     Peep* peep = (Peep*)create_sprite(1);
 
-    move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
+    move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP);
 
     peep->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
     peep->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
