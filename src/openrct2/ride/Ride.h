@@ -631,7 +631,8 @@ enum
 {
     RIDE_STATUS_CLOSED,
     RIDE_STATUS_OPEN,
-    RIDE_STATUS_TESTING
+    RIDE_STATUS_TESTING,
+    RIDE_STATUS_SIMULATING,
 };
 
 enum
@@ -1074,7 +1075,7 @@ rct_ride_measurement* ride_get_measurement(Ride* ride, rct_string_id* message);
 void ride_breakdown_add_news_item(Ride* ride);
 Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, int32_t isApplying);
-int32_t ride_is_valid_for_test(Ride* ride, int32_t goingToBeOpen, int32_t isApplying);
+int32_t ride_is_valid_for_test(Ride* ride, int32_t status, int32_t isApplying);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
 int32_t sub_6C683D(

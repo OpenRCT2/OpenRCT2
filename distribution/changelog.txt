@@ -1,5 +1,6 @@
 0.2.2+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#485] Rides can now be simulated with ghost trains during construction.
 - Feature: [#2339] Find local servers automatically when fetching servers.
 - Feature: [#7296] Allow assigning a keyboard shortcut for the scenery picker.
 - Feature: [#8029] Add the Hungarian Forint (HUF) to the list of available currencies.

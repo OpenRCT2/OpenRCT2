@@ -2026,7 +2026,7 @@ static void window_ride_construction_update(rct_window* w)
 
     // Close construction window if ride is not closed,
     // editing ride while open will cause many issues until properly handled
-    if (ride->status != RIDE_STATUS_CLOSED)
+    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
     {
         window_close(w);
         return;

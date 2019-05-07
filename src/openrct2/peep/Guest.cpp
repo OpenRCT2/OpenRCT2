@@ -5404,7 +5404,7 @@ void Guest::UpdateQueuing()
         return;
     }
     Ride* ride = get_ride(current_ride);
-    if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING)
+    if (ride->status != RIDE_STATUS_OPEN)
     {
         RemoveFromQueue();
         SetState(PEEP_STATE_1);
