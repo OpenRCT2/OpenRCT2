@@ -949,7 +949,7 @@ Peep* Park::GenerateGuest()
     if (spawn != nullptr)
     {
         auto direction = direction_reverse(spawn->direction);
-        peep = Peep::Generate({spawn->x, spawn->y, spawn->z});
+        peep = Peep::Generate({ spawn->x, spawn->y, spawn->z });
         if (peep != nullptr)
         {
             peep->sprite_direction = direction << 3;
