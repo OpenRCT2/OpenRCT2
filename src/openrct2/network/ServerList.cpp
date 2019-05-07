@@ -252,32 +252,40 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
         }
 
         std::vector<ServerListEntry> entries;
-        char buffer[1024]{};
-        size_t recievedLen{};
-        std::unique_ptr<INetworkEndpoint> endpoint;
         for (int i = 0; i < (RECV_WAIT_MS / RECV_DELAY_MS); i++)
         {
-            auto p = udpSocket->ReceiveData(buffer, sizeof(buffer) - 1, &recievedLen, &endpoint);
-            if (p == NETWORK_READPACKET_SUCCESS)
+            try
             {
-                auto sender = endpoint->GetHostname();
-                log_verbose("Received %zu bytes back from %s", recievedLen, sender.c_str());
-                auto jinfo = Json::FromString(std::string_view(buffer));
-
-                auto ip4 = json_array();
-                json_array_append_new(ip4, json_string(sender.c_str()));
-                auto ip = json_object();
-                json_object_set_new(ip, "v4", ip4);
-                json_object_set_new(jinfo, "ip", ip);
-
-                auto entry = ServerListEntry::FromJson(jinfo);
-                if (entry.has_value())
+                // Start with initialised buffer in case we receive a non-terminated string
+                char buffer[1024]{};
+                size_t recievedLen{};
+                std::unique_ptr<INetworkEndpoint> endpoint;
+                auto p = udpSocket->ReceiveData(buffer, sizeof(buffer) - 1, &recievedLen, &endpoint);
+                if (p == NETWORK_READPACKET_SUCCESS)
                 {
-                    (*entry).local = true;
-                    entries.push_back(*entry);
-                }
+                    auto sender = endpoint->GetHostname();
+                    log_verbose("Received %zu bytes back from %s", recievedLen, sender.c_str());
+                    auto jinfo = Json::FromString(std::string_view(buffer));
 
-                json_decref(jinfo);
+                    auto ip4 = json_array();
+                    json_array_append_new(ip4, json_string(sender.c_str()));
+                    auto ip = json_object();
+                    json_object_set_new(ip, "v4", ip4);
+                    json_object_set_new(jinfo, "ip", ip);
+
+                    auto entry = ServerListEntry::FromJson(jinfo);
+                    if (entry.has_value())
+                    {
+                        (*entry).local = true;
+                        entries.push_back(*entry);
+                    }
+
+                    json_decref(jinfo);
+                }
+            }
+            catch (const std::exception& e)
+            {
+                log_warning("Error receiving data: %s", e.what());
             }
             platform_sleep(RECV_DELAY_MS);
         }
@@ -320,7 +328,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
 std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync()
 {
 #    ifdef DISABLE_HTTP
-    return std::async(std::launch::deferred, [] { return std::vector<ServerListEntry>(); });
+    return {};
 #    else
     using namespace OpenRCT2::Network;
 

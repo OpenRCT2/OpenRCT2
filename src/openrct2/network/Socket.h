@@ -50,9 +50,7 @@ interface INetworkEndpoint
 interface ITcpSocket
 {
 public:
-    virtual ~ITcpSocket()
-    {
-    }
+    virtual ~ITcpSocket() = default;
 
     virtual SOCKET_STATUS GetStatus() abstract;
     virtual const char* GetError() abstract;
@@ -78,9 +76,7 @@ public:
 interface IUdpSocket
 {
 public:
-    virtual ~IUdpSocket()
-    {
-    }
+    virtual ~IUdpSocket() = default;
 
     virtual SOCKET_STATUS GetStatus() abstract;
     virtual const char* GetError() abstract;
