@@ -613,40 +613,13 @@ public:
         }
 
         // Create the listening socket
-        _socket = socket(ss.ss_family, SOCK_DGRAM, IPPROTO_UDP);
-        if (_socket == INVALID_SOCKET)
-        {
-            throw SocketException("Unable to create socket.");
-        }
-
-        // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
-        if (!SetOption(_socket, IPPROTO_IPV6, IPV6_V6ONLY, false))
-        {
-            log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
-        }
-
-        if (!SetOption(_socket, SOL_SOCKET, SO_REUSEADDR, true))
-        {
-            log_error("SO_REUSEADDR failed. %d", LAST_SOCKET_ERROR());
-        }
-
-        // Enable send and receiving of broadcast messages
-        if (!SetOption(_socket, SOL_SOCKET, SO_BROADCAST, true))
-        {
-            log_error("SO_BROADCAST failed. %d", LAST_SOCKET_ERROR());
-        }
-
+        _socket = CreateSocket();
         try
         {
             // Bind to address:port and listen
             if (bind(_socket, (sockaddr*)&ss, ss_len) != 0)
             {
                 throw SocketException("Unable to bind to socket.");
-            }
-
-            if (!SetNonBlocking(_socket, true))
-            {
-                throw SocketException("Failed to set non-blocking mode.");
             }
         }
         catch (const std::exception&)
@@ -675,22 +648,7 @@ public:
     {
         if (_socket == INVALID_SOCKET)
         {
-            _socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-            if (_socket == INVALID_SOCKET)
-            {
-                throw SocketException("Unable to create socket.");
-            }
-
-            // Enable send and receiving of broadcast messages
-            if (!SetOption(_socket, SOL_SOCKET, SO_BROADCAST, true))
-            {
-                log_error("SO_BROADCAST failed. %d", LAST_SOCKET_ERROR());
-            }
-
-            if (!SetNonBlocking(_socket, true))
-            {
-                throw SocketException("Failed to set non-blocking mode.");
-            }
+            _socket = CreateSocket();
         }
 
         const auto& dest = dynamic_cast<const NetworkEndpoint*>(&destination);
@@ -764,6 +722,39 @@ private:
         _socket = socket;
         _hostName = hostName;
         _status = SOCKET_STATUS_CONNECTED;
+    }
+
+    SOCKET CreateSocket()
+    {
+        auto sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+        if (sock == INVALID_SOCKET)
+        {
+            throw SocketException("Unable to create socket.");
+        }
+
+        // Enable send and receiving of broadcast messages
+        if (!SetOption(sock, SOL_SOCKET, SO_BROADCAST, true))
+        {
+            log_warning("SO_BROADCAST failed. %d", LAST_SOCKET_ERROR());
+        }
+
+        // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
+        if (!SetOption(_socket, IPPROTO_IPV6, IPV6_V6ONLY, false))
+        {
+            log_warning("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
+        }
+
+        if (!SetOption(_socket, SOL_SOCKET, SO_REUSEADDR, true))
+        {
+            log_warning("SO_REUSEADDR failed. %d", LAST_SOCKET_ERROR());
+        }
+
+        if (!SetNonBlocking(sock, true))
+        {
+            throw SocketException("Failed to set non-blocking mode.");
+        }
+
+        return sock;
     }
 
     void CloseSocket()
