@@ -24,7 +24,7 @@ namespace Json
     json_t* ReadFromFile(const utf8* path, size_t maxSize = MAX_JSON_SIZE);
     void WriteToFile(const utf8* path, const json_t* json, size_t flags = 0);
 
-    json_t* FromString(const std::string_view& raw);
+    json_t* FromString(std::string_view raw);
 } // namespace Json
 
 class JsonException final : public std::runtime_error

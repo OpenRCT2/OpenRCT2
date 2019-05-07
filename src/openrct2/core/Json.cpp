@@ -53,7 +53,7 @@ namespace Json
         fs.Write(jsonOutput, jsonOutputSize);
     }
 
-    json_t* FromString(const std::string_view& raw)
+    json_t* FromString(std::string_view raw)
     {
         json_t* root;
         json_error_t error;
