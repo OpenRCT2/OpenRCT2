@@ -714,7 +714,7 @@ public: // Peep
     void Pickup();
     void PickupAbort(int32_t old_x);
     bool Place(TileCoordsXYZ location, bool apply);
-    static Peep* Generate(int32_t x, int32_t y, int32_t z);
+    static Peep* Generate(const CoordsXYZ coords);
     void RemoveFromQueue();
     void RemoveFromRide();
 

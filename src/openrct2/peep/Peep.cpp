@@ -1708,7 +1708,7 @@ static constexpr const uint8_t tshirt_colours[] = {
  *
  *  rct2: 0x0069A05D
  */
-Peep* Peep::Generate(int32_t x, int32_t y, int32_t z)
+Peep* Peep::Generate(const CoordsXYZ coords)
 {
     if (gSpriteListCount[SPRITE_LIST_NULL] < 400)
         return nullptr;
@@ -1737,7 +1737,7 @@ Peep* Peep::Generate(int32_t x, int32_t y, int32_t z)
 
     peep->sprite_direction = 0;
 
-    sprite_move(x, y, z, (rct_sprite*)peep);
+    sprite_move(coords.x, coords.y, coords.z, (rct_sprite*)peep);
     peep->Invalidate();
 
     peep->mass = (scenario_rand() & 0x1F) + 45;
@@ -1777,13 +1777,13 @@ Peep* Peep::Generate(int32_t x, int32_t y, int32_t z)
 
     peep->intensity = (intensityHighest << 4) | intensityLowest;
 
-    uint8_t nausea_tolerance = scenario_rand() & 0x7;
+    uint8_t nauseaTolerance = scenario_rand() & 0x7;
     if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
     {
-        nausea_tolerance += 4;
+        nauseaTolerance += 4;
     }
 
-    peep->nausea_tolerance = nausea_tolerance_distribution[nausea_tolerance];
+    peep->nausea_tolerance = nausea_tolerance_distribution[nauseaTolerance];
 
     /* Scenario editor limits initial guest happiness to between 37..253.
      * To be on the safe side, assume the value could have been hacked
@@ -1794,9 +1794,9 @@ Peep* Peep::Generate(int32_t x, int32_t y, int32_t z)
     if (gGuestInitialHappiness == 0)
         peep->happiness = 128;
     /* Initial value will vary by -15..16 */
-    int8_t happiness_delta = (scenario_rand() & 0x1F) - 15;
+    int8_t happinessDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->happiness = std::clamp(peep->happiness + happiness_delta, 0, PEEP_MAX_HAPPINESS);
+    peep->happiness = std::clamp(peep->happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
     peep->happiness_target = peep->happiness;
     peep->nausea = 0;
     peep->nausea_target = 0;
@@ -1806,18 +1806,18 @@ Peep* Peep::Generate(int32_t x, int32_t y, int32_t z)
      * to any value 0..255. */
     peep->hunger = gGuestInitialHunger;
     /* Initial value will vary by -15..16 */
-    int8_t hunger_delta = (scenario_rand() & 0x1F) - 15;
+    int8_t hungerDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->hunger = std::clamp(peep->hunger + hunger_delta, 0, 255);
+    peep->hunger = std::clamp(peep->hunger + hungerDelta, 0, 255);
 
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
     peep->thirst = gGuestInitialThirst;
     /* Initial value will vary by -15..16 */
-    int8_t thirst_delta = (scenario_rand() & 0x1F) - 15;
+    int8_t thirstDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->thirst = std::clamp(peep->thirst + thirst_delta, 0, 0xFF);
+    peep->thirst = std::clamp(peep->thirst + thirstDelta, 0, 0xFF);
 
     peep->toilet = 0;
     peep->time_to_consume = 0;
@@ -1872,11 +1872,11 @@ Peep* Peep::Generate(int32_t x, int32_t y, int32_t z)
     peep->angriness = 0;
     peep->time_lost = 0;
 
-    uint8_t tshirt_colour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
-    peep->tshirt_colour = tshirt_colours[tshirt_colour];
+    uint8_t tshirtColour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
+    peep->tshirt_colour = tshirt_colours[tshirtColour];
 
-    uint8_t trousers_colour = static_cast<uint8_t>(scenario_rand() % std::size(trouser_colours));
-    peep->trousers_colour = trouser_colours[trousers_colour];
+    uint8_t trousersColour = static_cast<uint8_t>(scenario_rand() % std::size(trouser_colours));
+    peep->trousers_colour = trouser_colours[trousersColour];
 
     /* Minimum energy is capped at 32 and maximum at 128, so this initialises
      * a peep with approx 34%-100% energy. (65 - 32) / (128 - 32) ≈ 34% */
