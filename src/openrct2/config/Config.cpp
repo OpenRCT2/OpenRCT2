@@ -170,11 +170,6 @@ namespace Config
             model->use_vsync = reader->GetBoolean("use_vsync", true);
             model->virtual_floor_style = reader->GetEnum<int32_t>(
                 "virtual_floor_style", VIRTUAL_FLOOR_STYLE_GLASSY, Enum_VirtualFloorStyle);
-
-            // Default config setting is false until ghost trains are implemented #4540
-            model->test_unfinished_tracks = reader->GetBoolean("test_unfinished_tracks", false);
-
-            model->no_test_crashes = reader->GetBoolean("no_test_crashes", false);
             model->date_format = reader->GetEnum<int32_t>("date_format", platform_get_locale_date_format(), Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
@@ -250,8 +245,6 @@ namespace Config
         writer->WriteEnum<int32_t>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
         writer->WriteBoolean("uncap_fps", model->uncap_fps);
         writer->WriteBoolean("use_vsync", model->use_vsync);
-        writer->WriteBoolean("test_unfinished_tracks", model->test_unfinished_tracks);
-        writer->WriteBoolean("no_test_crashes", model->no_test_crashes);
         writer->WriteEnum<int32_t>("date_format", model->date_format, Enum_DateFormat);
         writer->WriteBoolean("auto_staff", model->auto_staff_placement);
         writer->WriteBoolean("handymen_mow_default", model->handymen_mow_default);
