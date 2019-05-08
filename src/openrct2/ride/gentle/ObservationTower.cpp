@@ -54,8 +54,11 @@ void vehicle_visual_observation_tower(
         baseImage_id = (vehicle->animation_frame * 2) + vehicleEntry->base_image_id + 8;
     }
 
-    image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24)
-        | IMAGE_TYPE_REMAP_2_PLUS;
+    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_3(vehicle->colours.body_colour, vehicle->colours.trim_colour << 24);
+    if (vehicle->IsGhost())
+    {
+        image_id = (image_id & 0x7FFFF) | CONSTRUCTION_MARKER;
+    }
     paint_struct* ps = sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1);
     if (ps != nullptr)
     {
