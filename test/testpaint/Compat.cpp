@@ -435,3 +435,9 @@ StationObject* ride_get_station_object(const Ride* ride)
 {
     return nullptr;
 }
+
+bool rct_vehicle::IsGhost() const
+{
+    auto r = get_ride(ride);
+    return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
+}
