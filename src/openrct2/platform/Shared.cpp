@@ -202,17 +202,14 @@ uint8_t platform_get_currency_value(const char* currCode)
 #ifndef _WIN32
 std::string platform_sanitise_filename(const std::string& path)
 {
+    static const std::array<std::string::value_type, 1> prohibited = { '/' };
     auto sanitised = path;
-
-    std::vector<std::string::value_type> prohibited = { '/' };
-
     std::replace_if(
         sanitised.begin(), sanitised.end(),
-        [&prohibited](const std::string::value_type& ch) -> bool {
+        [](const std::string::value_type& ch) -> bool {
             return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
         },
         '_');
-
     return sanitised;
 }
 #endif

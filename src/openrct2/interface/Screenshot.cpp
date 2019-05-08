@@ -107,21 +107,14 @@ static std::string screenshot_get_park_name()
     return buffer;
 }
 
-static opt::optional<std::string> screenshot_get_directory()
+static std::string screenshot_get_directory()
 {
     char screenshotPath[MAX_PATH];
     platform_get_user_directory(screenshotPath, "screenshot", sizeof(screenshotPath));
-
-    if (platform_ensure_directory_exists(screenshotPath))
-    {
-        return opt::make_optional<std::string>(screenshotPath);
-    }
-
-    log_error("Unable to save screenshots in OpenRCT2 screenshot directory.\n");
-    return opt::nullopt;
+    return screenshotPath;
 }
 
-static std::tuple<rct2_date, rct2_time> screenshot_get_date_time()
+static std::pair<rct2_date, rct2_time> screenshot_get_date_time()
 {
     rct2_date date;
     platform_get_date_local(&date);
@@ -144,41 +137,35 @@ static std::string screenshot_get_formatted_date_time()
 
 static opt::optional<std::string> screenshot_get_next_path()
 {
-    std::string dir, name, suffix = ".png", path;
-
     auto screenshotDirectory = screenshot_get_directory();
-
-    if (screenshotDirectory == opt::nullopt)
+    if (!platform_ensure_directory_exists(screenshotDirectory.c_str()))
     {
-        return opt::nullopt;
+        log_error("Unable to save screenshots in OpenRCT2 screenshot directory.\n");
+        return {};
     }
 
     auto parkName = screenshot_get_park_name();
     auto dateTime = screenshot_get_formatted_date_time();
-
-    dir = *screenshotDirectory;
-    name = parkName + " " + dateTime;
+    auto name = parkName + " " + dateTime;
 
     // Generate a path with a `tries` number
-    auto path_composer = [&dir, &name, &suffix ](int tries) -> auto
-    {
-        auto composed_filename = platform_sanitise_filename(
-            name + ((tries > 0) ? " ("s + std::to_string(tries) + ")" : ""s) + suffix);
-        return dir + PATH_SEPARATOR + composed_filename;
+    auto pathComposer = [&screenshotDirectory, &name](int tries) {
+        auto composedFilename = platform_sanitise_filename(
+            name + ((tries > 0) ? " ("s + std::to_string(tries) + ")" : ""s) + ".png");
+        return screenshotDirectory + PATH_SEPARATOR + composedFilename;
     };
 
     for (int tries = 0; tries < 100; tries++)
     {
-        path = path_composer(tries);
-        if (platform_file_exists(path.c_str()))
-            continue;
-
-        return path;
+        auto path = pathComposer(tries);
+        if (!platform_file_exists(path.c_str()))
+        {
+            return path;
+        }
     }
 
     log_error("You have too many saved screenshots saved at exactly the same date and time.\n");
-
-    return opt::nullopt;
+    return {};
 };
 
 std::string screenshot_dump_png(rct_drawpixelinfo* dpi)

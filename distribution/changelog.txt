@@ -25,6 +25,7 @@
 - Fix: [#8219] Faulty folder recreation in "save" folder.
 - Fix: [#8507] Incorrect change in vehicle rolling direction.
 - Fix: [#8537] Imported RCT1 rides/shops are all numbered 1.
+- Fix: [#8598] Taking screenshots fails with some park names.
 - Fix: [#8649] Setting date does not work in multiplayer.
 - Fix: [#8873] Potential crash when placing footpaths.
 - Fix: [#8882] Submarine Ride does not count as indoors (original bug).
@@ -115,8 +116,7 @@
 - Fix: [#8585] Part of track missing on air powered vertical coaster.
 - Fix: [#8588] Guest list scrolling breaks above ~2000 guests.
 - Fix: [#8591] Game loop does not run at a consistent tick rate of 40 Hz.
-- Fix: [#8647] Marketing campaigns check for entry fees below £1 (original bug). 
-- Fix: [#8598] Sanitize screenshot parknames.
+- Fix: [#8647] Marketing campaigns check for entry fees below £1 (original bug).
 - Fix: [#8653] Crash when peeps attempt to enter a ride with no vehicles.
 - Fix: [#8720] Desync due to boats colliding with ghost pieces.
 - Fix: [#8736] Incomplete warning when all ride slots are full.
