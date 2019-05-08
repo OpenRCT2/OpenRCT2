@@ -205,7 +205,7 @@ rct_sprite* create_sprite(uint8_t bl);
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
-void move_sprite_to_list(rct_sprite* sprite, uint8_t cl);
+void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newList);
 void sprite_misc_update_all();
 void sprite_move(int16_t x, int16_t y, int16_t z, rct_sprite* sprite);
 void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite);
