@@ -899,13 +899,6 @@ static void vehicle_sprite_paint(
     }
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][ecx];
 
-    bool isGhost = false;
-    auto ride = get_ride(vehicle->ride);
-    if (ride != nullptr && ride->status == RIDE_STATUS_SIMULATING)
-    {
-        isGhost = true;
-    }
-
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
     {
         baseImage_id += (vehicle->spin_sprite / 8) & 31;
@@ -917,7 +910,7 @@ static void vehicle_sprite_paint(
     int32_t image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24)
         | IMAGE_TYPE_REMAP_2_PLUS;
 
-    if (isGhost)
+    if (vehicle->IsGhost())
     {
         image_id &= 0x7FFFF;
         image_id |= CONSTRUCTION_MARKER;
@@ -944,7 +937,7 @@ static void vehicle_sprite_paint(
                     image_id += (vehicleEntry->no_vehicle_images * vehicle->animation_frame);
                 }
 
-                if (isGhost)
+                if (vehicle->IsGhost())
                 {
                     image_id &= 0x7FFFF;
                     image_id |= CONSTRUCTION_MARKER;

@@ -235,6 +235,7 @@ struct rct_vehicle : rct_sprite_common
     const rct_vehicle* GetHead() const;
     const rct_vehicle* GetCar(size_t carIndex) const;
     void Invalidate();
+    bool IsGhost() const;
 };
 
 struct train_ref

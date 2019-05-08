@@ -2285,7 +2285,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
 
         num_seats_on_train &= 0x7F;
 
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE))
+        if (ride->SupportsStatus(RIDE_STATUS_TESTING))
         {
             if (vehicle->time_waiting < 20)
             {
@@ -10047,4 +10047,10 @@ const rct_vehicle* rct_vehicle::GetCar(size_t carIndex) const
         car = GET_VEHICLE(car->next_vehicle_on_train);
     }
     return car;
+}
+
+bool rct_vehicle::IsGhost() const
+{
+    auto r = get_ride(ride);
+    return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
 }

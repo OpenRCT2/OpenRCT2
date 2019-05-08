@@ -2062,12 +2062,30 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
  */
 static void window_ride_main_resize(rct_window* w)
 {
-    const int32_t offset = gCheatsAllowArbitraryRideTypeChanges ? 15 : 0;
-    w->flags |= WF_RESIZABLE;
-    int32_t minHeight = 180 + offset;
+    int32_t minHeight = 180;
     if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
-        minHeight = 200 + offset + RCT1_LIGHT_OFFSET
-            - (ride_type_has_flag(get_ride(w->number)->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 * 2 : 0);
+    {
+        minHeight += 20 + RCT1_LIGHT_OFFSET;
+
+        auto ride = get_ride(w->number);
+        if (ride != nullptr)
+        {
+            if (ride->SupportsStatus(RIDE_STATUS_SIMULATING))
+            {
+                minHeight += 14;
+            }
+            if (ride->SupportsStatus(RIDE_STATUS_TESTING))
+            {
+                minHeight += 14;
+            }
+        }
+    }
+    if (gCheatsAllowArbitraryRideTypeChanges)
+    {
+        minHeight += 15;
+    }
+
+    w->flags |= WF_RESIZABLE;
     window_set_resize(w, 316, minHeight, 500, 450);
     window_ride_init_viewport(w);
 }
@@ -2136,60 +2154,68 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
  */
 static void window_ride_show_open_dropdown(rct_window* w, rct_widget* widget)
 {
-    Ride* ride;
-    int32_t numItems, highlightedIndex = 0;
-
-    ride = get_ride(w->number);
-
-    numItems = 0;
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_CLOSE_RIDE;
-    numItems++;
-
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE))
+    auto ride = get_ride(w->number);
+    auto numItems = 0;
+    if (ride->SupportsStatus(RIDE_STATUS_CLOSED))
+    {
+        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItemsArgs[numItems] = STR_CLOSE_RIDE;
+        numItems++;
+    }
+    if (ride->SupportsStatus(RIDE_STATUS_SIMULATING))
     {
         gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[numItems] = STR_SIMULATE_RIDE;
         numItems++;
-
+    }
+    if (ride->SupportsStatus(RIDE_STATUS_TESTING))
+    {
         gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[numItems] = STR_TEST_RIDE;
         numItems++;
     }
-
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OPEN_RIDE;
-    numItems++;
+    if (ride->SupportsStatus(RIDE_STATUS_OPEN))
+    {
+        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItemsArgs[numItems] = STR_OPEN_RIDE;
+        numItems++;
+    }
 
     window_dropdown_show_text(
         w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, numItems);
 
     auto checkedIndex = -1;
+    auto highlightedIndex = -1;
     switch (ride->status)
     {
         case RIDE_STATUS_CLOSED:
             checkedIndex = 0;
             highlightedIndex = 0;
-            if ((ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-                || (ride->lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE))
-                break;
-
-            highlightedIndex = 3;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE))
-                if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+                && !(ride->lifecycle_flags & RIDE_LIFECYCLE_HAS_STALLED_VEHICLE))
+            {
+                highlightedIndex = 3;
+                if (ride->SupportsStatus(RIDE_STATUS_TESTING) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+                {
                     highlightedIndex = 2;
+                }
+            }
             break;
         case RIDE_STATUS_SIMULATING:
             checkedIndex = 1;
             highlightedIndex = 2;
             if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+            {
                 highlightedIndex = 0;
+            }
             break;
         case RIDE_STATUS_TESTING:
             checkedIndex = 2;
             highlightedIndex = 3;
             if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+            {
                 highlightedIndex = 3;
+            }
             break;
         case RIDE_STATUS_OPEN:
             checkedIndex = 3;
@@ -2197,19 +2223,13 @@ static void window_ride_show_open_dropdown(rct_window* w, rct_widget* widget)
             break;
     }
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE))
-    {
-        // Open item is now index 1
-        if (checkedIndex == 3)
-            checkedIndex = 1;
-        if (highlightedIndex == 3)
-            highlightedIndex = 1;
-    }
+    // "Open" index can differ, set to last item index
+    if (checkedIndex == 3)
+        checkedIndex = numItems - 1;
+    if (highlightedIndex == 3)
+        highlightedIndex = numItems - 1;
 
-    if (checkedIndex != -1)
-    {
-        dropdown_set_checked(checkedIndex, true);
-    }
+    dropdown_set_checked(checkedIndex, true);
     gDropdownDefaultIndex = highlightedIndex;
 }
 
@@ -2399,23 +2419,25 @@ static void window_ride_main_mousedown(rct_window* w, rct_widgetindex widgetInde
  */
 static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    Ride* ride;
-    int32_t status = 0;
-
     switch (widgetIndex)
     {
         case WIDX_VIEW_DROPDOWN:
             if (dropdownIndex == -1)
             {
-                dropdownIndex = w->ride.view;
-                ride = get_ride(w->number);
-                dropdownIndex++;
-                if (dropdownIndex != 0 && dropdownIndex <= ride->num_vehicles
-                    && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
-                    dropdownIndex = ride->num_vehicles + 1;
-
-                if (dropdownIndex >= gDropdownNumItems)
-                    dropdownIndex = 0;
+                dropdownIndex = w->ride.view + 1;
+                auto ride = get_ride(w->number);
+                if (ride != nullptr)
+                {
+                    if (dropdownIndex != 0 && dropdownIndex <= ride->num_vehicles
+                        && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+                    {
+                        dropdownIndex = ride->num_vehicles + 1;
+                    }
+                    if (dropdownIndex >= gDropdownNumItems)
+                    {
+                        dropdownIndex = 0;
+                    }
+                }
             }
 
             w->ride.view = dropdownIndex;
@@ -2423,30 +2445,34 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
             window_invalidate(w);
             break;
         case WIDX_OPEN:
-            if (dropdownIndex == -1)
-                dropdownIndex = gDropdownHighlightedIndex;
-
-            ride = get_ride(w->number);
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE) && dropdownIndex != 0)
-                dropdownIndex += 2;
-
-            switch (dropdownIndex)
+        {
+            auto ride = get_ride(w->number);
+            if (ride != nullptr)
             {
-                case 0:
-                    status = RIDE_STATUS_CLOSED;
-                    break;
-                case 1:
-                    status = RIDE_STATUS_SIMULATING;
-                    break;
-                case 2:
-                    status = RIDE_STATUS_TESTING;
-                    break;
-                case 3:
-                    status = RIDE_STATUS_OPEN;
-                    break;
+                if (dropdownIndex == -1)
+                {
+                    dropdownIndex = gDropdownHighlightedIndex;
+                }
+                auto status = RIDE_STATUS_CLOSED;
+                switch (dropdownIndex)
+                {
+                    case 0:
+                        status = RIDE_STATUS_CLOSED;
+                        break;
+                    case 1:
+                        status = RIDE_STATUS_SIMULATING;
+                        break;
+                    case 2:
+                        status = RIDE_STATUS_TESTING;
+                        break;
+                    case 3:
+                        status = RIDE_STATUS_OPEN;
+                        break;
+                }
+                ride_set_status(ride, status);
             }
-            ride_set_status(ride, status);
             break;
+        }
         case WIDX_RIDE_TYPE_DROPDOWN:
             if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
             {
@@ -2602,10 +2628,9 @@ static void window_ride_main_invalidate(rct_window* w)
     {
         window_ride_main_widgets[WIDX_OPEN].type = WWT_EMPTY;
         window_ride_main_widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
-        window_ride_main_widgets[WIDX_SIMULATE_LIGHT].type
-            = (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? WWT_EMPTY : WWT_IMGBTN);
-        window_ride_main_widgets[WIDX_TEST_LIGHT].type
-            = (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? WWT_EMPTY : WWT_IMGBTN);
+        window_ride_main_widgets[WIDX_SIMULATE_LIGHT].type = ride->SupportsStatus(RIDE_STATUS_SIMULATING) ? WWT_IMGBTN
+                                                                                                          : WWT_EMPTY;
+        window_ride_main_widgets[WIDX_TEST_LIGHT].type = ride->SupportsStatus(RIDE_STATUS_TESTING) ? WWT_IMGBTN : WWT_EMPTY;
         window_ride_main_widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
 
         height = 62;
@@ -2624,10 +2649,6 @@ static void window_ride_main_invalidate(rct_window* w)
         window_ride_main_widgets[WIDX_OPEN_LIGHT].top = height;
         window_ride_main_widgets[WIDX_OPEN_LIGHT].bottom = height + 13;
         height += 14 - 24 + RCT1_LIGHT_OFFSET;
-
-        w->min_height = 200 + RCT1_LIGHT_OFFSET - (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 : 0);
-        if (w->height < w->min_height)
-            window_event_resize_call(w);
     }
     else
     {

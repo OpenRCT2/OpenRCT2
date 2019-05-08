@@ -973,6 +973,23 @@ bool Ride::CanHaveMultipleCircuits() const
     return true;
 }
 
+bool Ride::SupportsStatus(int32_t s) const
+{
+    switch (s)
+    {
+        case RIDE_STATUS_CLOSED:
+        case RIDE_STATUS_OPEN:
+            return true;
+        case RIDE_STATUS_SIMULATING:
+            return (
+                !ride_type_has_flag(type, RIDE_TYPE_FLAG_NO_TEST_MODE) && ride_type_has_flag(type, RIDE_TYPE_FLAG_HAS_TRACK));
+        case RIDE_STATUS_TESTING:
+            return !ride_type_has_flag(type, RIDE_TYPE_FLAG_NO_TEST_MODE);
+        default:
+            return false;
+    }
+}
+
 #pragma region Initialisation functions
 
 /**

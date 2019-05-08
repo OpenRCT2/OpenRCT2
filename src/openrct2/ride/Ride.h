@@ -382,6 +382,7 @@ public:
     bool IsPoweredLaunched() const;
     bool IsBlockSectioned() const;
     bool CanHaveMultipleCircuits() const;
+    bool SupportsStatus(int32_t s) const;
 
     void StopGuestsQueuing();
 
