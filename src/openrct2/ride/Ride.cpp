@@ -5430,7 +5430,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, int32_t isApplying)
     if (!ride_mode_check_valid_station_numbers(ride))
         return 0;
 
-    if (!ride_check_for_entrance_exit(ride->id))
+    if (status != RIDE_STATUS_SIMULATING && !ride_check_for_entrance_exit(ride->id))
     {
         loc_6B51C0(ride);
         return 0;
