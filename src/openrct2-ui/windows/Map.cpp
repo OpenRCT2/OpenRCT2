@@ -877,6 +877,7 @@ static void window_map_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     g1temp.x_offset = -8;
     g1temp.y_offset = -8;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
+    drawing_engine_invalidate_image(SPR_TEMP);
     gfx_draw_sprite(dpi, SPR_TEMP, 0, 0, 0);
 
     if (w->selected_tab == PAGE_PEEPS)
@@ -1551,7 +1552,10 @@ static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
     while (!(tileElement++)->IsLastForTile())
     {
         if (tileElement->IsGhost())
-            continue;
+        {
+            colour = MAP_COLOUR(PALETTE_INDEX_21);
+            break;
+        }
 
         int32_t tileElementType = tileElement->GetType() >> 2;
         if (tileElementType >= maxSupportedTileElementType)
@@ -1568,7 +1572,6 @@ static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
 static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
 {
     Ride* ride;
-    // ~Mikroscopic: do we need two separate colour variables here?
     uint16_t colourA = 0;                            // highlight colour
     uint16_t colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
 
@@ -1577,7 +1580,10 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
     do
     {
         if (tileElement->IsGhost())
-            continue;
+        {
+            colourA = MAP_COLOUR(PALETTE_INDEX_21);
+            break;
+        }
 
         switch (tileElement->GetType())
         {
