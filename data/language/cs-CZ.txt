@@ -3777,6 +3777,14 @@ STR_6306    :{SMALLFONT}{BLACK}Experimentální podpora více vláken pro vykres
 STR_6307    :Barevné schéma: {BLACK}{STRINGID}
 STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Znovu připojit
+STR_6310    :{WINDOW_COLOUR_2}Pozice: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Další: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(povrch)
+STR_6313    :(sklon {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Cíl: {BLACK}{INT32}, {INT32} tolerance {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Cíl hledání cesty: {BLACK}{INT32}, {INT32}, {INT32} směr {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Historie hledání cest:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} směr {INT32}
 
 ###############################################################################
 ## RCT2 Scenarios

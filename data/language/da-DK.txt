@@ -3780,6 +3780,14 @@ STR_6306    :{SMALLFONT}{BLACK}Eksperimentel indstilling, brug flere processor k
 STR_6307    :Farve tema: {BLACK}{STRINGID}
 STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Forbind igen
+STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Næste: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(overflade)
+STR_6313    :(skråning {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerance {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Stisøger Goal: {BLACK}{INT32}, {INT32}, {INT32} ret {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Stisøger historie:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} ret {INT32}
 
 #############
 # Scenarios #
