@@ -3772,6 +3772,14 @@ STR_6306    :{SMALLFONT}{BLACK}Experimentele optie om met meerdere threads te re
 STR_6307    :Kleurenschema: {BLACK}{STRINGID}
 STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Opnieuw verbinden
+STR_6310    :{WINDOW_COLOUR_2}Positie: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Volgende: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(oppervlak)
+STR_6313    :(helling {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Bestemming: {BLACK}{INT32}, {INT32} tolerantie {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Pathfind-doel: {BLACK}{INT32}, {INT32}, {INT32} richting {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Pathfind-geschiedenis:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} richting {INT32}
 
 #############
 # Scenarios #
