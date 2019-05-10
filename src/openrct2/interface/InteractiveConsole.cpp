@@ -1436,7 +1436,7 @@ static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments
     }
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager->IsRecording() == false && replayManager->IsNormalising() == false)
+    if (!replayManager->IsRecording() && !replayManager->IsNormalising())
     {
         console.WriteFormatLine("Replay currently not recording");
         return 0;

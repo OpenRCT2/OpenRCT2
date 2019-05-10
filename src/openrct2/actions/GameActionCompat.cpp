@@ -252,14 +252,7 @@ bool place_peep_spawn(CoordsXYZD location)
 {
     auto gameAction = PlacePeepSpawnAction(location);
     auto result = GameActions::Execute(&gameAction);
-    if (result->Error == GA_ERROR::OK)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return result->Error == GA_ERROR::OK;
 }
 #pragma endregion
 

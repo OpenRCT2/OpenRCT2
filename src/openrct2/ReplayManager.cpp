@@ -443,12 +443,12 @@ namespace OpenRCT2
         {
             _mode = ReplayMode::NORMALISATION;
 
-            if (StartPlayback(file) == false)
+            if (!StartPlayback(file))
             {
                 return false;
             }
 
-            if (StartRecording(outFile, k_MaxReplayTicks) == false)
+            if (!StartRecording(outFile, k_MaxReplayTicks))
             {
                 StopPlayback();
                 return false;
@@ -621,7 +621,7 @@ namespace OpenRCT2
                 return false;
 
             char buffer[128];
-            while (feof(fp) == false)
+            while (feof(fp) == 0)
             {
                 size_t numBytesRead = fread(buffer, 1, 128, fp);
                 if (numBytesRead == 0)
@@ -785,10 +785,7 @@ namespace OpenRCT2
 
         bool Compatible(ReplayRecordData& data)
         {
-            if (data.version == 1 && ReplayVersion == 2)
-                return true;
-
-            return false;
+            return data.version == 1 && ReplayVersion == 2;
         }
 
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)

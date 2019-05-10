@@ -2570,12 +2570,7 @@ bool Ride::CanBreakDown() const
     }
 
     rct_ride_entry* entry = GetRideEntry();
-    if (entry == nullptr || entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN)
-    {
-        return false;
-    }
-
-    return true;
+    return entry != nullptr && !(entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN);
 }
 
 static void choose_random_train_to_breakdown_safe(Ride* ride)
@@ -7197,7 +7192,7 @@ void sub_6CB945(Ride* ride)
                     break;
                 } while (!(tileElement++)->IsLastForTile());
 
-                if (trackFound == false)
+                if (!trackFound)
                 {
                     break;
                 }
@@ -7212,7 +7207,7 @@ void sub_6CB945(Ride* ride)
                 }
             }
 
-            if (specialTrack == false)
+            if (!specialTrack)
             {
                 continue;
             }
@@ -7782,13 +7777,9 @@ uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
 
 bool ride_type_supports_boosters(uint8_t rideType)
 {
-    if (rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER
+    return rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER
         || rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-        || rideType == RIDE_TYPE_GIGA_COASTER || rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
-    {
-        return true;
-    }
-    return false;
+        || rideType == RIDE_TYPE_GIGA_COASTER || rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER;
 }
 
 int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed)

@@ -715,10 +715,7 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
         if (pathZ < z || pathZ >= z + 32)
             continue;
 
-        if (tile_element_is_underground(tileElement))
-            return false;
-
-        return true;
+        return !tile_element_is_underground(tileElement);
     } while (!(tileElement++)->IsLastForTile());
     return false;
 }

@@ -154,7 +154,7 @@ namespace GameActions
 
         if (result->Error == GA_ERROR::OK)
         {
-            if (finance_check_affordability(result->Cost, action->GetFlags()) == false)
+            if (!finance_check_affordability(result->Cost, action->GetFlags()))
             {
                 result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
@@ -290,7 +290,7 @@ namespace GameActions
             LogActionFinish(logContext, action, result);
 
             // If not top level just give away the result.
-            if (topLevel == false)
+            if (!topLevel)
                 return result;
 
             gCommandPosition.x = result->Position.x;

@@ -276,7 +276,5 @@ bool utf8_is_format_code(int32_t codepoint)
 
 bool utf8_is_colour_code(int32_t codepoint)
 {
-    if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END)
-        return true;
-    return false;
+    return codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END;
 }

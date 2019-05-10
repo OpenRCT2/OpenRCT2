@@ -214,7 +214,7 @@ void fix_duplicated_banners()
                             log_error("Failed to create new banner.");
                             continue;
                         }
-                        Guard::Assert(activeBanners[newBannerIndex] == false);
+                        Guard::Assert(!activeBanners[newBannerIndex]);
 
                         // Copy over the original banner, but update the location
                         rct_banner& newBanner = gBanners[newBannerIndex];
