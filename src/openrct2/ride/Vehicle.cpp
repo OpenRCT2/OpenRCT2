@@ -1394,7 +1394,7 @@ static bool vehicle_close_restraints(rct_vehicle* vehicle)
                 continue;
             }
         }
-        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct//updated function call to match becoming a member function of rct_vehicle struct
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         restraintsClosed = false;
     } while ((vehicle_id = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 
