@@ -158,7 +158,7 @@ static constexpr const uint8_t _soundParams[SOUND_MAXID][2] =
     { 0, 0 },   // SOUND_QUACK
     { 0, 0 },   // SOUND_NEWS_ITEM
     { 0, 0 },   // SOUND_WINDOW_OPEN
-    { 0, 0 },   // SOUND_LAUGH_1rct_vehicle
+    { 0, 0 },   // SOUND_LAUGH_1
     { 0, 0 },   // SOUND_LAUGH_2
     { 0, 0 },   // SOUND_LAUGH_3
     { 0, 0 },   // SOUND_APPLAUSE
