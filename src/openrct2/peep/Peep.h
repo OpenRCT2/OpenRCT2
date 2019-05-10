@@ -733,9 +733,18 @@ private:
     void UpdatePicked();
 };
 
+//moved peep_insert_new_thought here as a member function
+//changed name from peep_insert_new_thought to PeepInsertNewThought
 struct Guest : Peep
 {
 public:
+    /**
+     * rct2: 0x699F5A
+     * al:thought_type
+     * ah:thought_arguments
+     * esi: peep
+     */
+    void PeepInsertNewThought(Peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
     bool HasItem(int32_t peepItem) const;
@@ -959,13 +968,6 @@ void peep_sprite_remove(Peep* peep);
 
 void peep_window_state_update(Peep* peep);
 void peep_decrement_num_riders(Peep* peep);
-/**
- * rct2: 0x699F5A
- * al:thought_type
- * ah:thought_arguments
- * esi: peep
- */
-void peep_insert_new_thought(Peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
 
 void peep_set_map_tooltip(Peep* peep);
 
