@@ -158,7 +158,7 @@ static constexpr const uint8_t _soundParams[SOUND_MAXID][2] =
     { 0, 0 },   // SOUND_QUACK
     { 0, 0 },   // SOUND_NEWS_ITEM
     { 0, 0 },   // SOUND_WINDOW_OPEN
-    { 0, 0 },   // SOUND_LAUGH_1
+    { 0, 0 },   // SOUND_LAUGH_1rct_vehicle
     { 0, 0 },   // SOUND_LAUGH_2
     { 0, 0 },   // SOUND_LAUGH_3
     { 0, 0 },   // SOUND_APPLAUSE
@@ -839,9 +839,11 @@ rct_vehicle* try_get_vehicle(uint16_t spriteIndex)
     return &sprite->vehicle;
 }
 
-static void vehicle_invalidate(rct_vehicle* vehicle)
+//updated function declaration to match becoming a member function of rct_vehicle struct
+//also changed name to match upper CamelCase
+void rct_vehicle::Invalidate()
 {
-    invalidate_sprite_2((rct_sprite*)vehicle);
+    invalidate_sprite_2((rct_sprite*)this);
 }
 
 static int32_t get_train_mass(rct_vehicle* first_vehicle)
@@ -1392,7 +1394,7 @@ static bool vehicle_close_restraints(rct_vehicle* vehicle)
                 continue;
             }
         }
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct//updated function call to match becoming a member function of rct_vehicle struct
         restraintsClosed = false;
     } while ((vehicle_id = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 
@@ -1449,7 +1451,7 @@ static bool vehicle_open_restraints(rct_vehicle* vehicle)
                 vehicle->spin_sprite += value;
                 vehicle->spin_speed -= value;
 
-                vehicle_invalidate(vehicle);
+                vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
                 continue;
             }
         }
@@ -1460,7 +1462,7 @@ static bool vehicle_open_restraints(rct_vehicle* vehicle)
                 vehicle->var_C8 = vehicle->var_C8 + 0x3333 - 0xFFFF;
                 vehicle->animation_frame++;
                 vehicle->animation_frame &= 7;
-                vehicle_invalidate(vehicle);
+                vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             }
             else
             {
@@ -1500,7 +1502,7 @@ static bool vehicle_open_restraints(rct_vehicle* vehicle)
             }
             vehicle->restraints_position += 20;
         }
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         restraintsOpen = false;
     } while ((vehicle_id = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 
@@ -2259,7 +2261,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
         vehicle->sub_state = 1;
         vehicle->time_waiting = 0;
 
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         return;
     }
     else if (vehicle->sub_state == 1)
@@ -2451,7 +2453,7 @@ static void vehicle_update_dodgems_mode(rct_vehicle* vehicle)
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS && vehicle->animation_frame != 1)
     {
         vehicle->animation_frame = 1;
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
     }
 
     vehicle_update_motion_dodgems(vehicle);
@@ -2467,7 +2469,7 @@ static void vehicle_update_dodgems_mode(rct_vehicle* vehicle)
 
     // Mark the dodgem as not in use.
     vehicle->animation_frame = 0;
-    vehicle_invalidate(vehicle);
+    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
     vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
@@ -3417,7 +3419,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
     if (vehicle_current_tower_element_is_top(vehicle) == false)
     {
         if (ride->mode == RIDE_MODE_FREEFALL_DROP)
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         return;
     }
 
@@ -3681,7 +3683,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle)
         vehicle->animation_frame++;
         vehicle->velocity = 0;
         vehicle->acceleration = 0;
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         return;
     }
 
@@ -4321,7 +4323,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle* vehicle)
         unk_F64E20.x = vehicle->x;
         unk_F64E20.y = vehicle->y;
         unk_F64E20.z = vehicle->z;
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 
         for (;;)
         {
@@ -4545,7 +4547,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle* vehicle)
         }
 
         sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)vehicle);
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
     }
 
     // loc_6DAAC9:
@@ -4719,7 +4721,7 @@ static void vehicle_update_swinging(rct_vehicle* vehicle)
         {
             // Used to know which sprite to draw
             vehicle->vehicle_sprite_type = (uint8_t)spriteType;
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         }
         return;
     }
@@ -4804,7 +4806,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle)
     if (rotation == vehicle->sub_state)
         vehicle->var_CE++;
 
-    vehicle_invalidate(vehicle);
+    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 
     uint8_t subState = vehicle->sub_state;
     if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
@@ -4867,7 +4869,7 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle)
         if (al == vehicle->vehicle_sprite_type)
             return;
         vehicle->vehicle_sprite_type = al;
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         return;
     }
 
@@ -4921,7 +4923,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle)
         if (sprite == vehicle->vehicle_sprite_type)
             return;
         vehicle->vehicle_sprite_type = sprite;
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         return;
     }
 
@@ -4985,7 +4987,7 @@ static void vehicle_update_space_rings_operating(rct_vehicle* vehicle)
         if (spriteType != vehicle->vehicle_sprite_type)
         {
             vehicle->vehicle_sprite_type = spriteType;
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         }
     }
     else
@@ -5011,7 +5013,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle)
         if (gCurrentTicks & 1)
         {
             vehicle->vehicle_sprite_type++;
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 
             if (vehicle->vehicle_sprite_type == 19)
                 vehicle->vehicle_sprite_type = 0;
@@ -5035,7 +5037,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle)
             break;
         case 75:
             vehicle->vehicle_sprite_type = 1;
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             break;
         case 400:
             audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCREAM_1, vehicle->x, vehicle->y, vehicle->z);
@@ -5045,7 +5047,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle)
             break;
         case 775:
             vehicle->vehicle_sprite_type = 1;
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             break;
         case 1100:
             audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCREAM_2, vehicle->x, vehicle->y, vehicle->z);
@@ -5092,13 +5094,13 @@ static void vehicle_update_top_spin_operating(rct_vehicle* vehicle)
         if (rotation != vehicle->vehicle_sprite_type)
         {
             vehicle->vehicle_sprite_type = rotation;
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         }
         rotation = sprite_map[vehicle->current_time].bank_rotation;
         if (rotation != vehicle->bank_rotation)
         {
             vehicle->bank_rotation = rotation;
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         }
         return;
     }
@@ -5313,7 +5315,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
     vehicle->sprite_height_positive = 5;
 
     sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite*)vehicle);
-    vehicle_invalidate(vehicle);
+    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 
     vehicle->crash_z = 0;
 }
@@ -5368,7 +5370,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
     vehicle->sprite_height_positive = 5;
 
     sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite*)vehicle);
-    vehicle_invalidate(vehicle);
+    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 
     vehicle->crash_z = -1;
 }
@@ -6291,7 +6293,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
                 vehicle->sprite_direction -= 2;
             }
             vehicle->sprite_direction &= 0x1E;
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         }
         else if ((scenario_rand() & 0xFFFF) <= 2849)
         {
@@ -6300,7 +6302,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
             else
                 vehicle->sprite_direction += 2;
             vehicle->sprite_direction &= 0x1E;
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         }
     }
 
@@ -6320,9 +6322,9 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
 
         if (!vehicle_update_dodgems_collision(vehicle, location.x, location.y, &collideSprite))
         {
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             sprite_move(location.x, location.y, location.z, (rct_sprite*)vehicle);
-            vehicle_invalidate(vehicle);
+            vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
         }
     }
 
@@ -6335,7 +6337,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
         unk_F64E20.y = vehicle->y;
         unk_F64E20.z = vehicle->z;
 
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 
         while (true)
         {
@@ -6390,7 +6392,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
         }
 
         sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)vehicle);
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
     }
 
     int32_t eax = vehicle->velocity / 2;
@@ -7051,7 +7053,7 @@ static void vehicle_update_swinging_car(rct_vehicle* vehicle)
     if (swingSprite != vehicle->swing_sprite)
     {
         vehicle->swing_sprite = swingSprite;
-        vehicle_invalidate(vehicle);
+        vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
     }
 }
 
@@ -7210,7 +7212,7 @@ static void vehicle_update_spinning_car(rct_vehicle* vehicle)
     vehicle->spin_sprite += spinSpeed >> 8;
     // Note this actually increases the spin speed if going right!
     vehicle->spin_speed -= spinSpeed >> vehicleEntry->spinning_friction;
-    vehicle_invalidate(vehicle);
+    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 }
 
 /**
@@ -7285,7 +7287,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                             vehicle->z + SteamParticleOffsets[index].z);
                     }
                 }
-                vehicle_invalidate(vehicle);
+                vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
@@ -7294,7 +7296,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             if (vehicle->animation_frame != al)
             {
                 vehicle->animation_frame = al;
-                vehicle_invalidate(vehicle);
+                vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
@@ -7304,7 +7306,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             if (vehicle->animation_frame != ah)
             {
                 vehicle->animation_frame = ah;
-                vehicle_invalidate(vehicle);
+                vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
@@ -7314,7 +7316,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             if (vehicle->animation_frame != ah)
             {
                 vehicle->animation_frame = ah;
-                vehicle_invalidate(vehicle);
+                vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
@@ -7323,7 +7325,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             if (vehicle->animation_frame != al)
             {
                 vehicle->animation_frame = al;
-                vehicle_invalidate(vehicle);
+                vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER: // loc_6D65C3
@@ -7336,7 +7338,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                 vehicle->var_C8 += 0x3333;
                 vehicle->animation_frame += 1;
                 vehicle->animation_frame &= 7;
-                vehicle_invalidate(vehicle);
+                vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
@@ -7345,7 +7347,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
             if (vehicle->animation_frame != al)
             {
                 vehicle->animation_frame = al;
-                vehicle_invalidate(vehicle);
+                vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
@@ -7357,7 +7359,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                 if (vehicle->animation_frame != ah)
                 {
                     vehicle->animation_frame = ah;
-                    vehicle_invalidate(vehicle);
+                    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
                 }
             }
             break;
@@ -7379,7 +7381,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                         vehicle->seat_rotation++;
 
                     vehicle->animation_frame = (vehicle->seat_rotation - 4) & 7;
-                    vehicle_invalidate(vehicle);
+                    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
                 }
             }
             break;
@@ -8730,7 +8732,7 @@ loc_6DC40E:
     unk_F64E20.x = vehicle->x;
     unk_F64E20.y = vehicle->y;
     unk_F64E20.z = vehicle->z;
-    vehicle_invalidate(vehicle);
+    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 
 loc_6DC462:
     if (vehicle->var_D3 == 0)
@@ -9074,7 +9076,7 @@ loc_6DCA7A:
     unk_F64E20.x = vehicle->x;
     unk_F64E20.y = vehicle->y;
     unk_F64E20.z = vehicle->z;
-    vehicle_invalidate(vehicle);
+    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 
 loc_6DCA9A:
     regs.ax = vehicle->track_progress - 1;
@@ -9239,7 +9241,7 @@ loc_6DCD6B:
 
 loc_6DCDE4:
     sprite_move(unk_F64E20.x, unk_F64E20.y, unk_F64E20.z, (rct_sprite*)vehicle);
-    vehicle_invalidate(vehicle);
+    vehicle->Invalidate();//updated function call to match becoming a member function of rct_vehicle struct
 
 loc_6DCE02:
     vehicle->acceleration /= _vehicleUnkF64E10;

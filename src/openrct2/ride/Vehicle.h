@@ -234,6 +234,9 @@ struct rct_vehicle : rct_sprite_common
     rct_vehicle* GetHead();
     const rct_vehicle* GetHead() const;
     const rct_vehicle* GetCar(size_t carIndex) const;
+    //made Invalidate() a member function inside the rct_vehicle
+    //also changed name to match upper CamelCase
+    void Invalidate();
 };
 
 struct train_ref
