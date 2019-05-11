@@ -18,9 +18,9 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/LandSetRightsAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/audio/audio.h>
-#include <openrct2/actions/LandSetRightsAction.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/Entrance.h>

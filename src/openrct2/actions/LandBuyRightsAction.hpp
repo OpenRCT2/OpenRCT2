@@ -41,9 +41,8 @@ private:
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_BUY_LAND, STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE };
 
 public:
-    LandBuyRightsAction()
-    {
-    }
+    LandBuyRightsAction() = default;
+
     LandBuyRightsAction(MapRange range, LandBuyRightSetting setting)
         : _range(range)
         , _setting(static_cast<uint8_t>(setting))

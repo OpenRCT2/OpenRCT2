@@ -40,12 +40,11 @@ DEFINE_GAME_ACTION(LandSetRightsAction, GAME_COMMAND_SET_LAND_OWNERSHIP, GameAct
 private:
     MapRange _range;
     uint8_t _setting = static_cast<uint8_t>(LandSetRightSetting::Count);
-    uint8_t _ownership;
+    uint8_t _ownership = 0;
 
 public:
-    LandSetRightsAction()
-    {
-    }
+    LandSetRightsAction() = default;
+
     LandSetRightsAction(MapRange range, LandSetRightSetting setting, uint8_t ownership = 0)
         : _range(range)
         , _setting(static_cast<uint8_t>(setting))
@@ -183,6 +182,9 @@ private:
                 TileElement* tileElement = map_get_first_element_at(loc.x / 32, loc.y / 32);
                 do
                 {
+                    if (tileElement == nullptr)
+                        break;
+
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                         continue;
 

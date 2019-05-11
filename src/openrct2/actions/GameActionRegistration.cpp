@@ -137,6 +137,7 @@ namespace GameActions
         Register<LargeSceneryPlaceAction>();
         Register<LargeSceneryRemoveAction>();
         Register<LargeScenerySetColourAction>();
+        Register<LandBuyRightsAction>();
         Register<LandLowerAction>();
         Register<LandRaiseAction>();
         Register<LandSetHeightAction>();

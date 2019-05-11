@@ -7,13 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../actions/LandSetRightsAction.hpp"
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceAction.hpp"
 #include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/LandSetRightsAction.hpp"
 #include "../core/Guard.hpp"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
