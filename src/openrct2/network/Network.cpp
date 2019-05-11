@@ -1400,9 +1400,9 @@ void Network::BeginServerLog()
 
 #    if defined(_WIN32) && !defined(__MINGW32__)
     auto pathW = std::unique_ptr<wchar_t>(utf8_to_widechar(_serverLogPath.c_str()));
-    _server_log_fs.open(pathW.get(), std::ios::out | std::ios::app);
+    _server_log_fs.open(pathW.get(), std::ios::out | std::ios::app | std::ios::binary);
 #    else
-    _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app);
+    _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app | std::ios::binary);
 #    endif
 
     // Log server start event
