@@ -1348,7 +1348,7 @@ void Network::AppendLog(std::ostream& fs, const std::string& s)
     }
     try
     {
-        utf8 buffer[256];
+        utf8 buffer[1024];
         time_t timer;
         time(&timer);
         auto tmInfo = localtime(&timer);
