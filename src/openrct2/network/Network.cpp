@@ -142,7 +142,7 @@ public:
     bool CheckSRAND(uint32_t tick, uint32_t srand0);
     bool IsDesynchronised();
     bool CheckDesynchronizaton();
-    void RequestDesyncedState();
+    void RequestStateSnapshot();
     NetworkServerState_t GetServerState() const;
     void KickPlayer(int32_t playerId);
     void SetPassword(const char* password);
@@ -544,7 +544,7 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
     _serverConnection = std::make_unique<NetworkConnection>();
     _serverConnection->Socket = CreateTcpSocket();
     _serverConnection->Socket->ConnectAsync(host, port);
-    _serverState.desyncDebug = false;
+    _serverState.gamestateSnapshotsEnabled = false;
 
     status = NETWORK_STATUS_CONNECTING;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
@@ -678,7 +678,7 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
 
     status = NETWORK_STATUS_CONNECTED;
     listening_port = port;
-    _serverState.desyncDebug = gConfigNetwork.desync_debugging;
+    _serverState.gamestateSnapshotsEnabled = gConfigNetwork.desync_debugging;
 
     if (gConfigNetwork.advertise)
     {
@@ -1064,7 +1064,7 @@ bool Network::CheckDesynchronizaton()
     return false;
 }
 
-void Network::RequestDesyncedState()
+void Network::RequestStateSnapshot()
 {
     log_info("Requesting game state for tick %u", _serverState.desyncTick);
 
@@ -1443,7 +1443,7 @@ void Network::CloseServerLog()
 
 void Network::Client_Send_RequestGameState(uint32_t tick)
 {
-    if (_serverState.desyncDebug == false)
+    if (_serverState.gamestateSnapshotsEnabled == false)
     {
         log_verbose("Server does not store a gamestate history");
         return;
@@ -1836,7 +1836,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
     json_object_set_new(obj, "provider", jsonProvider);
 
     packet->WriteString(json_dumps(obj, 0));
-    *packet << _serverState.desyncDebug;
+    *packet << _serverState.gamestateSnapshotsEnabled;
 
     json_decref(obj);
 #    endif
@@ -2372,7 +2372,7 @@ void Network::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, Net
     uint32_t tick;
     packet >> tick;
 
-    if (_serverState.desyncDebug == false)
+    if (_serverState.gamestateSnapshotsEnabled == false)
     {
         // Ignore this if this is off.
         return;
@@ -3321,7 +3321,7 @@ static std::string json_stdstring_value(const json_t* string)
 void Network::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     const char* jsonString = packet.ReadString();
-    packet >> _serverState.desyncDebug;
+    packet >> _serverState.gamestateSnapshotsEnabled;
 
     json_error_t error;
     json_t* root = json_loads(jsonString, 0, &error);
@@ -3402,14 +3402,14 @@ bool network_is_desynchronised()
     return gNetwork.IsDesynchronised();
 }
 
-bool network_check_desynchronization()
+bool network_check_desynchronisation()
 {
     return gNetwork.CheckDesynchronizaton();
 }
 
-void network_request_desynced_state()
+void network_request_gamestate_snapshot()
 {
-    return gNetwork.RequestDesyncedState();
+    return gNetwork.RequestStateSnapshot();
 }
 
 void network_send_tick()
@@ -4173,9 +4173,9 @@ NetworkServerState_t network_get_server_state()
     return gNetwork.GetServerState();
 }
 
-bool network_desync_debugging_enabled()
+bool network_gamestate_snapshots_enabled()
 {
-    return network_get_server_state().desyncDebug;
+    return network_get_server_state().gamestateSnapshotsEnabled;
 }
 
 #else
@@ -4205,15 +4205,15 @@ bool network_is_desynchronised()
 {
     return false;
 }
-bool network_desync_debugging_enabled()
+bool network_gamestate_snapshots_enabled()
 {
     return false;
 }
-bool network_check_desynchronization()
+bool network_check_desynchronisation()
 {
     return false;
 }
-void network_request_desynced_state()
+void network_request_gamestate_snapshot()
 {
 }
 void network_enqueue_game_action(const GameAction* action)

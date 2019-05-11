@@ -240,7 +240,7 @@ void GameState::UpdateLogic()
 
     if (network_get_mode() == NETWORK_MODE_SERVER)
     {
-        if (network_desync_debugging_enabled())
+        if (network_gamestate_snapshots_enabled())
         {
             CreateStateSnapshot();
         }
@@ -251,19 +251,17 @@ void GameState::UpdateLogic()
     else if (network_get_mode() == NETWORK_MODE_CLIENT)
     {
         // Check desync.
-        bool desynced = network_check_desynchronization();
+        bool desynced = network_check_desynchronisation();
         if (desynced)
         {
-            log_verbose("Desynchronized");
-
             // If desync debugging is enabled and we are still connected request the specific game state from server.
-            if (network_desync_debugging_enabled() && network_get_status() == NETWORK_STATUS_CONNECTED)
+            if (network_gamestate_snapshots_enabled() && network_get_status() == NETWORK_STATUS_CONNECTED)
             {
                 // Create snapshot from this tick so we can compare it later
                 // as we won't pause the game on this event.
                 CreateStateSnapshot();
 
-                network_request_desynced_state();
+                network_request_gamestate_snapshot();
             }
         }
     }

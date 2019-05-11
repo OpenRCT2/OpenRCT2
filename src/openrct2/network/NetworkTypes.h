@@ -86,7 +86,7 @@ struct NetworkServerState_t
     uint32_t desyncTick = 0;
     uint32_t tick = 0;
     uint32_t srand0 = 0;
-    bool desyncDebug = false;
+    bool gamestateSnapshotsEnabled = false;
 };
 
 // Structure is used for networking specific fields with meaning,
