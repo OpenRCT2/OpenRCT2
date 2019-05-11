@@ -839,11 +839,6 @@ rct_vehicle* try_get_vehicle(uint16_t spriteIndex)
     return &sprite->vehicle;
 }
 
-//Updated function declaration to match becoming a member function of rct_vehicle struct
-//Changed name to match upper CamelCase
-//Removed rct_sprite* vehicle from arguments
-//Changed vehicle to this in definition's logic
-//Invalidate function calls are now called through the instance that used to be passed as an argument
 void rct_vehicle::Invalidate()
 {
     invalidate_sprite_2((rct_sprite*)this);
