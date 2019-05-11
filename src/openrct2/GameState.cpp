@@ -339,5 +339,5 @@ void GameState::CreateStateSnapshot()
 
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
-    snapshots->LinkSnapshot(snapshot, gCurrentTicks);
+    snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
 }

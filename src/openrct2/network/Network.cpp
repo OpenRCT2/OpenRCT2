@@ -1013,7 +1013,10 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
     _serverTickData.erase(itTickData);
 
     if (storedTick.srand0 != srand0)
+    {
+        log_info("Srand0 mismatch, client = %08X, server = %08X", srand0, storedTick.srand0);
         return false;
+    }
 
     if (!storedTick.spriteHash.empty())
     {
@@ -1021,6 +1024,7 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
         std::string clientSpriteHash = checksum.ToString();
         if (clientSpriteHash != storedTick.spriteHash)
         {
+            log_info("Sprite hash mismatch, client = %s, server = %s", clientSpriteHash.c_str(), storedTick.spriteHash.c_str());
             return false;
         }
     }
@@ -2804,6 +2808,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
             game_command_queue.clear();
             _serverTickData.clear();
             _serverState.tick = gCurrentTicks;
+            _serverTickData.clear();
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NETWORK_SERVER_STATE_OK;
             _clientMapLoaded = true;

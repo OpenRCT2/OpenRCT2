@@ -48,6 +48,9 @@ struct GameStateSpriteChange_t
 
 struct GameStateCompareData_t
 {
+    uint32_t tick;
+    uint32_t srand0Left;
+    uint32_t srand0Right;
     std::vector<GameStateSpriteChange_t> spriteChanges;
 };
 
@@ -74,7 +77,7 @@ interface IGameStateSnapshots
     /*
      * Links the snapshot to a specific game tick.
      */
-    virtual void LinkSnapshot(GameStateSnapshot_t & snapshot, uint32_t tick) = 0;
+    virtual void LinkSnapshot(GameStateSnapshot_t & snapshot, uint32_t tick, uint32_t srand0) = 0;
 
     /*
      * This will fill the snapshot with the current game state in a compact form.

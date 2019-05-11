@@ -17,6 +17,7 @@ struct GameStateSnapshot_t
     }
 
     uint32_t tick = InvalidTick;
+    uint32_t srand0 = 0;
 
     MemoryStream storedSprites;
     MemoryStream parkParameters;
@@ -114,9 +115,10 @@ struct GameStateSnapshots : public IGameStateSnapshots
         return *_snapshots.back();
     }
 
-    virtual void LinkSnapshot(GameStateSnapshot_t& snapshot, uint32_t tick) override final
+    virtual void LinkSnapshot(GameStateSnapshot_t& snapshot, uint32_t tick, uint32_t srand0) override final
     {
         snapshot.tick = tick;
+        snapshot.srand0 = srand0;
     }
 
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
@@ -139,6 +141,7 @@ struct GameStateSnapshots : public IGameStateSnapshots
     virtual void SerialiseSnapshot(GameStateSnapshot_t& snapshot, DataSerialiser& ds) const override final
     {
         ds << snapshot.tick;
+        ds << snapshot.srand0;
         ds << snapshot.storedSprites;
         ds << snapshot.parkParameters;
     }
@@ -408,6 +411,9 @@ struct GameStateSnapshots : public IGameStateSnapshots
     virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const override final
     {
         GameStateCompareData_t res;
+        res.tick = base.tick;
+        res.srand0Left = base.srand0;
+        res.srand0Right = cmp.srand0;
 
         std::vector<rct_sprite> spritesBase = BuildSpriteList(const_cast<GameStateSnapshot_t&>(base));
         std::vector<rct_sprite> spritesCmp = BuildSpriteList(const_cast<GameStateSnapshot_t&>(cmp));
@@ -509,6 +515,14 @@ struct GameStateSnapshots : public IGameStateSnapshots
     {
         std::string outputBuffer;
         char tempBuffer[1024] = {};
+
+        snprintf(tempBuffer, sizeof(tempBuffer), "tick: %08X\n", cmpData.tick);
+        outputBuffer += tempBuffer;
+
+        snprintf(
+            tempBuffer, sizeof(tempBuffer), "srand0 left = %08X, srand0 right = %08X\n", cmpData.srand0Left,
+            cmpData.srand0Right);
+        outputBuffer += tempBuffer;
 
         for (auto& change : cmpData.spriteChanges)
         {
