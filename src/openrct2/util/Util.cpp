@@ -21,6 +21,9 @@
 #include <cctype>
 #include <cmath>
 #include <ctime>
+#include <random>
+
+static std::mt19937 _prng;
 
 int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres)
 {
@@ -528,13 +531,12 @@ bool str_is_null_or_empty(const char* str)
 
 void util_srand(int32_t source)
 {
-    srand(source);
+    _prng.seed(source);
 }
 
-// Caveat: rand() might only return values up to 0x7FFF, which is the minimum specified in the C standard.
 uint32_t util_rand()
 {
-    return rand();
+    return _prng();
 }
 
 #define CHUNK (128 * 1024)
