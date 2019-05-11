@@ -118,7 +118,7 @@ public:
 
     std::string GetHostname() const override
     {
-        char hostname[256];
+        char hostname[256]{};
         int res = getnameinfo(&_address, _addressLen, hostname, sizeof(hostname), nullptr, 0, NI_NUMERICHOST);
         if (res == 0)
         {
