@@ -152,7 +152,7 @@ void ServerList::Clear()
     _serverEntries.clear();
 }
 
-std::vector<ServerListEntry> ServerList::ReadFavourites()
+std::vector<ServerListEntry> ServerList::ReadFavourites() const
 {
     log_verbose("server_list_read(...)");
     std::vector<ServerListEntry> entries;
@@ -197,7 +197,7 @@ void ServerList::ReadAndAddFavourites()
     AddRange(entries);
 }
 
-void ServerList::WriteFavourites()
+void ServerList::WriteFavourites() const
 {
     // Save just favourite servers
     std::vector<ServerListEntry> favouriteServers;
@@ -207,7 +207,7 @@ void ServerList::WriteFavourites()
     WriteFavourites(favouriteServers);
 }
 
-bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries)
+bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) const
 {
     log_verbose("server_list_write(%d, 0x%p)", entries.size(), entries.data());
 
@@ -234,7 +234,7 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries)
     }
 }
 
-std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(const INetworkEndpoint& broadcastEndpoint)
+std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(const INetworkEndpoint& broadcastEndpoint) const
 {
     auto broadcastAddress = broadcastEndpoint.GetHostname();
     return std::async(std::launch::async, [broadcastAddress] {
@@ -293,7 +293,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
     });
 }
 
-std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync()
+std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync() const
 {
     return std::async(std::launch::async, [&] {
         // Get all possible LAN broadcast addresses
@@ -325,7 +325,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
     });
 }
 
-std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync()
+std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync() const
 {
 #    ifdef DISABLE_HTTP
     return {};

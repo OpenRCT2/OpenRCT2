@@ -216,12 +216,12 @@ public:
         CloseSocket();
     }
 
-    SOCKET_STATUS GetStatus() override
+    SOCKET_STATUS GetStatus() const override
     {
         return _status;
     }
 
-    const char* GetError() override
+    const char* GetError() const override
     {
         return _error.empty() ? nullptr : _error.c_str();
     }
@@ -583,12 +583,12 @@ public:
         CloseSocket();
     }
 
-    SOCKET_STATUS GetStatus() override
+    SOCKET_STATUS GetStatus() const override
     {
         return _status;
     }
 
-    const char* GetError() override
+    const char* GetError() const override
     {
         return _error.empty() ? nullptr : _error.c_str();
     }
@@ -739,12 +739,12 @@ private:
         }
 
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
-        if (!SetOption(_socket, IPPROTO_IPV6, IPV6_V6ONLY, false))
+        if (!SetOption(sock, IPPROTO_IPV6, IPV6_V6ONLY, false))
         {
             log_warning("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
         }
 
-        if (!SetOption(_socket, SOL_SOCKET, SO_REUSEADDR, true))
+        if (!SetOption(sock, SOL_SOCKET, SO_REUSEADDR, true))
         {
             log_warning("SO_REUSEADDR failed. %d", LAST_SOCKET_ERROR());
         }

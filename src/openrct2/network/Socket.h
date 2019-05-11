@@ -52,8 +52,8 @@ interface ITcpSocket
 public:
     virtual ~ITcpSocket() = default;
 
-    virtual SOCKET_STATUS GetStatus() abstract;
-    virtual const char* GetError() abstract;
+    virtual SOCKET_STATUS GetStatus() const abstract;
+    virtual const char* GetError() const abstract;
     virtual const char* GetHostName() const abstract;
 
     virtual void Listen(uint16_t port) abstract;
@@ -78,8 +78,8 @@ interface IUdpSocket
 public:
     virtual ~IUdpSocket() = default;
 
-    virtual SOCKET_STATUS GetStatus() abstract;
-    virtual const char* GetError() abstract;
+    virtual SOCKET_STATUS GetStatus() const abstract;
+    virtual const char* GetError() const abstract;
     virtual const char* GetHostName() const abstract;
 
     virtual void Listen(uint16_t port) abstract;

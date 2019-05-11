@@ -44,9 +44,9 @@ private:
     std::vector<ServerListEntry> _serverEntries;
 
     void Sort();
-    std::vector<ServerListEntry> ReadFavourites();
-    bool WriteFavourites(const std::vector<ServerListEntry>& entries);
-    std::future<std::vector<ServerListEntry>> FetchLocalServerListAsync(const INetworkEndpoint& broadcastEndpoint);
+    std::vector<ServerListEntry> ReadFavourites() const;
+    bool WriteFavourites(const std::vector<ServerListEntry>& entries) const;
+    std::future<std::vector<ServerListEntry>> FetchLocalServerListAsync(const INetworkEndpoint& broadcastEndpoint) const;
 
 public:
     ServerListEntry& GetServer(size_t index);
@@ -56,10 +56,10 @@ public:
     void Clear();
 
     void ReadAndAddFavourites();
-    void WriteFavourites();
+    void WriteFavourites() const;
 
-    std::future<std::vector<ServerListEntry>> FetchLocalServerListAsync();
-    std::future<std::vector<ServerListEntry>> FetchOnlineServerListAsync();
+    std::future<std::vector<ServerListEntry>> FetchLocalServerListAsync() const;
+    std::future<std::vector<ServerListEntry>> FetchOnlineServerListAsync() const;
     uint32_t GetTotalPlayerCount() const;
 };
 
