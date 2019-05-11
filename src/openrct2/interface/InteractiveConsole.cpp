@@ -1549,6 +1549,66 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_
     return 0;
 }
 
+static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv)
+{
+    int32_t desyncType = 0;
+    if (argv.size() >= 1)
+    {
+        desyncType = atoi(argv[0].c_str());
+    }
+
+    std::vector<rct_sprite*> peeps;
+    std::vector<rct_sprite*> vehicles;
+
+    for (int i = 0; i < MAX_SPRITES; i++)
+    {
+        rct_sprite* sprite = get_sprite(i);
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+            continue;
+
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            peeps.push_back(sprite);
+        else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            vehicles.push_back(sprite);
+    }
+
+    switch (desyncType)
+    {
+        case 0: // Peep t-shirts.
+        {
+            if (peeps.empty())
+            {
+                console.WriteFormatLine("No peeps");
+            }
+            else
+            {
+                rct_sprite* sprite = peeps[0];
+                if (peeps.size() > 1)
+                    sprite = peeps[util_rand() % peeps.size() - 1];
+                sprite->peep.tshirt_colour = util_rand() & 0xFF;
+                invalidate_sprite_0(sprite);
+            }
+            break;
+        }
+        case 1: // Remove random peep.
+        {
+            if (peeps.empty())
+            {
+                console.WriteFormatLine("No peep removed");
+            }
+            else
+            {
+                rct_sprite* sprite = peeps[0];
+                if (peeps.size() > 1)
+                    sprite = peeps[util_rand() % peeps.size() - 1];
+                sprite->AsPeep()->Remove();
+            }
+            break;
+        }
+    }
+    return 0;
+}
+
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
 static int32_t cc_abort([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
@@ -1670,6 +1730,7 @@ static constexpr const console_command console_command_table[] = {
     { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
     { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
+    { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random peep, 1 = Remove random peep ]"},
     
 };
 // clang-format on

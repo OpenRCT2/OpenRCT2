@@ -156,6 +156,7 @@ struct NetworkConfiguration
     bool log_chat;
     bool log_server_actions;
     bool pause_server_if_no_clients;
+    bool desync_debugging;
 };
 
 struct NotificationConfiguration

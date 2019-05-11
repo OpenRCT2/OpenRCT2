@@ -16,6 +16,7 @@
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
+#include "GameStateSnapshots.h"
 #include "Input.h"
 #include "Intro.h"
 #include "OpenRCT2.h"
@@ -92,6 +93,7 @@ namespace OpenRCT2
         std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
         std::unique_ptr<IReplayManager> _replayManager;
+        std::unique_ptr<IGameStateSnapshots> _gameStateSnapshots;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
@@ -209,6 +211,11 @@ namespace OpenRCT2
         IReplayManager* GetReplayManager() override
         {
             return _replayManager.get();
+        }
+
+        IGameStateSnapshots* GetGameStateSnapshots() override
+        {
+            return _gameStateSnapshots.get();
         }
 
         int32_t GetDrawingEngineType() override
@@ -340,6 +347,7 @@ namespace OpenRCT2
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
             _replayManager = CreateReplayManager();
+            _gameStateSnapshots = CreateGameStateSnapshots();
 #ifdef __ENABLE_DISCORD__
             _discordService = std::make_unique<DiscordService>();
 #endif
@@ -994,6 +1002,7 @@ namespace OpenRCT2
                     DIRID::THEME,
                     DIRID::SEQUENCE,
                     DIRID::REPLAY,
+                    DIRID::LOG_DESYNCS,
                 });
         }
 

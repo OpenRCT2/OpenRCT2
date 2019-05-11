@@ -3765,6 +3765,7 @@ STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerance {INT32}
 STR_6315    :{WINDOW_COLOUR_2}Pathfind Goal: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6316    :{WINDOW_COLOUR_2}Pathfind history:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6318    :Network desync detected.{NEWLINE}Log file: {STRING}
 
 #############
 # Scenarios #
