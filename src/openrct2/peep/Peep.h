@@ -733,8 +733,6 @@ private:
     void UpdatePicked();
 };
 
-//moved peep_insert_new_thought here as a member function
-//changed name from peep_insert_new_thought to InsertNewThought
 struct Guest : Peep
 {
 public:
