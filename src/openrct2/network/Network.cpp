@@ -2643,6 +2643,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         {
             game_load_init();
             game_command_queue.clear();
+            _serverTickData.clear();
             server_tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _desynchronised = false;
