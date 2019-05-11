@@ -31,7 +31,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "19"
+#define NETWORK_STREAM_VERSION "24"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -113,6 +113,7 @@ public:
 
     void SetEnvironment(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
     bool Init();
+    void Reconnect();
     void Close();
     bool BeginClient(const std::string& host, uint16_t port);
     bool BeginServer(uint16_t port, const std::string& address);
@@ -135,6 +136,7 @@ public:
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
     void SendPacketToClients(NetworkPacket& packet, bool front = false, bool gameCmd = false);
     bool CheckSRAND(uint32_t tick, uint32_t srand0);
+    bool IsDesynchronised();
     void CheckDesynchronizaton();
     void KickPlayer(int32_t playerId);
     void SetPassword(const char* password);
@@ -298,6 +300,7 @@ private:
     int32_t status = NETWORK_STATUS_NONE;
     bool _closeLock = false;
     bool _requireClose = false;
+    bool _requireReconnect = false;
     bool wsa_initialized = false;
     bool _clientMapLoaded = false;
     std::unique_ptr<ITcpSocket> _listenSocket;
@@ -311,6 +314,8 @@ private:
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
     std::multiset<GameCommand> game_command_queue;
     std::vector<uint8_t> chunk_buffer;
+    std::string _host;
+    uint16_t _port = 0;
     std::string _password;
     bool _desynchronised = false;
     uint32_t server_connect_time = 0;
@@ -429,6 +434,20 @@ bool Network::Init()
     return true;
 }
 
+void Network::Reconnect()
+{
+    if (status != NETWORK_STATUS_NONE)
+    {
+        Close();
+    }
+    if (_requireClose)
+    {
+        _requireReconnect = true;
+        return;
+    }
+    BeginClient(_host, _port);
+}
+
 void Network::Close()
 {
     if (status != NETWORK_STATUS_NONE)
@@ -507,6 +526,8 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
     mode = NETWORK_MODE_CLIENT;
 
     log_info("Connecting to %s:%u\n", host.c_str(), port);
+    _host = host;
+    _port = port;
 
     _serverConnection = std::make_unique<NetworkConnection>();
     _serverConnection->Socket = CreateTcpSocket();
@@ -618,7 +639,7 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
     ServerProviderEmail = gConfigNetwork.provider_email;
     ServerProviderWebsite = gConfigNetwork.provider_website;
 
-    cheats_reset();
+    CheatsReset();
     LoadGroups();
     BeginChatLog();
     BeginServerLog();
@@ -714,6 +735,10 @@ void Network::Update()
     if (_requireClose)
     {
         Close();
+        if (_requireReconnect)
+        {
+            Reconnect();
+        }
     }
 }
 
@@ -961,7 +986,7 @@ void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCm
 bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
 {
     // We have to wait for the map to be loaded first, ticks may match current loaded map.
-    if (_clientMapLoaded == false)
+    if (!_clientMapLoaded)
         return true;
 
     auto itTickData = _serverTickData.find(tick);
@@ -974,7 +999,7 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
     if (storedTick.srand0 != srand0)
         return false;
 
-    if (storedTick.spriteHash.empty() == false)
+    if (!storedTick.spriteHash.empty())
     {
         rct_sprite_checksum checksum = sprite_checksum();
         std::string clientSpriteHash = checksum.ToString();
@@ -985,6 +1010,11 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
     }
 
     return true;
+}
+
+bool Network::IsDesynchronised()
+{
+    return gNetwork._desynchronised;
 }
 
 void Network::CheckDesynchronizaton()
@@ -2168,7 +2198,7 @@ NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& ke
             if (networkUser == nullptr)
             {
                 player->Group = GetDefaultGroup();
-                if (name.empty() == false)
+                if (!name.empty())
                 {
                     player->SetName(MakePlayerNameUnique(String::Trim(name)));
                 }
@@ -2613,6 +2643,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         {
             game_load_init();
             game_command_queue.clear();
+            _serverTickData.clear();
             server_tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _desynchronised = false;
@@ -3153,6 +3184,11 @@ void network_close()
     gNetwork.Close();
 }
 
+void network_reconnect()
+{
+    gNetwork.Reconnect();
+}
+
 void network_shutdown_client()
 {
     gNetwork.ShutdownClient();
@@ -3191,6 +3227,11 @@ int32_t network_get_mode()
 int32_t network_get_status()
 {
     return gNetwork.GetStatus();
+}
+
+bool network_is_desynchronised()
+{
+    return gNetwork.IsDesynchronised();
 }
 
 void network_check_desynchronization()
@@ -3364,61 +3405,51 @@ void network_chat_show_server_greeting()
     }
 }
 
-void game_command_set_player_group(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
+GameActionResult::Ptr network_set_player_group(
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
-    uint8_t playerid = (uint8_t)*ecx;
-    uint8_t groupid = (uint8_t)*edx;
-    NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
-    NetworkGroup* fromgroup = gNetwork.GetGroupByID(game_command_playerid);
-    if (!player)
+    NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
+
+    NetworkGroup* fromgroup = gNetwork.GetGroupByID(actionPlayerId);
+    if (player == nullptr)
     {
-        gGameCommandErrorTitle = STR_CANT_DO_THIS;
-        gGameCommandErrorText = STR_NONE;
-        *ebx = MONEY32_UNDEFINED;
-        return;
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
     }
-    if (!gNetwork.GetGroupByID(groupid))
+
+    if (!gNetwork.GetGroupByID(groupId))
     {
-        gGameCommandErrorTitle = STR_CANT_DO_THIS;
-        gGameCommandErrorText = STR_NONE;
-        *ebx = MONEY32_UNDEFINED;
-        return;
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
     }
+
     if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
     {
-        gGameCommandErrorTitle = STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO;
-        gGameCommandErrorText = STR_NONE;
-        *ebx = MONEY32_UNDEFINED;
-        return;
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
     }
-    if (groupid == 0 && fromgroup && fromgroup->Id != 0)
+
+    if (groupId == 0 && fromgroup && fromgroup->Id != 0)
     {
-        gGameCommandErrorTitle = STR_CANT_SET_TO_THIS_GROUP;
-        gGameCommandErrorText = STR_NONE;
-        *ebx = MONEY32_UNDEFINED;
-        return;
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_SET_TO_THIS_GROUP);
     }
-    if (*ebx & GAME_COMMAND_FLAG_APPLY)
+
+    if (isExecuting)
     {
-        player->Group = groupid;
+        player->Group = groupId;
 
         if (network_get_mode() == NETWORK_MODE_SERVER)
         {
             // Add or update saved user
             NetworkUserManager* userManager = &gNetwork._userManager;
             NetworkUser* networkUser = userManager->GetOrAddUser(player->KeyHash);
-            networkUser->GroupId = groupid;
+            networkUser->GroupId = groupId;
             networkUser->Name = player->Name;
             userManager->Save();
         }
 
-        window_invalidate_by_number(WC_PLAYER, playerid);
+        window_invalidate_by_number(WC_PLAYER, playerId);
 
         // Log set player group event
-        NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(game_command_playerid);
-        NetworkGroup* new_player_group = gNetwork.GetGroupByID(groupid);
+        NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(actionPlayerId);
+        NetworkGroup* new_player_group = gNetwork.GetGroupByID(groupId);
         char log_msg[256];
         const char* args[3] = {
             player->Name.c_str(),
@@ -3428,7 +3459,7 @@ void game_command_set_player_group(
         format_string(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
         network_append_server_log(log_msg);
     }
-    *ebx = 0;
+    return std::make_unique<GameActionResult>();
 }
 
 void game_command_modify_groups(
@@ -3987,6 +4018,10 @@ void network_flush()
 void network_send_tick()
 {
 }
+bool network_is_desynchronised()
+{
+    return false;
+}
 void network_check_desynchronization()
 {
 }
@@ -4089,9 +4124,11 @@ const char* network_get_group_name(uint32_t index)
 {
     return "";
 };
-void game_command_set_player_group(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp)
+
+GameActionResult::Ptr network_set_player_group(
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
+    return std::make_unique<GameActionResult>();
 }
 void game_command_modify_groups(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp)
@@ -4143,6 +4180,9 @@ void network_send_password(const std::string& password)
 {
 }
 void network_close()
+{
+}
+void network_reconnect()
 {
 }
 void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>&)

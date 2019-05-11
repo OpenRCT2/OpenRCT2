@@ -395,6 +395,42 @@
         "y_offset": 1
     },
     {
+        "path": "icons/map_north.png"
+    },
+    {
+        "path": "icons/map_north_pressed.png"
+    },
+    {
+        "path": "icons/map_west.png"
+    },
+    {
+        "path": "icons/map_west_pressed.png"
+    },
+    {
+        "path": "icons/map_south.png"
+    },
+    {
+        "path": "icons/map_south_pressed.png"
+    },
+    {
+        "path": "icons/map_east.png"
+    },
+    {
+        "path": "icons/map_east_pressed.png"
+    },
+    {
+        "path": "icons/multiplayer_toolbar.png"
+    },
+    {
+        "path": "icons/multiplayer_toolbar_pressed.png"
+    },
+    {
+        "path": "icons/multiplayer_sync.png"
+    },
+    {
+        "path": "icons/multiplayer_desync.png"
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",

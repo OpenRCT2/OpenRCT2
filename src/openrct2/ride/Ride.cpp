@@ -24,6 +24,7 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../core/Optional.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -450,7 +451,7 @@ money32 Ride::CalculateIncomePerHour() const
     int32_t currentShopItem = entry->shop_item;
     if (currentShopItem != SHOP_ITEM_NONE)
     {
-        priceMinusCost -= get_shop_item_cost(currentShopItem);
+        priceMinusCost -= ShopItems[currentShopItem].Cost;
     }
 
     currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RidePhotoItems[type] : entry->shop_item_secondary;
@@ -458,7 +459,7 @@ money32 Ride::CalculateIncomePerHour() const
     if (currentShopItem != SHOP_ITEM_NONE)
     {
         priceMinusCost += price_secondary;
-        priceMinusCost -= get_shop_item_cost(currentShopItem);
+        priceMinusCost -= ShopItems[currentShopItem].Cost;
 
         if (entry->shop_item != SHOP_ITEM_NONE)
             priceMinusCost /= 2;
@@ -2569,12 +2570,7 @@ bool Ride::CanBreakDown() const
     }
 
     rct_ride_entry* entry = GetRideEntry();
-    if (entry == nullptr || entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN)
-    {
-        return false;
-    }
-
-    return true;
+    return entry != nullptr && !(entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN);
 }
 
 static void choose_random_train_to_breakdown_safe(Ride* ride)
@@ -4857,7 +4853,7 @@ static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int
         lastTrain = train;
 
         // Add train to ride vehicle list
-        move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_TRAIN * 2);
+        move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_TRAIN);
         for (int32_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
         {
             if (ride->vehicles[i] == SPRITE_INDEX_NULL)
@@ -6881,14 +6877,17 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
     return supportedPieces;
 }
 
-static int32_t ride_get_smallest_station_length(Ride* ride)
+static opt::optional<int32_t> ride_get_smallest_station_length(Ride* ride)
 {
-    auto result = std::numeric_limits<int32_t>::max();
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    opt::optional<int32_t> result;
+    for (const auto& station : ride->stations)
     {
-        if (ride->stations[i].Start.xy != RCT_XY8_UNDEFINED)
+        if (station.Start.xy != RCT_XY8_UNDEFINED)
         {
-            result = std::min<int32_t>(result, ride->stations[i].Length);
+            if (!result.has_value() || station.Length < *result)
+            {
+                result = station.Length;
+            }
         }
     }
     return result;
@@ -6996,11 +6995,11 @@ void Ride::UpdateMaxVehicles()
         min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
 
         // Calculate maximum train length based on smallest station length
-        int32_t stationLength = ride_get_smallest_station_length(this);
-        if (stationLength == -1)
+        auto stationNumTiles = ride_get_smallest_station_length(this);
+        if (!stationNumTiles.has_value())
             return;
 
-        stationLength = (stationLength * 0x44180) - 0x16B2A;
+        auto stationLength = (*stationNumTiles * 0x44180) - 0x16B2A;
         int32_t maxMass = RideData5[type].max_mass << 8;
         int32_t maxCarsPerTrain = 1;
         for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
@@ -7193,7 +7192,7 @@ void sub_6CB945(Ride* ride)
                     break;
                 } while (!(tileElement++)->IsLastForTile());
 
-                if (trackFound == false)
+                if (!trackFound)
                 {
                     break;
                 }
@@ -7208,7 +7207,7 @@ void sub_6CB945(Ride* ride)
                 }
             }
 
-            if (specialTrack == false)
+            if (!specialTrack)
             {
                 continue;
             }
@@ -7778,13 +7777,9 @@ uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
 
 bool ride_type_supports_boosters(uint8_t rideType)
 {
-    if (rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER
+    return rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER || rideType == RIDE_TYPE_CORKSCREW_ROLLER_COASTER
         || rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER || rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-        || rideType == RIDE_TYPE_GIGA_COASTER || rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
-    {
-        return true;
-    }
-    return false;
+        || rideType == RIDE_TYPE_GIGA_COASTER || rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER;
 }
 
 int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed)

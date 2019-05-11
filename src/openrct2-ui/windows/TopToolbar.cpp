@@ -25,6 +25,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/actions/BannerPlaceAction.hpp>
 #include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
@@ -35,6 +36,7 @@
 #include <openrct2/actions/LargeScenerySetColourAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
+#include <openrct2/actions/SetCheatAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
 #include <openrct2/actions/SmallScenerySetColourAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
@@ -152,6 +154,9 @@ enum TOP_TOOLBAR_DEBUG_DDIDX {
 enum TOP_TOOLBAR_NETWORK_DDIDX {
     DDIDX_MULTIPLAYER = 0,
     DDIDX_NETWORK = 1,
+    DDIDX_MULTIPLAYER_RECONNECT = 2,
+
+    TOP_TOOLBAR_NETWORK_COUNT
 };
 
 enum {
@@ -248,7 +253,7 @@ static rct_widget window_top_toolbar_widgets[] = {
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_FINANCES_RESEARCH_TIP },        // Research
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_RECENT_MESSAGES_TIP },     // News
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
+    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MULTIPLAYER,    STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
     { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_TOOLBAR_CHAT_TIP },             // Chat
 
     { WWT_EMPTY,    0,  0,      10-1,   0,                      0,                      0xFFFFFFFF,                                 STR_NONE },                         // Artificial widget separator
@@ -849,6 +854,20 @@ static void window_top_toolbar_invalidate(rct_window* w)
     else
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
 
+    // Set map button to the right image.
+    if (window_top_toolbar_widgets[WIDX_MAP].type != WWT_EMPTY)
+    {
+        static constexpr uint32_t imageIdByRotation[] = {
+            SPR_G2_MAP_NORTH,
+            SPR_G2_MAP_WEST,
+            SPR_G2_MAP_SOUTH,
+            SPR_G2_MAP_EAST,
+        };
+
+        uint32_t mapImageId = imageIdByRotation[get_current_rotation()];
+        window_top_toolbar_widgets[WIDX_MAP].image = IMAGE_TYPE_REMAP | mapImageId;
+    }
+
     // Zoomed out/in disable. Not sure where this code is in the original.
     if (window_get_main()->viewport->zoom == 0)
     {
@@ -979,8 +998,15 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y = w->y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
         if (widget_is_pressed(w, WIDX_NETWORK))
             y++;
-        imgId = SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION;
-        gfx_draw_sprite(dpi, imgId, x, y, 0);
+
+        // Draw (de)sync icon.
+        imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
+        gfx_draw_sprite(dpi, imgId, x + 3, y + 11, 0);
+
+        // Draw number of players.
+        int32_t player_count = network_get_num_players();
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+        gfx_draw_string_right(dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, x + 23, y + 1);
     }
 }
 
@@ -1906,12 +1932,26 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         }
         case SCENERY_TYPE_BANNER:
         {
-            int32_t flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
-
-            gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-            game_command_callback = game_command_callback_place_banner;
-            game_do_command(
-                gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, gWindowSceneryPrimaryColour);
+            uint8_t direction = (parameter_2 >> 8) & 0xFF;
+            int32_t z = (parameter_2 & 0xFF) * 16;
+            CoordsXYZD loc{ gridX, gridY, z, direction };
+            auto primaryColour = gWindowSceneryPrimaryColour;
+            auto bannerType = (parameter_1 & 0xFF00) >> 8;
+            auto bannerIndex = create_new_banner(0);
+            if (bannerIndex == BANNER_INDEX_NULL)
+            {
+                context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                break;
+            }
+            auto bannerPlaceAction = BannerPlaceAction(loc, bannerType, bannerIndex, primaryColour);
+            bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error == GA_ERROR::OK)
+                {
+                    audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                    context_open_detail_window(WD_BANNER, bannerIndex);
+                }
+            });
+            GameActions::Execute(&bannerPlaceAction);
             break;
         }
     }
@@ -2484,7 +2524,7 @@ static money32 try_place_ghost_scenery(
             gSceneryPlaceRotation = (uint16_t)(parameter_3 & 0xFF);
             gSceneryPlaceObject = selected_tab;
 
-            tileElement = gSceneryTileElement;
+            tileElement = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->tileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
             gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
             if (dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
@@ -2539,14 +2579,14 @@ static money32 try_place_ghost_scenery(
                 type, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
             wallPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-            wallPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+            wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
                 if (result->Error != GA_ERROR::OK)
                     return;
 
                 gSceneryGhostPosition.x = map_tile.x;
                 gSceneryGhostPosition.y = map_tile.y;
                 gSceneryGhostWallRotation = edges;
-                gSceneryGhostPosition.z = gSceneryTileElement->base_height;
+                gSceneryGhostPosition.z = result->tileElement->base_height;
 
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
             });
@@ -2579,7 +2619,7 @@ static money32 try_place_ghost_scenery(
             gSceneryGhostPosition.y = map_tile.y;
             gSceneryPlaceRotation = loc.direction;
 
-            tileElement = gSceneryTileElement;
+            tileElement = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->tileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
 
             if (dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
@@ -2597,20 +2637,36 @@ static money32 try_place_ghost_scenery(
             break;
         }
         case 4:
+        {
             // Banners
             // 6e2612
-            cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, 0);
+            uint8_t direction = (parameter_2 >> 8) & 0xFF;
+            int32_t z = (parameter_2 & 0xFF) * 16;
+            CoordsXYZD loc{ map_tile.x, map_tile.y, z, direction };
+            auto primaryColour = gWindowSceneryPrimaryColour;
+            auto bannerType = (parameter_1 & 0xFF00) >> 8;
+            auto bannerIndex = create_new_banner(0);
+            if (bannerIndex == BANNER_INDEX_NULL)
+            {
+                // Silently fail as this is just for the ghost
+                break;
+            }
+            auto bannerPlaceAction = BannerPlaceAction(loc, bannerType, bannerIndex, primaryColour);
+            bannerPlaceAction.SetFlags(
+                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            auto res = GameActions::Execute(&bannerPlaceAction);
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
+            if (res->Error != GA_ERROR::OK)
+                return MONEY32_UNDEFINED;
 
-            gSceneryGhostPosition.x = map_tile.x;
-            gSceneryGhostPosition.y = map_tile.y;
-            gSceneryGhostPosition.z = (parameter_2 & 0xFF) * 2 + 2;
-            gSceneryPlaceRotation = ((parameter_2 >> 8) & 0xFF);
+            gSceneryGhostPosition.x = loc.x;
+            gSceneryGhostPosition.y = loc.y;
+            gSceneryGhostPosition.z = loc.z / 8 + 2;
+            gSceneryPlaceRotation = direction;
             gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
+            cost = res->Cost;
             break;
+        }
     }
 
     return cost;
@@ -3366,16 +3422,13 @@ static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
+            CheatsSet(CheatType::SandboxMode, !gCheatsSandboxMode);
             break;
         case DDIDX_DISABLE_CLEARANCE_CHECKS:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks, GAME_COMMAND_CHEAT, 0,
-                0);
+            CheatsSet(CheatType::DisableClearanceChecks, !gCheatsDisableClearanceChecks);
             break;
         case DDIDX_DISABLE_SUPPORT_LIMITS:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits, GAME_COMMAND_CHEAT, 0, 0);
+            CheatsSet(CheatType::DisableSupportLimits, !gCheatsDisableSupportLimits);
             break;
     }
 }
@@ -3396,13 +3449,15 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 
 static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_MULTIPLAYER;
-
     gDropdownItemsFormat[DDIDX_MULTIPLAYER] = STR_MULTIPLAYER;
     gDropdownItemsFormat[DDIDX_NETWORK] = STR_NETWORK;
+    gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, 2);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        TOP_TOOLBAR_NETWORK_COUNT);
+
+    dropdown_set_disabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
 
     gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
@@ -3446,6 +3501,9 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
                 break;
             case DDIDX_NETWORK:
                 context_open_window(WC_NETWORK);
+                break;
+            case DDIDX_MULTIPLAYER_RECONNECT:
+                network_reconnect();
                 break;
         }
     }

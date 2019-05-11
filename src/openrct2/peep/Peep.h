@@ -35,6 +35,10 @@
 #define PEEP_MIN_ENERGY 32
 #define PEEP_MAX_ENERGY 128
 #define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
+#define PEEP_MAX_HUNGER 255
+#define PEEP_MAX_BATHROOM 255
+#define PEEP_MAX_NAUSEA 255
+#define PEEP_MAX_THIRST 255
 
 struct TileElement;
 struct Ride;
@@ -710,6 +714,7 @@ public: // Peep
     void Pickup();
     void PickupAbort(int32_t old_x);
     bool Place(TileCoordsXYZ location, bool apply);
+    static Peep* Generate(const CoordsXYZ coords);
     void RemoveFromQueue();
     void RemoveFromRide();
 
@@ -941,7 +946,6 @@ void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-Peep* peep_generate(int32_t x, int32_t y, int32_t z);
 void get_arguments_from_action(Peep* peep, uint32_t* argument_1, uint32_t* argument_2);
 void peep_thought_set_format_args(rct_peep_thought* thought);
 int32_t get_peep_face_sprite_small(Peep* peep);

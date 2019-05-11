@@ -130,11 +130,7 @@ bool platform_directory_exists(const utf8* path)
     struct stat dirinfo;
     int32_t result = stat(buffer, &dirinfo);
     log_verbose("checking dir %s, result = %d, is_dir = %d", buffer, result, S_ISDIR(dirinfo.st_mode));
-    if ((result != 0) || !S_ISDIR(dirinfo.st_mode))
-    {
-        return false;
-    }
-    return true;
+    return result == 0 && S_ISDIR(dirinfo.st_mode);
 }
 
 bool platform_original_game_data_exists(const utf8* path)

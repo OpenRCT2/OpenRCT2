@@ -256,7 +256,6 @@ extern colour_t gWindowScenerySecondaryColour;
 extern colour_t gWindowSceneryTertiaryColour;
 extern bool gWindowSceneryEyedropperEnabled;
 
-extern TileElement* gSceneryTileElement;
 extern uint8_t gSceneryQuadrant;
 
 extern money32 gSceneryPlaceCost;

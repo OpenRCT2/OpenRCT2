@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "BannerPlaceAction.hpp"
+#include "BannerRemoveAction.hpp"
 #include "BannerSetColourAction.hpp"
 #include "BannerSetNameAction.hpp"
 #include "BannerSetStyleAction.hpp"
@@ -39,6 +41,7 @@
 #include "PauseToggleAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
+#include "PlayerSetGroupAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
 #include "RideEntranceExitPlaceAction.hpp"
@@ -50,6 +53,7 @@
 #include "RideSetSetting.hpp"
 #include "RideSetStatus.hpp"
 #include "RideSetVehiclesAction.hpp"
+#include "SetCheatAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
 #include "SignSetStyleAction.hpp"
@@ -78,6 +82,8 @@ namespace GameActions
 {
     void Register()
     {
+        Register<BannerPlaceAction>();
+        Register<BannerRemoveAction>();
         Register<BannerSetColourAction>();
         Register<BannerSetNameAction>();
         Register<BannerSetStyleAction>();
@@ -97,6 +103,7 @@ namespace GameActions
         Register<ParkSetResearchFundingAction>();
         Register<PlaceParkEntranceAction>();
         Register<PlacePeepSpawnAction>();
+        Register<PlayerSetGroupAction>();
         Register<RideCreateAction>();
         Register<RideDemolishAction>();
         Register<RideEntranceExitPlaceAction>();
@@ -143,5 +150,6 @@ namespace GameActions
         Register<WaterRaiseAction>();
         Register<GuestSetFlagsAction>();
         Register<ParkSetDateAction>();
+        Register<SetCheatAction>();
     }
 } // namespace GameActions

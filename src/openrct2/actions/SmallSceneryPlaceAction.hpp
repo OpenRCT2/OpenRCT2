@@ -48,6 +48,7 @@ public:
     }
 
     uint8_t GroundFlags{ 0 };
+    TileElement* tileElement = nullptr;
 };
 
 DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, SmallSceneryPlaceActionResult)
@@ -98,20 +99,23 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t baseHeight = tile_element_height(_loc.x, _loc.y);
+        int32_t landHeight = tile_element_height(_loc.x, _loc.y);
+        int16_t waterHeight = tile_element_water_height(_loc.x, _loc.y);
+
+        int32_t surfaceHeight = landHeight;
         // If on water
-        if (baseHeight & 0xFFFF0000)
+        if (waterHeight > 0)
         {
-            baseHeight >>= 16;
+            surfaceHeight = waterHeight;
         }
         auto res = std::make_unique<SmallSceneryPlaceActionResult>();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = baseHeight;
+        res->Position.z = surfaceHeight;
         if (_loc.z != 0)
         {
-            baseHeight = _loc.z;
-            res->Position.z = baseHeight;
+            surfaceHeight = _loc.z;
+            res->Position.z = surfaceHeight;
         }
 
         if (!map_check_free_elements_and_reorganise(1))
@@ -155,12 +159,15 @@ public:
             x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
             y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
         }
-        baseHeight = tile_element_height(x2, y2);
+        landHeight = tile_element_height(x2, y2);
+        waterHeight = tile_element_water_height(x2, y2);
+
+        surfaceHeight = landHeight;
         // If on water
-        if (baseHeight & 0xFFFF0000)
+        if (waterHeight > 0)
         {
             // base_height2 is now the water height
-            baseHeight >>= 16;
+            surfaceHeight = waterHeight;
             if (_loc.z == 0)
             {
                 isOnWater = true;
@@ -169,7 +176,7 @@ public:
         auto targetHeight = _loc.z;
         if (_loc.z == 0)
         {
-            targetHeight = baseHeight;
+            targetHeight = surfaceHeight;
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
@@ -295,20 +302,23 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t baseHeight = tile_element_height(_loc.x, _loc.y);
+        int32_t landHeight = tile_element_height(_loc.x, _loc.y);
+        int16_t waterHeight = tile_element_water_height(_loc.x, _loc.y);
+
+        int32_t surfaceHeight = landHeight;
         // If on water
-        if (baseHeight & 0xFFFF0000)
+        if (waterHeight > 0)
         {
-            baseHeight >>= 16;
+            surfaceHeight = waterHeight;
         }
         auto res = std::make_unique<SmallSceneryPlaceActionResult>();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = baseHeight;
+        res->Position.z = surfaceHeight;
         if (_loc.z != 0)
         {
-            baseHeight = _loc.z;
-            res->Position.z = baseHeight;
+            surfaceHeight = _loc.z;
+            res->Position.z = surfaceHeight;
         }
 
         rct_scenery_entry* sceneryEntry = get_small_scenery_entry(_sceneryType);
@@ -342,17 +352,20 @@ public:
             x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
             y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
         }
-        baseHeight = tile_element_height(x2, y2);
+        landHeight = tile_element_height(x2, y2);
+        waterHeight = tile_element_water_height(x2, y2);
+
+        surfaceHeight = landHeight;
         // If on water
-        if (baseHeight & 0xFFFF0000)
+        if (waterHeight > 0)
         {
             // base_height2 is now the water height
-            baseHeight >>= 16;
+            surfaceHeight = waterHeight;
         }
         auto targetHeight = _loc.z;
         if (_loc.z == 0)
         {
-            targetHeight = baseHeight;
+            targetHeight = surfaceHeight;
         }
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
@@ -419,7 +432,7 @@ public:
 
         TileElement* newElement = tile_element_insert(_loc.x / 32, _loc.y / 32, zLow, quarterTile.GetBaseQuarterOccupied());
         assert(newElement != nullptr);
-        gSceneryTileElement = newElement;
+        res->tileElement = newElement;
         newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
         newElement->SetDirection(_loc.direction);
         SmallSceneryElement* sceneryElement = newElement->AsSmallScenery();

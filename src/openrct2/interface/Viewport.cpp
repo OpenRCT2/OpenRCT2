@@ -638,7 +638,7 @@ void viewport_update_sprite_follow(rct_window* window)
     {
         rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
-        int32_t height = (tile_element_height(0xFFFF & sprite->generic.x, 0xFFFF & sprite->generic.y) & 0xFFFF) - 16;
+        int32_t height = (tile_element_height(0xFFFF & sprite->generic.x, 0xFFFF & sprite->generic.y)) - 16;
         int32_t underground = sprite->generic.z < height;
 
         viewport_set_underground_flag(underground, window, window->viewport);
@@ -903,7 +903,7 @@ void viewport_paint(
     y >>= viewport->zoom;
     y += viewport->y;
 
-    rct_drawpixelinfo dpi1;
+    rct_drawpixelinfo dpi1 = *dpi;
     dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
     dpi1.x = left;
     dpi1.y = top;

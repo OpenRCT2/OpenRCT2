@@ -32,7 +32,8 @@
                 "/usr/include",
                 "/usr/local/include",
                 "${workspaceRoot}",
-                "${workspaceRoot}/src"
+                "${workspaceRoot}/src",
+                "${workspaceRoot}/bin/googletest-distribution-prefix/src/googletest-distribution/googletest/include/gtest"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",

@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/PlayerSetGroupAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
@@ -310,8 +311,14 @@ void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex,
         return;
     }
     int32_t group = network_get_group_id(dropdownIndex);
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, group, GAME_COMMAND_SET_PLAYER_GROUP, 0, 0);
-    window_invalidate(w);
+    auto playerSetGroupAction = PlayerSetGroupAction(w->number, group);
+    playerSetGroupAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+        if (result->Error == GA_ERROR::OK)
+        {
+            window_invalidate(w);
+        }
+    });
+    GameActions::Execute(&playerSetGroupAction);
 }
 
 void window_player_overview_resize(rct_window* w)

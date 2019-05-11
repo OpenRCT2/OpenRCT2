@@ -28,6 +28,7 @@
 #include "../world/Climate.h"
 #include "platform.h"
 
+#include <algorithm>
 #include <stdlib.h>
 #include <time.h>
 
@@ -197,6 +198,21 @@ uint8_t platform_get_currency_value(const char* currCode)
 
     return CURRENCY_POUNDS;
 }
+
+#ifndef _WIN32
+std::string platform_sanitise_filename(const std::string& path)
+{
+    static const std::array<std::string::value_type, 1> prohibited = { '/' };
+    auto sanitised = path;
+    std::replace_if(
+        sanitised.begin(), sanitised.end(),
+        [](const std::string::value_type& ch) -> bool {
+            return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
+        },
+        '_');
+    return sanitised;
+}
+#endif
 
 #ifndef __ANDROID__
 float platform_get_default_scale()

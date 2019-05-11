@@ -243,6 +243,7 @@ public:
                 break;
             case RideSetSetting::RideType:
                 ride->type = _value;
+                gfx_invalidate_screen();
                 break;
         }
 

@@ -44,7 +44,7 @@ size_t sawyercoding_write_chunk_buffer(uint8_t* dst_file, const uint8_t* buffer,
 {
     uint8_t *encode_buffer, *encode_buffer2;
 
-    if (gUseRLE == false)
+    if (!gUseRLE)
     {
         if (chunkHeader.encoding == CHUNK_ENCODING_RLE || chunkHeader.encoding == CHUNK_ENCODING_RLECOMPRESSED)
         {

@@ -19,6 +19,7 @@
 #include "../world/Location.hpp"
 #include "../world/Park.h"
 #include "../world/Wall.h"
+#include "BannerRemoveAction.hpp"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActionResult)
@@ -89,7 +90,7 @@ public:
         if (footpathElement != nullptr)
         {
             footpath_queue_chain_reset();
-            remove_banners_at_element(_x, _y, footpathElement);
+            RemoveBannersAtElement(_x, _y, footpathElement);
             footpath_remove_edges_at(_x, _y, footpathElement);
             map_invalidate_tile_full(_x, _y);
             tile_element_remove(footpathElement);
@@ -139,5 +140,26 @@ private:
     {
         money32 cost = -MONEY(10, 00);
         return cost;
+    }
+
+    /**
+     *
+     *  rct2: 0x006BA23E
+     */
+    void RemoveBannersAtElement(int32_t x, int32_t y, TileElement * tileElement) const
+    {
+        while (!(tileElement++)->IsLastForTile())
+        {
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+                return;
+            else if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
+                continue;
+
+            auto bannerRemoveAction = BannerRemoveAction(
+                { x, y, tileElement->base_height * 8, tileElement->AsBanner()->GetPosition() });
+            bannerRemoveAction.SetFlags(GetFlags());
+            GameActions::ExecuteNested(&bannerRemoveAction);
+            tileElement--;
+        }
     }
 };

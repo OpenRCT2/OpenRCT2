@@ -1797,7 +1797,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
             }
         } while (!(tileElement++)->IsLastForTile());
 
-        if (found == false)
+        if (!found)
             break;
 
         if (!tileElement->AsPath()->IsQueue())

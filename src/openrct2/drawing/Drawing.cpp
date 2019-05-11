@@ -591,12 +591,7 @@ bool clip_drawpixelinfo(rct_drawpixelinfo* dst, rct_drawpixelinfo* src, int32_t 
     int32_t right = x + width;
     int32_t bottom = y + height;
 
-    dst->bits = src->bits;
-    dst->x = src->x;
-    dst->y = src->y;
-    dst->width = src->width;
-    dst->height = src->height;
-    dst->pitch = src->pitch;
+    *dst = *src;
     dst->zoom_level = 0;
 
     if (x > dst->x)

@@ -154,7 +154,7 @@ namespace GameActions
 
         if (result->Error == GA_ERROR::OK)
         {
-            if (finance_check_affordability(result->Cost, action->GetFlags()) == false)
+            if (!finance_check_affordability(result->Cost, action->GetFlags()))
             {
                 result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
@@ -290,7 +290,7 @@ namespace GameActions
             LogActionFinish(logContext, action, result);
 
             // If not top level just give away the result.
-            if (topLevel == false)
+            if (!topLevel)
                 return result;
 
             gCommandPosition.x = result->Position.x;
@@ -363,7 +363,10 @@ namespace GameActions
         // In network mode the error should be only shown to the issuer of the action.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (action->GetPlayer() != network_get_current_player_id())
+            // If the action was never networked and query fails locally the player id is not assigned.
+            // So compare only if the action went into the queue otherwise show errors by default.
+            const bool isActionFromNetwork = (action->GetFlags() & GAME_COMMAND_FLAG_NETWORKED) != 0;
+            if (isActionFromNetwork && action->GetPlayer() != network_get_current_player_id())
             {
                 shouldShowError = false;
             }

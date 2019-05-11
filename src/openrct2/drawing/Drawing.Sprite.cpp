@@ -619,7 +619,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     if (dpi->zoom_level != 0 && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
     {
-        rct_drawpixelinfo zoomed_dpi;
+        rct_drawpixelinfo zoomed_dpi = *dpi;
         zoomed_dpi.bits = dpi->bits;
         zoomed_dpi.x = dpi->x >> 1;
         zoomed_dpi.y = dpi->y >> 1;

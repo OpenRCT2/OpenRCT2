@@ -551,8 +551,8 @@ STR_1167    :Wasserspiegel kann hier nicht erhöht werden...
 STR_1168    :Optionen
 STR_1169    :(Keine)
 STR_1170    :{STRING}
-STR_1171    :{RED}Geschlossen - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Geschlossen
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Fußwege und Warteschlangenreihen anlegen
 STR_1174    :Banner im Weg
 STR_1175    :Kann nicht auf Fußweg mit Neigung angelegt werden
@@ -1109,7 +1109,7 @@ STR_1726    :Land nicht zum Verkauf!
 STR_1727    :Baurechte nicht zum Verkauf!
 STR_1728    :Erwerb von Baurechten hier nicht möglich...
 STR_1729    :Land gehört nicht dem Park!
-STR_1730    :{RED}Geschlossen - - 
+STR_1730    :{RED}Geschlossen
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bauen
 STR_1733    :Modus
@@ -2034,7 +2034,7 @@ STR_2696    :Bäume platzieren
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Autosave-Frequenz:
+STR_2700    :Autosavefrequenz:
 STR_2701    :Jede Minute
 STR_2702    :Alle 5 Minuten
 STR_2703    :Alle 15 Minuten
@@ -2077,7 +2077,7 @@ STR_2739    :Keine
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nicht gefunden
-STR_2743    :Kopieren Sie „data/css17.dat“ aus Ihrem RCT1-Verzeichnis nach „data/css50.dat“ in Ihrem RCT2-Verzeichnis oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
+STR_2743    :Kopieren Sie „data/css17.dat“ aus Ihrem RCT1-Verzeichnis nach „data/css50.dat“ in Ihrem RCT2-Verzeichnis oder versichern Sie sich, dass der Pfad zur RCT1-Installation im Tab „Erweitert“ korrekt angegeben ist.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2222,7 +2222,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) Copyright © Chr
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) Copyright © Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) Copyright © Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) Copyright © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Auszüge mit freundlicher Genehmigung von Spectrasonics “Liquid Grooves“)
+STR_2901    :{WINDOW_COLOUR_2}(Auszüge mit freundlicher Genehmigung von Spectrasonics „Liquid Grooves“)
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, gespielt von Peter James Adcock) Aufnahme © Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) Copyright © Chris Sawyer
 STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) Copyright © Chris Sawyer
@@ -2239,7 +2239,7 @@ STR_2977    :Mitarbeitername
 STR_2978    :Neuen Namen für diesen Mitarbeiter eingeben:
 STR_2979    :Dieser Mitarbeiter kann nicht benannt werden...
 STR_2980    :Zu viele Banner im Spiel
-STR_2981    :{RED}Kein Zutritt - - 
+STR_2981    :{RED}Kein Zutritt
 STR_2982    :Bannertext
 STR_2983    :Neuen Text für dieses Banner eingeben:
 STR_2984    :Neuer Text für das Banner kann nicht erstellt werden...
@@ -2430,7 +2430,6 @@ STR_3190    :Fußwegextras
 STR_3191    :Szeneriegruppen
 STR_3192    :Parkeingang
 STR_3193    :Wasser
-STR_3194    :Szenariobeschreibung
 STR_3195    :Erfindungsliste
 STR_3196    :{WINDOW_COLOUR_2}Forschungsgruppe: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Vor dem Spielstart erfundene Objekte:
@@ -3590,8 +3589,8 @@ STR_6125    :Objekttyp
 STR_6126    :Unbekannter Typ
 STR_6127    :Datei: {STRING}
 STR_6128    :Die Datei konnte aufgrund fehlender oder beschädigter Objekte nicht geladen werden. Eine Liste dieser Elemente ist nachstehend aufgeführt.
-STR_6129    :Ausgewählte Elemente kopieren
-STR_6130    :Vollständige Liste kopieren
+STR_6129    :Kopieren
+STR_6130    :Alle kopieren
 STR_6131    :Objektquelle
 STR_6132    :Forschungsstatus ignorieren
 STR_6133    :{SMALLFONT}{BLACK}Ermöglicht den Zugriff auf Attraktionen und Szenerie, die bisher noch nicht erforscht wurden
@@ -3626,7 +3625,7 @@ STR_6161    :Gitternetzlinien ein-/ausblenden
 STR_6162    :Rotierende Wilde Maus
 STR_6163    :Mausförmige Wagen rasen um enge Kurven und kurze Gefälle herunter, wobei sie sich sanft drehen, um die Fahrgäste zu desorientieren
 STR_6164    :{WHITE}❌
-STR_6165    :Vertikale Synchronisation verwenden
+STR_6165    :Vertikale Synchr.
 STR_6166    :{SMALLFONT}{BLACK}Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen Tearing
 STR_6167    :{SMALLFONT}{BLACK}Erweitert
 STR_6168    :Titelsequenz
@@ -3733,8 +3732,42 @@ STR_6270    :Geländeflächen
 STR_6271    :Geländekanten
 STR_6272    :Stationen
 STR_6273    :Musik
-STR_6274    :Farbgebung kann nicht erkannt werden...
+STR_6274    :Farbschema kann nicht gesetzt werden...
 STR_6275    :{WINDOW_COLOUR_2}Stil der Station:
+STR_6276    :{RED}{STRINGID} hat steckengebliebene Gäste, möglicherweise aufgrund eines ungültigen Streckentyps oder Betriebsmodus.
+STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{COMMA16}
+STR_6278    :Autosaveanzahl:
+STR_6279    :{SMALLFONT}{BLACK}Anzahl der Autosaves, die{NEWLINE}behalten werden sollen
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Eine separate Schaltfläche für das Chatfenster in der Symbolleiste anzeigen
+STR_6282    :Chat
+STR_6283    :Der Chat ist derzeit nicht verfügbar. Sind Sie mit einem Server verbunden?
+STR_6284    :Netzwerk
+STR_6285    :Netzwerkinformation
+STR_6286    :Empfangen
+STR_6287    :Senden
+STR_6288    :Ges. empfangen
+STR_6289    :Ges. gesendet
+STR_6290    :Basisprotokoll
+STR_6291    :Befehle
+STR_6292    :Karte
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/s
+STR_6299    :Alle herunterladen
+STR_6300    :{SMALLFONT}{BLACK}Falls online verfügbar, alle fehlenden Objekte herunterladen
+STR_6301    :{SMALLFONT}{BLACK}Kopiert den ausgewählten Objektnamen in die Zwischenablage
+STR_6302    :{SMALLFONT}{BLACK}Kopiert die gesamte Liste der fehlenden Objekte in die Zwischenablage
+STR_6303    :Lädt Objekt herunter ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Szeneriewähler öffnen
+STR_6305    :Multithreading
+STR_6306    :{SMALLFONT}{BLACK}Experimentelle Option, um mehrere Threads für das Rendern zu verwenden, kann Instabilität verursachen
+STR_6307    :Farbschema: {BLACK}{STRINGID}
+STR_6308    :„{STRINGID}{OUTLINE}{TOPAZ}“{NEWLINE}{STRINGID}
+STR_6309    :Neu verbinden
 
 #############
 # Scenarios #

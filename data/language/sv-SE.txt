@@ -552,8 +552,8 @@ STR_1167    :Kan inte höja vattennivån...
 STR_1168    :Inställningar
 STR_1169    :(Inga)
 STR_1170    :{STRING}
-STR_1171    :{RED}Stängd - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Stängd
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Bygg gångvägar och köer
 STR_1174    :En skylt är i vägen
 STR_1175    :Kan inte bygga på en sluttande gångväg
@@ -1109,7 +1109,7 @@ STR_1726    :Marken är inte till salu!
 STR_1727    :Bygglov är inte till salu!
 STR_1728    :Kan inte få bygglov här...
 STR_1729    :Marken ägs inte av parken!
-STR_1730    :{RED}Stängd - - 
+STR_1730    :{RED}Stängd
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bygg
 STR_1733    :Läge
@@ -2238,7 +2238,7 @@ STR_2977    :Personalnamn
 STR_2978    :Skriv in nytt namn på personal:
 STR_2979    :Kan inte namnge personal...
 STR_2980    :För många banderoller i spelet
-STR_2981    :{RED}Tillträde förbjudet - - 
+STR_2981    :{RED}Tillträde förbjudet
 STR_2982    :Banderolltext
 STR_2983    :Skriv in ny text för denna banderoll:
 STR_2984    :Kan inte sätta ny text på banderollen...
@@ -3735,6 +3735,10 @@ STR_6264    :Använd alltid operativsystemets filhanterare
 STR_6265    :{SMALLFONT}{BLACK}Om aktiverad kommer spelet använda filhanteraren på datorn istället för OpenRCT2s egna.
 STR_6266    :Öppna mappen för anpassat innehåll
 STR_6267    :Öppna rutinspekteraren
+
+STR_6307    :Färgschema: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :Återanslut
 
 
 

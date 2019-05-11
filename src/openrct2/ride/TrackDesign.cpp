@@ -28,6 +28,7 @@
 #include "../audio/audio.h"
 #include "../core/File.h"
 #include "../core/String.hpp"
+#include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -53,6 +54,9 @@
 
 #include <algorithm>
 #include <iterator>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 struct map_backup
 {
@@ -1137,7 +1141,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
         gMapSelectionTiles.clear();
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
-        gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
+        gMapSelectArrowPosition.z = tile_element_height(x, y);
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1354,7 +1358,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
         gMapSelectionTiles.clear();
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
-        gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
+        gMapSelectArrowPosition.z = tile_element_height(x, y);
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -2244,6 +2248,9 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels)
     dpi.height = 217;
     dpi.pitch = 0;
     dpi.bits = pixels;
+
+    auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
+    dpi.DrawingEngine = drawingEngine.get();
 
     CoordsXY offset = { size_x / 2, size_y / 2 };
     for (uint8_t i = 0; i < 4; i++)

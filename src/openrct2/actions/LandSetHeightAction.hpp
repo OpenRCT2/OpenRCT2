@@ -144,7 +144,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         money32 cost = MONEY(0, 0);
-        auto surfaceHeight = tile_element_height(_coords.x, _coords.y) & 0xFFFF;
+        auto surfaceHeight = tile_element_height(_coords.x, _coords.y);
         footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
 
         if (!gCheatsDisableClearanceChecks)

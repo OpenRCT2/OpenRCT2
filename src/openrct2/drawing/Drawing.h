@@ -18,6 +18,11 @@ namespace OpenRCT2
     interface IPlatformEnvironment;
 }
 
+namespace OpenRCT2::Drawing
+{
+    interface IDrawingEngine;
+}
+
 struct rct_g1_element
 {
     uint8_t* offset;       // 0x00
@@ -31,13 +36,15 @@ struct rct_g1_element
 
 struct rct_drawpixelinfo
 {
-    uint8_t* bits;       // 0x00
-    int16_t x;           // 0x04
-    int16_t y;           // 0x06
-    int16_t width;       // 0x08
-    int16_t height;      // 0x0A
-    int16_t pitch;       // 0x0C         note: this is actually (pitch - width)
-    uint16_t zoom_level; // 0x0E
+    uint8_t* bits{};
+    int16_t x{};
+    int16_t y{};
+    int16_t width{};
+    int16_t height{};
+    int16_t pitch{}; // note: this is actually (pitch - width)
+    uint16_t zoom_level{};
+
+    OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 };
 
 struct rct_g1_element_32bit

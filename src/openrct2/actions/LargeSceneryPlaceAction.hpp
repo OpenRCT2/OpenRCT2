@@ -40,6 +40,7 @@ public:
     }
 
     uint8_t GroundFlags{ 0 };
+    TileElement* tileElement = nullptr;
 };
 
 DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GAME_COMMAND_PLACE_LARGE_SCENERY, LargeSceneryPlaceActionResult)
@@ -88,7 +89,7 @@ public:
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y) & 0xFFFF;
+        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y);
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = surfaceHeight;
@@ -212,7 +213,7 @@ public:
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
-        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y) & 0xFFFF;
+        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y);
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = surfaceHeight;
@@ -326,7 +327,7 @@ public:
 
             if (tileNum == 0)
             {
-                gSceneryTileElement = newTileElement;
+                res->tileElement = newTileElement;
             }
             map_invalidate_tile_full(curTile.x, curTile.y);
         }

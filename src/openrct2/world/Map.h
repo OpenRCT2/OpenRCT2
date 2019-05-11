@@ -151,7 +151,8 @@ SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int3
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
-int32_t tile_element_height(int32_t x, int32_t y);
+int16_t tile_element_height(int32_t x, int32_t y);
+int16_t tile_element_water_height(int32_t x, int32_t y);
 uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax);
 uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax);
 bool map_coord_is_connected(int32_t x, int32_t y, int32_t z, uint8_t faceDirection);
@@ -188,10 +189,6 @@ LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, int32_t rot
 money32 map_clear_scenery(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t clear, int32_t flags);
 
 void game_command_set_land_ownership(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_remove_banner(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_place_banner(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_place_park_entrance(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);

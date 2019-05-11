@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../actions/BannerRemoveAction.hpp"
 #include "../actions/FootpathRemoveAction.hpp"
 #include "../actions/LandLowerAction.hpp"
 #include "../actions/LandRaiseAction.hpp"
@@ -457,7 +458,7 @@ void map_update_tile_pointers()
  * dx: return remember to & with 0xFFFF if you don't want water affecting results
  *  rct2: 0x00662783
  */
-int32_t tile_element_height(int32_t x, int32_t y)
+int16_t tile_element_height(int32_t x, int32_t y)
 {
     TileElement* tileElement;
 
@@ -477,7 +478,7 @@ int32_t tile_element_height(int32_t x, int32_t y)
         return 16;
     }
 
-    uint32_t height = (tileElement->AsSurface()->GetWaterHeight() << 20) | (tileElement->base_height << 3);
+    uint16_t height = (tileElement->base_height << 3);
 
     uint32_t slope = tileElement->AsSurface()->GetSlope();
     uint8_t extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height
@@ -609,6 +610,31 @@ int32_t tile_element_height(int32_t x, int32_t y)
     return height;
 }
 
+int16_t tile_element_water_height(int32_t x, int32_t y)
+{
+    TileElement* tileElement;
+
+    // Off the map
+    if ((unsigned)x >= 8192 || (unsigned)y >= 8192)
+        return 0;
+
+    // Truncate subtile coordinates
+    int32_t x_tile = x & 0xFFFFFFE0;
+    int32_t y_tile = y & 0xFFFFFFE0;
+
+    // Get the surface element for the tile
+    tileElement = map_get_surface_element_at({ x_tile, y_tile });
+
+    if (tileElement == nullptr)
+    {
+        return 0;
+    }
+
+    uint16_t height = (tileElement->AsSurface()->GetWaterHeight() << 4);
+
+    return height;
+}
+
 /**
  * Checks if the tile at coordinate at height counts as connected.
  * @return 1 if connected, 0 otherwise
@@ -707,12 +733,9 @@ int32_t map_height_from_slope(const CoordsXY coords, int32_t slope, bool isSlope
 
 bool map_is_location_valid(const CoordsXY coords)
 {
-    if (coords.x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.x >= 0 && coords.y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32)
-        && coords.y >= 0)
-    {
-        return true;
-    }
-    return false;
+    const bool is_x_valid = coords.x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.x >= 0;
+    const bool is_y_valid = coords.y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.y >= 0;
+    return is_x_valid && is_y_valid;
 }
 
 bool map_is_edge(const CoordsXY coords)
@@ -925,7 +948,7 @@ static money32 map_set_land_ownership(uint8_t flags, int16_t x1, int16_t y1, int
     x += 16;
     y += 16;
 
-    int16_t z = tile_element_height(x, y) & 0xFFFF;
+    int16_t z = tile_element_height(x, y);
     audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
     return 0;
 }
@@ -1783,11 +1806,12 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         }
         break;
         case TILE_ELEMENT_TYPE_BANNER:
-            gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-            game_do_command(
-                x, GAME_COMMAND_FLAG_APPLY, y, (element->base_height) | ((element->AsBanner()->GetPosition() & 3) << 8),
-                GAME_COMMAND_REMOVE_BANNER, 0, 0);
+        {
+            auto bannerRemoveAction = BannerRemoveAction(
+                { x, y, element->base_height * 8, element->AsBanner()->GetPosition() });
+            GameActions::Execute(&bannerRemoveAction);
             break;
+        }
         default:
             tile_element_remove(element);
             break;
@@ -1877,7 +1901,7 @@ EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->IsGhost()))
+            if (!ghost && tileElement->IsGhost())
                 continue;
 
             return tileElement->AsEntrance();
@@ -1902,7 +1926,7 @@ EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 continue;
 
-            if ((ghost == false) && (tileElement->IsGhost()))
+            if (!ghost && tileElement->IsGhost())
                 continue;
 
             return tileElement->AsEntrance();
@@ -1927,7 +1951,7 @@ EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, b
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
-            if ((ghost == false) && (tileElement->IsGhost()))
+            if (!ghost && tileElement->IsGhost())
                 continue;
 
             return tileElement->AsEntrance();

@@ -551,8 +551,8 @@ STR_1167    :Can't raise water level here...
 STR_1168    :Options
 STR_1169    :(None)
 STR_1170    :{STRING}
-STR_1171    :{RED}Closed - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Closed
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
 STR_1174    :Banner sign in the way
 STR_1175    :Can't build this on sloped footpath
@@ -1108,7 +1108,7 @@ STR_1726    :Land not for sale!
 STR_1727    :Construction rights not for sale!
 STR_1728    :Can't buy construction rights here...
 STR_1729    :Land not owned by park!
-STR_1730    :{RED}Closed - - 
+STR_1730    :{RED}Closed
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Build
 STR_1733    :Mode
@@ -2237,7 +2237,7 @@ STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:
 STR_2979    :Can't name staff member...
 STR_2980    :Too many banners in game
-STR_2981    :{RED}No entry - - 
+STR_2981    :{RED}No entry
 STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner...
@@ -3724,7 +3724,7 @@ STR_6273    :Music
 STR_6274    :Can't set colour scheme...
 STR_6275    :{WINDOW_COLOUR_2}Station style:
 STR_6276    :{RED}{STRINGID} has guests getting stuck, possibly due to invalid ride type or operating mode.
-STR_6277    :{WINDOW_COLOUR_2}Station index: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Station index: {BLACK}{STRINGID}
 STR_6278    :Autosave amount
 STR_6279    :{SMALLFONT}{BLACK}Number of autosaves that should be kept
 STR_6280    :{SMALLFONT}{BLACK}Chat
@@ -3754,9 +3754,20 @@ STR_6303    :Downloading object ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :Open scenery picker
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Experimental option to use multiple threads to render, may cause instability.
-STR_6307    :{WINDOW_COLOUR_2}Block Brake Closed
-STR_6308    :{WINDOW_COLOUR_2}Indestructible
-STR_6309    :Broken
+STR_6307    :Colour scheme: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :Reconnect
+STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Next: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(surface)
+STR_6313    :(slope {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerance {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Pathfind Goal: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Pathfind history:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6318    :{WINDOW_COLOUR_2}Block Brake Closed
+STR_6319    :{WINDOW_COLOUR_2}Indestructible
+STR_6320    :Broken
 
 #############
 # Scenarios #

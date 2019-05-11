@@ -2098,7 +2098,7 @@ bool window_is_visible(rct_window* w)
  */
 void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom)
 {
-    rct_drawpixelinfo windowDPI;
+    rct_drawpixelinfo windowDPI = *dpi;
     windowDPI.bits = dpi->bits + left + ((dpi->width + dpi->pitch) * top);
     windowDPI.x = left;
     windowDPI.y = top;

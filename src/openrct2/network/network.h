@@ -22,6 +22,7 @@
 struct GameAction;
 struct Peep;
 struct LocationXYZ16;
+class GameActionResult;
 
 namespace OpenRCT2
 {
@@ -30,12 +31,14 @@ namespace OpenRCT2
 
 void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 void network_close();
+void network_reconnect();
 void network_shutdown_client();
 int32_t network_begin_client(const std::string& host, int32_t port);
 int32_t network_begin_server(int32_t port, const std::string& address);
 
 int32_t network_get_mode();
 int32_t network_get_status();
+bool network_is_desynchronised();
 void network_check_desynchronization();
 void network_send_tick();
 void network_update();
@@ -65,8 +68,8 @@ int32_t network_get_current_player_group_index();
 uint8_t network_get_group_id(uint32_t index);
 int32_t network_get_num_groups();
 const char* network_get_group_name(uint32_t index);
-void game_command_set_player_group(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+std::unique_ptr<GameActionResult> network_set_player_group(
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
 void game_command_modify_groups(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_kick_player(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);

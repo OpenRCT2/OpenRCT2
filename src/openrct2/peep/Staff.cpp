@@ -710,7 +710,7 @@ static uint8_t staff_direction_surface(Peep* peep, uint8_t initialDirection)
         LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
                                     static_cast<int16_t>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
-        if (map_surface_is_blocked(chosenTile.x, chosenTile.y) == false)
+        if (!map_surface_is_blocked(chosenTile.x, chosenTile.y))
         {
             return direction;
         }
@@ -1202,7 +1202,7 @@ void Staff::UpdateMowing()
         int16_t xy_distance;
         if (UpdateAction(&actionX, &actionY, &xy_distance))
         {
-            int16_t checkZ = tile_element_height(actionX, actionY) & 0xFFFF;
+            int16_t checkZ = tile_element_height(actionX, actionY);
             MoveTo(actionX, actionY, checkZ);
             Invalidate();
             return;
