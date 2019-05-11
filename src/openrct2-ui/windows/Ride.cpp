@@ -30,6 +30,7 @@
 #include <openrct2/actions/RideSetSetting.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -50,6 +51,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+
 using namespace OpenRCT2;
 
 enum
@@ -2210,7 +2212,7 @@ static void populate_ride_type_dropdown()
     }
 
     std::sort(RideDropdownData.begin(), RideDropdownData.end(), [](auto& a, auto& b) {
-        return std::strcmp(a.label_string, b.label_string) < 0;
+        return String::Compare(a.label_string, b.label_string, true) < 0;
     });
 
     RideDropdownDataLanguage = ls.GetCurrentLanguage();
@@ -2313,7 +2315,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
     }
 
     std::sort(VehicleDropdownData.begin(), VehicleDropdownData.end(), [](auto& a, auto& b) {
-        return std::strcmp(a.label_string, b.label_string) < 0;
+        return String::Compare(a.label_string, b.label_string, true) < 0;
     });
 
     VehicleDropdownExpanded = selectionShouldBeExpanded;
