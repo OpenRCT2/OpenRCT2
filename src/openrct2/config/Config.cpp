@@ -395,7 +395,7 @@ namespace Config
             model->log_chat = reader->GetBoolean("log_chat", false);
             model->log_server_actions = reader->GetBoolean("log_server_actions", false);
             model->pause_server_if_no_clients = reader->GetBoolean("pause_server_if_no_clients", false);
-            model->desync_debugging = reader->GetBoolean("desync_debugging", true);
+            model->desync_debugging = reader->GetBoolean("desync_debugging", false);
         }
     }
 
