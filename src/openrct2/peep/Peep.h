@@ -734,7 +734,7 @@ private:
 };
 
 //moved peep_insert_new_thought here as a member function
-//changed name from peep_insert_new_thought to PeepInsertNewThought
+//changed name from peep_insert_new_thought to InsertNewThought
 struct Guest : Peep
 {
 public:
@@ -744,7 +744,7 @@ public:
      * ah:thought_arguments
      * esi: peep
      */
-    void PeepInsertNewThought(Peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
+    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
     bool HasItem(int32_t peepItem) const;
