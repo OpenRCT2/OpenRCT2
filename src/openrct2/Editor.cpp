@@ -16,6 +16,8 @@
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
+#include "actions/LandBuyRightsAction.hpp"
+#include "actions/LandSetRightsAction.hpp"
 #include "audio/audio.h"
 #include "interface/Viewport.h"
 #include "localisation/Localisation.h"
@@ -193,7 +195,14 @@ namespace Editor
     {
         int32_t mapSize = gMapSize;
 
-        game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 3) * 32, (mapSize - 3) * 32);
+        MapRange range = { 64, 64, (mapSize - 3) * 32, (mapSize - 3) * 32 };
+        auto landSetRightsAction = LandSetRightsAction(range, LandSetRightSetting::SetForSale);
+        landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+        GameActions::Execute(&landSetRightsAction);
+
+        auto landBuyRightsAction = LandBuyRightsAction(range, LandBuyRightSetting::BuyLand);
+        landBuyRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+        GameActions::Execute(&landBuyRightsAction);
     }
 
     /**

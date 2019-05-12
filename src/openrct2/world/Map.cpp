@@ -19,6 +19,7 @@
 #include "../actions/LandLowerAction.hpp"
 #include "../actions/LandRaiseAction.hpp"
 #include "../actions/LandSetHeightAction.hpp"
+#include "../actions/LandSetRightsAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/ParkEntranceRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
@@ -924,52 +925,6 @@ int32_t tile_element_get_corner_height(const TileElement* tileElement, int32_t d
     return map_get_corner_height(z, slope, direction);
 }
 
-static money32 map_set_land_ownership(uint8_t flags, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t newOwnership)
-{
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
-        return 0;
-
-    // Clamp to maximum addressable element to prevent long loop spamming the log
-    x1 = std::clamp<int16_t>(x1, 32, gMapSizeUnits - 32);
-    y1 = std::clamp<int16_t>(y1, 32, gMapSizeUnits - 32);
-    x2 = std::clamp<int16_t>(x2, 32, gMapSizeUnits - 32);
-    y2 = std::clamp<int16_t>(y2, 32, gMapSizeUnits - 32);
-    gMapLandRightsUpdateSuccess = false;
-    map_buy_land_rights(x1, y1, x2, y2, BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, flags | (newOwnership << 8));
-
-    if (!gMapLandRightsUpdateSuccess)
-        return 0;
-
-    int16_t x = std::clamp<int16_t>(x1, 32, gMapSizeUnits - 32);
-    int16_t y = std::clamp<int16_t>(y1, 32, gMapSizeUnits - 32);
-
-    x += 16;
-    y += 16;
-
-    int16_t z = tile_element_height(x, y);
-    audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
-    return 0;
-}
-
-/**
- *
- *  rct2: 0x006648E3
- */
-void game_command_set_land_ownership(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
-{
-    int32_t flags = *ebx & 0xFF;
-
-    *ebx = map_set_land_ownership(flags, *eax & 0xFFFF, *ecx & 0xFFFF, *edi & 0xFFFF, *ebp & 0xFFFF, *edx & 0xFF);
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        map_count_remaining_land_rights();
-    }
-}
-
 uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax)
 {
     xMin = std::max(xMin, 32);
@@ -1648,7 +1603,13 @@ void map_remove_out_of_range_elements()
         {
             if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY)
             {
-                map_buy_land_rights(x, y, x, y, BUY_LAND_RIGHTS_FLAG_UNOWN_TILE, GAME_COMMAND_FLAG_APPLY);
+                // Note this purposely does not use LandSetRightsAction as X Y coordinates are outside of normal range.
+                auto surfaceElement = map_get_surface_element_at({ x, y });
+                if (surfaceElement != nullptr)
+                {
+                    surfaceElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+                    update_park_fences_around_tile({ x, y });
+                }
                 clear_elements_at(x, y);
             }
         }

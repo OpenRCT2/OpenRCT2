@@ -22,9 +22,11 @@
 #include "GameAction.h"
 #include "GuestSetFlagsAction.hpp"
 #include "GuestSetNameAction.hpp"
+#include "LandBuyRightsAction.hpp"
 #include "LandLowerAction.hpp"
 #include "LandRaiseAction.hpp"
 #include "LandSetHeightAction.hpp"
+#include "LandSetRightsAction.hpp"
 #include "LandSmoothAction.hpp"
 #include "LargeSceneryPlaceAction.hpp"
 #include "LargeSceneryRemoveAction.hpp"
@@ -135,9 +137,11 @@ namespace GameActions
         Register<LargeSceneryPlaceAction>();
         Register<LargeSceneryRemoveAction>();
         Register<LargeScenerySetColourAction>();
+        Register<LandBuyRightsAction>();
         Register<LandLowerAction>();
         Register<LandRaiseAction>();
         Register<LandSetHeightAction>();
+        Register<LandSetRightsAction>();
         Register<LandSmoothAction>();
         Register<TrackPlaceAction>();
         Register<TrackRemoveAction>();
