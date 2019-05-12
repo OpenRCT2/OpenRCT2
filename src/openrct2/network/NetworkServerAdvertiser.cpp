@@ -244,7 +244,7 @@ private:
         };
 
         std::random_device rd;
-        std::uniform_int_distribution<> dist(0, std::size(hexChars) - 1);
+        std::uniform_int_distribution<int32_t> dist(0, static_cast<int32_t>(std::size(hexChars) - 1));
 
         char key[17];
         for (int32_t i = 0; i < 16; i++)
