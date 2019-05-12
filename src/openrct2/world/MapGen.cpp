@@ -136,8 +136,6 @@ void mapgen_generate(mapgen_settings* settings)
     int32_t x, y, mapSize, floorTexture, wallTexture, waterLevel;
     TileElement* tileElement;
 
-    util_srand((int32_t)platform_get_ticks());
-
     mapSize = settings->mapSize;
     floorTexture = settings->floor;
     wallTexture = settings->wall;

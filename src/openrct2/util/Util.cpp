@@ -23,8 +23,6 @@
 #include <ctime>
 #include <random>
 
-static std::mt19937 _prng;
-
 int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres)
 {
     // 1 metre squared = 10.7639104 feet squared
@@ -529,13 +527,9 @@ bool str_is_null_or_empty(const char* str)
     return str == nullptr || str[0] == 0;
 }
 
-void util_srand(int32_t source)
-{
-    _prng.seed(source);
-}
-
 uint32_t util_rand()
 {
+    thread_local std::mt19937 _prng(std::random_device{}());
     return _prng();
 }
 
