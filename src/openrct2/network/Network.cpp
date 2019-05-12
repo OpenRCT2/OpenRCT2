@@ -539,7 +539,7 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
 
     mode = NETWORK_MODE_CLIENT;
 
-    log_info("Connecting to %s:%u\n", host.c_str(), port);
+    log_info("Connecting to %s:%u", host.c_str(), port);
     _host = host;
     _port = port;
 

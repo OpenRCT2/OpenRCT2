@@ -140,7 +140,7 @@ static opt::optional<std::string> screenshot_get_next_path()
     auto screenshotDirectory = screenshot_get_directory();
     if (!platform_ensure_directory_exists(screenshotDirectory.c_str()))
     {
-        log_error("Unable to save screenshots in OpenRCT2 screenshot directory.\n");
+        log_error("Unable to save screenshots in OpenRCT2 screenshot directory.");
         return {};
     }
 
@@ -164,7 +164,7 @@ static opt::optional<std::string> screenshot_get_next_path()
         }
     }
 
-    log_error("You have too many saved screenshots saved at exactly the same date and time.\n");
+    log_error("You have too many saved screenshots saved at exactly the same date and time.");
     return {};
 };
 

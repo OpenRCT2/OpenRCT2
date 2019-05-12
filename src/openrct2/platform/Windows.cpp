@@ -170,7 +170,7 @@ bool platform_lock_single_instance()
         // Create new mutex
         status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (status == nullptr)
-            log_error("unable to create mutex\n");
+            log_error("unable to create mutex");
 
         return true;
     }
