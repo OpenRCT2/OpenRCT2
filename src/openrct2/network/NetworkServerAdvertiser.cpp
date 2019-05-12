@@ -30,6 +30,7 @@
 #    include <cstring>
 #    include <iterator>
 #    include <memory>
+#    include <random>
 #    include <string>
 
 enum MASTER_SERVER_STATUS
@@ -307,10 +308,14 @@ private:
         static constexpr char hexChars[] = {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
         };
+
+        std::random_device rd;
+        std::uniform_int_distribution<int32_t> dist(0, static_cast<int32_t>(std::size(hexChars) - 1));
+
         char key[17];
         for (int32_t i = 0; i < 16; i++)
         {
-            int32_t hexCharIndex = util_rand() % std::size(hexChars);
+            int32_t hexCharIndex = dist(rd);
             key[i] = hexChars[hexCharIndex];
         }
         key[std::size(key) - 1] = 0;
