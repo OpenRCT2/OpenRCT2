@@ -34,6 +34,7 @@
 #include "LargeScenerySetColourAction.hpp"
 #include "LoadOrQuitAction.hpp"
 #include "MazeSetTrackAction.hpp"
+#include "NetworkModifyGroupAction.hpp"
 #include "ParkEntranceRemoveAction.hpp"
 #include "ParkMarketingAction.hpp"
 #include "ParkSetDateAction.hpp"
@@ -44,6 +45,7 @@
 #include "PauseToggleAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
+#include "PlayerKickAction.hpp"
 #include "PlayerSetGroupAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
@@ -99,6 +101,7 @@ namespace GameActions
         Register<FootpathSceneryRemoveAction>();
         Register<GuestSetNameAction>();
         Register<MazeSetTrackAction>();
+        Register<NetworkModifyGroupAction>();
         Register<ParkMarketingAction>();
         Register<ParkEntranceRemoveAction>();
         Register<ParkSetLoanAction>();
@@ -107,6 +110,7 @@ namespace GameActions
         Register<ParkSetResearchFundingAction>();
         Register<PlaceParkEntranceAction>();
         Register<PlacePeepSpawnAction>();
+        Register<PlayerKickAction>();
         Register<PlayerSetGroupAction>();
         Register<RideCreateAction>();
         Register<RideDemolishAction>();

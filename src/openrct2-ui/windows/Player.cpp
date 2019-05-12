@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/PlayerKickAction.hpp>
 #include <openrct2/actions/PlayerSetGroupAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
@@ -284,8 +285,11 @@ void window_player_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
         }
         break;
         case WIDX_KICK:
-            game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_KICK_PLAYER, 0, 0);
-            break;
+        {
+            auto kickPlayerAction = PlayerKickAction(w->number);
+            GameActions::Execute(&kickPlayerAction);
+        }
+        break;
     }
 }
 

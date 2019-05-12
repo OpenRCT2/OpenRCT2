@@ -26,6 +26,8 @@ struct GameAction;
 struct Peep;
 struct LocationXYZ16;
 class GameActionResult;
+enum class ModifyGroupType : uint8_t;
+enum class PermissionState : uint8_t;
 
 namespace OpenRCT2
 {
@@ -75,9 +77,11 @@ int32_t network_get_num_groups();
 const char* network_get_group_name(uint32_t index);
 std::unique_ptr<GameActionResult> network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
-void game_command_modify_groups(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_kick_player(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+std::unique_ptr<GameActionResult> network_modify_groups(
+    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
+    PermissionState permissionState, bool isExecuting);
+std::unique_ptr<GameActionResult> network_kick_player(
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, bool isExecuting);
 uint8_t network_get_default_group();
 int32_t network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32_t index);
