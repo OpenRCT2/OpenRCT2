@@ -25,6 +25,7 @@ static rct_string_id _StatusErrorTitles[] = {
     STR_CANT_CLOSE,
     STR_CANT_OPEN,
     STR_CANT_TEST,
+    STR_CANT_SIMULATE,
 };
 
 DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameActionResult)
@@ -73,7 +74,14 @@ public:
 
         if (_status != ride->status)
         {
-            if (_status == RIDE_STATUS_TESTING || _status == RIDE_STATUS_SIMULATING)
+            if (_status == RIDE_STATUS_SIMULATING && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            {
+                // Simulating will force clear the track, so make sure player can't cheat around a break down
+                res->Error = GA_ERROR::DISALLOWED;
+                res->ErrorMessage = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
+                return res;
+            }
+            else if (_status == RIDE_STATUS_TESTING || _status == RIDE_STATUS_SIMULATING)
             {
                 if (!ride_is_valid_for_test(ride, _status, 0))
                 {

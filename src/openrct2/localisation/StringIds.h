@@ -3960,6 +3960,7 @@ enum
     STR_SIMULATING = 6323,
     STR_SIMULATE_RIDE = 6324,
     STR_SIMULATE_RIDE_TIP = 6325,
+    STR_CANT_SIMULATE = 6326,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
