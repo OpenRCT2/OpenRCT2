@@ -302,7 +302,7 @@ public:
                     map_invalidate_tile_full(floor2(previousSegmentX, 32), floor2(previousSegmentY, 32));
                     if (tileElement == nullptr)
                     {
-                        log_error("No surface found\n");
+                        log_error("No surface found");
                         res->Error = GA_ERROR::UNKNOWN;
                         res->ErrorMessage = STR_NONE;
                         return res;

@@ -115,7 +115,7 @@ public:
         auto chunkReader = SawyerChunkReader(stream);
         chunkReader.ReadChunk(&_s6.header, sizeof(_s6.header));
 
-        log_verbose("saved game classic_flag = 0x%02x\n", _s6.header.classic_flag);
+        log_verbose("saved game classic_flag = 0x%02x", _s6.header.classic_flag);
         if (isScenario)
         {
             if (_s6.header.type != S6_TYPE_SCENARIO)
@@ -1434,7 +1434,7 @@ void load_from_sv6(const char* path)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
-        log_error("Error loading: %s\n", loadError.what());
+        log_error("Error loading: %s", loadError.what());
     }
     catch (const std::exception&)
     {
@@ -1466,13 +1466,13 @@ void load_from_sc6(const char* path)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
-        log_error("Error loading: %s\n", loadError.what());
+        log_error("Error loading: %s", loadError.what());
     }
     catch (const IOException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
-        log_error("Error loading: %s\n", loadError.what());
+        log_error("Error loading: %s", loadError.what());
     }
     catch (const std::exception&)
     {

@@ -149,7 +149,7 @@ void virtual_floor_invalidate()
         return;
     }
 
-    log_verbose("Min: %d %d, Max: %d %d\n", min_position.x, min_position.y, max_position.x, max_position.y);
+    log_verbose("Min: %d %d, Max: %d %d", min_position.x, min_position.y, max_position.x, max_position.y);
 
     // Invalidate new region if coordinates are set.
     if (min_position.x != std::numeric_limits<int16_t>::max() && min_position.y != std::numeric_limits<int16_t>::max()

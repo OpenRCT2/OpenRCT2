@@ -265,7 +265,7 @@ namespace OpenRCT2::Ui
         static int32_t Execute(const std::string& command, std::string* output = nullptr)
         {
 #    ifndef __EMSCRIPTEN__
-            log_verbose("executing \"%s\"...\n", command.c_str());
+            log_verbose("executing \"%s\"...", command.c_str());
             FILE* fpipe = popen(command.c_str(), "r");
             if (fpipe == nullptr)
             {
