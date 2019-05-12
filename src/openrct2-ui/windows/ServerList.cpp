@@ -448,6 +448,10 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         {
             colour = COLOUR_YELLOW;
         }
+        else if (serverDetails.local)
+        {
+            colour = COLOUR_MOSS_GREEN;
+        }
 
         // Draw server information
         if (highlighted && !serverDetails.description.empty())
