@@ -3254,7 +3254,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
                     vehicle_update_test_finish(vehicle);
                 }
             }
-            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS))
+            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !vehicle->IsGhost())
             {
                 vehicle_test_reset(vehicle);
             }
@@ -4238,7 +4238,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle)
                     vehicle_update_test_finish(vehicle);
                 }
             }
-            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS))
+            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !vehicle->IsGhost())
             {
                 vehicle_test_reset(vehicle);
             }
