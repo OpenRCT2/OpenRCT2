@@ -30,7 +30,7 @@ class RideCreateGameActionResult final : public GameActionResult
 {
 public:
     RideCreateGameActionResult()
-        : GameActionResult(GA_ERROR::OK, 0)
+        : GameActionResult(GA_ERROR::OK, STR_NONE)
     {
     }
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message)
@@ -44,15 +44,14 @@ public:
 DEFINE_GAME_ACTION(RideCreateAction, GAME_COMMAND_CREATE_RIDE, RideCreateGameActionResult)
 {
 private:
-    int32_t _rideType;
-    int32_t _subType;
-    uint8_t _colour1;
-    uint8_t _colour2;
+    int32_t _rideType{ RIDE_ID_NULL };
+    int32_t _subType{ RIDE_ENTRY_INDEX_NULL };
+    uint8_t _colour1{ 0xFF };
+    uint8_t _colour2{ 0xFF };
 
 public:
-    RideCreateAction()
-    {
-    }
+    RideCreateAction() = default;
+
     RideCreateAction(int32_t rideType, int32_t subType, int32_t colour1, int32_t colour2)
         : _rideType(rideType)
         , _subType(subType)
@@ -79,42 +78,45 @@ public:
         if (rideIndex == RIDE_ID_NULL)
         {
             // No more free slots available.
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_RIDES);
+            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_RIDES);
         }
 
         if (_rideType >= RIDE_TYPE_COUNT)
         {
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
         if (rideEntryIndex >= 128)
         {
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
         const track_colour_preset_list* colourPresets = &RideColourPresets[_rideType];
         if (_colour1 >= colourPresets->count)
         {
-            // FIXME: Add new error string.
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
+        if (rideEntry == nullptr)
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+
         vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
         if ((presetList->count > 0 && presetList->count != 255) && _colour2 >= presetList->count)
         {
-            // FIXME: Add new error string.
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        return std::make_unique<RideCreateGameActionResult>();
+        return MakeResult();
     }
 
     GameActionResult::Ptr Execute() const override
     {
         rct_ride_entry* rideEntry;
-        auto res = std::make_unique<RideCreateGameActionResult>();
+        auto res = MakeResult();
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
         ride_id_t rideIndex = ride_get_empty_slot();

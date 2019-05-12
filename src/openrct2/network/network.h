@@ -10,6 +10,8 @@
 #pragma once
 
 #define NETWORK_DEFAULT_PORT 11753
+#define NETWORK_LAN_BROADCAST_PORT 11754
+#define NETWORK_LAN_BROADCAST_MSG "openrct2.server.query"
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #include "../common.h"
@@ -19,6 +21,7 @@
 #include <memory>
 #include <string>
 
+struct json_t;
 struct GameAction;
 struct Peep;
 struct LocationXYZ16;
@@ -39,8 +42,10 @@ int32_t network_begin_server(int32_t port, const std::string& address);
 int32_t network_get_mode();
 int32_t network_get_status();
 bool network_is_desynchronised();
-void network_check_desynchronization();
+bool network_check_desynchronisation();
+void network_request_gamestate_snapshot();
 void network_send_tick();
+bool network_gamestate_snapshots_enabled();
 void network_update();
 void network_process_pending();
 void network_flush();
@@ -106,3 +111,5 @@ const utf8* network_get_server_provider_website();
 std::string network_get_version();
 
 NetworkStats_t network_get_stats();
+NetworkServerState_t network_get_server_state();
+json_t* network_get_server_info_as_json();

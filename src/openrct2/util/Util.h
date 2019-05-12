@@ -50,7 +50,6 @@ char* strcasestr(const char* haystack, const char* needle);
 bool utf8_is_bom(const char* str);
 bool str_is_null_or_empty(const char* str);
 
-void util_srand(int32_t source);
 uint32_t util_rand();
 
 uint8_t* util_zlib_deflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size);

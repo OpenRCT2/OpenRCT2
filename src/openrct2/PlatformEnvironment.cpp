@@ -221,6 +221,7 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
     "track",                // TRACK
     "heightmap",            // HEIGHTMAP
     "replay",               // REPLAY
+    "desyncs",              // DESYNCS
 };
 
 const char * PlatformEnvironment::FileNames[] =

@@ -3768,6 +3768,14 @@ STR_6306    :{SMALLFONT}{BLACK}Experimentelle Option, um mehrere Threads für da
 STR_6307    :Farbschema: {BLACK}{STRINGID}
 STR_6308    :„{STRINGID}{OUTLINE}{TOPAZ}“{NEWLINE}{STRINGID}
 STR_6309    :Neu verbinden
+STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Nächste: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(Oberfläche)
+STR_6313    :(Hang {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Ziel: {BLACK}{INT32}, {INT32} Toleranz {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Wegfindungsziel: {BLACK}{INT32}, {INT32}, {INT32} Richt. {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Wegfindungshistorie:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} Richtung {INT32}
 
 #############
 # Scenarios #

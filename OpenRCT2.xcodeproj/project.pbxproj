@@ -450,6 +450,7 @@
 		C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E415501FAFD6DB00D4A52A /* RideConstruction.cpp */; };
 		C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; };
 		C6E96E371E040E040076A04F /* libzip.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C9C630B62235A22D009AD16E /* GameStateSnapshots.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9C630B52235A22C009AD16E /* GameStateSnapshots.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
@@ -511,7 +512,7 @@
 		F76C86551EC4E88300FA49E2 /* NetworkServerAdvertiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84061EC4E7CC00FA49E2 /* NetworkServerAdvertiser.cpp */; };
 		F76C86581EC4E88300FA49E2 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84091EC4E7CC00FA49E2 /* NetworkUser.cpp */; };
 		F76C865A1EC4E88300FA49E2 /* ServerList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840B1EC4E7CC00FA49E2 /* ServerList.cpp */; };
-		F76C865C1EC4E88300FA49E2 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */; };
+		F76C865C1EC4E88300FA49E2 /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840D1EC4E7CC00FA49E2 /* Socket.cpp */; };
 		F76C86601EC4E88300FA49E2 /* BannerObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */; };
 		F76C86621EC4E88300FA49E2 /* EntranceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84141EC4E7CC00FA49E2 /* EntranceObject.cpp */; };
 		F76C86641EC4E88300FA49E2 /* FootpathItemObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84161EC4E7CC00FA49E2 /* FootpathItemObject.cpp */; };
@@ -1390,6 +1391,8 @@
 		C9C630BB2235A7F9009AD16E /* WaterLowerAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterLowerAction.hpp; sourceTree = "<group>"; };
 		C9C630BC2235A7F9009AD16E /* WaterRaiseAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterRaiseAction.hpp; sourceTree = "<group>"; };
 		C9C630BD2235A9C6009AD16E /* FootpathPlaceFromTrackAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FootpathPlaceFromTrackAction.hpp; sourceTree = "<group>"; };
+		C9C630B42235A22C009AD16E /* GameStateSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateSnapshots.h; sourceTree = "<group>"; };
+		C9C630B52235A22C009AD16E /* GameStateSnapshots.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateSnapshots.cpp; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
@@ -1657,8 +1660,8 @@
 		F76C840A1EC4E7CC00FA49E2 /* NetworkUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkUser.h; sourceTree = "<group>"; };
 		F76C840B1EC4E7CC00FA49E2 /* ServerList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ServerList.cpp; sourceTree = "<group>"; };
 		F76C840C1EC4E7CC00FA49E2 /* ServerList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerList.h; sourceTree = "<group>"; };
-		F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; };
-		F76C840E1EC4E7CC00FA49E2 /* TcpSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TcpSocket.h; sourceTree = "<group>"; };
+		F76C840D1EC4E7CC00FA49E2 /* Socket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
+		F76C840E1EC4E7CC00FA49E2 /* Socket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
 		F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Twitch.cpp; sourceTree = "<group>"; };
 		F76C84101EC4E7CC00FA49E2 /* twitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twitch.h; sourceTree = "<group>"; };
 		F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BannerObject.cpp; sourceTree = "<group>"; };
@@ -2512,6 +2515,8 @@
 		F76C83551EC4E7CC00FA49E2 /* libopenrct2 */ = {
 			isa = PBXGroup;
 			children = (
+				C9C630B52235A22C009AD16E /* GameStateSnapshots.cpp */,
+				C9C630B42235A22C009AD16E /* GameStateSnapshots.h */,
 				4C358E5021C445F700ADE6BC /* ReplayManager.cpp */,
 				4C358E5121C445F700ADE6BC /* ReplayManager.h */,
 				C6352B871F477032006CCEE3 /* actions */,
@@ -2815,8 +2820,8 @@
 				F76C840A1EC4E7CC00FA49E2 /* NetworkUser.h */,
 				F76C840B1EC4E7CC00FA49E2 /* ServerList.cpp */,
 				F76C840C1EC4E7CC00FA49E2 /* ServerList.h */,
-				F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */,
-				F76C840E1EC4E7CC00FA49E2 /* TcpSocket.h */,
+				F76C840D1EC4E7CC00FA49E2 /* Socket.cpp */,
+				F76C840E1EC4E7CC00FA49E2 /* Socket.h */,
 				F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */,
 				F76C84101EC4E7CC00FA49E2 /* twitch.h */,
 			);
@@ -3972,6 +3977,7 @@
 				C68878C220289B710084B384 /* DrawLineShader.cpp in Sources */,
 				F76C888B1EC5324E00FA49E2 /* Ui.cpp in Sources */,
 				C685E51A1F8907850090598F /* Staff.cpp in Sources */,
+				C9C630B62235A22D009AD16E /* GameStateSnapshots.cpp in Sources */,
 				F76C888C1EC5324E00FA49E2 /* UiContext.cpp in Sources */,
 				C666EE7D1F37ACB10061AA04 /* TitleMenu.cpp in Sources */,
 				93F6004C213DD7DD00EEB83E /* TerrainSurfaceObject.cpp in Sources */,
@@ -4117,7 +4123,7 @@
 				93F76EFF20BFF77B00D4512C /* Paint.Wall.cpp in Sources */,
 				F76C86581EC4E88300FA49E2 /* NetworkUser.cpp in Sources */,
 				F76C865A1EC4E88300FA49E2 /* ServerList.cpp in Sources */,
-				F76C865C1EC4E88300FA49E2 /* TcpSocket.cpp in Sources */,
+				F76C865C1EC4E88300FA49E2 /* Socket.cpp in Sources */,
 				C688784B202899B90084B384 /* Intro.cpp in Sources */,
 				C68878FD20289B9B0084B384 /* MiniRollerCoaster.cpp in Sources */,
 				2A1F4FE0221FF4B0003CA045 /* Twitch.cpp in Sources */,

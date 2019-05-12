@@ -43,8 +43,10 @@ rct_window* window_news_open();
 rct_window* window_news_options_open();
 rct_window* window_options_open();
 rct_window* window_save_prompt_open();
+#ifndef DISABLE_NETWORK
 rct_window* window_server_list_open();
 rct_window* window_server_start_open();
+#endif
 rct_window* window_shortcut_change_open(int32_t selected_key);
 rct_window* window_shortcut_keys_open();
 rct_window* window_staff_list_open();
