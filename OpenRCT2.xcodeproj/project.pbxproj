@@ -512,7 +512,7 @@
 		F76C86551EC4E88300FA49E2 /* NetworkServerAdvertiser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84061EC4E7CC00FA49E2 /* NetworkServerAdvertiser.cpp */; };
 		F76C86581EC4E88300FA49E2 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84091EC4E7CC00FA49E2 /* NetworkUser.cpp */; };
 		F76C865A1EC4E88300FA49E2 /* ServerList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840B1EC4E7CC00FA49E2 /* ServerList.cpp */; };
-		F76C865C1EC4E88300FA49E2 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */; };
+		F76C865C1EC4E88300FA49E2 /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C840D1EC4E7CC00FA49E2 /* Socket.cpp */; };
 		F76C86601EC4E88300FA49E2 /* BannerObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */; };
 		F76C86621EC4E88300FA49E2 /* EntranceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84141EC4E7CC00FA49E2 /* EntranceObject.cpp */; };
 		F76C86641EC4E88300FA49E2 /* FootpathItemObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84161EC4E7CC00FA49E2 /* FootpathItemObject.cpp */; };
@@ -1660,8 +1660,8 @@
 		F76C840A1EC4E7CC00FA49E2 /* NetworkUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkUser.h; sourceTree = "<group>"; };
 		F76C840B1EC4E7CC00FA49E2 /* ServerList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ServerList.cpp; sourceTree = "<group>"; };
 		F76C840C1EC4E7CC00FA49E2 /* ServerList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerList.h; sourceTree = "<group>"; };
-		F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; };
-		F76C840E1EC4E7CC00FA49E2 /* TcpSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TcpSocket.h; sourceTree = "<group>"; };
+		F76C840D1EC4E7CC00FA49E2 /* Socket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
+		F76C840E1EC4E7CC00FA49E2 /* Socket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
 		F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Twitch.cpp; sourceTree = "<group>"; };
 		F76C84101EC4E7CC00FA49E2 /* twitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twitch.h; sourceTree = "<group>"; };
 		F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BannerObject.cpp; sourceTree = "<group>"; };
@@ -2820,8 +2820,8 @@
 				F76C840A1EC4E7CC00FA49E2 /* NetworkUser.h */,
 				F76C840B1EC4E7CC00FA49E2 /* ServerList.cpp */,
 				F76C840C1EC4E7CC00FA49E2 /* ServerList.h */,
-				F76C840D1EC4E7CC00FA49E2 /* TcpSocket.cpp */,
-				F76C840E1EC4E7CC00FA49E2 /* TcpSocket.h */,
+				F76C840D1EC4E7CC00FA49E2 /* Socket.cpp */,
+				F76C840E1EC4E7CC00FA49E2 /* Socket.h */,
 				F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */,
 				F76C84101EC4E7CC00FA49E2 /* twitch.h */,
 			);
@@ -4123,7 +4123,7 @@
 				93F76EFF20BFF77B00D4512C /* Paint.Wall.cpp in Sources */,
 				F76C86581EC4E88300FA49E2 /* NetworkUser.cpp in Sources */,
 				F76C865A1EC4E88300FA49E2 /* ServerList.cpp in Sources */,
-				F76C865C1EC4E88300FA49E2 /* TcpSocket.cpp in Sources */,
+				F76C865C1EC4E88300FA49E2 /* Socket.cpp in Sources */,
 				C688784B202899B90084B384 /* Intro.cpp in Sources */,
 				C68878FD20289B9B0084B384 /* MiniRollerCoaster.cpp in Sources */,
 				2A1F4FE0221FF4B0003CA045 /* Twitch.cpp in Sources */,

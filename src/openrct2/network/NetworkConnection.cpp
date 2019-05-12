@@ -14,7 +14,7 @@
 #    include "../core/String.hpp"
 #    include "../localisation/Localisation.h"
 #    include "../platform/platform.h"
-#    include "TcpSocket.h"
+#    include "Socket.h"
 #    include "network.h"
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;

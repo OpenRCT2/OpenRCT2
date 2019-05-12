@@ -14,7 +14,7 @@
 #    include "NetworkKey.h"
 #    include "NetworkPacket.h"
 #    include "NetworkTypes.h"
-#    include "TcpSocket.h"
+#    include "Socket.h"
 
 #    include <list>
 #    include <memory>
