@@ -628,16 +628,16 @@ int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementInde
 int32_t tile_inspector_path_set_broken(int32_t x, int32_t y, int32_t elementIndex, bool broken, int32_t flags)
 {
     TileElement* const pathElement = map_get_nth_element_at(x, y, elementIndex);
-    
+
     if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return MONEY32_UNDEFINED;
-    
+
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         pathElement->AsPath()->SetIsBroken(broken);
-        
+
         map_invalidate_tile_full(x << 5, y << 5);
-        
+
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
             && (uint32_t)y == windowTileInspectorTileY)
@@ -645,7 +645,7 @@ int32_t tile_inspector_path_set_broken(int32_t x, int32_t y, int32_t elementInde
             window_invalidate(tileInspectorWindow);
         }
     }
-    
+
     return 0;
 }
 
@@ -1021,7 +1021,8 @@ int32_t tile_inspector_track_set_block_brake(int32_t x, int32_t y, int32_t eleme
     return 0;
 }
 
-int32_t tile_inspector_track_set_indestructible(int32_t x, int32_t y, int32_t elementIndex, bool isIndestructible, int32_t flags)
+int32_t tile_inspector_track_set_indestructible(
+    int32_t x, int32_t y, int32_t elementIndex, bool isIndestructible, int32_t flags)
 {
     TileElement* const trackElement = map_get_nth_element_at(x, y, elementIndex);
 
@@ -1044,7 +1045,6 @@ int32_t tile_inspector_track_set_indestructible(int32_t x, int32_t y, int32_t el
 
     return 0;
 }
-
 
 int32_t tile_inspector_scenery_set_quarter_location(
     int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags)

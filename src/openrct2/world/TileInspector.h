@@ -70,7 +70,8 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
 int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex, int32_t slopeValue, int32_t flags);
 int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t elementIndex, int8_t offset, int32_t flags);
 int32_t tile_inspector_track_set_block_brake(int32_t x, int32_t y, int32_t elementIndex, bool blockBrake, int32_t flags);
-int32_t tile_inspector_track_set_indestructible(int32_t x, int32_t y, int32_t elementIndex, bool isIndestructible, int32_t flags);
+int32_t tile_inspector_track_set_indestructible(
+    int32_t x, int32_t y, int32_t elementIndex, bool isIndestructible, int32_t flags);
 int32_t tile_inspector_track_set_chain(
     int32_t x, int32_t y, int32_t elementIndex, bool entireTrackBlock, bool setChain, int32_t flags);
 int32_t tile_inspector_scenery_set_quarter_location(

@@ -764,15 +764,16 @@ static void window_tile_inspector_track_block_set_lift(int32_t elementIndex, boo
 static void window_tile_inspector_track_set_block_brake(int32_t elementIndex, bool blockBrake)
 {
     game_do_command(
-        TILE_INSPECTOR_TRACK_SET_BLOCK_BRAKE, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, blockBrake, 0);
+        TILE_INSPECTOR_TRACK_SET_BLOCK_BRAKE, GAME_COMMAND_FLAG_APPLY,
+        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE, blockBrake, 0);
 }
 
 static void window_tile_inspector_track_set_indestructible(int32_t elementIndex, bool isIndestructible)
 {
     game_do_command(
-        TILE_INSPECTOR_TRACK_SET_INDESTRUCTIBLE, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, isIndestructible, 0);
+        TILE_INSPECTOR_TRACK_SET_INDESTRUCTIBLE, GAME_COMMAND_FLAG_APPLY,
+        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE, isIndestructible,
+        0);
 }
 
 static void window_tile_inspector_quarter_tile_set(int32_t elementIndex, const int32_t quarterIndex)
@@ -938,10 +939,12 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
                     break;
                 }
                 case WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED:
-                    window_tile_inspector_track_set_block_brake(windowTileInspectorSelectedIndex, !tileElement->AsTrack()->BlockBrakeClosed());
+                    window_tile_inspector_track_set_block_brake(
+                        windowTileInspectorSelectedIndex, !tileElement->AsTrack()->BlockBrakeClosed());
                     break;
                 case WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE:
-                    window_tile_inspector_track_set_indestructible(windowTileInspectorSelectedIndex, !tileElement->AsTrack()->IsIndestructible());
+                    window_tile_inspector_track_set_indestructible(
+                        windowTileInspectorSelectedIndex, !tileElement->AsTrack()->IsIndestructible());
                     break;
             } // switch widget index
             break;
