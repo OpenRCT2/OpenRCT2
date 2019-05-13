@@ -80,8 +80,7 @@ std::unique_ptr<GameActionResult> network_set_player_group(
 std::unique_ptr<GameActionResult> network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting);
-std::unique_ptr<GameActionResult> network_kick_player(
-    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, bool isExecuting);
+std::unique_ptr<GameActionResult> network_kick_player(NetworkPlayerId_t playerId, bool isExecuting);
 uint8_t network_get_default_group();
 int32_t network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32_t index);

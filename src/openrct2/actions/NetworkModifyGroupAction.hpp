@@ -40,9 +40,7 @@ private:
     uint8_t _permissionState{ static_cast<uint8_t>(PermissionState::Count) };
 
 public:
-    NetworkModifyGroupAction()
-    {
-    }
+    NetworkModifyGroupAction() = default;
 
     NetworkModifyGroupAction(ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), const std::string name = "", uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count )
         : _type(static_cast<uint8_t>(type))

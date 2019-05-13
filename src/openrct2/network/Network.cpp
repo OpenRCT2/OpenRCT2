@@ -3651,22 +3651,9 @@ GameActionResult::Ptr network_modify_groups(
             if (isExecuting)
             {
                 NetworkGroup* newgroup = gNetwork.AddGroup();
-                if (!newgroup)
+                if (newgroup == nullptr)
                 {
                     return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_DO_THIS);
-                }
-
-                // Log add player group event
-                NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(actionPlayerId);
-                if (game_command_player)
-                {
-                    char log_msg[256];
-                    const char* args[2] = {
-                        game_command_player->Name.c_str(),
-                        newgroup->GetName().c_str(),
-                    };
-                    format_string(log_msg, 256, STR_LOG_ADD_PLAYER_GROUP, args);
-                    network_append_server_log(log_msg);
                 }
             }
         }
@@ -3677,29 +3664,15 @@ GameActionResult::Ptr network_modify_groups(
             {
                 return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }
-            for (auto it = gNetwork.player_list.begin(); it != gNetwork.player_list.end(); it++)
+            for (const auto &it : gNetwork.player_list)
             {
-                if ((*it)->Group == groupId)
+                if ((it.get())->Group == groupId)
                 {
                     return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO);
                 }
             }
             if (isExecuting)
             {
-                // Log remove player group event
-                NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(actionPlayerId);
-                NetworkGroup* group = gNetwork.GetGroupByID(groupId);
-                if (game_command_player && group)
-                {
-                    char log_msg[256];
-                    const char* args[2] = {
-                        game_command_player->Name.c_str(),
-                        group->GetName().c_str(),
-                    };
-                    format_string(log_msg, 256, STR_LOG_REMOVE_PLAYER_GROUP, args);
-                    network_append_server_log(log_msg);
-                }
-
                 gNetwork.RemoveGroup(groupId);
             }
         }
@@ -3712,10 +3685,10 @@ GameActionResult::Ptr network_modify_groups(
             }
             NetworkGroup* mygroup = nullptr;
             NetworkPlayer* player = gNetwork.GetPlayerByID(actionPlayerId);
-            if (player && permissionState == PermissionState::Toggle)
+            if (player != nullptr && permissionState == PermissionState::Toggle)
             {
                 mygroup = gNetwork.GetGroupByID(player->Group);
-                if (!mygroup || !mygroup->CanPerformAction(permissionIndex))
+                if (mygroup == nullptr || !mygroup->CanPerformAction(permissionIndex))
                 {
                     return std::make_unique<GameActionResult>(
                         GA_ERROR::DISALLOWED, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF);
@@ -3724,11 +3697,11 @@ GameActionResult::Ptr network_modify_groups(
             if (isExecuting)
             {
                 NetworkGroup* group = gNetwork.GetGroupByID(groupId);
-                if (group)
+                if (group != nullptr)
                 {
                     if (permissionState != PermissionState::Toggle)
                     {
-                        if (mygroup)
+                        if (mygroup != nullptr)
                         {
                             if (permissionState == PermissionState::SetAll)
                             {
@@ -3745,15 +3718,6 @@ GameActionResult::Ptr network_modify_groups(
                         group->ToggleActionPermission(permissionIndex);
                     }
                 }
-
-                // Log edit player group permissions event
-                char log_msg[256];
-                const char* args[2] = {
-                    player->Name.c_str(),
-                    group->GetName().c_str(),
-                };
-                format_string(log_msg, 256, STR_LOG_EDIT_PLAYER_GROUP_PERMISSIONS, args);
-                network_append_server_log(log_msg);
             }
         }
         break;
@@ -3775,19 +3739,8 @@ GameActionResult::Ptr network_modify_groups(
 
             if (isExecuting)
             {
-                if (group)
+                if (group != nullptr)
                 {
-                    // Log edit player group name event
-                    NetworkPlayer* player = gNetwork.GetPlayerByID(actionPlayerId);
-                    char log_msg[256];
-                    const char* args[3] = {
-                        player->Name.c_str(),
-                        oldName,
-                        name.c_str(),
-                    };
-                    format_string(log_msg, 256, STR_LOG_EDIT_PLAYER_GROUP_NAME, args);
-                    network_append_server_log(log_msg);
-
                     group->SetName(name);
                 }
             }
@@ -3802,17 +3755,6 @@ GameActionResult::Ptr network_modify_groups(
             if (isExecuting)
             {
                 gNetwork.SetDefaultGroup(groupId);
-
-                // Log edit default player group event
-                NetworkPlayer* player = gNetwork.GetPlayerByID(actionPlayerId);
-                NetworkGroup* group = gNetwork.GetGroupByID(groupId);
-                char log_msg[256];
-                const char* args[2] = {
-                    player->Name.c_str(),
-                    group->GetName().c_str(),
-                };
-                format_string(log_msg, 256, STR_LOG_EDIT_DEFAULT_PLAYER_GROUP, args);
-                network_append_server_log(log_msg);
             }
         }
         break;
@@ -3823,10 +3765,9 @@ GameActionResult::Ptr network_modify_groups(
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr network_kick_player(NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, bool isExecuting)
+GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
 {
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
-    NetworkPlayer* kicker = gNetwork.GetPlayerByID(actionPlayerId);
     if (player == nullptr)
     {
         // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too early.
@@ -3848,18 +3789,6 @@ GameActionResult::Ptr network_kick_player(NetworkPlayerId_t actionPlayerId, Netw
             networkUserManager->Load();
             networkUserManager->RemoveUser(player->KeyHash);
             networkUserManager->Save();
-        }
-
-        if (kicker != nullptr)
-        {
-            // Log kick player event
-            char log_msg[256];
-            const char* args[2] = {
-                player->Name.c_str(),
-                kicker->Name.c_str(),
-            };
-            format_string(log_msg, 256, STR_LOG_PLAYER_KICKED, args);
-            network_append_server_log(log_msg);
         }
     }
     return std::make_unique<GameActionResult>();
@@ -4288,7 +4217,7 @@ GameActionResult::Ptr network_modify_groups(
 {
     return std::make_unique<GameActionResult>();
 }
-GameActionResult::Ptr network_kick_player(NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, bool isExecuting)
+GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
 {
     return std::make_unique<GameActionResult>();
 }

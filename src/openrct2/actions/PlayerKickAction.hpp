@@ -18,9 +18,7 @@ private:
     NetworkPlayerId_t _playerId{ -1 };
 
 public:
-    PlayerKickAction()
-    {
-    }
+    PlayerKickAction() = default;
 
     PlayerKickAction(NetworkPlayerId_t playerId)
         : _playerId(playerId)
@@ -40,11 +38,11 @@ public:
     }
     GameActionResult::Ptr Query() const override
     {
-        return network_kick_player(GetPlayer(), _playerId, false);
+        return network_kick_player(_playerId, false);
     }
 
     GameActionResult::Ptr Execute() const override
     {
-        return network_kick_player(GetPlayer(), _playerId, true);
+        return network_kick_player(_playerId, true);
     }
 };
