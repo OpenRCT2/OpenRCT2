@@ -36,6 +36,7 @@
 - Fix: [#8947] Detection of AVX2 support.
 - Fix: [#8988] Character sprite lookup noticeably slows down drawing.
 - Fix: [#9000] Show correct error message if not enough money available.
+- Fix: [#9132] System file browser cannot open SV4 files.
 - Fix: [#9152] Spectators can modify ride colours.
 - Fix: [#9202] Artefacts show when changing ride type as client or using in-game console.
 - Fix: Guests eating popcorn are drawn as if they're eating pizza.
