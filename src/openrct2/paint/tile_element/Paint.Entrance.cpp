@@ -63,7 +63,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
                 lightfx_add_3d_light_magic_from_drawing_tile(
                     session->MapPosition, 0, 16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
                 break;
-        };
+        }
     }
 #endif
 

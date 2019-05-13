@@ -78,7 +78,7 @@ void vehicle_visual_roto_drop(
             image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[i]);
             sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
-    };
+    }
 
     assert(vehicleEntry->effect_visual == 1);
     // Although called in original code, effect_visual (splash effects) are not used for many rides and does not make sense so
