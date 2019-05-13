@@ -1224,7 +1224,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     game_command_pickup_guest,
     game_command_pickup_staff,
-    game_command_balloon_press,
+    nullptr,
     game_command_modify_tile,
     game_command_edit_scenario_options,
     NULL,

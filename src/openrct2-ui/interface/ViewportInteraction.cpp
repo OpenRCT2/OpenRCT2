@@ -16,6 +16,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/BalloonPressAction.hpp>
 #include <openrct2/actions/FootpathSceneryRemoveAction.hpp>
 #include <openrct2/actions/LargeSceneryRemoveAction.hpp>
 #include <openrct2/actions/ParkEntranceRemoveAction.hpp>
@@ -161,10 +162,11 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
                         switch (info.sprite->generic.type)
                         {
                             case SPRITE_MISC_BALLOON:
-                                game_do_command(
-                                    info.sprite->balloon.sprite_index, GAME_COMMAND_FLAG_APPLY, 0, 0,
-                                    GAME_COMMAND_BALLOON_PRESS, 0, 0);
-                                break;
+                            {
+                                auto balloonPress = BalloonPressAction(info.sprite->AsBalloon()->sprite_index);
+                                GameActions::Execute(&balloonPress);
+                            }
+                            break;
                             case SPRITE_MISC_DUCK:
                                 duck_press(&info.sprite->duck);
                                 break;
