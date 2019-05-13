@@ -847,7 +847,8 @@ static void window_multiplayer_groups_scrollmousedown(rct_window* w, int32_t scr
     w->selected_list_item = index;
     window_invalidate(w);
 
-    auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::SetPermissions, _selectedGroup, "", index, PermissionState::Toggle);
+    auto networkModifyGroup = NetworkModifyGroupAction(
+        ModifyGroupType::SetPermissions, _selectedGroup, "", index, PermissionState::Toggle);
     GameActions::Execute(&networkModifyGroup);
 }
 
@@ -871,9 +872,7 @@ static void window_multiplayer_groups_text_input(rct_window* w, rct_widgetindex 
     if (text == nullptr)
         return;
 
-    
-    auto networkModifyGroup = NetworkModifyGroupAction(
-        ModifyGroupType::SetName, _selectedGroup, text);
+    auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::SetName, _selectedGroup, text);
     GameActions::Execute(&networkModifyGroup);
 }
 

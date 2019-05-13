@@ -42,7 +42,9 @@ private:
 public:
     NetworkModifyGroupAction() = default;
 
-    NetworkModifyGroupAction(ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), const std::string name = "", uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count )
+    NetworkModifyGroupAction(
+        ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), const std::string name = "",
+        uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count)
         : _type(static_cast<uint8_t>(type))
         , _groupId(groupId)
         , _name(name)

@@ -3664,11 +3664,12 @@ GameActionResult::Ptr network_modify_groups(
             {
                 return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }
-            for (const auto &it : gNetwork.player_list)
+            for (const auto& it : gNetwork.player_list)
             {
                 if ((it.get())->Group == groupId)
                 {
-                    return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO);
+                    return std::make_unique<GameActionResult>(
+                        GA_ERROR::DISALLOWED, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO);
                 }
             }
             if (isExecuting)
@@ -3758,6 +3759,10 @@ GameActionResult::Ptr network_modify_groups(
             }
         }
         break;
+        default:
+            log_error("Invalid Modify Group Type: %u", static_cast<uint8_t>(type));
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            break;
     }
 
     gNetwork.SaveGroups();
