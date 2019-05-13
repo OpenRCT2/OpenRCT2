@@ -187,8 +187,6 @@ int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, 
 void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation);
 LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, int32_t rotation);
 
-void game_command_place_park_entrance(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_modify_tile(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 struct tile_element_iterator

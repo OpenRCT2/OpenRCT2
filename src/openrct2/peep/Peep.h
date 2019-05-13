@@ -976,8 +976,6 @@ void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
 void peep_handle_easteregg_name(Peep* peep);
-void game_command_set_guest_name(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep);
 void peep_reset_pathfind_goal(Peep* peep);

@@ -1088,18 +1088,11 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
 TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex);
 TileElement* ride_get_station_exit_element(int32_t x, int32_t y, int32_t z);
 void ride_set_status(Ride* ride, int32_t status);
-void game_command_set_ride_status(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void ride_set_name(Ride* ride, const char* name, uint32_t flags);
-void game_command_set_ride_name(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 money32 ride_get_common_price(Ride* forRide);
 rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
-void game_command_create_ride(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_demolish_ride(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex, uint8_t* outRideColour);
 void ride_set_name_to_default(Ride* ride, rct_ride_entry* rideEntry);
 
