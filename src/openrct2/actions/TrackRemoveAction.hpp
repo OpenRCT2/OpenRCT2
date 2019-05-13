@@ -19,10 +19,6 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-/**
- *
- *  rct2: 0x006C5B69
- */
 DEFINE_GAME_ACTION(TrackRemoveAction, GAME_COMMAND_REMOVE_TRACK, GameActionResult)
 {
 private:
