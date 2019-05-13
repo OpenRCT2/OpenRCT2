@@ -71,10 +71,6 @@ extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;
 extern colour_t gStaffSecurityColour;
 
-void game_command_hire_new_staff_member(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_callback_hire_new_staff_member(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
 void game_command_set_staff_name(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_pickup_staff(
