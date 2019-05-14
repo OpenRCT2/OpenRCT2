@@ -39,6 +39,7 @@ enum TILE_INSPECTOR_INSTRUCTION_TYPE
     TILE_INSPECTOR_SURFACE_TOGGLE_CORNER,
     TILE_INSPECTOR_SURFACE_TOGGLE_DIAGONAL,
     TILE_INSPECTOR_PATH_SET_SLOPE,
+    TILE_INSPECTOR_PATH_SET_BROKEN,
     TILE_INSPECTOR_PATH_TOGGLE_EDGE,
     TILE_INSPECTOR_ENTRANCE_MAKE_USABLE,
     TILE_INSPECTOR_WALL_SET_SLOPE,
@@ -48,6 +49,8 @@ enum TILE_INSPECTOR_INSTRUCTION_TYPE
     TILE_INSPECTOR_SCENERY_SET_QUARTER_COLLISION,
     TILE_INSPECTOR_BANNER_TOGGLE_BLOCKING_EDGE,
     TILE_INSPECTOR_CORRUPT_CLAMP,
+    TILE_INSPECTOR_TRACK_SET_BLOCK_BRAKE,
+    TILE_INSPECTOR_TRACK_SET_INDESTRUCTIBLE,
 };
 
 int32_t tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIndex, int32_t flags);
@@ -61,10 +64,14 @@ int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool enabl
 int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t cornerIndex, int32_t flags);
 int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t flags);
 int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementIndex, bool sloped, int32_t flags);
+int32_t tile_inspector_path_set_broken(int32_t x, int32_t y, int32_t elementIndex, bool broken, int32_t flags);
 int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t cornerIndex, int32_t flags);
 int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elementIndex, int32_t flags);
 int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex, int32_t slopeValue, int32_t flags);
 int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t elementIndex, int8_t offset, int32_t flags);
+int32_t tile_inspector_track_set_block_brake(int32_t x, int32_t y, int32_t elementIndex, bool blockBrake, int32_t flags);
+int32_t tile_inspector_track_set_indestructible(
+    int32_t x, int32_t y, int32_t elementIndex, bool isIndestructible, int32_t flags);
 int32_t tile_inspector_track_set_chain(
     int32_t x, int32_t y, int32_t elementIndex, bool entireTrackBlock, bool setChain, int32_t flags);
 int32_t tile_inspector_scenery_set_quarter_location(
