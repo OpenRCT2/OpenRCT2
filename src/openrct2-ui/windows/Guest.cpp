@@ -2068,9 +2068,8 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto x = w->x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     auto y = w->y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
     {
-        //args only holds one thing, so no array
-        int32_t args = {peep->sprite_index};
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, args, 0 x, y);
+        set_format_arg(0, uint32_t, peep->sprite_index);
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, gCommonFromatArgs, 0 x, y);
     }
     y += LIST_ROW_HEIGHT;
     {
