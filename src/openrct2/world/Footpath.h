@@ -176,8 +176,6 @@ TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z);
 struct PathElement;
 PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope);
 void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z);
-void game_command_remove_footpath(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags);
 money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope);
 void footpath_provisional_remove();
