@@ -431,7 +431,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
     {
         // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom extension,
         // meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
-        if (get_file_extension_type(path) != fileType)
+        if (isSave && get_file_extension_type(path) != fileType)
             path_append_extension(path, extension, pathSize);
 
         return true;
