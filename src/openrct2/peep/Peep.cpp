@@ -1074,7 +1074,7 @@ void Peep::UpdateFalling()
                             peep_release_balloon(guest, height);
                         }
 
-                        this->InsertNewThought(PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
+                        InsertNewThought(PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
 
                         action = PEEP_ACTION_DROWNING;
                         action_frame = 0;
@@ -1173,7 +1173,7 @@ void Peep::UpdatePicked()
     sub_state++;
     if (sub_state == 13)
     {
-        this->InsertNewThought(PEEP_THOUGHT_TYPE_HELP, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PEEP_THOUGHT_TYPE_HELP, PEEP_THOUGHT_ITEM_NONE);
     }
 }
 
