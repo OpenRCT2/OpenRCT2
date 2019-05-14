@@ -486,7 +486,7 @@ static constexpr const rct_size16 window_guest_page_sizes[][2] = {
     { 210, 148, 210, 148 },     // WINDOW_GUEST_FINANCE
     { 192, 159, 500, 450 },     // WINDOW_GUEST_THOUGHTS
     { 192, 159, 500, 450 },     // WINDOW_GUEST_INVENTORY
-    { 192, 159, 192, 159 }      // WINDOW_GUEST_DEBUG
+    { 192, 159, 192, 171 }      // WINDOW_GUEST_DEBUG
 };
 // clang-format on
 
@@ -2067,6 +2067,12 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto peep = GET_PEEP(w->number);
     auto x = w->x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     auto y = w->y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+    {
+        //args only holds one thing, so no array
+        int32_t args = {peep->sprite_index};
+        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, args, 0 x, y);
+    }
+    y += LIST_ROW_HEIGHT;
     {
         int32_t args[] = { peep->x, peep->y, peep->x };
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_POSITION, args, 0, x, y);
