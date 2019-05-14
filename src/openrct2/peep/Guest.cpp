@@ -382,7 +382,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             PeepThoughtType thought_type = crowded_thoughts[scenario_rand() & 0xF];
             if (thought_type != PEEP_THOUGHT_TYPE_NONE)
             {
-                this->InsertNewThought(thought_type, PEEP_THOUGHT_ITEM_NONE);
+                InsertNewThought(thought_type, PEEP_THOUGHT_ITEM_NONE);
             }
         }
 
@@ -5110,7 +5110,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
  * ah:thoughtArguments
  * esi: peep
  */
-void Guest::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
+void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
 {
     PeepActionType action = PeepThoughtToActionMap[thoughtType].action;
     if (action != PEEP_ACTION_NONE_2 && this->action >= PEEP_ACTION_NONE_1)

@@ -717,6 +717,7 @@ public: // Peep
     static Peep* Generate(const CoordsXYZ coords);
     void RemoveFromQueue();
     void RemoveFromRide();
+    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
 
     // TODO: Make these private again when done refactoring
 public: // Peep
@@ -736,13 +737,6 @@ private:
 struct Guest : Peep
 {
 public:
-    /**
-     * rct2: 0x699F5A
-     * al:thought_type
-     * ah:thought_arguments
-     * esi: peep
-     */
-    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
     bool HasItem(int32_t peepItem) const;
