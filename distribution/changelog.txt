@@ -12,6 +12,7 @@
 - Feature: [#8963] Add missing Czech letters to sprite font, use sprite font for Czech.
 - Feature: [#9154] Change map toolbar icon with current viewport rotation.
 - Change: [#7877] Files are now sorted in logical rather than dictionary order.
+- Change: [#8427] Ghost elements now show up as white on the mini-map.
 - Change: [#8688] Move common actions from debug menu into cheats menu.
 - Fix: [#2294] Clients crashing the server with invalid object selection.
 - Fix: [#5103] OpenGL: ride track preview not rendered.

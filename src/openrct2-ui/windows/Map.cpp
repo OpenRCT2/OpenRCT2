@@ -878,6 +878,7 @@ static void window_map_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     g1temp.x_offset = -8;
     g1temp.y_offset = -8;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
+    drawing_engine_invalidate_image(SPR_TEMP);
     gfx_draw_sprite(dpi, SPR_TEMP, 0, 0, 0);
 
     if (w->selected_tab == PAGE_PEEPS)
@@ -1551,6 +1552,12 @@ static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
     const int32_t maxSupportedTileElementType = (int32_t)std::size(ElementTypeAddColour);
     while (!(tileElement++)->IsLastForTile())
     {
+        if (tileElement->IsGhost())
+        {
+            colour = MAP_COLOUR(PALETTE_INDEX_21);
+            break;
+        }
+
         int32_t tileElementType = tileElement->GetType() >> 2;
         if (tileElementType >= maxSupportedTileElementType)
         {
@@ -1573,6 +1580,12 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
     TileElement* tileElement = map_get_surface_element_at(c);
     do
     {
+        if (tileElement->IsGhost())
+        {
+            colourA = MAP_COLOUR(PALETTE_INDEX_21);
+            break;
+        }
+
         switch (tileElement->GetType())
         {
             case TILE_ELEMENT_TYPE_SURFACE:
