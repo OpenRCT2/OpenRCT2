@@ -58,6 +58,7 @@
 #include "RideSetSetting.hpp"
 #include "RideSetStatus.hpp"
 #include "RideSetVehiclesAction.hpp"
+#include "ScenarioSetSettingAction.hpp"
 #include "SetCheatAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
@@ -123,6 +124,7 @@ namespace GameActions
         Register<RideSetAppearanceAction>();
         Register<RideSetVehicleAction>();
         Register<RideSetSettingAction>();
+        Register<ScenarioSetSettingAction>();
         Register<SetParkEntranceFeeAction>();
         Register<SignSetNameAction>();
         Register<SignSetStyleAction>();
