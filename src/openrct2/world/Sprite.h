@@ -229,8 +229,6 @@ void sprite_position_tween_reset();
 ///////////////////////////////////////////////////////////////
 void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped);
 void balloon_update(rct_balloon* balloon);
-void game_command_balloon_press(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 ///////////////////////////////////////////////////////////////
 // Duck
