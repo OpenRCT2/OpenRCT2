@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/NetworkModifyGroupAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
@@ -741,11 +742,17 @@ static void window_multiplayer_groups_mouseup(rct_window* w, rct_widgetindex wid
             }
             break;
         case WIDX_ADD_GROUP:
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
-            break;
+        {
+            auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::AddGroup);
+            GameActions::Execute(&networkModifyGroup);
+        }
+        break;
         case WIDX_REMOVE_GROUP:
-            game_do_command(1 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
-            break;
+        {
+            auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, _selectedGroup);
+            GameActions::Execute(&networkModifyGroup);
+        }
+        break;
         case WIDX_RENAME_GROUP:;
             int32_t groupIndex = network_get_group_index(_selectedGroup);
             const utf8* groupName = network_get_group_name(groupIndex);
@@ -788,10 +795,12 @@ static void window_multiplayer_groups_dropdown(rct_window* w, rct_widgetindex wi
     switch (widgetIndex)
     {
         case WIDX_DEFAULT_GROUP_DROPDOWN:
-            game_do_command(
-                4 | (network_get_group_id(dropdownIndex) << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0,
-                0);
-            break;
+        {
+            auto networkModifyGroup = NetworkModifyGroupAction(
+                ModifyGroupType::SetDefault, network_get_group_id(dropdownIndex));
+            GameActions::Execute(&networkModifyGroup);
+        }
+        break;
         case WIDX_SELECTED_GROUP_DROPDOWN:
             _selectedGroup = network_get_group_id(dropdownIndex);
             break;
@@ -838,7 +847,9 @@ static void window_multiplayer_groups_scrollmousedown(rct_window* w, int32_t scr
     w->selected_list_item = index;
     window_invalidate(w);
 
-    game_do_command(2 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, index, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
+    auto networkModifyGroup = NetworkModifyGroupAction(
+        ModifyGroupType::SetPermissions, _selectedGroup, "", index, PermissionState::Toggle);
+    GameActions::Execute(&networkModifyGroup);
 }
 
 static void window_multiplayer_groups_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
@@ -861,15 +872,8 @@ static void window_multiplayer_groups_text_input(rct_window* w, rct_widgetindex 
     if (text == nullptr)
         return;
 
-    game_do_command(
-        3 | (_selectedGroup << 8) | (1 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int32_t*)(text + 0)),
-        GAME_COMMAND_MODIFY_GROUPS, *((int32_t*)(text + 8)), *((int32_t*)(text + 4)));
-    game_do_command(
-        3 | (_selectedGroup << 8) | (2 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int32_t*)(text + 12)),
-        GAME_COMMAND_MODIFY_GROUPS, *((int32_t*)(text + 20)), *((int32_t*)(text + 16)));
-    game_do_command(
-        3 | (_selectedGroup << 8) | (0 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int32_t*)(text + 24)),
-        GAME_COMMAND_MODIFY_GROUPS, *((int32_t*)(text + 32)), *((int32_t*)(text + 28)));
+    auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::SetName, _selectedGroup, text);
+    GameActions::Execute(&networkModifyGroup);
 }
 
 static void window_multiplayer_groups_invalidate(rct_window* w)
