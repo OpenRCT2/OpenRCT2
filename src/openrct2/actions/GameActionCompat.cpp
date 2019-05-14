@@ -65,15 +65,6 @@ void park_set_entrance_fee(money32 fee)
     auto gameAction = SetParkEntranceFeeAction((money16)fee);
     GameActions::Execute(&gameAction);
 }
-
-void game_command_set_park_entrance_fee(
-    [[maybe_unused]] int* eax, [[maybe_unused]] int* ebx, [[maybe_unused]] int* ecx, [[maybe_unused]] int* edx,
-    [[maybe_unused]] int* esi, int* edi, [[maybe_unused]] int* ebp)
-{
-    money16 fee = (money16)(*edi & 0xFFFF);
-    auto gameAction = SetParkEntranceFeeAction(fee);
-    GameActions::Execute(&gameAction);
-}
 #pragma endregion
 
 #pragma region RideCreateAction
