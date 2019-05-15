@@ -35,6 +35,7 @@ public:
     NetworkKey Key;
     std::vector<uint8_t> Challenge;
     std::vector<const ObjectRepositoryItem*> RequestedObjects;
+    bool IsDisconnected = false;
 
     NetworkConnection();
     ~NetworkConnection();
