@@ -174,13 +174,13 @@ void reset_sprite_list()
         else
         {
             spr->generic.previous = SPRITE_INDEX_NULL;
-            gSpriteListHead[SPRITE_LIST_NULL] = i;
+            gSpriteListHead[SPRITE_LIST_FREE] = i;
         }
         _spriteFlashingList[i] = false;
         previous_spr = spr;
     }
 
-    gSpriteListCount[SPRITE_LIST_NULL] = MAX_SPRITES;
+    gSpriteListCount[SPRITE_LIST_FREE] = MAX_SPRITES;
 
     reset_sprite_spatial_index();
 }
@@ -316,13 +316,13 @@ void sprite_clear_all_unused()
     rct_sprite_generic* sprite;
     uint16_t spriteIndex, nextSpriteIndex;
 
-    spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
+    spriteIndex = gSpriteListHead[SPRITE_LIST_FREE];
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
         sprite = &get_sprite(spriteIndex)->generic;
         nextSpriteIndex = sprite->next;
         sprite_reset(sprite);
-        sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
+        sprite->linked_list_type_offset = SPRITE_LIST_FREE * 2;
 
         // This shouldn't be necessary, as sprite_reset() preserves the index
         // but it has been left in as a safety net in case the index isn't set correctly
@@ -351,18 +351,18 @@ rct_sprite* create_sprite(uint8_t bl)
     {
         // 69EC96;
         uint16_t cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
-        if (cx >= gSpriteListCount[SPRITE_LIST_NULL])
+        if (cx >= gSpriteListCount[SPRITE_LIST_FREE])
         {
             return nullptr;
         }
         linkedListTypeOffset = SPRITE_LIST_MISC;
     }
-    else if (gSpriteListCount[SPRITE_LIST_NULL] == 0)
+    else if (gSpriteListCount[SPRITE_LIST_FREE] == 0)
     {
         return nullptr;
     }
 
-    rct_sprite_generic* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_NULL]))->generic;
+    rct_sprite_generic* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_FREE]))->generic;
 
     move_sprite_to_list((rct_sprite*)sprite, linkedListTypeOffset);
 
@@ -684,7 +684,7 @@ void sprite_remove(rct_sprite* sprite)
         user_string_free(peep->name_string_idx);
     }
 
-    move_sprite_to_list(sprite, SPRITE_LIST_NULL);
+    move_sprite_to_list(sprite, SPRITE_LIST_FREE);
     sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
     _spriteFlashingList[sprite->generic.sprite_index] = false;
 
@@ -1029,7 +1029,7 @@ int32_t check_for_sprite_list_cycles(bool fix)
 }
 
 /**
- * Finds and fixes null sprites that are not reachable via SPRITE_LIST_NULL list.
+ * Finds and fixes null sprites that are not reachable via SPRITE_LIST_FREE list.
  *
  * @return count of disjoint sprites found
  */
@@ -1037,7 +1037,7 @@ int32_t fix_disjoint_sprites()
 {
     // Find reachable sprites
     bool reachable[MAX_SPRITES] = { false };
-    uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_NULL];
+    uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_FREE];
     rct_sprite* null_list_tail = nullptr;
     while (sprite_idx != SPRITE_INDEX_NULL)
     {
