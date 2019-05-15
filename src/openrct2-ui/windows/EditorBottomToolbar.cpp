@@ -401,7 +401,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         drawPreviousButton = true;
     }
-    else if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES)
+    else if (gSpriteListCount[SPRITE_LIST_FREE] != MAX_SPRITES)
     {
         drawNextButton = true;
     }
