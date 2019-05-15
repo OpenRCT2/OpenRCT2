@@ -1072,7 +1072,7 @@ public:
             gSpriteListCount[i] = _s6.sprite_lists_count[i];
         }
         // This list contains the number of free slots. Increase it according to our own sprite limit.
-        gSpriteListCount[SPRITE_LIST_NULL] += (MAX_SPRITES - RCT2_MAX_SPRITES);
+        gSpriteListCount[SPRITE_LIST_FREE] += (MAX_SPRITES - RCT2_MAX_SPRITES);
     }
 
     void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)

@@ -111,7 +111,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        if (gSpriteListCount[SPRITE_LIST_NULL] < 400)
+        if (gSpriteListCount[SPRITE_LIST_FREE] < 400)
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
         }

@@ -1710,7 +1710,7 @@ static constexpr const uint8_t tshirt_colours[] = {
  */
 Peep* Peep::Generate(const CoordsXYZ coords)
 {
-    if (gSpriteListCount[SPRITE_LIST_NULL] < 400)
+    if (gSpriteListCount[SPRITE_LIST_FREE] < 400)
         return nullptr;
 
     Peep* peep = (Peep*)create_sprite(1);

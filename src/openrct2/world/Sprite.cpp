@@ -174,13 +174,13 @@ void reset_sprite_list()
         else
         {
             spr->generic.previous = SPRITE_INDEX_NULL;
-            gSpriteListHead[SPRITE_LIST_NULL] = i;
+            gSpriteListHead[SPRITE_LIST_FREE] = i;
         }
         _spriteFlashingList[i] = false;
         previous_spr = spr;
     }
 
-    gSpriteListCount[SPRITE_LIST_NULL] = MAX_SPRITES;
+    gSpriteListCount[SPRITE_LIST_FREE] = MAX_SPRITES;
 
     reset_sprite_spatial_index();
 }
