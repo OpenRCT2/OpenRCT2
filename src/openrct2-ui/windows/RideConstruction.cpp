@@ -1536,7 +1536,10 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             {
                 uint8_t* brakesSpeedPtr = &_currentBrakeSpeed2;
                 uint8_t maxBrakesSpeed = 30;
-                uint8_t brakesSpeed = *brakesSpeedPtr + 2;
+                uint8_t brakesSpeed = *brakesSpeedPtr;
+                if (brakesSpeed < 2)
+                    brakesSpeed = 2;
+                brakesSpeed += 2;
                 if (brakesSpeed <= maxBrakesSpeed)
                 {
                     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
@@ -1562,7 +1565,10 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             else
             {
                 uint8_t* brakesSpeedPtr = &_currentBrakeSpeed2;
-                uint8_t brakesSpeed = *brakesSpeedPtr - 2;
+                uint8_t brakesSpeed = *brakesSpeedPtr;
+                if (brakesSpeed < 2)
+                    brakesSpeed = 2;
+                brakesSpeed -= 2;
                 if (brakesSpeed >= 2)
                 {
                     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
@@ -2246,6 +2252,11 @@ static void window_ride_construction_invalidate(rct_window* w)
         {
             brakeSpeed2 = get_booster_speed(ride->type, brakeSpeed2);
         }
+
+        // Fix blocks with the hardcoded speed from stock RCT2 from displaying 0 speed.
+        if (brakeSpeed2 < 4)
+            brakeSpeed2 = 4;
+
         set_format_arg(2, uint16_t, brakeSpeed2);
     }
 
@@ -3085,7 +3096,8 @@ static void window_ride_construction_update_widgets(rct_window* w)
     window_ride_construction_widgets[WIDX_U_TRACK].type = WWT_EMPTY;
     window_ride_construction_widgets[WIDX_O_TRACK].type = WWT_EMPTY;
 
-    bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BRAKES);
+    bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BRAKES)
+        || _selectedTrackType == TRACK_ELEM_BLOCK_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BLOCK_BRAKES);
     _boosterTrackSelected = track_element_is_booster(ride->type, _selectedTrackType)
         || (ride->type != RIDE_TYPE_STEEL_WILD_MOUSE && _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
 
@@ -3172,7 +3184,8 @@ static void window_ride_construction_update_widgets(rct_window* w)
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WWT_EMPTY;
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WWT_EMPTY;
     if ((rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT)
-        && _selectedTrackType != TRACK_ELEM_BRAKES && _currentTrackCurve != (0x100 | TRACK_ELEM_BRAKES))
+        && _selectedTrackType != TRACK_ELEM_BRAKES && _currentTrackCurve != (0x100 | TRACK_ELEM_BRAKES)
+        && _selectedTrackType != TRACK_ELEM_BLOCK_BRAKES && _currentTrackCurve != (0x100 | TRACK_ELEM_BLOCK_BRAKES))
     {
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WWT_GROUPBOX;
         window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WWT_SPINNER;

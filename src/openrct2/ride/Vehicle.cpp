@@ -6566,26 +6566,34 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle* vehicle)
 }
 
 /**
- * Modifies the train's velocity to match the block-brake fixed velocity.
+ * Modifies the train's velocity to match the block-brakes specified velocity.
  * This function must be called when the car is running through a non-stopping
  * state block-brake (precondition), which means that the block brake is acting
  * merely as a velocity regulator, in a closed state. When the brake is open, it
- * boosts the train to the speed limit
+ * boosts the train to the fixed block release speed.
  */
-static void apply_non_stop_block_brake(rct_vehicle* vehicle, bool block_brake_closed)
+static void apply_non_stop_block_brake(rct_vehicle* vehicle, bool block_brake_closed, int32_t speed)
 {
+    if (speed < BLOCK_BRAKE_BASE_SPEED)
+    {
+        // Fix blocks that were saved before block section speed settings were implemented.
+        speed = BLOCK_BRAKE_BASE_SPEED;
+    }
     if (vehicle->velocity >= 0)
     {
         // If the vehicle is below the speed limit
-        if (vehicle->velocity <= 0x20364)
+        if (vehicle->velocity <= speed)
         {
-            // Boost it to the fixed block brake speed
-            vehicle->velocity = 0x20364;
-            vehicle->acceleration = 0;
+            if (vehicle->velocity <= BLOCK_BRAKE_BASE_SPEED)
+            {
+                // Boost it to the fixed block brake release speed
+                vehicle->velocity = BLOCK_BRAKE_BASE_SPEED;
+                vehicle->acceleration = 0;
+            }
         }
         else if (block_brake_closed)
         {
-            // Slow it down till the fixed block brake speed
+            // Slow it down till the specified block brake speed
             vehicle->velocity -= vehicle->velocity >> 4;
             vehicle->acceleration = 0;
         }
@@ -6596,7 +6604,7 @@ static void apply_non_stop_block_brake(rct_vehicle* vehicle, bool block_brake_cl
  *
  * Modifies the train's velocity influenced by a block brake
  */
-static void apply_block_brakes(rct_vehicle* vehicle, bool is_block_brake_closed)
+static void apply_block_brakes(rct_vehicle* vehicle, bool is_block_brake_closed, int32_t speed)
 {
     // If the site is in a "train blocking" state
     if (is_block_brake_closed)
@@ -6616,11 +6624,7 @@ static void apply_block_brakes(rct_vehicle* vehicle, bool is_block_brake_closed)
     }
     else
     {
-#ifdef NEW_BLOCK_BRAKES
-        apply_non_stop_block_brake(vehicle, false);
-#else
-        apply_non_stop_block_brake(vehicle, true);
-#endif
+        apply_non_stop_block_brake(vehicle, true, speed << 16);
     }
 }
 
@@ -6664,9 +6668,10 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
     {
         case TRACK_ELEM_BLOCK_BRAKES:
             if (ride->IsBlockSectioned())
-                apply_block_brakes(vehicle, trackElement->AsTrack()->BlockBrakeClosed());
+                apply_block_brakes(
+                    vehicle, trackElement->AsTrack()->BlockBrakeClosed(), trackElement->AsTrack()->GetBrakeBoosterSpeed());
             else
-                apply_non_stop_block_brake(vehicle, true);
+                apply_non_stop_block_brake(vehicle, true, trackElement->AsTrack()->GetBrakeBoosterSpeed() << 16);
 
             break;
         case TRACK_ELEM_END_STATION:
@@ -6685,7 +6690,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
                 {
                     if (trackElement->AsTrack()->BlockBrakeClosed())
                     {
-                        apply_block_brakes(vehicle, true);
+                        apply_block_brakes(vehicle, true, trackElement->AsTrack()->GetBrakeBoosterSpeed());
                     }
                 }
             }
@@ -8103,7 +8108,7 @@ loc_6DB41D:
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
-    if (trackType != TRACK_ELEM_BRAKES)
+    if (trackType != TRACK_ELEM_BRAKES && trackType != TRACK_ELEM_BLOCK_BRAKES)
     {
         vehicle->target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
@@ -8515,7 +8520,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
-    if (trackType != TRACK_ELEM_BRAKES)
+    if (trackType != TRACK_ELEM_BRAKES && trackType != TRACK_ELEM_BLOCK_BRAKES)
     {
         vehicle->target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }

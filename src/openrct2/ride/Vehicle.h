@@ -455,6 +455,7 @@ enum
 
 #define VEHICLE_SEAT_PAIR_FLAG 0x80
 #define VEHICLE_SEAT_NUM_MASK 0x7F
+constexpr auto BLOCK_BRAKE_BASE_SPEED = 0x20364;
 
 rct_vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
