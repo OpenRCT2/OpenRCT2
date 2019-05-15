@@ -283,6 +283,10 @@ public:
                     gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
                 }
                 break;
+            default:
+                log_error("Invalid setting: %u", _setting);
+                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                break;
         }
         window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
         return MakeResult();
