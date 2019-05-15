@@ -16,6 +16,7 @@
 #include "../network/network.h"
 #include "../ride/Ride.h"
 #include "../world/Location.hpp"
+#include "../world/TileElement.h"
 #include "DataSerialiserTag.h"
 #include "Endianness.h"
 #include "MemoryStream.h"
@@ -378,6 +379,38 @@ template<> struct DataSerializerTraits<MapRange>
             v.RightBottom.y);
 
         stream->Write(coords, strlen(coords));
+    }
+};
+
+template<> struct DataSerializerTraits<TileElement>
+{
+    static void encode(IStream* stream, const TileElement& tileElement)
+    {
+        stream->WriteValue(tileElement.type);
+        stream->WriteValue(tileElement.flags);
+        stream->WriteValue(tileElement.base_height);
+        stream->WriteValue(tileElement.clearance_height);
+        for (int i = 0; i < 4; ++i)
+        {
+            stream->WriteValue(tileElement.pad_04[i]);
+        }
+    }
+    static void decode(IStream* stream, TileElement& tileElement)
+    {
+        tileElement.type = stream->ReadValue<uint8_t>();
+        tileElement.flags = stream->ReadValue<uint8_t>();
+        tileElement.base_height = stream->ReadValue<uint8_t>();
+        tileElement.clearance_height = stream->ReadValue<uint8_t>();
+        for (int i = 0; i < 4; ++i)
+        {
+            tileElement.pad_04[i] = stream->ReadValue<uint8_t>();
+        }
+    }
+    static void log(IStream* stream, const TileElement& tileElement)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "TileElement(type = %u, flags = %u, base_height = %u)", tileElement.type, tileElement.flags, tileElement.base_height);
+        stream->Write(msg, strlen(msg));
     }
 };
 
