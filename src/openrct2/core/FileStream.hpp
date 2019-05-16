@@ -76,9 +76,16 @@ public:
         free(pathW);
         free(modeW);
 #else
-        struct stat fileStat;
-        // Only allow regular files to be opened as its possible to open directories.
-        if (stat(path, &fileStat) == 0 && S_ISREG(fileStat.st_mode))
+        if (fileMode == FILE_MODE_OPEN)
+        {
+            struct stat fileStat;
+            // Only allow regular files to be opened as its possible to open directories.
+            if (stat(path, &fileStat) == 0 && S_ISREG(fileStat.st_mode))
+            {
+                _file = fopen(path, mode);
+            }
+        }
+        else
         {
             _file = fopen(path, mode);
         }
