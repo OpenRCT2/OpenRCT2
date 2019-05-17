@@ -260,9 +260,9 @@ private:
 
             gStaffModes[staffIndex] = STAFF_MODE_WALK;
 
-            for (int32_t newStaffIndex = 0; newStaffIndex < STAFF_PATROL_AREA_SIZE; newStaffIndex++)
+            for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
             {
-                gStaffPatrolAreas[newStaffIndex * STAFF_PATROL_AREA_SIZE + newStaffId] = 0;
+                gStaffPatrolAreas[staffIndex * STAFF_PATROL_AREA_SIZE + i] = 0;
             }
 
             res->peepSriteIndex = newPeep->sprite_index;
