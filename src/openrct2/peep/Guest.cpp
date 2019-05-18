@@ -5112,19 +5112,19 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
  */
 void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
 {
-    PeepActionType action = PeepThoughtToActionMap[thoughtType].action;
-    if (action != PEEP_ACTION_NONE_2 && this->action >= PEEP_ACTION_NONE_1)
+    PeepActionType newAction = PeepThoughtToActionMap[thoughtType].action;
+    if (newAction != PEEP_ACTION_NONE_2 && this->action >= PEEP_ACTION_NONE_1)
     {
-        this->action = action;
-        this->action_frame = 0;
-        this->action_sprite_image_offset = 0;
-        this->UpdateCurrentActionSpriteType();
-        this->Invalidate();
+        action = newAction;
+        action_frame = 0;
+        action_sprite_image_offset = 0;
+        UpdateCurrentActionSpriteType();
+        Invalidate();
     }
 
     for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        rct_peep_thought* thought = &this->thoughts[i];
+        rct_peep_thought* thought = &thoughts[i];
         // Remove the oldest thought by setting it to NONE.
         if (thought->type == PEEP_THOUGHT_TYPE_NONE)
             break;
@@ -5142,14 +5142,14 @@ void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgument
         }
     }
 
-    memmove(&this->thoughts[1], &this->thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
+    memmove(&thoughts[1], &thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
 
-    this->thoughts[0].type = thoughtType;
-    this->thoughts[0].item = thoughtArguments;
-    this->thoughts[0].freshness = 0;
-    this->thoughts[0].fresh_timeout = 0;
+    thoughts[0].type = thoughtType;
+    thoughts[0].item = thoughtArguments;
+    thoughts[0].freshness = 0;
+    thoughts[0].fresh_timeout = 0;
 
-    this->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 }
 
 /**
