@@ -542,13 +542,14 @@ namespace OpenRCT2
                 {
                     int32_t param1 = command.edx;
                     int32_t param2 = command.edi;
-                    CoordsXY loc = { (command.ecx & 0xFF) * 32, ((command.ecx >> 8) & 0xFF) * 32 };
+                    CoordsXY loc = { static_cast<int16_t>((command.ecx & 0xFF) * 32),
+                                     static_cast<int16_t>(((command.ecx >> 8) & 0xFF) * 32) };
                     TileModifyType type = static_cast<TileModifyType>(command.eax & 0xFF);
 
                     if (type == TileModifyType::AnyPaste)
                     {
                         TileElement copiedElement{};
-                        int32_t data[2] = { command.edx, command.edi };
+                        uint32_t data[2] = { command.edx, command.edi };
                         std::memcpy(&copiedElement, &data[0], 8);
                         result.action = std::make_unique<TileModifyAction>(loc, type, 0, 0, copiedElement);
                     }

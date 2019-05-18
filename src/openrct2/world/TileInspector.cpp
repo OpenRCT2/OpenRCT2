@@ -11,8 +11,8 @@
 
 #include "../Context.h"
 #include "../Game.h"
-#include "../common.h"
 #include "../actions/GameAction.h"
+#include "../common.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -35,10 +35,10 @@ uint32_t windowTileInspectorTileY;
 int32_t windowTileInspectorElementCount = 0;
 int32_t windowTileInspectorSelectedIndex;
 
-static bool map_swap_elements_at(int32_t x, int32_t y, int16_t first, int16_t second)
+static bool map_swap_elements_at(CoordsXY loc, int16_t first, int16_t second)
 {
-    TileElement* const firstElement = map_get_nth_element_at(x, y, first);
-    TileElement* const secondElement = map_get_nth_element_at(x, y, second);
+    TileElement* const firstElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, first);
+    TileElement* const secondElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, second);
 
     if (firstElement == nullptr)
     {
@@ -78,7 +78,7 @@ static bool map_swap_elements_at(int32_t x, int32_t y, int16_t first, int16_t se
  * @param elementIndex The nth element on this tile
  * Returns 0 on success, MONEY_UNDEFINED otherwise.
  */
-GameActionResult::Ptr tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIndex, bool isExecuting)
+GameActionResult::Ptr tile_inspector_insert_corrupt_at(CoordsXY loc, int16_t elementIndex, bool isExecuting)
 {
     // Make sure there is enough space for the new element
     if (!map_check_free_elements_and_reorganise(1))
@@ -87,7 +87,8 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int
     if (isExecuting)
     {
         // Create new corrupt element
-        TileElement* corruptElement = tile_element_insert(x, y, -1, 0); // Ugly hack: -1 guarantees this to be placed first
+        TileElement* corruptElement = tile_element_insert(
+            loc.x / 32, loc.y / 32, -1, 0); // Ugly hack: -1 guarantees this to be placed first
         if (corruptElement == nullptr)
         {
             log_warning("Failed to insert corrupt element.");
@@ -96,7 +97,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int
         corruptElement->SetType(TILE_ELEMENT_TYPE_CORRUPT);
 
         // Set the base height to be the same as the selected element
-        TileElement* const selectedElement = map_get_nth_element_at(x, y, elementIndex + 1);
+        TileElement* const selectedElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex + 1);
         if (!selectedElement)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -107,7 +108,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int
         // this way it's placed under the selected element, even when there are multiple elements with the same base height
         for (int16_t i = 0; i < elementIndex; i++)
         {
-            if (!map_swap_elements_at(x, y, i, i + 1))
+            if (!map_swap_elements_at(loc, i, i + 1))
             {
                 // don't return error here, we've already inserted an element
                 // and moved it as far as we could, the only sensible thing left
@@ -116,12 +117,12 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int
             }
         }
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         // Update the tile inspector's list for everyone who has the tile selected
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             windowTileInspectorElementCount++;
 
@@ -145,23 +146,23 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int
  * @param y The y coordinate of the tile
  * @param elementIndex The nth element on this tile
  */
-GameActionResult::Ptr tile_inspector_remove_element_at(int32_t x, int32_t y, int16_t elementIndex, bool isExecuting)
+GameActionResult::Ptr tile_inspector_remove_element_at(CoordsXY loc, int16_t elementIndex, bool isExecuting)
 {
     if (isExecuting)
     {
         // Forcefully remove the element
-        TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+        TileElement* const tileElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
         if (!tileElement)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
         }
         tile_element_remove(tileElement);
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         // Update the window
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             windowTileInspectorElementCount--;
 
@@ -181,20 +182,20 @@ GameActionResult::Ptr tile_inspector_remove_element_at(int32_t x, int32_t y, int
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_swap_elements_at(int32_t x, int32_t y, int16_t first, int16_t second, bool isExecuting)
+GameActionResult::Ptr tile_inspector_swap_elements_at(CoordsXY loc, int16_t first, int16_t second, bool isExecuting)
 {
     if (isExecuting)
     {
-        if (!map_swap_elements_at(x, y, first, second))
+        if (!map_swap_elements_at(loc, first, second))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
         }
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         // Update the window
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             // If one of them was selected, update selected list item
             if (windowTileInspectorSelectedIndex == first)
@@ -209,13 +210,13 @@ GameActionResult::Ptr tile_inspector_swap_elements_at(int32_t x, int32_t y, int1
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIndex, bool isExecuting)
+GameActionResult::Ptr tile_inspector_rotate_element_at(CoordsXY loc, int32_t elementIndex, bool isExecuting)
 {
     if (isExecuting)
     {
         uint8_t newRotation, pathEdges, pathCorners;
 
-        TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+        TileElement* const tileElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
         if (!tileElement)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -248,11 +249,12 @@ GameActionResult::Ptr tile_inspector_rotate_element_at(int32_t x, int32_t y, int
                 uint8_t z = tileElement->base_height;
 
                 // Make sure this is the correct entrance or exit
-                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
+                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
+                    && entrance.z == z)
                 {
                     ride_set_entrance_location(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
                 }
-                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == x && exit.y == y && exit.z == z)
+                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
                 {
                     ride_set_exit_location(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
                 }
@@ -274,9 +276,9 @@ GameActionResult::Ptr tile_inspector_rotate_element_at(int32_t x, int32_t y, int
             }
         }
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
-        if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate_by_class(WC_TILE_INSPECTOR);
         }
@@ -285,7 +287,7 @@ GameActionResult::Ptr tile_inspector_rotate_element_at(int32_t x, int32_t y, int
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_paste_element_at(int32_t x, int32_t y, TileElement element, bool isExecuting)
+GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement element, bool isExecuting)
 {
     // Make sure there is enough space for the new element
     if (!map_check_free_elements_and_reorganise(1))
@@ -307,8 +309,8 @@ GameActionResult::Ptr tile_inspector_paste_element_at(int32_t x, int32_t y, Tile
             }
             rct_banner& newBanner = gBanners[newBannerIndex];
             newBanner = gBanners[bannerIndex];
-            newBanner.x = x;
-            newBanner.y = y;
+            newBanner.x = loc.x / 32;
+            newBanner.y = loc.y / 32;
 
             // Use the new banner index
             tile_element_set_banner_index(&element, newBannerIndex);
@@ -328,7 +330,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(int32_t x, int32_t y, Tile
             }
         }
 
-        TileElement* const pastedElement = tile_element_insert(x, y, element.base_height, 0);
+        TileElement* const pastedElement = tile_element_insert(loc.x / 32, loc.y / 32, element.base_height, 0);
 
         bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement = element;
@@ -338,16 +340,16 @@ GameActionResult::Ptr tile_inspector_paste_element_at(int32_t x, int32_t y, Tile
             pastedElement->flags |= TILE_ELEMENT_FLAG_LAST_TILE;
         }
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             windowTileInspectorElementCount++;
 
             // Select new element if there was none selected already
-            int16_t newIndex = (int16_t)(pastedElement - map_get_first_element_at(x, y));
+            int16_t newIndex = (int16_t)(pastedElement - map_get_first_element_at(loc.x / 32, loc.y / 32));
             if (windowTileInspectorSelectedIndex == -1)
                 windowTileInspectorSelectedIndex = newIndex;
             else if (windowTileInspectorSelectedIndex >= newIndex)
@@ -360,11 +362,11 @@ GameActionResult::Ptr tile_inspector_paste_element_at(int32_t x, int32_t y, Tile
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_sort_elements_at(int32_t x, int32_t y, bool isExecuting)
+GameActionResult::Ptr tile_inspector_sort_elements_at(CoordsXY loc, bool isExecuting)
 {
     if (isExecuting)
     {
-        const TileElement* const firstElement = map_get_first_element_at(x, y);
+        const TileElement* const firstElement = map_get_first_element_at(loc.x / 32, loc.y / 32);
 
         // Count elements on tile
         int32_t numElement = 0;
@@ -388,7 +390,7 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(int32_t x, int32_t y, bool
                        || (otherElement->base_height == currentElement->base_height
                            && otherElement->clearance_height > currentElement->clearance_height)))
             {
-                if (!map_swap_elements_at(x, y, currentId - 1, currentId))
+                if (!map_swap_elements_at(loc, currentId - 1, currentId))
                 {
                     // don't return error here, we've already ran some actions
                     // and moved things as far as we could, the only sensible
@@ -402,12 +404,12 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(int32_t x, int32_t y, bool
             }
         }
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         // Deselect tile for clients who had it selected
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             windowTileInspectorSelectedIndex = -1;
             window_invalidate(tileInspectorWindow);
@@ -417,9 +419,10 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(int32_t x, int32_t y, bool
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elementIndex, int8_t heightOffset, bool isExecuting)
+GameActionResult::Ptr tile_inspector_any_base_height_offset(
+    CoordsXY loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting)
 {
-    TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const tileElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
     if (tileElement == nullptr)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
@@ -445,10 +448,11 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(int32_t x, int32_t y
                 uint8_t z = tileElement->base_height;
 
                 // Make sure this is the correct entrance or exit
-                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
+                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
+                    && entrance.z == z)
                     ride_set_entrance_location(
                         ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
-                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == x && exit.y == y && exit.z == z)
+                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
                     ride_set_exit_location(ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
             }
         }
@@ -456,11 +460,11 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(int32_t x, int32_t y
         tileElement->base_height += heightOffset;
         tileElement->clearance_height += heightOffset;
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -469,9 +473,9 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(int32_t x, int32_t y
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool showFences, bool isExecuting)
+GameActionResult::Ptr tile_inspector_surface_show_park_fences(CoordsXY loc, bool showFences, bool isExecuting)
 {
-    TileElement* const surfaceelement = map_get_surface_element_at(x, y);
+    TileElement* const surfaceelement = map_get_surface_element_at(loc);
 
     // No surface element on tile
     if (surfaceelement == nullptr)
@@ -482,13 +486,13 @@ GameActionResult::Ptr tile_inspector_surface_show_park_fences(int32_t x, int32_t
         if (!showFences)
             surfaceelement->AsSurface()->SetParkFences(0);
         else
-            update_park_fences({ x << 5, y << 5 });
+            update_park_fences(loc);
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -497,9 +501,9 @@ GameActionResult::Ptr tile_inspector_surface_show_park_fences(int32_t x, int32_t
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t cornerIndex, bool isExecuting)
+GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t cornerIndex, bool isExecuting)
 {
-    TileElement* const surfaceElement = map_get_surface_element_at(x, y);
+    TileElement* const surfaceElement = map_get_surface_element_at(loc);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -551,11 +555,11 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(int32_t x, int32_t y,
             surfaceElement->clearance_height = surfaceElement->base_height + (diagonal ? 2 : 0);
         }
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -564,9 +568,9 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(int32_t x, int32_t y,
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, bool isExecuting)
+GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(CoordsXY loc, bool isExecuting)
 {
-    TileElement* const surfaceElement = map_get_surface_element_at(x, y);
+    TileElement* const surfaceElement = map_get_surface_element_at(loc);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -589,11 +593,11 @@ GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(int32_t x, int32_t 
             surfaceElement->clearance_height = surfaceElement->base_height;
         }
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -602,9 +606,9 @@ GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(int32_t x, int32_t 
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementIndex, bool sloped, bool isExecuting)
+GameActionResult::Ptr tile_inspector_path_set_sloped(CoordsXY loc, int32_t elementIndex, bool sloped, bool isExecuting)
 {
-    TileElement* const pathElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const pathElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -613,11 +617,11 @@ GameActionResult::Ptr tile_inspector_path_set_sloped(int32_t x, int32_t y, int32
     {
         pathElement->AsPath()->SetSloped(sloped);
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -626,9 +630,9 @@ GameActionResult::Ptr tile_inspector_path_set_sloped(int32_t x, int32_t y, int32
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_path_set_broken(int32_t x, int32_t y, int32_t elementIndex, bool broken, bool isExecuting)
+GameActionResult::Ptr tile_inspector_path_set_broken(CoordsXY loc, int32_t elementIndex, bool broken, bool isExecuting)
 {
-    TileElement* const pathElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const pathElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -637,11 +641,11 @@ GameActionResult::Ptr tile_inspector_path_set_broken(int32_t x, int32_t y, int32
     {
         pathElement->AsPath()->SetIsBroken(broken);
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -650,9 +654,9 @@ GameActionResult::Ptr tile_inspector_path_set_broken(int32_t x, int32_t y, int32
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, bool isExecuting)
+GameActionResult::Ptr tile_inspector_path_toggle_edge(CoordsXY loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting)
 {
-    TileElement* const pathElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const pathElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -662,11 +666,11 @@ GameActionResult::Ptr tile_inspector_path_toggle_edge(int32_t x, int32_t y, int3
         uint8_t newEdges = pathElement->AsPath()->GetEdgesAndCorners() ^ (1 << edgeIndex);
         pathElement->AsPath()->SetEdgesAndCorners(newEdges);
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -675,9 +679,9 @@ GameActionResult::Ptr tile_inspector_path_toggle_edge(int32_t x, int32_t y, int3
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elementIndex, bool isExecuting)
+GameActionResult::Ptr tile_inspector_entrance_make_usable(CoordsXY loc, int32_t elementIndex, bool isExecuting)
 {
-    TileElement* const entranceElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const entranceElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (entranceElement == nullptr || entranceElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -695,17 +699,19 @@ GameActionResult::Ptr tile_inspector_entrance_make_usable(int32_t x, int32_t y, 
         {
             case ENTRANCE_TYPE_RIDE_ENTRANCE:
                 ride_set_entrance_location(
-                    ride, stationIndex, { x, y, entranceElement->base_height, (uint8_t)entranceElement->GetDirection() });
+                    ride, stationIndex,
+                    { loc.x / 32, loc.y / 32, entranceElement->base_height, (uint8_t)entranceElement->GetDirection() });
                 break;
             case ENTRANCE_TYPE_RIDE_EXIT:
                 ride_set_exit_location(
-                    ride, stationIndex, { x, y, entranceElement->base_height, (uint8_t)entranceElement->GetDirection() });
+                    ride, stationIndex,
+                    { loc.x / 32, loc.y / 32, entranceElement->base_height, (uint8_t)entranceElement->GetDirection() });
                 break;
         }
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -714,9 +720,9 @@ GameActionResult::Ptr tile_inspector_entrance_make_usable(int32_t x, int32_t y, 
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex, int32_t slopeValue, bool isExecuting)
+GameActionResult::Ptr tile_inspector_wall_set_slope(CoordsXY loc, int32_t elementIndex, int32_t slopeValue, bool isExecuting)
 {
-    TileElement* const wallElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const wallElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (wallElement == nullptr || wallElement->GetType() != TILE_ELEMENT_TYPE_WALL)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -726,11 +732,11 @@ GameActionResult::Ptr tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_
         // Set new slope value
         wallElement->AsWall()->SetSlope(slopeValue);
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -741,9 +747,10 @@ GameActionResult::Ptr tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_
 
 // Changes the height of all track elements that belong to the same track piece
 // Broxzier: Copied from track_remove and stripped of unneeded code, but I think this should be smaller
-GameActionResult::Ptr tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t elementIndex, int8_t offset, bool isExecuting)
+GameActionResult::Ptr tile_inspector_track_base_height_offset(
+    CoordsXY loc, int32_t elementIndex, int8_t offset, bool isExecuting)
 {
-    TileElement* const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const trackElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (offset == 0)
         return std::make_unique<GameActionResult>();
@@ -754,8 +761,8 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(int32_t x, int32_t
     if (isExecuting)
     {
         uint8_t type = trackElement->AsTrack()->GetTrackType();
-        int16_t originX = x << 5;
-        int16_t originY = y << 5;
+        int16_t originX = loc.x;
+        int16_t originY = loc.y;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
         ride_id_t rideIndex = trackElement->AsTrack()->GetRideIndex();
@@ -834,9 +841,9 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(int32_t x, int32_t
 // Sets chainlift, optionally for an entire track block
 // Broxzier: Basically a copy of the above function, with just two different lines... should probably be combined somehow
 GameActionResult::Ptr tile_inspector_track_set_chain(
-    int32_t x, int32_t y, int32_t elementIndex, bool entireTrackBlock, bool setChain, bool isExecuting)
+    CoordsXY loc, int32_t elementIndex, bool entireTrackBlock, bool setChain, bool isExecuting)
 {
-    TileElement* const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const trackElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -855,8 +862,8 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
         }
 
         uint8_t type = trackElement->AsTrack()->GetTrackType();
-        int16_t originX = x << 5;
-        int16_t originY = y << 5;
+        int16_t originX = loc.x;
+        int16_t originY = loc.y;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
         ride_id_t rideIndex = trackElement->AsTrack()->GetRideIndex();
@@ -934,9 +941,10 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_track_set_block_brake(int32_t x, int32_t y, int32_t elementIndex, bool blockBrake, bool isExecuting)
+GameActionResult::Ptr tile_inspector_track_set_block_brake(
+    CoordsXY loc, int32_t elementIndex, bool blockBrake, bool isExecuting)
 {
-    TileElement* const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const trackElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -945,11 +953,11 @@ GameActionResult::Ptr tile_inspector_track_set_block_brake(int32_t x, int32_t y,
     {
         trackElement->AsTrack()->SetBlockBrakeClosed(blockBrake);
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -959,9 +967,9 @@ GameActionResult::Ptr tile_inspector_track_set_block_brake(int32_t x, int32_t y,
 }
 
 GameActionResult::Ptr tile_inspector_track_set_indestructible(
-    int32_t x, int32_t y, int32_t elementIndex, bool isIndestructible, bool isExecuting)
+    CoordsXY loc, int32_t elementIndex, bool isIndestructible, bool isExecuting)
 {
-    TileElement* const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const trackElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -970,11 +978,11 @@ GameActionResult::Ptr tile_inspector_track_set_indestructible(
     {
         trackElement->AsTrack()->SetIsIndestructible(isIndestructible);
 
-        map_invalidate_tile_full(x << 5, y << 5);
+        map_invalidate_tile_full(loc.x, loc.y);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
-            && (uint32_t)y == windowTileInspectorTileY)
+        if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
+            && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -984,9 +992,9 @@ GameActionResult::Ptr tile_inspector_track_set_indestructible(
 }
 
 GameActionResult::Ptr tile_inspector_scenery_set_quarter_location(
-    int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, bool isExecuting)
+    CoordsXY loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting)
 {
-    TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const tileElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -1000,8 +1008,8 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_location(
         tileElement->flags &= 0xF0;
         tileElement->flags |= 1 << ((quarterIndex + 2) & 3);
 
-        map_invalidate_tile_full(x << 5, y << 5);
-        if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        map_invalidate_tile_full(loc.x, loc.y);
+        if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate_by_class(WC_TILE_INSPECTOR);
         }
@@ -1011,9 +1019,9 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_location(
 }
 
 GameActionResult::Ptr tile_inspector_scenery_set_quarter_collision(
-    int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, bool isExecuting)
+    CoordsXY loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting)
 {
-    TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const tileElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -1022,8 +1030,8 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_collision(
     {
         tileElement->flags ^= 1 << quarterIndex;
 
-        map_invalidate_tile_full(x << 5, y << 5);
-        if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        map_invalidate_tile_full(loc.x, loc.y);
+        if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate_by_class(WC_TILE_INSPECTOR);
         }
@@ -1032,9 +1040,10 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_collision(
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, bool isExecuting)
+GameActionResult::Ptr tile_inspector_banner_toggle_blocking_edge(
+    CoordsXY loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting)
 {
-    TileElement* const bannerElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const bannerElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (bannerElement == nullptr || bannerElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -1045,7 +1054,7 @@ GameActionResult::Ptr tile_inspector_banner_toggle_blocking_edge(int32_t x, int3
         edges ^= (1 << edgeIndex);
         bannerElement->AsBanner()->SetAllowedEdges(edges);
 
-        if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate_by_class(WC_TILE_INSPECTOR);
         }
@@ -1054,9 +1063,9 @@ GameActionResult::Ptr tile_inspector_banner_toggle_blocking_edge(int32_t x, int3
     return std::make_unique<GameActionResult>();
 }
 
-GameActionResult::Ptr tile_inspector_corrupt_clamp(int32_t x, int32_t y, int32_t elementIndex, bool isExecuting)
+GameActionResult::Ptr tile_inspector_corrupt_clamp(CoordsXY loc, int32_t elementIndex, bool isExecuting)
 {
-    TileElement* const corruptElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const corruptElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (corruptElement == nullptr || corruptElement->GetType() != TILE_ELEMENT_TYPE_CORRUPT)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
@@ -1069,7 +1078,7 @@ GameActionResult::Ptr tile_inspector_corrupt_clamp(int32_t x, int32_t y, int32_t
         TileElement* const nextElement = corruptElement + 1;
         corruptElement->base_height = corruptElement->clearance_height = nextElement->base_height;
 
-        if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate_by_class(WC_TILE_INSPECTOR);
         }

@@ -409,7 +409,9 @@ template<> struct DataSerializerTraits<TileElement>
     static void log(IStream* stream, const TileElement& tileElement)
     {
         char msg[128] = {};
-        snprintf(msg, sizeof(msg), "TileElement(type = %u, flags = %u, base_height = %u)", tileElement.type, tileElement.flags, tileElement.base_height);
+        snprintf(
+            msg, sizeof(msg), "TileElement(type = %u, flags = %u, base_height = %u)", tileElement.type, tileElement.flags,
+            tileElement.base_height);
         stream->Write(msg, strlen(msg));
     }
 };
