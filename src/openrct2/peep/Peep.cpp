@@ -2278,7 +2278,6 @@ int32_t peep_get_easteregg_name_id(Peep* peep)
     return -1;
 }
 
-
 void peep_set_map_tooltip(Peep* peep)
 {
     if (peep->type == PEEP_TYPE_GUEST)
