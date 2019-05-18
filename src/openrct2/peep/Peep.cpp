@@ -1706,6 +1706,55 @@ static constexpr const uint8_t tshirt_colours[] = {
 
 /**
  *
+ *  rct2: 0x699F5A
+ * al:thoughtType
+ * ah:thoughtArguments
+ * esi: peep
+ */
+void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
+{
+    PeepActionType newAction = PeepThoughtToActionMap[thoughtType].action;
+    if (newAction != PEEP_ACTION_NONE_2 && this->action >= PEEP_ACTION_NONE_1)
+    {
+        action = newAction;
+        action_frame = 0;
+        action_sprite_image_offset = 0;
+        UpdateCurrentActionSpriteType();
+        Invalidate();
+    }
+
+    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
+    {
+        rct_peep_thought* thought = &thoughts[i];
+        // Remove the oldest thought by setting it to NONE.
+        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
+            break;
+
+        if (thought->type == thoughtType && thought->item == thoughtArguments)
+        {
+            // If the thought type has not changed then we need to move
+            // it to the top of the thought list. This is done by first removing the
+            // existing thought and placing it at the top.
+            if (i < PEEP_MAX_THOUGHTS - 2)
+            {
+                memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+            }
+            break;
+        }
+    }
+
+    memmove(&thoughts[1], &thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
+
+    thoughts[0].type = thoughtType;
+    thoughts[0].item = thoughtArguments;
+    thoughts[0].freshness = 0;
+    thoughts[0].fresh_timeout = 0;
+
+    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+}
+
+/**
+ *
  *  rct2: 0x0069A05D
  */
 Peep* Peep::Generate(const CoordsXYZ coords)
