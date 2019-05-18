@@ -230,10 +230,9 @@ void GameState::UpdateLogic()
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
         && network_get_authstatus() == NETWORK_AUTH_OK)
     {
-        // Can't be in sync with server, round trips won't work if we are at same level.
-        if (gCurrentTicks >= network_get_server_tick())
+        // Don't run ahead of the server but can be on same tick.
+        if (gCurrentTicks > network_get_server_tick())
         {
-            // Don't run past the server
             return;
         }
     }
