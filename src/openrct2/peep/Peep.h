@@ -717,6 +717,7 @@ public: // Peep
     static Peep* Generate(const CoordsXYZ coords);
     void RemoveFromQueue();
     void RemoveFromRide();
+    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
 
     // TODO: Make these private again when done refactoring
 public: // Peep
@@ -959,13 +960,6 @@ void peep_sprite_remove(Peep* peep);
 
 void peep_window_state_update(Peep* peep);
 void peep_decrement_num_riders(Peep* peep);
-/**
- * rct2: 0x699F5A
- * al:thought_type
- * ah:thought_arguments
- * esi: peep
- */
-void peep_insert_new_thought(Peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
 
 void peep_set_map_tooltip(Peep* peep);
 

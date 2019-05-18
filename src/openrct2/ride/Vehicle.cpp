@@ -3042,7 +3042,7 @@ void vehicle_peep_easteregg_here_we_are(const rct_vehicle* vehicle)
             Peep* peep = GET_PEEP(vehicle->peep[i]);
             if (peep->peep_flags & PEEP_FLAGS_HERE_WE_ARE)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HERE_WE_ARE, peep->current_ride);
+                peep->InsertNewThought(PEEP_THOUGHT_TYPE_HERE_WE_ARE, peep->current_ride);
             }
         }
     } while ((spriteId = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);

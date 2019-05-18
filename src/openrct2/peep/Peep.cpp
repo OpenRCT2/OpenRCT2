@@ -1074,7 +1074,7 @@ void Peep::UpdateFalling()
                             peep_release_balloon(guest, height);
                         }
 
-                        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
+                        InsertNewThought(PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
 
                         action = PEEP_ACTION_DROWNING;
                         action_frame = 0;
@@ -1173,7 +1173,7 @@ void Peep::UpdatePicked()
     sub_state++;
     if (sub_state == 13)
     {
-        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_HELP, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PEEP_THOUGHT_TYPE_HELP, PEEP_THOUGHT_ITEM_NONE);
     }
 }
 
@@ -1706,6 +1706,55 @@ static constexpr const uint8_t tshirt_colours[] = {
 
 /**
  *
+ *  rct2: 0x699F5A
+ * al:thoughtType
+ * ah:thoughtArguments
+ * esi: peep
+ */
+void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
+{
+    PeepActionType newAction = PeepThoughtToActionMap[thoughtType].action;
+    if (newAction != PEEP_ACTION_NONE_2 && this->action >= PEEP_ACTION_NONE_1)
+    {
+        action = newAction;
+        action_frame = 0;
+        action_sprite_image_offset = 0;
+        UpdateCurrentActionSpriteType();
+        Invalidate();
+    }
+
+    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
+    {
+        rct_peep_thought* thought = &thoughts[i];
+        // Remove the oldest thought by setting it to NONE.
+        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
+            break;
+
+        if (thought->type == thoughtType && thought->item == thoughtArguments)
+        {
+            // If the thought type has not changed then we need to move
+            // it to the top of the thought list. This is done by first removing the
+            // existing thought and placing it at the top.
+            if (i < PEEP_MAX_THOUGHTS - 2)
+            {
+                memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+            }
+            break;
+        }
+    }
+
+    memmove(&thoughts[1], &thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
+
+    thoughts[0].type = thoughtType;
+    thoughts[0].item = thoughtArguments;
+    thoughts[0].freshness = 0;
+    thoughts[0].fresh_timeout = 0;
+
+    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+}
+
+/**
+ *
  *  rct2: 0x0069A05D
  */
 Peep* Peep::Generate(const CoordsXYZ coords)
@@ -2229,55 +2278,6 @@ int32_t peep_get_easteregg_name_id(Peep* peep)
     return -1;
 }
 
-/**
- *
- *  rct2: 0x699F5A
- * al:thought_type
- * ah:thought_arguments
- * esi: peep
- */
-void peep_insert_new_thought(Peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments)
-{
-    PeepActionType action = PeepThoughtToActionMap[thought_type].action;
-    if (action != PEEP_ACTION_NONE_2 && peep->action >= PEEP_ACTION_NONE_1)
-    {
-        peep->action = action;
-        peep->action_frame = 0;
-        peep->action_sprite_image_offset = 0;
-        peep->UpdateCurrentActionSpriteType();
-        peep->Invalidate();
-    }
-
-    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
-    {
-        rct_peep_thought* thought = &peep->thoughts[i];
-        // Remove the oldest thought by setting it to NONE.
-        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
-            break;
-
-        if (thought->type == thought_type && thought->item == thought_arguments)
-        {
-            // If the thought type has not changed then we need to move
-            // it to the top of the thought list. This is done by first removing the
-            // existing thought and placing it at the top.
-            if (i < PEEP_MAX_THOUGHTS - 2)
-            {
-                memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
-            }
-            break;
-        }
-    }
-
-    memmove(&peep->thoughts[1], &peep->thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
-
-    peep->thoughts[0].type = thought_type;
-    peep->thoughts[0].item = thought_arguments;
-    peep->thoughts[0].freshness = 0;
-    peep->thoughts[0].fresh_timeout = 0;
-
-    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
-}
-
 void peep_set_map_tooltip(Peep* peep)
 {
     if (peep->type == PEEP_TYPE_GUEST)
@@ -2745,7 +2745,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         {
             if ((scenario_rand() & 0xFFFF) <= 10922)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
+                peep->InsertNewThought(PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
                 peep->happiness_target = std::max(0, peep->happiness_target - 17);
             }
             vandalThoughtTimeout = 3;
@@ -2793,7 +2793,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
 
     if (crowded >= 10 && peep->state == PEEP_STATE_WALKING && (scenario_rand() & 0xFFFF) <= 21845)
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
+        peep->InsertNewThought(PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
         peep->happiness_target = std::max(0, peep->happiness_target - 14);
     }
 
@@ -2819,7 +2819,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
 
         if (total_sick >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
+            peep->InsertNewThought(PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = std::max(0, peep->happiness_target - 17);
             // Reset disgusting time
             peep->disgusting_count |= 0xC0;
@@ -2845,7 +2845,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
 
         if (total_litter >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
+            peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = std::max(0, peep->happiness_target - 17);
             // Reset litter time
             peep->litter_count |= 0xC0;
