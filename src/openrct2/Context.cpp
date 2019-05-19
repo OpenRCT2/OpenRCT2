@@ -545,6 +545,8 @@ namespace OpenRCT2
                         sprite_position_tween_reset();
                         gScreenAge = 0;
                         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+
+                        bool sendMap = false;
                         if (info.Type == FILE_TYPE::SAVED_GAME)
                         {
                             if (network_get_mode() == NETWORK_MODE_CLIENT)
@@ -554,7 +556,7 @@ namespace OpenRCT2
                             game_load_init();
                             if (network_get_mode() == NETWORK_MODE_SERVER)
                             {
-                                network_send_map();
+                                sendMap = true;
                             }
                         }
                         else
@@ -562,7 +564,7 @@ namespace OpenRCT2
                             scenario_begin();
                             if (network_get_mode() == NETWORK_MODE_SERVER)
                             {
-                                network_send_map();
+                                sendMap = true;
                             }
                             if (network_get_mode() == NETWORK_MODE_CLIENT)
                             {
@@ -572,6 +574,10 @@ namespace OpenRCT2
                         // This ensures that the newly loaded save reflects the user's
                         // 'show real names of guests' option, now that it's a global setting
                         peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                        if (sendMap)
+                        {
+                            network_send_map();
+                        }
                         return true;
                     }
                     catch (const ObjectLoadException& e)
