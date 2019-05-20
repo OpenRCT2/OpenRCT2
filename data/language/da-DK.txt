@@ -3788,6 +3788,10 @@ STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerance {INT32}
 STR_6315    :{WINDOW_COLOUR_2}Stisøger Goal: {BLACK}{INT32}, {INT32}, {INT32} ret {INT32}
 STR_6316    :{WINDOW_COLOUR_2}Stisøger historie:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} ret {INT32}
+STR_6318    :Netværks synkroniseringsfejl.{NEWLINE}Log fil: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Blok Bremse tilkoblet
+STR_6320    :{WINDOW_COLOUR_2}Uforgængelig
+STR_6321    :{WINDOW_COLOUR_2}Tilføjelse defekt
 
 #############
 # Scenarios #

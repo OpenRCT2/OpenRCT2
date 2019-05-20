@@ -3780,6 +3780,10 @@ STR_6314    :{WINDOW_COLOUR_2}Bestemming: {BLACK}{INT32}, {INT32} tolerantie {IN
 STR_6315    :{WINDOW_COLOUR_2}Pathfind-doel: {BLACK}{INT32}, {INT32}, {INT32} richting {INT32}
 STR_6316    :{WINDOW_COLOUR_2}Pathfind-geschiedenis:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} richting {INT32}
+STR_6318    :Netwerkdesynchronisatie gedetecteerd.{NEWLINE}Logbestand: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Blokrem is gesloten
+STR_6320    :{WINDOW_COLOUR_2}Mag niet worden verwijderd
+STR_6321    :{WINDOW_COLOUR_2}Straatmeubel is kapot
 
 #############
 # Scenarios #
