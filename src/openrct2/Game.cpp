@@ -528,7 +528,7 @@ int32_t game_do_command_p(
                 {
                     // Create a +/- money text effect
                     if (cost != 0 && game_is_not_paused())
-                        money_effect_create(cost);
+                        rct_money_effect::Create(cost);
                 }
             }
 
