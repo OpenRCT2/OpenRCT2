@@ -21,6 +21,8 @@
 - Fix: [#5893] Looking at guest window tabs other than the main tab eventually causes assertion.
 - Fix: [#5905] Urban Park merry-go-round has entrance and exit swapped (original bug).
 - Fix: [#6006] Objects higher than 6 metres are considered trees (original bug).
+- Fix: [#7039] Map window not rendering properly when using OpenGL.
+- Fix: [#7045] Theme window's colour pickers not drawn properly on OpenGL.
 - Fix: [#7729] Money Input Prompt breaks on certain values.
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#7913] RCT1/RCT2 title sequence timing is off.
