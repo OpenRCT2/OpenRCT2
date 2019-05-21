@@ -3785,6 +3785,10 @@ STR_6314    :{WINDOW_COLOUR_2}Cíl: {BLACK}{INT32}, {INT32} tolerance {INT32}
 STR_6315    :{WINDOW_COLOUR_2}Cíl hledání cesty: {BLACK}{INT32}, {INT32}, {INT32} směr {INT32}
 STR_6316    :{WINDOW_COLOUR_2}Historie hledání cest:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} směr {INT32}
+STR_6318    :Detekována síťová desynchronizace.{NEWLINE}Log: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Uzavřený brzdný blok
+STR_6320    :{WINDOW_COLOUR_2}Nezničitelné
+STR_6321    :{WINDOW_COLOUR_2}Rozbitá část
 
 ###############################################################################
 ## RCT2 Scenarios
