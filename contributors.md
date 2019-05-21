@@ -130,6 +130,7 @@ The following people are not part of the development team, but have been contrib
 * Florian Will (w-flo)
 * Trevor Harkness (tharkne)
 * Steve Xu (stevexu-umich)
+* (aw20368)
 
 ## Toolchain
 * (Balletie) - macOS

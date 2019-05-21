@@ -301,7 +301,7 @@ namespace GameActions
             if (result->Error == GA_ERROR::OK && finance_check_money_required(flags) && result->Cost != 0)
             {
                 finance_payment(result->Cost, result->ExpenditureType);
-                money_effect_create(result->Cost);
+                rct_money_effect::Create(result->Cost);
             }
 
             if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && result->Error == GA_ERROR::OK)

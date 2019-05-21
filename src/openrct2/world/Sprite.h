@@ -93,6 +93,11 @@ struct rct_money_effect : rct_sprite_common
     money32 value;
     int16_t offset_x;
     uint16_t wiggle;
+
+    static void CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical);
+    static void Create(money32 value);
+    void Update();
+    std::pair<rct_string_id, money32> GetStringId() const;
 };
 
 struct rct_crashed_vehicle_particle : rct_sprite_generic
@@ -139,9 +144,11 @@ union rct_sprite
 
     bool IsBalloon();
     bool IsDuck();
+    bool IsMoneyEffect();
     bool IsPeep();
     rct_balloon* AsBalloon();
     rct_duck* AsDuck();
+    rct_money_effect* AsMoneyEffect();
     Peep* AsPeep();
 };
 assert_struct_size(rct_sprite, 0x100);
@@ -238,14 +245,6 @@ void duck_update(rct_duck* duck);
 void duck_press(rct_duck* duck);
 void duck_remove_all();
 uint32_t duck_get_frame_image(const rct_duck* duck, int32_t direction);
-
-///////////////////////////////////////////////////////////////
-// Money effect
-///////////////////////////////////////////////////////////////
-void money_effect_create(money32 value);
-void money_effect_create_at(money32 value, int32_t x, int32_t y, int32_t z, bool vertical);
-void money_effect_update(rct_money_effect* moneyEffect);
-rct_string_id money_effect_get_string_id(const rct_money_effect* sprite, money32* outValue);
 
 ///////////////////////////////////////////////////////////////
 // Crash particles

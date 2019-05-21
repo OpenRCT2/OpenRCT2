@@ -541,7 +541,7 @@ static void sprite_misc_update(rct_sprite* sprite)
             sprite_steam_particle_update((rct_steam_particle*)sprite);
             break;
         case SPRITE_MISC_MONEY_EFFECT:
-            money_effect_update(&sprite->money_effect);
+            sprite->money_effect.Update();
             break;
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
             crashed_vehicle_particle_update((rct_crashed_vehicle_particle*)sprite);
