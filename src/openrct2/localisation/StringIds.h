@@ -3955,10 +3955,10 @@ enum
     STR_PEEP_DEBUG_PATHFIND_GOAL = 6315,
     STR_PEEP_DEBUG_PATHFIND_HISTORY = 6316,
     STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM = 6317,
+    STR_PEEP_DEBUG_SPRITE_INDEX = 6322,
 
     STR_DESYNC_REPORT = 6318,
 
-    STR_PEEP_DEBUG_SPRITE_INDEX = 6322,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
