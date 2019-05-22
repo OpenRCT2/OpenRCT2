@@ -109,7 +109,6 @@ namespace OpenRCT2::Ui
             // Set open file name options
             OPENFILENAMEW openFileName = {};
             openFileName.lStructSize = sizeof(OPENFILENAMEW);
-            openFileName.hwndOwner = GetHWND(window);
             openFileName.lpstrTitle = wcTitle.c_str();
             openFileName.lpstrInitialDir = wcInitialDirectory.c_str();
             openFileName.lpstrFilter = wcFilters.c_str();
