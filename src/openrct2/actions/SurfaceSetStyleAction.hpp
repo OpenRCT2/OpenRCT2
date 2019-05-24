@@ -88,7 +88,7 @@ public:
             }
 
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _edgeStyle));
+                objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, _edgeStyle));
 
             if (edgeObj == nullptr)
             {
