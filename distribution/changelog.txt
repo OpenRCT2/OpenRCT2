@@ -47,6 +47,7 @@
 - Fix: [#9152] Spectators can modify ride colours.
 - Fix: [#9202] Artefacts show when changing ride type as client or using in-game console.
 - Fix: [#9240] Crash when passing directory instead of save file.
+- Fix: [#9293] Issue with the native load/save dialog.
 - Fix: Guests eating popcorn are drawn as if they're eating pizza.
 - Fix: The arbitrary ride type and vehicle dropdown lists are ordered case-sensitively.
 - Improved: [#6116] Expose colour scheme for track elements in the tile inspector.
