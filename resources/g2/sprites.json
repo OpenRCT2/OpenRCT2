@@ -21,7 +21,7 @@
         "path": "icons/map_gen_land.png"
     },
     {
-        "path": "7.png"
+        "path": "placeholder.png"
     },
     {
         "path": "icons/zoom_in.png"
@@ -87,16 +87,16 @@
         "path": "icons/rct1_open_on_pressed.png"
     },
     {
-        "path": "icons/29.png"
+        "path": "icons/title_restart.png"
     },
     {
-        "path": "icons/30.png"
+        "path": "icons/title_stop.png"
     },
     {
-        "path": "icons/31.png"
+        "path": "icons/title_play.png"
     },
     {
-        "path": "icons/32.png"
+        "path": "icons/title_skip.png"
     },
     {
         "path": "icons/cheats.png"
@@ -174,7 +174,7 @@
         "path": "track/junior/steep_to_flat_lift_3_2.png"
     },
     {
-        "path": "icons/58.png"
+        "path": "icons/news_messages.png"
     },
     {
         "path": "icons/server_password.png"
