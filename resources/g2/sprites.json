@@ -436,6 +436,18 @@
         "y_offset": 2
     },
     {
+        "path": "icons/rct1_simulate_off.png"
+    },
+    {
+        "path": "icons/rct1_simulate_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_simulate_on.png"
+    },
+    {
+        "path": "icons/rct1_simulate_on_pressed.png"
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
