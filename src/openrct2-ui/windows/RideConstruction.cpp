@@ -125,7 +125,7 @@ static rct_widget window_ride_construction_widgets[] = {
     { WWT_FLATBTN,          1,  123,    146,    132,    155,    SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,       STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP       },
     { WWT_GROUPBOX,         0,  96,     162,    120,    160,    STR_RIDE_CONSTRUCTION_SEAT_ROT,             STR_NONE                                                },
       SPINNER_WIDGETS      (1,  101,    158,    138,    149,    0,                                          STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
-    { WWT_FLATBTN,          1,  139,    162,    338,    361,    SPR_TESTING,                                STR_SIMULATE_RIDE_TIP                                   },
+    { WWT_FLATBTN,          1,  139,    162,    338,    361,    SPR_G2_SIMULATE,                            STR_SIMULATE_RIDE_TIP                                   },
     { WIDGETS_END }
 };
 

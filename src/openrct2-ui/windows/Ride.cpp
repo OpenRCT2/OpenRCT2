@@ -2574,7 +2574,7 @@ static void window_ride_main_invalidate(rct_window* w)
         SPR_CLOSED,
         SPR_OPEN,
         SPR_TESTING,
-        SPR_TESTING | (COLOUR_WHITE << 19 | COLOUR_WHITE << 24 | IMAGE_TYPE_REMAP),
+        SPR_G2_SIMULATE,
     };
     window_ride_main_widgets[WIDX_OPEN].image = spriteIds[ride->status];
 
