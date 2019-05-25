@@ -84,21 +84,8 @@ static paint_struct* sub_9819_c(
     paint_struct* ps = &session->NextFreePaintStruct->basic;
     ps->image_id = image_id;
 
-    switch (session->CurrentRotation)
-    {
-        case 0:
-            rotate_map_coordinates(&offset.x, &offset.y, 0);
-            break;
-        case 1:
-            rotate_map_coordinates(&offset.x, &offset.y, 3);
-            break;
-        case 2:
-            rotate_map_coordinates(&offset.x, &offset.y, 2);
-            break;
-        case 3:
-            rotate_map_coordinates(&offset.x, &offset.y, 1);
-            break;
-    }
+    uint8_t swappedRotation = (session->CurrentRotation * 3) % 4; // swaps 1 and 3
+    rotate_map_coordinates(&offset.x, &offset.y, swappedRotation);
     offset.x += session->SpritePosition.x;
     offset.y += session->SpritePosition.y;
 

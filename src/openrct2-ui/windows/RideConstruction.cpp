@@ -2325,26 +2325,7 @@ static void window_ride_construction_draw_track_piece(
         y = 0;
     }
 
-    int16_t tmp;
-    switch (trackDirection & 3)
-    {
-        case 1:
-            tmp = x;
-            x = y;
-            y = -tmp;
-            break;
-        case 2:
-            x = -x;
-            y = -y;
-            break;
-        case 3:
-            tmp = x;
-            x = -y;
-            y = tmp;
-            break;
-        case 0:
-            break;
-    }
+    rotate_map_coordinates(&x, &y, trackDirection & 3);
     // this is actually case 0, but the other cases all jump to it
     x = 4112 + (x / 2);
     y = 4112 + (y / 2);
@@ -2385,7 +2366,6 @@ static void sub_6CBCE2(
 {
     Ride* ride;
     const rct_preview_track* trackBlock;
-    int32_t offsetX, offsetY;
 
     paint_session* session = paint_session_alloc(dpi, 0);
     trackDirection &= 3;
@@ -2406,33 +2386,15 @@ static void sub_6CBCE2(
     while (trackBlock->index != 255)
     {
         auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
-        switch (trackDirection)
-        {
-            default:
-            case 0:
-                offsetX = trackBlock->x;
-                offsetY = trackBlock->y;
-                break;
-            case 1:
-                offsetX = trackBlock->y;
-                offsetY = -trackBlock->x;
-                break;
-            case 2:
-                offsetX = -trackBlock->x;
-                offsetY = -trackBlock->y;
-                break;
-            case 3:
-                offsetX = -trackBlock->y;
-                offsetY = trackBlock->x;
-                break;
-        }
-        int32_t x = originX + offsetX;
-        int32_t y = originY + offsetY;
+        CoordsXY coords = { originX, originY };
+        CoordsXY offsets = { trackBlock->x, trackBlock->y };
+        coords += offsets.Rotate(trackDirection);
+
         int32_t baseZ = (originZ + trackBlock->z) >> 3;
         int32_t clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
 
-        int32_t tileX = x >> 5;
-        int32_t tileY = y >> 5;
+        int32_t tileX = coords.x >> 5;
+        int32_t tileY = coords.y >> 5;
 
         // Replace map elements with temporary ones containing track
         _backupTileElementArrays[0] = map_get_first_element_at(tileX + 0, tileY + 0);
@@ -2462,7 +2424,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
         // Draw this map tile
-        sub_68B2B7(session, x, y);
+        sub_68B2B7(session, coords.x, coords.y);
 
         // Restore map elements
         map_set_tile_elements(tileX + 0, tileY + 0, _backupTileElementArrays[0]);
@@ -3341,35 +3303,17 @@ static void window_ride_construction_select_map_tiles(
     }
 
     const rct_preview_track* trackBlock;
-    int32_t offsetX, offsetY;
 
     trackBlock = get_track_def_from_ride(ride, trackType);
     trackDirection &= 3;
     gMapSelectionTiles.clear();
     while (trackBlock->index != 255)
     {
-        switch (trackDirection)
-        {
-            default:
-            case 0:
-                offsetX = trackBlock->x;
-                offsetY = trackBlock->y;
-                break;
-            case 1:
-                offsetX = trackBlock->y;
-                offsetY = -trackBlock->x;
-                break;
-            case 2:
-                offsetX = -trackBlock->x;
-                offsetY = -trackBlock->y;
-                break;
-            case 3:
-                offsetX = -trackBlock->y;
-                offsetY = trackBlock->x;
-                break;
-        }
+        CoordsXY coords = { x, y };
+        CoordsXY offsets = { trackBlock->x, trackBlock->y };
+        coords += offsets.Rotate(trackDirection);
 
-        gMapSelectionTiles.push_back({ x + offsetX, y + offsetY });
+        gMapSelectionTiles.push_back(coords);
         trackBlock++;
     }
 }
