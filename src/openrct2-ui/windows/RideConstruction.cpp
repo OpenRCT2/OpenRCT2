@@ -2269,17 +2269,14 @@ static void window_ride_construction_invalidate(rct_window* w)
     simulateWidget.type = WWT_EMPTY;
     if (ride->SupportsStatus(RIDE_STATUS_SIMULATING))
     {
-        if (ride->status == RIDE_STATUS_CLOSED)
+        simulateWidget.type = WWT_FLATBTN;
+        if (ride->status == RIDE_STATUS_SIMULATING)
         {
-            simulateWidget.type = WWT_FLATBTN;
-            simulateWidget.image = SPR_CLOSED;
-            simulateWidget.tooltip = STR_SIMULATE_RIDE_TIP;
+            w->pressed_widgets |= (1ULL << WIDX_SIMULATE);
         }
-        else if (ride->status == RIDE_STATUS_SIMULATING)
+        else
         {
-            simulateWidget.type = WWT_FLATBTN;
-            simulateWidget.image = SPR_TESTING | (COLOUR_WHITE << 19 | COLOUR_WHITE << 24 | IMAGE_TYPE_REMAP);
-            simulateWidget.tooltip = STR_CLOSE_RIDE_TIP;
+            w->pressed_widgets &= ~(1ULL << WIDX_SIMULATE);
         }
     }
 
