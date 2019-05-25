@@ -41,8 +41,10 @@ enum MASTER_SERVER_STATUS
     MASTER_SERVER_STATUS_INTERNAL_ERROR = 500
 };
 
+#    ifndef DISABLE_HTTP
 constexpr int32_t MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
 constexpr int32_t MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
+#    endif
 
 class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
