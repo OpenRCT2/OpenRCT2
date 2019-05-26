@@ -77,9 +77,9 @@ public:
         }
         else
         {
-            TileElement* tileElement = banner_get_scrolling_wall_tile_element((BannerIndex)_bannerIndex);
+            WallElement* wallElement = banner_get_scrolling_wall_tile_element((BannerIndex)_bannerIndex);
 
-            if (!tileElement)
+            if (!wallElement)
             {
                 log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -107,11 +107,11 @@ public:
         }
         else
         {
-            TileElement* tileElement = banner_get_scrolling_wall_tile_element((BannerIndex)_bannerIndex);
+            WallElement* wallElement = banner_get_scrolling_wall_tile_element((BannerIndex)_bannerIndex);
 
-            tileElement->AsWall()->SetPrimaryColour(_mainColour);
-            tileElement->AsWall()->SetSecondaryColour(_textColour);
-            map_invalidate_tile(coords.x, coords.y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+            wallElement->SetPrimaryColour(_mainColour);
+            wallElement->SetSecondaryColour(_textColour);
+            map_invalidate_tile(coords.x, coords.y, wallElement->base_height * 8, wallElement->clearance_height * 8);
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
