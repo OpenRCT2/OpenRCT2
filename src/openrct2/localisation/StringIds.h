@@ -3959,7 +3959,6 @@ enum
 
     STR_DESYNC_REPORT = 6318,
 
-
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
