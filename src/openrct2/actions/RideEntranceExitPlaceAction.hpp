@@ -89,9 +89,6 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }
 
-        ride_clear_for_construction(ride);
-        ride_remove_peeps(ride);
-
         const auto location = _isExit ? ride_get_exit_location(ride, _stationNum)
                                       : ride_get_entrance_location(ride, _stationNum);
 
