@@ -134,7 +134,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
     TileElement* tileElement = map_get_first_element_at(banner->x, banner->y);
 
     if (tileElement == nullptr)
-      return nullptr;
+        return nullptr;
 
     do
     {
