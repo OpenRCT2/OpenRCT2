@@ -952,7 +952,6 @@ private:
         dst->sheltered_eighths = src->num_inversions >> 5;
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
         dst->boat_hire_return_position = src->boat_hire_return_position;
-        dst->measurement_index = src->data_logging_index;
         dst->chairlift_bullwheel_rotation = src->chairlift_bullwheel_rotation;
         for (int i = 0; i < 2; i++)
         {
@@ -1108,23 +1107,32 @@ private:
 
     void ImportRideMeasurements()
     {
-        for (int32_t i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
+        for (const auto& src : _s4.ride_measurements)
         {
-            rct_ride_measurement* dst = get_ride_measurement(i);
-            rct_ride_measurement* src = &_s4.ride_measurements[i];
-            ImportRideMeasurement(dst, src);
+            if (src.ride_index != RCT12_RIDE_ID_NULL)
+            {
+                auto ride = get_ride(src.ride_index);
+                ride->measurement = std::make_unique<RideMeasurement>();
+                ride->measurement->ride = ride;
+                ImportRideMeasurement(*ride->measurement, src);
+            }
         }
     }
 
-    void ImportRideMeasurement(rct_ride_measurement* dst, rct_ride_measurement* src)
+    void ImportRideMeasurement(RideMeasurement& dst, const RCT12RideMeasurement& src)
     {
-        *dst = *src;
-        for (int32_t i = 0; i < RIDE_MEASUREMENT_MAX_ITEMS; i++)
+        dst.flags = src.flags;
+        dst.last_use_tick = src.last_use_tick;
+        dst.num_items = src.num_items;
+        dst.current_item = src.current_item;
+        dst.vehicle_index = src.vehicle_index;
+        dst.current_station = src.current_station;
+        for (size_t i = 0; i < std::size(src.velocity); i++)
         {
-            dst->velocity[i] /= 2;
-            dst->altitude[i] /= 2;
-            dst->vertical[i] /= 2;
-            dst->lateral[i] /= 2;
+            dst.velocity[i] = src.velocity[i] / 2;
+            dst.altitude[i] = src.altitude[i] / 2;
+            dst.vertical[i] = src.vertical[i] / 2;
+            dst.lateral[i] = src.lateral[i] / 2;
         }
     }
 

@@ -1798,6 +1798,7 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, Ride**
         _currentTrackPieceDirection = backup_rotation;
         user_string_free(ride->name);
         ride->type = RIDE_TYPE_NULL;
+        ride->measurement = {};
         byte_9D8150 = false;
         return false;
     }

@@ -1557,32 +1557,27 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
 
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
-            int32_t vertical_g, lateral_g;
-            vehicle_get_g_forces(vehicle, &vertical_g, &lateral_g);
+            auto gForces = vehicle_get_g_forces(vehicle);
+            gForces.VerticalG += ride->previous_vertical_g;
+            gForces.LateralG += ride->previous_lateral_g;
+            gForces.VerticalG /= 2;
+            gForces.LateralG /= 2;
 
-            vertical_g += ride->previous_vertical_g;
-            lateral_g += ride->previous_lateral_g;
-            vertical_g >>= 1;
-            lateral_g >>= 1;
-
-            ride->previous_vertical_g = vertical_g;
-            ride->previous_lateral_g = lateral_g;
-
-            if (vertical_g <= 0)
+            ride->previous_vertical_g = gForces.VerticalG;
+            ride->previous_lateral_g = gForces.LateralG;
+            if (gForces.VerticalG <= 0)
             {
                 ride->total_air_time++;
             }
 
-            if (vertical_g > ride->max_positive_vertical_g)
-                ride->max_positive_vertical_g = vertical_g;
+            if (gForces.VerticalG > ride->max_positive_vertical_g)
+                ride->max_positive_vertical_g = gForces.VerticalG;
 
-            if (vertical_g < ride->max_negative_vertical_g)
-                ride->max_negative_vertical_g = vertical_g;
+            if (gForces.VerticalG < ride->max_negative_vertical_g)
+                ride->max_negative_vertical_g = gForces.VerticalG;
 
-            lateral_g = abs(lateral_g);
-
-            if (lateral_g > ride->max_lateral_g)
-                ride->max_lateral_g = lateral_g;
+            gForces.LateralG = std::abs(gForces.LateralG);
+            ride->max_lateral_g = std::max(ride->max_lateral_g, (fixed16_2dp)gForces.LateralG);
         }
     }
 
@@ -5706,7 +5701,7 @@ produceScream:
  * dx: lateralG
  * esi: vehicle
  */
-void vehicle_get_g_forces(const rct_vehicle* vehicle, int32_t* verticalG, int32_t* lateralG)
+GForces vehicle_get_g_forces(const rct_vehicle* vehicle)
 {
     int32_t gForceVert = (((int64_t)0x280000) * Unk9A37E4[vehicle->vehicle_sprite_type]) >> 32;
     gForceVert = (((int64_t)gForceVert) * Unk9A39C4[vehicle->bank_rotation]) >> 32;
@@ -6221,11 +6216,7 @@ void vehicle_get_g_forces(const rct_vehicle* vehicle, int32_t* verticalG, int32_
     gForceLateral *= 10;
     gForceVert >>= 16;
     gForceLateral >>= 16;
-
-    if (verticalG != nullptr)
-        *verticalG = (int16_t)(gForceVert & 0xFFFF);
-    if (lateralG != nullptr)
-        *lateralG = (int16_t)(gForceLateral & 0xFFFF);
+    return { (int16_t)(gForceVert & 0xFFFF), (int16_t)(gForceLateral & 0xFFFF) };
 }
 
 void vehicle_set_map_toolbar(const rct_vehicle* vehicle)
@@ -6531,9 +6522,7 @@ bool vehicle_update_dodgems_collision(rct_vehicle* vehicle, int16_t x, int16_t y
  */
 static void vehicle_update_track_motion_up_stop_check(rct_vehicle* vehicle)
 {
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-    int32_t verticalG, lateralG;
-
+    auto vehicleEntry = vehicle_get_vehicle_entry(vehicle);
     if (vehicleEntry == nullptr)
     {
         return;
@@ -6545,18 +6534,18 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle* vehicle)
         int32_t trackType = vehicle->track_type >> 2;
         if (!track_element_is_covered(trackType))
         {
-            vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
-            lateralG = abs(lateralG);
-            if (lateralG <= 150)
+            auto gForces = vehicle_get_g_forces(vehicle);
+            gForces.LateralG = std::abs(gForces.LateralG);
+            if (gForces.LateralG <= 150)
             {
                 if (dword_9A2970[vehicle->vehicle_sprite_type] < 0)
                 {
-                    if (verticalG > -40)
+                    if (gForces.VerticalG > -40)
                     {
                         return;
                     }
                 }
-                else if (verticalG > -80)
+                else if (gForces.VerticalG > -80)
                 {
                     return;
                 }
@@ -6574,18 +6563,18 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle* vehicle)
         int32_t trackType = vehicle->track_type >> 2;
         if (!track_element_is_covered(trackType))
         {
-            vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
+            auto gForces = vehicle_get_g_forces(vehicle);
 
             if (dword_9A2970[vehicle->vehicle_sprite_type] < 0)
             {
-                if (verticalG > -45)
+                if (gForces.VerticalG > -45)
                 {
                     return;
                 }
             }
             else
             {
-                if (verticalG > -80)
+                if (gForces.VerticalG > -80)
                 {
                     return;
                 }

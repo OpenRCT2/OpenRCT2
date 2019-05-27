@@ -5880,7 +5880,6 @@ static void window_ride_graphs_mousedown(rct_window* w, rct_widgetindex widgetIn
 static void window_ride_graphs_update(rct_window* w)
 {
     rct_widget* widget;
-    rct_ride_measurement* measurement;
     int32_t x;
 
     w->frame_no++;
@@ -5896,7 +5895,8 @@ static void window_ride_graphs_update(rct_window* w)
         auto ride = get_ride(w->number);
         if (ride != nullptr)
         {
-            measurement = ride_get_measurement(ride, nullptr);
+            RideMeasurement* measurement{};
+            std::tie(measurement, std::ignore) = ride_get_measurement(ride);
             x = measurement == nullptr ? 0 : measurement->current_item - (((widget->right - widget->left) / 4) * 3);
         }
     }
@@ -5911,8 +5911,6 @@ static void window_ride_graphs_update(rct_window* w)
  */
 static void window_ride_graphs_scrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    rct_ride_measurement* measurement;
-
     window_event_invalidate_call(w);
 
     // Set minimum size
@@ -5922,7 +5920,8 @@ static void window_ride_graphs_scrollgetheight(rct_window* w, int32_t scrollInde
     auto ride = get_ride(w->number);
     if (ride != nullptr)
     {
-        measurement = ride_get_measurement(ride, nullptr);
+        RideMeasurement* measurement{};
+        std::tie(measurement, std::ignore) = ride_get_measurement(ride);
         if (measurement != nullptr)
         {
             *width = std::max<int32_t>(*width, measurement->num_items);
@@ -5950,8 +5949,7 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
         auto ride = get_ride(w->number);
         if (ride != nullptr)
         {
-            rct_string_id message;
-            auto measurement = ride_get_measurement(ride, &message);
+            auto [measurement, message] = ride_get_measurement(ride);
             if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING))
             {
                 set_format_arg(4, uint16_t, measurement->vehicle_index + 1);
@@ -6053,11 +6051,11 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
     auto widget = &window_ride_graphs_widgets[WIDX_GRAPH];
     auto stringId = STR_NONE;
-    rct_ride_measurement* measurement{};
+    RideMeasurement* measurement{};
     auto ride = get_ride(w->number);
     if (ride != nullptr)
     {
-        measurement = ride_get_measurement(ride, &stringId);
+        std::tie(measurement, stringId) = ride_get_measurement(ride);
     }
     if (measurement == nullptr)
     {

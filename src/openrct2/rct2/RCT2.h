@@ -310,7 +310,7 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     int32_t remaining_distance; // 0x24
     int32_t velocity;           // 0x28
     int32_t acceleration;       // 0x2C
-    ride_id_t ride;             // 0x30
+    uint8_t ride;               // 0x30
     uint8_t vehicle_type;       // 0x31
     rct_vehicle_colour colours; // 0x32
     union

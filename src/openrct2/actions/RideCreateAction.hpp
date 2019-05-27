@@ -186,7 +186,7 @@ public:
 
         ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;
 
-        ride->measurement_index = 255;
+        ride->measurement = {};
         ride->excitement = (ride_rating)-1;
         ride->cur_num_customers = 0;
         ride->num_customers_timeout = 0;

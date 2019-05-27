@@ -152,8 +152,6 @@ static constexpr const int32_t RideInspectionInterval[] = {
 
 Ride gRideList[MAX_RIDES];
 
-rct_ride_measurement gRideMeasurements[MAX_RIDE_MEASUREMENTS];
-
 uint16_t gRideCount;
 bool gGotoStartPlacementMode = false;
 
@@ -254,11 +252,6 @@ void get_ride_entry_name(char* name, int32_t index)
     const auto entryName = object_entry_get_entry(OBJECT_TYPE_RIDE, index)->name;
     std::memcpy(name, entryName, 8);
     name[8] = '\0';
-}
-
-rct_ride_measurement* get_ride_measurement(int32_t index)
-{
-    return &gRideMeasurements[index];
 }
 
 rct_ride_entry* Ride::GetRideEntry() const
@@ -955,12 +948,6 @@ void ride_init_all()
         ride->id = i;
         ride->type = RIDE_TYPE_NULL;
     }
-
-    for (int32_t i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
-    {
-        rct_ride_measurement* ride_measurement = get_ride_measurement(i);
-        ride_measurement->ride_index = RIDE_ID_NULL;
-    }
 }
 
 /**
@@ -1093,7 +1080,7 @@ static void ride_remove_vehicles(Ride* ride)
  */
 void ride_clear_for_construction(Ride* ride)
 {
-    ride_measurement_clear(ride);
+    ride->measurement = {};
 
     ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
@@ -2071,7 +2058,7 @@ void Ride::UpdateAll()
     {
         if (gS6Info.editor_step <= EDITOR_STEP_INVENTIONS_LIST_SET_UP)
             FOR_ALL_RIDES (i, ride)
-                ride->type = RIDE_TYPE_NULL;
+                ride->Delete();
         return;
     }
 
@@ -2965,37 +2952,16 @@ static void ride_music_update(Ride* ride)
 
 /**
  *
- *  rct2: 0x006B642B
- */
-void ride_measurement_clear(Ride* ride)
-{
-    rct_ride_measurement* measurement;
-
-    if (ride->measurement_index == 255)
-        return;
-
-    measurement = get_ride_measurement(ride->measurement_index);
-    measurement->ride_index = RIDE_ID_NULL;
-    ride->measurement_index = 255;
-}
-
-/**
- *
  *  rct2: 0x006B64F2
  */
-static void ride_measurement_update(rct_ride_measurement* measurement)
+static void ride_measurement_update(RideMeasurement* measurement)
 {
-    uint16_t spriteIndex;
-    Ride* ride;
-    rct_vehicle* vehicle;
-    int32_t velocity, altitude, verticalG, lateralG;
-
-    ride = get_ride(measurement->ride_index);
-    spriteIndex = ride->vehicles[measurement->vehicle_index];
+    auto ride = measurement->ride;
+    auto spriteIndex = ride->vehicles[measurement->vehicle_index];
     if (spriteIndex == SPRITE_INDEX_NULL)
         return;
 
-    vehicle = GET_VEHICLE(spriteIndex);
+    auto vehicle = GET_VEHICLE(spriteIndex);
 
     if (measurement->flags & RIDE_MEASUREMENT_FLAG_UNLOADING)
     {
@@ -3020,27 +2986,27 @@ static void ride_measurement_update(rct_ride_measurement* measurement)
         if (vehicle->velocity == 0)
             return;
 
-    if (measurement->current_item >= RIDE_MEASUREMENT_MAX_ITEMS)
+    if (measurement->current_item >= RideMeasurement::MAX_ITEMS)
         return;
 
     if (measurement->flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
     {
-        vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
-        verticalG = std::clamp(verticalG / 8, -127, 127);
-        lateralG = std::clamp(lateralG / 8, -127, 127);
+        auto gForces = vehicle_get_g_forces(vehicle);
+        gForces.VerticalG = std::clamp(gForces.VerticalG / 8, -127, 127);
+        gForces.LateralG = std::clamp(gForces.LateralG / 8, -127, 127);
 
         if (gScenarioTicks & 1)
         {
-            verticalG = (verticalG + measurement->vertical[measurement->current_item]) / 2;
-            lateralG = (lateralG + measurement->lateral[measurement->current_item]) / 2;
+            gForces.VerticalG = (gForces.VerticalG + measurement->vertical[measurement->current_item]) / 2;
+            gForces.LateralG = (gForces.LateralG + measurement->lateral[measurement->current_item]) / 2;
         }
 
-        measurement->vertical[measurement->current_item] = verticalG & 0xFF;
-        measurement->lateral[measurement->current_item] = lateralG & 0xFF;
+        measurement->vertical[measurement->current_item] = gForces.VerticalG & 0xFF;
+        measurement->lateral[measurement->current_item] = gForces.LateralG & 0xFF;
     }
 
-    velocity = std::min(std::abs((vehicle->velocity * 5) >> 16), 255);
-    altitude = std::min(vehicle->z / 8, 255);
+    auto velocity = std::min(std::abs((vehicle->velocity * 5) >> 16), 255);
+    auto altitude = std::min(vehicle->z / 8, 255);
 
     if (gScenarioTicks & 1)
     {
@@ -3068,136 +3034,106 @@ void ride_measurements_update()
         return;
 
     // For each ride measurement
-    for (int32_t i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
+    ride_id_t i{};
+    Ride* ride{};
+    FOR_ALL_RIDES (i, ride)
     {
-        rct_ride_measurement* measurement = get_ride_measurement(i);
-        if (measurement->ride_index == RIDE_ID_NULL)
-            continue;
-
-        Ride* ride = get_ride(measurement->ride_index);
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) || ride->status == RIDE_STATUS_SIMULATING)
-            continue;
-
-        if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
+        auto measurement = ride->measurement.get();
+        if (measurement != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) && ride->status != RIDE_STATUS_SIMULATING)
         {
-            ride_measurement_update(measurement);
-        }
-        else
-        {
-            // For each vehicle
-            for (int32_t j = 0; j < ride->num_vehicles; j++)
+            if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
             {
-                uint16_t vehicleSpriteIdx = ride->vehicles[j];
-                if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
-                    continue;
-
-                rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-                if (vehicle->status == VEHICLE_STATUS_DEPARTING || vehicle->status == VEHICLE_STATUS_TRAVELLING_CABLE_LIFT)
+                ride_measurement_update(measurement);
+            }
+            else
+            {
+                // For each vehicle
+                for (int32_t j = 0; j < ride->num_vehicles; j++)
                 {
-                    measurement->vehicle_index = j;
-                    measurement->current_station = vehicle->current_station;
-                    measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
-                    measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
-                    ride_measurement_update(measurement);
-                    break;
+                    uint16_t vehicleSpriteIdx = ride->vehicles[j];
+                    if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
+                    {
+                        auto vehicle = GET_VEHICLE(vehicleSpriteIdx);
+                        if (vehicle->status == VEHICLE_STATUS_DEPARTING
+                            || vehicle->status == VEHICLE_STATUS_TRAVELLING_CABLE_LIFT)
+                        {
+                            measurement->vehicle_index = j;
+                            measurement->current_station = vehicle->current_station;
+                            measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
+                            measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
+                            ride_measurement_update(measurement);
+                            break;
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-static rct_ride_measurement* ride_get_existing_measurement(ride_id_t rideIndex)
-{
-    for (int32_t i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
-    {
-        rct_ride_measurement* measurement = get_ride_measurement(i);
-        if (measurement->ride_index == rideIndex)
-            return measurement;
-    }
-
-    return nullptr;
-}
-
-static int32_t ride_get_free_measurement()
-{
-    for (int32_t i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
-    {
-        rct_ride_measurement* measurement = get_ride_measurement(i);
-        if (measurement->ride_index == RIDE_ID_NULL)
-            return i;
-    }
-
-    return -1;
-}
-
 /**
- *
- *  rct2: 0x006B66D9
+ * If there are more than the threshold of allowed ride measurements, free the non-LRU one.
  */
-rct_ride_measurement* ride_get_measurement(Ride* ride, rct_string_id* message)
+static void ride_free_old_measurements()
+{
+    size_t numRideMeasurements;
+    do
+    {
+        ride_id_t i{};
+        Ride* ride{};
+        Ride* lruRide{};
+        numRideMeasurements = 0;
+        FOR_ALL_RIDES (i, ride)
+        {
+            if (ride->measurement != nullptr)
+            {
+                if (lruRide == nullptr || ride->measurement->last_use_tick > lruRide->measurement->last_use_tick)
+                {
+                    lruRide = ride;
+                }
+                numRideMeasurements++;
+            }
+        }
+        if (numRideMeasurements > MAX_RIDE_MEASUREMENTS && lruRide != nullptr)
+        {
+            lruRide->measurement = {};
+            numRideMeasurements--;
+        }
+    } while (numRideMeasurements > MAX_RIDE_MEASUREMENTS);
+}
+
+std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride)
 {
     // Check if ride type supports data logging
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
     {
-        if (message != nullptr)
-            *message = STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE;
-        return nullptr;
+        return { nullptr, STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE };
     }
 
     // Check if a measurement already exists for this ride
-    rct_ride_measurement* measurement = ride_get_existing_measurement(ride->id);
+    auto& measurement = ride->measurement;
     if (measurement == nullptr)
     {
-        // Find a free measurement
-        int32_t i = ride_get_free_measurement();
-        if (i == -1)
-        {
-            // Use last recently used measurement for some other ride
-            int32_t lruIndex = 0;
-            uint32_t lruTicks = 0xFFFFFFFF;
-            for (i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
-            {
-                measurement = get_ride_measurement(i);
-
-                if (measurement->last_use_tick <= lruTicks)
-                {
-                    lruTicks = measurement->last_use_tick;
-                    lruIndex = i;
-                }
-            }
-
-            i = lruIndex;
-            measurement = get_ride_measurement(i);
-            get_ride(measurement->ride_index)->measurement_index = 255;
-        }
-        else
-        {
-            measurement = get_ride_measurement(i);
-        }
-
-        measurement->ride_index = ride->id;
-        ride->measurement_index = i;
-        measurement->flags = 0;
+        measurement = std::make_unique<RideMeasurement>();
+        measurement->ride = ride;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+        {
             measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
-        measurement->num_items = 0;
-        measurement->current_item = 0;
+        }
+        ride_free_old_measurements();
+        assert(ride->measurement != nullptr);
     }
 
     measurement->last_use_tick = gScenarioTicks;
     if (measurement->flags & 1)
     {
-        if (message != nullptr)
-            *message = STR_EMPTY;
-        return measurement;
+        return { measurement.get(), STR_EMPTY };
     }
     else
     {
         set_format_arg(0, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].singular);
         set_format_arg(2, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
-        if (message != nullptr)
-            *message = STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES;
-        return nullptr;
+        return { measurement.get(), STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES };
     }
 }
 
@@ -6652,7 +6588,7 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride* ride)
  */
 void invalidate_test_results(Ride* ride)
 {
-    ride_measurement_clear(ride);
+    ride->measurement = {};
     ride->excitement = RIDE_RATING_UNDEFINED;
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
@@ -7440,6 +7376,7 @@ rct_vehicle* ride_get_broken_vehicle(Ride* ride)
 void Ride::Delete()
 {
     user_string_free(name);
+    measurement = {};
     type = RIDE_TYPE_NULL;
 }
 

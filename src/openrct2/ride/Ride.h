@@ -21,6 +21,7 @@
 interface IObjectManager;
 class StationObject;
 struct Peep;
+struct Ride;
 struct Staff;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
@@ -35,7 +36,6 @@ struct Staff;
 #define CUSTOMER_HISTORY_SIZE 10
 #define MAX_CARS_PER_TRAIN 255
 #define MAX_STATIONS 4
-#define RIDE_MEASUREMENT_MAX_ITEMS 4800
 #define MAX_RIDES 255
 #define RIDE_ID_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
@@ -160,6 +160,23 @@ struct RideStation
     static constexpr uint8_t NO_TRAIN = std::numeric_limits<uint8_t>::max();
 };
 
+struct RideMeasurement
+{
+    static constexpr size_t MAX_ITEMS = 4800;
+
+    Ride* ride{};
+    uint8_t flags{};
+    uint32_t last_use_tick{};
+    uint16_t num_items{};
+    uint16_t current_item{};
+    uint8_t vehicle_index{};
+    uint8_t current_station{};
+    int8_t vertical[MAX_ITEMS]{};
+    int8_t lateral[MAX_ITEMS]{};
+    uint8_t velocity[MAX_ITEMS]{};
+    uint8_t altitude[MAX_ITEMS]{};
+};
+
 /**
  * Ride structure.
  *
@@ -212,7 +229,6 @@ struct Ride
 
     uint8_t boat_hire_return_direction;
     LocationXY8 boat_hire_return_position;
-    uint8_t measurement_index;
     // bits 0 through 4 are the number of helix sections
     // bit 5: spinning tunnel, water splash, or rapids
     // bit 6: log reverser, waterfall
@@ -352,6 +368,8 @@ struct Ride
     uint16_t holes;
     uint8_t sheltered_eighths;
 
+    std::unique_ptr<RideMeasurement> measurement;
+
 private:
     void Update();
     void UpdateChairlift();
@@ -402,26 +420,6 @@ public:
 };
 
 #pragma pack(push, 1)
-
-/**
- * Ride measurement structure.
- * size: 0x04B0C
- */
-struct rct_ride_measurement
-{
-    ride_id_t ride_index;                         // 0x0000
-    uint8_t flags;                                // 0x0001
-    uint32_t last_use_tick;                       // 0x0002
-    uint16_t num_items;                           // 0x0006
-    uint16_t current_item;                        // 0x0008
-    uint8_t vehicle_index;                        // 0x000A
-    uint8_t current_station;                      // 0x000B
-    int8_t vertical[RIDE_MEASUREMENT_MAX_ITEMS];  // 0x000C
-    int8_t lateral[RIDE_MEASUREMENT_MAX_ITEMS];   // 0x12CC
-    uint8_t velocity[RIDE_MEASUREMENT_MAX_ITEMS]; // 0x258C
-    uint8_t altitude[RIDE_MEASUREMENT_MAX_ITEMS]; // 0x384C
-};
-assert_struct_size(rct_ride_measurement, 0x4b0c);
 
 struct track_begin_end
 {
@@ -982,7 +980,7 @@ extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 Ride* get_ride(int32_t index);
 rct_ride_entry* get_ride_entry(int32_t index);
 void get_ride_entry_name(char* name, int32_t index);
-rct_ride_measurement* get_ride_measurement(int32_t index);
+RideMeasurement* get_ride_measurement(int32_t index);
 
 /**
  * Helper macro loop for enumerating through all the non null rides.
@@ -998,7 +996,6 @@ extern const uint8_t gRideClassifications[MAX_RIDES];
 extern Ride gRideList[MAX_RIDES];
 extern const rct_string_id ColourSchemeNames[4];
 
-extern rct_ride_measurement gRideMeasurements[MAX_RIDE_MEASUREMENTS];
 extern uint16_t gRideCount;
 
 extern money32 _currentTrackPrice;
@@ -1070,9 +1067,8 @@ int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
 uint8_t* get_ride_entry_indices_for_ride_type(uint8_t rideType);
 void reset_type_to_ride_entry_index_map(IObjectManager& objectManager);
-void ride_measurement_clear(Ride* ride);
 void ride_measurements_update();
-rct_ride_measurement* ride_get_measurement(Ride* ride, rct_string_id* message);
+std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride);
 void ride_breakdown_add_news_item(Ride* ride);
 Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplying);
