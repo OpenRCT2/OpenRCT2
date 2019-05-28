@@ -3152,7 +3152,7 @@ void ride_measurements_update()
             continue;
 
         Ride* ride = get_ride(measurement->ride_index);
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) || ride->status == RIDE_STATUS_SIMULATING)
             continue;
 
         if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
