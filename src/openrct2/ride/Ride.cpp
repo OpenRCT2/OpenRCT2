@@ -5407,7 +5407,7 @@ static TileElement* loc_6B4F6B(ride_id_t rideIndex, int32_t x, int32_t y)
     return nullptr;
 }
 
-int32_t ride_is_valid_for_test(Ride* ride, int32_t status, int32_t isApplying)
+int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
 {
     int32_t stationIndex;
     CoordsXYE trackElement, problematicTrackElement = {};
@@ -5546,7 +5546,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, int32_t isApplying)
  *
  *  rct2: 0x006B4EEA
  */
-int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, int32_t isApplying)
+int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplying)
 {
     int32_t stationIndex;
     CoordsXYE trackElement, problematicTrackElement = {};
