@@ -58,24 +58,25 @@ void vehicle_visual_launched_freefall(
         {
             baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
         }
-        image_id = (baseImage_id + ((((imageDirection / 8) + 0) & 3) * 3))
+        auto directionOffset = imageDirection / 8;
+        image_id = (baseImage_id + (((directionOffset + 0) & 3) * 3))
             | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
         sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         if (vehicle->num_peeps > 2)
         {
-            image_id = (baseImage_id + ((((imageDirection / 8) + 1) & 3) * 3))
+            image_id = (baseImage_id + (((directionOffset + 1) & 3) * 3))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
             sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
         if (vehicle->num_peeps > 4)
         {
-            image_id = (baseImage_id + ((((imageDirection / 8) + 2) & 3) * 3))
+            image_id = (baseImage_id + (((directionOffset + 2) & 3) * 3))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
             sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
         if (vehicle->num_peeps > 6)
         {
-            image_id = (baseImage_id + ((((imageDirection / 8) + 3) & 3) * 3))
+            image_id = (baseImage_id + (((directionOffset + 3) & 3) * 3))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
             sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
