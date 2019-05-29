@@ -146,7 +146,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
         rct_scenery_entry* scenery_entry = wallElement->GetEntry();
         if (scenery_entry->wall.scrolling_mode == SCROLLING_MODE_NONE)
             continue;
-        if (wallElement->GetBannerIndex() != (BannerIndex)bannerIndex)
+        if (wallElement->GetBannerIndex() != bannerIndex)
             continue;
         return wallElement;
     } while (!(tileElement++)->IsLastForTile());
