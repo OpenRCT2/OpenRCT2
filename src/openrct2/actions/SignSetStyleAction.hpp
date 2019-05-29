@@ -77,7 +77,7 @@ public:
         }
         else
         {
-            WallElement* wallElement = banner_get_scrolling_wall_tile_element((BannerIndex)_bannerIndex);
+            WallElement* wallElement = banner_get_scrolling_wall_tile_element(static_cast<BannerIndex>(_bannerIndex));
 
             if (!wallElement)
             {
@@ -107,7 +107,7 @@ public:
         }
         else
         {
-            WallElement* wallElement = banner_get_scrolling_wall_tile_element((BannerIndex)_bannerIndex);
+            WallElement* wallElement = banner_get_scrolling_wall_tile_element(static_cast<BannerIndex>(_bannerIndex));
 
             wallElement->SetPrimaryColour(_mainColour);
             wallElement->SetSecondaryColour(_textColour);
