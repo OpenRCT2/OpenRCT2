@@ -84,8 +84,7 @@ rct_vehicle* cable_lift_segment_create(
     current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
     current->track_progress = 164;
     current->update_flags = VEHICLE_UPDATE_FLAG_1;
-    current->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
-    current->sub_state = 0;
+    current->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
     return current;
@@ -136,7 +135,7 @@ static void cable_lift_update_moving_to_end_of_station(rct_vehicle* vehicle)
 
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
-    vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
+    vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS, vehicle->sub_state);
 }
 
 /**
@@ -170,8 +169,7 @@ static void cable_lift_update_waiting_to_depart(rct_vehicle* vehicle)
 
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
-    vehicle->status = VEHICLE_STATUS_DEPARTING;
-    vehicle->sub_state = 0;
+    vehicle->SetState(VEHICLE_STATUS_DEPARTING, 0);
 }
 
 /**
@@ -185,8 +183,8 @@ static void cable_lift_update_departing(rct_vehicle* vehicle)
         return;
 
     rct_vehicle* passengerVehicle = GET_VEHICLE(vehicle->cable_lift_target);
-    vehicle->status = VEHICLE_STATUS_TRAVELLING;
-    passengerVehicle->status = VEHICLE_STATUS_TRAVELLING_CABLE_LIFT;
+    vehicle->SetState(VEHICLE_STATUS_TRAVELLING, vehicle->sub_state);
+    passengerVehicle->SetState(VEHICLE_STATUS_TRAVELLING_CABLE_LIFT, passengerVehicle->sub_state);
 }
 
 /**
@@ -207,8 +205,7 @@ static void cable_lift_update_travelling(rct_vehicle* vehicle)
 
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
-    vehicle->status = VEHICLE_STATUS_ARRIVING;
-    vehicle->sub_state = 0;
+    vehicle->SetState(VEHICLE_STATUS_ARRIVING, 0);
 }
 
 /**
@@ -219,7 +216,7 @@ static void cable_lift_update_arriving(rct_vehicle* vehicle)
 {
     vehicle->sub_state++;
     if (vehicle->sub_state >= 64)
-        vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, vehicle->sub_state);
 }
 
 static bool sub_6DF01A_loop(rct_vehicle* vehicle)

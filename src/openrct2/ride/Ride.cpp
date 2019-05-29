@@ -4678,8 +4678,10 @@ static rct_vehicle* vehicle_create_car(
 
         vehicle->track_type = tileElement->AsTrack()->GetTrackType() << 2;
         vehicle->track_progress = 0;
-        vehicle->status = 0;
-        vehicle->sub_state = 0;
+
+        // Spongeloaf: This used to be "vehicle->status = 0;". I swapped it for the 0 enum. I hope it's correct.
+        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, 0);
+
         vehicle->update_flags = 0;
 
         LocationXY16 chosenLoc;
@@ -4784,8 +4786,7 @@ static rct_vehicle* vehicle_create_car(
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
         }
-        vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
-        vehicle->sub_state = 0;
+        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, 0);
     }
 
     // loc_6DDD5E:
@@ -5091,10 +5092,10 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
         while (true)
         {
             car->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
-            car->status = VEHICLE_STATUS_TRAVELLING;
+            car->SetState(VEHICLE_STATUS_TRAVELLING, car->sub_state);
             if ((car->track_type >> 2) == TRACK_ELEM_END_STATION)
             {
-                car->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+                car->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, car->sub_state);
             }
 
             uint16_t spriteIndex = car->next_vehicle_on_train;
