@@ -35,6 +35,10 @@
 #define PEEP_MIN_ENERGY 32
 #define PEEP_MAX_ENERGY 128
 #define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
+#define PEEP_MAX_HUNGER 255
+#define PEEP_MAX_BATHROOM 255
+#define PEEP_MAX_NAUSEA 255
+#define PEEP_MAX_THIRST 255
 
 struct TileElement;
 struct Ride;
@@ -511,6 +515,7 @@ enum PeepInvalidate
     PEEP_INVALIDATE_PEEP_2 = 1 << 2,
     PEEP_INVALIDATE_PEEP_INVENTORY = 1 << 3,
     PEEP_INVALIDATE_STAFF_STATS = 1 << 4,
+    PEEP_INVALIDATE_PEEP_ACTION = 1 << 5, // Currently set only when guest_heading_to_ride_id is changed
 };
 
 // Flags used by peep_should_go_on_ride()
@@ -709,8 +714,10 @@ public: // Peep
     void Pickup();
     void PickupAbort(int32_t old_x);
     bool Place(TileCoordsXYZ location, bool apply);
+    static Peep* Generate(const CoordsXYZ coords);
     void RemoveFromQueue();
     void RemoveFromRide();
+    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
 
     // TODO: Make these private again when done refactoring
 public: // Peep
@@ -940,7 +947,6 @@ void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-Peep* peep_generate(int32_t x, int32_t y, int32_t z);
 void get_arguments_from_action(Peep* peep, uint32_t* argument_1, uint32_t* argument_2);
 void peep_thought_set_format_args(rct_peep_thought* thought);
 int32_t get_peep_face_sprite_small(Peep* peep);
@@ -954,13 +960,6 @@ void peep_sprite_remove(Peep* peep);
 
 void peep_window_state_update(Peep* peep);
 void peep_decrement_num_riders(Peep* peep);
-/**
- * rct2: 0x699F5A
- * al:thought_type
- * ah:thought_arguments
- * esi: peep
- */
-void peep_insert_new_thought(Peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
 
 void peep_set_map_tooltip(Peep* peep);
 
@@ -971,8 +970,6 @@ void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
 void peep_handle_easteregg_name(Peep* peep);
-void game_command_set_guest_name(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep);
 void peep_reset_pathfind_goal(Peep* peep);

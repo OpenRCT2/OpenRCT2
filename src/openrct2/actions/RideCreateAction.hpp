@@ -30,7 +30,7 @@ class RideCreateGameActionResult final : public GameActionResult
 {
 public:
     RideCreateGameActionResult()
-        : GameActionResult(GA_ERROR::OK, 0)
+        : GameActionResult(GA_ERROR::OK, STR_NONE)
     {
     }
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message)
@@ -44,15 +44,14 @@ public:
 DEFINE_GAME_ACTION(RideCreateAction, GAME_COMMAND_CREATE_RIDE, RideCreateGameActionResult)
 {
 private:
-    int32_t _rideType;
-    int32_t _subType;
-    uint8_t _colour1;
-    uint8_t _colour2;
+    int32_t _rideType{ RIDE_ID_NULL };
+    int32_t _subType{ RIDE_ENTRY_INDEX_NULL };
+    uint8_t _colour1{ 0xFF };
+    uint8_t _colour2{ 0xFF };
 
 public:
-    RideCreateAction()
-    {
-    }
+    RideCreateAction() = default;
+
     RideCreateAction(int32_t rideType, int32_t subType, int32_t colour1, int32_t colour2)
         : _rideType(rideType)
         , _subType(subType)
@@ -79,42 +78,45 @@ public:
         if (rideIndex == RIDE_ID_NULL)
         {
             // No more free slots available.
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_RIDES);
+            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_RIDES);
         }
 
         if (_rideType >= RIDE_TYPE_COUNT)
         {
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
         if (rideEntryIndex >= 128)
         {
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
         const track_colour_preset_list* colourPresets = &RideColourPresets[_rideType];
         if (_colour1 >= colourPresets->count)
         {
-            // FIXME: Add new error string.
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
+        if (rideEntry == nullptr)
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+
         vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
         if ((presetList->count > 0 && presetList->count != 255) && _colour2 >= presetList->count)
         {
-            // FIXME: Add new error string.
-            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        return std::make_unique<RideCreateGameActionResult>();
+        return MakeResult();
     }
 
     GameActionResult::Ptr Execute() const override
     {
         rct_ride_entry* rideEntry;
-        auto res = std::make_unique<RideCreateGameActionResult>();
+        auto res = MakeResult();
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
         ride_id_t rideIndex = ride_get_empty_slot();
@@ -134,7 +136,7 @@ public:
         ride->id = rideIndex;
         ride->type = _rideType;
         ride->subtype = rideEntryIndex;
-        ride_set_colour_preset(ride, _colour1);
+        ride->SetColourPreset(_colour1);
         ride->overall_view.xy = RCT_XY8_UNDEFINED;
 
         // Ride name
@@ -206,11 +208,11 @@ public:
             }
             else
             {
-                ride->price = DefaultShopItemPrice[rideEntry->shop_item];
+                ride->price = ShopItems[rideEntry->shop_item].DefaultPrice;
             }
             if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE)
             {
-                ride->price_secondary = DefaultShopItemPrice[rideEntry->shop_item_secondary];
+                ride->price_secondary = ShopItems[rideEntry->shop_item_secondary].DefaultPrice;
             }
 
             if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
@@ -301,7 +303,7 @@ public:
         ride->guests_favourite = 0;
 
         ride->num_circuits = 1;
-        ride->mode = ride_get_default_mode(ride);
+        ride->mode = ride->GetDefaultMode();
         ride->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
         ride_set_vehicle_colours_to_random_preset(ride, _colour2);
         window_invalidate_by_class(WC_RIDE_LIST);

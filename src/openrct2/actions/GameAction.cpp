@@ -131,7 +131,7 @@ namespace GameActions
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
-        if (topLevel == true && !CheckActionInPausedMode(actionFlags))
+        if (topLevel && !CheckActionInPausedMode(actionFlags))
         {
             GameActionResult::Ptr result = std::make_unique<GameActionResult>();
 
@@ -154,7 +154,7 @@ namespace GameActions
 
         if (result->Error == GA_ERROR::OK)
         {
-            if (finance_check_affordability(result->Cost, action->GetFlags()) == false)
+            if (!finance_check_affordability(result->Cost, action->GetFlags()))
             {
                 result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
@@ -290,7 +290,7 @@ namespace GameActions
             LogActionFinish(logContext, action, result);
 
             // If not top level just give away the result.
-            if (topLevel == false)
+            if (!topLevel)
                 return result;
 
             gCommandPosition.x = result->Position.x;
@@ -301,7 +301,7 @@ namespace GameActions
             if (result->Error == GA_ERROR::OK && finance_check_money_required(flags) && result->Cost != 0)
             {
                 finance_payment(result->Cost, result->ExpenditureType);
-                money_effect_create(result->Cost);
+                rct_money_effect::Create(result->Cost);
             }
 
             if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && result->Error == GA_ERROR::OK)
@@ -326,7 +326,7 @@ namespace GameActions
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)
                 {
-                    bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_5) == 0;
+                    bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
                     bool recordAction = false;
                     if (replayManager)
@@ -358,18 +358,21 @@ namespace GameActions
         }
 
         // Only show errors when its not a ghost and not a preview and also top level action.
-        bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5) && topLevel == true;
+        bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && topLevel;
 
         // In network mode the error should be only shown to the issuer of the action.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (action->GetPlayer() != network_get_current_player_id())
+            // If the action was never networked and query fails locally the player id is not assigned.
+            // So compare only if the action went into the queue otherwise show errors by default.
+            const bool isActionFromNetwork = (action->GetFlags() & GAME_COMMAND_FLAG_NETWORKED) != 0;
+            if (isActionFromNetwork && action->GetPlayer() != network_get_current_player_id())
             {
                 shouldShowError = false;
             }
         }
 
-        if (result->Error != GA_ERROR::OK && shouldShowError == true)
+        if (result->Error != GA_ERROR::OK && shouldShowError)
         {
             // Show the error box
             std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);

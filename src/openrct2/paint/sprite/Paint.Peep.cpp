@@ -48,7 +48,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
                     break;
                 default:
                     return;
-            };
+            }
 
             lightfx_add_3d_light(
                 peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
@@ -56,7 +56,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
     }
 #endif
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level > 2)
     {
         return;

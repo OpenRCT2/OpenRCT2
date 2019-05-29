@@ -30,6 +30,8 @@ TextureCache::~TextureCache()
 
 void TextureCache::InvalidateImage(uint32_t image)
 {
+    unique_lock lock(_mutex);
+
     uint32_t index = _indexMap[image];
     if (index == UNUSED_INDEX)
         return;
@@ -61,17 +63,27 @@ void TextureCache::InvalidateImage(uint32_t image)
 
 BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
 {
+    uint32_t index;
+
     image &= 0x7FFFF;
 
-    uint32_t index = _indexMap[image];
-    if (index != UNUSED_INDEX)
+    // Try to read cached texture first.
     {
-        const auto& info = _textureCache[index];
-        return {
-            info.index,
-            info.normalizedBounds,
-        };
+        shared_lock lock(_mutex);
+
+        index = _indexMap[image];
+        if (index != UNUSED_INDEX)
+        {
+            const auto& info = _textureCache[index];
+            return {
+                info.index,
+                info.normalizedBounds,
+            };
+        }
     }
+
+    // Load new texture.
+    unique_lock lock(_mutex);
 
     index = (uint32_t)_textureCache.size();
 
@@ -87,17 +99,26 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* pa
 {
     GlyphId glyphId;
     glyphId.Image = image;
-    std::copy_n(palette, sizeof(glyphId.Palette), (uint8_t*)&glyphId.Palette);
 
-    auto kvp = _glyphTextureMap.find(glyphId);
-    if (kvp != _glyphTextureMap.end())
+    // Try to read cached texture first.
     {
-        const auto& info = kvp->second;
-        return {
-            info.index,
-            info.normalizedBounds,
-        };
+        shared_lock lock(_mutex);
+
+        std::copy_n(palette, sizeof(glyphId.Palette), (uint8_t*)&glyphId.Palette);
+
+        auto kvp = _glyphTextureMap.find(glyphId);
+        if (kvp != _glyphTextureMap.end())
+        {
+            const auto& info = kvp->second;
+            return {
+                info.index,
+                info.normalizedBounds,
+            };
+        }
     }
+
+    // Load new texture.
+    unique_lock lock(_mutex);
 
     auto cacheInfo = LoadGlyphTexture(image, palette);
     auto it = _glyphTextureMap.insert(std::make_pair(glyphId, cacheInfo));
@@ -176,7 +197,7 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
     {
         // Retrieve current array data, growing buffer.
         oldPixels.resize(_atlasesTextureDimensions * _atlasesTextureDimensions * _atlasesTextureCapacity);
-        if (oldPixels.size() > 0)
+        if (!oldPixels.empty())
         {
             glGetTexImage(GL_TEXTURE_2D_ARRAY, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
         }
@@ -191,7 +212,7 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
         GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
 
     // Restore old data
-    if (oldPixels.size() > 0)
+    if (!oldPixels.empty())
     {
         glTexSubImage3D(
             GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices,
@@ -258,7 +279,7 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     int32_t atlasSize = (int32_t)powf(2, (float)Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
 
 #    ifdef DEBUG
-    log_verbose("new texture atlas #%d (size %d) allocated\n", atlasIndex, atlasSize);
+    log_verbose("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);
 #    endif
 
     _atlases.emplace_back(atlasIndex, atlasSize);

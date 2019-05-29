@@ -197,6 +197,7 @@ enum
     TRACK_ELEM_FLAG_DOWN = (1 << 5),
     TRACK_ELEM_FLAG_UP = (1 << 6),
     TRACK_ELEM_FLAG_NORMAL_TO_INVERSION = (1 << 7),
+    TRACK_ELEM_FLAG_IS_GOLF_HOLE = (1 << 7),
     TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT = (1 << 8),
     TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND = (1 << 9),
     TRACK_ELEM_FLAG_IS_STEEP_UP = (1 << 10), // Used to allow steep backwards lifts on roller coasters that do not allow steep
@@ -521,8 +522,6 @@ struct track_circuit_iterator
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
-extern uint8_t gTrackGroundFlags;
-
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 
 const rct_preview_track* get_track_def_from_ride(Ride* ride, int32_t trackType);
@@ -548,11 +547,6 @@ int32_t track_get_actual_bank_3(rct_vehicle* vehicle, TileElement* tileElement);
 bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
 bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
 
-void game_command_remove_track(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-
-void game_command_set_maze_track(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 money32 maze_set_track(
     uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
     uint8_t mode);

@@ -104,7 +104,7 @@ money32 place_provisional_track_piece(
     ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST; // 105
         result = maze_set_track(x, y, z, flags, true, 0, rideIndex, GC_SET_MAZE_TRACK_BUILD);
         if (result == MONEY32_UNDEFINED)
@@ -115,7 +115,7 @@ money32 place_provisional_track_piece(
         _unkF440C5.z = z;
         _unkF440C5.direction = trackDirection;
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-        viewport_set_visibility((gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
+        viewport_set_visibility(3);
         if (_currentTrackSlopeEnd != 0)
             viewport_set_visibility(2);
 
@@ -134,7 +134,7 @@ money32 place_provisional_track_piece(
     {
         auto trackPlaceAction = TrackPlaceAction(
             rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, 0, 0, 0, liftHillAndAlternativeState);
-        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         // This command must not be sent over the network
         auto res = GameActions::Execute(&trackPlaceAction);
         result = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
@@ -160,7 +160,8 @@ money32 place_provisional_track_piece(
         _unkF440C5.z = z;
         _unkF440C5.direction = trackDirection;
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-        viewport_set_visibility((gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
+        viewport_set_visibility(
+            (dynamic_cast<TrackPlaceActionResult*>(res.get())->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
         if (_currentTrackSlopeEnd != 0)
             viewport_set_visibility(2);
 
@@ -590,19 +591,6 @@ void window_ride_construction_update_active_elements()
 {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
     context_broadcast_intent(&intent);
-}
-
-void game_command_callback_place_banner(
-    [[maybe_unused]] int32_t eax, int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi, int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    if (ebx != MONEY32_UNDEFINED)
-    {
-        int32_t bannerId = edi;
-
-        audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-        context_open_detail_window(WD_BANNER, bannerId);
-    }
 }
 
 /**

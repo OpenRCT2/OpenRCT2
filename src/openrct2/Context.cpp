@@ -16,6 +16,7 @@
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
+#include "GameStateSnapshots.h"
 #include "Input.h"
 #include "Intro.h"
 #include "OpenRCT2.h"
@@ -92,6 +93,7 @@ namespace OpenRCT2
         std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
         std::unique_ptr<IReplayManager> _replayManager;
+        std::unique_ptr<IGameStateSnapshots> _gameStateSnapshots;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
@@ -133,6 +135,7 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
+            , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
@@ -210,6 +213,11 @@ namespace OpenRCT2
             return _replayManager.get();
         }
 
+        IGameStateSnapshots* GetGameStateSnapshots() override
+        {
+            return _gameStateSnapshots.get();
+        }
+
         int32_t GetDrawingEngineType() override
         {
             return _drawingEngineType;
@@ -218,6 +226,11 @@ namespace OpenRCT2
         IDrawingEngine* GetDrawingEngine() override
         {
             return _drawingEngine.get();
+        }
+
+        virtual Paint::Painter* GetPainter() override
+        {
+            return _painter.get();
         }
 
         int32_t RunOpenRCT2(int argc, const char** argv) override
@@ -334,6 +347,7 @@ namespace OpenRCT2
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
             _replayManager = CreateReplayManager();
+            _gameStateSnapshots = CreateGameStateSnapshots();
 #ifdef __ENABLE_DISCORD__
             _discordService = std::make_unique<DiscordService>();
 #endif
@@ -410,8 +424,8 @@ namespace OpenRCT2
                 lightfx_init();
 #endif
             }
+
             gScenarioTicks = 0;
-            util_srand((uint32_t)time(nullptr));
             input_reset_place_obj_modifier();
             viewport_init_all();
 
@@ -425,7 +439,6 @@ namespace OpenRCT2
         void InitialiseDrawingEngine() final override
         {
             assert(_drawingEngine == nullptr);
-            assert(_painter == nullptr);
 
             _drawingEngineType = gConfigGeneral.drawing_engine;
 
@@ -452,7 +465,6 @@ namespace OpenRCT2
             }
             else
             {
-                _painter = std::make_unique<Painter>(_uiContext);
                 try
                 {
                     drawingEngine->Initialise();
@@ -461,7 +473,6 @@ namespace OpenRCT2
                 }
                 catch (const std::exception& ex)
                 {
-                    _painter = nullptr;
                     if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
                     {
                         _drawingEngineType = DRAWING_ENGINE_NONE;
@@ -486,7 +497,6 @@ namespace OpenRCT2
         void DisposeDrawingEngine() final override
         {
             _drawingEngine = nullptr;
-            _painter = nullptr;
         }
 
         bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail) final override
@@ -535,6 +545,8 @@ namespace OpenRCT2
                         sprite_position_tween_reset();
                         gScreenAge = 0;
                         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+
+                        bool sendMap = false;
                         if (info.Type == FILE_TYPE::SAVED_GAME)
                         {
                             if (network_get_mode() == NETWORK_MODE_CLIENT)
@@ -544,7 +556,7 @@ namespace OpenRCT2
                             game_load_init();
                             if (network_get_mode() == NETWORK_MODE_SERVER)
                             {
-                                network_send_map();
+                                sendMap = true;
                             }
                         }
                         else
@@ -552,7 +564,7 @@ namespace OpenRCT2
                             scenario_begin();
                             if (network_get_mode() == NETWORK_MODE_SERVER)
                             {
-                                network_send_map();
+                                sendMap = true;
                             }
                             if (network_get_mode() == NETWORK_MODE_CLIENT)
                             {
@@ -562,6 +574,10 @@ namespace OpenRCT2
                         // This ensures that the newly loaded save reflects the user's
                         // 'show real names of guests' option, now that it's a global setting
                         peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                        if (sendMap)
+                        {
+                            network_send_map();
+                        }
                         return true;
                     }
                     catch (const ObjectLoadException& e)
@@ -991,6 +1007,7 @@ namespace OpenRCT2
                     DIRID::THEME,
                     DIRID::SEQUENCE,
                     DIRID::REPLAY,
+                    DIRID::LOG_DESYNCS,
                 });
         }
 

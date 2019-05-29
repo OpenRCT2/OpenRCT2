@@ -625,7 +625,7 @@ static void window_ride_construction_close(rct_window* w)
             }
         }
 
-        ride_set_to_default_inspection_interval(ride);
+        ride->SetToDefaultInspectionInterval();
         auto intent = Intent(WC_RIDE);
         intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
         context_open_intent(&intent);
@@ -1654,8 +1654,8 @@ static void window_ride_construction_dropdown(rct_window* w, rct_widgetindex wid
     _currentTrackCurve = trackPiece | 0x100;
     window_ride_construction_update_active_elements();
 }
-static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActionResult* result);
-static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActionResult* result);
+static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result);
+static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result);
 static void CloseConstructWindowOnCompletion(Ride* ride);
 
 static void CloseConstructWindowOnCompletion(Ride* ride)
@@ -1677,7 +1677,7 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
     }
 }
 
-static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActionResult* result)
+static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result)
 {
     if (result->Error != GA_ERROR::OK)
     {
@@ -1724,7 +1724,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
     CloseConstructWindowOnCompletion(ride);
 }
 
-static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActionResult* result)
+static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result)
 {
     if (result->Error != GA_ERROR::OK)
     {
@@ -1791,7 +1791,6 @@ static void window_ride_construction_construct(rct_window* w)
     auto trackPlaceAction = TrackPlaceAction(
         rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, (properties)&0xFF, (properties >> 8) & 0x0F,
         (properties >> 12) & 0x0F, liftHillAndAlternativeState);
-
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
         trackPlaceAction.SetCallback(RideConstructPlacedBackwardGameActionCallback);
@@ -1802,7 +1801,16 @@ static void window_ride_construction_construct(rct_window* w)
     }
     auto res = GameActions::Execute(&trackPlaceAction);
     // Used by some functions
-    _trackPlaceCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+    if (res->Error != GA_ERROR::OK)
+    {
+        gGameCommandErrorText = res->ErrorMessage;
+        _trackPlaceCost = MONEY32_UNDEFINED;
+    }
+    else
+    {
+        gGameCommandErrorText = STR_NONE;
+        _trackPlaceCost = res->Cost;
+    }
 
     if (res->Error != GA_ERROR::OK)
     {
@@ -1815,7 +1823,7 @@ static void window_ride_construction_construct(rct_window* w)
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
     }
 
-    if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
+    if (dynamic_cast<TrackPlaceActionResult*>(res.get())->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
     {
         viewport_set_visibility(1);
     }
@@ -2441,14 +2449,14 @@ static void sub_6CBCE2(
         // Set the temporary track element
         _tempTrackTileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
         _tempTrackTileElement.SetDirection(trackDirection);
-        _tempTrackTileElement.AsTrack()->SetHasChain((edx & 0x10000) ? true : false);
+        _tempTrackTileElement.AsTrack()->SetHasChain((edx & 0x10000) != 0);
         _tempTrackTileElement.flags = quarterTile.GetBaseQuarterOccupied() | TILE_ELEMENT_FLAG_LAST_TILE;
         _tempTrackTileElement.base_height = baseZ;
         _tempTrackTileElement.clearance_height = clearanceZ;
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
         _tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
         _tempTrackTileElement.AsTrack()->SetHasCableLift(false);
-        _tempTrackTileElement.AsTrack()->SetInverted((edx & 0x20000) ? true : false);
+        _tempTrackTileElement.AsTrack()->SetInverted((edx & 0x20000) != 0);
         _tempTrackTileElement.AsTrack()->SetColourScheme(RIDE_COLOUR_SCHEME_MAIN);
         // Skipping seat rotation, should not be necessary for a temporary piece.
         _tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
@@ -2518,7 +2526,7 @@ void window_ride_construction_update_active_elements_impl()
 void window_ride_construction_update_enabled_track_pieces()
 {
     Ride* ride = get_ride(_currentRideIndex);
-    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+    rct_ride_entry* rideEntry = ride->GetRideEntry();
     int32_t rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type
                                                                                      : ride->type;
 
@@ -3337,7 +3345,7 @@ static void window_ride_construction_select_map_tiles(
 
     trackBlock = get_track_def_from_ride(ride, trackType);
     trackDirection &= 3;
-    int32_t selectionTileIndex = 0;
+    gMapSelectionTiles.clear();
     while (trackBlock->index != 255)
     {
         switch (trackDirection)
@@ -3360,13 +3368,10 @@ static void window_ride_construction_select_map_tiles(
                 offsetY = trackBlock->x;
                 break;
         }
-        gMapSelectionTiles[selectionTileIndex].x = x + offsetX;
-        gMapSelectionTiles[selectionTileIndex].y = y + offsetY;
-        selectionTileIndex++;
+
+        gMapSelectionTiles.push_back({ x + offsetX, y + offsetY });
         trackBlock++;
     }
-    gMapSelectionTiles[selectionTileIndex].x = -1;
-    gMapSelectionTiles[selectionTileIndex].y = -1;
 }
 
 /**
@@ -3502,10 +3507,8 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
     gMapSelectArrowPosition.x = x;
     gMapSelectArrowPosition.y = y;
     gMapSelectArrowPosition.z = z;
-    gMapSelectionTiles[0].x = x;
-    gMapSelectionTiles[0].y = y;
-    gMapSelectionTiles[1].x = -1;
-    gMapSelectionTiles[1].y = -1;
+    gMapSelectionTiles.clear();
+    gMapSelectionTiles.push_back({ x, y });
 
     ride_id_t rideIndex;
     int32_t trackType, trackDirection, liftHillAndAlternativeState;
@@ -3531,16 +3534,14 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
         if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
         {
             int32_t highestZ = 0;
-            LocationXY16* selectedTile = gMapSelectionTiles;
-            while (selectedTile->x != -1)
+            for (const auto& selectedTile : gMapSelectionTiles)
             {
-                if (selectedTile->x < (256 * 32) && selectedTile->y < (256 * 32))
+                if (selectedTile.x < (256 * 32) && selectedTile.y < (256 * 32))
                 {
-                    z = map_get_highest_z(selectedTile->x >> 5, selectedTile->y >> 5);
+                    z = map_get_highest_z(selectedTile.x / 32, selectedTile.y / 32);
                     if (z > highestZ)
                         highestZ = z;
                 }
-                selectedTile++;
             }
         }
         // loc_6CC8BF:
@@ -3756,17 +3757,14 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
     highestZ = 0;
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
-        LocationXY16* selectedTile = gMapSelectionTiles;
-        while (selectedTile->x != -1)
+        for (const auto& selectedTile : gMapSelectionTiles)
         {
-            if (selectedTile->x >= (256 * 32) || selectedTile->y >= (256 * 32))
+            if (selectedTile.x >= (256 * 32) || selectedTile.y >= (256 * 32))
                 continue;
 
-            z = map_get_highest_z(selectedTile->x >> 5, selectedTile->y >> 5);
+            z = map_get_highest_z(selectedTile.x / 32, selectedTile.y / 32);
             if (z > highestZ)
                 highestZ = z;
-
-            selectedTile++;
         }
     }
 

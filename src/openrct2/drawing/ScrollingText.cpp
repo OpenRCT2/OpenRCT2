@@ -17,6 +17,7 @@
 #include "TTF.h"
 
 #include <algorithm>
+#include <mutex>
 
 #pragma pack(push, 1)
 /* size: 0xA12 */
@@ -38,6 +39,7 @@ assert_struct_size(rct_draw_scroll_text, 0xA12);
 static rct_draw_scroll_text _drawScrollTextList[MAX_SCROLLING_TEXT_ENTRIES];
 static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
+static std::mutex _scrollingTextMutex;
 
 static void scrolling_text_set_bitmap_for_sprite(
     utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets);
@@ -47,15 +49,10 @@ static void scrolling_text_set_bitmap_for_ttf(
 void scrolling_text_initialise_bitmaps()
 {
     uint8_t drawingSurface[64];
-    rct_drawpixelinfo dpi = {
-        /* .bits = */ (uint8_t*)&drawingSurface,
-        /* .x = */ 0,
-        /* .y = */ 0,
-        /* .width = */ 8,
-        /* .height = */ 8,
-        /* .pitch = */ 0,
-        /* .zoom_level = */ 0,
-    };
+    rct_drawpixelinfo dpi;
+    dpi.bits = (uint8_t*)&drawingSurface;
+    dpi.width = 8;
+    dpi.height = 8;
 
     for (int32_t i = 0; i < FONT_SPRITE_GLYPH_COUNT; i++)
     {
@@ -1472,9 +1469,11 @@ void scrolling_text_invalidate()
  */
 int32_t scrolling_text_setup(paint_session* session, rct_string_id stringId, uint16_t scroll, uint16_t scrollingMode)
 {
+    std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
+
     assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if (dpi->zoom_level != 0)
         return SPR_SCROLLING_TEXT_DEFAULT;

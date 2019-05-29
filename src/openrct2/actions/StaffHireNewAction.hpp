@@ -111,7 +111,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        if (gSpriteListCount[SPRITE_LIST_NULL] < 400)
+        if (gSpriteListCount[SPRITE_LIST_FREE] < 400)
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
@@ -164,7 +164,7 @@ private:
         }
         else
         {
-            move_sprite_to_list((rct_sprite*)newPeep, SPRITE_LIST_PEEP * 2);
+            move_sprite_to_list((rct_sprite*)newPeep, SPRITE_LIST_PEEP);
 
             newPeep->sprite_identifier = 1;
             newPeep->window_invalidate_flags = 0;
@@ -225,7 +225,7 @@ private:
             newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
             newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
-            if (_autoPosition == true)
+            if (_autoPosition)
             {
                 AutoPositionNewStaff(newPeep);
             }
@@ -260,9 +260,9 @@ private:
 
             gStaffModes[staffIndex] = STAFF_MODE_WALK;
 
-            for (int32_t newStaffIndex = 0; newStaffIndex < STAFF_PATROL_AREA_SIZE; newStaffIndex++)
+            for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
             {
-                gStaffPatrolAreas[newStaffIndex * STAFF_PATROL_AREA_SIZE + newStaffId] = 0;
+                gStaffPatrolAreas[staffIndex * STAFF_PATROL_AREA_SIZE + i] = 0;
             }
 
             res->peepSriteIndex = newPeep->sprite_index;
@@ -320,7 +320,7 @@ private:
         else
         {
             // No walking guests; pick random park entrance
-            if (gParkEntrances.size() > 0)
+            if (!gParkEntrances.empty())
             {
                 auto rand = scenario_rand_max((uint32_t)gParkEntrances.size());
                 const auto& entrance = gParkEntrances[rand];

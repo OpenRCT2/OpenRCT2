@@ -67,7 +67,7 @@ void date_reset()
 
 void date_set(int32_t year, int32_t month, int32_t day)
 {
-    year = std::clamp(year, 1, 8192);
+    year = std::clamp(year, 1, MAX_YEAR);
     month = std::clamp(month, 1, (int)MONTH_COUNT);
     day = std::clamp(day, 1, (int)days_in_month[month - 1]);
     gDateMonthsElapsed = (year - 1) * MONTH_COUNT + month - 1;

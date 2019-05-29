@@ -75,7 +75,7 @@ bool finance_check_money_required(uint32_t flags)
         return false;
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return false;
-    if (flags & GAME_COMMAND_FLAG_5)
+    if (flags & GAME_COMMAND_FLAG_NO_SPEND)
         return false;
     if (flags & GAME_COMMAND_FLAG_GHOST)
         return false;
@@ -89,13 +89,7 @@ bool finance_check_money_required(uint32_t flags)
  */
 bool finance_check_affordability(money32 cost, uint32_t flags)
 {
-    if (cost <= 0)
-        return true;
-    if (finance_check_money_required(flags) == false)
-        return true;
-    if (cost > gCash)
-        return false;
-    return true;
+    return cost <= 0 || !finance_check_money_required(flags) || cost <= gCash;
 }
 
 /**
@@ -192,7 +186,7 @@ void finance_pay_ride_upkeep()
     {
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
         {
-            ride_renew(ride);
+            ride->Renew();
         }
 
         if (ride->status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY))

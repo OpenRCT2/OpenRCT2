@@ -611,14 +611,14 @@ static void window_finances_summary_mousedown(rct_window* w, rct_widgetindex wid
     }
 }
 
-static uint16_t summary_num_months_available()
+static uint16_t summary_max_available_month()
 {
-    return std::min<uint16_t>(gDateMonthsElapsed, EXPENDITURE_TABLE_MONTH_COUNT);
+    return std::min<uint16_t>(gDateMonthsElapsed, EXPENDITURE_TABLE_MONTH_COUNT - 1);
 }
 
 static void window_finances_summary_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    *width = EXPENDITURE_COLUMN_WIDTH * (summary_num_months_available() + 1);
+    *width = EXPENDITURE_COLUMN_WIDTH * (summary_max_available_month() + 1);
 }
 
 static void window_finances_summary_invertscroll(rct_window* w)
@@ -737,7 +737,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
 
     // Expenditure / Income values for each month
     int16_t currentMonthYear = gDateMonthsElapsed;
-    for (int32_t i = summary_num_months_available(); i >= 0; i--)
+    for (int32_t i = summary_max_available_month(); i >= 0; i--)
     {
         y = 0;
 
@@ -1197,7 +1197,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
                 break;
             }
             case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                set_format_arg(0, rct_string_id, ShopItemStringIds[campaign->ShopItemType].plural);
+                set_format_arg(0, rct_string_id, ShopItems[campaign->ShopItemType].Naming.Plural);
                 break;
         }
 

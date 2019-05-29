@@ -114,7 +114,7 @@ static void blank_tiles_paint(paint_session* session, int32_t x, int32_t y)
     dx -= 16;
     int32_t bx = dx + 32;
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (bx <= dpi->y)
         return;
     dx -= 20;
@@ -136,7 +136,7 @@ bool gShowSupportSegmentHeights = false;
  */
 static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 {
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {

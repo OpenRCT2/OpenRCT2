@@ -13,6 +13,7 @@
 #include "Context.h"
 #include "Editor.h"
 #include "FileClassifier.h"
+#include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
@@ -92,7 +93,7 @@ static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_callback_place_banner,
+    nullptr,
     nullptr,
     nullptr,
     game_command_callback_pickup_guest,
@@ -407,15 +408,6 @@ int32_t game_do_command_p(
     // Increment nest count
     gGameCommandNestLevel++;
 
-    // Remove ghost scenery so it doesn't interfere with incoming network command
-    if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST)
-        && (command == GAME_COMMAND_PLACE_WALL || command == GAME_COMMAND_PLACE_SCENERY
-            || command == GAME_COMMAND_PLACE_LARGE_SCENERY || command == GAME_COMMAND_PLACE_BANNER
-            || command == GAME_COMMAND_PLACE_PATH))
-    {
-        scenery_remove_ghost_tool_placement();
-    }
-
     if (game_command_playerid == -1)
     {
         game_command_playerid = network_get_current_player_id();
@@ -446,7 +438,7 @@ int32_t game_do_command_p(
     {
         // Check funds
         int32_t insufficientFunds = 0;
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
+        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && cost != 0)
             insufficientFunds = game_check_affordability(cost, flags);
 
         if (insufficientFunds != MONEY32_UNDEFINED)
@@ -465,7 +457,7 @@ int32_t game_do_command_p(
             }
 
             if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED)
-                && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5)
+                && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND)
                 && gGameCommandNestLevel == 1) /* Send only top-level commands */
             {
                 network_send_gamecmd(
@@ -488,7 +480,7 @@ int32_t game_do_command_p(
             {
                 bool recordCommand = false;
                 bool commandExecutes = (flags & GAME_COMMAND_FLAG_APPLY) && (flags & GAME_COMMAND_FLAG_GHOST) == 0
-                    && (flags & GAME_COMMAND_FLAG_5) == 0;
+                    && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
                 if (replayManager->IsRecording() && commandExecutes)
                     recordCommand = true;
@@ -536,7 +528,7 @@ int32_t game_do_command_p(
                 {
                     // Create a +/- money text effect
                     if (cost != 0 && game_is_not_paused())
-                        money_effect_create(cost);
+                        rct_money_effect::Create(cost);
                 }
             }
 
@@ -586,18 +578,7 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
     }
 
     char log_msg[256];
-    if (command == GAME_COMMAND_CHEAT)
-    {
-        // Get cheat name
-        const char* cheat = cheats_get_cheat_string(*ecx, *edx, *edi);
-        char* args[2] = {
-            (char*)player_name,
-            (char*)cheat,
-        };
-        format_string(log_msg, 256, STR_LOG_CHEAT_USED, args);
-        network_append_server_log(log_msg);
-    }
-    else if (command == GAME_COMMAND_DEMOLISH_RIDE && (*ebp == 1 || *ebp == 0))
+    if (command == GAME_COMMAND_DEMOLISH_RIDE && (*ebp == 1 || *ebp == 0))
     { // ebp is 1 if command comes from ride window prompt, so we don't log "demolishing" ride previews
         // Get ride name
         Ride* ride = get_ride(*edx);
@@ -610,95 +591,6 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         };
         format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
         network_append_server_log(log_msg);
-    }
-    else if (command == GAME_COMMAND_SET_PARK_OPEN)
-    {
-        // Log change in park open/close
-        char* args[1] = {
-            (char*)player_name,
-        };
-
-        if (*edx >> 8 == 0)
-        {
-            format_string(log_msg, 256, STR_LOG_PARK_OPEN, args);
-        }
-        else if (*edx >> 8 == 1)
-        {
-            format_string(log_msg, 256, STR_LOG_PARK_CLOSED, args);
-        }
-
-        network_append_server_log(log_msg);
-    }
-    else if (
-        command == GAME_COMMAND_PLACE_WALL || command == GAME_COMMAND_PLACE_LARGE_SCENERY
-        || command == GAME_COMMAND_PLACE_BANNER)
-    {
-        uint8_t flags = *ebx & 0xFF;
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            // Don't log ghost previews being removed
-            return;
-        }
-
-        // Log placing scenery
-        char* args[1] = {
-            (char*)player_name,
-        };
-
-        format_string(log_msg, 256, STR_LOG_PLACE_SCENERY, args);
-        network_append_server_log(log_msg);
-    }
-    else if (command == GAME_COMMAND_REMOVE_BANNER)
-    {
-        uint8_t flags = *ebx & 0xFF;
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            // Don't log ghost previews being removed
-            return;
-        }
-
-        // Log removing scenery
-        char* args[1] = {
-            (char*)player_name,
-        };
-        format_string(log_msg, 256, STR_LOG_REMOVE_SCENERY, args);
-        network_append_server_log(log_msg);
-    }
-    else if (
-        command == GAME_COMMAND_SET_SCENERY_COLOUR || command == GAME_COMMAND_SET_WALL_COLOUR
-        || command == GAME_COMMAND_SET_LARGE_SCENERY_COLOUR || command == GAME_COMMAND_SET_BANNER_COLOUR
-        || command == GAME_COMMAND_SET_BANNER_STYLE)
-    {
-        // Log editing scenery
-        char* args[1] = {
-            (char*)player_name,
-        };
-        format_string(log_msg, 256, STR_LOG_EDIT_SCENERY, args);
-        network_append_server_log(log_msg);
-        if (command == GAME_COMMAND_SET_BANNER_NAME || command == GAME_COMMAND_SET_SIGN_NAME)
-        {
-            static char banner_name[128];
-
-            std::fill_n(banner_name, sizeof(banner_name), ' ');
-            int nameChunkIndex = *eax & 0xFFFF;
-
-            int nameChunkOffset = nameChunkIndex - 1;
-            if (nameChunkOffset < 0)
-                nameChunkOffset = 2;
-            nameChunkOffset *= 12;
-            nameChunkOffset = std::min(nameChunkOffset, (int32_t)(std::size(banner_name) - 12));
-            std::memcpy(banner_name + nameChunkOffset + 0, edx, 4);
-            std::memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
-            std::memcpy(banner_name + nameChunkOffset + 8, edi, 4);
-            banner_name[sizeof(banner_name) - 1] = '\0';
-
-            char* args_sign[2] = {
-                (char*)player_name,
-                (char*)banner_name,
-            };
-            format_string(log_msg, 256, STR_LOG_SET_SIGN_NAME, args_sign);
-            network_append_server_log(log_msg);
-        }
     }
 }
 
@@ -895,7 +787,7 @@ void game_fix_save_vars()
         }
     }
 
-    if (peepsToRemove.size() > 0)
+    if (!peepsToRemove.empty())
     {
         // Some broken saves have broken spatial indexes
         reset_sprite_spatial_index();
@@ -955,6 +847,9 @@ void game_fix_save_vars()
 void game_load_init()
 {
     rct_window* mainWindow;
+
+    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+    snapshots->Reset();
 
     gScreenFlags = SCREEN_FLAGS_PLAYING;
     audio_stop_all_music_and_sounds();
@@ -1266,11 +1161,6 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_create_ride,
-    game_command_demolish_ride,
-    game_command_set_ride_status,
-    nullptr,
-    game_command_set_ride_name,
     nullptr,
     nullptr,
     nullptr,
@@ -1280,57 +1170,62 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     nullptr,
     nullptr,
-    game_command_change_surface_style,
-    nullptr,
-    game_command_set_guest_name,
-    game_command_set_staff_name,
-    nullptr,
-    nullptr,
-    game_command_smooth_land,
     nullptr,
     nullptr,
     nullptr,
     nullptr,
-    game_command_set_staff_patrol,
-    game_command_fire_staff_member,
     nullptr,
     nullptr,
-    game_command_set_park_open,
-    game_command_buy_land_rights,
-    game_command_place_park_entrance,
-    game_command_remove_park_entrance,
-    game_command_set_maze_track,
-    game_command_set_park_entrance_fee,
     nullptr,
-    game_command_place_wall,
     nullptr,
-    game_command_place_large_scenery,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     nullptr,
     nullptr,
     nullptr,
     game_command_place_track_design,
     nullptr,
     game_command_place_maze_design,
-    game_command_place_banner,
-    game_command_remove_banner,
-    game_command_set_scenery_colour,
-    game_command_set_wall_colour,
-    game_command_set_large_scenery_colour,
-    game_command_set_banner_colour,
-    game_command_set_land_ownership,
     nullptr,
     nullptr,
     nullptr,
-    game_command_set_banner_style,
     nullptr,
-    game_command_set_player_group,
-    game_command_modify_groups,
-    game_command_kick_player,
-    game_command_cheat,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
     game_command_pickup_guest,
     game_command_pickup_staff,
-    game_command_balloon_press,
+    nullptr,
     game_command_modify_tile,
-    game_command_edit_scenario_options,
+    nullptr,
     NULL,
 };

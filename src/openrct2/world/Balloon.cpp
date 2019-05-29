@@ -84,24 +84,6 @@ void rct_balloon::Pop()
     audio_play_sound_at_location(SOUND_BALLOON_POP, x, y, z);
 }
 
-static money32 game_command_balloon_press(uint16_t spriteIndex, uint8_t flags)
-{
-    rct_sprite* sprite = try_get_sprite(spriteIndex);
-    if (sprite == nullptr || !sprite->IsBalloon())
-    {
-        log_error("Tried getting invalid sprite for balloon: %u", spriteIndex);
-        return MONEY32_UNDEFINED;
-    }
-    else
-    {
-        if (flags & GAME_COMMAND_FLAG_APPLY)
-        {
-            sprite->AsBalloon()->Press();
-        }
-        return 0;
-    }
-}
-
 void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped)
 {
     rct_sprite* sprite = create_sprite(2);
@@ -123,11 +105,4 @@ void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopp
 void balloon_update(rct_balloon* balloon)
 {
     balloon->Update();
-}
-
-void game_command_balloon_press(
-    int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx, [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    *ebx = game_command_balloon_press(*eax & 0xFFFF, *ebx & 0xFF);
 }

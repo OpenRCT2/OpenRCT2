@@ -19,6 +19,7 @@ interface IObjectRepository;
 interface IScenarioRepository;
 interface IStream;
 interface ITrackDesignRepository;
+interface IGameStateSnapshots;
 
 class Intent;
 struct rct_window;
@@ -88,6 +89,11 @@ namespace OpenRCT2
         interface IUiContext;
     }
 
+    namespace Paint
+    {
+        interface Painter;
+    }
+
     /**
      * Represents an instance of OpenRCT2 and can be used to get various services.
      */
@@ -105,8 +111,10 @@ namespace OpenRCT2
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;
+        virtual IGameStateSnapshots* GetGameStateSnapshots() abstract;
         virtual int32_t GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
+        virtual Paint::Painter* GetPainter() abstract;
 
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 

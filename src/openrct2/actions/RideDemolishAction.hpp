@@ -45,6 +45,11 @@ public:
     {
     }
 
+    uint32_t GetCooldownTime() const override
+    {
+        return 1000;
+    }
+
     void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
@@ -125,7 +130,7 @@ private:
 
         ride_clear_for_construction(ride);
         ride_remove_peeps(ride);
-        ride_stop_peeps_queuing(ride);
+        ride->StopGuestsQueuing();
 
         sub_6CB945(ride);
         ride_clear_leftover_entrances(ride);
@@ -303,7 +308,7 @@ private:
             {
                 auto trackRemoveAction = TrackRemoveAction(
                     type, it.element->AsTrack()->GetSequenceIndex(), { x, y, z, rotation });
-                trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_5);
+                trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
 
                 auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
 
@@ -350,7 +355,7 @@ private:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->Cost = GetRefurbishPrice(ride);
 
-        ride_renew(ride);
+        ride->Renew();
 
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
         ride->last_crash_type = RIDE_CRASH_TYPE_NONE;

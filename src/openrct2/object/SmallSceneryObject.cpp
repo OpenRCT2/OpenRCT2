@@ -46,6 +46,11 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     {
         _frameOffsets = ReadFrameOffsets(stream);
     }
+    // This crude method was used by RCT2. JSON objects have a flag for this property.
+    if (_legacyType.small_scenery.height > 64)
+    {
+        _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_IS_TREE;
+    }
 
     GetImageTable().Read(context, stream);
 
@@ -270,6 +275,7 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, const json_t* roo
             { "allowSupportsAbove", SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP },
             { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
             { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 },
+            { "isTree", SMALL_SCENERY_FLAG_IS_TREE },
         });
 
     // Determine shape flags from a shape string

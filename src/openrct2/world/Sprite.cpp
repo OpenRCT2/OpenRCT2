@@ -174,13 +174,13 @@ void reset_sprite_list()
         else
         {
             spr->generic.previous = SPRITE_INDEX_NULL;
-            gSpriteListHead[SPRITE_LIST_NULL] = i;
+            gSpriteListHead[SPRITE_LIST_FREE] = i;
         }
         _spriteFlashingList[i] = false;
         previous_spr = spr;
     }
 
-    gSpriteListCount[SPRITE_LIST_NULL] = MAX_SPRITES;
+    gSpriteListCount[SPRITE_LIST_FREE] = MAX_SPRITES;
 
     reset_sprite_spatial_index();
 }
@@ -316,13 +316,13 @@ void sprite_clear_all_unused()
     rct_sprite_generic* sprite;
     uint16_t spriteIndex, nextSpriteIndex;
 
-    spriteIndex = gSpriteListHead[SPRITE_LIST_NULL];
+    spriteIndex = gSpriteListHead[SPRITE_LIST_FREE];
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
         sprite = &get_sprite(spriteIndex)->generic;
         nextSpriteIndex = sprite->next;
         sprite_reset(sprite);
-        sprite->linked_list_type_offset = SPRITE_LIST_NULL * 2;
+        sprite->linked_list_type_offset = SPRITE_LIST_FREE * 2;
 
         // This shouldn't be necessary, as sprite_reset() preserves the index
         // but it has been left in as a safety net in case the index isn't set correctly
@@ -346,25 +346,25 @@ void sprite_clear_all_unused()
  */
 rct_sprite* create_sprite(uint8_t bl)
 {
-    size_t linkedListTypeOffset = SPRITE_LIST_UNKNOWN * 2;
+    SPRITE_LIST linkedListTypeOffset = SPRITE_LIST_UNKNOWN;
     if ((bl & 2) != 0)
     {
         // 69EC96;
         uint16_t cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
-        if (cx >= gSpriteListCount[SPRITE_LIST_NULL])
+        if (cx >= gSpriteListCount[SPRITE_LIST_FREE])
         {
             return nullptr;
         }
-        linkedListTypeOffset = SPRITE_LIST_MISC * 2;
+        linkedListTypeOffset = SPRITE_LIST_MISC;
     }
-    else if (gSpriteListCount[SPRITE_LIST_NULL] == 0)
+    else if (gSpriteListCount[SPRITE_LIST_FREE] == 0)
     {
         return nullptr;
     }
 
-    rct_sprite_generic* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_NULL]))->generic;
+    rct_sprite_generic* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_FREE]))->generic;
 
-    move_sprite_to_list((rct_sprite*)sprite, (uint8_t)linkedListTypeOffset);
+    move_sprite_to_list((rct_sprite*)sprite, linkedListTypeOffset);
 
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
@@ -392,12 +392,12 @@ rct_sprite* create_sprite(uint8_t bl)
  * of the desired linked list in a uint16_t array. Known valid values are
  * 2, 4, 6, 8 or 10 (SPRITE_LIST_... * 2)
  */
-void move_sprite_to_list(rct_sprite* sprite, uint8_t newListOffset)
+void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newList)
 {
     rct_sprite_generic* unkSprite = &sprite->generic;
     uint8_t oldListOffset = unkSprite->linked_list_type_offset;
     int32_t oldList = oldListOffset >> 1;
-    int32_t newList = newListOffset >> 1;
+    int32_t newListOffset = newList * 2;
 
     // No need to move if the sprite is already in the desired list
     if (oldListOffset == newListOffset)
@@ -541,7 +541,7 @@ static void sprite_misc_update(rct_sprite* sprite)
             sprite_steam_particle_update((rct_steam_particle*)sprite);
             break;
         case SPRITE_MISC_MONEY_EFFECT:
-            money_effect_update(&sprite->money_effect);
+            sprite->money_effect.Update();
             break;
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
             crashed_vehicle_particle_update((rct_crashed_vehicle_particle*)sprite);
@@ -684,7 +684,7 @@ void sprite_remove(rct_sprite* sprite)
         user_string_free(peep->name_string_idx);
     }
 
-    move_sprite_to_list(sprite, SPRITE_LIST_NULL * 2);
+    move_sprite_to_list(sprite, SPRITE_LIST_FREE);
     sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
     _spriteFlashingList[sprite->generic.sprite_index] = false;
 
@@ -715,10 +715,7 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
         if (pathZ < z || pathZ >= z + 32)
             continue;
 
-        if (tile_element_is_underground(tileElement))
-            return false;
-
-        return true;
+        return !tile_element_is_underground(tileElement);
     } while (!(tileElement++)->IsLastForTile());
     return false;
 }
@@ -765,7 +762,7 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
     if (litter == nullptr)
         return;
 
-    move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER * 2);
+    move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER);
     litter->sprite_direction = direction;
     litter->sprite_width = 6;
     litter->sprite_height_negative = 6;
@@ -1032,7 +1029,7 @@ int32_t check_for_sprite_list_cycles(bool fix)
 }
 
 /**
- * Finds and fixes null sprites that are not reachable via SPRITE_LIST_NULL list.
+ * Finds and fixes null sprites that are not reachable via SPRITE_LIST_FREE list.
  *
  * @return count of disjoint sprites found
  */
@@ -1040,7 +1037,7 @@ int32_t fix_disjoint_sprites()
 {
     // Find reachable sprites
     bool reachable[MAX_SPRITES] = { false };
-    uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_NULL];
+    uint16_t sprite_idx = gSpriteListHead[SPRITE_LIST_FREE];
     rct_sprite* null_list_tail = nullptr;
     while (sprite_idx != SPRITE_INDEX_NULL)
     {

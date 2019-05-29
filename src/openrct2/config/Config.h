@@ -32,6 +32,7 @@ struct GeneralConfiguration
     bool uncap_fps;
     bool use_vsync;
     bool show_fps;
+    bool multithreading;
     bool minimize_fullscreen_focus_loss;
 
     // Map rendering
@@ -155,6 +156,7 @@ struct NetworkConfiguration
     bool log_chat;
     bool log_server_actions;
     bool pause_server_if_no_clients;
+    bool desync_debugging;
 };
 
 struct NotificationConfiguration

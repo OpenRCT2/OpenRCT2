@@ -80,9 +80,8 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
     particle->velocity_z = vz & 0xFFFF;
 
     // Check collision with land / water
-    uint32_t waterLand = tile_element_height(x, y);
-    int16_t landZ = (waterLand & 0xFFFF);
-    int16_t waterZ = (waterLand >> 16);
+    int16_t landZ = tile_element_height(x, y);
+    int16_t waterZ = tile_element_water_height(x, y);
 
     if (waterZ != 0 && particle->z >= waterZ && z <= waterZ)
     {

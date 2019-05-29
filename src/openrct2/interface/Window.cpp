@@ -1662,7 +1662,7 @@ void window_relocate_windows(int32_t width, int32_t height)
  */
 void window_resize_gui(int32_t width, int32_t height)
 {
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
         window_resize_gui_scenario_editor(width, height);
         return;
@@ -2098,7 +2098,7 @@ bool window_is_visible(rct_window* w)
  */
 void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom)
 {
-    rct_drawpixelinfo windowDPI;
+    rct_drawpixelinfo windowDPI = *dpi;
     windowDPI.bits = dpi->bits + left + ((dpi->width + dpi->pitch) * top);
     windowDPI.x = left;
     windowDPI.y = top;

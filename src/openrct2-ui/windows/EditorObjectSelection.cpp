@@ -99,9 +99,6 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_PARK_ENTRANCE,               SPR_TAB_PARK,               false },
     { STR_OBJECT_SELECTION_WATER,                       SPR_TAB_WATER,              false },
 
-    // No longer supported:
-    // { STR_OBJECT_SELECTION_SCENARIO_DESCRIPTION,        SPR_TAB_STATS,              false },
-
     // Currently hidden until new save format arrives:
     // { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            false },
     // { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TAB_LAND,            false },
@@ -327,7 +324,7 @@ static void visible_list_refresh(rct_window* w)
         }
     }
 
-    if (_listItems.size() == 0)
+    if (_listItems.empty())
     {
         visible_list_dispose();
     }
@@ -828,7 +825,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
         w->pressed_widgets &= ~(1 << WIDX_ADVANCED);
 
     // Set window title and buttons
-    set_format_arg(0, rct_string_id, ObjectSelectionPages[get_selected_object_type(w)].Caption);
+    set_format_arg(0, rct_string_id, ObjectSelectionPages[w->selected_tab].Caption);
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         w->widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
@@ -1463,10 +1460,7 @@ static bool filter_chunks(const ObjectRepositoryItem* item)
                     break;
                 }
             }
-            if (_filter_flags & (1 << (gRideCategories[rideType] + _numSourceGameItems)))
-                return true;
-
-            return false;
+            return (_filter_flags & (1 << (gRideCategories[rideType] + _numSourceGameItems))) != 0;
     }
     return true;
 }
@@ -1533,5 +1527,9 @@ static std::string object_get_description(const void* object)
 
 static int32_t get_selected_object_type(rct_window* w)
 {
-    return w->selected_tab;
+    auto tab = w->selected_tab;
+    if (tab >= OBJECT_TYPE_SCENARIO_TEXT)
+        return tab + 1;
+    else
+        return tab;
 }

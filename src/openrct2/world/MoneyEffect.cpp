@@ -17,11 +17,27 @@
 
 static constexpr const LocationXY16 _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
 
+bool rct_sprite::IsMoneyEffect()
+{
+    return this->money_effect.sprite_identifier == SPRITE_IDENTIFIER_MISC
+        && this->money_effect.type == SPRITE_MISC_MONEY_EFFECT;
+}
+
+rct_money_effect* rct_sprite::AsMoneyEffect()
+{
+    rct_money_effect* result = nullptr;
+    if (IsMoneyEffect())
+    {
+        result = (rct_money_effect*)this;
+    }
+    return result;
+}
+
 /**
  *
  *  rct2: 0x0067351F
  */
-void money_effect_create_at(money32 value, int32_t x, int32_t y, int32_t z, bool vertical)
+void rct_money_effect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical)
 {
     if (value == MONEY(0, 00))
         return;
@@ -44,10 +60,9 @@ void money_effect_create_at(money32 value, int32_t x, int32_t y, int32_t z, bool
     int16_t offsetX = 0;
     if (!gOpenRCT2NoGraphics)
     {
-        // Construct string to display
-        rct_string_id stringId = money_effect_get_string_id(moneyEffect, &value);
+        auto [stringId, newValue] = moneyEffect->GetStringId();
         char buffer[128];
-        format_string(buffer, 128, stringId, &value);
+        format_string(buffer, 128, stringId, &newValue);
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         offsetX = -(gfx_get_string_width(buffer) / 2);
     }
@@ -59,7 +74,7 @@ void money_effect_create_at(money32 value, int32_t x, int32_t y, int32_t z, bool
  *
  *  rct2: 0x0069C5D0
  */
-void money_effect_create(money32 value)
+void rct_money_effect::Create(money32 value)
 {
     LocationXYZ16 mapPosition = { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z };
 
@@ -76,69 +91,65 @@ void money_effect_create(money32 value)
         if (mapPosition.x == LOCATION_NULL)
             return;
 
-        mapPosition.z = tile_element_height(mapPosition.x, mapPosition.y) & 0xFFFF;
+        mapPosition.z = tile_element_height(mapPosition.x, mapPosition.y);
     }
     mapPosition.z += 10;
-    money_effect_create_at(-value, mapPosition.x, mapPosition.y, mapPosition.z, false);
+    CreateAt(-value, mapPosition.x, mapPosition.y, mapPosition.z, false);
 }
 
 /**
  *
  *  rct2: 0x00673232
  */
-void money_effect_update(rct_money_effect* moneyEffect)
+void rct_money_effect::Update()
 {
-    invalidate_sprite_2((rct_sprite*)moneyEffect);
-    moneyEffect->wiggle++;
-    if (moneyEffect->wiggle >= 22)
+    invalidate_sprite_2((rct_sprite*)this);
+    wiggle++;
+    if (wiggle >= 22)
     {
-        moneyEffect->wiggle = 0;
+        wiggle = 0;
     }
 
-    moneyEffect->move_delay++;
-    if (moneyEffect->move_delay < 2)
-    {
-        return;
-    }
-
-    int32_t x = moneyEffect->x;
-    int32_t y = moneyEffect->y;
-    int32_t z = moneyEffect->z;
-    moneyEffect->move_delay = 0;
-
-    if (moneyEffect->vertical)
-    {
-        z += 1;
-    }
-    y += _moneyEffectMoveOffset[get_current_rotation()].y;
-    x += _moneyEffectMoveOffset[get_current_rotation()].x;
-
-    sprite_move(x, y, z, (rct_sprite*)moneyEffect);
-
-    moneyEffect->num_movements++;
-    if (moneyEffect->num_movements < 55)
+    move_delay++;
+    if (move_delay < 2)
     {
         return;
     }
 
-    sprite_remove((rct_sprite*)moneyEffect);
+    int32_t newX = x;
+    int32_t newY = y;
+    int32_t newZ = z;
+    move_delay = 0;
+
+    if (vertical)
+    {
+        newZ += 1;
+    }
+    newY += _moneyEffectMoveOffset[get_current_rotation()].y;
+    newX += _moneyEffectMoveOffset[get_current_rotation()].x;
+
+    sprite_move(newX, newY, newZ, (rct_sprite*)this);
+
+    num_movements++;
+    if (num_movements < 55)
+    {
+        return;
+    }
+
+    sprite_remove((rct_sprite*)this);
 }
 
-rct_string_id money_effect_get_string_id(const rct_money_effect* sprite, money32* outValue)
+std::pair<rct_string_id, money32> rct_money_effect::GetStringId() const
 {
-    bool vertical = (sprite->vertical != 0);
     rct_string_id spentStringId = vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
     rct_string_id receiveStringId = vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
     rct_string_id stringId = receiveStringId;
-    money32 value = sprite->value;
+    money32 outValue = value;
     if (value < 0)
     {
-        value *= -1;
+        outValue *= -1;
         stringId = spentStringId;
     }
-    if (outValue != nullptr)
-    {
-        *outValue = value;
-    }
-    return stringId;
+
+    return std::make_pair(stringId, outValue);
 }

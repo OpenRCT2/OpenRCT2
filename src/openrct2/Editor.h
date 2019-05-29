@@ -24,7 +24,6 @@ namespace Editor
     int32_t CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();
-    void GameCommandEditScenarioOptions(int32_t*, int32_t*, int32_t*, int32_t*, int32_t*, int32_t*, int32_t*);
 
     uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index);
     void ClearSelectedObject(int32_t objectType, size_t index, uint32_t flags);
@@ -69,8 +68,5 @@ enum
 };
 
 void editor_open_windows_for_current_step();
-
-void game_command_edit_scenario_options(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 #endif

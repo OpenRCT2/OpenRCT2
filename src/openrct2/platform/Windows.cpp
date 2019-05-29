@@ -22,14 +22,17 @@
 #    include "../OpenRCT2.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
+#    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
 #    include "../rct2/RCT2.h"
 #    include "../util/Util.h"
 #    include "platform.h"
 
+#    include <algorithm>
 #    include <iterator>
 #    include <lmcons.h>
+#    include <memory>
 #    include <psapi.h>
 #    include <shlobj.h>
 #    include <sys/stat.h>
@@ -167,7 +170,7 @@ bool platform_lock_single_instance()
         // Create new mutex
         status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (status == nullptr)
-            log_error("unable to create mutex\n");
+            log_error("unable to create mutex");
 
         return true;
     }
@@ -251,6 +254,20 @@ std::string platform_get_rct1_steam_dir()
 std::string platform_get_rct2_steam_dir()
 {
     return "Rollercoaster Tycoon 2";
+}
+
+std::string platform_sanitise_filename(const std::string& path)
+{
+    static const std::array<std::string::value_type, 9> prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
+    auto sanitised = path;
+    std::replace_if(
+        sanitised.begin(), sanitised.end(),
+        [](const std::string::value_type& ch) -> bool {
+            return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
+        },
+        '_');
+    sanitised = String::Trim(sanitised);
+    return sanitised;
 }
 
 uint16_t platform_get_locale_language()

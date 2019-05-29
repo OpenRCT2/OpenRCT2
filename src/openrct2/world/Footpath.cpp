@@ -13,6 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceAction.hpp"
 #include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/LandSetRightsAction.hpp"
 #include "../core/Guard.hpp"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -124,25 +125,6 @@ TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
     return nullptr;
 }
 
-/**
- *
- *  rct2: 0x006BA23E
- */
-void remove_banners_at_element(int32_t x, int32_t y, TileElement* tileElement)
-{
-    while (!(tileElement++)->IsLastForTile())
-    {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-            return;
-        else if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
-            continue;
-
-        game_do_command(
-            x, 1, y, tileElement->base_height | tileElement->AsBanner()->GetPosition() << 8, GAME_COMMAND_REMOVE_BANNER, 0, 0);
-        tileElement--;
-    }
-}
-
 money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags)
 {
     auto action = FootpathRemoveAction(x, y, z);
@@ -229,7 +211,8 @@ void footpath_provisional_remove()
 
         footpath_remove(
             gFootpathProvisionalPosition.x, gFootpathProvisionalPosition.y, gFootpathProvisionalPosition.z,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                | GAME_COMMAND_FLAG_GHOST);
     }
 }
 
@@ -1256,7 +1239,9 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         ownership = OWNERSHIP_UNOWNED;
     }
 
-    map_buy_land_rights(x, y, x, y, BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, (ownership << 4) | GAME_COMMAND_FLAG_APPLY);
+    auto landSetRightsAction = LandSetRightsAction({ x, y }, LandSetRightSetting::SetOwnershipWithChecks, ownership);
+    landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+    GameActions::Execute(&landSetRightsAction);
 }
 
 static bool get_next_direction(int32_t edges, int32_t* direction)
@@ -1468,7 +1453,7 @@ bool PathElement::IsBroken() const
 
 void PathElement::SetIsBroken(bool isBroken)
 {
-    if (isBroken == true)
+    if (isBroken)
     {
         flags |= TILE_ELEMENT_FLAG_BROKEN;
     }
@@ -1485,7 +1470,7 @@ bool PathElement::IsBlockedByVehicle() const
 
 void PathElement::SetIsBlockedByVehicle(bool isBlocked)
 {
-    if (isBlocked == true)
+    if (isBlocked)
     {
         flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
     }
@@ -1571,7 +1556,7 @@ PathSurfaceEntry* PathElement::GetPathEntry() const
     if (!IsQueue())
         return get_path_surface_entry(GetPathEntryIndex());
     else
-        return get_path_surface_entry(GetPathEntryIndex() + 32);
+        return get_path_surface_entry(GetPathEntryIndex() + MAX_PATH_OBJECTS);
 }
 
 PathRailingsEntry* PathElement::GetRailingEntry() const

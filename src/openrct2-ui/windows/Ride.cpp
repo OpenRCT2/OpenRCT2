@@ -23,12 +23,14 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/GameAction.h>
+#include <openrct2/actions/ParkSetParameterAction.hpp>
 #include <openrct2/actions/RideSetAppearanceAction.hpp>
 #include <openrct2/actions/RideSetColourScheme.hpp>
 #include <openrct2/actions/RideSetPriceAction.hpp>
 #include <openrct2/actions/RideSetSetting.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -49,6 +51,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+
 using namespace OpenRCT2;
 
 enum
@@ -977,7 +980,7 @@ static constexpr const rct_string_id RideBreakdownReasonNames[] = {
     STR_RIDE_BREAKDOWN_CONTROL_FAILURE
 };
 
-static constexpr const rct_string_id ColourSchemeNames[] = {
+const rct_string_id ColourSchemeNames[4] = {
     STR_MAIN_COLOUR_SCHEME,
     STR_ALTERNATIVE_COLOUR_SCHEME_1,
     STR_ALTERNATIVE_COLOUR_SCHEME_2,
@@ -1319,7 +1322,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
 
         Ride* ride = get_ride(w->number);
 
-        rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+        rct_ride_entry* rideEntry = ride->GetRideEntry();
         if (rideEntry->flags & RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF)
         {
             clipDPI.zoom_level = 1;
@@ -1855,7 +1858,7 @@ static void window_ride_init_viewport(rct_window* w)
     {
         focus.sprite.sprite_id = ride->vehicles[eax];
 
-        rct_ride_entry* ride_entry = get_ride_entry_by_ride(ride);
+        rct_ride_entry* ride_entry = ride->GetRideEntry();
         if (ride_entry && ride_entry->tab_vehicle != 0)
         {
             rct_vehicle* vehicle = GET_VEHICLE(focus.sprite.sprite_id);
@@ -2209,7 +2212,7 @@ static void populate_ride_type_dropdown()
     }
 
     std::sort(RideDropdownData.begin(), RideDropdownData.end(), [](auto& a, auto& b) {
-        return std::strcmp(a.label_string, b.label_string) < 0;
+        return String::Compare(a.label_string, b.label_string, true) < 0;
     });
 
     RideDropdownDataLanguage = ls.GetCurrentLanguage();
@@ -2249,7 +2252,7 @@ static void window_ride_show_ride_type_dropdown(rct_window* w, rct_widget* widge
 
 static void populate_vehicle_type_dropdown(Ride* ride)
 {
-    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+    rct_ride_entry* rideEntry = ride->GetRideEntry();
 
     bool selectionShouldBeExpanded;
     int32_t rideTypeIterator, rideTypeIteratorMax;
@@ -2312,7 +2315,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
     }
 
     std::sort(VehicleDropdownData.begin(), VehicleDropdownData.end(), [](auto& a, auto& b) {
-        return std::strcmp(a.label_string, b.label_string) < 0;
+        return String::Compare(a.label_string, b.label_string, true) < 0;
     });
 
     VehicleDropdownExpanded = selectionShouldBeExpanded;
@@ -2434,7 +2437,6 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                 {
                     set_operating_setting(w->number, RideSetSetting::RideType, rideType);
                 }
-                window_invalidate_all();
             }
     }
 }
@@ -2870,20 +2872,20 @@ static void window_ride_vehicle_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_VEHICLE_TRAINS_INCREASE:
             if (ride->num_vehicles < 32)
-                ride_set_num_vehicles(ride, ride->num_vehicles + 1);
+                ride->SetNumVehicles(ride->num_vehicles + 1);
             break;
         case WIDX_VEHICLE_TRAINS_DECREASE:
             if (ride->num_vehicles > 1)
-                ride_set_num_vehicles(ride, ride->num_vehicles - 1);
+                ride->SetNumVehicles(ride->num_vehicles - 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
             if (ride->num_cars_per_train < 255)
-                ride_set_num_cars_per_vehicle(ride, ride->num_cars_per_train + 1);
+                ride->SetNumCarsPerVehicle(ride->num_cars_per_train + 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
-            rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+            rct_ride_entry* rideEntry = ride->GetRideEntry();
             if (ride->num_cars_per_train > rideEntry->zero_cars + 1)
-                ride_set_num_cars_per_vehicle(ride, ride->num_cars_per_train - 1);
+                ride->SetNumCarsPerVehicle(ride->num_cars_per_train - 1);
             break;
     }
 }
@@ -2906,7 +2908,7 @@ static void window_ride_vehicle_dropdown(rct_window* w, rct_widgetindex widgetIn
                 if (ride != nullptr)
                 {
                     auto newRideType = VehicleDropdownData[dropdownIndex].subtype_id;
-                    ride_set_ride_entry(ride, newRideType);
+                    ride->SetRideEntry(newRideType);
                 }
             }
             break;
@@ -2946,7 +2948,7 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
+    rideEntry = ride->GetRideEntry();
 
     set_format_arg(0, rct_string_id, ride->name);
     set_format_arg(2, uint32_t, ride->name_arguments);
@@ -3041,7 +3043,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_ride_draw_tab_images(dpi, w);
 
     ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
+    rideEntry = ride->GetRideEntry();
 
     x = w->x + 8;
     y = w->y + 64;
@@ -3103,7 +3105,7 @@ static rct_vehicle_paintinfo _sprites_to_draw[144];
 static void window_ride_vehicle_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     Ride* ride = get_ride(w->number);
-    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+    rct_ride_entry* rideEntry = ride->GetRideEntry();
 
     // Background
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, PALETTE_INDEX_12);
@@ -3533,7 +3535,7 @@ static void window_ride_operating_invalidate(rct_window* w)
     }
 
     // Number of circuits
-    if (ride_can_have_multiple_circuits(ride))
+    if (ride->CanHaveMultipleCircuits())
     {
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].type = WWT_LABEL;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].type = WWT_SPINNER;
@@ -4363,7 +4365,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
     rct_string_id stringId;
 
     ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
+    rideEntry = ride->GetRideEntry();
     colourSchemeIndex = w->ride_colour;
     dropdownWidget = widget - 1;
 
@@ -4632,7 +4634,7 @@ static void window_ride_colour_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
+    rideEntry = ride->GetRideEntry();
 
     set_format_arg(0, rct_string_id, ride->name);
     set_format_arg(2, uint32_t, ride->name_arguments);
@@ -4848,7 +4850,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_ride_entry* rideEntry;
 
     ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
+    rideEntry = ride->GetRideEntry();
 
     window_draw_widgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
@@ -4899,7 +4901,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         uint8_t shopItem = rideEntry->shop_item_secondary == SHOP_ITEM_NONE ? rideEntry->shop_item
                                                                             : rideEntry->shop_item_secondary;
-        int32_t spriteIndex = ShopItemImage[shopItem];
+        int32_t spriteIndex = ShopItems[shopItem].Image;
         spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[0].main);
 
         gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
@@ -4957,7 +4959,7 @@ static void window_ride_colour_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     vehicle_colour vehicleColour;
 
     ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
+    rideEntry = ride->GetRideEntry();
     vehiclePreviewWidget = &window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW];
     vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
 
@@ -5582,7 +5584,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 if (ride->type == RIDE_TYPE_MINI_GOLF)
                 {
                     // Holes
-                    holes = ride->holes & 0x1F;
+                    holes = ride->holes;
                     gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
                     y += LIST_ROW_HEIGHT;
                 }
@@ -5706,7 +5708,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 if (ride->type != RIDE_TYPE_MINI_GOLF)
                 {
                     // Inversions
-                    inversions = ride->inversions & 0x1F;
+                    inversions = ride->inversions;
                     if (inversions != 0)
                     {
                         gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, COLOUR_BLACK, x, y);
@@ -6151,32 +6153,22 @@ static utf8 _moneyInputText[MONEY_STRING_MAXLENGTH];
 
 static void update_same_price_throughout_flags(uint32_t shop_item)
 {
-    uint32_t newFlags;
+    uint64_t newFlags;
 
     if (shop_item_is_photo(shop_item))
     {
-        newFlags = gSamePriceThroughoutParkA;
-        newFlags ^= (1 << SHOP_ITEM_PHOTO);
-        game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-
-        newFlags = gSamePriceThroughoutParkB;
-        newFlags ^= (1 << (SHOP_ITEM_PHOTO2 - 32)) | (1 << (SHOP_ITEM_PHOTO3 - 32)) | (1 << (SHOP_ITEM_PHOTO4 - 32));
-        game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+        newFlags = gSamePriceThroughoutPark;
+        newFlags ^= (1ULL << SHOP_ITEM_PHOTO) | (1ULL << SHOP_ITEM_PHOTO2) | (1ULL << SHOP_ITEM_PHOTO3)
+            | (1ULL << SHOP_ITEM_PHOTO4);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
+        GameActions::Execute(&parkSetParameter);
     }
     else
     {
-        if (shop_item < 32)
-        {
-            newFlags = gSamePriceThroughoutParkA;
-            newFlags ^= (1u << shop_item);
-            game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-        }
-        else
-        {
-            newFlags = gSamePriceThroughoutParkB;
-            newFlags ^= (1u << (shop_item - 32));
-            game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-        }
+        newFlags = gSamePriceThroughoutPark;
+        newFlags ^= (1ULL << shop_item);
+        auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
+        GameActions::Execute(&parkSetParameter);
     }
 }
 
@@ -6474,7 +6466,7 @@ static void window_ride_income_invalidate(rct_window* w)
     set_format_arg(0, rct_string_id, ride->name);
     set_format_arg(2, uint32_t, ride->name_arguments);
 
-    rideEntry = get_ride_entry_by_ride(ride);
+    rideEntry = ride->GetRideEntry();
 
     // Primary item
     w->pressed_widgets &= ~(1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
@@ -6509,7 +6501,7 @@ static void window_ride_income_invalidate(rct_window* w)
         if (shop_item_has_common_price(primaryItem))
             w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
-        window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = ShopItemStringIds[primaryItem].price_label;
+        window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = ShopItems[primaryItem].Naming.PriceLabel;
     }
 
     // Get secondary item
@@ -6518,7 +6510,7 @@ static void window_ride_income_invalidate(rct_window* w)
     {
         if ((secondaryItem = rideEntry->shop_item_secondary) != SHOP_ITEM_NONE)
         {
-            window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = ShopItemStringIds[secondaryItem].price_label;
+            window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = ShopItems[secondaryItem].Naming.PriceLabel;
         }
     }
 
@@ -6572,7 +6564,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_ride_draw_tab_images(dpi, w);
 
     ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
+    rideEntry = ride->GetRideEntry();
 
     x = w->x + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     y = w->y + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].top + 33;
@@ -6584,7 +6576,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
         profit = ride->price;
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
-        profit -= get_shop_item_cost(primaryItem);
+        profit -= ShopItems[primaryItem].Cost;
         if (profit < 0)
         {
             profit *= -1;
@@ -6605,7 +6597,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
         profit = ride->price_secondary;
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
-        profit -= get_shop_item_cost(secondaryItem);
+        profit -= ShopItems[secondaryItem].Cost;
         if (profit < 0)
         {
             profit *= -1;
@@ -6829,17 +6821,17 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Queue time
     if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
     {
-        queueTime = ride_get_max_queue_time(ride);
+        queueTime = ride->GetMaxQueueTime();
         stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
         y += gfx_draw_string_left_wrapped(dpi, &queueTime, x, y, 308, stringId, COLOUR_BLACK);
         y += 5;
     }
 
     // Primary shop items sold
-    shopItem = get_ride_entry_by_ride(ride)->shop_item;
+    shopItem = ride->GetRideEntry()->shop_item;
     if (shopItem != SHOP_ITEM_NONE)
     {
-        set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
+        set_format_arg(0, rct_string_id, ShopItems[shopItem].Naming.Plural);
         set_format_arg(2, uint32_t, ride->no_primary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
@@ -6847,10 +6839,10 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Secondary shop items sold / on-ride photos sold
     shopItem = (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RidePhotoItems[ride->type]
-                                                                      : get_ride_entry_by_ride(ride)->shop_item_secondary;
+                                                                      : ride->GetRideEntry()->shop_item_secondary;
     if (shopItem != SHOP_ITEM_NONE)
     {
-        set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
+        set_format_arg(0, rct_string_id, ShopItems[shopItem].Naming.Plural);
         set_format_arg(2, uint32_t, ride->no_secondary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;

@@ -171,6 +171,7 @@ const std::array<NetworkAction, NETWORK_PERMISSION_COUNT> NetworkActions::Action
             GAME_COMMAND_SET_GUEST_NAME,
             GAME_COMMAND_PICKUP_GUEST,
             GAME_COMMAND_BALLOON_PRESS,
+            GAME_COMMAND_GUEST_SET_FLAGS,
         },
     },
     NetworkAction{
@@ -236,6 +237,7 @@ const std::array<NetworkAction, NETWORK_PERMISSION_COUNT> NetworkActions::Action
         "PERMISSION_CHEAT",
         {
             GAME_COMMAND_CHEAT,
+            GAME_COMMAND_SET_DATE,
         },
     },
     NetworkAction{

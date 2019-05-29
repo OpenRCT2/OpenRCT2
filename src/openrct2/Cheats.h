@@ -34,57 +34,56 @@ extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
 
-enum
+enum class CheatType : int32_t
 {
-    CHEAT_SANDBOXMODE,
-    CHEAT_DISABLECLEARANCECHECKS,
-    CHEAT_DISABLESUPPORTLIMITS,
-    CHEAT_SHOWALLOPERATINGMODES,
-    CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES,
-    CHEAT_DISABLETRAINLENGTHLIMIT,
-    CHEAT_ENABLECHAINLIFTONALLTRACK,
-    CHEAT_FASTLIFTHILL,
-    CHEAT_DISABLEBRAKESFAILURE,
-    CHEAT_DISABLEALLBREAKDOWNS,
-    CHEAT_UNLOCKALLPRICES,
-    CHEAT_BUILDINPAUSEMODE,
-    CHEAT_IGNORERIDEINTENSITY,
-    CHEAT_DISABLEVANDALISM,
-    CHEAT_DISABLELITTERING,
-    CHEAT_NOMONEY,
-    CHEAT_ADDMONEY,
-    CHEAT_SETMONEY,
-    CHEAT_CLEARLOAN,
-    CHEAT_SETGUESTPARAMETER,
-    CHEAT_GENERATEGUESTS,
-    CHEAT_REMOVEALLGUESTS,
-    CHEAT_EXPLODEGUESTS,
-    CHEAT_GIVEALLGUESTS,
-    CHEAT_SETGRASSLENGTH,
-    CHEAT_WATERPLANTS,
-    CHEAT_DISABLEPLANTAGING,
-    CHEAT_FIXVANDALISM,
-    CHEAT_REMOVELITTER,
-    CHEAT_SETSTAFFSPEED,
-    CHEAT_RENEWRIDES,
-    CHEAT_MAKEDESTRUCTIBLE,
-    CHEAT_FIXRIDES,
-    CHEAT_RESETCRASHSTATUS,
-    CHEAT_10MINUTEINSPECTIONS,
-    CHEAT_WINSCENARIO,
-    CHEAT_FORCEWEATHER,
-    CHEAT_FREEZEWEATHER,
-    CHEAT_OPENCLOSEPARK,
-    CHEAT_HAVEFUN,
-    CHEAT_SETFORCEDPARKRATING,
-    CHEAT_NEVERENDINGMARKETING,
-    CHEAT_RESETDATE,
-    CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,
-    CHEAT_OWNALLLAND,
-    CHEAT_DISABLERIDEVALUEAGING,
-    CHEAT_IGNORERESEARCHSTATUS,
-    CHEAT_ENABLEALLDRAWABLETRACKPIECES,
-    CHEAT_DATE_SET,
+    SandboxMode,
+    DisableClearanceChecks,
+    DisableSupportLimits,
+    ShowAllOperatingModes,
+    ShowVehiclesFromOtherTrackTypes,
+    DisableTrainLengthLimit,
+    EnableChainLiftOnAllTrack,
+    FastLiftHill,
+    DisableBrakesFailure,
+    DisableAllBreakdowns,
+    UnlockAllPrices,
+    BuildInPauseMode,
+    IgnoreRideIntensity,
+    DisableVandalism,
+    DisableLittering,
+    NoMoney,
+    AddMoney,
+    SetMoney,
+    ClearLoan,
+    SetGuestParameter,
+    GenerateGuests,
+    RemoveAllGuests,
+    ExplodeGuests,
+    GiveAllGuests,
+    SetGrassLength,
+    WaterPlants,
+    DisablePlantAging,
+    FixVandalism,
+    RemoveLitter,
+    SetStaffSpeed,
+    RenewRides,
+    MakeDestructible,
+    FixRides,
+    ResetCrashStatus,
+    TenMinuteInspections,
+    WinScenario,
+    ForceWeather,
+    FreezeWeather,
+    OpenClosePark,
+    HaveFun,
+    SetForcedParkRating,
+    NeverEndingMarketing,
+    AllowArbitraryRideTypeChanges,
+    OwnAllLand,
+    DisableRideValueAging,
+    IgnoreResearchStatus,
+    EnableAllDrawableTrackPieces,
+    Count,
 };
 
 enum
@@ -113,15 +112,8 @@ enum
 #define CHEATS_STAFF_NORMAL_SPEED 0x60
 #define CHEATS_STAFF_FREEZE_SPEED 0
 
-extern int32_t park_rating_spinner_value;
-extern int32_t year_spinner_value;
-extern int32_t month_spinner_value;
-extern int32_t day_spinner_value;
-
-void game_command_cheat(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-
-void cheats_reset();
-
-const char* cheats_get_cheat_string(int cheat, int edx, int edi);
+void CheatsReset();
+const char* CheatsGetName(CheatType cheatType);
+void CheatsSet(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0);
 
 #endif

@@ -28,7 +28,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "ca-ES", "Catalan",               u8"Català",              FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_CATALAN
     { "zh-CN", "Chinese (Simplified)",  "Chinese (Simplified)",  FAMILY(&TTFFamilyChineseSimplified),   false }, // LANGUAGE_CHINESE_SIMPLIFIED
     { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", FAMILY(&TTFFamilyChineseTraditional),  false }, // LANGUAGE_CHINESE_TRADITIONAL
-    { "cs-CZ", "Czech",                 "Czech",                 FAMILY(&TTFFamilySansSerif),           false }, // LANGUAGE_CZECH
+    { "cs-CZ", "Czech",                 u8"Čeština",             FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_CZECH
     { "da-DK", "Danish",                "Dansk",                 FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_DANISH
     { "de-DE", "German",                "Deutsch",               FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_GERMAN
     { "en-GB", "English (UK)",          "English (UK)",          FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ENGLISH_UK

@@ -1320,7 +1320,7 @@ bool path_b_supports_paint_setup(
             baseHeight += z;
         }
 
-        if (keepGoing == false)
+        if (!keepGoing)
         {
             break;
         }

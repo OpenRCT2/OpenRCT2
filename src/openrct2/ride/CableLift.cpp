@@ -36,7 +36,7 @@ rct_vehicle* cable_lift_segment_create(
     current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
     if (head)
     {
-        move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_TRAIN * 2);
+        move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_TRAIN);
         ride->cable_lift = current->sprite_index;
     }
     current->type = head ? VEHICLE_TYPE_HEAD : VEHICLE_TYPE_TAIL;
@@ -423,7 +423,7 @@ int32_t cable_lift_update_track_motion(rct_vehicle* cableLift)
             {
                 if (vehicle->remaining_distance < 0)
                 {
-                    if (sub_6DF21B_loop(vehicle) == true)
+                    if (sub_6DF21B_loop(vehicle))
                     {
                         break;
                     }
@@ -439,7 +439,7 @@ int32_t cable_lift_update_track_motion(rct_vehicle* cableLift)
                 }
                 else
                 {
-                    if (sub_6DF01A_loop(vehicle) == true)
+                    if (sub_6DF01A_loop(vehicle))
                     {
                         break;
                     }

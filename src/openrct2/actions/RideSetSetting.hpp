@@ -186,7 +186,7 @@ public:
                 ride_remove_peeps(ride);
 
                 ride->mode = _value;
-                ride_update_max_vehicles(ride);
+                ride->UpdateMaxVehicles();
                 break;
             case RideSetSetting::Departure:
                 ride->depart_flags = _value;
@@ -243,6 +243,7 @@ public:
                 break;
             case RideSetSetting::RideType:
                 ride->type = _value;
+                gfx_invalidate_screen();
                 break;
         }
 

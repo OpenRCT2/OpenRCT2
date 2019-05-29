@@ -10,6 +10,8 @@
 #pragma once
 
 #define NETWORK_DEFAULT_PORT 11753
+#define NETWORK_LAN_BROADCAST_PORT 11754
+#define NETWORK_LAN_BROADCAST_MSG "openrct2.server.query"
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #include "../common.h"
@@ -19,9 +21,13 @@
 #include <memory>
 #include <string>
 
+struct json_t;
 struct GameAction;
 struct Peep;
 struct LocationXYZ16;
+class GameActionResult;
+enum class ModifyGroupType : uint8_t;
+enum class PermissionState : uint8_t;
 
 namespace OpenRCT2
 {
@@ -30,14 +36,18 @@ namespace OpenRCT2
 
 void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 void network_close();
+void network_reconnect();
 void network_shutdown_client();
 int32_t network_begin_client(const std::string& host, int32_t port);
 int32_t network_begin_server(int32_t port, const std::string& address);
 
 int32_t network_get_mode();
 int32_t network_get_status();
-void network_check_desynchronization();
+bool network_is_desynchronised();
+bool network_check_desynchronisation();
+void network_request_gamestate_snapshot();
 void network_send_tick();
+bool network_gamestate_snapshots_enabled();
 void network_update();
 void network_process_pending();
 void network_flush();
@@ -65,11 +75,12 @@ int32_t network_get_current_player_group_index();
 uint8_t network_get_group_id(uint32_t index);
 int32_t network_get_num_groups();
 const char* network_get_group_name(uint32_t index);
-void game_command_set_player_group(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_modify_groups(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_kick_player(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+std::unique_ptr<GameActionResult> network_set_player_group(
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
+std::unique_ptr<GameActionResult> network_modify_groups(
+    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
+    PermissionState permissionState, bool isExecuting);
+std::unique_ptr<GameActionResult> network_kick_player(NetworkPlayerId_t playerId, bool isExecuting);
 uint8_t network_get_default_group();
 int32_t network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32_t index);
@@ -103,3 +114,5 @@ const utf8* network_get_server_provider_website();
 std::string network_get_version();
 
 NetworkStats_t network_get_stats();
+NetworkServerState_t network_get_server_state();
+json_t* network_get_server_info_as_json();

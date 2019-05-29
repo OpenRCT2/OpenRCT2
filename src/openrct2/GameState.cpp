@@ -12,9 +12,11 @@
 #include "Context.h"
 #include "Editor.h"
 #include "Game.h"
+#include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ReplayManager.h"
+#include "config/Config.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
@@ -228,23 +230,39 @@ void GameState::UpdateLogic()
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
         && network_get_authstatus() == NETWORK_AUTH_OK)
     {
-        // Can't be in sync with server, round trips won't work if we are at same level.
-        if (gCurrentTicks >= network_get_server_tick())
+        // Don't run ahead of the server but can be on same tick.
+        if (gCurrentTicks > network_get_server_tick())
         {
-            // Don't run past the server
             return;
         }
     }
 
     if (network_get_mode() == NETWORK_MODE_SERVER)
     {
+        if (network_gamestate_snapshots_enabled())
+        {
+            CreateStateSnapshot();
+        }
+
         // Send current tick out.
         network_send_tick();
     }
     else if (network_get_mode() == NETWORK_MODE_CLIENT)
     {
         // Check desync.
-        network_check_desynchronization();
+        bool desynced = network_check_desynchronisation();
+        if (desynced)
+        {
+            // If desync debugging is enabled and we are still connected request the specific game state from server.
+            if (network_gamestate_snapshots_enabled() && network_get_status() == NETWORK_STATUS_CONNECTED)
+            {
+                // Create snapshot from this tick so we can compare it later
+                // as we won't pause the game on this event.
+                CreateStateSnapshot();
+
+                network_request_gamestate_snapshot();
+            }
+        }
     }
 
     date_update();
@@ -260,9 +278,9 @@ void GameState::UpdateLogic()
     map_restore_provisional_elements();
     vehicle_update_all();
     sprite_misc_update_all();
-    ride_update_all();
+    Ride::UpdateAll();
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         _park->Update(_date);
     }
@@ -310,4 +328,13 @@ void GameState::UpdateLogic()
     gCurrentTicks++;
     gScenarioTicks++;
     gSavedAge++;
+}
+
+void GameState::CreateStateSnapshot()
+{
+    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+
+    auto& snapshot = snapshots->CreateSnapshot();
+    snapshots->Capture(snapshot);
+    snapshots->LinkSnapshot(snapshot, gCurrentTicks, scenario_rand_state().s0);
 }

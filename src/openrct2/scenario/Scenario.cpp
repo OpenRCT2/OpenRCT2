@@ -238,7 +238,7 @@ static void scenario_entrance_fee_too_high_check()
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
     {
-        if (gParkEntrances.size() > 0)
+        if (!gParkEntrances.empty())
         {
             const auto& entrance = gParkEntrances[0];
             auto x = entrance.x + 16;
@@ -435,7 +435,7 @@ static int32_t scenario_create_ducks()
     if (!map_is_location_in_park({ x, y }))
         return 0;
 
-    centreWaterZ = (tile_element_height(x, y) >> 16) & 0xFFFF;
+    centreWaterZ = (tile_element_water_height(x, y));
     if (centreWaterZ == 0)
         return 0;
 
@@ -447,7 +447,7 @@ static int32_t scenario_create_ducks()
     {
         for (j = 0; j < 7; j++)
         {
-            waterZ = (tile_element_height(x2, y2) >> 16) & 0xFFFF;
+            waterZ = (tile_element_water_height(x2, y2));
             if (waterZ == centreWaterZ)
                 c++;
 

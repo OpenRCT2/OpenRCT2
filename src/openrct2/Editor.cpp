@@ -16,6 +16,8 @@
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
+#include "actions/LandBuyRightsAction.hpp"
+#include "actions/LandSetRightsAction.hpp"
 #include "audio/audio.h"
 #include "interface/Viewport.h"
 #include "localisation/Localisation.h"
@@ -193,7 +195,14 @@ namespace Editor
     {
         int32_t mapSize = gMapSize;
 
-        game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 3) * 32, (mapSize - 3) * 32);
+        MapRange range = { 64, 64, (mapSize - 3) * 32, (mapSize - 3) * 32 };
+        auto landSetRightsAction = LandSetRightsAction(range, LandSetRightSetting::SetForSale);
+        landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+        GameActions::Execute(&landSetRightsAction);
+
+        auto landBuyRightsAction = LandBuyRightsAction(range, LandBuyRightSetting::BuyLand);
+        landBuyRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+        GameActions::Execute(&landBuyRightsAction);
     }
 
     /**
@@ -491,7 +500,7 @@ namespace Editor
             return false;
         }
 
-        if (gParkEntrances.size() == 0)
+        if (gParkEntrances.empty())
         {
             gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
             return false;
@@ -520,226 +529,13 @@ namespace Editor
             }
         }
 
-        if (gPeepSpawns.size() == 0)
+        if (gPeepSpawns.empty())
         {
             gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
             return false;
         }
 
         return true;
-    }
-
-    void GameCommandEditScenarioOptions(
-        [[maybe_unused]] int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
-        [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-    {
-        if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
-        {
-            *ebx = 0;
-            return;
-        }
-
-        switch (*ecx)
-        {
-            case EDIT_SCENARIOOPTIONS_SETNOMONEY:
-                if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-                {
-                    if (*edx != 0)
-                    {
-                        gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
-                    }
-                    else
-                    {
-                        gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-                    }
-                }
-                else
-                {
-                    if (*edx != 0)
-                    {
-                        gParkFlags |= PARK_FLAGS_NO_MONEY;
-                    }
-                    else
-                    {
-                        gParkFlags &= ~PARK_FLAGS_NO_MONEY;
-                    }
-                    // Invalidate all windows that have anything to do with finance
-                    window_invalidate_by_class(WC_RIDE);
-                    window_invalidate_by_class(WC_PEEP);
-                    window_invalidate_by_class(WC_PARK_INFORMATION);
-                    window_invalidate_by_class(WC_FINANCES);
-                    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                }
-                break;
-            case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
-                gInitialCash = std::clamp(*edx, MONEY(0, 00), MONEY(1000000, 00));
-                gCash = gInitialCash;
-                window_invalidate_by_class(WC_FINANCES);
-                window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-                break;
-            case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
-                gBankLoan = std::clamp(*edx, MONEY(0, 00), MONEY(5000000, 00));
-                gMaxBankLoan = std::max(gBankLoan, gMaxBankLoan);
-                window_invalidate_by_class(WC_FINANCES);
-                break;
-            case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
-                gMaxBankLoan = std::clamp(*edx, MONEY(0, 00), MONEY(5000000, 00));
-                gBankLoan = std::min(gBankLoan, gMaxBankLoan);
-                window_invalidate_by_class(WC_FINANCES);
-                break;
-            case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
-                gBankLoanInterestRate = std::clamp(*edx, 0, 80);
-                window_invalidate_by_class(WC_FINANCES);
-                break;
-            case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
-                if (*edx != 0)
-                {
-                    gParkFlags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
-                }
-                else
-                {
-                    gParkFlags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
-                }
-                break;
-            case EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST:
-                gGuestInitialCash = std::clamp(*edx, MONEY(0, 00), MONEY(1000, 00));
-                break;
-            case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
-                gGuestInitialHappiness = std::clamp(*edx, 40, 250);
-                break;
-            case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER:
-                gGuestInitialHunger = std::clamp(*edx, 40, 250);
-                break;
-            case EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST:
-                gGuestInitialThirst = std::clamp(*edx, 40, 250);
-                break;
-            case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
-                if (*edx != 0)
-                {
-                    gParkFlags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-                }
-                else
-                {
-                    gParkFlags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
-                }
-                break;
-            case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES:
-                if (*edx != 0)
-                {
-                    gParkFlags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
-                }
-                else
-                {
-                    gParkFlags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
-                }
-                break;
-            case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
-                gLandPrice = std::clamp(*edx, MONEY(5, 00), MONEY(200, 00));
-                break;
-            case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
-                gConstructionRightsPrice = std::clamp(*edx, MONEY(5, 00), MONEY(200, 00));
-                break;
-            case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
-                if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-                {
-                    if (*edx == 0)
-                    {
-                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                        gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                        gParkEntranceFee = MONEY(0, 00);
-                    }
-                    else if (*edx == 1)
-                    {
-                        gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                        gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                        gParkEntranceFee = MONEY(10, 00);
-                    }
-                    else
-                    {
-                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                        gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
-                        gParkEntranceFee = MONEY(10, 00);
-                    }
-                }
-                else
-                {
-                    if (*edx == 0)
-                    {
-                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                        gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    }
-                    else if (*edx == 1)
-                    {
-                        gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                        gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    }
-                    else
-                    {
-                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                        gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    }
-                    window_invalidate_by_class(WC_PARK_INFORMATION);
-                    window_invalidate_by_class(WC_RIDE);
-                }
-                break;
-            case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
-                gParkEntranceFee = std::clamp(*edx, MONEY(0, 00), MAX_ENTRANCE_FEE);
-                window_invalidate_by_class(WC_PARK_INFORMATION);
-                break;
-            case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:
-                if (*edx != 0)
-                {
-                    gParkFlags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
-                }
-                else
-                {
-                    gParkFlags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
-                }
-                break;
-            case EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES:
-                if (*edx != 0)
-                {
-                    gParkFlags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
-                }
-                else
-                {
-                    gParkFlags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
-                }
-                break;
-            case EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION:
-                if (*edx != 0)
-                {
-                    gParkFlags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-                }
-                else
-                {
-                    gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-                }
-                break;
-            case EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL:
-                if (*edx != 0)
-                {
-                    gParkFlags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
-                }
-                else
-                {
-                    gParkFlags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
-                }
-                break;
-            case EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL:
-                if (*edx != 0)
-                {
-                    gParkFlags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
-                }
-                else
-                {
-                    gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
-                }
-                break;
-        }
-        window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
-        *ebx = 0;
     }
 
     uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index)
@@ -777,10 +573,4 @@ namespace Editor
 void editor_open_windows_for_current_step()
 {
     Editor::OpenWindowsForCurrentStep();
-}
-
-void game_command_edit_scenario_options(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp)
-{
-    Editor::GameCommandEditScenarioOptions(eax, ebx, ecx, edx, esi, edi, ebp);
 }

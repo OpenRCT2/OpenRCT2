@@ -77,6 +77,7 @@ The following people are not part of the development team, but have been contrib
 * Albert Morgese (Fusxfaranto) - Shop auto-rotation, unicode uppercasing.
 * Olivier Wervers (oli414) - Remove unused objects command, various bugfixes
 * Christian Schubert (Osmodium) - Ensuring custom user content folders, incl. open folder.
+* (Xkeeper0) - Improved banner tooltips; multiplayer status in toolbar.
 
 ## Bug fixes
 * (halfbro)
@@ -104,6 +105,7 @@ The following people are not part of the development team, but have been contrib
 * (telk5093)
 * Ethan Smith (ethanhs) - Refactor MAX_PATH
 * Robert Lewicki (rlewicki)
+* Liam Parker (elInfidel)
 * Tyler Ruckinger (TyPR124)
 * Justin Gottula (jgottula)
 * Seongsik Park (pss9205)
@@ -116,6 +118,19 @@ The following people are not part of the development team, but have been contrib
 * Øystein Dale (oystedal)
 * Christian Schubert (Osmodium)
 * James Lord (RCTMASTA)
+* Brian Massino (Nazey)
+* Lauren Watson (lwatson2016)
+* Jason Myre (jmyre1999)
+* Nicole Wright (nicolewright)
+* Josh Tucker (joshtucker132)
+* Hussein Okasha (Hokasha2016)
+* Brandon Dupree (Bdupree5)
+* Zetao Ye (ZbrettonYe)
+* Jordan Arevalos (Jarevalos2017)
+* Florian Will (w-flo)
+* Trevor Harkness (tharkne)
+* Steve Xu (stevexu-umich)
+* (aw20368)
 
 ## Toolchain
 * (Balletie) - macOS

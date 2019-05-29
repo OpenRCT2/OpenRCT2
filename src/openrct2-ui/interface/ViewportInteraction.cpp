@@ -16,8 +16,10 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/BalloonPressAction.hpp>
 #include <openrct2/actions/FootpathSceneryRemoveAction.hpp>
 #include <openrct2/actions/LargeSceneryRemoveAction.hpp>
+#include <openrct2/actions/ParkEntranceRemoveAction.hpp>
 #include <openrct2/actions/SmallSceneryRemoveAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/localisation/Localisation.h>
@@ -160,10 +162,11 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
                         switch (info.sprite->generic.type)
                         {
                             case SPRITE_MISC_BALLOON:
-                                game_do_command(
-                                    info.sprite->balloon.sprite_index, GAME_COMMAND_FLAG_APPLY, 0, 0,
-                                    GAME_COMMAND_BALLOON_PRESS, 0, 0);
-                                break;
+                            {
+                                auto balloonPress = BalloonPressAction(info.sprite->AsBalloon()->sprite_index);
+                                GameActions::Execute(&balloonPress);
+                            }
+                            break;
                             case SPRITE_MISC_DUCK:
                                 duck_press(&info.sprite->duck);
                                 break;
@@ -316,8 +319,11 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             sceneryEntry = tileElement->AsWall()->GetEntry();
             if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
+                banner = &gBanners[tileElement->AsWall()->GetBannerIndex()];
+                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
+                set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                set_map_tooltip_format_arg(6, rct_string_id, sceneryEntry->name);
                 return info->type;
             }
             break;
@@ -326,8 +332,11 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
+                banner = &gBanners[tileElement->AsLargeScenery()->GetBannerIndex()];
+                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
+                set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                set_map_tooltip_format_arg(6, rct_string_id, sceneryEntry->name);
                 return info->type;
             }
             break;
@@ -336,8 +345,15 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             banner = &gBanners[tileElement->AsBanner()->GetIndex()];
             sceneryEntry = get_banner_entry(banner->type);
 
-            set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-            set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
+            set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+
+            if (banner->flags & BANNER_FLAG_NO_ENTRY)
+                set_map_tooltip_format_arg(2, rct_string_id, STR_NO_ENTRY);
+            else
+                set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
+
+            set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+            set_map_tooltip_format_arg(6, rct_string_id, sceneryEntry->name);
             return info->type;
     }
 
@@ -530,8 +546,8 @@ void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t
             y -= CoordsDirectionDelta[rotation].y;
             break;
     }
-    gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-    game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, tileElement->base_height / 2, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 0, 0);
+    auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ x, y, tileElement->base_height * 8 });
+    GameActions::Execute(&parkEntranceRemoveAction);
 }
 
 /**

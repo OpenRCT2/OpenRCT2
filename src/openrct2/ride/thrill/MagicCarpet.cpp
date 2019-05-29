@@ -122,7 +122,7 @@ static void paint_magic_carpet_vehicle(
     paint_session* session, Ride* ride, uint8_t direction, uint32_t swingImageId, LocationXYZ16 offset, LocationXYZ16 bbOffset,
     LocationXYZ16 bbSize)
 {
-    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+    rct_ride_entry* rideEntry = ride->GetRideEntry();
     uint32_t vehicleImageId = rideEntry->vehicles[0].base_image_id + direction;
 
     // Vehicle
@@ -155,7 +155,7 @@ static void paint_magic_carpet_vehicle(
         bbOffset.x, bbOffset.y, bbOffset.z);
 
     // Riders
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
         rct_vehicle* vehicle = get_first_vehicle(ride);
