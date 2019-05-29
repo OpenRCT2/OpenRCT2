@@ -3789,6 +3789,7 @@ STR_6318    :Detekována síťová desynchronizace.{NEWLINE}Log: {STRING}
 STR_6319    :{WINDOW_COLOUR_2}Uzavřený brzdný blok
 STR_6320    :{WINDOW_COLOUR_2}Nezničitelné
 STR_6321    :{WINDOW_COLOUR_2}Rozbitá část
+STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 
 ###############################################################################
 ## RCT2 Scenarios
