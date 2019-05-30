@@ -562,6 +562,8 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
     dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
     dpi.DrawingEngine = context->GetDrawingEngine();
 
+    std::memset(dpi.bits, PALETTE_INDEX_0, dpi.width * dpi.height);
+
     if (options->hide_guests)
     {
         viewport.flags |= VIEWPORT_FLAG_INVISIBLE_PEEPS;
@@ -595,6 +597,11 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
     if (options->remove_litter || options->tidy_up_park)
     {
         CheatsSet(CheatType::RemoveLitter);
+    }
+
+    if (options->transparent)
+    {
+        viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }
 
     viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);

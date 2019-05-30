@@ -57,7 +57,7 @@ void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y)
 
         sub_68B3FB(session, x, y);
     }
-    else
+    else if (!(session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
         blank_tiles_paint(session, x, y);
     }
@@ -78,7 +78,7 @@ void sub_68B2B7(paint_session* session, int32_t x, int32_t y)
 
         sub_68B3FB(session, x, y);
     }
-    else
+    else if (!(session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
         blank_tiles_paint(session, x, y);
     }
