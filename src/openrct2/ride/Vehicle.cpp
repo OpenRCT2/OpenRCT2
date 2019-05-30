@@ -2587,6 +2587,10 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
             vehicle_update_rotating(vehicle);
             break;
         case RIDE_MODE_FILM_AVENGING_AVIATORS:
+            vehicle->SetState(VEHICLE_STATUS_SIMULATOR_OPERATING, 0);
+            vehicle->current_time = -1;
+            vehicle_update_simulator_operating(vehicle);
+            break;
         case RIDE_MODE_FILM_THRILL_RIDERS:
             vehicle->SetState(VEHICLE_STATUS_SIMULATOR_OPERATING, 1);
             vehicle->current_time = -1;
@@ -9914,7 +9918,7 @@ const rct_vehicle* rct_vehicle::GetCar(size_t carIndex) const
     return car;
 }
 
-void rct_vehicle::SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState)
+void rct_vehicle::SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0)
 {
     status = vehicleStatus;
     sub_state = subState;
