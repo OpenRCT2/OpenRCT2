@@ -1243,6 +1243,15 @@ private:
             }
         }
 
+        VEHICLE_STATUS statusSrc = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+
+        // This will need to be updated if we ever add more VEHICLE_STATUS enums.
+        if (src->status >= VEHICLE_STATUS_MOVING_TO_END_OF_STATION || src->status <= VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES)
+        {
+            statusSrc = static_cast<VEHICLE_STATUS>(src->status);
+        }
+        
+        dst->status = statusSrc;
         dst->var_CD = src->var_CD;
         dst->track_x = src->track_x;
         dst->track_y = src->track_y;
@@ -1251,7 +1260,6 @@ private:
         dst->track_type = src->track_type;
         dst->track_progress = src->track_progress;
         dst->vertical_drop_countdown = src->vertical_drop_countdown;
-        dst->status = src->status;
         dst->sub_state = src->sub_state;
         dst->update_flags = src->update_flags;
 
