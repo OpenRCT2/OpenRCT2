@@ -128,6 +128,32 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
     return nullptr;
 }
 
+WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
+{
+    rct_banner* banner = &gBanners[bannerIndex];
+    TileElement* tileElement = map_get_first_element_at(banner->x, banner->y);
+
+    if (tileElement == nullptr)
+        return nullptr;
+
+    do
+    {
+        auto wallElement = tileElement->AsWall();
+
+        if (wallElement == nullptr)
+            continue;
+
+        rct_scenery_entry* scenery_entry = wallElement->GetEntry();
+        if (scenery_entry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+            continue;
+        if (wallElement->GetBannerIndex() != bannerIndex)
+            continue;
+        return wallElement;
+    } while (!(tileElement++)->IsLastForTile());
+
+    return nullptr;
+}
+
 /**
  *
  *  rct2: 0x006B7D86
