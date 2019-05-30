@@ -605,7 +605,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         CheatsSet(CheatType::RemoveLitter);
     }
 
-    if (options->transparent)
+    if (options->transparent || gConfigGeneral.transparent_screenshot)
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }
