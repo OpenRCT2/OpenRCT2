@@ -253,30 +253,13 @@ void screenshot_giant()
     int32_t centreX = (mapSize / 2) * 32 + 16;
     int32_t centreY = (mapSize / 2) * 32 + 16;
 
-    int32_t x = 0, y = 0;
     int32_t z = tile_element_height(centreX, centreY);
-    switch (rotation)
-    {
-        case 0:
-            x = centreY - centreX;
-            y = ((centreX + centreY) / 2) - z;
-            break;
-        case 1:
-            x = -centreY - centreX;
-            y = ((-centreX + centreY) / 2) - z;
-            break;
-        case 2:
-            x = -centreY + centreX;
-            y = ((-centreX - centreY) / 2) - z;
-            break;
-        case 3:
-            x = centreY + centreX;
-            y = ((centreX - centreY) / 2) - z;
-            break;
-    }
 
-    viewport.view_x = x - ((viewport.view_width << zoom) / 2);
-    viewport.view_y = y - ((viewport.view_height << zoom) / 2);
+    CoordsXYZ centreCoords3d = { centreX, centreY, z };
+    CoordsXY centreCoords2d = translate_3d_to_2d_with_z(rotation, centreCoords3d);
+
+    viewport.view_x = centreCoords2d.x - ((viewport.view_width << zoom) / 2);
+    viewport.view_y = centreCoords2d.y - ((viewport.view_height << zoom) / 2);
     viewport.zoom = zoom;
     gCurrentRotation = rotation;
 
@@ -531,30 +514,13 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             if (centreMapY)
                 customY = (mapSize / 2) * 32 + 16;
 
-            int32_t x = 0, y = 0;
             int32_t z = tile_element_height(customX, customY);
-            switch (customRotation)
-            {
-                case 0:
-                    x = customY - customX;
-                    y = ((customX + customY) / 2) - z;
-                    break;
-                case 1:
-                    x = -customY - customX;
-                    y = ((-customX + customY) / 2) - z;
-                    break;
-                case 2:
-                    x = -customY + customX;
-                    y = ((-customX - customY) / 2) - z;
-                    break;
-                case 3:
-                    x = customY + customX;
-                    y = ((customX - customY) / 2) - z;
-                    break;
-            }
+            CoordsXYZ coords3d = { customX, customY, z };
 
-            viewport.view_x = x - ((viewport.view_width << customZoom) / 2);
-            viewport.view_y = y - ((viewport.view_height << customZoom) / 2);
+            CoordsXY coords2d = translate_3d_to_2d_with_z(customRotation, coords3d);
+
+            viewport.view_x = coords2d.x - ((viewport.view_width << customZoom) / 2);
+            viewport.view_y = coords2d.y - ((viewport.view_height << customZoom) / 2);
             viewport.zoom = customZoom;
             gCurrentRotation = customRotation;
         }

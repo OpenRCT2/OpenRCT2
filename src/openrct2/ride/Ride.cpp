@@ -7899,28 +7899,9 @@ StationObject* ride_get_station_object(const Ride* ride)
 
 LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z)
 {
-    LocationXY16 rotatedCoords = { 0, 0 };
-
-    switch (get_current_rotation())
-    {
-        case 0:
-            rotatedCoords.x = y - x;
-            rotatedCoords.y = ((y + x) / 2) - z;
-            break;
-        case 1:
-            rotatedCoords.x = -x - y;
-            rotatedCoords.y = ((y - x) / 2) - z;
-            break;
-        case 2:
-            rotatedCoords.x = x - y;
-            rotatedCoords.y = ((-y - x) / 2) - z;
-            break;
-        case 3:
-            rotatedCoords.x = y + x;
-            rotatedCoords.y = ((x - y) / 2) - z;
-            break;
-    }
-
+    CoordsXYZ coords3d = { x, y, z };
+    CoordsXY coords2d = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
+    LocationXY16 rotatedCoords = { (int16_t)coords2d.x, (int16_t)coords2d.y };
     return rotatedCoords;
 }
 
