@@ -208,6 +208,7 @@ namespace Config
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
+            model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", false);
         }
     }
 
@@ -281,6 +282,7 @@ namespace Config
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
         writer->WriteEnum<int32_t>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
+        writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
     }
 
     static void ReadInterface(IIniReader* reader)

@@ -275,6 +275,12 @@ void screenshot_giant()
     dpi.zoom_level = 0;
     dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
 
+    if (gConfigGeneral.transparent_screenshot)
+    {
+        std::memset(dpi.bits, PALETTE_INDEX_0, dpi.width * dpi.height);
+        viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+    }
+
     auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
     dpi.DrawingEngine = drawingEngine.get();
 

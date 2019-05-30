@@ -46,6 +46,7 @@ struct GeneralConfiguration
     bool render_weather_gloom;
     bool disable_lightning_effect;
     bool show_guest_purchases;
+    bool transparent_screenshot;
 
     // Localisation
     int32_t language;
