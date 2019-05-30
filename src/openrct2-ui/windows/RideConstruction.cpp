@@ -1932,11 +1932,14 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, _currentTrackPieceDirection });
 
     trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-        _stationConstructed = get_ride(w->number)->num_stations != 0;
-        window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
         if (result->Error != GA_ERROR::OK)
         {
             window_ride_construction_update_active_elements();
+        }
+        else
+        {
+            _stationConstructed = get_ride(w->number)->num_stations != 0;
+            window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
         }
     });
 
