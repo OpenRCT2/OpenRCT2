@@ -491,6 +491,7 @@ public:
                     // Remove walls in the directions this track intersects
                     uint8_t intersectingDirections = (*wallEdges)[blockIndex];
                     intersectingDirections ^= 0x0F;
+                    intersectingDirections = rol4(intersectingDirections, _origin.direction);
                     for (int32_t i = 0; i < 4; i++)
                     {
                         if (intersectingDirections & (1 << i))
