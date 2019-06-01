@@ -254,9 +254,10 @@ static void viewport_redraw_after_shift(
             || viewport->x >= window->x + window->width || viewport->y + viewport->height <= window->y
             || viewport->y >= window->y + window->height)
         {
-            auto nextWindowIndex = window_get_index(window) + 1;
-            auto nextWindow = nextWindowIndex >= g_window_list.size() ? nullptr : g_window_list[nextWindowIndex].get();
-            viewport_redraw_after_shift(dpi, nextWindow, viewport, x, y);
+            auto itWindowPos = window_get_iterator(window);
+            auto itNextWindow = itWindowPos != g_window_list.end() ? std::next(itWindowPos) : g_window_list.end();
+            viewport_redraw_after_shift(
+                dpi, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), viewport, x, y);
             return;
         }
 
@@ -368,9 +369,10 @@ static void viewport_redraw_after_shift(
 static void viewport_shift_pixels(
     rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int16_t x_diff, int16_t y_diff)
 {
-    for (auto i = window_get_index(window); i < g_window_list.size(); i++)
+    auto it = window_get_iterator(window);
+    for (; it != g_window_list.end(); it++)
     {
-        auto w = g_window_list[i].get();
+        auto w = it->get();
         if (!(w->flags & WF_TRANSPARENT))
             continue;
         if (w->viewport == viewport)

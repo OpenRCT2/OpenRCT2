@@ -784,9 +784,10 @@ private:
         DrawRainFunc drawFunc)
     {
         rct_window* w{};
-        for (auto i = window_get_index(original_w) + 1;; i++)
+        auto itStart = window_get_iterator(original_w);
+        for (auto it = std::next(itStart);; it++)
         {
-            if (i >= g_window_list.size())
+            if (it == g_window_list.end())
             {
                 // Loop ended, draw rain for original_w
                 auto vp = original_w->viewport;
@@ -806,7 +807,7 @@ private:
                 return;
             }
 
-            w = g_window_list[i].get();
+            w = it->get();
             if (right <= w->x || bottom <= w->y)
             {
                 continue;

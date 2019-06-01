@@ -14,6 +14,8 @@
 #include "../ride/RideTypes.h"
 
 #include <limits>
+#include <list>
+#include <memory>
 
 struct rct_drawpixelinfo;
 struct rct_window;
@@ -580,7 +582,8 @@ extern colour_t gCurrentWindowColours[4];
 
 extern bool gDisableErrorWindowSound;
 
-size_t window_get_index(const rct_window* w);
+std::list<std::unique_ptr<rct_window>>::iterator window_get_iterator(const rct_window* w);
+
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();
