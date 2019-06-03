@@ -892,8 +892,6 @@ void window_set_location(rct_window* w, int32_t x, int32_t y, int32_t z)
  */
 void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
 {
-    log_info("YEP");
-
     LocationXYZ16 location_3d = { (int16_t)x, (int16_t)y, (int16_t)z };
 
     assert(w != nullptr);
