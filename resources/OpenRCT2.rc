@@ -1,6 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+#include "version.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -15,8 +16,45 @@
 /////////////////////////////////////////////////////////////////////////////
 // English (United Kingdom) resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU) || defined(AFX_TARG_ENG)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(65001)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION OPENRCT2_FILE_VERSION
+ PRODUCTVERSION OPENRCT2_FILE_VERSION
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080904b0"
+        BEGIN
+            VALUE "CompanyName", "OpenRCT2 Team"
+            VALUE "FileDescription", "Main executable for OpenRCT2"
+            VALUE "FileVersion", OPENRCT2_PRODUCT_VERSION
+            VALUE "LegalCopyright", "Copyright (c) 2014-2019 OpenRCT2 developers"
+            VALUE "ProductName", "OpenRCT2"
+            VALUE "ProductVersion", OPENRCT2_PRODUCT_VERSION
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x809, 1200
+    END
+END
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -67,3 +105,4 @@ IDI_ICON                ICON                    "logo\\icon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
