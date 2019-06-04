@@ -363,12 +363,14 @@ void window_close_all()
 {
     window_close_by_class(WC_DROPDOWN);
 
-    auto it = g_window_list.begin();
-    while (it != g_window_list.end())
+    for (auto it = g_window_list.begin(); it != g_window_list.end();)
     {
         auto itNext = std::next(it);
         auto w = it->get();
-        window_close(w);
+        if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        {
+            window_close(w);
+        }
         it = itNext;
     }
 }
