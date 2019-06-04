@@ -3770,6 +3770,10 @@ STR_6319    :{WINDOW_COLOUR_2}Block Brake Closed
 STR_6320    :{WINDOW_COLOUR_2}Indestructible
 STR_6321    :{WINDOW_COLOUR_2}Addition is broken
 STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6323    :Simulating
+STR_6324    :Simulate
+STR_6325    :{SMALLFONT}{BLACK}Simulate ride/attraction
+STR_6326    :Can't simulate {POP16}{POP16}{POP16}{STRINGID}...
 
 #############
 # Scenarios #

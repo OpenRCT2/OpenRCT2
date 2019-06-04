@@ -2285,7 +2285,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
 
         num_seats_on_train &= 0x7F;
 
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE))
+        if (ride->SupportsStatus(RIDE_STATUS_TESTING))
         {
             if (vehicle->time_waiting < 20)
             {
@@ -3254,7 +3254,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
                     vehicle_update_test_finish(vehicle);
                 }
             }
-            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS))
+            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !vehicle->IsGhost())
             {
                 vehicle_test_reset(vehicle);
             }
@@ -3520,6 +3520,15 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle)
     news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
 }
 
+static void vehicle_simulate_crash(rct_vehicle* vehicle)
+{
+    auto ride = get_ride(vehicle->ride);
+    if (ride != nullptr)
+    {
+        ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
+    }
+}
+
 /**
  * Setup function for a vehicle colliding with
  * another vehicle.
@@ -3528,10 +3537,16 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle)
  */
 static void vehicle_update_collision_setup(rct_vehicle* vehicle)
 {
+    auto ride = get_ride(vehicle->ride);
+    if (ride != nullptr && ride->status == RIDE_STATUS_SIMULATING)
+    {
+        vehicle_simulate_crash(vehicle);
+        return;
+    }
+
     vehicle->status = VEHICLE_STATUS_CRASHED;
     vehicle_invalidate_window(vehicle);
 
-    Ride* ride = get_ride(vehicle->ride);
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = vehicle->GetHead();
@@ -3603,6 +3618,13 @@ static constexpr const LocationXY16 stru_9A3AC4[] = {
  */
 static void vehicle_update_crash_setup(rct_vehicle* vehicle)
 {
+    auto ride = get_ride(vehicle->ride);
+    if (ride != nullptr && ride->status == RIDE_STATUS_SIMULATING)
+    {
+        vehicle_simulate_crash(vehicle);
+        return;
+    }
+
     vehicle->status = VEHICLE_STATUS_CRASHING;
     vehicle_invalidate_window(vehicle);
 
@@ -4216,7 +4238,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle)
                     vehicle_update_test_finish(vehicle);
                 }
             }
-            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS))
+            else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS) && !vehicle->IsGhost())
             {
                 vehicle_test_reset(vehicle);
             }
@@ -5266,10 +5288,16 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle)
 
 static void vehicle_crash_on_land(rct_vehicle* vehicle)
 {
+    auto ride = get_ride(vehicle->ride);
+    if (ride != nullptr && ride->status == RIDE_STATUS_SIMULATING)
+    {
+        vehicle_simulate_crash(vehicle);
+        return;
+    }
+
     vehicle->status = VEHICLE_STATUS_CRASHED;
     vehicle_invalidate_window(vehicle);
 
-    Ride* ride = get_ride(vehicle->ride);
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = vehicle->GetHead();
@@ -5320,10 +5348,16 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
 
 static void vehicle_crash_on_water(rct_vehicle* vehicle)
 {
+    auto ride = get_ride(vehicle->ride);
+    if (ride != nullptr && ride->status == RIDE_STATUS_SIMULATING)
+    {
+        vehicle_simulate_crash(vehicle);
+        return;
+    }
+
     vehicle->status = VEHICLE_STATUS_CRASHED;
     vehicle_invalidate_window(vehicle);
 
-    Ride* ride = get_ride(vehicle->ride);
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = vehicle->GetHead();
@@ -10013,4 +10047,10 @@ const rct_vehicle* rct_vehicle::GetCar(size_t carIndex) const
         car = GET_VEHICLE(car->next_vehicle_on_train);
     }
     return car;
+}
+
+bool rct_vehicle::IsGhost() const
+{
+    auto r = get_ride(ride);
+    return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
 }

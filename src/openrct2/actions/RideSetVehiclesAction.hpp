@@ -92,7 +92,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::BROKEN, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
         }
 
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::NOT_CLOSED, errTitle, STR_MUST_BE_CLOSED_FIRST);
         }

@@ -79,6 +79,7 @@ enum {
     WIDX_SEAT_ROTATION_ANGLE_SPINNER,
     WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP,
     WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN,
+    WIDX_SIMULATE,
 };
 
 validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_CONSTRUCT);
@@ -113,8 +114,8 @@ static rct_widget window_ride_construction_widgets[] = {
     { WWT_IMGBTN,           1,  3,      162,    164,    333,    0xFFFFFFFF,                                 STR_RIDE_CONSTRUCTION_CONSTRUCT_SELECTED_SECTION_TIP    },
     { WWT_FLATBTN,          1,  60,     105,    338,    361,    SPR_DEMOLISH_CURRENT_SECTION,               STR_RIDE_CONSTRUCTION_REMOVE_HIGHLIGHTED_SECTION_TIP    },
     { WWT_FLATBTN,          1,  50,     71,     29,     52,     SPR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE,     STR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE_TIP              },
-    { WWT_FLATBTN,          1,  20,     43,     338,    361,    SPR_PREVIOUS,                               STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP      },
-    { WWT_FLATBTN,          1,  122,    145,    338,    361,    SPR_NEXT,                                   STR_RIDE_CONSTRUCTION_MOVE_TO_NEXT_SECTION_TIP          },
+    { WWT_FLATBTN,          1,  30,     53,     338,    361,    SPR_PREVIOUS,                               STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP      },
+    { WWT_FLATBTN,          1,  112,    135,    338,    361,    SPR_NEXT,                                   STR_RIDE_CONSTRUCTION_MOVE_TO_NEXT_SECTION_TIP          },
     { WWT_GROUPBOX,         0,  3,      162,    362,    389,    0xFFFFFFFF,                                 STR_NONE                                                },
     { WWT_BUTTON,           1,  9,      78,     372,    383,    STR_RIDE_CONSTRUCTION_ENTRANCE,             STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                      },
     { WWT_BUTTON,           1,  87,     156,    372,    383,    STR_RIDE_CONSTRUCTION_EXIT,                 STR_RIDE_CONSTRUCTION_EXIT_TIP                          },
@@ -124,6 +125,7 @@ static rct_widget window_ride_construction_widgets[] = {
     { WWT_FLATBTN,          1,  123,    146,    132,    155,    SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,       STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP       },
     { WWT_GROUPBOX,         0,  96,     162,    120,    160,    STR_RIDE_CONSTRUCTION_SEAT_ROT,             STR_NONE                                                },
       SPINNER_WIDGETS      (1,  101,    158,    138,    149,    0,                                          STR_RIDE_CONSTRUCTION_SELECT_SEAT_ROTATION_ANGLE_TIP),
+    { WWT_FLATBTN,          1,  139,    162,    338,    361,    SPR_G2_SIMULATE,                            STR_SIMULATE_RIDE_TIP                                   },
     { WIDGETS_END }
 };
 
@@ -540,8 +542,8 @@ rct_window* window_ride_construction_open()
         | (1ULL << WIDX_SLOPE_DOWN) | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP)
         | (1ULL << WIDX_CHAIN_LIFT) | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_STRAIGHT) | (1ULL << WIDX_BANK_RIGHT)
         | (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_DEMOLISH) | (1ULL << WIDX_LEFT_CURVE_LARGE) | (1ULL << WIDX_PREVIOUS_SECTION)
-        | (1ULL << WIDX_NEXT_SECTION) | (1ULL << WIDX_ENTRANCE) | (1ULL << WIDX_EXIT) | (1ULL << WIDX_RIGHT_CURVE_LARGE)
-        | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_U_TRACK) | (1ULL << WIDX_O_TRACK)
+        | (1ULL << WIDX_NEXT_SECTION) | (1ULL << WIDX_SIMULATE) | (1ULL << WIDX_ENTRANCE) | (1ULL << WIDX_EXIT)
+        | (1ULL << WIDX_RIGHT_CURVE_LARGE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_U_TRACK) | (1ULL << WIDX_O_TRACK)
         | (1ULL << WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP) | (1ULL << WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN);
 
     window_init_scroll_widgets(w);
@@ -674,6 +676,16 @@ static void window_ride_construction_mouseup(rct_window* w, rct_widgetindex widg
         case WIDX_EXIT:
             window_ride_construction_exit_click(w);
             break;
+        case WIDX_SIMULATE:
+        {
+            auto ride = get_ride(_currentRideIndex);
+            if (ride != nullptr)
+            {
+                auto status = ride->status == RIDE_STATUS_SIMULATING ? RIDE_STATUS_CLOSED : RIDE_STATUS_SIMULATING;
+                ride_set_status(ride, status);
+            }
+            break;
+        }
     }
 }
 
@@ -2029,7 +2041,7 @@ static void window_ride_construction_update(rct_window* w)
 
     // Close construction window if ride is not closed,
     // editing ride while open will cause many issues until properly handled
-    if (ride->status != RIDE_STATUS_CLOSED)
+    if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
     {
         window_close(w);
         return;
@@ -2254,6 +2266,22 @@ static void window_ride_construction_invalidate(rct_window* w)
 
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings
         [_currentSeatRotationAngle];
+
+    // Simulate button
+    auto& simulateWidget = w->widgets[WIDX_SIMULATE];
+    simulateWidget.type = WWT_EMPTY;
+    if (ride->SupportsStatus(RIDE_STATUS_SIMULATING))
+    {
+        simulateWidget.type = WWT_FLATBTN;
+        if (ride->status == RIDE_STATUS_SIMULATING)
+        {
+            w->pressed_widgets |= (1ULL << WIDX_SIMULATE);
+        }
+        else
+        {
+            w->pressed_widgets &= ~(1ULL << WIDX_SIMULATE);
+        }
+    }
 
     // Set window title arguments
     set_format_arg(4, rct_string_id, ride->name);

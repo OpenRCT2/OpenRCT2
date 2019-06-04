@@ -25,6 +25,7 @@ static rct_string_id _StatusErrorTitles[] = {
     STR_CANT_CLOSE,
     STR_CANT_OPEN,
     STR_CANT_TEST,
+    STR_CANT_SIMULATE,
 };
 
 DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameActionResult)
@@ -73,9 +74,16 @@ public:
 
         if (_status != ride->status)
         {
-            if (_status == RIDE_STATUS_TESTING)
+            if (_status == RIDE_STATUS_SIMULATING && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
-                if (!ride_is_valid_for_test(ride, _status == RIDE_STATUS_OPEN, 0))
+                // Simulating will force clear the track, so make sure player can't cheat around a break down
+                res->Error = GA_ERROR::DISALLOWED;
+                res->ErrorMessage = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
+                return res;
+            }
+            else if (_status == RIDE_STATUS_TESTING || _status == RIDE_STATUS_SIMULATING)
+            {
+                if (!ride_is_valid_for_test(ride, _status, false))
                 {
                     res->Error = GA_ERROR::UNKNOWN;
                     res->ErrorMessage = gGameCommandErrorText;
@@ -84,7 +92,7 @@ public:
             }
             else if (_status == RIDE_STATUS_OPEN)
             {
-                if (!ride_is_valid_for_open(ride, _status == RIDE_STATUS_OPEN, 0))
+                if (!ride_is_valid_for_open(ride, _status == RIDE_STATUS_OPEN, false))
                 {
                     res->Error = GA_ERROR::UNKNOWN;
                     res->ErrorMessage = gGameCommandErrorText;
@@ -123,7 +131,7 @@ public:
         switch (_status)
         {
             case RIDE_STATUS_CLOSED:
-                if (ride->status == _status)
+                if (ride->status == _status || ride->status == RIDE_STATUS_SIMULATING)
                 {
                     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
                     {
@@ -139,12 +147,41 @@ public:
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;
+            case RIDE_STATUS_SIMULATING:
+            {
+                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
+                ride_clear_for_construction(ride);
+                ride_remove_peeps(ride);
+
+                if (!ride_is_valid_for_test(ride, _status, true))
+                {
+                    res->Error = GA_ERROR::UNKNOWN;
+                    res->ErrorMessage = gGameCommandErrorText;
+                    return res;
+                }
+
+                ride->status = _status;
+                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
+                ride->race_winner = SPRITE_INDEX_NULL;
+                ride->current_issues = 0;
+                ride->last_issue_time = 0;
+                ride_get_measurement(ride, nullptr);
+                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                window_invalidate_by_number(WC_RIDE, _rideIndex);
+                break;
+            }
             case RIDE_STATUS_TESTING:
             case RIDE_STATUS_OPEN:
             {
                 if (ride->status == _status)
                 {
                     return res;
+                }
+
+                if (ride->status == RIDE_STATUS_SIMULATING)
+                {
+                    ride_clear_for_construction(ride);
+                    ride_remove_peeps(ride);
                 }
 
                 // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
@@ -157,14 +194,14 @@ public:
 
                 if (_status == RIDE_STATUS_TESTING)
                 {
-                    if (!ride_is_valid_for_test(ride, _status == RIDE_STATUS_OPEN, 1))
+                    if (!ride_is_valid_for_test(ride, _status, true))
                     {
                         res->Error = GA_ERROR::UNKNOWN;
                         res->ErrorMessage = gGameCommandErrorText;
                         return res;
                     }
                 }
-                else if (!ride_is_valid_for_open(ride, _status == RIDE_STATUS_OPEN, 1))
+                else if (!ride_is_valid_for_open(ride, _status == RIDE_STATUS_OPEN, true))
                 {
                     res->Error = GA_ERROR::UNKNOWN;
                     res->ErrorMessage = gGameCommandErrorText;

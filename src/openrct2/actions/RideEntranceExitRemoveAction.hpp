@@ -60,7 +60,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_MUST_BE_CLOSED_FIRST);
         }
@@ -123,9 +123,12 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        ride_clear_for_construction(ride);
-        ride_remove_peeps(ride);
-        invalidate_test_results(ride);
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            ride_clear_for_construction(ride);
+            ride_remove_peeps(ride);
+            invalidate_test_results(ride);
+        }
 
         bool found = false;
         TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
