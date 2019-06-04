@@ -683,9 +683,6 @@ rct_window* window_bring_to_front(rct_window* w)
         auto itSourcePos = window_get_iterator(w);
         if (itSourcePos != g_window_list.end())
         {
-            auto wptr = std::move(*itSourcePos);
-            g_window_list.erase(itSourcePos);
-
             // Insert in front of the first non-stick-to-front window
             auto itDestPos = g_window_list.begin();
             for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -698,7 +695,7 @@ rct_window* window_bring_to_front(rct_window* w)
                 }
             }
 
-            g_window_list.insert(itDestPos, std::move(wptr));
+            g_window_list.splice(itDestPos, g_window_list, itSourcePos);
             window_invalidate(w);
 
             if (w->x + w->width < 20)
