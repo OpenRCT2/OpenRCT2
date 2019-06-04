@@ -112,6 +112,10 @@ void cable_lift_update(rct_vehicle* vehicle)
         case VEHICLE_STATUS_ARRIVING:
             cable_lift_update_arriving(vehicle);
             break;
+
+        // prevents compiler warnings
+        default:
+            break;
     }
 }
 
