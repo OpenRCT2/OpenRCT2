@@ -2027,8 +2027,6 @@ static void vehicle_update(rct_vehicle* vehicle)
             break;
         case VEHICLE_STATUS_DOING_CIRCUS_SHOW:
             vehicle_update_doing_circus_show(vehicle);
-
-        // prevents compiler warnings
         default:
             break;
     }

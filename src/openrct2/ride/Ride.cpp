@@ -4678,10 +4678,7 @@ static rct_vehicle* vehicle_create_car(
 
         vehicle->track_type = tileElement->AsTrack()->GetTrackType() << 2;
         vehicle->track_progress = 0;
-
-        // Spongeloaf: This used to be "vehicle->status = 0;". I swapped it for the 0 enum. I hope it's correct.
         vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, 0);
-
         vehicle->update_flags = 0;
 
         LocationXY16 chosenLoc;

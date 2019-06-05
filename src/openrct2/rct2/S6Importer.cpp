@@ -1131,14 +1131,12 @@ public:
         dst->crash_z = src->crash_z;
 
         VEHICLE_STATUS statusSrc = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
-
-        // This will need to be updated if we ever add more VEHICLE_STATUS enums.
-        if (src->status >= 0 || src->status <= 30)
+        if (src->status >= static_cast<uint8_t>(VEHICLE_STATUS_MOVING_TO_END_OF_STATION) && src->status <= static_cast<uint8_t>(VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES))
         {
             statusSrc = static_cast<VEHICLE_STATUS>(src->status);
         }
 
-        dst->status =statusSrc;
+        dst->status = statusSrc;
         dst->sub_state = src->sub_state;
         for (size_t i = 0; i < std::size(src->peep); i++)
         {
