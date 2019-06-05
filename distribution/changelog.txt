@@ -30,6 +30,7 @@
 - Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
 - Fix: [#7913] RCT1/RCT2 title sequence timing is off.
 - Fix: [#7700, #8079, #8969] Crash when unloading buggy custom rides.
+- Fix: [#7829] Rotated information kiosk can cause 'unreachable' messages.
 - Fix: [#7878] Scroll shortcut keys ignore SHIFT/CTRL/ALT modifiers.
 - Fix: [#8219] Faulty folder recreation in "save" folder.
 - Fix: [#8480, #8535] Crash when mirroring track design.

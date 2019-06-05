@@ -3503,7 +3503,7 @@ static void ride_shop_connected(Ride* ride)
     if (trackElement == nullptr)
         return;
 
-    uint16_t entrance_directions = 0;
+    uint8_t entrance_directions = 0;
     uint8_t track_type = trackElement->GetTrackType();
     ride = get_ride(trackElement->GetRideIndex());
     if (ride == nullptr)
@@ -3512,16 +3512,15 @@ static void ride_shop_connected(Ride* ride)
     }
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
     {
-        entrance_directions = FlatRideTrackSequenceProperties[track_type][0];
+        entrance_directions = FlatRideTrackSequenceProperties[track_type][0] & 0xF;
     }
     else
     {
-        entrance_directions = TrackSequenceProperties[track_type][0];
+        entrance_directions = TrackSequenceProperties[track_type][0] & 0xF;
     }
 
     uint8_t tile_direction = trackElement->GetDirection();
-    entrance_directions <<= tile_direction;
-    entrance_directions = ((entrance_directions >> 12) | entrance_directions) & 0xF;
+    entrance_directions = rol4(entrance_directions, tile_direction);
 
     // Now each bit in entrance_directions stands for an entrance direction to check
     if (entrance_directions == 0)
