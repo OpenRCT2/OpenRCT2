@@ -259,16 +259,15 @@ void window_close(rct_window* window)
  */
 void window_close_by_class(rct_windowclass cls)
 {
-    auto it = g_window_list.begin();
-    while (it != g_window_list.end())
+    std::vector<rct_window*> closeList;
+    for (auto& w : g_window_list)
     {
-        auto itNext = std::next(it);
-        auto w = it->get();
         if (w->classification == cls)
-        {
-            window_close(w);
-        }
-        it = itNext;
+            closeList.push_back(w.get());
+    }
+    for (auto& w : closeList)
+    {
+        window_close(w);
     }
 }
 
@@ -280,16 +279,15 @@ void window_close_by_class(rct_windowclass cls)
  */
 void window_close_by_number(rct_windowclass cls, rct_windownumber number)
 {
-    auto it = g_window_list.begin();
-    while (it != g_window_list.end())
+    std::vector<rct_window*> closeList;
+    for (auto& w : g_window_list)
     {
-        auto itNext = std::next(it);
-        auto w = it->get();
         if (w->classification == cls && w->number == number)
-        {
-            window_close(w);
-        }
-        it = itNext;
+            closeList.push_back(w.get());
+    }
+    for (auto& w : closeList)
+    {
+        window_close(w);
     }
 }
 
@@ -342,7 +340,6 @@ void window_close_top()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
             return;
-
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
         auto& w = (*it);
@@ -363,31 +360,31 @@ void window_close_all()
 {
     window_close_by_class(WC_DROPDOWN);
 
-    for (auto it = g_window_list.begin(); it != g_window_list.end();)
+    std::vector<rct_window*> closeList;
+    for (auto& w : g_window_list)
     {
-        auto itNext = std::next(it);
-        auto w = it->get();
         if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
-        {
-            window_close(w);
-        }
-        it = itNext;
+            closeList.push_back(w.get());
+    }
+    for (auto& w : closeList)
+    {
+        window_close(w);
     }
 }
 
 void window_close_all_except_class(rct_windowclass cls)
 {
     window_close_by_class(WC_DROPDOWN);
-    auto it = g_window_list.begin();
-    while (it != g_window_list.end())
+
+    std::vector<rct_window*> closeList;
+    for (auto& w : g_window_list)
     {
-        auto itNext = std::next(it);
-        auto w = it->get();
         if (w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
-        {
-            window_close(w);
-        }
-        it = itNext;
+            closeList.push_back(w.get());
+    }
+    for (auto& w : closeList)
+    {
+        window_close(w);
     }
 }
 
@@ -396,16 +393,15 @@ void window_close_all_except_class(rct_windowclass cls)
  */
 void window_close_all_except_flags(uint16_t flags)
 {
-    auto it = g_window_list.begin();
-    while (it != g_window_list.end())
+    std::vector<rct_window*> closeList;
+    for (auto& w : g_window_list)
     {
-        auto itNext = std::next(it);
-        auto w = it->get();
         if (!(w->flags & flags))
-        {
-            window_close(w);
-        }
-        it = itNext;
+            closeList.push_back(w.get());
+    }
+    for (auto& w : closeList)
+    {
+        window_close(w);
     }
 }
 
