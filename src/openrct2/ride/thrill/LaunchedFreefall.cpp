@@ -35,48 +35,50 @@ void vehicle_visual_launched_freefall(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    int32_t image_id;
-    int32_t baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
+    auto imageFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    if (vehicle->IsGhost())
+    {
+        imageFlags = CONSTRUCTION_MARKER;
+    }
 
     // Draw back:
-    image_id = (baseImage_id + 2) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    int32_t baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
+    auto image_id = (baseImage_id + 2) | imageFlags;
     sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1);
 
     // Draw front:
-    image_id = (baseImage_id + 1) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    image_id = (baseImage_id + 1) | imageFlags;
     sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
 
     // Draw peeps:
-    if (session->DPI.zoom_level < 2)
+    if (session->DPI.zoom_level < 2 && vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {
-        if (vehicle->num_peeps > 0)
+        baseImage_id = vehicleEntry->base_image_id + 9;
+        if ((vehicle->restraints_position / 64) == 3)
         {
-            baseImage_id = vehicleEntry->base_image_id + 9;
-            if ((vehicle->restraints_position / 64) == 3)
-            {
-                baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
-            }
-            image_id = (baseImage_id + ((((imageDirection / 8) + 0) & 3) * 3))
-                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
+            baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
+        }
+        auto directionOffset = imageDirection / 8;
+        image_id = (baseImage_id + (((directionOffset + 0) & 3) * 3))
+            | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
+        sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
+        if (vehicle->num_peeps > 2)
+        {
+            image_id = (baseImage_id + (((directionOffset + 1) & 3) * 3))
+                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
             sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
-            if (vehicle->num_peeps > 2)
-            {
-                image_id = (baseImage_id + ((((imageDirection / 8) + 1) & 3) * 3))
-                    | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
-                sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
-            }
-            if (vehicle->num_peeps > 4)
-            {
-                image_id = (baseImage_id + ((((imageDirection / 8) + 2) & 3) * 3))
-                    | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
-                sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
-            }
-            if (vehicle->num_peeps > 6)
-            {
-                image_id = (baseImage_id + ((((imageDirection / 8) + 3) & 3) * 3))
-                    | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
-                sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
-            }
+        }
+        if (vehicle->num_peeps > 4)
+        {
+            image_id = (baseImage_id + (((directionOffset + 2) & 3) * 3))
+                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
+            sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
+        }
+        if (vehicle->num_peeps > 6)
+        {
+            image_id = (baseImage_id + (((directionOffset + 3) & 3) * 3))
+                | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
+            sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
     }
 

@@ -31,6 +31,18 @@ namespace Numerics
     }
 
     /**
+     * Bitwise left rotate of lowest 4 bits
+     * @param x unsigned 8-bit integer value
+     * @param shift positions to shift
+     * @return rotated value
+     */
+    [[maybe_unused]] static constexpr uint8_t rol4(uint8_t x, size_t shift)
+    {
+        x &= 0x0F;
+        return (x << shift | x >> (4 - shift)) & 0x0F;
+    }
+
+    /**
      * Bitwise right rotate
      * @tparam _UIntType unsigned integral type
      * @param x value
@@ -42,6 +54,18 @@ namespace Numerics
         static_assert(std::is_unsigned<_UIntType>::value, "result_type must be an unsigned integral type");
         using limits = std::numeric_limits<_UIntType>;
         return (((_UIntType)(x) >> shift) | ((_UIntType)(x) << (limits::digits - shift)));
+    }
+
+    /**
+     * Bitwise right rotate of lowest 4 bits
+     * @param x unsigned 8-bit integer value
+     * @param shift positions to shift
+     * @return rotated value
+     */
+    [[maybe_unused]] static constexpr uint8_t ror4(uint8_t x, size_t shift)
+    {
+        x &= 0x0F;
+        return (x >> shift | x << (4 - shift)) & 0x0F;
     }
 
 } // namespace Numerics

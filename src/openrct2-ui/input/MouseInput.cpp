@@ -106,10 +106,13 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, int
 void game_handle_input()
 {
     // NOTE: g_window_list may change during the event callbacks.
-    for (size_t i = g_window_list.size(); i > 0; i--)
+    auto it = g_window_list.begin();
+    while (it != g_window_list.end())
     {
-        auto& w = g_window_list[i - 1];
+        auto itNext = std::next(it);
+        auto& w = *it;
         window_event_periodic_update_call(w.get());
+        it = itNext;
     }
 
     invalidate_all_windows_after_input();
@@ -136,11 +139,13 @@ void game_handle_input()
         process_mouse_tool(x, y);
     }
 
-    // NOTE: g_window_list may change during the event callbacks.
-    for (size_t i = g_window_list.size(); i > 0; i--)
+    it = g_window_list.begin();
+    while (it != g_window_list.end())
     {
-        auto& w = g_window_list[i - 1];
+        auto itNext = std::next(it);
+        auto& w = *it;
         window_event_unknown_08_call(w.get());
+        it = itNext;
     }
 }
 

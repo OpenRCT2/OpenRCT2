@@ -78,7 +78,7 @@ public:
 
         if (_modifyType == RIDE_MODIFY_RENEW)
         {
-            if (ride->status != RIDE_STATUS_CLOSED)
+            if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
             {
                 return std::make_unique<GameActionResult>(
                     GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);

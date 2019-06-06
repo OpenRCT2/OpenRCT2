@@ -271,6 +271,7 @@ struct rct_vehicle : rct_sprite_common
     const rct_vehicle* GetCar(size_t carIndex) const;
     void Invalidate();
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState);
+    bool IsGhost() const;
 };
 
 struct train_ref

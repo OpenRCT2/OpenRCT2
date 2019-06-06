@@ -650,14 +650,6 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         {
             console.WriteFormatLine("console_small_font %d", gConfigInterface.console_small_font);
         }
-        else if (argv[0] == "test_unfinished_tracks")
-        {
-            console.WriteFormatLine("test_unfinished_tracks %d", gConfigGeneral.test_unfinished_tracks);
-        }
-        else if (argv[0] == "no_test_crashes")
-        {
-            console.WriteFormatLine("no_test_crashes %d", gConfigGeneral.no_test_crashes);
-        }
         else if (argv[0] == "location")
         {
             rct_window* w = window_get_main();
@@ -915,18 +907,6 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             gConfigInterface.console_small_font = (int_val[0] != 0);
             config_save_default();
             console.Execute("get console_small_font");
-        }
-        else if (argv[0] == "test_unfinished_tracks" && invalidArguments(&invalidArgs, int_valid[0]))
-        {
-            gConfigGeneral.test_unfinished_tracks = (int_val[0] != 0);
-            config_save_default();
-            console.Execute("get test_unfinished_tracks");
-        }
-        else if (argv[0] == "no_test_crashes" && invalidArguments(&invalidArgs, int_valid[0]))
-        {
-            gConfigGeneral.no_test_crashes = (int_val[0] != 0);
-            config_save_default();
-            console.Execute("get no_test_crashes");
         }
         else if (argv[0] == "location" && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
         {
@@ -1673,8 +1653,6 @@ static constexpr const utf8* console_variable_table[] = {
     "climate",
     "game_speed",
     "console_small_font",
-    "test_unfinished_tracks",
-    "no_test_crashes",
     "location",
     "window_scale",
     "window_limit",

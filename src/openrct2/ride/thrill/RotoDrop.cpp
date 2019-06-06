@@ -35,6 +35,12 @@ void vehicle_visual_roto_drop(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
+    auto imageFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    if (vehicle->IsGhost())
+    {
+        imageFlags = CONSTRUCTION_MARKER;
+    }
+
     int32_t image_id;
     int32_t baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
     if (vehicle->restraints_position >= 64)
@@ -44,39 +50,42 @@ void vehicle_visual_roto_drop(
     }
 
     // Draw back:
-    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    image_id = baseImage_id | imageFlags;
     sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1);
 
     // Draw front:
-    image_id = (baseImage_id + 4) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    image_id = (baseImage_id + 4) | imageFlags;
     sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
 
-    uint8_t riding_peep_sprites[64];
-    std::fill_n(riding_peep_sprites, sizeof(riding_peep_sprites), 0xFF);
-    for (int32_t i = 0; i < vehicle->num_peeps; i++)
+    if (vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {
-        uint8_t cl = (i & 3) * 16;
-        cl += (i & 0xFC);
-        cl += vehicle->animation_frame / 4;
-        cl += (imageDirection / 8) * 16;
-        cl &= 0x3F;
-        riding_peep_sprites[cl] = vehicle->peep_tshirt_colours[i];
-    }
-
-    // Draw riding peep sprites in back to front order:
-    for (int32_t j = 0; j <= 48; j++)
-    {
-        int32_t i = (j % 2) ? (48 - (j / 2)) : (j / 2);
-        if (riding_peep_sprites[i] != 0xFF)
+        uint8_t riding_peep_sprites[64];
+        std::fill_n(riding_peep_sprites, sizeof(riding_peep_sprites), 0xFF);
+        for (int32_t i = 0; i < vehicle->num_peeps; i++)
         {
-            baseImage_id = vehicleEntry->base_image_id + 20 + i;
-            if (vehicle->restraints_position >= 64)
+            uint8_t cl = (i & 3) * 16;
+            cl += (i & 0xFC);
+            cl += vehicle->animation_frame / 4;
+            cl += (imageDirection / 8) * 16;
+            cl &= 0x3F;
+            riding_peep_sprites[cl] = vehicle->peep_tshirt_colours[i];
+        }
+
+        // Draw riding peep sprites in back to front order:
+        for (int32_t j = 0; j <= 48; j++)
+        {
+            int32_t i = (j % 2) ? (48 - (j / 2)) : (j / 2);
+            if (riding_peep_sprites[i] != 0xFF)
             {
-                baseImage_id += 64;
-                baseImage_id += vehicle->restraints_position / 64;
+                baseImage_id = vehicleEntry->base_image_id + 20 + i;
+                if (vehicle->restraints_position >= 64)
+                {
+                    baseImage_id += 64;
+                    baseImage_id += vehicle->restraints_position / 64;
+                }
+                image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[i]);
+                sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
             }
-            image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[i]);
-            sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
     }
 
