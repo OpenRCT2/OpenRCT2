@@ -17,6 +17,9 @@ platform:
   - Win32
   - x64
 configuration: Release
+before_build:
+- ps: Set-Content -Path '.\resources\version.h' -Value "#define OPENRCT2_FILE_VERSION $($env:APPVEYOR_BUILD_VERSION -replace "\.", ",")"
+- ps: Add-Content -Path '.\resources\version.h' -Value "#define OPENRCT2_PRODUCT_VERSION `"$($env:APPVEYOR_BUILD_VERSION)-$($env:APPVEYOR_REPO_COMMIT.Substring(0,10))`""
 build:
   parallel: true
   project: openrct2.proj

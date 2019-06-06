@@ -2741,8 +2741,6 @@ enum
     STR_LOCALE_DECIMAL_POINT = 5152,
     STR_EDIT_THEMES_BUTTON = 5153,
     STR_HARDWARE_DISPLAY = 5154, // Unused
-    STR_TEST_UNFINISHED_TRACKS = 5155,
-    STR_TEST_UNFINISHED_TRACKS_TIP = 5156,
     STR_CHEAT_UNLOCK_PRICES = 5157,
     STR_QUIT_TO_MENU = 5158,
     STR_EXIT_OPENRCT2 = 5159,
@@ -3958,6 +3956,11 @@ enum
     STR_PEEP_DEBUG_SPRITE_INDEX = 6322,
 
     STR_DESYNC_REPORT = 6318,
+
+    STR_SIMULATING = 6323,
+    STR_SIMULATE_RIDE = 6324,
+    STR_SIMULATE_RIDE_TIP = 6325,
+    STR_CANT_SIMULATE = 6326,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

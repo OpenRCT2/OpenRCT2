@@ -24,6 +24,12 @@ void vehicle_visual_submarine(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
+    auto imageFlags = SPRITE_ID_PALETTE_COLOUR_3(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    if (vehicle->IsGhost())
+    {
+        imageFlags = CONSTRUCTION_MARKER;
+    }
+
     int32_t baseImage_id = imageDirection;
     int32_t image_id;
     if (vehicle->restraints_position >= 64)
@@ -53,8 +59,7 @@ void vehicle_visual_submarine(
 
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][imageDirection / 2];
 
-    image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24)
-        | IMAGE_TYPE_REMAP_2_PLUS;
+    image_id = baseImage_id | imageFlags;
     paint_struct* ps = sub_98197C(
         session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z);
     if (ps != nullptr)
@@ -62,8 +67,7 @@ void vehicle_visual_submarine(
         ps->tertiary_colour = vehicle->colours_extended;
     }
 
-    image_id = (baseImage_id + 1) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24)
-        | IMAGE_TYPE_REMAP_2_PLUS;
+    image_id = (baseImage_id + 1) | imageFlags;
     ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10);
     if (ps != nullptr)
     {

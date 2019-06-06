@@ -70,8 +70,6 @@ struct GeneralConfiguration
     int32_t window_snap_proximity;
     bool allow_loading_with_incorrect_checksum;
     bool save_plugin_data;
-    bool test_unfinished_tracks;
-    bool no_test_crashes;
     bool debugging_tools;
     int32_t autosave_frequency;
     int32_t autosave_amount;
