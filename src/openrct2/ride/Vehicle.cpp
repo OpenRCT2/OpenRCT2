@@ -3583,6 +3583,7 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle)
     }
     vehicle->SetState(VEHICLE_STATUS_CRASHING, vehicle->sub_state);
 
+
     int32_t num_peeps = vehicle_get_total_num_peeps(vehicle);
     if (num_peeps != 0)
     {
