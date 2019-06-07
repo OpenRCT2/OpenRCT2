@@ -9951,7 +9951,6 @@ const rct_vehicle* rct_vehicle::GetCar(size_t carIndex) const
     return car;
 }
 
-
 void rct_vehicle::SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0)
 {
     status = vehicleStatus;

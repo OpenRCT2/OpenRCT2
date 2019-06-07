@@ -1248,7 +1248,6 @@ private:
         {
             statusSrc = static_cast<VEHICLE_STATUS>(src->status);
         }
-        
         dst->status = statusSrc;
         dst->var_CD = src->var_CD;
         dst->track_x = src->track_x;
