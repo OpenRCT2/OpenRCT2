@@ -270,7 +270,7 @@ struct rct_vehicle : rct_sprite_common
     const rct_vehicle* GetHead() const;
     const rct_vehicle* GetCar(size_t carIndex) const;
     void Invalidate();
-    void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState);
+    void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
 };
 
