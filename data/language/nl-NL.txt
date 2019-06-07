@@ -3784,6 +3784,11 @@ STR_6318    :Netwerkdesynchronisatie gedetecteerd.{NEWLINE}Logbestand: {STRING}
 STR_6319    :{WINDOW_COLOUR_2}Blokrem is gesloten
 STR_6320    :{WINDOW_COLOUR_2}Mag niet worden verwijderd
 STR_6321    :{WINDOW_COLOUR_2}Straatmeubel is kapot
+STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
+STR_6323    :Simulatie
+STR_6324    :Simuleren
+STR_6325    :{SMALLFONT}{BLACK}Testrit simuleren
+STR_6326    :Kan {POP16}{POP16}{POP16}{STRINGID} niet in simulatiemodus zetten...
 
 #############
 # Scenarios #
