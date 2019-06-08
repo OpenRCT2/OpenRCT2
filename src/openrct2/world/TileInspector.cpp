@@ -763,59 +763,28 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
-        switch (originDirection)
-        {
-            case 0:
-                originX -= trackBlock->x;
-                originY -= trackBlock->y;
-                break;
-            case 1:
-                originX -= trackBlock->y;
-                originY += trackBlock->x;
-                break;
-            case 2:
-                originX += trackBlock->x;
-                originY += trackBlock->y;
-                break;
-            case 3:
-                originX += trackBlock->y;
-                originY -= trackBlock->x;
-                break;
-        }
+        CoordsXY offsets = { trackBlock->x, trackBlock->y };
+        CoordsXY coords = { originX, originY };
+        coords += offsets.Rotate(direction_reverse(originDirection));
 
+        originX = (int16_t)coords.x;
+        originY = (int16_t)coords.y;
         originZ -= trackBlock->z;
 
         trackBlock = get_track_def_from_ride(ride, type);
         for (; trackBlock->index != 255; trackBlock++)
         {
-            int16_t elemX = originX, elemY = originY, elemZ = originZ;
-
-            switch (originDirection)
-            {
-                case 0:
-                    elemX += trackBlock->x;
-                    elemY += trackBlock->y;
-                    break;
-                case 1:
-                    elemX += trackBlock->y;
-                    elemY -= trackBlock->x;
-                    break;
-                case 2:
-                    elemX -= trackBlock->x;
-                    elemY -= trackBlock->y;
-                    break;
-                case 3:
-                    elemX -= trackBlock->y;
-                    elemY += trackBlock->x;
-                    break;
-            }
-
+            CoordsXY elem = { originX, originY };
+            int16_t elemZ = originZ;
+            offsets.x = trackBlock->x;
+            offsets.y = trackBlock->y;
+            elem += offsets.Rotate(originDirection);
             elemZ += trackBlock->z;
 
-            map_invalidate_tile_full(elemX, elemY);
+            map_invalidate_tile_full(elem.x, elem.y);
 
             bool found = false;
-            TileElement* tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
+            TileElement* tileElement = map_get_first_element_at(elem.x >> 5, elem.y >> 5);
             do
             {
                 if (tileElement->base_height != elemZ / 8)
@@ -845,8 +814,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
 
             // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when
             // you decrease the map size.
-            openrct2_assert(
-                map_get_surface_element_at({ elemX, elemY }) != nullptr, "No surface at %d,%d", elemX >> 5, elemY >> 5);
+            openrct2_assert(map_get_surface_element_at(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
 
             // Keep?
             // invalidate_test_results(ride);
@@ -896,59 +864,28 @@ int32_t tile_inspector_track_set_chain(
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
-        switch (originDirection)
-        {
-            case 0:
-                originX -= trackBlock->x;
-                originY -= trackBlock->y;
-                break;
-            case 1:
-                originX -= trackBlock->y;
-                originY += trackBlock->x;
-                break;
-            case 2:
-                originX += trackBlock->x;
-                originY += trackBlock->y;
-                break;
-            case 3:
-                originX += trackBlock->y;
-                originY -= trackBlock->x;
-                break;
-        }
+        CoordsXY offsets = { trackBlock->x, trackBlock->y };
+        CoordsXY coords = { originX, originY };
+        coords += offsets.Rotate(direction_reverse(originDirection));
 
+        originX = (int16_t)coords.x;
+        originY = (int16_t)coords.y;
         originZ -= trackBlock->z;
 
         trackBlock = get_track_def_from_ride(ride, type);
         for (; trackBlock->index != 255; trackBlock++)
         {
-            int16_t elemX = originX, elemY = originY, elemZ = originZ;
-
-            switch (originDirection)
-            {
-                case 0:
-                    elemX += trackBlock->x;
-                    elemY += trackBlock->y;
-                    break;
-                case 1:
-                    elemX += trackBlock->y;
-                    elemY -= trackBlock->x;
-                    break;
-                case 2:
-                    elemX -= trackBlock->x;
-                    elemY -= trackBlock->y;
-                    break;
-                case 3:
-                    elemX -= trackBlock->y;
-                    elemY += trackBlock->x;
-                    break;
-            }
-
+            CoordsXY elem = { originX, originY };
+            int16_t elemZ = originZ;
+            offsets.x = trackBlock->x;
+            offsets.y = trackBlock->y;
+            elem += offsets.Rotate(originDirection);
             elemZ += trackBlock->z;
 
-            map_invalidate_tile_full(elemX, elemY);
+            map_invalidate_tile_full(elem.x, elem.y);
 
             bool found = false;
-            TileElement* tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
+            TileElement* tileElement = map_get_first_element_at(elem.x >> 5, elem.y >> 5);
             do
             {
                 if (tileElement->base_height != elemZ / 8)
@@ -978,8 +915,7 @@ int32_t tile_inspector_track_set_chain(
 
             // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when
             // you decrease the map size.
-            openrct2_assert(
-                map_get_surface_element_at({ elemX, elemY }) != nullptr, "No surface at %d,%d", elemX >> 5, elemY >> 5);
+            openrct2_assert(map_get_surface_element_at(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
 
             // Keep?
             // invalidate_test_results(ride);

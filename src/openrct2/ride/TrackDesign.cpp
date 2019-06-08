@@ -811,7 +811,7 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(rct_td6_scenery_element* sce
 }
 
 static bool TrackDesignPlaceSceneryElement(
-    CoordsXY mapCoord, LocationXY8 tile, uint8_t mode, rct_td6_scenery_element* scenery, uint8_t rotation, int32_t originZ)
+    CoordsXY mapCoord, uint8_t mode, rct_td6_scenery_element* scenery, uint8_t rotation, int32_t originZ)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
@@ -1101,31 +1101,14 @@ static int32_t track_design_place_all_scenery(
         for (rct_td6_scenery_element* scenery = scenery_start; scenery->scenery_object.end_flag != 0xFF; scenery++)
         {
             uint8_t rotation = _currentTrackPieceDirection;
-            LocationXY8 tile = { (uint8_t)(originX / 32), (uint8_t)(originY / 32) };
-            switch (rotation & 3)
-            {
-                case TILE_ELEMENT_DIRECTION_WEST:
-                    tile.x += scenery->x;
-                    tile.y += scenery->y;
-                    break;
-                case TILE_ELEMENT_DIRECTION_NORTH:
-                    tile.x += scenery->y;
-                    tile.y -= scenery->x;
-                    break;
-                case TILE_ELEMENT_DIRECTION_EAST:
-                    tile.x -= scenery->x;
-                    tile.y -= scenery->y;
-                    break;
-                case TILE_ELEMENT_DIRECTION_SOUTH:
-                    tile.x -= scenery->y;
-                    tile.y += scenery->x;
-                    break;
-            }
+            TileCoordsXY tileCoords = { originX / 32, originY / 32 };
+            TileCoordsXY offsets = { scenery->x, scenery->y };
+            tileCoords += offsets.Rotate(rotation);
 
-            CoordsXY mapCoord = { tile.x * 32, tile.y * 32 };
+            CoordsXY mapCoord = { tileCoords.x * 32, tileCoords.y * 32 };
             track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
 
-            if (!TrackDesignPlaceSceneryElement(mapCoord, tile, mode, scenery, rotation, originZ))
+            if (!TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, originZ))
             {
                 return 0;
             }

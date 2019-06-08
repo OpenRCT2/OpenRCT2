@@ -613,33 +613,12 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     int32_t OriginZ = input->element->base_height * 8;
 
     uint8_t rotation = input->element->GetDirection();
-    switch (rotation)
-    {
-        case 0:
-            x += trackCoordinate->x;
-            x -= trackBlock->x;
-            y += trackCoordinate->y;
-            y -= trackBlock->y;
-            break;
-        case 1:
-            x += trackCoordinate->y;
-            x -= trackBlock->y;
-            y -= trackCoordinate->x;
-            y += trackBlock->x;
-            break;
-        case 2:
-            x -= trackCoordinate->x;
-            x += trackBlock->x;
-            y -= trackCoordinate->y;
-            y += trackBlock->y;
-            break;
-        case 3:
-            x -= trackCoordinate->y;
-            x += trackBlock->y;
-            y += trackCoordinate->x;
-            y -= trackBlock->x;
-            break;
-    }
+
+    CoordsXY coords = { x, y };
+    CoordsXY trackCoordOffset = { trackCoordinate->x, trackCoordinate->y };
+    CoordsXY trackBlockOffset = { trackBlock->x, trackBlock->y };
+    coords += trackCoordOffset.Rotate(rotation);
+    coords += trackBlockOffset.Rotate(direction_reverse(rotation));
 
     OriginZ -= trackBlock->z;
     OriginZ += trackCoordinate->z_end;
@@ -647,7 +626,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     uint8_t directionStart = ((trackCoordinate->rotation_end + rotation) & TILE_ELEMENT_DIRECTION_MASK)
         | (trackCoordinate->rotation_end & (1 << 2));
 
-    return track_block_get_next_from_zero(x, y, OriginZ, ride, directionStart, output, z, direction, false);
+    return track_block_get_next_from_zero(coords.x, coords.y, OriginZ, ride, directionStart, output, z, direction, false);
 }
 
 /**
@@ -713,25 +692,12 @@ bool track_block_get_previous_from_zero(
         outTrackBeginEnd->begin_y = y;
         outTrackBeginEnd->end_x = x;
         outTrackBeginEnd->end_y = y;
-        switch (nextRotation & 3)
-        {
-            case 0:
-                outTrackBeginEnd->begin_x -= nextTrackCoordinate->x;
-                outTrackBeginEnd->begin_y -= nextTrackCoordinate->y;
-                break;
-            case 1:
-                outTrackBeginEnd->begin_x -= nextTrackCoordinate->y;
-                outTrackBeginEnd->begin_y += nextTrackCoordinate->x;
-                break;
-            case 2:
-                outTrackBeginEnd->begin_x += nextTrackCoordinate->x;
-                outTrackBeginEnd->begin_y += nextTrackCoordinate->y;
-                break;
-            case 3:
-                outTrackBeginEnd->begin_x += nextTrackCoordinate->y;
-                outTrackBeginEnd->begin_y -= nextTrackCoordinate->x;
-                break;
-        }
+
+        CoordsXY coords = { outTrackBeginEnd->begin_x, outTrackBeginEnd->begin_y };
+        CoordsXY offsets = { nextTrackCoordinate->x, nextTrackCoordinate->y };
+        coords += offsets.Rotate(direction_reverse(nextRotation));
+        outTrackBeginEnd->begin_x = coords.x;
+        outTrackBeginEnd->begin_y = coords.y;
 
         outTrackBeginEnd->begin_z = tileElement->base_height * 8;
         outTrackBeginEnd->begin_z += get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType())->z
@@ -772,25 +738,9 @@ bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, tr
     int32_t z = tileElement->base_height * 8;
 
     uint8_t rotation = tileElement->GetDirection();
-    switch (rotation)
-    {
-        case 0:
-            x -= trackBlock->x;
-            y -= trackBlock->y;
-            break;
-        case 1:
-            x -= trackBlock->y;
-            y += trackBlock->x;
-            break;
-        case 2:
-            x += trackBlock->x;
-            y += trackBlock->y;
-            break;
-        case 3:
-            x += trackBlock->y;
-            y -= trackBlock->x;
-            break;
-    }
+    CoordsXY coords = { x, y };
+    CoordsXY offsets = { trackBlock->x, trackBlock->y };
+    coords += offsets.Rotate(direction_reverse(rotation));
 
     z -= trackBlock->z;
     z += trackCoordinate->z_begin;
@@ -798,7 +748,7 @@ bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, tr
     rotation = ((trackCoordinate->rotation_begin + rotation) & TILE_ELEMENT_DIRECTION_MASK)
         | (trackCoordinate->rotation_begin & (1 << 2));
 
-    return track_block_get_previous_from_zero(x, y, z, ride, rotation, outTrackBeginEnd);
+    return track_block_get_previous_from_zero(coords.x, coords.y, z, ride, rotation, outTrackBeginEnd);
 }
 
 /**
@@ -1321,56 +1271,29 @@ int32_t sub_6C683D(
     int32_t sequence = tileElement->AsTrack()->GetSequenceIndex();
     uint8_t mapDirection = tileElement->GetDirection();
 
-    switch (mapDirection)
-    {
-        case TILE_ELEMENT_DIRECTION_WEST:
-            *x -= trackBlock[sequence].x;
-            *y -= trackBlock[sequence].y;
-            break;
-        case TILE_ELEMENT_DIRECTION_NORTH:
-            *x -= trackBlock[sequence].y;
-            *y += trackBlock[sequence].x;
-            break;
-        case TILE_ELEMENT_DIRECTION_EAST:
-            *x += trackBlock[sequence].x;
-            *y += trackBlock[sequence].y;
-            break;
-        case TILE_ELEMENT_DIRECTION_SOUTH:
-            *x += trackBlock[sequence].y;
-            *y -= trackBlock[sequence].x;
-            break;
-    }
+    TileCoordsXY offsets = { trackBlock[sequence].x, trackBlock[sequence].y };
+    TileCoordsXY newCoords = { *x, *y };
+    newCoords += offsets.Rotate(direction_reverse(mapDirection));
+
+    *x = newCoords.x;
+    *y = newCoords.y;
+
     *z -= trackBlock[sequence].z;
 
     int32_t start_x = *x, start_y = *y, start_z = *z;
     *z += trackBlock[0].z;
     for (int32_t i = 0; trackBlock[i].index != 0xFF; ++i)
     {
-        int32_t cur_x = start_x, cur_y = start_y, cur_z = start_z;
-        switch (mapDirection)
-        {
-            case TILE_ELEMENT_DIRECTION_WEST:
-                cur_x += trackBlock[i].x;
-                cur_y += trackBlock[i].y;
-                break;
-            case TILE_ELEMENT_DIRECTION_NORTH:
-                cur_x += trackBlock[i].y;
-                cur_y -= trackBlock[i].x;
-                break;
-            case TILE_ELEMENT_DIRECTION_EAST:
-                cur_x -= trackBlock[i].x;
-                cur_y -= trackBlock[i].y;
-                break;
-            case TILE_ELEMENT_DIRECTION_SOUTH:
-                cur_x -= trackBlock[i].y;
-                cur_y += trackBlock[i].x;
-                break;
-        }
+        TileCoordsXY cur = { start_x, start_y };
+        int32_t cur_z = start_z;
+        offsets.x = trackBlock[i].x;
+        offsets.y = trackBlock[i].y;
+        cur += offsets.Rotate(mapDirection);
         cur_z += trackBlock[i].z;
 
-        map_invalidate_tile_full(cur_x, cur_y);
+        map_invalidate_tile_full(cur.x, cur.y);
 
-        tileElement = map_get_first_element_at(cur_x / 32, cur_y / 32);
+        tileElement = map_get_first_element_at(cur.x / 32, cur.y / 32);
         successTileElement = nullptr;
         do
         {

@@ -386,28 +386,11 @@ bool window_ride_construction_update_state(
             trackDirection |= 0x04;
         }
 
-        switch (trackDirection & 0x03)
-        {
-            case 0:
-                x -= trackCoordinates->x;
-                y -= trackCoordinates->y;
-                break;
-
-            case 1:
-                x -= trackCoordinates->y;
-                y += trackCoordinates->x;
-                break;
-
-            case 2:
-                x += trackCoordinates->x;
-                y += trackCoordinates->y;
-                break;
-
-            case 3:
-                x += trackCoordinates->y;
-                y -= trackCoordinates->x;
-                break;
-        }
+        CoordsXY offsets = { trackCoordinates->x, trackCoordinates->y };
+        CoordsXY coords = { x, y };
+        coords += offsets.Rotate(direction_reverse(trackDirection));
+        x = (uint16_t)coords.x;
+        y = (uint16_t)coords.y;
     }
     else
     {
