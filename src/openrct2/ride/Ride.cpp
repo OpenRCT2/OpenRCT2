@@ -4688,7 +4688,7 @@ static rct_vehicle* vehicle_create_car(
 
         vehicle->track_type = tileElement->AsTrack()->GetTrackType() << 2;
         vehicle->track_progress = 0;
-        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, 0);
+        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
         vehicle->update_flags = 0;
 
         LocationXY16 chosenLoc;
@@ -4793,7 +4793,7 @@ static rct_vehicle* vehicle_create_car(
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
         }
-        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, 0);
+        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
     }
 
     // loc_6DDD5E:
