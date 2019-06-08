@@ -208,7 +208,7 @@ namespace Config
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
-            model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", false);
+            model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", true);
         }
     }
 
