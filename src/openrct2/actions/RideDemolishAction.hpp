@@ -229,10 +229,6 @@ private:
             }
         }
 
-        user_string_free(ride->name);
-        ride->type = RIDE_TYPE_NULL;
-        gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
-
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->Cost = refundPrice;
@@ -245,6 +241,9 @@ private:
 
             res->Position = { x, y, z };
         }
+
+        ride->Delete();
+        gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
         // Close windows related to the demolished ride
         if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))

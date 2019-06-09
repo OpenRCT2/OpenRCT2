@@ -396,7 +396,7 @@ public:
         // pad_0138B582
 
         gRideRatingsCalcData = _s6.ride_ratings_calc_data;
-        std::memcpy(gRideMeasurements, _s6.ride_measurements, sizeof(_s6.ride_measurements));
+        ImportRideMeasurements();
         gNextGuestNumber = _s6.next_guest_index;
         gGrassSceneryTileLoopPosition = _s6.grass_and_scenery_tilepos;
         std::memcpy(gStaffPatrolAreas, _s6.patrol_areas, sizeof(_s6.patrol_areas));
@@ -586,8 +586,6 @@ public:
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
         dst->boat_hire_return_position = src->boat_hire_return_position;
 
-        dst->measurement_index = src->measurement_index;
-
         dst->special_track_elements = src->special_track_elements;
         // pad_0D6[2];
 
@@ -748,6 +746,37 @@ public:
         dst->cable_lift = src->cable_lift;
 
         // pad_208[0x58];
+    }
+
+    void ImportRideMeasurements()
+    {
+        for (const auto& src : _s6.ride_measurements)
+        {
+            if (src.ride_index != RCT12_RIDE_ID_NULL)
+            {
+                auto ride = get_ride(src.ride_index);
+                ride->measurement = std::make_unique<RideMeasurement>();
+                ride->measurement->ride = ride;
+                ImportRideMeasurement(*ride->measurement, src);
+            }
+        }
+    }
+
+    void ImportRideMeasurement(RideMeasurement& dst, const RCT12RideMeasurement& src)
+    {
+        dst.flags = src.flags;
+        dst.last_use_tick = src.last_use_tick;
+        dst.num_items = src.num_items;
+        dst.current_item = src.current_item;
+        dst.vehicle_index = src.vehicle_index;
+        dst.current_station = src.current_station;
+        for (size_t i = 0; i < std::size(src.velocity); i++)
+        {
+            dst.velocity[i] = src.velocity[i];
+            dst.altitude[i] = src.altitude[i];
+            dst.vertical[i] = src.vertical[i];
+            dst.lateral[i] = src.lateral[i];
+        }
     }
 
     void ImportResearchedRideTypes()

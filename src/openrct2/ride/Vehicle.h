@@ -457,10 +457,16 @@ enum
 #define VEHICLE_SEAT_PAIR_FLAG 0x80
 #define VEHICLE_SEAT_NUM_MASK 0x7F
 
+struct GForces
+{
+    int32_t VerticalG{};
+    int32_t LateralG{};
+};
+
 rct_vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-void vehicle_get_g_forces(const rct_vehicle* vehicle, int32_t* verticalG, int32_t* lateralG);
+GForces vehicle_get_g_forces(const rct_vehicle* vehicle);
 void vehicle_set_map_toolbar(const rct_vehicle* vehicle);
 int32_t vehicle_is_used_in_pairs(const rct_vehicle* vehicle);
 int32_t vehicle_update_track_motion(rct_vehicle* vehicle, int32_t* outStation);

@@ -212,7 +212,7 @@ public:
                 ride->status = _status;
                 ride->current_issues = 0;
                 ride->last_issue_time = 0;
-                ride_get_measurement(ride, nullptr);
+                ride_get_measurement(ride);
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;

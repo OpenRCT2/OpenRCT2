@@ -360,7 +360,7 @@ void S6Exporter::Export()
     // pad_0138B582
 
     _s6.ride_ratings_calc_data = gRideRatingsCalcData;
-    std::memcpy(_s6.ride_measurements, gRideMeasurements, sizeof(_s6.ride_measurements));
+    ExportRideMeasurements();
     _s6.next_guest_index = gNextGuestNumber;
     _s6.grass_and_scenery_tilepos = gGrassSceneryTileLoopPosition;
     std::memcpy(_s6.patrol_areas, gStaffPatrolAreas, sizeof(_s6.patrol_areas));
@@ -538,8 +538,6 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->boat_hire_return_direction = src->boat_hire_return_direction;
     dst->boat_hire_return_position = src->boat_hire_return_position;
 
-    dst->measurement_index = src->measurement_index;
-
     dst->special_track_elements = src->special_track_elements;
     // pad_0D6[2];
 
@@ -684,6 +682,60 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->cable_lift = src->cable_lift;
 
     // pad_208[0x58];
+}
+
+void S6Exporter::ExportRideMeasurements()
+{
+    // Get all the ride measurements
+    std::vector<const RideMeasurement*> rideMeasurements;
+    for (ride_id_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
+    {
+        auto ride = get_ride(i);
+        if (ride != nullptr && ride->measurement != nullptr)
+        {
+            rideMeasurements.push_back(ride->measurement.get());
+        }
+    }
+
+    // If there are more than S6 can hold, trim it by LRU
+    if (rideMeasurements.size() > RCT12_RIDE_MEASUREMENT_MAX_ITEMS)
+    {
+        // Sort in order of last recently used
+        std::sort(rideMeasurements.begin(), rideMeasurements.end(), [](const RideMeasurement* a, const RideMeasurement* b) {
+            return a->last_use_tick > b->last_use_tick;
+        });
+        rideMeasurements.resize(RCT12_RIDE_MEASUREMENT_MAX_ITEMS);
+    }
+
+    // Convert ride measurements to S6 format
+    uint8_t i{};
+    for (auto src : rideMeasurements)
+    {
+        auto& dst = _s6.ride_measurements[i];
+        ExportRideMeasurement(_s6.ride_measurements[i], *src);
+
+        auto rideId = src->ride->id;
+        dst.ride_index = rideId;
+        _s6.rides[rideId].measurement_index = i;
+        i++;
+    }
+}
+
+void S6Exporter::ExportRideMeasurement(RCT12RideMeasurement& dst, const RideMeasurement& src)
+{
+    dst.flags = src.flags;
+    dst.last_use_tick = src.last_use_tick;
+    dst.num_items = src.num_items;
+    dst.current_item = src.current_item;
+    dst.vehicle_index = src.vehicle_index;
+    dst.current_station = src.current_station;
+    for (size_t i = 0; i < std::size(src.velocity); i++)
+    {
+        dst.velocity[i] = src.velocity[i];
+        dst.altitude[i] = src.altitude[i];
+        dst.vertical[i] = src.vertical[i];
+        dst.lateral[i] = src.lateral[i];
+    }
 }
 
 void S6Exporter::ExportResearchedRideTypes()
