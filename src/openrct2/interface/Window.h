@@ -677,11 +677,6 @@ void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetin
 
 void window_staff_list_init_vars();
 
-void game_command_callback_pickup_guest(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
-void game_command_callback_pickup_staff(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
-
 void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex);
 void window_event_resize_call(rct_window* w);

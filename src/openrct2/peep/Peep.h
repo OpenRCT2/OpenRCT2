@@ -953,7 +953,6 @@ int32_t get_peep_face_sprite_small(Peep* peep);
 int32_t get_peep_face_sprite_large(Peep* peep);
 int32_t peep_check_easteregg_name(int32_t index, Peep* peep);
 int32_t peep_get_easteregg_name_id(Peep* peep);
-bool peep_pickup_command(uint32_t peepnum, int32_t x, int32_t y, int32_t z, int32_t action, bool apply);
 void game_command_pickup_guest(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void peep_sprite_remove(Peep* peep);
