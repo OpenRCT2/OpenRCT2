@@ -970,7 +970,7 @@ void window_scenery_invalidate(rct_window* w)
     if (gWindowSceneryEyedropperEnabled)
         w->pressed_widgets |= (1 << WIDX_SCENERY_EYEDROPPER_BUTTON);
     if (gWindowSceneryClusterEnabled == 1)
-        w->pressed_widgets |= (1 << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
+        w->pressed_widgets |= (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
     window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_EMPTY;
     window_scenery_widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WWT_EMPTY;
