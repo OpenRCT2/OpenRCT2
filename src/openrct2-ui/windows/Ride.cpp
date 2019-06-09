@@ -2508,7 +2508,8 @@ static void window_ride_main_update(rct_window* w)
                 return;
 
             rct_vehicle* vehicle = &(get_sprite(vehicleSpriteIndex)->vehicle);
-            if (vehicle->status != 4 && vehicle->status != 22 && vehicle->status != 10 && vehicle->status != 7)
+            if (vehicle->status != VEHICLE_STATUS_TRAVELLING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT
+                && vehicle->status != VEHICLE_STATUS_TRAVELLING_DODGEMS && vehicle->status != VEHICLE_STATUS_TRAVELLING_BOAT)
             {
                 return;
             }
