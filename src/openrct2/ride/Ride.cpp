@@ -3039,7 +3039,8 @@ void ride_measurements_update()
     FOR_ALL_RIDES (i, ride)
     {
         auto measurement = ride->measurement.get();
-        if (measurement != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) && ride->status != RIDE_STATUS_SIMULATING)
+        if (measurement != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+            && ride->status != RIDE_STATUS_SIMULATING)
         {
             if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
             {
