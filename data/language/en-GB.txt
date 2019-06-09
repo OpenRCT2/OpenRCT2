@@ -3774,6 +3774,8 @@ STR_6323    :Simulating
 STR_6324    :Simulate
 STR_6325    :{SMALLFONT}{BLACK}Simulate ride/attraction
 STR_6326    :Can't simulate {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Transparent background for giant screenshots
+STR_6328    :{SMALLFONT}{BLACK}With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
 
 #############
 # Scenarios #

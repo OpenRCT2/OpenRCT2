@@ -3962,6 +3962,9 @@ enum
     STR_SIMULATE_RIDE_TIP = 6325,
     STR_CANT_SIMULATE = 6326,
 
+    STR_TRANSPARENT_SCREENSHOT = 6327,
+    STR_TRANSPARENT_SCREENSHOT_TIP = 6328,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

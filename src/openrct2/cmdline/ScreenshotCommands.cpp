@@ -24,6 +24,7 @@ static constexpr const CommandLineOptionDefinition ScreenshotOptionsDef[]
     { CMDLINE_TYPE_SWITCH,  &options.fix_vandalism, NAC, "fix-vandalism", "fix vandalism for the screenshot" },
     { CMDLINE_TYPE_SWITCH,  &options.remove_litter, NAC, "remove-litter", "remove litter for the screenshot" },
     { CMDLINE_TYPE_SWITCH,  &options.tidy_up_park,  NAC, "tidy-up-park",  "clear grass, water plants, fix vandalism and remove litter" },
+    { CMDLINE_TYPE_SWITCH,  &options.transparent,   NAC, "transparent",   "make the background transparent" },
     OptionTableEnd
 };
 

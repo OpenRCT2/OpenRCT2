@@ -275,6 +275,12 @@ void screenshot_giant()
     dpi.zoom_level = 0;
     dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
 
+    if (gConfigGeneral.transparent_screenshot)
+    {
+        std::memset(dpi.bits, PALETTE_INDEX_0, dpi.width * dpi.height);
+        viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+    }
+
     auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
     dpi.DrawingEngine = drawingEngine.get();
 
@@ -469,139 +475,150 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
 
     gOpenRCT2Headless = true;
     auto context = CreateContext();
-    if (context->Initialise())
+    if (!context->Initialise())
     {
-        drawing_engine_init();
+        std::puts("Failed to initialize context.");
+        return -1;
+    }
 
-        try
+    drawing_engine_init();
+
+    try
+    {
+        context->LoadParkFromFile(inputPath);
+    }
+    catch (const std::exception& e)
+    {
+        std::printf("%s\n", e.what());
+        drawing_engine_dispose();
+        return -1;
+    }
+
+    gIntroState = INTRO_STATE_NONE;
+    gScreenFlags = SCREEN_FLAGS_PLAYING;
+
+    int32_t mapSize = gMapSize;
+    if (resolutionWidth == 0 || resolutionHeight == 0)
+    {
+        resolutionWidth = (mapSize * 32 * 2) >> customZoom;
+        resolutionHeight = (mapSize * 32 * 1) >> customZoom;
+
+        resolutionWidth += 8;
+        resolutionHeight += 128;
+    }
+
+    rct_viewport viewport;
+    viewport.x = 0;
+    viewport.y = 0;
+    viewport.width = resolutionWidth;
+    viewport.height = resolutionHeight;
+    viewport.view_width = viewport.width;
+    viewport.view_height = viewport.height;
+    viewport.var_11 = 0;
+    viewport.flags = 0;
+
+    if (customLocation)
+    {
+        if (centreMapX)
+            customX = (mapSize / 2) * 32 + 16;
+        if (centreMapY)
+            customY = (mapSize / 2) * 32 + 16;
+
+        int32_t z = tile_element_height(customX, customY);
+        CoordsXYZ coords3d = { customX, customY, z };
+
+        CoordsXY coords2d = translate_3d_to_2d_with_z(customRotation, coords3d);
+
+        viewport.view_x = coords2d.x - ((viewport.view_width << customZoom) / 2);
+        viewport.view_y = coords2d.y - ((viewport.view_height << customZoom) / 2);
+        viewport.zoom = customZoom;
+        gCurrentRotation = customRotation;
+    }
+    else
+    {
+        viewport.view_x = gSavedViewX - (viewport.view_width / 2);
+        viewport.view_y = gSavedViewY - (viewport.view_height / 2);
+        viewport.zoom = gSavedViewZoom;
+        gCurrentRotation = gSavedViewRotation;
+    }
+
+    if (options->weather != 0)
+    {
+        if (options->weather < 1 || options->weather > 6)
         {
-            context->LoadParkFromFile(inputPath);
-        }
-        catch (const std::exception& e)
-        {
-            std::printf("%s\n", e.what());
+            std::printf("Weather can only be set to an integer value from 1 till 6.");
             drawing_engine_dispose();
             return -1;
         }
 
-        gIntroState = INTRO_STATE_NONE;
-        gScreenFlags = SCREEN_FLAGS_PLAYING;
-
-        int32_t mapSize = gMapSize;
-        if (resolutionWidth == 0 || resolutionHeight == 0)
-        {
-            resolutionWidth = (mapSize * 32 * 2) >> customZoom;
-            resolutionHeight = (mapSize * 32 * 1) >> customZoom;
-
-            resolutionWidth += 8;
-            resolutionHeight += 128;
-        }
-
-        rct_viewport viewport;
-        viewport.x = 0;
-        viewport.y = 0;
-        viewport.width = resolutionWidth;
-        viewport.height = resolutionHeight;
-        viewport.view_width = viewport.width;
-        viewport.view_height = viewport.height;
-        viewport.var_11 = 0;
-        viewport.flags = 0;
-
-        if (customLocation)
-        {
-            if (centreMapX)
-                customX = (mapSize / 2) * 32 + 16;
-            if (centreMapY)
-                customY = (mapSize / 2) * 32 + 16;
-
-            int32_t z = tile_element_height(customX, customY);
-            CoordsXYZ coords3d = { customX, customY, z };
-
-            CoordsXY coords2d = translate_3d_to_2d_with_z(customRotation, coords3d);
-
-            viewport.view_x = coords2d.x - ((viewport.view_width << customZoom) / 2);
-            viewport.view_y = coords2d.y - ((viewport.view_height << customZoom) / 2);
-            viewport.zoom = customZoom;
-            gCurrentRotation = customRotation;
-        }
-        else
-        {
-            viewport.view_x = gSavedViewX - (viewport.view_width / 2);
-            viewport.view_y = gSavedViewY - (viewport.view_height / 2);
-            viewport.zoom = gSavedViewZoom;
-            gCurrentRotation = gSavedViewRotation;
-        }
-
-        if (options->weather != 0)
-        {
-            if (options->weather < 1 || options->weather > 6)
-            {
-                std::printf("Weather can only be set to an integer value from 1 till 6.");
-                drawing_engine_dispose();
-                return -1;
-            }
-
-            uint8_t customWeather = options->weather - 1;
-            climate_force_weather(customWeather);
-        }
-
-        // Ensure sprites appear regardless of rotation
-        reset_all_sprite_quadrant_placements();
-
-        rct_drawpixelinfo dpi;
-        dpi.x = 0;
-        dpi.y = 0;
-        dpi.width = resolutionWidth;
-        dpi.height = resolutionHeight;
-        dpi.pitch = 0;
-        dpi.zoom_level = 0;
-        dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
-        dpi.DrawingEngine = context->GetDrawingEngine();
-
-        if (options->hide_guests)
-        {
-            viewport.flags |= VIEWPORT_FLAG_INVISIBLE_PEEPS;
-        }
-
-        if (options->hide_sprites)
-        {
-            viewport.flags |= VIEWPORT_FLAG_INVISIBLE_SPRITES;
-        }
-
-        if (options->mowed_grass)
-        {
-            CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_MOWED);
-        }
-
-        if (options->clear_grass || options->tidy_up_park)
-        {
-            CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_CLEAR_0);
-        }
-
-        if (options->water_plants || options->tidy_up_park)
-        {
-            CheatsSet(CheatType::WaterPlants);
-        }
-
-        if (options->fix_vandalism || options->tidy_up_park)
-        {
-            CheatsSet(CheatType::FixVandalism);
-        }
-
-        if (options->remove_litter || options->tidy_up_park)
-        {
-            CheatsSet(CheatType::RemoveLitter);
-        }
-
-        viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
-
-        rct_palette renderedPalette;
-        screenshot_get_rendered_palette(&renderedPalette);
-
-        WriteDpiToFile(outputPath, &dpi, renderedPalette);
-
-        free(dpi.bits);
-        drawing_engine_dispose();
+        uint8_t customWeather = options->weather - 1;
+        climate_force_weather(customWeather);
     }
+
+    // Ensure sprites appear regardless of rotation
+    reset_all_sprite_quadrant_placements();
+
+    rct_drawpixelinfo dpi;
+    dpi.x = 0;
+    dpi.y = 0;
+    dpi.width = resolutionWidth;
+    dpi.height = resolutionHeight;
+    dpi.pitch = 0;
+    dpi.zoom_level = 0;
+    dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
+    dpi.DrawingEngine = context->GetDrawingEngine();
+
+    std::memset(dpi.bits, PALETTE_INDEX_0, dpi.width * dpi.height);
+
+    if (options->hide_guests)
+    {
+        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+    }
+
+    if (options->hide_sprites)
+    {
+        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_SPRITES;
+    }
+
+    if (options->mowed_grass)
+    {
+        CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_MOWED);
+    }
+
+    if (options->clear_grass || options->tidy_up_park)
+    {
+        CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_CLEAR_0);
+    }
+
+    if (options->water_plants || options->tidy_up_park)
+    {
+        CheatsSet(CheatType::WaterPlants);
+    }
+
+    if (options->fix_vandalism || options->tidy_up_park)
+    {
+        CheatsSet(CheatType::FixVandalism);
+    }
+
+    if (options->remove_litter || options->tidy_up_park)
+    {
+        CheatsSet(CheatType::RemoveLitter);
+    }
+
+    if (options->transparent || gConfigGeneral.transparent_screenshot)
+    {
+        viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+    }
+
+    viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
+
+    rct_palette renderedPalette;
+    screenshot_get_rendered_palette(&renderedPalette);
+
+    WriteDpiToFile(outputPath, &dpi, renderedPalette);
+
+    free(dpi.bits);
+    drawing_engine_dispose();
+
     return 1;
 }
