@@ -3794,6 +3794,8 @@ STR_6323    :Probíhá simulace
 STR_6324    :Simulovat
 STR_6325    :{SMALLFONT}{BLACK}Simulovat atrakci
 STR_6326    :Nelze simulovat {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Průhledné pozadí pro velké screenshoty
+STR_6328    :{SMALLFONT}{BLACK}Velké snímky obrazovky budou mít průhledné pozadí namísto výchozí černé barvy.
 
 ###############################################################################
 ## RCT2 Scenarios
