@@ -54,7 +54,7 @@ void vehicle_visual_observation_tower(
         baseImage_id = (vehicle->animation_frame * 2) + vehicleEntry->base_image_id + 8;
     }
 
-    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_3(vehicle->colours.body_colour, vehicle->colours.trim_colour << 24);
+    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_3(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     if (vehicle->IsGhost())
     {
         image_id = (image_id & 0x7FFFF) | CONSTRUCTION_MARKER;
