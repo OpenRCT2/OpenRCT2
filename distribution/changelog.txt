@@ -37,6 +37,7 @@
 - Fix: [#8480, #8535] Crash when mirroring track design.
 - Fix: [#8507] Incorrect change in vehicle rolling direction.
 - Fix: [#8537] Imported RCT1 rides/shops are all numbered 1.
+- Fix: [#8553] Scenery removal tool removes fences and paths while paused.
 - Fix: [#8598] Taking screenshots fails with some park names.
 - Fix: [#8649] Setting date does not work in multiplayer.
 - Fix: [#8873] Potential crash when placing footpaths.
