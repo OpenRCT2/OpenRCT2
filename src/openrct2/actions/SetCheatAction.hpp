@@ -356,7 +356,11 @@ private:
         {
             for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
             {
-                auto surfaceElement = map_get_surface_element_at(x, y)->AsSurface();
+                auto tileElement = map_get_surface_element_at(x, y);
+                if (tileElement == nullptr)
+                    continue;
+
+                auto surfaceElement = tileElement->AsSurface();
                 if (surfaceElement != nullptr && (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
                     && surfaceElement->GetWaterHeight() == 0 && surfaceElement->CanGrassGrow())
                 {
