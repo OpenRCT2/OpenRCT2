@@ -2918,6 +2918,7 @@ bool Network::LoadMap(IStream* stream)
         gGamePaused = stream->ReadValue<uint32_t>();
         _guestGenerationProbability = stream->ReadValue<uint32_t>();
         _suggestedGuestMaximum = stream->ReadValue<uint32_t>();
+        gCheatsEnableAllDrawableTrackPieces = stream->ReadValue<uint8_t>() != 0;
         gCheatsSandboxMode = stream->ReadValue<uint8_t>() != 0;
         gCheatsDisableClearanceChecks = stream->ReadValue<uint8_t>() != 0;
         gCheatsDisableSupportLimits = stream->ReadValue<uint8_t>() != 0;
@@ -2965,6 +2966,7 @@ bool Network::SaveMap(IStream* stream, const std::vector<const ObjectRepositoryI
         stream->WriteValue<uint32_t>(gGamePaused);
         stream->WriteValue<uint32_t>(_guestGenerationProbability);
         stream->WriteValue<uint32_t>(_suggestedGuestMaximum);
+        stream->WriteValue<uint8_t>(gCheatsEnableAllDrawableTrackPieces);
         stream->WriteValue<uint8_t>(gCheatsSandboxMode);
         stream->WriteValue<uint8_t>(gCheatsDisableClearanceChecks);
         stream->WriteValue<uint8_t>(gCheatsDisableSupportLimits);
