@@ -3792,6 +3792,13 @@ STR_6318    :Netværks synkroniseringsfejl.{NEWLINE}Log fil: {STRING}
 STR_6319    :{WINDOW_COLOUR_2}Blok Bremse tilkoblet
 STR_6320    :{WINDOW_COLOUR_2}Uforgængelig
 STR_6321    :{WINDOW_COLOUR_2}Tilføjelse defekt
+STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6323    :Simulérer
+STR_6324    :Simulér
+STR_6325    :{SMALLFONT}{BLACK}Simulér forlystelse/attraktion
+STR_6326    :Kan ikke simulére {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Transparent baggrund for gigantisk Skærmbillede
+STR_6328    :{SMALLFONT}{BLACK}Med denne indstilling aktiveret, vil gigantisk skærmbillede have transparent baggrund i stedet for en standard sort baggrund.
 
 #############
 # Scenarios #
