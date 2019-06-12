@@ -794,7 +794,7 @@ void S6Exporter::ExportMarketingCampaigns()
     std::memset(_s6.campaign_ride_index, 0, sizeof(_s6.campaign_ride_index));
     for (const auto& campaign : gMarketingCampaigns)
     {
-        _s6.campaign_weeks_left[campaign.Type] = campaign.WeeksLeft;
+        _s6.campaign_weeks_left[campaign.Type] = campaign.WeeksLeft | CAMPAIGN_ACTIVE_FLAG;
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
             _s6.campaign_ride_index[campaign.Type] = campaign.RideId;
