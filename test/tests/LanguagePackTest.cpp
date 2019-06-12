@@ -14,10 +14,6 @@
 
 #include <gtest/gtest.h>
 
-#ifndef _WIN32
-const language_descriptor LanguagesDescriptors[] = {};
-#endif
-
 class LanguagePackTest : public testing::Test
 {
 protected:
@@ -38,7 +34,7 @@ TEST_F(LanguagePackTest, create_mutable_id_1)
     ILanguagePack* lang = LanguagePackFactory::FromText(1, "STR_0000:\n");
     ASSERT_EQ(lang->GetId(), 1);
     ASSERT_EQ(lang->GetCount(), 1U);
-    ASSERT_STREQ(lang->GetString(0), nullptr);
+    ASSERT_STREQ(lang->GetString(0), "");
     lang->SetString(0, "xx");
     ASSERT_EQ(lang->GetCount(), 1U);
     ASSERT_STREQ(lang->GetString(0), "xx");
