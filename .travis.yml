@@ -41,6 +41,7 @@ matrix:
             - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/bin/openrct2-cli OpenRCT2/ && mv OpenRCT2/bin/libopenrct2.so OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc && mv OpenRCT2/bin/libdiscord-rpc.so OpenRCT2/
             - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
             - tar cvzf openrct2-linux.tar.gz OpenRCT2/
+            - ls -la
             - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then
               export PUSH_BRANCH=master ;
               else export PUSH_BRANCH=$TRAVIS_BRANCH ; export FILENAME_PART=-${TRAVIS_BRANCH}-$(git rev-parse --short HEAD) ;
