@@ -515,7 +515,8 @@ static void viewport_surface_smoothen_edge(
 
 static bool tile_is_inside_clip_view(const tile_descriptor& tile)
 {
-    Guard::ArgumentNotNull(tile.tile_element);
+    if (tile.tile_element == nullptr)
+        return false;
 
     if (tile.tile_element->base_height > gClipHeight)
         return false;
@@ -584,7 +585,7 @@ static void viewport_surface_draw_tile_side_bottom(
         neighbourCornerHeight1 = MINIMUM_LAND_HEIGHT / 2;
     }
 
-    if (isWater)
+    if (isWater && neighbour.tile_element != nullptr)
     {
         uint8_t waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight();
         if (waterHeight == height && !neighbourIsClippedAway)
