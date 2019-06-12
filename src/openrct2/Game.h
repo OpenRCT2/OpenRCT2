@@ -87,8 +87,8 @@ enum GAME_COMMAND
     GAME_COMMAND_CHEAT,                    // GA
     GAME_COMMAND_PICKUP_GUEST,
     GAME_COMMAND_PICKUP_STAFF,
-    GAME_COMMAND_BALLOON_PRESS, // GA
-    GAME_COMMAND_MODIFY_TILE,
+    GAME_COMMAND_BALLOON_PRESS,           // GA
+    GAME_COMMAND_MODIFY_TILE,             // GA
     GAME_COMMAND_EDIT_SCENARIO_OPTIONS,   // GA
     GAME_COMMAND_PLACE_PEEP_SPAWN,        // GA, TODO: refactor to separate array for just game actions
     GAME_COMMAND_SET_CLIMATE,             // GA

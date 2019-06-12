@@ -19,6 +19,7 @@
 #include "actions/RideEntranceExitPlaceAction.hpp"
 #include "actions/RideSetSetting.hpp"
 #include "actions/SetCheatAction.hpp"
+#include "actions/TileModifyAction.hpp"
 #include "actions/TrackPlaceAction.hpp"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
@@ -534,6 +535,28 @@ namespace OpenRCT2
                     CheatType cheatType = static_cast<CheatType>(command.ecx);
 
                     result.action = std::make_unique<SetCheatAction>(cheatType, param1, param2);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_MODIFY_TILE:
+                {
+                    int32_t param1 = command.edx;
+                    int32_t param2 = command.edi;
+                    CoordsXY loc = { static_cast<int16_t>((command.ecx & 0xFF) * 32),
+                                     static_cast<int16_t>(((command.ecx >> 8) & 0xFF) * 32) };
+                    TileModifyType type = static_cast<TileModifyType>(command.eax & 0xFF);
+
+                    if (type == TileModifyType::AnyPaste)
+                    {
+                        TileElement copiedElement{};
+                        uint32_t data[2] = { command.edx, command.edi };
+                        std::memcpy(&copiedElement, &data[0], 8);
+                        result.action = std::make_unique<TileModifyAction>(loc, type, 0, 0, copiedElement);
+                    }
+                    else
+                    {
+                        result.action = std::make_unique<TileModifyAction>(loc, type, param1, param2);
+                    }
                     result.action->SetFlags(command.ebx & 0xFF);
                     break;
                 }

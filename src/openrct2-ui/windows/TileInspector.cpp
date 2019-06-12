@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/TileModifyAction.hpp>
 #include <openrct2/common.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Localisation.h>
@@ -29,7 +30,6 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/Surface.h>
-#include <openrct2/world/TileInspector.h>
 
 // clang-format off
 static constexpr const rct_string_id TerrainTypeStringIds[] = {
@@ -619,25 +619,25 @@ static void window_tile_inspector_load_tile(rct_window* w, TileElement* elementT
 static void window_tile_inspector_insert_corrupt_element(int32_t elementIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-    game_do_command(
-        TILE_INSPECTOR_ANY_INSERT_CORRUPT, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, 0, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyInsertCorrupt, elementIndex);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_remove_element(int32_t elementIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-    game_do_command(
-        TILE_INSPECTOR_ANY_REMOVE, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, 0, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyRemove, elementIndex);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_rotate_element(int32_t elementIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-    game_do_command(
-        TILE_INSPECTOR_ANY_ROTATE, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, 0, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyRotate, elementIndex);
+    GameActions::Execute(&modifyTile);
 }
 
 // Swap element with its parent
@@ -645,17 +645,16 @@ static void window_tile_inspector_swap_elements(int16_t first, int16_t second)
 {
     openrct2_assert(first >= 0 && first < windowTileInspectorElementCount, "first out of range");
     openrct2_assert(second >= 0 && second < windowTileInspectorElementCount, "second out of range");
-    game_do_command(
-        TILE_INSPECTOR_ANY_SWAP, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8), first,
-        GAME_COMMAND_MODIFY_TILE, second, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnySwap, first, second);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_sort_elements()
 {
     openrct2_assert(windowTileInspectorTileSelected, "No tile selected");
-    game_do_command(
-        TILE_INSPECTOR_ANY_SORT, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8), 0,
-        GAME_COMMAND_MODIFY_TILE, 0, 0);
+    auto modifyTile = TileModifyAction({ windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnySort);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_copy_element(rct_window* w)
@@ -672,127 +671,130 @@ static void window_tile_inspector_paste_element(rct_window* w)
     int32_t data[2];
     std::memcpy(&data[0], &tileInspectorCopiedElement, 8);
     assert_struct_size(data, sizeof(tileInspectorCopiedElement));
-
-    game_do_command(
-        TILE_INSPECTOR_ANY_PASTE, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8), data[0],
-        GAME_COMMAND_MODIFY_TILE, data[1], 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyPaste, 0, 0,
+        tileInspectorCopiedElement);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_base_height_offset(int16_t elementIndex, int8_t heightOffset)
 {
-    game_do_command(
-        TILE_INSPECTOR_ANY_BASE_HEIGHT_OFFSET, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE, heightOffset, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyBaseHeightOffset, elementIndex,
+        heightOffset);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_surface_show_park_fences(bool showFences)
 {
-    game_do_command(
-        TILE_INSPECTOR_SURFACE_SHOW_PARK_FENCES, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), showFences, GAME_COMMAND_MODIFY_TILE, 0, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::SurfaceShowParkFences, showFences);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_surface_toggle_corner(int32_t cornerIndex)
 {
-    game_do_command(
-        TILE_INSPECTOR_SURFACE_TOGGLE_CORNER, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), cornerIndex, GAME_COMMAND_MODIFY_TILE, 0, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::SurfaceToggleCorner, cornerIndex);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_surface_toggle_diagonal()
 {
-    game_do_command(
-        TILE_INSPECTOR_SURFACE_TOGGLE_DIAGONAL, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), 0, GAME_COMMAND_MODIFY_TILE, 0, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::SurfaceToggleDiagonal);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_path_set_sloped(int32_t elementIndex, bool sloped)
 {
-    game_do_command(
-        TILE_INSPECTOR_PATH_SET_SLOPE, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, sloped, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::PathSetSlope, elementIndex, sloped);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_path_set_broken(int32_t elementIndex, bool broken)
 {
-    game_do_command(
-        TILE_INSPECTOR_PATH_SET_BROKEN, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, broken, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::PathSetBroken, elementIndex, broken);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_path_toggle_edge(int32_t elementIndex, int32_t cornerIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
     openrct2_assert(cornerIndex >= 0 && cornerIndex < 8, "cornerIndex out of range");
-    game_do_command(
-        TILE_INSPECTOR_PATH_TOGGLE_EDGE, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, cornerIndex, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::PathToggleEdge, elementIndex,
+        cornerIndex);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_entrance_make_usable(int32_t elementIndex)
 {
     Guard::ArgumentInRange(elementIndex, 0, windowTileInspectorElementCount - 1);
-    game_do_command(
-        TILE_INSPECTOR_ENTRANCE_MAKE_USABLE, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE, 0, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::EntranceMakeUsable, elementIndex);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_wall_set_slope(int32_t elementIndex, int32_t slopeValue)
 {
     // Make sure only the correct bits are set
     openrct2_assert((slopeValue & 3) == slopeValue, "slopeValue doesn't match its mask");
-
-    game_do_command(
-        TILE_INSPECTOR_WALL_SET_SLOPE, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, slopeValue, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::WallSetSlope, elementIndex, slopeValue);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_track_block_height_offset(int32_t elementIndex, int8_t heightOffset)
 {
-    game_do_command(
-        TILE_INSPECTOR_TRACK_BASE_HEIGHT_OFFSET, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE, heightOffset, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::TrackBaseHeightOffset, elementIndex,
+        heightOffset);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_track_block_set_lift(int32_t elementIndex, bool entireTrackBlock, bool chain)
 {
-    game_do_command(
-        TILE_INSPECTOR_TRACK_SET_CHAIN, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, entireTrackBlock, chain);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY },
+        entireTrackBlock ? TileModifyType::TrackSetChainBlock : TileModifyType::TrackSetChain, elementIndex, chain);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_track_set_block_brake(int32_t elementIndex, bool blockBrake)
 {
-    game_do_command(
-        TILE_INSPECTOR_TRACK_SET_BLOCK_BRAKE, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE, blockBrake, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::TrackSetBlockBrake, elementIndex,
+        blockBrake);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_track_set_indestructible(int32_t elementIndex, bool isIndestructible)
 {
-    game_do_command(
-        TILE_INSPECTOR_TRACK_SET_INDESTRUCTIBLE, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE, isIndestructible,
-        0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::TrackSetIndestructible, elementIndex,
+        isIndestructible);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_quarter_tile_set(int32_t elementIndex, const int32_t quarterIndex)
 {
     // quarterIndex is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
     openrct2_assert(quarterIndex >= 0 && quarterIndex < 4, "quarterIndex out of range");
-
-    game_do_command(
-        TILE_INSPECTOR_SCENERY_SET_QUARTER_LOCATION, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE,
-        (quarterIndex - get_current_rotation()) & 3, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::ScenerySetQuarterLocation, elementIndex,
+        (quarterIndex - get_current_rotation()) & 3);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_toggle_quadrant_collosion(int32_t elementIndex, const int32_t quadrantIndex)
 {
-    game_do_command(
-        TILE_INSPECTOR_SCENERY_SET_QUARTER_COLLISION, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE,
-        (quadrantIndex + 2 - get_current_rotation()) & 3, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::ScenerySetQuarterCollision, elementIndex,
+        (quadrantIndex + 2 - get_current_rotation()) & 3);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_banner_toggle_block(int32_t elementIndex, int32_t edgeIndex)
@@ -801,17 +803,17 @@ static void window_tile_inspector_banner_toggle_block(int32_t elementIndex, int3
 
     // Make edgeIndex abstract
     edgeIndex = (edgeIndex - get_current_rotation()) & 3;
-
-    game_do_command(
-        TILE_INSPECTOR_BANNER_TOGGLE_BLOCKING_EDGE, GAME_COMMAND_FLAG_APPLY,
-        windowTileInspectorTileX | (windowTileInspectorTileY << 8), elementIndex, GAME_COMMAND_MODIFY_TILE, edgeIndex, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::BannerToggleBlockingEdge, elementIndex,
+        edgeIndex);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_clamp_corrupt(int32_t elementIndex)
 {
-    game_do_command(
-        TILE_INSPECTOR_CORRUPT_CLAMP, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
-        elementIndex, GAME_COMMAND_MODIFY_TILE, 0, 0);
+    auto modifyTile = TileModifyAction(
+        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::CorruptClamp, elementIndex);
+    GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetIndex)
