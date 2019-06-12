@@ -71,6 +71,7 @@ public:
         MarketingCampaign campaign{};
         campaign.Type = _type;
         campaign.WeeksLeft = _numWeeks;
+        campaign.Flags = MarketingCampaignFlags::FIRST_WEEK;
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
             campaign.RideId = _item;
