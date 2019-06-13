@@ -156,7 +156,7 @@ private:
         while (!(tileElement++)->IsLastForTile())
         {
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-                return;
+                return result;
             else if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
                 continue;
 
@@ -173,5 +173,6 @@ private:
             }
             tileElement--;
         }
+        return result;
     }
 };
