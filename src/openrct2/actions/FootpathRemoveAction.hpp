@@ -90,7 +90,11 @@ public:
         if (footpathElement != nullptr)
         {
             footpath_queue_chain_reset();
-            RemoveBannersAtElement(_x, _y, footpathElement);
+            auto bannerRes = RemoveBannersAtElement(_x, _y, footpathElement);
+            if (bannerRes->Error == GA_ERROR::OK)
+            {
+                res->Cost += bannerRes->Cost;
+            }
             footpath_remove_edges_at(_x, _y, footpathElement);
             map_invalidate_tile_full(_x, _y);
             tile_element_remove(footpathElement);
@@ -101,7 +105,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
         }
 
-        res->Cost = GetRefundPrice(footpathElement);
+        res->Cost += GetRefundPrice(footpathElement);
 
         return res;
     }
@@ -146,8 +150,9 @@ private:
      *
      *  rct2: 0x006BA23E
      */
-    void RemoveBannersAtElement(int32_t x, int32_t y, TileElement * tileElement) const
+    GameActionResult::Ptr RemoveBannersAtElement(int32_t x, int32_t y, TileElement * tileElement) const
     {
+        auto result = MakeResult();
         while (!(tileElement++)->IsLastForTile())
         {
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
@@ -157,9 +162,15 @@ private:
 
             auto bannerRemoveAction = BannerRemoveAction(
                 { x, y, tileElement->base_height * 8, tileElement->AsBanner()->GetPosition() });
-            auto bannerFlags = GetFlags() | (tileElement->IsGhost() ? static_cast<uint32_t>(GAME_COMMAND_FLAG_GHOST) : 0);
+            bool isGhost = tileElement->IsGhost();
+            auto bannerFlags = GetFlags() | (isGhost ? static_cast<uint32_t>(GAME_COMMAND_FLAG_GHOST) : 0);
             bannerRemoveAction.SetFlags(bannerFlags);
-            GameActions::ExecuteNested(&bannerRemoveAction);
+            auto res = GameActions::ExecuteNested(&bannerRemoveAction);
+            // Ghost removal is free
+            if (res->Error == GA_ERROR::OK && !isGhost)
+            {
+                result->Cost += res->Cost;
+            }
             tileElement--;
         }
     }
