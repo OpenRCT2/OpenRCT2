@@ -187,7 +187,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
-    paint_util_set_general_support_height(session, height, 0x20);
+    paint_util_set_general_support_height(session, 8 * tile_element->clearance_height, 0x20);
 
     uint32_t dword_141F710 = 0;
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
