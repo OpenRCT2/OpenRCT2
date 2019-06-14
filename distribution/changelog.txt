@@ -56,6 +56,8 @@
 - Fix: [#9240] Crash when passing directory instead of save file.
 - Fix: [#9293] Issue with the native load/save dialog.
 - Fix: [#9322] Peep crashing the game trying to find a ride to look at.
+- Fix: [#9402] Ad campaigns disappear when you save and load the game.
+- Fix: [#9411] Ad campaigns end too soon.
 - Fix: Guests eating popcorn are drawn as if they're eating pizza.
 - Fix: The arbitrary ride type and vehicle dropdown lists are ordered case-sensitively.
 - Improved: [#6116] Expose colour scheme for track elements in the tile inspector.
