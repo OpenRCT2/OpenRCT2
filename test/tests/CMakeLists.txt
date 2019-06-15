@@ -20,7 +20,7 @@ else (SYSTEM_GTEST)
         ExternalProject_Add(
                 googletest-distribution
                 URL https://github.com/google/googletest/archive/e110929a7b496714c1f6f6be2edcf494a18e5676.tar.gz
-                URL_HASH SHA1=e468bfdffe7c46c14ce06bfb48a29b6201908504
+                URL_HASH SHA1=93ca771f2870aaf71266c3901e31a261b0572891
                 TIMEOUT 10
                 CONFIGURE_COMMAND ""
                 BUILD_COMMAND ""
