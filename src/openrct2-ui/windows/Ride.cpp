@@ -2047,7 +2047,7 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_ride_rename(w);
             break;
         case WIDX_LOCATE:
-            window_scroll_to_viewport(w);
+            w->ScrollToViewport();
             break;
         case WIDX_DEMOLISH:
             context_open_detail_window(WD_DEMOLISH_RIDE, w->number);

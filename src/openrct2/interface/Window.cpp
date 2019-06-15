@@ -805,38 +805,6 @@ rct_window* window_get_main()
 }
 
 /**
- * Based on
- *  rct2: 0x696ee9, 0x66842F, 0x006AF3B3
- */
-void window_scroll_to_viewport(rct_window* w)
-{
-    int32_t x, y, z;
-    rct_window* mainWindow;
-    assert(w != nullptr);
-    // In original checked to make sure x and y were not -1 as well.
-    if (w->viewport == nullptr || w->viewport_focus_coordinates.y == -1)
-        return;
-
-    if (w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_SPRITE)
-    {
-        rct_sprite* sprite = get_sprite(w->viewport_focus_sprite.sprite_id);
-        x = sprite->generic.x;
-        y = sprite->generic.y;
-        z = sprite->generic.z;
-    }
-    else
-    {
-        x = w->viewport_focus_coordinates.x;
-        y = w->viewport_focus_coordinates.y & VIEWPORT_FOCUS_Y_MASK;
-        z = w->viewport_focus_coordinates.z;
-    }
-
-    mainWindow = window_get_main();
-    if (mainWindow != nullptr)
-        window_scroll_to_location(mainWindow, x, y, z);
-}
-
-/**
  *
  *  rct2: 0x006E7C9C
  * @param w (esi)

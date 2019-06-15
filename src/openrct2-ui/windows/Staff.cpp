@@ -459,7 +459,7 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_staff_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_LOCATE:
-            window_scroll_to_viewport(w);
+            w->ScrollToViewport();
             break;
         case WIDX_PICKUP:
         {

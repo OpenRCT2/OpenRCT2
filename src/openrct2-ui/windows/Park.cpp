@@ -655,7 +655,7 @@ static void window_park_entrance_mouseup(rct_window* w, rct_widgetindex widgetIn
             context_open_window(WC_LAND_RIGHTS);
             break;
         case WIDX_LOCATE:
-            window_scroll_to_viewport(w);
+            w->ScrollToViewport();
             break;
         case WIDX_RENAME:
         {

@@ -719,7 +719,7 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             break;
         }
         case WIDX_LOCATE:
-            window_scroll_to_viewport(w);
+            w->ScrollToViewport();
             break;
         case WIDX_TRACK:
         {
