@@ -536,10 +536,10 @@ rct_window* window_finances_open()
     }
 
     w->page = WINDOW_FINANCES_PAGE_SUMMARY;
-    window_invalidate(w);
+    w->Invalidate();
     w->width = 530;
     w->height = 310;
-    window_invalidate(w);
+    w->Invalidate();
 
     w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
     w->enabled_widgets = WindowFinancesPageEnabledWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
@@ -1427,7 +1427,7 @@ static void window_finances_set_page(rct_window* w, int32_t page)
     w->disabled_widgets = 0;
     w->pressed_widgets = 0;
 
-    window_invalidate(w);
+    w->Invalidate();
     if (w->page == WINDOW_FINANCES_PAGE_RESEARCH)
     {
         w->width = 320;
@@ -1447,7 +1447,7 @@ static void window_finances_set_page(rct_window* w, int32_t page)
     window_event_invalidate_call(w);
 
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     // Scroll summary all the way to the right, initially.
     if (w->page == WINDOW_FINANCES_PAGE_SUMMARY)

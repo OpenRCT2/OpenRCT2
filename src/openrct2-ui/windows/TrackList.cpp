@@ -316,12 +316,12 @@ static void window_track_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_ROTATE:
             _currentTrackPieceDirection++;
             _currentTrackPieceDirection %= 4;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_TOGGLE_SCENERY:
             gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
             _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_BACK:
             window_close(w);
@@ -347,7 +347,7 @@ static void window_track_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
 
             String::Set(_filterString, sizeof(_filterString), "");
             window_track_list_filter_list();
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -396,7 +396,7 @@ static void window_track_list_scrollmouseover(rct_window* w, int32_t scrollIndex
         if (i != -1 && w->selected_list_item != i)
         {
             w->selected_list_item = i;
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -415,7 +415,7 @@ static void window_track_list_textinput(rct_window* w, rct_widgetindex widgetInd
 
     w->scrolls->v_top = 0;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_track_list_update(rct_window* w)
@@ -430,7 +430,7 @@ static void window_track_list_update(rct_window* w)
     {
         track_list_load_designs(_window_track_list_item);
         w->selected_list_item = 0;
-        window_invalidate(w);
+        w->Invalidate();
         w->track_list.reload_track_designs = false;
     }
 }

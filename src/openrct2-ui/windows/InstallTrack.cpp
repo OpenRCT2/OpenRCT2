@@ -147,7 +147,7 @@ rct_window* window_install_track_open(const utf8* path)
     _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
     window_install_track_update_preview();
-    window_invalidate(w);
+    w->Invalidate();
 
     return w;
 }
@@ -180,12 +180,12 @@ static void window_install_track_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_ROTATE:
             _currentTrackPieceDirection++;
             _currentTrackPieceDirection %= 4;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_TOGGLE_SCENERY:
             gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
             window_install_track_update_preview();
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INSTALL:
             window_install_track_design(w);

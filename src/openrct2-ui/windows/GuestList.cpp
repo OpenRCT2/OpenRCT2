@@ -340,7 +340,7 @@ static void window_guest_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
                 w->pressed_widgets |= (1 << WIDX_TRACKING);
             else
                 w->pressed_widgets &= ~(1 << WIDX_TRACKING);
-            window_invalidate(w);
+            w->Invalidate();
             w->scrolls[0].v_top = 0;
             break;
         case WIDX_FILTER_BY_NAME:
@@ -370,12 +370,12 @@ static void window_guest_list_resize(rct_window* w)
     w->min_height = 330;
     if (w->width < w->min_width)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->width = w->min_width;
     }
     if (w->height < w->min_height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->height = w->min_height;
     }
 }
@@ -408,7 +408,7 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
             w->list_information_type = 0;
             _window_guest_list_selected_filter = -1;
-            window_invalidate(w);
+            w->Invalidate();
             w->scrolls[0].v_top = 0;
             break;
         case WIDX_PAGE_DROPDOWN_BUTTON:
@@ -455,13 +455,13 @@ static void window_guest_list_dropdown(rct_window* w, rct_widgetindex widgetInde
             if (dropdownIndex == -1)
                 break;
             _window_guest_list_selected_page = dropdownIndex;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
             if (dropdownIndex == -1)
                 break;
             _window_guest_list_selected_view = dropdownIndex;
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -533,7 +533,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
     if (_window_guest_list_highlighted_index != -1)
     {
         _window_guest_list_highlighted_index = -1;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     i = y - window_guest_list_widgets[WIDX_GUEST_LIST].bottom + window_guest_list_widgets[WIDX_GUEST_LIST].top + 21;
@@ -542,7 +542,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
     if (i < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *width = 447;
@@ -594,7 +594,7 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
                 _window_guest_list_selected_filter = _window_guest_list_selected_view;
                 _window_guest_list_selected_tab = PAGE_INDIVIDUAL;
                 window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
-                window_invalidate(w);
+                w->Invalidate();
                 w->scrolls[0].v_top = 0;
             }
             break;
@@ -614,7 +614,7 @@ static void window_guest_list_scrollmouseover(rct_window* w, int32_t scrollIndex
     if (i != _window_guest_list_highlighted_index)
     {
         _window_guest_list_highlighted_index = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

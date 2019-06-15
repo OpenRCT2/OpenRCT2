@@ -35,3 +35,8 @@ void rct_window::ScrollToViewport()
     if (mainWindow != nullptr)
         window_scroll_to_location(mainWindow, newX, newY, newZ);
 }
+
+void rct_window::Invalidate()
+{
+    gfx_set_dirty_blocks(x, y, x + width, y + height);
+}

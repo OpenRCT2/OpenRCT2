@@ -329,7 +329,7 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
         w->selected_list_item = index;
         _hoverButtonIndex = hoverButtonIndex;
         window_tooltip_close();
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -367,7 +367,7 @@ static void window_server_list_textinput(rct_window* w, rct_widgetindex widgetIn
             entry.favourite = true;
             _serverList.Add(entry);
             _serverList.WriteFavourites();
-            window_invalidate(w);
+            w->Invalidate();
             break;
         }
     }
@@ -611,7 +611,7 @@ static void server_list_fetch_servers_check(rct_window* w)
                 log_warning("Unable to connect to master server: %s", e.what());
             }
             _fetchFuture = {};
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }

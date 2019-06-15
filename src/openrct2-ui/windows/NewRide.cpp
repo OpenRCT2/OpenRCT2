@@ -589,7 +589,7 @@ static void window_new_ride_set_page(rct_window* w, int32_t page)
     }
 
     window_new_ride_refresh_widget_sizing(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
@@ -633,7 +633,7 @@ static void window_new_ride_refresh_widget_sizing(rct_window* w)
     // Handle new window size
     if (w->width != width || w->height != height)
     {
-        window_invalidate(w);
+        w->Invalidate();
 
         // Resize widgets to new window size
         window_new_ride_widgets[WIDX_BACKGROUND].right = width - 1;
@@ -646,7 +646,7 @@ static void window_new_ride_refresh_widget_sizing(rct_window* w)
 
         w->width = width;
         w->height = height;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     window_init_scroll_widgets(w);
@@ -776,7 +776,7 @@ static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, 
 
     audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
     w->new_ride.selected_ride_countdown = 8;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -797,7 +797,7 @@ static void window_new_ride_scrollmouseover(rct_window* w, int32_t scrollIndex, 
 
     w->new_ride.highlighted_ride_id = item.ride_type_and_entry;
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**

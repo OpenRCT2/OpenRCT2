@@ -104,6 +104,7 @@ struct rct_window
 
     void SetLocation(int32_t x, int32_t y, int32_t z);
     void ScrollToViewport();
+    void Invalidate();
 };
 
 // rct2: 0x01420078

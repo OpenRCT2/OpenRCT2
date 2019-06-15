@@ -334,7 +334,7 @@ static void window_multiplayer_set_page(rct_window* w, int32_t page)
     window_event_resize_call(w);
     window_event_invalidate_call(w);
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_multiplayer_anchor_border_widgets(rct_window* w)
@@ -561,7 +561,7 @@ static void window_multiplayer_players_resize(rct_window* w)
     w->widgets[WIDX_HEADER_PING].right = w->width - 5;
 
     w->selected_list_item = -1;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_multiplayer_players_update(rct_window* w)
@@ -577,7 +577,7 @@ static void window_multiplayer_players_scrollgetsize(rct_window* w, int32_t scro
     if (w->selected_list_item != -1)
     {
         w->selected_list_item = -1;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *height = network_get_num_players() * SCROLLABLE_ROW_HEIGHT;
@@ -587,7 +587,7 @@ static void window_multiplayer_players_scrollgetsize(rct_window* w, int32_t scro
     if (i < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -600,7 +600,7 @@ static void window_multiplayer_players_scrollmousedown(rct_window* w, int32_t sc
         return;
 
     w->selected_list_item = index;
-    window_invalidate(w);
+    w->Invalidate();
 
     window_player_open(network_get_player_id(index));
 }
@@ -614,7 +614,7 @@ static void window_multiplayer_players_scrollmouseover(rct_window* w, int32_t sc
         return;
 
     w->selected_list_item = index;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_multiplayer_players_invalidate(rct_window* w)
@@ -769,7 +769,7 @@ static void window_multiplayer_groups_resize(rct_window* w)
     w->list_item_positions[0] = 0;
 
     w->selected_list_item = -1;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_multiplayer_groups_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
@@ -806,7 +806,7 @@ static void window_multiplayer_groups_dropdown(rct_window* w, rct_widgetindex wi
             break;
     }
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_multiplayer_groups_update(rct_window* w)
@@ -822,7 +822,7 @@ static void window_multiplayer_groups_scrollgetsize(rct_window* w, int32_t scrol
     if (w->selected_list_item != -1)
     {
         w->selected_list_item = -1;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *height = network_get_num_actions() * SCROLLABLE_ROW_HEIGHT;
@@ -832,7 +832,7 @@ static void window_multiplayer_groups_scrollgetsize(rct_window* w, int32_t scrol
     if (i < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -845,7 +845,7 @@ static void window_multiplayer_groups_scrollmousedown(rct_window* w, int32_t scr
         return;
 
     w->selected_list_item = index;
-    window_invalidate(w);
+    w->Invalidate();
 
     auto networkModifyGroup = NetworkModifyGroupAction(
         ModifyGroupType::SetPermissions, _selectedGroup, "", index, PermissionState::Toggle);
@@ -861,7 +861,7 @@ static void window_multiplayer_groups_scrollmouseover(rct_window* w, int32_t scr
         return;
 
     w->selected_list_item = index;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_multiplayer_groups_text_input(rct_window* w, rct_widgetindex widgetIndex, char* text)

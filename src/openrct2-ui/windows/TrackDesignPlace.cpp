@@ -207,14 +207,14 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_ROTATE:
             window_track_place_clear_provisional();
             _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
-            window_invalidate(w);
+            w->Invalidate();
             _window_track_place_last_x = -1;
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_MIRROR:
             track_design_mirror(_trackDesign.get());
             _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
-            window_invalidate(w);
+            w->Invalidate();
             _window_track_place_last_x = -1;
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;

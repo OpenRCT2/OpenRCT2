@@ -195,7 +195,7 @@ static void window_server_start_mouseup(rct_window* w, rct_widgetindex widgetInd
                 gConfigNetwork.maxplayers++;
             }
             config_save_default();
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_MAXPLAYERS_DECREASE:
             if (gConfigNetwork.maxplayers > 1)
@@ -203,12 +203,12 @@ static void window_server_start_mouseup(rct_window* w, rct_widgetindex widgetInd
                 gConfigNetwork.maxplayers--;
             }
             config_save_default();
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_ADVERTISE_CHECKBOX:
             gConfigNetwork.advertise = !gConfigNetwork.advertise;
             config_save_default();
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_START_SERVER:
             window_scenarioselect_open(window_server_start_scenarioselect_callback, false);

@@ -292,7 +292,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_SET_LAND_RIGHTS:
-            window_invalidate(w);
+            w->Invalidate();
             if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
                 break;
             _activeTool = 2;
@@ -308,7 +308,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 2)
                 _activeTool &= 0xF2;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LAND_SALE_CHECKBOX:
             _activeTool ^= 8;
@@ -316,7 +316,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 8)
                 _activeTool &= 0xF8;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX:
             _activeTool ^= 1;
@@ -324,7 +324,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 1)
                 _activeTool &= 0xF1;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX:
             _activeTool ^= 4;
@@ -332,10 +332,10 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 4)
                 _activeTool &= 0xF4;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
-            window_invalidate(w);
+            w->Invalidate();
             if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
                 break;
 
@@ -410,13 +410,13 @@ static void window_map_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct
             // Decrement land rights tool size
             _landRightsToolSize = std::max(MINIMUM_TOOL_SIZE, _landRightsToolSize - 1);
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LAND_TOOL_LARGER:
             // Increment land rights tool size
             _landRightsToolSize = std::min(MAXIMUM_TOOL_SIZE, _landRightsToolSize + 1);
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -437,7 +437,7 @@ static void window_map_update(rct_window* w)
     for (int32_t i = 0; i < 16; i++)
         map_window_set_pixels(w);
 
-    window_invalidate(w);
+    w->Invalidate();
 
     // Update tab animations
     w->list_information_type++;
@@ -524,20 +524,20 @@ static void window_map_toolabort(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_SET_LAND_RIGHTS:
-            window_invalidate(w);
+            w->Invalidate();
             hide_gridlines();
             hide_land_rights();
             hide_construction_rights();
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
             park_entrance_remove_ghost();
-            window_invalidate(w);
+            w->Invalidate();
             hide_gridlines();
             hide_land_rights();
             hide_construction_rights();
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
-            window_invalidate(w);
+            w->Invalidate();
             hide_gridlines();
             hide_land_rights();
             hide_construction_rights();
@@ -638,7 +638,7 @@ static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, cha
             {
                 size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
                 _landRightsToolSize = size;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case WIDX_MAP_SIZE_SPINNER:
@@ -660,7 +660,7 @@ static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, cha
                     map_window_increase_map_size();
                     currentSize++;
                 }
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
     }

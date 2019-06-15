@@ -465,22 +465,22 @@ static void window_themes_resize(rct_window* w)
         if (w->width < w->min_width)
         {
             w->width = w->min_width;
-            window_invalidate(w);
+            w->Invalidate();
         }
         if (w->height < w->min_height)
         {
             w->height = w->min_height;
-            window_invalidate(w);
+            w->Invalidate();
         }
         if (w->width > w->max_width)
         {
             w->width = w->max_width;
-            window_invalidate(w);
+            w->Invalidate();
         }
         if (w->height > w->max_height)
         {
             w->height = w->max_height;
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -508,7 +508,7 @@ static void window_themes_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             w->scrolls[0].v_top = 0;
             w->frame_no = 0;
             window_event_resize_call(w);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_THEMES_PRESETS_DROPDOWN:
             theme_manager_load_available_themes();
@@ -628,7 +628,7 @@ void window_themes_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* wi
     if (i < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *width = 420;
@@ -727,7 +727,7 @@ static void window_themes_textinput(rct_window* w, rct_widgetindex widgetIndex, 
                     {
                         theme_rename(text);
                     }
-                    window_invalidate(w);
+                    w->Invalidate();
                 }
                 else
                 {

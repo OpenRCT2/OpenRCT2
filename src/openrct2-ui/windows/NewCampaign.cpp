@@ -308,11 +308,11 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
         // In RCT2, the maximum was 6 weeks
         case WIDX_WEEKS_INCREASE_BUTTON:
             w->campaign.no_weeks = std::min(w->campaign.no_weeks + 1, 12);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_WEEKS_DECREASE_BUTTON:
             w->campaign.no_weeks = std::max(w->campaign.no_weeks - 1, 2);
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -338,7 +338,7 @@ static void window_new_campaign_dropdown(rct_window* w, rct_widgetindex widgetIn
         w->campaign.ride_id = window_new_campaign_rides[dropdownIndex];
     }
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**

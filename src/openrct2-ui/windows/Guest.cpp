@@ -535,7 +535,7 @@ rct_window* window_guest_open(Peep* peep)
     }
 
     window->page = 0;
-    window_invalidate(window);
+    window->Invalidate();
 
     window->widgets = window_guest_page_widgets[WINDOW_GUEST_OVERVIEW];
     window->enabled_widgets = window_guest_page_enabled_widgets[WINDOW_GUEST_OVERVIEW];
@@ -608,13 +608,13 @@ void window_guest_disable_widgets(rct_window* w)
     if (peep_can_be_picked_up(peep))
     {
         if (w->disabled_widgets & (1 << WIDX_PICKUP))
-            window_invalidate(w);
+            w->Invalidate();
     }
     else
     {
         disabled_widgets = (1 << WIDX_PICKUP);
         if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
-            window_invalidate(w);
+            w->Invalidate();
     }
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
@@ -768,11 +768,11 @@ void window_guest_set_page(rct_window* w, int32_t page)
     w->pressed_widgets = 0;
     w->widgets = window_guest_page_widgets[page];
     window_guest_disable_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     if (listen && w->viewport)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
@@ -837,9 +837,9 @@ void window_guest_viewport_init(rct_window* w)
                 w->viewport->flags = origViewportFlags;
             }
             w->flags |= WF_NO_SCROLLING;
-            window_invalidate(w);
+            w->Invalidate();
         }
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1346,7 +1346,7 @@ void window_guest_stats_update(rct_window* w)
     Peep* peep = GET_PEEP(w->number);
     peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_STATS;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -1578,7 +1578,7 @@ void window_guest_rides_update(rct_window* w)
         // Every 2048 ticks do a full window_invalidate
         int32_t number_of_ticks = gScenarioTicks - peep->time_in_park;
         if (!(number_of_ticks & 0x7FF))
-            window_invalidate(w);
+            w->Invalidate();
 
         uint8_t curr_list_position = 0;
         for (const auto& ride : GetRideManager())
@@ -1594,7 +1594,7 @@ void window_guest_rides_update(rct_window* w)
         if (w->no_list_items != curr_list_position)
         {
             w->no_list_items = curr_list_position;
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -1610,7 +1610,7 @@ void window_guest_rides_scroll_get_size(rct_window* w, int32_t scrollIndex, int3
     if (w->selected_list_item != -1)
     {
         w->selected_list_item = -1;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     int32_t visable_height = *height - window_guest_rides_widgets[WIDX_RIDE_SCROLL].bottom
@@ -1622,7 +1622,7 @@ void window_guest_rides_scroll_get_size(rct_window* w, int32_t scrollIndex, int3
     if (visable_height < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = visable_height;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1659,7 +1659,7 @@ void window_guest_rides_scroll_mouse_over(rct_window* w, int32_t scrollIndex, in
         return;
     w->selected_list_item = index;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -1863,7 +1863,7 @@ void window_guest_thoughts_update(rct_window* w)
     if (peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_THOUGHTS)
     {
         peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1926,7 +1926,7 @@ void window_guest_inventory_update(rct_window* w)
     if (peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_INVENTORY)
     {
         peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -2064,7 +2064,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
 void window_guest_debug_update(rct_window* w)
 {
     w->frame_no++;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)

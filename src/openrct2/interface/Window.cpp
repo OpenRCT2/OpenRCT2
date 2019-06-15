@@ -150,7 +150,7 @@ void window_update_all()
             w->flags -= WF_WHITE_BORDER_ONE;
             if (!(w->flags & WF_WHITE_BORDER_MASK))
             {
-                window_invalidate(w);
+                w->Invalidate();
             }
         }
     });
@@ -228,7 +228,7 @@ void window_close(rct_window* w)
     }
 
     // Invalidate the window (area)
-    window_invalidate(window.get());
+    window->Invalidate();
 
     // The window list may have been modified in the close event
     itWindow = window_get_iterator(w);
@@ -463,18 +463,12 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, int32_t x, int32_t 
  *
  * @param window The window to invalidate (esi).
  */
-void window_invalidate(rct_window* window)
-{
-    if (window != nullptr)
-        gfx_set_dirty_blocks(window->x, window->y, window->x + window->width, window->y + window->height);
-}
-
 template<typename _TPred> static void window_invalidate_by_condition(_TPred pred)
 {
     window_visit_each([pred](rct_window* w) {
         if (pred(w))
         {
-            window_invalidate(w);
+            w->Invalidate();
         }
     });
 }
@@ -504,7 +498,7 @@ void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
  */
 void window_invalidate_all()
 {
-    window_visit_each([](rct_window* w) { window_invalidate(w); });
+    window_visit_each([](rct_window* w) { w->Invalidate(); });
 }
 
 /**
@@ -535,7 +529,7 @@ template<typename _TPred> static void widget_invalidate_by_condition(_TPred pred
     window_visit_each([pred](rct_window* w) {
         if (pred(w))
         {
-            window_invalidate(w);
+            w->Invalidate();
         }
     });
 }
@@ -619,7 +613,7 @@ void window_update_scroll_widgets(rct_window* w)
         if (scrollPositionChanged)
         {
             widget_scroll_update_thumbs(w, widgetIndex);
-            window_invalidate(w);
+            w->Invalidate();
         }
         scrollIndex++;
     }
@@ -663,7 +657,7 @@ rct_window* window_bring_to_front(rct_window* w)
             }
 
             g_window_list.splice(itDestPos, g_window_list, itSourcePos);
-            window_invalidate(w);
+            w->Invalidate();
 
             if (w->x + w->width < 20)
             {
@@ -671,7 +665,7 @@ rct_window* window_bring_to_front(rct_window* w)
                 w->x += i;
                 if (w->viewport != nullptr)
                     w->viewport->x += i;
-                window_invalidate(w);
+                w->Invalidate();
             }
         }
     }
@@ -686,7 +680,7 @@ rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint1
     if (w != nullptr)
     {
         w->flags |= flags;
-        window_invalidate(w);
+        w->Invalidate();
         w = window_bring_to_front(w);
     }
 
@@ -712,7 +706,7 @@ rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
     if (w != nullptr)
     {
         w->flags |= WF_WHITE_BORDER_MASK;
-        window_invalidate(w);
+        w->Invalidate();
         w = window_bring_to_front(w);
     }
 
@@ -739,12 +733,12 @@ void window_push_others_right(rct_window* window)
         if (w->y + w->height <= window->y)
             return;
 
-        window_invalidate(w);
+        w->Invalidate();
         if (window->x + window->width + 13 >= context_get_width())
             return;
         uint16_t push_amount = window->x + window->width - w->x + 3;
         w->x += push_amount;
-        window_invalidate(w);
+        w->Invalidate();
         if (w->viewport != nullptr)
             w->viewport->x += push_amount;
     });
@@ -774,13 +768,13 @@ void window_push_others_below(rct_window* w1)
             return;
 
         // Invalidate the window's current area
-        window_invalidate(w2);
+        w2->Invalidate();
 
         int32_t push_amount = w1->y + w1->height - w2->y + 3;
         w2->y += push_amount;
 
         // Invalidate the window's new area
-        window_invalidate(w2);
+        w2->Invalidate();
 
         // Update viewport position if necessary
         if (w2->viewport != nullptr)
@@ -828,7 +822,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             if (!(w->viewport->flags & 1 << 0))
             {
                 w->viewport->flags |= 1 << 0;
-                window_invalidate(w);
+                w->Invalidate();
             }
         }
         else
@@ -836,7 +830,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             if (w->viewport->flags & 1 << 0)
             {
                 w->viewport->flags &= ~(1 << 0);
-                window_invalidate(w);
+                w->Invalidate();
             }
         }
 
@@ -946,7 +940,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
     viewport->view_x = new_x;
     viewport->view_y = new_y;
 
-    window_invalidate(w);
+    w->Invalidate();
 
     call_event_viewport_rotate_on_all_windows();
     reset_all_sprite_quadrant_placements();
@@ -1043,7 +1037,7 @@ void window_zoom_set(rct_window* w, int32_t zoomLevel, bool atCursor)
     // HACK: Prevents the redraw from failing when there is
     // a window on top of the viewport.
     window_bring_to_front(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -1256,7 +1250,7 @@ void window_move_position(rct_window* w, int32_t dx, int32_t dy)
         return;
 
     // Invalidate old region
-    window_invalidate(w);
+    w->Invalidate();
 
     // Translate window and viewport
     w->x += dx;
@@ -1268,7 +1262,7 @@ void window_move_position(rct_window* w, int32_t dx, int32_t dy)
     }
 
     // Invalidate new region
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 void window_resize(rct_window* w, int32_t dw, int32_t dh)
@@ -1278,7 +1272,7 @@ void window_resize(rct_window* w, int32_t dw, int32_t dh)
         return;
 
     // Invalidate old region
-    window_invalidate(w);
+    w->Invalidate();
 
     // Clamp new size to minimum and maximum
     w->width = std::clamp<int16_t>(w->width + dw, w->min_width, w->max_width);
@@ -1296,7 +1290,7 @@ void window_resize(rct_window* w, int32_t dw, int32_t dh)
     window_update_scroll_widgets(w);
 
     // Invalidate new region
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight)
@@ -1313,10 +1307,10 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
     // Resize window if size has changed
     if (w->width != width || w->height != height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->width = width;
         w->height = height;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

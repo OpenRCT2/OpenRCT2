@@ -298,7 +298,7 @@ void window_text_input_key(rct_window* w, char keychar)
     }
 
     if (w)
-        window_invalidate(w);
+        w->Invalidate();
 }
 
 void window_text_input_periodic_update(rct_window* w)
@@ -317,7 +317,7 @@ void window_text_input_periodic_update(rct_window* w)
     if (w->frame_no > 30)
         w->frame_no = 0;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_text_input_close(rct_window* w)
@@ -344,7 +344,7 @@ static void window_text_input_invalidate(rct_window* w)
     // Change window size if required.
     if (height != w->height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         window_set_resize(w, WW, height, WW, height);
     }
 

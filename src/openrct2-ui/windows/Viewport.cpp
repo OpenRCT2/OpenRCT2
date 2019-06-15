@@ -135,14 +135,14 @@ static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (w->viewport != nullptr && w->viewport->zoom > 0)
             {
                 w->viewport->zoom--;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case WIDX_ZOOM_OUT:
             if (w->viewport != nullptr && w->viewport->zoom < 3)
             {
                 w->viewport->zoom++;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case WIDX_LOCATE:
@@ -175,7 +175,7 @@ static void window_viewport_update(rct_window* w)
     if (w->viewport->flags != mainWindow->viewport->flags)
     {
         w->viewport->flags = mainWindow->viewport->flags;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     // Not sure how to invalidate part of the viewport that has changed, this will have to do for now
