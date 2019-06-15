@@ -845,12 +845,14 @@ static void viewport_fill_column(paint_session* session)
 static void viewport_paint_column(paint_session* session)
 {
     if (session->ViewFlags
-        & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_CLIP_VIEW))
+            & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE
+               | VIEWPORT_FLAG_CLIP_VIEW)
+        && (~session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
-        uint8_t colour = 10;
+        uint8_t colour = COLOUR_AQUAMARINE;
         if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
         {
-            colour = 0;
+            colour = COLOUR_BLACK;
         }
         gfx_clear(&session->DPI, colour);
     }
