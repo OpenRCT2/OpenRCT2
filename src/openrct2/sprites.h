@@ -39,6 +39,8 @@ enum
     PEEP_SPAWN_ARROW_2 = 3113,
     PEEP_SPAWN_ARROW_3 = 3114,
 
+    SPR_BLANK_TILE = 3123,
+
     // This is the start of every character there are
     // 224 characters per font (first 32 are control codes hence why it doesn't go to 255)
     // 4 fonts
