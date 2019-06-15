@@ -10,6 +10,9 @@ if (SYSTEM_GTEST)
     message(WARNING "Gtest strongly advices against using a system installation, see https://github.com/google/googletest/blob/master/googletest/docs/FAQ.md#why-is-it-not-recommended-to-install-a-pre-compiled-copy-of-google-test-for-example-into-usrlocal for detailed information. If errors occur please double-check without the SYSTEM_GTEST flag.")
 else (SYSTEM_GTEST)
 
+        # include gtest cmake module anyway for test discovery
+        find_package(GTest)
+
         # Bootstrap GoogleTest
         INCLUDE(ExternalProject)
 
@@ -183,9 +186,4 @@ SET_CHECK_CXX_FLAGS(test_all)
 target_link_libraries(test_all ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_all)
 
-# The macro is only available when using system gtest option, which pulls in gtest's cmake module
-if (SYSTEM_GTEST)
-    gtest_discover_tests(test_all)
-else (SYSTEM_GTEST)
-    add_test(NAME all COMMAND test_all)
-endif (SYSTEM_GTEST)
+gtest_discover_tests(test_all)
