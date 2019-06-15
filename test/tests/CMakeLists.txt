@@ -19,7 +19,7 @@ else (SYSTEM_GTEST)
         # Use googletest with https://github.com/google/googletest/pull/1045 applied
         ExternalProject_Add(
                 googletest-distribution
-                URL https://github.com/google/googletest/archive/ad49eaa0466b98f21449efaaaae817683daa8b99.tar.gz
+                URL https://github.com/google/googletest/archive/e110929a7b496714c1f6f6be2edcf494a18e5676.tar.gz
                 URL_HASH SHA1=e468bfdffe7c46c14ce06bfb48a29b6201908504
                 TIMEOUT 10
                 CONFIGURE_COMMAND ""
