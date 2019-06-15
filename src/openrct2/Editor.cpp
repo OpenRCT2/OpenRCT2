@@ -20,6 +20,7 @@
 #include "actions/LandSetRightsAction.hpp"
 #include "audio/audio.h"
 #include "interface/Viewport.h"
+#include "interface/Window_internal.h"
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "management/NewsItem.h"
@@ -86,7 +87,7 @@ namespace Editor
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
-        window_set_location(mainWindow, 2400, 2400, 112);
+        mainWindow->SetLocation(2400, 2400, 112);
         load_palette();
         gScreenAge = 0;
         gScenarioName = language_get_string(STR_MY_NEW_SCENARIO);
@@ -162,7 +163,7 @@ namespace Editor
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
-        window_set_location(mainWindow, 2400, 2400, 112);
+        mainWindow->SetLocation(2400, 2400, 112);
         load_palette();
     }
 
@@ -183,7 +184,7 @@ namespace Editor
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
-        window_set_location(mainWindow, 2400, 2400, 112);
+        mainWindow->SetLocation(2400, 2400, 112);
         load_palette();
     }
 
