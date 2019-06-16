@@ -59,6 +59,7 @@
 - Fix: [#9324] Crash trying to remove invalid footpath scenery.
 - Fix: [#9402] Ad campaigns disappear when you save and load the game.
 - Fix: [#9411] Ad campaigns end too soon.
+- Fix: [#9424] Crash using multi threading with TrueType fonts.
 - Fix: Guests eating popcorn are drawn as if they're eating pizza.
 - Fix: The arbitrary ride type and vehicle dropdown lists are ordered case-sensitively.
 - Improved: [#6116] Expose colour scheme for track elements in the tile inspector.
