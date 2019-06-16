@@ -3591,7 +3591,9 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
         return;
     }
 
-    for (;;)
+    // search for appropriate z value for ghost, up to max ride height (2^12 - 16)
+    int numAttempts = (z <= 2032 ? (2032 - z) / 8 + 1 : 2);
+    for (int zAttempts = numAttempts; zAttempts > 1; zAttempts--)
     {
         window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords->x, &mapCoords->y, &z, nullptr);
@@ -3600,16 +3602,11 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
         if (_currentTrackPrice != MONEY32_UNDEFINED)
             break;
 
-        bx--;
-        if (bx == 0)
-            break;
-
         _currentTrackBegin.z -= 8;
         if (_currentTrackBegin.z < 0)
             break;
 
-        if (bx >= 0)
-            _currentTrackBegin.z += 16;
+        _currentTrackBegin.z += 16;
     }
 
     if (_autoRotatingShop && _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE
@@ -3858,7 +3855,10 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
         return;
     }
 
-    for (int32_t zAttempts = 41; zAttempts >= 0; zAttempts--)
+    // search for appropriate z value, up to max ride height (2^12 - 16)
+    int numAttempts = (z <= 2032 ? (2032 - z) / 8 + 1 : 2);
+
+    for (int32_t zAttempts = numAttempts; zAttempts > 0; zAttempts--)
     {
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackBegin.x = mapCoords.x;
@@ -3881,7 +3881,8 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
             z -= 8;
             if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER
                 || errorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND
-                || errorText == STR_TOO_HIGH_FOR_SUPPORTS || zAttempts == 0 || z < 0)
+                || errorText == STR_TOO_HIGH_FOR_SUPPORTS || errorText == STR_TOO_HIGH
+                || errorText == STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT || zAttempts == 1 || z < 0)
             {
                 int32_t saveTrackDirection = _currentTrackPieceDirection;
                 int32_t saveCurrentTrackCurve = _currentTrackCurve;
@@ -3906,10 +3907,8 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
                 audio_play_sound(SoundId::Error, 0, state->position.x);
                 break;
             }
-            else if (zAttempts >= 0)
-            {
-                z += 16;
-            }
+
+            z += 16;
         }
         else
         {
