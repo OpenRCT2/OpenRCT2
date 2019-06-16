@@ -848,7 +848,18 @@ void S6Exporter::ExportResearchedSceneryItems()
 
 void S6Exporter::ExportResearchList()
 {
-    std::memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
+    size_t i = 0;
+    for (const auto& researchItem : gResearchItemsInvented)
+    {
+        _s6.research_items[i++] = RCT12ResearchItem{ researchItem.rawValue, researchItem.category };
+    }
+    _s6.research_items[i++] = { RCT12_RESEARCHED_ITEMS_SEPARATOR, 0 };
+    for (const auto& researchItem : gResearchItemsUninvented)
+    {
+        _s6.research_items[i++] = RCT12ResearchItem{ researchItem.rawValue, researchItem.category };
+    }
+    _s6.research_items[i++] = { RCT12_RESEARCHED_ITEMS_END, 0 };
+    _s6.research_items[i] = { RCT12_RESEARCHED_ITEMS_END_2, 0 };
 }
 
 void S6Exporter::ExportMarketingCampaigns()

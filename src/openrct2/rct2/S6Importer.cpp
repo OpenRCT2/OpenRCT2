@@ -850,7 +850,25 @@ public:
 
     void ImportResearchList()
     {
-        std::memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
+        bool invented = true;
+        for (size_t i = 0; i < sizeof(_s6.research_items); i++)
+        {
+            if (_s6.research_items[i].IsInventedEndMarker())
+            {
+                invented = false;
+                continue;
+            }
+            else if (_s6.research_items[i].IsUninventedEndMarker() || _s6.research_items[i].IsRandomEndMarker())
+            {
+                break;
+            }
+
+            RCT12ResearchItem* ri = &_s6.research_items[i];
+            if (invented)
+                gResearchItemsInvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+            else
+                gResearchItemsUninvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+        }
     }
 
     void ImportBanner(Banner* dst, const RCT12Banner* src)

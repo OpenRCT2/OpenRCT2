@@ -242,26 +242,20 @@ static void move_research_item(ResearchItem* beforeItem)
  */
 static ResearchItem* window_editor_inventions_list_get_item_from_scroll_y(int32_t scrollIndex, int32_t y)
 {
-    ResearchItem* researchItem;
-
-    researchItem = gResearchItems;
-
+    auto begin = gResearchItemsInvented.begin();
+    auto end = gResearchItemsInvented.end();
     if (scrollIndex != 0)
     {
-        // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
-        {
-        }
-        researchItem++;
+        begin = gResearchItemsUninvented.begin();
+        end = gResearchItemsUninvented.end();
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END;
-         researchItem++)
+    for (auto it = begin; it != end; it++)
     {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
         {
-            return researchItem;
+            return &*it;
         }
     }
 
@@ -274,30 +268,24 @@ static ResearchItem* window_editor_inventions_list_get_item_from_scroll_y(int32_
  */
 static ResearchItem* window_editor_inventions_list_get_item_from_scroll_y_include_seps(int32_t scrollIndex, int32_t y)
 {
-    ResearchItem* researchItem;
-
-    researchItem = gResearchItems;
-
+    auto begin = gResearchItemsInvented.begin();
+    auto end = gResearchItemsInvented.end();
     if (scrollIndex != 0)
     {
-        // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
-        {
-        }
-        researchItem++;
+        begin = gResearchItemsUninvented.begin();
+        end = gResearchItemsUninvented.end();
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END;
-         researchItem++)
+    for (auto it = begin; it != end; it++)
     {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
         {
-            return researchItem;
+            return &*it;
         }
     }
 
-    return researchItem;
+    return &*(end - 1);
 }
 
 static ResearchItem* get_research_item_at(int32_t x, int32_t y)
@@ -443,22 +431,14 @@ static void window_editor_inventions_list_update(rct_window* w)
  */
 static void window_editor_inventions_list_scrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    ResearchItem* researchItem;
-
     *height = 0;
-
-    // Count / skip pre-researched items
-    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
-        *height += SCROLLABLE_ROW_HEIGHT;
-
-    if (scrollIndex == 1)
+    if (scrollIndex == 0)
     {
-        researchItem++;
-
-        // Count non pre-researched items
-        *height = 0;
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
-            *height += SCROLLABLE_ROW_HEIGHT;
+        *height += gResearchItemsInvented.size() * SCROLLABLE_ROW_HEIGHT;
+    }
+    else
+    {
+        *height += gResearchItemsUninvented.size() * SCROLLABLE_ROW_HEIGHT;
     }
 }
 
@@ -676,21 +656,13 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    ResearchItem* researchItem = gResearchItems;
-    int32_t researchItemEndMarker;
+    auto it = gResearchItemsInvented.begin();
+    auto researchItemEndMarker = gResearchItemsInvented.end();
 
     if (scrollIndex == 1)
     {
-        // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
-        {
-        }
-        researchItem++;
-        researchItemEndMarker = RESEARCHED_ITEMS_END;
-    }
-    else
-    {
-        researchItemEndMarker = RESEARCHED_ITEMS_SEPARATOR;
+        it = gResearchItemsUninvented.begin();
+        researchItemEndMarker = gResearchItemsUninvented.end();
     }
 
     int16_t boxWidth = (w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left);
@@ -698,6 +670,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
     int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
     do
     {
+        ResearchItem* researchItem = &*it;
         itemY += SCROLLABLE_ROW_HEIGHT;
         if (itemY + SCROLLABLE_ROW_HEIGHT < dpi->y || itemY >= dpi->y + dpi->height)
             continue;
@@ -720,9 +693,6 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
 
             gfx_filter_rect(dpi, 0, top, boxWidth, bottom, PALETTE_DARKEN_1);
         }
-
-        if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR || researchItem->rawValue == RESEARCHED_ITEMS_END)
-            continue;
 
         if (researchItem == _editorInventionsListDraggedItem)
             continue;
@@ -777,7 +747,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             gfx_clip_string(vehicleNameBuffer, columnSplitOffset - 11);
             gfx_draw_string(dpi, vehicleNameBuffer, colour, columnSplitOffset + 1, itemY);
         }
-    } while (researchItem++->rawValue != researchItemEndMarker);
+    } while (it++ != researchItemEndMarker);
 }
 
 #pragma region Drag item
@@ -856,7 +826,7 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, int32_t x, i
     {
         researchItem = get_research_item_at(x, y);
         y += LIST_ROW_HEIGHT;
-    } while (researchItem != nullptr && researchItem->rawValue >= 0 && research_item_is_always_researched(researchItem));
+    } while (researchItem != nullptr && research_item_is_always_researched(researchItem));
 
     if (researchItem != nullptr)
         move_research_item(researchItem);

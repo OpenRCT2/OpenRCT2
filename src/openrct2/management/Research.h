@@ -35,6 +35,8 @@ struct ResearchItem
     bool IsInventedEndMarker() const;
     bool IsRandomEndMarker() const;
     bool IsUninventedEndMarker() const;
+    bool Equals(const ResearchItem* otherItem) const;
+    bool Exists() const;
 };
 assert_struct_size(ResearchItem, 5);
 #pragma pack(pop)
@@ -103,7 +105,8 @@ extern uint8_t gResearchExpectedDay;
 extern ResearchItem gResearchLastItem;
 extern ResearchItem gResearchNextItem;
 
-extern ResearchItem gResearchItems[MAX_RESEARCH_ITEMS];
+extern std::vector<ResearchItem> gResearchItemsUninvented;
+extern std::vector<ResearchItem> gResearchItemsInvented;
 extern uint8_t gResearchUncompletedCategories;
 extern bool gSilentResearch;
 
@@ -113,7 +116,6 @@ void research_update();
 void research_reset_current_item();
 void research_populate_list_random();
 void research_populate_list_researched();
-void research_process_random_items();
 
 void research_finish_item(ResearchItem* researchItem);
 void research_insert(int32_t researched, int32_t rawValue, uint8_t category);
