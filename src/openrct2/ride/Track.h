@@ -81,6 +81,7 @@ enum
 #define TRACK_ELEMENT_FLAG_STATION_NO_MASK 0x02
 
 #define MAX_STATION_PLATFORM_LENGTH 32
+constexpr uint16_t const MAX_TRACK_HEIGHT = 254;
 
 enum
 {
