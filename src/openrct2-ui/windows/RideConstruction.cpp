@@ -3591,8 +3591,8 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
         return;
     }
 
-    // search for appropriate z value for ghost, up to max ride height (2^12 - 16)
-    int numAttempts = (z <= 2032 ? (2032 - z) / 8 + 1 : 2);
+    // search for appropriate z value for ghost, up to max ride height
+    int numAttempts = (z <= (8 * MAX_TRACK_HEIGHT) ? MAX_TRACK_HEIGHT - (z / 8) + 1 : 2);
     for (int zAttempts = numAttempts; zAttempts > 1; zAttempts--)
     {
         window_ride_construction_update_state(
@@ -3855,8 +3855,8 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
         return;
     }
 
-    // search for appropriate z value, up to max ride height (2^12 - 16)
-    int numAttempts = (z <= 2032 ? (2032 - z) / 8 + 1 : 2);
+    // search for z value to build at, up to max ride height
+    int numAttempts = (z <= (8 * MAX_TRACK_HEIGHT) ? MAX_TRACK_HEIGHT - (z / 8) + 1 : 2);
 
     for (int32_t zAttempts = numAttempts; zAttempts > 0; zAttempts--)
     {

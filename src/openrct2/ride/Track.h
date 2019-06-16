@@ -78,6 +78,7 @@ enum
 };
 
 #define MAX_STATION_PLATFORM_LENGTH 32
+constexpr uint16_t const MAX_TRACK_HEIGHT = 254;
 
 enum
 {
