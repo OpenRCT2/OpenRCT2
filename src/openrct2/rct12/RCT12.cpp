@@ -915,3 +915,18 @@ void RCT12BannerElement::SetAllowedEdges(uint8_t newEdges)
     flags &= ~0b00001111;
     flags |= (newEdges & 0b00001111);
 }
+
+bool RCT12ResearchItem::IsInventedEndMarker() const
+{
+    return rawValue == RCT12_RESEARCHED_ITEMS_SEPARATOR;
+}
+
+bool RCT12ResearchItem::IsUninventedEndMarker() const
+{
+    return rawValue == RCT12_RESEARCHED_ITEMS_END;
+}
+
+bool RCT12ResearchItem::IsRandomEndMarker() const
+{
+    return rawValue == RCT12_RESEARCHED_ITEMS_END_2;
+}

@@ -238,7 +238,7 @@ struct rct_s6_data
     uint8_t last_entrance_style;
     uint8_t rct1_water_colour;
     uint8_t pad_01358842[2];
-    rct_research_item research_items[MAX_RESEARCH_ITEMS];
+    RCT12ResearchItem research_items[MAX_RESEARCH_ITEMS];
     uint16_t map_base_z;
     char scenario_name[64];
     char scenario_description[256];
