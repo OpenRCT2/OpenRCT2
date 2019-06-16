@@ -36,7 +36,7 @@ static constexpr const RideGroup ride_group_corkscrew_rc = {
 
 static constexpr const RideGroup ride_group_hypercoaster = {
     /*.RideType =*/RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
-    /*.MaximumHeight =*/45,
+    /*.MaximumHeight =*/55,
     /*.AvailableTrackPieces =*/(1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL)
         | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE)
         | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE)
