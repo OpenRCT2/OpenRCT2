@@ -887,7 +887,7 @@ void research_items_shuffle()
     }
 }
 
-bool research_item_is_always_researched(ResearchItem* researchItem)
+bool research_item_is_always_researched(const ResearchItem* researchItem)
 {
     return (researchItem->flags
             & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED))

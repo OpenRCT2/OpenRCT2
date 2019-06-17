@@ -149,4 +149,4 @@ void research_fix();
 void research_items_make_all_unresearched();
 void research_items_make_all_researched();
 void research_items_shuffle();
-bool research_item_is_always_researched(ResearchItem* researchItem);
+bool research_item_is_always_researched(const ResearchItem* researchItem);
