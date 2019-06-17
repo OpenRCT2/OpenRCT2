@@ -444,9 +444,9 @@ void research_remove(ResearchItem* researchItem)
         auto& researchItem2 = *it;
         if (researchItem2.Equals(researchItem))
         {
+            gResearchItemsInvented.erase(it);
             return;
         }
-        gResearchItemsInvented.erase(it);
     }
 }
 
@@ -853,6 +853,7 @@ void research_items_make_all_unresearched()
     {
         auto& researchItem = *it;
         gResearchItemsUninvented.push_back(researchItem);
+        gResearchItemsInvented.erase(it);
     }
 }
 
@@ -862,6 +863,7 @@ void research_items_make_all_researched()
     {
         auto& researchItem = *it;
         gResearchItemsInvented.push_back(researchItem);
+        gResearchItemsUninvented.erase(it);
     }
 }
 

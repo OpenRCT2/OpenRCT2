@@ -33,8 +33,6 @@ struct ResearchItem
     uint8_t category;
 
     bool IsInventedEndMarker() const;
-    bool IsRandomEndMarker() const;
-    bool IsUninventedEndMarker() const;
     bool Equals(const ResearchItem* otherItem) const;
     bool Exists() const;
 };
