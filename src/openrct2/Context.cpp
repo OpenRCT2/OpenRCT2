@@ -349,7 +349,10 @@ namespace OpenRCT2
             _replayManager = CreateReplayManager();
             _gameStateSnapshots = CreateGameStateSnapshots();
 #ifdef __ENABLE_DISCORD__
-            _discordService = std::make_unique<DiscordService>();
+            if (!gOpenRCT2Headless)
+            {
+                _discordService = std::make_unique<DiscordService>();
+            }
 #endif
 
             try
