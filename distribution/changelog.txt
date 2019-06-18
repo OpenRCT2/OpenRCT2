@@ -16,6 +16,7 @@
 - Change: [#7877] Files are now sorted in logical rather than dictionary order.
 - Change: [#8427] Ghost elements now show up as white on the mini-map.
 - Change: [#8688] Move common actions from debug menu into cheats menu.
+- Change: [#9428] Increase maximum height of the Hypercoaster to RCT1 limits.
 - Fix: [#2294] Clients crashing the server with invalid object selection.
 - Fix: [#4568, #5896] Incorrect fences removed when building a tracked ride through
 - Fix: [#5103] OpenGL: ride track preview not rendered.
