@@ -446,8 +446,7 @@ static bool windowTileInspectorTileSelected = false;
 static int32_t windowTileInspectorToolMouseX = 0;
 static int32_t windowTileInspectorToolMouseY = 0;
 static bool windowTileInspectorToolCtrlDown = false;
-static int32_t windowTileInspectorToolMapX = 0;
-static int32_t windowTileInspectorToolMapY = 0;
+static CoordsXY windowTileInspectorToolMap = {};
 static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
 static TileElement tileInspectorCopiedElement;
@@ -577,7 +576,8 @@ static TileElement* window_tile_inspector_get_selected_element(rct_window* w)
     openrct2_assert(
         windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
         "Selected list item out of range");
-    return map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY) + windowTileInspectorSelectedIndex;
+    return map_get_first_element_at(windowTileInspectorToolMap.x / 32, windowTileInspectorToolMap.y / 32)
+        + windowTileInspectorSelectedIndex;
 }
 
 static void window_tile_inspector_select_element_from_list(rct_window* w, int32_t index)
@@ -599,7 +599,7 @@ static void window_tile_inspector_load_tile(rct_window* w, TileElement* elementT
     windowTileInspectorSelectedIndex = -1;
     w->scrolls[0].v_top = 0;
 
-    TileElement* element = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+    TileElement* element = map_get_first_element_at(windowTileInspectorToolMap.x / 32, windowTileInspectorToolMap.y / 32);
     int16_t numItems = 0;
     do
     {
@@ -619,24 +619,21 @@ static void window_tile_inspector_load_tile(rct_window* w, TileElement* elementT
 static void window_tile_inspector_insert_corrupt_element(int32_t elementIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyInsertCorrupt, elementIndex);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnyInsertCorrupt, elementIndex);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_remove_element(int32_t elementIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyRemove, elementIndex);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnyRemove, elementIndex);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_rotate_element(int32_t elementIndex)
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyRotate, elementIndex);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnyRotate, elementIndex);
     GameActions::Execute(&modifyTile);
 }
 
@@ -645,15 +642,14 @@ static void window_tile_inspector_swap_elements(int16_t first, int16_t second)
 {
     openrct2_assert(first >= 0 && first < windowTileInspectorElementCount, "first out of range");
     openrct2_assert(second >= 0 && second < windowTileInspectorElementCount, "second out of range");
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnySwap, first, second);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnySwap, first, second);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_sort_elements()
 {
     openrct2_assert(windowTileInspectorTileSelected, "No tile selected");
-    auto modifyTile = TileModifyAction({ windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnySort);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnySort);
     GameActions::Execute(&modifyTile);
 }
 
@@ -671,52 +667,44 @@ static void window_tile_inspector_paste_element(rct_window* w)
     int32_t data[2];
     std::memcpy(&data[0], &tileInspectorCopiedElement, 8);
     assert_struct_size(data, sizeof(tileInspectorCopiedElement));
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyPaste, 0, 0,
-        tileInspectorCopiedElement);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnyPaste, 0, 0, tileInspectorCopiedElement);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_base_height_offset(int16_t elementIndex, int8_t heightOffset)
 {
     auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::AnyBaseHeightOffset, elementIndex,
-        heightOffset);
+        windowTileInspectorToolMap, TileModifyType::AnyBaseHeightOffset, elementIndex, heightOffset);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_surface_show_park_fences(bool showFences)
 {
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::SurfaceShowParkFences, showFences);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::SurfaceShowParkFences, showFences);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_surface_toggle_corner(int32_t cornerIndex)
 {
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::SurfaceToggleCorner, cornerIndex);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::SurfaceToggleCorner, cornerIndex);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_surface_toggle_diagonal()
 {
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::SurfaceToggleDiagonal);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::SurfaceToggleDiagonal);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_path_set_sloped(int32_t elementIndex, bool sloped)
 {
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::PathSetSlope, elementIndex, sloped);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::PathSetSlope, elementIndex, sloped);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_path_set_broken(int32_t elementIndex, bool broken)
 {
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::PathSetBroken, elementIndex, broken);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::PathSetBroken, elementIndex, broken);
     GameActions::Execute(&modifyTile);
 }
 
@@ -724,17 +712,14 @@ static void window_tile_inspector_path_toggle_edge(int32_t elementIndex, int32_t
 {
     openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
     openrct2_assert(cornerIndex >= 0 && cornerIndex < 8, "cornerIndex out of range");
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::PathToggleEdge, elementIndex,
-        cornerIndex);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::PathToggleEdge, elementIndex, cornerIndex);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_entrance_make_usable(int32_t elementIndex)
 {
     Guard::ArgumentInRange(elementIndex, 0, windowTileInspectorElementCount - 1);
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::EntranceMakeUsable, elementIndex);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::EntranceMakeUsable, elementIndex);
     GameActions::Execute(&modifyTile);
 }
 
@@ -742,40 +727,36 @@ static void window_tile_inspector_wall_set_slope(int32_t elementIndex, int32_t s
 {
     // Make sure only the correct bits are set
     openrct2_assert((slopeValue & 3) == slopeValue, "slopeValue doesn't match its mask");
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::WallSetSlope, elementIndex, slopeValue);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::WallSetSlope, elementIndex, slopeValue);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_track_block_height_offset(int32_t elementIndex, int8_t heightOffset)
 {
     auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::TrackBaseHeightOffset, elementIndex,
-        heightOffset);
+        windowTileInspectorToolMap, TileModifyType::TrackBaseHeightOffset, elementIndex, heightOffset);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_track_block_set_lift(int32_t elementIndex, bool entireTrackBlock, bool chain)
 {
     auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY },
-        entireTrackBlock ? TileModifyType::TrackSetChainBlock : TileModifyType::TrackSetChain, elementIndex, chain);
+        windowTileInspectorToolMap, entireTrackBlock ? TileModifyType::TrackSetChainBlock : TileModifyType::TrackSetChain,
+        elementIndex, chain);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_track_set_block_brake(int32_t elementIndex, bool blockBrake)
 {
     auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::TrackSetBlockBrake, elementIndex,
-        blockBrake);
+        windowTileInspectorToolMap, TileModifyType::TrackSetBlockBrake, elementIndex, blockBrake);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_track_set_indestructible(int32_t elementIndex, bool isIndestructible)
 {
     auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::TrackSetIndestructible, elementIndex,
-        isIndestructible);
+        windowTileInspectorToolMap, TileModifyType::TrackSetIndestructible, elementIndex, isIndestructible);
     GameActions::Execute(&modifyTile);
 }
 
@@ -784,7 +765,7 @@ static void window_tile_inspector_quarter_tile_set(int32_t elementIndex, const i
     // quarterIndex is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
     openrct2_assert(quarterIndex >= 0 && quarterIndex < 4, "quarterIndex out of range");
     auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::ScenerySetQuarterLocation, elementIndex,
+        windowTileInspectorToolMap, TileModifyType::ScenerySetQuarterLocation, elementIndex,
         (quarterIndex - get_current_rotation()) & 3);
     GameActions::Execute(&modifyTile);
 }
@@ -792,7 +773,7 @@ static void window_tile_inspector_quarter_tile_set(int32_t elementIndex, const i
 static void window_tile_inspector_toggle_quadrant_collosion(int32_t elementIndex, const int32_t quadrantIndex)
 {
     auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::ScenerySetQuarterCollision, elementIndex,
+        windowTileInspectorToolMap, TileModifyType::ScenerySetQuarterCollision, elementIndex,
         (quadrantIndex + 2 - get_current_rotation()) & 3);
     GameActions::Execute(&modifyTile);
 }
@@ -804,15 +785,13 @@ static void window_tile_inspector_banner_toggle_block(int32_t elementIndex, int3
     // Make edgeIndex abstract
     edgeIndex = (edgeIndex - get_current_rotation()) & 3;
     auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::BannerToggleBlockingEdge, elementIndex,
-        edgeIndex);
+        windowTileInspectorToolMap, TileModifyType::BannerToggleBlockingEdge, elementIndex, edgeIndex);
     GameActions::Execute(&modifyTile);
 }
 
 static void window_tile_inspector_clamp_corrupt(int32_t elementIndex)
 {
-    auto modifyTile = TileModifyAction(
-        { windowTileInspectorToolMapX, windowTileInspectorToolMapY }, TileModifyType::CorruptClamp, elementIndex);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::CorruptClamp, elementIndex);
     GameActions::Execute(&modifyTile);
 }
 
@@ -1026,24 +1005,24 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
     {
         case WIDX_SPINNER_X_INCREASE:
             windowTileInspectorTileX = std::min<uint32_t>(windowTileInspectorTileX + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
-            windowTileInspectorToolMapX = std::min<int32_t>(
-                windowTileInspectorToolMapX + 32, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+            windowTileInspectorToolMap.x = std::min<int32_t>(
+                windowTileInspectorToolMap.x + 32, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_X_DECREASE:
             windowTileInspectorTileX = std::max<uint32_t>(windowTileInspectorTileX - 1, 0);
-            windowTileInspectorToolMapX = std::max<int32_t>(windowTileInspectorToolMapX - 32, 0);
+            windowTileInspectorToolMap.x = std::max<int32_t>(windowTileInspectorToolMap.x - 32, 0);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_Y_INCREASE:
             windowTileInspectorTileY = std::min<uint32_t>(windowTileInspectorTileY + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
-            windowTileInspectorToolMapY = std::min<int32_t>(
-                windowTileInspectorToolMapY + 32, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+            windowTileInspectorToolMap.y = std::min<int32_t>(
+                windowTileInspectorToolMap.y + 32, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_Y_DECREASE:
             windowTileInspectorTileY = std::max<uint32_t>(windowTileInspectorTileY - 1, 0);
-            windowTileInspectorToolMapY = std::max<int32_t>(windowTileInspectorToolMapY - 32, 0);
+            windowTileInspectorToolMap.y = std::max<int32_t>(windowTileInspectorToolMap.y - 32, 0);
             window_tile_inspector_load_tile(w, nullptr);
             break;
     } // switch widget index
@@ -1266,8 +1245,8 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     }
     else if (windowTileInspectorTileSelected)
     {
-        gMapSelectPositionA.x = gMapSelectPositionB.x = windowTileInspectorTileX << 5;
-        gMapSelectPositionA.y = gMapSelectPositionB.y = windowTileInspectorTileY << 5;
+        gMapSelectPositionA.x = gMapSelectPositionB.x = windowTileInspectorToolMap.x;
+        gMapSelectPositionA.y = gMapSelectPositionB.y = windowTileInspectorToolMap.y;
     }
     else
     {
@@ -1312,15 +1291,15 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x,
         }
 
         // Tile is already selected
-        if (windowTileInspectorTileSelected && mapX == windowTileInspectorToolMapX && mapY == windowTileInspectorToolMapY)
+        if (windowTileInspectorTileSelected && mapX == windowTileInspectorToolMap.x && mapY == windowTileInspectorToolMap.y)
         {
             return;
         }
     }
 
     windowTileInspectorTileSelected = true;
-    windowTileInspectorToolMapX = mapX;
-    windowTileInspectorToolMapY = mapY;
+    windowTileInspectorToolMap.x = mapX;
+    windowTileInspectorToolMap.y = mapY;
     windowTileInspectorTileX = mapX >> 5;
     windowTileInspectorTileY = mapY >> 5;
 
@@ -1435,12 +1414,14 @@ static void window_tile_inspector_invalidate(rct_window* w)
     // X and Y spinners
     widget_set_enabled(
         w, WIDX_SPINNER_X_INCREASE,
-        (windowTileInspectorTileSelected && (windowTileInspectorTileX < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
-    widget_set_enabled(w, WIDX_SPINNER_X_DECREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileX > 0)));
+        (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.x / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+    widget_set_enabled(
+        w, WIDX_SPINNER_X_DECREASE, (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.x / 32) > 0)));
     widget_set_enabled(
         w, WIDX_SPINNER_Y_INCREASE,
-        (windowTileInspectorTileSelected && (windowTileInspectorTileY < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
-    widget_set_enabled(w, WIDX_SPINNER_Y_DECREASE, (windowTileInspectorTileSelected && (windowTileInspectorTileY > 0)));
+        (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.y / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+    widget_set_enabled(
+        w, WIDX_SPINNER_Y_DECREASE, (windowTileInspectorTileSelected && ((windowTileInspectorToolMap.y / 32) > 0)));
 
     // Sort buttons
     widget_set_enabled(w, WIDX_BUTTON_SORT, (windowTileInspectorTileSelected && windowTileInspectorElementCount > 1));
@@ -1776,8 +1757,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string(dpi, (char*)"Y:", COLOUR_DARK_GREEN, w->x + 74, w->y + 24);
     if (windowTileInspectorTileSelected)
     {
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileX, COLOUR_DARK_GREEN, w->x + 43, w->y + 24);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &windowTileInspectorTileY, COLOUR_DARK_GREEN, w->x + 113, w->y + 24);
+        auto tileCoords = TileCoordsXY{ windowTileInspectorToolMap };
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &tileCoords.x, COLOUR_DARK_GREEN, w->x + 43, w->y + 24);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &tileCoords.y, COLOUR_DARK_GREEN, w->x + 113, w->y + 24);
     }
     else
     {
@@ -1988,11 +1970,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
-                    // Park entrance ID
-                    int32_t middleX = windowTileInspectorTileX << 5;
-                    int32_t middleY = windowTileInspectorTileY << 5;
                     // TODO: Make this work with Left/Right park entrance parts
-                    int16_t parkEntranceIndex = park_entrance_get_index(middleX, middleY, tileElement->base_height * 8);
+                    int16_t parkEntranceIndex = park_entrance_get_index(
+                        windowTileInspectorToolMap.x, windowTileInspectorToolMap.y, tileElement->base_height * 8);
                     gfx_draw_string_left(
                         dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, COLOUR_DARK_GREEN, x, y + 11);
                 }
@@ -2177,7 +2157,8 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     if (!windowTileInspectorTileSelected)
         return;
 
-    const TileElement* tileElement = map_get_first_element_at(windowTileInspectorTileX, windowTileInspectorTileY);
+    const TileElement* tileElement = map_get_first_element_at(
+        windowTileInspectorToolMap.x / 32, windowTileInspectorToolMap.y / 32);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     do
