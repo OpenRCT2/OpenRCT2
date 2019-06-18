@@ -1026,18 +1026,24 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
     {
         case WIDX_SPINNER_X_INCREASE:
             windowTileInspectorTileX = std::min<uint32_t>(windowTileInspectorTileX + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+            windowTileInspectorToolMapX = std::min<int32_t>(
+                windowTileInspectorToolMapX + 32, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_X_DECREASE:
             windowTileInspectorTileX = std::max<uint32_t>(windowTileInspectorTileX - 1, 0);
+            windowTileInspectorToolMapX = std::max<int32_t>(windowTileInspectorToolMapX - 32, 0);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_Y_INCREASE:
             windowTileInspectorTileY = std::min<uint32_t>(windowTileInspectorTileY + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+            windowTileInspectorToolMapY = std::min<int32_t>(
+                windowTileInspectorToolMapY + 32, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_Y_DECREASE:
             windowTileInspectorTileY = std::max<uint32_t>(windowTileInspectorTileY - 1, 0);
+            windowTileInspectorToolMapY = std::max<int32_t>(windowTileInspectorToolMapY - 32, 0);
             window_tile_inspector_load_tile(w, nullptr);
             break;
     } // switch widget index
