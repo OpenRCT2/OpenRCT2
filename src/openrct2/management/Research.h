@@ -15,7 +15,6 @@
 
 struct rct_ride_entry;
 
-#pragma pack(push, 1)
 struct ResearchItem
 {
     // Bit 16 (0: scenery entry, 1: ride entry)
@@ -36,8 +35,6 @@ struct ResearchItem
     bool Equals(const ResearchItem* otherItem) const;
     bool Exists() const;
 };
-assert_struct_size(ResearchItem, 5);
-#pragma pack(pop)
 
 enum
 {

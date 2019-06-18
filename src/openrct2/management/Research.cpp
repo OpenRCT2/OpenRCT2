@@ -759,7 +759,7 @@ void research_fix()
             rct_ride_entry* rideEntry = get_ride_entry(researchItem.entryIndex);
             if (rideEntry == nullptr)
             {
-                gResearchItemsInvented.erase(it);
+                it = gResearchItemsInvented.erase(it);
             }
             else
             {
@@ -771,7 +771,7 @@ void research_fix()
             rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.rawValue);
             if (sceneryGroupEntry == nullptr)
             {
-                gResearchItemsInvented.erase(it);
+                it = gResearchItemsInvented.erase(it);
             }
             else
             {
@@ -787,7 +787,7 @@ void research_fix()
             rct_ride_entry* rideEntry = get_ride_entry(researchItem.entryIndex);
             if (rideEntry == nullptr)
             {
-                gResearchItemsUninvented.erase(it);
+                it = gResearchItemsUninvented.erase(it);
             }
             else
             {
@@ -799,7 +799,7 @@ void research_fix()
             rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.rawValue);
             if (sceneryGroupEntry == nullptr)
             {
-                gResearchItemsUninvented.erase(it);
+                it = gResearchItemsUninvented.erase(it);
             }
             else
             {
@@ -849,22 +849,16 @@ void research_fix()
 
 void research_items_make_all_unresearched()
 {
-    for (auto it = gResearchItemsInvented.begin(); it != gResearchItemsInvented.end();)
-    {
-        auto& researchItem = *it;
-        gResearchItemsUninvented.push_back(researchItem);
-        gResearchItemsInvented.erase(it);
-    }
+    gResearchItemsUninvented.insert(
+        gResearchItemsUninvented.end(), std::make_move_iterator(gResearchItemsInvented.begin()),
+        std::make_move_iterator(gResearchItemsInvented.end()));
 }
 
 void research_items_make_all_researched()
 {
-    for (auto it = gResearchItemsUninvented.begin(); it != gResearchItemsUninvented.end();)
-    {
-        auto& researchItem = *it;
-        gResearchItemsInvented.push_back(researchItem);
-        gResearchItemsUninvented.erase(it);
-    }
+    gResearchItemsInvented.insert(
+        gResearchItemsInvented.end(), std::make_move_iterator(gResearchItemsUninvented.begin()),
+        std::make_move_iterator(gResearchItemsUninvented.end()));
 }
 
 /**
@@ -873,20 +867,7 @@ void research_items_make_all_researched()
  */
 void research_items_shuffle()
 {
-    // Count non pre-researched items
-    size_t numNonResearchedItems = gResearchItemsUninvented.size();
-
-    // Shuffle list
-    for (size_t i = 0; i < numNonResearchedItems; i++)
-    {
-        size_t ri = util_rand() % numNonResearchedItems;
-        if (ri == i)
-            continue;
-
-        ResearchItem researchItemTemp = gResearchItemsUninvented[i];
-        gResearchItemsUninvented[i] = gResearchItemsUninvented[ri];
-        gResearchItemsUninvented[ri] = researchItemTemp;
-    }
+    std::shuffle(std::begin(gResearchItemsUninvented), std::end(gResearchItemsUninvented), std::default_random_engine{});
 }
 
 bool research_item_is_always_researched(const ResearchItem* researchItem)

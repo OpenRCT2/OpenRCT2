@@ -432,7 +432,7 @@ static void window_editor_inventions_list_scrollmousedown(rct_window* w, int32_t
         return;
 
     // Disallow picking up always-researched items
-    if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 || research_item_is_always_researched(researchItem))
+    if (research_item_is_always_researched(researchItem))
         return;
 
     w->Invalidate();
@@ -485,8 +485,7 @@ static void window_editor_inventions_list_cursor(
 
     // Use the open hand as cursor for items that can be picked up
     researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
-    if (researchItem != nullptr && researchItem->rawValue >= RESEARCHED_ITEMS_END_2
-        && !research_item_is_always_researched(researchItem))
+    if (researchItem != nullptr && !research_item_is_always_researched(researchItem))
     {
         *cursorId = CURSOR_HAND_OPEN;
     }
