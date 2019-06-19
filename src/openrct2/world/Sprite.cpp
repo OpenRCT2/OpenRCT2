@@ -164,7 +164,7 @@ void reset_sprite_list()
         spr->generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
         spr->generic.sprite_index = i;
         spr->generic.next = SPRITE_INDEX_NULL;
-        spr->generic.linked_list_type_offset = 0;
+        spr->generic.linked_list_index = 0;
 
         if (previous_spr != (rct_sprite*)SPRITE_INDEX_NULL)
         {
@@ -290,7 +290,7 @@ rct_sprite_checksum sprite_checksum()
 static void sprite_reset(rct_sprite_generic* sprite)
 {
     // Need to retain how the sprite is linked in lists
-    uint8_t llto = sprite->linked_list_type_offset;
+    uint8_t llto = sprite->linked_list_index;
     uint16_t next = sprite->next;
     uint16_t next_in_quadrant = sprite->next_in_quadrant;
     uint16_t prev = sprite->previous;
@@ -299,7 +299,7 @@ static void sprite_reset(rct_sprite_generic* sprite)
 
     std::memset(sprite, 0, sizeof(rct_sprite));
 
-    sprite->linked_list_type_offset = llto;
+    sprite->linked_list_index = llto;
     sprite->next = next;
     sprite->next_in_quadrant = next_in_quadrant;
     sprite->previous = prev;
@@ -322,7 +322,7 @@ void sprite_clear_all_unused()
         sprite = &get_sprite(spriteIndex)->generic;
         nextSpriteIndex = sprite->next;
         sprite_reset(sprite);
-        sprite->linked_list_type_offset = SPRITE_LIST_FREE * 2;
+        sprite->linked_list_index = SPRITE_LIST_FREE;
 
         // This shouldn't be necessary, as sprite_reset() preserves the index
         // but it has been left in as a safety net in case the index isn't set correctly
@@ -388,19 +388,15 @@ rct_sprite* create_sprite(uint8_t bl)
 /*
  * rct2: 0x0069ED0B
  * This function moves a sprite to the specified sprite linked list.
- * There are 5/6 of those, and cl specifies a pointer offset
- * of the desired linked list in a uint16_t array. Known valid values are
- * 2, 4, 6, 8 or 10 (SPRITE_LIST_... * 2)
+ * The game uses this list to categorise sprites by type.
  */
-void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newList)
+void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newListIndex)
 {
     rct_sprite_generic* unkSprite = &sprite->generic;
-    uint8_t oldListOffset = unkSprite->linked_list_type_offset;
-    int32_t oldList = oldListOffset >> 1;
-    int32_t newListOffset = newList * 2;
+    int32_t oldListIndex = unkSprite->linked_list_index;
 
     // No need to move if the sprite is already in the desired list
-    if (oldListOffset == newListOffset)
+    if (oldListIndex == newListIndex)
     {
         return;
     }
@@ -409,7 +405,7 @@ void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newList)
     // sprite following this one becomes the new head of the list.
     if (unkSprite->previous == SPRITE_INDEX_NULL)
     {
-        gSpriteListHead[oldList] = unkSprite->next;
+        gSpriteListHead[oldListIndex] = unkSprite->next;
     }
     else
     {
@@ -424,10 +420,10 @@ void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newList)
     }
 
     unkSprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
-    unkSprite->linked_list_type_offset = newListOffset;
+    unkSprite->linked_list_index = newListIndex;
 
-    unkSprite->next = gSpriteListHead[newList];         // This sprite's next sprite is the old head, since we're the new head
-    gSpriteListHead[newList] = unkSprite->sprite_index; // Store this sprite's index as head of its new list
+    unkSprite->next = gSpriteListHead[newListIndex]; // This sprite's next sprite is the old head, since we're the new head
+    gSpriteListHead[newListIndex] = unkSprite->sprite_index; // Store this sprite's index as head of its new list
 
     if (unkSprite->next != SPRITE_INDEX_NULL)
     {
@@ -437,8 +433,8 @@ void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newList)
 
     // These globals are probably counters for each sprite list?
     // Decrement old list counter, increment new list counter.
-    gSpriteListCount[oldList]--;
-    gSpriteListCount[newList]++;
+    gSpriteListCount[oldListIndex]--;
+    gSpriteListCount[newListIndex]++;
 }
 
 /**
@@ -767,7 +763,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
     {
         rct_sprite* sprite = get_sprite(spriteIndex);
         uint16_t nextSpriteIndex = sprite->generic.next_in_quadrant;
-        if (sprite->generic.linked_list_type_offset == SPRITE_LIST_LITTER * 2)
+        if (sprite->generic.linked_list_index == SPRITE_LIST_LITTER)
         {
             rct_litter* litter = &sprite->litter;
 
@@ -789,7 +785,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z)
  */
 static bool sprite_should_tween(rct_sprite* sprite)
 {
-    switch (sprite->generic.linked_list_type_offset >> 1)
+    switch (sprite->generic.linked_list_index)
     {
         case SPRITE_LIST_TRAIN:
         case SPRITE_LIST_PEEP:

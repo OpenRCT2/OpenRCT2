@@ -452,7 +452,7 @@ void peep_update_all()
         else
         {
             peep_128_tick_update(peep, i);
-            if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2)
+            if (peep->linked_list_index == SPRITE_LIST_PEEP)
             {
                 peep->Update();
             }

@@ -211,7 +211,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
                 for (; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->generic.next_in_quadrant)
                 {
                     sprite = get_sprite(spriteIdx);
-                    if (sprite->generic.linked_list_type_offset != SPRITE_LIST_PEEP * 2)
+                    if (sprite->generic.linked_list_index != SPRITE_LIST_PEEP)
                         continue;
 
                     peep = &sprite->peep;

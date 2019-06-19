@@ -407,7 +407,7 @@ void footpath_remove_litter(int32_t x, int32_t y, int32_t z)
     {
         rct_litter* sprite = &get_sprite(spriteIndex)->litter;
         uint16_t nextSpriteIndex = sprite->next_in_quadrant;
-        if (sprite->linked_list_type_offset == SPRITE_LIST_LITTER * 2)
+        if (sprite->linked_list_index == SPRITE_LIST_LITTER)
         {
             int32_t distanceZ = abs(sprite->z - z);
             if (distanceZ <= 32)
@@ -431,7 +431,7 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
     {
         Peep* peep = &get_sprite(spriteIndex)->peep;
         uint16_t nextSpriteIndex = peep->next_in_quadrant;
-        if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2)
+        if (peep->linked_list_index == SPRITE_LIST_PEEP)
         {
             if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING)
             {
