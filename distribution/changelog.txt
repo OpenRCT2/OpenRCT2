@@ -55,6 +55,7 @@
 - Fix: [#9152] Spectators can modify ride colours.
 - Fix: [#9202] Artefacts show when changing ride type as client or using in-game console.
 - Fix: [#9240] Crash when passing directory instead of save file.
+- Fix: [#9245] Headless servers apply Discord Rich Presence.
 - Fix: [#9293] Issue with the native load/save dialog.
 - Fix: [#9322] Peep crashing the game trying to find a ride to look at.
 - Fix: [#9324] Crash trying to remove invalid footpath scenery.
