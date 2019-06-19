@@ -852,6 +852,7 @@ void research_items_make_all_unresearched()
     gResearchItemsUninvented.insert(
         gResearchItemsUninvented.end(), std::make_move_iterator(gResearchItemsInvented.begin()),
         std::make_move_iterator(gResearchItemsInvented.end()));
+    gResearchItemsInvented.clear();
 }
 
 void research_items_make_all_researched()
@@ -859,6 +860,7 @@ void research_items_make_all_researched()
     gResearchItemsInvented.insert(
         gResearchItemsInvented.end(), std::make_move_iterator(gResearchItemsUninvented.begin()),
         std::make_move_iterator(gResearchItemsUninvented.end()));
+    gResearchItemsUninvented.clear();
 }
 
 /**
