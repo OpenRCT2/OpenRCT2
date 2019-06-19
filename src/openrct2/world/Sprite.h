@@ -32,11 +32,11 @@ enum SPRITE_IDENTIFIER
 enum SPRITE_LIST
 {
     SPRITE_LIST_FREE,
-    SPRITE_LIST_TRAIN,
+    SPRITE_LIST_VEHICLE_HEAD,
     SPRITE_LIST_PEEP,
     SPRITE_LIST_MISC,
     SPRITE_LIST_LITTER,
-    SPRITE_LIST_UNKNOWN,
+    SPRITE_LIST_VEHICLE,
 };
 
 struct rct_litter : rct_sprite_common
@@ -195,7 +195,7 @@ extern uint16_t gSpriteSpatialIndex[0x10001];
 
 extern const rct_string_id litterNames[12];
 
-rct_sprite* create_sprite(uint8_t bl);
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier);
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();

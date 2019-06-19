@@ -1255,7 +1255,7 @@ void vehicle_sounds_update()
     vehicle_sounds_update_window_setup();
 
     gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
-    for (uint16_t i = gSpriteListHead[SPRITE_LIST_TRAIN]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
+    for (uint16_t i = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
     {
         vehicle_update_sound_params(&get_sprite(i)->vehicle);
     }
@@ -1338,7 +1338,7 @@ void vehicle_update_all()
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return;
 
-    sprite_index = gSpriteListHead[SPRITE_LIST_TRAIN];
+    sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD];
     while (sprite_index != SPRITE_INDEX_NULL)
     {
         vehicle = GET_VEHICLE(sprite_index);
@@ -7153,7 +7153,7 @@ static void steam_particle_create(int16_t x, int16_t y, int16_t z)
     TileElement* tileElement = map_get_surface_element_at({ x, y });
     if (tileElement != nullptr && z > tileElement->base_height * 8)
     {
-        rct_steam_particle* steam = (rct_steam_particle*)create_sprite(2);
+        rct_steam_particle* steam = (rct_steam_particle*)create_sprite(SPRITE_IDENTIFIER_MISC);
         if (steam == nullptr)
             return;
 

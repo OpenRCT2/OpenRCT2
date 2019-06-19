@@ -751,7 +751,7 @@ uint32_t lightfx_get_light_polution()
 
 void lightfx_add_lights_magic_vehicles()
 {
-    uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_TRAIN];
+    uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD];
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
         rct_vehicle* vehicle = &(get_sprite(spriteIndex)->vehicle);
