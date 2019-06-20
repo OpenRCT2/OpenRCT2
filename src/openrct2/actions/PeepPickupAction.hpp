@@ -178,6 +178,7 @@ public:
                 {
                     return MakeResult(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PERSON_HERE, gGameCommandErrorText);
                 }
+                CancelConcurrentPickups(peep);
                 break;
             default:
                 log_error("Invalid pickup type: %u", _type);
@@ -185,5 +186,27 @@ public:
                 break;
         }
         return res;
+    }
+
+private:
+    void CancelConcurrentPickups(Peep * pickedPeep) const
+    {
+        // This part is only relevant in multiplayer games.
+        if (network_get_mode() == NETWORK_MODE_NONE)
+            return;
+
+        // Not relevant for owner, owner gets to place it normally.
+        NetworkPlayerId_t currentPlayerId = network_get_current_player_id();
+        if (currentPlayerId == _owner)
+            return;
+
+        Peep* peep = network_get_pickup_peep(network_get_current_player_id());
+        if (peep != pickedPeep)
+            return;
+
+        // By assigning the peep to null before calling tool_cancel we can avoid
+        // resetting the peep to the initial position.
+        network_set_pickup_peep(currentPlayerId, nullptr);
+        tool_cancel();
     }
 };
