@@ -2081,7 +2081,6 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
             coord.x = x + 8;
             coord.y = y + 8;
             coord.z = z;
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
         // Place track element

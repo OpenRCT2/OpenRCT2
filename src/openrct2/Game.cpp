@@ -74,7 +74,6 @@ float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;
 int32_t gGameCommandNestLevel;
-bool gGameCommandIsNetworked;
 std::string gCurrentLoadedPath;
 
 bool gLoadKeepWindowsOpen = false;
@@ -84,8 +83,6 @@ uint8_t gUnk141F568;
 
 uint32_t gCurrentTicks;
 uint32_t gCurrentRealTimeTicks;
-
-int32_t game_command_playerid = -1;
 
 rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
@@ -366,16 +363,10 @@ int32_t game_do_command_p(
     if (gGameCommandNestLevel == 0)
     {
         gGameCommandErrorText = STR_NONE;
-        gGameCommandIsNetworked = (flags & GAME_COMMAND_FLAG_NETWORKED) != 0;
     }
 
     // Increment nest count
     gGameCommandNestLevel++;
-
-    if (game_command_playerid == -1)
-    {
-        game_command_playerid = network_get_current_player_id();
-    }
 
     *ebx &= ~GAME_COMMAND_FLAG_APPLY;
 
@@ -410,22 +401,6 @@ int32_t game_do_command_p(
                 return cost;
             }
 
-            if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED)
-                && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND)
-                && gGameCommandNestLevel == 1) /* Send only top-level commands */
-            {
-                network_send_gamecmd(
-                    *eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, 0);
-                if (network_get_mode() == NETWORK_MODE_CLIENT)
-                {
-                    // Client sent the command to the server, do not run it locally, just return.  It will run when server
-                    // sends it.
-                    // Decrement nest count
-                    gGameCommandNestLevel--;
-                    return cost;
-                }
-            }
-
             // Second call to actually perform the operation
             new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
@@ -446,8 +421,6 @@ int32_t game_do_command_p(
                         gCurrentTicks, *eax, original_ebx, *ecx, original_edx, original_esi, original_edi, original_ebp, 0);
                 }
             }
-
-            game_command_playerid = -1;
 
             *edx = *ebx;
 
@@ -470,13 +443,6 @@ int32_t game_do_command_p(
                     if (cost != 0 && game_is_not_paused())
                         rct_money_effect::Create(cost);
                 }
-            }
-
-            if (network_get_mode() == NETWORK_MODE_SERVER && !(flags & GAME_COMMAND_FLAG_NETWORKED)
-                && !(flags & GAME_COMMAND_FLAG_GHOST))
-            {
-                network_set_player_last_action(network_get_player_index(network_get_current_player_id()), command);
-                network_add_player_money_spent(network_get_current_player_id(), cost);
             }
 
             // Start autosave timer after game command

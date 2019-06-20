@@ -131,8 +131,6 @@ enum
 using GAME_COMMAND_POINTER = void(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
-extern int32_t game_command_playerid;
-
 extern rct_string_id gGameCommandErrorTitle;
 extern rct_string_id gGameCommandErrorText;
 extern uint8_t gErrorType;
@@ -151,7 +149,6 @@ extern float gDayNightCycle;
 extern bool gInUpdateCode;
 extern bool gInMapInitCode;
 extern int32_t gGameCommandNestLevel;
-extern bool gGameCommandIsNetworked;
 extern std::string gCurrentLoadedPath;
 
 extern bool gLoadKeepWindowsOpen;
