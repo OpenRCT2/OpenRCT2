@@ -4008,10 +4008,6 @@ void network_request_gamestate_snapshot()
 void network_enqueue_game_action(const GameAction* action)
 {
 }
-void network_send_gamecmd(
-    uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi, uint32_t ebp, uint8_t callback)
-{
-}
 void network_send_game_action(const GameAction* action)
 {
 }
