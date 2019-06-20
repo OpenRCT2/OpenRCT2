@@ -36,6 +36,7 @@ enum
 
 enum
 {
+    CAMPAIGN_FIRST_WEEK_FLAG = (1 << 6),
     CAMPAIGN_ACTIVE_FLAG = (1 << 7)
 };
 

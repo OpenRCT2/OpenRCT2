@@ -12,6 +12,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../network/network.h"
 #include "Map.h"
 #include "Sprite.h"
 
@@ -80,6 +81,14 @@ void rct_money_effect::Create(money32 value)
 
     if (mapPosition.x == LOCATION_NULL)
     {
+        // If game actions return no valid location of the action we can not use the screen
+        // coordinates as every client will have different ones.
+        if (network_get_mode() != NETWORK_MODE_NONE)
+        {
+            log_warning("Attempted to create money effect without a valid location in multiplayer");
+            return;
+        }
+
         rct_window* mainWindow = window_get_main();
         if (mainWindow == nullptr)
             return;

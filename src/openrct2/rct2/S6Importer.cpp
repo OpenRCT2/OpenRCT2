@@ -1072,7 +1072,11 @@ public:
             {
                 MarketingCampaign campaign{};
                 campaign.Type = (uint8_t)i;
-                campaign.WeeksLeft = _s6.campaign_weeks_left[i] & ~CAMPAIGN_ACTIVE_FLAG;
+                campaign.WeeksLeft = _s6.campaign_weeks_left[i] & ~(CAMPAIGN_ACTIVE_FLAG | CAMPAIGN_FIRST_WEEK_FLAG);
+                if ((_s6.campaign_weeks_left[i] & CAMPAIGN_FIRST_WEEK_FLAG) != 0)
+                {
+                    campaign.Flags |= MarketingCampaignFlags::FIRST_WEEK;
+                }
                 if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                 {
                     campaign.RideId = _s6.campaign_ride_index[i];
