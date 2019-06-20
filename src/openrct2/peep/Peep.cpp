@@ -846,8 +846,6 @@ bool Peep::Place(TileCoordsXYZ location, bool apply)
             happiness_target = std::max(happiness_target - 10, 0);
             UpdateCurrentActionSpriteType();
         }
-
-        network_set_pickup_peep(game_command_playerid, nullptr);
     }
 
     return true;
