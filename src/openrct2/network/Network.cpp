@@ -2145,11 +2145,6 @@ void Network::ProcessGameCommands()
         }
         else
         {
-            if (GetPlayerID() == gc.playerid)
-            {
-                game_command_callback = game_command_callback_get_callback(gc.callback);
-            }
-
             game_command_playerid = gc.playerid;
 
             int32_t command = gc.esi;
