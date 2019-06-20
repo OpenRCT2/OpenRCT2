@@ -166,7 +166,7 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
                                                                   { 0, -32 },   { -32, +32 }, { +32, -32 },
                                                                   { +32, +32 }, { -32, +32 }, { 0, 0 } };
 
-    for (size_t i = 0; i < (int32_t)std::size(NeighbourCheckOrder); i++)
+    for (size_t i = 0; i < std::size(NeighbourCheckOrder); i++)
     {
         ride_id_t rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
         if (rideIndex != RIDE_ID_NULL)
