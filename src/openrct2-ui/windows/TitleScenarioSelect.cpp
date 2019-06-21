@@ -226,10 +226,17 @@ static void window_scenarioselect_init_tabs(rct_window* w)
         }
     }
 
-    int32_t firstPage = bitscanforward(showPages);
-    if (firstPage != -1)
+    if (showPages & 1 << gConfigInterface.scenarioselect_last_tab)
     {
-        w->selected_tab = firstPage;
+        w->selected_tab = gConfigInterface.scenarioselect_last_tab;
+    }
+    else
+    {
+        int32_t firstPage = bitscanforward(showPages);
+        if (firstPage != -1)
+        {
+            w->selected_tab = firstPage;
+        }
     }
 
     int32_t x = 3;
@@ -269,6 +276,8 @@ static void window_scenarioselect_mousedown(rct_window* w, rct_widgetindex widge
     {
         w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
+        gConfigInterface.scenarioselect_last_tab = w->selected_tab;
+        config_save_default();
         initialise_list_items(w);
         window_invalidate(w);
         window_event_resize_call(w);

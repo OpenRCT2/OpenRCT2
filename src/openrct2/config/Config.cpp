@@ -300,6 +300,7 @@ namespace Config
             model->current_theme_preset = reader->GetCString("current_theme", "*RCT2");
             model->current_title_sequence_preset = reader->GetCString("current_title_sequence", "*OPENRCT2");
             model->object_selection_filter_flags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
+            model->scenarioselect_last_tab = reader->GetInt32("scenarioselect_last_tab", 0);
         }
     }
 
@@ -317,6 +318,7 @@ namespace Config
         writer->WriteString("current_theme", model->current_theme_preset);
         writer->WriteString("current_title_sequence", model->current_title_sequence_preset);
         writer->WriteInt32("object_selection_filter_flags", model->object_selection_filter_flags);
+        writer->WriteInt32("scenarioselect_last_tab", model->scenarioselect_last_tab);
     }
 
     static void ReadSound(IIniReader* reader)
