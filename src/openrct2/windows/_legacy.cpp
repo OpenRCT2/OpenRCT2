@@ -29,58 +29,6 @@
 
 bool gDisableErrorWindowSound = false;
 
-void game_command_callback_pickup_guest(
-    int32_t eax, int32_t ebx, int32_t ecx, [[maybe_unused]] int32_t edx, [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    switch (ecx)
-    {
-        case 0:
-        {
-            int32_t peepnum = eax;
-            rct_window* w = window_find_by_number(WC_PEEP, peepnum);
-            if (w)
-            {
-                tool_set(w, WC_PEEP__WIDX_PICKUP, TOOL_PICKER);
-            }
-        }
-        break;
-        case 2:
-            if (ebx == 0)
-            {
-                tool_cancel();
-                gPickupPeepImage = UINT32_MAX;
-            }
-            break;
-    }
-}
-
-void game_command_callback_pickup_staff(
-    int32_t eax, int32_t ebx, int32_t ecx, [[maybe_unused]] int32_t edx, [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    switch (ecx)
-    {
-        case 0:
-        {
-            int32_t peepnum = eax;
-            rct_window* w = window_find_by_number(WC_PEEP, peepnum);
-            if (w)
-            {
-                tool_set(w, WC_STAFF__WIDX_PICKUP, TOOL_PICKER);
-            }
-        }
-        break;
-        case 2:
-            if (ebx == 0)
-            {
-                tool_cancel();
-                gPickupPeepImage = UINT32_MAX;
-            }
-            break;
-    }
-}
-
 uint64_t _enabledRidePieces;
 uint8_t _rideConstructionState2;
 

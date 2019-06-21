@@ -14,6 +14,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/GuestSetFlagsAction.hpp>
+#include <openrct2/actions/PeepPickupAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
@@ -692,14 +693,25 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             window_guest_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_PICKUP:
+        {
             if (!peep_can_be_picked_up(peep))
             {
                 return;
             }
             w->picked_peep_old_x = peep->x;
-            game_command_callback = game_command_callback_pickup_guest;
-            game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_PICKUP_GUEST, 0, 0);
-            break;
+            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, {}, network_get_current_player_id() };
+            pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error != GA_ERROR::OK)
+                    return;
+                rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
+                if (wind)
+                {
+                    tool_set(wind, WC_PEEP__WIDX_PICKUP, TOOL_PICKER);
+                }
+            });
+            GameActions::Execute(&pickupAction);
+        }
+        break;
         case WIDX_RENAME:
             window_text_input_open(
                 w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, peep->name_string_idx, peep->id, 32);
@@ -1275,8 +1287,16 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     if (dest_x == LOCATION_NULL)
         return;
 
-    game_command_callback = game_command_callback_pickup_guest;
-    game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, tileElement->base_height, GAME_COMMAND_PICKUP_GUEST, dest_x, dest_y);
+    PeepPickupAction pickupAction{
+        PeepPickupType::Place, w->number, { dest_x, dest_y, tileElement->base_height }, network_get_current_player_id()
+    };
+    pickupAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+        if (result->Error != GA_ERROR::OK)
+            return;
+        tool_cancel();
+        gPickupPeepImage = UINT32_MAX;
+    });
+    GameActions::Execute(&pickupAction);
 }
 
 /**
@@ -1288,7 +1308,10 @@ void window_guest_overview_tool_abort(rct_window* w, rct_widgetindex widgetIndex
     if (widgetIndex != WIDX_PICKUP)
         return;
 
-    game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 1, 0, GAME_COMMAND_PICKUP_GUEST, w->picked_peep_old_x, 0);
+    PeepPickupAction pickupAction{
+        PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
+    };
+    GameActions::Execute(&pickupAction);
 }
 
 /**

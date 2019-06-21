@@ -16,6 +16,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/PeepPickupAction.hpp>
 #include <openrct2/actions/StaffSetCostumeAction.hpp>
 #include <openrct2/actions/StaffSetOrdersAction.hpp>
 #include <openrct2/actions/StaffSetPatrolAreaAction.hpp>
@@ -462,13 +463,19 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_PICKUP:
         {
-            // this is called in callback when hiring staff, setting nestlevel to 0 so that command is sent separately
-            int32_t oldNestLevel = gGameCommandNestLevel;
-            gGameCommandNestLevel = 0;
-            game_command_callback = game_command_callback_pickup_staff;
             w->picked_peep_old_x = peep->x;
-            game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_PICKUP_STAFF, 0, 0);
-            gGameCommandNestLevel = oldNestLevel;
+
+            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, {}, network_get_current_player_id() };
+            pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error != GA_ERROR::OK)
+                    return;
+                rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
+                if (wind)
+                {
+                    tool_set(wind, WC_STAFF__WIDX_PICKUP, TOOL_PICKER);
+                }
+            });
+            GameActions::Execute(&pickupAction);
         }
         break;
         case WIDX_FIRE:
@@ -1198,9 +1205,16 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         if (dest_x == LOCATION_NULL)
             return;
 
-        game_command_callback = game_command_callback_pickup_staff;
-        game_do_command(
-            w->number, GAME_COMMAND_FLAG_APPLY, 2, tileElement->base_height, GAME_COMMAND_PICKUP_STAFF, dest_x, dest_y);
+        PeepPickupAction pickupAction{
+            PeepPickupType::Place, w->number, { dest_x, dest_y, tileElement->base_height }, network_get_current_player_id()
+        };
+        pickupAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+            if (result->Error != GA_ERROR::OK)
+                return;
+            tool_cancel();
+            gPickupPeepImage = UINT32_MAX;
+        });
+        GameActions::Execute(&pickupAction);
     }
     else if (widgetIndex == WIDX_PATROL)
     {
@@ -1285,7 +1299,10 @@ void window_staff_overview_tool_abort(rct_window* w, rct_widgetindex widgetIndex
 {
     if (widgetIndex == WIDX_PICKUP)
     {
-        game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 1, 0, GAME_COMMAND_PICKUP_STAFF, w->picked_peep_old_x, 0);
+        PeepPickupAction pickupAction{
+            PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
+        };
+        GameActions::Execute(&pickupAction);
     }
     else if (widgetIndex == WIDX_PATROL)
     {

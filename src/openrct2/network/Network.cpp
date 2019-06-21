@@ -16,6 +16,7 @@
 #include "../PlatformEnvironment.h"
 #include "../actions/LoadOrQuitAction.hpp"
 #include "../actions/NetworkModifyGroupAction.hpp"
+#include "../actions/PeepPickupAction.hpp"
 #include "../core/Guard.hpp"
 #include "../platform/platform.h"
 #include "../ui/UiContext.h"
@@ -33,7 +34,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "44"
+#define NETWORK_STREAM_VERSION "45"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -2246,11 +2247,11 @@ void Network::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& conne
     Peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
     if (pickup_peep)
     {
-        game_command_playerid = connection_player->Id;
-        game_do_command(
-            pickup_peep->sprite_index, GAME_COMMAND_FLAG_APPLY, 1, 0,
-            pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF,
-            network_get_pickup_peep_old_x(connection_player->Id), 0);
+        PeepPickupAction pickupAction{ PeepPickupType::Cancel,
+                                       pickup_peep->sprite_index,
+                                       { network_get_pickup_peep_old_x(connection_player->Id), 0, 0 },
+                                       network_get_current_player_id() };
+        auto res = GameActions::Execute(&pickupAction);
     }
     gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED(
         (char*)connection_player->Name.c_str(), connection->GetLastDisconnectReason());

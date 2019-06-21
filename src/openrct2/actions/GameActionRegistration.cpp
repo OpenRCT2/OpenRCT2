@@ -43,6 +43,7 @@
 #include "ParkSetParameterAction.hpp"
 #include "ParkSetResearchFundingAction.hpp"
 #include "PauseToggleAction.hpp"
+#include "PeepPickupAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
 #include "PlayerKickAction.hpp"
@@ -110,6 +111,7 @@ namespace GameActions
         Register<ParkSetNameAction>();
         Register<ParkSetParameterAction>();
         Register<ParkSetResearchFundingAction>();
+        Register<PeepPickupAction>();
         Register<PlaceParkEntranceAction>();
         Register<PlacePeepSpawnAction>();
         Register<PlayerKickAction>();
