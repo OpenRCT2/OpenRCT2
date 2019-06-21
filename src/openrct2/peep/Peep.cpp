@@ -79,37 +79,9 @@ static TileElement* _peepRideEntranceExitElement;
 static void* _crowdSoundChannel = nullptr;
 
 static void peep_128_tick_update(Peep* peep, int32_t index);
-static void peep_easter_egg_peep_interactions(Guest* peep);
 static void peep_give_real_name(Peep* peep);
 static void peep_release_balloon(Guest* peep, int16_t spawn_height);
-
 // clang-format off
-static constexpr const char *gPeepEasterEggNames[] = {
-    "MICHAEL SCHUMACHER",
-    "JACQUES VILLENEUVE",
-    "DAMON HILL",
-    "MR BEAN",
-    "CHRIS SAWYER",
-    "KATIE BRAYSHAW",
-    "MELANIE WARN",
-    "SIMON FOSTER",
-    "JOHN WARDLEY",
-    "LISA STIRLING",
-    "DONALD MACRAE",
-    "KATHERINE MCGOWAN",
-    "FRANCES MCGOWAN",
-    "CORINA MASSOURA",
-    "CAROL YOUNG",
-    "MIA SHERIDAN",
-    "KATIE RODGER",
-    "EMMA GARRELL",
-    "JOANNE BARTON",
-    "FELICITY ANDERSON",
-    "KATIE SMITH",
-    "EILIDH BELL",
-    "NANCY STILLWAGON",
-    "DAVID ELLIS"
-};
 
 /** rct2: 0x00981DB0 */
 static struct
@@ -1178,7 +1150,7 @@ void Peep::Update()
         auto guest = AsGuest();
         if (guest != nullptr)
         {
-            peep_easter_egg_peep_interactions(guest);
+            guest->UpdateEasterEggInteractions();
         }
     }
     else
@@ -2155,32 +2127,6 @@ int32_t get_peep_face_sprite_small(Peep* peep)
 int32_t get_peep_face_sprite_large(Peep* peep)
 {
     return face_sprite_large[get_face_sprite_offset(peep)];
-}
-
-/**
- *
- *  rct2: 0x0069A5A0
- * tests if a peep's name matches a cheat code, normally returns using a register flag
- */
-int32_t peep_check_easteregg_name(int32_t index, Peep* peep)
-{
-    char buffer[256];
-
-    format_string(buffer, 256, peep->name_string_idx, &peep->id);
-    return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
-}
-
-int32_t peep_get_easteregg_name_id(Peep* peep)
-{
-    char buffer[256];
-
-    format_string(buffer, 256, peep->name_string_idx, &peep->id);
-
-    for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
-        if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
-            return static_cast<int32_t>(i);
-
-    return -1;
 }
 
 void peep_set_map_tooltip(Peep* peep)
@@ -3196,147 +3142,6 @@ void peep_reset_pathfind_goal(Peep* peep)
     peep->pathfind_goal.direction = 0xFF;
 }
 
-static bool peep_has_valid_xy(Peep* peep)
-{
-    if (peep->x != LOCATION_NULL)
-    {
-        if (peep->x < (256 * 32) && peep->y < (256 * 32))
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-using easter_egg_function = void (*)(Guest* peep, Guest* otherPeep);
-
-static void peep_apply_easter_egg_to_nearby_guests(Guest* peep, easter_egg_function easter_egg)
-{
-    if (!peep_has_valid_xy(peep))
-        return;
-
-    uint16_t spriteIndex = sprite_get_first_in_quadrant(peep->x, peep->y);
-    if (spriteIndex == SPRITE_INDEX_NULL)
-        return;
-
-    auto otherPeep = GET_PEEP(spriteIndex);
-    for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant)
-    {
-        otherPeep = GET_PEEP(spriteIndex);
-        auto otheerGuest = otherPeep->AsGuest();
-        if (otheerGuest != nullptr)
-        {
-            auto zDiff = std::abs(otherPeep->z - peep->z);
-            if (zDiff <= 32)
-            {
-                easter_egg(peep, otheerGuest);
-            }
-        }
-    }
-}
-
-static void peep_give_passing_peeps_purple_clothes([[maybe_unused]] Guest* peep, Guest* otherPeep)
-{
-    otherPeep->tshirt_colour = COLOUR_BRIGHT_PURPLE;
-    otherPeep->trousers_colour = COLOUR_BRIGHT_PURPLE;
-    invalidate_sprite_2((rct_sprite*)otherPeep);
-}
-
-static void peep_give_passing_peeps_pizza(Guest* peep, Guest* otherPeep)
-{
-    if ((otherPeep->item_standard_flags & PEEP_ITEM_PIZZA))
-        return;
-
-    otherPeep->item_standard_flags |= PEEP_ITEM_PIZZA;
-
-    int32_t peepDirection = (peep->sprite_direction >> 3) ^ 2;
-    int32_t otherPeepOppositeDirection = otherPeep->sprite_direction >> 3;
-    if (peepDirection == otherPeepOppositeDirection)
-    {
-        if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2)
-        {
-            peep->Invalidate();
-            otherPeep->action = PEEP_ACTION_WAVE_2;
-            otherPeep->action_frame = 0;
-            otherPeep->action_sprite_image_offset = 0;
-            otherPeep->UpdateCurrentActionSpriteType();
-            invalidate_sprite_2((rct_sprite*)otherPeep);
-        }
-    }
-    invalidate_sprite_2((rct_sprite*)otherPeep);
-}
-
-static void peep_make_passing_peeps_sick(Guest* peep, Guest* otherPeep)
-{
-    if (peep == otherPeep)
-        return;
-    if (otherPeep->state != PEEP_STATE_WALKING)
-        return;
-
-    if (otherPeep->action == PEEP_ACTION_NONE_1 || otherPeep->action == PEEP_ACTION_NONE_2)
-    {
-        otherPeep->action = PEEP_ACTION_THROW_UP;
-        otherPeep->action_frame = 0;
-        otherPeep->action_sprite_image_offset = 0;
-        otherPeep->UpdateCurrentActionSpriteType();
-        invalidate_sprite_2((rct_sprite*)otherPeep);
-    }
-}
-
-static void peep_give_passing_peeps_ice_cream(Guest* peep, Guest* otherPeep)
-{
-    if (peep == otherPeep)
-        return;
-    if (otherPeep->item_standard_flags & PEEP_ITEM_ICE_CREAM)
-        return;
-
-    otherPeep->item_standard_flags |= PEEP_ITEM_ICE_CREAM;
-    otherPeep->UpdateSpriteType();
-}
-
-/**
- *
- *  rct2: 0x0068FD3A
- */
-static void peep_easter_egg_peep_interactions(Guest* peep)
-{
-    if (peep->peep_flags & PEEP_FLAGS_PURPLE)
-    {
-        peep_apply_easter_egg_to_nearby_guests(peep, &peep_give_passing_peeps_purple_clothes);
-    }
-
-    if (peep->peep_flags & PEEP_FLAGS_PIZZA)
-    {
-        peep_apply_easter_egg_to_nearby_guests(peep, &peep_give_passing_peeps_pizza);
-    }
-
-    if (peep->peep_flags & PEEP_FLAGS_CONTAGIOUS)
-    {
-        peep_apply_easter_egg_to_nearby_guests(peep, &peep_make_passing_peeps_sick);
-    }
-
-    if (peep->peep_flags & PEEP_FLAGS_JOY)
-    {
-        if (scenario_rand() <= 1456)
-        {
-            if (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2)
-            {
-                peep->action = PEEP_ACTION_JOY;
-                peep->action_frame = 0;
-                peep->action_sprite_image_offset = 0;
-                peep->UpdateCurrentActionSpriteType();
-                peep->Invalidate();
-            }
-        }
-    }
-
-    if (peep->peep_flags & PEEP_FLAGS_ICE_CREAM)
-    {
-        peep_apply_easter_egg_to_nearby_guests(peep, &peep_give_passing_peeps_ice_cream);
-    }
-}
-
 /**
  * Gets the height including the bit depending on how far up the slope the peep
  * is.
@@ -3588,133 +3393,6 @@ void peep_update_names(bool realNames)
 
     peep_sort();
     gfx_invalidate_screen();
-}
-
-void peep_handle_easteregg_name(Peep* peep)
-{
-    peep->peep_flags &= ~PEEP_FLAGS_WAVING;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_WAVING;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_PHOTO;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CHRIS_SAWYER, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_PHOTO;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_PAINTING;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_SIMON_FOSTER, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_PAINTING;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_WOW;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOHN_WARDLEY, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_WOW;
-    }
-
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MELANIE_WARN, peep))
-    {
-        peep->happiness = 250;
-        peep->happiness_target = 250;
-        peep->energy = 127;
-        peep->energy_target = 127;
-        peep->nausea = 0;
-        peep->nausea_target = 0;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_LITTER;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_LISA_STIRLING, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_LITTER;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_LOST;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DONALD_MACRAE, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_LOST;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_HUNGER;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_HUNGER;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_BATHROOM;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_BATHROOM;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_CROWDED;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CORINA_MASSOURA, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_CROWDED;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_HAPPINESS;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CAROL_YOUNG, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_HAPPINESS;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_NAUSEA;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MIA_SHERIDAN, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_NAUSEA;
-    }
-
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_RODGER, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_LEAVING_PARK;
-        peep->peep_flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_PURPLE;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EMMA_GARRELL, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_PURPLE;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_PIZZA;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOANNE_BARTON, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_PIZZA;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_CONTAGIOUS;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_CONTAGIOUS;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_JOY;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_SMITH, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_JOY;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EILIDH_BELL, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_ANGRY;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_ICE_CREAM;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_ICE_CREAM;
-    }
-
-    peep->peep_flags &= ~PEEP_FLAGS_HERE_WE_ARE;
-    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DAVID_ELLIS, peep))
-    {
-        peep->peep_flags |= PEEP_FLAGS_HERE_WE_ARE;
-    }
 }
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

@@ -343,6 +343,33 @@ static constexpr const uint8_t peep_extra_item_containers[] = {
     0xFF,                           // PEEP_ITEM_EMPTY_BOWL_BLUE
 };
 
+static constexpr const char *gPeepEasterEggNames[] = {
+    "MICHAEL SCHUMACHER",
+    "JACQUES VILLENEUVE",
+    "DAMON HILL",
+    "MR BEAN",
+    "CHRIS SAWYER",
+    "KATIE BRAYSHAW",
+    "MELANIE WARN",
+    "SIMON FOSTER",
+    "JOHN WARDLEY",
+    "LISA STIRLING",
+    "DONALD MACRAE",
+    "KATHERINE MCGOWAN",
+    "FRANCES MCGOWAN",
+    "CORINA MASSOURA",
+    "CAROL YOUNG",
+    "MIA SHERIDAN",
+    "KATIE RODGER",
+    "EMMA GARRELL",
+    "JOANNE BARTON",
+    "FELICITY ANDERSON",
+    "KATIE SMITH",
+    "EILIDH BELL",
+    "NANCY STILLWAGON",
+    "DAVID ELLIS"
+};
+
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
 static constexpr const ride_rating NauseaMinimumThresholds[] = {
     0, 0, 200, 400
@@ -368,6 +395,298 @@ static void peep_leave_park(Peep* peep);
 static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags);
 bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
+
+bool Guest::GuestHasValidXY() const
+{
+    if (x != LOCATION_NULL)
+    {
+        if (x < (256 * 32) && y < (256 * 32))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Guest::ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg)
+{
+    if (!GuestHasValidXY())
+        return;
+
+    uint16_t spriteIndex = sprite_get_first_in_quadrant(x, y);
+    if (spriteIndex == SPRITE_INDEX_NULL)
+        return;
+
+    auto otherPeep = GET_PEEP(spriteIndex);
+    for (; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = otherPeep->next_in_quadrant)
+    {
+        otherPeep = GET_PEEP(spriteIndex);
+        auto otherGuest = otherPeep->AsGuest();
+        if (otherGuest)
+        {
+            auto zDiff = std::abs(otherPeep->z - z);
+            if (zDiff <= 32)
+            {
+                (*this.*easter_egg)(otherGuest);
+            }
+        }
+    }
+}
+
+void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
+{
+    passingPeep->tshirt_colour = COLOUR_BRIGHT_PURPLE;
+    passingPeep->trousers_colour = COLOUR_BRIGHT_PURPLE;
+    invalidate_sprite_2((rct_sprite*)passingPeep);
+}
+
+void Guest::GivePassingPeepsPizza(Guest* passingPeep)
+{
+    if ((passingPeep->item_standard_flags & PEEP_ITEM_PIZZA))
+        return;
+
+    passingPeep->item_standard_flags |= PEEP_ITEM_PIZZA;
+
+    int32_t peepDirection = (sprite_direction >> 3) ^ 2;
+    int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
+    if (peepDirection == otherPeepOppositeDirection)
+    {
+        if (passingPeep->action == PEEP_ACTION_NONE_1 || passingPeep->action == PEEP_ACTION_NONE_2)
+        {
+            Invalidate();
+            passingPeep->action = PEEP_ACTION_WAVE_2;
+            passingPeep->action_frame = 0;
+            passingPeep->action_sprite_image_offset = 0;
+            passingPeep->UpdateCurrentActionSpriteType();
+            invalidate_sprite_2((rct_sprite*)passingPeep);
+        }
+    }
+    invalidate_sprite_2((rct_sprite*)passingPeep);
+}
+
+void Guest::MakePassingPeepsSick(Guest* passingPeep)
+{
+    if (this == passingPeep)
+        return;
+    if (passingPeep->state != PEEP_STATE_WALKING)
+        return;
+
+    if (passingPeep->action == PEEP_ACTION_NONE_1 || passingPeep->action == PEEP_ACTION_NONE_2)
+    {
+        passingPeep->action = PEEP_ACTION_THROW_UP;
+        passingPeep->action_frame = 0;
+        passingPeep->action_sprite_image_offset = 0;
+        passingPeep->UpdateCurrentActionSpriteType();
+        invalidate_sprite_2((rct_sprite*)passingPeep);
+    }
+}
+
+void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
+{
+    if (this == passingPeep)
+        return;
+    if (passingPeep->item_standard_flags & PEEP_ITEM_ICE_CREAM)
+        return;
+
+    passingPeep->item_standard_flags |= PEEP_ITEM_ICE_CREAM;
+    passingPeep->UpdateSpriteType();
+}
+
+/**
+ *
+ *  rct2: 0x0068FD3A
+ */
+void Guest::UpdateEasterEggInteractions()
+{
+    if (peep_flags & PEEP_FLAGS_PURPLE)
+    {
+        ApplyEasterEggToNearbyGuests(&Guest::GivePassingPeepsPurpleClothes);
+    }
+
+    if (peep_flags & PEEP_FLAGS_PIZZA)
+    {
+        ApplyEasterEggToNearbyGuests(&Guest::GivePassingPeepsPizza);
+    }
+
+    if (peep_flags & PEEP_FLAGS_CONTAGIOUS)
+    {
+        ApplyEasterEggToNearbyGuests(&Guest::MakePassingPeepsSick);
+    }
+
+    if (peep_flags & PEEP_FLAGS_JOY)
+    {
+        if (scenario_rand() <= 1456)
+        {
+            if (action == PEEP_ACTION_NONE_1 || action == PEEP_ACTION_NONE_2)
+            {
+                action = PEEP_ACTION_JOY;
+                action_frame = 0;
+                action_sprite_image_offset = 0;
+                UpdateCurrentActionSpriteType();
+                Invalidate();
+            }
+        }
+    }
+
+    if (peep_flags & PEEP_FLAGS_ICE_CREAM)
+    {
+        ApplyEasterEggToNearbyGuests(&Guest::GivePassingPeepsIceCream);
+    }
+}
+
+int32_t Guest::GetEasterEggNameId() const
+{
+    char buffer[256];
+
+    format_string(buffer, 256, this->name_string_idx, &this->id);
+
+    for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
+        if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
+            return static_cast<int32_t>(i);
+
+    return -1;
+}
+
+void Guest::HandleEasterEggName()
+{
+    peep_flags &= ~PEEP_FLAGS_WAVING;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW))
+    {
+        peep_flags |= PEEP_FLAGS_WAVING;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_PHOTO;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_CHRIS_SAWYER))
+    {
+        peep_flags |= PEEP_FLAGS_PHOTO;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_PAINTING;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_SIMON_FOSTER))
+    {
+        peep_flags |= PEEP_FLAGS_PAINTING;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_WOW;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_JOHN_WARDLEY))
+    {
+        peep_flags |= PEEP_FLAGS_WOW;
+    }
+
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_MELANIE_WARN))
+    {
+        happiness = 250;
+        happiness_target = 250;
+        energy = 127;
+        energy_target = 127;
+        nausea = 0;
+        nausea_target = 0;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_LITTER;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_LISA_STIRLING))
+    {
+        peep_flags |= PEEP_FLAGS_LITTER;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_LOST;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_DONALD_MACRAE))
+    {
+        peep_flags |= PEEP_FLAGS_LOST;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_HUNGER;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN))
+    {
+        peep_flags |= PEEP_FLAGS_HUNGER;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_BATHROOM;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN))
+    {
+        peep_flags |= PEEP_FLAGS_BATHROOM;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_CROWDED;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_CORINA_MASSOURA))
+    {
+        peep_flags |= PEEP_FLAGS_CROWDED;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_HAPPINESS;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_CAROL_YOUNG))
+    {
+        peep_flags |= PEEP_FLAGS_HAPPINESS;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_NAUSEA;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_MIA_SHERIDAN))
+    {
+        peep_flags |= PEEP_FLAGS_NAUSEA;
+    }
+
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_KATIE_RODGER))
+    {
+        peep_flags |= PEEP_FLAGS_LEAVING_PARK;
+        peep_flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_PURPLE;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_EMMA_GARRELL))
+    {
+        peep_flags |= PEEP_FLAGS_PURPLE;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_PIZZA;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_JOANNE_BARTON))
+    {
+        peep_flags |= PEEP_FLAGS_PIZZA;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_CONTAGIOUS;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON))
+    {
+        peep_flags |= PEEP_FLAGS_CONTAGIOUS;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_JOY;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_KATIE_SMITH))
+    {
+        peep_flags |= PEEP_FLAGS_JOY;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_ANGRY;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_EILIDH_BELL))
+    {
+        peep_flags |= PEEP_FLAGS_ANGRY;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_ICE_CREAM;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON))
+    {
+        peep_flags |= PEEP_FLAGS_ICE_CREAM;
+    }
+
+    peep_flags &= ~PEEP_FLAGS_HERE_WE_ARE;
+    if (CheckEasterEggName(EASTEREGG_PEEP_NAME_DAVID_ELLIS))
+    {
+        peep_flags |= PEEP_FLAGS_HERE_WE_ARE;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x0069A5A0
+ * tests if a peep's name matches a cheat code, normally returns using a register flag
+ */
+int32_t Guest::CheckEasterEggName(int32_t index) const
+{
+    char buffer[256];
+
+    format_string(buffer, 256, this->name_string_idx, &this->id);
+    return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
+}
 
 void Guest::Tick128UpdateGuest(int32_t index)
 {

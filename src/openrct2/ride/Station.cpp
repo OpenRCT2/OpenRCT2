@@ -284,23 +284,29 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
         {
             Peep* peep = &get_sprite(vehicle->peep[0])->peep;
 
-            switch (peep_get_easteregg_name_id(peep))
+            // Easter egg names should only work on guests
+            Guest* guest = peep->AsGuest();
+
+            if (guest != nullptr)
             {
-                case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:
-                    vehicle->speed += 35;
-                    break;
-                case EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE:
-                    vehicle->speed += 25;
-                    break;
-                case EASTEREGG_PEEP_NAME_DAMON_HILL:
-                    vehicle->speed += 55;
-                    break;
-                case EASTEREGG_PEEP_NAME_CHRIS_SAWYER:
-                    vehicle->speed += 14;
-                    break;
-                case EASTEREGG_PEEP_NAME_MR_BEAN:
-                    vehicle->speed = 9;
-                    break;
+                switch (guest->GetEasterEggNameId())
+                {
+                    case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:
+                        vehicle->speed += 35;
+                        break;
+                    case EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE:
+                        vehicle->speed += 25;
+                        break;
+                    case EASTEREGG_PEEP_NAME_DAMON_HILL:
+                        vehicle->speed += 55;
+                        break;
+                    case EASTEREGG_PEEP_NAME_CHRIS_SAWYER:
+                        vehicle->speed += 14;
+                        break;
+                    case EASTEREGG_PEEP_NAME_MR_BEAN:
+                        vehicle->speed = 9;
+                        break;
+                }
             }
         }
     }
