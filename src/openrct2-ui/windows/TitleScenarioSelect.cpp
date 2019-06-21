@@ -226,7 +226,7 @@ static void window_scenarioselect_init_tabs(rct_window* w)
         }
     }
 
-    if (showPages & 1 << gConfigInterface.scenarioselect_last_tab)
+    if (showPages & (1 << gConfigInterface.scenarioselect_last_tab))
     {
         w->selected_tab = gConfigInterface.scenarioselect_last_tab;
     }
