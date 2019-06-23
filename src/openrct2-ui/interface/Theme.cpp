@@ -866,10 +866,7 @@ rct_string_id theme_desc_get_name(rct_windowclass wc)
 
 void colour_scheme_update_all()
 {
-    for (auto& w : g_window_list)
-    {
-        colour_scheme_update(w.get());
-    }
+    window_visit_each([](rct_window* w) { colour_scheme_update(w); });
 }
 
 void colour_scheme_update(rct_window* window)

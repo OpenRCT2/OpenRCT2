@@ -689,10 +689,9 @@ static void window_invalidate_pressed_image_buttons(rct_window* w)
  */
 void invalidate_all_windows_after_input()
 {
-    for (auto& w : g_window_list)
-    {
-        window_update_scroll_widgets(w.get());
-        window_invalidate_pressed_image_buttons(w.get());
-        window_event_resize_call(w.get());
-    }
+    window_visit_each([](rct_window* w) {
+        window_update_scroll_widgets(w);
+        window_invalidate_pressed_image_buttons(w);
+        window_event_resize_call(w);
+    });
 }
