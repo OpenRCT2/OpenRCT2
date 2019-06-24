@@ -65,7 +65,6 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
 };
 
-static int32_t jumping_fountain_get_type(const rct_jumping_fountain* jumpingFountain);
 static void jumping_fountain_continue(rct_jumping_fountain* jumpingFountain);
 static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z);
 
@@ -190,16 +189,16 @@ void rct_jumping_fountain::Update()
     }
 }
 
-static int32_t jumping_fountain_get_type(const rct_jumping_fountain* jumpingFountain)
+int32_t rct_jumping_fountain::GetType() const
 {
-    int32_t type = jumpingFountain->type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ? JUMPING_FOUNTAIN_TYPE_SNOW
-                                                                              : JUMPING_FOUNTAIN_TYPE_WATER;
-    return type;
+    const int32_t fountainType = this->type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ? JUMPING_FOUNTAIN_TYPE_SNOW
+                                                                                 : JUMPING_FOUNTAIN_TYPE_WATER;
+    return fountainType;
 }
 
 static void jumping_fountain_continue(rct_jumping_fountain* jumpingFountain)
 {
-    int32_t type = jumping_fountain_get_type(jumpingFountain);
+    int32_t type = jumpingFountain->GetType();
     int32_t direction = (jumpingFountain->sprite_direction >> 3) & 7;
     int32_t x = jumpingFountain->x + CoordsDirectionDelta[direction].x;
     int32_t y = jumpingFountain->y + CoordsDirectionDelta[direction].y;
@@ -340,7 +339,7 @@ static void jumping_fountain_split(
 {
     if (jumpingFountain->iteration < 3)
     {
-        int32_t type = jumping_fountain_get_type(jumpingFountain);
+        int32_t type = jumpingFountain->GetType();
         int32_t direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
         availableDirections &= ~(1 << direction);
         availableDirections &= ~(1 << (direction + 1));
@@ -382,7 +381,7 @@ static void jumping_fountain_random(
 static void jumping_fountain_create_next(
     const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t direction)
 {
-    int32_t type = jumping_fountain_get_type(jumpingFountain);
+    int32_t type = jumpingFountain->GetType();
     int32_t flags = jumpingFountain->fountain_flags & ~FOUNTAIN_FLAG::DIRECTION;
     if (direction & 1)
     {
