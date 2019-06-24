@@ -83,6 +83,8 @@ struct rct_jumping_fountain : rct_sprite_generic
     int16_t target_x;
     int16_t target_y;
     uint16_t iteration;
+
+    void Update();
 };
 
 struct rct_money_effect : rct_sprite_common

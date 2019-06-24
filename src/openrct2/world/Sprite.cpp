@@ -557,7 +557,7 @@ static void sprite_misc_update(rct_sprite* sprite)
             break;
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
         case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
-            jumping_fountain_update(&sprite->jumping_fountain);
+            sprite->jumping_fountain.Update();
             break;
         case SPRITE_MISC_BALLOON:
             balloon_update(&sprite->balloon);

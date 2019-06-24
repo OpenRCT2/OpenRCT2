@@ -149,44 +149,44 @@ void jumping_fountain_create(int32_t type, int32_t x, int32_t y, int32_t z, int3
     }
 }
 
-void jumping_fountain_update(rct_jumping_fountain* jumpingFountain)
+void rct_jumping_fountain::Update()
 {
-    jumpingFountain->num_ticks_alive++;
+    this->num_ticks_alive++;
     // Originaly this would not update the frame on the following
     // ticks: 1, 3, 6, 9, 11, 14, 17, 19, 22, 25
     // This change was to simplefy the code base. There is a small increase
     // in speed of the fountain jump because of this change.
-    if ((jumpingFountain->num_ticks_alive % 3) == 0)
+    if ((this->num_ticks_alive % 3) == 0)
     {
         return;
     }
 
-    invalidate_sprite_0((rct_sprite*)jumpingFountain);
-    jumpingFountain->frame++;
+    invalidate_sprite_0(reinterpret_cast<rct_sprite*>(this));
+    this->frame++;
 
-    switch (jumpingFountain->type)
+    switch (this->type)
     {
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-            if (jumpingFountain->frame == 11 && (jumpingFountain->fountain_flags & FOUNTAIN_FLAG::FAST))
+            if (this->frame == 11 && (this->fountain_flags & FOUNTAIN_FLAG::FAST))
             {
-                jumping_fountain_continue(jumpingFountain);
+                jumping_fountain_continue(this);
             }
-            if (jumpingFountain->frame == 16 && !(jumpingFountain->fountain_flags & FOUNTAIN_FLAG::FAST))
+            if (this->frame == 16 && !(this->fountain_flags & FOUNTAIN_FLAG::FAST))
             {
-                jumping_fountain_continue(jumpingFountain);
+                jumping_fountain_continue(this);
             }
             break;
         case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
-            if (jumpingFountain->frame == 16)
+            if (this->frame == 16)
             {
-                jumping_fountain_continue(jumpingFountain);
+                jumping_fountain_continue(this);
             }
             break;
     }
 
-    if (jumpingFountain->frame == 16)
+    if (this->frame == 16)
     {
-        sprite_remove((rct_sprite*)jumpingFountain);
+        sprite_remove(reinterpret_cast<rct_sprite*>(this));
     }
 }
 
