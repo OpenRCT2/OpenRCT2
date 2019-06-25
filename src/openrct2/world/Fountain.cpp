@@ -65,35 +65,22 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
 };
 
-static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z);
-
-static void jumping_fountain_goto_edge(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections);
-static void jumping_fountain_bounce(
-    rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections);
-static void jumping_fountain_split(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections);
-static void jumping_fountain_random(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections);
-static void jumping_fountain_create_next(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t direction);
-
-void rct_jumping_fountain::Begin(int32_t type, int32_t x, int32_t y, const TileElement* tileElement)
+void rct_jumping_fountain::Begin(const int32_t newType, const int32_t newX, const int32_t newY, const TileElement* tileElement)
 {
     int32_t randomIndex;
-    int32_t z = tileElement->base_height * 8;
+    const int32_t newZ = tileElement->base_height * 8;
 
     // Change pattern approximately every 51 seconds
     uint32_t pattern = (gCurrentTicks >> 11) & 7;
-    switch ((PATTERN)pattern)
+    switch (static_cast<PATTERN>(pattern))
     {
         case PATTERN::CYCLIC_SQUARES:
             // 0, 1, 2, 3
             for (int32_t i = 0; i < 4; i++)
             {
                 rct_jumping_fountain::Create(
-                    type, x + _fountainDirectionsPositive[i].x, y + _fountainDirectionsPositive[i].y, z, _fountainDirections[i],
-                    _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
+                    newType, newX + _fountainDirectionsPositive[i].x, newY + _fountainDirectionsPositive[i].y, newZ,
+                    _fountainDirections[i], _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
             }
             break;
         case PATTERN::BOUNCING_PAIRS:
@@ -102,46 +89,51 @@ void rct_jumping_fountain::Begin(int32_t type, int32_t x, int32_t y, const TileE
             for (int32_t i = randomIndex; i < 4; i += 2)
             {
                 rct_jumping_fountain::Create(
-                    type, x + _fountainDirectionsPositive[i].x, y + _fountainDirectionsPositive[i].y, z, _fountainDirections[i],
-                    _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
+                    newType, newX + _fountainDirectionsPositive[i].x, newY + _fountainDirectionsPositive[i].y, newZ,
+                    _fountainDirections[i], _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
             }
             break;
         case PATTERN::RACING_PAIRS:
             // random [0 - 3 and 4 - 7]
             randomIndex = scenario_rand() & 3;
             rct_jumping_fountain::Create(
-                type, x + _fountainDirectionsPositive[randomIndex].x, y + _fountainDirectionsPositive[randomIndex].y, z,
-                _fountainDirections[randomIndex], _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
+                newType, newX + _fountainDirectionsPositive[randomIndex].x, newY + _fountainDirectionsPositive[randomIndex].y,
+                newZ, _fountainDirections[randomIndex], _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern],
+                0);
             randomIndex += 4;
             rct_jumping_fountain::Create(
-                type, x + _fountainDirectionsPositive[randomIndex].x, y + _fountainDirectionsPositive[randomIndex].y, z,
-                _fountainDirections[randomIndex], _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
+                newType, newX + _fountainDirectionsPositive[randomIndex].x, newY + _fountainDirectionsPositive[randomIndex].y,
+                newZ, _fountainDirections[randomIndex], _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern],
+                0);
             break;
         default:
             // random [0 - 7]
             randomIndex = scenario_rand() & 7;
             rct_jumping_fountain::Create(
-                type, x + _fountainDirectionsPositive[randomIndex].x, y + _fountainDirectionsPositive[randomIndex].y, z,
-                _fountainDirections[randomIndex], _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
+                newType, newX + _fountainDirectionsPositive[randomIndex].x, newY + _fountainDirectionsPositive[randomIndex].y,
+                newZ, _fountainDirections[randomIndex], _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern],
+                0);
             break;
     }
 }
 
-void rct_jumping_fountain::Create(int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration)
+void rct_jumping_fountain::Create(
+    const int32_t newType, const int32_t newX, const int32_t newY, const int32_t newZ, const int32_t direction,
+    const int32_t newFlags, const int32_t iteration)
 {
     const auto jumpingFountain = reinterpret_cast<rct_jumping_fountain*>(create_sprite(SPRITE_IDENTIFIER_MISC));
     if (jumpingFountain != nullptr)
     {
         jumpingFountain->iteration = iteration;
-        jumpingFountain->fountain_flags = flags;
+        jumpingFountain->fountain_flags = newFlags;
         jumpingFountain->sprite_direction = direction << 3;
         jumpingFountain->sprite_width = 33;
         jumpingFountain->sprite_height_negative = 36;
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(x, y, z, reinterpret_cast<rct_sprite*>(jumpingFountain));
-        jumpingFountain->type = type == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
-                                                                   : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
+        sprite_move(newX, newY, newZ, reinterpret_cast<rct_sprite*>(jumpingFountain));
+        jumpingFountain->type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
+                                                                      : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
         jumpingFountain->num_ticks_alive = 0;
         jumpingFountain->frame = 0;
     }
@@ -191,13 +183,13 @@ void rct_jumping_fountain::Update()
 int32_t rct_jumping_fountain::GetType() const
 {
     const int32_t fountainType = type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ? JUMPING_FOUNTAIN_TYPE_SNOW
-                                                                                 : JUMPING_FOUNTAIN_TYPE_WATER;
+                                                                           : JUMPING_FOUNTAIN_TYPE_WATER;
     return fountainType;
 }
 
 void rct_jumping_fountain::Continue()
 {
-    const int32_t newType = this->GetType();
+    const int32_t newType = GetType();
     const int32_t direction = (sprite_direction >> 3) & 7;
     const int32_t newX = x + CoordsDirectionDelta[direction].x;
     const int32_t newY = y + CoordsDirectionDelta[direction].y;
@@ -206,7 +198,7 @@ void rct_jumping_fountain::Continue()
     int32_t availableDirections = 0;
     for (int32_t i = 0; i < 8; i++)
     {
-        if (is_jumping_fountain(newType, newX + _fountainDirectionsNegative[i].x, newY + _fountainDirectionsNegative[i].y, newZ))
+        if (IsJumpingFountain(newType, newX + _fountainDirectionsNegative[i].x, newY + _fountainDirectionsNegative[i].y, newZ))
         {
             availableDirections |= 1 << i;
         }
@@ -224,45 +216,45 @@ void rct_jumping_fountain::Continue()
 
     if (fountain_flags & FOUNTAIN_FLAG::GOTO_EDGE)
     {
-        jumping_fountain_goto_edge(this, newX, newY, newZ, availableDirections);
+        GoToEdge(newX, newY, newZ, availableDirections);
         return;
     }
 
     if (fountain_flags & FOUNTAIN_FLAG::BOUNCE)
     {
-        jumping_fountain_bounce(this, newX, newY, newZ, availableDirections);
+        Bounce(newX, newY, newZ, availableDirections);
         return;
     }
 
     if (fountain_flags & FOUNTAIN_FLAG::SPLIT)
     {
-        jumping_fountain_split(this, newX, newY, newZ, availableDirections);
+        Split(newX, newY, newZ, availableDirections);
         return;
     }
 
-    jumping_fountain_random(this, newX, newY, newZ, availableDirections);
+    Random(newX, newY, newZ, availableDirections);
 }
 
-static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z)
+bool rct_jumping_fountain::IsJumpingFountain(const int32_t newType, const int32_t newX, const int32_t newY, int32_t newZ)
 {
-    z = z >> 3;
+    newZ >>= 3;
 
-    int32_t pathBitFlagMask = type == JUMPING_FOUNTAIN_TYPE_SNOW ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
-                                                                 : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
+    const int32_t pathBitFlagMask = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
+                                                                          : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(newX >> 5, newY >> 5);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != newZ)
             continue;
         if (tileElement->AsPath()->AdditionIsGhost())
             continue;
         if (!tileElement->AsPath()->HasAddition())
             continue;
 
-        uint8_t additionIndex = tileElement->AsPath()->GetAdditionEntryIndex();
+        const uint8_t additionIndex = tileElement->AsPath()->GetAdditionEntryIndex();
         rct_scenery_entry* sceneryEntry = get_footpath_item_entry(additionIndex);
         if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & pathBitFlagMask)
         {
@@ -273,32 +265,32 @@ static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z)
     return false;
 }
 
-static void jumping_fountain_goto_edge(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections)
+void rct_jumping_fountain::GoToEdge(
+    const int32_t newX, const int32_t newY, const int32_t newZ, const int32_t availableDirections) const
 {
-    int32_t direction = (jumpingFountain->sprite_direction >> 3) << 1;
+    int32_t direction = (sprite_direction >> 3) << 1;
     if (availableDirections & (1 << direction))
     {
-        jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
+        CreateNext(newX, newY, newZ, direction);
         return;
     }
 
     direction++;
     if (availableDirections & (1 << direction))
     {
-        jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
+        CreateNext(newX, newY, newZ, direction);
         return;
     }
 
-    uint32_t randomIndex = scenario_rand();
+    const uint32_t randomIndex = scenario_rand();
     if ((randomIndex & 0xFFFF) < 0x3333)
     {
         return;
     }
 
-    if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG::SPLIT)
+    if (fountain_flags & FOUNTAIN_FLAG::SPLIT)
     {
-        jumping_fountain_split(jumpingFountain, x, y, z, availableDirections);
+        Split(newX, newY, newZ, availableDirections);
         return;
     }
 
@@ -308,38 +300,36 @@ static void jumping_fountain_goto_edge(
         direction = (direction + 1) & 7;
     }
 
-    jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
+    CreateNext(newX, newY, newZ, direction);
 }
 
-static void jumping_fountain_bounce(
-    rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections)
+void rct_jumping_fountain::Bounce(const int32_t newX, const int32_t newY, const int32_t newZ, const int32_t availableDirections)
 {
-    jumpingFountain->iteration++;
-    if (jumpingFountain->iteration < 8)
+    iteration++;
+    if (iteration < 8)
     {
-        int32_t direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
+        int32_t direction = ((sprite_direction >> 3) ^ 2) << 1;
         if (availableDirections & (1 << direction))
         {
-            jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
+            CreateNext(newX, newY, newZ, direction);
         }
         else
         {
             direction++;
             if (availableDirections & (1 << direction))
             {
-                jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
+                CreateNext(newX, newY, newZ, direction);
             }
         }
     }
 }
 
-static void jumping_fountain_split(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections)
+void rct_jumping_fountain::Split(const int32_t newX, const int32_t newY, const int32_t newZ, int32_t availableDirections) const
 {
-    if (jumpingFountain->iteration < 3)
+    if (iteration < 3)
     {
-        int32_t type = jumpingFountain->GetType();
-        int32_t direction = ((jumpingFountain->sprite_direction >> 3) ^ 2) << 1;
+        const int32_t newType = GetType();
+        int32_t direction = ((sprite_direction >> 3) ^ 2) << 1;
         availableDirections &= ~(1 << direction);
         availableDirections &= ~(1 << (direction + 1));
 
@@ -348,24 +338,21 @@ static void jumping_fountain_split(
             if (availableDirections & (1 << direction))
             {
                 rct_jumping_fountain::Create(
-                    type, x, y, z, direction >> 1, jumpingFountain->fountain_flags & ~FOUNTAIN_FLAG::DIRECTION,
-                    jumpingFountain->iteration + 1);
+                    newType, newX, newY, newZ, direction >> 1, fountain_flags & ~FOUNTAIN_FLAG::DIRECTION, iteration + 1);
             }
             direction++;
             if (availableDirections & (1 << direction))
             {
                 rct_jumping_fountain::Create(
-                    type, x, y, z, direction >> 1, jumpingFountain->fountain_flags | FOUNTAIN_FLAG::DIRECTION,
-                    jumpingFountain->iteration + 1);
+                    newType, newX, newY, newZ, direction >> 1, fountain_flags | FOUNTAIN_FLAG::DIRECTION, iteration + 1);
             }
         }
     }
 }
 
-static void jumping_fountain_random(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections)
+void rct_jumping_fountain::Random(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const
 {
-    uint32_t randomIndex = scenario_rand();
+    const uint32_t randomIndex = scenario_rand();
     if ((randomIndex & 0xFFFF) >= 0x2000)
     {
         int32_t direction = randomIndex & 7;
@@ -373,18 +360,17 @@ static void jumping_fountain_random(
         {
             direction = (direction + 1) & 7;
         }
-        jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
+        CreateNext(newX, newY, newZ, direction);
     }
 }
 
-static void jumping_fountain_create_next(
-    const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t direction)
+void rct_jumping_fountain::CreateNext(int32_t newX, int32_t newY, int32_t newZ, int32_t direction) const
 {
-    int32_t type = jumpingFountain->GetType();
-    int32_t flags = jumpingFountain->fountain_flags & ~FOUNTAIN_FLAG::DIRECTION;
+    const int32_t newType = GetType();
+    int32_t newFlags = fountain_flags & ~FOUNTAIN_FLAG::DIRECTION;
     if (direction & 1)
     {
-        flags |= FOUNTAIN_FLAG::DIRECTION;
+        newFlags |= FOUNTAIN_FLAG::DIRECTION;
     }
-    rct_jumping_fountain::Create(type, x, y, z, direction >> 1, flags, jumpingFountain->iteration);
+    rct_jumping_fountain::Create(newType, newX, newY, newZ, direction >> 1, newFlags, iteration);
 }

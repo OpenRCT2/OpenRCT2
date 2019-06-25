@@ -87,9 +87,15 @@ struct rct_jumping_fountain : rct_sprite_generic
     void Update();
     int32_t GetType() const;
     void Continue();
+    void GoToEdge(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
+    void Bounce(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections);
+    void Split(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
+    void Random(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
+    void CreateNext(int32_t newX, int32_t newY, int32_t newZ, int32_t direction) const;
 
-    static void Begin(int32_t type, int32_t x, int32_t y, const TileElement* tileElement);
-    static void Create(int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration);
+    static void Begin(int32_t newType, int32_t newX, int32_t newY, const TileElement* tileElement);
+    static void Create(int32_t newType, int32_t newX, int32_t newY, int32_t newZ, int32_t direction, int32_t newFlags, int32_t iteration);
+    static bool IsJumpingFountain(int32_t newType, int32_t newX, int32_t newY, int32_t newZ);
 };
 
 struct rct_money_effect : rct_sprite_common
