@@ -22,8 +22,8 @@ let
   title-sequences-src = pkgs.fetchFromGitHub {
     owner = "OpenRCT2";
     repo = "title-sequences";
-    rev = "v0.1.2a";
-    sha256 = "7536dbd7c8b91554306e5823128f6bb7e94862175ef09d366d25e4bce573d155";
+    rev = "v0.1.2b";
+    sha256 = "a220b4c3cd3180bebb261cc59141b7fb290b433631ba9c7587a4f2c9f7dc4e4c";
 };
 in
 pkgs.stdenv.mkDerivation {
