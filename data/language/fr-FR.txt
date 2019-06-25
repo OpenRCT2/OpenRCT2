@@ -3779,6 +3779,17 @@ STR_6314    :{WINDOW_COLOUR_2}Destination : {BLACK}{INT32}, {INT32} tolérance {
 STR_6315    :{WINDOW_COLOUR_2}Objectif recherche chemin : {BLACK}{INT32}, {INT32}, {INT32} dir. {INT32}
 STR_6316    :{WINDOW_COLOUR_2}Historique recherche chemin :
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6318    :Desynchronisation réseau détecté.{NEWLINE}Fichier journal : {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Bloc de frein fermé
+STR_6320    :{WINDOW_COLOUR_2}Indestructible
+STR_6321    :{WINDOW_COLOUR_2}L'ajout est cassé
+STR_6322    :{WINDOW_COLOUR_2}Identifiant sprite : {BLACK}{INT32}
+STR_6323    :Simulation
+STR_6324    :Simuler
+STR_6325    :{SMALLFONT}{BLACK}Simule l'attraction
+STR_6326    :Impossible de similar {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Fond transparent pour les captures d'écran géantes
+STR_6328    :{SMALLFONT}{BLACK}Quand cette option est activée, les captures d'écran auront un fond transparent plutôt qu'un fond noir.
 
 #############
 # Scenarios #
