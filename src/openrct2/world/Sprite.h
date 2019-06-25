@@ -87,6 +87,9 @@ struct rct_jumping_fountain : rct_sprite_generic
     void Update();
     int32_t GetType() const;
     void Continue();
+
+    static void Begin(int32_t type, int32_t x, int32_t y, const TileElement* tileElement);
+    static void Create(int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration);
 };
 
 struct rct_money_effect : rct_sprite_common

@@ -78,7 +78,7 @@ static void jumping_fountain_random(
 static void jumping_fountain_create_next(
     const rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t direction);
 
-void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElement* tileElement)
+void rct_jumping_fountain::Begin(int32_t type, int32_t x, int32_t y, const TileElement* tileElement)
 {
     int32_t randomIndex;
     int32_t z = tileElement->base_height * 8;
@@ -91,7 +91,7 @@ void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElemen
             // 0, 1, 2, 3
             for (int32_t i = 0; i < 4; i++)
             {
-                jumping_fountain_create(
+                rct_jumping_fountain::Create(
                     type, x + _fountainDirectionsPositive[i].x, y + _fountainDirectionsPositive[i].y, z, _fountainDirections[i],
                     _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
             }
@@ -101,7 +101,7 @@ void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElemen
             randomIndex = scenario_rand() & 1;
             for (int32_t i = randomIndex; i < 4; i += 2)
             {
-                jumping_fountain_create(
+                rct_jumping_fountain::Create(
                     type, x + _fountainDirectionsPositive[i].x, y + _fountainDirectionsPositive[i].y, z, _fountainDirections[i],
                     _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
             }
@@ -109,25 +109,25 @@ void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElemen
         case PATTERN::RACING_PAIRS:
             // random [0 - 3 and 4 - 7]
             randomIndex = scenario_rand() & 3;
-            jumping_fountain_create(
+            rct_jumping_fountain::Create(
                 type, x + _fountainDirectionsPositive[randomIndex].x, y + _fountainDirectionsPositive[randomIndex].y, z,
                 _fountainDirections[randomIndex], _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
             randomIndex += 4;
-            jumping_fountain_create(
+            rct_jumping_fountain::Create(
                 type, x + _fountainDirectionsPositive[randomIndex].x, y + _fountainDirectionsPositive[randomIndex].y, z,
                 _fountainDirections[randomIndex], _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
             break;
         default:
             // random [0 - 7]
             randomIndex = scenario_rand() & 7;
-            jumping_fountain_create(
+            rct_jumping_fountain::Create(
                 type, x + _fountainDirectionsPositive[randomIndex].x, y + _fountainDirectionsPositive[randomIndex].y, z,
                 _fountainDirections[randomIndex], _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
             break;
     }
 }
 
-void jumping_fountain_create(int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration)
+void rct_jumping_fountain::Create(int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration)
 {
     const auto jumpingFountain = reinterpret_cast<rct_jumping_fountain*>(create_sprite(SPRITE_IDENTIFIER_MISC));
     if (jumpingFountain != nullptr)
@@ -347,14 +347,14 @@ static void jumping_fountain_split(
         {
             if (availableDirections & (1 << direction))
             {
-                jumping_fountain_create(
+                rct_jumping_fountain::Create(
                     type, x, y, z, direction >> 1, jumpingFountain->fountain_flags & ~FOUNTAIN_FLAG::DIRECTION,
                     jumpingFountain->iteration + 1);
             }
             direction++;
             if (availableDirections & (1 << direction))
             {
-                jumping_fountain_create(
+                rct_jumping_fountain::Create(
                     type, x, y, z, direction >> 1, jumpingFountain->fountain_flags | FOUNTAIN_FLAG::DIRECTION,
                     jumpingFountain->iteration + 1);
             }
@@ -386,5 +386,5 @@ static void jumping_fountain_create_next(
     {
         flags |= FOUNTAIN_FLAG::DIRECTION;
     }
-    jumping_fountain_create(type, x, y, z, direction >> 1, flags, jumpingFountain->iteration);
+    rct_jumping_fountain::Create(type, x, y, z, direction >> 1, flags, jumpingFountain->iteration);
 }
