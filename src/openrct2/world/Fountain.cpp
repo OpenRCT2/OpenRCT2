@@ -65,7 +65,6 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
 };
 
-static void jumping_fountain_continue(rct_jumping_fountain* jumpingFountain);
 static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z);
 
 static void jumping_fountain_goto_edge(
@@ -130,7 +129,7 @@ void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElemen
 
 void jumping_fountain_create(int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration)
 {
-    rct_jumping_fountain* jumpingFountain = (rct_jumping_fountain*)create_sprite(SPRITE_IDENTIFIER_MISC);
+    const auto jumpingFountain = reinterpret_cast<rct_jumping_fountain*>(create_sprite(SPRITE_IDENTIFIER_MISC));
     if (jumpingFountain != nullptr)
     {
         jumpingFountain->iteration = iteration;
@@ -140,7 +139,7 @@ void jumping_fountain_create(int32_t type, int32_t x, int32_t y, int32_t z, int3
         jumpingFountain->sprite_height_negative = 36;
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(x, y, z, (rct_sprite*)jumpingFountain);
+        sprite_move(x, y, z, reinterpret_cast<rct_sprite*>(jumpingFountain));
         jumpingFountain->type = type == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
                                                                    : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
         jumpingFountain->num_ticks_alive = 0;
@@ -150,40 +149,40 @@ void jumping_fountain_create(int32_t type, int32_t x, int32_t y, int32_t z, int3
 
 void rct_jumping_fountain::Update()
 {
-    this->num_ticks_alive++;
-    // Originaly this would not update the frame on the following
+    num_ticks_alive++;
+    // Originally this would not update the frame on the following
     // ticks: 1, 3, 6, 9, 11, 14, 17, 19, 22, 25
-    // This change was to simplefy the code base. There is a small increase
+    // This change was to simplify the code base. There is a small increase
     // in speed of the fountain jump because of this change.
-    if ((this->num_ticks_alive % 3) == 0)
+    if (num_ticks_alive % 3 == 0)
     {
         return;
     }
 
     invalidate_sprite_0(reinterpret_cast<rct_sprite*>(this));
-    this->frame++;
+    frame++;
 
-    switch (this->type)
+    switch (type)
     {
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-            if (this->frame == 11 && (this->fountain_flags & FOUNTAIN_FLAG::FAST))
+            if (frame == 11 && (fountain_flags & FOUNTAIN_FLAG::FAST))
             {
-                jumping_fountain_continue(this);
+                Continue();
             }
-            if (this->frame == 16 && !(this->fountain_flags & FOUNTAIN_FLAG::FAST))
+            if (frame == 16 && !(fountain_flags & FOUNTAIN_FLAG::FAST))
             {
-                jumping_fountain_continue(this);
+                Continue();
             }
             break;
         case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
-            if (this->frame == 16)
+            if (frame == 16)
             {
-                jumping_fountain_continue(this);
+                Continue();
             }
             break;
     }
 
-    if (this->frame == 16)
+    if (frame == 16)
     {
         sprite_remove(reinterpret_cast<rct_sprite*>(this));
     }
@@ -191,23 +190,23 @@ void rct_jumping_fountain::Update()
 
 int32_t rct_jumping_fountain::GetType() const
 {
-    const int32_t fountainType = this->type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ? JUMPING_FOUNTAIN_TYPE_SNOW
+    const int32_t fountainType = type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ? JUMPING_FOUNTAIN_TYPE_SNOW
                                                                                  : JUMPING_FOUNTAIN_TYPE_WATER;
     return fountainType;
 }
 
-static void jumping_fountain_continue(rct_jumping_fountain* jumpingFountain)
+void rct_jumping_fountain::Continue()
 {
-    int32_t type = jumpingFountain->GetType();
-    int32_t direction = (jumpingFountain->sprite_direction >> 3) & 7;
-    int32_t x = jumpingFountain->x + CoordsDirectionDelta[direction].x;
-    int32_t y = jumpingFountain->y + CoordsDirectionDelta[direction].y;
-    int32_t z = jumpingFountain->z;
+    const int32_t newType = this->GetType();
+    const int32_t direction = (sprite_direction >> 3) & 7;
+    const int32_t newX = x + CoordsDirectionDelta[direction].x;
+    const int32_t newY = y + CoordsDirectionDelta[direction].y;
+    const int32_t newZ = z;
 
     int32_t availableDirections = 0;
     for (int32_t i = 0; i < 8; i++)
     {
-        if (is_jumping_fountain(type, x + _fountainDirectionsNegative[i].x, y + _fountainDirectionsNegative[i].y, z))
+        if (is_jumping_fountain(newType, newX + _fountainDirectionsNegative[i].x, newY + _fountainDirectionsNegative[i].y, newZ))
         {
             availableDirections |= 1 << i;
         }
@@ -218,30 +217,30 @@ static void jumping_fountain_continue(rct_jumping_fountain* jumpingFountain)
         return;
     }
 
-    if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG::TERMINATE)
+    if (fountain_flags & FOUNTAIN_FLAG::TERMINATE)
     {
         return;
     }
 
-    if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG::GOTO_EDGE)
+    if (fountain_flags & FOUNTAIN_FLAG::GOTO_EDGE)
     {
-        jumping_fountain_goto_edge(jumpingFountain, x, y, z, availableDirections);
+        jumping_fountain_goto_edge(this, newX, newY, newZ, availableDirections);
         return;
     }
 
-    if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG::BOUNCE)
+    if (fountain_flags & FOUNTAIN_FLAG::BOUNCE)
     {
-        jumping_fountain_bounce(jumpingFountain, x, y, z, availableDirections);
+        jumping_fountain_bounce(this, newX, newY, newZ, availableDirections);
         return;
     }
 
-    if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG::SPLIT)
+    if (fountain_flags & FOUNTAIN_FLAG::SPLIT)
     {
-        jumping_fountain_split(jumpingFountain, x, y, z, availableDirections);
+        jumping_fountain_split(this, newX, newY, newZ, availableDirections);
         return;
     }
 
-    jumping_fountain_random(jumpingFountain, x, y, z, availableDirections);
+    jumping_fountain_random(this, newX, newY, newZ, availableDirections);
 }
 
 static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z)
