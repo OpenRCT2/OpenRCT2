@@ -27,12 +27,12 @@ env:
 matrix:
     include:
         - os: linux
-          name: Ubuntu amd64 GCC RelWithDebInfo
+          name: Ubuntu amd64 GCC MinSizeRel
           if: type != cron
           services:
             - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON -DCMAKE_CXX_FLAGS=\"-gz\"" TARGET=ubuntu_amd64
+            - OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON -DCMAKE_CXX_FLAGS=\"-g -gz\"" TARGET=ubuntu_amd64
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
             - sudo chown -R $USER build
