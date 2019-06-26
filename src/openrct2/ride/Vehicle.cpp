@@ -48,7 +48,6 @@ static void vehicle_claxon(const rct_vehicle* vehicle);
 
 static void vehicle_update_showing_film(rct_vehicle* vehicle);
 static void vehicle_update_doing_circus_show(rct_vehicle* vehicle);
-static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle);
 static void vehicle_update_departing(rct_vehicle* vehicle);
 static void vehicle_finish_departing(rct_vehicle* vehicle);
 static void vehicle_update_travelling(rct_vehicle* vehicle);
@@ -57,11 +56,9 @@ static void vehicle_update_rotating(rct_vehicle* vehicle);
 static void vehicle_update_space_rings_operating(rct_vehicle* vehicle);
 static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle);
 static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle);
-static void vehicle_update_dodgems_mode(rct_vehicle* vehicle);
 static void vehicle_update_swinging(rct_vehicle* vehicle);
 static void vehicle_update_simulator_operating(rct_vehicle* vehicle);
 static void vehicle_update_top_spin_operating(rct_vehicle* vehicle);
-static void vehicle_update_crash(rct_vehicle* vehicle);
 static void vehicle_update_travelling_boat(rct_vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(rct_vehicle* vehicle);
 static void vehicle_update_boat_location(rct_vehicle* vehicle);
@@ -1508,108 +1505,108 @@ static bool vehicle_open_restraints(rct_vehicle* vehicle)
  *
  *  rct2: 0x006D6D1F
  */
-static void vehicle_update_measurements(rct_vehicle* vehicle)
+void rct_vehicle::UpdateMeasurements()
 {
-    Ride* ride;
+    Ride* newRide;
 
-    ride = get_ride(vehicle->ride);
+    newRide = get_ride(this->ride);
 
-    if (vehicle->status == VEHICLE_STATUS_TRAVELLING_BOAT)
+    if (status == VEHICLE_STATUS_TRAVELLING_BOAT)
     {
-        ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
-        ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
-        ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
-        window_invalidate_by_number(WC_RIDE, vehicle->ride);
+        newRide->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
+        newRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
+        newRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
+        update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
+        window_invalidate_by_number(WC_RIDE, this->ride);
         return;
     }
 
-    uint8_t stationId = ride->current_test_station;
-    if (!ride_get_entrance_location(ride, stationId).isNull())
+    uint8_t stationId = newRide->current_test_station;
+    if (!ride_get_entrance_location(newRide, stationId).isNull())
     {
-        uint8_t test_segment = ride->current_test_segment;
+        uint8_t test_segment = newRide->current_test_segment;
 
-        ride->average_speed_test_timeout++;
-        if (ride->average_speed_test_timeout >= 32)
-            ride->average_speed_test_timeout = 0;
+        newRide->average_speed_test_timeout++;
+        if (newRide->average_speed_test_timeout >= 32)
+            newRide->average_speed_test_timeout = 0;
 
-        int32_t velocity = abs(vehicle->velocity);
-        if (velocity > ride->max_speed)
+        int32_t newVelocity = abs(velocity);
+        if (newVelocity > newRide->max_speed)
         {
-            ride->max_speed = velocity;
+            newRide->max_speed = newVelocity;
         }
 
-        if (ride->average_speed_test_timeout == 0 && velocity > 0x8000)
+        if (newRide->average_speed_test_timeout == 0 && newVelocity > 0x8000)
         {
-            ride->average_speed = add_clamp_int32_t(ride->average_speed, velocity);
-            ride->stations[test_segment].SegmentTime++;
+            newRide->average_speed = add_clamp_int32_t(newRide->average_speed, newVelocity);
+            newRide->stations[test_segment].SegmentTime++;
         }
 
-        int32_t distance = abs(((vehicle->velocity + vehicle->acceleration) >> 10) * 42);
-        if (vehicle->var_CE == 0)
+        int32_t distance = abs(((newVelocity + acceleration) >> 10) * 42);
+        if (var_CE == 0)
         {
-            ride->stations[test_segment].SegmentLength = add_clamp_int32_t(
-                ride->stations[test_segment].SegmentLength, distance);
+            newRide->stations[test_segment].SegmentLength = add_clamp_int32_t(
+                newRide->stations[test_segment].SegmentLength, distance);
         }
 
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (ride_type_has_flag(newRide->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
-            auto gForces = vehicle_get_g_forces(vehicle);
-            gForces.VerticalG += ride->previous_vertical_g;
-            gForces.LateralG += ride->previous_lateral_g;
+            auto gForces = vehicle_get_g_forces(this);
+            gForces.VerticalG += newRide->previous_vertical_g;
+            gForces.LateralG += newRide->previous_lateral_g;
             gForces.VerticalG /= 2;
             gForces.LateralG /= 2;
 
-            ride->previous_vertical_g = gForces.VerticalG;
-            ride->previous_lateral_g = gForces.LateralG;
+            newRide->previous_vertical_g = gForces.VerticalG;
+            newRide->previous_lateral_g = gForces.LateralG;
             if (gForces.VerticalG <= 0)
             {
-                ride->total_air_time++;
+                newRide->total_air_time++;
             }
 
-            if (gForces.VerticalG > ride->max_positive_vertical_g)
-                ride->max_positive_vertical_g = gForces.VerticalG;
+            if (gForces.VerticalG > newRide->max_positive_vertical_g)
+                newRide->max_positive_vertical_g = gForces.VerticalG;
 
-            if (gForces.VerticalG < ride->max_negative_vertical_g)
-                ride->max_negative_vertical_g = gForces.VerticalG;
+            if (gForces.VerticalG < newRide->max_negative_vertical_g)
+                newRide->max_negative_vertical_g = gForces.VerticalG;
 
             gForces.LateralG = std::abs(gForces.LateralG);
-            ride->max_lateral_g = std::max(ride->max_lateral_g, (fixed16_2dp)gForces.LateralG);
+            newRide->max_lateral_g = std::max(newRide->max_lateral_g, (fixed16_2dp)gForces.LateralG);
         }
     }
 
     // If we have already evaluated this track piece skip to next section
-    uint16_t map_location = (vehicle->track_x / 32) | ((vehicle->track_y / 32) << 8);
-    if (vehicle->track_z / 8 != ride->cur_test_track_z || map_location != ride->cur_test_track_location.xy)
+    uint16_t map_location = (track_x / 32) | ((track_y / 32) << 8);
+    if (track_z / 8 != newRide->cur_test_track_z || map_location != newRide->cur_test_track_location.xy)
     {
-        ride->cur_test_track_z = vehicle->track_z / 8;
-        ride->cur_test_track_location.xy = map_location;
+        newRide->cur_test_track_z = track_z / 8;
+        newRide->cur_test_track_location.xy = map_location;
 
-        if (ride_get_entrance_location(ride, ride->current_test_station).isNull())
+        if (ride_get_entrance_location(newRide, newRide->current_test_station).isNull())
             return;
 
-        uint16_t track_elem_type = vehicle->track_type / 4;
-        if (track_elem_type == TRACK_ELEM_POWERED_LIFT || (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+        uint16_t track_elem_type = track_type / 4;
+        if (track_elem_type == TRACK_ELEM_POWERED_LIFT || (update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
-            if (!(ride->testing_flags & RIDE_TESTING_POWERED_LIFT))
+            if (!(newRide->testing_flags & RIDE_TESTING_POWERED_LIFT))
             {
-                ride->testing_flags |= RIDE_TESTING_POWERED_LIFT;
-                if (ride->drops + 64 < 0xFF)
+                newRide->testing_flags |= RIDE_TESTING_POWERED_LIFT;
+                if (newRide->drops + 64 < 0xFF)
                 {
-                    ride->drops += 64;
+                    newRide->drops += 64;
                 }
             }
         }
         else
         {
-            ride->testing_flags &= ~RIDE_TESTING_POWERED_LIFT;
+            newRide->testing_flags &= ~RIDE_TESTING_POWERED_LIFT;
         }
 
-        if (ride->type == RIDE_TYPE_WATER_COASTER)
+        if (newRide->type == RIDE_TYPE_WATER_COASTER)
         {
             if (track_elem_type >= TRACK_ELEM_FLAT_COVERED && track_elem_type <= TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED)
             {
-                ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+                newRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
             }
         }
 
@@ -1617,39 +1614,39 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         {
             case TRACK_ELEM_RAPIDS:
             case TRACK_ELEM_SPINNING_TUNNEL:
-                ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+                newRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
                 break;
             case TRACK_ELEM_WATERFALL:
             case TRACK_ELEM_LOG_FLUME_REVERSER:
-                ride->special_track_elements |= RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+                newRide->special_track_elements |= RIDE_ELEMENT_REVERSER_OR_WATERFALL;
                 break;
             case TRACK_ELEM_WHIRLPOOL:
-                ride->special_track_elements |= RIDE_ELEMENT_WHIRLPOOL;
+                newRide->special_track_elements |= RIDE_ELEMENT_WHIRLPOOL;
                 break;
             case TRACK_ELEM_WATER_SPLASH:
-                if (vehicle->velocity >= 0xB0000)
+                if (velocity >= 0xB0000)
                 {
-                    ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+                    newRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
                 }
         }
 
         // ax
         uint16_t track_flags = TrackFlags[track_elem_type];
 
-        uint32_t testing_flags = ride->testing_flags;
+        uint32_t testing_flags = newRide->testing_flags;
         if (testing_flags & RIDE_TESTING_TURN_LEFT && track_flags & TRACK_ELEM_FLAG_TURN_LEFT)
         {
             // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
-            ride->turn_count_default += 0x800;
+            newRide->turn_count_default += 0x800;
         }
         else if (testing_flags & RIDE_TESTING_TURN_RIGHT && track_flags & TRACK_ELEM_FLAG_TURN_RIGHT)
         {
             // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
-            ride->turn_count_default += 0x800;
+            newRide->turn_count_default += 0x800;
         }
         else if (testing_flags & RIDE_TESTING_TURN_RIGHT || testing_flags & RIDE_TESTING_TURN_LEFT)
         {
-            ride->testing_flags &= ~(
+            newRide->testing_flags &= ~(
                 RIDE_TESTING_TURN_LEFT | RIDE_TESTING_TURN_RIGHT | RIDE_TESTING_TURN_BANKED | RIDE_TESTING_TURN_SLOPED);
 
             uint8_t turn_type = 1;
@@ -1661,19 +1658,19 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
                     turn_type = 0;
                 }
             }
-            switch (ride->turn_count_default >> 11)
+            switch (newRide->turn_count_default >> 11)
             {
                 case 0:
-                    increment_turn_count_1_element(ride, turn_type);
+                    increment_turn_count_1_element(newRide, turn_type);
                     break;
                 case 1:
-                    increment_turn_count_2_elements(ride, turn_type);
+                    increment_turn_count_2_elements(newRide, turn_type);
                     break;
                 case 2:
-                    increment_turn_count_3_elements(ride, turn_type);
+                    increment_turn_count_3_elements(newRide, turn_type);
                     break;
                 default:
-                    increment_turn_count_4_plus_elements(ride, turn_type);
+                    increment_turn_count_4_plus_elements(newRide, turn_type);
                     break;
             }
         }
@@ -1681,153 +1678,153 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         {
             if (track_flags & TRACK_ELEM_FLAG_TURN_LEFT)
             {
-                ride->testing_flags |= RIDE_TESTING_TURN_LEFT;
-                ride->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
+                newRide->testing_flags |= RIDE_TESTING_TURN_LEFT;
+                newRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
 
                 if (track_flags & TRACK_ELEM_FLAG_TURN_BANKED)
                 {
-                    ride->testing_flags |= RIDE_TESTING_TURN_BANKED;
+                    newRide->testing_flags |= RIDE_TESTING_TURN_BANKED;
                 }
                 if (track_flags & TRACK_ELEM_FLAG_TURN_SLOPED)
                 {
-                    ride->testing_flags |= RIDE_TESTING_TURN_SLOPED;
+                    newRide->testing_flags |= RIDE_TESTING_TURN_SLOPED;
                 }
             }
 
             if (track_flags & TRACK_ELEM_FLAG_TURN_RIGHT)
             {
-                ride->testing_flags |= RIDE_TESTING_TURN_RIGHT;
-                ride->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
+                newRide->testing_flags |= RIDE_TESTING_TURN_RIGHT;
+                newRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
 
                 if (track_flags & TRACK_ELEM_FLAG_TURN_BANKED)
                 {
-                    ride->testing_flags |= RIDE_TESTING_TURN_BANKED;
+                    newRide->testing_flags |= RIDE_TESTING_TURN_BANKED;
                 }
                 if (track_flags & TRACK_ELEM_FLAG_TURN_SLOPED)
                 {
-                    ride->testing_flags |= RIDE_TESTING_TURN_SLOPED;
+                    newRide->testing_flags |= RIDE_TESTING_TURN_SLOPED;
                 }
             }
         }
 
         if (testing_flags & RIDE_TESTING_DROP_DOWN)
         {
-            if (vehicle->velocity < 0 || !(track_flags & TRACK_ELEM_FLAG_DOWN))
+            if (velocity < 0 || !(track_flags & TRACK_ELEM_FLAG_DOWN))
             {
-                ride->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
+                newRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
 
-                int16_t z = vehicle->z / 8 - ride->start_drop_height;
-                if (z < 0)
+                int16_t newZ = z / 8 - newRide->start_drop_height;
+                if (newZ < 0)
                 {
-                    z = abs(z);
-                    if (z > ride->highest_drop_height)
+                    newZ = abs(newZ);
+                    if (newZ > newRide->highest_drop_height)
                     {
-                        ride->highest_drop_height = (uint8_t)z;
+                        newRide->highest_drop_height = (uint8_t)newZ;
                     }
                 }
             }
         }
-        else if (track_flags & TRACK_ELEM_FLAG_DOWN && vehicle->velocity >= 0)
+        else if (track_flags & TRACK_ELEM_FLAG_DOWN && velocity >= 0)
         {
-            ride->testing_flags &= ~RIDE_TESTING_DROP_UP;
-            ride->testing_flags |= RIDE_TESTING_DROP_DOWN;
+            newRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
+            newRide->testing_flags |= RIDE_TESTING_DROP_DOWN;
 
-            uint8_t drops = ride->drops & 0x3F;
+            uint8_t drops = newRide->drops & 0x3F;
             if (drops != 0x3F)
                 drops++;
-            ride->drops &= ~0x3F;
-            ride->drops |= drops;
+            newRide->drops &= ~0x3F;
+            newRide->drops |= drops;
 
-            ride->start_drop_height = vehicle->z / 8;
+            newRide->start_drop_height = z / 8;
             testing_flags &= ~RIDE_TESTING_DROP_UP;
         }
 
         if (testing_flags & RIDE_TESTING_DROP_UP)
         {
-            if (vehicle->velocity > 0 || !(track_flags & TRACK_ELEM_FLAG_UP))
+            if (velocity > 0 || !(track_flags & TRACK_ELEM_FLAG_UP))
             {
-                ride->testing_flags &= ~RIDE_TESTING_DROP_UP;
+                newRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
 
-                int16_t z = vehicle->z / 8 - ride->start_drop_height;
-                if (z < 0)
+                int16_t newZ = z / 8 - newRide->start_drop_height;
+                if (newZ < 0)
                 {
-                    z = abs(z);
-                    if (z > ride->highest_drop_height)
+                    newZ = abs(newZ);
+                    if (newZ > newRide->highest_drop_height)
                     {
-                        ride->highest_drop_height = (uint8_t)z;
+                        newRide->highest_drop_height = (uint8_t)newZ;
                     }
                 }
             }
         }
-        else if (track_flags & TRACK_ELEM_FLAG_UP && vehicle->velocity <= 0)
+        else if (track_flags & TRACK_ELEM_FLAG_UP && velocity <= 0)
         {
-            ride->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
-            ride->testing_flags |= RIDE_TESTING_DROP_UP;
+            newRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
+            newRide->testing_flags |= RIDE_TESTING_DROP_UP;
 
-            uint8_t drops = ride->drops & 0x3F;
+            uint8_t drops = newRide->drops & 0x3F;
             if (drops != 0x3F)
                 drops++;
-            ride->drops &= ~0x3F;
-            ride->drops |= drops;
+            newRide->drops &= ~0x3F;
+            newRide->drops |= drops;
 
-            ride->start_drop_height = vehicle->z / 8;
+            newRide->start_drop_height = z / 8;
         }
 
-        if (ride->type == RIDE_TYPE_MINI_GOLF)
+        if (newRide->type == RIDE_TYPE_MINI_GOLF)
         {
             if (track_flags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
             {
-                if (ride->holes < MAX_GOLF_HOLES)
-                    ride->holes++;
+                if (newRide->holes < MAX_GOLF_HOLES)
+                    newRide->holes++;
             }
         }
         else
         {
             if (track_flags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
             {
-                if (ride->inversions < MAX_INVERSIONS)
-                    ride->inversions++;
+                if (newRide->inversions < MAX_INVERSIONS)
+                    newRide->inversions++;
             }
         }
 
         if (track_flags & TRACK_ELEM_FLAG_HELIX)
         {
-            uint8_t helixes = ride_get_helix_sections(ride);
+            uint8_t helixes = ride_get_helix_sections(newRide);
             if (helixes != MAX_HELICES)
                 helixes++;
 
-            ride->special_track_elements &= ~0x1F;
-            ride->special_track_elements |= helixes;
+            newRide->special_track_elements &= ~0x1F;
+            newRide->special_track_elements |= helixes;
         }
     }
 
-    if (ride_get_entrance_location(ride, ride->current_test_station).isNull())
+    if (ride_get_entrance_location(newRide, newRide->current_test_station).isNull())
         return;
 
-    int16_t x, y, z;
-    x = vehicle->x;
-    y = vehicle->y;
-    z = vehicle->z;
+    int16_t newX, newY, newZ;
+    newX = x;
+    newY = y;
+    newZ = z;
 
-    if (x == LOCATION_NULL)
+    if (newX == LOCATION_NULL)
     {
-        ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
+        newRide->testing_flags &= ~RIDE_TESTING_SHELTERED;
         return;
     }
 
-    TileElement* tile_element = map_get_surface_element_at({ x, y });
-    // If vehicle above ground.
-    if (tile_element != nullptr && tile_element->base_height * 8 <= z)
+    TileElement* tile_element = map_get_surface_element_at({ newX, newY });
+    // If this above ground.
+    if (tile_element != nullptr && tile_element->base_height * 8 <= newZ)
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
-        tile_element = map_get_first_element_at(x / 32, y / 32);
+        tile_element = map_get_first_element_at(newX / 32, newY / 32);
 
         bool cover_found = false;
         do
         {
-            // If the tile_element is lower than the vehicle, continue (don't set flag)
-            if (tile_element->base_height * 8 <= z)
+            // If the tile_element is lower than the this, continue (don't set flag)
+            if (tile_element->base_height * 8 <= newZ)
                 continue;
 
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
@@ -1856,37 +1853,37 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
 
         if (!cover_found)
         {
-            ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
+            newRide->testing_flags &= ~RIDE_TESTING_SHELTERED;
             return;
         }
     }
 
-    if (!(ride->testing_flags & RIDE_TESTING_SHELTERED))
+    if (!(newRide->testing_flags & RIDE_TESTING_SHELTERED))
     {
-        ride->testing_flags |= RIDE_TESTING_SHELTERED;
+        newRide->testing_flags |= RIDE_TESTING_SHELTERED;
 
-        uint8_t num_sheltered_sections = ride->num_sheltered_sections & 0x1F;
+        uint8_t num_sheltered_sections = newRide->num_sheltered_sections & 0x1F;
         if (num_sheltered_sections != 0x1F)
             num_sheltered_sections++;
-        ride->num_sheltered_sections &= ~0x1F;
-        ride->num_sheltered_sections |= num_sheltered_sections;
+        newRide->num_sheltered_sections &= ~0x1F;
+        newRide->num_sheltered_sections |= num_sheltered_sections;
 
-        if (vehicle->vehicle_sprite_type != 0)
+        if (vehicle_sprite_type != 0)
         {
-            ride->num_sheltered_sections |= (1 << 5);
+            newRide->num_sheltered_sections |= (1 << 5);
         }
 
-        if (vehicle->bank_rotation != 0)
+        if (bank_rotation != 0)
         {
-            ride->num_sheltered_sections |= (1 << 6);
+            newRide->num_sheltered_sections |= (1 << 6);
         }
     }
 
-    int32_t distance = ((vehicle->velocity + vehicle->acceleration) >> 10) * 42;
+    int32_t distance = ((velocity + acceleration) >> 10) * 42;
     if (distance < 0)
         return;
 
-    ride->sheltered_length = add_clamp_int32_t(ride->sheltered_length, distance);
+    newRide->sheltered_length = add_clamp_int32_t(newRide->sheltered_length, distance);
 }
 
 static uint16_t sub_6D7AC0(int32_t currentSoundId, int32_t currentVolume, int32_t targetSoundId, int32_t targetVolume)
@@ -1919,29 +1916,29 @@ static uint16_t sub_6D7AC0(int32_t currentSoundId, int32_t currentVolume, int32_
  */
 void rct_vehicle::Update()
 {
-    Ride* rideLocal;
-    rct_ride_entry* rideEntryLocal;
+    Ride* newRide;
+    rct_ride_entry* newRideEntry;
 
     // The cable lift uses the ride type of NULL
     if (ride_subtype == RIDE_TYPE_NULL)
     {
-        cable_lift_update(this);
+        UpdateCableLift();
         return;
     }
 
-    rideEntryLocal = get_ride_entry(ride_subtype);
+    newRideEntry = get_ride_entry(ride_subtype);
 
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntryLocal->vehicles[vehicle_type];
+    rct_ride_entry_vehicle* vehicleEntry = &newRideEntry->vehicles[vehicle_type];
 
-    rideLocal = get_ride(this->ride);
-    if (this->update_flags & VEHICLE_UPDATE_FLAG_TESTING)
-        vehicle_update_measurements(this);
+    newRide = get_ride(this->ride);
+    if (update_flags & VEHICLE_UPDATE_FLAG_TESTING)
+        UpdateMeasurements();
 
     _vehicleBreakdown = 255;
-    if (rideLocal->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (newRide->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        _vehicleBreakdown = rideLocal->breakdown_reason_pending;
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && rideLocal->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
+        _vehicleBreakdown = newRide->breakdown_reason_pending;
+        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && newRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
                 || (vehicle_sprite_type == 2 && velocity <= 0x20000))
@@ -1960,38 +1957,38 @@ void rct_vehicle::Update()
             UpdateWaitingForPassengers();
             break;
         case VEHICLE_STATUS_WAITING_TO_DEPART:
-            vehicle_update_waiting_to_depart(this);
+            UpdateWaitingToDepart();
             break;
         case VEHICLE_STATUS_CRASHING:
         case VEHICLE_STATUS_CRASHED:
-            vehicle_update_crash(this);
+            UpdateCrash();
             break;
         case VEHICLE_STATUS_TRAVELLING_DODGEMS:
-            vehicle_update_dodgems_mode(this);
+            UpdateDodgemsMode();
             break;
         case VEHICLE_STATUS_SWINGING:
-            vehicle_update_swinging(this);
+            UpdateSwinging();
             break;
         case VEHICLE_STATUS_SIMULATOR_OPERATING:
-            vehicle_update_simulator_operating(this);
+            UpdateSimulatorOperating();
             break;
         case VEHICLE_STATUS_TOP_SPIN_OPERATING:
-            vehicle_update_top_spin_operating(this);
+            UpdateTopSpinOperating();
             break;
         case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
-            vehicle_update_ferris_wheel_rotating(this);
+            UpdateFerrisWheelRotating();
             break;
         case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
-            vehicle_update_space_rings_operating(this);
+            UpdateSpaceRingsOperating();
             break;
         case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
-            vehicle_update_haunted_house_operating(this);
+            UpdateHauntedHouseOperating();
             break;
         case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
-            vehicle_update_crooked_house_operating(this);
+            UpdateCrookedHouseOperating();
             break;
         case VEHICLE_STATUS_ROTATING:
-            vehicle_update_rotating(this);
+            UpdateRotating();
             break;
         case VEHICLE_STATUS_DEPARTING:
             vehicle_update_departing(this);
@@ -2015,10 +2012,10 @@ void rct_vehicle::Update()
             vehicle_update_waiting_for_cable_lift(this);
             break;
         case VEHICLE_STATUS_SHOWING_FILM:
-            vehicle_update_showing_film(this);
+            UpdateShowingFilm();
             break;
         case VEHICLE_STATUS_DOING_CIRCUS_SHOW:
-            vehicle_update_doing_circus_show(this);
+            UpdateDoingCircusShow();
         default:
             break;
     }
@@ -2032,10 +2029,10 @@ void rct_vehicle::Update()
  */
 void rct_vehicle::UpdateMovingToEndOfStation()
 {
-    Ride* rideLocal = get_ride(this->ride);
-    int32_t flagsLocal, stationLocal;
+    Ride* newRide = get_ride(this->ride);
+    int32_t newFlags, newStation;
 
-    switch (rideLocal->mode)
+    switch (newRide->mode)
     {
         case RIDE_MODE_UPWARD_LAUNCH:
         case RIDE_MODE_ROTATING_LIFT:
@@ -2050,8 +2047,8 @@ void rct_vehicle::UpdateMovingToEndOfStation()
                 velocity -= velocity / 16;
                 acceleration = 0;
             }
-            flagsLocal = vehicle_update_track_motion(this, &stationLocal);
-            if (!(flagsLocal & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
+            newFlags = vehicle_update_track_motion(this, &newStation);
+            if (!(newFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 break;
             [[fallthrough]];
         case RIDE_MODE_BUMPERCAR:
@@ -2099,15 +2096,15 @@ void rct_vehicle::UpdateMovingToEndOfStation()
                 acceleration = 0;
             }
 
-            flagsLocal = vehicle_update_track_motion(this, &stationLocal);
+            newFlags = vehicle_update_track_motion(this, &newStation);
 
-            if (flagsLocal & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1)
+            if (newFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1)
             {
                 velocity = 0;
                 acceleration = 0;
                 sub_state++;
 
-                if (rideLocal->mode == RIDE_MODE_RACE && sub_state >= 40)
+                if (newRide->mode == RIDE_MODE_RACE && sub_state >= 40)
                 {
                     SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
                     break;
@@ -2121,10 +2118,10 @@ void rct_vehicle::UpdateMovingToEndOfStation()
                 }
             }
 
-            if (!(flagsLocal & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
+            if (!(newFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
                 break;
 
-            current_station = stationLocal;
+            current_station = newStation;
             velocity = 0;
             acceleration = 0;
             SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
@@ -2216,30 +2213,30 @@ void rct_vehicle::UpdateWaitingForPassengers()
 {
     velocity = 0;
 
-    Ride* rideLocal = get_ride(this->ride);
+    Ride* newRide = get_ride(this->ride);
 
     if (sub_state == 0)
     {
         if (!vehicle_open_restraints(this))
             return;
 
-        if (ride_get_entrance_location(rideLocal, current_station).isNull())
+        if (ride_get_entrance_location(newRide, current_station).isNull())
         {
-            rideLocal->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+            newRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
             sub_state = 2;
             return;
         }
 
-        int trainIndex = ride_get_train_index_from_vehicle(rideLocal, sprite_index);
+        int trainIndex = ride_get_train_index_from_vehicle(newRide, sprite_index);
         if (trainIndex == VEHICLE_INVALID_ID)
         {
             return;
         }
 
-        if (rideLocal->stations[current_station].TrainAtStation != RideStation::NO_TRAIN)
+        if (newRide->stations[current_station].TrainAtStation != RideStation::NO_TRAIN)
             return;
 
-        rideLocal->stations[current_station].TrainAtStation = trainIndex;
+        newRide->stations[current_station].TrainAtStation = trainIndex;
         sub_state = 1;
         time_waiting = 0;
 
@@ -2269,7 +2266,7 @@ void rct_vehicle::UpdateWaitingForPassengers()
 
         num_seats_on_train &= 0x7F;
 
-        if (rideLocal->SupportsStatus(RIDE_STATUS_TESTING))
+        if (newRide->SupportsStatus(RIDE_STATUS_TESTING))
         {
             if (time_waiting < 20)
             {
@@ -2286,19 +2283,19 @@ void rct_vehicle::UpdateWaitingForPassengers()
             }
         }
 
-        if (ride_type_has_flag(rideLocal->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
+        if (ride_type_has_flag(newRide->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
         {
-            if (rideLocal->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
+            if (newRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
             {
-                if (rideLocal->min_waiting_time * 32 > time_waiting)
+                if (newRide->min_waiting_time * 32 > time_waiting)
                 {
                     train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
                     return;
                 }
             }
-            if (rideLocal->depart_flags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
+            if (newRide->depart_flags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH)
             {
-                if (rideLocal->max_waiting_time * 32 < time_waiting)
+                if (newRide->max_waiting_time * 32 < time_waiting)
                 {
                     update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
                     train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
@@ -2307,9 +2304,9 @@ void rct_vehicle::UpdateWaitingForPassengers()
             }
         }
 
-        if (rideLocal->depart_flags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
+        if (newRide->depart_flags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
         {
-            for (auto train_id : rideLocal->vehicles)
+            for (auto train_id : newRide->vehicles)
             {
                 if (train_id == SPRITE_INDEX_NULL)
                     continue;
@@ -2332,7 +2329,7 @@ void rct_vehicle::UpdateWaitingForPassengers()
             }
         }
 
-        if (ride_type_has_flag(rideLocal->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS) && rideLocal->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
+        if (ride_type_has_flag(newRide->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS) && newRide->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
         {
             if (num_peeps_on_train == num_seats_on_train)
             {
@@ -2341,7 +2338,7 @@ void rct_vehicle::UpdateWaitingForPassengers()
                 return;
             }
 
-            uint8_t load = rideLocal->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK;
+            uint8_t load = newRide->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK;
             if (load == 3)
             {
                 train_ready_to_depart(this, num_peeps_on_train, num_used_seats_on_train);
@@ -2407,7 +2404,7 @@ void rct_vehicle::UpdateWaitingForPassengers()
     velocity = 0;
     update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
 
-    if (rideLocal->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
+    if (newRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
     {
         update_flags |= VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
     }
@@ -2419,53 +2416,54 @@ void rct_vehicle::UpdateWaitingForPassengers()
  *
  *  rct2: 0x006D91BF
  */
-static void vehicle_update_dodgems_mode(rct_vehicle* vehicle)
+void rct_vehicle::UpdateDodgemsMode()
 {
-    Ride* ride = get_ride(vehicle->ride);
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    Ride* newRide = get_ride(this->ride);
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
     {
         return;
     }
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    
+    // rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
     // Mark the dodgem as in use.
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS && vehicle->animation_frame != 1)
+    if (flags & VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS &&animation_frame != 1)
     {
-        vehicle->animation_frame = 1;
-        vehicle->Invalidate();
+        animation_frame = 1;
+        Invalidate();
     }
 
-    vehicle_update_motion_dodgems(vehicle);
+    vehicle_update_motion_dodgems(this);
 
     // Update the length of time vehicle has been in bumper mode
-    if (vehicle->sub_state++ == 0xFF)
+    if (sub_state++ == 0xFF)
     {
-        vehicle->var_CE++;
+        var_CE++;
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    if (newRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         return;
 
     // Mark the dodgem as not in use.
-    vehicle->animation_frame = 0;
-    vehicle->Invalidate();
-    vehicle->velocity = 0;
-    vehicle->acceleration = 0;
-    vehicle->SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+    animation_frame = 0;
+    Invalidate();
+    velocity = 0;
+    acceleration = 0;
+    SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
 }
 
 /**
  *
  *  rct2: 0x006D80BE
  */
-static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
+void rct_vehicle::UpdateWaitingToDepart()
 {
-    Ride* ride = get_ride(vehicle->ride);
+    Ride* newRide = get_ride(ride);
     bool shouldBreak = false;
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (newRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        switch (ride->breakdown_reason_pending)
+        switch (newRide->breakdown_reason_pending)
         {
             case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
             case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
@@ -2479,39 +2477,39 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
     }
 
     bool skipCheck = false;
-    if (shouldBreak || ride->status != RIDE_STATUS_OPEN)
+    if (shouldBreak || newRide->status != RIDE_STATUS_OPEN)
     {
-        if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
+        if (newRide->mode == RIDE_MODE_FORWARD_ROTATION || newRide->mode == RIDE_MODE_BACKWARD_ROTATION)
         {
-            uint8_t seat = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
-            if (vehicle->peep[seat * 2] == SPRITE_INDEX_NULL)
+            uint8_t seat = ((-vehicle_sprite_type) >> 3) & 0xF;
+            if (peep[seat * 2] == SPRITE_INDEX_NULL)
             {
-                if (vehicle->num_peeps == 0)
+                if (num_peeps == 0)
                 {
                     skipCheck = true;
                 }
             }
             else
             {
-                if (!ride_get_exit_location(ride, vehicle->current_station).isNull())
+                if (!ride_get_exit_location(newRide, current_station).isNull())
                 {
-                    vehicle->SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+                    SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
                     return;
                 }
             }
         }
         else
         {
-            uint16_t spriteId = vehicle->sprite_index;
+            uint16_t spriteId = sprite_index;
             for (rct_vehicle* curVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = curVehicle->next_vehicle_on_train)
             {
                 curVehicle = GET_VEHICLE(spriteId);
 
                 if (curVehicle->num_peeps != 0)
                 {
-                    if (!ride_get_exit_location(ride, vehicle->current_station).isNull())
+                    if (!ride_get_exit_location(newRide, current_station).isNull())
                     {
-                        vehicle->SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+                        SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
                         return;
                     }
                     break;
@@ -2522,17 +2520,17 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
 
     if (!skipCheck)
     {
-        if (!(ride->stations[vehicle->current_station].Depart & STATION_DEPART_FLAG))
+        if (!(newRide->stations[current_station].Depart & STATION_DEPART_FLAG))
             return;
     }
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
+    if (ride_type_has_flag(newRide->type, RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
     {
-        if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
+        if (newRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
         {
-            if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT)
+            if (update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT)
             {
-                if (!vehicle_can_depart_synchronised(vehicle))
+                if (!vehicle_can_depart_synchronised(this))
                 {
                     return;
                 }
@@ -2540,131 +2538,131 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
         }
     }
 
-    vehicle->SetState(VEHICLE_STATUS_DEPARTING);
+    SetState(VEHICLE_STATUS_DEPARTING);
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
+    if (newRide->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
     {
         CoordsXYE track;
-        int32_t z;
+        int32_t newZ;
         int32_t direction;
 
         if (track_block_get_next_from_zero(
-                vehicle->track_x, vehicle->track_y, vehicle->track_z, ride, (uint8_t)(vehicle->track_direction & 0x3), &track,
-                &z, &direction, false))
+                track_x, track_y, track_z, newRide, (uint8_t)(track_direction & 0x3), &track,
+                &newZ, &direction, false))
         {
             if (track.element->AsTrack()->HasCableLift())
             {
-                vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT, vehicle->sub_state);
+                SetState(VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT, sub_state);
             }
         }
     }
 
-    switch (ride->mode)
+    switch (newRide->mode)
     {
         case RIDE_MODE_BUMPERCAR:
             // Bumper mode uses sub_state / var_CE to tell how long
-            // the vehicle has been ridden.
-            vehicle->SetState(VEHICLE_STATUS_TRAVELLING_DODGEMS);
-            vehicle->var_CE = 0;
-            vehicle_update_dodgems_mode(vehicle);
+            // the this has been ridden.
+            SetState(VEHICLE_STATUS_TRAVELLING_DODGEMS);
+            var_CE = 0;
+            UpdateDodgemsMode();
             break;
         case RIDE_MODE_SWING:
-            vehicle->SetState(VEHICLE_STATUS_SWINGING);
-            vehicle->var_CE = 0;
-            vehicle->current_time = -1;
-            vehicle_update_swinging(vehicle);
+            SetState(VEHICLE_STATUS_SWINGING);
+            var_CE = 0;
+            current_time = -1;
+            vehicle_update_swinging(this);
             break;
         case RIDE_MODE_ROTATION:
-            vehicle->SetState(VEHICLE_STATUS_ROTATING);
-            vehicle->var_CE = 0;
-            vehicle->current_time = -1;
-            vehicle_update_rotating(vehicle);
+            SetState(VEHICLE_STATUS_ROTATING);
+            var_CE = 0;
+            current_time = -1;
+            vehicle_update_rotating(this);
             break;
         case RIDE_MODE_FILM_AVENGING_AVIATORS:
-            vehicle->SetState(VEHICLE_STATUS_SIMULATOR_OPERATING);
-            vehicle->current_time = -1;
-            vehicle_update_simulator_operating(vehicle);
+            SetState(VEHICLE_STATUS_SIMULATOR_OPERATING);
+            current_time = -1;
+            vehicle_update_simulator_operating(this);
             break;
         case RIDE_MODE_FILM_THRILL_RIDERS:
-            vehicle->SetState(VEHICLE_STATUS_SIMULATOR_OPERATING, 1);
-            vehicle->current_time = -1;
-            vehicle_update_simulator_operating(vehicle);
+            SetState(VEHICLE_STATUS_SIMULATOR_OPERATING, 1);
+            current_time = -1;
+            vehicle_update_simulator_operating(this);
             break;
         case RIDE_MODE_BEGINNERS:
         case RIDE_MODE_INTENSE:
         case RIDE_MODE_BERSERK:
-            vehicle->SetState(VEHICLE_STATUS_TOP_SPIN_OPERATING, vehicle->sub_state);
+            SetState(VEHICLE_STATUS_TOP_SPIN_OPERATING, sub_state);
 
-            switch (ride->mode)
+            switch (newRide->mode)
             {
                 case RIDE_MODE_BEGINNERS:
-                    vehicle->sub_state = 0;
+                    sub_state = 0;
                     break;
                 case RIDE_MODE_INTENSE:
-                    vehicle->sub_state = 1;
+                    sub_state = 1;
                     break;
                 case RIDE_MODE_BERSERK:
-                    vehicle->sub_state = 2;
+                    sub_state = 2;
                     break;
             }
-            vehicle->current_time = -1;
-            vehicle->vehicle_sprite_type = 0;
-            vehicle->bank_rotation = 0;
-            vehicle_update_top_spin_operating(vehicle);
+            current_time = -1;
+            vehicle_sprite_type = 0;
+            bank_rotation = 0;
+            vehicle_update_top_spin_operating(this);
             break;
         case RIDE_MODE_FORWARD_ROTATION:
         case RIDE_MODE_BACKWARD_ROTATION:
-            vehicle->SetState(VEHICLE_STATUS_FERRIS_WHEEL_ROTATING, vehicle->vehicle_sprite_type);
-            vehicle->var_CE = 0;
-            vehicle->ferris_wheel_var_0 = 8;
-            vehicle->ferris_wheel_var_1 = 8;
-            vehicle_update_ferris_wheel_rotating(vehicle);
+            SetState(VEHICLE_STATUS_FERRIS_WHEEL_ROTATING, vehicle_sprite_type);
+            var_CE = 0;
+            ferris_wheel_var_0 = 8;
+            ferris_wheel_var_1 = 8;
+            vehicle_update_ferris_wheel_rotating(this);
             break;
         case RIDE_MODE_3D_FILM_MOUSE_TAILS:
         case RIDE_MODE_3D_FILM_STORM_CHASERS:
         case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
-            vehicle->SetState(VEHICLE_STATUS_SHOWING_FILM, vehicle->sub_state);
-            switch (ride->mode)
+            SetState(VEHICLE_STATUS_SHOWING_FILM, sub_state);
+            switch (newRide->mode)
             {
                 case RIDE_MODE_3D_FILM_MOUSE_TAILS:
-                    vehicle->sub_state = 0;
+                    sub_state = 0;
                     break;
                 case RIDE_MODE_3D_FILM_STORM_CHASERS:
-                    vehicle->sub_state = 1;
+                    sub_state = 1;
                     break;
                 case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
-                    vehicle->sub_state = 2;
+                    sub_state = 2;
                     break;
             }
-            vehicle->current_time = -1;
-            vehicle_update_showing_film(vehicle);
+            current_time = -1;
+            vehicle_update_showing_film(this);
             break;
         case RIDE_MODE_CIRCUS_SHOW:
-            vehicle->SetState(VEHICLE_STATUS_DOING_CIRCUS_SHOW);
-            vehicle->current_time = -1;
-            vehicle_update_doing_circus_show(vehicle);
+            SetState(VEHICLE_STATUS_DOING_CIRCUS_SHOW);
+            current_time = -1;
+            vehicle_update_doing_circus_show(this);
             break;
         case RIDE_MODE_SPACE_RINGS:
-            vehicle->SetState(VEHICLE_STATUS_SPACE_RINGS_OPERATING);
-            vehicle->vehicle_sprite_type = 0;
-            vehicle->current_time = -1;
-            vehicle_update_space_rings_operating(vehicle);
+            SetState(VEHICLE_STATUS_SPACE_RINGS_OPERATING);
+            vehicle_sprite_type = 0;
+            current_time = -1;
+            vehicle_update_space_rings_operating(this);
             break;
         case RIDE_MODE_HAUNTED_HOUSE:
-            vehicle->SetState(VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING);
-            vehicle->vehicle_sprite_type = 0;
-            vehicle->current_time = -1;
-            vehicle_update_haunted_house_operating(vehicle);
+            SetState(VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING);
+            vehicle_sprite_type = 0;
+            current_time = -1;
+            vehicle_update_haunted_house_operating(this);
             break;
         case RIDE_MODE_CROOKED_HOUSE:
-            vehicle->SetState(VEHICLE_STATUS_CROOKED_HOUSE_OPERATING);
-            vehicle->vehicle_sprite_type = 0;
-            vehicle->current_time = -1;
-            vehicle_update_crooked_house_operating(vehicle);
+            SetState(VEHICLE_STATUS_CROOKED_HOUSE_OPERATING);
+            vehicle_sprite_type = 0;
+            current_time = -1;
+            vehicle_update_crooked_house_operating(this);
             break;
         default:
-            vehicle->SetState(vehicle->status);
-            vehicle->var_CE = 0;
+            SetState(status);
+            var_CE = 0;
             break;
     }
 }
@@ -4633,15 +4631,15 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
  *
  *  rct2: 0x006D9249
  */
-static void vehicle_update_swinging(rct_vehicle* vehicle)
+void rct_vehicle::UpdateSwinging()
 {
-    Ride* ride = get_ride(vehicle->ride);
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    Ride* newRide = get_ride(this->ride);
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
 
-    // SubState for this ride means swinging state
+    // SubState for this Ride means swinging state
     // 0 == first swing
     // 3 == full swing
-    uint8_t swingState = vehicle->sub_state;
+    uint8_t swingState = sub_state;
     if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1)
     {
         swingState += 4;
@@ -4650,180 +4648,180 @@ static void vehicle_update_swinging(rct_vehicle* vehicle)
     }
 
     const int8_t* spriteMap = SwingingTimeToSpriteMaps[swingState];
-    int8_t spriteType = spriteMap[vehicle->current_time + 1];
+    int8_t spriteType = spriteMap[current_time + 1];
 
     // 0x80 indicates that a complete swing has been
     // completed and the next swing can start
     if (spriteType != -128)
     {
-        vehicle->current_time++;
-        if ((uint8_t)spriteType != vehicle->vehicle_sprite_type)
+        current_time++;
+        if ((uint8_t)spriteType != vehicle_sprite_type)
         {
             // Used to know which sprite to draw
-            vehicle->vehicle_sprite_type = (uint8_t)spriteType;
-            vehicle->Invalidate();
+            vehicle_sprite_type = (uint8_t)spriteType;
+            Invalidate();
         }
         return;
     }
 
-    vehicle->current_time = -1;
-    vehicle->var_CE++;
-    if (ride->status != RIDE_STATUS_CLOSED)
+    current_time = -1;
+    var_CE++;
+    if (newRide->status != RIDE_STATUS_CLOSED)
     {
         // It takes 3 swings to get into full swing
-        // ride->rotations already takes this into account
-        if (vehicle->var_CE + 3 < ride->rotations)
+        // newRide->rotations already takes this into account
+        if (var_CE + 3 < newRide->rotations)
         {
             // Go to the next swing state until we
             // are at full swing.
-            if (vehicle->sub_state != 3)
+            if (sub_state != 3)
             {
-                vehicle->sub_state++;
+                sub_state++;
             }
-            vehicle_update_swinging(vehicle);
+            vehicle_update_swinging(this);
             return;
         }
     }
 
     // To get to this part of the code the
     // swing has to be in slowing down phase
-    if (vehicle->sub_state == 0)
+    if (sub_state == 0)
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
         return;
     }
     // Go towards first swing state
-    vehicle->sub_state--;
-    vehicle_update_swinging(vehicle);
+    sub_state--;
+    vehicle_update_swinging(this);
 }
 
 /**
  *
  *  rct2: 0x006D9413
  */
-static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle)
+void rct_vehicle::UpdateFerrisWheelRotating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    Ride* ride = get_ride(vehicle->ride);
-    if ((vehicle->ferris_wheel_var_1 -= 1) != 0)
+    Ride* newRide = get_ride(this->ride);
+    if ((ferris_wheel_var_1 -= 1) != 0)
         return;
 
-    int8_t ferris_wheel_var_0 = vehicle->ferris_wheel_var_0;
+    int8_t ferris_wheel_var_0 = ferris_wheel_var_0;
 
     if (ferris_wheel_var_0 == 3)
     {
-        vehicle->ferris_wheel_var_0 = ferris_wheel_var_0;
-        vehicle->ferris_wheel_var_1 = ferris_wheel_var_0;
+        ferris_wheel_var_0 = ferris_wheel_var_0;
+        ferris_wheel_var_1 = ferris_wheel_var_0;
     }
     else if (ferris_wheel_var_0 < 3)
     {
         if (ferris_wheel_var_0 != -8)
             ferris_wheel_var_0--;
-        vehicle->ferris_wheel_var_0 = ferris_wheel_var_0;
-        vehicle->ferris_wheel_var_1 = -ferris_wheel_var_0;
+        ferris_wheel_var_0 = ferris_wheel_var_0;
+        ferris_wheel_var_1 = -ferris_wheel_var_0;
     }
     else
     {
         ferris_wheel_var_0--;
-        vehicle->ferris_wheel_var_0 = ferris_wheel_var_0;
-        vehicle->ferris_wheel_var_1 = ferris_wheel_var_0;
+        ferris_wheel_var_0 = ferris_wheel_var_0;
+        ferris_wheel_var_1 = ferris_wheel_var_0;
     }
 
-    uint8_t rotation = vehicle->vehicle_sprite_type;
-    if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
+    uint8_t rotation = vehicle_sprite_type;
+    if (newRide->mode == RIDE_MODE_FORWARD_ROTATION)
         rotation++;
     else
         rotation--;
 
     rotation &= 0x7F;
-    vehicle->vehicle_sprite_type = rotation;
+    vehicle_sprite_type = rotation;
 
-    if (rotation == vehicle->sub_state)
-        vehicle->var_CE++;
+    if (rotation == sub_state)
+        var_CE++;
 
-    vehicle->Invalidate();
+    Invalidate();
 
-    uint8_t subState = vehicle->sub_state;
-    if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
+    uint8_t subState = sub_state;
+    if (newRide->mode == RIDE_MODE_FORWARD_ROTATION)
         subState++;
     else
         subState--;
     subState &= 0x7F;
 
-    if (subState == vehicle->vehicle_sprite_type)
+    if (subState == vehicle_sprite_type)
     {
         bool shouldStop = true;
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (newRide->status != RIDE_STATUS_CLOSED)
         {
-            if (vehicle->var_CE < ride->rotations)
+            if (var_CE < newRide->rotations)
                 shouldStop = false;
         }
 
         if (shouldStop)
         {
-            ferris_wheel_var_0 = vehicle->ferris_wheel_var_0;
-            vehicle->ferris_wheel_var_0 = -abs(ferris_wheel_var_0);
-            vehicle->ferris_wheel_var_1 = abs(ferris_wheel_var_0);
+            ferris_wheel_var_0 = ferris_wheel_var_0;
+            ferris_wheel_var_0 = -abs(ferris_wheel_var_0);
+            ferris_wheel_var_1 = abs(ferris_wheel_var_0);
         }
     }
 
-    if (vehicle->ferris_wheel_var_0 != -8)
+    if (ferris_wheel_var_0 != -8)
         return;
 
-    subState = vehicle->sub_state;
-    if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
+    subState = sub_state;
+    if (newRide->mode == RIDE_MODE_FORWARD_ROTATION)
         subState += 8;
     else
         subState -= 8;
     subState &= 0x7F;
 
-    if (subState != vehicle->vehicle_sprite_type)
+    if (subState != vehicle_sprite_type)
         return;
 
-    vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-    vehicle->var_C0 = 0;
+    SetState(VEHICLE_STATUS_ARRIVING);
+    var_C0 = 0;
 }
 
 /**
  *
  *  rct2: 0x006D94F2
  */
-static void vehicle_update_simulator_operating(rct_vehicle* vehicle)
+void rct_vehicle::UpdateSimulatorOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    assert(vehicle->current_time >= -1);
-    assert(vehicle->current_time < MotionSimulatorTimeToSpriteMapCount);
-    uint8_t al = MotionSimulatorTimeToSpriteMap[vehicle->current_time + 1];
+    assert(current_time >= -1);
+    assert(current_time < MotionSimulatorTimeToSpriteMapCount);
+    uint8_t al = MotionSimulatorTimeToSpriteMap[current_time + 1];
     if (al != 0xFF)
     {
-        vehicle->current_time++;
-        if (al == vehicle->vehicle_sprite_type)
+        current_time++;
+        if (al == vehicle_sprite_type)
             return;
-        vehicle->vehicle_sprite_type = al;
-        vehicle->Invalidate();
+        vehicle_sprite_type = al;
+        Invalidate();
         return;
     }
 
-    vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-    vehicle->var_C0 = 0;
+    SetState(VEHICLE_STATUS_ARRIVING);
+    var_C0 = 0;
 }
 
 /**
  *
  *  rct2: 0x006D92FF
  */
-static void vehicle_update_rotating(rct_vehicle* vehicle)
+void rct_vehicle::UpdateRotating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    Ride* ride = get_ride(vehicle->ride);
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    Ride* newRide = get_ride(this->ride);
+    rct_ride_entry* rideEntry = get_ride_entry(ride_subtype);
     if (rideEntry == nullptr)
     {
         return;
@@ -4832,98 +4830,98 @@ static void vehicle_update_rotating(rct_vehicle* vehicle)
     const uint8_t* timeToSpriteMap;
     if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1)
     {
-        timeToSpriteMap = Rotation1TimeToSpriteMaps[vehicle->sub_state];
+        timeToSpriteMap = Rotation1TimeToSpriteMaps[sub_state];
     }
     else if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2)
     {
-        timeToSpriteMap = Rotation2TimeToSpriteMaps[vehicle->sub_state];
+        timeToSpriteMap = Rotation2TimeToSpriteMaps[sub_state];
     }
     else
     {
-        timeToSpriteMap = Rotation3TimeToSpriteMaps[vehicle->sub_state];
+        timeToSpriteMap = Rotation3TimeToSpriteMaps[sub_state];
     }
 
-    int32_t time = vehicle->current_time;
+    int32_t time = current_time;
     if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE)
     {
-        time += (ride->breakdown_sound_modifier >> 6) + 1;
+        time += (newRide->breakdown_sound_modifier >> 6) + 1;
     }
     time++;
 
     uint8_t sprite = timeToSpriteMap[(uint32_t)time];
     if (sprite != 0xFF)
     {
-        vehicle->current_time = (uint16_t)time;
-        if (sprite == vehicle->vehicle_sprite_type)
+        current_time = (uint16_t)time;
+        if (sprite == vehicle_sprite_type)
             return;
-        vehicle->vehicle_sprite_type = sprite;
-        vehicle->Invalidate();
+        vehicle_sprite_type = sprite;
+        Invalidate();
         return;
     }
 
-    vehicle->current_time = -1;
-    vehicle->var_CE++;
+    current_time = -1;
+    var_CE++;
     if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE)
     {
         bool shouldStop = true;
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (newRide->status != RIDE_STATUS_CLOSED)
         {
-            sprite = vehicle->var_CE + 1;
-            if (ride->type == RIDE_TYPE_ENTERPRISE)
+            sprite = var_CE + 1;
+            if (newRide->type == RIDE_TYPE_ENTERPRISE)
                 sprite += 9;
 
-            if (sprite < ride->rotations)
+            if (sprite < newRide->rotations)
                 shouldStop = false;
         }
 
         if (shouldStop)
         {
-            if (vehicle->sub_state == 2)
+            if (sub_state == 2)
             {
-                vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-                vehicle->var_C0 = 0;
+                SetState(VEHICLE_STATUS_ARRIVING);
+                var_C0 = 0;
                 return;
             }
-            vehicle->sub_state++;
-            vehicle_update_rotating(vehicle);
+            sub_state++;
+            vehicle_update_rotating(this);
             return;
         }
     }
 
-    if (ride->type == RIDE_TYPE_ENTERPRISE && vehicle->sub_state == 2)
+    if (newRide->type == RIDE_TYPE_ENTERPRISE && sub_state == 2)
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
         return;
     }
 
-    vehicle->sub_state = 1;
-    vehicle_update_rotating(vehicle);
+    sub_state = 1;
+    vehicle_update_rotating(this);
 }
 
 /**
  *
  *  rct2: 0x006D97CB
  */
-static void vehicle_update_space_rings_operating(rct_vehicle* vehicle)
+void rct_vehicle::UpdateSpaceRingsOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    uint8_t spriteType = SpaceRingsTimeToSpriteMap[vehicle->current_time + 1];
+    uint8_t spriteType = SpaceRingsTimeToSpriteMap[current_time + 1];
     if (spriteType != 255)
     {
-        vehicle->current_time++;
-        if (spriteType != vehicle->vehicle_sprite_type)
+        current_time++;
+        if (spriteType != vehicle_sprite_type)
         {
-            vehicle->vehicle_sprite_type = spriteType;
-            vehicle->Invalidate();
+            vehicle_sprite_type = spriteType;
+            Invalidate();
         }
     }
     else
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
     }
 }
 
@@ -4931,52 +4929,52 @@ static void vehicle_update_space_rings_operating(rct_vehicle* vehicle)
  *
  *  rct2: 0x006D9641
  */
-static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle)
+void rct_vehicle::UpdateHauntedHouseOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicle_sprite_type != 0)
     {
         if (gCurrentTicks & 1)
         {
-            vehicle->vehicle_sprite_type++;
-            vehicle->Invalidate();
+            vehicle_sprite_type++;
+            Invalidate();
 
-            if (vehicle->vehicle_sprite_type == 19)
-                vehicle->vehicle_sprite_type = 0;
+            if (vehicle_sprite_type == 19)
+                vehicle_sprite_type = 0;
         }
     }
 
-    if (vehicle->current_time + 1 > 1500)
+    if (current_time + 1 > 1500)
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
         return;
     }
 
-    vehicle->current_time++;
-    switch (vehicle->current_time)
+    current_time++;
+    switch (current_time)
     {
         case 45:
-            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCARE, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCARE, x, y, z);
             break;
         case 75:
-            vehicle->vehicle_sprite_type = 1;
-            vehicle->Invalidate();
+            vehicle_sprite_type = 1;
+            Invalidate();
             break;
         case 400:
-            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCREAM_1, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCREAM_1, x, y, z);
             break;
         case 745:
-            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCARE, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCARE, x, y, z);
             break;
         case 775:
-            vehicle->vehicle_sprite_type = 1;
-            vehicle->Invalidate();
+            vehicle_sprite_type = 1;
+            Invalidate();
             break;
         case 1100:
-            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCREAM_2, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCREAM_2, x, y, z);
             break;
     }
 }
@@ -4985,75 +4983,75 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle)
  *
  *  rct2: 0x006d9781
  */
-static void vehicle_update_crooked_house_operating(rct_vehicle* vehicle)
+void rct_vehicle::UpdateCrookedHouseOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
     // Originally used an array of size 1 at 0x009A0AC4 and passed the sub state into it.
-    if ((uint16_t)(vehicle->current_time + 1) > 600)
+    if ((uint16_t)(current_time + 1) > 600)
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
         return;
     }
 
-    vehicle->current_time++;
+    current_time++;
 }
 
 /**
  *
  *  rct2: 0x006D9547
  */
-static void vehicle_update_top_spin_operating(rct_vehicle* vehicle)
+void rct_vehicle::UpdateTopSpinOperating()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    const top_spin_time_to_sprite_map* sprite_map = TopSpinTimeToSpriteMaps[vehicle->sub_state];
-    uint8_t rotation = sprite_map[vehicle->current_time + 1].arm_rotation;
+    const top_spin_time_to_sprite_map* sprite_map = TopSpinTimeToSpriteMaps[sub_state];
+    uint8_t rotation = sprite_map[current_time + 1].arm_rotation;
     if (rotation != 0xFF)
     {
-        vehicle->current_time = vehicle->current_time + 1;
-        if (rotation != vehicle->vehicle_sprite_type)
+        current_time = current_time + 1;
+        if (rotation != vehicle_sprite_type)
         {
-            vehicle->vehicle_sprite_type = rotation;
-            vehicle->Invalidate();
+            vehicle_sprite_type = rotation;
+            Invalidate();
         }
-        rotation = sprite_map[vehicle->current_time].bank_rotation;
-        if (rotation != vehicle->bank_rotation)
+        rotation = sprite_map[current_time].bank_rotation;
+        if (rotation != bank_rotation)
         {
-            vehicle->bank_rotation = rotation;
-            vehicle->Invalidate();
+            bank_rotation = rotation;
+            Invalidate();
         }
         return;
     }
 
-    vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-    vehicle->var_C0 = 0;
+    SetState(VEHICLE_STATUS_ARRIVING);
+    var_C0 = 0;
 }
 
 /**
  *
  *  rct2: 0x006D95AD
  */
-static void vehicle_update_showing_film(rct_vehicle* vehicle)
+void rct_vehicle::UpdateShowingFilm()
 {
     int32_t currentTime, totalTime;
 
     if (_vehicleBreakdown == 0)
         return;
 
-    totalTime = RideFilmLength[vehicle->sub_state];
-    currentTime = vehicle->current_time + 1;
+    totalTime = RideFilmLength[sub_state];
+    currentTime = current_time + 1;
     if (currentTime <= totalTime)
     {
-        vehicle->current_time = currentTime;
+        current_time = currentTime;
     }
     else
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
     }
 }
 
@@ -5061,20 +5059,20 @@ static void vehicle_update_showing_film(rct_vehicle* vehicle)
  *
  *  rct2: 0x006D95F7
  */
-static void vehicle_update_doing_circus_show(rct_vehicle* vehicle)
+void rct_vehicle::UpdateDoingCircusShow()
 {
     if (_vehicleBreakdown == 0)
         return;
 
-    int32_t currentTime = vehicle->current_time + 1;
+    int32_t currentTime = current_time + 1;
     if (currentTime <= 5000)
     {
-        vehicle->current_time = currentTime;
+        current_time = currentTime;
     }
     else
     {
-        vehicle->SetState(VEHICLE_STATUS_ARRIVING);
-        vehicle->var_C0 = 0;
+        SetState(VEHICLE_STATUS_ARRIVING);
+        var_C0 = 0;
     }
 }
 
@@ -5305,9 +5303,9 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
  *
  *  rct2: 0x006D98CA
  */
-static void vehicle_update_crash(rct_vehicle* vehicle)
+void rct_vehicle::UpdateCrash()
 {
-    uint16_t spriteId = vehicle->sprite_index;
+    uint16_t spriteId = sprite_index;
     rct_vehicle* curVehicle;
     do
     {
@@ -5346,7 +5344,7 @@ static void vehicle_update_crash(rct_vehicle* vehicle)
             continue;
         }
 
-        int16_t z = tile_element_height(curVehicle->x, curVehicle->y);
+        int16_t newZ = tile_element_height(curVehicle->x, curVehicle->y);
         int16_t waterHeight = tile_element_water_height(curVehicle->x, curVehicle->y);
         int16_t zDiff;
         if (waterHeight != 0)
@@ -5359,7 +5357,7 @@ static void vehicle_update_crash(rct_vehicle* vehicle)
             }
         }
 
-        zDiff = curVehicle->z - z;
+        zDiff = curVehicle->z - newZ;
         if ((zDiff <= 0 && zDiff >= -20) || curVehicle->z < 16)
         {
             vehicle_crash_on_land(curVehicle);

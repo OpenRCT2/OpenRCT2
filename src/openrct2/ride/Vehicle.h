@@ -268,6 +268,7 @@ struct rct_vehicle : rct_sprite_common
     }
 
 public:
+    void UpdateMeasurements();
     void Update();
     rct_vehicle* GetHead();
     const rct_vehicle* GetHead() const;
@@ -278,6 +279,20 @@ public:
 private:
     void UpdateMovingToEndOfStation();
     void UpdateWaitingForPassengers();
+    void UpdateDodgemsMode();
+    void UpdateWaitingToDepart();
+    void UpdateSwinging();
+    void UpdateFerrisWheelRotating();
+    void UpdateSimulatorOperating();
+    void UpdateRotating();
+    void UpdateSpaceRingsOperating();
+    void UpdateHauntedHouseOperating();
+    void UpdateCrookedHouseOperating();
+    void UpdateTopSpinOperating();
+    void UpdateShowingFilm();
+    void UpdateDoingCircusShow();
+    void UpdateCrash();
+    void UpdateCableLift();
 };
 
 struct train_ref
