@@ -1381,12 +1381,12 @@ public:
             {
                 auto src = (const RCT12SpriteJumpingFountain*)csrc;
                 auto dst = (JumpingFountain*)cdst;
-                dst->numTicksAlive = src->num_ticks_alive;
+                dst->NumTicksAlive = src->num_ticks_alive;
                 dst->frame = src->frame;
-                dst->fountainFlags = src->fountain_flags;
-                dst->targetX = src->target_x;
-                dst->targetY = src->target_y;
-                dst->iteration = src->iteration;
+                dst->FountainFlags = src->fountain_flags;
+                dst->TargetX = src->target_x;
+                dst->TargetY = src->target_y;
+                dst->Iteration = src->iteration;
                 break;
             }
             case SPRITE_MISC_BALLOON:

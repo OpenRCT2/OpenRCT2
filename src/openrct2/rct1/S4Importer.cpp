@@ -1766,9 +1766,9 @@ private:
 
     void ImportJumpingFountainWater(JumpingFountain* dst, JumpingFountain* src)
     {
-        dst->fountainFlags = src->fountainFlags;
-        dst->iteration = src->iteration;
-        dst->numTicksAlive = src->numTicksAlive;
+        dst->FountainFlags = src->FountainFlags;
+        dst->Iteration = src->Iteration;
+        dst->NumTicksAlive = src->NumTicksAlive;
         dst->frame = src->frame;
     }
 

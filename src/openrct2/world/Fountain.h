@@ -15,11 +15,11 @@
 
 struct JumpingFountain : rct_sprite_generic
 {
-    uint8_t numTicksAlive;
-    uint8_t fountainFlags;
-    int16_t targetX;
-    int16_t targetY;
-    uint16_t iteration;
+    uint8_t NumTicksAlive;
+    uint8_t FountainFlags;
+    int16_t TargetX;
+    int16_t TargetY;
+    uint16_t Iteration;
 
     void Update();
     static void Begin(int32_t newType, int32_t newX, int32_t newY, const TileElement* tileElement);

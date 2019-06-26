@@ -108,7 +108,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
             uint16_t height = jumpingFountain.z + 6;
             int32_t ebx = imageDirection / 8;
 
-            uint8_t al = (jumpingFountain.fountainFlags / 128) & 1;
+            uint8_t al = (jumpingFountain.FountainFlags / 128) & 1;
             uint8_t ah = (jumpingFountain.sprite_direction / 16) & 1;
 
             if (al == ah)
