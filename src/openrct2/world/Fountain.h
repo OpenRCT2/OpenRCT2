@@ -22,6 +22,9 @@ struct JumpingFountain : rct_sprite_generic
     uint16_t iteration;
 
     void Update();
+    static void Begin(int32_t newType, int32_t newX, int32_t newY, const TileElement* tileElement);
+
+private:
     int32_t GetType() const;
     void Continue();
     void GoToEdge(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
@@ -29,8 +32,6 @@ struct JumpingFountain : rct_sprite_generic
     void Split(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
     void Random(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
     void CreateNext(int32_t newX, int32_t newY, int32_t newZ, int32_t direction) const;
-
-    static void Begin(int32_t newType, int32_t newX, int32_t newY, const TileElement* tileElement);
     static void Create(
         int32_t newType, int32_t newX, int32_t newY, int32_t newZ, int32_t direction, int32_t newFlags, int32_t iteration);
     static bool IsJumpingFountain(int32_t newType, int32_t newX, int32_t newY, int32_t newZ);
