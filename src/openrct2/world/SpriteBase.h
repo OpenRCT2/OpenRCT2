@@ -28,3 +28,8 @@ struct rct_sprite_common
     int16_t sprite_bottom;
     uint8_t sprite_direction;
 };
+
+struct rct_sprite_generic : rct_sprite_common
+{
+    uint16_t frame;
+};

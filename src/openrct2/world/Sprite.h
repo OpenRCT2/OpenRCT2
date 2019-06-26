@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../peep/Peep.h"
 #include "../ride/Vehicle.h"
+#include "Fountain.h"
 #include "SpriteBase.h"
 
 #define SPRITE_INDEX_NULL 0xFFFF
@@ -36,11 +37,6 @@ enum SPRITE_LIST
     SPRITE_LIST_MISC,
     SPRITE_LIST_LITTER,
     SPRITE_LIST_UNKNOWN,
-};
-
-struct rct_sprite_generic : rct_sprite_common
-{
-    uint16_t frame;
 };
 
 struct rct_litter : rct_sprite_common
@@ -74,28 +70,6 @@ struct rct_duck : rct_sprite_generic
     void Invalidate();
     void Remove();
     void MoveTo(int16_t x, int16_t y, int16_t z);
-};
-
-struct rct_jumping_fountain : rct_sprite_generic
-{
-    uint8_t num_ticks_alive;
-    uint8_t fountain_flags;
-    int16_t target_x;
-    int16_t target_y;
-    uint16_t iteration;
-
-    void Update();
-    int32_t GetType() const;
-    void Continue();
-    void GoToEdge(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
-    void Bounce(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections);
-    void Split(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
-    void Random(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
-    void CreateNext(int32_t newX, int32_t newY, int32_t newZ, int32_t direction) const;
-
-    static void Begin(int32_t newType, int32_t newX, int32_t newY, const TileElement* tileElement);
-    static void Create(int32_t newType, int32_t newX, int32_t newY, int32_t newZ, int32_t direction, int32_t newFlags, int32_t iteration);
-    static bool IsJumpingFountain(int32_t newType, int32_t newX, int32_t newY, int32_t newZ);
 };
 
 struct rct_money_effect : rct_sprite_common
@@ -149,7 +123,7 @@ union rct_sprite
     rct_vehicle vehicle;
     rct_balloon balloon;
     rct_duck duck;
-    rct_jumping_fountain jumping_fountain;
+    JumpingFountain jumping_fountain;
     rct_money_effect money_effect;
     rct_crashed_vehicle_particle crashed_vehicle_particle;
     rct_crash_splash crash_splash;

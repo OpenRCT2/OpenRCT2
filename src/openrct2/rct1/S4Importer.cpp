@@ -1734,7 +1734,7 @@ private:
                     case SPRITE_MISC_EXPLOSION_FLARE:
                         break;
                     case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-                        ImportJumpingFountainWater((rct_jumping_fountain*)dst, (rct_jumping_fountain*)src);
+                        ImportJumpingFountainWater((JumpingFountain*)dst, (JumpingFountain*)src);
                         break;
                     case SPRITE_MISC_BALLOON:
                         ImportBalloon((rct_balloon*)dst, (rct_balloon*)src);
@@ -1764,11 +1764,11 @@ private:
         dst->frame = src->frame;
     }
 
-    void ImportJumpingFountainWater(rct_jumping_fountain* dst, rct_jumping_fountain* src)
+    void ImportJumpingFountainWater(JumpingFountain* dst, JumpingFountain* src)
     {
-        dst->fountain_flags = src->fountain_flags;
+        dst->fountainFlags = src->fountainFlags;
         dst->iteration = src->iteration;
-        dst->num_ticks_alive = src->num_ticks_alive;
+        dst->numTicksAlive = src->numTicksAlive;
         dst->frame = src->frame;
     }
 

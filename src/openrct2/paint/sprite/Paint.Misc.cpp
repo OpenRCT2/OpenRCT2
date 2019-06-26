@@ -10,6 +10,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/StringIds.h"
+#include "../../world/Fountain.h"
 #include "../../world/Sprite.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
@@ -102,12 +103,12 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
                 return;
             }
 
-            rct_jumping_fountain jumpingFountain = misc->jumping_fountain;
+            JumpingFountain jumpingFountain = misc->jumping_fountain;
 
             uint16_t height = jumpingFountain.z + 6;
             int32_t ebx = imageDirection / 8;
 
-            uint8_t al = (jumpingFountain.fountain_flags / 128) & 1;
+            uint8_t al = (jumpingFountain.fountainFlags / 128) & 1;
             uint8_t ah = (jumpingFountain.sprite_direction / 16) & 1;
 
             if (al == ah)

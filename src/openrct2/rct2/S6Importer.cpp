@@ -1380,12 +1380,12 @@ public:
             case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
             {
                 auto src = (const RCT12SpriteJumpingFountain*)csrc;
-                auto dst = (rct_jumping_fountain*)cdst;
-                dst->num_ticks_alive = src->num_ticks_alive;
+                auto dst = (JumpingFountain*)cdst;
+                dst->numTicksAlive = src->num_ticks_alive;
                 dst->frame = src->frame;
-                dst->fountain_flags = src->fountain_flags;
-                dst->target_x = src->target_x;
-                dst->target_y = src->target_y;
+                dst->fountainFlags = src->fountain_flags;
+                dst->targetX = src->target_x;
+                dst->targetY = src->target_y;
                 dst->iteration = src->iteration;
                 break;
             }
