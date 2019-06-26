@@ -3994,7 +3994,7 @@ STR_DTLS    :Området omkring en dæmning er til rådighed for dig, til at udvik
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    En stor kløft er din, til at forvandle den til en forlystelsespark
+STR_DTLS    :En stor kløft er din, til at forvandle den til en forlystelsespark
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
