@@ -266,12 +266,18 @@ struct rct_vehicle : rct_sprite_common
     {
         return type == VEHICLE_TYPE_HEAD;
     }
+
+public:
+    void Update();
     rct_vehicle* GetHead();
     const rct_vehicle* GetHead() const;
     const rct_vehicle* GetCar(size_t carIndex) const;
     void Invalidate();
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
+private:
+    void UpdateMovingToEndOfStation();
+    void UpdateWaitingForPassengers();
 };
 
 struct train_ref
