@@ -121,7 +121,7 @@ void JumpingFountain::Create(
     const int32_t newType, const int32_t newX, const int32_t newY, const int32_t newZ, const int32_t direction,
     const int32_t newFlags, const int32_t iteration)
 {
-    const auto jumpingFountain = reinterpret_cast<JumpingFountain*>(create_sprite(SPRITE_IDENTIFIER_MISC));
+    auto* jumpingFountain = reinterpret_cast<JumpingFountain*>(create_sprite(SPRITE_IDENTIFIER_MISC));
     if (jumpingFountain != nullptr)
     {
         jumpingFountain->Iteration = iteration;
