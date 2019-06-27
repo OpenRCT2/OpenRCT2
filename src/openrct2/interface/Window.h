@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../ride/RideTypes.h"
 
+#include <functional>
 #include <limits>
 #include <list>
 #include <memory>
@@ -582,7 +583,8 @@ extern colour_t gCurrentWindowColours[4];
 
 extern bool gDisableErrorWindowSound;
 
-std::list<std::unique_ptr<rct_window>>::iterator window_get_iterator(const rct_window* w);
+std::list<std::shared_ptr<rct_window>>::iterator window_get_iterator(const rct_window* w);
+void window_visit_each(std::function<void(rct_window*)> func);
 
 void window_dispatch_update_all();
 void window_update_all_viewports();

@@ -104,4 +104,4 @@ struct rct_window
 };
 
 // rct2: 0x01420078
-extern std::list<std::unique_ptr<rct_window>> g_window_list;
+extern std::list<std::shared_ptr<rct_window>> g_window_list;
