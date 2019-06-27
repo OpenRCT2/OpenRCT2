@@ -179,7 +179,7 @@ namespace Platform
 
 #    ifdef __USE_GETDATEFORMATEX__
         wchar_t date[20];
-        GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date), nullptr);
+        GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, (int)std::size(date), nullptr);
         std::string result = String::ToUtf8(std::wstring(date));
 #    else
         char date[20];
@@ -196,7 +196,7 @@ namespace Platform
 
 #    ifdef __USE_GETDATEFORMATEX__
         wchar_t time[20];
-        GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
+        GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, (int)std::size(time));
         std::string result = String::ToUtf8(std::wstring(time));
 #    else
         char time[20];
