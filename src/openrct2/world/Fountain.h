@@ -22,11 +22,11 @@ struct JumpingFountain : rct_sprite_generic
     uint16_t Iteration;
 
     void Update();
-    static void Begin(int32_t newType, int32_t newX, int32_t newY, const TileElement* tileElement);
+    static void StartAnimation(int32_t newType, int32_t newX, int32_t newY, const TileElement* tileElement);
 
 private:
     int32_t GetType() const;
-    void Continue();
+    void AdvanceAnimation();
     void GoToEdge(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
     void Bounce(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections);
     void Split(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;

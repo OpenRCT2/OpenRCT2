@@ -65,7 +65,8 @@ const uint8_t _fountainPatternFlags[] = {
     FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
 };
 
-void JumpingFountain::Begin(const int32_t newType, const int32_t newX, const int32_t newY, const TileElement* tileElement)
+void JumpingFountain::StartAnimation(
+    const int32_t newType, const int32_t newX, const int32_t newY, const TileElement* tileElement)
 {
     int32_t randomIndex;
     const int32_t newZ = tileElement->base_height * 8;
@@ -159,17 +160,17 @@ void JumpingFountain::Update()
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
             if (frame == 11 && (FountainFlags & FOUNTAIN_FLAG::FAST))
             {
-                Continue();
+                AdvanceAnimation();
             }
             if (frame == 16 && !(FountainFlags & FOUNTAIN_FLAG::FAST))
             {
-                Continue();
+                AdvanceAnimation();
             }
             break;
         case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
             if (frame == 16)
             {
-                Continue();
+                AdvanceAnimation();
             }
             break;
     }
@@ -187,7 +188,7 @@ int32_t JumpingFountain::GetType() const
     return fountainType;
 }
 
-void JumpingFountain::Continue()
+void JumpingFountain::AdvanceAnimation()
 {
     const int32_t newType = GetType();
     const int32_t direction = (sprite_direction >> 3) & 7;
