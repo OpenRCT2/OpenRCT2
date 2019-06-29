@@ -51,7 +51,6 @@ TextInputSession* gTextInput;
 
 uint16_t gWindowUpdateTicks;
 uint16_t gWindowMapFlashingFlags;
-
 colour_t gCurrentWindowColours[4];
 
 // converted from uint16_t values at 0x009A41EC - 0x009A4230
@@ -77,6 +76,13 @@ static constexpr const float window_scroll_locations[][2] = {
     { 0.125f, 0.125f },
 };
 // clang-format on
+
+namespace WindowCloseFlags
+{
+    static constexpr uint32_t None = 0;
+    static constexpr uint32_t IterateReverse = (1 << 0);
+    static constexpr uint32_t CloseSingle = (1 << 1);
+} // namespace WindowCloseFlags
 
 static int32_t window_draw_split(
     rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
@@ -239,31 +245,53 @@ void window_close(rct_window* window)
     }
 }
 
-template<typename _TPred> static void window_close_by_condition(_TPred pred)
+template<typename _TPred> static void window_close_by_condition(_TPred pred, uint32_t flags = WindowCloseFlags::None)
 {
     bool listUpdated;
     do
     {
         listUpdated = false;
 
-        auto windowList = g_window_list;
-        for (auto& w : windowList)
-        {
-            if (pred(w.get()))
+        auto closeSingle = [&](std::shared_ptr<rct_window> window) -> bool {
+            if (!pred(window.get()))
             {
-                // Keep track of current amount, if a new window is created upon closing
-                // we need to break this current iteration and restart.
-                size_t previousCount = g_window_list.size();
-
-                window_close(w.get());
-
-                if (previousCount >= g_window_list.size())
-                {
-                    listUpdated = true;
-                    break;
-                }
+                return false;
             }
-        }
+
+            // Keep track of current amount, if a new window is created upon closing
+            // we need to break this current iteration and restart.
+            size_t previousCount = g_window_list.size();
+
+            window_close(window.get());
+
+            if ((flags & WindowCloseFlags::CloseSingle) != 0)
+            {
+                // Only close a single one.
+                return true;
+            }
+
+            if (previousCount >= g_window_list.size())
+            {
+                // A new window was created during the close event.
+                return true;
+            }
+
+            // Keep closing windows.
+            return false;
+        };
+
+        // The closest to something like for_each_if is using find_if in order to avoid duplicate code
+        // to change the loop direction.
+        auto windowList = g_window_list;
+        if ((flags & WindowCloseFlags::IterateReverse) != 0)
+            listUpdated = std::find_if(windowList.rbegin(), windowList.rend(), closeSingle) != windowList.rend();
+        else
+            listUpdated = std::find_if(windowList.begin(), windowList.end(), closeSingle) != windowList.end();
+
+        // If requested to close only a single window and a new window was created during close
+        // we ignore it.
+        if ((flags & WindowCloseFlags::CloseSingle) != 0)
+            break;
 
     } while (listUpdated);
 }
@@ -341,7 +369,8 @@ void window_close_top()
             return;
     }
 
-    window_close_by_condition([](rct_window* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
+    auto pred = [](rct_window* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); };
+    window_close_by_condition(pred, WindowCloseFlags::CloseSingle | WindowCloseFlags::IterateReverse);
 }
 
 /**
