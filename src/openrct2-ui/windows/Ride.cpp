@@ -49,6 +49,7 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesign.h>
+#include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -950,6 +951,7 @@ static rct_window_event_list *window_ride_page_events[] = {
 static bool _collectTrackDesignScenery = false;
 static int32_t _lastSceneryX = 0;
 static int32_t _lastSceneryY = 0;
+static std::unique_ptr<TrackDesign> _trackDesign;
 
 // Cached overall view for each ride
 // (Re)calculated when the ride window is opened
@@ -5403,16 +5405,48 @@ void window_ride_measurements_design_cancel()
     }
 }
 
+void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* path)
+{
+    if (result == MODAL_RESULT_OK)
+    {
+        track_repository_scan();
+    }
+    gfx_invalidate_screen();
+};
+
 /**
  *
  *  rct2: 0x006AD4CD
  */
 static void window_ride_measurements_design_save(rct_window* w)
 {
-    T6Exporter t6Exporter;
-    t6Exporter.Save((ride_id_t)w->number);
-    t6Exporter.SaveTrack("test.td6");
-    // track_design_save((uint8_t)w->number);
+    Ride* ride = get_ride(w->number);
+    _trackDesign = ride->SaveToTrackDesign();
+    if (!_trackDesign)
+    {
+        return;
+    }
+
+    if (gTrackDesignSaveMode)
+    {
+        auto errMessage = _trackDesign->CreateTrackDesignScenery();
+        if (errMessage != STR_NONE)
+        {
+            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage);
+            return;
+        }
+    }
+
+    utf8 track_name[256];
+    format_string(track_name, sizeof(track_name), ride->name, &ride->name_arguments);
+
+    auto intent = Intent(WC_LOADSAVE);
+    intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
+    intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
+    intent.putExtra(INTENT_EXTRA_PATH, std::string{ track_name });
+    intent.putExtra(INTENT_EXTRA_CALLBACK, static_cast<void*>(&TrackDesignCallback));
+
+    context_open_intent(&intent);
 }
 
 /**
@@ -5516,8 +5550,8 @@ static void window_ride_measurements_dropdown(rct_window* w, rct_widgetindex wid
 
     if (dropdownIndex == 0)
     {
+        window_ride_measurements_design_save(w);
     }
-    // track_design_save((uint8_t)w->number);
     else
         setup_scenery_selection(w);
 }

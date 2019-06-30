@@ -218,6 +218,16 @@ struct TrackDesign
     std::vector<rct_td6_scenery_element> scenery_elements;
 
     std::unique_ptr<const utf8> name;
+
+public:
+    rct_string_id CreateTrackDesign(const Ride& ride);
+    rct_string_id CreateTrackDesignScenery();
+
+private:
+    uint8_t _saveDirection;
+    rct_string_id CreateTrackDesignTrack(const Ride& ride);
+    rct_string_id CreateTrackDesignMaze(const Ride& ride);
+    CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 
 // Only written to in RCT2, not used in OpenRCT2. All of these are elements that had to be invented in RCT1.

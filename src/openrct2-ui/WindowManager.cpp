@@ -19,6 +19,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/interface/Viewport.h>
+#include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Sprite.h>
 
@@ -222,7 +223,8 @@ public:
                 uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
                 std::string defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
                 loadsave_callback callback = (loadsave_callback)intent->GetPointerExtra(INTENT_EXTRA_CALLBACK);
-                rct_window* w = window_loadsave_open(type, defaultName.c_str(), callback);
+                TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
+                rct_window* w = window_loadsave_open(type, defaultName.c_str(), callback, trackDesign);
 
                 return w;
             }

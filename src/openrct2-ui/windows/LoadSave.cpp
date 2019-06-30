@@ -26,6 +26,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/platform/platform.h>
+#include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/title/TitleScreen.h>
@@ -144,6 +145,7 @@ struct LoadSaveListItem
 };
 
 static loadsave_callback _loadSaveCallback;
+static TrackDesign* _trackDesign;
 
 static std::vector<LoadSaveListItem> _listItems;
 static char _directory[MAX_PATH];
@@ -250,9 +252,10 @@ static int32_t window_loadsave_get_dir(const int32_t type, char* path, size_t pa
 
 static bool browse(bool isSave, char* path, size_t pathSize);
 
-rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback)
+rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* trackDesign)
 {
     _loadSaveCallback = callback;
+    _trackDesign = trackDesign;
     _type = type;
     _defaultName[0] = '\0';
 
@@ -1081,8 +1084,13 @@ static void window_loadsave_select(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
         {
+            save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
+
             path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
-            int32_t success = 0; // track_design_save_to_file(pathBuffer);
+
+            T6Exporter t6Export{ _trackDesign };
+
+            auto success = t6Export.SaveTrack(pathBuffer);
 
             if (success)
             {

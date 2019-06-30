@@ -95,15 +95,484 @@ static void track_design_preview_restore_map(map_backup* backup);
 
 static void track_design_preview_clear_map();
 
+rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
+{
+    type = ride.type;
+    auto object = object_entry_get_entry(OBJECT_TYPE_RIDE, ride.subtype);
+
+    // Note we are only copying rct_object_entry in size and
+    // not the extended as we don't need the chunk size.
+    std::memcpy(&vehicle_object, object, sizeof(rct_object_entry));
+
+    ride_mode = ride.mode;
+    colour_scheme = ride.colour_scheme_type & 3;
+
+    for (int32_t i = 0; i < RCT12_MAX_VEHICLES_PER_RIDE; i++)
+    {
+        vehicle_colours[i].body_colour = ride.vehicle_colours[i].Body;
+        vehicle_colours[i].trim_colour = ride.vehicle_colours[i].Trim;
+        vehicle_additional_colour[i] = ride.vehicle_colours[i].Ternary;
+    }
+
+    for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+    {
+        track_spine_colour[i] = ride.track_colour[i].main;
+        track_rail_colour[i] = ride.track_colour[i].additional;
+        track_support_colour[i] = ride.track_colour[i].supports;
+    }
+
+    depart_flags = ride.depart_flags;
+    number_of_trains = ride.num_vehicles;
+    number_of_cars_per_train = ride.num_cars_per_train;
+    min_waiting_time = ride.min_waiting_time;
+    max_waiting_time = ride.max_waiting_time;
+    operation_setting = ride.operation_option;
+    lift_hill_speed = ride.lift_hill_speed;
+    num_circuits = ride.num_circuits;
+
+    entrance_style = ride.entrance_style;
+    max_speed = (int8_t)(ride.max_speed / 65536);
+    average_speed = (int8_t)(ride.average_speed / 65536);
+    ride_length = ride_get_total_length(&ride) / 65536;
+    max_positive_vertical_g = ride.max_positive_vertical_g / 32;
+    max_negative_vertical_g = ride.max_negative_vertical_g / 32;
+    max_lateral_g = ride.max_lateral_g / 32;
+    inversions = ride.holes & 0x1F;
+    inversions = ride.inversions & 0x1F;
+    inversions |= (ride.sheltered_eighths << 5);
+    drops = ride.drops;
+    highest_drop_height = ride.highest_drop_height;
+
+    uint16_t totalAirTime = (ride.total_air_time * 123) / 1024;
+    if (totalAirTime > 255)
+    {
+        totalAirTime = 0;
+    }
+    total_air_time = (uint8_t)totalAirTime;
+
+    excitement = ride.ratings.excitement / 10;
+    intensity = ride.ratings.intensity / 10;
+    nausea = ride.ratings.nausea / 10;
+
+    upkeep_cost = ride.upkeep_cost;
+    flags = 0;
+    flags2 = 0;
+
+    if (type == RIDE_TYPE_MAZE)
+    {
+        return CreateTrackDesignMaze(ride);
+    }
+    else
+    {
+        return CreateTrackDesignTrack(ride);
+    }
+}
+
+rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
+{
+    CoordsXYE trackElement;
+    if (!ride_try_get_origin_element(&ride, &trackElement))
+    {
+        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+    }
+
+    ride_get_start_of_track(&trackElement);
+
+    int32_t z = trackElement.element->base_height * 8;
+    uint8_t trackType = trackElement.element->AsTrack()->GetTrackType();
+    uint8_t direction = trackElement.element->GetDirection();
+    _saveDirection = direction;
+
+    if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, trackType, 0, &trackElement.element, 0))
+    {
+        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+    }
+
+    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackElement.element->AsTrack()->GetTrackType()];
+    // Used in the following loop to know when we have
+    // completed all of the elements and are back at the
+    // start.
+    TileElement* initialMap = trackElement.element;
+
+    int16_t start_x = trackElement.x;
+    int16_t start_y = trackElement.y;
+    int16_t start_z = z + trackCoordinates->z_begin;
+    gTrackPreviewOrigin = { start_x, start_y, start_z };
+
+    do
+    {
+        rct_td6_track_element track{};
+        track.type = trackElement.element->AsTrack()->GetTrackType();
+        // TODO move to RCT2 limit
+        if (track.type == TRACK_ELEM_255)
+        {
+            track.type = TRACK_ELEM_255_ALIAS;
+        }
+
+        uint8_t trackFlags;
+        if (track_element_has_speed_setting(track.type))
+        {
+            trackFlags = trackElement.element->AsTrack()->GetBrakeBoosterSpeed() >> 1;
+        }
+        else
+        {
+            trackFlags = trackElement.element->AsTrack()->GetSeatRotation();
+        }
+
+        if (trackElement.element->AsTrack()->HasChain())
+            trackFlags |= (1 << 7);
+        trackFlags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
+        if (RideData4[ride.type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE
+            && trackElement.element->AsTrack()->IsInverted())
+        {
+            trackFlags |= TRACK_ELEMENT_FLAG_INVERTED;
+        }
+
+        track.flags = trackFlags;
+        track_elements.push_back(track);
+
+        if (!track_block_get_next(&trackElement, &trackElement, nullptr, nullptr))
+        {
+            break;
+        }
+
+        z = trackElement.element->base_height * 8;
+        direction = trackElement.element->GetDirection();
+        trackType = trackElement.element->AsTrack()->GetTrackType();
+
+        if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, trackType, 0, &trackElement.element, 0))
+        {
+            break;
+        }
+
+        // TODO move to RCT2 limit
+        constexpr auto TD6MaxTrackElements = 8192;
+
+        if (track_elements.size() > TD6MaxTrackElements)
+        {
+            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        }
+    } while (trackElement.element != initialMap);
+
+    // First entrances, second exits
+    for (int32_t i = 0; i < 2; i++)
+    {
+        for (int32_t station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++)
+        {
+            z = ride.stations[station_index].Height;
+
+            TileCoordsXYZD location;
+            if (i == 0)
+            {
+                location = ride_get_entrance_location(&ride, station_index);
+            }
+            else
+            {
+                location = ride_get_exit_location(&ride, station_index);
+            }
+
+            if (location.isNull())
+            {
+                continue;
+            }
+
+            int16_t x = location.x * 32;
+            int16_t y = location.y * 32;
+
+            TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+            do
+            {
+                if (tileElement == nullptr)
+                    break;
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+                    continue;
+                if (tileElement->base_height == z)
+                    break;
+            } while (!(tileElement++)->IsLastForTile());
+
+            if (tileElement == nullptr)
+            {
+                continue;
+            }
+            // Add something that stops this from walking off the end
+
+            Direction entranceDirection = tileElement->GetDirection();
+            entranceDirection -= _saveDirection;
+            entranceDirection &= TILE_ELEMENT_DIRECTION_MASK;
+
+            rct_td6_entrance_element entrance{};
+            entrance.direction = entranceDirection;
+
+            x -= gTrackPreviewOrigin.x;
+            y -= gTrackPreviewOrigin.y;
+
+            // Rotate entrance coordinates backwards to the correct direction
+            rotate_map_coordinates(&x, &y, (0 - _saveDirection) & 3);
+            entrance.x = x;
+            entrance.y = y;
+
+            z *= 8;
+            z -= gTrackPreviewOrigin.z;
+            z /= 8;
+
+            if (z > 127 || z < -126)
+            {
+                return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+            }
+
+            if (z == 0xFF)
+            {
+                z = 0x80;
+            }
+
+            entrance.z = z;
+
+            // If this is the exit version
+            if (i == 1)
+            {
+                entrance.direction |= (1 << 7);
+            }
+            entrance_elements.push_back(entrance);
+        }
+    }
+
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, get_ride(0), 4096, 4096, 0);
+
+    // Resave global vars for scenery reasons.
+    gTrackPreviewOrigin = { start_x, start_y, start_z };
+
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+
+    space_required_x = ((gTrackPreviewMax.x - gTrackPreviewMin.x) / 32) + 1;
+    space_required_y = ((gTrackPreviewMax.y - gTrackPreviewMin.y) / 32) + 1;
+    return STR_NONE;
+}
+
+rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
+{
+    auto startLoc = MazeGetFirstElement(ride);
+
+    if (startLoc.element == nullptr)
+    {
+        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+    }
+
+    gTrackPreviewOrigin = { static_cast<int16_t>(startLoc.x), static_cast<int16_t>(startLoc.y),
+                            (int16_t)(startLoc.element->base_height * 8) };
+
+    // x is defined here as we can start the search
+    // on tile start_x, start_y but then the next row
+    // must restart on 0
+    for (int16_t y = startLoc.y, x = startLoc.y; y < 8192; y += 32)
+    {
+        for (; x < 8192; x += 32)
+        {
+            auto tileElement = map_get_first_element_at(x / 32, y / 32);
+            do
+            {
+                if (tileElement == nullptr)
+                    break;
+                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                    continue;
+                if (tileElement->AsTrack()->GetRideIndex() != ride.id)
+                    continue;
+
+                rct_td6_maze_element maze{};
+
+                maze.maze_entry = tileElement->AsTrack()->GetMazeEntry();
+                maze.x = (x - startLoc.x) / 32;
+                maze.y = (y - startLoc.y) / 32;
+                _saveDirection = tileElement->GetDirection();
+                maze_elements.push_back(maze);
+
+                if (maze_elements.size() >= 2000)
+                {
+                    return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+                }
+            } while (!(tileElement++)->IsLastForTile());
+        }
+        x = 0;
+    }
+
+    auto location = ride_get_entrance_location(&ride, 0);
+    if (location.isNull())
+    {
+        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+    }
+
+    CoordsXY entranceLoc = { location.x * 32, location.y * 32 };
+    auto tileElement = map_get_first_element_at(location.x, location.y);
+    do
+    {
+        if (tileElement == nullptr)
+            break;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+            continue;
+        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+            continue;
+        if (tileElement->AsEntrance()->GetRideIndex() == ride.id)
+            break;
+    } while (!(tileElement++)->IsLastForTile());
+    // Add something that stops this from walking off the end
+
+    uint8_t entranceDirection = tileElement->GetDirection();
+    rct_td6_maze_element mazeEntrance{};
+    mazeEntrance.direction = entranceDirection;
+    mazeEntrance.type = 8;
+    mazeEntrance.x = (int8_t)((entranceLoc.x - startLoc.x) / 32);
+    mazeEntrance.y = (int8_t)((entranceLoc.y - startLoc.y) / 32);
+    maze_elements.push_back(mazeEntrance);
+
+    location = ride_get_exit_location(&ride, 0);
+    if (location.isNull())
+    {
+        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+    }
+
+    CoordsXY exitLoc = { location.x * 32, location.y * 32 };
+    tileElement = map_get_first_element_at(location.x, location.y);
+    do
+    {
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+            continue;
+        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+            continue;
+        if (tileElement->AsEntrance()->GetRideIndex() == ride.id)
+            break;
+    } while (!(tileElement++)->IsLastForTile());
+    // Add something that stops this from walking off the end
+
+    uint8_t exit_direction = tileElement->GetDirection();
+    rct_td6_maze_element mazeExit{};
+    mazeExit.direction = exit_direction;
+    mazeExit.type = 0x80;
+    mazeExit.x = (int8_t)((exitLoc.x - startLoc.x) / 32);
+    mazeExit.y = (int8_t)((exitLoc.y - startLoc.y) / 32);
+    maze_elements.push_back(mazeExit);
+
+    // Save global vars as they are still used by scenery????
+    int16_t startZ = gTrackPreviewOrigin.z;
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, get_ride(0), 4096, 4096, 0);
+    gTrackPreviewOrigin = { static_cast<int16_t>(startLoc.x), static_cast<int16_t>(startLoc.y), startZ };
+
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+
+    space_required_x = ((gTrackPreviewMax.x - gTrackPreviewMin.x) / 32) + 1;
+    space_required_y = ((gTrackPreviewMax.y - gTrackPreviewMin.y) / 32) + 1;
+    return STR_NONE;
+}
+
+CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
+{
+    CoordsXYE tile{};
+    for (tile.y = 0; tile.y < 8192; tile.y += 32)
+    {
+        for (tile.x = 0; tile.x < 8192; tile.x += 32)
+        {
+            tile.element = map_get_first_element_at(tile.x / 32, tile.y / 32);
+            do
+            {
+                if (tile.element == nullptr)
+                    break;
+
+                if (tile.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                    continue;
+                if (tile.element->AsTrack()->GetRideIndex() == ride.id)
+                {
+                    return tile;
+                }
+            } while (!(tile.element++)->IsLastForTile());
+        }
+    }
+    tile.element = nullptr;
+    return tile;
+}
+
+rct_string_id TrackDesign::CreateTrackDesignScenery()
+{
+    scenery_elements = _trackSavedTileElementsDesc;
+    // Run an element loop
+    for (auto& scenery : scenery_elements)
+    {
+        switch (object_entry_get_type(&scenery.scenery_object))
+        {
+            case OBJECT_TYPE_PATHS:
+            {
+                uint8_t slope = (scenery.flags & 0x60) >> 5;
+                slope -= _saveDirection;
+
+                scenery.flags &= 0x9F;
+                scenery.flags |= ((slope & 3) << 5);
+
+                // Direction of connection on path
+                uint8_t direction = scenery.flags & 0xF;
+                // Rotate the direction by the track direction
+                direction = ((direction << 4) >> _saveDirection);
+
+                scenery.flags &= 0xF0;
+                scenery.flags |= (direction & 0xF) | (direction >> 4);
+                break;
+            }
+            case OBJECT_TYPE_WALLS:
+            {
+                uint8_t direction = scenery.flags & 3;
+                direction -= _saveDirection;
+
+                scenery.flags &= 0xFC;
+                scenery.flags |= (direction & 3);
+                break;
+            }
+            default:
+            {
+                uint8_t direction = scenery.flags & 3;
+                uint8_t quadrant = (scenery.flags & 0x0C) >> 2;
+
+                direction -= _saveDirection;
+                quadrant -= _saveDirection;
+
+                scenery.flags &= 0xF0;
+                scenery.flags |= (direction & 3) | ((quadrant & 3) << 2);
+                break;
+            }
+        }
+
+        int16_t x = ((uint8_t)scenery.x) * 32 - gTrackPreviewOrigin.x;
+        int16_t y = ((uint8_t)scenery.y) * 32 - gTrackPreviewOrigin.y;
+        rotate_map_coordinates(&x, &y, (0 - _saveDirection) & 3);
+        x /= 32;
+        y /= 32;
+
+        if (x > 127 || y > 127 || x < -126 || y < -126)
+        {
+            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        }
+
+        scenery.x = (int8_t)x;
+        scenery.y = (int8_t)y;
+
+        int32_t z = scenery.z * 8 - gTrackPreviewOrigin.z;
+        z /= 8;
+        if (z > 127 || z < -126)
+        {
+            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+        }
+        scenery.z = z;
+    }
+
+    return STR_NONE;
+}
+
 std::unique_ptr<TrackDesign> track_design_open(const utf8* path)
 {
     auto trackImporter = TrackImporter::Create(path);
     trackImporter->Load(path);
     try
     {
-        auto track2 = trackImporter->Import();
-        log_error("Test %d", track2->type);
-        return track2;
+        return trackImporter->Import();
     }
     catch (const std::exception& e)
     {
