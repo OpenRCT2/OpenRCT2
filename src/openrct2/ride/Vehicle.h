@@ -270,7 +270,6 @@ struct rct_vehicle : rct_sprite_common
 public:
     void UpdateMeasurements();
     void Update();
-    void UpdateTravellingBoat();
     rct_vehicle* GetHead();
     const rct_vehicle* GetHead() const;
     const rct_vehicle* GetCar(size_t carIndex) const;
@@ -282,12 +281,15 @@ private:
     void UpdateWaitingForPassengers();
     void UpdateDodgemsMode();
     void UpdateWaitingToDepart();
+    void UpdateTravellingBoatHireSetup();
+    void UpdateDepartingBoatHire();
     void UpdateDeparting();
     void UpdateTravelling();
     void UpdateArriving();
     void UpdateUnloadingPassengers();
     void UpdateWaitingForCableLift();
     void UpdateTravellingCableLift();
+    void UpdateTravellingBoat();
     void UpdateSwinging();
     void UpdateFerrisWheelRotating();
     void UpdateSimulatorOperating();

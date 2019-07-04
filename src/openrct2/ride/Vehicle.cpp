@@ -45,7 +45,6 @@
 
 static void vehicle_update_crossings(const rct_vehicle* vehicle);
 static void vehicle_claxon(const rct_vehicle* vehicle);
-
 static void vehicle_finish_departing(rct_vehicle* vehicle);
 static void vehicle_update_motion_boat_hire(rct_vehicle* vehicle);
 static void vehicle_update_boat_location(rct_vehicle* vehicle);
@@ -59,7 +58,6 @@ static bool vehicle_update_motion_collision_detection(
 static int32_t vehicle_get_sound_priority_factor(rct_vehicle* vehicle);
 static void vehicle_update_sound(rct_vehicle* vehicle);
 static int32_t vehicle_update_scream_sound(rct_vehicle* vehicle);
-
 static void vehicle_kill_all_passengers(rct_vehicle* vehicle);
 static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle);
 
@@ -3093,39 +3091,39 @@ static bool vehicle_current_tower_element_is_top(rct_vehicle* vehicle)
  *
  *  rct2: 0x006D986C
  */
-static void vehicle_update_travelling_boat_hire_setup(rct_vehicle* vehicle)
+void rct_vehicle::UpdateTravellingBoatHireSetup()
 {
-    vehicle->var_34 = vehicle->sprite_direction;
-    vehicle->track_x = vehicle->x & 0xFFE0;
-    vehicle->track_y = vehicle->y & 0xFFE0;
+    var_34 = sprite_direction;
+    track_x = x & 0xFFE0;
+    track_y = y & 0xFFE0;
 
     LocationXY8 location = {
-        static_cast<uint8_t>((vehicle->track_x + CoordsDirectionDelta[vehicle->sprite_direction >> 3].x) / 32),
-        static_cast<uint8_t>((vehicle->track_y + CoordsDirectionDelta[vehicle->sprite_direction >> 3].y) / 32)
+        static_cast<uint8_t>((track_x + CoordsDirectionDelta[sprite_direction >> 3].x) / 32),
+        static_cast<uint8_t>((track_y + CoordsDirectionDelta[sprite_direction >> 3].y) / 32)
     };
 
-    vehicle->boat_location = location;
-    vehicle->var_35 = 0;
-    vehicle->SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
-    vehicle->remaining_distance += 27924;
+    boat_location = location;
+    var_35 = 0;
+    SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
+    remaining_distance += 27924;
 
-    vehicle->UpdateTravellingBoat();
+    UpdateTravellingBoat();
 }
 
 /**
  *
  *  rct2: 0x006D982F
  */
-static void vehicle_update_departing_boat_hire(rct_vehicle* vehicle)
+void rct_vehicle::UpdateDepartingBoatHire()
 {
-    vehicle->lost_time_out = 0;
-    Ride* ride = get_ride(vehicle->ride);
+    lost_time_out = 0;
+    Ride* newRide = get_ride(this->ride);
 
-    ride->stations[vehicle->current_station].Depart &= STATION_DEPART_FLAG;
-    uint8_t waitingTime = std::max(ride->min_waiting_time, static_cast<uint8_t>(3));
+    newRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
+    uint8_t waitingTime = std::max(newRide->min_waiting_time, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
-    ride->stations[vehicle->current_station].Depart |= waitingTime;
-    vehicle_update_travelling_boat_hire_setup(vehicle);
+    newRide->stations[current_station].Depart |= waitingTime;
+    UpdateTravellingBoatHireSetup();
 }
 
 /**
@@ -3258,7 +3256,7 @@ void rct_vehicle::UpdateDeparting()
     {
         if (newRide->mode == RIDE_MODE_BOAT_HIRE)
         {
-            vehicle_update_departing_boat_hire(this);
+            UpdateDepartingBoatHire();
             return;
         }
         else if (newRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
@@ -3673,7 +3671,7 @@ void rct_vehicle::UpdateTravelling()
             }
             else if (newRide->mode == RIDE_MODE_BOAT_HIRE)
             {
-                vehicle_update_travelling_boat_hire_setup(this);
+                UpdateTravellingBoatHireSetup();
                 return;
             }
             else if (newRide->mode == RIDE_MODE_SHUTTLE)
