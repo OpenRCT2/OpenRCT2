@@ -4694,20 +4694,20 @@ void rct_vehicle::UpdateFerrisWheelRotating()
 
     if (newFerrisWheelVar0 == 3)
     {
-        newFerrisWheelVar0 = newFerrisWheelVar0;
+        ferris_wheel_var_0 = newFerrisWheelVar0;
         ferris_wheel_var_1 = newFerrisWheelVar0;
     }
     else if (newFerrisWheelVar0 < 3)
     {
         if (newFerrisWheelVar0 != -8)
             newFerrisWheelVar0--;
-        newFerrisWheelVar0 = newFerrisWheelVar0;
+        ferris_wheel_var_0 = newFerrisWheelVar0;
         ferris_wheel_var_1 = -newFerrisWheelVar0;
     }
     else
     {
         newFerrisWheelVar0--;
-        newFerrisWheelVar0 = newFerrisWheelVar0;
+        ferris_wheel_var_0 = newFerrisWheelVar0;
         ferris_wheel_var_1 = newFerrisWheelVar0;
     }
 
