@@ -1321,7 +1321,7 @@ void vehicle_update_all()
     {
         vehicle = GET_VEHICLE(sprite_index);
         sprite_index = vehicle->next;
-        
+
         (*vehicle).Update();
     }
 }
@@ -1923,8 +1923,7 @@ void rct_vehicle::Update()
         _vehicleBreakdown = newRide->breakdown_reason_pending;
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && newRide->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
         {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
-                || (vehicle_sprite_type == 2 && velocity <= 0x20000))
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE) || (vehicle_sprite_type == 2 && velocity <= 0x20000))
             {
                 update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
             }
@@ -2312,7 +2311,8 @@ void rct_vehicle::UpdateWaitingForPassengers()
             }
         }
 
-        if (ride_type_has_flag(newRide->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS) && newRide->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
+        if (ride_type_has_flag(newRide->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS)
+            && newRide->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
         {
             if (num_peeps_on_train == num_seats_on_train)
             {
@@ -2407,11 +2407,11 @@ void rct_vehicle::UpdateDodgemsMode()
     {
         return;
     }
-    
+
     // rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
     // Mark the dodgem as in use.
-    if (flags & VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS &&animation_frame != 1)
+    if (flags & VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS && animation_frame != 1)
     {
         animation_frame = 1;
         Invalidate();
@@ -2530,8 +2530,7 @@ void rct_vehicle::UpdateWaitingToDepart()
         int32_t direction;
 
         if (track_block_get_next_from_zero(
-                track_x, track_y, track_z, newRide, (uint8_t)(track_direction & 0x3), &track,
-                &newZ, &direction, false))
+                track_x, track_y, track_z, newRide, (uint8_t)(track_direction & 0x3), &track, &newZ, &direction, false))
         {
             if (track.element->AsTrack()->HasCableLift())
             {
@@ -3093,39 +3092,37 @@ static bool vehicle_current_tower_element_is_top(rct_vehicle* vehicle)
  *
  *  rct2: 0x006D986C
  */
-static void vehicle_update_travelling_boat_hire_setup(rct_vehicle* vehicle)
+void rct_vehicle::UpdateTravellingBoatHireSetup()
 {
-    vehicle->var_34 = vehicle->sprite_direction;
-    vehicle->track_x = vehicle->x & 0xFFE0;
-    vehicle->track_y = vehicle->y & 0xFFE0;
+    var_34 = sprite_direction;
+    track_x = x & 0xFFE0;
+    track_y = y & 0xFFE0;
 
-    LocationXY8 location = {
-        static_cast<uint8_t>((vehicle->track_x + CoordsDirectionDelta[vehicle->sprite_direction >> 3].x) / 32),
-        static_cast<uint8_t>((vehicle->track_y + CoordsDirectionDelta[vehicle->sprite_direction >> 3].y) / 32)
-    };
+    LocationXY8 location = { static_cast<uint8_t>((track_x + CoordsDirectionDelta[sprite_direction >> 3].x) / 32),
+                             static_cast<uint8_t>((track_y + CoordsDirectionDelta[sprite_direction >> 3].y) / 32) };
 
-    vehicle->boat_location = location;
-    vehicle->var_35 = 0;
-    vehicle->SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
-    vehicle->remaining_distance += 27924;
+    boat_location = location;
+    var_35 = 0;
+    SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
+    remaining_distance += 27924;
 
-    vehicle->UpdateTravellingBoat();
+    UpdateTravellingBoat();
 }
 
 /**
  *
  *  rct2: 0x006D982F
  */
-static void vehicle_update_departing_boat_hire(rct_vehicle* vehicle)
+void rct_vehicle::UpdateDepartingBoatHire()
 {
-    vehicle->lost_time_out = 0;
-    Ride* ride = get_ride(vehicle->ride);
+    lost_time_out = 0;
+    Ride* newRide = get_ride(ride);
 
-    ride->stations[vehicle->current_station].Depart &= STATION_DEPART_FLAG;
-    uint8_t waitingTime = std::max(ride->min_waiting_time, static_cast<uint8_t>(3));
+    newRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
+    uint8_t waitingTime = std::max(newRide->min_waiting_time, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
-    ride->stations[vehicle->current_station].Depart |= waitingTime;
-    vehicle_update_travelling_boat_hire_setup(vehicle);
+    newRide->stations[current_station].Depart |= waitingTime;
+    UpdateTravellingBoatHireSetup();
 }
 
 /**
@@ -3258,7 +3255,7 @@ void rct_vehicle::UpdateDeparting()
     {
         if (newRide->mode == RIDE_MODE_BOAT_HIRE)
         {
-            vehicle_update_departing_boat_hire(this);
+            UpdateDepartingBoatHire();
             return;
         }
         else if (newRide->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
@@ -3341,7 +3338,8 @@ void rct_vehicle::UpdateDeparting()
 
             if (!(newFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 return;
-            if (newRide->mode == RIDE_MODE_BOAT_HIRE || newRide->mode == RIDE_MODE_ROTATING_LIFT || newRide->mode == RIDE_MODE_SHUTTLE)
+            if (newRide->mode == RIDE_MODE_BOAT_HIRE || newRide->mode == RIDE_MODE_ROTATING_LIFT
+                || newRide->mode == RIDE_MODE_SHUTTLE)
                 return;
 
             vehicle_update_crash_setup(this);
@@ -3673,7 +3671,7 @@ void rct_vehicle::UpdateTravelling()
             }
             else if (newRide->mode == RIDE_MODE_BOAT_HIRE)
             {
-                vehicle_update_travelling_boat_hire_setup(this);
+                UpdateTravellingBoatHireSetup();
                 return;
             }
             else if (newRide->mode == RIDE_MODE_SHUTTLE)
@@ -3933,8 +3931,7 @@ loc_6D8E36:
     }
 
     var_C0++;
-    if ((newFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1) && (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
-        && (var_C0 < 40))
+    if ((newFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1) && (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART) && (var_C0 < 40))
     {
         return;
     }
@@ -4169,7 +4166,8 @@ void rct_vehicle::UpdateTravellingCableLift()
 
     sub_state = 2;
 
-    if (newRide->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || newRide->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (newRide->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
+        || newRide->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
         return;
 
     // This is slightly different to the vanilla function
@@ -4696,20 +4694,20 @@ void rct_vehicle::UpdateFerrisWheelRotating()
 
     if (newFerrisWheelVar0 == 3)
     {
-        newFerrisWheelVar0 = newFerrisWheelVar0;
+        ferris_wheel_var_0 = newFerrisWheelVar0;
         ferris_wheel_var_1 = newFerrisWheelVar0;
     }
     else if (newFerrisWheelVar0 < 3)
     {
         if (newFerrisWheelVar0 != -8)
             newFerrisWheelVar0--;
-        newFerrisWheelVar0 = newFerrisWheelVar0;
+        ferris_wheel_var_0 = newFerrisWheelVar0;
         ferris_wheel_var_1 = -newFerrisWheelVar0;
     }
     else
     {
         newFerrisWheelVar0--;
-        newFerrisWheelVar0 = newFerrisWheelVar0;
+        ferris_wheel_var_0 = newFerrisWheelVar0;
         ferris_wheel_var_1 = newFerrisWheelVar0;
     }
 
@@ -4745,7 +4743,7 @@ void rct_vehicle::UpdateFerrisWheelRotating()
 
         if (shouldStop)
         {
-            newFerrisWheelVar0 = newFerrisWheelVar0;
+            ferris_wheel_var_0 = newFerrisWheelVar0;
             newFerrisWheelVar0 = -abs(newFerrisWheelVar0);
             ferris_wheel_var_1 = abs(newFerrisWheelVar0);
         }
