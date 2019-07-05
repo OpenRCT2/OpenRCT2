@@ -267,7 +267,8 @@ private:
 
     money32 MazeRemoveTrack(uint16_t x, uint16_t y, uint16_t z, uint8_t direction) const
     {
-        auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
+        CoordsXYZD mazeLocation = {x, y, z, (Direction)direction};
+        auto setMazeTrack = MazeSetTrackAction(mazeLocation, false ,_rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
         auto execRes = GameActions::ExecuteNested(&setMazeTrack);

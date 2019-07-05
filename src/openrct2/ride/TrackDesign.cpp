@@ -775,18 +775,20 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             {
                 quadrant = 0;
             }
-
-            ga = std::make_unique<SmallSceneryRemoveAction>(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
+            CoordsXYZ sceneryLocation = {mapCoord.x, mapCoord.y, z};
+            ga = std::make_unique<SmallSceneryRemoveAction>(sceneryLocation, quadrant, entry_index);
             break;
         }
         case OBJECT_TYPE_LARGE_SCENERY:
-            ga = std::make_unique<LargeSceneryRemoveAction>(mapCoord.x, mapCoord.y, z, sceneryRotation, 0);
+           
+            ga = std::make_unique<LargeSceneryRemoveAction>(CoordsXYZD { mapCoord.x, mapCoord.y, z,sceneryRotation }, 0);
             break;
         case OBJECT_TYPE_WALLS:
-            ga = std::make_unique<WallRemoveAction>(TileCoordsXYZD{ mapCoord.x / 32, mapCoord.y / 32, z, sceneryRotation });
+             
+            ga = std::make_unique<WallRemoveAction>(CoordsXYZD  { mapCoord.x / 32, mapCoord.y / 32, z, sceneryRotation });
             break;
         case OBJECT_TYPE_PATHS:
-            ga = std::make_unique<FootpathRemoveAction>(mapCoord.x, mapCoord.y, z);
+            ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ { mapCoord.x, mapCoord.y, z } );
             break;
         default:
             return true;

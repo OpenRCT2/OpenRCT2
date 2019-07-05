@@ -61,6 +61,7 @@ static rct_window_event_list window_main_events = {
  */
 rct_window* window_main_open()
 {
+    
     window_main_widgets[0].right = context_get_width();
     window_main_widgets[0].bottom = context_get_height();
     rct_window* window = window_create(

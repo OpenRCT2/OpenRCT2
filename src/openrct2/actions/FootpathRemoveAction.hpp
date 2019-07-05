@@ -25,16 +25,13 @@
 DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActionResult)
 {
 private:
-    int32_t _x;
-    int32_t _y;
-    int32_t _z;
+    CoordsXYZ _location;
+
 
 public:
     FootpathRemoveAction() = default;
-    FootpathRemoveAction(int32_t x, int32_t y, int32_t z)
-        : _x(x)
-        , _y(y)
-        , _z(z)
+    FootpathRemoveAction(CoordsXYZ location)
+        : _location{location}
     {
     }
 
@@ -47,7 +44,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_x) << DS_TAG(_y) << DS_TAG(_z);
+        stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z);
     }
 
     GameActionResult::Ptr Query() const override
@@ -55,9 +52,9 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position = { _x + 16, _y + 16, _z * 8 };
+        res->Position = { _location.x + 16, _location.y + 16, _location.z * 8 };
 
-        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_x, _y, _z * 8))
+        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_location.x, _location.y, _location.z * 8))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -78,25 +75,25 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position = { _x + 16, _y + 16, _z * 8 };
+        res->Position = { _location.x + 16, _location.y + 16, _location.z * 8 };
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_interrupt_peeps(_x, _y, _z * 8);
-            footpath_remove_litter(_x, _y, _z * 8);
+            footpath_interrupt_peeps(_location.x, _location.y, _location.z * 8);
+            footpath_remove_litter(_location.x, _location.y, _location.z * 8);
         }
 
         TileElement* footpathElement = GetFootpathElement();
         if (footpathElement != nullptr)
         {
             footpath_queue_chain_reset();
-            auto bannerRes = RemoveBannersAtElement(_x, _y, footpathElement);
+            auto bannerRes = RemoveBannersAtElement(_location.x, _location.y, footpathElement);
             if (bannerRes->Error == GA_ERROR::OK)
             {
                 res->Cost += bannerRes->Cost;
             }
-            footpath_remove_edges_at(_x, _y, footpathElement);
-            map_invalidate_tile_full(_x, _y);
+            footpath_remove_edges_at(_location.x, _location.y, footpathElement);
+            map_invalidate_tile_full(_location.x, _location.y);
             tile_element_remove(footpathElement);
             footpath_update_queue_chains();
         }
@@ -115,7 +112,7 @@ private:
     {
         bool getGhostPath = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-        TileElement* tileElement = map_get_footpath_element(_x / 32, _y / 32, _z);
+        TileElement* tileElement = map_get_footpath_element(_location.x / 32, _location.y / 32, _location.z);
         TileElement* footpathElement = nullptr;
         if (tileElement != nullptr)
         {

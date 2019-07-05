@@ -152,7 +152,8 @@ private:
                     case TILE_ELEMENT_TYPE_PATH:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_FOOTPATH)
                         {
-                            auto footpathRemoveAction = FootpathRemoveAction(x * 32, y * 32, tileElement->base_height);
+                            auto footpathRemoveAction = FootpathRemoveAction(
+                                 CoordsXYZ { x * 32, y * 32, tileElement->base_height } );
                             footpathRemoveAction.SetFlags(GetFlags());
 
                             auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
@@ -168,8 +169,9 @@ private:
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
-                            auto removeSceneryAction = SmallSceneryRemoveAction(
-                                x * 32, y * 32, tileElement->base_height, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+                            CoordsXYZ sceneryLocation = {x,y,tileElement->base_height};
+                            auto removeSceneryAction = SmallSceneryRemoveAction(sceneryLocation
+                            , tileElement->AsSmallScenery()->GetSceneryQuadrant(),
                                 tileElement->AsSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
@@ -186,7 +188,7 @@ private:
                     case TILE_ELEMENT_TYPE_WALL:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
-                            TileCoordsXYZD wallLocation = { x, y, tileElement->base_height, tileElement->GetDirection() };
+                            CoordsXYZD wallLocation = { x, y, tileElement->base_height, tileElement->GetDirection() };
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 
@@ -203,8 +205,9 @@ private:
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
                         {
+                            CoordsXYZD sceneryLocation = {x * 32, y * 32, tileElement->base_height,(Direction) tileElement->GetDirection()};
                             auto removeSceneryAction = LargeSceneryRemoveAction(
-                                x * 32, y * 32, tileElement->base_height, tileElement->GetDirection(),
+                                sceneryLocation,
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
 

@@ -22,11 +22,11 @@
 DEFINE_GAME_ACTION(WallRemoveAction, GAME_COMMAND_REMOVE_WALL, GameActionResult)
 {
 private:
-    TileCoordsXYZD _location;
+    CoordsXYZD _location;
 
 public:
     WallRemoveAction() = default;
-    WallRemoveAction(const TileCoordsXYZD& location)
+    WallRemoveAction(const CoordsXYZD& location)
         : _location(location)
     {
     }
@@ -96,7 +96,7 @@ public:
     }
 
 private:
-    TileElement* GetFirstWallElementAt(const TileCoordsXYZD& location, bool isGhost) const
+    TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const
     {
         TileElement* tileElement = map_get_first_element_at(location.x, location.y);
         if (!tileElement)

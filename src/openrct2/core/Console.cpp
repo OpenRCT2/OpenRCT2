@@ -18,6 +18,7 @@ namespace Console
 {
     void Write(char c)
     {
+        
         fputc(c, stdout);
     }
 
@@ -71,7 +72,7 @@ namespace Console
         void WriteFormat(const utf8* format, ...)
         {
             va_list args;
-
+            
             va_start(args, format);
             vfprintf(stderr, format, args);
             va_end(args);

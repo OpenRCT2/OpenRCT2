@@ -24,17 +24,16 @@
 DEFINE_GAME_ACTION(RideSetColourSchemeAction, GAME_COMMAND_SET_COLOUR_SCHEME, GameActionResult)
 {
 private:
-    int32_t _x = 0, _y = 0, _z = 0, _direction = 0, _trackType = 0;
+
+    CoordsXYZD _location = {0,0,0,0};
+    int32_t _trackType = 0;
     uint16_t _newColourScheme = 0;
 
 public:
     RideSetColourSchemeAction() = default;
-    RideSetColourSchemeAction(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t trackType, uint16_t newColourScheme)
-        : _x(x)
-        , _y(y)
-        , _z(z)
-        , _direction(direction)
-        , _trackType(trackType)
+    RideSetColourSchemeAction(CoordsXYZD location, int32_t trackType, uint16_t newColourScheme)
+        : _location(location)
+        ,_trackType(trackType)
         , _newColourScheme(newColourScheme)
     {
     }
@@ -48,7 +47,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_x) << DS_TAG(_y) << DS_TAG(_z) << DS_TAG(_direction) << DS_TAG(_trackType)
+        stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction) << DS_TAG(_trackType)
                << DS_TAG(_newColourScheme);
     }
 
@@ -63,8 +62,8 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
-        int32_t x = _x, y = _y, z = _z;
-        sub_6C683D(&x, &y, &z, _direction, _trackType, _newColourScheme, nullptr, 4);
+        int32_t x = _location.x, y = _location.y, z = _location.z;
+        sub_6C683D(&x, &y, &z, _location.direction, _trackType, _newColourScheme, nullptr, 4);
 
         return res;
     }
