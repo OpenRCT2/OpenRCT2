@@ -26,15 +26,13 @@ DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActionRes
 {
 private:
     CoordsXYZ _location;
-
-
 public:
     FootpathRemoveAction() = default;
     FootpathRemoveAction(CoordsXYZ location)
         : _location{location}
     {
     }
-
+    
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();

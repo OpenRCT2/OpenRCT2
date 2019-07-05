@@ -24,7 +24,6 @@
 DEFINE_GAME_ACTION(RideSetColourSchemeAction, GAME_COMMAND_SET_COLOUR_SCHEME, GameActionResult)
 {
 private:
-
     CoordsXYZD _location = {0,0,0,0};
     int32_t _trackType = 0;
     uint16_t _newColourScheme = 0;
