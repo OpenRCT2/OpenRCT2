@@ -776,14 +776,14 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
                 quadrant = 0;
             }
 
-            ga = std::make_unique<SmallSceneryRemoveAction>(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
+            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{mapCoord.x, mapCoord.y, z * 8}, quadrant, entry_index);
             break;
         }
         case OBJECT_TYPE_LARGE_SCENERY:
             ga = std::make_unique<LargeSceneryRemoveAction>(mapCoord.x, mapCoord.y, z, sceneryRotation, 0);
             break;
         case OBJECT_TYPE_WALLS:
-            ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x , mapCoord.y , z, sceneryRotation });
+            ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x , mapCoord.y , z * 8, sceneryRotation });
             break;
         case OBJECT_TYPE_PATHS:
             ga = std::make_unique<FootpathRemoveAction>(mapCoord.x, mapCoord.y, z);

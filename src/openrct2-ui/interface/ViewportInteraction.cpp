@@ -496,7 +496,8 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
 static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y)
 {
     auto removeSceneryAction = SmallSceneryRemoveAction(
-        x, y, tileElement->base_height, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+        {x, y, tileElement->base_height * 8},
+        tileElement->AsSmallScenery()->GetSceneryQuadrant(),
         tileElement->AsSmallScenery()->GetEntryIndex());
 
     GameActions::Execute(&removeSceneryAction);
@@ -574,7 +575,7 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, int3
     }
     else
     {
-        CoordsXYZD wallLocation = { x , y , tileElement->base_height , tileElement->GetDirection() };
+        CoordsXYZD wallLocation = { x, y, tileElement->base_height << 3, tileElement->GetDirection() };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         GameActions::Execute(&wallRemoveAction);
     }

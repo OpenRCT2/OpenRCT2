@@ -474,7 +474,7 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
                 }
                 tile_element++;
             }
-            CoordsXYZD wallLocation = { x , y , tile_element->base_height, tile_element->GetDirection() };
+            CoordsXYZD wallLocation = { x , y , tile_element->base_height << 3, tile_element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
             break;

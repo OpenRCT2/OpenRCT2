@@ -1755,7 +1755,7 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         }
         case TILE_ELEMENT_TYPE_WALL:
         {
-            CoordsXYZD wallLocation = { x, y, element->base_height, element->GetDirection() };
+            CoordsXYZD wallLocation = { x, y, element->base_height << 3, element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
         }

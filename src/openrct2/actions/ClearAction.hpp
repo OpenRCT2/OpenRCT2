@@ -169,7 +169,8 @@ private:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
                             auto removeSceneryAction = SmallSceneryRemoveAction(
-                                x * 32, y * 32, tileElement->base_height, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+                                {x * 32, y * 32, tileElement->base_height * 8},
+                                tileElement->AsSmallScenery()->GetSceneryQuadrant(),
                                 tileElement->AsSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
@@ -186,7 +187,7 @@ private:
                     case TILE_ELEMENT_TYPE_WALL:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
-                            CoordsXYZD wallLocation = { x<<5, y<<5, tileElement->base_height, tileElement->GetDirection() };
+                            CoordsXYZD wallLocation = { x<<5, y<<5, tileElement->base_height << 3, tileElement->GetDirection() };
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 
