@@ -216,7 +216,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_2;
 
-        TileCoordsXYZD wallLocation = { x >> 5, y >> 5, z, gSceneryGhostWallRotation };
+        CoordsXYZD wallLocation = { x , y , z, gSceneryGhostWallRotation };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY);
         wallRemoveAction.Execute();

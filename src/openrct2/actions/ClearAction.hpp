@@ -186,7 +186,7 @@ private:
                     case TILE_ELEMENT_TYPE_WALL:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
-                            TileCoordsXYZD wallLocation = { x, y, tileElement->base_height, tileElement->GetDirection() };
+                            CoordsXYZD wallLocation = { x<<5, y<<5, tileElement->base_height, tileElement->GetDirection() };
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 

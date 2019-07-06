@@ -574,7 +574,7 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, int3
     }
     else
     {
-        TileCoordsXYZD wallLocation = { x >> 5, y >> 5, tileElement->base_height, tileElement->GetDirection() };
+        CoordsXYZD wallLocation = { x , y , tileElement->base_height , tileElement->GetDirection() };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         GameActions::Execute(&wallRemoveAction);
     }
