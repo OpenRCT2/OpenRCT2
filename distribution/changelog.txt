@@ -61,7 +61,6 @@
 - Fix: [#9324] Crash trying to remove invalid footpath scenery.
 - Fix: [#9402] Ad campaigns disappear when you save and load the game.
 - Fix: [#9411] Ad campaigns end too soon.
-- Fix: [#9424] Crash using multi threading with TrueType fonts.
 - Fix: [#9476] Running `simulate` command on park yields `Completed: (null)`.
 - Fix: [#9520] Time Twister object artdec29 conversion problem.
 - Fix: Guests eating popcorn are drawn as if they're eating pizza.
