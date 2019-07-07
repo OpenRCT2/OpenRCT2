@@ -51,11 +51,8 @@ static constexpr const uint8_t byte_993D0C[] = {
 DEFINE_GAME_ACTION(MazeSetTrackAction, GAME_COMMAND_SET_MAZE_TRACK, GameActionResult)
 {
 private:
-    uint16_t _x;
-    uint16_t _y;
-    uint16_t _z;
+    CoordsXYZD _loc;
     bool _initialPlacement;
-    uint8_t _direction;
     NetworkRideId_t _rideIndex;
     uint8_t _mode;
 
@@ -64,12 +61,9 @@ public:
     {
     }
     MazeSetTrackAction(
-        uint16_t x, uint16_t y, uint16_t z, bool initialPlacement, uint8_t direction, NetworkRideId_t rideIndex, uint8_t mode)
-        : _x(x)
-        , _y(y)
-        , _z(z)
+        CoordsXYZD location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
+        : _loc(location)
         , _initialPlacement(initialPlacement)
-        , _direction(direction)
         , _rideIndex(rideIndex)
         , _mode(mode)
     {
@@ -79,17 +73,16 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_x) << DS_TAG(_y) << DS_TAG(_z) << DS_TAG(_initialPlacement) << DS_TAG(_direction)
-               << DS_TAG(_rideIndex) << DS_TAG(_mode);
+        stream << DS_TAG(_loc) << DS_TAG(_initialPlacement) << DS_TAG(_rideIndex) << DS_TAG(_mode);
     }
 
     GameActionResult::Ptr Query() const override
     {
         auto res = std::make_unique<GameActionResult>();
 
-        res->Position.x = _x + 8;
-        res->Position.y = _y + 8;
-        res->Position.z = _z;
+        res->Position.x = _loc.x + 8;
+        res->Position.y = _loc.y + 8;
+        res->Position.z = _loc.z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
@@ -100,21 +93,21 @@ public:
             return res;
         }
 
-        if ((_z & 0xF) != 0)
+        if ((_loc.z & 0xF) != 0)
         {
             res->Error = GA_ERROR::UNKNOWN;
             res->ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
             return res;
         }
 
-        if (!map_is_location_owned(floor2(_x, 32), floor2(_y, 32), _z) && !gCheatsSandboxMode)
+        if (!map_is_location_owned(floor2(_loc.x, 32), floor2(_loc.y, 32), _loc.z) && !gCheatsSandboxMode)
         {
             res->Error = GA_ERROR::NOT_OWNED;
             res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
             return res;
         }
 
-        TileElement* tileElement = map_get_surface_element_at(_x / 32, _y / 32);
+        TileElement* tileElement = map_get_surface_element_at(_loc.x / 32, _loc.y / 32);
         if (tileElement == nullptr)
         {
             res->Error = GA_ERROR::UNKNOWN;
@@ -122,8 +115,8 @@ public:
             return res;
         }
 
-        uint8_t baseHeight = _z >> 3;
-        uint8_t clearanceHeight = (_z + 32) >> 3;
+        uint8_t baseHeight = _loc.z >> 3;
+        uint8_t clearanceHeight = (_loc.z + 32) >> 3;
 
         int8_t heightDifference = baseHeight - tileElement->base_height;
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
@@ -138,7 +131,7 @@ public:
             }
         }
 
-        tileElement = map_get_track_element_at_of_type_from_ride(_x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        tileElement = map_get_track_element_at_of_type_from_ride(_loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             if (_mode != GC_SET_MAZE_TRACK_BUILD)
@@ -148,7 +141,7 @@ public:
                 return res;
             }
 
-            if (!map_can_construct_at(floor2(_x, 32), floor2(_y, 32), baseHeight, clearanceHeight, { 0b1111, 0 }))
+            if (!map_can_construct_at(floor2(_loc.x, 32), floor2(_loc.y, 32), baseHeight, clearanceHeight, { 0b1111, 0 }))
             {
                 return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
             }
@@ -188,9 +181,9 @@ public:
     {
         auto res = std::make_unique<GameActionResult>();
 
-        res->Position.x = _x + 8;
-        res->Position.y = _y + 8;
-        res->Position.z = _z;
+        res->Position.x = _loc.x + 8;
+        res->Position.y = _loc.y + 8;
+        res->Position.z = _loc.z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
@@ -204,14 +197,14 @@ public:
         uint32_t flags = GetFlags();
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_remove_litter(_x, _y, _z);
-            wall_remove_at(floor2(_x, 32), floor2(_y, 32), _z, _z + 32);
+            footpath_remove_litter(_loc.x, _loc.y, _loc.z);
+            wall_remove_at(floor2(_loc.x, 32), floor2(_loc.y, 32), _loc.z, _loc.z + 32);
         }
 
-        uint8_t baseHeight = _z >> 3;
-        uint8_t clearanceHeight = (_z + 32) >> 3;
+        uint8_t baseHeight = _loc.z >> 3;
+        uint8_t clearanceHeight = (_loc.z + 32) >> 3;
 
-        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             Ride* ride = get_ride(_rideIndex);
@@ -220,10 +213,10 @@ public:
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
 
-            uint16_t flooredX = floor2(_x, 32);
-            uint16_t flooredY = floor2(_y, 32);
+            uint16_t flooredX = floor2(_loc.x, 32);
+            uint16_t flooredY = floor2(_loc.y, 32);
 
-            tileElement = tile_element_insert(_x / 32, _y / 32, baseHeight, 0xF);
+            tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, baseHeight, 0xF);
             assert(tileElement != nullptr);
 
             tileElement->clearance_height = clearanceHeight;
@@ -255,20 +248,20 @@ public:
         {
             case GC_SET_MAZE_TRACK_BUILD:
             {
-                uint8_t segmentOffset = MazeGetSegmentBit(_x, _y);
+                uint8_t segmentOffset = MazeGetSegmentBit(_loc.x, _loc.y);
 
                 tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
                 if (!_initialPlacement)
                 {
-                    segmentOffset = byte_993CE9[(_direction + segmentOffset)];
+                    segmentOffset = byte_993CE9[(_loc.direction + segmentOffset)];
                     tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
                     uint8_t temp_edx = byte_993CFC[segmentOffset];
                     if (temp_edx != 0xFF)
                     {
-                        uint16_t previousElementX = floor2(_x, 32) - CoordsDirectionDelta[_direction].x;
-                        uint16_t previousElementY = floor2(_y, 32) - CoordsDirectionDelta[_direction].y;
+                        uint16_t previousElementX = floor2(_loc.x, 32) - CoordsDirectionDelta[_loc.direction].x;
+                        uint16_t previousElementY = floor2(_loc.y, 32) - CoordsDirectionDelta[_loc.direction].y;
 
                         TileElement* previousTileElement = map_get_track_element_at_of_type_from_ride(
                             previousElementX, previousElementY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
@@ -293,8 +286,8 @@ public:
             case GC_SET_MAZE_TRACK_FILL:
                 if (!_initialPlacement)
                 {
-                    uint16_t previousSegmentX = _x - CoordsDirectionDelta[_direction].x / 2;
-                    uint16_t previousSegmentY = _y - CoordsDirectionDelta[_direction].y / 2;
+                    uint16_t previousSegmentX = _loc.x - CoordsDirectionDelta[_loc.direction].x / 2;
+                    uint16_t previousSegmentY = _loc.y - CoordsDirectionDelta[_loc.direction].y / 2;
 
                     tileElement = map_get_track_element_at_of_type_from_ride(
                         previousSegmentX, previousSegmentY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
@@ -340,7 +333,7 @@ public:
                 break;
         }
 
-        map_invalidate_tile(floor2(_x, 32), floor2(_y, 32), tileElement->base_height * 8, tileElement->clearance_height * 8);
+        map_invalidate_tile(floor2(_loc.x, 32), floor2(_loc.y, 32), tileElement->base_height * 8, tileElement->clearance_height * 8);
 
         if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
         {

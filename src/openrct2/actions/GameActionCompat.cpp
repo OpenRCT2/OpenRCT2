@@ -178,7 +178,7 @@ money32 maze_set_track(
     uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
     uint8_t mode)
 {
-    auto gameAction = MazeSetTrackAction(x, y, z, initialPlacement, direction, rideIndex, mode);
+    auto gameAction = MazeSetTrackAction({x, y, z, direction}, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);
 
     GameActionResult::Ptr res;
