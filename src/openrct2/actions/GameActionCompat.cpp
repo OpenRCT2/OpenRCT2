@@ -23,7 +23,7 @@
 #pragma region PlaceParkEntranceAction
 money32 place_park_entrance(int16_t x, int16_t y, int16_t z, uint8_t direction)
 {
-    auto gameAction = PlaceParkEntranceAction({x, y, z << 4, direction});
+    auto gameAction = PlaceParkEntranceAction({ x, y, z * 16, direction });
     auto result = GameActions::Execute(&gameAction);
     if (result->Error == GA_ERROR::OK)
     {
@@ -43,7 +43,7 @@ money32 park_entrance_place_ghost(int32_t x, int32_t y, int32_t z, int32_t direc
 {
     park_entrance_remove_ghost();
 
-    auto gameAction = PlaceParkEntranceAction({x, y, z << 4, (Direction)direction});
+    auto gameAction = PlaceParkEntranceAction({ x, y, z * 16, (Direction)direction });
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);
@@ -178,7 +178,7 @@ money32 maze_set_track(
     uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
     uint8_t mode)
 {
-    auto gameAction = MazeSetTrackAction({x, y, z, direction}, initialPlacement, rideIndex, mode);
+    auto gameAction = MazeSetTrackAction({ x, y, z, direction }, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);
 
     GameActionResult::Ptr res;

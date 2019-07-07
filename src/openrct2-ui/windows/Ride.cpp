@@ -4349,8 +4349,8 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
 
     z = tileElement->base_height * 8;
     direction = tileElement->GetDirection();
-    auto gameAction = RideSetColourSchemeAction( { x, y, z, (Direction)direction}
-    , tileElement->AsTrack()->GetTrackType(), newColourScheme);
+    auto gameAction = RideSetColourSchemeAction(
+        CoordsXYZD{ x, y, z, static_cast<Direction>(direction) }, tileElement->AsTrack()->GetTrackType(), newColourScheme);
     GameActions::Execute(&gameAction);
 }
 

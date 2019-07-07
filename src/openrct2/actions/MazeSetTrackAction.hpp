@@ -6,7 +6,6 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-
 #pragma once
 
 #include "../Cheats.h"
@@ -20,7 +19,6 @@
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 #include "GameAction.h"
-
 // clang-format off
 /** rct2: 0x00993CE9 */
 static constexpr const uint8_t byte_993CE9[] = {
@@ -60,8 +58,7 @@ public:
     MazeSetTrackAction()
     {
     }
-    MazeSetTrackAction(
-        CoordsXYZD location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
+    MazeSetTrackAction(CoordsXYZD location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
         : _loc(location)
         , _initialPlacement(initialPlacement)
         , _rideIndex(rideIndex)
@@ -72,8 +69,7 @@ public:
     void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
-
-        stream << DS_TAG(_loc) << DS_TAG(_initialPlacement) << DS_TAG(_rideIndex) << DS_TAG(_mode);
+        stream << DS_TAG(_loc) << DS_TAG(_loc.direction) << DS_TAG(_initialPlacement) << DS_TAG(_rideIndex) << DS_TAG(_mode);
     }
 
     GameActionResult::Ptr Query() const override
@@ -85,14 +81,12 @@ public:
         res->Position.z = _loc.z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-
         if (!map_check_free_elements_and_reorganise(1))
         {
             res->Error = GA_ERROR::NO_FREE_ELEMENTS;
             res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
-
         if ((_loc.z & 0xF) != 0)
         {
             res->Error = GA_ERROR::UNKNOWN;
@@ -115,8 +109,8 @@ public:
             return res;
         }
 
-        uint8_t baseHeight = _loc.z >> 3;
-        uint8_t clearanceHeight = (_loc.z + 32) >> 3;
+        uint8_t baseHeight = _loc.z / 8;
+        uint8_t clearanceHeight = (_loc.z + 32) / 8;
 
         int8_t heightDifference = baseHeight - tileElement->base_height;
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
@@ -201,10 +195,11 @@ public:
             wall_remove_at(floor2(_loc.x, 32), floor2(_loc.y, 32), _loc.z, _loc.z + 32);
         }
 
-        uint8_t baseHeight = _loc.z >> 3;
-        uint8_t clearanceHeight = (_loc.z + 32) >> 3;
+        uint8_t baseHeight = _loc.z / 8;
+        uint8_t clearanceHeight = (_loc.z + 32) / 8;
 
-        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(
+            _loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             Ride* ride = get_ride(_rideIndex);
@@ -333,7 +328,8 @@ public:
                 break;
         }
 
-        map_invalidate_tile(floor2(_loc.x, 32), floor2(_loc.y, 32), tileElement->base_height * 8, tileElement->clearance_height * 8);
+        map_invalidate_tile(
+            floor2(_loc.x, 32), floor2(_loc.y, 32), tileElement->base_height * 8, tileElement->clearance_height * 8);
 
         if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
         {

@@ -186,7 +186,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_0;
 
-        auto removeSceneryAction = SmallSceneryRemoveAction({x, y, z * 8}, gSceneryQuadrant, gSceneryPlaceObject);
+        auto removeSceneryAction = SmallSceneryRemoveAction({ x, y, z * 8 }, gSceneryQuadrant, gSceneryPlaceObject);
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         removeSceneryAction.Execute();
@@ -216,7 +216,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_2;
 
-        CoordsXYZD wallLocation = { x , y , z * 8, gSceneryGhostWallRotation };
+        CoordsXYZD wallLocation = { x, y, z * 8, gSceneryGhostWallRotation };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY);
         wallRemoveAction.Execute();
@@ -226,7 +226,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_3;
 
-        auto removeSceneryAction = LargeSceneryRemoveAction({x, y, z << 3, gSceneryPlaceRotation}, 0);
+        auto removeSceneryAction = LargeSceneryRemoveAction({ x, y, z * 8, gSceneryPlaceRotation }, 0);
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
             | GAME_COMMAND_FLAG_NO_SPEND);

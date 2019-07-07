@@ -59,7 +59,7 @@ public:
         int32_t z = tile_element_height(_loc.x, _loc.x);
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = z ;
+        res->Position.z = z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Cost = 0;
 
@@ -72,10 +72,9 @@ public:
 
         rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
 
-        LocationXYZ16 firstTile = {
-            scenery_entry->large_scenery.tiles[_tileIndex].x_offset, scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
-            static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset)
-        };
+        LocationXYZ16 firstTile = { scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
+                                    scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
+                                    static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset) };
 
         rotate_map_coordinates(&firstTile.x, &firstTile.y, _loc.direction);
 
@@ -145,10 +144,9 @@ public:
 
         rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
 
-        LocationXYZ16 firstTile = {
-            scenery_entry->large_scenery.tiles[_tileIndex].x_offset, scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
-            static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset)
-        };
+        LocationXYZ16 firstTile = { scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
+                                    scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
+                                    static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset) };
 
         rotate_map_coordinates(&firstTile.x, &firstTile.y, _loc.direction);
 
@@ -225,7 +223,7 @@ private:
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 continue;
 
-            if (tileElement->base_height != _loc.z >> 3)
+            if (tileElement->base_height != _loc.z / 8)
                 continue;
 
             if (tileElement->AsLargeScenery()->GetSequenceIndex() != _tileIndex)

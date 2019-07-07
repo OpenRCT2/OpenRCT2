@@ -1755,7 +1755,7 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         }
         case TILE_ELEMENT_TYPE_WALL:
         {
-            CoordsXYZD wallLocation = { x, y, element->base_height << 3, element->GetDirection() };
+            CoordsXYZD wallLocation = { x, y, element->base_height * 8, element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
         }
@@ -1763,8 +1763,7 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
             auto removeSceneryAction = LargeSceneryRemoveAction(
-                {x, y, element->base_height << 3, element->GetDirection()}
-                , element->AsLargeScenery()->GetSequenceIndex());
+                { x, y, element->base_height * 8, element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
             GameActions::Execute(&removeSceneryAction);
         }
         break;
@@ -1794,7 +1793,7 @@ static void clear_elements_at(int32_t x, int32_t y)
             [x, y](const auto& spawn) { return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y; }),
         gPeepSpawns.end());
 
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
 
     // Remove all elements except the last one
     while (!tileElement->IsLastForTile())
@@ -1827,7 +1826,7 @@ int32_t map_get_highest_z(int32_t tileX, int32_t tileY)
 
 LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement == nullptr)
     {
         return nullptr;
@@ -1850,7 +1849,7 @@ LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t
 
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement != nullptr)
     {
         do
@@ -1875,7 +1874,7 @@ EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t 
 
 EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement != nullptr)
     {
         do
@@ -1900,7 +1899,7 @@ EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t 
 
 EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement != nullptr)
     {
         do
@@ -1925,7 +1924,7 @@ EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, b
 
 SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement != nullptr)
     {
         do

@@ -58,7 +58,7 @@ public:
 
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-        res->Position = {_loc.x, _loc.y, _loc.z};
+        res->Position = { _loc.x, _loc.y, _loc.z };
 
         if (!map_check_free_elements_and_reorganise(3))
         {
@@ -77,7 +77,7 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
-        int8_t zLow = _loc.z >> 3;
+        int8_t zLow = _loc.z / 8;
         int8_t zHigh = zLow + 12;
         LocationXY16 entranceLoc = { (int16_t)_loc.x, (int16_t)_loc.y };
         for (uint8_t index = 0; index < 3; index++)
@@ -85,11 +85,11 @@ public:
             if (index == 1)
             {
                 entranceLoc.x += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].x;
-                entranceLoc.y += CoordsDirectionDelta[(_loc.direction  - 1) & 0x3].y;
+                entranceLoc.y += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].y;
             }
             else if (index == 2)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_loc.direction  + 1) & 0x3].x * 2;
+                entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
@@ -121,10 +121,10 @@ public:
 
         CoordsXYZD parkEntrance;
         parkEntrance = _loc;
-    
+
         gParkEntrances.push_back(parkEntrance);
 
-        int8_t zLow = _loc.z >> 3;
+        int8_t zLow = _loc.z / 8;
         int8_t zHigh = zLow + 12;
         CoordsXY entranceLoc = { _loc.x, _loc.y };
         for (uint8_t index = 0; index < 3; index++)
