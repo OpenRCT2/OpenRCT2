@@ -29,7 +29,6 @@ class TD4Importer final : public ITrackImporter
 private:
     MemoryStream _stream;
     std::unique_ptr<const utf8> name;
-    RCT12TrackDesignVersion _version = RCT12TrackDesignVersion::unknown;
 
 public:
     TD4Importer()
@@ -54,13 +53,11 @@ public:
     bool LoadFromStream(IStream* stream) override
     {
         auto checksumType = SawyerEncoding::ValidateTrackChecksum(stream);
-        if (!gConfigGeneral.allow_loading_with_incorrect_checksum && checksumType != RCT12TrackDesignVersion::TD4
-            && checksumType != RCT12TrackDesignVersion::TD4_AA)
+        if (!gConfigGeneral.allow_loading_with_incorrect_checksum && checksumType == RCT12TrackDesignVersion::unknown)
         {
             throw IOException("Invalid checksum.");
         }
 
-        _version = checksumType;
         auto chunkReader = SawyerChunkReader(stream);
         auto data = chunkReader.ReadChunkTrack();
         _stream.WriteArray<const uint8_t>(reinterpret_cast<const uint8_t*>(data->GetData()), data->GetLength());
@@ -68,22 +65,20 @@ public:
         return true;
     }
 
-    std::unique_ptr<TrackDesign> Import()
+    std::unique_ptr<TrackDesign> Import() override
     {
         std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
 
         _stream.SetPosition(7);
         RCT12TrackDesignVersion version = static_cast<RCT12TrackDesignVersion>(_stream.ReadValue<uint8_t>() >> 2);
 
-        if (_version != version && !gConfigGeneral.allow_loading_with_incorrect_checksum)
+        if (version != RCT12TrackDesignVersion::TD4 && version != RCT12TrackDesignVersion::TD4_AA)
         {
-            throw IOException("Mismatch between checksum and version");
+            throw IOException("Version number incorrect.");
         }
-        // This is required if allow_loading_with_incorrect_checksums has created a bad value
-        _version = version;
         _stream.SetPosition(0);
 
-        if (_version == RCT12TrackDesignVersion::TD4_AA)
+        if (version == RCT12TrackDesignVersion::TD4_AA)
         {
             return ImportAA();
         }
@@ -253,11 +248,11 @@ private:
 
         if (td->type == RIDE_TYPE_MAZE)
         {
-            rct_td6_maze_element mazeElement{};
+            rct_td46_maze_element mazeElement{};
             mazeElement.all = !0;
             while (mazeElement.all != 0)
             {
-                _stream.Read(&mazeElement, sizeof(rct_td6_maze_element));
+                _stream.Read(&mazeElement, sizeof(rct_td46_maze_element));
                 if (mazeElement.all != 0)
                 {
                     td->maze_elements.push_back(mazeElement);
@@ -266,29 +261,13 @@ private:
         }
         else
         {
-            rct_td6_track_element trackElement{};
+            rct_td46_track_element trackElement{};
             for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
             {
                 _stream.SetPosition(_stream.GetPosition() - 1);
-                _stream.Read(&trackElement, sizeof(rct_td6_track_element));
+                _stream.Read(&trackElement, sizeof(rct_td46_track_element));
                 td->track_elements.push_back(trackElement);
             }
-
-            rct_td6_entrance_element entranceElement{};
-            for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
-            {
-                _stream.SetPosition(_stream.GetPosition() - 1);
-                _stream.Read(&entranceElement, sizeof(rct_td6_entrance_element));
-                td->entrance_elements.push_back(entranceElement);
-            }
-        }
-
-        for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
-        {
-            _stream.SetPosition(_stream.GetPosition() - 1);
-            rct_td6_scenery_element sceneryElement{};
-            _stream.Read(&sceneryElement, sizeof(rct_td6_scenery_element));
-            td->scenery_elements.push_back(sceneryElement);
         }
 
         td->name = std::move(name);

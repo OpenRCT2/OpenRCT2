@@ -59,6 +59,38 @@ enum class RCT12TrackDesignVersion : uint8_t
 
 #pragma pack(push, 1)
 
+/* Maze Element entry   size: 0x04 */
+struct rct_td46_maze_element
+{
+    union
+    {
+        uint32_t all;
+        struct
+        {
+            int8_t x;
+            int8_t y;
+            union
+            {
+                uint16_t maze_entry;
+                struct
+                {
+                    uint8_t direction;
+                    uint8_t type;
+                };
+            };
+        };
+    };
+};
+assert_struct_size(rct_td46_maze_element, 0x04);
+
+/* Track Element entry  size: 0x02 */
+struct rct_td46_track_element
+{
+    uint8_t type;  // 0x00
+    uint8_t flags; // 0x01
+};
+assert_struct_size(rct_td46_track_element, 0x02);
+
 struct rct12_award
 {
     uint16_t time;

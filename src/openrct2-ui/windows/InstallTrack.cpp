@@ -344,7 +344,6 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
 
-
         if (td6->total_air_time != 0)
         {
             // Total air time

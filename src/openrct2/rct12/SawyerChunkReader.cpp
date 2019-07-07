@@ -108,7 +108,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
     try
     {
         // Remove 4 as we don't want to touch the checksum at the end of the file
-        auto compressedDataLength64 = _stream->GetLength() - _stream->GetPosition() - 4;
+        int64_t compressedDataLength64 = _stream->GetLength() - _stream->GetPosition() - 4;
         if (compressedDataLength64 < 0 || compressedDataLength64 > std::numeric_limits<uint32_t>::max())
         {
             throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);

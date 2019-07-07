@@ -201,7 +201,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
 
     do
     {
-        rct_td6_track_element track{};
+        rct_td46_track_element track{};
         track.type = trackElement.element->AsTrack()->GetTrackType();
         // TODO move to RCT2 limit
         if (track.type == TRACK_ELEM_255)
@@ -336,7 +336,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         }
     }
 
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, get_ride(0), 4096, 4096, 0);
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), 4096, 4096, 0);
 
     // Resave global vars for scenery reasons.
     gTrackPreviewOrigin = { start_x, start_y, start_z };
@@ -379,7 +379,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
                 if (tileElement->AsTrack()->GetRideIndex() != ride.id)
                     continue;
 
-                rct_td6_maze_element maze{};
+                rct_td46_maze_element maze{};
 
                 maze.maze_entry = tileElement->AsTrack()->GetMazeEntry();
                 maze.x = (x - startLoc.x) / 32;
@@ -418,7 +418,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     // Add something that stops this from walking off the end
 
     uint8_t entranceDirection = tileElement->GetDirection();
-    rct_td6_maze_element mazeEntrance{};
+    rct_td46_maze_element mazeEntrance{};
     mazeEntrance.direction = entranceDirection;
     mazeEntrance.type = 8;
     mazeEntrance.x = (int8_t)((entranceLoc.x - startLoc.x) / 32);
@@ -445,7 +445,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     // Add something that stops this from walking off the end
 
     uint8_t exit_direction = tileElement->GetDirection();
-    rct_td6_maze_element mazeExit{};
+    rct_td46_maze_element mazeExit{};
     mazeExit.direction = exit_direction;
     mazeExit.type = 0x80;
     mazeExit.x = (int8_t)((exitLoc.x - startLoc.x) / 32);
@@ -454,7 +454,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
 
     // Save global vars as they are still used by scenery????
     int16_t startZ = gTrackPreviewOrigin.z;
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, get_ride(0), 4096, 4096, 0);
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), 4096, 4096, 0);
     gTrackPreviewOrigin = { static_cast<int16_t>(startLoc.x), static_cast<int16_t>(startLoc.y), startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -582,7 +582,6 @@ std::unique_ptr<TrackDesign> track_design_open(const utf8* path)
     return nullptr;
 }
 
-
 /**
  *
  *  rct2: 0x006ABDB0
@@ -609,7 +608,7 @@ static void track_design_load_scenery_objects(TrackDesign* td6)
  */
 static void track_design_mirror_scenery(TrackDesign* td6)
 {
-    for (auto& scenery: td6->scenery_elements)
+    for (auto& scenery : td6->scenery_elements)
     {
         uint8_t entry_type{ 0 }, entry_index{ 0 };
         if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
@@ -658,11 +657,11 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                         scenery.x = (scenery.x * 32 + y2 + y1) / 32;
                         scenery.y = (-(scenery.y * 32)) / 32;
                         scenery.flags ^= (1 << 1);
-                        break; 
-                    case 2:    
+                        break;
+                    case 2:
                         scenery.y = (-(scenery.y * 32 - y2) + y1) / 32;
-                        break; 
-                    case 3:    
+                        break;
+                    case 3:
                         scenery.x = (scenery.x * 32 - y2 - y1) / 32;
                         scenery.y = (-(scenery.y * 32)) / 32;
                         scenery.flags ^= (1 << 1);
@@ -720,7 +719,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
  */
 static void track_design_mirror_ride(TrackDesign* td6)
 {
-    for (auto& track: td6->track_elements)
+    for (auto& track : td6->track_elements)
     {
         track.type = TrackElementMirrorMap[track.type];
     }
@@ -746,7 +745,7 @@ static constexpr const uint8_t maze_segment_mirror_map[] = {
  */
 static void track_design_mirror_maze(TrackDesign* td6)
 {
-    for (auto& maze:td6->maze_elements)
+    for (auto& maze : td6->maze_elements)
     {
         maze.y = -maze.y;
 
@@ -921,7 +920,7 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(const rct_td6_scenery_elemen
 }
 
 static bool TrackDesignPlaceSceneryElement(
-    CoordsXY mapCoord, uint8_t mode, const rct_td6_scenery_element &scenery, uint8_t rotation, int32_t originZ)
+    CoordsXY mapCoord, uint8_t mode, const rct_td6_scenery_element& scenery, uint8_t rotation, int32_t originZ)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
@@ -1194,7 +1193,7 @@ static bool TrackDesignPlaceSceneryElement(
  *  rct2: 0x006D0964
  */
 static int32_t track_design_place_all_scenery(
-    const std::vector<rct_td6_scenery_element> &sceneryList, int32_t originX, int32_t originY, int32_t originZ)
+    const std::vector<rct_td6_scenery_element>& sceneryList, int32_t originX, int32_t originY, int32_t originZ)
 {
     for (uint8_t mode = 0; mode <= 1; mode++)
     {
@@ -1612,7 +1611,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
     }
 
     // Entrance elements
-    for (const auto& entrance:td6->entrance_elements)
+    for (const auto& entrance : td6->entrance_elements)
     {
         rotation = _currentTrackPieceDirection & 3;
         x = entrance.x;

@@ -15,17 +15,19 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"
+#include "../rct12/SawyerChunkWriter.h"
 #include "../ride/Ride.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/TrackDesignRepository.h"
-#include "../rct12/SawyerChunkWriter.h"
 #include "../windows/Intent.h"
+
 #include <functional>
 
-T6Exporter::T6Exporter(TrackDesign* trackDesign) : _trackDesign(trackDesign)
+T6Exporter::T6Exporter(TrackDesign* trackDesign)
+    : _trackDesign(trackDesign)
 {
 }
 
@@ -78,7 +80,7 @@ bool T6Exporter::SaveTrack(IStream* stream)
 
     if (_trackDesign->type == RIDE_TYPE_MAZE)
     {
-        for (const auto &mazeElement : _trackDesign->maze_elements)
+        for (const auto& mazeElement : _trackDesign->maze_elements)
         {
             tempStream.WriteValue<uint32_t>(mazeElement.all);
         }
@@ -87,7 +89,7 @@ bool T6Exporter::SaveTrack(IStream* stream)
     }
     else
     {
-        for (const auto &trackElement : _trackDesign->track_elements)
+        for (const auto& trackElement : _trackDesign->track_elements)
         {
             tempStream.WriteValue<uint8_t>(trackElement.type);
             tempStream.WriteValue<uint8_t>(trackElement.flags);
@@ -95,7 +97,7 @@ bool T6Exporter::SaveTrack(IStream* stream)
 
         tempStream.WriteValue<uint8_t>(0xFF);
 
-        for (const auto &entranceElement : _trackDesign->entrance_elements)
+        for (const auto& entranceElement : _trackDesign->entrance_elements)
         {
             tempStream.WriteValue<uint8_t>(entranceElement.z);
             tempStream.WriteValue<uint8_t>(entranceElement.direction);
@@ -106,7 +108,7 @@ bool T6Exporter::SaveTrack(IStream* stream)
         tempStream.WriteValue<uint8_t>(0xFF);
     }
 
-    for (const auto &sceneryElement : _trackDesign->scenery_elements)
+    for (const auto& sceneryElement : _trackDesign->scenery_elements)
     {
         tempStream.Write(&sceneryElement.scenery_object, sizeof(rct_object_entry));
         tempStream.WriteValue<int8_t>(sceneryElement.x);

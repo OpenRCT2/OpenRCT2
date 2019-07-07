@@ -10,12 +10,12 @@
 #pragma once
 
 #include "common.h"
+#include "core/IStream.hpp"
+#include "ride/TrackDesign.h"
+
 #include <memory>
 #include <string>
 #include <vector>
-#include "ride/TrackDesign.h"
-#include "core/IStream.hpp"
-
 
 /**
  * Interface to import scenarios and saved games.
@@ -26,8 +26,7 @@ public:
     virtual ~ITrackImporter() = default;
 
     virtual bool Load(const utf8* path) abstract;
-    virtual bool LoadFromStream(
-        IStream * stream) abstract;
+    virtual bool LoadFromStream(IStream * stream) abstract;
 
     virtual std::unique_ptr<TrackDesign> Import() abstract;
 };

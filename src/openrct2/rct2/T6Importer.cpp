@@ -63,7 +63,7 @@ public:
         return true;
     }
 
-    std::unique_ptr<TrackDesign> Import()
+    std::unique_ptr<TrackDesign> Import() override
     {
         std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
 
@@ -132,11 +132,11 @@ public:
 
         if (td->type == RIDE_TYPE_MAZE)
         {
-            rct_td6_maze_element mazeElement{};
+            rct_td46_maze_element mazeElement{};
             mazeElement.all = !0;
             while (mazeElement.all != 0)
             {
-                _stream.Read(&mazeElement, sizeof(rct_td6_maze_element));
+                _stream.Read(&mazeElement, sizeof(rct_td46_maze_element));
                 if (mazeElement.all != 0)
                 {
                     td->maze_elements.push_back(mazeElement);
@@ -145,11 +145,11 @@ public:
         }
         else
         {
-            rct_td6_track_element trackElement{};
+            rct_td46_track_element trackElement{};
             for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
             {
                 _stream.SetPosition(_stream.GetPosition() - 1);
-                _stream.Read(&trackElement, sizeof(rct_td6_track_element));
+                _stream.Read(&trackElement, sizeof(rct_td46_track_element));
                 td->track_elements.push_back(trackElement);
             }
 

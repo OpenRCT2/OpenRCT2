@@ -5405,7 +5405,7 @@ void window_ride_measurements_design_cancel()
     }
 }
 
-void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* path)
+static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* path)
 {
     if (result == MODAL_RESULT_OK)
     {
@@ -5437,14 +5437,12 @@ static void window_ride_measurements_design_save(rct_window* w)
         }
     }
 
-    utf8 track_name[256];
-    format_string(track_name, sizeof(track_name), ride->name, &ride->name_arguments);
-
+    auto trackName = ride->GetName();
     auto intent = Intent(WC_LOADSAVE);
     intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
     intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
-    intent.putExtra(INTENT_EXTRA_PATH, std::string{ track_name });
-    intent.putExtra(INTENT_EXTRA_CALLBACK, static_cast<void*>(&TrackDesignCallback));
+    intent.putExtra(INTENT_EXTRA_PATH, trackName);
+    intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(&TrackDesignCallback));
 
     context_open_intent(&intent);
 }

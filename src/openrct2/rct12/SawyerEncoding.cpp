@@ -11,6 +11,7 @@
 
 #include "../core/IStream.hpp"
 #include "RCT12.h"
+
 #include <algorithm>
 
 namespace SawyerEncoding
@@ -72,7 +73,7 @@ namespace SawyerEncoding
 
         try
         {
-            auto data{stream->ReadArray<uint8_t>(dataSize) };
+            auto data{ stream->ReadArray<uint8_t>(dataSize) };
             uint32_t checksum = 0;
             for (size_t i = 0; i < dataSize; i++, ++data)
             {
@@ -88,7 +89,7 @@ namespace SawyerEncoding
             if (checksum - 0x1D4C1 == fileChecksum)
                 return RCT12TrackDesignVersion::TD6;
             else if (checksum - 0x1A67C == fileChecksum)
-                return RCT12TrackDesignVersion::TD4_AA;
+                return RCT12TrackDesignVersion::TD4;
             else if (checksum - 0x1A650 == fileChecksum)
                 return RCT12TrackDesignVersion::TD4;
             else
