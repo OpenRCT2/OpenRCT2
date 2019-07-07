@@ -1763,7 +1763,8 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
             auto removeSceneryAction = LargeSceneryRemoveAction(
-                x, y, element->base_height, element->GetDirection(), element->AsLargeScenery()->GetSequenceIndex());
+                {x, y, element->base_height << 3, element->GetDirection()}
+                , element->AsLargeScenery()->GetSequenceIndex());
             GameActions::Execute(&removeSceneryAction);
         }
         break;

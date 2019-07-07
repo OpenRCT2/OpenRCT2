@@ -205,7 +205,7 @@ private:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
                         {
                             auto removeSceneryAction = LargeSceneryRemoveAction(
-                                x * 32, y * 32, tileElement->base_height, tileElement->GetDirection(),
+                                {x * 32, y * 32, tileElement->base_height * 8, tileElement->GetDirection()},
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
 

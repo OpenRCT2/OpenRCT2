@@ -226,7 +226,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_3;
 
-        auto removeSceneryAction = LargeSceneryRemoveAction(x, y, z, gSceneryPlaceRotation, 0);
+        auto removeSceneryAction = LargeSceneryRemoveAction({x, y, z << 3, gSceneryPlaceRotation}, 0);
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
             | GAME_COMMAND_FLAG_NO_SPEND);

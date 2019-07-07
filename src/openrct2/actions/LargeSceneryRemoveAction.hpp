@@ -26,20 +26,14 @@
 DEFINE_GAME_ACTION(LargeSceneryRemoveAction, GAME_COMMAND_REMOVE_LARGE_SCENERY, GameActionResult)
 {
 private:
-    int16_t _x;
-    int16_t _y;
-    uint8_t _baseHeight;
-    uint8_t _direction;
+    CoordsXYZD _loc;
     uint16_t _tileIndex;
 
 public:
     LargeSceneryRemoveAction() = default;
 
-    LargeSceneryRemoveAction(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint16_t tileIndex)
-        : _x(x)
-        , _y(y)
-        , _baseHeight(baseHeight)
-        , _direction(direction)
+    LargeSceneryRemoveAction(CoordsXYZD location, uint16_t tileIndex)
+        : _loc(location)
         , _tileIndex(tileIndex)
     {
     }
@@ -53,7 +47,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_x) << DS_TAG(_y) << DS_TAG(_baseHeight) << DS_TAG(_direction) << DS_TAG(_tileIndex);
+        stream << DS_TAG(_loc) << DS_TAG(_tileIndex);
     }
 
     GameActionResult::Ptr Query() const override
@@ -62,17 +56,17 @@ public:
 
         const uint32_t flags = GetFlags();
 
-        int32_t z = tile_element_height(_x, _y);
-        res->Position.x = _x + 16;
-        res->Position.y = _y + 16;
-        res->Position.z = z;
+        int32_t z = tile_element_height(_loc.x, _loc.x);
+        res->Position.x = _loc.x + 16;
+        res->Position.y = _loc.y + 16;
+        res->Position.z = z ;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Cost = 0;
 
         TileElement* tileElement = FindLargeSceneryElement();
         if (tileElement == nullptr)
         {
-            log_warning("Invalid game command for scenery removal, x = %d, y = %d", _x, _y);
+            log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
@@ -80,13 +74,13 @@ public:
 
         LocationXYZ16 firstTile = {
             scenery_entry->large_scenery.tiles[_tileIndex].x_offset, scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
-            static_cast<int16_t>((_baseHeight * 8) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset)
+            static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset)
         };
 
-        rotate_map_coordinates(&firstTile.x, &firstTile.y, _direction);
+        rotate_map_coordinates(&firstTile.x, &firstTile.y, _loc.direction);
 
-        firstTile.x = _x - firstTile.x;
-        firstTile.y = _y - firstTile.y;
+        firstTile.x = _loc.x - firstTile.x;
+        firstTile.y = _loc.y - firstTile.y;
 
         bool calculate_cost = true;
         for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
@@ -95,7 +89,7 @@ public:
                                           scenery_entry->large_scenery.tiles[i].y_offset,
                                           scenery_entry->large_scenery.tiles[i].z_offset };
 
-            rotate_map_coordinates(&currentTile.x, &currentTile.y, _direction);
+            rotate_map_coordinates(&currentTile.x, &currentTile.y, _loc.direction);
 
             currentTile.x += firstTile.x;
             currentTile.y += firstTile.y;
@@ -133,9 +127,9 @@ public:
 
         const uint32_t flags = GetFlags();
 
-        int32_t z = tile_element_height(_x, _y);
-        res->Position.x = _x + 16;
-        res->Position.y = _y + 16;
+        int32_t z = tile_element_height(_loc.x, _loc.y);
+        res->Position.x = _loc.x + 16;
+        res->Position.y = _loc.y + 16;
         res->Position.z = z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Cost = 0;
@@ -143,7 +137,7 @@ public:
         TileElement* tileElement = FindLargeSceneryElement();
         if (tileElement == nullptr)
         {
-            log_warning("Invalid game command for scenery removal, x = %d, y = %d", _x, _y);
+            log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
@@ -153,13 +147,13 @@ public:
 
         LocationXYZ16 firstTile = {
             scenery_entry->large_scenery.tiles[_tileIndex].x_offset, scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
-            static_cast<int16_t>((_baseHeight * 8) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset)
+            static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset)
         };
 
-        rotate_map_coordinates(&firstTile.x, &firstTile.y, _direction);
+        rotate_map_coordinates(&firstTile.x, &firstTile.y, _loc.direction);
 
-        firstTile.x = _x - firstTile.x;
-        firstTile.y = _y - firstTile.y;
+        firstTile.x = _loc.x - firstTile.x;
+        firstTile.y = _loc.y - firstTile.y;
 
         for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
         {
@@ -167,7 +161,7 @@ public:
                                           scenery_entry->large_scenery.tiles[i].y_offset,
                                           scenery_entry->large_scenery.tiles[i].z_offset };
 
-            rotate_map_coordinates(&currentTile.x, &currentTile.y, _direction);
+            rotate_map_coordinates(&currentTile.x, &currentTile.y, _loc.direction);
 
             currentTile.x += firstTile.x;
             currentTile.y += firstTile.y;
@@ -188,7 +182,7 @@ public:
                 if (sceneryElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
                     continue;
 
-                if (sceneryElement->GetDirection() != _direction)
+                if (sceneryElement->GetDirection() != _loc.direction)
                     continue;
 
                 if (sceneryElement->AsLargeScenery()->GetSequenceIndex() != i)
@@ -222,7 +216,7 @@ public:
 private:
     TileElement* FindLargeSceneryElement() const
     {
-        TileElement* tileElement = map_get_first_element_at(_x / 32, _y / 32);
+        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
         if (tileElement == nullptr)
             return nullptr;
 
@@ -231,13 +225,13 @@ private:
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 continue;
 
-            if (tileElement->base_height != _baseHeight)
+            if (tileElement->base_height != _loc.z >> 3)
                 continue;
 
             if (tileElement->AsLargeScenery()->GetSequenceIndex() != _tileIndex)
                 continue;
 
-            if (tileElement->GetDirection() != _direction)
+            if (tileElement->GetDirection() != _loc.direction)
                 continue;
 
             // If we are removing ghost elements

@@ -780,7 +780,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             break;
         }
         case OBJECT_TYPE_LARGE_SCENERY:
-            ga = std::make_unique<LargeSceneryRemoveAction>(mapCoord.x, mapCoord.y, z, sceneryRotation, 0);
+            ga = std::make_unique<LargeSceneryRemoveAction>(CoordsXYZD{mapCoord.x, mapCoord.y, z * 8, sceneryRotation}, 0);
             break;
         case OBJECT_TYPE_WALLS:
             ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x , mapCoord.y , z * 8, sceneryRotation });

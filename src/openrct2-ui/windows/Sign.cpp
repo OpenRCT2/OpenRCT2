@@ -232,7 +232,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
 
             auto sceneryRemoveAction = LargeSceneryRemoveAction(
-                x, y, tile_element->base_height, tile_element->GetDirection(),
+                {x, y, tile_element->base_height * 8, tile_element->GetDirection()},
                 tile_element->AsLargeScenery()->GetSequenceIndex());
             GameActions::Execute(&sceneryRemoveAction);
 
