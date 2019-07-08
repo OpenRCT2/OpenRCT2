@@ -552,8 +552,8 @@ STR_1167    :...لا يمكن زيادة مستوي الماء هنا
 STR_1168    :الإعدادات
 STR_1169    :(لا شئ)
 STR_1170    :{STRING}
-STR_1171    :{RED} مغلق - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED} مغلق 
+STR_1172    :{YELLOW}{STRINGID} 
 STR_1173    :{SMALLFONT}{BLACK} ابني ممشي وخطوط إنتظار
 STR_1174    :Banner sign in the way
 STR_1175    :Can't build this on sloped footpath
@@ -1109,7 +1109,7 @@ STR_1726    :الأرض ليست للبيع!
 STR_1727    :حقوق الإنشاء ليست للبيع!
 STR_1728    :Can't buy construction rights here...
 STR_1729    :الأرض ليست مملوكة للحديقة!
-STR_1730    :{RED}مغلقة - - 
+STR_1730    :{RED}مغلقة 
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :بناء
 STR_1733    :الوضع
@@ -2240,19 +2240,19 @@ STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:
 STR_2979    :Can't name staff member...
 STR_2980    :Too many banners in game
-STR_2981    :{RED}No entry - -
+STR_2981    :{RED}لا دخول
 STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner...
-STR_2985    :Banner
-STR_2986    :{SMALLFONT}{BLACK}Change text on banner
+STR_2985    :يافطة
+STR_2986    :{SMALLFONT}{BLACK}غير الكلام علي اليافطة
 STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
-STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
+STR_2988    :{SMALLFONT}{BLACK}دمر هذه اليافطة
 STR_2989    :{SMALLFONT}{BLACK}حدد اللون الأساسي
 STR_2990    :{SMALLFONT}{BLACK}حدد لون الكتابة
 STR_2991    :يافطة
 STR_2992    :الكلام علي اليافطة
-STR_2993    :أدخل كلام جديد لكتابته علي اليافطة:
+STR_2993    ::أدخل كلام جديد لكتابته علي اليافطة
 STR_2994    :{SMALLFONT}{BLACK}تغيير االكلام علي اليافطة
 STR_2995    :{SMALLFONT}{BLACK}تدمير هذه اليافطة
 STR_2996    :{BLACK}ABC
@@ -2269,7 +2269,7 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :غير قادر علي تحميل الملف...
+STR_3010    :...غير قادر علي تحميل الملف
 STR_3011    :الملف يحتوي علي بيانات خاطئة
 STR_3012    :Dodgems beat style
 STR_3013    :Fairground organ style
@@ -2419,7 +2419,6 @@ STR_3190    :Path Extras
 STR_3191    :Scenery Groups
 STR_3192    :Park Entrance
 STR_3193    :Water
-STR_3194    :Scenario Description
 STR_3195    :Invention List
 STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
@@ -2519,7 +2518,7 @@ STR_3290    :بارد ومبتل
 STR_3291    :دافئ
 STR_3292    :حار وجاف
 STR_3293    :بارد
-STR_3294    :تغيير...
+STR_3294    :...تغيير
 STR_3295    :{SMALLFONT}{BLACK}Change name of park
 STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
 STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
@@ -3587,8 +3586,8 @@ STR_6125    :نوع العنصر
 STR_6126    :نوع غير معروف
 STR_6127    :{STRING}:الملف
 STR_6128    :.الملف لا يمكن تحملية لأن هناك بعض العناصر المُشار إليها فيه مفقودة أو ربما تكون متضررة. قائمة بهذه العناصر معروضة في الأسفل
-STR_6129    :إنسخ المحدد إلي الحافظة
-STR_6130    :إنسخ القائمة كاملة إلي الحافظة
+STR_6129    :إنسخ
+STR_6130    :إنسخ الكل
 STR_6131    :مصدر العنصر
 STR_6132    :تجاهل حالة التطوير
 STR_6133    :{SMALLFONT}{BLACK}Access rides and scenery that have not yet been invented
@@ -3728,12 +3727,60 @@ STR_6270    :أسطح التضاريس
 STR_6271    :حواف التضاريس
 STR_6272    :المحطات
 STR_6273    :الموسيقي
-STR_6274    :لا يمكن تحديد مخطط اللون...
+STR_6274    :...لا يمكن تحديد مخطط اللون
 STR_6275    :{WINDOW_COLOUR_2}نمط المحطة
-STR_6276    :{RED}{STRINGID} هل علق الزوار؟ ربما يكون هذا بسبب أفعوانية غير صالحة أو وضع تشغيل غير صالح.
-STR_6277    :{WINDOW_COLOUR_2}فهرسة المحطة: {BLACK}{COMMA16}
+STR_6276    :{RED}{STRINGID} .هل علق الزوار؟ ربما يكون هذا بسبب أفعوانية غير صالحة أو وضع تشغيل غير صالح
+STR_6277    :{WINDOW_COLOUR_2} {BLACK}{COMMA16} :فهرسة المحطة
 STR_6278    :عدد ملفات الحفظ التلقائي
 STR_6279    :{SMALLFONT}{BLACK}عدد ملفات الحفظ التلقائي التي يجب إبقائها في المرة الواحدة
+STR_6280    :{SMALLFONT}{BLACK}الدردشة
+STR_6281    :{SMALLFONT}{BLACK}أظهر زر منفصل لنافذة الدردشة في شريط الأدوات
+STR_6282    :الدردشة
+STR_6283    :الدردشة غير متوفرة حالياً. هل أنت متصل بالسرفر؟
+STR_6284    :الشبكة
+STR_6285    :معلومات الشبكة
+STR_6286    :يستقبل
+STR_6287    :يُرسل
+STR_6288    :إجمالي المُستقبل
+STR_6289    :إجمالي المُرسل
+STR_6290    :البرتكول الأساسي
+STR_6291    :الأوامر
+STR_6292    :الخريطة
+STR_6293    :بايت
+STR_6294    :كيلو بايت
+STR_6295    :ميجا بايت
+STR_6296    :جيجا بايت
+STR_6297    :تيرا بايت
+STR_6298    :{STRING}/ثانية
+STR_6299    :حمل الكل
+STR_6300    :{SMALLFONT}{BLACK}.حمل كل العناصر المفقودة إذا كانت متوفرة علي الإنترنت
+STR_6301    :{SMALLFONT}{BLACK}.إنسخ أسم العنصر المُحدد إلي الحافظة
+STR_6302    :{SMALLFONT}{BLACK}.إنسخ قائمة العناصر المفقودة كلها إلي الحافظة
+STR_6303    :({COMMA16} / {COMMA16}): [{STRING}] يُحمل العنصر
+STR_6304    :إفتح مُحدد المشهد
+STR_6305    :المعالجة المتعددة
+STR_6306    :{SMALLFONT}{BLACK}.اعداد إختباري لإستخدام  عدة معالجات لكي ترسم المشهد، ربما يسبب عدم الإتزان
+STR_6307    :{BLACK}{STRINGID} :نمط اللون
+STR_6309    :إعادة الإتصال
+STR_6310    :{WINDOW_COLOUR_2} {BLACK}{INT32} {INT32} {INT32} :الموقع
+STR_6311    :{WINDOW_COLOUR_2} {BLACK}{INT32} {INT32} {INT32} :التالي
+STR_6312    :(السطح)
+STR_6313    :({INT32} الإنحدار)
+STR_6314    :{WINDOW_COLOUR_2}مسافة: {BLACK}{INT32}, {INT32} تفاوت {INT32}
+STR_6315    :{WINDOW_COLOUR_2}هدف مُحدد المسار: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6316    :{WINDOW_COLOUR_2}تاريخ مُحدد المسار:
+STR_6317    :{BLACK}{INT32}، {INT32}، {INT32} مسار {INT32}
+STR_6318    :{STRING} :ملف السجل {NEWLINE}.تم إكتشاف إنفصال عن الشبكة 
+STR_6319    :{WINDOW_COLOUR_2}مكابح البلوك مغلقة
+STR_6320    :{WINDOW_COLOUR_2}غير قابل للتدمير
+STR_6321    :{WINDOW_COLOUR_2}الإضافة متضررة
+STR_6322    :{WINDOW_COLOUR_2} {BLACK}{INT32} :رقم النقش المتحرك
+STR_6323    :يُحاكي
+STR_6324    :حاكي
+STR_6325    :{SMALLFONT}{BLACK}حاكي الرحلة/المزار
+STR_6326    :...{POP16}{POP16}{POP16}{STRINGID} لا يمكن محاكاة
+STR_6327    :خلفية شفافة للقطات الشاشة العملاقة
+STR_6328    :{SMALLFONT}{BLACK}.مع هذا الإعداد، صور لقطة الشاشة العملاقة ستحصل علي خلفية شفافة بدلاً من الخلفية السوداء الإفتراضية
 
 #############
 # Scenarios #
