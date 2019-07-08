@@ -133,7 +133,7 @@ static constexpr const RideGroup ride_group_spinning_wild_mouse = {
     /*.MaximumHeight =*/16,
     /*.AvailableTrackPieces =*/(1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL)
         | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL)
-        | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES), | (1ULL << TRACK_ROTATION_CONTROL_TOGGLE),
+        | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_ROTATION_CONTROL_TOGGLE),
     /*.Naming =*/{ STR_SPINNING_WILD_MOUSE_GROUP, STR_SPINNING_WILD_MOUSE_GROUP_DESC },
     /*.Flags =*/0,
 };
