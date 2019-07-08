@@ -222,7 +222,10 @@ namespace Platform
         if (hModule != nullptr)
         {
             using RtlGetVersionPtr = NTSTATUS(WINAPI*)(PRTL_OSVERSIONINFOW);
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wcast-function-type"
             auto fn = (RtlGetVersionPtr)GetProcAddress(hModule, "RtlGetVersion");
+#    pragma GCC diagnostic pop
             if (fn != nullptr)
             {
                 RTL_OSVERSIONINFOW rovi{};
