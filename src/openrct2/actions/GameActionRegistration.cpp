@@ -111,7 +111,8 @@ namespace GameActions
         Register<ParkSetNameAction>();
         Register<ParkSetParameterAction>();
         Register<ParkSetResearchFundingAction>();
-        Register<PeepPickupAction>();
+        Register<GuestPickupAction>();
+        Register<StaffPickupAction>();
         Register<PlaceParkEntranceAction>();
         Register<PlacePeepSpawnAction>();
         Register<PlayerKickAction>();

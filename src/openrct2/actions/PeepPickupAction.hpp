@@ -22,7 +22,7 @@ enum class PeepPickupType : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(PeepPickupAction, GAME_COMMAND_PICKUP_GUEST, GameActionResult)
+DEFINE_GAME_ACTION(PeepPickupAction, GAME_COMMAND_COUNT, GameActionResult)
 {
 private:
     uint8_t _type = static_cast<uint8_t>(PeepPickupType::Count);
@@ -210,3 +210,6 @@ private:
         tool_cancel();
     }
 };
+
+DEFINE_GAME_ACTION_ALIAS(GuestPickupAction, GAME_COMMAND_PICKUP_GUEST, PeepPickupAction);
+DEFINE_GAME_ACTION_ALIAS(StaffPickupAction, GAME_COMMAND_PICKUP_STAFF, PeepPickupAction);

@@ -91,19 +91,13 @@ public:
     using Callback_t = std::function<void(const struct GameAction*, const GameActionResult*)>;
 
 private:
-    uint32_t const _type;
-
     NetworkPlayerId_t _playerId = { -1 }; // Callee
     uint32_t _flags = 0;                  // GAME_COMMAND_FLAGS
     uint32_t _networkId = 0;
     Callback_t _callback;
 
 public:
-    GameAction(uint32_t type)
-        : _type(type)
-    {
-    }
-
+    GameAction() = default;
     virtual ~GameAction() = default;
 
     virtual const char* GetName() const = 0;
@@ -152,10 +146,7 @@ public:
         return _flags = flags;
     }
 
-    uint32_t GetType() const
-    {
-        return _type;
-    }
+    virtual uint32_t GetType() const = 0;
 
     void SetCallback(Callback_t cb)
     {
@@ -223,9 +214,11 @@ public:
 
     static constexpr uint32_t TYPE = TType;
 
-    GameActionBase()
-        : GameAction(TYPE)
+    GameActionBase() = default;
+
+    virtual uint32_t GetType() const override
     {
+        return TYPE;
     }
 
     virtual const char* GetName() const override
@@ -275,15 +268,37 @@ namespace GameActions
     }
 
     // clang-format off
-#define DEFINE_GAME_ACTION(cls, id, res)                                         \
-    template<> struct GameActionNameQuery<id>                                    \
-    {                                                                            \
-        static const char* Name()                                                \
-        {                                                                        \
-            return #cls;                                                         \
-        }                                                                        \
-    };                                                                           \
+#define DEFINE_GAME_ACTION_NAME(cls, id)                      \
+    template<> struct GameActionNameQuery<id>                 \
+    {                                                         \
+        static const char* Name()                             \
+        {                                                     \
+            return #cls;                                      \
+        }                                                     \
+    }
+
+#define DEFINE_GAME_ACTION(cls, id, res)                      \
+    DEFINE_GAME_ACTION_NAME(cls, id);                         \
     struct cls : public GameActionBase<id, res>
+
+#define DEFINE_GAME_ACTION_ALIAS(cls, id, base)               \
+    DEFINE_GAME_ACTION_NAME(cls, id);                         \
+    struct cls : base                                         \
+    {                                                         \
+        static constexpr uint32_t TYPE = id;                  \
+        using base::base;                                     \
+        using base::Serialise;                                \
+        using base::Query;                                    \
+        using base::Execute;                                  \
+        virtual uint32_t GetType() const override             \
+        {                                                     \
+            return cls::TYPE;                                 \
+        }                                                     \
+        virtual const char* GetName() const override          \
+        {                                                     \
+            return GameActionNameQuery<cls::TYPE>::Name();    \
+        }                                                     \
+    }
     // clang-format on
 
 } // namespace GameActions

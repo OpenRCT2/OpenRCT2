@@ -2247,10 +2247,10 @@ void Network::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& conne
     Peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
     if (pickup_peep)
     {
-        PeepPickupAction pickupAction{ PeepPickupType::Cancel,
-                                       pickup_peep->sprite_index,
-                                       { network_get_pickup_peep_old_x(connection_player->Id), 0, 0 },
-                                       network_get_current_player_id() };
+        GuestPickupAction pickupAction{ PeepPickupType::Cancel,
+                                        pickup_peep->sprite_index,
+                                        { network_get_pickup_peep_old_x(connection_player->Id), 0, 0 },
+                                        network_get_current_player_id() };
         auto res = GameActions::Execute(&pickupAction);
     }
     gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED(

@@ -699,7 +699,7 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
                 return;
             }
             w->picked_peep_old_x = peep->x;
-            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, {}, network_get_current_player_id() };
+            GuestPickupAction pickupAction{ PeepPickupType::Pickup, w->number, {}, network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error != GA_ERROR::OK)
                     return;
@@ -1287,7 +1287,7 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     if (dest_x == LOCATION_NULL)
         return;
 
-    PeepPickupAction pickupAction{
+    GuestPickupAction pickupAction{
         PeepPickupType::Place, w->number, { dest_x, dest_y, tileElement->base_height }, network_get_current_player_id()
     };
     pickupAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
@@ -1308,7 +1308,7 @@ void window_guest_overview_tool_abort(rct_window* w, rct_widgetindex widgetIndex
     if (widgetIndex != WIDX_PICKUP)
         return;
 
-    PeepPickupAction pickupAction{
+    GuestPickupAction pickupAction{
         PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
     };
     GameActions::Execute(&pickupAction);
