@@ -7114,42 +7114,38 @@ void sub_6CB945(Ride* ride)
         }
     }
 
-    // Needs room for an entrance and an exit per station, plus one position for the list terminator.
-    TileCoordsXYZD locations[(MAX_STATIONS * 2) + 1];
-    TileCoordsXYZD* locationList = locations;
+    std::vector<TileCoordsXYZD> locations;
     for (uint8_t stationId = 0; stationId < MAX_STATIONS; ++stationId)
     {
         auto entrance = ride_get_entrance_location(ride, stationId);
         if (!entrance.isNull())
         {
-            *locationList++ = entrance;
+            locations.push_back(entrance);
             ride_clear_entrance_location(ride, stationId);
         }
 
         auto exit = ride_get_exit_location(ride, stationId);
         if (!exit.isNull())
         {
-            *locationList++ = exit;
+            locations.push_back(exit);
             ride_clear_exit_location(ride, stationId);
         }
     }
-    (*locationList++).x = COORDS_NULL;
 
-    locationList = locations;
-    for (; !(*locationList).isNull(); locationList++)
+    for (auto locationList = locations.cbegin(); locationList != locations.cend(); locationList++)
     {
-        TileCoordsXYZD* locationList2 = locationList;
+        auto locationList2 = locationList;
         locationList2++;
 
         bool duplicateLocation = false;
-        do
+        for (; locationList2 != locations.cend(); locationList2++)
         {
             if ((*locationList).x == (*locationList2).x && (*locationList).y == (*locationList2).y)
             {
                 duplicateLocation = true;
                 break;
             }
-        } while (!(*locationList2++).isNull());
+        }
 
         if (duplicateLocation)
         {
