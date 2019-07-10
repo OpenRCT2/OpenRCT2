@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,11 @@ namespace OpenRCT2
     interface IPlatformEnvironment;
 }
 
+namespace OpenRCT2::Drawing
+{
+    interface IDrawingEngine;
+}
+
 struct rct_g1_element
 {
     uint8_t* offset;       // 0x00
@@ -31,13 +36,15 @@ struct rct_g1_element
 
 struct rct_drawpixelinfo
 {
-    uint8_t* bits;       // 0x00
-    int16_t x;           // 0x04
-    int16_t y;           // 0x06
-    int16_t width;       // 0x08
-    int16_t height;      // 0x0A
-    int16_t pitch;       // 0x0C         note: this is actually (pitch - width)
-    uint16_t zoom_level; // 0x0E
+    uint8_t* bits{};
+    int16_t x{};
+    int16_t y{};
+    int16_t width{};
+    int16_t height{};
+    int16_t pitch{}; // note: this is actually (pitch - width)
+    uint16_t zoom_level{};
+
+    OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 };
 
 struct rct_g1_element_32bit
@@ -237,8 +244,8 @@ struct rct_size16
 
 #define MAX_SCROLLING_TEXT_MODES 38
 
-extern int16_t gCurrentFontSpriteBase;
-extern uint16_t gCurrentFontFlags;
+extern thread_local int16_t gCurrentFontSpriteBase;
+extern thread_local uint16_t gCurrentFontFlags;
 
 extern rct_palette_entry gPalette[256];
 extern uint8_t gGamePalette[256 * 4];
@@ -250,8 +257,8 @@ extern uint8_t gOtherPalette[256];
 extern uint8_t text_palette[];
 extern const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT];
 
-extern int32_t gLastDrawStringX;
-extern int32_t gLastDrawStringY;
+extern thread_local int32_t gLastDrawStringX;
+extern thread_local int32_t gLastDrawStringY;
 
 extern uint32_t gPickupPeepImage;
 extern int32_t gPickupPeepX;

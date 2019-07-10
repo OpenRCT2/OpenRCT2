@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,6 +87,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_STEAM_OVERLAY_PAUSE,
     WIDX_UNCAP_FPS_CHECKBOX,
     WIDX_SHOW_FPS_CHECKBOX,
+    WIDX_MULTITHREADING_CHECKBOX,
     WIDX_USE_VSYNC_CHECKBOX,
     WIDX_MINIMIZE_FOCUS_LOSS,
 
@@ -96,6 +97,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_GRIDLINES_CHECKBOX,
     WIDX_UPPER_CASE_BANNERS_CHECKBOX,
     WIDX_SHOW_GUEST_PURCHASES_CHECKBOX,
+    WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX,
     WIDX_VIRTUAL_FLOOR_LABEL,
     WIDX_VIRTUAL_FLOOR,
     WIDX_VIRTUAL_FLOOR_DROPDOWN,
@@ -172,7 +174,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
     // Advanced
     WIDX_DEBUGGING_TOOLS = WIDX_PAGE_START,
-    WIDX_TEST_UNFINISHED_TRACKS,
     WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,
     WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
     WIDX_STAY_CONNECTED_AFTER_DESYNC,
@@ -236,7 +237,8 @@ static rct_widget window_options_display_widgets[] = {
     { WWT_CHECKBOX,         1,  25,     290,    144,    155,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
     { WWT_CHECKBOX,         1,  11,     153,    161,    172,    STR_UNCAP_FPS,          STR_UNCAP_FPS_TIP },        // Uncap fps
     { WWT_CHECKBOX,         1,  155,    290,    161,    172,    STR_SHOW_FPS,           STR_SHOW_FPS_TIP },         // Show fps
-    { WWT_CHECKBOX,         1,  11,     290,    176,    187,    STR_USE_VSYNC,          STR_USE_VSYNC_TIP },        // Use vsync
+    { WWT_CHECKBOX,         1,  155,    290,    176,    187,    STR_MULTITHREADING,           STR_MULTITHREADING_TIP },         // Multithreading
+    { WWT_CHECKBOX,         1,  11,     153,    176,    187,    STR_USE_VSYNC,          STR_USE_VSYNC_TIP },        // Use vsync
     { WWT_CHECKBOX,         1,  11,     290,    191,    202,    STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS,  STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP },    // Minimise fullscreen focus loss
     { WIDGETS_END },
 };
@@ -244,16 +246,17 @@ static rct_widget window_options_display_widgets[] = {
 static rct_widget window_options_rendering_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    FRAME_RENDERING_START + 0,      FRAME_RENDERING_START + 92,     STR_RENDERING_GROUP,            STR_NONE },                             // Rendering group
+    { WWT_GROUPBOX,         1,  5,      304,    FRAME_RENDERING_START + 0,      FRAME_RENDERING_START + 107,    STR_RENDERING_GROUP,            STR_NONE },                             // Rendering group
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 15,     FRAME_RENDERING_START + 26,     STR_TILE_SMOOTHING,             STR_TILE_SMOOTHING_TIP },               // Landscape smoothing
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 30,     FRAME_RENDERING_START + 41,     STR_GRIDLINES,                  STR_GRIDLINES_TIP },                    // Gridlines
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 56,     STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },         // Guest purchases
-    { WWT_LABEL,            1,  10,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_VIRTUAL_FLOOR_STYLE,        STR_NONE },                             // Virtual floor
-    { WWT_DROPDOWN,         1,  155,    299,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_NONE,                       STR_VIRTUAL_FLOOR_STYLE_TIP },          // Virtual floor dropdown
-    { WWT_BUTTON,           1,  288,    298,    FRAME_RENDERING_START + 76,     FRAME_RENDERING_START + 85,     STR_DROPDOWN_GLYPH,             STR_VIRTUAL_FLOOR_STYLE_TIP },          // Virtual floor dropdown
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_TRANSPARENT_SCREENSHOT,     STR_TRANSPARENT_SCREENSHOT_TIP },       // Transparent screenshot
+    { WWT_LABEL,            1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_VIRTUAL_FLOOR_STYLE,        STR_NONE },                             // Virtual floor
+    { WWT_DROPDOWN,         1,  155,    299,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_NONE,                       STR_VIRTUAL_FLOOR_STYLE_TIP },          // Virtual floor dropdown
+    { WWT_BUTTON,           1,  288,    298,    FRAME_RENDERING_START + 91,     FRAME_RENDERING_START + 100,    STR_DROPDOWN_GLYPH,             STR_VIRTUAL_FLOOR_STYLE_TIP },          // Virtual floor dropdown
 #undef FRAME_RENDERING_START
-#define FRAME_EFFECTS_START 148
+#define FRAME_EFFECTS_START 163
     { WWT_GROUPBOX,         1,  5,      304,    FRAME_EFFECTS_START + 0,        FRAME_EFFECTS_START + 78,       STR_EFFECTS_GROUP,              STR_NONE },                             // Rendering group
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_EFFECTS_START + 15,       FRAME_EFFECTS_START + 26,       STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
     { WWT_CHECKBOX,         1,  25,     290,    FRAME_EFFECTS_START + 30,       FRAME_EFFECTS_START + 41,       STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
@@ -357,17 +360,16 @@ static rct_widget window_options_misc_widgets[] = {
 static rct_widget window_options_advanced_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_CHECKBOX,         2,  10,     299,    54,      65,    STR_ENABLE_DEBUGGING_TOOLS,                 STR_ENABLE_DEBUGGING_TOOLS_TIP },                   // Enable debugging tools
-    { WWT_CHECKBOX,         2,  10,     299,    69,      80,    STR_TEST_UNFINISHED_TRACKS,                 STR_TEST_UNFINISHED_TRACKS_TIP },                   // Test unfinished tracks
-    { WWT_CHECKBOX,         2,  10,     299,    84,      95,    STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,  STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },    // Allow loading with incorrect checksum
-    { WWT_CHECKBOX,         2,  10,     299,    99,     110,    STR_SAVE_PLUGIN_DATA,                       STR_SAVE_PLUGIN_DATA_TIP },                         // Export plug-in objects with saved games
-    { WWT_CHECKBOX,         2,  10,     299,    114,    125,    STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
-    { WWT_CHECKBOX,         1,  10,     299,    129,    140,    STR_ALWAYS_NATIVE_LOADSAVE,                 STR_ALWAYS_NATIVE_LOADSAVE_TIP },                   // Use native load/save window
-    { WWT_DROPDOWN,         1,  165,    299,    145,    157,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
-    { WWT_BUTTON,           1,  288,    298,    146,    156,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
-    SPINNER_WIDGETS        (1,  165,    299,    165,    176,    STR_NONE,                                   STR_AUTOSAVE_AMOUNT_TIP ),                          // Autosave amount spinner
-    { WWT_LABEL,            1,  23,     298,    184,    195,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
-    { WWT_BUTTON,           1,  24,     289,    199,    212,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
-    { WWT_BUTTON,           1,  289,    299,    199,    212,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
+    { WWT_CHECKBOX,         2,  10,     299,    69,      80,    STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,  STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },    // Allow loading with incorrect checksum
+    { WWT_CHECKBOX,         2,  10,     299,    84,      95,    STR_SAVE_PLUGIN_DATA,                       STR_SAVE_PLUGIN_DATA_TIP },                         // Export plug-in objects with saved games
+    { WWT_CHECKBOX,         2,  10,     299,    99,      110,   STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
+    { WWT_CHECKBOX,         1,  10,     299,    114,     125,   STR_ALWAYS_NATIVE_LOADSAVE,                 STR_ALWAYS_NATIVE_LOADSAVE_TIP },                   // Use native load/save window
+    { WWT_DROPDOWN,         1,  165,    299,    130,     142,   STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
+    { WWT_BUTTON,           1,  288,    298,    131,     141,   STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
+    SPINNER_WIDGETS        (1,  165,    299,    150,     161,   STR_NONE,                                   STR_AUTOSAVE_AMOUNT_TIP ),                          // Autosave amount spinner
+    { WWT_LABEL,            1,  23,     298,    169,     180,   STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
+    { WWT_BUTTON,           1,  24,     289,    184,     197,   STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
+    { WWT_BUTTON,           1,  289,    299,    184,     197,   STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
     { WIDGETS_END },
 };
 
@@ -522,6 +524,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_UNCAP_FPS_CHECKBOX) |
     (1 << WIDX_USE_VSYNC_CHECKBOX) |
     (1 << WIDX_SHOW_FPS_CHECKBOX) |
+    (1 << WIDX_MULTITHREADING_CHECKBOX) |
     (1 << WIDX_MINIMIZE_FOCUS_LOSS) |
     (1 << WIDX_STEAM_OVERLAY_PAUSE) |
     (1 << WIDX_SCALE) |
@@ -535,6 +538,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_GRIDLINES_CHECKBOX) |
     (1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
     (1 << WIDX_SHOW_GUEST_PURCHASES_CHECKBOX) |
+    (1 << WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX) |
     (1 << WIDX_VIRTUAL_FLOOR) |
     (1 << WIDX_VIRTUAL_FLOOR_DROPDOWN) |
     (1 << WIDX_DAY_NIGHT_CHECKBOX) |
@@ -598,7 +602,6 @@ static uint64_t window_options_page_enabled_widgets[] = {
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_DEBUGGING_TOOLS) |
-    (1 << WIDX_TEST_UNFINISHED_TRACKS) |
     (1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
     (1 << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
     (1 << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
@@ -693,6 +696,11 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     config_save_default();
                     window_invalidate(w);
                     break;
+                case WIDX_MULTITHREADING_CHECKBOX:
+                    gConfigGeneral.multithreading ^= 1;
+                    config_save_default();
+                    window_invalidate(w);
+                    break;
                 case WIDX_MINIMIZE_FOCUS_LOSS:
                     gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
                     platform_refresh_video(false);
@@ -756,6 +764,11 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     break;
                 case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
                     gConfigGeneral.show_guest_purchases ^= 1;
+                    config_save_default();
+                    window_invalidate(w);
+                    break;
+                case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
+                    gConfigGeneral.transparent_screenshot ^= 1;
                     config_save_default();
                     window_invalidate(w);
                     break;
@@ -915,11 +928,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     gConfigGeneral.debugging_tools ^= 1;
                     config_save_default();
                     gfx_invalidate_screen();
-                    break;
-                case WIDX_TEST_UNFINISHED_TRACKS:
-                    gConfigGeneral.test_unfinished_tracks ^= 1;
-                    config_save_default();
-                    window_invalidate(w);
                     break;
                 case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
                     gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral
@@ -1711,6 +1719,7 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
             widget_set_checkbox_value(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
             widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
+            widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
             widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
             widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
 
@@ -1730,6 +1739,7 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
             widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
             widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
+            widget_set_checkbox_value(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
             widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
             rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
@@ -1917,7 +1927,6 @@ static void window_options_invalidate(rct_window* w)
 
         case WINDOW_OPTIONS_PAGE_ADVANCED:
             widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
-            widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
             widget_set_checkbox_value(
                 w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
             widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);

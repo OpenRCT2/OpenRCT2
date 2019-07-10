@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,9 @@
 #include "../ReplayManager.h"
 #include "../Version.h"
 #include "../actions/ClimateSetAction.hpp"
+#include "../actions/RideSetPriceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
+#include "../actions/SetCheatAction.hpp"
 #include "../actions/StaffSetCostumeAction.hpp"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
@@ -169,6 +171,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     console.WriteFormatLine("rides set excitement <ride id> <excitement value>");
                     console.WriteFormatLine("rides set intensity <ride id> <intensity value>");
                     console.WriteFormatLine("rides set nausea <ride id> <nausea value>");
+                    console.WriteFormatLine("rides set price <ride id / all [type]> <price>");
                 }
                 return 0;
             }
@@ -355,6 +358,70 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     else
                     {
                         ride->nausea = nausea;
+                    }
+                }
+            }
+            else if (argv[1] == "price")
+            {
+                bool int_valid[2] = { false };
+                if (argv[2] == "all")
+                {
+                    auto arg1 = console_parse_int(argv[3], &int_valid[0]);
+                    if (argv.size() <= 4)
+                    {
+                        auto price = arg1;
+                        if (int_valid[0])
+                        {
+                            uint16_t rideId{};
+                            Ride* ride;
+                            FOR_ALL_RIDES (rideId, ride)
+                            {
+                                auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                                GameActions::Execute(&rideSetPrice);
+                            }
+                        }
+                        else
+                        {
+                            console.WriteFormatLine("This command expects one or two integer arguments");
+                        }
+                    }
+                    else
+                    {
+                        auto rideType = arg1;
+                        auto price = console_parse_int(argv[4], &int_valid[1]);
+
+                        if (int_valid[0] && int_valid[1])
+                        {
+                            uint16_t rideId{};
+                            Ride* ride;
+                            FOR_ALL_RIDES (rideId, ride)
+                            {
+                                if (ride->type == rideType)
+                                {
+                                    auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                                    GameActions::Execute(&rideSetPrice);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            console.WriteFormatLine("This command expects one or two integer arguments");
+                        }
+                    }
+                }
+                else
+                {
+                    int32_t rideId = console_parse_int(argv[2], &int_valid[0]);
+                    money16 price = console_parse_int(argv[3], &int_valid[1]);
+
+                    if (!int_valid[0] || !int_valid[1])
+                    {
+                        console.WriteFormatLine("This command expects the string all or two integer arguments");
+                    }
+                    else
+                    {
+                        auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                        GameActions::Execute(&rideSetPrice);
                     }
                 }
             }
@@ -583,14 +650,6 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         {
             console.WriteFormatLine("console_small_font %d", gConfigInterface.console_small_font);
         }
-        else if (argv[0] == "test_unfinished_tracks")
-        {
-            console.WriteFormatLine("test_unfinished_tracks %d", gConfigGeneral.test_unfinished_tracks);
-        }
-        else if (argv[0] == "no_test_crashes")
-        {
-            console.WriteFormatLine("no_test_crashes %d", gConfigGeneral.no_test_crashes);
-        }
         else if (argv[0] == "location")
         {
             rct_window* w = window_get_main();
@@ -687,26 +746,18 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         if (argv[0] == "money" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             money32 money = MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100);
-            bool run_get_money = true;
             if (gCash != money)
             {
-                if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, money, GAME_COMMAND_CHEAT, 0, 0)
-                    != MONEY32_UNDEFINED)
-                {
-                    // When in networked client mode, console.Execute("get money")
-                    // does not print value accurately. Instead, print the argument.
-                    if (network_get_mode() == NETWORK_MODE_CLIENT)
-                    {
-                        run_get_money = false;
-                        console.WriteFormatLine("money %d.%d0", money / 10, money % 10);
-                    }
-                }
-                else
-                {
-                    console.WriteLineError("Network error: Permission denied!");
-                }
+                auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
+                    if (res->Error != GA_ERROR::OK)
+                        console.WriteLineError("Network error: Permission denied!");
+                    else
+                        console.Execute("get money");
+                });
+                GameActions::Execute(&setCheatAction);
             }
-            if (run_get_money)
+            else
             {
                 console.Execute("get money");
             }
@@ -857,18 +908,6 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             config_save_default();
             console.Execute("get console_small_font");
         }
-        else if (argv[0] == "test_unfinished_tracks" && invalidArguments(&invalidArgs, int_valid[0]))
-        {
-            gConfigGeneral.test_unfinished_tracks = (int_val[0] != 0);
-            config_save_default();
-            console.Execute("get test_unfinished_tracks");
-        }
-        else if (argv[0] == "no_test_crashes" && invalidArguments(&invalidArgs, int_valid[0]))
-        {
-            gConfigGeneral.no_test_crashes = (int_val[0] != 0);
-            config_save_default();
-            console.Execute("get no_test_crashes");
-        }
         else if (argv[0] == "location" && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1]))
         {
             rct_window* w = window_get_main();
@@ -913,57 +952,55 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             if (gCheatsSandboxMode != (int_val[0] != 0))
             {
-                if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0)
-                    != MONEY32_UNDEFINED)
-                {
-                    // Change it locally so it shows the accurate value in the
-                    // "console.Execute("get cheat_sandbox_mode")" line when in networked client mode
-                    gCheatsSandboxMode = (int_val[0] != 0);
-                }
-                else
-                {
-                    console.WriteLineError("Network error: Permission denied!");
-                }
+                auto setCheatAction = SetCheatAction(CheatType::SandboxMode, int_val[0] != 0);
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
+                    if (res->Error != GA_ERROR::OK)
+                        console.WriteLineError("Network error: Permission denied!");
+                    else
+                        console.Execute("get cheat_sandbox_mode");
+                });
+                GameActions::Execute(&setCheatAction);
             }
-            console.Execute("get cheat_sandbox_mode");
+            else
+            {
+                console.Execute("get cheat_sandbox_mode");
+            }
         }
         else if (argv[0] == "cheat_disable_clearance_checks" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             if (gCheatsDisableClearanceChecks != (int_val[0] != 0))
             {
-                if (game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0)
-                    != MONEY32_UNDEFINED)
-                {
-                    // Change it locally so it shows the accurate value in the
-                    // "console.Execute("get cheat_disable_clearance_checks")" line when in networked client mode
-                    gCheatsDisableClearanceChecks = (int_val[0] != 0);
-                }
-                else
-                {
-                    console.WriteLineError("Network error: Permission denied!");
-                }
+                auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, int_val[0] != 0);
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
+                    if (res->Error != GA_ERROR::OK)
+                        console.WriteLineError("Network error: Permission denied!");
+                    else
+                        console.Execute("get cheat_disable_clearance_checks");
+                });
+                GameActions::Execute(&setCheatAction);
             }
-            console.Execute("get cheat_disable_clearance_checks");
+            else
+            {
+                console.Execute("get cheat_disable_clearance_checks");
+            }
         }
         else if (argv[0] == "cheat_disable_support_limits" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             if (gCheatsDisableSupportLimits != (int_val[0] != 0))
             {
-                if (game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, (int_val[0] != 0), GAME_COMMAND_CHEAT, 0, 0)
-                    != MONEY32_UNDEFINED)
-                {
-                    // Change it locally so it shows the accurate value in the
-                    // "console.Execute("get cheat_disable_support_limits")" line when in networked client mode
-                    gCheatsDisableSupportLimits = (int_val[0] != 0);
-                }
-                else
-                {
-                    console.WriteLineError("Network error: Permission denied!");
-                }
+                auto setCheatAction = SetCheatAction(CheatType::DisableSupportLimits, int_val[0] != 0);
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
+                    if (res->Error != GA_ERROR::OK)
+                        console.WriteLineError("Network error: Permission denied!");
+                    else
+                        console.Execute("get cheat_disable_support_limits");
+                });
+                GameActions::Execute(&setCheatAction);
             }
-            console.Execute("get cheat_disable_support_limits");
+            else
+            {
+                console.Execute("get cheat_disable_support_limits");
+            }
         }
         else if (argv[0] == "current_rotation" && invalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -1379,7 +1416,7 @@ static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments
     }
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager->IsRecording() == false && replayManager->IsNormalising() == false)
+    if (!replayManager->IsRecording() && !replayManager->IsNormalising())
     {
         console.WriteFormatLine("Replay currently not recording");
         return 0;
@@ -1492,6 +1529,66 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_
     return 0;
 }
 
+static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv)
+{
+    int32_t desyncType = 0;
+    if (argv.size() >= 1)
+    {
+        desyncType = atoi(argv[0].c_str());
+    }
+
+    std::vector<rct_sprite*> peeps;
+    std::vector<rct_sprite*> vehicles;
+
+    for (int i = 0; i < MAX_SPRITES; i++)
+    {
+        rct_sprite* sprite = get_sprite(i);
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+            continue;
+
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            peeps.push_back(sprite);
+        else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            vehicles.push_back(sprite);
+    }
+
+    switch (desyncType)
+    {
+        case 0: // Peep t-shirts.
+        {
+            if (peeps.empty())
+            {
+                console.WriteFormatLine("No peeps");
+            }
+            else
+            {
+                rct_sprite* sprite = peeps[0];
+                if (peeps.size() > 1)
+                    sprite = peeps[util_rand() % peeps.size() - 1];
+                sprite->peep.tshirt_colour = util_rand() & 0xFF;
+                invalidate_sprite_0(sprite);
+            }
+            break;
+        }
+        case 1: // Remove random peep.
+        {
+            if (peeps.empty())
+            {
+                console.WriteFormatLine("No peep removed");
+            }
+            else
+            {
+                rct_sprite* sprite = peeps[0];
+                if (peeps.size() > 1)
+                    sprite = peeps[util_rand() % peeps.size() - 1];
+                sprite->AsPeep()->Remove();
+            }
+            break;
+        }
+    }
+    return 0;
+}
+
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
 static int32_t cc_abort([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
@@ -1556,8 +1653,6 @@ static constexpr const utf8* console_variable_table[] = {
     "climate",
     "game_speed",
     "console_small_font",
-    "test_unfinished_tracks",
-    "no_test_crashes",
     "location",
     "window_scale",
     "window_limit",
@@ -1613,6 +1708,7 @@ static constexpr const console_command console_command_table[] = {
     { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
     { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
+    { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random peep, 1 = Remove random peep ]"},
     
 };
 // clang-format on

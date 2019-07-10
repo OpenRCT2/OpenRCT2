@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,12 +9,14 @@
 
 #pragma once
 
+#include "../Cheats.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/Localisation.h"
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
 #include "../ride/Ride.h"
 #include "../world/Location.hpp"
+#include "../world/TileElement.h"
 #include "DataSerialiserTag.h"
 #include "Endianness.h"
 #include "MemoryStream.h"
@@ -252,6 +254,64 @@ template<> struct DataSerializerTraits<MemoryStream>
     }
 };
 
+template<typename _Ty, size_t _Size> struct DataSerializerTraitsPODArray
+{
+    static void encode(IStream* stream, const _Ty (&val)[_Size])
+    {
+        uint16_t len = (uint16_t)_Size;
+        uint16_t swapped = ByteSwapBE(len);
+        stream->Write(&swapped);
+
+        DataSerializerTraits<uint8_t> s;
+        for (auto&& sub : val)
+        {
+            s.encode(stream, sub);
+        }
+    }
+    static void decode(IStream* stream, _Ty (&val)[_Size])
+    {
+        uint16_t len;
+        stream->Read(&len);
+        len = ByteSwapBE(len);
+
+        if (len != _Size)
+            throw std::runtime_error("Invalid size, can't decode");
+
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.decode(stream, sub);
+        }
+    }
+    static void log(IStream* stream, const _Ty (&val)[_Size])
+    {
+        stream->Write("{", 1);
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.log(stream, sub);
+            stream->Write("; ", 2);
+        }
+        stream->Write("}", 1);
+    }
+};
+
+template<size_t _Size> struct DataSerializerTraits<uint8_t[_Size]> : public DataSerializerTraitsPODArray<uint8_t, _Size>
+{
+};
+
+template<size_t _Size> struct DataSerializerTraits<uint16_t[_Size]> : public DataSerializerTraitsPODArray<uint16_t, _Size>
+{
+};
+
+template<size_t _Size> struct DataSerializerTraits<uint32_t[_Size]> : public DataSerializerTraitsPODArray<uint32_t, _Size>
+{
+};
+
+template<size_t _Size> struct DataSerializerTraits<uint64_t[_Size]> : public DataSerializerTraitsPODArray<uint64_t, _Size>
+{
+};
+
 template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty, _Size>>
 {
     static void encode(IStream* stream, const std::array<_Ty, _Size>& val)
@@ -319,6 +379,40 @@ template<> struct DataSerializerTraits<MapRange>
             v.RightBottom.y);
 
         stream->Write(coords, strlen(coords));
+    }
+};
+
+template<> struct DataSerializerTraits<TileElement>
+{
+    static void encode(IStream* stream, const TileElement& tileElement)
+    {
+        stream->WriteValue(tileElement.type);
+        stream->WriteValue(tileElement.flags);
+        stream->WriteValue(tileElement.base_height);
+        stream->WriteValue(tileElement.clearance_height);
+        for (int i = 0; i < 4; ++i)
+        {
+            stream->WriteValue(tileElement.pad_04[i]);
+        }
+    }
+    static void decode(IStream* stream, TileElement& tileElement)
+    {
+        tileElement.type = stream->ReadValue<uint8_t>();
+        tileElement.flags = stream->ReadValue<uint8_t>();
+        tileElement.base_height = stream->ReadValue<uint8_t>();
+        tileElement.clearance_height = stream->ReadValue<uint8_t>();
+        for (int i = 0; i < 4; ++i)
+        {
+            tileElement.pad_04[i] = stream->ReadValue<uint8_t>();
+        }
+    }
+    static void log(IStream* stream, const TileElement& tileElement)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "TileElement(type = %u, flags = %u, base_height = %u)", tileElement.type, tileElement.flags,
+            tileElement.base_height);
+        stream->Write(msg, strlen(msg));
     }
 };
 
@@ -393,5 +487,25 @@ template<> struct DataSerializerTraits<CoordsXYZD>
         snprintf(
             msg, sizeof(msg), "CoordsXYZD(x = %d, y = %d, z = %d, direction = %d)", coord.x, coord.y, coord.z, coord.direction);
         stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits<NetworkCheatType_t>
+{
+    static void encode(IStream* stream, const NetworkCheatType_t& val)
+    {
+        uint32_t temp = ByteSwapBE(val.id);
+        stream->Write(&temp);
+    }
+    static void decode(IStream* stream, NetworkCheatType_t& val)
+    {
+        uint32_t temp;
+        stream->Read(&temp);
+        val.id = ByteSwapBE(temp);
+    }
+    static void log(IStream* stream, const NetworkCheatType_t& val)
+    {
+        const char* cheatName = CheatsGetName(static_cast<CheatType>(val.id));
+        stream->Write(cheatName, strlen(cheatName));
     }
 };

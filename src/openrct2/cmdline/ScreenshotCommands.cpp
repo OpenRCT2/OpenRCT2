@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,7 @@ static constexpr const CommandLineOptionDefinition ScreenshotOptionsDef[]
     { CMDLINE_TYPE_SWITCH,  &options.fix_vandalism, NAC, "fix-vandalism", "fix vandalism for the screenshot" },
     { CMDLINE_TYPE_SWITCH,  &options.remove_litter, NAC, "remove-litter", "remove litter for the screenshot" },
     { CMDLINE_TYPE_SWITCH,  &options.tidy_up_park,  NAC, "tidy-up-park",  "clear grass, water plants, fix vandalism and remove litter" },
+    { CMDLINE_TYPE_SWITCH,  &options.transparent,   NAC, "transparent",   "make the background transparent" },
     OptionTableEnd
 };
 

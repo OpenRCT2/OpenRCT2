@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,11 +19,11 @@
 #include "../world/Water.h"
 
 // HACK These were originally passed back through registers
-int32_t gLastDrawStringX;
-int32_t gLastDrawStringY;
+thread_local int32_t gLastDrawStringX;
+thread_local int32_t gLastDrawStringY;
 
-int16_t gCurrentFontSpriteBase;
-uint16_t gCurrentFontFlags;
+thread_local int16_t gCurrentFontSpriteBase;
+thread_local uint16_t gCurrentFontFlags;
 
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;
@@ -591,12 +591,7 @@ bool clip_drawpixelinfo(rct_drawpixelinfo* dst, rct_drawpixelinfo* src, int32_t 
     int32_t right = x + width;
     int32_t bottom = y + height;
 
-    dst->bits = src->bits;
-    dst->x = src->x;
-    dst->y = src->y;
-    dst->width = src->width;
-    dst->height = src->height;
-    dst->pitch = src->pitch;
+    *dst = *src;
     dst->zoom_level = 0;
 
     if (x > dst->x)

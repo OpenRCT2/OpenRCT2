@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,9 +34,11 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <iterator>
+#include <list>
 
-std::vector<std::unique_ptr<rct_window>> g_window_list;
+std::list<std::shared_ptr<rct_window>> g_window_list;
 rct_window* gWindowAudioExclusive;
 
 uint16_t TextInputDescriptionArgs[4];
@@ -49,7 +51,6 @@ TextInputSession* gTextInput;
 
 uint16_t gWindowUpdateTicks;
 uint16_t gWindowMapFlashingFlags;
-
 colour_t gCurrentWindowColours[4];
 
 // converted from uint16_t values at 0x009A41EC - 0x009A4230
@@ -76,20 +77,31 @@ static constexpr const float window_scroll_locations[][2] = {
 };
 // clang-format on
 
+namespace WindowCloseFlags
+{
+    static constexpr uint32_t None = 0;
+    static constexpr uint32_t IterateReverse = (1 << 0);
+    static constexpr uint32_t CloseSingle = (1 << 1);
+} // namespace WindowCloseFlags
+
 static int32_t window_draw_split(
     rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
-size_t window_get_index(const rct_window* w)
+std::list<std::shared_ptr<rct_window>>::iterator window_get_iterator(const rct_window* w)
 {
-    for (size_t i = 0; i < g_window_list.size(); i++)
+    return std::find_if(g_window_list.begin(), g_window_list.end(), [w](const std::shared_ptr<rct_window>& w2) -> bool {
+        return w == w2.get();
+    });
+}
+
+void window_visit_each(std::function<void(rct_window*)> func)
+{
+    auto windowList = g_window_list;
+    for (auto& w : windowList)
     {
-        if (g_window_list[i].get() == w)
-        {
-            return i;
-        }
+        func(w.get());
     }
-    return std::numeric_limits<size_t>::max();
 }
 
 /**
@@ -99,27 +111,17 @@ size_t window_get_index(const rct_window* w)
 void window_dispatch_update_all()
 {
     // gTooltipNotShownTicks++;
-
-    // The window list can change during update calls, so use index based iteration
-    for (auto i = g_window_list.size(); i > 0; i--)
-    {
-        if (i - 1 < g_window_list.size())
-        {
-            auto& w = g_window_list[i - 1];
-            window_event_update_call(w.get());
-        }
-    }
+    window_visit_each([&](rct_window* w) { window_event_update_call(w); });
 }
 
 void window_update_all_viewports()
 {
-    for (auto& w : g_window_list)
-    {
-        if (w->viewport != nullptr && window_is_visible(w.get()))
+    window_visit_each([&](rct_window* w) {
+        if (w->viewport != nullptr && window_is_visible(w))
         {
-            viewport_update_position(w.get());
+            viewport_update_position(w);
         }
-    }
+    });
 }
 
 /**
@@ -137,17 +139,12 @@ void window_update_all()
     if (gWindowUpdateTicks >= 1000)
     {
         gWindowUpdateTicks = 0;
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-        {
-            auto w = it->get();
-            window_event_periodic_update_call(w);
-        }
+
+        window_visit_each([](rct_window* w) { window_event_periodic_update_call(w); });
     }
 
     // Border flash invalidation
-    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-    {
-        auto w = it->get();
+    window_visit_each([](rct_window* w) {
         if (w->flags & WF_WHITE_BORDER_MASK)
         {
             w->flags -= WF_WHITE_BORDER_ONE;
@@ -156,7 +153,7 @@ void window_update_all()
                 window_invalidate(w);
             }
         }
-    }
+    });
 
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
     windowManager->UpdateMouseWheel();
@@ -238,11 +235,65 @@ void window_close(rct_window* window)
     // Invalidate the window (area)
     window_invalidate(window);
 
-    auto index = window_get_index(window);
-    if (index != std::numeric_limits<size_t>::max())
+    for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
     {
-        g_window_list.erase(g_window_list.begin() + index);
+        if ((*it).get() == window)
+        {
+            g_window_list.erase(it);
+            break;
+        }
     }
+}
+
+template<typename _TPred> static void window_close_by_condition(_TPred pred, uint32_t flags = WindowCloseFlags::None)
+{
+    bool listUpdated;
+    do
+    {
+        listUpdated = false;
+
+        auto closeSingle = [&](std::shared_ptr<rct_window> window) -> bool {
+            if (!pred(window.get()))
+            {
+                return false;
+            }
+
+            // Keep track of current amount, if a new window is created upon closing
+            // we need to break this current iteration and restart.
+            size_t previousCount = g_window_list.size();
+
+            window_close(window.get());
+
+            if ((flags & WindowCloseFlags::CloseSingle) != 0)
+            {
+                // Only close a single one.
+                return true;
+            }
+
+            if (previousCount >= g_window_list.size())
+            {
+                // A new window was created during the close event.
+                return true;
+            }
+
+            // Keep closing windows.
+            return false;
+        };
+
+        // The closest to something like for_each_if is using find_if in order to avoid duplicate code
+        // to change the loop direction.
+        auto windowList = g_window_list;
+        if ((flags & WindowCloseFlags::IterateReverse) != 0)
+            listUpdated = std::find_if(windowList.rbegin(), windowList.rend(), closeSingle) != windowList.rend();
+        else
+            listUpdated = std::find_if(windowList.begin(), windowList.end(), closeSingle) != windowList.end();
+
+        // If requested to close only a single window and a new window was created during close
+        // we ignore it.
+        if ((flags & WindowCloseFlags::CloseSingle) != 0)
+            break;
+
+    } while (listUpdated);
 }
 
 /**
@@ -252,15 +303,7 @@ void window_close(rct_window* window)
  */
 void window_close_by_class(rct_windowclass cls)
 {
-    for (size_t i = 0; i < g_window_list.size(); i++)
-    {
-        auto& w = *g_window_list[i];
-        if (w.classification == cls)
-        {
-            window_close(&w);
-            i--;
-        }
-    }
+    window_close_by_condition([&](rct_window* w) -> bool { return w->classification == cls; });
 }
 
 /**
@@ -271,15 +314,7 @@ void window_close_by_class(rct_windowclass cls)
  */
 void window_close_by_number(rct_windowclass cls, rct_windownumber number)
 {
-    for (size_t i = 0; i < g_window_list.size(); i++)
-    {
-        auto& w = *g_window_list[i];
-        if (w.classification == cls && w.number == number)
-        {
-            window_close(&w);
-            i--;
-        }
-    }
+    window_close_by_condition([cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
 }
 
 /**
@@ -329,18 +364,13 @@ void window_close_top()
     window_close_by_class(WC_DROPDOWN);
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    {
         if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
             return;
-
-    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-    {
-        auto& w = **it;
-        if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
-        {
-            window_close(&w);
-            break;
-        }
     }
+
+    auto pred = [](rct_window* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); };
+    window_close_by_condition(pred, WindowCloseFlags::CloseSingle | WindowCloseFlags::IterateReverse);
 }
 
 /**
@@ -351,27 +381,16 @@ void window_close_top()
 void window_close_all()
 {
     window_close_by_class(WC_DROPDOWN);
-    for (size_t i = g_window_list.size(); i > 0; i--)
-    {
-        auto& w = *g_window_list[i - 1];
-        if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
-        {
-            window_close(&w);
-        }
-    }
+    window_close_by_condition([](rct_window* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
 }
 
 void window_close_all_except_class(rct_windowclass cls)
 {
     window_close_by_class(WC_DROPDOWN);
-    for (size_t i = g_window_list.size(); i > 0; i--)
-    {
-        auto& w = *g_window_list[i - 1];
-        if (w.classification != cls && !(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
-        {
-            window_close(&w);
-        }
-    }
+
+    window_close_by_condition([cls](rct_window* w) -> bool {
+        return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
+    });
 }
 
 /**
@@ -379,14 +398,7 @@ void window_close_all_except_class(rct_windowclass cls)
  */
 void window_close_all_except_flags(uint16_t flags)
 {
-    for (size_t i = g_window_list.size(); i > 0; i--)
-    {
-        auto& w = *g_window_list[i - 1];
-        if (!(w.flags & flags))
-        {
-            window_close(&w);
-        }
-    }
+    window_close_by_condition([flags](rct_window* w) -> bool { return !(w->flags & flags); });
 }
 
 /**
@@ -397,18 +409,18 @@ rct_window* window_find_from_point(int32_t x, int32_t y)
 {
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
-        auto& w = **it;
-        if (x < w.x || x >= w.x + w.width || y < w.y || y >= w.y + w.height)
+        auto& w = *it;
+        if (x < w->x || x >= w->x + w->width || y < w->y || y >= w->y + w->height)
             continue;
 
-        if (w.flags & WF_NO_BACKGROUND)
+        if (w->flags & WF_NO_BACKGROUND)
         {
-            auto widgetIndex = window_find_widget_from_point(&w, x, y);
+            auto widgetIndex = window_find_widget_from_point(w.get(), x, y);
             if (widgetIndex == -1)
                 continue;
         }
 
-        return &w;
+        return w.get();
     }
 
     return nullptr;
@@ -466,6 +478,16 @@ void window_invalidate(rct_window* window)
         gfx_set_dirty_blocks(window->x, window->y, window->x + window->width, window->y + window->height);
 }
 
+template<typename _TPred> static void window_invalidate_by_condition(_TPred pred)
+{
+    window_visit_each([pred](rct_window* w) {
+        if (pred(w))
+        {
+            window_invalidate(w);
+        }
+    });
+}
+
 /**
  * Invalidates all windows with the specified window class.
  *  rct2: 0x006EC3AC
@@ -473,13 +495,7 @@ void window_invalidate(rct_window* window)
  */
 void window_invalidate_by_class(rct_windowclass cls)
 {
-    for (auto& w : g_window_list)
-    {
-        if (w->classification == cls)
-        {
-            window_invalidate(w.get());
-        }
-    }
+    window_invalidate_by_condition([cls](rct_window* w) -> bool { return w->classification == cls; });
 }
 
 /**
@@ -488,13 +504,8 @@ void window_invalidate_by_class(rct_windowclass cls)
  */
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
 {
-    for (auto& w : g_window_list)
-    {
-        if (w->classification == cls && w->number == number)
-        {
-            window_invalidate(w.get());
-        }
-    }
+    window_invalidate_by_condition(
+        [cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
 }
 
 /**
@@ -502,10 +513,7 @@ void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
  */
 void window_invalidate_all()
 {
-    for (auto& w : g_window_list)
-    {
-        window_invalidate(w.get());
-    }
+    window_visit_each([](rct_window* w) { window_invalidate(w); });
 }
 
 /**
@@ -531,18 +539,27 @@ void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
     gfx_set_dirty_blocks(w->x + widget->left, w->y + widget->top, w->x + widget->right + 1, w->y + widget->bottom + 1);
 }
 
+template<typename _TPred> static void widget_invalidate_by_condition(_TPred pred)
+{
+    window_visit_each([pred](rct_window* w) {
+        if (pred(w))
+        {
+            window_invalidate(w);
+        }
+    });
+}
+
 /**
  * Invalidates the specified widget of all windows that match the specified window class.
  */
 void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex)
 {
-    for (auto& w : g_window_list)
-    {
+    window_visit_each([cls, widgetIndex](rct_window* w) {
         if (w->classification == cls)
         {
-            widget_invalidate(w.get(), widgetIndex);
+            widget_invalidate(w, widgetIndex);
         }
-    }
+    });
 }
 
 /**
@@ -551,13 +568,12 @@ void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex
  */
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex)
 {
-    for (auto& w : g_window_list)
-    {
+    window_visit_each([cls, number, widgetIndex](rct_window* w) {
         if (w->classification == cls && w->number == number)
         {
-            widget_invalidate(w.get(), widgetIndex);
+            widget_invalidate(w, widgetIndex);
         }
-    }
+    });
 }
 
 /**
@@ -640,25 +656,22 @@ rct_window* window_bring_to_front(rct_window* w)
 {
     if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
     {
-        size_t srcIndex = window_get_index(w);
-        if (srcIndex != std::numeric_limits<size_t>::max())
+        auto itSourcePos = window_get_iterator(w);
+        if (itSourcePos != g_window_list.end())
         {
-            auto wptr = std::move(g_window_list[srcIndex]);
-            g_window_list.erase(g_window_list.begin() + srcIndex);
-
             // Insert in front of the first non-stick-to-front window
-            size_t dstIndex = 0;
-            for (size_t i = g_window_list.size(); i > 0; i--)
+            auto itDestPos = g_window_list.begin();
+            for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
             {
-                auto& w2 = *g_window_list[i - 1];
-                if (!(w2.flags & WF_STICK_TO_FRONT))
+                auto& w2 = *it;
+                if (!(w2->flags & WF_STICK_TO_FRONT))
                 {
-                    dstIndex = i;
+                    itDestPos = it.base();
                     break;
                 }
             }
 
-            g_window_list.insert(g_window_list.begin() + dstIndex, std::move(wptr));
+            g_window_list.splice(itDestPos, g_window_list, itSourcePos);
             window_invalidate(w);
 
             if (w->x + w->width < 20)
@@ -721,30 +734,29 @@ rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
  */
 void window_push_others_right(rct_window* window)
 {
-    for (auto& w : g_window_list)
-    {
-        if (w.get() == window)
-            continue;
+    window_visit_each([window](rct_window* w) {
+        if (w == window)
+            return;
         if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
-            continue;
+            return;
         if (w->x >= window->x + window->width)
-            continue;
+            return;
         if (w->x + w->width <= window->x)
-            continue;
+            return;
         if (w->y >= window->y + window->height)
-            continue;
+            return;
         if (w->y + w->height <= window->y)
-            continue;
+            return;
 
-        window_invalidate(w.get());
+        window_invalidate(w);
         if (window->x + window->width + 13 >= context_get_width())
-            continue;
+            return;
         uint16_t push_amount = window->x + window->width - w->x + 3;
         w->x += push_amount;
-        window_invalidate(w.get());
+        window_invalidate(w);
         if (w->viewport != nullptr)
             w->viewport->x += push_amount;
-    }
+    });
 }
 
 /**
@@ -753,41 +765,36 @@ void window_push_others_right(rct_window* window)
  */
 void window_push_others_below(rct_window* w1)
 {
-    int32_t push_amount;
-
     // Enumerate through all other windows
-    for (auto& w2 : g_window_list)
-    {
-        if (w1 == w2.get())
-            continue;
-
+    window_visit_each([w1](rct_window* w2) {
+        if (w1 == w2)
+            return;
         // ?
         if (w2->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
-            continue;
-
+            return;
         // Check if w2 intersects with w1
         if (w2->x > (w1->x + w1->width) || w2->x + w2->width < w1->x)
-            continue;
+            return;
         if (w2->y > (w1->y + w1->height) || w2->y + w2->height < w1->y)
-            continue;
+            return;
 
         // Check if there is room to push it down
         if (w1->y + w1->height + 80 >= context_get_height())
-            continue;
+            return;
 
         // Invalidate the window's current area
-        window_invalidate(w2.get());
+        window_invalidate(w2);
 
-        push_amount = w1->y + w1->height - w2->y + 3;
+        int32_t push_amount = w1->y + w1->height - w2->y + 3;
         w2->y += push_amount;
 
         // Invalidate the window's new area
-        window_invalidate(w2.get());
+        window_invalidate(w2);
 
         // Update viewport position if necessary
         if (w2->viewport != nullptr)
             w2->viewport->y += push_amount;
-    }
+    });
 }
 
 /**
@@ -890,15 +897,11 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             {
                 int16_t x2 = w->viewport->x + (int16_t)(w->viewport->width * window_scroll_locations[i][0]);
                 int16_t y2 = w->viewport->y + (int16_t)(w->viewport->height * window_scroll_locations[i][1]);
-                for (auto w2i = window_get_index(w); w2i <= g_window_list.size(); w2i++)
-                {
-                    if (w2i == g_window_list.size())
-                    {
-                        found = true;
-                        break;
-                    }
 
-                    auto& w2 = g_window_list[w2i];
+                auto it = window_get_iterator(w);
+                for (; it != g_window_list.end(); it++)
+                {
+                    auto w2 = (*it).get();
                     int16_t x1 = w2->x - 10;
                     int16_t y1 = w2->y - 10;
                     if (x2 >= x1 && x2 <= w2->width + x1 + 20)
@@ -911,6 +914,10 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
                             break;
                         }
                     }
+                }
+                if (it == g_window_list.end())
+                {
+                    found = true;
                 }
                 if (i >= (int32_t)std::size(window_scroll_locations))
                 {
@@ -938,11 +945,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
  */
 static void call_event_viewport_rotate_on_all_windows()
 {
-    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-    {
-        auto w = it->get();
-        window_event_viewport_rotate_call(w);
-    }
+    window_visit_each([](rct_window* w) { window_event_viewport_rotate_call(w); });
 }
 
 /**
@@ -1151,10 +1154,10 @@ void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t to
         return;
 
     // Draw the window in this region
-    for (size_t i = window_get_index(w); i < g_window_list.size(); i++)
+    for (auto it = window_get_iterator(w); it != g_window_list.end(); it++)
     {
         // Don't draw overlapping opaque windows, they won't have changed
-        auto v = g_window_list[i].get();
+        auto v = (*it).get();
         if ((w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(v))
         {
             window_draw_single(dpi, v, left, top, right, bottom);
@@ -1170,10 +1173,11 @@ static int32_t window_draw_split(
     rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Divide the draws up for only the visible regions of the window recursively
-    for (auto i = window_get_index(w) + 1; i < g_window_list.size(); i++)
+    auto itPos = window_get_iterator(w);
+    for (auto it = std::next(itPos); it != g_window_list.end(); it++)
     {
         // Check if this window overlaps w
-        auto topwindow = g_window_list[i].get();
+        auto topwindow = it->get();
         if (topwindow->x >= right || topwindow->y >= bottom)
             continue;
         if (topwindow->x + topwindow->width <= left || topwindow->y + topwindow->height <= top)
@@ -1621,8 +1625,7 @@ void window_bubble_list_item(rct_window* w, int32_t item_position)
 void window_relocate_windows(int32_t width, int32_t height)
 {
     int32_t new_location = 8;
-    for (auto& w : g_window_list)
-    {
+    window_visit_each([width, height, &new_location](rct_window* w) {
         // Work out if the window requires moving
         if (w->x + 10 < width)
         {
@@ -1630,12 +1633,12 @@ void window_relocate_windows(int32_t width, int32_t height)
             {
                 if (w->y - 22 < height)
                 {
-                    continue;
+                    return;
                 }
             }
             if (w->y + 10 < height)
             {
-                continue;
+                return;
             }
         }
 
@@ -1654,7 +1657,7 @@ void window_relocate_windows(int32_t width, int32_t height)
             w->viewport->x -= x - w->x;
             w->viewport->y -= y - w->y;
         }
-    }
+    });
 }
 
 /**
@@ -1662,7 +1665,7 @@ void window_relocate_windows(int32_t width, int32_t height)
  */
 void window_resize_gui(int32_t width, int32_t height)
 {
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
         window_resize_gui_scenario_editor(width, height);
         return;
@@ -1827,21 +1830,21 @@ static void window_snap_left(rct_window* w, int32_t proximity)
     auto wLeftProximity = w->x - (proximity * 2);
     auto wRightProximity = w->x + (proximity * 2);
     auto rightMost = INT32_MIN;
-    for (auto& w2 : g_window_list)
-    {
-        if (w2.get() == w || w2.get() == mainWindow)
-            continue;
+
+    window_visit_each([&](rct_window* w2) {
+        if (w2 == w || w2 == mainWindow)
+            return;
 
         auto right = w2->x + w2->width;
 
         if (wBottom < w2->y || w->y > w2->y + w2->height)
-            continue;
+            return;
 
         if (right < wLeftProximity || right > wRightProximity)
-            continue;
+            return;
 
         rightMost = std::max(rightMost, right);
-    }
+    });
 
     if (0 >= wLeftProximity && 0 <= wRightProximity)
         rightMost = std::max(rightMost, 0);
@@ -1857,21 +1860,21 @@ static void window_snap_top(rct_window* w, int32_t proximity)
     auto wTopProximity = w->y - (proximity * 2);
     auto wBottomProximity = w->y + (proximity * 2);
     auto bottomMost = INT32_MIN;
-    for (auto& w2 : g_window_list)
-    {
-        if (w2.get() == w || w2.get() == mainWindow)
-            continue;
+
+    window_visit_each([&](rct_window* w2) {
+        if (w2 == w || w2 == mainWindow)
+            return;
 
         auto bottom = w2->y + w2->height;
 
         if (wRight < w2->x || w->x > w2->x + w2->width)
-            continue;
+            return;
 
         if (bottom < wTopProximity || bottom > wBottomProximity)
-            continue;
+            return;
 
         bottomMost = std::max(bottomMost, bottom);
-    }
+    });
 
     if (0 >= wTopProximity && 0 <= wBottomProximity)
         bottomMost = std::max(bottomMost, 0);
@@ -1888,19 +1891,19 @@ static void window_snap_right(rct_window* w, int32_t proximity)
     auto wLeftProximity = wRight - (proximity * 2);
     auto wRightProximity = wRight + (proximity * 2);
     auto leftMost = INT32_MAX;
-    for (auto& w2 : g_window_list)
-    {
-        if (w2.get() == w || w2.get() == mainWindow)
-            continue;
+
+    window_visit_each([&](rct_window* w2) {
+        if (w2 == w || w2 == mainWindow)
+            return;
 
         if (wBottom < w2->y || w->y > w2->y + w2->height)
-            continue;
+            return;
 
         if (w2->x < wLeftProximity || w2->x > wRightProximity)
-            continue;
+            return;
 
         leftMost = std::min<int32_t>(leftMost, w2->x);
-    }
+    });
 
     auto screenWidth = context_get_width();
     if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
@@ -1918,19 +1921,19 @@ static void window_snap_bottom(rct_window* w, int32_t proximity)
     auto wTopProximity = wBottom - (proximity * 2);
     auto wBottomProximity = wBottom + (proximity * 2);
     auto topMost = INT32_MAX;
-    for (auto& w2 : g_window_list)
-    {
-        if (w2.get() == w || w2.get() == mainWindow)
-            continue;
+
+    window_visit_each([&](rct_window* w2) {
+        if (w2 == w || w2 == mainWindow)
+            return;
 
         if (wRight < w2->x || w->x > w2->x + w2->width)
-            continue;
+            return;
 
         if (w2->y < wTopProximity || w2->y > wBottomProximity)
-            continue;
+            return;
 
         topMost = std::min<int32_t>(topMost, w2->y);
-    }
+    });
 
     auto screenHeight = context_get_height();
     if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
@@ -2068,9 +2071,10 @@ bool window_is_visible(rct_window* w)
     }
 
     // start from the window above the current
-    for (auto i = window_get_index(w) + 1; i < g_window_list.size(); i++)
+    auto itPos = window_get_iterator(w);
+    for (auto it = std::next(itPos); it != g_window_list.end(); it++)
     {
-        auto& w_other = *g_window_list[i];
+        auto& w_other = *(*it);
 
         // if covered by a higher window, no rendering needed
         if (w_other.x <= w->x && w_other.y <= w->y && w_other.x + w_other.width >= w->x + w->width
@@ -2098,7 +2102,7 @@ bool window_is_visible(rct_window* w)
  */
 void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom)
 {
-    rct_drawpixelinfo windowDPI;
+    rct_drawpixelinfo windowDPI = *dpi;
     windowDPI.bits = dpi->bits + left + ((dpi->width + dpi->pitch) * top);
     windowDPI.x = left;
     windowDPI.y = top;
@@ -2107,17 +2111,15 @@ void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t 
     windowDPI.pitch = dpi->width + dpi->pitch + left - right;
     windowDPI.zoom_level = 0;
 
-    for (auto& w : g_window_list)
-    {
+    window_visit_each([&windowDPI, left, top, right, bottom](rct_window* w) {
         if (w->flags & WF_TRANSPARENT)
-            continue;
+            return;
         if (right <= w->x || bottom <= w->y)
-            continue;
+            return;
         if (left >= w->x + w->width || top >= w->y + w->height)
-            continue;
-
-        window_draw(&windowDPI, w.get(), left, top, right, bottom);
-    }
+            return;
+        window_draw(&windowDPI, w, left, top, right, bottom);
+    });
 }
 
 rct_viewport* window_get_previous_viewport(rct_viewport* current)
@@ -2144,14 +2146,13 @@ rct_viewport* window_get_previous_viewport(rct_viewport* current)
 void window_reset_visibilities()
 {
     // reset window visibility status to unknown
-    for (auto& w : g_window_list)
-    {
+    window_visit_each([](rct_window* w) {
         w->visibility = VC_UNKNOWN;
         if (w->viewport != nullptr)
         {
             w->viewport->visibility = VC_UNKNOWN;
         }
-    }
+    });
 }
 
 void window_init_all()

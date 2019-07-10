@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <jansson.h>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 namespace Json
 {
@@ -23,7 +24,7 @@ namespace Json
     json_t* ReadFromFile(const utf8* path, size_t maxSize = MAX_JSON_SIZE);
     void WriteToFile(const utf8* path, const json_t* json, size_t flags = 0);
 
-    json_t* FromString(const std::string& raw);
+    json_t* FromString(std::string_view raw);
 } // namespace Json
 
 class JsonException final : public std::runtime_error

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceAction.hpp"
 #include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/LandSetRightsAction.hpp"
 #include "../core/Guard.hpp"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -112,205 +113,16 @@ static bool entrance_has_direction(TileElement* tileElement, int32_t direction)
 
 TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
+        if (tileElement == nullptr)
+            break;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z)
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
-}
-
-/** rct2: 0x0098D7EC */
-static constexpr const QuarterTile SlopedFootpathQuarterTiles[] = {
-    { 0b1111, 0b1100 }, { 0b1111, 0b1001 }, { 0b1111, 0b0011 }, { 0b1111, 0b0110 }
-};
-
-/**
- *
- *  rct2: 0x006BA23E
- */
-void remove_banners_at_element(int32_t x, int32_t y, TileElement* tileElement)
-{
-    while (!(tileElement++)->IsLastForTile())
-    {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-            return;
-        else if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
-            continue;
-
-        game_do_command(
-            x, 1, y, tileElement->base_height | tileElement->AsBanner()->GetPosition() << 8, GAME_COMMAND_REMOVE_BANNER, 0, 0);
-        tileElement--;
-    }
-}
-
-static money32 footpath_place_from_track(
-    int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t edges, int32_t flags)
-{
-    TileElement* tileElement;
-    EntranceElement* entranceElement;
-    bool entrancePath = false, entranceIsSamePath = false;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z * 8;
-
-    if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        return MONEY32_UNDEFINED;
-    }
-
-    if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST))
-        footpath_interrupt_peeps(x, y, z * 8);
-
-    gFootpathPrice = 0;
-    gFootpathGroundFlags = 0;
-
-    if (!map_is_location_owned(x, y, z * 8) && !gCheatsSandboxMode)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
-        return MONEY32_UNDEFINED;
-
-    if (z < 2)
-    {
-        gGameCommandErrorText = STR_TOO_LOW;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (z > 248)
-    {
-        gGameCommandErrorText = STR_TOO_HIGH;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (!(flags & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
-        {
-            footpath_remove_litter(x, y, z * 8);
-        }
-    }
-
-    gFootpathPrice += 120;
-    QuarterTile quarterTile = { 0b1111, 0 };
-    int32_t zHigh = z + 4;
-    if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP)
-    {
-        quarterTile = SlopedFootpathQuarterTiles[slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP];
-        zHigh += 2;
-    }
-
-    entranceElement = map_get_park_entrance_element_at(x, y, z, false);
-    // Make sure the entrance part is the middle
-    if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
-    {
-        entrancePath = true;
-        // Make the price the same as replacing a path
-        if (entranceElement->GetPathType() == (type & 0xF))
-            entranceIsSamePath = true;
-        else
-            gFootpathPrice -= MONEY(6, 00);
-    }
-
-    // Do not attempt to build a crossing with a queue or a sloped.
-    uint8_t crossingMode = (type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (slope != TILE_ELEMENT_SLOPE_FLAT)
-        ? CREATE_CROSSING_MODE_NONE
-        : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath
-        && !map_can_construct_with_clear_at(
-               x, y, z, zHigh, &map_place_non_scenery_clear_func, quarterTile, flags, &gFootpathPrice, crossingMode))
-        return MONEY32_UNDEFINED;
-
-    gFootpathGroundFlags = gMapGroundFlags;
-    if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER))
-    {
-        gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
-        return MONEY32_UNDEFINED;
-    }
-
-    tileElement = map_get_surface_element_at({ x, y });
-
-    int32_t supportHeight = z - tileElement->base_height;
-    gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            LocationXYZ16 coord;
-            coord.x = x + 16;
-            coord.y = y + 16;
-            coord.z = tile_element_height(coord.x, coord.y);
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-
-        if (entrancePath)
-        {
-            if (!(flags & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
-            {
-                // Set the path type but make sure it's not a queue as that will not show up
-                entranceElement->SetPathType(type & 0x7F);
-                map_invalidate_tile_full(x, y);
-            }
-        }
-        else
-        {
-            tileElement = tile_element_insert(x / 32, y / 32, z, 0x0F);
-            assert(tileElement != nullptr);
-            tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
-            PathElement* pathElement = tileElement->AsPath();
-            // This can NEVER happen, but GCC does not want to believe that...
-            if (pathElement == nullptr)
-            {
-                assert(false);
-                return MONEY32_UNDEFINED;
-            }
-            pathElement->clearance_height = z + 4 + ((slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) ? 2 : 0);
-            pathElement->SetPathEntryIndex(type & 0xF);
-            pathElement->SetSlopeDirection(slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
-            if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
-                pathElement->SetSloped(true);
-            if (type & (1 << 7))
-                pathElement->SetIsQueue(true);
-            pathElement->SetAddition(0);
-            pathElement->SetRideIndex(RIDE_ID_NULL);
-            pathElement->SetAdditionStatus(255);
-            pathElement->SetEdges(edges);
-            pathElement->SetCorners(0);
-            pathElement->SetIsBroken(false);
-            if (flags & (1 << 6))
-                pathElement->SetGhost(true);
-
-            map_invalidate_tile_full(x, y);
-        }
-    }
-
-    if (entranceIsSamePath)
-        gFootpathPrice = 0;
-
-    return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
-}
-
-/**
- *
- *  rct2: 0x006A68AE
- */
-void game_command_place_footpath_from_track(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    *ebx = footpath_place_from_track(
-        (*edx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 13) & 0x3) | ((*ebx >> 10) & 0x4),
-        (*ebx >> 8) & 0xF, *ebx & 0xFF);
 }
 
 money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags)
@@ -399,7 +211,8 @@ void footpath_provisional_remove()
 
         footpath_remove(
             gFootpathProvisionalPosition.x, gFootpathProvisionalPosition.y, gFootpathProvisionalPosition.z,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                | GAME_COMMAND_FLAG_GHOST);
     }
 }
 
@@ -1426,7 +1239,9 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         ownership = OWNERSHIP_UNOWNED;
     }
 
-    map_buy_land_rights(x, y, x, y, BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, (ownership << 4) | GAME_COMMAND_FLAG_APPLY);
+    auto landSetRightsAction = LandSetRightsAction({ x, y }, LandSetRightSetting::SetOwnershipWithChecks, ownership);
+    landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+    GameActions::Execute(&landSetRightsAction);
 }
 
 static bool get_next_direction(int32_t edges, int32_t* direction)
@@ -1638,7 +1453,7 @@ bool PathElement::IsBroken() const
 
 void PathElement::SetIsBroken(bool isBroken)
 {
-    if (isBroken == true)
+    if (isBroken)
     {
         flags |= TILE_ELEMENT_FLAG_BROKEN;
     }
@@ -1655,7 +1470,7 @@ bool PathElement::IsBlockedByVehicle() const
 
 void PathElement::SetIsBlockedByVehicle(bool isBlocked)
 {
-    if (isBlocked == true)
+    if (isBlocked)
     {
         flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
     }
@@ -1738,7 +1553,10 @@ uint8_t PathElement::GetRailingEntryIndex() const
 
 PathSurfaceEntry* PathElement::GetPathEntry() const
 {
-    return get_path_surface_entry(GetPathEntryIndex());
+    if (!IsQueue())
+        return get_path_surface_entry(GetPathEntryIndex());
+    else
+        return get_path_surface_entry(GetPathEntryIndex() + MAX_PATH_OBJECTS);
 }
 
 PathRailingsEntry* PathElement::GetRailingEntry() const
@@ -2329,10 +2147,14 @@ PathSurfaceEntry* get_path_surface_entry(int32_t entryIndex)
 {
     PathSurfaceEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
+    // TODO: Change when moving to the new save format.
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex % MAX_PATH_OBJECTS);
     if (obj != nullptr)
     {
-        result = ((FootpathObject*)obj)->GetPathSurfaceEntry();
+        if (entryIndex < MAX_PATH_OBJECTS)
+            result = ((FootpathObject*)obj)->GetPathSurfaceEntry();
+        else
+            result = ((FootpathObject*)obj)->GetQueueEntry();
     }
     return result;
 }

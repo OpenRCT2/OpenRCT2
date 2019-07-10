@@ -104,6 +104,34 @@ public:
         }
     }
 
+    void push_back(value_type&& val)
+    {
+        if (_size == 0)
+        {
+            _elements[_head] = std::move(val);
+            _tail = _head;
+            _size++;
+        }
+        else if (_size != capacity())
+        {
+            _tail++;
+            if (_tail == capacity())
+                _tail = 0;
+            _size++;
+            _elements[_tail] = std::move(val);
+        }
+        else
+        {
+            _head++;
+            if (_head == capacity())
+                _head = 0;
+            _tail++;
+            if (_tail == capacity())
+                _tail = 0;
+            _elements[_tail] = std::move(val);
+        }
+    }
+
 private:
     size_t _head = 0;
     size_t _tail = 0;

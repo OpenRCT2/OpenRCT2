@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -126,6 +126,7 @@ bool platform_process_is_elevated();
 bool platform_get_steam_path(utf8* outPath, size_t outSize);
 std::string platform_get_rct1_steam_dir();
 std::string platform_get_rct2_steam_dir();
+std::string platform_sanitise_filename(const std::string&);
 
 #ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size);

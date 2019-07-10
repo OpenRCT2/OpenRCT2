@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,10 +34,13 @@ private:
 public:
     MemoryStream() = default;
     MemoryStream(const MemoryStream& copy);
+    MemoryStream(MemoryStream&& mv);
     explicit MemoryStream(size_t capacity);
     MemoryStream(void* data, size_t dataSize, uint8_t access = MEMORY_ACCESS::READ);
     MemoryStream(const void* data, size_t dataSize);
     virtual ~MemoryStream();
+
+    MemoryStream& operator=(MemoryStream&& mv);
 
     const void* GetData() const;
     void* GetDataCopy() const;

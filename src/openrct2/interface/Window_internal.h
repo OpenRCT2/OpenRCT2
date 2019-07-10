@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,8 +11,8 @@
 
 #include "Window.h"
 
+#include <list>
 #include <memory>
-#include <vector>
 
 struct rct_research_item;
 struct rct_object_entry;
@@ -104,4 +104,4 @@ struct rct_window
 };
 
 // rct2: 0x01420078
-extern std::vector<std::unique_ptr<rct_window>> g_window_list;
+extern std::list<std::shared_ptr<rct_window>> g_window_list;

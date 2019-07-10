@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -658,10 +658,10 @@ static void window_park_entrance_mouseup(rct_window* w, rct_widgetindex widgetIn
             window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, USER_STRING_MAX_LENGTH);
             break;
         case WIDX_CLOSE_LIGHT:
-            park_set_open(0);
+            park_set_open(false);
             break;
         case WIDX_OPEN_LIGHT:
-            park_set_open(1);
+            park_set_open(true);
             break;
     }
 }
@@ -718,13 +718,11 @@ static void window_park_entrance_dropdown(rct_window* w, rct_widgetindex widgetI
 
         if (dropdownIndex != 0)
         {
-            gGameCommandErrorTitle = STR_CANT_CLOSE_PARK;
-            park_set_open(1);
+            park_set_open(true);
         }
         else
         {
-            gGameCommandErrorTitle = STR_CANT_OPEN_PARK;
-            park_set_open(0);
+            park_set_open(false);
         }
     }
 }
@@ -878,7 +876,7 @@ static void window_park_init_viewport(rct_window* w)
     if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
         return;
 
-    if (gParkEntrances.size() > 0)
+    if (!gParkEntrances.empty())
     {
         const auto& entrance = gParkEntrances[0];
         x = entrance.x + 16;

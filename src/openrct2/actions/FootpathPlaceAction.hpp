@@ -79,12 +79,12 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
         }
 
-        if (_loc.z / 8 < 2)
+        if (_loc.z / 8 < FootpathMinHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
         }
 
-        if (_loc.z / 8 > 248)
+        if (_loc.z / 8 > FootpathMaxHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
         }
@@ -399,7 +399,7 @@ private:
             }
         }
 
-        if (gPeepSpawns.size() == 0)
+        if (gPeepSpawns.empty())
         {
             gPeepSpawns.emplace_back();
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,6 +44,8 @@ enum SMALL_SCENERY_FLAGS
     SMALL_SCENERY_FLAG_THREE_QUARTERS = (1 << 25),       // 0x2000000
     SMALL_SCENERY_FLAG_PAINT_SUPPORTS = (1 << 26),       // 0x4000000; used for scenery items which are support structures
     SMALL_SCENERY_FLAG27 = (1 << 27),                    // 0x8000000
+
+    SMALL_SCENERY_FLAG_IS_TREE = (1 << 28), // Added by OpenRCT2
 };
 
 enum

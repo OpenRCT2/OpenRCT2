@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,7 +30,7 @@ const uint32_t vehicle_particle_base_sprites[] = {
  */
 void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDirection)
 {
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     switch (misc->steam_particle.type)
     {
@@ -49,8 +49,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
             }
 
             const rct_money_effect* moneyEffect = &misc->money_effect;
-            money32 value;
-            rct_string_id stringId = money_effect_get_string_id(moneyEffect, &value);
+            auto [stringId, value] = moneyEffect->GetStringId();
             paint_floating_money_effect(
                 session, value, stringId, moneyEffect->y, moneyEffect->z, (int8_t*)&money_wave[moneyEffect->wiggle % 22],
                 moneyEffect->offset_x, session->CurrentRotation);

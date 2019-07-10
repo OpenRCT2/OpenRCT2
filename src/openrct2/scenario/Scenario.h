@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -265,7 +265,7 @@ struct rct_s6_data
     uint8_t pad_0138B582[2];
     rct_ride_rating_calc_data ride_ratings_calc_data;
     uint8_t pad_0138B5D0[60];
-    rct_ride_measurement ride_measurements[8];
+    RCT12RideMeasurement ride_measurements[8];
     uint32_t next_guest_index;
     uint16_t grass_and_scenery_tilepos;
     uint32_t patrol_areas[(RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];

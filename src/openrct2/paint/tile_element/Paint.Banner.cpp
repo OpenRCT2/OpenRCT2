@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,7 +34,7 @@ const LocationXY16 BannerBoundBoxes[][2] = {
 void banner_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
     uint16_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
 
@@ -95,19 +95,23 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     set_format_arg(0, uint32_t, 0);
     set_format_arg(4, uint32_t, 0);
 
-    rct_string_id string_id = STR_NO_ENTRY;
-    if (!(gBanners[tile_element->AsBanner()->GetIndex()].flags & BANNER_FLAG_NO_ENTRY))
+    if (gBanners[tile_element->AsBanner()->GetIndex()].flags & BANNER_FLAG_NO_ENTRY)
     {
-        set_format_arg(0, rct_string_id, gBanners[tile_element->AsBanner()->GetIndex()].string_idx);
-        string_id = STR_BANNER_TEXT_FORMAT;
-    }
-    if (gConfigGeneral.upper_case_banners)
-    {
-        format_string_to_upper(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+        set_format_arg(0, rct_string_id, STR_NO_ENTRY);
     }
     else
     {
-        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+        set_format_arg(0, rct_string_id, gBanners[tile_element->AsBanner()->GetIndex()].string_idx);
+    }
+
+    if (gConfigGeneral.upper_case_banners)
+    {
+        format_string_to_upper(
+            gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+    }
+    else
+    {
+        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
     }
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -116,6 +120,6 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
     sub_98199C(
-        session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22,
+        session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22,
         boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 }

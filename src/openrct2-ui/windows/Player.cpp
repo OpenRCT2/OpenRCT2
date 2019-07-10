@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,8 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/PlayerKickAction.hpp>
+#include <openrct2/actions/PlayerSetGroupAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
@@ -283,8 +285,11 @@ void window_player_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
         }
         break;
         case WIDX_KICK:
-            game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_KICK_PLAYER, 0, 0);
-            break;
+        {
+            auto kickPlayerAction = PlayerKickAction(w->number);
+            GameActions::Execute(&kickPlayerAction);
+        }
+        break;
     }
 }
 
@@ -310,8 +315,14 @@ void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex,
         return;
     }
     int32_t group = network_get_group_id(dropdownIndex);
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, group, GAME_COMMAND_SET_PLAYER_GROUP, 0, 0);
-    window_invalidate(w);
+    auto playerSetGroupAction = PlayerSetGroupAction(w->number, group);
+    playerSetGroupAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+        if (result->Error == GA_ERROR::OK)
+        {
+            window_invalidate(w);
+        }
+    });
+    GameActions::Execute(&playerSetGroupAction);
 }
 
 void window_player_overview_resize(rct_window* w)
@@ -400,6 +411,12 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 void window_player_overview_invalidate(rct_window* w)
 {
+    int32_t playerIndex = network_get_player_index((uint8_t)w->number);
+    if (playerIndex == -1)
+    {
+        return;
+    }
+
     if (window_player_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_player_page_widgets[w->page];
@@ -449,7 +466,7 @@ void window_player_overview_invalidate(rct_window* w)
 
     // Only enable kick button for other players
     const bool canKick = network_can_perform_action(network_get_current_player_group_index(), NETWORK_PERMISSION_KICK_PLAYER);
-    const bool isServer = network_get_player_flags(w->number) & NETWORK_PLAYER_FLAG_ISSERVER;
+    const bool isServer = network_get_player_flags(playerIndex) & NETWORK_PLAYER_FLAG_ISSERVER;
     const bool isOwnWindow = (network_get_current_player_id() == w->number);
     widget_set_enabled(w, WIDX_KICK, canKick && !isOwnWindow && !isServer);
 }

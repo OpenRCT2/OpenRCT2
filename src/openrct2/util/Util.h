@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,14 +37,12 @@ bool avx2_available();
 int32_t bitscanforward(int32_t source);
 void bitcount_init();
 int32_t bitcount(uint32_t source);
-bool strequals(const char* a, const char* b, int32_t length, bool caseInsensitive);
 int32_t strcicmp(char const* a, char const* b);
 int32_t strlogicalcmp(char const* a, char const* b);
 utf8* safe_strtrunc(utf8* text, size_t size);
 char* safe_strcpy(char* destination, const char* source, size_t num);
 char* safe_strcat(char* destination, const char* source, size_t size);
 char* safe_strcat_path(char* destination, const char* source, size_t size);
-char* safe_strtrimleft(char* destination, const char* source, size_t size);
 #if defined(_WIN32)
 char* strcasestr(const char* haystack, const char* needle);
 #endif
@@ -52,7 +50,6 @@ char* strcasestr(const char* haystack, const char* needle);
 bool utf8_is_bom(const char* str);
 bool str_is_null_or_empty(const char* str);
 
-void util_srand(int32_t source);
 uint32_t util_rand();
 
 uint8_t* util_zlib_deflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size);

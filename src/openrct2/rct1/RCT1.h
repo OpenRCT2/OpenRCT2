@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -428,8 +428,8 @@ struct rct1_peep : RCT12SpriteBase
     uint8_t pad_C4;
     union
     {
-        uint8_t staff_id;                   // 0xC5
-        ride_id_t guest_heading_to_ride_id; // 0xC5
+        uint8_t staff_id;                 // 0xC5
+        uint8_t guest_heading_to_ride_id; // 0xC5
     };
     union
     {
@@ -681,7 +681,7 @@ struct rct1_s4
     uint32_t unk_1CADCA;
     uint16_t unk_1CADCE;
     uint8_t unk_1CADD0[116];
-    rct_ride_measurement ride_measurements[8];
+    RCT12RideMeasurement ride_measurements[8];
     uint32_t next_guest_index;
     uint16_t game_counter_5;
     uint8_t patrol_areas[(RCT1_MAX_STAFF + RCT12_STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];

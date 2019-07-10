@@ -620,7 +620,7 @@ int main(int argc, char* argv[])
     Write(Verbosity::QUIET, CLIColour::GREEN, "[  PASSED  ] ");
     Write(Verbosity::QUIET, "%d tests.\n", successCount);
 
-    if (failures.size() > 0)
+    if (!failures.empty())
     {
         Write(Verbosity::QUIET, CLIColour::RED, "[  FAILED  ] ");
         Write(Verbosity::QUIET, "%d tests, listed below:\n", (int)failures.size());

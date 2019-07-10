@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -139,7 +139,7 @@ struct tunnel_entry
 
 struct paint_session
 {
-    rct_drawpixelinfo* DPI;
+    rct_drawpixelinfo DPI;
     paint_entry PaintStructs[4000];
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     paint_struct PaintHead;
@@ -182,7 +182,7 @@ extern LocationXY8 gClipSelectionA;
 extern LocationXY8 gClipSelectionB;
 
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
-#define CONSTRUCTION_MARKER (COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP);
+#define CONSTRUCTION_MARKER (COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP)
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
 extern bool gPaintBlockedTiles;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -238,7 +238,7 @@ static void scenario_entrance_fee_too_high_check()
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
     {
-        if (gParkEntrances.size() > 0)
+        if (!gParkEntrances.empty())
         {
             const auto& entrance = gParkEntrances[0];
             auto x = entrance.x + 16;
@@ -435,7 +435,7 @@ static int32_t scenario_create_ducks()
     if (!map_is_location_in_park({ x, y }))
         return 0;
 
-    centreWaterZ = (tile_element_height(x, y) >> 16) & 0xFFFF;
+    centreWaterZ = (tile_element_water_height(x, y));
     if (centreWaterZ == 0)
         return 0;
 
@@ -447,7 +447,7 @@ static int32_t scenario_create_ducks()
     {
         for (j = 0; j < 7; j++)
         {
-            waterZ = (tile_element_height(x2, y2) >> 16) & 0xFFFF;
+            waterZ = (tile_element_water_height(x2, y2));
             if (waterZ == centreWaterZ)
                 c++;
 
@@ -493,77 +493,10 @@ void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result
  *
  * @return eax
  */
-#ifndef DEBUG_DESYNC
 random_engine_t::result_type scenario_rand()
-#else
-static FILE* fp = nullptr;
-static const char* realm = "LC";
-
-uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data)
-#endif
 {
-#ifdef DEBUG_DESYNC
-    if (fp == nullptr)
-    {
-        if (network_get_mode() == NETWORK_MODE_SERVER)
-        {
-            fp = fopen("server_rand.txt", "wt");
-            realm = "SV";
-        }
-        else if (network_get_mode() == NETWORK_MODE_CLIENT)
-        {
-            fp = fopen("client_rand.txt", "wt");
-            realm = "CL";
-        }
-        else
-        {
-            if (fp)
-                fclose(fp);
-            fp = nullptr;
-            realm = "LC";
-        }
-    }
-    if (fp)
-    {
-        fprintf(fp, "Tick: %d, Rand: %08X - REF: %s:%u %s (%p)\n", gCurrentTicks, gScenarioSrand1, file, line, function, data);
-    }
-    if (!gInUpdateCode && !gInMapInitCode)
-    {
-        log_warning("scenario_rand called from outside game update");
-        assert(false);
-    }
-#endif
-
     return gScenarioRand();
 }
-
-#ifdef DEBUG_DESYNC
-void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char* clientHash, const char* serverHash)
-{
-    if (fp == nullptr)
-    {
-        if (network_get_mode() == NETWORK_MODE_SERVER)
-        {
-            fp = fopen("server_rand.txt", "wt");
-            realm = "SV";
-        }
-        else if (network_get_mode() == NETWORK_MODE_CLIENT)
-        {
-            fp = fopen("client_rand.txt", "wt");
-            realm = "CL";
-        }
-    }
-    if (fp)
-    {
-        const bool sprites_mismatch = serverHash[0] != '\0' && strcmp(clientHash, serverHash);
-
-        fprintf(
-            fp, "[%s] !! DESYNC !! Tick: %d, Client Hash: %s, Server Hash: %s, Client Rand: %08X, Server Rand: %08X - %s\n",
-            realm, tick, clientHash, ((serverHash[0] != '\0') ? serverHash : "<NONE:0>"), srand0, server_srand0,
-            (sprites_mismatch ? "Sprite hash mismatch" : "scenario rand mismatch"));
-    }
-}
-#endif
 
 uint32_t scenario_rand_max(uint32_t max)
 {

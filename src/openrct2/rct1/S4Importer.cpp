@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../ParkImporter.h"
+#include "../actions/WallPlaceAction.hpp"
 #include "../audio/audio.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
@@ -103,6 +104,7 @@ private:
     rct1_s4 _s4 = {};
     uint8_t _gameVersion = 0;
     uint8_t _parkValueConversionFactor = 0;
+    bool _isScenario = false;
 
     // Lists of dynamic object entries
     EntryList _rideEntries;
@@ -168,6 +170,7 @@ public:
     {
         _s4 = *ReadAndDecodeS4(stream, isScenario);
         _s4Path = path;
+        _isScenario = isScenario;
 
         // Only determine what objects we required to import this saved game
         InitialiseEntryMaps();
@@ -197,7 +200,9 @@ public:
         ImportScenarioObjective();
         ImportSavedView();
         FixLandOwnership();
+        FixUrbanPark();
         CountBlockSections();
+        SetDefaultNames();
         determine_ride_entrance_and_exit_locations();
 
         // Importing the strings is done later on, although that approach needs looking at.
@@ -789,10 +794,6 @@ private:
                 }
             }
         }
-        if (dst->name == 0)
-        {
-            ride_set_name_to_default(dst, rideEntry);
-        }
 
         dst->status = src->status;
 
@@ -944,10 +945,13 @@ private:
         dst->drops = src->num_drops;
         dst->start_drop_height = src->start_drop_height / 2;
         dst->highest_drop_height = src->highest_drop_height / 2;
-        dst->inversions = src->num_inversions;
+        if (dst->type == RIDE_TYPE_MINI_GOLF)
+            dst->holes = src->num_inversions & 0x1F;
+        else
+            dst->inversions = src->num_inversions & 0x1F;
+        dst->sheltered_eighths = src->num_inversions >> 5;
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
         dst->boat_hire_return_position = src->boat_hire_return_position;
-        dst->measurement_index = src->data_logging_index;
         dst->chairlift_bullwheel_rotation = src->chairlift_bullwheel_rotation;
         for (int i = 0; i < 2; i++)
         {
@@ -1103,23 +1107,32 @@ private:
 
     void ImportRideMeasurements()
     {
-        for (int32_t i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
+        for (const auto& src : _s4.ride_measurements)
         {
-            rct_ride_measurement* dst = get_ride_measurement(i);
-            rct_ride_measurement* src = &_s4.ride_measurements[i];
-            ImportRideMeasurement(dst, src);
+            if (src.ride_index != RCT12_RIDE_ID_NULL)
+            {
+                auto ride = get_ride(src.ride_index);
+                ride->measurement = std::make_unique<RideMeasurement>();
+                ride->measurement->ride = ride;
+                ImportRideMeasurement(*ride->measurement, src);
+            }
         }
     }
 
-    void ImportRideMeasurement(rct_ride_measurement* dst, rct_ride_measurement* src)
+    void ImportRideMeasurement(RideMeasurement& dst, const RCT12RideMeasurement& src)
     {
-        *dst = *src;
-        for (int32_t i = 0; i < RIDE_MEASUREMENT_MAX_ITEMS; i++)
+        dst.flags = src.flags;
+        dst.last_use_tick = src.last_use_tick;
+        dst.num_items = src.num_items;
+        dst.current_item = src.current_item;
+        dst.vehicle_index = src.vehicle_index;
+        dst.current_station = src.current_station;
+        for (size_t i = 0; i < std::size(src.velocity); i++)
         {
-            dst->velocity[i] /= 2;
-            dst->altitude[i] /= 2;
-            dst->vertical[i] /= 2;
-            dst->lateral[i] /= 2;
+            dst.velocity[i] = src.velocity[i] / 2;
+            dst.altitude[i] = src.altitude[i] / 2;
+            dst.vertical[i] = src.vertical[i] / 2;
+            dst.lateral[i] = src.lateral[i] / 2;
         }
     }
 
@@ -1152,7 +1165,7 @@ private:
                     // If vehicle is the first car on a train add to train list
                     if (vehicle->IsHead())
                     {
-                        move_sprite_to_list((rct_sprite*)vehicle, SPRITE_LIST_TRAIN * 2);
+                        move_sprite_to_list((rct_sprite*)vehicle, SPRITE_LIST_TRAIN);
                     }
                 }
             }
@@ -1238,6 +1251,12 @@ private:
             }
         }
 
+        VEHICLE_STATUS statusSrc = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+        if (src->status <= static_cast<uint8_t>(VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES))
+        {
+            statusSrc = static_cast<VEHICLE_STATUS>(src->status);
+        }
+        dst->status = statusSrc;
         dst->var_CD = src->var_CD;
         dst->track_x = src->track_x;
         dst->track_y = src->track_y;
@@ -1246,7 +1265,6 @@ private:
         dst->track_type = src->track_type;
         dst->track_progress = src->track_progress;
         dst->vertical_drop_countdown = src->vertical_drop_countdown;
-        dst->status = src->status;
         dst->sub_state = src->sub_state;
         dst->update_flags = src->update_flags;
 
@@ -1344,7 +1362,7 @@ private:
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
                 Peep* peep = (Peep*)create_sprite(SPRITE_IDENTIFIER_PEEP);
-                move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
+                move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP);
                 spriteIndexMap[i] = peep->sprite_index;
 
                 ImportPeep(peep, srcPeep);
@@ -1660,7 +1678,7 @@ private:
                 const auto* srcLitter = &sprite.litter;
 
                 rct_litter* litter = (rct_litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
-                move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER * 2);
+                move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER);
 
                 litter->sprite_identifier = srcLitter->sprite_identifier;
                 litter->type = srcLitter->type;
@@ -1687,7 +1705,7 @@ private:
             {
                 rct1_unk_sprite* src = &sprite.unknown;
                 rct_sprite_generic* dst = (rct_sprite_generic*)create_sprite(SPRITE_IDENTIFIER_MISC);
-                move_sprite_to_list((rct_sprite*)dst, SPRITE_LIST_MISC * 2);
+                move_sprite_to_list((rct_sprite*)dst, SPRITE_LIST_MISC);
 
                 dst->sprite_identifier = src->sprite_identifier;
                 dst->type = src->type;
@@ -2769,10 +2787,13 @@ private:
                                 ConvertWall(&type, &colourA, &colourB);
 
                                 type = _wallTypeToEntryMap[type];
-                                const uint8_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                                    | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_PATH_SCENERY;
 
-                                wall_place(type, x * 32, y * 32, 0, edge, colourA, colourB, colourC, flags);
+                                auto wallPlaceAction = WallPlaceAction(
+                                    type, { x * 32, y * 32, 0 }, edge, colourA, colourB, colourC);
+                                wallPlaceAction.SetFlags(
+                                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                                    | GAME_COMMAND_FLAG_PATH_SCENERY);
+                                GameActions::Execute(&wallPlaceAction);
                             }
                         }
                         break;
@@ -2941,6 +2962,50 @@ private:
     }
 
     /**
+     * In Urban Park, the entrance and exit of the merry-go-round are the wrong way round. This code fixes that.
+     * To avoid messing up saves (in which this problem is most likely solved by the user), only carry out this
+     * fix when loading from a scenario.
+     */
+    void FixUrbanPark()
+    {
+        if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
+        {
+            // First, make the queuing peep exit
+            int32_t i;
+            Peep* peep;
+            FOR_ALL_GUESTS (i, peep)
+            {
+                if (peep->state == PEEP_STATE_QUEUING_FRONT && peep->current_ride == 0)
+                {
+                    peep->RemoveFromQueue();
+                    peep->SetState(PEEP_STATE_FALLING);
+                    break;
+                }
+            }
+
+            // Now, swap the entrance and exit.
+            Ride* ride = get_ride(0);
+            auto entranceCoords = ride->stations[0].Exit;
+            auto exitCoords = ride->stations[0].Entrance;
+            ride->stations[0].Entrance = entranceCoords;
+            ride->stations[0].Exit = exitCoords;
+
+            auto entranceElement = map_get_ride_exit_element_at(
+                entranceCoords.x * 32, entranceCoords.y * 32, entranceCoords.z, false);
+            entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
+            auto exitElement = map_get_ride_entrance_element_at(exitCoords.x * 32, exitCoords.y * 32, exitCoords.z, false);
+            exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
+
+            // Trigger footpath update
+            footpath_queue_chain_reset();
+            footpath_connect_edges(
+                entranceCoords.x * 32, (entranceCoords.y) * 32, (TileElement*)entranceElement,
+                GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            footpath_update_queue_chains();
+        }
+    }
+
+    /**
      * Counts the block sections. The reason this iterates over the map is to avoid getting into infinite loops,
      * which can happen with hacked parks.
      */
@@ -2976,6 +3041,24 @@ private:
                         ride->num_block_brakes++;
                     }
                 } while (!(tileElement++)->IsLastForTile());
+            }
+        }
+    }
+
+    /**
+     * This has to be done after importing tile elements, because it needs those to detect if a pre-existing ride
+     * name should be considered reserved.
+     */
+    void SetDefaultNames()
+    {
+        ride_id_t i;
+        Ride* ride;
+        FOR_ALL_RIDES (i, ride)
+        {
+            if (ride->name == 0)
+            {
+                auto rideEntry = get_ride_entry(ride->subtype);
+                ride_set_name_to_default(ride, rideEntry);
             }
         }
     }

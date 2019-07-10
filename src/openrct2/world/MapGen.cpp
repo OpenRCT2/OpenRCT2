@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -135,8 +135,6 @@ void mapgen_generate(mapgen_settings* settings)
 {
     int32_t x, y, mapSize, floorTexture, wallTexture, waterLevel;
     TileElement* tileElement;
-
-    util_srand((int32_t)platform_get_ticks());
 
     mapSize = settings->mapSize;
     floorTexture = settings->floor;
@@ -354,7 +352,7 @@ static void mapgen_place_trees()
             case TERRAIN_GRASS:
             case TERRAIN_DIRT:
             case TERRAIN_GRASS_CLUMPS:
-                if (grassTreeIds.size() == 0)
+                if (grassTreeIds.empty())
                     break;
 
                 type = grassTreeIds[util_rand() % grassTreeIds.size()];
@@ -363,7 +361,7 @@ static void mapgen_place_trees()
             case TERRAIN_SAND:
             case TERRAIN_SAND_DARK:
             case TERRAIN_SAND_LIGHT:
-                if (desertTreeIds.size() == 0)
+                if (desertTreeIds.empty())
                     break;
 
                 if (util_rand() % 4 == 0)
@@ -371,7 +369,7 @@ static void mapgen_place_trees()
                 break;
 
             case TERRAIN_ICE:
-                if (snowTreeIds.size() == 0)
+                if (snowTreeIds.empty())
                     break;
 
                 type = snowTreeIds[util_rand() % snowTreeIds.size()];

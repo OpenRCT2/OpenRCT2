@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,14 +30,15 @@
 #include "Localisation.h"
 
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <ctype.h>
 #include <iterator>
 #include <limits.h>
 
-char gCommonStringFormatBuffer[512];
-uint8_t gCommonFormatArgs[80];
-uint8_t gMapTooltipFormatArgs[40];
+thread_local char gCommonStringFormatBuffer[512];
+thread_local uint8_t gCommonFormatArgs[80];
+thread_local uint8_t gMapTooltipFormatArgs[40];
 
 #ifdef DEBUG
 // Set to true before a string format call to see details of the formatting.
@@ -1512,8 +1513,8 @@ money32 string_to_money(const char* string_to_monetise)
 
     auto number = std::stod(processedString, nullptr);
     number /= (currencyDesc->rate / 10.0);
-    auto whole = static_cast<uint16_t>(number);
-    auto fraction = static_cast<uint8_t>((number - whole) * 100);
+    auto whole = static_cast<int32_t>(number);
+    auto fraction = static_cast<uint8_t>(ceil((number - whole) * 100.0));
 
     money32 result = MONEY(whole, fraction);
     // Check if MONEY resulted in overflow

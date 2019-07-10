@@ -43,16 +43,14 @@ namespace TestPaint
         rct_drawpixelinfo dpi = {};
         dpi.zoom_level = 1;
         RCT2_Unk140E9A8 = &dpi;
-        gPaintSession.DPI = &dpi;
+        gPaintSession.DPI = dpi;
 
         {
-            Ride ride = {};
-            ride.entrance_style = 0;
             static rct_ride_entry rideEntry = {};
             rct_ride_entry_vehicle vehicleEntry{};
             vehicleEntry.base_image_id = 0x70000;
             rideEntry.vehicles[0] = vehicleEntry;
-            gRideList[0] = ride;
+            gRideList[0] = {};
             gRideEntries[0] = &rideEntry;
         }
         {

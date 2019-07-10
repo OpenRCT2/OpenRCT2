@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
@@ -80,7 +81,7 @@ public:
             if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 // Check for obstructing large trees
-                TileElement* tileElement = CheckTallTreeObstructions();
+                TileElement* tileElement = CheckTreeObstructions();
                 if (tileElement != nullptr)
                 {
                     map_obstruction_set_error_text(tileElement);
@@ -143,7 +144,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         money32 cost = MONEY(0, 0);
-        auto surfaceHeight = tile_element_height(_coords.x, _coords.y) & 0xFFFF;
+        auto surfaceHeight = tile_element_height(_coords.x, _coords.y);
         footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
 
         if (!gCheatsDisableClearanceChecks)
@@ -195,7 +196,7 @@ private:
         return STR_NONE;
     }
 
-    TileElement* CheckTallTreeObstructions() const
+    TileElement* CheckTreeObstructions() const
     {
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
@@ -207,7 +208,7 @@ private:
             if (_height + 4 < tileElement->base_height)
                 continue;
             rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-            if (sceneryEntry->small_scenery.height > 64)
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE))
             {
                 return tileElement;
             }
@@ -259,7 +260,7 @@ private:
                 Ride* ride = get_ride(rideIndex);
                 if (ride != nullptr)
                 {
-                    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+                    rct_ride_entry* rideEntry = ride->GetRideEntry();
                     if (rideEntry != nullptr)
                     {
                         int32_t maxHeight = rideEntry->max_height;

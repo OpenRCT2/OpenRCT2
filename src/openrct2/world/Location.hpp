@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,6 +70,47 @@ struct CoordsXY
         , y(_y)
     {
     }
+
+    CoordsXY& operator+=(const CoordsXY rhs)
+    {
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+    }
+
+    CoordsXY& operator-=(const CoordsXY rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+
+    CoordsXY Rotate(int32_t direction)
+    {
+        CoordsXY rotatedCoords;
+        switch (direction & 3)
+        {
+            default:
+            case 0:
+                rotatedCoords.x = x;
+                rotatedCoords.y = y;
+                break;
+            case 1:
+                rotatedCoords.x = y;
+                rotatedCoords.y = -x;
+                break;
+            case 2:
+                rotatedCoords.x = -x;
+                rotatedCoords.y = -y;
+                break;
+            case 3:
+                rotatedCoords.x = -y;
+                rotatedCoords.y = x;
+                break;
+        }
+
+        return rotatedCoords;
+    }
 };
 
 struct TileCoordsXY
@@ -91,6 +132,40 @@ struct TileCoordsXY
         y += rhs.y;
         return *this;
     }
+    TileCoordsXY& operator-=(const TileCoordsXY rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+
+    TileCoordsXY Rotate(int32_t direction)
+    {
+        TileCoordsXY rotatedCoords;
+        switch (direction & 3)
+        {
+            default:
+            case 0:
+                rotatedCoords.x = x;
+                rotatedCoords.y = y;
+                break;
+            case 1:
+                rotatedCoords.x = y;
+                rotatedCoords.y = -x;
+                break;
+            case 2:
+                rotatedCoords.x = -x;
+                rotatedCoords.y = -y;
+                break;
+            case 3:
+                rotatedCoords.x = -y;
+                rotatedCoords.y = x;
+                break;
+        }
+
+        return rotatedCoords;
+    }
+
     int32_t x = 0, y = 0;
 };
 

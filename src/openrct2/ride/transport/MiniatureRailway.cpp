@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -927,7 +927,7 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(
             session, right_quarter_turn_5_supports_type[direction][trackSequence], 0, height,
             session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-        if (isSupported == false || (trackSequence == 3 && direction == 2))
+        if (!isSupported || (trackSequence == 3 && direction == 2))
         {
             track_paint_util_right_quarter_turn_5_tiles_paint(
                 session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
@@ -1063,7 +1063,7 @@ static void paint_miniature_railway_track_s_bend_left(
     LocationXY16 offset = offsetList[trackSequence];
     LocationXY16 bounds = boundsList[trackSequence];
 
-    if (isSupported == false)
+    if (!isSupported)
     {
         sub_98197C_rotated(
             session, direction, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y,
@@ -1163,7 +1163,7 @@ static void paint_miniature_railway_track_s_bend_right(
         | session->TrackColours[SCHEME_TRACK];
     LocationXY16 offset = offsetList[trackSequence];
     LocationXY16 bounds = boundsList[trackSequence];
-    if (isSupported == false)
+    if (!isSupported)
     {
         sub_98197C_rotated(
             session, direction, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 2, height, offset.x, offset.y,
@@ -1274,7 +1274,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
         isSupported = wooden_a_supports_paint_setup(
             session, supportType[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     }
-    if (isSupported == false)
+    if (!isSupported)
     {
         track_paint_util_right_quarter_turn_3_tiles_paint(
             session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
@@ -1429,7 +1429,7 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
             session, supportType[direction][trackSequence], 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     }
     uint32_t imageId;
-    if (isSupported == false)
+    if (!isSupported)
     {
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
@@ -1566,7 +1566,7 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
     }
 
     uint32_t imageId;
-    if (isSupported == false)
+    if (!isSupported)
     {
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)

@@ -552,8 +552,8 @@ STR_1167    :Kan ikke hæve vand her...
 STR_1168    :Indstillinger
 STR_1169    :(ingen)
 STR_1170    :{STRING}
-STR_1171    :{RED}Lukket - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Lukket
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Byg stier og kø linjer
 STR_1174    :Banner skilt i vejen
 STR_1175    :Kan ikke bygge dette på en skrå sti
@@ -1110,7 +1110,7 @@ STR_1726    :Land er ikke til salg!
 STR_1727    :Byggetilladelse er ikke til salg!
 STR_1728    :Kan ikke købe byggetilladelse her...
 STR_1729    :Land ikke ejet af parken!
-STR_1730    :{RED}Lukket - - 
+STR_1730    :{RED}Lukket
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Byg
 STR_1733    :Tilstand
@@ -2242,7 +2242,7 @@ STR_2977    :Navn på ansat
 STR_2978    :Angiv et navn for denne ansat:
 STR_2979    :Kan ikke navngive ansat...
 STR_2980    :For mange bannere i spillet
-STR_2981    :{RED}Ingen indhold - - 
+STR_2981    :{RED}Ingen indhold
 STR_2982    :Banner tekst
 STR_2983    :Angiv ny tekst på dette banner:
 STR_2984    :Kan ikke sætte ny tekst på banner...
@@ -3774,6 +3774,31 @@ STR_6300    :{SMALLFONT}{BLACK}Hent alle manglende objekter hvis de er tilgænge
 STR_6301    :{SMALLFONT}{BLACK}Kopier det valgte objekt til udklipsholder.
 STR_6302    :{SMALLFONT}{BLACK}Kopier hele listen af manglende objekter til udklipsholderen.
 STR_6303    :Henter objekt ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Åben scenarie vælger
+STR_6305    :Multi-tråde
+STR_6306    :{SMALLFONT}{BLACK}Eksperimentel indstilling, brug flere processor kerner til at gengive spillet, kan påvirke stabiliteten.
+STR_6307    :Farve tema: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :Forbind igen
+STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Næste: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(overflade)
+STR_6313    :(skråning {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerance {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Stisøger Goal: {BLACK}{INT32}, {INT32}, {INT32} ret {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Stisøger historie:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} ret {INT32}
+STR_6318    :Netværks synkroniseringsfejl.{NEWLINE}Log fil: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Blok Bremse tilkoblet
+STR_6320    :{WINDOW_COLOUR_2}Uforgængelig
+STR_6321    :{WINDOW_COLOUR_2}Tilføjelse defekt
+STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6323    :Simulérer
+STR_6324    :Simulér
+STR_6325    :{SMALLFONT}{BLACK}Simulér forlystelse/attraktion
+STR_6326    :Kan ikke simulére {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Transparent baggrund for gigantisk Skærmbillede
+STR_6328    :{SMALLFONT}{BLACK}Med denne indstilling aktiveret, vil gigantisk skærmbillede have transparent baggrund i stedet for en standard sort baggrund.
 
 #############
 # Scenarios #
@@ -3894,152 +3919,152 @@ STR_DTLS    :Kun for sjov!
 <Whispering Cliffs>
 STR_SCNR    :Whispering Cliffs
 STR_PARK    :Whispering Cliffs
-STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+STR_DTLS    :Udvikel denne klippe ud mod havet, til en blomstrende forlystelsespark
 
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :Centralt i denne store udviklingspark, er en kæmpe tredobbelt-Track Racing/Duelling stål rutchebane
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
 STR_PARK    :Canary Mines
-STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its miniature railway and a pair of vertical drop rutschebaner
+STR_DTLS    :Denne forladte mine er allerede en turistattraktion med sin miniature jernbane og et par lodrette fald rutschebaner
 
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+STR_DTLS    :Få denne gamle udtjente bro, til at udvikle sig til en forlystelsespark
 
 <Funtopia>
 STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
-STR_DTLS    :Covering land both sides of a highway, this park has several forlystelser already operating
+STR_DTLS    :Med land begge sider af en motorvej, har denne park allerede flere fungerende forlystelser
 
 <Haunted Harbour>
 STR_SCNR    :Haunted Harbour
 STR_PARK    :Haunted Harbour
-STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain forlystelser are preserved
+STR_DTLS    :De lokale myndigheder har indvilliget i at sælge nærliggende land billigt, til denne lille kystpark, på betingelse af, at visse forlystelser bliver bevaret
 
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :Fun Fortress
-STR_DTLS    :This castle is all yours to turn into a theme park
+STR_DTLS    :Denne borg, kan du forvandle til en forlystelspark 
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :Future World
-STR_DTLS    :This futuristic park has plenty of space for new forlystelser on its alien landscape
+STR_DTLS    :Denne futuristiske forlystelsespark, har masser af plads til nye forlystelser på sit fremmede landskab
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :Gentle Glen
-STR_DTLS    :The local population prefer gentle and relaxing forlystelser, so it is your job to expand this park to suit their tastes
+STR_DTLS    :Den lokale befolkning foretrækker blide og afslappende forlystelser, så det er dit job at udvide denne forlystelsespark, så den passer til deres smag
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
 STR_PARK    :Jolly Jungle
-STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+STR_DTLS    :Dybt inde i junglen ligger et stort landområde, klar til at blive omdannet til en forlystelsespark
 
 <Hydro Hills>
 STR_SCNR    :Hydro Hills
 STR_PARK    :Hydro Hills
-STR_DTLS    :A series of stepped lakes form the basis for this new park
+STR_DTLS    :En række forskudte søer, danner grundlaget for denne nye forlystelsespark
 
 <Sprightly Park>
 STR_SCNR    :Sprightly Park
 STR_PARK    :Sprightly Park
-STR_DTLS    :This elderly park has many historical forlystelser but is badly in debt
+STR_DTLS    :Denne aldrene Park har mange historiske forlystelser, men er forgældet
 
 <Magic Quarters>
 STR_SCNR    :Magic Quarters
 STR_PARK    :Magic Quarters
-STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+STR_DTLS    :Et stort område af jord er blevet ryddet og delvist tematiseret, klar til at udvikle sig til en anlagt forlystelsespark
 
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
 STR_PARK    :Fruit Farm
-STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+STR_DTLS    :En blomstrende frugt gård har bygget en jernbane for at øge sin indkomst, dit job er at udvikle det til en lækker forlystelsespark
 
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam
 STR_PARK    :Butterfly Dam
-STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+STR_DTLS    :Området omkring en dæmning er til rådighed for dig, til at udvikle en forlystelsespark
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    :A vast canyon is yours to turn into a theme park
+STR_DTLS    :En stor kløft er din, til at forvandle den til en forlystelsespark
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some forlystelser to be built under cover
+STR_DTLS    :Vejret er så vådt her, at der er bygget en gigantisk pyramide, for at nogle forlystelser kan blive bygget under den.
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :Den lokale myndighed vil ikke tillade dig at bygge over træ højde i denne forlystelsespark
 
 <Roman Village>
 STR_SCNR    :Roman Village
 STR_PARK    :Roman Village
-STR_DTLS    :Develop this Roman-themed park by adding forlystelser and rutschebaner
+STR_DTLS    :Udvikl denne forlystelsespark med et romersk tema, ved at tilføje forlystelser og rutschebaner
 
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large rutschebaner as its centrepiece
+STR_DTLS    :Bygget delvist på en række små øer, har denne forlystelsespark allerede et par store rutschebaner som sit centrum
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
 STR_PARK    :Adrenaline Heights
-STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+STR_DTLS    :Byg en Park for at appellere til den højintensive, gys-søgende, lokale folk
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
 STR_PARK    :Utopia Park
-STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+STR_DTLS    :En oase midt i ørkenen giver en usædvanlig mulighed for at bygge en forlystelsespark
 
 <Rotting Heights>
 STR_SCNR    :Rotting Heights
 STR_PARK    :Rotting Heights
-STR_DTLS    :Overgrown and dilapidated, can you resurrect this once-great amusement park?
+STR_DTLS    :Overgroet og nedslidt, kan du genoplive denne en gang store forlystelsespark?
 
 <Fiasco Forest>
 STR_SCNR    :Fiasco Forest
 STR_PARK    :Fiasco Forest
-STR_DTLS    :Full of badly designed and dangerous forlystelser, you have a very limited budget and time to fix the problems and turn the park around
+STR_DTLS    :Fuld af dårligt designede og farlige forlystelser, har du et meget begrænset budget og tid, til at løse problemerne og vende parken rundt
 
 <Pickle Park>
 STR_SCNR    :Pickle Park
 STR_PARK    :Pickle Park
-STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+STR_DTLS    :De lokale myndigheder vil ikke tillade nogen form for reklame eller forfremmelse, så denne forlystelsespark skal lykkes udelukkende på omdømme
 
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centrepiece of this expanding park
+STR_DTLS    :En fire sporet hestevæddeløbs bane er kernen i denne ekspanderende forlystelsespark
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
 STR_PARK    :Mineral Park
-STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+STR_DTLS    :Forvandel dette forladte stenbrud, til et sted til at tiltrække gys-søgende turister
 
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
 STR_PARK    :Coaster Crazy
-STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast rutschebane park
+STR_DTLS    :YDu har begrænsede midler, men ubegrænset tid til at vende dette bjergområde til en stor rutschebane forlystelsespark
 
 <Urban Park>
 STR_SCNR    :Urban Park
 STR_PARK    :Urban Park
-STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+STR_DTLS    :En lille forlystelsespark har lavet en aftale, med den nærliggende by, for at tillade ekspansion, gennem selve byen
 
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
 STR_PARK    :Geoffrey Gardens
-STR_DTLS    :A large garden park needs turning into a thriving theme park
+STR_DTLS    :En stor have park skal forvandles til en blomstrende forlystelsespark
 
 ## Loopy Landscapes
 <Iceberg Islands>

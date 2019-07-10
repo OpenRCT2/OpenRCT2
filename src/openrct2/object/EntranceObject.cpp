@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,14 +23,6 @@ void EntranceObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     GetImageTable().Read(context, stream);
-
-    // Fix issue #1705: The Medieval entrance from Time Twister has a straight banner,
-    // but scrolls its text as if it a curved one.
-    if (String::Equals(GetIdentifier(), "MEDIENTR"))
-    {
-        _legacyType.scrolling_mode = 32;
-        _legacyType.text_height += 1;
-    }
 }
 
 void EntranceObject::Load()

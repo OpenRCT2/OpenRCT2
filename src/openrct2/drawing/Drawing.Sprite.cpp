@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -619,7 +619,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     if (dpi->zoom_level != 0 && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
     {
-        rct_drawpixelinfo zoomed_dpi;
+        rct_drawpixelinfo zoomed_dpi = *dpi;
         zoomed_dpi.bits = dpi->bits;
         zoomed_dpi.x = dpi->x >> 1;
         zoomed_dpi.y = dpi->y >> 1;

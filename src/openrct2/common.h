@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -65,7 +65,7 @@ const constexpr auto ror64 = ror<uint64_t>;
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #    include <unistd.h>
-#    define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
+#    define STUB() log_warning("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__)
 #    define _strcmpi _stricmp
 #    define _stricmp(x, y) strcasecmp((x), (y))
 #    define _strnicmp(x, y, n) strncasecmp((x), (y), (n))

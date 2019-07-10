@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -121,7 +121,7 @@ static void spiral_slide_paint_tile_front(
         sub_98197C(session, image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3);
     }
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level == 0 && ride->slide_in_use != 0)
     {
         uint8_t slide_progress = ride->spiral_slide_progress;

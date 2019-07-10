@@ -7,7 +7,7 @@ cache:
 - secure-file -> scripts\ps\appveyor_install.ps1
 environment:
   OPENRCT2_ORG_TOKEN:
-    secure: leQX3xCQpmBLGuMqrxjFlzexDt96ypNRMM5TTRVHbGE8PwVg9crgeykLc2BIZU6HDHveJCHqh2cGMdHtHYJYcw==
+    secure: esyy5+5PRKZNYZ1hx1w/JpJGVwEC/YsJXnPp3cH98Yu7sW6/a03z/oJ1m9jhM/nDv5HL0swVK7pi9qQsN0utRg==
   BUILD_SERVER: AppVeyor
   PATH: C:\ProgramData\chocolatey\bin;$(PATH);C:\Program Files (x86)\Windows Kits\10\bin\x86;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin
 install:
@@ -17,6 +17,9 @@ platform:
   - Win32
   - x64
 configuration: Release
+before_build:
+- ps: Set-Content -Path '.\resources\version.h' -Value "#define OPENRCT2_FILE_VERSION $($env:APPVEYOR_BUILD_VERSION -replace "\.", ",")"
+- ps: Add-Content -Path '.\resources\version.h' -Value "#define OPENRCT2_PRODUCT_VERSION `"$($env:APPVEYOR_BUILD_VERSION)-$($env:APPVEYOR_REPO_COMMIT.Substring(0,10))`""
 build:
   parallel: true
   project: openrct2.proj

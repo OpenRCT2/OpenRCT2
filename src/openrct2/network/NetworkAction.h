@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 
 #include <array>
 #include <string>
+#include <vector>
 
 enum MISC_COMMAND
 {
@@ -55,7 +56,7 @@ class NetworkAction final
 public:
     rct_string_id Name;
     std::string PermissionName;
-    std::array<int32_t, NETWORK_PERMISSION_COUNT> Commands;
+    std::vector<int32_t> Commands;
 };
 
 class NetworkActions final

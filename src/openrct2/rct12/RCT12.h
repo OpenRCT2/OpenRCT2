@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,6 +38,13 @@
 #define RCT12_USER_STRING_MAX_LENGTH 32
 
 #define RCT12_PEEP_MAX_THOUGHTS 5
+
+#define RCT12_RIDE_ID_NULL 255
+#define RCT12_RIDE_MEASUREMENT_MAX_ITEMS 4800
+
+constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
+constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
+constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
 #pragma pack(push, 1)
 
@@ -497,5 +504,21 @@ struct RCT12PeepThought
     uint8_t fresh_timeout;
 };
 assert_struct_size(RCT12PeepThought, 4);
+
+struct RCT12RideMeasurement
+{
+    uint8_t ride_index;                                 // 0x0000
+    uint8_t flags;                                      // 0x0001
+    uint32_t last_use_tick;                             // 0x0002
+    uint16_t num_items;                                 // 0x0006
+    uint16_t current_item;                              // 0x0008
+    uint8_t vehicle_index;                              // 0x000A
+    uint8_t current_station;                            // 0x000B
+    int8_t vertical[RCT12_RIDE_MEASUREMENT_MAX_ITEMS];  // 0x000C
+    int8_t lateral[RCT12_RIDE_MEASUREMENT_MAX_ITEMS];   // 0x12CC
+    uint8_t velocity[RCT12_RIDE_MEASUREMENT_MAX_ITEMS]; // 0x258C
+    uint8_t altitude[RCT12_RIDE_MEASUREMENT_MAX_ITEMS]; // 0x384C
+};
+assert_struct_size(RCT12RideMeasurement, 0x4B0C);
 
 #pragma pack(pop)

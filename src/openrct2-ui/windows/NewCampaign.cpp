@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -271,7 +271,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                             break;
 
                         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = ShopItemStringIds[window_new_campaign_shop_items[i]].plural;
+                        gDropdownItemsArgs[i] = ShopItems[window_new_campaign_shop_items[i]].Naming.Plural;
                         numItems++;
                     }
 
@@ -368,7 +368,7 @@ static void window_new_campaign_invalidate(rct_window* w)
             window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
             if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED)
             {
-                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = ShopItemStringIds[w->campaign.ride_id].plural;
+                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = ShopItems[w->campaign.ride_id].Naming.Plural;
             }
             break;
     }

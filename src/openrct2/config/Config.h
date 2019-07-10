@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,6 +32,7 @@ struct GeneralConfiguration
     bool uncap_fps;
     bool use_vsync;
     bool show_fps;
+    bool multithreading;
     bool minimize_fullscreen_focus_loss;
 
     // Map rendering
@@ -45,6 +46,7 @@ struct GeneralConfiguration
     bool render_weather_gloom;
     bool disable_lightning_effect;
     bool show_guest_purchases;
+    bool transparent_screenshot;
 
     // Localisation
     int32_t language;
@@ -69,8 +71,6 @@ struct GeneralConfiguration
     int32_t window_snap_proximity;
     bool allow_loading_with_incorrect_checksum;
     bool save_plugin_data;
-    bool test_unfinished_tracks;
-    bool no_test_crashes;
     bool debugging_tools;
     int32_t autosave_frequency;
     int32_t autosave_amount;
@@ -155,6 +155,7 @@ struct NetworkConfiguration
     bool log_chat;
     bool log_server_actions;
     bool pause_server_if_no_clients;
+    bool desync_debugging;
 };
 
 struct NotificationConfiguration

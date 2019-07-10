@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -74,9 +74,9 @@ extern const char real_name_initials[16];
 extern const char* real_names[1024];
 
 extern utf8 gUserStrings[MAX_USER_STRINGS][USER_STRING_MAX_LENGTH];
-extern char gCommonStringFormatBuffer[512];
-extern uint8_t gCommonFormatArgs[80];
-extern uint8_t gMapTooltipFormatArgs[40];
+extern thread_local char gCommonStringFormatBuffer[512];
+extern thread_local uint8_t gCommonFormatArgs[80];
+extern thread_local uint8_t gMapTooltipFormatArgs[40];
 extern bool gDebugStringFormatting;
 
 extern const rct_string_id SpeedNames[5];

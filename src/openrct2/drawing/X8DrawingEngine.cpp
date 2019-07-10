@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -131,6 +131,7 @@ void X8RainDrawer::Restore()
 X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiContext>& uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
+    _bitsDPI.DrawingEngine = this;
 #ifdef __ENABLE_LIGHTFX__
     lightfx_set_available(true);
     _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);

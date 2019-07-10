@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,9 @@
 #include "String.hpp"
 
 #include <algorithm>
+#ifndef _WIN32
+#    include <sys/stat.h>
+#endif
 
 enum
 {
@@ -73,7 +76,19 @@ public:
         free(pathW);
         free(modeW);
 #else
-        _file = fopen(path, mode);
+        if (fileMode == FILE_MODE_OPEN)
+        {
+            struct stat fileStat;
+            // Only allow regular files to be opened as its possible to open directories.
+            if (stat(path, &fileStat) == 0 && S_ISREG(fileStat.st_mode))
+            {
+                _file = fopen(path, mode);
+            }
+        }
+        else
+        {
+            _file = fopen(path, mode);
+        }
 #endif
         if (_file == nullptr)
         {

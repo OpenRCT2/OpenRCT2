@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,8 @@
 #include "actions/GameAction.h"
 #include "actions/RideEntranceExitPlaceAction.hpp"
 #include "actions/RideSetSetting.hpp"
+#include "actions/SetCheatAction.hpp"
+#include "actions/TileModifyAction.hpp"
 #include "actions/TrackPlaceAction.hpp"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
@@ -442,12 +444,12 @@ namespace OpenRCT2
         {
             _mode = ReplayMode::NORMALISATION;
 
-            if (StartPlayback(file) == false)
+            if (!StartPlayback(file))
             {
                 return false;
             }
 
-            if (StartRecording(outFile, k_MaxReplayTicks) == false)
+            if (!StartRecording(outFile, k_MaxReplayTicks))
             {
                 StopPlayback();
                 return false;
@@ -523,6 +525,38 @@ namespace OpenRCT2
                     uint8_t slope = (command.ebx >> 8) & 0xFF;
                     uint8_t type = (command.edx >> 8) & 0xFF;
                     result.action = std::make_unique<FootpathPlaceAction>(loc, slope, type);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_CHEAT:
+                {
+                    int32_t param1 = command.edx;
+                    int32_t param2 = command.edi;
+                    CheatType cheatType = static_cast<CheatType>(command.ecx);
+
+                    result.action = std::make_unique<SetCheatAction>(cheatType, param1, param2);
+                    result.action->SetFlags(command.ebx & 0xFF);
+                    break;
+                }
+                case GAME_COMMAND_MODIFY_TILE:
+                {
+                    int32_t param1 = command.edx;
+                    int32_t param2 = command.edi;
+                    CoordsXY loc = { static_cast<int16_t>((command.ecx & 0xFF) * 32),
+                                     static_cast<int16_t>(((command.ecx >> 8) & 0xFF) * 32) };
+                    TileModifyType type = static_cast<TileModifyType>(command.eax & 0xFF);
+
+                    if (type == TileModifyType::AnyPaste)
+                    {
+                        TileElement copiedElement{};
+                        uint32_t data[2] = { command.edx, command.edi };
+                        std::memcpy(&copiedElement, &data[0], 8);
+                        result.action = std::make_unique<TileModifyAction>(loc, type, 0, 0, copiedElement);
+                    }
+                    else
+                    {
+                        result.action = std::make_unique<TileModifyAction>(loc, type, param1, param2);
+                    }
                     result.action->SetFlags(command.ebx & 0xFF);
                     break;
                 }
@@ -610,7 +644,7 @@ namespace OpenRCT2
                 return false;
 
             char buffer[128];
-            while (feof(fp) == false)
+            while (feof(fp) == 0)
             {
                 size_t numBytesRead = fread(buffer, 1, 128, fp);
                 if (numBytesRead == 0)
@@ -774,10 +808,7 @@ namespace OpenRCT2
 
         bool Compatible(ReplayRecordData& data)
         {
-            if (data.version == 1 && ReplayVersion == 2)
-                return true;
-
-            return false;
+            return data.version == 1 && ReplayVersion == 2;
         }
 
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)

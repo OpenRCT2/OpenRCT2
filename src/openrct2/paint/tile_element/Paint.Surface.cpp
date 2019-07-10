@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -515,7 +515,8 @@ static void viewport_surface_smoothen_edge(
 
 static bool tile_is_inside_clip_view(const tile_descriptor& tile)
 {
-    Guard::ArgumentNotNull(tile.tile_element);
+    if (tile.tile_element == nullptr)
+        return false;
 
     if (tile.tile_element->base_height > gClipHeight)
         return false;
@@ -584,7 +585,7 @@ static void viewport_surface_draw_tile_side_bottom(
         neighbourCornerHeight1 = MINIMUM_LAND_HEIGHT / 2;
     }
 
-    if (isWater)
+    if (isWater && neighbour.tile_element != nullptr)
     {
         uint8_t waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight();
         if (waterHeight == height && !neighbourIsClippedAway)
@@ -668,7 +669,7 @@ static void viewport_surface_draw_tile_side_bottom(
                 tunnelIndex++;
             }
 
-            if (isWater == true || curHeight != tunnelArray[tunnelIndex].height)
+            if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
                 sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16);
 
@@ -781,7 +782,7 @@ static void viewport_surface_draw_tile_side_top(
             return;
     }
 
-    if (isWater == false)
+    if (!isWater)
         dl = height;
 
     // save ecx
@@ -907,7 +908,7 @@ static void viewport_surface_draw_water_side_top(
  */
 void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
 {
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
     session->DidPassSurface = true;
     session->SurfaceElement = tileElement;
@@ -976,7 +977,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         const int16_t x = session->MapPosition.x;
         const int16_t y = session->MapPosition.y;
 
-        int32_t dx = tile_element_height(x + 16, y + 16) & 0xFFFF;
+        int32_t dx = tile_element_height(x + 16, y + 16);
         dx += 3;
 
         int32_t image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
@@ -1087,7 +1088,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_AVAILABLE)
         {
             const LocationXY16& pos = session->MapPosition;
-            const int32_t height2 = (tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
+            const int32_t height2 = (tile_element_height(pos.x + 16, pos.y + 16)) + 3;
             paint_struct* backup = session->LastRootPS;
             sub_98196C(session, SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2);
             session->LastRootPS = backup;
@@ -1104,7 +1105,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
         {
             const LocationXY16& pos = session->MapPosition;
-            const int32_t height2 = tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
+            const int32_t height2 = tile_element_height(pos.x + 16, pos.y + 16);
             paint_struct* backup = session->LastRootPS;
             sub_98196C(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3);
             session->LastRootPS = backup;
@@ -1193,9 +1194,9 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     {
         const LocationXY16& pos = session->MapPosition;
 
-        for (const LocationXY16* tile = gMapSelectionTiles; tile->x != -1; tile++)
+        for (const auto& tile : gMapSelectionTiles)
         {
-            if (tile->x != pos.x || tile->y != pos.y)
+            if (tile.x != pos.x || tile.y != pos.y)
             {
                 continue;
             }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -105,31 +105,31 @@ rct_window* window_create(
     }
 
     // Find right position to insert new window
-    auto dstIndex = g_window_list.size();
+    auto itDestPos = g_window_list.end();
     if (flags & WF_STICK_TO_BACK)
     {
-        for (size_t i = 0; i < g_window_list.size(); i++)
+        for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
         {
-            if (!(g_window_list[i]->flags & WF_STICK_TO_BACK))
+            if (!((*it)->flags & WF_STICK_TO_BACK))
             {
-                dstIndex = i;
+                itDestPos = it;
             }
         }
     }
     else if (!(flags & WF_STICK_TO_FRONT))
     {
-        for (size_t i = g_window_list.size(); i > 0; i--)
+        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
         {
-            if (!(g_window_list[i - 1]->flags & WF_STICK_TO_FRONT))
+            if (!((*it)->flags & WF_STICK_TO_FRONT))
             {
-                dstIndex = i;
+                itDestPos = it.base();
                 break;
             }
         }
     }
 
-    g_window_list.insert(g_window_list.begin() + dstIndex, std::make_unique<rct_window>());
-    auto w = g_window_list[dstIndex].get();
+    auto itNew = g_window_list.insert(itDestPos, std::make_unique<rct_window>());
+    auto w = itNew->get();
 
     // Setup window
     w->classification = cls;
@@ -689,10 +689,9 @@ static void window_invalidate_pressed_image_buttons(rct_window* w)
  */
 void invalidate_all_windows_after_input()
 {
-    for (auto& w : g_window_list)
-    {
-        window_update_scroll_widgets(w.get());
-        window_invalidate_pressed_image_buttons(w.get());
-        window_event_resize_call(w.get());
-    }
+    window_visit_each([](rct_window* w) {
+        window_update_scroll_widgets(w);
+        window_invalidate_pressed_image_buttons(w);
+        window_event_resize_call(w);
+    });
 }

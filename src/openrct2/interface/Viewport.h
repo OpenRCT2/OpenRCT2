@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,6 +46,7 @@ enum
     VIEWPORT_FLAG_SEETHROUGH_PATHS = (1 << 16),
     VIEWPORT_FLAG_CLIP_VIEW = (1 << 17),
     VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES = (1 << 18),
+    VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
 };
 
 enum

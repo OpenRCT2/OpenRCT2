@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -909,13 +909,19 @@ static void vehicle_sprite_paint(
     }
     int32_t image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24)
         | IMAGE_TYPE_REMAP_2_PLUS;
+
+    if (vehicle->IsGhost())
+    {
+        image_id &= 0x7FFFF;
+        image_id |= CONSTRUCTION_MARKER;
+    }
     paint_struct* ps = sub_98197C(
         session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z);
     if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
     }
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level < 2 && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0)
     {
         baseImage_id += vehicleEntry->no_vehicle_images;
@@ -930,6 +936,13 @@ static void vehicle_sprite_paint(
                 {
                     image_id += (vehicleEntry->no_vehicle_images * vehicle->animation_frame);
                 }
+
+                if (vehicle->IsGhost())
+                {
+                    image_id &= 0x7FFFF;
+                    image_id |= CONSTRUCTION_MARKER;
+                }
+
                 sub_98199C(
                     session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y,
                     bb.offset_z + z);

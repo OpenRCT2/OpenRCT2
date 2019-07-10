@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -198,12 +198,12 @@ enum
 enum
 {
     PTD_OPERATION_DRAW_OUTLINES,
-    PTD_OPERATION_1,
-    PTD_OPERATION_2,
+    PTD_OPERATION_PLACE_QUERY,
+    PTD_OPERATION_PLACE,
     PTD_OPERATION_GET_PLACE_Z,
-    PTD_OPERATION_4,
-    PTD_OPERATION_GET_COST,
-    PTD_OPERATION_CLEAR_OUTLINES,
+    PTD_OPERATION_PLACE_GHOST,
+    PTD_OPERATION_PLACE_TRACK_PREVIEW,
+    PTD_OPERATION_REMOVE_GHOST,
 };
 
 enum

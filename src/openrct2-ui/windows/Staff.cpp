@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,8 +16,10 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/PeepPickupAction.hpp>
 #include <openrct2/actions/StaffSetCostumeAction.hpp>
 #include <openrct2/actions/StaffSetOrdersAction.hpp>
+#include <openrct2/actions/StaffSetPatrolAreaAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
@@ -461,13 +463,19 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_PICKUP:
         {
-            // this is called in callback when hiring staff, setting nestlevel to 0 so that command is sent separately
-            int32_t oldNestLevel = gGameCommandNestLevel;
-            gGameCommandNestLevel = 0;
-            game_command_callback = game_command_callback_pickup_staff;
             w->picked_peep_old_x = peep->x;
-            game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_PICKUP_STAFF, 0, 0);
-            gGameCommandNestLevel = oldNestLevel;
+
+            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, {}, network_get_current_player_id() };
+            pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error != GA_ERROR::OK)
+                    return;
+                rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
+                if (wind)
+                {
+                    tool_set(wind, WC_STAFF__WIDX_PICKUP, TOOL_PICKER);
+                }
+            });
+            GameActions::Execute(&pickupAction);
         }
         break;
         case WIDX_FIRE:
@@ -1197,9 +1205,16 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         if (dest_x == LOCATION_NULL)
             return;
 
-        game_command_callback = game_command_callback_pickup_staff;
-        game_do_command(
-            w->number, GAME_COMMAND_FLAG_APPLY, 2, tileElement->base_height, GAME_COMMAND_PICKUP_STAFF, dest_x, dest_y);
+        PeepPickupAction pickupAction{
+            PeepPickupType::Place, w->number, { dest_x, dest_y, tileElement->base_height }, network_get_current_player_id()
+        };
+        pickupAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+            if (result->Error != GA_ERROR::OK)
+                return;
+            tool_cancel();
+            gPickupPeepImage = UINT32_MAX;
+        });
+        GameActions::Execute(&pickupAction);
     }
     else if (widgetIndex == WIDX_PATROL)
     {
@@ -1210,14 +1225,14 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
             return;
 
         rct_sprite* sprite = try_get_sprite(w->number);
-        if (sprite == nullptr || sprite->IsPeep() == false)
+        if (sprite == nullptr || !sprite->IsPeep())
             return;
 
         Peep& peep = sprite->peep;
         if (peep.type != PEEP_TYPE_STAFF)
             return;
 
-        if (staff_is_patrol_area_set(peep.staff_id, dest_x, dest_y) == true)
+        if (staff_is_patrol_area_set(peep.staff_id, dest_x, dest_y))
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::UNSET;
         }
@@ -1225,7 +1240,8 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
         }
-        game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
+        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, { dest_x, dest_y });
+        GameActions::Execute(&staffSetPatrolAreaAction);
     }
 }
 
@@ -1250,7 +1266,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
         return;
 
     rct_sprite* sprite = try_get_sprite(w->number);
-    if (sprite == nullptr || sprite->IsPeep() == false)
+    if (sprite == nullptr || !sprite->IsPeep())
         return;
 
     Peep& peep = sprite->peep;
@@ -1258,12 +1274,13 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
         return;
 
     bool patrolAreaValue = staff_is_patrol_area_set(peep.staff_id, dest_x, dest_y);
-    if (_staffPatrolAreaPaintValue == PatrolAreaValue::SET && patrolAreaValue == true)
+    if (_staffPatrolAreaPaintValue == PatrolAreaValue::SET && patrolAreaValue)
         return; // Since area is already the value we want, skip...
-    if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && patrolAreaValue == false)
+    if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && !patrolAreaValue)
         return; // Since area is already the value we want, skip...
 
-    game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
+    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, { dest_x, dest_y });
+    GameActions::Execute(&staffSetPatrolAreaAction);
 }
 
 void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
@@ -1282,7 +1299,10 @@ void window_staff_overview_tool_abort(rct_window* w, rct_widgetindex widgetIndex
 {
     if (widgetIndex == WIDX_PICKUP)
     {
-        game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 1, 0, GAME_COMMAND_PICKUP_STAFF, w->picked_peep_old_x, 0);
+        PeepPickupAction pickupAction{
+            PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
+        };
+        GameActions::Execute(&pickupAction);
     }
     else if (widgetIndex == WIDX_PATROL)
     {

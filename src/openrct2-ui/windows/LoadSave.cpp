@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -240,17 +240,10 @@ static const char* getFilterPatternByType(const int32_t type, const bool isSave)
 static int32_t window_loadsave_get_dir(const int32_t type, char* path, size_t pathSize)
 {
     const char* last_save = getLastDirectoryByType(type);
-    if (last_save && platform_ensure_directory_exists(last_save))
+    if (last_save != nullptr && platform_directory_exists(last_save))
         safe_strcpy(path, last_save, pathSize);
     else
         getInitialDirectoryByType(type, path, pathSize);
-
-    if (!platform_ensure_directory_exists(path))
-    {
-        log_error("Unable to create save directory.");
-        return 0;
-    }
-
     return 1;
 }
 
@@ -438,7 +431,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
     {
         // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom extension,
         // meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
-        if (get_file_extension_type(path) != fileType)
+        if (isSave && get_file_extension_type(path) != fileType)
             path_append_extension(path, extension, pathSize);
 
         return true;
@@ -793,15 +786,15 @@ static bool list_item_sort(LoadSaveListItem& a, LoadSaveListItem& b)
     switch (gConfigGeneral.load_save_sort)
     {
         case SORT_NAME_ASCENDING:
-            return strcicmp(a.name.c_str(), b.name.c_str()) < 0;
+            return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
         case SORT_NAME_DESCENDING:
-            return -strcicmp(a.name.c_str(), b.name.c_str()) < 0;
+            return -strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
         case SORT_DATE_DESCENDING:
             return -difftime(a.date_modified, b.date_modified) < 0;
         case SORT_DATE_ASCENDING:
             return difftime(a.date_modified, b.date_modified) < 0;
         default:
-            return strcicmp(a.name.c_str(), b.name.c_str()) < 0;
+            return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
     }
 }
 

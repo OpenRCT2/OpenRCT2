@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -176,7 +176,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
 
     if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_ANIMATED))
     {
-        rct_drawpixelinfo* dpi = session->DPI;
+        rct_drawpixelinfo* dpi = &session->DPI;
         if ((scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) || (dpi->zoom_level <= 1))
         {
             // 6E01A9:

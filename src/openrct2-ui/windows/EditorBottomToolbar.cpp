@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -316,7 +316,7 @@ static void window_editor_bottom_toolbar_mouseup([[maybe_unused]] rct_window* w,
     if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
     {
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-            || (gSpriteListCount[SPRITE_LIST_NULL] == MAX_SPRITES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
+            || (gSpriteListCount[SPRITE_LIST_FREE] == MAX_SPRITES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
         {
             previous_button_mouseup_events[gS6Info.editor_step]();
         }
@@ -376,7 +376,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window* w)
         }
         else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
         {
-            if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
+            if (gSpriteListCount[SPRITE_LIST_FREE] != MAX_SPRITES || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
             {
                 hide_previous_step_button();
             }
@@ -401,7 +401,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         drawPreviousButton = true;
     }
-    else if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES)
+    else if (gSpriteListCount[SPRITE_LIST_FREE] != MAX_SPRITES)
     {
         drawNextButton = true;
     }

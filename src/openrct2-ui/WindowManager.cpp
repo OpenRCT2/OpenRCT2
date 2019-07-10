@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -100,10 +100,12 @@ public:
                 return window_save_prompt_open();
             case WC_SCENERY:
                 return window_scenery_open();
+#ifndef DISABLE_NETWORK
             case WC_SERVER_LIST:
                 return window_server_list_open();
             case WC_SERVER_START:
                 return window_server_start_open();
+#endif
             case WC_KEYBOARD_SHORTCUT_LIST:
                 return window_shortcut_keys_open();
             case WC_STAFF_LIST:

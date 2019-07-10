@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -611,16 +611,9 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
         int32_t image = ConstructionPreviewImages[slope][direction];
 
-        int32_t selectedPath = gFootpathSelectedId;
+        int32_t selectedPath = gFootpathSelectedId + (MAX_PATH_OBJECTS * gFootpathSelectedType);
         PathSurfaceEntry* pathType = get_path_surface_entry(selectedPath);
-        if (gFootpathSelectedType == SELECTED_PATH_TYPE_NORMAL)
-        {
-            image += pathType->image;
-        }
-        else
-        {
-            image += pathType->queue_image;
-        }
+        image += pathType->image;
 
         // Draw construction image
         int32_t x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
@@ -1172,9 +1165,9 @@ static void window_footpath_set_enabled_and_pressed_widgets()
         gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
         int32_t direction = gFootpathConstructDirection;
-        gMapSelectionTiles[0].x = gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;
-        gMapSelectionTiles[0].y = gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y;
-        gMapSelectionTiles[1].x = -1;
+        gMapSelectionTiles.clear();
+        gMapSelectionTiles.push_back({ gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
+                                       gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
         map_invalidate_map_selection_tiles();
     }
 

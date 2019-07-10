@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,10 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/BannerRemoveAction.hpp>
+#include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/BannerSetNameAction.hpp>
+#include <openrct2/actions/BannerSetStyleAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
@@ -186,20 +189,24 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_BANNER_DEMOLISH:
-            game_do_command(
-                x, 1, y, tile_element->base_height | (tile_element->AsBanner()->GetPosition() << 8), GAME_COMMAND_REMOVE_BANNER,
-                0, 0);
+        {
+            auto bannerRemoveAction = BannerRemoveAction(
+                { x, y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() });
+            GameActions::Execute(&bannerRemoveAction);
             break;
+        }
         case WIDX_BANNER_TEXT:
             window_text_input_open(
                 w, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, gBanners[w->number].string_idx, 0, 32);
             break;
         case WIDX_BANNER_NO_ENTRY:
+        {
             textinput_cancel();
-            game_do_command(
-                1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour,
-                banner->flags ^ BANNER_FLAG_NO_ENTRY);
+            auto bannerSetStyle = BannerSetStyleAction(
+                BannerSetStyleType::NoEntry, w->number, banner->flags ^ BANNER_FLAG_NO_ENTRY);
+            GameActions::Execute(&bannerSetStyle);
             break;
+        }
     }
 }
 
@@ -242,26 +249,25 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
  */
 static void window_banner_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    rct_banner* banner = &gBanners[w->number];
-
     switch (widgetIndex)
     {
         case WIDX_MAIN_COLOUR:
+        {
             if (dropdownIndex == -1)
                 break;
 
-            game_do_command(
-                1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour,
-                banner->flags);
+            auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::PrimaryColour, w->number, dropdownIndex);
+            GameActions::Execute(&bannerSetStyle);
             break;
+        }
         case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
+        {
             if (dropdownIndex == -1)
                 break;
-
-            game_do_command(
-                1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, dropdownIndex + 1,
-                banner->flags);
+            auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::TextColour, w->number, dropdownIndex + 1);
+            GameActions::Execute(&bannerSetStyle);
             break;
+        }
     }
 }
 

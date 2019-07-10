@@ -1,3 +1,73 @@
+0.2.2+ (in development)
+------------------------------------------------------------------------
+- Feature: [#485] Rides can now be simulated with ghost trains during construction.
+- Feature: [#1260] Option for making giant screenshots have a transparent background.
+- Feature: [#2339] Find local servers automatically when fetching servers.
+- Feature: [#7296] Allow assigning a keyboard shortcut for the scenery picker.
+- Feature: [#8029] Add the Hungarian Forint (HUF) to the list of available currencies.
+- Feature: [#8481] Multi-threaded rendering.
+- Feature: [#8558] Guest debugging tab.
+- Feature: [#8659] Banner and sign texts are now shown in tooltips.
+- Feature: [#8687] New multiplayer toolbar icon showing network status with reconnect option.
+- Feature: [#8791] Improved tile element flag manipulation in Tile Inspector.
+- Feature: [#8919] Allow setting ride price from console.
+- Feature: [#8963] Add missing Czech letters to sprite font, use sprite font for Czech.
+- Feature: [#9154] Change map toolbar icon with current viewport rotation.
+- Change: [#7877] Files are now sorted in logical rather than dictionary order.
+- Change: [#8427] Ghost elements now show up as white on the mini-map.
+- Change: [#8688] Move common actions from debug menu into cheats menu.
+- Change: [#9428] Increase maximum height of the Hypercoaster to RCT1 limits.
+- Fix: [#2294] Clients crashing the server with invalid object selection.
+- Fix: [#4568, #5896] Incorrect fences removed when building a tracked ride through
+- Fix: [#5103] OpenGL: ride track preview not rendered.
+- Fix: [#5889] Giant screenshot does not work while using OpenGL renderer.
+- Fix: [#5579] Network desync immediately after connecting.
+- Fix: [#5893] Looking at guest window tabs other than the main tab eventually causes assertion.
+- Fix: [#5905] Urban Park merry-go-round has entrance and exit swapped (original bug).
+- Fix: [#6006] Objects higher than 6 metres are considered trees (original bug).
+- Fix: [#7039] Map window not rendering properly when using OpenGL.
+- Fix: [#7045] Theme window's colour pickers not drawn properly on OpenGL.
+- Fix: [#7323] Tunnel entrances not rendering in 'highlight path issues' mode if they have benches inside.
+- Fix: [#7729] Money Input Prompt breaks on certain values.
+- Fix: [#7884] Unfinished preserved rides can be demolished with quick demolish.
+- Fix: [#7913] RCT1/RCT2 title sequence timing is off.
+- Fix: [#7700, #8079, #8969] Crash when unloading buggy custom rides.
+- Fix: [#7829] Rotated information kiosk can cause 'unreachable' messages.
+- Fix: [#7878] Scroll shortcut keys ignore SHIFT/CTRL/ALT modifiers.
+- Fix: [#8219] Faulty folder recreation in "save" folder.
+- Fix: [#8480, #8535] Crash when mirroring track design.
+- Fix: [#8507] Incorrect change in vehicle rolling direction.
+- Fix: [#8537] Imported RCT1 rides/shops are all numbered 1.
+- Fix: [#8553] Scenery removal tool removes fences and paths while paused.
+- Fix: [#8598] Taking screenshots fails with some park names.
+- Fix: [#8602] Wall piece collision detection deviates from vanilla
+- Fix: [#8649] Setting date does not work in multiplayer.
+- Fix: [#8873] Potential crash when placing footpaths.
+- Fix: [#8882] Submarine Ride does not count as indoors (original bug).
+- Fix: [#8900] Peep tracking is not synchronized.
+- Fix: [#8909] Potential crash when invoking game actions as server.
+- Fix: [#8947] Detection of AVX2 support.
+- Fix: [#8988] Character sprite lookup noticeably slows down drawing.
+- Fix: [#9000] Show correct error message if not enough money available.
+- Fix: [#9067] Land/water tools show prices when money is disabled.
+- Fix: [#9124] Disconnected clients can crash the server.
+- Fix: [#9132] System file browser cannot open SV4 files.
+- Fix: [#9152] Spectators can modify ride colours.
+- Fix: [#9202] Artefacts show when changing ride type as client or using in-game console.
+- Fix: [#9240] Crash when passing directory instead of save file.
+- Fix: [#9245] Headless servers apply Discord Rich Presence.
+- Fix: [#9293] Issue with the native load/save dialog.
+- Fix: [#9322] Peep crashing the game trying to find a ride to look at.
+- Fix: [#9324] Crash trying to remove invalid footpath scenery.
+- Fix: [#9402] Ad campaigns disappear when you save and load the game.
+- Fix: [#9411] Ad campaigns end too soon.
+- Fix: [#9476] Running `simulate` command on park yields `Completed: (null)`.
+- Fix: [#9520] Time Twister object artdec29 conversion problem.
+- Fix: Guests eating popcorn are drawn as if they're eating pizza.
+- Fix: The arbitrary ride type and vehicle dropdown lists are ordered case-sensitively.
+- Improved: [#6116] Expose colour scheme for track elements in the tile inspector.
+- Improved: Allow the use of numpad enter key for console and chat.
+
 0.2.2 (2019-03-13)
 ------------------------------------------------------------------------
 - Feature: [#4418] Allow steep slopes on the side-friction roller coaster.
@@ -31,6 +101,7 @@
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
 - Fix: [#7439] Placement messages have mixed strings
 - Fix: [#7473] Disabling sound effects also disables "Disable audio on focus loss".
+- Fix: [#7476] Trying to Change Park Name During MP Session Instantly Crashes Host Game.
 - Fix: [#7536] Android builds fail to start.
 - Fix: [#7689] Deleting 0-tile maze gives a MONEY32_UNDEFINED (negative) refund.
 - Fix: [#7828] Copied entrances and exits stay when demolishing ride.
@@ -55,6 +126,7 @@
 - Fix: [#8200] Incorrect behaviour when removing entrances and exits that are on the same tile.
 - Fix: [#8204] Crash when tile element has no surface elements.
 - Fix: [#8264] Rides and scenery placeable outside of map with ZC and Sandbox mode enabled.
+- Fix: [#8300] Crash in UpdateRideMazePathfinding().
 - Fix: [#8335] Rides with arbitrary ride types can crash the game when they break down.
 - Fix: [#8358] Infinite loop when changing vehicle count on stopped ride.
 - Fix: [#8402] Crash closing a window in some cases.
@@ -71,9 +143,10 @@
 - Fix: [#8585] Part of track missing on air powered vertical coaster.
 - Fix: [#8588] Guest list scrolling breaks above ~2000 guests.
 - Fix: [#8591] Game loop does not run at a consistent tick rate of 40 Hz.
-- Fix: [#8647] Marketing campaigns check for entry fees below £1 (original bug). 
+- Fix: [#8647] Marketing campaigns check for entry fees below £1 (original bug).
 - Fix: [#8653] Crash when peeps attempt to enter a ride with no vehicles.
 - Fix: [#8720] Desync due to boats colliding with ghost pieces.
+- Fix: [#8736] Incomplete warning when all ride slots are full.
 - Fix: [#8739] Savegame from original game crashes when cruising through map.
 - Fix: [#8742] Access violation in vehicle_update_sound_params.
 - Fix: [#8804] Raising water shows money effect at the bottom rather than new height.

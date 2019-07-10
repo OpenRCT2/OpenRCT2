@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,18 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Theme.h"
+#ifndef DISABLE_NETWORK
 
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
-#include <openrct2/ParkImporter.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/interface/Chat.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/network/network.h>
-#include <openrct2/util/Util.h>
-#include <openrct2/windows/Intent.h>
+#    include "../interface/Theme.h"
+
+#    include <openrct2-ui/interface/Widget.h>
+#    include <openrct2-ui/windows/Window.h>
+#    include <openrct2/Context.h>
+#    include <openrct2/ParkImporter.h>
+#    include <openrct2/config/Config.h>
+#    include <openrct2/interface/Chat.h>
+#    include <openrct2/localisation/Localisation.h>
+#    include <openrct2/network/network.h>
+#    include <openrct2/util/Util.h>
+#    include <openrct2/windows/Intent.h>
 
 static char _port[7];
 static char _name[65];
@@ -345,3 +347,5 @@ static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_PASSWORD, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PASSWORD_INPUT].top);
     gfx_draw_string_left(dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_MAXPLAYERS].top);
 }
+
+#endif

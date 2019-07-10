@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -82,7 +82,7 @@ public:
             // Check if allowed to remove item
             if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
-                if (entry->small_scenery.height > 64)
+                if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_IS_TREE))
                 {
                     res->Error = GA_ERROR::NO_CLEARANCE;
                     res->ErrorTitle = STR_CANT_REMOVE_THIS;

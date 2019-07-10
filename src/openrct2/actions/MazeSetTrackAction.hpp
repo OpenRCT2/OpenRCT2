@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -202,7 +202,7 @@ public:
         }
 
         uint32_t flags = GetFlags();
-        if (!(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_2))
+        if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
             footpath_remove_litter(_x, _y, _z);
             wall_remove_at(floor2(_x, 32), floor2(_y, 32), _z, _z + 32);
@@ -302,7 +302,7 @@ public:
                     map_invalidate_tile_full(floor2(previousSegmentX, 32), floor2(previousSegmentY, 32));
                     if (tileElement == nullptr)
                     {
-                        log_error("No surface found\n");
+                        log_error("No surface found");
                         res->Error = GA_ERROR::UNKNOWN;
                         res->ErrorMessage = STR_NONE;
                         return res;

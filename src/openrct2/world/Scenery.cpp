@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../actions/BannerRemoveAction.hpp"
 #include "../actions/FootpathSceneryRemoveAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
@@ -40,7 +41,6 @@ colour_t gWindowScenerySecondaryColour;
 colour_t gWindowSceneryTertiaryColour;
 bool gWindowSceneryEyedropperEnabled;
 
-TileElement* gSceneryTileElement;
 uint8_t gSceneryQuadrant;
 
 money32 gSceneryPlaceCost;
@@ -62,8 +62,6 @@ int16_t gSceneryShiftPressZOffset;
 
 int16_t gSceneryCtrlPressed;
 int16_t gSceneryCtrlPressZ;
-
-uint8_t gSceneryGroundFlags;
 
 money32 gClearSceneryCost;
 
@@ -189,7 +187,8 @@ void scenery_remove_ghost_tool_placement()
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_0;
 
         auto removeSceneryAction = SmallSceneryRemoveAction(x, y, z, gSceneryQuadrant, gSceneryPlaceObject);
-        removeSceneryAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+        removeSceneryAction.SetFlags(
+            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         removeSceneryAction.Execute();
     }
 
@@ -229,16 +228,19 @@ void scenery_remove_ghost_tool_placement()
 
         auto removeSceneryAction = LargeSceneryRemoveAction(x, y, z, gSceneryPlaceRotation, 0);
         removeSceneryAction.SetFlags(
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5);
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+            | GAME_COMMAND_FLAG_NO_SPEND);
         removeSceneryAction.Execute();
     }
 
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_4)
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_4;
-        constexpr uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-            | GAME_COMMAND_FLAG_5;
-        game_do_command(x, flags, y, z | (gSceneryPlaceRotation << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
+
+        auto removeSceneryAction = BannerRemoveAction({ x, y, z * 8, gSceneryPlaceRotation });
+        removeSceneryAction.SetFlags(
+            GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+        GameActions::Execute(&removeSceneryAction);
     }
 }
 

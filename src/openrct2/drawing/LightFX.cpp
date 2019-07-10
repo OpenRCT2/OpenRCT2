@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -170,8 +170,7 @@ void lightfx_update_buffers(rct_drawpixelinfo* info)
 {
     _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info->width * info->height);
     _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info->width * info->height);
-
-    std::memcpy(&_pixelInfo, info, sizeof(rct_drawpixelinfo));
+    _pixelInfo = *info;
 }
 
 extern void viewport_paint_setup();

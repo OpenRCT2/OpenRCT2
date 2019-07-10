@@ -139,14 +139,14 @@ rct_ride_entry* get_ride_entry(int index)
     return gRideEntries[index];
 }
 
-rct_ride_entry* get_ride_entry_by_ride(const Ride* ride)
+rct_ride_entry* Ride::GetRideEntry() const
 {
-    rct_ride_entry* type = get_ride_entry(ride->subtype);
-    if (type == nullptr)
+    rct_ride_entry* rideEntry = get_ride_entry(subtype);
+    if (rideEntry == nullptr)
     {
         log_error("Invalid ride subtype for ride");
     }
-    return type;
+    return rideEntry;
 }
 
 rct_sprite* get_sprite(size_t sprite_idx)
@@ -434,4 +434,10 @@ uint8_t PathElement::GetEdges() const
 StationObject* ride_get_station_object(const Ride* ride)
 {
     return nullptr;
+}
+
+bool rct_vehicle::IsGhost() const
+{
+    auto r = get_ride(ride);
+    return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
 }

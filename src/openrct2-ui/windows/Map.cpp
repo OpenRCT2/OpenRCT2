@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/LandSetRightsAction.hpp>
+#include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
@@ -504,10 +506,10 @@ static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int3
         case WIDX_SET_LAND_RIGHTS:
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
-                gGameCommandErrorTitle = 0;
-                game_do_command(
-                    gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y, _activeTool,
-                    GAME_COMMAND_SET_LAND_OWNERSHIP, gMapSelectPositionB.x, gMapSelectPositionB.y);
+                auto landSetRightsAction = LandSetRightsAction(
+                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                    LandSetRightSetting::SetOwnershipWithChecks, _activeTool << 4);
+                GameActions::Execute(&landSetRightsAction);
             }
             break;
     }
@@ -590,11 +592,10 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
         gMapSelectPositionB.y = mapY + size;
         map_invalidate_selection_rect();
 
-        gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-        game_do_command(
-            gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y,
-            gLandToolTerrainSurface | (gLandToolTerrainEdge << 8), GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
+        auto surfaceSetStyleAction = SurfaceSetStyleAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+            gLandToolTerrainSurface, gLandToolTerrainEdge);
+        GameActions::Execute(&surfaceSetStyleAction);
     }
     else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
     {
@@ -614,10 +615,10 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
         gMapSelectPositionB.y = mapY + size;
         map_invalidate_selection_rect();
 
-        gGameCommandErrorTitle = 0;
-        game_do_command(
-            gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y, _activeTool, GAME_COMMAND_SET_LAND_OWNERSHIP,
-            gMapSelectPositionB.x, gMapSelectPositionB.y);
+        auto landSetRightsAction = LandSetRightsAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+            LandSetRightSetting::SetOwnershipWithChecks, _activeTool << 4);
+        GameActions::Execute(&landSetRightsAction);
     }
 }
 
@@ -877,6 +878,7 @@ static void window_map_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     g1temp.x_offset = -8;
     g1temp.y_offset = -8;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
+    drawing_engine_invalidate_image(SPR_TEMP);
     gfx_draw_sprite(dpi, SPR_TEMP, 0, 0, 0);
 
     if (w->selected_tab == PAGE_PEEPS)
@@ -1235,14 +1237,12 @@ static void window_map_place_park_entrance_tool_update(int32_t x, int32_t y)
     }
 
     sideDirection = (direction + 1) & 3;
-    gMapSelectionTiles[0].x = mapX;
-    gMapSelectionTiles[0].y = mapY;
-    gMapSelectionTiles[1].x = mapX + CoordsDirectionDelta[sideDirection].x;
-    gMapSelectionTiles[1].y = mapY + CoordsDirectionDelta[sideDirection].y;
-    gMapSelectionTiles[2].x = mapX - CoordsDirectionDelta[sideDirection].x;
-    gMapSelectionTiles[2].y = mapY - CoordsDirectionDelta[sideDirection].y;
-    gMapSelectionTiles[3].x = -1;
-    gMapSelectionTiles[3].y = -1;
+    gMapSelectionTiles.clear();
+    gMapSelectionTiles.push_back({ mapX, mapY });
+    gMapSelectionTiles.push_back(
+        { mapX + CoordsDirectionDelta[sideDirection].x, mapY + CoordsDirectionDelta[sideDirection].y });
+    gMapSelectionTiles.push_back(
+        { mapX - CoordsDirectionDelta[sideDirection].x, mapY - CoordsDirectionDelta[sideDirection].y });
 
     gMapSelectArrowPosition.x = mapX;
     gMapSelectArrowPosition.y = mapY;
@@ -1552,6 +1552,12 @@ static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
     const int32_t maxSupportedTileElementType = (int32_t)std::size(ElementTypeAddColour);
     while (!(tileElement++)->IsLastForTile())
     {
+        if (tileElement->IsGhost())
+        {
+            colour = MAP_COLOUR(PALETTE_INDEX_21);
+            break;
+        }
+
         int32_t tileElementType = tileElement->GetType() >> 2;
         if (tileElementType >= maxSupportedTileElementType)
         {
@@ -1574,6 +1580,12 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
     TileElement* tileElement = map_get_surface_element_at(c);
     do
     {
+        if (tileElement->IsGhost())
+        {
+            colourA = MAP_COLOUR(PALETTE_INDEX_21);
+            break;
+        }
+
         switch (tileElement->GetType())
         {
             case TILE_ELEMENT_TYPE_SURFACE:

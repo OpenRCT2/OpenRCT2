@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,10 @@
 #include "../common.h"
 #include "../ride/RideTypes.h"
 
+#include <functional>
 #include <limits>
+#include <list>
+#include <memory>
 
 struct rct_drawpixelinfo;
 struct rct_window;
@@ -487,9 +490,10 @@ enum
 #define WC_RIDE_CONSTRUCTION__WIDX_ROTATE 32
 #define WC_SCENERY__WIDX_SCENERY_TAB_1 4
 #define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 25
+#define WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON 30
 #define WC_PEEP__WIDX_PATROL 11
-#define WC_PEEP__WIDX_ACTION_LBL 12
-#define WC_PEEP__WIDX_PICKUP 13
+#define WC_PEEP__WIDX_ACTION_LBL 13
+#define WC_PEEP__WIDX_PICKUP 14
 #define WC_TRACK_DESIGN_LIST__WIDX_ROTATE 8
 #define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE 3
 #define WC_MAP__WIDX_ROTATE_90 20
@@ -579,7 +583,9 @@ extern colour_t gCurrentWindowColours[4];
 
 extern bool gDisableErrorWindowSound;
 
-size_t window_get_index(const rct_window* w);
+std::list<std::shared_ptr<rct_window>>::iterator window_get_iterator(const rct_window* w);
+void window_visit_each(std::function<void(rct_window*)> func);
+
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();
@@ -672,11 +678,6 @@ void window_bubble_list_item(rct_window* w, int32_t item_position);
 void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id);
 
 void window_staff_list_init_vars();
-
-void game_command_callback_pickup_guest(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
-void game_command_callback_pickup_staff(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
 
 void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex);

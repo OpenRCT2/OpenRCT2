@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -114,7 +115,7 @@ public:
         auto chunkReader = SawyerChunkReader(stream);
         chunkReader.ReadChunk(&_s6.header, sizeof(_s6.header));
 
-        log_verbose("saved game classic_flag = 0x%02x\n", _s6.header.classic_flag);
+        log_verbose("saved game classic_flag = 0x%02x", _s6.header.classic_flag);
         if (isScenario)
         {
             if (_s6.header.type != S6_TYPE_SCENARIO)
@@ -334,7 +335,8 @@ public:
         gMapSizeMinus2 = _s6.map_size_minus_2;
         gMapSize = _s6.map_size;
         gMapSizeMaxXY = _s6.map_max_xy;
-        gSamePriceThroughoutParkA = _s6.same_price_throughout;
+        gSamePriceThroughoutPark = _s6.same_price_throughout
+            | (static_cast<uint64_t>(_s6.same_price_throughout_extended) << 32);
         _suggestedGuestMaximum = _s6.suggested_max_guests;
         gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
         gLastEntranceStyle = _s6.last_entrance_style;
@@ -346,7 +348,6 @@ public:
         gScenarioDetails = std::string_view(_s6.scenario_description, sizeof(_s6.scenario_description));
         gBankLoanInterestRate = _s6.current_interest_rate;
         // pad_0135934B
-        gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
         // Preserve compatibility with vanilla RCT2's save format.
         gParkEntrances.clear();
         for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
@@ -395,7 +396,7 @@ public:
         // pad_0138B582
 
         gRideRatingsCalcData = _s6.ride_ratings_calc_data;
-        std::memcpy(gRideMeasurements, _s6.ride_measurements, sizeof(_s6.ride_measurements));
+        ImportRideMeasurements();
         gNextGuestNumber = _s6.next_guest_index;
         gGrassSceneryTileLoopPosition = _s6.grass_and_scenery_tilepos;
         std::memcpy(gStaffPatrolAreas, _s6.patrol_areas, sizeof(_s6.patrol_areas));
@@ -585,8 +586,6 @@ public:
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
         dst->boat_hire_return_position = src->boat_hire_return_position;
 
-        dst->measurement_index = src->measurement_index;
-
         dst->special_track_elements = src->special_track_elements;
         // pad_0D6[2];
 
@@ -607,8 +606,11 @@ public:
         dst->turn_count_default = src->turn_count_default;
         dst->turn_count_banked = src->turn_count_banked;
         dst->turn_count_sloped = src->turn_count_sloped;
-        // Includes holes and (for some strange reason?!) sheltered_eights
-        dst->inversions = src->inversions;
+        if (dst->type == RIDE_TYPE_MINI_GOLF)
+            dst->holes = src->inversions & 0x1F;
+        else
+            dst->inversions = src->inversions & 0x1F;
+        dst->sheltered_eighths = src->inversions >> 5;
         dst->drops = src->drops;
         dst->start_drop_height = src->start_drop_height;
         dst->highest_drop_height = src->highest_drop_height;
@@ -706,6 +708,20 @@ public:
             dst->track_colour[i].additional = src->track_colour_additional[i];
             dst->track_colour[i].supports = src->track_colour_supports[i];
         }
+        // This stall was not colourable in RCT2.
+        if (dst->type == RIDE_TYPE_FOOD_STALL)
+        {
+            auto entry = object_entry_get_entry(OBJECT_TYPE_RIDE, dst->subtype);
+            if (entry != nullptr)
+            {
+                char name[DAT_NAME_LENGTH + 1];
+                object_entry_get_name_fixed(name, sizeof(name), entry);
+                if (strncmp(name, "ICECR1  ", DAT_NAME_LENGTH) == 0)
+                {
+                    dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
+                }
+            }
+        }
 
         dst->music = src->music;
         dst->entrance_style = src->entrance_style;
@@ -730,6 +746,37 @@ public:
         dst->cable_lift = src->cable_lift;
 
         // pad_208[0x58];
+    }
+
+    void ImportRideMeasurements()
+    {
+        for (const auto& src : _s6.ride_measurements)
+        {
+            if (src.ride_index != RCT12_RIDE_ID_NULL)
+            {
+                auto ride = get_ride(src.ride_index);
+                ride->measurement = std::make_unique<RideMeasurement>();
+                ride->measurement->ride = ride;
+                ImportRideMeasurement(*ride->measurement, src);
+            }
+        }
+    }
+
+    void ImportRideMeasurement(RideMeasurement& dst, const RCT12RideMeasurement& src)
+    {
+        dst.flags = src.flags;
+        dst.last_use_tick = src.last_use_tick;
+        dst.num_items = src.num_items;
+        dst.current_item = src.current_item;
+        dst.vehicle_index = src.vehicle_index;
+        dst.current_station = src.current_station;
+        for (size_t i = 0; i < std::size(src.velocity); i++)
+        {
+            dst.velocity[i] = src.velocity[i];
+            dst.altitude[i] = src.altitude[i];
+            dst.vertical[i] = src.vertical[i];
+            dst.lateral[i] = src.lateral[i];
+        }
     }
 
     void ImportResearchedRideTypes()
@@ -1025,7 +1072,11 @@ public:
             {
                 MarketingCampaign campaign{};
                 campaign.Type = (uint8_t)i;
-                campaign.WeeksLeft = _s6.campaign_weeks_left[i] & ~CAMPAIGN_ACTIVE_FLAG;
+                campaign.WeeksLeft = _s6.campaign_weeks_left[i] & ~(CAMPAIGN_ACTIVE_FLAG | CAMPAIGN_FIRST_WEEK_FLAG);
+                if ((_s6.campaign_weeks_left[i] & CAMPAIGN_FIRST_WEEK_FLAG) != 0)
+                {
+                    campaign.Flags |= MarketingCampaignFlags::FIRST_WEEK;
+                }
                 if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                 {
                     campaign.RideId = _s6.campaign_ride_index[i];
@@ -1054,7 +1105,7 @@ public:
             gSpriteListCount[i] = _s6.sprite_lists_count[i];
         }
         // This list contains the number of free slots. Increase it according to our own sprite limit.
-        gSpriteListCount[SPRITE_LIST_NULL] += (MAX_SPRITES - RCT2_MAX_SPRITES);
+        gSpriteListCount[SPRITE_LIST_FREE] += (MAX_SPRITES - RCT2_MAX_SPRITES);
     }
 
     void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
@@ -1111,7 +1162,14 @@ public:
         dst->current_station = src->current_station;
         dst->current_time = src->current_time;
         dst->crash_z = src->crash_z;
-        dst->status = src->status;
+
+        VEHICLE_STATUS statusSrc = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+        if (src->status <= static_cast<uint8_t>(VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES))
+        {
+            statusSrc = static_cast<VEHICLE_STATUS>(src->status);
+        }
+
+        dst->status = statusSrc;
         dst->sub_state = src->sub_state;
         for (size_t i = 0; i < std::size(src->peep); i++)
         {
@@ -1412,10 +1470,11 @@ void load_from_sv6(const char* path)
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
     }
-    catch (const IOException&)
+    catch (const IOException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s", loadError.what());
     }
     catch (const std::exception&)
     {
@@ -1443,15 +1502,17 @@ void load_from_sc6(const char* path)
         sprite_position_tween_reset();
         return;
     }
-    catch (const ObjectLoadException&)
+    catch (const ObjectLoadException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s", loadError.what());
     }
-    catch (const IOException&)
+    catch (const IOException& loadError)
     {
         gErrorType = ERROR_TYPE_FILE_LOAD;
         gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s", loadError.what());
     }
     catch (const std::exception&)
     {

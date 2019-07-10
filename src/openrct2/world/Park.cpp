@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../actions/ParkSetParameterAction.hpp"
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
 #include "../interface/Colour.h"
@@ -94,7 +95,7 @@ void reset_park_entry()
  */
 static PeepSpawn* get_random_peep_spawn()
 {
-    if (gPeepSpawns.size() > 0)
+    if (!gPeepSpawns.empty())
     {
         return &gPeepSpawns[scenario_rand() % gPeepSpawns.size()];
     }
@@ -104,55 +105,10 @@ static PeepSpawn* get_random_peep_spawn()
     }
 }
 
-void park_set_open(int32_t open)
+void park_set_open(bool open)
 {
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, open << 8, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
-}
-
-/**
- *
- *  rct2: 0x00669D4A
- */
-void game_command_set_park_open(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
-    int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
-    {
-        *ebx = 0;
-        return;
-    }
-
-    int32_t dh = (*edx >> 8) & 0xFF;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
-    switch (dh)
-    {
-        case 0:
-            if (gParkFlags & PARK_FLAGS_PARK_OPEN)
-            {
-                gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
-                window_invalidate_by_class(WC_PARK_INFORMATION);
-            }
-            break;
-        case 1:
-            if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
-            {
-                gParkFlags |= PARK_FLAGS_PARK_OPEN;
-                window_invalidate_by_class(WC_PARK_INFORMATION);
-            }
-            break;
-        case 2:
-            gSamePriceThroughoutParkA = *edi;
-            window_invalidate_by_class(WC_RIDE);
-            break;
-        case 3:
-            gSamePriceThroughoutParkB = *edi;
-            window_invalidate_by_class(WC_RIDE);
-            break;
-    }
-
-    *ebx = 0;
+    auto parkSetParameter = ParkSetParameterAction(open ? ParkParameter::Open : ParkParameter::Close);
+    GameActions::Execute(&parkSetParameter);
 }
 
 /**
@@ -244,213 +200,6 @@ void park_set_name(const char* name)
     {
         user_string_free(gParkName);
         gParkName = nameId;
-    }
-}
-
-static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t setting, int32_t flags)
-{
-    SurfaceElement* surfaceElement = map_get_surface_element_at({ x, y })->AsSurface();
-    if (surfaceElement == nullptr)
-        return MONEY32_UNDEFINED;
-
-    switch (setting)
-    {
-        case BUY_LAND_RIGHTS_FLAG_BUY_LAND: // 0
-            if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) != 0)
-            { // If the land is already owned
-                return 0;
-            }
-
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
-                || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
-            {
-                gGameCommandErrorText = STR_LAND_NOT_FOR_SALE;
-                return MONEY32_UNDEFINED;
-            }
-            if (flags & GAME_COMMAND_FLAG_APPLY)
-            {
-                surfaceElement->SetOwnership(OWNERSHIP_OWNED);
-                update_park_fences_around_tile({ x, y });
-            }
-            return gLandPrice;
-        case BUY_LAND_RIGHTS_FLAG_UNOWN_TILE: // 1
-            if (flags & GAME_COMMAND_FLAG_APPLY)
-            {
-                surfaceElement->SetOwnership(
-                    surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
-                update_park_fences_around_tile({ x, y });
-            }
-            return 0;
-        case BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS: // 2
-            if ((surfaceElement->GetOwnership() & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0)
-            { // If the land or construction rights are already owned
-                return 0;
-            }
-
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
-                || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
-            {
-                gGameCommandErrorText = STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE;
-                return MONEY32_UNDEFINED;
-            }
-
-            if (flags & GAME_COMMAND_FLAG_APPLY)
-            {
-                surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                uint16_t baseHeight = surfaceElement->base_height * 8;
-                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-            }
-            return gConstructionRightsPrice;
-        case BUY_LAND_RIGHTS_FLAG_UNOWN_CONSTRUCTION_RIGHTS: // 3
-            if (flags & GAME_COMMAND_FLAG_APPLY)
-            {
-                surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                uint16_t baseHeight = surfaceElement->base_height * 8;
-                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-            }
-            return 0;
-        case BUY_LAND_RIGHTS_FLAG_SET_FOR_SALE: // 4
-            if (flags & GAME_COMMAND_FLAG_APPLY)
-            {
-                surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
-                uint16_t baseHeight = surfaceElement->base_height * 8;
-                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-            }
-            return 0;
-        case BUY_LAND_RIGHTS_FLAG_SET_CONSTRUCTION_RIGHTS_FOR_SALE: // 5
-            if (flags & GAME_COMMAND_FLAG_APPLY)
-            {
-                surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
-                uint16_t baseHeight = surfaceElement->base_height * 8;
-                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-            }
-            return 0;
-        case BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS:
-        {
-            if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
-            {
-                return MONEY32_UNDEFINED;
-            }
-
-            if (x <= 0 || y <= 0)
-            {
-                gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
-                return MONEY32_UNDEFINED;
-            }
-
-            if (x >= gMapSizeUnits || y >= gMapSizeUnits)
-            {
-                gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
-                return MONEY32_UNDEFINED;
-            }
-
-            uint8_t newOwnership = (flags & 0xFF00) >> 4;
-            if (newOwnership == surfaceElement->GetOwnership())
-            {
-                return 0;
-            }
-
-            TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
-            do
-            {
-                if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE
-                    && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
-                {
-                    // Do not allow ownership of park entrance.
-                    if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
-                        return 0;
-                    // Allow construction rights available / for sale on park entrances on surface.
-                    // There is no need to check the height if newOwnership is 0 (unowned and no rights available).
-                    if ((newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED
-                         || newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
-                        && (tileElement->base_height - 3 > surfaceElement->base_height
-                            || tileElement->base_height < surfaceElement->base_height))
-                        return 0;
-                }
-            } while (!(tileElement++)->IsLastForTile());
-
-            if (!(flags & GAME_COMMAND_FLAG_APPLY))
-            {
-                return gLandPrice;
-            }
-
-            if ((newOwnership & 0xF0) != 0)
-            {
-                gPeepSpawns.erase(
-                    std::remove_if(
-                        gPeepSpawns.begin(), gPeepSpawns.end(),
-                        [x, y](const auto& spawn) { return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y; }),
-                    gPeepSpawns.end());
-            }
-            surfaceElement->SetOwnership(newOwnership);
-            update_park_fences_around_tile({ x, y });
-            gMapLandRightsUpdateSuccess = true;
-            return 0;
-        }
-        default:
-            log_warning("Tried calling map_buy_land_rights_for_tile() with an incorrect setting!");
-            assert(false);
-            return MONEY32_UNDEFINED;
-    }
-}
-
-int32_t map_buy_land_rights(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t setting, int32_t flags)
-{
-    int32_t x, y, z;
-    money32 totalCost, cost;
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-
-    if (x1 == 0 && y1 == 0)
-    {
-        x1 = x0;
-        y1 = y0;
-    }
-
-    x = (x0 + x1) / 2 + 16;
-    y = (y0 + y1) / 2 + 16;
-    z = tile_element_height(x, y);
-    gCommandPosition.x = x;
-    gCommandPosition.y = y;
-    gCommandPosition.z = z;
-
-    // Game command modified to accept selection size
-    totalCost = 0;
-    gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || game_is_not_paused() || gCheatsBuildInPauseMode)
-    {
-        for (y = y0; y <= y1; y += 32)
-        {
-            for (x = x0; x <= x1; x += 32)
-            {
-                cost = map_buy_land_rights_for_tile(x, y, setting, flags);
-                if (cost != MONEY32_UNDEFINED)
-                {
-                    totalCost += cost;
-                }
-            }
-        }
-    }
-
-    return totalCost;
-}
-
-/**
- *
- *  rct2: 0x006649BD
- */
-void game_command_buy_land_rights(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
-{
-    int32_t flags = *ebx & 0xFFFF;
-
-    *ebx = map_buy_land_rights((*eax & 0xFFFF), (*ecx & 0xFFFF), (*edi & 0xFFFF), (*ebp & 0xFFFF), (*edx & 0x00FF), flags);
-
-    // Too expensive to always call in map_buy_land_rights.
-    // It's already counted when the park is loaded, after
-    // that it should only be called for user actions.
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        map_count_remaining_land_rights();
     }
 }
 
@@ -993,7 +742,7 @@ Peep* Park::GenerateGuest()
     if (spawn != nullptr)
     {
         auto direction = direction_reverse(spawn->direction);
-        peep = peep_generate(spawn->x, spawn->y, spawn->z);
+        peep = Peep::Generate({ spawn->x, spawn->y, spawn->z });
         if (peep != nullptr)
         {
             peep->sprite_direction = direction << 3;

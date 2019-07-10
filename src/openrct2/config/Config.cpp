@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -170,11 +170,6 @@ namespace Config
             model->use_vsync = reader->GetBoolean("use_vsync", true);
             model->virtual_floor_style = reader->GetEnum<int32_t>(
                 "virtual_floor_style", VIRTUAL_FLOOR_STYLE_GLASSY, Enum_VirtualFloorStyle);
-
-            // Default config setting is false until ghost trains are implemented #4540
-            model->test_unfinished_tracks = reader->GetBoolean("test_unfinished_tracks", false);
-
-            model->no_test_crashes = reader->GetBoolean("no_test_crashes", false);
             model->date_format = reader->GetEnum<int32_t>("date_format", platform_get_locale_date_format(), Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
@@ -195,6 +190,7 @@ namespace Config
             model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
             model->scale_quality = reader->GetEnum<int32_t>("scale_quality", SCALE_QUALITY_SMOOTH_NN, Enum_ScaleQuality);
             model->show_fps = reader->GetBoolean("show_fps", false);
+            model->multithreading = reader->GetBoolean("multi_threading", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);
             model->auto_open_shops = reader->GetBoolean("auto_open_shops", false);
             model->scenario_select_mode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
@@ -212,6 +208,7 @@ namespace Config
             model->show_guest_purchases = reader->GetBoolean("show_guest_purchases", false);
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
+            model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", true);
         }
     }
 
@@ -249,8 +246,6 @@ namespace Config
         writer->WriteEnum<int32_t>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
         writer->WriteBoolean("uncap_fps", model->uncap_fps);
         writer->WriteBoolean("use_vsync", model->use_vsync);
-        writer->WriteBoolean("test_unfinished_tracks", model->test_unfinished_tracks);
-        writer->WriteBoolean("no_test_crashes", model->no_test_crashes);
         writer->WriteEnum<int32_t>("date_format", model->date_format, Enum_DateFormat);
         writer->WriteBoolean("auto_staff", model->auto_staff_placement);
         writer->WriteBoolean("handymen_mow_default", model->handymen_mow_default);
@@ -268,6 +263,7 @@ namespace Config
         writer->WriteFloat("window_scale", model->window_scale);
         writer->WriteEnum<int32_t>("scale_quality", model->scale_quality, Enum_ScaleQuality);
         writer->WriteBoolean("show_fps", model->show_fps);
+        writer->WriteBoolean("multi_threading", model->multithreading);
         writer->WriteBoolean("trap_cursor", model->trap_cursor);
         writer->WriteBoolean("auto_open_shops", model->auto_open_shops);
         writer->WriteInt32("scenario_select_mode", model->scenario_select_mode);
@@ -286,6 +282,7 @@ namespace Config
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
         writer->WriteEnum<int32_t>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
+        writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
     }
 
     static void ReadInterface(IIniReader* reader)
@@ -393,6 +390,7 @@ namespace Config
             model->log_chat = reader->GetBoolean("log_chat", false);
             model->log_server_actions = reader->GetBoolean("log_server_actions", false);
             model->pause_server_if_no_clients = reader->GetBoolean("pause_server_if_no_clients", false);
+            model->desync_debugging = reader->GetBoolean("desync_debugging", false);
         }
     }
 
@@ -418,6 +416,7 @@ namespace Config
         writer->WriteBoolean("log_chat", model->log_chat);
         writer->WriteBoolean("log_server_actions", model->log_server_actions);
         writer->WriteBoolean("pause_server_if_no_clients", model->pause_server_if_no_clients);
+        writer->WriteBoolean("desync_debugging", model->desync_debugging);
     }
 
     static void ReadNotifications(IIniReader* reader)

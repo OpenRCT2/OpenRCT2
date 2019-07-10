@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -435,7 +435,7 @@ void peep_update_all()
     uint16_t spriteIndex;
     Peep* peep;
 
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
     spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP];
@@ -846,104 +846,9 @@ bool Peep::Place(TileCoordsXYZ location, bool apply)
             happiness_target = std::max(happiness_target - 10, 0);
             UpdateCurrentActionSpriteType();
         }
-
-        network_set_pickup_peep(game_command_playerid, nullptr);
     }
 
     return true;
-}
-
-bool peep_pickup_command(uint32_t peepnum, int32_t x, int32_t y, int32_t z, int32_t action, bool apply)
-{
-    if (peepnum >= MAX_SPRITES)
-    {
-        log_error("Failed to pick up peep for sprite %d", peepnum);
-        return false;
-    }
-
-    Peep* const peep = GET_PEEP(peepnum);
-    if (!peep || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP)
-    {
-        return false;
-    }
-
-    switch (action)
-    {
-        case 0: // pickup
-        {
-            if (!peep_can_be_picked_up(peep))
-            {
-                return false;
-            }
-            Peep* existing = network_get_pickup_peep(game_command_playerid);
-            if (existing)
-            {
-                // already picking up a peep
-                bool result = peep_pickup_command(
-                    existing->sprite_index, network_get_pickup_peep_old_x(game_command_playerid), 0, 0, 1, apply);
-                if (existing == peep)
-                {
-                    return result;
-                }
-                if (game_command_playerid == network_get_current_player_id())
-                {
-                    // prevent tool_cancel()
-                    input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
-                }
-            }
-
-            if (apply)
-            {
-                network_set_pickup_peep(game_command_playerid, peep);
-                network_set_pickup_peep_old_x(game_command_playerid, peep->x);
-                peep->Pickup();
-            }
-        }
-        break;
-        case 1: // cancel
-            if (apply)
-            {
-                // TODO: Verify if this is really needed or that we can use `peep` instead
-                Peep* const pickedUpPeep = network_get_pickup_peep(game_command_playerid);
-                if (pickedUpPeep)
-                {
-                    pickedUpPeep->PickupAbort(x);
-                }
-
-                network_set_pickup_peep(game_command_playerid, nullptr);
-            }
-            break;
-        case 2: // place
-            if (network_get_pickup_peep(game_command_playerid) != peep)
-            {
-                return false;
-            }
-
-            if (!peep->Place({ x / 32, y / 32, z }, apply))
-            {
-                return false;
-            }
-            break;
-    }
-    return true;
-}
-
-void game_command_pickup_guest(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
-{
-    int32_t peepnum = *eax;
-    int32_t x = *edi;
-    int32_t y = *ebp;
-    int32_t z = *edx;
-    int32_t action = *ecx;
-    if (peep_pickup_command(peepnum, x, y, z, action, *ebx & GAME_COMMAND_FLAG_APPLY))
-    {
-        *ebx = 0;
-    }
-    else
-    {
-        *ebx = MONEY32_UNDEFINED;
-    }
 }
 
 /**
@@ -1074,7 +979,7 @@ void Peep::UpdateFalling()
                             peep_release_balloon(guest, height);
                         }
 
-                        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
+                        InsertNewThought(PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
 
                         action = PEEP_ACTION_DROWNING;
                         action_frame = 0;
@@ -1086,7 +991,7 @@ void Peep::UpdateFalling()
                         return;
                     }
                 }
-                int32_t map_height = tile_element_height(0xFFFF & x, 0xFFFF & y) & 0xFFFF;
+                int32_t map_height = tile_element_height(0xFFFF & x, 0xFFFF & y);
                 if (map_height < z || map_height - 4 > z)
                     continue;
                 saved_height = map_height;
@@ -1173,7 +1078,7 @@ void Peep::UpdatePicked()
     sub_state++;
     if (sub_state == 13)
     {
-        peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_HELP, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PEEP_THOUGHT_TYPE_HELP, PEEP_THOUGHT_ITEM_NONE);
     }
 }
 
@@ -1706,16 +1611,65 @@ static constexpr const uint8_t tshirt_colours[] = {
 
 /**
  *
+ *  rct2: 0x699F5A
+ * al:thoughtType
+ * ah:thoughtArguments
+ * esi: peep
+ */
+void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
+{
+    PeepActionType newAction = PeepThoughtToActionMap[thoughtType].action;
+    if (newAction != PEEP_ACTION_NONE_2 && this->action >= PEEP_ACTION_NONE_1)
+    {
+        action = newAction;
+        action_frame = 0;
+        action_sprite_image_offset = 0;
+        UpdateCurrentActionSpriteType();
+        Invalidate();
+    }
+
+    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
+    {
+        rct_peep_thought* thought = &thoughts[i];
+        // Remove the oldest thought by setting it to NONE.
+        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
+            break;
+
+        if (thought->type == thoughtType && thought->item == thoughtArguments)
+        {
+            // If the thought type has not changed then we need to move
+            // it to the top of the thought list. This is done by first removing the
+            // existing thought and placing it at the top.
+            if (i < PEEP_MAX_THOUGHTS - 2)
+            {
+                memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
+            }
+            break;
+        }
+    }
+
+    memmove(&thoughts[1], &thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
+
+    thoughts[0].type = thoughtType;
+    thoughts[0].item = thoughtArguments;
+    thoughts[0].freshness = 0;
+    thoughts[0].fresh_timeout = 0;
+
+    window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+}
+
+/**
+ *
  *  rct2: 0x0069A05D
  */
-Peep* peep_generate(int32_t x, int32_t y, int32_t z)
+Peep* Peep::Generate(const CoordsXYZ coords)
 {
-    if (gSpriteListCount[SPRITE_LIST_NULL] < 400)
+    if (gSpriteListCount[SPRITE_LIST_FREE] < 400)
         return nullptr;
 
     Peep* peep = (Peep*)create_sprite(1);
 
-    move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
+    move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP);
 
     peep->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
     peep->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
@@ -1737,14 +1691,14 @@ Peep* peep_generate(int32_t x, int32_t y, int32_t z)
 
     peep->sprite_direction = 0;
 
-    sprite_move(x, y, z, (rct_sprite*)peep);
+    sprite_move(coords.x, coords.y, coords.z, (rct_sprite*)peep);
     peep->Invalidate();
 
     peep->mass = (scenario_rand() & 0x1F) + 45;
     peep->path_check_optimisation = 0;
-    peep->interaction_ride_index = 0xFF;
+    peep->interaction_ride_index = RIDE_ID_NULL;
     peep->type = PEEP_TYPE_GUEST;
-    peep->previous_ride = 0xFF;
+    peep->previous_ride = RIDE_ID_NULL;
     peep->thoughts->type = PEEP_THOUGHT_TYPE_NONE;
     peep->window_invalidate_flags = 0;
 
@@ -1777,13 +1731,13 @@ Peep* peep_generate(int32_t x, int32_t y, int32_t z)
 
     peep->intensity = (intensityHighest << 4) | intensityLowest;
 
-    uint8_t nausea_tolerance = scenario_rand() & 0x7;
+    uint8_t nauseaTolerance = scenario_rand() & 0x7;
     if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
     {
-        nausea_tolerance += 4;
+        nauseaTolerance += 4;
     }
 
-    peep->nausea_tolerance = nausea_tolerance_distribution[nausea_tolerance];
+    peep->nausea_tolerance = nausea_tolerance_distribution[nauseaTolerance];
 
     /* Scenario editor limits initial guest happiness to between 37..253.
      * To be on the safe side, assume the value could have been hacked
@@ -1794,9 +1748,9 @@ Peep* peep_generate(int32_t x, int32_t y, int32_t z)
     if (gGuestInitialHappiness == 0)
         peep->happiness = 128;
     /* Initial value will vary by -15..16 */
-    int8_t happiness_delta = (scenario_rand() & 0x1F) - 15;
+    int8_t happinessDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->happiness = std::clamp(peep->happiness + happiness_delta, 0, PEEP_MAX_HAPPINESS);
+    peep->happiness = std::clamp(peep->happiness + happinessDelta, 0, PEEP_MAX_HAPPINESS);
     peep->happiness_target = peep->happiness;
     peep->nausea = 0;
     peep->nausea_target = 0;
@@ -1806,18 +1760,18 @@ Peep* peep_generate(int32_t x, int32_t y, int32_t z)
      * to any value 0..255. */
     peep->hunger = gGuestInitialHunger;
     /* Initial value will vary by -15..16 */
-    int8_t hunger_delta = (scenario_rand() & 0x1F) - 15;
+    int8_t hungerDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->hunger = std::clamp(peep->hunger + hunger_delta, 0, 255);
+    peep->hunger = std::clamp(peep->hunger + hungerDelta, 0, PEEP_MAX_HUNGER);
 
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
     peep->thirst = gGuestInitialThirst;
     /* Initial value will vary by -15..16 */
-    int8_t thirst_delta = (scenario_rand() & 0x1F) - 15;
+    int8_t thirstDelta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->thirst = std::clamp(peep->thirst + thirst_delta, 0, 0xFF);
+    peep->thirst = std::clamp(peep->thirst + thirstDelta, 0, PEEP_MAX_THIRST);
 
     peep->toilet = 0;
     peep->time_to_consume = 0;
@@ -1842,7 +1796,7 @@ Peep* peep_generate(int32_t x, int32_t y, int32_t z)
         cash = 0;
     }
 
-    if (gGuestInitialCash == (money16)(uint16_t)0xFFFF)
+    if (gGuestInitialCash == MONEY16_UNDEFINED)
     {
         cash = 0;
     }
@@ -1856,7 +1810,7 @@ Peep* peep_generate(int32_t x, int32_t y, int32_t z)
     peep->pathfind_goal.direction = 0xFF;
     peep->item_standard_flags = 0;
     peep->item_extra_flags = 0;
-    peep->guest_heading_to_ride_id = 0xFF;
+    peep->guest_heading_to_ride_id = RIDE_ID_NULL;
     peep->litter_count = 0;
     peep->disgusting_count = 0;
     peep->vandalism_seen = 0;
@@ -1872,11 +1826,11 @@ Peep* peep_generate(int32_t x, int32_t y, int32_t z)
     peep->angriness = 0;
     peep->time_lost = 0;
 
-    uint8_t tshirt_colour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
-    peep->tshirt_colour = tshirt_colours[tshirt_colour];
+    uint8_t tshirtColour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
+    peep->tshirt_colour = tshirt_colours[tshirtColour];
 
-    uint8_t trousers_colour = static_cast<uint8_t>(scenario_rand() % std::size(trouser_colours));
-    peep->trousers_colour = trouser_colours[trousers_colour];
+    uint8_t trousersColour = static_cast<uint8_t>(scenario_rand() % std::size(trouser_colours));
+    peep->trousers_colour = trouser_colours[trousersColour];
 
     /* Minimum energy is capped at 32 and maximum at 128, so this initialises
      * a peep with approx 34%-100% energy. (65 - 32) / (128 - 32) ≈ 34% */
@@ -2054,11 +2008,11 @@ void peep_thought_set_format_args(rct_peep_thought* thought)
     }
     else if (flags & 2)
     {
-        set_format_arg(2, rct_string_id, ShopItemStringIds[thought->item].singular);
+        set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Singular);
     }
     else if (flags & 4)
     {
-        set_format_arg(2, rct_string_id, ShopItemStringIds[thought->item].indefinite);
+        set_format_arg(2, rct_string_id, ShopItems[thought->item].Naming.Indefinite);
     }
 }
 
@@ -2227,55 +2181,6 @@ int32_t peep_get_easteregg_name_id(Peep* peep)
             return static_cast<int32_t>(i);
 
     return -1;
-}
-
-/**
- *
- *  rct2: 0x699F5A
- * al:thought_type
- * ah:thought_arguments
- * esi: peep
- */
-void peep_insert_new_thought(Peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments)
-{
-    PeepActionType action = PeepThoughtToActionMap[thought_type].action;
-    if (action != PEEP_ACTION_NONE_2 && peep->action >= PEEP_ACTION_NONE_1)
-    {
-        peep->action = action;
-        peep->action_frame = 0;
-        peep->action_sprite_image_offset = 0;
-        peep->UpdateCurrentActionSpriteType();
-        peep->Invalidate();
-    }
-
-    for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; ++i)
-    {
-        rct_peep_thought* thought = &peep->thoughts[i];
-        // Remove the oldest thought by setting it to NONE.
-        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
-            break;
-
-        if (thought->type == thought_type && thought->item == thought_arguments)
-        {
-            // If the thought type has not changed then we need to move
-            // it to the top of the thought list. This is done by first removing the
-            // existing thought and placing it at the top.
-            if (i < PEEP_MAX_THOUGHTS - 2)
-            {
-                memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
-            }
-            break;
-        }
-    }
-
-    memmove(&peep->thoughts[1], &peep->thoughts[0], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - 1));
-
-    peep->thoughts[0].type = thought_type;
-    peep->thoughts[0].item = thought_arguments;
-    peep->thoughts[0].freshness = 0;
-    peep->thoughts[0].fresh_timeout = 0;
-
-    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 }
 
 void peep_set_map_tooltip(Peep* peep)
@@ -2736,7 +2641,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     // Advance the vandalised tiles by 1
     uint8_t vandalisedTiles = (peep->vandalism_seen * 2) & 0x3F;
 
-    if (vandalism == true)
+    if (vandalism)
     {
         // Add one more to the vandalised tiles
         vandalisedTiles |= 1;
@@ -2745,7 +2650,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         {
             if ((scenario_rand() & 0xFFFF) <= 10922)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
+                peep->InsertNewThought(PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
                 peep->happiness_target = std::max(0, peep->happiness_target - 17);
             }
             vandalThoughtTimeout = 3;
@@ -2793,7 +2698,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
 
     if (crowded >= 10 && peep->state == PEEP_STATE_WALKING && (scenario_rand() & 0xFFFF) <= 21845)
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
+        peep->InsertNewThought(PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
         peep->happiness_target = std::max(0, peep->happiness_target - 14);
     }
 
@@ -2819,7 +2724,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
 
         if (total_sick >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
+            peep->InsertNewThought(PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = std::max(0, peep->happiness_target - 17);
             // Reset disgusting time
             peep->disgusting_count |= 0xC0;
@@ -2845,7 +2750,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
 
         if (total_litter >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
+            peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = std::max(0, peep->happiness_target - 17);
             // Reset litter time
             peep->litter_count |= 0xC0;
@@ -3444,7 +3349,7 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 
     if (GetNextIsSurface())
     {
-        return tile_element_height(tile_x, tile_y) & 0xFFFF;
+        return tile_element_height(tile_x, tile_y);
     }
 
     int32_t height = next_z * 8;

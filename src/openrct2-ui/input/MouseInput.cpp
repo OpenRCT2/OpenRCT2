@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -105,12 +105,7 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, int
  */
 void game_handle_input()
 {
-    // NOTE: g_window_list may change during the event callbacks.
-    for (size_t i = g_window_list.size(); i > 0; i--)
-    {
-        auto& w = g_window_list[i - 1];
-        window_event_periodic_update_call(w.get());
-    }
+    window_visit_each([](rct_window* w) { window_event_periodic_update_call(w); });
 
     invalidate_all_windows_after_input();
 
@@ -136,12 +131,7 @@ void game_handle_input()
         process_mouse_tool(x, y);
     }
 
-    // NOTE: g_window_list may change during the event callbacks.
-    for (size_t i = g_window_list.size(); i > 0; i--)
-    {
-        auto& w = g_window_list[i - 1];
-        window_event_unknown_08_call(w.get());
-    }
+    window_visit_each([](rct_window* w) { window_event_unknown_08_call(w); });
 }
 
 /**

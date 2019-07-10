@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -187,7 +187,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
-    paint_util_set_general_support_height(session, height, 0x20);
+    paint_util_set_general_support_height(session, 8 * tile_element->clearance_height, 0x20);
 
     uint32_t dword_141F710 = 0;
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))

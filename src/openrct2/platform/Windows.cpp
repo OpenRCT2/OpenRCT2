@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,14 +22,17 @@
 #    include "../OpenRCT2.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
+#    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
 #    include "../rct2/RCT2.h"
 #    include "../util/Util.h"
 #    include "platform.h"
 
+#    include <algorithm>
 #    include <iterator>
 #    include <lmcons.h>
+#    include <memory>
 #    include <psapi.h>
 #    include <shlobj.h>
 #    include <sys/stat.h>
@@ -167,7 +170,7 @@ bool platform_lock_single_instance()
         // Create new mutex
         status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (status == nullptr)
-            log_error("unable to create mutex\n");
+            log_error("unable to create mutex");
 
         return true;
     }
@@ -251,6 +254,20 @@ std::string platform_get_rct1_steam_dir()
 std::string platform_get_rct2_steam_dir()
 {
     return "Rollercoaster Tycoon 2";
+}
+
+std::string platform_sanitise_filename(const std::string& path)
+{
+    static const std::array<std::string::value_type, 9> prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
+    auto sanitised = path;
+    std::replace_if(
+        sanitised.begin(), sanitised.end(),
+        [](const std::string::value_type& ch) -> bool {
+            return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
+        },
+        '_');
+    sanitised = String::Trim(sanitised);
+    return sanitised;
 }
 
 uint16_t platform_get_locale_language()
@@ -396,7 +413,7 @@ uint8_t platform_get_locale_date_format()
 {
     // Retrieve short date format, eg "MM/dd/yyyy"
     wchar_t dateFormat[20];
-    if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, sizeof(dateFormat)) == 0)
+    if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, (int)std::size(dateFormat)) == 0)
     {
         return DATE_FORMAT_DAY_MONTH_YEAR;
     }
@@ -567,8 +584,8 @@ static bool windows_setup_file_association(
 
     [[maybe_unused]] int32_t printResult;
 
-    GetModuleFileNameW(nullptr, exePathW, sizeof(exePathW));
-    GetModuleFileNameW(plaform_get_dll_module(), dllPathW, sizeof(dllPathW));
+    GetModuleFileNameW(nullptr, exePathW, (DWORD)std::size(exePathW));
+    GetModuleFileNameW(plaform_get_dll_module(), dllPathW, (DWORD)std::size(dllPathW));
 
     wchar_t* extensionW = utf8_to_widechar(extension);
     wchar_t* fileTypeTextW = utf8_to_widechar(fileTypeText);
@@ -720,7 +737,7 @@ bool platform_setup_uri_protocol()
                     GetModuleFileNameW(nullptr, exePath, MAX_PATH);
 
                     wchar_t buffer[512];
-                    swprintf_s(buffer, sizeof(buffer), L"\"%s\" handle-uri \"%%1\"", exePath);
+                    swprintf_s(buffer, std::size(buffer), L"\"%s\" handle-uri \"%%1\"", exePath);
                     if (RegSetValueW(hClassKey, L"shell\\open\\command", REG_SZ, buffer, 0) == ERROR_SUCCESS)
                     {
                         // Not compulsory, but gives the application a nicer name
@@ -728,11 +745,11 @@ bool platform_setup_uri_protocol()
                         HKEY hMuiCacheKey;
                         if (RegCreateKeyW(hRootKey, MUI_CACHE, &hMuiCacheKey) == ERROR_SUCCESS)
                         {
-                            swprintf_s(buffer, sizeof(buffer), L"%s.FriendlyAppName", exePath);
+                            swprintf_s(buffer, std::size(buffer), L"%s.FriendlyAppName", exePath);
                             // mingw-w64 used to define RegSetKeyValueW's signature incorrectly
                             // You need at least mingw-w64 5.0 including this commit:
                             //   https://sourceforge.net/p/mingw-w64/mingw-w64/ci/da9341980a4b70be3563ac09b5927539e7da21f7/
-                            RegSetKeyValueW(hMuiCacheKey, nullptr, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2") + 1);
+                            RegSetKeyValueW(hMuiCacheKey, nullptr, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2"));
                         }
 
                         log_verbose("URI protocol setup successful");

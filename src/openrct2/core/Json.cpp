@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,11 +53,11 @@ namespace Json
         fs.Write(jsonOutput, jsonOutputSize);
     }
 
-    json_t* FromString(const std::string& raw)
+    json_t* FromString(std::string_view raw)
     {
         json_t* root;
         json_error_t error;
-        root = json_loads(raw.c_str(), 0, &error);
+        root = json_loadb(raw.data(), raw.size(), 0, &error);
         if (root == nullptr)
         {
             throw JsonException(&error);

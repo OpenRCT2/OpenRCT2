@@ -79,7 +79,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
         }
 
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
         {
             return MakeResult(GA_ERROR::NOT_CLOSED, errorTitle, STR_MUST_BE_CLOSED_FIRST);
         }
@@ -88,9 +88,6 @@ public:
         {
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }
-
-        ride_clear_for_construction(ride);
-        ride_remove_peeps(ride);
 
         const auto location = _isExit ? ride_get_exit_location(ride, _stationNum)
                                       : ride_get_entrance_location(ride, _stationNum);
@@ -156,8 +153,11 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
         }
 
-        ride_clear_for_construction(ride);
-        ride_remove_peeps(ride);
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            ride_clear_for_construction(ride);
+            ride_remove_peeps(ride);
+        }
 
         const auto location = _isExit ? ride_get_exit_location(ride, _stationNum)
                                       : ride_get_entrance_location(ride, _stationNum);
