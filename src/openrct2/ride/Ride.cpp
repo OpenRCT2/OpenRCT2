@@ -7132,15 +7132,16 @@ void sub_6CB945(Ride* ride)
         }
     }
 
-    for (auto locationList = locations.cbegin(); locationList != locations.cend(); locationList++)
+    auto locationListIter = locations.cbegin();
+    for (const TileCoordsXYZD& locationCoords : locations)
     {
-        auto locationList2 = locationList;
-        locationList2++;
+        auto locationList = ++locationListIter;
 
         bool duplicateLocation = false;
-        for (; locationList2 != locations.cend(); locationList2++)
+        while (locationList != locations.cend())
         {
-            if ((*locationList).x == (*locationList2).x && (*locationList).y == (*locationList2).y)
+            const TileCoordsXYZD& locationCoords2 = *locationList++;
+            if (locationCoords.x == locationCoords2.x && locationCoords.y == locationCoords2.y)
             {
                 duplicateLocation = true;
                 break;
@@ -7152,7 +7153,7 @@ void sub_6CB945(Ride* ride)
             continue;
         }
 
-        CoordsXY location = { (*locationList).x * 32, (*locationList).y * 32 };
+        CoordsXY location = { locationCoords.x * 32, locationCoords.y * 32 };
 
         TileElement* tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
         do
