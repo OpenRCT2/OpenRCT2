@@ -208,7 +208,7 @@ void font_sprite_initialise_characters()
 {
     // Compute min and max that helps avoiding lookups for no reason.
     _smallestCodepointValue = std::numeric_limits<char32_t>::max();
-    for (const auto entry : codepointOffsetMap)
+    for (const auto& entry : codepointOffsetMap)
     {
         _smallestCodepointValue = std::min(_smallestCodepointValue, entry.first);
         _biggestCodepointValue = std::max(_biggestCodepointValue, entry.first);
