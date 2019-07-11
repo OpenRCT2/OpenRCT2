@@ -87,7 +87,7 @@ struct GameStateSnapshot_t
                             ds << reinterpret_cast<uint8_t(&)[sizeof(rct_duck)]>(sprite.duck);
                             break;
                         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(rct_jumping_fountain)]>(sprite.jumping_fountain);
+                            ds << reinterpret_cast<uint8_t(&)[sizeof(JumpingFountain)]>(sprite.jumping_fountain);
                             break;
                         case SPRITE_MISC_STEAM_PARTICLE:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(rct_steam_particle)]>(sprite.steam_particle);

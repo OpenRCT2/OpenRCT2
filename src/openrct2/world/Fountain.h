@@ -11,15 +11,34 @@
 
 #include "../common.h"
 #include "Map.h"
-#include "Sprite.h"
+#include "SpriteBase.h"
+
+struct JumpingFountain : rct_sprite_generic
+{
+    uint8_t NumTicksAlive;
+    uint8_t FountainFlags;
+    int16_t TargetX;
+    int16_t TargetY;
+    uint16_t Iteration;
+
+    void Update();
+    static void StartAnimation(int32_t newType, int32_t newX, int32_t newY, const TileElement* tileElement);
+
+private:
+    int32_t GetType() const;
+    void AdvanceAnimation();
+    void GoToEdge(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
+    void Bounce(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections);
+    void Split(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
+    void Random(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
+    void CreateNext(int32_t newX, int32_t newY, int32_t newZ, int32_t direction) const;
+    static void Create(
+        int32_t newType, int32_t newX, int32_t newY, int32_t newZ, int32_t direction, int32_t newFlags, int32_t iteration);
+    static bool IsJumpingFountain(int32_t newType, int32_t newX, int32_t newY, int32_t newZ);
+};
 
 enum
 {
     JUMPING_FOUNTAIN_TYPE_WATER,
     JUMPING_FOUNTAIN_TYPE_SNOW
 };
-
-void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElement* tileElement);
-void jumping_fountain_create(
-    int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration);
-void jumping_fountain_update(rct_jumping_fountain* jumpingFountain);

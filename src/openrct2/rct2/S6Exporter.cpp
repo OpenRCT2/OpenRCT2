@@ -1114,14 +1114,15 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
         case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
         {
-            auto src = (const rct_jumping_fountain*)csrc;
-            auto dst = (RCT12SpriteJumpingFountain*)cdst;
-            dst->num_ticks_alive = src->num_ticks_alive;
+            auto* src = (const JumpingFountain*)csrc;
+            auto* dst = (RCT12SpriteJumpingFountain*)cdst;
+            dst->num_ticks_alive = src->NumTicksAlive;
             dst->frame = src->frame;
-            dst->fountain_flags = src->fountain_flags;
-            dst->target_x = src->target_x;
-            dst->target_y = src->target_y;
-            dst->iteration = src->iteration;
+            dst->fountain_flags = src->FountainFlags;
+            dst->target_x = src->TargetX;
+            dst->target_y = src->TargetY;
+            dst->target_y = src->TargetY;
+            dst->iteration = src->Iteration;
             break;
         }
         case SPRITE_MISC_BALLOON:
