@@ -1220,6 +1220,7 @@
 		9350B52720B46E0900897BC5 /* ftbdf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftbdf.h; sourceTree = "<group>"; };
 		9350B52820B46E0900897BC5 /* ftrender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftrender.h; sourceTree = "<group>"; };
 		9350B52920B46E0900897BC5 /* ft2build.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ft2build.h; sourceTree = "<group>"; };
+		9391535A22D74359008E0780 /* OpenRCT2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenRCT2.entitlements; sourceTree = "<group>"; };
 		939A359720C12FC700630B3F /* Paint.Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Litter.cpp; sourceTree = "<group>"; };
 		939A359820C12FC700630B3F /* Paint.Misc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Misc.cpp; sourceTree = "<group>"; };
 		939A359920C12FC700630B3F /* Paint.Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.Sprite.h; sourceTree = "<group>"; };
@@ -2406,6 +2407,7 @@
 		D497D06F1C20FD52002BF46A = {
 			isa = PBXGroup;
 			children = (
+				9391535A22D74359008E0780 /* OpenRCT2.entitlements */,
 				4CF67196206B7E720034ADDD /* object */,
 				D41B72431C21015A0080A7B9 /* Sources */,
 				D497D07A1C20FD52002BF46A /* Resources */,
@@ -3582,6 +3584,11 @@
 					};
 					D497D0771C20FD52002BF46A = {
 						CreatedOnToolsVersion = 7.2;
+						SystemCapabilities = {
+							com.apple.HardenedRuntime = {
+								enabled = 1;
+							};
+						};
 					};
 					F76C80991EC4D9FA00FA49E2 = {
 						CreatedOnToolsVersion = 8.3.2;
@@ -4395,6 +4402,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CLANG_X86_VECTOR_INSTRUCTIONS = default;
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -4437,6 +4445,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = NO;
 				CLANG_X86_VECTOR_INSTRUCTIONS = default;
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
