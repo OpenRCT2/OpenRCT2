@@ -680,7 +680,7 @@ void track_design_mirror(rct_track_td6* td6)
 
 static void track_design_add_selection_tile(int16_t x, int16_t y)
 {
-    for (const auto tile : gMapSelectionTiles)
+    for (const auto& tile : gMapSelectionTiles)
     {
         if (tile.x == x && tile.y == y)
         {
