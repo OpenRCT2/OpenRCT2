@@ -26,8 +26,6 @@
 		2A1F4FE2221FF4B0003CA045 /* macos.mm in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.mm */; };
 		2A43D2BA2225B8D900E8F73B /* RideSetVehiclesAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2B72225B8D900E8F73B /* RideSetVehiclesAction.hpp */; };
 		2A43D2BB2225B8D900E8F73B /* SmallSceneryPlaceAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2B82225B8D900E8F73B /* SmallSceneryPlaceAction.hpp */; };
-		2A43D2BC2225B8D900E8F73B /* LoadOrQuitAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2B92225B8D900E8F73B /* LoadOrQuitAction.hpp */; };
-		2A43D2C02225B91A00E8F73B /* RideSetVehiclesAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2BD2225B91A00E8F73B /* RideSetVehiclesAction.hpp */; };
 		2A43D2C12225B91A00E8F73B /* RideEntranceExitRemoveAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2BE2225B91A00E8F73B /* RideEntranceExitRemoveAction.hpp */; };
 		2A43D2C22225B91A00E8F73B /* LoadOrQuitAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2A43D2BF2225B91A00E8F73B /* LoadOrQuitAction.hpp */; };
 		2A5354E922099C4F00A5440F /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5354E822099C4F00A5440F /* Network.cpp */; };
@@ -118,8 +116,8 @@
 		9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DC208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DD208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
-		937A92152242CDAA00B09278 /* LandSmoothAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 937A92142242CDAA00B09278 /* LandSmoothAction.hpp */; };
 		937A92132242CCB300B09278 /* LandBuyRightsAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 937A92122242CCB300B09278 /* LandBuyRightsAction.hpp */; };
+		937A92152242CDAA00B09278 /* LandSmoothAction.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 937A92142242CDAA00B09278 /* LandSmoothAction.hpp */; };
 		939A359A20C12FC800630B3F /* Paint.Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 939A359720C12FC700630B3F /* Paint.Litter.cpp */; };
 		939A359B20C12FC800630B3F /* Paint.Misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 939A359820C12FC700630B3F /* Paint.Misc.cpp */; };
 		939A359C20C12FC800630B3F /* Paint.Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359920C12FC700630B3F /* Paint.Sprite.h */; };
@@ -1243,8 +1241,8 @@
 		9350B52720B46E0900897BC5 /* ftbdf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftbdf.h; sourceTree = "<group>"; };
 		9350B52820B46E0900897BC5 /* ftrender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftrender.h; sourceTree = "<group>"; };
 		9350B52920B46E0900897BC5 /* ft2build.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ft2build.h; sourceTree = "<group>"; };
-		937A92142242CDAA00B09278 /* LandSmoothAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSmoothAction.hpp; sourceTree = "<group>"; };
 		937A92122242CCB300B09278 /* LandBuyRightsAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandBuyRightsAction.hpp; sourceTree = "<group>"; };
+		937A92142242CDAA00B09278 /* LandSmoothAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSmoothAction.hpp; sourceTree = "<group>"; };
 		939A359720C12FC700630B3F /* Paint.Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Litter.cpp; sourceTree = "<group>"; };
 		939A359820C12FC700630B3F /* Paint.Misc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Misc.cpp; sourceTree = "<group>"; };
 		939A359920C12FC700630B3F /* Paint.Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.Sprite.h; sourceTree = "<group>"; };
@@ -1388,13 +1386,13 @@
 		C6E96E331E0408A80076A04F /* zip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		C6E96E341E0408A80076A04F /* zipconf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zipconf.h; sourceTree = "<group>"; };
 		C6E96E351E0408B40076A04F /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzip.dylib; sourceTree = "<group>"; };
+		C9C630B42235A22C009AD16E /* GameStateSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateSnapshots.h; sourceTree = "<group>"; };
+		C9C630B52235A22C009AD16E /* GameStateSnapshots.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateSnapshots.cpp; sourceTree = "<group>"; };
 		C9C630B92235A7E7009AD16E /* LandRaiseAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandRaiseAction.hpp; sourceTree = "<group>"; };
 		C9C630BA2235A7E7009AD16E /* LandLowerAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandLowerAction.hpp; sourceTree = "<group>"; };
 		C9C630BB2235A7F9009AD16E /* WaterLowerAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterLowerAction.hpp; sourceTree = "<group>"; };
 		C9C630BC2235A7F9009AD16E /* WaterRaiseAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterRaiseAction.hpp; sourceTree = "<group>"; };
 		C9C630BD2235A9C6009AD16E /* FootpathPlaceFromTrackAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FootpathPlaceFromTrackAction.hpp; sourceTree = "<group>"; };
-		C9C630B42235A22C009AD16E /* GameStateSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStateSnapshots.h; sourceTree = "<group>"; };
-		C9C630B52235A22C009AD16E /* GameStateSnapshots.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateSnapshots.cpp; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
@@ -3535,7 +3533,6 @@
 				C6352B941F477032006CCEE3 /* PlaceParkEntranceAction.hpp in Headers */,
 				C6352B911F477032006CCEE3 /* GameAction.h in Headers */,
 				2A43D2BA2225B8D900E8F73B /* RideSetVehiclesAction.hpp in Headers */,
-				2A43D2C02225B91A00E8F73B /* RideSetVehiclesAction.hpp in Headers */,
 				2ADE2F1C2244187B002598AF /* ParkSetNameAction.hpp in Headers */,
 				2AA050322209A8E300D3A922 /* StaffSetCostumeAction.hpp in Headers */,
 				937A92132242CCB300B09278 /* LandBuyRightsAction.hpp in Headers */,
@@ -3543,7 +3540,6 @@
 				2A43D2C22225B91A00E8F73B /* LoadOrQuitAction.hpp in Headers */,
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
 				2ADE2F152244187B002598AF /* StaffSetPatrolAreaAction.hpp in Headers */,
-				2A43D2BC2225B8D900E8F73B /* LoadOrQuitAction.hpp in Headers */,
 				2ADE2F0E2244187B002598AF /* StaffHireNewAction.hpp in Headers */,
 				2ADE2F112244187B002598AF /* GuestSetFlagsAction.hpp in Headers */,
 				2ADE2F27224418B2002598AF /* Random.hpp in Headers */,
@@ -3649,7 +3645,7 @@
 		D497D0701C20FD52002BF46A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = OpenRCT2;
 				TargetAttributes = {
 					C68B2D431EC790690020651C = {
