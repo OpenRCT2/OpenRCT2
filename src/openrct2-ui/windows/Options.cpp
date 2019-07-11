@@ -960,6 +960,7 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                         {
                             SafeFree(gConfigGeneral.rct1_path);
                             gConfigGeneral.rct1_path = rct1path;
+                            gConfigInterface.scenarioselect_last_tab = 0;
                             config_save_default();
                             context_show_error(STR_RESTART_REQUIRED, STR_NONE);
                         }
@@ -1603,6 +1604,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     if (dropdownIndex != gConfigGeneral.scenario_select_mode)
                     {
                         gConfigGeneral.scenario_select_mode = dropdownIndex;
+                        gConfigInterface.scenarioselect_last_tab = 0;
                         config_save_default();
                         window_invalidate(w);
                         window_close_by_class(WC_SCENARIO_SELECT);
