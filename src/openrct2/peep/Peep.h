@@ -774,6 +774,9 @@ public:
     void CheckCantFindExit();
     bool DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price);
     void SetSpriteType(PeepSpriteType new_sprite_type);
+    void HandleEasterEggName();
+    int32_t GetEasterEggNameId() const;
+    void UpdateEasterEggInteractions();
 
 private:
     void UpdateRide();
@@ -805,7 +808,14 @@ private:
     void UpdateRideShopApproach();
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
-
+    using easter_egg_function = void (Guest::*)(Guest* otherGuest);
+    int32_t CheckEasterEggName(int32_t index) const;
+    void ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg);
+    bool GuestHasValidXY() const;
+    void GivePassingPeepsPurpleClothes(Guest* passingPeep);
+    void GivePassingPeepsPizza(Guest* passingPeep);
+    void MakePassingPeepsSick(Guest* passingPeep);
+    void GivePassingPeepsIceCream(Guest* passingPeep);
     Ride* FindBestRideToGoOn();
     std::bitset<MAX_RIDES> FindRidesToGoOn();
 };
@@ -951,8 +961,6 @@ void get_arguments_from_action(Peep* peep, uint32_t* argument_1, uint32_t* argum
 void peep_thought_set_format_args(rct_peep_thought* thought);
 int32_t get_peep_face_sprite_small(Peep* peep);
 int32_t get_peep_face_sprite_large(Peep* peep);
-int32_t peep_check_easteregg_name(int32_t index, Peep* peep);
-int32_t peep_get_easteregg_name_id(Peep* peep);
 void game_command_pickup_guest(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void peep_sprite_remove(Peep* peep);
@@ -968,7 +976,6 @@ void peep_sort();
 void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
-void peep_handle_easteregg_name(Peep* peep);
 
 int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep);
 void peep_reset_pathfind_goal(Peep* peep);

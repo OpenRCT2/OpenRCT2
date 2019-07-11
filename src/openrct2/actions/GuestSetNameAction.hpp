@@ -113,7 +113,13 @@ public:
 
         peep_update_name_sort(peep);
 
-        peep_handle_easteregg_name(peep);
+        // Easter egg functions are for guests only
+        Guest* guest = peep->AsGuest();
+
+        if (guest != nullptr)
+        {
+            guest->HandleEasterEggName();
+        }
 
         gfx_invalidate_screen();
 

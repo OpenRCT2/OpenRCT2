@@ -118,8 +118,6 @@ public:
 
         peep_update_name_sort(peep);
 
-        peep_handle_easteregg_name(peep);
-
         gfx_invalidate_screen();
 
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
