@@ -3671,7 +3671,7 @@
 			};
 			buildConfigurationList = D497D0731C20FD52002BF46A /* Build configuration list for PBXProject "OpenRCT2" */;
 			compatibilityVersion = "Xcode 10.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
