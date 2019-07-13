@@ -413,7 +413,7 @@ void ride_update_favourited_stat()
 
     FOR_ALL_PEEPS (spriteIndex, peep)
     {
-        if (peep->linked_list_type_offset != SPRITE_LIST_PEEP * 2)
+        if (peep->linked_list_index != SPRITE_LIST_PEEP)
             return;
         if (peep->favourite_ride != RIDE_ID_NULL)
         {

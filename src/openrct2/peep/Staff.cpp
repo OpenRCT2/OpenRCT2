@@ -1827,7 +1827,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
     {
         sprite = get_sprite(sprite_id);
 
-        if (sprite->generic.linked_list_type_offset != SPRITE_LIST_LITTER * 2)
+        if (sprite->generic.linked_list_index != SPRITE_LIST_LITTER)
             continue;
 
         uint16_t z_diff = abs(peep->z - sprite->litter.z);
