@@ -59,9 +59,9 @@ rct_vehicle_sound_params* gVehicleSoundParamsListEnd;
 // clang-format off
 static int32_t SoundVolumeAdjust[SOUND_MAXID] =
 {
-    0,      // SOUND_LIFT_1
-    0,      // SOUND_TRACK_FRICTION_1
-    0,      // SOUND_LIFT_2
+    0,      // SOUND_LIFT_CLASSIC
+    0,      // SOUND_TRACK_FRICTION_CLASSIC_WOOD
+    0,      // SOUND_FRICTION_CLASSIC
     0,      // SOUND_SCREAM_1
     0,      // SOUND_CLICK_1
     0,      // SOUND_CLICK_2
@@ -71,27 +71,27 @@ static int32_t SoundVolumeAdjust[SOUND_MAXID] =
     0,      // SOUND_SCREAM_4
     0,      // SOUND_SCREAM_5
     0,      // SOUND_SCREAM_6
-    0,      // SOUND_LIFT_3
+    0,      // SOUND_LIFT_VEKOMA
     -400,   // SOUND_PURCHASE
     0,      // SOUND_CRASH
     0,      // SOUND_LAYING_OUT_WATER
     0,      // SOUND_WATER_1
     0,      // SOUND_WATER_2
     0,      // SOUND_TRAIN_WHISTLE
-    0,      // SOUND_TRAIN_CHUGGING
+    0,      // SOUND_TRAIN_DEPARTING
     -1000,  // SOUND_WATER_SPLASH
-    0,      // SOUND_HAMMERING
+    0,      // SOUND_GO_KART_ENGINE
     -800,   // SOUND_RIDE_LAUNCH_1
     -1700,  // SOUND_RIDE_LAUNCH_2
     -700,   // SOUND_COUGH_1
     -700,   // SOUND_COUGH_2
     -700,   // SOUND_COUGH_3
     -700,   // SOUND_COUGH_4
-    0,      // SOUND_RAIN_1
+    0,      // SOUND_RAIN
     0,      // SOUND_THUNDER_1
     0,      // SOUND_THUNDER_2
-    0,      // SOUND_RAIN_2
-    0,      // SOUND_RAIN_3
+    0,      // SOUND_TRACK_FRICTION_TRAIN
+    0,      // SOUND_TRACK_FRICTION_WATER
     0,      // SOUND_BALLOON_POP
     -700,   // SOUND_MECHANIC_FIX
     0,      // SOUND_SCREAM_7
@@ -107,21 +107,21 @@ static int32_t SoundVolumeAdjust[SOUND_MAXID] =
     -600,   // SOUND_HAUNTED_HOUSE_SCARE
     -700,   // SOUND_HAUNTED_HOUSE_SCREAM_1
     -700,   // SOUND_HAUNTED_HOUSE_SCREAM_2
-    -2550,  // SOUND_48
-    -2900,  // SOUND_49
+    -2550,  // SOUND_BLOCK_BRAKE_CLOSE
+    -2900,  // SOUND_BLOCK_BRAKE_RELEASE
     0,      // SOUND_ERROR
-    -3400,  // SOUND_51
-    0,      // SOUND_LIFT_4
-    0,      // SOUND_LIFT_5
-    0,      // SOUND_TRACK_FRICTION_2
-    0,      // SOUND_LIFT_6
-    0,      // SOUND_LIFT_7
-    0,      // SOUND_TRACK_FRICTION_3
+    -3400,  // SOUND_BRAKE_RELEASE
+    0,      // SOUND_LIFT_ARROW
+    0,      // SOUND_LIFT_WOOD
+    0,      // SOUND_TRACK_FRICTION_WOOD
+    0,      // SOUND_LIFT_WILD_MOUSE
+    0,      // SOUND_LIFT_BM
+    0,      // SOUND_TRACK_FRICTION_BM
     0,      // SOUND_SCREAM_8
     0,      // SOUND_TRAM
     -2000,  // SOUND_DOOR_OPEN
     -2700,  // SOUND_DOOR_CLOSE
-    -700    // SOUND_62
+    -700    // SOUND_PORTCULLIS
 };
 // clang-format on
 

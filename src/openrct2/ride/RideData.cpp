@@ -1450,26 +1450,26 @@ const uint16_t RideCrookedHouseLength[1] = {
 
 /* rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
 const rct_ride_lift_data RideLiftData[] = {
-    { SOUND_LIFT_3, 7, 7 }, // Spiral Roller coaster
-    { SOUND_LIFT_1, 4, 6 }, // Stand Up Coaster
-    { SOUND_LIFT_1, 4, 6 }, // Suspended Swinging
-    { SOUND_LIFT_7, 5, 7 }, // Inverted
-    { SOUND_LIFT_3, 4, 6 }, // Steel Mini Coaster
+    { SOUND_LIFT_VEKOMA, 7, 7 }, // Spiral Roller coaster
+    { SOUND_LIFT_CLASSIC, 4, 6 }, // Stand Up Coaster
+    { SOUND_LIFT_CLASSIC, 4, 6 }, // Suspended Swinging
+    { SOUND_LIFT_BM, 5, 7 }, // Inverted
+    { SOUND_LIFT_VEKOMA, 4, 6 }, // Steel Mini Coaster
     { 255,          5, 5 }, // Mini Railway
     { 255,          5, 5 }, // Monorail
-    { SOUND_LIFT_3, 4, 5 }, // Mini Suspended Coaster
+    { SOUND_LIFT_VEKOMA, 4, 5 }, // Mini Suspended Coaster
     { 255,          5, 5 }, // Boat Hire
-    { SOUND_LIFT_1, 4, 5 }, // Wooden Wild Mine/Mouse
-    { SOUND_LIFT_1, 4, 5 }, // Steeplechase/Motorbike/Soap Box D
+    { SOUND_LIFT_CLASSIC, 4, 5 }, // Wooden Wild Mine/Mouse
+    { SOUND_LIFT_CLASSIC, 4, 5 }, // Steeplechase/Motorbike/Soap Box D
     { 255,          5, 5 }, // Car Ride
     { 255,          5, 5 }, // Launched Freefall
-    { SOUND_LIFT_3, 4, 5 }, // Bobsleigh Coaster
+    { SOUND_LIFT_VEKOMA, 4, 5 }, // Bobsleigh Coaster
     { 255,          5, 5 }, // Observation Tower
-    { SOUND_LIFT_1, 4, 6 }, // Looping Roller Coaster
-    { SOUND_LIFT_3, 4, 5 }, // Dinghy Slide
-    { SOUND_LIFT_4, 4, 6 }, // Mine Train Coaster
+    { SOUND_LIFT_CLASSIC, 4, 6 }, // Looping Roller Coaster
+    { SOUND_LIFT_VEKOMA, 4, 5 }, // Dinghy Slide
+    { SOUND_LIFT_ARROW, 4, 6 }, // Mine Train Coaster
     { 255,          5, 5 }, // Chairlift
-    { SOUND_LIFT_4, 4, 6 }, // Corkscrew Roller Coaster
+    { SOUND_LIFT_ARROW, 4, 6 }, // Corkscrew Roller Coaster
     { 255,          5, 5 }, // Maze
     { 255,          5, 5 }, // Spiral Slide
     { 255,          5, 5 }, // Go Karts
@@ -1494,39 +1494,39 @@ const rct_ride_lift_data RideLiftData[] = {
     { 255,          5, 5 }, // Space Rings
     { 255,          5, 5 }, // Reverse Freefall Coaster
     { 255,          5, 5 }, // Elevator
-    { SOUND_LIFT_7, 4, 5 }, // Vertical Drop Roller Coaster
+    { SOUND_LIFT_BM, 4, 5 }, // Vertical Drop Roller Coaster
     { 255,          5, 5 }, // ATM
     { 255,          5, 5 }, // Twist
     { 255,          5, 5 }, // Haunted House
     { 255,          5, 5 }, // First Aid
     { 255,          5, 5 }, // Circus Show
     { 255,          5, 5 }, // Ghost Train
-    { SOUND_LIFT_7, 5, 8 }, // Twister Roller Coaster
-    { SOUND_LIFT_5, 5, 7 }, // Wooden Roller Coaster
-    { SOUND_LIFT_5, 3, 4 }, // Side-Friction Roller Coaster
-    { SOUND_LIFT_6, 4, 6 }, // Wild Mouse
-    { SOUND_LIFT_3, 4, 6 }, // Multi Dimension Coaster
-    { SOUND_LIFT_3, 4, 6 }, // (none)
-    { SOUND_LIFT_7, 4, 6 }, // Flying Roller Coaster
-    { SOUND_LIFT_7, 4, 6 }, // (none)
-    { SOUND_LIFT_1, 3, 4 }, // Virginia Reel
+    { SOUND_LIFT_BM, 5, 8 }, // Twister Roller Coaster
+    { SOUND_LIFT_WOOD, 5, 7 }, // Wooden Roller Coaster
+    { SOUND_LIFT_WOOD, 3, 4 }, // Side-Friction Roller Coaster
+    { SOUND_LIFT_WILD_MOUSE, 4, 6 }, // Wild Mouse
+    { SOUND_LIFT_VEKOMA, 4, 6 }, // Multi Dimension Coaster
+    { SOUND_LIFT_VEKOMA, 4, 6 }, // (none)
+    { SOUND_LIFT_BM, 4, 6 }, // Flying Roller Coaster
+    { SOUND_LIFT_BM, 4, 6 }, // (none)
+    { SOUND_LIFT_CLASSIC, 3, 4 }, // Virginia Reel
     { 255,          5, 5 }, // Splash Boats
     { 255,          5, 5 }, // Mini Helicopters
-    { SOUND_LIFT_1, 4, 6 }, // Lay-down Roller Coaster
+    { SOUND_LIFT_CLASSIC, 4, 6 }, // Lay-down Roller Coaster
     { 255,          5, 5 }, // Suspended Monorail
-    { SOUND_LIFT_1, 4, 6 }, // (none)
-    { SOUND_LIFT_1, 3, 4 }, // Reverser Roller Coaster
-    { SOUND_LIFT_1, 4, 6 }, // Heartline Twister Roller Coaster
+    { SOUND_LIFT_CLASSIC, 4, 6 }, // (none)
+    { SOUND_LIFT_CLASSIC, 3, 4 }, // Reverser Roller Coaster
+    { SOUND_LIFT_CLASSIC, 4, 6 }, // Heartline Twister Roller Coaster
     { 255,          5, 5 }, // Mini Golf
-    { SOUND_LIFT_1, 5, 8 }, // Giga Coaster
+    { SOUND_LIFT_CLASSIC, 5, 8 }, // Giga Coaster
     { 255,          5, 5 }, // Roto-Drop
     { 255,          5, 5 }, // Flying Saucers
     { 255,          5, 5 }, // Crooked House
     { 255,          5, 5 }, // Monorail Cycles
-    { SOUND_LIFT_3, 4, 6 }, // Compact Inverted Coaster
-    { SOUND_LIFT_1, 4, 6 }, // Water Coaster
+    { SOUND_LIFT_VEKOMA, 4, 6 }, // Compact Inverted Coaster
+    { SOUND_LIFT_CLASSIC, 4, 6 }, // Water Coaster
     { 255,          5, 5 }, // Air Powered Vertical Coaster
-    { SOUND_LIFT_6, 4, 6 }, // Inverted Hairpin Coaster
+    { SOUND_LIFT_WILD_MOUSE, 4, 6 }, // Inverted Hairpin Coaster
     { 255,          5, 5 }, // Magic Carpet
     { 255,          5, 5 }, // Submarine Ride
     { 255,          5, 5 }, // River Rafts
@@ -1535,11 +1535,11 @@ const rct_ride_lift_data RideLiftData[] = {
     { 255,          5, 5 }, // (none)
     { 255,          5, 5 }, // (none)
     { 255,          5, 5 }, // (none)
-    { SOUND_LIFT_4, 4, 7 }, // (none)
-    { SOUND_LIFT_1, 4, 7 }, // Inverted Impulse Coaster
-    { SOUND_LIFT_1, 4, 6 }, // Mini Roller Coaster
+    { SOUND_LIFT_ARROW, 4, 7 }, // (none)
+    { SOUND_LIFT_CLASSIC, 4, 7 }, // Inverted Impulse Coaster
+    { SOUND_LIFT_CLASSIC, 4, 6 }, // Mini Roller Coaster
     { 255,          5, 5 }, // Mine Ride
-    { SOUND_LIFT_6, 4, 6 }, // (none)
+    { SOUND_LIFT_WILD_MOUSE, 4, 6 }, // (none)
     { 255,          4, 6 }  // LIM Launched Roller Coaster
 };
 
