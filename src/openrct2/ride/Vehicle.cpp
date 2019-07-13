@@ -7888,7 +7888,8 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
             {
                 if (!(rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_POWERED))
                 {
-                    audio_play_sound_at_location(SOUND_BLOCK_BRAKE_RELEASE, vehicle->track_x, vehicle->track_y, vehicle->track_z);
+                    audio_play_sound_at_location(
+                        SOUND_BLOCK_BRAKE_RELEASE, vehicle->track_x, vehicle->track_y, vehicle->track_z);
                 }
             }
             map_invalidate_element(vehicle->track_x, vehicle->track_z, tileElement);
