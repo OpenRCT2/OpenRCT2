@@ -7114,49 +7114,46 @@ void sub_6CB945(Ride* ride)
         }
     }
 
-    // Needs room for an entrance and an exit per station, plus one position for the list terminator.
-    TileCoordsXYZD locations[(MAX_STATIONS * 2) + 1];
-    TileCoordsXYZD* locationList = locations;
+    std::vector<TileCoordsXYZD> locations;
     for (uint8_t stationId = 0; stationId < MAX_STATIONS; ++stationId)
     {
         auto entrance = ride_get_entrance_location(ride, stationId);
         if (!entrance.isNull())
         {
-            *locationList++ = entrance;
+            locations.push_back(entrance);
             ride_clear_entrance_location(ride, stationId);
         }
 
         auto exit = ride_get_exit_location(ride, stationId);
         if (!exit.isNull())
         {
-            *locationList++ = exit;
+            locations.push_back(exit);
             ride_clear_exit_location(ride, stationId);
         }
     }
-    (*locationList++).x = COORDS_NULL;
 
-    locationList = locations;
-    for (; !(*locationList).isNull(); locationList++)
+    auto locationListIter = locations.cbegin();
+    for (const TileCoordsXYZD& locationCoords : locations)
     {
-        TileCoordsXYZD* locationList2 = locationList;
-        locationList2++;
+        auto locationList = ++locationListIter;
 
         bool duplicateLocation = false;
-        do
+        while (locationList != locations.cend())
         {
-            if ((*locationList).x == (*locationList2).x && (*locationList).y == (*locationList2).y)
+            const TileCoordsXYZD& locationCoords2 = *locationList++;
+            if (locationCoords.x == locationCoords2.x && locationCoords.y == locationCoords2.y)
             {
                 duplicateLocation = true;
                 break;
             }
-        } while (!(*locationList2++).isNull());
+        }
 
         if (duplicateLocation)
         {
             continue;
         }
 
-        CoordsXY location = { (*locationList).x * 32, (*locationList).y * 32 };
+        CoordsXY location = { locationCoords.x * 32, locationCoords.y * 32 };
 
         TileElement* tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
         do
