@@ -1450,23 +1450,23 @@ const uint16_t RideCrookedHouseLength[1] = {
 
 /* rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
 const rct_ride_lift_data RideLiftData[] = {
-    { SOUND_LIFT_VEKOMA, 7, 7 }, // Spiral Roller coaster
+    { SOUND_LIFT_FRICTION_WHEELS, 7, 7 }, // Spiral Roller coaster
     { SOUND_LIFT_CLASSIC, 4, 6 }, // Stand Up Coaster
     { SOUND_LIFT_CLASSIC, 4, 6 }, // Suspended Swinging
     { SOUND_LIFT_BM, 5, 7 }, // Inverted
-    { SOUND_LIFT_VEKOMA, 4, 6 }, // Steel Mini Coaster
+    { SOUND_LIFT_FRICTION_WHEELS, 4, 6 }, // Steel Mini Coaster
     { 255,          5, 5 }, // Mini Railway
     { 255,          5, 5 }, // Monorail
-    { SOUND_LIFT_VEKOMA, 4, 5 }, // Mini Suspended Coaster
+    { SOUND_LIFT_FRICTION_WHEELS, 4, 5 }, // Mini Suspended Coaster
     { 255,          5, 5 }, // Boat Hire
     { SOUND_LIFT_CLASSIC, 4, 5 }, // Wooden Wild Mine/Mouse
     { SOUND_LIFT_CLASSIC, 4, 5 }, // Steeplechase/Motorbike/Soap Box D
     { 255,          5, 5 }, // Car Ride
     { 255,          5, 5 }, // Launched Freefall
-    { SOUND_LIFT_VEKOMA, 4, 5 }, // Bobsleigh Coaster
+    { SOUND_LIFT_FRICTION_WHEELS, 4, 5 }, // Bobsleigh Coaster
     { 255,          5, 5 }, // Observation Tower
     { SOUND_LIFT_CLASSIC, 4, 6 }, // Looping Roller Coaster
-    { SOUND_LIFT_VEKOMA, 4, 5 }, // Dinghy Slide
+    { SOUND_LIFT_FRICTION_WHEELS, 4, 5 }, // Dinghy Slide
     { SOUND_LIFT_ARROW, 4, 6 }, // Mine Train Coaster
     { 255,          5, 5 }, // Chairlift
     { SOUND_LIFT_ARROW, 4, 6 }, // Corkscrew Roller Coaster
@@ -1505,8 +1505,8 @@ const rct_ride_lift_data RideLiftData[] = {
     { SOUND_LIFT_WOOD, 5, 7 }, // Wooden Roller Coaster
     { SOUND_LIFT_WOOD, 3, 4 }, // Side-Friction Roller Coaster
     { SOUND_LIFT_WILD_MOUSE, 4, 6 }, // Wild Mouse
-    { SOUND_LIFT_VEKOMA, 4, 6 }, // Multi Dimension Coaster
-    { SOUND_LIFT_VEKOMA, 4, 6 }, // (none)
+    { SOUND_LIFT_FRICTION_WHEELS, 4, 6 }, // Multi Dimension Coaster
+    { SOUND_LIFT_FRICTION_WHEELS, 4, 6 }, // (none)
     { SOUND_LIFT_BM, 4, 6 }, // Flying Roller Coaster
     { SOUND_LIFT_BM, 4, 6 }, // (none)
     { SOUND_LIFT_CLASSIC, 3, 4 }, // Virginia Reel
@@ -1523,7 +1523,7 @@ const rct_ride_lift_data RideLiftData[] = {
     { 255,          5, 5 }, // Flying Saucers
     { 255,          5, 5 }, // Crooked House
     { 255,          5, 5 }, // Monorail Cycles
-    { SOUND_LIFT_VEKOMA, 4, 6 }, // Compact Inverted Coaster
+    { SOUND_LIFT_FRICTION_WHEELS, 4, 6 }, // Compact Inverted Coaster
     { SOUND_LIFT_CLASSIC, 4, 6 }, // Water Coaster
     { 255,          5, 5 }, // Air Powered Vertical Coaster
     { SOUND_LIFT_WILD_MOUSE, 4, 6 }, // Inverted Hairpin Coaster

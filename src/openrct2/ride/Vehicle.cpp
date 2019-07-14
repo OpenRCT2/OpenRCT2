@@ -129,7 +129,7 @@ static constexpr const uint8_t _soundParams[SOUND_MAXID][2] =
     { 0, 1 },   // SOUND_SCREAM_4
     { 0, 1 },   // SOUND_SCREAM_5
     { 0, 1 },   // SOUND_SCREAM_6
-    { 1, 0 },   // SOUND_LIFT_VEKOMA
+    { 1, 0 },   // SOUND_LIFT_FRICTION_WHEELS
     { 0, 0 },   // SOUND_PURCHASE
     { 0, 0 },   // SOUND_CRASH
     { 0, 0 },   // SOUND_LAYING_OUT_WATER

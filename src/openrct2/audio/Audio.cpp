@@ -71,7 +71,7 @@ static int32_t SoundVolumeAdjust[SOUND_MAXID] =
     0,      // SOUND_SCREAM_4
     0,      // SOUND_SCREAM_5
     0,      // SOUND_SCREAM_6
-    0,      // SOUND_LIFT_VEKOMA
+    0,      // SOUND_LIFT_FRICTION_WHEELS
     -400,   // SOUND_PURCHASE
     0,      // SOUND_CRASH
     0,      // SOUND_LAYING_OUT_WATER
