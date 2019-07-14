@@ -577,6 +577,7 @@ namespace OpenRCT2
             serialiser << gCheatsDisableRideValueAging;
             serialiser << gConfigGeneral.show_real_names_of_guests;
             serialiser << gCheatsIgnoreResearchStatus;
+            serialiser << gCheatsEnableAllDrawableTrackPieces;
 
             return true;
         }
