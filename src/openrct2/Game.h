@@ -130,13 +130,6 @@ enum
 
 using GAME_COMMAND_POINTER = void(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-using GAME_COMMAND_CALLBACK_POINTER = void(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
-
-extern GAME_COMMAND_CALLBACK_POINTER* game_command_callback;
-int32_t game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
-GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(uint32_t index);
-extern int32_t game_command_playerid;
 
 extern rct_string_id gGameCommandErrorTitle;
 extern rct_string_id gGameCommandErrorText;
@@ -156,7 +149,6 @@ extern float gDayNightCycle;
 extern bool gInUpdateCode;
 extern bool gInMapInitCode;
 extern int32_t gGameCommandNestLevel;
-extern bool gGameCommandIsNetworked;
 extern std::string gCurrentLoadedPath;
 
 extern bool gLoadKeepWindowsOpen;
@@ -174,8 +166,6 @@ void update_palette_effects();
 int32_t game_do_command(int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
 int32_t game_do_command_p(
     uint32_t command, int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-
-void game_log_multiplayer_command(int command, const int* eax, const int* ebx, const int* ecx, int* edx, int* edi, int* ebp);
 
 void game_load_or_quit_no_save_prompt();
 void load_from_sv6(const char* path);

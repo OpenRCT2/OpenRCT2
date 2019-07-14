@@ -5222,7 +5222,7 @@ static void loc_6B51C0(const Ride* ride)
  */
 static void ride_scroll_to_track_error(CoordsXYE* trackElement)
 {
-    if (!gGameCommandIsNetworked && gUnk141F568 == gUnk13CA740)
+    if (gUnk141F568 == gUnk13CA740)
     {
         rct_window* w = window_get_main();
         if (w != nullptr)

@@ -2075,15 +2075,6 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            LocationXYZ16 coord;
-            coord.x = x + 8;
-            coord.y = y + 8;
-            coord.z = z;
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-
         // Place track element
         int32_t fx = floor2(x, 32);
         int32_t fy = floor2(y, 32);

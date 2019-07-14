@@ -191,7 +191,6 @@ void NetworkConnection::RecordPacketStats(const NetworkPacket& packet, bool send
 
     switch (packet.GetCommand())
     {
-        case NETWORK_COMMAND_GAMECMD:
         case NETWORK_COMMAND_GAME_ACTION:
             trafficGroup = NETWORK_STATISTICS_GROUP_COMMANDS;
             break;

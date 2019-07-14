@@ -74,7 +74,6 @@ float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;
 int32_t gGameCommandNestLevel;
-bool gGameCommandIsNetworked;
 std::string gCurrentLoadedPath;
 
 bool gLoadKeepWindowsOpen = false;
@@ -85,50 +84,12 @@ uint8_t gUnk141F568;
 uint32_t gCurrentTicks;
 uint32_t gCurrentRealTimeTicks;
 
-// clang-format off
-GAME_COMMAND_CALLBACK_POINTER * game_command_callback = nullptr;
-static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr
-};
-// clang-format on
-int32_t game_command_playerid = -1;
-
 rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
 uint8_t gErrorType;
 rct_string_id gErrorStringId;
 
 using namespace OpenRCT2;
-
-int32_t game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
-{
-    for (uint32_t i = 0; i < std::size(game_command_callback_table); i++)
-    {
-        if (game_command_callback_table[i] == callback)
-        {
-            return i;
-        }
-    }
-    return 0;
-}
-
-GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(uint32_t index)
-{
-    if (index < std::size(game_command_callback_table))
-    {
-        return game_command_callback_table[index];
-    }
-    return nullptr;
-}
 
 void game_increase_game_speed()
 {
@@ -402,26 +363,10 @@ int32_t game_do_command_p(
     if (gGameCommandNestLevel == 0)
     {
         gGameCommandErrorText = STR_NONE;
-        gGameCommandIsNetworked = (flags & GAME_COMMAND_FLAG_NETWORKED) != 0;
     }
 
     // Increment nest count
     gGameCommandNestLevel++;
-
-    if (game_command_playerid == -1)
-    {
-        game_command_playerid = network_get_current_player_id();
-    }
-
-    // Log certain commands if we are in multiplayer and logging is enabled
-    bool serverLog = (network_get_mode() == NETWORK_MODE_SERVER) && gGameCommandNestLevel == 1
-        && gConfigNetwork.log_server_actions;
-    bool clientLog = (network_get_mode() == NETWORK_MODE_CLIENT) && (flags & GAME_COMMAND_FLAG_NETWORKED)
-        && gGameCommandNestLevel == 1 && gConfigNetwork.log_server_actions;
-    if (serverLog || clientLog)
-    {
-        game_log_multiplayer_command(command, eax, ebx, ecx, edx, edi, ebp);
-    }
 
     *ebx &= ~GAME_COMMAND_FLAG_APPLY;
 
@@ -456,23 +401,6 @@ int32_t game_do_command_p(
                 return cost;
             }
 
-            if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED)
-                && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND)
-                && gGameCommandNestLevel == 1) /* Send only top-level commands */
-            {
-                network_send_gamecmd(
-                    *eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, game_command_callback_get_index(game_command_callback));
-                if (network_get_mode() == NETWORK_MODE_CLIENT)
-                {
-                    // Client sent the command to the server, do not run it locally, just return.  It will run when server
-                    // sends it.
-                    game_command_callback = nullptr;
-                    // Decrement nest count
-                    gGameCommandNestLevel--;
-                    return cost;
-                }
-            }
-
             // Second call to actually perform the operation
             new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
@@ -489,25 +417,10 @@ int32_t game_do_command_p(
 
                 if (recordCommand && gGameCommandNestLevel == 1)
                 {
-                    int32_t callback = game_command_callback_get_index(game_command_callback);
-
                     replayManager->AddGameCommand(
-                        gCurrentTicks, *eax, original_ebx, *ecx, original_edx, original_esi, original_edi, original_ebp,
-                        callback);
+                        gCurrentTicks, *eax, original_ebx, *ecx, original_edx, original_esi, original_edi, original_ebp, 0);
                 }
             }
-
-            // Do the callback (required for multiplayer to work correctly), but only for top level commands
-            if (gGameCommandNestLevel == 1)
-            {
-                if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST))
-                {
-                    game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
-                    game_command_callback = nullptr;
-                }
-            }
-
-            game_command_playerid = -1;
 
             *edx = *ebx;
 
@@ -532,13 +445,6 @@ int32_t game_do_command_p(
                 }
             }
 
-            if (network_get_mode() == NETWORK_MODE_SERVER && !(flags & GAME_COMMAND_FLAG_NETWORKED)
-                && !(flags & GAME_COMMAND_FLAG_GHOST))
-            {
-                network_set_player_last_action(network_get_player_index(network_get_current_player_id()), command);
-                network_add_player_money_spent(network_get_current_player_id(), cost);
-            }
-
             // Start autosave timer after game command
             if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
                 gLastAutoSaveUpdate = platform_get_ticks();
@@ -552,9 +458,6 @@ int32_t game_do_command_p(
     // Decrement nest count
     gGameCommandNestLevel--;
 
-    // Clear the game command callback to prevent the next command triggering it
-    game_command_callback = nullptr;
-
     // Show error window
     if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740
         && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED)
@@ -564,34 +467,6 @@ int32_t game_do_command_p(
     }
 
     return MONEY32_UNDEFINED;
-}
-
-void game_log_multiplayer_command(int command, const int* eax, const int* ebx, const int* ecx, int* edx, int* edi, int* ebp)
-{
-    // Get player name
-    const char* player_name = "localhost";
-
-    int player_index = network_get_player_index(game_command_playerid);
-    if (player_index != -1)
-    {
-        player_name = network_get_player_name(player_index);
-    }
-
-    char log_msg[256];
-    if (command == GAME_COMMAND_DEMOLISH_RIDE && (*ebp == 1 || *ebp == 0))
-    { // ebp is 1 if command comes from ride window prompt, so we don't log "demolishing" ride previews
-        // Get ride name
-        Ride* ride = get_ride(*edx);
-        char ride_name[128];
-        format_string(ride_name, 128, ride->name, &ride->name_arguments);
-
-        char* args[2] = {
-            (char*)player_name,
-            ride_name,
-        };
-        format_string(log_msg, 256, STR_LOG_DEMOLISH_RIDE, args);
-        network_append_server_log(log_msg);
-    }
 }
 
 void pause_toggle()
