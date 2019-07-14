@@ -278,6 +278,8 @@ namespace UnicodeChar
     constexpr char32_t leftguillemet = 0xAB;
     constexpr char32_t rightguillemet = 0xBB;
     constexpr char32_t interpunct = 0xB7;
+    constexpr char32_t multiplication_sign = 0xD7;
+    constexpr char32_t en_dash = 0x2013;
     constexpr char32_t single_quote_open = 0x2018;
     constexpr char32_t single_quote_end = 0x2019;
     constexpr char32_t single_german_quote_open = 0x201A;
