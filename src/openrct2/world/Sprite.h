@@ -18,7 +18,6 @@
 
 #define SPRITE_INDEX_NULL 0xFFFF
 #define MAX_SPRITES 10000
-#define NUM_SPRITE_LISTS 6
 
 enum SPRITE_IDENTIFIER
 {
@@ -37,6 +36,7 @@ enum SPRITE_LIST
     SPRITE_LIST_MISC,
     SPRITE_LIST_LITTER,
     SPRITE_LIST_VEHICLE,
+    SPRITE_LIST_COUNT,
 };
 
 struct rct_litter : rct_sprite_common

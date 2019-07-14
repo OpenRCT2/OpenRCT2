@@ -1245,7 +1245,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     }
 
     int32_t spriteCount = 0;
-    for (int32_t i = 1; i < NUM_SPRITE_LISTS; ++i)
+    for (int32_t i = 1; i < SPRITE_LIST_COUNT; ++i)
     {
         spriteCount += gSpriteListCount[i];
     }

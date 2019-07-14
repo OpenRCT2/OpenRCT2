@@ -25,8 +25,8 @@
 #include <cmath>
 #include <iterator>
 
-uint16_t gSpriteListHead[6];
-uint16_t gSpriteListCount[6];
+uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
+uint16_t gSpriteListCount[SPRITE_LIST_COUNT];
 static rct_sprite _spriteList[MAX_SPRITES];
 
 static bool _spriteFlashingList[MAX_SPRITES];
@@ -149,7 +149,7 @@ void reset_sprite_list()
     gSavedAge = 0;
     std::memset(_spriteList, 0, sizeof(_spriteList));
 
-    for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
+    for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
     {
         gSpriteListHead[i] = SPRITE_INDEX_NULL;
         gSpriteListCount[i] = 0;
@@ -340,10 +340,6 @@ void sprite_clear_all_unused()
     }
 }
 
-/*
- * rct2: 0x0069EC6B
- * bl: if bl & 2 > 0, the sprite ends up in the MISC linked list.
- */
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 
 rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
@@ -993,7 +989,7 @@ static bool index_is_in_list(uint16_t index, enum SPRITE_LIST sl)
 
 int32_t check_for_sprite_list_cycles(bool fix)
 {
-    for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
+    for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
     {
         rct_sprite* cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
         if (cycle_start != nullptr)
