@@ -72,6 +72,8 @@
     <TitleSequencesSha1>19263f8ca383345959473e64da4785a60f00f420</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.11/objects.zip</ObjectsUrl>
     <ObjectsSha1>8674120086929f9196560d77cada631fb478d7c0</ObjectsSha1>
+    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.1/replays.zip</ReplaysUrl>
+    <ObjectsSha1>8612DACA1FFE63BE4731C048CCB2411C5C45E9B4</ObjectsSha1>
   </PropertyGroup>
 
   <ItemGroup>
@@ -224,6 +226,15 @@
                         Sha1="$(ObjectsSha1)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)data\object" />
+  </Target>
+
+  <!-- Target to download replays -->
+  <Target Name="DownloadReplays" AfterTargets="Build">
+    <DownloadDependency Name="Replays"
+                        Url="$(ReplaysUrl)"
+                        Sha1="$(ReplaysSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)testdata\replays" />
   </Target>
 
   <!-- Target to publish OpenRCT2 as a portable zip -->
