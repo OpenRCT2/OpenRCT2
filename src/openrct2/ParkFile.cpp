@@ -549,6 +549,16 @@ namespace OpenRCT2
                     // Stats
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
+                        auto hasMeasurement = cs.Read<uint8_t>();
+                        if (hasMeasurement != 0)
+                        {
+                            ride.measurement = std::make_unique<RideMeasurement>();
+                            ride.measurement->ride = &ride;
+                            ReadWriteRideMeasurement(cs, *ride.measurement);
+                        }
+                    }
+                    else
+                    {
                         if (ride.measurement == nullptr)
                         {
                             cs.Write<uint8_t>(0);
@@ -559,18 +569,6 @@ namespace OpenRCT2
                             ReadWriteRideMeasurement(cs, *ride.measurement);
                         }
                     }
-                    else
-                    {
-                        auto hasMeasurement = cs.Read<uint8_t>();
-                        if (hasMeasurement)
-                        {
-                            ride.measurement = std::make_unique<RideMeasurement>();
-                            ride.measurement->ride = &ride;
-                            ReadWriteRideMeasurement(cs, *ride.measurement);
-                        }
-                    }
-
-                    cs.ReadWrite(ride.measurement);
 
                     cs.ReadWrite(ride.special_track_elements);
                     cs.ReadWrite(ride.max_speed);
@@ -673,12 +671,6 @@ namespace OpenRCT2
 
         static void ReadWriteRideMeasurement(OrcaStream::ChunkStream& cs, RideMeasurement& measurement)
         {
-            if (cs.GetMode() == OrcaStream::Mode::READING)
-            {
-                // Initialise measurement (mainly just for the fixed arrays)
-                measurement = {};
-            }
-
             cs.ReadWrite(measurement.flags);
             cs.ReadWrite(measurement.last_use_tick);
             cs.ReadWrite(measurement.num_items);

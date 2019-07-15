@@ -15,6 +15,7 @@
 #include <cstdint>
 #include <fstream>
 #include <sstream>
+#include <stack>
 #include <vector>
 
 namespace OpenRCT2
@@ -189,12 +190,17 @@ namespace OpenRCT2
         class ChunkStream
         {
         private:
+            struct ArrayState
+            {
+                std::streampos StartPos{};
+                std::streampos LastPos{};
+                size_t Count{};
+                size_t ElementSize{};
+            };
+
             std::stringstream& _buffer;
             Mode _mode;
-            std::streampos _currentArrayStartPos;
-            std::streampos _currentArrayLastPos;
-            size_t _currentArrayCount;
-            size_t _currentArrayElementSize;
+            std::stack<ArrayState> _arrayStack;
 
         public:
             ChunkStream(std::stringstream& buffer, Mode mode)
@@ -388,78 +394,82 @@ namespace OpenRCT2
 
             size_t BeginArray()
             {
+                auto& arrayState = _arrayStack.emplace();
                 if (_mode == Mode::READING)
                 {
-                    _currentArrayCount = Read<uint32_t>();
-                    _currentArrayElementSize = Read<uint32_t>();
-                    _currentArrayLastPos = _buffer.tellg();
-                    return _currentArrayCount;
+                    arrayState.Count = Read<uint32_t>();
+                    arrayState.ElementSize = Read<uint32_t>();
+                    arrayState.LastPos = _buffer.tellg();
+                    return arrayState.Count;
                 }
                 else
                 {
-                    _currentArrayCount = 0;
-                    _currentArrayElementSize = 0;
-                    _currentArrayStartPos = _buffer.tellp();
+                    arrayState.Count = 0;
+                    arrayState.ElementSize = 0;
+                    arrayState.StartPos = _buffer.tellp();
                     Write<uint32_t>(0);
                     Write<uint32_t>(0);
-                    _currentArrayLastPos = _buffer.tellp();
+                    arrayState.LastPos = _buffer.tellp();
                     return 0;
                 }
             }
 
             bool NextArrayElement()
             {
+                auto& arrayState = _arrayStack.top();
                 if (_mode == Mode::READING)
                 {
-                    if (_currentArrayCount == 0)
+                    if (arrayState.Count == 0)
                     {
                         return false;
                     }
-                    if (_currentArrayElementSize != 0)
+                    if (arrayState.ElementSize != 0)
                     {
-                        _currentArrayLastPos += _currentArrayElementSize;
-                        _buffer.seekg(_currentArrayLastPos);
+                        arrayState.LastPos += arrayState.ElementSize;
+                        _buffer.seekg(arrayState.LastPos);
                     }
-                    _currentArrayCount--;
-                    return _currentArrayCount == 0;
+                    arrayState.Count--;
+                    return arrayState.Count == 0;
                 }
                 else
                 {
-                    auto lastElSize = (size_t)_buffer.tellp() - _currentArrayLastPos;
-                    if (_currentArrayCount == 0)
+                    auto lastElSize = (size_t)_buffer.tellp() - arrayState.LastPos;
+                    if (arrayState.Count == 0)
                     {
                         // Set array element size based on first element size
-                        _currentArrayElementSize = lastElSize;
+                        arrayState.ElementSize = lastElSize;
                     }
-                    else if (_currentArrayElementSize != lastElSize)
+                    else if (arrayState.ElementSize != lastElSize)
                     {
                         // Array element size was different from first element so reset it
                         // to dynamic
-                        _currentArrayElementSize = 0;
+                        arrayState.ElementSize = 0;
                     }
-                    _currentArrayCount++;
-                    _currentArrayLastPos = _buffer.tellp();
+                    arrayState.Count++;
+                    arrayState.LastPos = _buffer.tellp();
                     return true;
                 }
             }
 
             void EndArray()
             {
+                auto& arrayState = _arrayStack.top();
                 if (_mode == Mode::READING)
                 {
                 }
                 else
                 {
                     auto backupPos = _buffer.tellp();
-                    if ((size_t)backupPos != (size_t)_currentArrayStartPos + 8 && _currentArrayCount == 0)
+                    if ((size_t)backupPos != (size_t)arrayState.StartPos + 8 && arrayState.Count == 0)
                     {
                         throw std::runtime_error("Array data was written but no elements were added.");
                     }
-                    _buffer.seekp(_currentArrayStartPos);
-                    Write((uint32_t)_currentArrayCount);
-                    Write((uint32_t)_currentArrayElementSize);
+                    _buffer.seekp(arrayState.StartPos);
+                    Write((uint32_t)arrayState.Count);
+                    Write((uint32_t)arrayState.ElementSize);
                     _buffer.seekp(backupPos);
                 }
+                _arrayStack.pop();
             }
         };
     };
