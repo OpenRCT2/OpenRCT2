@@ -242,8 +242,22 @@ namespace OpenRCT2
                 cs.ReadWriteAs<uint32_t, uint64_t>(gScenarioTicks);
                 cs.ReadWriteAs<uint16_t, uint32_t>(gDateMonthTicks);
                 cs.ReadWrite(gDateMonthsElapsed);
-                cs.ReadWrite(gScenarioSrand0);
-                cs.ReadWrite(gScenarioSrand1);
+
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    uint32_t s0{}, s1{};
+                    cs.ReadWrite(s0);
+                    cs.ReadWrite(s1);
+                    Random::Rct2::Seed s{ s0, s1 };
+                    gScenarioRand.seed(s);
+                }
+                else
+                {
+                    auto randState = gScenarioRand.state();
+                    cs.Write(randState.s0);
+                    cs.Write(randState.s1);
+                }
+
                 cs.ReadWrite(gGuestInitialCash);
                 cs.ReadWrite(gGuestInitialHunger);
                 cs.ReadWrite(gGuestInitialThirst);
@@ -307,33 +321,15 @@ namespace OpenRCT2
                 cs.ReadWrite(gStaffHandymanColour);
                 cs.ReadWrite(gStaffMechanicColour);
                 cs.ReadWrite(gStaffSecurityColour);
-
-                // TODO use a uint64 or a list of active items
-                cs.ReadWrite(gSamePriceThroughoutParkA);
-                cs.ReadWrite(gSamePriceThroughoutParkB);
+                cs.ReadWrite(gSamePriceThroughoutPark);
 
                 // Marketing
-                std::vector<std::tuple<uint32_t, uint32_t>> marketing;
-                if (cs.GetMode() != OrcaStream::Mode::READING)
-                {
-                    for (size_t i = 0; i < std::size(gMarketingCampaignDaysLeft); i++)
-                    {
-                        marketing.push_back(std::make_tuple(gMarketingCampaignDaysLeft[i], gMarketingCampaignRideIndex[i]));
-                    }
-                }
-                cs.ReadWriteVector(marketing, [&cs](std::tuple<uint32_t, uint32_t>& m) {
-                    cs.ReadWrite(std::get<0>(m));
-                    cs.ReadWrite(std::get<1>(m));
+                cs.ReadWriteVector(gMarketingCampaigns, [&cs](MarketingCampaign& campaign) {
+                    cs.ReadWrite(campaign.Type);
+                    cs.ReadWrite(campaign.WeeksLeft);
+                    cs.ReadWrite(campaign.Flags);
+                    cs.ReadWrite(campaign.RideId);
                 });
-                if (cs.GetMode() == OrcaStream::Mode::READING)
-                {
-                    auto count = std::min(std::size(gMarketingCampaignDaysLeft), marketing.size());
-                    for (size_t i = 0; i < count; i++)
-                    {
-                        gMarketingCampaignDaysLeft[i] = std::get<0>(marketing[i]);
-                        gMarketingCampaignRideIndex[i] = std::get<1>(marketing[i]);
-                    }
-                }
 
                 // Awards
                 cs.ReadWriteArray(gCurrentAwards, [&cs](Award& award) {
@@ -551,7 +547,30 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.cable_lift_z);
 
                     // Stats
-                    cs.ReadWrite(ride.measurement_index);
+                    if (cs.GetMode() == OrcaStream::Mode::READING)
+                    {
+                        if (ride.measurement == nullptr)
+                        {
+                            cs.Write<uint8_t>(0);
+                        }
+                        else
+                        {
+                            cs.Write<uint8_t>(1);
+                            ReadWriteRideMeasurement(cs, *ride.measurement);
+                        }
+                    }
+                    else
+                    {
+                        auto hasMeasurement = cs.Read<uint8_t>();
+                        if (hasMeasurement)
+                        {
+                            ride.measurement = std::make_unique<RideMeasurement>();
+                            ride.measurement->ride = &ride;
+                            ReadWriteRideMeasurement(cs, *ride.measurement);
+                        }
+                    }
+
+                    cs.ReadWrite(ride.measurement);
 
                     cs.ReadWrite(ride.special_track_elements);
                     cs.ReadWrite(ride.max_speed);
@@ -642,7 +661,37 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.music_position);
                     return true;
                 });
+
+                // Correct ride IDs which are effectively constant
+                for (size_t i = 0; i < MAX_RIDES; i++)
+                {
+                    auto ride = &gRideList[i];
+                    ride->id = (ride_id_t)i;
+                }
             });
+        }
+
+        static void ReadWriteRideMeasurement(OrcaStream::ChunkStream& cs, RideMeasurement& measurement)
+        {
+            if (cs.GetMode() == OrcaStream::Mode::READING)
+            {
+                // Initialise measurement (mainly just for the fixed arrays)
+                measurement = {};
+            }
+
+            cs.ReadWrite(measurement.flags);
+            cs.ReadWrite(measurement.last_use_tick);
+            cs.ReadWrite(measurement.num_items);
+            cs.ReadWrite(measurement.current_item);
+            cs.ReadWrite(measurement.vehicle_index);
+            cs.ReadWrite(measurement.current_station);
+            for (size_t i = 0; i < measurement.num_items; i++)
+            {
+                cs.ReadWrite(measurement.vertical[i]);
+                cs.ReadWrite(measurement.lateral[i]);
+                cs.ReadWrite(measurement.velocity[i]);
+                cs.ReadWrite(measurement.altitude[i]);
+            }
         }
 
         void AutoCreateMapAnimations()
