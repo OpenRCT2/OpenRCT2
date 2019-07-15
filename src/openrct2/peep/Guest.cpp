@@ -4207,7 +4207,7 @@ void Guest::UpdateRideEnterVehicle()
 
                 vehicle->mass += seated_peep->mass;
                 seated_peep->Invalidate();
-                sprite_move(LOCATION_NULL, 0, 0, (rct_sprite*)seated_peep);
+                sprite_move(LOCATION_NULL, 0, 0, reinterpret_cast<rct_sprite*>(seated_peep));
 
                 seated_peep->SetState(PEEP_STATE_ON_RIDE);
                 seated_peep->time_on_ride = 0;
@@ -4219,7 +4219,7 @@ void Guest::UpdateRideEnterVehicle()
             ride->cur_num_customers++;
 
             vehicle->mass += mass;
-            invalidate_sprite_2((rct_sprite*)vehicle);
+            invalidate_sprite_2(reinterpret_cast<rct_sprite*>(vehicle));
 
             Invalidate();
             MoveTo(LOCATION_NULL, 0, 0);
