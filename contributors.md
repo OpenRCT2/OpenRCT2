@@ -131,6 +131,7 @@ The following people are not part of the development team, but have been contrib
 * Trevor Harkness (tharkne)
 * Steve Xu (stevexu-umich)
 * (aw20368)
+* Jim Armstrong (41northstudios)
 
 ## Toolchain
 * (Balletie) - macOS
