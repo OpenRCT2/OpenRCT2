@@ -263,7 +263,7 @@ std::vector<rct_large_scenery_text_glyph> LargeSceneryObject::ReadJsonGlyphs(con
     const json_t* jGlyph;
     json_array_foreach(jGlpyhs, index, jGlyph)
     {
-        rct_large_scenery_text_glyph glyph;
+        rct_large_scenery_text_glyph glyph = {};
         glyph.image_offset = json_integer_value(json_object_get(jGlyph, "image"));
         glyph.width = json_integer_value(json_object_get(jGlyph, "width"));
         glyph.height = json_integer_value(json_object_get(jGlyph, "height"));
