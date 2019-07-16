@@ -17,6 +17,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Guard.hpp>
@@ -406,15 +407,14 @@ static bool browse(bool isSave, char* path, size_t pathSize)
         }
         else
         {
-            utf8 buffer[USER_STRING_MAX_LENGTH]{};
-            if (gParkName != STR_NONE)
-                format_string(buffer, pathSize, gParkName, nullptr);
-
-            // Use localized "Unnamed Park" if park name was empty
-            if (String::SizeOf(buffer) == 0)
-                format_string(buffer, pathSize, STR_UNNAMED_PARK, nullptr);
-
-            safe_strcat_path(path, buffer, pathSize);
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            auto buffer = park.Name;
+            if (buffer.empty())
+            {
+                // Use localized "Unnamed Park" if park name was empty
+                buffer = format_string(STR_UNNAMED_PARK, nullptr);
+            }
+            safe_strcat_path(path, buffer.c_str(), pathSize);
         }
     }
 

@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetLoanAction.hpp>
 #include <openrct2/actions/ParkSetResearchFundingAction.hpp>
 #include <openrct2/config/Config.h>
@@ -1182,8 +1183,6 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
             continue;
 
         noCampaignsActive = 0;
-        set_format_arg(0, rct_string_id, gParkName);
-        set_format_arg(2, uint32_t, gParkNameArgs);
 
         // Set special parameters
         switch (i)
@@ -1199,6 +1198,13 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
             case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
                 set_format_arg(0, rct_string_id, ShopItems[campaign->ShopItemType].Naming.Plural);
                 break;
+            default:
+            {
+                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                auto parkName = park.Name.c_str();
+                set_format_arg(0, rct_string_id, STR_STRING);
+                set_format_arg(2, const char*, parkName);
+            }
         }
 
         // Advertisement

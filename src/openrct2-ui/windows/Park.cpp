@@ -19,6 +19,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/ParkSetNameAction.hpp>
 #include <openrct2/config/Config.h>
@@ -582,8 +583,11 @@ static void window_park_set_disabled_tabs(rct_window* w)
 
 static void window_park_prepare_window_title_text()
 {
-    set_format_arg(0, rct_string_id, gParkName);
-    set_format_arg(2, uint32_t, gParkNameArgs);
+    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+    auto parkName = park.Name.c_str();
+
+    set_format_arg(0, rct_string_id, STR_STRING);
+    set_format_arg(2, const char*, parkName);
 }
 
 #pragma region Entrance page
@@ -654,9 +658,12 @@ static void window_park_entrance_mouseup(rct_window* w, rct_widgetindex widgetIn
             window_scroll_to_viewport(w);
             break;
         case WIDX_RENAME:
-            set_format_arg(16, uint32_t, gParkNameArgs);
-            window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, USER_STRING_MAX_LENGTH);
+        {
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            window_text_input_raw_open(
+                w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, park.Name.c_str(), USER_STRING_MAX_LENGTH);
             break;
+        }
         case WIDX_CLOSE_LIGHT:
             park_set_open(false);
             break;
@@ -764,8 +771,13 @@ static void window_park_entrance_invalidate(rct_window* w)
     window_park_set_pressed_tab(w);
 
     // Set open / close park button state
-    set_format_arg(0, rct_string_id, gParkName);
-    set_format_arg(2, uint32_t, gParkNameArgs);
+    {
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        auto parkName = park.Name.c_str();
+
+        set_format_arg(0, rct_string_id, STR_STRING);
+        set_format_arg(2, const char*, parkName);
+    }
     window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
     window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
         + widget_is_pressed(w, WIDX_CLOSE_LIGHT);

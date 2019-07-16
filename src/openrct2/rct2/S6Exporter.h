@@ -36,6 +36,7 @@ public:
     void SaveScenario(const utf8* path);
     void SaveScenario(IStream* stream);
     void Export();
+    void ExportParkName();
     void ExportRides();
     void ExportRide(rct2_ride* dst, const Ride* src);
     void ExportSprites();

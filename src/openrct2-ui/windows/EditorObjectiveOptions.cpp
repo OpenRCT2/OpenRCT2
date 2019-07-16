@@ -14,8 +14,10 @@
 
 #include <iterator>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetNameAction.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Colour.h>
@@ -402,9 +404,11 @@ static void window_editor_objective_options_main_mouseup(rct_window* w, rct_widg
             window_editor_objective_options_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_PARK_NAME:
-            set_format_arg(16, uint32_t, gParkNameArgs);
-            window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
+        {
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            window_text_input_raw_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, park.Name.c_str(), 32);
             break;
+        }
         case WIDX_SCENARIO_NAME:
             window_text_input_raw_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gS6Info.name, 64);
             break;
@@ -771,7 +775,10 @@ static void window_editor_objective_options_main_textinput(rct_window* w, rct_wi
             GameActions::Execute(&action);
 
             if (gS6Info.name[0] == '\0')
-                format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
+            {
+                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                String::Set(gS6Info.name, sizeof(gS6Info.name), park.Name.c_str());
+            }
             break;
         }
         case WIDX_SCENARIO_NAME:
@@ -943,9 +950,14 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     y = w->y + w->widgets[WIDX_PARK_NAME].top;
     width = w->widgets[WIDX_PARK_NAME].left - 16;
 
-    set_format_arg(0, rct_string_id, gParkName);
-    set_format_arg(2, uint32_t, gParkNameArgs);
-    gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
+    {
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        auto parkName = park.Name.c_str();
+
+        set_format_arg(0, rct_string_id, STR_STRING);
+        set_format_arg(2, const char*, parkName);
+        gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
+    }
 
     // Scenario name
     x = w->x + 8;

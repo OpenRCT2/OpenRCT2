@@ -19,20 +19,15 @@
 #include <algorithm>
 #include <mutex>
 
-#pragma pack(push, 1)
-/* size: 0xA12 */
 struct rct_draw_scroll_text
 {
-    rct_string_id string_id; // 0x00
-    uint32_t string_args_0;  // 0x02
-    uint32_t string_args_1;  // 0x06
-    uint16_t position;       // 0x0A
-    uint16_t mode;           // 0x0C
-    uint32_t id;             // 0x0E
-    uint8_t bitmap[64 * 40]; // 0x12
+    rct_string_id string_id;
+    uint8_t string_args[16];
+    uint16_t position;
+    uint16_t mode;
+    uint32_t id;
+    uint8_t bitmap[64 * 40];
 };
-assert_struct_size(rct_draw_scroll_text, 0xA12);
-#pragma pack(pop)
 
 #define MAX_SCROLLING_TEXT_ENTRIES 32
 
@@ -144,11 +139,9 @@ static int32_t scrolling_text_get_matching_or_oldest(rct_string_id stringId, uin
         }
 
         // If exact match return the matching index
-        uint32_t stringArgs0, stringArgs1;
-        std::memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32_t));
-        std::memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32_t));
-        if (scrollText->string_id == stringId && scrollText->string_args_0 == stringArgs0
-            && scrollText->string_args_1 == stringArgs1 && scrollText->position == scroll && scrollText->mode == scrollingMode)
+        if (scrollText->string_id == stringId
+            && std::memcmp(scrollText->string_args, gCommonFormatArgs, sizeof(scrollText->string_args)) == 0
+            && scrollText->position == scroll && scrollText->mode == scrollingMode)
         {
             scrollText->id = _drawSCrollNextIndex;
             return i + SPR_SCROLLING_TEXT_START;
@@ -174,11 +167,11 @@ static void scrolling_text_format(utf8* dst, size_t size, rct_draw_scroll_text* 
 {
     if (gConfigGeneral.upper_case_banners)
     {
-        format_string_to_upper(dst, size, scrollText->string_id, &scrollText->string_args_0);
+        format_string_to_upper(dst, size, scrollText->string_id, scrollText->string_args);
     }
     else
     {
-        format_string(dst, size, scrollText->string_id, &scrollText->string_args_0);
+        format_string(dst, size, scrollText->string_id, scrollText->string_args);
     }
 }
 
@@ -1454,8 +1447,7 @@ void scrolling_text_invalidate()
     {
         rct_draw_scroll_text& scrollText = _drawScrollTextList[i];
         scrollText.string_id = 0;
-        scrollText.string_args_0 = 0;
-        scrollText.string_args_1 = 0;
+        std::memset(scrollText.string_args, 0, sizeof(scrollText.string_args));
     }
 }
 
@@ -1485,14 +1477,9 @@ int32_t scrolling_text_setup(paint_session* session, rct_string_id stringId, uin
         return scrollIndex;
 
     // Setup scrolling text
-    uint32_t stringArgs0, stringArgs1;
-    std::memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32_t));
-    std::memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32_t));
-
-    rct_draw_scroll_text* scrollText = &_drawScrollTextList[scrollIndex];
+    auto scrollText = &_drawScrollTextList[scrollIndex];
     scrollText->string_id = stringId;
-    scrollText->string_args_0 = stringArgs0;
-    scrollText->string_args_1 = stringArgs1;
+    std::memcpy(scrollText->string_args, gCommonFormatArgs, sizeof(scrollText->string_args));
     scrollText->position = scroll;
     scrollText->mode = scrollingMode;
     scrollText->id = _drawSCrollNextIndex;

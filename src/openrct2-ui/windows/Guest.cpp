@@ -12,6 +12,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/GuestSetFlagsAction.hpp>
 #include <openrct2/actions/PeepPickupAction.hpp>
@@ -1942,15 +1943,17 @@ void window_guest_inventory_update(rct_window* w)
 
 static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item)
 {
-    Ride* ride;
+    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+    auto parkName = park.Name.c_str();
 
     // Default arguments
     set_format_arg(0, uint32_t, ShopItems[item].Image);
     set_format_arg(4, rct_string_id, ShopItems[item].Naming.Display);
-    set_format_arg(6, rct_string_id, gParkName);
-    set_format_arg(8, uint32_t, gParkNameArgs);
+    set_format_arg(6, rct_string_id, STR_STRING);
+    set_format_arg(8, const char*, parkName);
 
     // Special overrides
+    Ride* ride{};
     switch (item)
     {
         case SHOP_ITEM_BALLOON:
@@ -1969,8 +1972,8 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
-                    set_format_arg(8, rct_string_id, gParkName);
-                    set_format_arg(10, uint32_t, gParkNameArgs);
+                    set_format_arg(8, rct_string_id, STR_STRING);
+                    set_format_arg(10, const char*, parkName);
                     break;
                 case VOUCHER_TYPE_RIDE_FREE:
                     ride = get_ride(peep->voucher_arguments);
@@ -1980,8 +1983,8 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
-                    set_format_arg(8, rct_string_id, gParkName);
-                    set_format_arg(10, uint32_t, gParkNameArgs);
+                    set_format_arg(8, rct_string_id, STR_STRING);
+                    set_format_arg(10, const char*, parkName);
                     break;
                 case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);

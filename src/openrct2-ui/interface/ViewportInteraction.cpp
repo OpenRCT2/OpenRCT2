@@ -14,6 +14,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/BalloonPressAction.hpp>
@@ -94,9 +95,14 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
             ride_set_map_tooltip(tileElement);
             break;
         case VIEWPORT_INTERACTION_ITEM_PARK:
-            set_map_tooltip_format_arg(0, rct_string_id, gParkName);
-            set_map_tooltip_format_arg(2, uint32_t, gParkNameArgs);
+        {
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            auto parkName = park.Name.c_str();
+
+            set_map_tooltip_format_arg(0, rct_string_id, STR_STRING);
+            set_map_tooltip_format_arg(2, const char*, parkName);
             break;
+        }
         default:
             info->type = VIEWPORT_INTERACTION_ITEM_NONE;
             break;

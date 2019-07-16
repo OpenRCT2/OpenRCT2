@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../common.h"
 #include "../config/Config.h"
@@ -198,10 +199,8 @@ void S6Exporter::Export()
     _s6.next_free_tile_element_pointer_index = gNextFreeTileElementPointerIndex;
 
     ExportSprites();
+    ExportParkName();
 
-    _s6.park_name = gParkName;
-    // pad_013573D6
-    _s6.park_name_args = gParkNameArgs;
     _s6.initial_cash = gInitialCash;
     _s6.current_loan = gBankLoan;
     _s6.park_flags = gParkFlags;
@@ -442,6 +441,23 @@ uint32_t S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32_t
     value += maxBankLoan;
     value = ror32(value, 3);
     return value;
+}
+
+void S6Exporter::ExportParkName()
+{
+    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+    auto stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, park.Name.c_str());
+    if (stringId != 0)
+    {
+        _s6.park_name = stringId;
+        _s6.park_name_args = 0;
+    }
+    else
+    {
+        log_warning("Unable to allocate user string for park name during S6 export.");
+        _s6.park_name = STR_UNNAMED_PARK;
+        _s6.park_name_args = 0;
+    }
 }
 
 void S6Exporter::ExportRides()

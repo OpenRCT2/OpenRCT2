@@ -18,6 +18,7 @@
 #include "StringIds.h"
 
 #include <cstring>
+#include <string>
 
 bool utf8_is_format_code(int32_t codepoint);
 bool utf8_is_colour_code(int32_t codepoint);
@@ -25,6 +26,7 @@ bool utf8_should_use_sprite_for_codepoint(int32_t codepoint);
 int32_t utf8_get_format_code_arg_length(int32_t codepoint);
 void utf8_remove_formatting(utf8* string, bool allowColours);
 
+std::string format_string(rct_string_id format, const void* args);
 void format_string(char* dest, size_t size, rct_string_id format, const void* args);
 void format_string_raw(char* dest, size_t size, const char* src, const void* args);
 void format_string_to_upper(char* dest, size_t size, rct_string_id format, const void* args);

@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../Context.h"
 #include "../../Game.h"
+#include "../../GameState.h"
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
@@ -269,8 +271,10 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
 
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
                 {
-                    set_format_arg(0, rct_string_id, gParkName);
-                    set_format_arg(2, uint32_t, gParkNameArgs);
+                    const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                    auto name = park.Name.c_str();
+                    set_format_arg(0, rct_string_id, STR_STRING);
+                    set_format_arg(2, const char*, name);
                 }
                 else
                 {

@@ -215,9 +215,6 @@ public:
         ImportTileElements();
         ImportSprites();
 
-        gParkName = _s6.park_name;
-        // pad_013573D6
-        gParkNameArgs = _s6.park_name_args;
         gInitialCash = _s6.initial_cash;
         gBankLoan = _s6.current_loan;
         gParkFlags = _s6.park_flags;
@@ -451,6 +448,16 @@ public:
         gWidePathTileLoopX = _s6.wide_path_tile_loop_x;
         gWidePathTileLoopY = _s6.wide_path_tile_loop_y;
         // pad_13CE778
+
+        // Park name, must be after user strings are loaded
+        // Eventually format_string should be something that the S6 user strings can be passed directly to
+        {
+            char parkName[128]{};
+            format_string(parkName, sizeof(parkName), _s6.park_name, &_s6.park_name_args);
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            park.Name = parkName;
+            user_string_free(_s6.park_name);
+        }
 
         // Fix and set dynamic variables
         map_strip_ghost_flag_from_elements();

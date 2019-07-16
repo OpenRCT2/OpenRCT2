@@ -102,9 +102,7 @@ static void screenshot_get_rendered_palette(rct_palette* palette)
 
 static std::string screenshot_get_park_name()
 {
-    char buffer[512];
-    format_string(buffer, sizeof(buffer), gParkName, &gParkNameArgs);
-    return buffer;
+    return GetContext()->GetGameState()->GetPark().Name;
 }
 
 static std::string screenshot_get_directory()
