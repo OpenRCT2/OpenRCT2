@@ -16,11 +16,13 @@
 TTFontFamily const TTFFamilyChineseSimplified = {
     &TTFFontSimSun,
     &TTFFontHeiti,
+    &TTFFontMicroHei,
 };
 
 TTFontFamily const TTFFamilyChineseTraditional = {
     &TTFFontMingLiu,
     &TTFFontLiHeiPro,
+    &TTFFontMicroHei,
 };
 
 TTFontFamily const TTFFamilyJapanese = {

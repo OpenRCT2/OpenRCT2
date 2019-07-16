@@ -28,6 +28,7 @@ extern TTFFontSetDescriptor TTFFontGulim;
 extern TTFFontSetDescriptor TTFFontNanum;
 extern TTFFontSetDescriptor TTFFontArial;
 extern TTFFontSetDescriptor TTFFontArialUnicode;
+extern TTFFontSetDescriptor TTFFontMicroHei;
 #    define FONT(x) x
 #else
 #    define FONT(x) FONT_OPENRCT2_SPRITE
