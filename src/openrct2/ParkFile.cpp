@@ -115,6 +115,7 @@ namespace OpenRCT2
             String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName.c_str());
 
             AutoCreateMapAnimations();
+            AutoDeriveVariables();
         }
 
         void Save(const std::string_view& path)
@@ -774,6 +775,34 @@ namespace OpenRCT2
                     }
                 }
             }
+        }
+
+        void AutoDeriveVariables()
+        {
+            Peep* peep{};
+            uint16_t spriteIndex{};
+            uint16_t numGuestsInPark = 0;
+            uint16_t numGuestsHeadingsForPark = 0;
+            FOR_ALL_GUESTS (spriteIndex, peep)
+            {
+                if (peep->state == PEEP_STATE_ENTERING_PARK)
+                {
+                    numGuestsHeadingsForPark++;
+                }
+                if (!peep->outside_of_park)
+                {
+                    numGuestsInPark++;
+                }
+            }
+
+            gNumGuestsInPark = numGuestsInPark;
+            gNumGuestsHeadingForPark = numGuestsHeadingsForPark;
+
+            auto& park = GetContext()->GetGameState()->GetPark();
+            gParkSize = park.CalculateParkSize();
+            gParkValue = park.CalculateParkValue();
+            gCompanyValue = park.CalculateCompanyValue();
+            gParkRating = park.CalculateParkRating();
         }
 
         static void ReadWriteStringTable(OrcaStream::ChunkStream& cs, std::string& value, const std::string_view& lcode)
