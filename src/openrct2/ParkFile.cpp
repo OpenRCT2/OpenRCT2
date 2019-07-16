@@ -99,12 +99,14 @@ namespace OpenRCT2
             auto& os = *_os;
             ReadWriteTilesChunk(os);
             ReadWriteRidesChunk(os);
+            ReadWriteThingsChunk(os);
             ReadWriteScenarioChunk(os);
             ReadWriteGeneralChunk(os);
             ReadWriteParkChunk(os);
             ReadWriteClimateChunk(os);
             ReadWriteResearchChunk(os);
             ReadWriteNotificationsChunk(os);
+            ReadWriteStringsChunk(os);
             ReadWriteInterfaceChunk(os);
 
             // Initial cash will eventually be removed
@@ -128,12 +130,14 @@ namespace OpenRCT2
             ReadWriteObjectsChunk(os);
             ReadWriteTilesChunk(os);
             ReadWriteRidesChunk(os);
+            ReadWriteThingsChunk(os);
             ReadWriteScenarioChunk(os);
             ReadWriteGeneralChunk(os);
             ReadWriteParkChunk(os);
             ReadWriteClimateChunk(os);
             ReadWriteResearchChunk(os);
             ReadWriteNotificationsChunk(os);
+            ReadWriteStringsChunk(os);
             ReadWriteInterfaceChunk(os);
         }
 
@@ -491,8 +495,7 @@ namespace OpenRCT2
 
                     // Stations
                     cs.ReadWrite(ride.num_stations);
-                    std::vector<RideStation> stations(std::begin(ride.stations), std::end(ride.stations));
-                    cs.ReadWriteVector(stations, [&cs](RideStation& station) {
+                    cs.ReadWriteArray(ride.stations, [&cs](RideStation& station) {
                         cs.ReadWrite(station.Start);
                         cs.ReadWrite(station.Height);
                         cs.ReadWrite(station.Length);
@@ -505,6 +508,7 @@ namespace OpenRCT2
                         cs.ReadWrite(station.QueueTime);
                         cs.ReadWrite(station.QueueLength);
                         cs.ReadWrite(station.LastPeepInQueue);
+                        return true;
                     });
 
                     cs.ReadWrite(ride.overall_view);
@@ -686,6 +690,49 @@ namespace OpenRCT2
             }
         }
 
+        void ReadWriteThingsChunk(OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::THINGS, [](OrcaStream::ChunkStream& cs) {
+                for (size_t i = 0; i < NUM_SPRITE_LISTS; i++)
+                {
+                    cs.ReadWrite(gSpriteListHead[i]);
+                    cs.ReadWrite(gSpriteListCount[i]);
+                }
+                for (size_t i = 0; i < MAX_SPRITES; i++)
+                {
+                    auto& sprite = *(get_sprite(i));
+                    cs.ReadWrite(sprite);
+                }
+            });
+        }
+
+        void ReadWriteStringsChunk(OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::STRINGS, [](OrcaStream::ChunkStream& cs) {
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    user_string_clear_all();
+                    for (size_t i = 0; i < MAX_USER_STRINGS; i++)
+                    {
+                        auto src = cs.Read<std::string>();
+                        if (src.size() >= USER_STRING_MAX_LENGTH)
+                        {
+                            src.resize(USER_STRING_MAX_LENGTH - 1);
+                        }
+                        std::memcpy(&gUserStrings[i][0], src.data(), src.size());
+                    }
+                }
+                else
+                {
+                    for (size_t i = 0; i < MAX_USER_STRINGS; i++)
+                    {
+                        std::string_view s(&gUserStrings[i][0], 32);
+                        cs.Write(s);
+                    }
+                }
+            });
+        }
+
         void AutoCreateMapAnimations()
         {
             // Automatically create map animations from tile elements
@@ -697,13 +744,34 @@ namespace OpenRCT2
                 auto el = it.element;
                 switch (el->GetType())
                 {
-                    case TILE_ELEMENT_TYPE_ENTRANCE:
-                        auto entrance = el->AsEntrance();
-                        if (entrance->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->GetSequenceIndex() == 0)
+                    case TILE_ELEMENT_TYPE_PATH:
+                    {
+                        auto path = el->AsPath();
+                        if (path->HasQueueBanner())
                         {
-                            map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, it.x * 32, it.y * 32, entrance->base_height);
+                            map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, it.x * 32, it.y * 32, path->base_height);
                         }
                         break;
+                    }
+                    case TILE_ELEMENT_TYPE_ENTRANCE:
+                    {
+                        auto entrance = el->AsEntrance();
+                        switch (entrance->GetEntranceType())
+                        {
+                            case ENTRANCE_TYPE_PARK_ENTRANCE:
+                                if (entrance->GetSequenceIndex() == 0)
+                                {
+                                    map_animation_create(
+                                        MAP_ANIMATION_TYPE_PARK_ENTRANCE, it.x * 32, it.y * 32, entrance->base_height);
+                                }
+                                break;
+                            case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                                map_animation_create(
+                                    MAP_ANIMATION_TYPE_RIDE_ENTRANCE, it.x * 32, it.y * 32, entrance->base_height);
+                                break;
+                        }
+                        break;
+                    }
                 }
             }
         }
