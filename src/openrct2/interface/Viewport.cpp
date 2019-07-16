@@ -827,9 +827,26 @@ void viewport_render(
 #endif
 }
 
-static void viewport_fill_column(paint_session* session)
+static void viewport_fill_column(paint_session* session, std::vector<paint_session>* sessions, size_t index)
 {
     paint_session_generate(session);
+    // Perform a deep copy of the paint session, use relative offsets.
+    // This is done to extract the session for benchmark.
+    if (sessions != nullptr)
+    {
+        (*sessions)[index] = (*session);
+        paint_session* session_copy = &sessions->at(index);
+
+        // Mind the offset needs to be calculated against the original `session`, not `session_copy`
+        for (auto& ps : session_copy->PaintStructs)
+        {
+            ps.basic.next_quadrant_ps = (paint_struct*)(ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic) : std::size(session->PaintStructs));
+        }
+        for (auto& quad : session_copy->Quadrants)
+        {
+            quad = (paint_struct*)(quad ? int(quad - &session->PaintStructs[0].basic) : std::size(session->Quadrants));
+        }
+    }
     paint_session_arrange(session);
 }
 
@@ -928,6 +945,11 @@ void viewport_paint(
 
     // Splits the area into 32 pixel columns and renders them
     size_t index = 0;
+    uint16_t column_count = (rightBorder - floor2(dpi1.x, 32)) / 32 + 1;
+    if (sessions != nullptr)
+    {
+        sessions->resize(column_count);
+    }
     for (x = floor2(dpi1.x, 32); x < rightBorder; x += 32, index++)
     {
         paint_session* session = paint_session_alloc(&dpi1, viewFlags);
@@ -954,11 +976,11 @@ void viewport_paint(
 
         if (useMultithreading)
         {
-            _paintJobs->AddTask([session]() -> void { viewport_fill_column(session); });
+            _paintJobs->AddTask([session, sessions, index]() -> void { viewport_fill_column(session, sessions, index); });
         }
         else
         {
-            viewport_fill_column(session);
+            viewport_fill_column(session, sessions, index);
         }
     }
 
