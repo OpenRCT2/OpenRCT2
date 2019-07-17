@@ -47,6 +47,7 @@ bool gCheatsDisablePlantAging = false;
 bool gCheatsEnableChainLiftOnAllTrack = false;
 bool gCheatsAllowArbitraryRideTypeChanges = false;
 bool gCheatsDisableRideValueAging = false;
+bool gCheatsAutomaticRidePricing = false;
 bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
 
@@ -71,6 +72,7 @@ void CheatsReset()
     gCheatsDisablePlantAging = false;
     gCheatsAllowArbitraryRideTypeChanges = false;
     gCheatsDisableRideValueAging = false;
+    gCheatsAutomaticRidePricing = false;
     gCheatsIgnoreResearchStatus = false;
 }
 
@@ -172,6 +174,8 @@ const char* CheatsGetName(CheatType cheatType)
             return language_get_string(STR_CHEAT_OWN_ALL_LAND);
         case CheatType::DisableRideValueAging:
             return language_get_string(STR_CHEAT_DISABLE_RIDE_VALUE_AGING);
+        case CheatType::AutomaticRidePricing:
+            return language_get_string(STR_CHEAT_AUTOMATIC_RIDE_PRICING);
         case CheatType::IgnoreResearchStatus:
             return language_get_string(STR_CHEAT_IGNORE_RESEARCH_STATUS);
         case CheatType::EnableAllDrawableTrackPieces:

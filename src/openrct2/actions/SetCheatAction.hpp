@@ -224,6 +224,9 @@ public:
             case CheatType::DisableRideValueAging:
                 gCheatsDisableRideValueAging = _param1 != 0;
                 break;
+            case CheatType::AutomaticRidePricing:
+                gCheatsAutomaticRidePricing = _param1 != 0;
+                break;
             case CheatType::IgnoreResearchStatus:
                 gCheatsIgnoreResearchStatus = _param1 != 0;
                 break;
@@ -291,6 +294,8 @@ private:
             case CheatType::AllowArbitraryRideTypeChanges:
                 [[fallthrough]];
             case CheatType::DisableRideValueAging:
+                [[fallthrough]];
+            case CheatType::AutomaticRidePricing:
                 [[fallthrough]];
             case CheatType::IgnoreResearchStatus:
                 [[fallthrough]];

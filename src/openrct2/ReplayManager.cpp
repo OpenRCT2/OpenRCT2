@@ -757,6 +757,7 @@ namespace OpenRCT2
             serialiser << gCheatsDisablePlantAging;
             serialiser << gCheatsAllowArbitraryRideTypeChanges;
             serialiser << gCheatsDisableRideValueAging;
+            serialiser << gCheatsAutomaticRidePricing;
             serialiser << gConfigGeneral.show_real_names_of_guests;
             serialiser << gCheatsIgnoreResearchStatus;
 

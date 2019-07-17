@@ -75,6 +75,7 @@ static bool LoadMap(IStream* stream)
         gCheatsDisablePlantAging = stream->ReadValue<uint8_t>() != 0;
         gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8_t>() != 0;
         gCheatsDisableRideValueAging = stream->ReadValue<uint8_t>() != 0;
+        gCheatsAutomaticRidePricing = stream->ReadValue<uint8_t>() != 0;
         gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8_t>() != 0;
         gCheatsIgnoreResearchStatus = stream->ReadValue<uint8_t>() != 0;
 
@@ -122,6 +123,7 @@ static bool SaveMap(IStream* stream, const std::vector<const ObjectRepositoryIte
         stream->WriteValue<uint8_t>(gCheatsDisablePlantAging);
         stream->WriteValue<uint8_t>(gCheatsAllowArbitraryRideTypeChanges);
         stream->WriteValue<uint8_t>(gCheatsDisableRideValueAging);
+        stream->WriteValue<uint8_t>(gCheatsAutomaticRidePricing);
         stream->WriteValue<uint8_t>(gConfigGeneral.show_real_names_of_guests);
         stream->WriteValue<uint8_t>(gCheatsIgnoreResearchStatus);
 

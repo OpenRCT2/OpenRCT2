@@ -164,6 +164,7 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_DISABLE_BRAKES_FAILURE,
     WIDX_DISABLE_ALL_BREAKDOWNS,
     WIDX_DISABLE_RIDE_VALUE_AGING,
+    WIDX_AUTOMATIC_RIDE_PRICING,
     WIDX_TRACK_PIECES_GROUP,
     WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES,
     WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,
@@ -303,17 +304,18 @@ static rct_widget window_cheats_rides_widgets[] =
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(4),         OHPL(4),        STR_CHEAT_BUILD_IN_PAUSE_MODE,                  STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP },    // Build in pause mode
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(5),         OHPL(5),        STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP},   // Show all drawable track pieces
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(6),         OHPL(6),        STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP },    // Enable chain lift on all track
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(7.25),      HPL(12.25),     STR_CHEAT_GROUP_OPERATION,                      STR_NONE },                             // Construction group
+    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(7.25),      HPL(13.25),     STR_CHEAT_GROUP_OPERATION,                      STR_NONE },                             // Construction group
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(8),         OHPL(8),        STR_CHEAT_SHOW_ALL_OPERATING_MODES,             STR_NONE },                             // Show all operating modes
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(9),         OHPL(9),        STR_CHEAT_UNLOCK_OPERATING_LIMITS,              STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },// 410 km/h lift hill etc.
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(10),        OHPL(10),       STR_CHEAT_DISABLE_BRAKES_FAILURE,               STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP }, // Disable brakes failure
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(11),        OHPL(11),       STR_CHEAT_DISABLE_BREAKDOWNS,                   STR_CHEAT_DISABLE_BREAKDOWNS_TIP },     // Disable all breakdowns
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(12),        OHPL(12),       STR_CHEAT_DISABLE_RIDE_VALUE_AGING,             STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP }, // Disable ride ageing
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(13.25),     HPL(17.25),     STR_CHEAT_GROUP_AVAILABILITY,                   STR_NONE },                             // Construction group
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(14),        OHPL(14),       STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },  // Allow arbitrary ride type changes
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(15),        OHPL(15),       STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, STR_NONE },                 // Show vehicles from other track types
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(16),        OHPL(16),       STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP }, // Disable train length limits
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(17),        OHPL(17),       STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP},    // Ignore Research Status
+    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(13),        OHPL(13),       STR_CHEAT_AUTOMATIC_RIDE_PRICING,               STR_CHEAT_AUTOMATIC_RIDE_PRICING_TIP }, // Automatic ride pricing
+    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(14.25),     HPL(18.25),     STR_CHEAT_GROUP_AVAILABILITY,                   STR_NONE },                             // Construction group
+    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(15),        OHPL(15),       STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },  // Allow arbitrary ride type changes
+    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(16),        OHPL(16),       STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, STR_NONE },                 // Show vehicles from other track types
+    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(17),        OHPL(17),       STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP }, // Disable train length limits
+    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(18),        OHPL(18),       STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP},    // Ignore Research Status
 
     { WIDGETS_END },
 };
@@ -570,6 +572,7 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK) |
     (1ULL << WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES) |
     (1ULL << WIDX_DISABLE_RIDE_VALUE_AGING) |
+    (1ULL << WIDX_AUTOMATIC_RIDE_PRICING) |
     (1ULL << WIDX_IGNORE_RESEARCH_STATUS) |
     (1ULL << WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES)
 };
@@ -1054,6 +1057,9 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_DISABLE_RIDE_VALUE_AGING:
             CheatsSet(CheatType::DisableRideValueAging, !gCheatsDisableRideValueAging);
             break;
+        case WIDX_AUTOMATIC_RIDE_PRICING:
+            CheatsSet(CheatType::AutomaticRidePricing, !gCheatsAutomaticRidePricing);
+            break;
         case WIDX_IGNORE_RESEARCH_STATUS:
             CheatsSet(CheatType::IgnoreResearchStatus, !gCheatsIgnoreResearchStatus);
             break;
@@ -1152,6 +1158,7 @@ static void window_cheats_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gCheatsEnableChainLiftOnAllTrack);
             widget_set_checkbox_value(w, WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gCheatsAllowArbitraryRideTypeChanges);
             widget_set_checkbox_value(w, WIDX_DISABLE_RIDE_VALUE_AGING, gCheatsDisableRideValueAging);
+            widget_set_checkbox_value(w, WIDX_AUTOMATIC_RIDE_PRICING, gCheatsAutomaticRidePricing);
             widget_set_checkbox_value(w, WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
             widget_set_checkbox_value(w, WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
             break;

@@ -822,6 +822,10 @@ static void ride_ratings_calculate_value(Ride* ride)
         value -= value / 4;
 
     ride->value = std::max(0, value);
+    if (gCheatsAutomaticRidePricing)
+    {
+        ride->price = std::max(0, value * 2);
+    }
 }
 
 /**
