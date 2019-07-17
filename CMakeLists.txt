@@ -1,4 +1,4 @@
-﻿# CMAKE project for openrct2
+# CMAKE project for openrct2
 cmake_minimum_required(VERSION 3.9)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
@@ -292,10 +292,14 @@ if (DOWNLOAD_OBJECTS)
         endif ()")
 endif ()
 if (DOWNLOAD_REPLAYS)
-    set(REPLAY_DIR "\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/testdata/replays")
-    install(CODE "file(DOWNLOAD ${REPLAYS_URL} ${REPLAY_DIR}/replays.zip EXPECTED_HASH SHA1=${REPLAYS_SHA1} SHOW_PROGRESS)")
-    install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir ${REPLAY_DIR}/ \"${CMAKE_COMMAND}\" -E tar xvf replays.zip)")
-    install(CODE "file(REMOVE ${REPLAY_DIR}/replays.zip)")
+    install(CODE
+        "if (EXISTS \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/testdata/replays/)\n\
+            message(\"Using cached replays\")\n\
+        else () \n\
+	    file(DOWNLOAD ${REPLAYS_URL} \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/testdata/replays/replays.zip EXPECTED_HASH SHA1=${REPLAYS_SHA1} SHOW_PROGRESS)\n\
+            execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/testdata/replays/ \"${CMAKE_COMMAND}\" -E tar xf replays.zip)\n\
+            file(REMOVE \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/testdata/replays/replays.zip)\n\
+        endif ()")
 endif ()
 install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
                               ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
