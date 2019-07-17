@@ -16,5 +16,5 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
 add_executable(${PROJECT_NAME} ${OPENRCT2_CLI_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/..")
 ipo_set_target_properties(${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME} libopenrct2 Threads::Threads)
+target_link_libraries(${PROJECT_NAME} ${ICU_LIBRARIES} libopenrct2 Threads::Threads)
 target_link_platform_libraries(${PROJECT_NAME})
