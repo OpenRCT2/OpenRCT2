@@ -411,7 +411,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
             auto buffer = park.Name;
             if (buffer.empty())
             {
-                // Use localized "Unnamed Park" if park name was empty
+                // Use localised "Unnamed Park" if park name was empty.
                 buffer = format_string(STR_UNNAMED_PARK, nullptr);
             }
             safe_strcat_path(path, buffer.c_str(), pathSize);
