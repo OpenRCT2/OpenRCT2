@@ -1817,7 +1817,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             auto pathItemType = parameter_3 & 0xFF;
             int32_t z = (parameter_2 & 0xFF) * 8;
             auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ gridX, gridY, z }, pathItemType);
-            
+
             footpathSceneryPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error != GA_ERROR::OK)
                 {
