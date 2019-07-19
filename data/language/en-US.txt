@@ -240,8 +240,6 @@ STR_6212    :Gray sandstone
 STR_6274    :Can't set color scheme...
 STR_6307    :Color scheme: {BLACK}{STRINGID}
 STR_6328    :{SMALLFONT}{BLACK}With this option enabled, giant screenshots will have a transparent background instead of the default black color.
-STR_6329    :Automatic ride pricing
-STR_6330    :{SMALLFONT}{BLACK}Rides will have their admission price automatically set and updated as time progresses to just a bit lower then "overpriced".
 
 #############
 # Scenarios #
