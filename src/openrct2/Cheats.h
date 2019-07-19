@@ -81,6 +81,7 @@ enum class CheatType : int32_t
     NeverEndingMarketing,
     AllowArbitraryRideTypeChanges,
     OwnAllLand,
+    BuildBenches,
     DisableRideValueAging,
     AutomaticRidePricing,
     IgnoreResearchStatus,

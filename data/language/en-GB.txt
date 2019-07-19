@@ -3776,6 +3776,10 @@ STR_6325    :{SMALLFONT}{BLACK}Simulate ride/attraction
 STR_6326    :Can't simulate {POP16}{POP16}{POP16}{STRINGID}...
 STR_6327    :Transparent background for giant screenshots
 STR_6328    :{SMALLFONT}{BLACK}With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
+STR_6329    :Automatic ride pricing
+STR_6330    :{SMALLFONT}{BLACK}Rides will have their admission price automatically set and updated as time progresses to just a bit lower then "overpriced".
+STR_6331    :Build Benches
+STR_6332    :{SMALLFONT}{BLACK}Places benches, bins, lamps, sprinklers randomly on all empty footpaths in your park and lamps, queue line tv's on all empty queue lines.
 
 #############
 # Scenarios #

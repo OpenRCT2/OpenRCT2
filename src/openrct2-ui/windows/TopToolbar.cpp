@@ -64,7 +64,7 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 #include <string>
-
+ 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
@@ -1817,6 +1817,21 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             auto pathItemType = parameter_3 & 0xFF;
             int32_t z = (parameter_2 & 0xFF) * 8;
             auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ gridX, gridY, z }, pathItemType);
+            
+            //String text = pathItemType.c_str();
+            // const char* text = (const char*)pathItemType;
+            // log_verbose("%s", text);
+            // 1 = bench    4 = bin
+            log_fatal("pathItemType %d", pathItemType);
+        //    log_verbose("pathItemType %d", pathItemType);
+        //    openrct2_assert(1, "pathItemType %d", pathItemType);
+        //    printf("pathItemType %d", pathItemType);
+            // console.WriteFormatLine("No ride found with index %d", ride_index);
+            //   Console::Error::WriteLine("pathItemType %d", pathItemType);
+            // Console.Write("pathItemType %d", pathItemType);
+            // Debug.Print("pathItemType %d", pathItemType);
+            // Debug.WriteLine("pathItemType %d", pathItemType);
+            // log_verbose("%s", pathItemType.c_str());
 
             footpathSceneryPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error != GA_ERROR::OK)

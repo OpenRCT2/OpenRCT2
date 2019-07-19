@@ -128,6 +128,7 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_OPEN_CLOSE_PARK,
     WIDX_PARK_PARAMETERS,
     WIDX_OWN_ALL_LAND,
+    WIDX_BUILD_BENCHES,
     WIDX_FORCE_PARK_RATING,
     WIDX_PARK_RATING_SPINNER,
     WIDX_INCREASE_PARK_RATING,
@@ -272,6 +273,7 @@ static rct_widget window_cheats_misc_widgets[] =
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(1),         HPL(1),         STR_CHEAT_OPEN_PARK,                STR_CHEAT_OPEN_PARK_TIP },              // open / close park
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(1),         HPL(1),         STR_CHEAT_PARK_PARAMETERS,          STR_CHEAT_PARK_PARAMETERS_TIP },        // Park parameters
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },           // Own all land
+    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(3),         HPL(3),         STR_CHEAT_BUILD_BENCHES,            STR_CHEAT_BUILD_BENCHES_TIP },          // Build benches bins etc.
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_FORCE_PARK_RATING,              STR_NONE },                             // Force park rating
       SPINNER_WIDGETS      (1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE),                              // park rating (3 widgets)
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(6),         HPL(6),         STR_CHEAT_WIN_SCENARIO,             STR_NONE },                             // Win scenario
@@ -548,6 +550,7 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_WIN_SCENARIO) |
     (1ULL << WIDX_HAVE_FUN) |
     (1ULL << WIDX_OWN_ALL_LAND) |
+    (1ULL << WIDX_BUILD_BENCHES) |
     (1ULL << WIDX_NEVERENDING_MARKETING) |
     (1ULL << WIDX_STAFF_SPEED) |
     (1ULL << WIDX_STAFF_SPEED_DROPDOWN_BUTTON) |
@@ -954,6 +957,9 @@ static void window_cheats_misc_mouseup(rct_window* w, rct_widgetindex widgetInde
             break;
         case WIDX_OWN_ALL_LAND:
             CheatsSet(CheatType::OwnAllLand);
+            break;
+        case WIDX_BUILD_BENCHES:
+            CheatsSet(CheatType::BuildBenches);
             break;
         case WIDX_NEVERENDING_MARKETING:
             CheatsSet(CheatType::NeverEndingMarketing, !gCheatsNeverendingMarketing);

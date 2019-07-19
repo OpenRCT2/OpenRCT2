@@ -339,6 +339,12 @@ void Park::Update(const Date& date)
         gParkValue = CalculateParkValue();
         gCompanyValue = CalculateCompanyValue();
         gTotalRideValueForMoney = CalculateTotalRideValueForMoney();
+        // if (gCheatsAutomaticRidePricing && gParkEntranceFee > 0)
+        if (gCheatsAutomaticRidePricing && !park_ride_prices_unlocked())
+        {
+            int nodpmoney = (((int)(gTotalRideValueForMoney / 10)) * 10);
+            gParkEntranceFee = std::clamp<money16>(nodpmoney, MONEY(0, 00), MAX_ENTRANCE_FEE);
+        }
         _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
         _guestGenerationProbability = CalculateGuestGenerationProbability();
 

@@ -221,6 +221,9 @@ public:
             case CheatType::OwnAllLand:
                 OwnAllLand();
                 break;
+            case CheatType::BuildBenches:
+                BuildBenches();
+                break;
             case CheatType::DisableRideValueAging:
                 gCheatsDisableRideValueAging = _param1 != 0;
                 break;
@@ -439,6 +442,98 @@ private:
             sceneryEntry = it.element->AsPath()->GetAdditionEntry();
             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
                 it.element->AsPath()->SetAdditionStatus(0xFF);
+
+        } while (tile_element_iterator_next(&it));
+
+        gfx_invalidate_screen();
+    }
+
+    void BuildBenches() const
+    {
+        tile_element_iterator it;
+        int random = 0;
+
+        tile_element_iterator_begin(&it);
+        do
+        {
+            if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
+                continue;
+
+            if ((it.element)->AsPath()->HasAddition())
+                continue;
+
+            footpath_interrupt_peeps(it.x, it.y, it.element->base_height * 8);
+            random = util_rand() % 10;
+
+            if ((it.element)->AsPath()->IsQueue())
+            {
+                if (random < 3)
+                {
+                    // 30% lamp(2)
+                    it.element->AsPath()->SetAddition(2);
+                }
+                else
+                {
+                    // 70% queue tv(6)
+                    it.element->AsPath()->SetAddition(6);
+                }
+                it.element->AsPath()->SetAdditionIsGhost(false);
+                it.element->AsPath()->SetIsBroken(false);
+                map_invalidate_tile_full(it.x, it.y);
+                continue;
+            }
+
+            if (bitcount((it.element)->AsPath()->GetEdges()) == 4)
+            {
+                // 100% sprinkler(7)
+                it.element->AsPath()->SetAddition(7);
+                it.element->AsPath()->SetAdditionIsGhost(false);
+                it.element->AsPath()->SetIsBroken(false);
+                map_invalidate_tile_full(it.x, it.y);
+                continue;
+            }
+
+            if ((it.element)->AsPath()->IsSloped())
+            {
+                if (random < 3)
+                {
+                    // 30% lamp(2)
+                    it.element->AsPath()->SetAddition(2);
+                }
+                else
+                {
+                    // 70% bin(4)
+                    it.element->AsPath()->SetAddition(4);
+                    it.element->AsPath()->SetAdditionStatus(255);
+                }
+            }
+            else
+            {
+                if (random < 5)
+                {
+                    // 50% bench(1)
+                    it.element->AsPath()->SetAddition(1);
+                }
+                else if (random >= 5 && random < 8)
+                {
+                    // 30% bin(4)
+                    it.element->AsPath()->SetAddition(4);
+                    it.element->AsPath()->SetAdditionStatus(255);
+                }
+                else if (random == 8)
+                {
+                    // 10% lamp(2)
+                    it.element->AsPath()->SetAddition(2);
+                }
+                else
+                {
+                    // 10% sprinkler(7)
+                    it.element->AsPath()->SetAddition(7);
+                }
+            }
+            it.element->AsPath()->SetAdditionIsGhost(false);
+            it.element->AsPath()->SetIsBroken(false);
+            map_invalidate_tile_full(it.x, it.y);
 
         } while (tile_element_iterator_next(&it));
 

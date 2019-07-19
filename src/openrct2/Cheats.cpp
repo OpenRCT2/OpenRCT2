@@ -172,6 +172,8 @@ const char* CheatsGetName(CheatType cheatType)
             return language_get_string(STR_SET_MONEY);
         case CheatType::OwnAllLand:
             return language_get_string(STR_CHEAT_OWN_ALL_LAND);
+        case CheatType::BuildBenches:
+            return language_get_string(STR_CHEAT_BUILD_BENCHES);
         case CheatType::DisableRideValueAging:
             return language_get_string(STR_CHEAT_DISABLE_RIDE_VALUE_AGING);
         case CheatType::AutomaticRidePricing:
