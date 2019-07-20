@@ -55,7 +55,7 @@ void intro_update()
             _introStateCounter = -580;
 
             // Play the chain lift sound
-            _soundChannel = Mixer_Play_Effect(SOUND_LIFT_7, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.5f, 1, true);
+            _soundChannel = Mixer_Play_Effect(SOUND_LIFT_BM, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.5f, 1, true);
             _chainLiftFinished = false;
             gIntroState++;
             break;
@@ -94,7 +94,7 @@ void intro_update()
 
                 // Play the track friction sound
                 _soundChannel = Mixer_Play_Effect(
-                    SOUND_TRACK_FRICTION_3, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.25f, 0.75, true);
+                    SOUND_TRACK_FRICTION_BM, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.25f, 0.75, true);
             }
 
             // Check if logo is off the screen...ish

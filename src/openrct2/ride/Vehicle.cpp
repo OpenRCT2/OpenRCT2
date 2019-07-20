@@ -117,9 +117,9 @@ static constexpr const uint8_t byte_9A3A18[] = {
 };
 static constexpr const uint8_t _soundParams[SOUND_MAXID][2] =
 {
-    { 1, 0 },   // SOUND_LIFT_1
-    { 1, 0 },   // SOUND_TRACK_FRICTION_1
-    { 1, 0 },   // SOUND_LIFT_2
+    { 1, 0 },   // SOUND_LIFT_CLASSIC
+    { 1, 0 },   // SOUND_TRACK_FRICTION_CLASSIC_WOOD
+    { 1, 0 },   // SOUND_FRICTION_CLASSIC
     { 0, 1 },   // SOUND_SCREAM_1
     { 0, 0 },   // SOUND_CLICK_1
     { 0, 0 },   // SOUND_CLICK_2
@@ -129,27 +129,27 @@ static constexpr const uint8_t _soundParams[SOUND_MAXID][2] =
     { 0, 1 },   // SOUND_SCREAM_4
     { 0, 1 },   // SOUND_SCREAM_5
     { 0, 1 },   // SOUND_SCREAM_6
-    { 1, 0 },   // SOUND_LIFT_3
+    { 1, 0 },   // SOUND_LIFT_FRICTION_WHEELS
     { 0, 0 },   // SOUND_PURCHASE
     { 0, 0 },   // SOUND_CRASH
     { 0, 0 },   // SOUND_LAYING_OUT_WATER
     { 0, 0 },   // SOUND_WATER_1
     { 0, 0 },   // SOUND_WATER_2
     { 0, 1 },   // SOUND_TRAIN_WHISTLE
-    { 0, 1 },   // SOUND_TRAIN_CHUGGING
+    { 0, 1 },   // SOUND_TRAIN_DEPARTING
     { 0, 0 },   // SOUND_WATER_SPLASH
-    { 1, 0 },   // SOUND_HAMMERING
+    { 1, 0 },   // SOUND_GO_KART_ENGINE
     { 0, 0 },   // SOUND_RIDE_LAUNCH_1
     { 0, 0 },   // SOUND_RIDE_LAUNCH_2
     { 0, 0 },   // SOUND_COUGH_1
     { 0, 0 },   // SOUND_COUGH_2
     { 0, 0 },   // SOUND_COUGH_3
     { 0, 0 },   // SOUND_COUGH_4
-    { 1, 0 },   // SOUND_RAIN_1
+    { 1, 0 },   // SOUND_RAIN
     { 0, 0 },   // SOUND_THUNDER_1
     { 0, 0 },   // SOUND_THUNDER_2
-    { 1, 0 },   // SOUND_RAIN_2
-    { 1, 0 },   // SOUND_RAIN_3
+    { 1, 0 },   // SOUND_TRACK_FRICTION_TRAIN
+    { 1, 0 },   // SOUND_TRACK_FRICTION_WATER
     { 0, 0 },   // SOUND_BALLOON_POP
     { 0, 0 },   // SOUND_MECHANIC_FIX
     { 0, 1 },   // SOUND_SCREAM_7
@@ -165,21 +165,21 @@ static constexpr const uint8_t _soundParams[SOUND_MAXID][2] =
     { 0, 0 },   // SOUND_HAUNTED_HOUSE_SCARE
     { 0, 0 },   // SOUND_HAUNTED_HOUSE_SCREAM_1
     { 0, 0 },   // SOUND_HAUNTED_HOUSE_SCREAM_2
-    { 0, 0 },   // SOUND_48
-    { 0, 0 },   // SOUND_49
+    { 0, 0 },   // SOUND_BLOCK_BRAKE_CLOSE
+    { 0, 0 },   // SOUND_BLOCK_BRAKE_RELEASE
     { 0, 0 },   // SOUND_ERROR
-    { 0, 0 },   // SOUND_51
-    { 1, 0 },   // SOUND_LIFT_4
-    { 1, 0 },   // SOUND_LIFT_5
-    { 1, 0 },   // SOUND_TRACK_FRICTION_2
-    { 1, 0 },   // SOUND_LIFT_6
-    { 1, 0 },   // SOUND_LIFT_7
-    { 1, 2 },   // SOUND_TRACK_FRICTION_3
+    { 0, 0 },   // SOUND_BRAKE_RELEASE
+    { 1, 0 },   // SOUND_LIFT_ARROW
+    { 1, 0 },   // SOUND_LIFT_WOOD
+    { 1, 0 },   // SOUND_TRACK_FRICTION_WOOD
+    { 1, 0 },   // SOUND_LIFT_WILD_MOUSE
+    { 1, 0 },   // SOUND_LIFT_BM
+    { 1, 2 },   // SOUND_TRACK_FRICTION_BM
     { 0, 1 },   // SOUND_SCREAM_8
     { 0, 1 },   // SOUND_TRAM
     { 0, 0 },   // SOUND_DOOR_OPEN
     { 0, 0 },   // SOUND_DOOR_CLOSE
-    { 0, 0 }    // SOUND_62
+    { 0, 0 }    // SOUND_PORTCULLIS
 };
 
 static constexpr const uint8_t SpaceRingsTimeToSpriteMap[] =
@@ -694,13 +694,13 @@ static constexpr const LocationXY16 AvoidCollisionMoveOffset[] =
 static constexpr const uint8_t DoorOpenSoundIds[] =
 {
     SOUND_DOOR_OPEN,
-    SOUND_62
+    SOUND_PORTCULLIS
 };
 
 static constexpr const uint8_t DoorCloseSoundIds[] =
 {
     SOUND_DOOR_CLOSE,
-    SOUND_62
+    SOUND_PORTCULLIS
 };
 
 static const struct
@@ -3187,7 +3187,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
         {
-            uint8_t soundId = (rideEntry->vehicles[0].sound_range == 4) ? SOUND_TRAM : SOUND_TRAIN_CHUGGING;
+            uint8_t soundId = (rideEntry->vehicles[0].sound_range == 4) ? SOUND_TRAM : SOUND_TRAIN_DEPARTING;
 
             audio_play_sound_at_location(soundId, vehicle->x, vehicle->y, vehicle->z);
         }
@@ -6709,7 +6709,7 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
         Ride* ride = get_ride(vehicle->ride);
         if (ride->IsBlockSectioned())
         {
-            audio_play_sound_at_location(SOUND_48, x, y, z);
+            audio_play_sound_at_location(SOUND_BLOCK_BRAKE_CLOSE, x, y, z);
         }
     }
 }
@@ -7888,7 +7888,8 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
             {
                 if (!(rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_POWERED))
                 {
-                    audio_play_sound_at_location(SOUND_49, vehicle->track_x, vehicle->track_y, vehicle->track_z);
+                    audio_play_sound_at_location(
+                        SOUND_BLOCK_BRAKE_RELEASE, vehicle->track_x, vehicle->track_y, vehicle->track_z);
                 }
             }
             map_invalidate_element(vehicle->track_x, vehicle->track_z, tileElement);
@@ -8095,7 +8096,7 @@ loc_6DAEB9:
                 if (_vehicleF64E2C == 0)
                 {
                     _vehicleF64E2C++;
-                    audio_play_sound_at_location(SOUND_51, vehicle->x, vehicle->y, vehicle->z);
+                    audio_play_sound_at_location(SOUND_BRAKE_RELEASE, vehicle->x, vehicle->y, vehicle->z);
                 }
             }
         }
