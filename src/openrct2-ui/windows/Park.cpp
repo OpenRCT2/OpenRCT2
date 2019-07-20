@@ -124,7 +124,7 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS,
-    { WWT_BUTTON,           1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
+    { WWT_BUTTON,           1,  7,      222,    207,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
     { WIDGETS_END },
 };
 
@@ -1509,7 +1509,12 @@ static void window_park_objective_mouseup(rct_window* w, rct_widgetindex widgetI
  */
 static void window_park_objective_resize(rct_window* w)
 {
-    window_set_resize(w, 230, 226, 230, 226);
+#ifndef NO_TTF
+    if (gCurrentTTFFontSet != nullptr)
+        window_set_resize(w, 230, 270, 230, 270);
+    else
+#endif
+        window_set_resize(w, 230, 226, 230, 226);
 }
 
 /**
@@ -1544,9 +1549,13 @@ static void window_park_objective_invalidate(rct_window* w)
     window_park_set_pressed_tab(w);
     window_park_prepare_window_title_text();
 
-    //
+    // Show name input button on scenario completion.
     if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+    {
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_BUTTON;
+        window_park_objective_widgets[WIDX_ENTER_NAME].top = w->height - 19;
+        window_park_objective_widgets[WIDX_ENTER_NAME].bottom = w->height - 6;
+    }
     else
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
 
