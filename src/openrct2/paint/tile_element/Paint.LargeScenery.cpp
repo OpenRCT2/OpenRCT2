@@ -316,8 +316,11 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
             if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
             {
                 auto ride = get_ride(banner->ride_index);
-                stringId = ride->name;
-                set_format_arg(0, uint32_t, ride->name_arguments);
+                if (ride != nullptr)
+                {
+                    stringId = STR_STRINGID;
+                    ride->FormatNameTo(gCommonFormatArgs);
+                }
             }
             utf8 signString[256];
             format_string(signString, sizeof(signString), stringId, gCommonFormatArgs);
@@ -436,9 +439,11 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     set_format_arg(0, rct_string_id, banner->string_idx);
     if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
-        Ride* ride = get_ride(banner->ride_index);
-        set_format_arg(0, rct_string_id, ride->name);
-        set_format_arg(2, uint32_t, ride->name_arguments);
+        auto ride = get_ride(banner->ride_index);
+        if (ride != nullptr)
+        {
+            ride->FormatNameTo(gCommonFormatArgs);
+        }
     }
     utf8 signString[256];
     rct_string_id stringId = STR_SCROLLING_SIGN_TEXT;

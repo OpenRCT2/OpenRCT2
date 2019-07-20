@@ -190,14 +190,13 @@ template<> struct DataSerializerTraits<NetworkRideId_t>
 
         stream->Write(rideId, strlen(rideId));
 
-        Ride* ride = get_ride(val.id);
-        if (ride)
+        auto ride = get_ride(val.id);
+        if (ride != nullptr)
         {
-            char rideName[256] = {};
-            format_string(rideName, 256, ride->name, &ride->name_arguments);
+            auto rideName = ride->GetName();
 
             stream->Write(" \"", 2);
-            stream->Write(rideName, strlen(rideName));
+            stream->Write(rideName.c_str(), rideName.size());
             stream->Write("\"", 1);
         }
     }

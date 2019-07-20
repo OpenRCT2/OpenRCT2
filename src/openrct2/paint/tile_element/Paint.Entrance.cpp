@@ -165,8 +165,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
 
         if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            set_format_arg(2, rct_string_id, ride->name);
-            set_format_arg(4, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 2);
         }
         else
         {

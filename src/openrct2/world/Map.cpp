@@ -1298,8 +1298,7 @@ void map_obstruction_set_error_text(TileElement* tileElement)
         case TILE_ELEMENT_TYPE_TRACK:
             ride = get_ride(tileElement->AsTrack()->GetRideIndex());
             errorStringId = STR_X_IN_THE_WAY;
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             sceneryEntry = tileElement->AsSmallScenery()->GetEntry();

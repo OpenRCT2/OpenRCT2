@@ -138,16 +138,7 @@ public:
         ride->subtype = rideEntryIndex;
         ride->SetColourPreset(_colour1);
         ride->overall_view.xy = RCT_XY8_UNDEFINED;
-
-        // Ride name
-        if (rideEntryIndex == RIDE_ENTRY_INDEX_NULL)
-        {
-            ride_set_name_to_track_default(ride, rideEntry);
-        }
-        else
-        {
-            ride_set_name_to_default(ride, rideEntry);
-        }
+        ride->SetNameToDefault();
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {

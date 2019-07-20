@@ -454,8 +454,7 @@ static void sub_6A4101(
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
                 set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
-                set_format_arg(2, rct_string_id, ride->name);
-                set_format_arg(4, uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gCommonFormatArgs + 2);
             }
             else
             {

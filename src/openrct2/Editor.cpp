@@ -303,16 +303,6 @@ namespace Editor
             }
         }
 
-        //
-        {
-            int32_t i;
-            Ride* ride;
-            FOR_ALL_RIDES (i, ride)
-            {
-                user_string_free(ride->name);
-            }
-        }
-
         ride_init_all();
 
         //

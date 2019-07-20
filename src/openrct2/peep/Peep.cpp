@@ -1972,9 +1972,15 @@ void peep_thought_set_format_args(rct_peep_thought* thought)
     uint8_t flags = PeepThoughtToActionMap[thought->type].flags;
     if (flags & 1)
     {
-        Ride* ride = get_ride(thought->item);
-        set_format_arg(2, rct_string_id, ride->name);
-        set_format_arg(4, uint32_t, ride->name_arguments);
+        auto ride = get_ride(thought->item);
+        if (ride != nullptr)
+        {
+            ride->FormatNameTo(gCommonFormatArgs + 2);
+        }
+        else
+        {
+            set_format_arg(2, rct_string_id, STR_NONE);
+        }
     }
     else if (flags & 2)
     {
@@ -2355,8 +2361,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         {
             set_format_arg(0, rct_string_id, peep->name_string_idx);
             set_format_arg(2, uint32_t, peep->id);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             if (gConfigNotifications.guest_queuing_for_ride)
             {
                 news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
@@ -2799,8 +2804,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     {
                         set_format_arg(0, rct_string_id, peep->name_string_idx);
                         set_format_arg(2, uint32_t, peep->id);
-                        set_format_arg(6, rct_string_id, ride->name);
-                        set_format_arg(8, uint32_t, ride->name_arguments);
+                        ride->FormatNameTo(gCommonFormatArgs + 6);
                         if (gConfigNotifications.guest_queuing_for_ride)
                         {
                             news_item_add_to_queue(
@@ -2909,8 +2913,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         {
             set_format_arg(0, rct_string_id, peep->name_string_idx);
             set_format_arg(2, uint32_t, peep->id);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             rct_string_id string_id = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_PEEP_TRACKING_PEEP_IS_IN_X
                                                                                              : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (gConfigNotifications.guest_used_facility)
