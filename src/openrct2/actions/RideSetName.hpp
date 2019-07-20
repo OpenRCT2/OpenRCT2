@@ -79,9 +79,6 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id newUserStringId = user_string_allocate(
-            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-
         Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
@@ -89,8 +86,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
         }
 
-        user_string_free(ride->name);
-        ride->name = newUserStringId;
+        ride->custom_name = _name;
 
         scrolling_text_invalidate();
         gfx_invalidate_screen();

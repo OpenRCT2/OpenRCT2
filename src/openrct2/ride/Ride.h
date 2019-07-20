@@ -195,16 +195,8 @@ struct Ride
     VehicleColour vehicle_colours[MAX_CARS_PER_TRAIN];
     // 0 = closed, 1 = open, 2 = test
     uint8_t status;
-    rct_string_id name;
-    union
-    {
-        uint32_t name_arguments;
-        struct
-        {
-            rct_string_id name_arguments_type_name;
-            uint16_t name_arguments_number;
-        };
-    };
+    std::string custom_name;
+    uint16_t default_name_number;
     LocationXY8 overall_view;
     uint16_t vehicles[MAX_VEHICLES_PER_RIDE]; // Points to the first car in the train
     uint8_t depart_flags;
@@ -415,6 +407,10 @@ public:
 
     void QueueInsertGuestAtFront(int32_t stationIndex, Peep* peep);
     Peep* GetQueueHeadGuest(int32_t stationIndex) const;
+
+    void SetNameToDefault();
+    std::string GetName() const;
+    void FormatNameTo(void* args) const;
 
     static void UpdateAll();
 };
@@ -1092,9 +1088,7 @@ int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 money32 ride_get_common_price(Ride* forRide);
 rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
 money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex, uint8_t* outRideColour);
-void ride_set_name_to_default(Ride* ride, rct_ride_entry* rideEntry);
 
-void ride_set_name_to_track_default(Ride* ride, rct_ride_entry* rideEntry);
 void ride_clear_for_construction(Ride* ride);
 void ride_entrance_exit_place_provisional_ghost();
 void ride_entrance_exit_remove_ghost();

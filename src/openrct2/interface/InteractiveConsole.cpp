@@ -141,11 +141,10 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             int32_t i;
             FOR_ALL_RIDES (i, ride)
             {
-                char name[128];
-                format_string(name, 128, ride->name, &ride->name_arguments);
+                auto name = ride->GetName();
                 console.WriteFormatLine(
                     "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", i, ride->type, ride->subtype,
-                    ride->mode, name);
+                    ride->mode, name.c_str());
             }
         }
         else if (argv[0] == "set")

@@ -1749,8 +1749,7 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         auto ride = get_ride(w->list_item_positions[list_index]);
         if (ride != nullptr)
         {
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
         }
     }
@@ -1961,8 +1960,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             break;
         case SHOP_ITEM_PHOTO:
             ride = get_ride(peep->photo1_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_UMBRELLA:
             set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour) | ShopItems[item].Image);
@@ -1978,8 +1976,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                 case VOUCHER_TYPE_RIDE_FREE:
                     ride = get_ride(peep->voucher_arguments);
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-                    set_format_arg(8, rct_string_id, ride->name);
-                    set_format_arg(10, uint32_t, ride->name_arguments);
+                    ride->FormatNameTo(gCommonFormatArgs + 8);
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
@@ -2000,18 +1997,15 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             break;
         case SHOP_ITEM_PHOTO2:
             ride = get_ride(peep->photo2_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_PHOTO3:
             ride = get_ride(peep->photo3_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_PHOTO4:
             ride = get_ride(peep->photo4_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
     }
 

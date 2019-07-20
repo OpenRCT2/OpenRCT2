@@ -3848,8 +3848,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
                 ride->last_issue_time = gCurrentTicks;
 
-                set_format_arg(0, rct_string_id, ride->name);
-                set_format_arg(2, uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gCommonFormatArgs);
                 if (gConfigNotifications.ride_warnings)
                 {
                     news_item_add_to_queue(NEWS_ITEM_RIDE, STR_GUESTS_GETTING_STUCK_ON_RIDE, current_ride);
@@ -4012,8 +4011,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     {
         set_format_arg(0, rct_string_id, name_string_idx);
         set_format_arg(2, uint32_t, id);
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 6);
 
         rct_string_id msg_string;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
@@ -5159,8 +5157,7 @@ void Guest::UpdateRideLeaveExit()
     {
         set_format_arg(0, rct_string_id, name_string_idx);
         set_format_arg(2, uint32_t, id);
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 6);
 
         if (gConfigNotifications.guest_left_ride)
         {

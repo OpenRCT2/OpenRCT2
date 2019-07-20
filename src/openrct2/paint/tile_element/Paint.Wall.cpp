@@ -436,9 +436,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     set_format_arg(0, rct_string_id, banner->string_idx);
     if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
-        Ride* ride = get_ride(banner->ride_index);
-        set_format_arg(0, rct_string_id, ride->name);
-        set_format_arg(2, uint32_t, ride->name_arguments);
+        auto ride = get_ride(banner->ride_index);
+        if (ride != nullptr)
+        {
+            ride->FormatNameTo(gCommonFormatArgs);
+        }
     }
 
     utf8 signString[256];

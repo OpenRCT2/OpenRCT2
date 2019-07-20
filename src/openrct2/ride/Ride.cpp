@@ -205,7 +205,6 @@ static void ride_breakdown_update(Ride* ride);
 static void ride_call_closest_mechanic(Ride* ride);
 static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection);
 static void ride_entrance_exit_connected(Ride* ride);
-static void ride_set_name_to_vehicle_default(Ride* ride, rct_ride_entry* rideEntry);
 static int32_t ride_get_new_breakdown_problem(Ride* ride);
 static void ride_inspection_update(Ride* ride);
 static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus);
@@ -259,9 +258,8 @@ rct_ride_entry* Ride::GetRideEntry() const
     rct_ride_entry* rideEntry = get_ride_entry(subtype);
     if (rideEntry == nullptr)
     {
-        char oldname[128];
-        format_string(oldname, 128, name, &name_arguments);
-        log_error("Invalid ride subtype for ride %s", oldname);
+        auto rideName = GetName();
+        log_error("Invalid ride subtype for ride %s", rideName.c_str());
     }
     return rideEntry;
 }
@@ -977,16 +975,14 @@ static int32_t ride_check_if_construction_allowed(Ride* ride)
     }
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 6);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
         return 0;
     }
 
     if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
     {
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 6);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);
         return 0;
     }
@@ -1909,8 +1905,7 @@ int32_t ride_modify(CoordsXYE* input)
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
     {
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 6);
         context_show_error(
             STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         return 0;
@@ -2604,8 +2599,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
  */
 void ride_breakdown_add_news_item(Ride* ride)
 {
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
     if (gConfigNotifications.ride_broken_down)
     {
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, ride->id);
@@ -2631,8 +2625,7 @@ static void ride_breakdown_status_update(Ride* ride)
         if (!(ride->not_fixed_timeout & 15) && ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING
             && ride->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             if (gConfigNotifications.ride_warnings)
             {
                 news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_STILL_NOT_FIXED, ride->id);
@@ -3313,8 +3306,7 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!entrance.isNull() && !ride_entrance_exit_is_reachable(entrance))
         {
             // name of ride is parameter of the format string
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             if (gConfigNotifications.ride_warnings)
             {
                 news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride->id);
@@ -3325,8 +3317,7 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!exit.isNull() && !ride_entrance_exit_is_reachable(exit))
         {
             // name of ride is parameter of the format string
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             if (gConfigNotifications.ride_warnings)
             {
                 news_item_add_to_queue(1, STR_EXIT_NOT_CONNECTED, ride->id);
@@ -3410,8 +3401,7 @@ static void ride_shop_connected(Ride* ride)
     }
 
     // Name of ride is parameter of the format string
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
     if (gConfigNotifications.ride_warnings)
     {
         news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride->id);
@@ -3430,8 +3420,7 @@ static void ride_track_set_map_tooltip(TileElement* tileElement)
     auto ride = get_ride(rideIndex);
 
     set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-    set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-    set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs + 2);
 
     rct_string_id formatSecondary;
     int32_t arg1 = 0;
@@ -3446,8 +3435,7 @@ static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
     auto ride = get_ride(rideIndex);
 
     set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-    set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-    set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs + 2);
 
     rct_string_id formatSecondary;
     int32_t arg1 = 0;
@@ -3467,8 +3455,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
 
     set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
     set_map_tooltip_format_arg(2, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
-    set_map_tooltip_format_arg(4, rct_string_id, ride->name);
-    set_map_tooltip_format_arg(6, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs + 4);
     set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
     set_map_tooltip_format_arg(12, uint16_t, stationIndex + 1);
 
@@ -3499,8 +3486,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
         set_map_tooltip_format_arg(2, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
-        set_map_tooltip_format_arg(4, rct_string_id, ride->name);
-        set_map_tooltip_format_arg(6, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gMapTooltipFormatArgs + 4);
         set_map_tooltip_format_arg(12, uint16_t, stationIndex + 1);
         if (queueLength == 0)
         {
@@ -3525,8 +3511,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
                 stationIndex--;
 
         set_map_tooltip_format_arg(0, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
-        set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-        set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 2);
         set_map_tooltip_format_arg(10, uint16_t, stationIndex + 1);
     }
 }
@@ -5712,12 +5697,15 @@ static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour*
 
 static bool ride_name_exists(char* name)
 {
-    char buffer[256];
+    char buffer[256]{};
+    uint32_t formatArgs[32]{};
+
     Ride* ride;
     int32_t i;
     FOR_ALL_RIDES (i, ride)
     {
-        format_string(buffer, 256, ride->name, &ride->name_arguments);
+        ride->FormatNameTo(formatArgs);
+        format_string(buffer, 256, STR_STRINGID, formatArgs);
         if ((strcmp(buffer, name) == 0) && ride_has_any_track_elements(ride))
         {
             return true;
@@ -5800,76 +5788,19 @@ money32 ride_get_common_price(Ride* forRide)
     return MONEY32_UNDEFINED;
 }
 
-void ride_set_name_to_default(Ride* ride, rct_ride_entry* rideEntry)
+void Ride::SetNameToDefault()
 {
-    if (RideGroupManager::RideTypeIsIndependent(ride->type))
-    {
-        ride_set_name_to_vehicle_default(ride, rideEntry);
-    }
-    else
-    {
-        ride_set_name_to_track_default(ride, rideEntry);
-    }
-}
+    char rideNameBuffer[256]{};
+    uint8_t rideNameArgs[32]{};
 
-void ride_set_name_to_track_default(Ride* ride, rct_ride_entry* rideEntry)
-{
-    char rideNameBuffer[256];
-    ride_name_args name_args;
-
-    ride->name = STR_NONE;
-
-    if (RideGroupManager::RideTypeHasRideGroups(ride->type))
-    {
-        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
-        name_args.type_name = rideGroup->Naming.name;
-    }
-    else
-    {
-        name_args.type_name = RideNaming[ride->type].name;
-    }
-
-    name_args.number = 0;
+    // Increment default name number until we find a unique name
+    default_name_number = 0;
     do
     {
-        name_args.number++;
-        format_string(rideNameBuffer, 256, 1, &name_args);
+        default_name_number++;
+        FormatNameTo(rideNameArgs);
+        format_string(rideNameBuffer, 256, STR_STRINGID, &rideNameArgs);
     } while (ride_name_exists(rideNameBuffer));
-
-    ride->name = 1;
-    ride->name_arguments_type_name = name_args.type_name;
-    ride->name_arguments_number = name_args.number;
-}
-
-static void ride_set_name_to_vehicle_default(Ride* ride, rct_ride_entry* rideEntry)
-{
-    char rideNameBuffer[256];
-    ride_name_args name_args;
-
-    ride->name = 1;
-    ride->name_arguments_type_name = rideEntry->naming.name;
-    rct_string_id rideNameStringId = 0;
-    name_args.type_name = rideEntry->naming.name;
-    name_args.number = 0;
-
-    do
-    {
-        name_args.number++;
-        format_string(rideNameBuffer, 256, ride->name, &name_args);
-    } while (ride_name_exists(rideNameBuffer));
-
-    ride->name_arguments_type_name = name_args.type_name;
-    ride->name_arguments_number = name_args.number;
-
-    rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, rideNameBuffer);
-    if (rideNameStringId != 0)
-    {
-        ride->name = rideNameStringId;
-    }
-    else
-    {
-        ride_set_name_to_track_default(ride, rideEntry);
-    }
 }
 
 /**
@@ -7272,8 +7203,7 @@ void Ride::Crash(uint8_t vehicleIndex)
         }
     }
 
-    set_format_arg(0, rct_string_id, name);
-    set_format_arg(2, uint32_t, name_arguments);
+    FormatNameTo(gCommonFormatArgs);
     if (gConfigNotifications.ride_crashed)
     {
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, id);
@@ -7284,24 +7214,9 @@ void ride_reset_all_names()
 {
     int32_t i;
     Ride* ride;
-    char rideNameBuffer[256];
-    ride_name_args name_args;
-
     FOR_ALL_RIDES (i, ride)
     {
-        ride->name = STR_NONE;
-
-        name_args.type_name = RideNaming[ride->type].name;
-        name_args.number = 0;
-        do
-        {
-            name_args.number++;
-            format_string(rideNameBuffer, 256, 1, &name_args);
-        } while (ride_name_exists(rideNameBuffer));
-
-        ride->name = 1;
-        ride->name_arguments_type_name = name_args.type_name;
-        ride->name_arguments_number = name_args.number;
+        ride->SetNameToDefault();
     }
 }
 
@@ -7371,7 +7286,7 @@ rct_vehicle* ride_get_broken_vehicle(Ride* ride)
  */
 void Ride::Delete()
 {
-    user_string_free(name);
+    custom_name = {};
     measurement = {};
     type = RIDE_TYPE_NULL;
 }
@@ -7941,5 +7856,54 @@ void ride_clear_leftover_entrances(Ride* ride)
             tile_element_remove(it.element);
             tile_element_iterator_restart_for_tile(&it);
         }
+    }
+}
+
+std::string Ride::GetName() const
+{
+    uint8_t args[32]{};
+    FormatNameTo(args);
+    return format_string(STR_STRINGID, args);
+}
+
+void Ride::FormatNameTo(void* argsV) const
+{
+    auto args = (uint8_t*)argsV;
+    if (!custom_name.empty())
+    {
+        auto str = custom_name.c_str();
+        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
+        set_format_arg_on(args, 2, void*, str);
+    }
+    else
+    {
+        rct_string_id rideTypeName{};
+        if (RideGroupManager::RideTypeIsIndependent(type))
+        {
+            auto rideEntry = GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                rideTypeName = rideEntry->naming.name;
+            }
+        }
+        else
+        {
+            if (RideGroupManager::RideTypeHasRideGroups(type))
+            {
+                auto rideEntry = GetRideEntry();
+                if (rideEntry != nullptr)
+                {
+                    auto rideGroup = RideGroupManager::GetRideGroup(type, rideEntry);
+                    rideTypeName = rideGroup->Naming.name;
+                }
+            }
+            else
+            {
+                rideTypeName = RideNaming[type].name;
+            }
+        }
+        set_format_arg_on(args, 0, rct_string_id, 1);
+        set_format_arg_on(args, 2, rct_string_id, rideTypeName);
+        set_format_arg_on(args, 4, uint16_t, default_name_number);
     }
 }

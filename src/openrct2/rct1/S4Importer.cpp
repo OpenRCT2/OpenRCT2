@@ -3051,10 +3051,9 @@ private:
         Ride* ride;
         FOR_ALL_RIDES (i, ride)
         {
-            if (ride->name == 0)
+            if (ride->custom_name.empty())
             {
-                auto rideEntry = get_ride_entry(ride->subtype);
-                ride_set_name_to_default(ride, rideEntry);
+                ride->SetNameToDefault();
             }
         }
     }

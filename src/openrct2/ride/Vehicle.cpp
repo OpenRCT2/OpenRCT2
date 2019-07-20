@@ -3466,8 +3466,7 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle)
 
     vehicleIndex++;
     set_format_arg(2, uint16_t, vehicleIndex);
-    set_format_arg(4, rct_string_id, ride->name);
-    set_format_arg(6, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs + 4);
     set_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
 
     news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
@@ -5148,8 +5147,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle)
 
     if (numFatalities != 0)
     {
-        set_format_arg(2, rct_string_id, ride->name);
-        set_format_arg(4, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 2);
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
 
         if (gParkRatingCasualtyPenalty < 500)
@@ -6134,8 +6132,7 @@ void vehicle_set_map_toolbar(const rct_vehicle* vehicle)
 
     set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
     set_map_tooltip_format_arg(2, rct_string_id, STR_MAP_TOOLTIP_STRINGID_STRINGID);
-    set_map_tooltip_format_arg(4, rct_string_id, ride->name);
-    set_map_tooltip_format_arg(6, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs + 4);
     set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised);
     set_map_tooltip_format_arg(12, uint16_t, vehicleIndex + 1);
 

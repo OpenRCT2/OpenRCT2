@@ -608,8 +608,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         ride = get_ride(w->list_item_positions[i]);
 
         // Ride name
-        set_format_arg(0, rct_string_id, ride->name);
-        set_format_arg(2, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs);
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, 159);
 
         // Ride information
