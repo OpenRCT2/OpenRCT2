@@ -633,7 +633,7 @@ private:
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SOUND_PLACE_ITEM, _coords.x, _coords.y, centreZ);
+            audio_play_sound_at_location(RCT2Sound::PlaceItem, _coords.x, _coords.y, centreZ);
         }
         res->Cost += result->Cost;
         return res;

@@ -12,6 +12,7 @@
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
 #include "../world/Sprite.h"
+#include "../audio/audio.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
@@ -58,13 +59,13 @@ rct_vehicle* cable_lift_segment_create(
     current->spin_sprite = 0;
     current->spin_speed = 0;
     current->sound2_flags = 0;
-    current->sound1_id = RCT12_SOUND_ID_NULL;
-    current->sound2_id = RCT12_SOUND_ID_NULL;
+    current->sound1_id = RCT2Sound::Null;
+    current->sound2_id = RCT2Sound::Null;
     current->var_C4 = 0;
     current->animation_frame = 0;
     current->var_C8 = 0;
     current->var_CA = 0;
-    current->scream_sound_id = 0xFF;
+    current->scream_sound_id = RCT2Sound::Null;
     current->vehicle_sprite_type = 0;
     current->bank_rotation = 0;
     for (auto& peep : current->peep)

@@ -1218,8 +1218,8 @@ private:
         dst->sound_vector_factor = src->sound_vector_factor;
         dst->spin_speed = src->spin_speed;
         dst->sound2_flags = src->sound2_flags;
-        dst->sound1_id = RCT12_SOUND_ID_NULL;
-        dst->sound2_id = RCT12_SOUND_ID_NULL;
+        dst->sound1_id = RCT2Sound::Null;
+        dst->sound2_id = RCT2Sound::Null;
         dst->var_C0 = src->var_C0;
         dst->var_C4 = src->var_C4;
         dst->animation_frame = src->animation_frame;
@@ -1227,7 +1227,7 @@ private:
         dst->var_CA = src->var_CA;
         dst->var_CE = src->var_CE;
         dst->var_D3 = src->var_D3;
-        dst->scream_sound_id = 255;
+        dst->scream_sound_id = RCT2Sound::Null;
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
 

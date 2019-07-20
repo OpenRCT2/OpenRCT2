@@ -143,7 +143,7 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message)
     w->error.var_480 = 0;
     if (!gDisableErrorWindowSound)
     {
-        audio_play_sound(SOUND_ERROR, 0, w->x + (w->width / 2));
+        audio_play_sound(RCT2Sound::Error, 0, w->x + (w->width / 2));
     }
 
     return w;

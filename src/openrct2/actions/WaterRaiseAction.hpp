@@ -119,7 +119,7 @@ private:
 
         if (isExecuting && hasChanged)
         {
-            audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, res->Position.x, res->Position.y, res->Position.z);
+            audio_play_sound_at_location(RCT2Sound::LayingOutWater, res->Position.x, res->Position.y, res->Position.z);
         }
         // Force ride construction to recheck area
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;

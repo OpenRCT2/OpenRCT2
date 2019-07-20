@@ -1063,7 +1063,7 @@ static void input_widget_left(int32_t x, int32_t y, rct_window* w, rct_widgetind
         default:
             if (widget_is_enabled(w, widgetIndex) && !widget_is_disabled(w, widgetIndex))
             {
-                audio_play_sound(SOUND_CLICK_1, 0, w->x + ((widget->left + widget->right) / 2));
+                audio_play_sound(RCT2Sound::Click1, 0, w->x + ((widget->left + widget->right) / 2));
 
                 // Set new cursor down widget
                 gPressedWidget.window_classification = windowClass;
@@ -1345,7 +1345,7 @@ void input_state_widget_pressed(
 
             {
                 int32_t mid_point_x = (widget->left + widget->right) / 2 + w->x;
-                audio_play_sound(SOUND_CLICK_2, 0, mid_point_x);
+                audio_play_sound(RCT2Sound::Click2, 0, mid_point_x);
             }
             if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                 break;

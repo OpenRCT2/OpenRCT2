@@ -81,7 +81,7 @@ void rct_balloon::Pop()
 {
     popped = 1;
     frame = 0;
-    audio_play_sound_at_location(SOUND_BALLOON_POP, x, y, z);
+    audio_play_sound_at_location(RCT2Sound::BalloonPop, x, y, z);
 }
 
 void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped)

@@ -374,7 +374,7 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
         if (result->Error != GA_ERROR::OK)
             return;
 
-        audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+        audio_play_sound_at_location(RCT2Sound::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
 
         Ride* ride = get_ride(rideIndex);
         if (ride_are_all_possible_entrances_and_exits_built(ride))
@@ -507,6 +507,6 @@ static void window_maze_construction_construct(int32_t direction)
     _currentTrackBegin.y = y;
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_MAZE_MOVE)
     {
-        audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
+        audio_play_sound_at_location(RCT2Sound::PlaceItem, x, y, z);
     }
 }

@@ -10,10 +10,13 @@
 #pragma once
 
 #include "../common.h"
+#include "audio.h"
 
 #define MIXER_VOLUME_MAX 128
 #define MIXER_LOOP_NONE 0
 #define MIXER_LOOP_INFINITE (-1)
+
+enum class RCT_SOUND : uint32_t;
 
 enum MIXER_GROUP
 {
@@ -43,7 +46,7 @@ namespace OpenRCT2::Audio
         virtual bool LoadMusic(size_t pathid) abstract;
         virtual void SetVolume(float volume) abstract;
 
-        virtual IAudioSource* GetSoundSource(int32_t id) abstract;
+        virtual IAudioSource* GetSoundSource(RCT2Sound id) abstract;
         virtual IAudioSource* GetMusicSource(int32_t id) abstract;
     };
 } // namespace OpenRCT2::Audio
@@ -56,7 +59,7 @@ namespace OpenRCT2::Audio
 #endif
 
 void Mixer_Init(const char* device);
-void* Mixer_Play_Effect(size_t id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
+void* Mixer_Play_Effect(RCT2Sound id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
 void Mixer_Stop_Channel(void* channel);
 void Mixer_Channel_Volume(void* channel, int32_t volume);
 void Mixer_Channel_Pan(void* channel, float pan);

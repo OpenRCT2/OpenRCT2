@@ -1423,7 +1423,7 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     /* .no_seating_rows = */ 0,
     /* .spinning_inertia = */ 0,
     /* .spinning_friction = */ 255,
-    /* .friction_sound_id = */ 0,
+    /* .friction_sound_id = */ RCT2Sound::LiftClassic,
     /* .log_flume_reverser_vehicle_type = */ 0,
     /* .sound_range = */ 0,
     /* .double_sound_frequency = */ 0,
@@ -1450,97 +1450,97 @@ const uint16_t RideCrookedHouseLength[1] = {
 
 /* rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
 const rct_ride_lift_data RideLiftData[] = {
-    { SOUND_LIFT_FRICTION_WHEELS, 7, 7 }, // Spiral Roller coaster
-    { SOUND_LIFT_CLASSIC, 4, 6 }, // Stand Up Coaster
-    { SOUND_LIFT_CLASSIC, 4, 6 }, // Suspended Swinging
-    { SOUND_LIFT_BM, 5, 7 }, // Inverted
-    { SOUND_LIFT_FRICTION_WHEELS, 4, 6 }, // Steel Mini Coaster
-    { 255,          5, 5 }, // Mini Railway
-    { 255,          5, 5 }, // Monorail
-    { SOUND_LIFT_FRICTION_WHEELS, 4, 5 }, // Mini Suspended Coaster
-    { 255,          5, 5 }, // Boat Hire
-    { SOUND_LIFT_CLASSIC, 4, 5 }, // Wooden Wild Mine/Mouse
-    { SOUND_LIFT_CLASSIC, 4, 5 }, // Steeplechase/Motorbike/Soap Box D
-    { 255,          5, 5 }, // Car Ride
-    { 255,          5, 5 }, // Launched Freefall
-    { SOUND_LIFT_FRICTION_WHEELS, 4, 5 }, // Bobsleigh Coaster
-    { 255,          5, 5 }, // Observation Tower
-    { SOUND_LIFT_CLASSIC, 4, 6 }, // Looping Roller Coaster
-    { SOUND_LIFT_FRICTION_WHEELS, 4, 5 }, // Dinghy Slide
-    { SOUND_LIFT_ARROW, 4, 6 }, // Mine Train Coaster
-    { 255,          5, 5 }, // Chairlift
-    { SOUND_LIFT_ARROW, 4, 6 }, // Corkscrew Roller Coaster
-    { 255,          5, 5 }, // Maze
-    { 255,          5, 5 }, // Spiral Slide
-    { 255,          5, 5 }, // Go Karts
-    { 255,          5, 5 }, // Log Flume
-    { 255,          5, 5 }, // River Rapids
-    { 255,          5, 5 }, // Dodgems
-    { 255,          5, 5 }, // Pirate Ship
-    { 255,          5, 5 }, // Swinging Inverter Ship
-    { 255,          5, 5 }, // Food Stall
-    { 255,          5, 5 }, // (none)
-    { 255,          5, 5 }, // Drink Stall
-    { 255,          5, 5 }, // (none)
-    { 255,          5, 5 }, // Shop (all types)
-    { 255,          5, 5 }, // Merry Go Round
-    { 255,          5, 5 }, // Balloon Stall (maybe)
-    { 255,          5, 5 }, // Information Kiosk
-    { 255,          5, 5 }, // Bathroom
-    { 255,          5, 5 }, // Ferris Wheel
-    { 255,          5, 5 }, // Motion Simulator
-    { 255,          5, 5 }, // 3D Cinema
-    { 255,          5, 5 }, // Topspin
-    { 255,          5, 5 }, // Space Rings
-    { 255,          5, 5 }, // Reverse Freefall Coaster
-    { 255,          5, 5 }, // Elevator
-    { SOUND_LIFT_BM, 4, 5 }, // Vertical Drop Roller Coaster
-    { 255,          5, 5 }, // ATM
-    { 255,          5, 5 }, // Twist
-    { 255,          5, 5 }, // Haunted House
-    { 255,          5, 5 }, // First Aid
-    { 255,          5, 5 }, // Circus Show
-    { 255,          5, 5 }, // Ghost Train
-    { SOUND_LIFT_BM, 5, 8 }, // Twister Roller Coaster
-    { SOUND_LIFT_WOOD, 5, 7 }, // Wooden Roller Coaster
-    { SOUND_LIFT_WOOD, 3, 4 }, // Side-Friction Roller Coaster
-    { SOUND_LIFT_WILD_MOUSE, 4, 6 }, // Wild Mouse
-    { SOUND_LIFT_FRICTION_WHEELS, 4, 6 }, // Multi Dimension Coaster
-    { SOUND_LIFT_FRICTION_WHEELS, 4, 6 }, // (none)
-    { SOUND_LIFT_BM, 4, 6 }, // Flying Roller Coaster
-    { SOUND_LIFT_BM, 4, 6 }, // (none)
-    { SOUND_LIFT_CLASSIC, 3, 4 }, // Virginia Reel
-    { 255,          5, 5 }, // Splash Boats
-    { 255,          5, 5 }, // Mini Helicopters
-    { SOUND_LIFT_CLASSIC, 4, 6 }, // Lay-down Roller Coaster
-    { 255,          5, 5 }, // Suspended Monorail
-    { SOUND_LIFT_CLASSIC, 4, 6 }, // (none)
-    { SOUND_LIFT_CLASSIC, 3, 4 }, // Reverser Roller Coaster
-    { SOUND_LIFT_CLASSIC, 4, 6 }, // Heartline Twister Roller Coaster
-    { 255,          5, 5 }, // Mini Golf
-    { SOUND_LIFT_CLASSIC, 5, 8 }, // Giga Coaster
-    { 255,          5, 5 }, // Roto-Drop
-    { 255,          5, 5 }, // Flying Saucers
-    { 255,          5, 5 }, // Crooked House
-    { 255,          5, 5 }, // Monorail Cycles
-    { SOUND_LIFT_FRICTION_WHEELS, 4, 6 }, // Compact Inverted Coaster
-    { SOUND_LIFT_CLASSIC, 4, 6 }, // Water Coaster
-    { 255,          5, 5 }, // Air Powered Vertical Coaster
-    { SOUND_LIFT_WILD_MOUSE, 4, 6 }, // Inverted Hairpin Coaster
-    { 255,          5, 5 }, // Magic Carpet
-    { 255,          5, 5 }, // Submarine Ride
-    { 255,          5, 5 }, // River Rafts
-    { 255,          5, 5 }, // (none)
-    { 255,          5, 5 }, // Enterprise
-    { 255,          5, 5 }, // (none)
-    { 255,          5, 5 }, // (none)
-    { 255,          5, 5 }, // (none)
-    { SOUND_LIFT_ARROW, 4, 7 }, // (none)
-    { SOUND_LIFT_CLASSIC, 4, 7 }, // Inverted Impulse Coaster
-    { SOUND_LIFT_CLASSIC, 4, 6 }, // Mini Roller Coaster
-    { 255,          5, 5 }, // Mine Ride
-    { SOUND_LIFT_WILD_MOUSE, 4, 6 }, // (none)
-    { 255,          4, 6 }  // LIM Launched Roller Coaster
+    { RCT2Sound::LiftFrictionWheels, 7, 7 }, // Spiral Roller coaster
+    { RCT2Sound::LiftClassic, 4, 6 }, // Stand Up Coaster
+    { RCT2Sound::LiftClassic, 4, 6 }, // Suspended Swinging
+    { RCT2Sound::LiftBM, 5, 7 }, // Inverted
+    { RCT2Sound::LiftFrictionWheels, 4, 6 }, // Steel Mini Coaster
+    { RCT2Sound::Null,          5, 5 }, // Mini Railway
+    { RCT2Sound::Null,          5, 5 }, // Monorail
+    { RCT2Sound::LiftFrictionWheels, 4, 5 }, // Mini Suspended Coaster
+    { RCT2Sound::Null,          5, 5 }, // Boat Hire
+    { RCT2Sound::LiftClassic, 4, 5 }, // Wooden Wild Mine/Mouse
+    { RCT2Sound::LiftClassic, 4, 5 }, // Steeplechase/Motorbike/Soap Box D
+    { RCT2Sound::Null,          5, 5 }, // Car Ride
+    { RCT2Sound::Null,          5, 5 }, // Launched Freefall
+    { RCT2Sound::LiftFrictionWheels, 4, 5 }, // Bobsleigh Coaster
+    { RCT2Sound::Null,          5, 5 }, // Observation Tower
+    { RCT2Sound::LiftClassic, 4, 6 }, // Looping Roller Coaster
+    { RCT2Sound::LiftFrictionWheels, 4, 5 }, // Dinghy Slide
+    { RCT2Sound::LiftArrow, 4, 6 }, // Mine Train Coaster
+    { RCT2Sound::Null,          5, 5 }, // Chairlift
+    { RCT2Sound::LiftArrow, 4, 6 }, // Corkscrew Roller Coaster
+    { RCT2Sound::Null,          5, 5 }, // Maze
+    { RCT2Sound::Null,          5, 5 }, // Spiral Slide
+    { RCT2Sound::Null,          5, 5 }, // Go Karts
+    { RCT2Sound::Null,          5, 5 }, // Log Flume
+    { RCT2Sound::Null,          5, 5 }, // River Rapids
+    { RCT2Sound::Null,          5, 5 }, // Dodgems
+    { RCT2Sound::Null,          5, 5 }, // Pirate Ship
+    { RCT2Sound::Null,          5, 5 }, // Swinging Inverter Ship
+    { RCT2Sound::Null,          5, 5 }, // Food Stall
+    { RCT2Sound::Null,          5, 5 }, // (none)
+    { RCT2Sound::Null,          5, 5 }, // Drink Stall
+    { RCT2Sound::Null,          5, 5 }, // (none)
+    { RCT2Sound::Null,          5, 5 }, // Shop (all types)
+    { RCT2Sound::Null,          5, 5 }, // Merry Go Round
+    { RCT2Sound::Null,          5, 5 }, // Balloon Stall (maybe)
+    { RCT2Sound::Null,          5, 5 }, // Information Kiosk
+    { RCT2Sound::Null,          5, 5 }, // Bathroom
+    { RCT2Sound::Null,          5, 5 }, // Ferris Wheel
+    { RCT2Sound::Null,          5, 5 }, // Motion Simulator
+    { RCT2Sound::Null,          5, 5 }, // 3D Cinema
+    { RCT2Sound::Null,          5, 5 }, // Topspin
+    { RCT2Sound::Null,          5, 5 }, // Space Rings
+    { RCT2Sound::Null,          5, 5 }, // Reverse Freefall Coaster
+    { RCT2Sound::Null,          5, 5 }, // Elevator
+    { RCT2Sound::LiftBM, 4, 5 }, // Vertical Drop Roller Coaster
+    { RCT2Sound::Null,          5, 5 }, // ATM
+    { RCT2Sound::Null,          5, 5 }, // Twist
+    { RCT2Sound::Null,          5, 5 }, // Haunted House
+    { RCT2Sound::Null,          5, 5 }, // First Aid
+    { RCT2Sound::Null,          5, 5 }, // Circus Show
+    { RCT2Sound::Null,          5, 5 }, // Ghost Train
+    { RCT2Sound::LiftBM, 5, 8 }, // Twister Roller Coaster
+    { RCT2Sound::LiftWood, 5, 7 }, // Wooden Roller Coaster
+    { RCT2Sound::LiftWood, 3, 4 }, // Side-Friction Roller Coaster
+    { RCT2Sound::LiftWildMouse, 4, 6 }, // Wild Mouse
+    { RCT2Sound::LiftFrictionWheels, 4, 6 }, // Multi Dimension Coaster
+    { RCT2Sound::LiftFrictionWheels, 4, 6 }, // (none)
+    { RCT2Sound::LiftBM, 4, 6 }, // Flying Roller Coaster
+    { RCT2Sound::LiftBM, 4, 6 }, // (none)
+    { RCT2Sound::LiftClassic, 3, 4 }, // Virginia Reel
+    { RCT2Sound::Null,          5, 5 }, // Splash Boats
+    { RCT2Sound::Null,          5, 5 }, // Mini Helicopters
+    { RCT2Sound::LiftClassic, 4, 6 }, // Lay-down Roller Coaster
+    { RCT2Sound::Null,          5, 5 }, // Suspended Monorail
+    { RCT2Sound::LiftClassic, 4, 6 }, // (none)
+    { RCT2Sound::LiftClassic, 3, 4 }, // Reverser Roller Coaster
+    { RCT2Sound::LiftClassic, 4, 6 }, // Heartline Twister Roller Coaster
+    { RCT2Sound::Null,          5, 5 }, // Mini Golf
+    { RCT2Sound::LiftClassic, 5, 8 }, // Giga Coaster
+    { RCT2Sound::Null,          5, 5 }, // Roto-Drop
+    { RCT2Sound::Null,          5, 5 }, // Flying Saucers
+    { RCT2Sound::Null,          5, 5 }, // Crooked House
+    { RCT2Sound::Null,          5, 5 }, // Monorail Cycles
+    { RCT2Sound::LiftFrictionWheels, 4, 6 }, // Compact Inverted Coaster
+    { RCT2Sound::LiftClassic, 4, 6 }, // Water Coaster
+    { RCT2Sound::Null,          5, 5 }, // Air Powered Vertical Coaster
+    { RCT2Sound::LiftWildMouse, 4, 6 }, // Inverted Hairpin Coaster
+    { RCT2Sound::Null,          5, 5 }, // Magic Carpet
+    { RCT2Sound::Null,          5, 5 }, // Submarine Ride
+    { RCT2Sound::Null,          5, 5 }, // River Rafts
+    { RCT2Sound::Null,          5, 5 }, // (none)
+    { RCT2Sound::Null,          5, 5 }, // Enterprise
+    { RCT2Sound::Null,          5, 5 }, // (none)
+    { RCT2Sound::Null,          5, 5 }, // (none)
+    { RCT2Sound::Null,          5, 5 }, // (none)
+    { RCT2Sound::LiftArrow, 4, 7 }, // (none)
+    { RCT2Sound::LiftClassic, 4, 7 }, // Inverted Impulse Coaster
+    { RCT2Sound::LiftClassic, 4, 6 }, // Mini Roller Coaster
+    { RCT2Sound::Null,          5, 5 }, // Mine Ride
+    { RCT2Sound::LiftWildMouse, 4, 6 }, // (none)
+    { RCT2Sound::Null,          4, 6 }  // LIM Launched Roller Coaster
 };
 
 /** rct2: 0x0097D7CB */

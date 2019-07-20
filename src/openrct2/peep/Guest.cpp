@@ -709,7 +709,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         {
             if (state == PEEP_STATE_WALKING || state == PEEP_STATE_SITTING)
             {
-                audio_play_sound_at_location(SOUND_CRASH, x, y, z);
+                audio_play_sound_at_location(RCT2Sound::Crash, x, y, z);
 
                 sprite_misc_explosion_cloud_create(x, y, z + 16);
                 sprite_misc_explosion_flare_create(x, y, z + 16);
@@ -1819,10 +1819,15 @@ void Guest::OnExitRide(ride_id_t rideIndex)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_WAS_GREAT, rideIndex);
 
-        int32_t laugh = scenario_rand() & 7;
-        if (laugh < 3)
+        RCT2Sound laughs[3] = {
+            RCT2Sound::Laugh1,
+            RCT2Sound::Laugh2,
+            RCT2Sound::Laugh3
+        };
+        int32_t laughType = scenario_rand() & 7;
+        if (laughType < 3)
         {
-            audio_play_sound_at_location(SOUND_LAUGH_1 + laugh, x, y, z);
+            audio_play_sound_at_location(laughs[laughType], x, y, z);
         }
     }
 
@@ -2364,7 +2369,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount)
         }
     }
 
-    audio_play_sound_at_location(SOUND_PURCHASE, x, y, z);
+    audio_play_sound_at_location(RCT2Sound::Purchase, x, y, z);
 }
 
 void Guest::SetHasRidden(Ride* ride)
@@ -5253,7 +5258,7 @@ void Guest::UpdateRideShopInteract()
     // Do not play toilet flush sound on title screen as it's considered loud and annoying
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        audio_play_sound_at_location(SOUND_TOILET_FLUSH, x, y, z);
+        audio_play_sound_at_location(RCT2Sound::ToiletFlush, x, y, z);
     }
 
     sub_state = PEEP_SHOP_LEAVE;
@@ -7040,7 +7045,7 @@ void Guest::UpdateSpriteType()
             if ((scenario_rand() & 0xFFFF) <= 13107)
             {
                 isBalloonPopped = true;
-                audio_play_sound_at_location(SOUND_BALLOON_POP, x, y, z);
+                audio_play_sound_at_location(RCT2Sound::BalloonPop, x, y, z);
             }
             create_balloon(x, y, z + 9, balloon_colour, isBalloonPopped);
         }
