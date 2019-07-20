@@ -718,6 +718,7 @@ public: // Peep
     void RemoveFromQueue();
     void RemoveFromRide();
     void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
+    void FormatActionTo(void* args) const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep
@@ -957,7 +958,6 @@ void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-void get_arguments_from_action(Peep* peep, uint32_t* argument_1, uint32_t* argument_2);
 void peep_thought_set_format_args(rct_peep_thought* thought);
 int32_t get_peep_face_sprite_small(Peep* peep);
 int32_t get_peep_face_sprite_large(Peep* peep);

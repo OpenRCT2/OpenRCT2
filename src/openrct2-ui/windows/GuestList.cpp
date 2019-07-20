@@ -774,11 +774,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                 gfx_draw_sprite(dpi, STR_ENTER_SELECTION_SIZE, 112, y + 1, 0);
 
                             // Action
-
-                            get_arguments_from_action(peep, &argument_1, &argument_2);
-
-                            set_format_arg(0, uint32_t, argument_1);
-                            set_format_arg(4, uint32_t, argument_2);
+                            peep->FormatActionTo(gCommonFormatArgs);
                             gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 133, y, 314);
                             break;
                         case VIEW_THOUGHTS:
