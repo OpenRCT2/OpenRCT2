@@ -1821,142 +1821,182 @@ Peep* Peep::Generate(const CoordsXYZ coords)
     return peep;
 }
 
-/**
- * rct2: 0x00698B0D
- * peep.sprite_index (eax)
- * thought.type (ebx)
- * argument_1 (ecx & ebx)
- * argument_2 (edx)
- */
-void get_arguments_from_action(Peep* peep, uint32_t* argument_1, uint32_t* argument_2)
+void Peep::FormatActionTo(void* argsV) const
 {
-    Ride* ride;
-
-    switch (peep->state)
+    auto args = (uint8_t*)argsV;
+    switch (state)
     {
         case PEEP_STATE_FALLING:
-            *argument_1 = peep->action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING;
-            *argument_2 = 0;
+            set_format_arg_on(args, 0, rct_string_id, action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING);
             break;
         case PEEP_STATE_1:
-            *argument_1 = STR_WALKING;
-            *argument_2 = 0;
+            set_format_arg_on(args, 0, rct_string_id, STR_WALKING);
             break;
         case PEEP_STATE_ON_RIDE:
         case PEEP_STATE_LEAVING_RIDE:
         case PEEP_STATE_ENTERING_RIDE:
-            *argument_1 = STR_ON_RIDE;
-            ride = get_ride(peep->current_ride);
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
-                *argument_1 = STR_IN_RIDE;
-            *argument_1 |= ((uint32_t)ride->name << 16);
-            *argument_2 = ride->name_arguments;
-            break;
-        case PEEP_STATE_BUYING:
-            ride = get_ride(peep->current_ride);
-            *argument_1 = STR_AT_RIDE | ((uint32_t)ride->name << 16);
-            *argument_2 = ride->name_arguments;
-            break;
-        case PEEP_STATE_WALKING:
-        case PEEP_STATE_USING_BIN:
-            if (peep->guest_heading_to_ride_id != 0xFF)
+        {
+            auto ride = get_ride(current_ride);
+            if (ride != nullptr)
             {
-                ride = get_ride(peep->guest_heading_to_ride_id);
-                *argument_1 = STR_HEADING_FOR | ((uint32_t)ride->name << 16);
-                *argument_2 = ride->name_arguments;
+                set_format_arg_on(
+                    args, 0, rct_string_id, ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
+                ride->FormatNameTo(args + 2);
             }
             else
             {
-                *argument_1 = (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING;
-                *argument_2 = 0;
+                set_format_arg_on(args, 0, rct_string_id, STR_ON_RIDE);
+                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+            }
+        }
+        case PEEP_STATE_BUYING:
+        {
+            set_format_arg_on(args, 0, rct_string_id, STR_AT_RIDE);
+            auto ride = get_ride(current_ride);
+            if (ride != nullptr)
+            {
+                ride->FormatNameTo(args + 2);
+            }
+            else
+            {
+                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+            }
+            break;
+        }
+        case PEEP_STATE_WALKING:
+        case PEEP_STATE_USING_BIN:
+            if (guest_heading_to_ride_id != RIDE_ID_NULL)
+            {
+                auto ride = get_ride(guest_heading_to_ride_id);
+                if (ride != nullptr)
+                {
+                    set_format_arg_on(args, 0, rct_string_id, STR_HEADING_FOR);
+                    ride->FormatNameTo(args + 2);
+                }
+            }
+            else
+            {
+                set_format_arg_on(
+                    args, 0, rct_string_id, (peep_flags & PEEP_FLAGS_LEAVING_PARK) ? STR_LEAVING_PARK : STR_WALKING);
             }
             break;
         case PEEP_STATE_QUEUING_FRONT:
         case PEEP_STATE_QUEUING:
-            ride = get_ride(peep->current_ride);
-            *argument_1 = STR_QUEUING_FOR | ((uint32_t)ride->name << 16);
-            *argument_2 = ride->name_arguments;
+        {
+            auto ride = get_ride(current_ride);
+            if (ride != nullptr)
+            {
+                set_format_arg_on(args, 0, rct_string_id, STR_QUEUING_FOR);
+                ride->FormatNameTo(args + 2);
+            }
             break;
+        }
         case PEEP_STATE_SITTING:
-            *argument_1 = STR_SITTING;
-            *argument_2 = 0;
+            set_format_arg_on(args, 0, rct_string_id, STR_SITTING);
             break;
         case PEEP_STATE_WATCHING:
-            if (peep->current_ride != 0xFF)
+            if (current_ride != RIDE_ID_NULL)
             {
-                ride = get_ride(peep->current_ride);
-                *argument_1 = STR_WATCHING_RIDE | ((uint32_t)ride->name << 16);
-                *argument_2 = ride->name_arguments;
-                if (peep->current_seat & 0x1)
-                    *argument_1 = STR_WATCHING_CONSTRUCTION_OF | ((uint32_t)ride->name << 16);
-                else
-                    *argument_1 = STR_WATCHING_RIDE | ((uint32_t)ride->name << 16);
+                auto ride = get_ride(current_ride);
+                if (ride != nullptr)
+                {
+                    set_format_arg_on(
+                        args, 0, rct_string_id, (current_seat & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
+                    ride->FormatNameTo(args + 2);
+                }
             }
             else
             {
-                *argument_1 = (peep->current_seat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY;
-                *argument_2 = 0;
+                set_format_arg_on(
+                    args, 0, rct_string_id,
+                    (current_seat & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
             }
             break;
         case PEEP_STATE_PICKED:
-            *argument_1 = STR_SELECT_LOCATION;
-            *argument_2 = 0;
+            set_format_arg_on(args, 0, rct_string_id, STR_SELECT_LOCATION);
             break;
         case PEEP_STATE_PATROLLING:
         case PEEP_STATE_ENTERING_PARK:
         case PEEP_STATE_LEAVING_PARK:
-            *argument_1 = STR_WALKING;
-            *argument_2 = 0;
+            set_format_arg_on(args, 0, rct_string_id, STR_WALKING);
             break;
         case PEEP_STATE_MOWING:
-            *argument_1 = STR_MOWING_GRASS;
-            *argument_2 = 0;
+            set_format_arg_on(args, 0, rct_string_id, STR_MOWING_GRASS);
             break;
         case PEEP_STATE_SWEEPING:
-            *argument_1 = STR_SWEEPING_FOOTPATH;
-            *argument_2 = 0;
+            set_format_arg_on(args, 0, rct_string_id, STR_SWEEPING_FOOTPATH);
             break;
         case PEEP_STATE_WATERING:
-            *argument_1 = STR_WATERING_GARDENS;
-            *argument_2 = 0;
+            set_format_arg_on(args, 0, rct_string_id, STR_WATERING_GARDENS);
             break;
         case PEEP_STATE_EMPTYING_BIN:
-            *argument_1 = STR_EMPTYING_LITTER_BIN;
-            *argument_2 = 0;
+            set_format_arg_on(args, 0, rct_string_id, STR_EMPTYING_LITTER_BIN);
             break;
         case PEEP_STATE_ANSWERING:
-            if (peep->sub_state == 0)
+            if (sub_state == 0)
             {
-                *argument_1 = STR_WALKING;
-                *argument_2 = 0;
+                set_format_arg_on(args, 0, rct_string_id, STR_WALKING);
             }
-            else if (peep->sub_state == 1)
+            else if (sub_state == 1)
             {
-                *argument_1 = STR_ANSWERING_RADIO_CALL;
-                *argument_2 = 0;
+                set_format_arg_on(args, 0, rct_string_id, STR_ANSWERING_RADIO_CALL);
             }
             else
             {
-                ride = get_ride(peep->current_ride);
-                *argument_1 = STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL | ((uint32_t)ride->name << 16);
-                *argument_2 = ride->name_arguments;
+                set_format_arg_on(args, 0, rct_string_id, STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL);
+                auto ride = get_ride(current_ride);
+                if (ride != nullptr)
+                {
+                    ride->FormatNameTo(args + 2);
+                }
+                else
+                {
+                    set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+                }
             }
             break;
         case PEEP_STATE_FIXING:
-            ride = get_ride(peep->current_ride);
-            *argument_1 = STR_FIXING_RIDE | ((uint32_t)ride->name << 16);
-            *argument_2 = ride->name_arguments;
+        {
+            set_format_arg_on(args, 0, rct_string_id, STR_FIXING_RIDE);
+            auto ride = get_ride(current_ride);
+            if (ride != nullptr)
+            {
+                ride->FormatNameTo(args + 2);
+            }
+            else
+            {
+                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+            }
             break;
+        }
         case PEEP_STATE_HEADING_TO_INSPECTION:
-            ride = get_ride(peep->current_ride);
-            *argument_1 = STR_HEADING_TO_RIDE_FOR_INSPECTION | ((uint32_t)ride->name << 16);
-            *argument_2 = ride->name_arguments;
+        {
+            set_format_arg_on(args, 0, rct_string_id, STR_HEADING_TO_RIDE_FOR_INSPECTION);
+            auto ride = get_ride(current_ride);
+            if (ride != nullptr)
+            {
+                ride->FormatNameTo(args + 2);
+            }
+            else
+            {
+                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+            }
             break;
+        }
         case PEEP_STATE_INSPECTING:
-            ride = get_ride(peep->current_ride);
-            *argument_1 = STR_INSPECTING_RIDE | ((uint32_t)ride->name << 16);
-            *argument_2 = ride->name_arguments;
+        {
+            set_format_arg_on(args, 0, rct_string_id, STR_INSPECTING_RIDE);
+            auto ride = get_ride(current_ride);
+            if (ride != nullptr)
+            {
+                ride->FormatNameTo(args + 2);
+            }
+            else
+            {
+                set_format_arg_on(args, 2, rct_string_id, STR_NONE);
+            }
             break;
+        }
     }
 }
 
@@ -2144,22 +2184,14 @@ void peep_set_map_tooltip(Peep* peep)
         set_map_tooltip_format_arg(2, uint32_t, get_peep_face_sprite_small(peep));
         set_map_tooltip_format_arg(6, rct_string_id, peep->name_string_idx);
         set_map_tooltip_format_arg(8, uint32_t, peep->id);
-
-        uint32_t arg0 = 0, arg1 = 0;
-        get_arguments_from_action(peep, &arg0, &arg1);
-        set_map_tooltip_format_arg(12, uint32_t, arg0);
-        set_map_tooltip_format_arg(16, uint32_t, arg1);
+        peep->FormatActionTo(gMapTooltipFormatArgs + 12);
     }
     else
     {
         set_map_tooltip_format_arg(0, rct_string_id, STR_STAFF_MAP_TIP);
         set_map_tooltip_format_arg(2, rct_string_id, peep->name_string_idx);
         set_map_tooltip_format_arg(4, uint32_t, peep->id);
-
-        uint32_t arg0 = 0, arg1 = 0;
-        get_arguments_from_action(peep, &arg0, &arg1);
-        set_map_tooltip_format_arg(8, uint32_t, arg0);
-        set_map_tooltip_format_arg(12, uint32_t, arg1);
+        peep->FormatActionTo(gMapTooltipFormatArgs + 8);
     }
 }
 
