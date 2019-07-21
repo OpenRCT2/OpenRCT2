@@ -1876,8 +1876,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 rct_string_id rideType = RideNaming[ride->type].name;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_DARK_GREEN, x, y);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 11);
-                set_format_arg(0, rct_string_id, ride->name);
-                set_format_arg(0 + sizeof(rct_string_id), uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gCommonFormatArgs);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 22);
                 // Track
                 int16_t trackType = trackElement->GetTrackType();

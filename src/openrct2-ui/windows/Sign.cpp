@@ -131,6 +131,8 @@ static rct_window_event_list window_sign_small_events = {
 };
 // clang-format on
 
+static void window_sign_show_text_input(rct_window* w);
+
 /**
  *
  *  rct2: 0x006BA305
@@ -203,11 +205,6 @@ rct_window* window_sign_open(rct_windownumber number)
  */
 static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    auto banner = GetBanner(w->number);
-    int32_t x = banner->position.x << 5;
-    int32_t y = banner->position.y << 5;
-    auto tile_element = map_get_first_element_at(x / 32, y / 32);
-
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
@@ -215,6 +212,10 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_SIGN_DEMOLISH:
         {
+            auto banner = GetBanner(w->number);
+            int32_t x = banner->position.x << 5;
+            int32_t y = banner->position.y << 5;
+            auto tile_element = map_get_first_element_at(x / 32, y / 32);
             while (1)
             {
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
@@ -238,17 +239,8 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         }
         case WIDX_SIGN_TEXT:
-        {
-            auto stringId = banner->string_idx;
-            if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
-            {
-                Ride* ride = get_ride(banner->ride_index);
-                set_format_arg(16, uint32_t, ride->name_arguments);
-                stringId = ride->name;
-            }
-            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, stringId, 0, 32);
+            window_sign_show_text_input(w);
             break;
-        }
     }
 }
 
@@ -458,11 +450,6 @@ rct_window* window_sign_small_open(rct_windownumber number)
  */
 static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    auto banner = GetBanner(w->number);
-    int32_t x = banner->position.x << 5;
-    int32_t y = banner->position.y << 5;
-    auto tile_element = map_get_first_element_at(x / 32, y / 32);
-
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
@@ -470,6 +457,10 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_SIGN_DEMOLISH:
         {
+            auto banner = GetBanner(w->number);
+            int32_t x = banner->position.x << 5;
+            int32_t y = banner->position.y << 5;
+            auto tile_element = map_get_first_element_at(x / 32, y / 32);
             while (true)
             {
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
@@ -489,17 +480,8 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         }
         case WIDX_SIGN_TEXT:
-        {
-            auto stringId = banner->string_idx;
-            if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
-            {
-                Ride* ride = get_ride(banner->ride_index);
-                set_format_arg(16, uint32_t, ride->name_arguments);
-                stringId = ride->name;
-            }
-            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, stringId, 0, 32);
+            window_sign_show_text_input(w);
             break;
-        }
     }
 }
 
@@ -561,4 +543,23 @@ static void window_sign_small_invalidate(rct_window* w)
 
     main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->var_492) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+}
+
+static void window_sign_show_text_input(rct_window* w)
+{
+    auto banner = GetBanner(w->number);
+    std::string inputText;
+    if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+    {
+        auto ride = get_ride(banner->ride_index);
+        if (ride != nullptr)
+        {
+            inputText = ride->GetName();
+        }
+    }
+    else
+    {
+        inputText = format_string(banner->string_idx, nullptr);
+    }
+    window_text_input_raw_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, inputText.c_str(), 32);
 }

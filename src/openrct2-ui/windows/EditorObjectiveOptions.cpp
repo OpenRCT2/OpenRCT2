@@ -1181,7 +1181,8 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         }
 
         // Ride name
-        gfx_draw_string_left(dpi, stringId, &ride->name, COLOUR_BLACK, 15, y);
+        ride->FormatNameTo(gCommonFormatArgs);
+        gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 15, y);
     }
 }
 

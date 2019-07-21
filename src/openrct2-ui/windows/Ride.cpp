@@ -2569,9 +2569,8 @@ static void window_ride_main_invalidate(rct_window* w)
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
         w->disabled_widgets |= (1 << WIDX_DEMOLISH);
 
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
-    set_format_arg(6, uint16_t, RideNaming[ride->type].name);
+    ride->FormatNameTo(gCommonFormatArgs);
+
     uint32_t spriteIds[] = {
         SPR_CLOSED,
         SPR_OPEN,
@@ -3013,8 +3012,7 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     ride = get_ride(w->number);
     rideEntry = ride->GetRideEntry();
 
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     // Widget setup
     carsPerTrain = ride->num_cars_per_train - rideEntry->zero_cars;
@@ -3571,8 +3569,7 @@ static void window_ride_operating_invalidate(rct_window* w)
 
     ride = get_ride(w->number);
 
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     // Widget setup
     w->pressed_widgets &= ~(
@@ -4147,8 +4144,8 @@ static void window_ride_maintenance_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+
+    ride->FormatNameTo(gCommonFormatArgs);
 
     window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL].text = RideInspectionIntervalNames[ride->inspection_interval];
 
@@ -4699,8 +4696,7 @@ static void window_ride_colour_invalidate(rct_window* w)
     ride = get_ride(w->number);
     rideEntry = ride->GetRideEntry();
 
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     // Track colours
     int32_t colourScheme = w->ride_colour;
@@ -5213,8 +5209,7 @@ static void window_ride_music_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     // Set selected music
     window_ride_music_widgets[WIDX_MUSIC].text = MusicStyleNames[ride->music];
@@ -5541,8 +5536,7 @@ static void window_ride_measurements_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN_NOT_POSSIBLE;
     window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_EMPTY;
@@ -5989,9 +5983,7 @@ static void window_ride_graphs_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     ride = get_ride(w->number);
-
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     // Set pressed graph button type
     w->pressed_widgets &= ~(1 << WIDX_GRAPH_VELOCITY);
@@ -6524,8 +6516,7 @@ static void window_ride_income_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     rideEntry = ride->GetRideEntry();
 
@@ -6799,8 +6790,7 @@ static void window_ride_customer_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     window_ride_customer_widgets[WIDX_SHOW_GUESTS_THOUGHTS].type = WWT_FLATBTN;
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
