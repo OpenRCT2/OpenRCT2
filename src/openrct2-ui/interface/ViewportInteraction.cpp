@@ -235,12 +235,12 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             if (ride->status == RIDE_STATUS_CLOSED)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-                set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gMapTooltipFormatArgs + 2);
             }
             return info->type;
 
         case VIEWPORT_INTERACTION_ITEM_RIDE:
+        {
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
@@ -299,15 +299,13 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
                     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
                 }
 
-                set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-                set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gMapTooltipFormatArgs + 2);
                 return info->type;
             }
 
-            set_map_tooltip_format_arg(4, rct_string_id, ride->name);
-            set_map_tooltip_format_arg(6, uint32_t, ride->name_arguments);
+            auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 4);
             set_map_tooltip_format_arg(
-                10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
+                4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
 
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
                 stationIndex = tileElement->AsEntrance()->GetStationIndex();
@@ -318,9 +316,9 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
                 if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
                     stationIndex--;
             stationIndex++;
-            set_map_tooltip_format_arg(12, uint16_t, stationIndex);
+            set_map_tooltip_format_arg(4 + nameArgLen + 2, uint16_t, stationIndex);
             return info->type;
-
+        }
         case VIEWPORT_INTERACTION_ITEM_WALL:
             sceneryEntry = tileElement->AsWall()->GetEntry();
             if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)

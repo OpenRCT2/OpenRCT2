@@ -218,22 +218,16 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    Ride* ride = get_ride(w->number);
-
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
-    set_format_arg(6, money32, _demolishRideCost);
-
-    int32_t x = w->x + WW / 2;
-    int32_t y = w->y + (WH / 2) - 3;
-
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    auto ride = get_ride(w->number);
+    if (ride != nullptr)
     {
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_DEMOLISH_RIDE_ID, COLOUR_BLACK);
-    }
-    else
-    {
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_DEMOLISH_RIDE_ID_MONEY, COLOUR_BLACK);
+        auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID : STR_DEMOLISH_RIDE_ID_MONEY;
+        auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
+        set_format_arg(nameArgLen, money32, _demolishRideCost);
+
+        int32_t x = w->x + WW / 2;
+        int32_t y = w->y + (WH / 2) - 3;
+        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
     }
 }
 
@@ -241,21 +235,15 @@ static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    Ride* ride = get_ride(w->number);
-
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
-    set_format_arg(6, money32, _demolishRideCost / 2);
-
-    int32_t x = w->x + WW / 2;
-    int32_t y = w->y + (WH / 2) - 3;
-
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    auto ride = get_ride(w->number);
+    if (ride != nullptr)
     {
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_REFURBISH_RIDE_ID_NO_MONEY, COLOUR_BLACK);
-    }
-    else
-    {
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_REFURBISH_RIDE_ID_MONEY, COLOUR_BLACK);
+        auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY : STR_REFURBISH_RIDE_ID_MONEY;
+        auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
+        set_format_arg(nameArgLen, money32, _demolishRideCost / 2);
+
+        int32_t x = w->x + WW / 2;
+        int32_t y = w->y + (WH / 2) - 3;
+        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
     }
 }
