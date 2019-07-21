@@ -2692,15 +2692,11 @@ static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* ar
     auto ride = get_ride(w->number);
     if (ride != nullptr)
     {
-        rct_string_id formatSecondary;
-        int32_t argument;
-        ride_get_status(ride, &formatSecondary, &argument);
-        std::memcpy(arguments, &formatSecondary, sizeof(formatSecondary));
-        std::memcpy((void*)((uintptr_t)arguments + 2), &argument, sizeof(argument));
-        stringId = STR_RED_OUTLINED_STRING;
-        if (formatSecondary != STR_BROKEN_DOWN && formatSecondary != STR_CRASHED)
+        ride->FormatStatusTo(arguments);
+        stringId = STR_BLACK_STRING;
+        if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
         {
-            stringId = STR_BLACK_STRING;
+            stringId = STR_RED_OUTLINED_STRING;
         }
     }
     return stringId;
@@ -4279,8 +4275,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 auto peep = (&(get_sprite(ride->mechanic)->peep))->AsStaff();
                 if (peep != nullptr && peep->IsMechanic())
                 {
-                    set_format_arg(0, rct_string_id, peep->name_string_idx);
-                    set_format_arg(2, uint32_t, peep->id);
+                    peep->FormatNameTo(gCommonFormatArgs);
                     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x + 4, y, 280, stringId, COLOUR_BLACK);
                 }
             }

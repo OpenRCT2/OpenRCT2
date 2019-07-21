@@ -693,8 +693,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
                     format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
-                set_format_arg(0, rct_string_id, peep->name_string_idx);
-                set_format_arg(2, uint32_t, peep->id);
+                peep->FormatNameTo(gCommonFormatArgs);
                 gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, nameColumnSize);
 
                 peep->FormatActionTo(gCommonFormatArgs);

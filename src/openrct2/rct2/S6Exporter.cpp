@@ -983,7 +983,39 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const rct_vehicle* 
 void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 {
     ExportSpriteCommonProperties(dst, (const rct_sprite_common*)src);
-    dst->name_string_idx = src->name_string_idx;
+
+    auto generateName = true;
+    if (src->name != nullptr)
+    {
+        auto stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, src->name);
+        if (stringId != 0)
+        {
+            dst->name_string_idx = stringId;
+            generateName = false;
+        }
+    }
+    if (generateName)
+    {
+        if (src->type == PeepType::PEEP_TYPE_STAFF)
+        {
+            static constexpr const rct_string_id staffNames[] = {
+                STR_HANDYMAN_X,
+                STR_MECHANIC_X,
+                STR_SECURITY_GUARD_X,
+                STR_ENTERTAINER_X,
+            };
+            dst->name_string_idx = staffNames[src->staff_type % sizeof(staffNames)];
+        }
+        else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        {
+            dst->name_string_idx = get_real_name_string_id_from_id(src->id);
+        }
+        else
+        {
+            dst->name_string_idx = STR_GUEST_X;
+        }
+    }
+
     dst->next_x = src->next_x;
     dst->next_y = src->next_y;
     dst->next_z = src->next_z;

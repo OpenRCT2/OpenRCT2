@@ -79,7 +79,6 @@ static TileElement* _peepRideEntranceExitElement;
 static void* _crowdSoundChannel = nullptr;
 
 static void peep_128_tick_update(Peep* peep, int32_t index);
-static void peep_give_real_name(Peep* peep);
 static void peep_release_balloon(Guest* peep, int16_t spawn_height);
 // clang-format off
 
@@ -899,8 +898,7 @@ void Peep::UpdateFalling()
 
         if (gConfigNotifications.guest_died)
         {
-            set_format_arg(0, rct_string_id, name_string_idx);
-            set_format_arg(2, uint32_t, id);
+            FormatNameTo(gCommonFormatArgs);
             news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, actionX | (actionY << 16));
         }
 
@@ -1750,7 +1748,7 @@ Peep* Peep::Generate(const CoordsXYZ coords)
     peep->no_of_rides = 0;
     std::fill_n(peep->ride_types_been_on, 16, 0x00);
     peep->id = gNextGuestNumber++;
-    peep->name_string_idx = STR_GUEST_X;
+    peep->name = nullptr;
 
     money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
     if (cash < 0)
@@ -1808,10 +1806,6 @@ Peep* Peep::Generate(const CoordsXYZ coords)
     peep->energy = energy;
     peep->energy_target = energy;
 
-    if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
-    {
-        peep_give_real_name(peep);
-    }
     peep_update_name_sort(peep);
 
     increment_guests_heading_for_park();
@@ -1999,6 +1993,81 @@ void Peep::FormatActionTo(void* argsV) const
     }
 }
 
+size_t Peep::FormatNameTo(void* argsV) const
+{
+    auto args = (uint8_t*)argsV;
+    if (name == nullptr)
+    {
+        if (type == PeepType::PEEP_TYPE_STAFF)
+        {
+            static constexpr const rct_string_id staffNames[] = {
+                STR_HANDYMAN_X,
+                STR_MECHANIC_X,
+                STR_SECURITY_GUARD_X,
+                STR_ENTERTAINER_X,
+            };
+
+            auto staffNameIndex = staff_type;
+            if (staffNameIndex > sizeof(staffNames))
+            {
+                staffNameIndex = 0;
+            }
+
+            set_format_arg_on(args, 0, rct_string_id, staffNames[staffNameIndex]);
+            set_format_arg_on(args, 2, uint32_t, id);
+            return sizeof(rct_string_id) + sizeof(uint32_t);
+        }
+        else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        {
+            auto realNameStringId = get_real_name_string_id_from_id(id);
+            set_format_arg_on(args, 0, rct_string_id, realNameStringId);
+            return sizeof(rct_string_id);
+        }
+        else
+        {
+            set_format_arg_on(args, 0, rct_string_id, STR_GUEST_X);
+            set_format_arg_on(args, 2, uint32_t, id);
+            return sizeof(rct_string_id) + sizeof(uint32_t);
+        }
+    }
+    else
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
+        set_format_arg_on(args, 2, const char*, name);
+        return sizeof(rct_string_id) + sizeof(const char*);
+    }
+}
+
+std::string Peep::GetName() const
+{
+    uint8_t args[32]{};
+    FormatNameTo(args);
+    return format_string(STR_STRINGID, args);
+}
+
+bool Peep::SetName(const std::string_view& value)
+{
+    if (value.empty())
+    {
+        std::free(name);
+        name = nullptr;
+        return true;
+    }
+    else
+    {
+        auto newNameMemory = (char*)std::malloc(value.size() + 1);
+        if (newNameMemory != nullptr)
+        {
+            std::memcpy(newNameMemory, value.data(), value.size());
+            newNameMemory[value.size()] = '\0';
+            std::free(name);
+            name = newNameMemory;
+            return true;
+        }
+    }
+    return false;
+}
+
 /**
  * rct2: 0x00698342
  * thought.item (eax)
@@ -2181,16 +2250,14 @@ void peep_set_map_tooltip(Peep* peep)
         set_map_tooltip_format_arg(
             0, rct_string_id, (peep->peep_flags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
         set_map_tooltip_format_arg(2, uint32_t, get_peep_face_sprite_small(peep));
-        set_map_tooltip_format_arg(6, rct_string_id, peep->name_string_idx);
-        set_map_tooltip_format_arg(8, uint32_t, peep->id);
-        peep->FormatActionTo(gMapTooltipFormatArgs + 12);
+        auto nameArgLen = peep->FormatNameTo(gMapTooltipFormatArgs + 6);
+        peep->FormatActionTo(gMapTooltipFormatArgs + 6 + nameArgLen);
     }
     else
     {
         set_map_tooltip_format_arg(0, rct_string_id, STR_STAFF_MAP_TIP);
-        set_map_tooltip_format_arg(2, rct_string_id, peep->name_string_idx);
-        set_map_tooltip_format_arg(4, uint32_t, peep->id);
-        peep->FormatActionTo(gMapTooltipFormatArgs + 8);
+        auto nameArgLen = peep->FormatNameTo(gMapTooltipFormatArgs + 2);
+        peep->FormatActionTo(gMapTooltipFormatArgs + 2 + nameArgLen);
     }
 }
 
@@ -2392,9 +2459,8 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         peep->time_in_queue = 0;
         if (peep->peep_flags & PEEP_FLAGS_TRACKING)
         {
-            set_format_arg(0, rct_string_id, peep->name_string_idx);
-            set_format_arg(2, uint32_t, peep->id);
-            ride->FormatNameTo(gCommonFormatArgs + 6);
+            auto nameArgLen = peep->FormatNameTo(gCommonFormatArgs);
+            ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
             if (gConfigNotifications.guest_queuing_for_ride)
             {
                 news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
@@ -2457,8 +2523,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             peep->var_37 = 0;
             if (peep->peep_flags & PEEP_FLAGS_TRACKING)
             {
-                set_format_arg(0, rct_string_id, peep->name_string_idx);
-                set_format_arg(2, uint32_t, peep->id);
+                peep->FormatNameTo(gCommonFormatArgs);
                 if (gConfigNotifications.guest_left_park)
                 {
                     news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
@@ -2835,9 +2900,8 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                     peep->time_in_queue = 0;
                     if (peep->peep_flags & PEEP_FLAGS_TRACKING)
                     {
-                        set_format_arg(0, rct_string_id, peep->name_string_idx);
-                        set_format_arg(2, uint32_t, peep->id);
-                        ride->FormatNameTo(gCommonFormatArgs + 6);
+                        auto nameArgLen = peep->FormatNameTo(gCommonFormatArgs);
+                        ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
                         if (gConfigNotifications.guest_queuing_for_ride)
                         {
                             news_item_add_to_queue(
@@ -2944,9 +3008,8 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
         ride->cur_num_customers++;
         if (peep->peep_flags & PEEP_FLAGS_TRACKING)
         {
-            set_format_arg(0, rct_string_id, peep->name_string_idx);
-            set_format_arg(2, uint32_t, peep->id);
-            ride->FormatNameTo(gCommonFormatArgs + 6);
+            auto nameArgLen = peep->FormatNameTo(gCommonFormatArgs);
+            ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
             rct_string_id string_id = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_PEEP_TRACKING_PEEP_IS_IN_X
                                                                                              : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (gConfigNotifications.guest_used_facility)
@@ -3196,14 +3259,10 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
     return height + map_height_from_slope({ tile_x, tile_y }, slope, GetNextIsSloped());
 }
 
-/**
- *
- *  rct2: 0x0069C483
- */
-static void peep_give_real_name(Peep* peep)
+rct_string_id get_real_name_string_id_from_id(uint32_t id)
 {
     // Generate a name_string_idx from the peep id using bit twiddling
-    uint16_t ax = (uint16_t)(peep->id + 0xF0B);
+    uint16_t ax = (uint16_t)(id + 0xF0B);
     uint16_t dx = 0;
     static constexpr uint16_t twiddlingBitOrder[] = { 4, 9, 3, 7, 5, 8, 2, 1, 6, 0, 12, 11, 13, 10 };
     for (size_t i = 0; i < std::size(twiddlingBitOrder); i++)
@@ -3220,7 +3279,7 @@ static void peep_give_real_name(Peep* peep)
     }
     dx /= 4;
     dx += REAL_NAME_START;
-    peep->name_string_idx = dx;
+    return dx;
 }
 
 static int32_t peep_compare(const void* sprite_index_a, const void* sprite_index_b)
@@ -3234,46 +3293,30 @@ static int32_t peep_compare(const void* sprite_index_a, const void* sprite_index
         return peep_a->type - peep_b->type;
     }
 
-    // Simple ID comparison for when both peeps use a number or a generated name
-    const bool both_numbers
-        = (peep_a->name_string_idx >= 767 && peep_a->name_string_idx <= 771 && peep_b->name_string_idx >= 767
-           && peep_b->name_string_idx <= 771);
-    if (both_numbers)
+    if (peep_a->name == nullptr && peep_b->name == nullptr)
     {
-        return peep_a->id - peep_b->id;
-    }
-    const bool both_have_generated_names
-        = (peep_a->name_string_idx >= REAL_NAME_START && peep_a->name_string_idx <= REAL_NAME_END
-           && peep_b->name_string_idx >= REAL_NAME_START && peep_b->name_string_idx <= REAL_NAME_END);
-    if (both_have_generated_names)
-    {
-        rct_string_id peep_a_format = peep_a->name_string_idx + REAL_NAME_START;
-        rct_string_id peep_b_format = peep_b->name_string_idx + REAL_NAME_START;
-
-        uint16_t peep_a_name = (peep_a_format % std::size(real_names));
-        uint16_t peep_b_name = (peep_b_format % std::size(real_names));
-
-        if (peep_a_name == peep_b_name)
+        if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
-            uint16_t peep_a_initial = ((peep_a_format >> 10) % std::size(real_name_initials));
-            uint16_t peep_b_initial = ((peep_b_format >> 10) % std::size(real_name_initials));
-            return peep_a_initial - peep_b_initial;
+            // Potentially could find a more optional way of sorting dynamic real names
         }
         else
         {
-            return peep_a_name - peep_b_name;
+            // Simple ID comparison for when both peeps use a number or a generated name
+            return peep_a->id - peep_b->id;
         }
     }
 
-    // At least one of them has a custom name assigned
     // Compare their names as strings
-    utf8 name_a[256];
-    utf8 name_b[256];
-    uint32_t peepIndex = peep_a->id;
-    format_string(name_a, 256, peep_a->name_string_idx, &peepIndex);
-    peepIndex = peep_b->id;
-    format_string(name_b, 256, peep_b->name_string_idx, &peepIndex);
-    return strlogicalcmp(name_a, name_b);
+    uint8_t args[32]{};
+
+    char nameA[256]{};
+    peep_a->FormatNameTo(args);
+    format_string(nameA, sizeof(nameA), STR_STRINGID, args);
+
+    char nameB[256]{};
+    peep_b->FormatNameTo(args);
+    format_string(nameB, sizeof(nameB), STR_STRINGID, args);
+    return strlogicalcmp(nameA, nameB);
 }
 
 /**
@@ -3401,28 +3444,12 @@ void peep_update_names(bool realNames)
     if (realNames)
     {
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        Peep* peep;
-        uint16_t spriteIndex;
-        FOR_ALL_GUESTS (spriteIndex, peep)
-        {
-            if (peep->name_string_idx == STR_GUEST_X)
-            {
-                peep_give_real_name(peep);
-            }
-        }
+        // Peep names are now dynamic
     }
     else
     {
         gParkFlags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        Peep* peep;
-        uint16_t spriteIndex;
-        FOR_ALL_GUESTS (spriteIndex, peep)
-        {
-            if (peep->name_string_idx >= REAL_NAME_START && peep->name_string_idx <= REAL_NAME_END)
-            {
-                peep->name_string_idx = STR_GUEST_X;
-            }
-        }
+        // Peep names are now dynamic
     }
 
     peep_sort();

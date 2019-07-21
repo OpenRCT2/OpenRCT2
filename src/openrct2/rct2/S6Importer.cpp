@@ -1296,7 +1296,10 @@ public:
     void ImportSpritePeep(Peep* dst, const RCT2SpritePeep* src)
     {
         ImportSpriteCommonProperties((rct_sprite_common*)dst, src);
-        dst->name_string_idx = src->name_string_idx;
+        if (is_user_string_id(src->name_string_idx))
+        {
+            dst->SetName(GetUserString(src->name_string_idx));
+        }
         dst->next_x = src->next_x;
         dst->next_y = src->next_y;
         dst->next_z = src->next_z;

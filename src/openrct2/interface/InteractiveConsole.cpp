@@ -443,10 +443,9 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             int32_t i;
             FOR_ALL_STAFF (i, peep)
             {
-                char name[128];
-                format_string(name, 128, peep->name_string_idx, &peep->id);
+                auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name);
+                    "staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name.c_str());
             }
         }
         else if (argv[0] == "set")

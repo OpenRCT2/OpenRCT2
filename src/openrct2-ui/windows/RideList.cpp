@@ -586,7 +586,7 @@ static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t i, y, argument;
+    int32_t i, y;
     rct_string_id format, formatSecondary;
     Ride* ride;
 
@@ -616,8 +616,13 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         switch (_window_ride_list_information_type)
         {
             case INFORMATION_TYPE_STATUS:
-                ride_get_status(ride, &formatSecondary, &argument);
-                set_format_arg(2, int32_t, argument);
+                ride->FormatStatusTo(gCommonFormatArgs);
+
+                // Make test red and bold if broken down or crashed
+                if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+                {
+                    format = STR_RED_OUTLINED_STRING;
+                }
                 break;
             case INFORMATION_TYPE_POPULARITY:
                 formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
@@ -735,10 +740,6 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 }
                 break;
         }
-
-        // Make test red and bold if broken down or crashed
-        if (formatSecondary == STR_BROKEN_DOWN || formatSecondary == STR_CRASHED)
-            format = STR_RED_OUTLINED_STRING;
 
         set_format_arg(0, rct_string_id, formatSecondary);
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 160, y - 1, 157);

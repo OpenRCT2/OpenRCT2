@@ -1432,18 +1432,9 @@ private:
         dst->sprite_direction = src->sprite_direction;
 
         // Peep name
-        dst->name_string_idx = src->name_string_idx;
         if (is_user_string_id(src->name_string_idx))
         {
-            std::string peepName = GetUserString(src->name_string_idx);
-            if (!peepName.empty())
-            {
-                rct_string_id peepNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, peepName.c_str());
-                if (peepNameStringId != 0)
-                {
-                    dst->name_string_idx = peepNameStringId;
-                }
-            }
+            dst->SetName(GetUserString(src->name_string_idx));
         }
 
         dst->outside_of_park = src->outside_of_park;

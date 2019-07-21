@@ -538,7 +538,7 @@ struct Staff;
 
 struct Peep : rct_sprite_common
 {
-    rct_string_id name_string_idx; // 0x22
+    char* name;
     uint16_t next_x;               // 0x24
     uint16_t next_y;               // 0x26
     uint8_t next_z;                // 0x28
@@ -719,6 +719,9 @@ public: // Peep
     void RemoveFromRide();
     void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
     void FormatActionTo(void* args) const;
+    size_t FormatNameTo(void* args) const;
+    std::string GetName() const;
+    bool SetName(const std::string_view& value);
 
     // TODO: Make these private again when done refactoring
 public: // Peep
@@ -851,6 +854,8 @@ private:
     void UpdateRideInspected(ride_id_t rideIndex);
     void UpdateHeadingToInspect();
 };
+
+static_assert(sizeof(Peep) <= 256);
 
 struct rct_sprite_bounds
 {
@@ -1001,5 +1006,7 @@ void increment_guests_in_park();
 void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
+
+rct_string_id get_real_name_string_id_from_id(uint32_t id);
 
 #endif

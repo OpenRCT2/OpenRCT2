@@ -1280,8 +1280,6 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
         format_push_char(real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)]);
         format_push_char('.');
         *(*dest) = '\0';
-
-        *args += 4;
     }
     else
     {

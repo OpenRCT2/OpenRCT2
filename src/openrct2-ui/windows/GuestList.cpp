@@ -775,8 +775,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     }
 
                     // Guest name
-                    set_format_arg(0, rct_string_id, peep->name_string_idx);
-                    set_format_arg(2, uint32_t, peep->id);
+                    peep->FormatNameTo(gCommonFormatArgs);
                     gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, 113);
 
                     switch (_window_guest_list_selected_view)
@@ -1052,14 +1051,14 @@ static bool guest_should_be_visible(Peep* peep)
 
     if (_window_guest_list_filter_name[0] != '\0')
     {
-        char formatted[256];
-
-        set_format_arg(0, rct_string_id, peep->name_string_idx);
-        set_format_arg(2, uint32_t, peep->id);
-        format_string(formatted, sizeof(formatted), peep->name_string_idx, gCommonFormatArgs);
-
-        if (strcasestr(formatted, _window_guest_list_filter_name) == nullptr)
+        char name[256]{};
+        uint8_t args[32]{};
+        peep->FormatNameTo(args);
+        format_string(name, sizeof(name), STR_STRINGID, args);
+        if (strcasestr(name, _window_guest_list_filter_name) == nullptr)
+        {
             return false;
+        }
     }
 
     return true;

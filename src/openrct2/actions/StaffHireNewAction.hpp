@@ -26,13 +26,6 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-static constexpr const rct_string_id staffNames[] = {
-    STR_HANDYMAN_X,
-    STR_MECHANIC_X,
-    STR_SECURITY_GUARD_X,
-    STR_ENTERTAINER_X,
-};
-
 /* rct2: 0x009929FC */
 static constexpr const PeepSpriteType spriteTypes[] = {
     PEEP_SPRITE_TYPE_HANDYMAN,
@@ -217,7 +210,7 @@ private:
             {
                 spriteType = static_cast<PeepSpriteType>(PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + _entertainerType);
             }
-            newPeep->name_string_idx = staffNames[_staffType];
+            newPeep->name = nullptr;
             newPeep->sprite_type = spriteType;
 
             const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[spriteType].sprite_bounds;

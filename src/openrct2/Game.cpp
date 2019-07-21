@@ -644,10 +644,8 @@ void game_fix_save_vars()
                 continue;
             }
             set_format_arg(0, uint32_t, peep->id);
-            utf8* curName = gCommonStringFormatBuffer;
-            rct_string_id curId = peep->name_string_idx;
-            format_string(curName, 256, curId, gCommonFormatArgs);
-            log_warning("Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName, srcStation, rideIdx);
+            auto curName = peep->GetName();
+            log_warning("Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
             int8_t station = ride_get_first_valid_station_exit(get_ride(rideIdx));
             if (station == -1)
             {

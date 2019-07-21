@@ -53,18 +53,6 @@ public:
             log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
-
-        // Ensure user string space.
-        rct_string_id string_id = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-        if (string_id != 0)
-        {
-            user_string_free(string_id);
-        }
-        else
-        {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_ERR_CANT_SET_BANNER_TEXT);
-        }
-
         return MakeResult();
     }
 

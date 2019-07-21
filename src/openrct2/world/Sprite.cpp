@@ -679,7 +679,7 @@ void sprite_remove(rct_sprite* sprite)
     auto peep = sprite->AsPeep();
     if (peep != nullptr)
     {
-        user_string_free(peep->name_string_idx);
+        peep->SetName({});
     }
 
     move_sprite_to_list(sprite, SPRITE_LIST_FREE);

@@ -835,80 +835,63 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
     return 0;
 }
 
-/**
- *
- *  rct2: 0x006AF561
- */
-void ride_get_status(const Ride* ride, rct_string_id* formatSecondary, int32_t* argument)
+void Ride::FormatStatusTo(void* argsV) const
 {
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-    {
-        *formatSecondary = STR_CRASHED;
-        return;
-    }
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-    {
-        *formatSecondary = STR_BROKEN_DOWN;
-        return;
-    }
-    if (ride->status == RIDE_STATUS_CLOSED)
-    {
-        *formatSecondary = STR_CLOSED;
+    auto args = (uint8_t*)argsV;
 
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+    if (lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_CRASHED);
+    }
+    else if (lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_BROKEN_DOWN);
+    }
+    else if (status == RIDE_STATUS_CLOSED)
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_CLOSED);
+        if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_IS_SHOP))
         {
-            *argument = ride->num_riders;
-
-            if (*argument == 1)
+            if (num_riders != 0)
             {
-                *formatSecondary = STR_CLOSED_WITH_PERSON;
-            }
-            else if (*argument > 1)
-            {
-                *formatSecondary = STR_CLOSED_WITH_PEOPLE;
+                set_format_arg_on(args, 0, rct_string_id, num_riders == 1 ? STR_CLOSED_WITH_PERSON : STR_CLOSED_WITH_PEOPLE);
+                set_format_arg_on(args, 2, uint16_t, num_riders);
             }
         }
-
-        return;
     }
-    else if (ride->status == RIDE_STATUS_SIMULATING)
+    else if (status == RIDE_STATUS_SIMULATING)
     {
-        *formatSecondary = STR_SIMULATING;
-        return;
+        set_format_arg_on(args, 0, rct_string_id, STR_SIMULATING);
     }
-    else if (ride->status == RIDE_STATUS_TESTING)
+    else if (status == RIDE_STATUS_TESTING)
     {
-        *formatSecondary = STR_TEST_RUN;
-        return;
+        set_format_arg_on(args, 0, rct_string_id, STR_TEST_RUN);
     }
-    if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
-        && ride->race_winner != SPRITE_INDEX_NULL && (GET_PEEP(ride->race_winner))->sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+    else if (
+        mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+        && race_winner != SPRITE_INDEX_NULL)
     {
-        Peep* peep = GET_PEEP(ride->race_winner);
-        if (peep->name_string_idx == STR_GUEST_X)
+        auto sprite = get_sprite(race_winner);
+        if (sprite != nullptr)
         {
-            *argument = peep->id;
-            *formatSecondary = STR_RACE_WON_BY_GUEST;
+            auto peep = sprite->AsPeep();
+            set_format_arg_on(args, 0, rct_string_id, STR_RACE_WON_BY);
+            peep->FormatNameTo(args + 2);
         }
         else
         {
-            *argument = peep->name_string_idx;
-            *formatSecondary = STR_RACE_WON_BY;
+            set_format_arg_on(args, 0, rct_string_id, STR_RACE_WON_BY);
+            set_format_arg_on(args, 2, rct_string_id, STR_NONE);
         }
+    }
+    else if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_IS_SHOP))
+    {
+        set_format_arg_on(args, 0, rct_string_id, num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
+        set_format_arg_on(args, 2, uint16_t, num_riders);
     }
     else
     {
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
-        {
-            *argument = ride->num_riders;
-            *formatSecondary = STR_PERSON_ON_RIDE;
-            if (*argument != 1)
-                *formatSecondary = STR_PEOPLE_ON_RIDE;
-        }
-        else
-        {
-            *formatSecondary = STR_OPEN;
-        }
+        set_format_arg_on(args, 0, rct_string_id, STR_OPEN);
     }
 }
 
@@ -7947,14 +7930,4 @@ size_t Ride::FormatNameTo(void* argsV) const
         set_format_arg_on(args, 4, uint16_t, default_name_number);
         return sizeof(rct_string_id) + sizeof(rct_string_id) + sizeof(uint16_t);
     }
-}
-
-void Ride::FormatStatusTo(void* argsV) const
-{
-    auto args = (uint8_t*)argsV;
-    rct_string_id stringId{};
-    int32_t arg32{};
-    ride_get_status(this, &stringId, &arg32);
-    set_format_arg_on(args, 0, rct_string_id, stringId);
-    set_format_arg_on(args, 2, uint32_t, arg32);
 }

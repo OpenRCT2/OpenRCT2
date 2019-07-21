@@ -311,7 +311,7 @@ namespace Editor
             auto peep = get_sprite(i)->AsPeep();
             if (peep != nullptr)
             {
-                user_string_free(peep->name_string_idx);
+                peep->SetName({});
             }
         }
 
