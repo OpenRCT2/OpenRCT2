@@ -446,7 +446,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
         sub_98199C(
-            session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, scroll, scrollingMode, secondaryColour), 0, 0, 1, 1, 13, height + 8,
-            boundsOffset.x, boundsOffset.y, boundsOffset.z);
+            session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, scroll, scrollingMode, secondaryColour), 0, 0, 1, 1,
+            13, height + 8, boundsOffset.x, boundsOffset.y, boundsOffset.z);
     }
 }

@@ -635,7 +635,8 @@ void game_fix_save_vars()
             }
             set_format_arg(0, uint32_t, peep->id);
             auto curName = peep->GetName();
-            log_warning("Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
+            log_warning(
+                "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
             int8_t station = ride_get_first_valid_station_exit(get_ride(rideIdx));
             if (station == -1)
             {

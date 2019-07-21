@@ -999,7 +999,8 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
         }
         else
         {
-            log_warning("Unable to allocate user string for peep #%d (%s) during S6 export.", (int)src->sprite_index, src->name);
+            log_warning(
+                "Unable to allocate user string for peep #%d (%s) during S6 export.", (int)src->sprite_index, src->name);
         }
     }
     if (generateName)

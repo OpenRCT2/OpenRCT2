@@ -539,15 +539,15 @@ struct Staff;
 struct Peep : rct_sprite_common
 {
     char* name;
-    uint16_t next_x;               // 0x24
-    uint16_t next_y;               // 0x26
-    uint8_t next_z;                // 0x28
-    uint8_t next_flags;            // 0x29
-    uint8_t outside_of_park;       // 0x2A
-    PeepState state;               // 0x2B
-    uint8_t sub_state;             // 0x2C
-    PeepSpriteType sprite_type;    // 0x2D
-    PeepType type;                 // 0x2E
+    uint16_t next_x;            // 0x24
+    uint16_t next_y;            // 0x26
+    uint8_t next_z;             // 0x28
+    uint8_t next_flags;         // 0x29
+    uint8_t outside_of_park;    // 0x2A
+    PeepState state;            // 0x2B
+    uint8_t sub_state;          // 0x2C
+    PeepSpriteType sprite_type; // 0x2D
+    PeepType type;              // 0x2E
     union
     {
         uint8_t staff_type;  // 0x2F

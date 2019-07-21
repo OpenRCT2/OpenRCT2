@@ -362,7 +362,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             argPos += sizeof(rct_string_id);
             argPos += banner->FormatTextTo(gMapTooltipFormatArgs + argPos);
             set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                argPos += sizeof(rct_string_id);
+            argPos += sizeof(rct_string_id);
             set_map_tooltip_format_arg(argPos, rct_string_id, sceneryEntry->name);
             return info->type;
         }
