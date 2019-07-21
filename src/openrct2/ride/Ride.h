@@ -414,6 +414,7 @@ public:
     void FormatStatusTo(void* args) const;
 
     static void UpdateAll();
+    static bool NameExists(const std::string_view& name, ride_id_t excludeRideId = RIDE_ID_NULL);
 };
 
 #pragma pack(push, 1)

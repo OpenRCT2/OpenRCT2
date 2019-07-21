@@ -5734,7 +5734,7 @@ static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour*
     return false;
 }
 
-static bool ride_name_exists(char* name)
+bool Ride::NameExists(const std::string_view& name, ride_id_t excludeRideId)
 {
     char buffer[256]{};
     uint32_t formatArgs[32]{};
@@ -5743,11 +5743,14 @@ static bool ride_name_exists(char* name)
     int32_t i;
     FOR_ALL_RIDES (i, ride)
     {
-        ride->FormatNameTo(formatArgs);
-        format_string(buffer, 256, STR_STRINGID, formatArgs);
-        if ((strcmp(buffer, name) == 0) && ride_has_any_track_elements(ride))
+        if (i != excludeRideId)
         {
-            return true;
+            ride->FormatNameTo(formatArgs);
+            format_string(buffer, 256, STR_STRINGID, formatArgs);
+            if (std::string_view(buffer) == name && ride_has_any_track_elements(ride))
+            {
+                return true;
+            }
         }
     }
     return false;
@@ -5833,13 +5836,14 @@ void Ride::SetNameToDefault()
     uint8_t rideNameArgs[32]{};
 
     // Increment default name number until we find a unique name
+    custom_name = {};
     default_name_number = 0;
     do
     {
         default_name_number++;
         FormatNameTo(rideNameArgs);
         format_string(rideNameBuffer, 256, STR_STRINGID, &rideNameArgs);
-    } while (ride_name_exists(rideNameBuffer));
+    } while (Ride::NameExists(rideNameBuffer, id));
 }
 
 /**
