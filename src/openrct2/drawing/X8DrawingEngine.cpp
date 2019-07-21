@@ -47,16 +47,6 @@ void X8RainDrawer::SetDPI(rct_drawpixelinfo* dpi)
 
 void X8RainDrawer::Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart)
 {
-    // clang-format off
-    static constexpr const uint8_t RainPattern[] =
-    {
-        32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
-        0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
-        255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255,
-        0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
-    };
-    // clang-format on
-
     const uint8_t* pattern = RainPattern;
     uint8_t patternXSpace = *pattern++;
     uint8_t patternYSpace = *pattern++;

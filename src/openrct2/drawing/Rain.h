@@ -18,4 +18,14 @@ namespace OpenRCT2::Drawing
     interface IRainDrawer;
 }
 
+// clang-format off
+static constexpr const uint8_t RainPattern[] =
+{
+    32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
+    0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
+    255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255,
+    0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
+};
+// clang-format on
+
 void DrawRain(rct_drawpixelinfo* dpi, OpenRCT2::Drawing::IRainDrawer* rainDrawer);
