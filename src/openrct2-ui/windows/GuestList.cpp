@@ -886,7 +886,7 @@ static int32_t window_guest_list_is_peep_in_filter(Peep* peep)
 
     if (_window_guest_list_filter_arguments.GetFirstStringId() == STR_NONE && _window_guest_list_selected_filter == 1)
     {
-        set_format_arg_on(_window_guest_list_filter_arguments.args, 0, rct_string_id, STR_NONE);
+        set_format_arg_on(peepArgs.args, 0, rct_string_id, STR_NONE);
     }
 
     if (_window_guest_list_filter_arguments == peepArgs)

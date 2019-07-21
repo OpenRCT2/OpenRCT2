@@ -288,8 +288,17 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                     if (ride == nullptr)
                         break;
 
+                    // HACK until dropdown items have longer argument buffers
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    ride->FormatNameTo(&gDropdownItemsArgs[i]);
+                    if (ride->custom_name.empty())
+                    {
+                        ride->FormatNameTo(&gDropdownItemsArgs[i]);
+                    }
+                    else
+                    {
+                        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
+                        set_format_arg_on((uint8_t*)&gDropdownItemsArgs[i], 0, const char*, ride->custom_name.c_str());
+                    }
                     numItems++;
                 }
 

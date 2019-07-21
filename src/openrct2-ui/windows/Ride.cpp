@@ -3012,7 +3012,8 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     ride = get_ride(w->number);
     rideEntry = ride->GetRideEntry();
 
-    ride->FormatNameTo(gCommonFormatArgs);
+    w->widgets[WIDX_TITLE].text = STR_ARG_20_STRINGID;
+    ride->FormatNameTo(gCommonFormatArgs + 20);
 
     // Widget setup
     carsPerTrain = ride->num_cars_per_train - rideEntry->zero_cars;
@@ -4696,7 +4697,8 @@ static void window_ride_colour_invalidate(rct_window* w)
     ride = get_ride(w->number);
     rideEntry = ride->GetRideEntry();
 
-    ride->FormatNameTo(gCommonFormatArgs);
+    w->widgets[WIDX_TITLE].text = STR_ARG_16_STRINGID;
+    ride->FormatNameTo(gCommonFormatArgs + 16);
 
     // Track colours
     int32_t colourScheme = w->ride_colour;
@@ -6516,7 +6518,9 @@ static void window_ride_income_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    ride->FormatNameTo(gCommonFormatArgs);
+
+    w->widgets[WIDX_TITLE].text = STR_ARG_14_STRINGID;
+    ride->FormatNameTo(gCommonFormatArgs + 14);
 
     rideEntry = ride->GetRideEntry();
 
