@@ -864,8 +864,9 @@ static void window_ride_construction_resize(rct_window* w)
         case TRACK_SLOPE_DOWN_60:
             disabledWidgets |= (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
             if (!is_track_enabled(TRACK_SLOPE_LONG)
-                && !(is_track_enabled(TRACK_SLOPE_STEEP_LONG)
-                     && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
+                && !(
+                    is_track_enabled(TRACK_SLOPE_STEEP_LONG)
+                    && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
             {
                 disabledWidgets |= (1ULL << WIDX_LEVEL);
             }
@@ -876,8 +877,9 @@ static void window_ride_construction_resize(rct_window* w)
         case TRACK_SLOPE_UP_60:
             disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN);
             if (!is_track_enabled(TRACK_SLOPE_LONG)
-                && !(is_track_enabled(TRACK_SLOPE_STEEP_LONG)
-                     && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
+                && !(
+                    is_track_enabled(TRACK_SLOPE_STEEP_LONG)
+                    && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
             {
                 disabledWidgets |= (1ULL << WIDX_LEVEL);
             }
@@ -2236,12 +2238,13 @@ static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex wid
  */
 static void window_ride_construction_invalidate(rct_window* w)
 {
-    Ride* ride;
-    rct_string_id stringId;
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+    {
+        return;
+    }
 
-    ride = get_ride(_currentRideIndex);
-
-    stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
+    rct_string_id stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
     if (_currentTrackCurve & 0x100)
     {
         stringId = RideConfigurationStringIds[_currentTrackCurve & 0xFF];
@@ -2284,8 +2287,7 @@ static void window_ride_construction_invalidate(rct_window* w)
     }
 
     // Set window title arguments
-    set_format_arg(4, rct_string_id, ride->name);
-    set_format_arg(6, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs + 4);
 }
 
 /**

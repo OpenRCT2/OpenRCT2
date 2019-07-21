@@ -660,7 +660,6 @@ static constexpr const uint32_t staffCostumeSprites[] = {
 void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
-    uint32_t argument_1, argument_2;
     uint8_t selectedTab;
     Peep* peep;
 

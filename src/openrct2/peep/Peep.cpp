@@ -2007,7 +2007,7 @@ void Peep::FormatActionTo(void* argsV) const
  * argument_1 (esi & ebx)
  * argument_2 (esi+2)
  */
-void peep_thought_set_format_args(rct_peep_thought* thought)
+void peep_thought_set_format_args(const rct_peep_thought* thought)
 {
     set_format_arg(0, rct_string_id, PeepThoughts[thought->type]);
 

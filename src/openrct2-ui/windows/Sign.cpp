@@ -131,6 +131,8 @@ static rct_window_event_list window_sign_small_events = {
 };
 // clang-format on
 
+static void window_sign_show_text_input(rct_window* w, const rct_banner* banner);
+
 /**
  *
  *  rct2: 0x006BA305
@@ -206,8 +208,6 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
     int32_t x = banner->x << 5;
     int32_t y = banner->y << 5;
 
-    rct_string_id string_id;
-
     TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
 
     switch (widgetIndex)
@@ -240,17 +240,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         }
         case WIDX_SIGN_TEXT:
-            if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
-            {
-                Ride* ride = get_ride(banner->ride_index);
-                set_format_arg(16, uint32_t, ride->name_arguments);
-                string_id = ride->name;
-            }
-            else
-            {
-                string_id = gBanners[w->number].string_idx;
-            }
-            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
+            window_sign_show_text_input(w, banner);
             break;
     }
 }
@@ -464,8 +454,6 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
     int32_t x = banner->x << 5;
     int32_t y = banner->y << 5;
 
-    rct_string_id string_id;
-
     TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
 
     switch (widgetIndex)
@@ -494,17 +482,7 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
         }
         break;
         case WIDX_SIGN_TEXT:
-            if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
-            {
-                Ride* ride = get_ride(banner->ride_index);
-                set_format_arg(16, uint32_t, ride->name_arguments);
-                string_id = ride->name;
-            }
-            else
-            {
-                string_id = gBanners[w->number].string_idx;
-            }
-            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
+            window_sign_show_text_input(w, banner);
             break;
     }
 }
@@ -567,4 +545,22 @@ static void window_sign_small_invalidate(rct_window* w)
 
     main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->var_492) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+}
+
+static void window_sign_show_text_input(rct_window* w, const rct_banner* banner)
+{
+    std::string inputText;
+    if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+    {
+        auto ride = get_ride(banner->ride_index);
+        if (ride != nullptr)
+        {
+            inputText = ride->GetName();
+        }
+    }
+    else
+    {
+        inputText = format_string(gBanners[w->number].string_idx, nullptr);
+    }
+    window_text_input_raw_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, inputText.c_str(), 32);
 }

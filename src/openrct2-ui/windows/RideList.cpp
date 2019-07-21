@@ -781,7 +781,6 @@ void window_ride_list_refresh_list(rct_window* w)
 {
     int32_t i;
     Ride *ride, *otherRide;
-    char bufferA[128], bufferB[128];
     int32_t list_index = 0;
 
     FOR_ALL_RIDES (i, ride)
@@ -800,17 +799,19 @@ void window_ride_list_refresh_list(rct_window* w)
         switch (w->list_information_type)
         {
             case INFORMATION_TYPE_STATUS:
-                format_string_to_upper(bufferA, 128, ride->name, &ride->name_arguments);
+            {
+                auto strA = ride->GetName();
                 while (--current_list_position >= 0)
                 {
                     otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    format_string_to_upper(bufferB, 128, otherRide->name, &otherRide->name_arguments);
-                    if (strcmp(bufferA, bufferB) >= 0)
+                    auto strB = ride->GetName();
+                    if (_strcmpi(strA.c_str(), strB.c_str()) >= 0)
                         break;
 
                     window_bubble_list_item(w, current_list_position);
                 }
                 break;
+            }
             case INFORMATION_TYPE_POPULARITY:
                 while (--current_list_position >= 0)
                 {
