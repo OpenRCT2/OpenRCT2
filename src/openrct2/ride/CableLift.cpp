@@ -9,10 +9,10 @@
 
 #include "CableLift.h"
 
+#include "../audio/audio.h"
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
 #include "../world/Sprite.h"
-#include "../audio/audio.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"

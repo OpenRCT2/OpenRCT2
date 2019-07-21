@@ -1819,11 +1819,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_WAS_GREAT, rideIndex);
 
-        RCT2Sound laughs[3] = {
-            RCT2Sound::Laugh1,
-            RCT2Sound::Laugh2,
-            RCT2Sound::Laugh3
-        };
+        RCT2Sound laughs[3] = { RCT2Sound::Laugh1, RCT2Sound::Laugh2, RCT2Sound::Laugh3 };
         int32_t laughType = scenario_rand() & 7;
         if (laughType < 3)
         {

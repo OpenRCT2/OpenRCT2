@@ -200,7 +200,6 @@ void audio_pause_sounds();
  * @param volume The volume at which the sound effect should be played.
  * @param pan The pan at which the sound effect should be played. If set to anything other than AUDIO_PLAY_AT_CENTRE, plays the
  * sound at a position relative to the centre of the viewport.
- * 
  */
 void audio_play_sound(RCT2Sound soundId, int32_t volume, int32_t pan);
 /**
@@ -209,7 +208,6 @@ void audio_play_sound(RCT2Sound soundId, int32_t volume, int32_t pan);
  * @param x The x coordinate of the location.
  * @param y The y coordinate of the location.
  * @param z The z coordinate of the location.
- * 
  */
 void audio_play_sound_at_location(RCT2Sound soundId, int16_t x, int16_t y, int16_t z);
 /**

@@ -1823,8 +1823,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 {
                     return;
                 }
-                audio_play_sound_at_location(
-                    RCT2Sound::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
+                audio_play_sound_at_location(RCT2Sound::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
             });
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             break;

@@ -1897,8 +1897,7 @@ struct SoundIdVolume
     uint8_t volume;
 };
 
-static SoundIdVolume sub_6D7AC0(
-    RCT2Sound currentSoundId, uint8_t currentVolume, RCT2Sound targetSoundId, uint8_t targetVolume)
+static SoundIdVolume sub_6D7AC0(RCT2Sound currentSoundId, uint8_t currentVolume, RCT2Sound targetSoundId, uint8_t targetVolume)
 {
     if (currentSoundId != RCT2Sound::Null)
     {
@@ -3193,8 +3192,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
         {
-            auto soundId = (rideEntry->vehicles[0].sound_range == 4) ? RCT2Sound::Tram
-                                                                     : RCT2Sound::TrainDeparting;
+            auto soundId = (rideEntry->vehicles[0].sound_range == 4) ? RCT2Sound::Tram : RCT2Sound::TrainDeparting;
 
             audio_play_sound_at_location(soundId, vehicle->x, vehicle->y, vehicle->z);
         }

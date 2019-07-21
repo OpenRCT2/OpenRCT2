@@ -1316,8 +1316,7 @@ static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y)
         money32 price = place_park_entrance(mapX, mapY, mapZ, direction);
         if (price != MONEY32_UNDEFINED)
         {
-            audio_play_sound_at_location(
-                RCT2Sound::PlaceItem, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+            audio_play_sound_at_location(RCT2Sound::PlaceItem, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
         }
     }
 }

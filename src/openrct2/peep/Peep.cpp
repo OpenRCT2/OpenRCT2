@@ -673,12 +673,7 @@ bool Peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance
     // Create sick at location
     litter_create(x, y, z, sprite_direction, (sprite_index & 1) ? LITTER_TYPE_SICK_ALT : LITTER_TYPE_SICK);
 
-    RCT2Sound coughs[4] = {
-        RCT2Sound::Cough1,
-        RCT2Sound::Cough2,
-        RCT2Sound::Cough3,
-        RCT2Sound::Cough4
-    };
+    RCT2Sound coughs[4] = { RCT2Sound::Cough1, RCT2Sound::Cough2, RCT2Sound::Cough3, RCT2Sound::Cough4 };
     auto soundId = coughs[scenario_rand() & 3];
     audio_play_sound_at_location(soundId, x, y, z);
 

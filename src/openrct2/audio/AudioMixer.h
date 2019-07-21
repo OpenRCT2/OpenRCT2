@@ -10,13 +10,12 @@
 #pragma once
 
 #include "../common.h"
-#include "audio.h"
 
 #define MIXER_VOLUME_MAX 128
 #define MIXER_LOOP_NONE 0
 #define MIXER_LOOP_INFINITE (-1)
 
-enum class RCT_SOUND : uint32_t;
+enum class RCT2Sound : uint8_t;
 
 enum MIXER_GROUP
 {

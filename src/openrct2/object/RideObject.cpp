@@ -12,6 +12,7 @@
 #include "RideObject.h"
 
 #include "../OpenRCT2.h"
+#include "../audio/audio.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
@@ -22,7 +23,6 @@
 #include "../ride/RideGroupManager.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Track.h"
-#include "../audio/audio.h"
 #include "ObjectJsonHelpers.h"
 #include "ObjectRepository.h"
 

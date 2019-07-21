@@ -108,8 +108,7 @@ void intro_update()
                 }
 
                 // Play long peep scream sound
-                _soundChannel = Mixer_Play_Effect(
-                    RCT2Sound::Scream1, MIXER_LOOP_NONE, MIXER_VOLUME_MAX, 0.5f, 1, false);
+                _soundChannel = Mixer_Play_Effect(RCT2Sound::Scream1, MIXER_LOOP_NONE, MIXER_VOLUME_MAX, 0.5f, 1, false);
 
                 gIntroState++;
                 _introStateCounter = 0;

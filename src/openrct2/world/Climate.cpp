@@ -282,8 +282,7 @@ static void climate_update_rain_sound()
         // Start playing the rain sound
         if (gRainSoundChannel == nullptr)
         {
-            gRainSoundChannel = Mixer_Play_Effect(
-                RCT2Sound::Rain, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
+            gRainSoundChannel = Mixer_Play_Effect(RCT2Sound::Rain, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
         }
         if (_rainVolume == 1)
         {
