@@ -20,13 +20,21 @@ constexpr uint8_t SCROLLING_MODE_NONE = 255;
 
 struct Banner
 {
-    uint8_t type;
-    uint8_t flags;
-    rct_string_id string_idx;
-    uint8_t colour;
-    uint8_t ride_index;
-    uint8_t text_colour;
+    uint8_t type = BANNER_NULL;
+    uint8_t flags{};
+    std::string text;
+    uint8_t colour{};
+    ride_id_t ride_index{};
+    uint8_t text_colour{};
     TileCoordsXY position;
+
+    bool IsNull() const
+    {
+        return type == BANNER_NULL;
+    }
+
+    std::string GetText() const;
+    size_t FormatTextTo(void* args) const;
 };
 
 enum BANNER_FLAGS

@@ -75,24 +75,11 @@ public:
         int32_t x = banner->position.x << 5;
         int32_t y = banner->position.y << 5;
 
-        if (_name.empty() == false)
+        if (!_name.empty())
         {
-            rct_string_id string_id = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-            if (string_id != 0)
-            {
-                rct_string_id prev_string_id = banner->string_idx;
-                banner->string_idx = string_id;
-                user_string_free(prev_string_id);
-
-                banner->flags &= ~(BANNER_FLAG_LINKED_TO_RIDE);
-
-                scrolling_text_invalidate();
-                gfx_invalidate_screen();
-            }
-            else
-            {
-                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_ERR_CANT_SET_BANNER_TEXT);
-            }
+            banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+            banner->ride_index = RIDE_ID_NULL;
+            banner->text = _name;
         }
         else
         {
@@ -100,20 +87,20 @@ public:
             ride_id_t rideIndex = banner_get_closest_ride_index(x, y, 16);
             if (rideIndex == RIDE_ID_NULL)
             {
-                return MakeResult();
+                banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+                banner->ride_index = RIDE_ID_NULL;
+                banner->text = {};
             }
-
-            banner->ride_index = rideIndex;
-            banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-
-            rct_string_id prev_string_id = banner->string_idx;
-            banner->string_idx = STR_DEFAULT_SIGN;
-            user_string_free(prev_string_id);
-
-            scrolling_text_invalidate();
-            gfx_invalidate_screen();
+            else
+            {
+                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+                banner->ride_index = rideIndex;
+                banner->text = {};
+            }
         }
 
+        scrolling_text_invalidate();
+        gfx_invalidate_screen();
         return MakeResult();
     }
 };

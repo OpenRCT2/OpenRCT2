@@ -2836,18 +2836,9 @@ private:
             dst->flags |= BANNER_FLAG_NO_ENTRY;
         }
 
-        dst->string_idx = STR_DEFAULT_SIGN;
         if (is_user_string_id(src->string_idx))
         {
-            std::string bannerText = GetUserString(src->string_idx);
-            if (!bannerText.empty())
-            {
-                rct_string_id bannerTextStringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, bannerText.c_str());
-                if (bannerTextStringId != 0)
-                {
-                    dst->string_idx = bannerTextStringId;
-                }
-            }
+            dst->text = GetUserString(src->string_idx);
         }
 
         dst->colour = RCT1::GetColour(src->colour);

@@ -188,8 +188,8 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
         sub_98199C(
-            session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, stationObj->ScrollingMode), 0, 0, 0x1C, 0x1C,
-            0x33, height + stationObj->Height, 2, 2, height + stationObj->Height);
+            session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, stationObj->ScrollingMode, COLOUR_BLACK), 0,
+            0, 0x1C, 0x1C, 0x33, height + stationObj->Height, 2, 2, height + stationObj->Height);
     }
 
     image_id = entranceImageId;
@@ -300,7 +300,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                     break;
 
                 int32_t stsetup = scrolling_text_setup(
-                    session, STR_BANNER_TEXT_FORMAT, scroll, entrance->scrolling_mode + direction / 2);
+                    session, STR_BANNER_TEXT_FORMAT, scroll, entrance->scrolling_mode + direction / 2, COLOUR_BLACK);
                 int32_t text_height = height + entrance->text_height;
                 sub_98199C(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height);
             }

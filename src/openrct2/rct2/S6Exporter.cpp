@@ -1204,20 +1204,26 @@ void S6Exporter::ExportBanners()
 
 void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
 {
+    dst = {};
     dst.type = src.type;
-    dst.flags = src.flags;
-    dst.string_idx = src.string_idx;
-    if (src.flags & BANNER_FLAG_LINKED_TO_RIDE)
+
+    if (!src.IsNull())
     {
-        dst.ride_index = src.ride_index;
-    }
-    else
-    {
+        dst.flags = src.flags;
+
+        dst.string_idx = STR_DEFAULT_SIGN;
+        auto stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, src.text.c_str());
+        if (stringId != 0)
+        {
+            dst.string_idx = stringId;
+        }
+
         dst.colour = src.colour;
+        dst.ride_index = src.ride_index;
+        dst.text_colour = src.text_colour;
+        dst.x = src.position.x;
+        dst.y = src.position.y;
     }
-    dst.text_colour = src.text_colour;
-    dst.x = src.position.x;
-    dst.y = src.position.y;
 }
 
 enum : uint32_t

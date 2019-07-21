@@ -134,35 +134,8 @@ public:
                 banner->colour = _parameter;
                 break;
             case BannerSetStyleType::TextColour:
-            {
                 banner->text_colour = _parameter;
-                int32_t colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
-
-                utf8 buffer[256];
-                format_string(buffer, 256, banner->string_idx, nullptr);
-                int32_t firstCodepoint = utf8_get_next(buffer, nullptr);
-                if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END)
-                {
-                    utf8_write_codepoint(buffer, colourCodepoint);
-                }
-                else
-                {
-                    utf8_insert_codepoint(buffer, colourCodepoint);
-                }
-
-                rct_string_id stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-                if (stringId != 0)
-                {
-                    rct_string_id prevStringId = banner->string_idx;
-                    banner->string_idx = stringId;
-                    user_string_free(prevStringId);
-                }
-                else
-                {
-                    return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_SET_BANNER_TEXT);
-                }
                 break;
-            }
             case BannerSetStyleType::NoEntry:
             {
                 BannerElement* bannerElement = tileElement->AsBanner();

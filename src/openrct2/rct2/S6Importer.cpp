@@ -849,7 +849,11 @@ public:
         *dst = {};
         dst->type = src->type;
         dst->flags = src->flags;
-        dst->string_idx = src->string_idx;
+
+        if (!(src->flags & BANNER_FLAG_LINKED_TO_RIDE) && is_user_string_id(src->string_idx))
+        {
+            dst->text = GetUserString(src->string_idx);
+        }
 
         if (src->flags & BANNER_FLAG_LINKED_TO_RIDE)
         {

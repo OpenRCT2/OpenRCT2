@@ -356,7 +356,7 @@ public:
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
             }
 
-            banner->string_idx = STR_DEFAULT_SIGN;
+            banner->text = {};
             banner->colour = 2;
             banner->text_colour = 2;
             banner->flags = BANNER_FLAG_IS_WALL;
