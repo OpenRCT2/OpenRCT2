@@ -7921,7 +7921,7 @@ size_t Ride::FormatNameTo(void* argsV) const
     }
     else
     {
-        rct_string_id rideTypeName{};
+        auto rideTypeName = RideNaming[type].name;
         if (RideGroupManager::RideTypeIsIndependent(type))
         {
             auto rideEntry = GetRideEntry();
@@ -7930,20 +7930,13 @@ size_t Ride::FormatNameTo(void* argsV) const
                 rideTypeName = rideEntry->naming.name;
             }
         }
-        else
+        else if (RideGroupManager::RideTypeHasRideGroups(type))
         {
-            if (RideGroupManager::RideTypeHasRideGroups(type))
+            auto rideEntry = GetRideEntry();
+            if (rideEntry != nullptr)
             {
-                auto rideEntry = GetRideEntry();
-                if (rideEntry != nullptr)
-                {
-                    auto rideGroup = RideGroupManager::GetRideGroup(type, rideEntry);
-                    rideTypeName = rideGroup->Naming.name;
-                }
-            }
-            else
-            {
-                rideTypeName = RideNaming[type].name;
+                auto rideGroup = RideGroupManager::GetRideGroup(type, rideEntry);
+                rideTypeName = rideGroup->Naming.name;
             }
         }
         set_format_arg_on(args, 0, rct_string_id, 1);
