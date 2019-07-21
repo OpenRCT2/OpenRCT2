@@ -523,8 +523,16 @@ public:
 
         // pad_046;
         dst->status = src->status;
-        dst->name = src->name;
-        dst->name_arguments = src->name_arguments;
+
+        dst->default_name_number = src->name_arguments_number;
+        if (is_user_string_id(src->name))
+        {
+            dst->custom_name = GetUserString(src->name);
+        }
+        else
+        {
+            dst->default_name_number = src->name_arguments_number;
+        }
 
         dst->overall_view = src->overall_view;
 
@@ -1449,6 +1457,12 @@ public:
         dst->sprite_right = src->sprite_right;
         dst->sprite_bottom = src->sprite_bottom;
         dst->sprite_direction = src->sprite_direction;
+    }
+
+    std::string GetUserString(rct_string_id stringId)
+    {
+        const char* originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
+        return rct2_to_utf8(originalString, RCT2_LANGUAGE_ID_ENGLISH_UK);
     }
 };
 

@@ -410,7 +410,8 @@ public:
 
     void SetNameToDefault();
     std::string GetName() const;
-    void FormatNameTo(void* args) const;
+    size_t FormatNameTo(void* args) const;
+    void FormatStatusTo(void* args) const;
 
     static void UpdateAll();
 };
