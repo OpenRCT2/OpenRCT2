@@ -344,7 +344,6 @@ void S6Exporter::Export()
     safe_strcpy(_s6.scenario_filename, gScenarioFileName, sizeof(_s6.scenario_filename));
     std::memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));
     ExportBanners();
-    std::memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));
     _s6.game_ticks_1 = gCurrentTicks;
 
     this->ExportRides();
@@ -413,6 +412,8 @@ void S6Exporter::Export()
 
     scenario_fix_ghosts(&_s6);
     game_convert_strings_to_rct2(&_s6);
+
+    ExportUserStrings();
 }
 
 void S6Exporter::ExportPeepSpawns()
@@ -446,10 +447,10 @@ uint32_t S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32_t
 void S6Exporter::ExportParkName()
 {
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-    auto stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, park.Name.c_str());
-    if (stringId != 0)
+    auto stringId = AllocateUserString(park.Name);
+    if (stringId != opt::nullopt)
     {
-        _s6.park_name = stringId;
+        _s6.park_name = *stringId;
         _s6.park_name_args = 0;
     }
     else
@@ -496,26 +497,29 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     // pad_046;
     dst->status = src->status;
-    if (src->custom_name.empty())
+
+    bool useDefaultName = true;
+    if (!src->custom_name.empty())
+    {
+        // Custom name, allocate user string for ride
+        auto rideName = utf8_to_rct2(src->custom_name);
+        auto stringId = AllocateUserString(rideName);
+        if (stringId != opt::nullopt)
+        {
+            dst->name = *stringId;
+            dst->name_arguments = 0;
+            useDefaultName = false;
+        }
+        else
+        {
+            log_warning("Unable to allocate user string for ride #%d (%s).", (int)src->id, src->custom_name.c_str());
+        }
+    }
+    if (useDefaultName)
     {
         // Default name with number
         dst->name = RideNaming[src->type].name;
         dst->name_arguments_number = src->default_name_number;
-    }
-    else
-    {
-        // Custom name, allocate user string for ride
-        auto rideName = utf8_to_rct2(src->custom_name);
-        auto stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, rideName.c_str());
-        if (stringId != 0)
-        {
-            dst->name = stringId;
-            dst->name_arguments = 0;
-        }
-        else
-        {
-            log_warning("Unable to allocate user string for ride: %s.", src->custom_name.c_str());
-        }
     }
 
     dst->overall_view = src->overall_view;
@@ -987,11 +991,15 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     auto generateName = true;
     if (src->name != nullptr)
     {
-        auto stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, src->name);
-        if (stringId != 0)
+        auto stringId = AllocateUserString(src->name);
+        if (stringId != opt::nullopt)
         {
-            dst->name_string_idx = stringId;
+            dst->name_string_idx = *stringId;
             generateName = false;
+        }
+        else
+        {
+            log_warning("Unable to allocate user string for peep #%d (%s) during S6 export.", (int)src->sprite_index, src->name);
         }
     }
     if (generateName)
@@ -1244,10 +1252,10 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         dst.flags = src.flags;
 
         dst.string_idx = STR_DEFAULT_SIGN;
-        auto stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, src.text.c_str());
-        if (stringId != 0)
+        auto stringId = AllocateUserString(src.text);
+        if (stringId != opt::nullopt)
         {
-            dst.string_idx = stringId;
+            dst.string_idx = *stringId;
         }
 
         dst.colour = src.colour;
@@ -1255,6 +1263,33 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         dst.text_colour = src.text_colour;
         dst.x = src.position.x;
         dst.y = src.position.y;
+    }
+}
+
+opt::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& value)
+{
+    auto nextId = _userStrings.size();
+    if (nextId < RCT12_MAX_USER_STRINGS)
+    {
+        _userStrings.emplace_back(value);
+        return (uint16_t)(USER_STRING_START + nextId);
+    }
+    return {};
+}
+
+void S6Exporter::ExportUserStrings()
+{
+    auto numUserStrings = std::min<size_t>(_userStrings.size(), RCT12_MAX_USER_STRINGS);
+    for (size_t i = 0; i < numUserStrings; i++)
+    {
+        auto dst = _s6.custom_strings[i];
+        const auto& src = _userStrings[i];
+        auto stringLen = std::min<size_t>(src.size(), RCT12_USER_STRING_MAX_LENGTH - 1);
+        std::memcpy(dst, src.data(), stringLen);
+        if (stringLen < src.size())
+        {
+            log_warning("A user string '%s' was truncated to the S6 user string length limit.", src.c_str());
+        }
     }
 }
 
