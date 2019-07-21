@@ -555,16 +555,6 @@ void game_convert_strings_to_utf8()
     gScenarioName = rct2_to_utf8(gScenarioName, RCT2_LANGUAGE_ID_ENGLISH_UK);
     gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2_LANGUAGE_ID_ENGLISH_UK);
 
-    // User strings
-    for (auto* string : gUserStrings)
-    {
-        if (!str_is_null_or_empty(string))
-        {
-            rct2_to_utf8_self(string, RCT12_USER_STRING_MAX_LENGTH);
-            utf8_remove_formatting(string, true);
-        }
-    }
-
     // News items
     game_convert_news_items_to_utf8();
 }

@@ -386,7 +386,7 @@ static void format_append_string(char** dest, size_t* size, const utf8* string)
     }
 }
 
-static void format_append_string_n(char** dest, size_t* size, const utf8* string, size_t maxlen)
+[[maybe_unused]] void format_append_string_n(char** dest, size_t* size, const utf8* string, size_t maxlen)
 {
     if ((*size) == 0)
         return;
@@ -1257,16 +1257,14 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
     }
     else if (format <= USER_STRING_END)
     {
+        // User strings should no longer be used
+        assert(false);
+
         // Custom string
         format -= 0x8000;
 
         // Bits 10, 11 represent number of bytes to pop off arguments
         *args += (format & 0xC00) >> 9;
-        format &= ~0xC00;
-
-        format_append_string_n(dest, size, gUserStrings[format], USER_STRING_MAX_LENGTH);
-        if ((*size) > 0)
-            *(*dest) = '\0';
     }
     else if (format <= REAL_NAME_END)
     {

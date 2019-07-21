@@ -538,3 +538,5 @@ struct RCT12Banner
 assert_struct_size(RCT12Banner, 8);
 
 #pragma pack(pop)
+
+bool is_user_string_id(rct_string_id stringId);

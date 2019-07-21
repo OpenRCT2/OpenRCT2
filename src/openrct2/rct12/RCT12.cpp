@@ -408,3 +408,8 @@ uint8_t RCT12BannerElement::GetAllowedEdges() const
 {
     return flags & 0b00001111;
 }
+
+bool is_user_string_id(rct_string_id stringId)
+{
+    return stringId >= 0x8000 && stringId < 0x9000;
+}
