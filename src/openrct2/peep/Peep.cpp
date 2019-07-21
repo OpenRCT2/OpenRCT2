@@ -1846,6 +1846,7 @@ void Peep::FormatActionTo(void* argsV) const
                 set_format_arg_on(args, 0, rct_string_id, STR_ON_RIDE);
                 set_format_arg_on(args, 2, rct_string_id, STR_NONE);
             }
+            break;
         }
         case PEEP_STATE_BUYING:
         {
