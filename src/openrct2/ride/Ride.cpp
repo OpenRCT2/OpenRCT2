@@ -7936,7 +7936,10 @@ size_t Ride::FormatNameTo(void* argsV) const
             if (rideEntry != nullptr)
             {
                 auto rideGroup = RideGroupManager::GetRideGroup(type, rideEntry);
-                rideTypeName = rideGroup->Naming.name;
+                if (rideGroup != nullptr)
+                {
+                    rideTypeName = rideGroup->Naming.name;
+                }
             }
         }
         set_format_arg_on(args, 0, rct_string_id, 1);
