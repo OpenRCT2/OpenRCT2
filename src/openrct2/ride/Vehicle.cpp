@@ -3471,8 +3471,8 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle)
 
     vehicleIndex++;
     set_format_arg(2, uint16_t, vehicleIndex);
-    ride->FormatNameTo(gCommonFormatArgs + 4);
-    set_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
+    auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs + 4);
+    set_format_arg(4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].singular);
 
     news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, vehicle->ride);
 }
@@ -6127,27 +6127,29 @@ GForces vehicle_get_g_forces(const rct_vehicle* vehicle)
 
 void vehicle_set_map_toolbar(const rct_vehicle* vehicle)
 {
-    Ride* ride;
-    int32_t vehicleIndex;
+    auto ride = get_ride(vehicle->ride);
+    if (ride != nullptr)
+    {
+        vehicle = vehicle->GetHead();
 
-    ride = get_ride(vehicle->ride);
-    vehicle = vehicle->GetHead();
-    for (vehicleIndex = 0; vehicleIndex < 32; vehicleIndex++)
-        if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
-            break;
+        int32_t vehicleIndex;
+        for (vehicleIndex = 0; vehicleIndex < 32; vehicleIndex++)
+            if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
+                break;
 
-    set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-    set_map_tooltip_format_arg(2, rct_string_id, STR_MAP_TOOLTIP_STRINGID_STRINGID);
-    ride->FormatNameTo(gCommonFormatArgs + 4);
-    set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised);
-    set_map_tooltip_format_arg(12, uint16_t, vehicleIndex + 1);
-
-    rct_string_id formatSecondary;
-    int32_t arg1;
-    ride_get_status(ride, &formatSecondary, &arg1);
-    set_map_tooltip_format_arg(14, rct_string_id, formatSecondary);
-    // TODO: odd cast
-    set_map_tooltip_format_arg(16, uint32_t, (uint16_t)arg1);
+        size_t argPos = 0;
+        set_map_tooltip_format_arg(argPos, rct_string_id, STR_RIDE_MAP_TIP);
+        argPos += sizeof(rct_string_id);
+        set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_STRINGID);
+        argPos += sizeof(rct_string_id);
+        argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
+        set_map_tooltip_format_arg(
+            argPos, rct_string_id, RideComponentNames[RideNameConvention[ride->type].vehicle].capitalised);
+        argPos += sizeof(rct_string_id);
+        set_map_tooltip_format_arg(argPos, uint16_t, vehicleIndex + 1);
+        argPos += sizeof(uint16_t);
+        ride->FormatStatusTo(gMapTooltipFormatArgs + argPos);
+    }
 }
 
 rct_vehicle* vehicle_get_head(const rct_vehicle* vehicle)

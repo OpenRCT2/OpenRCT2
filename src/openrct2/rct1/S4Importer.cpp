@@ -781,18 +781,10 @@ private:
         }
 
         // Ride name
-        dst->name = 0;
         if (is_user_string_id(src->name))
         {
-            std::string rideName = GetUserString(src->name);
-            if (!rideName.empty())
-            {
-                rct_string_id rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, rideName.c_str());
-                if (rideNameStringId != 0)
-                {
-                    dst->name = rideNameStringId;
-                }
-            }
+            auto rideName = GetUserString(src->name);
+            dst->custom_name = rct2_to_utf8(rideName, RCT2_LANGUAGE_ID_ENGLISH_UK);
         }
 
         dst->status = src->status;

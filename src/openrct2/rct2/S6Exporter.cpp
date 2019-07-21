@@ -496,8 +496,27 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     // pad_046;
     dst->status = src->status;
-    dst->name = src->name;
-    dst->name_arguments = src->name_arguments;
+    if (src->custom_name.empty())
+    {
+        // Default name with number
+        dst->name = RideNaming[src->type].name;
+        dst->name_arguments_number = src->default_name_number;
+    }
+    else
+    {
+        // Custom name, allocate user string for ride
+        auto rideName = utf8_to_rct2(src->custom_name);
+        auto stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, rideName.c_str());
+        if (stringId != 0)
+        {
+            dst->name = stringId;
+            dst->name_arguments = 0;
+        }
+        else
+        {
+            log_warning("Unable to allocate user string for ride: %s.", src->custom_name.c_str());
+        }
+    }
 
     dst->overall_view = src->overall_view;
 

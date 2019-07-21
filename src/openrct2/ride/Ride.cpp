@@ -3449,103 +3449,109 @@ static void ride_shop_connected(Ride* ride)
 
 static void ride_track_set_map_tooltip(TileElement* tileElement)
 {
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
-
-    set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-    ride->FormatNameTo(gCommonFormatArgs + 2);
-
-    rct_string_id formatSecondary;
-    int32_t arg1 = 0;
-    ride_get_status(ride, &formatSecondary, &arg1);
-    set_map_tooltip_format_arg(8, rct_string_id, formatSecondary);
-    set_map_tooltip_format_arg(10, uint32_t, arg1);
+    if (ride != nullptr)
+    {
+        set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+        auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 2);
+        ride->FormatStatusTo(gMapTooltipFormatArgs + 2 + nameArgLen);
+    }
 }
 
 static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
 {
-    ride_id_t rideIndex = tileElement->AsPath()->GetRideIndex();
+    auto rideIndex = tileElement->AsPath()->GetRideIndex();
     auto ride = get_ride(rideIndex);
-
-    set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-    ride->FormatNameTo(gCommonFormatArgs + 2);
-
-    rct_string_id formatSecondary;
-    int32_t arg1 = 0;
-    ride_get_status(ride, &formatSecondary, &arg1);
-    set_map_tooltip_format_arg(8, rct_string_id, formatSecondary);
-    set_map_tooltip_format_arg(10, uint32_t, arg1);
+    if (ride != nullptr)
+    {
+        set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+        auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 2);
+        ride->FormatStatusTo(gMapTooltipFormatArgs + 2 + nameArgLen);
+    }
 }
 
 static void ride_station_set_map_tooltip(TileElement* tileElement)
 {
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
-    auto stationIndex = tileElement->AsTrack()->GetStationIndex();
-    for (int32_t i = stationIndex; i >= 0; i--)
-        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
-            stationIndex--;
-
-    set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-    set_map_tooltip_format_arg(2, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
-    ride->FormatNameTo(gCommonFormatArgs + 4);
-    set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
-    set_map_tooltip_format_arg(12, uint16_t, stationIndex + 1);
-
-    rct_string_id formatSecondary;
-    int32_t arg1;
-    ride_get_status(ride, &formatSecondary, &arg1);
-    set_map_tooltip_format_arg(14, rct_string_id, formatSecondary);
-    set_map_tooltip_format_arg(16, uint32_t, arg1);
-}
-
-static void ride_entrance_set_map_tooltip(TileElement* tileElement)
-{
-    ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
-    auto ride = get_ride(rideIndex);
-
-    // Get the station
-    auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
-    for (int32_t i = stationIndex; i >= 0; i--)
-        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
-            stationIndex--;
-
-    if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+    if (ride != nullptr)
     {
-        // Get the queue length
-        int32_t queueLength = 0;
-        if (!ride_get_entrance_location(ride, stationIndex).isNull())
-            queueLength = ride->stations[stationIndex].QueueLength;
-
-        set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-        set_map_tooltip_format_arg(2, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
-        ride->FormatNameTo(gMapTooltipFormatArgs + 4);
-        set_map_tooltip_format_arg(12, uint16_t, stationIndex + 1);
-        if (queueLength == 0)
-        {
-            set_map_tooltip_format_arg(14, rct_string_id, STR_QUEUE_EMPTY);
-        }
-        else if (queueLength == 1)
-        {
-            set_map_tooltip_format_arg(14, rct_string_id, STR_QUEUE_ONE_PERSON);
-        }
-        else
-        {
-            set_map_tooltip_format_arg(14, rct_string_id, STR_QUEUE_PEOPLE);
-        }
-        set_map_tooltip_format_arg(16, uint16_t, queueLength);
-    }
-    else
-    {
-        // Get the station
-        stationIndex = tileElement->AsEntrance()->GetStationIndex();
+        auto stationIndex = tileElement->AsTrack()->GetStationIndex();
         for (int32_t i = stationIndex; i >= 0; i--)
             if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
                 stationIndex--;
 
-        set_map_tooltip_format_arg(0, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
-        ride->FormatNameTo(gCommonFormatArgs + 2);
-        set_map_tooltip_format_arg(10, uint16_t, stationIndex + 1);
+        size_t argPos = 0;
+        set_map_tooltip_format_arg(argPos, rct_string_id, STR_RIDE_MAP_TIP);
+        argPos += sizeof(rct_string_id);
+        set_map_tooltip_format_arg(argPos, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
+        argPos += sizeof(rct_string_id);
+        argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
+        set_map_tooltip_format_arg(
+            argPos, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
+        argPos += sizeof(rct_string_id);
+        set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
+        argPos += sizeof(uint16_t);
+        ride->FormatStatusTo(gMapTooltipFormatArgs + argPos);
+    }
+}
+
+static void ride_entrance_set_map_tooltip(TileElement* tileElement)
+{
+    auto rideIndex = tileElement->AsEntrance()->GetRideIndex();
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+    {
+        // Get the station
+        auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
+        for (int32_t i = stationIndex; i >= 0; i--)
+            if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+                stationIndex--;
+
+        if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+        {
+            // Get the queue length
+            int32_t queueLength = 0;
+            if (!ride_get_entrance_location(ride, stationIndex).isNull())
+                queueLength = ride->stations[stationIndex].QueueLength;
+
+            size_t argPos = 0;
+            set_map_tooltip_format_arg(argPos, rct_string_id, STR_RIDE_MAP_TIP);
+            argPos += sizeof(rct_string_id);
+            set_map_tooltip_format_arg(
+                argPos, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
+            argPos += sizeof(rct_string_id);
+            argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
+            set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
+            argPos += sizeof(uint16_t);
+            if (queueLength == 0)
+            {
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_QUEUE_EMPTY);
+            }
+            else if (queueLength == 1)
+            {
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_QUEUE_ONE_PERSON);
+            }
+            else
+            {
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_QUEUE_PEOPLE);
+            }
+            argPos += sizeof(rct_string_id);
+            set_map_tooltip_format_arg(argPos, uint16_t, queueLength);
+        }
+        else
+        {
+            // Get the station
+            stationIndex = tileElement->AsEntrance()->GetStationIndex();
+            for (int32_t i = stationIndex; i >= 0; i--)
+                if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+                    stationIndex--;
+
+            set_map_tooltip_format_arg(0, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
+            auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 2);
+            set_map_tooltip_format_arg(2 + nameArgLen, uint16_t, stationIndex + 1);
+        }
     }
 }
 
@@ -7899,7 +7905,7 @@ std::string Ride::GetName() const
     return format_string(STR_STRINGID, args);
 }
 
-void Ride::FormatNameTo(void* argsV) const
+size_t Ride::FormatNameTo(void* argsV) const
 {
     auto args = (uint8_t*)argsV;
     if (!custom_name.empty())
@@ -7907,6 +7913,7 @@ void Ride::FormatNameTo(void* argsV) const
         auto str = custom_name.c_str();
         set_format_arg_on(args, 0, rct_string_id, STR_STRING);
         set_format_arg_on(args, 2, void*, str);
+        return sizeof(rct_string_id) + sizeof(void*);
     }
     else
     {
@@ -7938,5 +7945,16 @@ void Ride::FormatNameTo(void* argsV) const
         set_format_arg_on(args, 0, rct_string_id, 1);
         set_format_arg_on(args, 2, rct_string_id, rideTypeName);
         set_format_arg_on(args, 4, uint16_t, default_name_number);
+        return sizeof(rct_string_id) + sizeof(rct_string_id) + sizeof(uint16_t);
     }
+}
+
+void Ride::FormatStatusTo(void* argsV) const
+{
+    auto args = (uint8_t*)argsV;
+    rct_string_id stringId{};
+    int32_t arg32{};
+    ride_get_status(this, &stringId, &arg32);
+    set_format_arg_on(args, 0, rct_string_id, stringId);
+    set_format_arg_on(args, 2, uint32_t, arg32);
 }
