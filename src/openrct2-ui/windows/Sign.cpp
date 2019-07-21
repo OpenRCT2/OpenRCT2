@@ -202,7 +202,7 @@ rct_window* window_sign_open(rct_windownumber number)
  */
 static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_banner* banner = &gBanners[w->number];
+    auto banner = &gBanners[w->number];
     int32_t x = banner->x << 5;
     int32_t y = banner->y << 5;
 
@@ -371,7 +371,7 @@ static void window_sign_viewport_rotate(rct_window* w)
 
     view->width = 0;
 
-    rct_banner* banner = &gBanners[w->number];
+    Banner* banner = &gBanners[w->number];
 
     int32_t view_x = (banner->x << 5) + 16;
     int32_t view_y = (banner->y << 5) + 16;
@@ -460,7 +460,7 @@ rct_window* window_sign_small_open(rct_windownumber number)
  */
 static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_banner* banner = &gBanners[w->number];
+    Banner* banner = &gBanners[w->number];
     int32_t x = banner->x << 5;
     int32_t y = banner->y << 5;
 

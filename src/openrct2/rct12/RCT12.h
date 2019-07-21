@@ -521,4 +521,20 @@ struct RCT12RideMeasurement
 };
 assert_struct_size(RCT12RideMeasurement, 0x4B0C);
 
+struct RCT12Banner
+{
+    uint8_t type;
+    uint8_t flags;            // 0x01
+    rct_string_id string_idx; // 0x02
+    union
+    {
+        uint8_t colour;     // 0x04
+        uint8_t ride_index; // 0x04
+    };
+    uint8_t text_colour; // 0x05
+    uint8_t x;           // 0x06
+    uint8_t y;           // 0x07
+};
+assert_struct_size(RCT12Banner, 8);
+
 #pragma pack(pop)

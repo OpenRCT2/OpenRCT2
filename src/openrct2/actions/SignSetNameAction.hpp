@@ -70,7 +70,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_banner* banner = &gBanners[_bannerIndex];
+        auto banner = &gBanners[_bannerIndex];
 
         int32_t x = banner->x << 5;
         int32_t y = banner->y << 5;

@@ -18,23 +18,17 @@ constexpr BannerIndex BANNER_INDEX_NULL = (BannerIndex)-1;
 
 constexpr uint8_t SCROLLING_MODE_NONE = 255;
 
-#pragma pack(push, 1)
-struct rct_banner
+struct Banner
 {
     uint8_t type;
-    uint8_t flags;            // 0x01
-    rct_string_id string_idx; // 0x02
-    union
-    {
-        uint8_t colour;     // 0x04
-        uint8_t ride_index; // 0x04
-    };
-    uint8_t text_colour; // 0x05
-    uint8_t x;           // 0x06
-    uint8_t y;           // 0x07
+    uint8_t flags;
+    rct_string_id string_idx;
+    uint8_t colour;
+    uint8_t ride_index;
+    uint8_t text_colour;
+    uint8_t x;
+    uint8_t y;
 };
-assert_struct_size(rct_banner, 8);
-#pragma pack(pop)
 
 enum BANNER_FLAGS
 {
@@ -44,7 +38,7 @@ enum BANNER_FLAGS
     BANNER_FLAG_IS_WALL = (1 << 3)
 };
 
-extern rct_banner gBanners[MAX_BANNERS];
+extern Banner gBanners[MAX_BANNERS];
 
 void banner_init();
 BannerIndex create_new_banner(uint8_t flags);

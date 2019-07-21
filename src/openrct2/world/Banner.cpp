@@ -30,7 +30,7 @@
 #include <iterator>
 #include <limits>
 
-rct_banner gBanners[MAX_BANNERS];
+Banner gBanners[MAX_BANNERS];
 
 /**
  *
@@ -103,7 +103,7 @@ BannerIndex create_new_banner(uint8_t flags)
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_banner* banner = &gBanners[bannerIndex];
+        auto banner = &gBanners[bannerIndex];
 
         banner->flags = 0;
         banner->type = 0;
@@ -116,7 +116,7 @@ BannerIndex create_new_banner(uint8_t flags)
 
 TileElement* banner_get_tile_element(BannerIndex bannerIndex)
 {
-    rct_banner* banner = &gBanners[bannerIndex];
+    auto banner = &gBanners[bannerIndex];
     TileElement* tileElement = map_get_first_element_at(banner->x, banner->y);
     do
     {
@@ -130,7 +130,7 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
 
 WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
 {
-    rct_banner* banner = &gBanners[bannerIndex];
+    auto banner = &gBanners[bannerIndex];
     TileElement* tileElement = map_get_first_element_at(banner->x, banner->y);
 
     if (tileElement == nullptr)
@@ -243,7 +243,7 @@ void fix_duplicated_banners()
                         Guard::Assert(!activeBanners[newBannerIndex]);
 
                         // Copy over the original banner, but update the location
-                        rct_banner& newBanner = gBanners[newBannerIndex];
+                        auto& newBanner = gBanners[newBannerIndex];
                         newBanner = gBanners[bannerIndex];
                         newBanner.x = x;
                         newBanner.y = y;

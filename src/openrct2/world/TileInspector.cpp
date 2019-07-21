@@ -307,7 +307,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
             {
                 return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
             }
-            rct_banner& newBanner = gBanners[newBannerIndex];
+            auto& newBanner = gBanners[newBannerIndex];
             newBanner = gBanners[bannerIndex];
             newBanner.x = loc.x / 32;
             newBanner.y = loc.y / 32;

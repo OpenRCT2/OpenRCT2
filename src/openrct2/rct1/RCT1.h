@@ -27,6 +27,7 @@
 #define RCT1_MAX_STAFF 116
 #define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
 #define RCT1_MAX_ANIMATED_OBJECTS 1000
+#define RCT1_MAX_BANNERS 100
 
 struct ParkLoadResult;
 
@@ -665,7 +666,7 @@ struct rct1_s4
     uint16_t unk_199C9A;
     rct1_research_item research_items_LL[180];
     uint8_t unk_19A020[5468];
-    rct_banner banners[100];
+    RCT12Banner banners[RCT1_MAX_BANNERS];
     char string_table[RCT12_MAX_USER_STRINGS][RCT12_USER_STRING_MAX_LENGTH];
     uint32_t game_time_counter;
     rct1_ride rides[RCT12_MAX_RIDES_IN_PARK];

@@ -170,7 +170,7 @@ rct_window* window_banner_open(rct_windownumber number)
  */
 static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_banner* banner = &gBanners[w->number];
+    auto banner = &gBanners[w->number];
     int32_t x = banner->x << 5;
     int32_t y = banner->y << 5;
 
@@ -216,7 +216,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
  */
 static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    rct_banner* banner = &gBanners[w->number];
+    Banner* banner = &gBanners[w->number];
 
     switch (widgetIndex)
     {
@@ -290,7 +290,7 @@ static void window_banner_textinput(rct_window* w, rct_widgetindex widgetIndex, 
  */
 static void window_banner_invalidate(rct_window* w)
 {
-    rct_banner* banner = &gBanners[w->number];
+    Banner* banner = &gBanners[w->number];
     rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
     colour_btn->type = WWT_EMPTY;
 
@@ -341,7 +341,7 @@ static void window_banner_viewport_rotate(rct_window* w)
 
     view->width = 0;
 
-    rct_banner* banner = &gBanners[w->number];
+    Banner* banner = &gBanners[w->number];
 
     int32_t view_x = (banner->x << 5) + 16;
     int32_t view_y = (banner->y << 5) + 16;

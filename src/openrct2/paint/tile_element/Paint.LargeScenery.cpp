@@ -310,7 +310,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         }
         textColour = (textColour << 19) | IMAGE_TYPE_REMAP;
         BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
-        rct_banner* banner = &gBanners[bannerIndex];
+        auto banner = &gBanners[bannerIndex];
         rct_string_id stringId = banner->string_idx;
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
         {
@@ -429,7 +429,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     set_format_arg(7, uint8_t, textColour);
     BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
     uint16_t scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
-    rct_banner* banner = &gBanners[bannerIndex];
+    auto banner = &gBanners[bannerIndex];
     set_format_arg(0, rct_string_id, banner->string_idx);
     if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
     {

@@ -354,7 +354,7 @@ public:
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
             }
 
-            rct_banner* banner = &gBanners[_bannerId];
+            auto banner = &gBanners[_bannerId];
             banner->string_idx = STR_DEFAULT_SIGN;
             banner->colour = 2;
             banner->text_colour = 2;

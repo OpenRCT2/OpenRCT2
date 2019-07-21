@@ -1080,7 +1080,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            rct_banner* banner = &gBanners[tile_element->AsBanner()->GetIndex()];
+            auto banner = &gBanners[tile_element->AsBanner()->GetIndex()];
             rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
             if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
             {
@@ -1165,7 +1165,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
             int32_t bannerIndex = tileElement->AsBanner()->GetIndex();
-            rct_banner* banner = &gBanners[bannerIndex];
+            auto banner = &gBanners[bannerIndex];
             rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
             if (sceneryEntry != nullptr)
             {

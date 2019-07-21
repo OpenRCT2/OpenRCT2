@@ -137,7 +137,7 @@ public:
 
         TileElement* newTileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, baseHeight, 0);
         assert(newTileElement != nullptr);
-        rct_banner* banner = &gBanners[_bannerIndex];
+        auto banner = &gBanners[_bannerIndex];
 
         banner->flags = 0;
         banner->string_idx = STR_DEFAULT_SIGN;

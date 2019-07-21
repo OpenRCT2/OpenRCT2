@@ -71,7 +71,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_banner* banner = &gBanners[_bannerIndex];
+        auto banner = &gBanners[_bannerIndex];
 
         utf8* buffer = gCommonStringFormatBuffer;
         utf8* dst = buffer;

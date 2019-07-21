@@ -625,7 +625,7 @@ void scenario_fix_ghosts(rct_s6_data* s6)
                     BannerIndex bannerIndex = tile_element_get_banner_index(reinterpret_cast<TileElement*>(originalElement));
                     if (bannerIndex != BANNER_INDEX_NULL)
                     {
-                        rct_banner* banner = &s6->banners[bannerIndex];
+                        auto banner = &s6->banners[bannerIndex];
                         if (banner->type != BANNER_NULL)
                         {
                             banner->type = BANNER_NULL;
