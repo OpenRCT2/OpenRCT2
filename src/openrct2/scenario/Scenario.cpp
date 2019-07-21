@@ -125,7 +125,7 @@ void scenario_begin()
             }
             if (localisedStringIds[1] != STR_NONE)
             {
-                park_set_name(language_get_string(localisedStringIds[1]));
+                park.Name = language_get_string(localisedStringIds[1]);
             }
             if (localisedStringIds[2] != STR_NONE)
             {
@@ -135,12 +135,9 @@ void scenario_begin()
     }
 
     // Set the last saved game path
-    char parkName[128];
-    format_string(parkName, 128, gParkName, &gParkNameArgs);
-
     char savePath[MAX_PATH];
     platform_get_user_directory(savePath, "save", sizeof(savePath));
-    safe_strcat_path(savePath, parkName, sizeof(savePath));
+    safe_strcat_path(savePath, park.Name.c_str(), sizeof(savePath));
     path_append_extension(savePath, ".sv6", sizeof(savePath));
     gScenarioSavePath = savePath;
 
@@ -579,10 +576,12 @@ static bool scenario_prepare_rides_for_save()
  */
 bool scenario_prepare_for_save()
 {
-    gS6Info.entry.flags = 255;
+    auto& park = GetContext()->GetGameState()->GetPark();
+    auto parkName = park.Name.c_str();
 
+    gS6Info.entry.flags = 255;
     if (gS6Info.name[0] == 0)
-        format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
+        String::Set(gS6Info.name, sizeof(gS6Info.name), parkName);
 
     gS6Info.objective_type = gScenarioObjectiveType;
     gS6Info.objective_arg_1 = gScenarioObjectiveYear;

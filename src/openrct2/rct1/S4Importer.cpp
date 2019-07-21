@@ -2476,12 +2476,8 @@ private:
             }
         }
 
-        rct_string_id stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, parkName.c_str());
-        if (stringId != 0)
-        {
-            gParkName = stringId;
-            gParkNameArgs = 0;
-        }
+        auto& park = GetContext()->GetGameState()->GetPark();
+        park.Name = parkName;
     }
 
     void ImportParkFlags()

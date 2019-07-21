@@ -1291,6 +1291,32 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
     }
 }
 
+std::string format_string(rct_string_id format, const void* args)
+{
+    std::string buffer(256, 0);
+    size_t len{};
+    for (;;)
+    {
+        format_string(buffer.data(), buffer.size(), format, args);
+        len = buffer.find('\0');
+        if (len == std::string::npos)
+        {
+            len = buffer.size();
+        }
+        if (len >= buffer.size() - 1)
+        {
+            // Null terminator to close to end of buffer, grow buffer and try again
+            buffer.resize(buffer.size() * 2);
+        }
+        else
+        {
+            buffer.resize(len);
+            break;
+        }
+    }
+    return buffer;
+}
+
 /**
  * Writes a formatted string to a buffer.
  *  rct2: 0x006C2555

@@ -44,8 +44,6 @@
 
 using namespace OpenRCT2;
 
-rct_string_id gParkName;
-uint32_t gParkNameArgs;
 uint32_t gParkFlags;
 uint16_t gParkRating;
 money16 gParkEntranceFee;
@@ -78,17 +76,6 @@ int32_t _suggestedGuestMaximum;
  * approximately 1 guest per second can be generated (+60 guests in one minute).
  */
 int32_t _guestGenerationProbability;
-
-/**
- *
- *  rct2: 0x00667104
- */
-void reset_park_entry()
-{
-    gParkName = 0;
-    reset_park_entrance();
-    gPeepSpawns.clear();
-}
 
 /**
  * Choose a random peep spawn and iterates through until defined spawn is found.
@@ -193,16 +180,6 @@ void update_park_fences_around_tile(const CoordsXY coords)
     update_park_fences({ coords.x, coords.y - 32 });
 }
 
-void park_set_name(const char* name)
-{
-    auto nameId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, name);
-    if (nameId != 0)
-    {
-        user_string_free(gParkName);
-        gParkName = nameId;
-    }
-}
-
 void set_forced_park_rating(int32_t rating)
 {
     _forcedParkRating = rating;
@@ -278,8 +255,8 @@ money32 Park::GetCompanyValue() const
 
 void Park::Initialise()
 {
+    Name = format_string(STR_UNNAMED_PARK, nullptr);
     gUnk13CA740 = 0;
-    gParkName = STR_UNNAMED_PARK;
     gStaffHandymanColour = COLOUR_BRIGHT_RED;
     gStaffMechanicColour = COLOUR_LIGHT_BLUE;
     gStaffSecurityColour = COLOUR_YELLOW;
@@ -302,10 +279,8 @@ void Park::Initialise()
 
     gParkEntranceFee = MONEY(10, 00);
 
-    for (auto& peepSpawn : gPeepSpawns)
-    {
-        peepSpawn.x = PEEP_SPAWN_UNDEFINED;
-    }
+    gPeepSpawns.clear();
+    reset_park_entrance();
 
     gResearchPriorities = (1 << RESEARCH_CATEGORY_TRANSPORT) | (1 << RESEARCH_CATEGORY_GENTLE)
         | (1 << RESEARCH_CATEGORY_ROLLERCOASTER) | (1 << RESEARCH_CATEGORY_THRILL) | (1 << RESEARCH_CATEGORY_WATER)

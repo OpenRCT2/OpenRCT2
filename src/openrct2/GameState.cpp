@@ -52,7 +52,6 @@ void GameState::InitAll(int32_t mapSize)
     map_init(mapSize);
     _park->Initialise();
     finance_init();
-    reset_park_entry();
     banner_init();
     ride_init_all();
     reset_sprite_list();
