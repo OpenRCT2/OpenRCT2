@@ -2904,8 +2904,9 @@ private:
 
     std::string GetUserString(rct_string_id stringId)
     {
-        const char* originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
-        return rct2_to_utf8(originalString, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
+        std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
+        return rct2_to_utf8(originalStringView, RCT2_LANGUAGE_ID_ENGLISH_UK);
     }
 
     void FixLandOwnership()

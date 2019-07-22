@@ -1278,6 +1278,35 @@ opt::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& v
     return {};
 }
 
+static std::string GetTruncatedRCT2String(const std::string_view& src)
+{
+    auto rct2encoded = utf8_to_rct2(src);
+    if (rct2encoded.size() > RCT12_USER_STRING_MAX_LENGTH - 1)
+    {
+        log_warning("The user string '%s' is too long for the S6 file format and has therefore been truncated.", std::string(src).c_str());
+
+        rct2encoded.resize(RCT12_USER_STRING_MAX_LENGTH - 1);
+        for (size_t i = 0; i < rct2encoded.size(); i++)
+        {
+            if (rct2encoded[i] == (char)(uint8_t)0xFF)
+            {
+                if (i > RCT12_USER_STRING_MAX_LENGTH - 4)
+                {
+                    // This codepoint was truncated, remove codepoint altogether
+                    rct2encoded.resize(i);
+                    break;
+                }
+                else
+                {
+                    // Skip the next two bytes which represent the unicode character
+                    i += 2;
+                }
+            }
+        }
+    }
+    return rct2encoded;
+}
+
 void S6Exporter::ExportUserStrings()
 {
     auto numUserStrings = std::min<size_t>(_userStrings.size(), RCT12_MAX_USER_STRINGS);
@@ -1285,12 +1314,9 @@ void S6Exporter::ExportUserStrings()
     {
         auto dst = _s6.custom_strings[i];
         const auto& src = _userStrings[i];
-        auto stringLen = std::min<size_t>(src.size(), RCT12_USER_STRING_MAX_LENGTH - 1);
-        std::memcpy(dst, src.data(), stringLen);
-        if (stringLen < src.size())
-        {
-            log_warning("A user string '%s' was truncated to the S6 user string length limit.", src.c_str());
-        }
+        auto encodedSrc = GetTruncatedRCT2String(src);
+        auto stringLen = std::min<size_t>(encodedSrc.size(), RCT12_USER_STRING_MAX_LENGTH - 1);
+        std::memcpy(dst, encodedSrc.data(), stringLen);
     }
 }
 
@@ -1346,8 +1372,9 @@ int32_t scenario_save(const utf8* path, int32_t flags)
         }
         result = true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
+        log_error("Unable to save park: '%s'", e.what());
     }
     delete s6exporter;
 
