@@ -144,7 +144,7 @@ static void window_news_update(rct_window* w)
     }
 
     window_invalidate(w);
-    audio_play_sound(SOUND_CLICK_2, 0, w->x + (w->width / 2));
+    audio_play_sound(SoundId::Click2, 0, w->x + (w->width / 2));
 
     j = w->news.var_480;
     w->news.var_480 = -1;
@@ -238,7 +238,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, int3
         w->news.var_482 = buttonIndex;
         w->news.var_484 = 4;
         window_invalidate(w);
-        audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
+        audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
     }
 }
 

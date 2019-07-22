@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "AudioSource.h"
+#include "audio.h"
 
 namespace OpenRCT2::Audio
 {

@@ -44,7 +44,7 @@ namespace OpenRCT2::Audio
         uint8_t _settingSoundVolume = 0xFF;
         uint8_t _settingMusicVolume = 0xFF;
 
-        IAudioSource* _css1Sources[SOUND_MAXID] = { nullptr };
+        IAudioSource* _css1Sources[RCT2SoundCount] = { nullptr };
         IAudioSource* _musicSources[PATH_ID_END] = { nullptr };
 
         std::vector<uint8_t> _channelBuffer;
@@ -185,9 +185,9 @@ namespace OpenRCT2::Audio
             _volume = volume;
         }
 
-        IAudioSource* GetSoundSource(int32_t id) override
+        IAudioSource* GetSoundSource(SoundId id) override
         {
-            return _css1Sources[id];
+            return _css1Sources[static_cast<uint32_t>(id)];
         }
 
         IAudioSource* GetMusicSource(int32_t id) override

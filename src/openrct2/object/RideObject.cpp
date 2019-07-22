@@ -12,6 +12,7 @@
 #include "RideObject.h"
 
 #include "../OpenRCT2.h"
+#include "../audio/audio.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
@@ -442,7 +443,7 @@ void RideObject::ReadLegacyVehicle(
     vehicle->no_seating_rows = stream->ReadValue<uint8_t>();
     vehicle->spinning_inertia = stream->ReadValue<uint8_t>();
     vehicle->spinning_friction = stream->ReadValue<uint8_t>();
-    vehicle->friction_sound_id = stream->ReadValue<uint8_t>();
+    vehicle->friction_sound_id = stream->ReadValue<SoundId>();
     vehicle->log_flume_reverser_vehicle_type = stream->ReadValue<uint8_t>();
     vehicle->sound_range = stream->ReadValue<uint8_t>();
     vehicle->double_sound_frequency = stream->ReadValue<uint8_t>();
@@ -576,7 +577,7 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
         car.sprite_height_positive = 1;
         car.flags = VEHICLE_ENTRY_FLAG_SPINNING;
         car.car_visual = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
-        car.friction_sound_id = 0xFF;
+        car.friction_sound_id = SoundId::Null;
         car.sound_range = 0xFF;
         car.draw_order = 6;
 
@@ -763,7 +764,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t* jCar)
     car.no_seating_rows = ObjectJsonHelpers::GetInteger(jCar, "numSeatRows");
     car.spinning_inertia = ObjectJsonHelpers::GetInteger(jCar, "spinningInertia");
     car.spinning_friction = ObjectJsonHelpers::GetInteger(jCar, "spinningFriction");
-    car.friction_sound_id = ObjectJsonHelpers::GetInteger(jCar, "frictionSoundId", 255);
+    car.friction_sound_id = static_cast<SoundId>(ObjectJsonHelpers::GetInteger(jCar, "frictionSoundId", 255));
     car.log_flume_reverser_vehicle_type = ObjectJsonHelpers::GetInteger(jCar, "logFlumeReverserVehicleType");
     car.sound_range = ObjectJsonHelpers::GetInteger(jCar, "soundRange", 255);
     car.double_sound_frequency = ObjectJsonHelpers::GetInteger(jCar, "doubleSoundFrequency");

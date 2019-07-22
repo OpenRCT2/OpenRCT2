@@ -247,7 +247,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
         return;
     }
 
-    audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
+    audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         if (listIndex == 0)

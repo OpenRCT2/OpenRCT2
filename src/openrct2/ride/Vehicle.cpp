@@ -81,12 +81,11 @@ static bool vehicle_update_motion_collision_detection(
     rct_vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
 static int32_t vehicle_get_sound_priority_factor(rct_vehicle* vehicle);
 static void vehicle_update_sound(rct_vehicle* vehicle);
-static int32_t vehicle_update_scream_sound(rct_vehicle* vehicle);
+static SoundId vehicle_update_scream_sound(rct_vehicle* vehicle);
 
 static void vehicle_kill_all_passengers(rct_vehicle* vehicle);
 static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle);
 
-#define NO_SCREAM 254
 #define VEHICLE_INVALID_ID (-1)
 
 #define VEHICLE_MAX_SPIN_SPEED 1536
@@ -109,77 +108,77 @@ rct_vehicle* _vehicleFrontVehicle;
 LocationXYZ16 unk_F64E20;
 
 // clang-format off
-static constexpr const uint8_t byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
-static constexpr const uint8_t byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
-static constexpr const uint8_t byte_9A3A18[] = {
-    SOUND_SCREAM_3, SOUND_SCREAM_1, SOUND_SCREAM_5, SOUND_SCREAM_6,
-    SOUND_SCREAM_7, SOUND_SCREAM_2, SOUND_SCREAM_4
+static constexpr const SoundId byte_9A3A14[] = { SoundId::Scream8, SoundId::Scream1 };
+static constexpr const SoundId byte_9A3A16[] = { SoundId::Scream1, SoundId::Scream6 };
+static constexpr const SoundId byte_9A3A18[] = {
+    SoundId::Scream3, SoundId::Scream1, SoundId::Scream5, SoundId::Scream6,
+    SoundId::Scream7, SoundId::Scream2, SoundId::Scream4
 };
-static constexpr const uint8_t _soundParams[SOUND_MAXID][2] =
+static constexpr const uint8_t _soundParams[RCT2SoundCount][2] =
 {
-    { 1, 0 },   // SOUND_LIFT_CLASSIC
-    { 1, 0 },   // SOUND_TRACK_FRICTION_CLASSIC_WOOD
-    { 1, 0 },   // SOUND_FRICTION_CLASSIC
-    { 0, 1 },   // SOUND_SCREAM_1
-    { 0, 0 },   // SOUND_CLICK_1
-    { 0, 0 },   // SOUND_CLICK_2
-    { 0, 0 },   // SOUND_PLACE_ITEM
-    { 0, 1 },   // SOUND_SCREAM_2
-    { 0, 1 },   // SOUND_SCREAM_3
-    { 0, 1 },   // SOUND_SCREAM_4
-    { 0, 1 },   // SOUND_SCREAM_5
-    { 0, 1 },   // SOUND_SCREAM_6
-    { 1, 0 },   // SOUND_LIFT_FRICTION_WHEELS
-    { 0, 0 },   // SOUND_PURCHASE
-    { 0, 0 },   // SOUND_CRASH
-    { 0, 0 },   // SOUND_LAYING_OUT_WATER
-    { 0, 0 },   // SOUND_WATER_1
-    { 0, 0 },   // SOUND_WATER_2
-    { 0, 1 },   // SOUND_TRAIN_WHISTLE
-    { 0, 1 },   // SOUND_TRAIN_DEPARTING
-    { 0, 0 },   // SOUND_WATER_SPLASH
-    { 1, 0 },   // SOUND_GO_KART_ENGINE
-    { 0, 0 },   // SOUND_RIDE_LAUNCH_1
-    { 0, 0 },   // SOUND_RIDE_LAUNCH_2
-    { 0, 0 },   // SOUND_COUGH_1
-    { 0, 0 },   // SOUND_COUGH_2
-    { 0, 0 },   // SOUND_COUGH_3
-    { 0, 0 },   // SOUND_COUGH_4
-    { 1, 0 },   // SOUND_RAIN
-    { 0, 0 },   // SOUND_THUNDER_1
-    { 0, 0 },   // SOUND_THUNDER_2
-    { 1, 0 },   // SOUND_TRACK_FRICTION_TRAIN
-    { 1, 0 },   // SOUND_TRACK_FRICTION_WATER
-    { 0, 0 },   // SOUND_BALLOON_POP
-    { 0, 0 },   // SOUND_MECHANIC_FIX
-    { 0, 1 },   // SOUND_SCREAM_7
-    { 0, 0 },   // SOUND_TOILET_FLUSH
-    { 0, 0 },   // SOUND_CLICK_3
-    { 0, 0 },   // SOUND_QUACK
-    { 0, 0 },   // SOUND_NEWS_ITEM
-    { 0, 0 },   // SOUND_WINDOW_OPEN
-    { 0, 0 },   // SOUND_LAUGH_1
-    { 0, 0 },   // SOUND_LAUGH_2
-    { 0, 0 },   // SOUND_LAUGH_3
-    { 0, 0 },   // SOUND_APPLAUSE
-    { 0, 0 },   // SOUND_HAUNTED_HOUSE_SCARE
-    { 0, 0 },   // SOUND_HAUNTED_HOUSE_SCREAM_1
-    { 0, 0 },   // SOUND_HAUNTED_HOUSE_SCREAM_2
-    { 0, 0 },   // SOUND_BLOCK_BRAKE_CLOSE
-    { 0, 0 },   // SOUND_BLOCK_BRAKE_RELEASE
-    { 0, 0 },   // SOUND_ERROR
-    { 0, 0 },   // SOUND_BRAKE_RELEASE
-    { 1, 0 },   // SOUND_LIFT_ARROW
-    { 1, 0 },   // SOUND_LIFT_WOOD
-    { 1, 0 },   // SOUND_TRACK_FRICTION_WOOD
-    { 1, 0 },   // SOUND_LIFT_WILD_MOUSE
-    { 1, 0 },   // SOUND_LIFT_BM
-    { 1, 2 },   // SOUND_TRACK_FRICTION_BM
-    { 0, 1 },   // SOUND_SCREAM_8
-    { 0, 1 },   // SOUND_TRAM
-    { 0, 0 },   // SOUND_DOOR_OPEN
-    { 0, 0 },   // SOUND_DOOR_CLOSE
-    { 0, 0 }    // SOUND_PORTCULLIS
+    { 1, 0 },   // LiftClassic
+    { 1, 0 },   // TrackFrictionClassicWood
+    { 1, 0 },   // FrictionClassic
+    { 0, 1 },   // Scream1
+    { 0, 0 },   // Click1
+    { 0, 0 },   // Click2
+    { 0, 0 },   // PlaceItem
+    { 0, 1 },   // Scream2
+    { 0, 1 },   // Scream3
+    { 0, 1 },   // Scream4
+    { 0, 1 },   // Scream5
+    { 0, 1 },   // Scream6
+    { 1, 0 },   // LiftFrictionWheels
+    { 0, 0 },   // Purchase
+    { 0, 0 },   // Crash
+    { 0, 0 },   // LayingOutWater
+    { 0, 0 },   // Water1
+    { 0, 0 },   // Water2
+    { 0, 1 },   // TrainWhistle
+    { 0, 1 },   // TrainDeparting
+    { 0, 0 },   // WaterSplash
+    { 1, 0 },   // GoKartEngine
+    { 0, 0 },   // RideLaunch1
+    { 0, 0 },   // RideLaunch2
+    { 0, 0 },   // Cough1
+    { 0, 0 },   // Cough2
+    { 0, 0 },   // Cough3
+    { 0, 0 },   // Cough4
+    { 1, 0 },   // Rain
+    { 0, 0 },   // Thunder1
+    { 0, 0 },   // Thunder2
+    { 1, 0 },   // TrackFrictionTrain
+    { 1, 0 },   // TrackFrictionWater
+    { 0, 0 },   // BalloonPop
+    { 0, 0 },   // MechanicFix
+    { 0, 1 },   // Scream7
+    { 0, 0 },   // ToiletFlush
+    { 0, 0 },   // Click3
+    { 0, 0 },   // Quack
+    { 0, 0 },   // NewsItem
+    { 0, 0 },   // WindowOpen
+    { 0, 0 },   // Laugh1
+    { 0, 0 },   // Laugh2
+    { 0, 0 },   // Laugh3
+    { 0, 0 },   // Applause
+    { 0, 0 },   // HauntedHouseScare
+    { 0, 0 },   // HauntedHouseScream1
+    { 0, 0 },   // HauntedHouseScream2
+    { 0, 0 },   // BlockBrakeClose
+    { 0, 0 },   // BlockBrakeRelease
+    { 0, 0 },   // Error
+    { 0, 0 },   // BrakeRelease
+    { 1, 0 },   // LiftArrow
+    { 1, 0 },   // LiftWood
+    { 1, 0 },   // TrackFrictionWood
+    { 1, 0 },   // LiftWildMouse
+    { 1, 0 },   // LiftBM
+    { 1, 2 },   // TrackFrictionBM
+    { 0, 1 },   // Scream8
+    { 0, 1 },   // Tram
+    { 0, 0 },   // DoorOpen
+    { 0, 0 },   // DoorClose
+    { 0, 0 }    // Portcullis
 };
 
 static constexpr const uint8_t SpaceRingsTimeToSpriteMap[] =
@@ -691,16 +690,16 @@ static constexpr const LocationXY16 AvoidCollisionMoveOffset[] =
 };
 
 
-static constexpr const uint8_t DoorOpenSoundIds[] =
+static constexpr const SoundId DoorOpenSoundIds[] =
 {
-    SOUND_DOOR_OPEN,
-    SOUND_PORTCULLIS
+    SoundId::DoorOpen,
+    SoundId::Portcullis
 };
 
-static constexpr const uint8_t DoorCloseSoundIds[] =
+static constexpr const SoundId DoorCloseSoundIds[] =
 {
-    SOUND_DOOR_CLOSE,
-    SOUND_PORTCULLIS
+    SoundId::DoorClose,
+    SoundId::Portcullis
 };
 
 static const struct
@@ -873,7 +872,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return;
 
-    if (vehicle->sound1_id == RCT12_SOUND_ID_NULL && vehicle->sound2_id == RCT12_SOUND_ID_NULL)
+    if (vehicle->sound1_id == SoundId::Null && vehicle->sound2_id == SoundId::Null)
         return;
 
     if (vehicle->sprite_left == LOCATION_NULL)
@@ -1101,8 +1100,8 @@ static rct_vehicle_sound* vehicle_sounds_update_get_vehicle_sound(rct_vehicle_so
             if (vehicleSound->id == SOUND_ID_NULL)
             {
                 vehicleSound->id = sound_params->id;
-                vehicleSound->sound1_id = SOUND_ID_NULL;
-                vehicleSound->sound2_id = SOUND_ID_NULL;
+                vehicleSound->sound1_id = SoundId::Null;
+                vehicleSound->sound2_id = SoundId::Null;
                 vehicleSound->volume = 0x30;
                 return vehicleSound;
             }
@@ -1120,33 +1119,33 @@ static void vehicle_sounds_update_sound_1(
     volume = volume / 8;
     volume = std::max(volume - 0x1FFF, -10000);
 
-    if (vehicle->sound1_id == RCT12_SOUND_ID_NULL)
+    if (vehicle->sound1_id == SoundId::Null)
     {
-        if (sound->sound1_id != SOUND_ID_NULL)
+        if (sound->sound1_id != SoundId::Null)
         {
-            sound->sound1_id = SOUND_ID_NULL;
+            sound->sound1_id = SoundId::Null;
             Mixer_Stop_Channel(sound->sound1_channel);
         }
         return;
     }
 
-    if (sound->sound1_id != SOUND_ID_NULL && vehicle->sound1_id != sound->sound1_id)
+    if (sound->sound1_id != SoundId::Null && vehicle->sound1_id != sound->sound1_id)
     {
         Mixer_Stop_Channel(sound->sound1_channel);
     }
 
-    if ((sound->sound1_id == SOUND_ID_NULL) || (vehicle->sound1_id != sound->sound1_id))
+    if ((sound->sound1_id == SoundId::Null) || (vehicle->sound1_id != sound->sound1_id))
     {
         sound->sound1_id = vehicle->sound1_id;
         sound->sound1_pan = sound_params->pan_x;
         sound->sound1_volume = volume;
         sound->sound1_freq = sound_params->frequency;
         uint16_t frequency = sound_params->frequency;
-        if (_soundParams[vehicle->sound1_id][1] & 2)
+        if (_soundParams[static_cast<uint8_t>(vehicle->sound1_id)][1] & 2)
         {
             frequency = (frequency / 2) + 4000;
         }
-        uint8_t looping = _soundParams[vehicle->sound1_id][0];
+        uint8_t looping = _soundParams[static_cast<uint8_t>(vehicle->sound1_id)][0];
         int32_t pan = sound_params->pan_x;
         sound->sound1_channel = Mixer_Play_Effect(
             vehicle->sound1_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan),
@@ -1167,7 +1166,7 @@ static void vehicle_sounds_update_sound_1(
     {
         sound->sound1_freq = sound_params->frequency;
         uint16_t frequency = sound_params->frequency;
-        if (_soundParams[vehicle->sound1_id][1] & 2)
+        if (_soundParams[static_cast<uint8_t>(vehicle->sound1_id)][1] & 2)
         {
             frequency = (frequency / 2) + 4000;
         }
@@ -1184,35 +1183,35 @@ static void vehicle_sounds_update_sound_2(
     volume = volume / 8;
     volume = std::max(volume - 0x1FFF, -10000);
 
-    if (vehicle->sound2_id == RCT12_SOUND_ID_NULL)
+    if (vehicle->sound2_id == SoundId::Null)
     {
-        if (sound->sound2_id != SOUND_ID_NULL)
+        if (sound->sound2_id != SoundId::Null)
         {
-            sound->sound2_id = SOUND_ID_NULL;
+            sound->sound2_id = SoundId::Null;
             Mixer_Stop_Channel(sound->sound2_channel);
         }
         return;
     }
 
-    if (sound->sound2_id != SOUND_ID_NULL && vehicle->sound2_id != sound->sound2_id)
+    if (sound->sound2_id != SoundId::Null && vehicle->sound2_id != sound->sound2_id)
     {
         Mixer_Stop_Channel(sound->sound2_channel);
     }
 
-    if ((sound->sound2_id == SOUND_ID_NULL) || (vehicle->sound2_id != sound->sound2_id))
+    if ((sound->sound2_id == SoundId::Null) || (vehicle->sound2_id != sound->sound2_id))
     {
         sound->sound2_id = vehicle->sound2_id;
         sound->sound2_pan = sound_params->pan_x;
         sound->sound2_volume = volume;
         sound->sound2_freq = sound_params->frequency;
         uint16_t frequency = sound_params->frequency;
-        if (_soundParams[vehicle->sound2_id][1] & 1)
+        if (_soundParams[static_cast<uint8_t>(vehicle->sound2_id)][1] & 1)
         {
             frequency = 12649;
         }
         frequency = std::min((frequency * 2) - 3248, 25700);
 
-        uint8_t looping = _soundParams[vehicle->sound2_id][0];
+        uint8_t looping = _soundParams[static_cast<uint8_t>(vehicle->sound2_id)][0];
         int32_t pan = sound_params->pan_x;
         sound->sound2_channel = Mixer_Play_Effect(
             vehicle->sound2_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan),
@@ -1232,7 +1231,7 @@ static void vehicle_sounds_update_sound_2(
     if (!(gCurrentTicks & 3) && sound_params->frequency != sound->sound2_freq)
     {
         sound->sound2_freq = sound_params->frequency;
-        if (!(_soundParams[vehicle->sound2_id][1] & 1))
+        if (!(_soundParams[static_cast<uint8_t>(vehicle->sound2_id)][1] & 1))
         {
             uint16_t frequency = (sound_params->frequency * 2) - 3248;
             if (frequency > 25700)
@@ -1280,11 +1279,11 @@ void vehicle_sounds_update()
             if (keepPlaying)
                 continue;
 
-            if (vehicle_sound.sound1_id != SOUND_ID_NULL)
+            if (vehicle_sound.sound1_id != SoundId::Null)
             {
                 Mixer_Stop_Channel(vehicle_sound.sound1_channel);
             }
-            if (vehicle_sound.sound2_id != SOUND_ID_NULL)
+            if (vehicle_sound.sound2_id != SoundId::Null)
             {
                 Mixer_Stop_Channel(vehicle_sound.sound2_channel);
             }
@@ -1892,20 +1891,26 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
     ride->sheltered_length = add_clamp_int32_t(ride->sheltered_length, distance);
 }
 
-static uint16_t sub_6D7AC0(int32_t currentSoundId, int32_t currentVolume, int32_t targetSoundId, int32_t targetVolume)
+struct SoundIdVolume
 {
-    if (currentSoundId != 255)
+    SoundId id;
+    uint8_t volume;
+};
+
+static SoundIdVolume sub_6D7AC0(SoundId currentSoundId, uint8_t currentVolume, SoundId targetSoundId, uint8_t targetVolume)
+{
+    if (currentSoundId != SoundId::Null)
     {
         if (currentSoundId == targetSoundId)
         {
-            currentVolume = std::min(currentVolume + 15, targetVolume);
-            return (currentVolume << 8) | currentSoundId;
+            currentVolume = std::min<int32_t>(currentVolume + 15, targetVolume);
+            return { currentSoundId, currentVolume };
         }
         else
         {
             currentVolume -= 9;
             if (currentVolume >= 80)
-                return (currentVolume << 8) | currentSoundId;
+                return { currentSoundId, currentVolume };
         }
     }
 
@@ -1913,7 +1918,7 @@ static uint16_t sub_6D7AC0(int32_t currentSoundId, int32_t currentVolume, int32_
     currentSoundId = targetSoundId;
     currentVolume = targetVolume == 255 ? 255 : targetVolume / 4;
 
-    return (currentVolume << 8) | currentSoundId;
+    return { currentSoundId, currentVolume };
 }
 
 /**
@@ -3187,14 +3192,14 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
         {
-            uint8_t soundId = (rideEntry->vehicles[0].sound_range == 4) ? SOUND_TRAM : SOUND_TRAIN_DEPARTING;
+            auto soundId = (rideEntry->vehicles[0].sound_range == 4) ? SoundId::Tram : SoundId::TrainDeparting;
 
             audio_play_sound_at_location(soundId, vehicle->x, vehicle->y, vehicle->z);
         }
 
         if (ride->mode == RIDE_MODE_UPWARD_LAUNCH || (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH && vehicle->var_CE > 1))
         {
-            audio_play_sound_at_location(SOUND_RIDE_LAUNCH_2, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SoundId::RideLaunch2, vehicle->x, vehicle->y, vehicle->z);
         }
 
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
@@ -3399,7 +3404,7 @@ static void vehicle_finish_departing(rct_vehicle* vehicle)
         if (vehicle->var_CE >= 1 && (14 << 16) > vehicle->velocity)
             return;
 
-        audio_play_sound_at_location(SOUND_RIDE_LAUNCH_1, vehicle->x, vehicle->y, vehicle->z);
+        audio_play_sound_at_location(SoundId::RideLaunch1, vehicle->x, vehicle->y, vehicle->z);
     }
 
     if (ride->mode == RIDE_MODE_UPWARD_LAUNCH)
@@ -3407,7 +3412,7 @@ static void vehicle_finish_departing(rct_vehicle* vehicle)
         if ((ride->launch_speed << 16) > vehicle->velocity)
             return;
 
-        audio_play_sound_at_location(SOUND_RIDE_LAUNCH_1, vehicle->x, vehicle->y, vehicle->z);
+        audio_play_sound_at_location(SoundId::RideLaunch1, vehicle->x, vehicle->y, vehicle->z);
     }
 
     if (ride->mode != RIDE_MODE_RACE && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
@@ -3529,7 +3534,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
 
         train->sub_state = 2;
 
-        audio_play_sound_at_location(SOUND_CRASH, train->x, train->y, train->z);
+        audio_play_sound_at_location(SoundId::Crash, train->x, train->y, train->z);
 
         sprite_misc_explosion_cloud_create(train->x, train->y, train->z);
 
@@ -3581,7 +3586,7 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle)
     int32_t num_peeps = vehicle_get_total_num_peeps(vehicle);
     if (num_peeps != 0)
     {
-        audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCREAM_2, vehicle->x, vehicle->y, vehicle->z);
+        audio_play_sound_at_location(SoundId::HauntedHouseScream2, vehicle->x, vehicle->y, vehicle->z);
     }
 
     int32_t edx = vehicle->velocity >> 10;
@@ -3994,7 +3999,7 @@ loc_6D8E36:
 
     if ((ride->mode == RIDE_MODE_UPWARD_LAUNCH || ride->mode == RIDE_MODE_DOWNWARD_LAUNCH) && vehicle->var_CE < 2)
     {
-        audio_play_sound_at_location(SOUND_RIDE_LAUNCH_2, vehicle->x, vehicle->y, vehicle->z);
+        audio_play_sound_at_location(SoundId::RideLaunch2, vehicle->x, vehicle->y, vehicle->z);
         vehicle->velocity = 0;
         vehicle->acceleration = 0;
         vehicle->SetState(VEHICLE_STATUS_DEPARTING, 1);
@@ -4962,24 +4967,24 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle)
     switch (vehicle->current_time)
     {
         case 45:
-            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCARE, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SoundId::HauntedHouseScare, vehicle->x, vehicle->y, vehicle->z);
             break;
         case 75:
             vehicle->vehicle_sprite_type = 1;
             vehicle->Invalidate();
             break;
         case 400:
-            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCREAM_1, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SoundId::HauntedHouseScream1, vehicle->x, vehicle->y, vehicle->z);
             break;
         case 745:
-            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCARE, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SoundId::HauntedHouseScare, vehicle->x, vehicle->y, vehicle->z);
             break;
         case 775:
             vehicle->vehicle_sprite_type = 1;
             vehicle->Invalidate();
             break;
         case 1100:
-            audio_play_sound_at_location(SOUND_HAUNTED_HOUSE_SCREAM_2, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SoundId::HauntedHouseScream2, vehicle->x, vehicle->y, vehicle->z);
             break;
     }
 }
@@ -5222,7 +5227,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
     }
 
     vehicle->sub_state = 2;
-    audio_play_sound_at_location(SOUND_CRASH, vehicle->x, vehicle->y, vehicle->z);
+    audio_play_sound_at_location(SoundId::Crash, vehicle->x, vehicle->y, vehicle->z);
 
     sprite_misc_explosion_cloud_create(vehicle->x, vehicle->y, vehicle->z);
     sprite_misc_explosion_flare_create(vehicle->x, vehicle->y, vehicle->z);
@@ -5280,7 +5285,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
     }
 
     vehicle->sub_state = 2;
-    audio_play_sound_at_location(SOUND_WATER_1, vehicle->x, vehicle->y, vehicle->z);
+    audio_play_sound_at_location(SoundId::Water1, vehicle->x, vehicle->y, vehicle->z);
 
     crash_splash_create(vehicle->x, vehicle->y, vehicle->z);
     crash_splash_create(vehicle->x - 8, vehicle->y - 9, vehicle->z);
@@ -5404,10 +5409,11 @@ static void vehicle_update_sound(rct_vehicle* vehicle)
     Ride* ride;
     rct_ride_entry* rideEntry;
     // frictionVolume (bl) should be set before hand
-    uint8_t frictionVolume = 255, frictionId = 255;
+    uint8_t frictionVolume = 255;
+    SoundId frictionId = SoundId::Null;
     // bh screamVolume should be set before hand
-    uint8_t screamId = 255, screamVolume = 255;
-    uint16_t soundIdVolume;
+    SoundId screamId = SoundId::Null;
+    uint8_t screamVolume = 255;
 
     ride = get_ride(vehicle->ride);
     rideEntry = get_ride_entry(vehicle->ride_subtype);
@@ -5433,18 +5439,18 @@ static void vehicle_update_sound(rct_vehicle* vehicle)
             screamId = vehicle->scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
-                if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
+                if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != SoundId::Null)
                     goto loc_6D7A97;
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
-                    vehicle->scream_sound_id = SOUND_TRAIN_WHISTLE;
+                    vehicle->scream_sound_id = SoundId::TrainWhistle;
                     screamVolume = 255;
                     break;
                 }
             }
-            if (screamId == NO_SCREAM)
-                screamId = 255;
+            if (screamId == SoundId::NoScream)
+                screamId = SoundId::Null;
             screamVolume = 255;
             break;
 
@@ -5452,18 +5458,18 @@ static void vehicle_update_sound(rct_vehicle* vehicle)
             screamId = vehicle->scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
-                if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
+                if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != SoundId::Null)
                     goto loc_6D7A97;
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
-                    vehicle->scream_sound_id = SOUND_TRAM;
+                    vehicle->scream_sound_id = SoundId::Tram;
                     screamVolume = 255;
                     break;
                 }
             }
-            if (screamId == NO_SCREAM)
-                screamId = 255;
+            if (screamId == SoundId::NoScream)
+                screamId = SoundId::Null;
             screamVolume = 255;
             break;
 
@@ -5471,34 +5477,34 @@ static void vehicle_update_sound(rct_vehicle* vehicle)
             if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RIDERS_SCREAM))
             {
                 screamId = vehicle_update_scream_sound(vehicle);
-                if (screamId == NO_SCREAM)
-                    screamId = 255;
-                if (screamId == 255)
+                if (screamId == SoundId::NoScream)
+                    screamId = SoundId::Null;
+                if (screamId == SoundId::Null)
                     goto loc_6D7A97;
                 break;
             }
 
         loc_6D7A97:
-            vehicle->scream_sound_id = 255;
+            vehicle->scream_sound_id = SoundId::Null;
             if (ride->type < std::size(RideLiftData))
             {
                 // Get lift hill sound
                 screamId = RideLiftData[ride->type].sound_id;
                 screamVolume = 243;
                 if (!(vehicle->sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
-                    screamId = 255;
+                    screamId = SoundId::Null;
             }
     }
 
     // Friction sound
-    soundIdVolume = sub_6D7AC0(vehicle->sound1_id, vehicle->sound1_volume, frictionId, frictionVolume);
-    vehicle->sound1_id = soundIdVolume & 0xFF;
-    vehicle->sound1_volume = (soundIdVolume >> 8) & 0xFF;
+    auto soundIdVolume = sub_6D7AC0(vehicle->sound1_id, vehicle->sound1_volume, frictionId, frictionVolume);
+    vehicle->sound1_id = soundIdVolume.id;
+    vehicle->sound1_volume = soundIdVolume.volume;
 
     // Scream sound
     soundIdVolume = sub_6D7AC0(vehicle->sound2_id, vehicle->sound2_volume, screamId, screamVolume);
-    vehicle->sound2_id = soundIdVolume & 0xFF;
-    vehicle->sound2_volume = (soundIdVolume >> 8) & 0xFF;
+    vehicle->sound2_id = soundIdVolume.id;
+    vehicle->sound2_volume = soundIdVolume.volume;
 
     // Calculate Sound Vector (used for sound frequency calcs)
     int32_t soundDirection = SpriteDirectionToSoundDirection[vehicle->sprite_direction];
@@ -5512,7 +5518,7 @@ static void vehicle_update_sound(rct_vehicle* vehicle)
  *
  *  rct2: 0x006D796B
  */
-static int32_t vehicle_update_scream_sound(rct_vehicle* vehicle)
+static SoundId vehicle_update_scream_sound(rct_vehicle* vehicle)
 {
     uint32_t r;
     uint16_t spriteIndex;
@@ -5525,12 +5531,12 @@ static int32_t vehicle_update_scream_sound(rct_vehicle* vehicle)
 
     int32_t totalNumPeeps = vehicle_get_total_num_peeps(vehicle);
     if (totalNumPeeps == 0)
-        return 255;
+        return SoundId::Null;
 
     if (vehicle->velocity < 0)
     {
         if (vehicle->velocity > -0x2C000)
-            return 255;
+            return SoundId::Null;
 
         spriteIndex = vehicle->sprite_index;
         do
@@ -5545,11 +5551,11 @@ static int32_t vehicle_update_scream_sound(rct_vehicle* vehicle)
             if (vehicle2->vehicle_sprite_type <= 15)
                 goto produceScream;
         } while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
-        return 255;
+        return SoundId::Null;
     }
 
     if (vehicle->velocity < 0x2C000)
-        return 255;
+        return SoundId::Null;
 
     spriteIndex = vehicle->sprite_index;
     do
@@ -5564,10 +5570,10 @@ static int32_t vehicle_update_scream_sound(rct_vehicle* vehicle)
         if (vehicle2->vehicle_sprite_type <= 23)
             goto produceScream;
     } while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
-    return 255;
+    return SoundId::Null;
 
 produceScream:
-    if (vehicle->scream_sound_id == 255)
+    if (vehicle->scream_sound_id == SoundId::Null)
     {
         r = scenario_rand();
         if (totalNumPeeps >= (int32_t)(r % 16))
@@ -5584,13 +5590,13 @@ produceScream:
                     vehicle->scream_sound_id = byte_9A3A16[r % 2];
                     break;
                 default:
-                    vehicle->scream_sound_id = NO_SCREAM;
+                    vehicle->scream_sound_id = SoundId::NoScream;
                     break;
             }
         }
         else
         {
-            vehicle->scream_sound_id = NO_SCREAM;
+            vehicle->scream_sound_id = SoundId::NoScream;
         }
     }
     return vehicle->scream_sound_id;
@@ -6709,7 +6715,7 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
         Ride* ride = get_ride(vehicle->ride);
         if (ride->IsBlockSectioned())
         {
-            audio_play_sound_at_location(SOUND_BLOCK_BRAKE_CLOSE, x, y, z);
+            audio_play_sound_at_location(SoundId::BlockBrakeClose, x, y, z);
         }
     }
 }
@@ -7321,8 +7327,8 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle* vehicle, WallEleme
     int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
     if (doorSoundType != 0)
     {
-        int32_t soundId = DoorOpenSoundIds[doorSoundType - 1];
-        if (soundId != 255)
+        auto soundId = DoorOpenSoundIds[doorSoundType - 1];
+        if (soundId != SoundId::Null)
         {
             audio_play_sound_at_location(soundId, vehicle->x, vehicle->track_y, vehicle->track_z);
         }
@@ -7339,8 +7345,8 @@ static void vehicle_play_scenery_door_close_sound(rct_vehicle* vehicle, WallElem
     int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
     if (doorSoundType != 0)
     {
-        int32_t soundId = DoorCloseSoundIds[doorSoundType - 1];
-        if (soundId != 255)
+        auto soundId = DoorCloseSoundIds[doorSoundType - 1];
+        if (soundId != SoundId::Null)
         {
             audio_play_sound_at_location(soundId, vehicle->x, vehicle->track_y, vehicle->track_z);
         }
@@ -7473,7 +7479,7 @@ static void vehicle_update_play_water_splash_sound()
         return;
     }
 
-    audio_play_sound_at_location(SOUND_WATER_SPLASH, unk_F64E20.x, unk_F64E20.y, unk_F64E20.z);
+    audio_play_sound_at_location(SoundId::WaterSplash, unk_F64E20.x, unk_F64E20.y, unk_F64E20.z);
 }
 
 /**
@@ -7889,7 +7895,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
                 if (!(rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_POWERED))
                 {
                     audio_play_sound_at_location(
-                        SOUND_BLOCK_BRAKE_RELEASE, vehicle->track_x, vehicle->track_y, vehicle->track_z);
+                        SoundId::BlockBrakeRelease, vehicle->track_x, vehicle->track_y, vehicle->track_z);
                 }
             }
             map_invalidate_element(vehicle->track_x, vehicle->track_z, tileElement);
@@ -8096,7 +8102,7 @@ loc_6DAEB9:
                 if (_vehicleF64E2C == 0)
                 {
                     _vehicleF64E2C++;
-                    audio_play_sound_at_location(SOUND_BRAKE_RELEASE, vehicle->x, vehicle->y, vehicle->z);
+                    audio_play_sound_at_location(SoundId::BrakeRelease, vehicle->x, vehicle->y, vehicle->z);
                 }
             }
         }
@@ -9908,10 +9914,10 @@ void vehicle_claxon(const rct_vehicle* vehicle)
     switch (rideEntry->vehicles[vehicle->vehicle_type].sound_range)
     {
         case SOUND_RANGE_WHISTLE:
-            audio_play_sound_at_location(SOUND_TRAIN_WHISTLE, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SoundId::TrainWhistle, vehicle->x, vehicle->y, vehicle->z);
             break;
         case SOUND_RANGE_BELL:
-            audio_play_sound_at_location(SOUND_TRAM, vehicle->x, vehicle->y, vehicle->z);
+            audio_play_sound_at_location(SoundId::Tram, vehicle->x, vehicle->y, vehicle->z);
             break;
     }
 }

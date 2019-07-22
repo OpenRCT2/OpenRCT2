@@ -19,6 +19,8 @@
 #include <cstddef>
 #include <vector>
 
+enum class SoundId : uint8_t;
+
 struct rct_vehicle_colour
 {
     uint8_t body_colour;
@@ -79,7 +81,7 @@ struct rct_ride_entry_vehicle
     uint8_t no_seating_rows;                 // 0x54 , 0x6E
     uint8_t spinning_inertia;                // 0x55 , 0x6F
     uint8_t spinning_friction;               // 0x56 , 0x70
-    uint8_t friction_sound_id;               // 0x57 , 0x71
+    SoundId friction_sound_id;               // 0x57 , 0x71
     uint8_t log_flume_reverser_vehicle_type; // 0x58 , 0x72
     uint8_t sound_range;                     // 0x59 , 0x73
     uint8_t
@@ -217,9 +219,9 @@ struct rct_vehicle : rct_sprite_common
     };
     uint16_t sound2_flags; // 0xB8
     uint8_t spin_sprite;   // 0xBA lowest 3 bits not used for sprite selection (divide by 8 to use)
-    uint8_t sound1_id;     // 0xBB
+    SoundId sound1_id;     // 0xBB
     uint8_t sound1_volume; // 0xBC
-    uint8_t sound2_id;     // 0xBD
+    SoundId sound2_id;     // 0xBD
     uint8_t sound2_volume; // 0xBE
     int8_t sound_vector_factor;
     union
@@ -240,7 +242,7 @@ struct rct_vehicle : rct_sprite_common
     uint8_t pad_C6[0x2];
     uint16_t var_C8;
     uint16_t var_CA;
-    uint8_t scream_sound_id; // 0xCC
+    SoundId scream_sound_id; // 0xCC
     uint8_t var_CD;
     union
     {

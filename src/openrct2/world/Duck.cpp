@@ -367,7 +367,7 @@ void duck_update(rct_duck* duck)
 
 void duck_press(rct_duck* duck)
 {
-    audio_play_sound_at_location(SOUND_QUACK, duck->x, duck->y, duck->z);
+    audio_play_sound_at_location(SoundId::Quack, duck->x, duck->y, duck->z);
 }
 
 void duck_remove_all()

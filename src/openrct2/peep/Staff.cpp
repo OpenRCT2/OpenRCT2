@@ -2592,7 +2592,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 
     if (action_frame == 0x13 || action_frame == 0x19 || action_frame == 0x1F || action_frame == 0x25 || action_frame == 0x2B)
     {
-        audio_play_sound_at_location(SOUND_MECHANIC_FIX, x, y, z);
+        audio_play_sound_at_location(SoundId::MechanicFix, x, y, z);
     }
 
     return false;

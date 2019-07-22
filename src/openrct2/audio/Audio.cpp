@@ -57,75 +57,75 @@ rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params* gVehicleSoundParamsListEnd;
 
 // clang-format off
-static int32_t SoundVolumeAdjust[SOUND_MAXID] =
+static int32_t SoundVolumeAdjust[RCT2SoundCount] =
 {
-    0,      // SOUND_LIFT_CLASSIC
-    0,      // SOUND_TRACK_FRICTION_CLASSIC_WOOD
-    0,      // SOUND_FRICTION_CLASSIC
-    0,      // SOUND_SCREAM_1
-    0,      // SOUND_CLICK_1
-    0,      // SOUND_CLICK_2
-    0,      // SOUND_PLACE_ITEM
-    0,      // SOUND_SCREAM_2
-    0,      // SOUND_SCREAM_3
-    0,      // SOUND_SCREAM_4
-    0,      // SOUND_SCREAM_5
-    0,      // SOUND_SCREAM_6
-    0,      // SOUND_LIFT_FRICTION_WHEELS
-    -400,   // SOUND_PURCHASE
-    0,      // SOUND_CRASH
-    0,      // SOUND_LAYING_OUT_WATER
-    0,      // SOUND_WATER_1
-    0,      // SOUND_WATER_2
-    0,      // SOUND_TRAIN_WHISTLE
-    0,      // SOUND_TRAIN_DEPARTING
-    -1000,  // SOUND_WATER_SPLASH
-    0,      // SOUND_GO_KART_ENGINE
-    -800,   // SOUND_RIDE_LAUNCH_1
-    -1700,  // SOUND_RIDE_LAUNCH_2
-    -700,   // SOUND_COUGH_1
-    -700,   // SOUND_COUGH_2
-    -700,   // SOUND_COUGH_3
-    -700,   // SOUND_COUGH_4
-    0,      // SOUND_RAIN
-    0,      // SOUND_THUNDER_1
-    0,      // SOUND_THUNDER_2
-    0,      // SOUND_TRACK_FRICTION_TRAIN
-    0,      // SOUND_TRACK_FRICTION_WATER
-    0,      // SOUND_BALLOON_POP
-    -700,   // SOUND_MECHANIC_FIX
-    0,      // SOUND_SCREAM_7
-    -2500,  // SOUND_TOILET_FLUSH original value: -1000
-    0,      // SOUND_CLICK_3
-    0,      // SOUND_QUACK
-    0,      // SOUND_NEWS_ITEM
-    0,      // SOUND_WINDOW_OPEN
-    -900,   // SOUND_LAUGH_1
-    -900,   // SOUND_LAUGH_2
-    -900,   // SOUND_LAUGH_3
-    0,      // SOUND_APPLAUSE
-    -600,   // SOUND_HAUNTED_HOUSE_SCARE
-    -700,   // SOUND_HAUNTED_HOUSE_SCREAM_1
-    -700,   // SOUND_HAUNTED_HOUSE_SCREAM_2
-    -2550,  // SOUND_BLOCK_BRAKE_CLOSE
-    -2900,  // SOUND_BLOCK_BRAKE_RELEASE
-    0,      // SOUND_ERROR
-    -3400,  // SOUND_BRAKE_RELEASE
-    0,      // SOUND_LIFT_ARROW
-    0,      // SOUND_LIFT_WOOD
-    0,      // SOUND_TRACK_FRICTION_WOOD
-    0,      // SOUND_LIFT_WILD_MOUSE
-    0,      // SOUND_LIFT_BM
-    0,      // SOUND_TRACK_FRICTION_BM
-    0,      // SOUND_SCREAM_8
-    0,      // SOUND_TRAM
-    -2000,  // SOUND_DOOR_OPEN
-    -2700,  // SOUND_DOOR_CLOSE
-    -700    // SOUND_PORTCULLIS
+    0,      // LiftClassic
+    0,      // TrackFrictionClassicWood
+    0,      // FrictionClassic
+    0,      // Scream1
+    0,      // Click1
+    0,      // Click2
+    0,      // PlaceItem
+    0,      // Scream2
+    0,      // Scream3
+    0,      // Scream4
+    0,      // Scream5
+    0,      // Scream6
+    0,      // LiftFrictionWheels
+    -400,   // Purchase
+    0,      // Crash
+    0,      // LayingOutWater
+    0,      // Water1
+    0,      // Water2
+    0,      // TrainWhistle
+    0,      // TrainDeparting
+    -1000,  // WaterSplash
+    0,      // GoKartEngine
+    -800,   // RideLaunch1
+    -1700,  // RideLaunch2
+    -700,   // Cough1
+    -700,   // Cough2
+    -700,   // Cough3
+    -700,   // Cough4
+    0,      // Rain
+    0,      // Thunder1
+    0,      // Thunder2
+    0,      // TrackFrictionTrain
+    0,      // TrackFrictionWater
+    0,      // BalloonPop
+    -700,   // MechanicFix
+    0,      // Scream7
+    -2500,  // ToiletFlush original value: -1000
+    0,      // Click3
+    0,      // Quack
+    0,      // NewsItem
+    0,      // WindowOpen
+    -900,   // Laugh1
+    -900,   // Laugh2
+    -900,   // Laugh3
+    0,      // Applause
+    -600,   // HauntedHouseScare
+    -700,   // HauntedHouseScream1
+    -700,   // HauntedHouseScream2
+    -2550,  // BlockBrakeClose
+    -2900,  // BlockBrakeRelease
+    0,      // Error
+    -3400,  // BrakeRelease
+    0,      // LiftArrow
+    0,      // LiftWood
+    0,      // TrackFrictionWood
+    0,      // LiftWildMouse
+    0,      // LiftBM
+    0,      // TrackFrictionBM
+    0,      // Scream8
+    0,      // Tram
+    -2000,  // DoorOpen
+    -2700,  // DoorClose
+    -700    // Portcullis
 };
 // clang-format on
 
-AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16* location);
+AudioParams audio_get_params_from_location(SoundId soundId, const LocationXYZ16* location);
 
 void audio_init()
 {
@@ -180,10 +180,10 @@ void audio_populate_devices()
     }
 }
 
-int32_t audio_play_sound_at_location(int32_t soundId, int16_t x, int16_t y, int16_t z)
+void audio_play_sound_at_location(SoundId soundId, int16_t x, int16_t y, int16_t z)
 {
     if (gGameSoundsOff)
-        return 0;
+        return;
 
     LocationXYZ16 location;
     location.x = x;
@@ -193,9 +193,8 @@ int32_t audio_play_sound_at_location(int32_t soundId, int16_t x, int16_t y, int1
     AudioParams params = audio_get_params_from_location(soundId, &location);
     if (params.in_range)
     {
-        soundId = audio_play_sound(soundId, params.volume, params.pan);
+        audio_play_sound(soundId, params.volume, params.pan);
     }
-    return soundId;
 }
 
 /**
@@ -204,7 +203,7 @@ int32_t audio_play_sound_at_location(int32_t soundId, int16_t x, int16_t y, int1
  * @param location The location at which the sound effect is to be played.
  * @return The audio parameters to be used when playing this sound effect.
  */
-AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16* location)
+AudioParams audio_get_params_from_location(SoundId soundId, const LocationXYZ16* location)
 {
     int32_t volumeDown = 0;
     AudioParams params;
@@ -229,7 +228,8 @@ AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16*
             int16_t vy = pos2.y - viewport->view_y;
             int16_t vx = pos2.x - viewport->view_x;
             params.pan = viewport->x + (vx >> viewport->zoom);
-            params.volume = SoundVolumeAdjust[soundId] + ((-1024 * viewport->zoom - 1) * (1 << volumeDown)) + 1;
+            params.volume = SoundVolumeAdjust[static_cast<uint8_t>(soundId)]
+                + ((-1024 * viewport->zoom - 1) * (1 << volumeDown)) + 1;
 
             if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || params.volume < -10000)
             {
@@ -242,10 +242,10 @@ AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16*
     return params;
 }
 
-int32_t audio_play_sound(int32_t soundId, int32_t volume, int32_t pan)
+void audio_play_sound(SoundId soundId, int32_t volume, int32_t pan)
 {
     if (gGameSoundsOff)
-        return 0;
+        return;
 
     int32_t mixerPan = 0;
     if (pan != AUDIO_PLAY_AT_CENTRE)
@@ -256,7 +256,6 @@ int32_t audio_play_sound(int32_t soundId, int32_t volume, int32_t pan)
     }
 
     Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(mixerPan), 1, 1);
-    return 0;
 }
 
 void audio_start_title_music()
@@ -435,11 +434,11 @@ void audio_stop_vehicle_sounds()
         if (vehicleSound.id != SOUND_ID_NULL)
         {
             vehicleSound.id = SOUND_ID_NULL;
-            if (vehicleSound.sound1_id != SOUND_ID_NULL)
+            if (vehicleSound.sound1_id != SoundId::Null)
             {
                 Mixer_Stop_Channel(vehicleSound.sound1_channel);
             }
-            if (vehicleSound.sound2_id != SOUND_ID_NULL)
+            if (vehicleSound.sound2_id != SoundId::Null)
             {
                 Mixer_Stop_Channel(vehicleSound.sound2_channel);
             }

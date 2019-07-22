@@ -80,7 +80,7 @@ void screenshot_check()
 
             if (!screenshotPath.empty())
             {
-                audio_play_sound(SOUND_WINDOW_OPEN, 100, context_get_width() / 2);
+                audio_play_sound(SoundId::WindowOpen, 100, context_get_width() / 2);
             }
             else
             {

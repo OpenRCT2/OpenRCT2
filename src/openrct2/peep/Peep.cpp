@@ -673,8 +673,9 @@ bool Peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance
     // Create sick at location
     litter_create(x, y, z, sprite_direction, (sprite_index & 1) ? LITTER_TYPE_SICK_ALT : LITTER_TYPE_SICK);
 
-    int32_t sound_id = SOUND_COUGH_1 + (scenario_rand() & 3);
-    audio_play_sound_at_location(sound_id, x, y, z);
+    SoundId coughs[4] = { SoundId::Cough1, SoundId::Cough2, SoundId::Cough3, SoundId::Cough4 };
+    auto soundId = coughs[scenario_rand() & 3];
+    audio_play_sound_at_location(soundId, x, y, z);
 
     Invalidate();
     *actionX = x;
@@ -1481,7 +1482,7 @@ void peep_applause()
     }
 
     // Play applause noise
-    audio_play_sound(SOUND_APPLAUSE, 0, context_get_width() / 2);
+    audio_play_sound(SoundId::Applause, 0, context_get_width() / 2);
 }
 
 /**
