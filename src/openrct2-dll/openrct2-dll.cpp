@@ -32,7 +32,7 @@ using namespace OpenRCT2::Ui;
 
 static char** GetCommandLineArgs(int argc, wchar_t** argvW);
 static void FreeCommandLineArgs(int argc, char** argv);
-static char* ConvertUTF16toUTF8(const wchar_t* src);
+static char* ConvertWideChartoUTF8(const wchar_t* src);
 
 DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t** argvW)
 {
@@ -63,7 +63,7 @@ static char** GetCommandLineArgs(int argc, wchar_t** argvW)
     // Convert to UTF-8
     for (int i = 0; i < argc; i++)
     {
-        argv[i] = ConvertUTF16toUTF8(argvW[i]);
+        argv[i] = ConvertWideChartoUTF8(argvW[i]);
     }
 
     return argv;
@@ -79,7 +79,7 @@ static void FreeCommandLineArgs(int argc, char** argv)
     free(argv);
 }
 
-static char* ConvertUTF16toUTF8(const wchar_t* src)
+static char* ConvertWideChartoUTF8(const wchar_t* src)
 {
     int srcLen = lstrlenW(src);
     int sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);

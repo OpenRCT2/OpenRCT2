@@ -87,23 +87,23 @@ namespace OpenRCT2::Ui
         void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
             HWND hwnd = GetHWND(window);
-            std::wstring messageW = String::ToUtf16(message);
+            std::wstring messageW = String::ToWideChar(message);
             MessageBoxW(hwnd, messageW.c_str(), L"OpenRCT2", MB_OK);
         }
 
         void OpenFolder(const std::string& path) override
         {
-            std::wstring pathW = String::ToUtf16(path);
+            std::wstring pathW = String::ToWideChar(path);
             ShellExecuteW(NULL, L"open", pathW.c_str(), NULL, NULL, SW_SHOWNORMAL);
         }
 
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
-            std::wstring wcFilename = String::ToUtf16(desc.DefaultFilename);
+            std::wstring wcFilename = String::ToWideChar(desc.DefaultFilename);
             wcFilename.resize(std::max<size_t>(wcFilename.size(), MAX_PATH));
 
-            std::wstring wcTitle = String::ToUtf16(desc.Title);
-            std::wstring wcInitialDirectory = String::ToUtf16(desc.InitialDirectory);
+            std::wstring wcTitle = String::ToWideChar(desc.Title);
+            std::wstring wcInitialDirectory = String::ToWideChar(desc.InitialDirectory);
             std::wstring wcFilters = GetFilterString(desc.Filters);
 
             // Set open file name options
@@ -162,7 +162,7 @@ namespace OpenRCT2::Ui
             LPMALLOC lpMalloc;
             if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)) && SUCCEEDED(SHGetMalloc(&lpMalloc)))
             {
-                std::wstring titleW = String::ToUtf16(title);
+                std::wstring titleW = String::ToWideChar(title);
                 BROWSEINFOW bi = {};
                 bi.lpszTitle = titleW.c_str();
                 bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE | BIF_NONEWFOLDERBUTTON;
@@ -211,7 +211,7 @@ namespace OpenRCT2::Ui
             std::wstringstream filtersb;
             for (auto filter : filters)
             {
-                filtersb << String::ToUtf16(filter.Name) << '\0' << String::ToUtf16(filter.Pattern) << '\0';
+                filtersb << String::ToWideChar(filter.Name) << '\0' << String::ToWideChar(filter.Pattern) << '\0';
             }
             return filtersb.str();
         }

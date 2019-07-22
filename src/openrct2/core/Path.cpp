@@ -171,7 +171,7 @@ namespace Path
     utf8* GetAbsolute(utf8* buffer, size_t bufferSize, const utf8* relativePath)
     {
 #ifdef _WIN32
-        auto relativePathW = String::ToUtf16(relativePath);
+        auto relativePathW = String::ToWideChar(relativePath);
         wchar_t absolutePathW[MAX_PATH];
         DWORD length = GetFullPathNameW(relativePathW.c_str(), (DWORD)std::size(absolutePathW), absolutePathW, nullptr);
         if (length == 0)

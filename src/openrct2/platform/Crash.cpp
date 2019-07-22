@@ -68,7 +68,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
     }
     else
     {
-        parameters[L"commit"] = String::ToUtf16(gVersionInfoFull);
+        parameters[L"commit"] = String::ToWideChar(gVersionInfoFull);
     }
     int timeout = 10000;
     bool success = google_breakpad::HTTPUpload::SendRequest(url, parameters, files, &timeout, &response, &error);
@@ -189,7 +189,7 @@ static bool OnCrash(
     std::string screenshotPath = screenshot_dump();
     if (!screenshotPath.empty())
     {
-        auto screenshotPathW = String::ToUtf16(screenshotPath.c_str());
+        auto screenshotPathW = String::ToWideChar(screenshotPath.c_str());
         uploadFiles[L"attachment_screenshot.png"] = screenshotPathW;
     }
 
@@ -266,7 +266,7 @@ static std::wstring GetDumpDirectory()
 {
     char userDirectory[MAX_PATH];
     platform_get_user_directory(userDirectory, nullptr, sizeof(userDirectory));
-    auto result = String::ToUtf16(userDirectory);
+    auto result = String::ToWideChar(userDirectory);
     return result;
 }
 

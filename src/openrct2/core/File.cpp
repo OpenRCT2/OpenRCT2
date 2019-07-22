@@ -49,7 +49,7 @@ namespace File
         std::vector<uint8_t> result;
 
 #if defined(_WIN32) && !defined(__MINGW32__)
-        auto pathW = String::ToUtf16(std::string(path));
+        auto pathW = String::ToWideChar(std::string(path));
         std::ifstream fs(pathW, std::ios::in | std::ios::binary);
 #else
         std::ifstream fs(std::string(path), std::ios::in | std::ios::binary);
@@ -125,7 +125,7 @@ namespace File
     {
         uint64_t lastModified = 0;
 #ifdef _WIN32
-        auto pathW = String::ToUtf16(path.c_str());
+        auto pathW = String::ToWideChar(path.c_str());
         auto hFile = CreateFileW(pathW.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
         if (hFile != INVALID_HANDLE_VALUE)
         {

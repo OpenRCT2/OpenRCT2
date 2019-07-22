@@ -31,10 +31,6 @@ using namespace Numerics;
 using utf8 = char;
 using utf8string = utf8*;
 using const_utf8string = const utf8*;
-#ifdef _WIN32
-using utf16 = wchar_t;
-using utf16string = utf16*;
-#endif
 
 // Define MAX_PATH for various headers that don't want to include system headers
 // just for MAX_PATH

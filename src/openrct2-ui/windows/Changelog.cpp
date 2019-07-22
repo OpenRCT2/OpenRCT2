@@ -213,7 +213,7 @@ static std::string GetChangelogText()
 {
     auto path = GetChangelogPath();
 #if defined(_WIN32) && !defined(__MINGW32__)
-    auto pathW = String::ToUtf16(path);
+    auto pathW = String::ToWideChar(path);
     auto fs = std::ifstream(pathW, std::ios::in);
 #else
     auto fs = std::ifstream(path, std::ios::in);

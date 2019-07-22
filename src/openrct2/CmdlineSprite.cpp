@@ -69,8 +69,8 @@ static uint8_t* spriteFileData;
 
 static FILE* fopen_utf8(const char* path, const char* mode)
 {
-    auto pathW = String::ToUtf16(path);
-    auto modeW = String::ToUtf16(mode);
+    auto pathW = String::ToWideChar(path);
+    auto modeW = String::ToWideChar(mode);
     auto file = _wfopen(pathW.c_str(), modeW.c_str());
     return file;
 }

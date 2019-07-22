@@ -1356,7 +1356,7 @@ void Network::BeginChatLog()
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
 
 #    if defined(_WIN32) && !defined(__MINGW32__)
-    auto pathW = String::ToUtf16(_chatLogPath.c_str());
+    auto pathW = String::ToWideChar(_chatLogPath.c_str());
     _chat_log_fs.open(pathW.c_str(), std::ios::out | std::ios::app);
 #    else
     _chat_log_fs.open(_chatLogPath, std::ios::out | std::ios::app);
@@ -1382,7 +1382,7 @@ void Network::BeginServerLog()
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
 
 #    if defined(_WIN32) && !defined(__MINGW32__)
-    auto pathW = String::ToUtf16(_serverLogPath.c_str());
+    auto pathW = String::ToWideChar(_serverLogPath.c_str());
     _server_log_fs.open(pathW.c_str(), std::ios::out | std::ios::app | std::ios::binary);
 #    else
     _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app | std::ios::binary);

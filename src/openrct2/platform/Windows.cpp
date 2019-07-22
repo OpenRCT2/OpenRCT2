@@ -85,7 +85,7 @@ void platform_get_time_local(rct2_time* out_time)
 
 bool platform_file_exists(const utf8* path)
 {
-    auto wPath = String::ToUtf16(path);
+    auto wPath = String::ToWideChar(path);
     DWORD result = GetFileAttributesW(wPath.c_str());
     DWORD error = GetLastError();
     return !(result == INVALID_FILE_ATTRIBUTES && (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND));
@@ -93,7 +93,7 @@ bool platform_file_exists(const utf8* path)
 
 bool platform_directory_exists(const utf8* path)
 {
-    auto wPath = String::ToUtf16(path);
+    auto wPath = String::ToWideChar(path);
     DWORD dwAttrib = GetFileAttributesW(wPath.c_str());
     return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
@@ -125,7 +125,7 @@ bool platform_ensure_directory_exists(const utf8* path)
     if (platform_directory_exists(path))
         return 1;
 
-    auto wPath = String::ToUtf16(path);
+    auto wPath = String::ToWideChar(path);
     auto success = CreateDirectoryW(wPath.c_str(), nullptr);
     return success != FALSE;
 }
@@ -133,7 +133,7 @@ bool platform_ensure_directory_exists(const utf8* path)
 bool platform_directory_delete(const utf8* path)
 {
     // Needs to be double-null terminated as pFrom is a null terminated array of strings
-    auto wPath = String::ToUtf16(path) + L"\0";
+    auto wPath = String::ToWideChar(path) + L"\0";
 
     SHFILEOPSTRUCTW fileop;
     fileop.hwnd = nullptr;                           // no status display
@@ -180,23 +180,23 @@ int32_t platform_get_drives()
 
 bool platform_file_copy(const utf8* srcPath, const utf8* dstPath, bool overwrite)
 {
-    auto wSrcPath = String::ToUtf16(srcPath);
-    auto wDstPath = String::ToUtf16(dstPath);
+    auto wSrcPath = String::ToWideChar(srcPath);
+    auto wDstPath = String::ToWideChar(dstPath);
     auto success = CopyFileW(wSrcPath.c_str(), wDstPath.c_str(), overwrite ? FALSE : TRUE);
     return success != FALSE;
 }
 
 bool platform_file_move(const utf8* srcPath, const utf8* dstPath)
 {
-    auto wSrcPath = String::ToUtf16(srcPath);
-    auto wDstPath = String::ToUtf16(dstPath);
+    auto wSrcPath = String::ToWideChar(srcPath);
+    auto wDstPath = String::ToWideChar(dstPath);
     auto success = MoveFileW(wSrcPath.c_str(), wDstPath.c_str());
     return success != FALSE;
 }
 
 bool platform_file_delete(const utf8* path)
 {
-    auto wPath = String::ToUtf16(path);
+    auto wPath = String::ToWideChar(path);
     auto success = DeleteFileW(wPath.c_str());
     return success != FALSE;
 }
@@ -326,7 +326,7 @@ uint16_t platform_get_locale_language()
 time_t platform_file_get_modified_time(const utf8* path)
 {
     WIN32_FILE_ATTRIBUTE_DATA data{};
-    auto wPath = String::ToUtf16(path);
+    auto wPath = String::ToWideChar(path);
     auto result = GetFileAttributesExW(wPath.c_str(), GetFileExInfoStandard, &data);
     if (result != FALSE)
     {
@@ -488,7 +488,7 @@ std::string platform_get_absolute_path(const utf8* relativePath, const utf8* bas
             pathToResolve = std::string(basePath) + std::string("\\") + relativePath;
         }
 
-        auto pathToResolveW = String::ToUtf16(pathToResolve);
+        auto pathToResolveW = String::ToWideChar(pathToResolve);
         wchar_t fullPathW[MAX_PATH]{};
         auto fullPathLen = GetFullPathNameW(pathToResolveW.c_str(), (DWORD)std::size(fullPathW), fullPathW, nullptr);
         if (fullPathLen != 0)
@@ -554,7 +554,7 @@ bool platform_process_is_elevated()
 static std::wstring get_progIdName(const std::string_view& extension)
 {
     auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
-    auto progIdNameW = String::ToUtf16(progIdName);
+    auto progIdNameW = String::ToWideChar(progIdName);
     return progIdNameW;
 }
 
@@ -569,10 +569,10 @@ static bool windows_setup_file_association(
     GetModuleFileNameW(nullptr, exePathW, (DWORD)std::size(exePathW));
     GetModuleFileNameW(plaform_get_dll_module(), dllPathW, (DWORD)std::size(dllPathW));
 
-    auto extensionW = String::ToUtf16(extension);
-    auto fileTypeTextW = String::ToUtf16(fileTypeText);
-    auto commandTextW = String::ToUtf16(commandText);
-    auto commandArgsW = String::ToUtf16(commandArgs);
+    auto extensionW = String::ToWideChar(extension);
+    auto fileTypeTextW = String::ToWideChar(fileTypeText);
+    auto commandTextW = String::ToWideChar(commandText);
+    auto commandArgsW = String::ToWideChar(commandArgs);
     auto progIdNameW = get_progIdName(extension);
 
     bool result = false;

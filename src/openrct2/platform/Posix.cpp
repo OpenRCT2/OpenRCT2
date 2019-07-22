@@ -98,7 +98,7 @@ void platform_get_time_local(rct2_time* out_time)
 
 static size_t platform_utf8_to_multibyte(const utf8* path, char* buffer, size_t buffer_size)
 {
-    auto wpath = String::ToUtf16(path);
+    auto wpath = String::ToWideChar(path);
     setlocale(LC_CTYPE, "UTF-8");
     size_t len = wcstombs(NULL, wpath.c_str(), 0);
     bool truncated = false;
