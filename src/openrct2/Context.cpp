@@ -504,6 +504,7 @@ namespace OpenRCT2
 
         bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail) final override
         {
+            log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
             try
             {
                 auto fs = FileStream(path, FILE_MODE_OPEN);
