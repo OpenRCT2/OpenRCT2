@@ -4515,13 +4515,13 @@ static rct_vehicle* vehicle_create_car(
     vehicle->spin_sprite = 0;
     vehicle->spin_speed = 0;
     vehicle->sound2_flags = 0;
-    vehicle->sound1_id = RCT2Sound::Null;
-    vehicle->sound2_id = RCT2Sound::Null;
+    vehicle->sound1_id = SoundId::Null;
+    vehicle->sound2_id = SoundId::Null;
     vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
     vehicle->var_C4 = 0;
     vehicle->animation_frame = 0;
     vehicle->var_C8 = 0;
-    vehicle->scream_sound_id = RCT2Sound::Null;
+    vehicle->scream_sound_id = SoundId::Null;
     vehicle->vehicle_sprite_type = 0;
     vehicle->bank_rotation = 0;
     vehicle->target_seat_rotation = 4;

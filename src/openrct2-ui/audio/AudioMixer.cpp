@@ -185,7 +185,7 @@ namespace OpenRCT2::Audio
             _volume = volume;
         }
 
-        IAudioSource* GetSoundSource(RCT2Sound id) override
+        IAudioSource* GetSoundSource(SoundId id) override
         {
             return _css1Sources[static_cast<uint32_t>(id)];
         }

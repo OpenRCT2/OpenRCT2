@@ -141,7 +141,7 @@ rct_window* window_create(
     if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
     {
         w->flags |= WF_WHITE_BORDER_MASK;
-        audio_play_sound(RCT2Sound::WindowOpen, 0, x + (width / 2));
+        audio_play_sound(SoundId::WindowOpen, 0, x + (width / 2));
     }
 
     w->number = 0;

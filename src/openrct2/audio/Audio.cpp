@@ -125,7 +125,7 @@ static int32_t SoundVolumeAdjust[RCT2SoundCount] =
 };
 // clang-format on
 
-AudioParams audio_get_params_from_location(RCT2Sound soundId, const LocationXYZ16* location);
+AudioParams audio_get_params_from_location(SoundId soundId, const LocationXYZ16* location);
 
 void audio_init()
 {
@@ -180,7 +180,7 @@ void audio_populate_devices()
     }
 }
 
-void audio_play_sound_at_location(RCT2Sound soundId, int16_t x, int16_t y, int16_t z)
+void audio_play_sound_at_location(SoundId soundId, int16_t x, int16_t y, int16_t z)
 {
     if (gGameSoundsOff)
         return;
@@ -203,7 +203,7 @@ void audio_play_sound_at_location(RCT2Sound soundId, int16_t x, int16_t y, int16
  * @param location The location at which the sound effect is to be played.
  * @return The audio parameters to be used when playing this sound effect.
  */
-AudioParams audio_get_params_from_location(RCT2Sound soundId, const LocationXYZ16* location)
+AudioParams audio_get_params_from_location(SoundId soundId, const LocationXYZ16* location)
 {
     int32_t volumeDown = 0;
     AudioParams params;
@@ -242,7 +242,7 @@ AudioParams audio_get_params_from_location(RCT2Sound soundId, const LocationXYZ1
     return params;
 }
 
-void audio_play_sound(RCT2Sound soundId, int32_t volume, int32_t pan)
+void audio_play_sound(SoundId soundId, int32_t volume, int32_t pan)
 {
     if (gGameSoundsOff)
         return;
@@ -434,11 +434,11 @@ void audio_stop_vehicle_sounds()
         if (vehicleSound.id != SOUND_ID_NULL)
         {
             vehicleSound.id = SOUND_ID_NULL;
-            if (vehicleSound.sound1_id != RCT2Sound::Null)
+            if (vehicleSound.sound1_id != SoundId::Null)
             {
                 Mixer_Stop_Channel(vehicleSound.sound1_channel);
             }
-            if (vehicleSound.sound2_id != RCT2Sound::Null)
+            if (vehicleSound.sound2_id != SoundId::Null)
             {
                 Mixer_Stop_Channel(vehicleSound.sound2_channel);
             }

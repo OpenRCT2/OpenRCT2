@@ -1828,7 +1828,7 @@ static void window_ride_construction_construct(rct_window* w)
     {
         return;
     }
-    audio_play_sound_at_location(RCT2Sound::PlaceItem, x, y, z);
+    audio_play_sound_at_location(SoundId::PlaceItem, x, y, z);
 
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
@@ -3812,7 +3812,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
                     || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND || errorText == STR_TOO_HIGH_FOR_SUPPORTS
                     || zAttempts == 0 || z < 0)
                 {
-                    audio_play_sound(RCT2Sound::Error, 0, state->x);
+                    audio_play_sound(SoundId::Error, 0, state->x);
                     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
                     if (w != nullptr)
                     {
@@ -3834,7 +3834,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
             {
                 window_close_by_class(WC_ERROR);
                 audio_play_sound_at_location(
-                    RCT2Sound::PlaceItem, _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z);
+                    SoundId::PlaceItem, _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z);
                 break;
             }
         }
@@ -3886,7 +3886,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
                 _currentTrackAlternative = saveCurrentTrackAlternative;
                 _currentTrackLiftHill = saveCurrentTrackLiftHill;
 
-                audio_play_sound(RCT2Sound::Error, 0, state->x);
+                audio_play_sound(SoundId::Error, 0, state->x);
                 break;
             }
             else if (zAttempts >= 0)
@@ -3925,7 +3925,7 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
         if (result->Error != GA_ERROR::OK)
             return;
 
-        audio_play_sound_at_location(RCT2Sound::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
+        audio_play_sound_at_location(SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
 
         Ride* ride = get_ride(gRideEntranceExitPlaceRideIndex);
         if (ride_are_all_possible_entrances_and_exits_built(ride))

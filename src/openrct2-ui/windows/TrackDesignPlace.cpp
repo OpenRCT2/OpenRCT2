@@ -341,7 +341,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
         if (cost != MONEY32_UNDEFINED)
         {
             window_close_by_class(WC_ERROR);
-            audio_play_sound_at_location(RCT2Sound::PlaceItem, mapX, mapY, mapZ);
+            audio_play_sound_at_location(SoundId::PlaceItem, mapX, mapY, mapZ);
 
             _currentRideIndex = rideIndex;
             if (track_design_are_entrance_and_exit_placed())
@@ -368,7 +368,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     }
 
     // Unable to build track
-    audio_play_sound_at_location(RCT2Sound::Error, mapX, mapY, mapZ);
+    audio_play_sound_at_location(SoundId::Error, mapX, mapY, mapZ);
 }
 
 /**

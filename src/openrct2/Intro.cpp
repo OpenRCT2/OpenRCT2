@@ -55,7 +55,7 @@ void intro_update()
             _introStateCounter = -580;
 
             // Play the chain lift sound
-            _soundChannel = Mixer_Play_Effect(RCT2Sound::LiftBM, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.5f, 1, true);
+            _soundChannel = Mixer_Play_Effect(SoundId::LiftBM, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.5f, 1, true);
             _chainLiftFinished = false;
             gIntroState++;
             break;
@@ -94,7 +94,7 @@ void intro_update()
 
                 // Play the track friction sound
                 _soundChannel = Mixer_Play_Effect(
-                    RCT2Sound::TrackFrictionBM, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.25f, 0.75, true);
+                    SoundId::TrackFrictionBM, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.25f, 0.75, true);
             }
 
             // Check if logo is off the screen...ish
@@ -108,7 +108,7 @@ void intro_update()
                 }
 
                 // Play long peep scream sound
-                _soundChannel = Mixer_Play_Effect(RCT2Sound::Scream1, MIXER_LOOP_NONE, MIXER_VOLUME_MAX, 0.5f, 1, false);
+                _soundChannel = Mixer_Play_Effect(SoundId::Scream1, MIXER_LOOP_NONE, MIXER_VOLUME_MAX, 0.5f, 1, false);
 
                 gIntroState++;
                 _introStateCounter = 0;

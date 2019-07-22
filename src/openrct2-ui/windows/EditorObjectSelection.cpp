@@ -698,7 +698,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window* w, int32
     window_invalidate(w);
 
     const CursorState* state = context_get_cursor_state();
-    audio_play_sound(RCT2Sound::Click1, 0, state->x);
+    audio_play_sound(SoundId::Click1, 0, state->x);
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {

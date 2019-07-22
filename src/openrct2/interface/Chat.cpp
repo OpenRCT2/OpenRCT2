@@ -235,7 +235,7 @@ void chat_history_add(const char* src)
 
     free(buffer);
 
-    Mixer_Play_Effect(RCT2Sound::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
+    Mixer_Play_Effect(SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
 
 void chat_input(CHAT_INPUT input)

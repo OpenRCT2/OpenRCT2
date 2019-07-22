@@ -20,7 +20,7 @@
 #define AUDIO_PLAY_AT_LOCATION 0x8001
 #define SOUND_ID_NULL 0xFFFF
 
-enum class RCT2Sound : uint8_t;
+enum class SoundId : uint8_t;
 
 struct audio_device
 {
@@ -58,11 +58,11 @@ struct rct_vehicle_sound
 {
     uint16_t id;
     int16_t volume;
-    RCT2Sound sound1_id;
+    SoundId sound1_id;
     int16_t sound1_volume;
     int16_t sound1_pan;
     uint16_t sound1_freq;
-    RCT2Sound sound2_id;
+    SoundId sound2_id;
     int16_t sound2_volume;
     int16_t sound2_pan;
     uint16_t sound2_freq;
@@ -80,7 +80,7 @@ struct rct_vehicle_sound_params
     uint16_t priority;
 };
 
-enum class RCT2Sound : uint8_t
+enum class SoundId : uint8_t
 {
     LiftClassic,
     TrackFrictionClassicWood,
@@ -149,7 +149,7 @@ enum class RCT2Sound : uint8_t
     Null = 255
 };
 
-constexpr uint8_t RCT2SoundCount = static_cast<uint32_t>(RCT2Sound::Portcullis) + 1;
+constexpr uint8_t RCT2SoundCount = static_cast<uint32_t>(SoundId::Portcullis) + 1;
 
 extern audio_device* gAudioDevices;
 extern int32_t gAudioDeviceCount;
@@ -201,7 +201,7 @@ void audio_pause_sounds();
  * @param pan The pan at which the sound effect should be played. If set to anything other than AUDIO_PLAY_AT_CENTRE, plays the
  * sound at a position relative to the centre of the viewport.
  */
-void audio_play_sound(RCT2Sound soundId, int32_t volume, int32_t pan);
+void audio_play_sound(SoundId soundId, int32_t volume, int32_t pan);
 /**
  * Plays the specified sound at a virtual location.
  * @param soundId The sound effect to play.
@@ -209,7 +209,7 @@ void audio_play_sound(RCT2Sound soundId, int32_t volume, int32_t pan);
  * @param y The y coordinate of the location.
  * @param z The z coordinate of the location.
  */
-void audio_play_sound_at_location(RCT2Sound soundId, int16_t x, int16_t y, int16_t z);
+void audio_play_sound_at_location(SoundId soundId, int16_t x, int16_t y, int16_t z);
 /**
  * Populates the gAudioDevices array with the available audio devices.
  */

@@ -37,7 +37,7 @@ void Mixer_Init(const char* device)
     audioContext->SetOutputDevice(std::string(device));
 }
 
-void* Mixer_Play_Effect(RCT2Sound id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone)
+void* Mixer_Play_Effect(SoundId id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone)
 {
     IAudioChannel* channel = nullptr;
     if (gConfigSound.sound_enabled)
