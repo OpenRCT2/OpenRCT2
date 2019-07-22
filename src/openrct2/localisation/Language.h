@@ -101,8 +101,6 @@ bool utf8_is_codepoint_start(const utf8* text);
 void utf8_remove_format_codes(utf8* text, bool allowcolours);
 int32_t utf8_get_codepoint_length(int32_t codepoint);
 int32_t utf8_length(const utf8* text);
-wchar_t* utf8_to_widechar(const utf8* src);
-utf8* widechar_to_utf8(const wchar_t* src);
 
 std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId);
 std::string utf8_to_rct2(const std::string_view& src);

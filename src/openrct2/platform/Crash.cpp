@@ -150,18 +150,17 @@ static bool OnCrash(
     wprintf(L"Commit: %s\n", _wszCommitSha1Short);
 
     bool savedGameDumped = false;
-    utf8* saveFilePathUTF8 = widechar_to_utf8(saveFilePath);
+    auto saveFilePathUTF8 = String::ToUtf8(saveFilePath);
     try
     {
         auto exporter = std::make_unique<S6Exporter>();
         exporter->Export();
-        exporter->SaveGame(saveFilePathUTF8);
+        exporter->SaveGame(saveFilePathUTF8.c_str());
         savedGameDumped = true;
     }
     catch (const std::exception&)
     {
     }
-    free(saveFilePathUTF8);
 
     // Compress the save
     if (savedGameDumped)
@@ -181,19 +180,16 @@ static bool OnCrash(
         fclose(dest);
     }
 
-    utf8* configFilePathUTF8 = widechar_to_utf8(configFilePath);
-    if (config_save(configFilePathUTF8))
+    auto configFilePathUTF8 = String::ToUtf8(configFilePath);
+    if (config_save(configFilePathUTF8.c_str()))
     {
         uploadFiles[L"attachment_config.ini"] = configFilePath;
     }
-    free(configFilePathUTF8);
 
     std::string screenshotPath = screenshot_dump();
     if (!screenshotPath.empty())
     {
-        wchar_t* screenshotPathWchar = utf8_to_widechar(screenshotPath.c_str());
-        auto screenshotPathW = std::wstring(screenshotPathWchar);
-        free(screenshotPathWchar);
+        auto screenshotPathW = String::ToUtf16(screenshotPath.c_str());
         uploadFiles[L"attachment_screenshot.png"] = screenshotPathW;
     }
 
@@ -270,11 +266,7 @@ static std::wstring GetDumpDirectory()
 {
     char userDirectory[MAX_PATH];
     platform_get_user_directory(userDirectory, nullptr, sizeof(userDirectory));
-
-    wchar_t* userDirectoryW = utf8_to_widechar(userDirectory);
-    auto result = std::wstring(userDirectoryW);
-    free(userDirectoryW);
-
+    auto result = String::ToUtf16(userDirectory);
     return result;
 }
 

@@ -125,8 +125,8 @@ namespace File
     {
         uint64_t lastModified = 0;
 #ifdef _WIN32
-        auto pathW = utf8_to_widechar(path.c_str());
-        auto hFile = CreateFileW(pathW, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+        auto pathW = String::ToUtf16(path.c_str());
+        auto hFile = CreateFileW(pathW.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
         if (hFile != INVALID_HANDLE_VALUE)
         {
             FILETIME ftCreate, ftAccess, ftWrite;
@@ -136,7 +136,6 @@ namespace File
             }
             CloseHandle(hFile);
         }
-        free(pathW);
 #else
         struct stat statInfo
         {
