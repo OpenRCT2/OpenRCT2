@@ -97,7 +97,7 @@ namespace String
 #endif
     }
 
-    std::wstring ToUtf16(const std::string_view& src)
+    std::wstring ToWideChar(const std::string_view& src)
     {
 #ifdef _WIN32
         int srcLen = (int)src.size();
@@ -706,7 +706,7 @@ namespace String
     std::string ToUpper(const std::string_view& src)
     {
 #ifdef _WIN32
-        auto srcW = ToUtf16(src);
+        auto srcW = ToWideChar(src);
 
         // Measure how long the destination needs to be
         auto requiredSize = LCMapStringEx(

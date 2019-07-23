@@ -1189,11 +1189,11 @@ int32_t scenario_save(const utf8* path, int32_t flags)
 {
     if (flags & S6_SAVE_FLAG_SCENARIO)
     {
-        log_verbose("saving scenario");
+        log_verbose("scenario_save(%s, SCENARIO)", path);
     }
     else
     {
-        log_verbose("saving game");
+        log_verbose("scenario_save(%s, SAVED GAME)", path);
     }
 
     if (!(flags & S6_SAVE_FLAG_AUTOMATIC))

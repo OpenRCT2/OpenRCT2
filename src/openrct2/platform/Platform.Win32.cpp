@@ -50,7 +50,7 @@ namespace Platform
     std::string GetEnvironmentVariable(const std::string& name)
     {
         std::wstring result;
-        auto wname = String::ToUtf16(name);
+        auto wname = String::ToWideChar(name);
         wchar_t wvalue[256];
         auto valueSize = GetEnvironmentVariableW(wname.c_str(), wvalue, (DWORD)std::size(wvalue));
         if (valueSize < std::size(wvalue))

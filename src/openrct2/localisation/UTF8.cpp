@@ -137,44 +137,6 @@ int32_t utf8_length(const utf8* text)
     return count;
 }
 
-wchar_t* utf8_to_widechar(const utf8* src)
-{
-    wchar_t* result = (wchar_t*)malloc((utf8_length(src) + 1) * sizeof(wchar_t));
-    wchar_t* dst = result;
-
-    const utf8* ch = src;
-    int32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0)
-    {
-        if ((uint32_t)codepoint > 0xFFFF)
-        {
-            *dst++ = '?';
-        }
-        else
-        {
-            *dst++ = codepoint;
-        }
-    }
-    *dst = 0;
-
-    return result;
-}
-
-utf8* widechar_to_utf8(const wchar_t* src)
-{
-    utf8* result = (utf8*)malloc((wcslen(src) * 4) + 1);
-    utf8* dst = result;
-
-    for (; *src != 0; src++)
-    {
-        dst = utf8_write_codepoint(dst, *src);
-    }
-    *dst++ = 0;
-
-    size_t size = (size_t)(dst - result);
-    return (utf8*)realloc(result, size);
-}
-
 /**
  * Returns a pointer to the null terminator of the given UTF-8 string.
  */

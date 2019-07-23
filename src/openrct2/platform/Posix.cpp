@@ -21,6 +21,7 @@
 #    include "../OpenRCT2.h"
 #    include "../config/Config.h"
 #    include "../core/Path.hpp"
+#    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
 #    include "../util/Util.h"
@@ -97,20 +98,19 @@ void platform_get_time_local(rct2_time* out_time)
 
 static size_t platform_utf8_to_multibyte(const utf8* path, char* buffer, size_t buffer_size)
 {
-    wchar_t* wpath = utf8_to_widechar(path);
+    auto wpath = String::ToWideChar(path);
     setlocale(LC_CTYPE, "UTF-8");
-    size_t len = wcstombs(NULL, wpath, 0);
+    size_t len = wcstombs(NULL, wpath.c_str(), 0);
     bool truncated = false;
     if (len > buffer_size - 1)
     {
         truncated = true;
         len = buffer_size - 1;
     }
-    wcstombs(buffer, wpath, len);
+    wcstombs(buffer, wpath.c_str(), len);
     buffer[len] = '\0';
     if (truncated)
         log_warning("truncated string %s", buffer);
-    free(wpath);
     return len;
 }
 
@@ -286,19 +286,29 @@ bool platform_directory_delete(const utf8* path)
     return true;
 }
 
-utf8* platform_get_absolute_path(const utf8* relative_path, const utf8* base_path)
+std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path)
 {
-    utf8 path[MAX_PATH];
+    std::string result;
+    if (relative_path != nullptr)
+    {
+        std::string pathToResolve;
+        if (base_path == nullptr)
+        {
+            pathToResolve = std::string(relative_path);
+        }
+        else
+        {
+            pathToResolve = std::string(base_path) + std::string("/") + relative_path;
+        }
 
-    if (base_path != nullptr)
-    {
-        snprintf(path, MAX_PATH, "%s/%s", base_path, relative_path);
+        auto realpathResult = realpath(pathToResolve.c_str(), nullptr);
+        if (realpathResult != nullptr)
+        {
+            result = std::string(realpathResult);
+            free(realpathResult);
+        }
     }
-    else
-    {
-        safe_strcpy(path, base_path, MAX_PATH);
-    }
-    return realpath(path, NULL);
+    return result;
 }
 
 bool platform_lock_single_instance()
@@ -482,18 +492,15 @@ datetime64 platform_get_datetime_now_utc()
     return utcNow;
 }
 
-utf8* platform_get_username()
+std::string platform_get_username()
 {
-    struct passwd* pw = getpwuid(getuid());
-
-    if (pw)
+    std::string result;
+    auto pw = getpwuid(getuid());
+    if (pw != nullptr)
     {
-        return pw->pw_name;
+        result = std::string(pw->pw_name);
     }
-    else
-    {
-        return nullptr;
-    }
+    return result;
 }
 
 bool platform_process_is_elevated()

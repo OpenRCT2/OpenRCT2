@@ -70,11 +70,9 @@ public:
         }
 
 #ifdef _WIN32
-        wchar_t* pathW = utf8_to_widechar(path);
-        wchar_t* modeW = utf8_to_widechar(mode);
-        _file = _wfopen(pathW, modeW);
-        free(pathW);
-        free(modeW);
+        auto pathW = String::ToWideChar(path);
+        auto modeW = String::ToWideChar(mode);
+        _file = _wfopen(pathW.c_str(), modeW.c_str());
 #else
         if (fileMode == FILE_MODE_OPEN)
         {
