@@ -4198,21 +4198,26 @@ void Guest::UpdateRideEnterVehicle()
 
             if (vehicle_is_used_in_pairs(vehicle))
             {
-                auto seated_peep = (GET_PEEP(vehicle->peep[current_seat ^ 1]))->AsGuest();
-                if (seated_peep == nullptr || seated_peep->sub_state != PEEP_RIDE_ENTER_VEHICLE)
-                    return;
+                auto* seated_peep = GET_PEEP(vehicle->peep[current_seat ^ 1]);
 
-                vehicle->num_peeps++;
-                ride->cur_num_customers++;
+                if (seated_peep != nullptr)
+                {
+                    auto* seated_guest = seated_peep->AsGuest();
+                    if (seated_guest == nullptr || seated_guest->sub_state != PEEP_RIDE_ENTER_VEHICLE)
+                        return;
 
-                vehicle->mass += seated_peep->mass;
-                seated_peep->Invalidate();
-                sprite_move(LOCATION_NULL, 0, 0, reinterpret_cast<rct_sprite*>(seated_peep));
+                    vehicle->num_peeps++;
+                    ride->cur_num_customers++;
 
-                seated_peep->SetState(PEEP_STATE_ON_RIDE);
-                seated_peep->time_on_ride = 0;
-                seated_peep->sub_state = PEEP_RIDE_ON_RIDE;
-                seated_peep->OnEnterRide(current_ride);
+                    vehicle->mass += seated_peep->mass;
+                    seated_guest->Invalidate();
+                    sprite_move(LOCATION_NULL, 0, 0, reinterpret_cast<rct_sprite*>(seated_guest));
+
+                    seated_guest->SetState(PEEP_STATE_ON_RIDE);
+                    seated_guest->time_on_ride = 0;
+                    seated_guest->sub_state = PEEP_RIDE_ON_RIDE;
+                    seated_guest->OnEnterRide(current_ride);
+                }
             }
 
             vehicle->num_peeps++;
