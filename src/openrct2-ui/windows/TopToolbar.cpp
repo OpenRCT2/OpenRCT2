@@ -2517,8 +2517,6 @@ static money32 try_place_ghost_scenery(
                 { map_tile.x, map_tile.y, gSceneryPlaceZ, rotation }, quadrant, type, primaryColour, secondaryColour);
             smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
             auto res = GameActions::Execute(&smallSceneryPlaceAction);
-
-            cost = res->Cost;
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
@@ -2542,6 +2540,7 @@ static money32 try_place_ghost_scenery(
             }
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
+            cost = res->Cost;
             break;
         }
         case 1:
@@ -2569,6 +2568,8 @@ static money32 try_place_ghost_scenery(
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
+
+            cost = res->Cost;
             break;
         }
         case 2:
@@ -2614,9 +2615,8 @@ static money32 try_place_ghost_scenery(
             sceneryPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&sceneryPlaceAction);
-
             if (res->Error != GA_ERROR::OK)
-                return res->Cost;
+                return MONEY32_UNDEFINED;
 
             gSceneryGhostPosition.x = map_tile.x;
             gSceneryGhostPosition.y = map_tile.y;
@@ -2637,6 +2637,7 @@ static money32 try_place_ghost_scenery(
             }
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
+            cost = res->Cost;
             break;
         }
         case 4:
@@ -2658,7 +2659,6 @@ static money32 try_place_ghost_scenery(
             bannerPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&bannerPlaceAction);
-
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 

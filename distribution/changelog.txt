@@ -1,6 +1,7 @@
 0.2.3+ (in development)
 ------------------------------------------------------------------------
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
+- Fix: [#9625] Show correct cost in scenery selection.
 
 0.2.3 (2019-07-10)
 ------------------------------------------------------------------------
