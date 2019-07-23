@@ -4177,12 +4177,10 @@ void Guest::UpdateRideApproachVehicle()
 
 void Guest::UpdateRideEnterVehicle()
 {
-    Ride* ride = get_ride(current_ride);
-
+    auto* ride = get_ride(current_ride);
     if (ride != nullptr)
     {
-        rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
-
+        auto* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
         if (vehicle != nullptr)
         {
             for (int32_t i = current_car; i != 0; --i)
@@ -4198,25 +4196,24 @@ void Guest::UpdateRideEnterVehicle()
 
             if (vehicle_is_used_in_pairs(vehicle))
             {
-                auto* seated_peep = GET_PEEP(vehicle->peep[current_seat ^ 1]);
-
-                if (seated_peep != nullptr)
+                auto* seatedPeep = GET_PEEP(vehicle->peep[current_seat ^ 1]);
+                if (seatedPeep != nullptr)
                 {
-                    auto* seated_guest = seated_peep->AsGuest();
-                    if (seated_guest == nullptr || seated_guest->sub_state != PEEP_RIDE_ENTER_VEHICLE)
+                    auto* seatedPeepAsGuest = seatedPeep->AsGuest();
+                    if (seatedPeepAsGuest == nullptr || seatedPeepAsGuest->sub_state != PEEP_RIDE_ENTER_VEHICLE)
                         return;
 
                     vehicle->num_peeps++;
                     ride->cur_num_customers++;
 
-                    vehicle->mass += seated_peep->mass;
-                    seated_guest->Invalidate();
-                    sprite_move(LOCATION_NULL, 0, 0, reinterpret_cast<rct_sprite*>(seated_guest));
+                    vehicle->mass += seatedPeepAsGuest->mass;
+                    seatedPeepAsGuest->Invalidate();
+                    sprite_move(LOCATION_NULL, 0, 0, reinterpret_cast<rct_sprite*>(seatedPeepAsGuest));
 
-                    seated_guest->SetState(PEEP_STATE_ON_RIDE);
-                    seated_guest->time_on_ride = 0;
-                    seated_guest->sub_state = PEEP_RIDE_ON_RIDE;
-                    seated_guest->OnEnterRide(current_ride);
+                    seatedPeepAsGuest->SetState(PEEP_STATE_ON_RIDE);
+                    seatedPeepAsGuest->time_on_ride = 0;
+                    seatedPeepAsGuest->sub_state = PEEP_RIDE_ON_RIDE;
+                    seatedPeepAsGuest->OnEnterRide(current_ride);
                 }
             }
 
