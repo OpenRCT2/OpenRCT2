@@ -113,7 +113,7 @@ static rct_widget window_park_guests_widgets[] = {
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS,
     { WWT_LABEL,            1,  21,     146,    50,     61,     STR_ADMISSION_PRICE,            STR_NONE },                         //
-      SPINNER_WIDGETS      (1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE), // Price (3 widgets)
+      SPINNER_WIDGETS      (1,  147,    222,    50,     61,     STR_NONE,                       STR_NONE), // Price (3 widgets)
     { WIDGETS_END },
 };
 
@@ -1289,10 +1289,6 @@ static void window_park_price_invalidate(rct_window* w)
         window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_BUTTON;
     }
 
-    money16 parkEntranceFee = park_get_entrance_fee();
-    set_format_arg(6, uint32_t, parkEntranceFee);
-    window_park_price_widgets[WIDX_PRICE].text = parkEntranceFee == 0 ? STR_FREE : STR_ARG_6_CURRENCY2DP;
-
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
     window_park_anchor_border_widgets(w);
 }
@@ -1303,15 +1299,18 @@ static void window_park_price_invalidate(rct_window* w)
  */
 static void window_park_price_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y;
-
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
-    x = w->x + window_park_price_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    y = w->y + window_park_price_widgets[WIDX_PAGE_BACKGROUND].top + 30;
-
+    auto x = w->x + w->widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    auto y = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 30;
     gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions, COLOUR_BLACK, x, y);
+
+    money32 parkEntranceFee = park_get_entrance_fee();
+    auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
+    x = w->x + w->widgets[WIDX_PRICE].left + 1;
+    y = w->y + w->widgets[WIDX_PRICE].top + 1;
+    gfx_draw_string_left(dpi, stringId, &parkEntranceFee, w->colours[1], x, y);
 }
 
 #pragma endregion
