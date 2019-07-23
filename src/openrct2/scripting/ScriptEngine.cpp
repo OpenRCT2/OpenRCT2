@@ -14,6 +14,7 @@
 #include "../core/Path.hpp"
 #include "../interface/InteractiveConsole.h"
 #include "../platform/Platform2.h"
+#include "Duktape.hpp"
 #include "ScConsole.hpp"
 #include "ScContext.hpp"
 #include "ScDisposable.hpp"
@@ -22,8 +23,6 @@
 #include "ScThing.hpp"
 #include "ScTile.hpp"
 
-#include <dukglue/dukglue.h>
-#include <duktape.h>
 #include <iostream>
 #include <stdexcept>
 

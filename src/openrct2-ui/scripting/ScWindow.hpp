@@ -9,11 +9,10 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../interface/Window.h"
-#include "../interface/Window_internal.h"
-
-#include <dukglue/dukglue.h>
+#include <openrct2/common.h>
+#include <openrct2/interface/Window.h>
+#include <openrct2/interface/Window_internal.h>
+#include <openrct2/scripting/Duktape.hpp>
 
 namespace OpenRCT2::Scripting
 {

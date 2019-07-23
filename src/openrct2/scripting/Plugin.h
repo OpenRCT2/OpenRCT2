@@ -9,7 +9,8 @@
 
 #pragma once
 
-#include <dukglue/dukglue.h>
+#include "Duktape.hpp"
+
 #include <memory>
 #include <string>
 #include <vector>

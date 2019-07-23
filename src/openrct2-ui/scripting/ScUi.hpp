@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include "../Context.h"
-#include "../common.h"
 #include "ScWindow.hpp"
 
-#include <dukglue/dukglue.h>
 #include <memory>
+#include <openrct2/Context.h>
+#include <openrct2/common.h>
+#include <openrct2/scripting/Duktape.hpp>
 #include <openrct2/scripting/ScriptEngine.h>
 #include <string>
 
@@ -93,12 +93,12 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScWindow> getWindow(int32_t index)
         {
-            for (int32_t i = 0; i < g_window_list.size(); i++)
+            int32_t i = 0;
+            for (auto w : g_window_list)
             {
                 if (i == index)
                 {
-                    auto w = g_window_list[i].get();
-                    return std::make_shared<ScWindow>(w);
+                    return std::make_shared<ScWindow>(w.get());
                 }
                 i++;
             }

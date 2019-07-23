@@ -9,12 +9,12 @@
 
 #pragma once
 
+#include "Duktape.hpp"
 #include "HookEngine.h"
 #include "ScDisposable.hpp"
 #include "ScriptEngine.h"
 
 #include <cstdio>
-#include <dukglue/dukglue.h>
 #include <memory>
 
 namespace OpenRCT2::Scripting

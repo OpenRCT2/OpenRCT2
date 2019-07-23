@@ -14,19 +14,19 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "Duktape.hpp"
 
 #include <cstdio>
-#include <dukglue/dukglue.h>
 
 namespace OpenRCT2::Scripting
 {
     class ScTileElement
     {
     protected:
-        rct_tile_element* _element;
+        TileElement* _element;
 
     public:
-        ScTileElement(rct_tile_element* element)
+        ScTileElement(TileElement* element)
             : _element(element)
         {
         }
@@ -105,63 +105,59 @@ namespace OpenRCT2::Scripting
     {
         uint8_t slope_get()
         {
-            return _element->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
+            return _element->AsSurface()->GetSlope();
         }
         void slope_set(uint8_t value)
         {
             // TODO: Give warning when value > TILE_ELEMENT_SURFACE_SLOPE_MASK
-            _element->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
-            _element->properties.surface.slope |= value & TILE_ELEMENT_SURFACE_SLOPE_MASK;
+            _element->AsSurface()->SetSlope(value);
         }
 
         uint8_t terrain_get()
         {
-            return surface_get_terrain(_element);
+            return _element->AsSurface()->GetSurfaceStyle();
         }
         void terrain_set(uint8_t value)
         {
-            surface_set_terrain(_element, value);
+            _element->AsSurface()->SetSurfaceStyle(value);
         }
 
         uint8_t waterHeight_get()
         {
-            return surface_get_water_height(_element);
+            return _element->AsSurface()->GetWaterHeight();
         }
         void waterHeight_set(uint8_t value)
         {
             // TODO: Give warning when value > TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK
-            _element->properties.surface.terrain &= ~TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
-            _element->properties.surface.terrain |= value & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+            _element->AsSurface()->SetWaterHeight(value);
         }
 
         uint8_t grassLength_get()
         {
-            return _element->properties.surface.grass_length;
+            return _element->AsSurface()->GetGrassLength();
         }
         void grassLength_set(uint8_t value)
         {
             // TODO: Give warning when value > GRASS_LENGTH_CLUMPS_2
-            _element->properties.surface.grass_length = value;
+            return _element->AsSurface()->SetGrassLength(value);
         }
 
         uint8_t ownership_get()
         {
-            return _element->properties.surface.ownership & 0xF0;
+            return _element->AsSurface()->GetOwnership();
         }
         void ownership_set(uint8_t flags)
         {
-            _element->properties.surface.ownership &= ~0xF0;
-            _element->properties.surface.ownership |= flags << 4;
+            _element->AsSurface()->SetOwnership(flags);
         }
 
         uint8_t parkFences_get()
         {
-            return _element->properties.surface.ownership & 0xF0;
+            return _element->AsSurface()->GetParkFences();
         }
         void parkFences_set(uint8_t flags)
         {
-            _element->properties.surface.ownership &= ~0x0F;
-            _element->properties.surface.ownership |= flags & 0x0F;
+            return _element->AsSurface()->SetParkFences(flags);
         }
 
     public:
@@ -184,52 +180,60 @@ namespace OpenRCT2::Scripting
             class ScFootpathAdditionStatus
             {
             protected:
-                rct_tile_element* _element;
+                TileElement* _element;
 
             public:
-                ScFootpathAdditionStatus(rct_tile_element* element)
+                ScFootpathAdditionStatus(TileElement* element)
                     : _element(element)
                 {
                 }
 
                 uint8_t north_get()
                 {
-                    return _element->properties.path.addition_status & 3;
+                    return _element->AsPath()->GetAdditionStatus() & 3;
                 }
                 void north_set(uint8_t value)
                 {
-                    _element->properties.path.addition_status &= ~3;
-                    _element->properties.path.addition_status |= value & 3;
+                    auto addition = _element->AsPath()->GetAdditionStatus();
+                    addition &= ~3;
+                    addition |= value & 3;
+                    _element->AsPath()->SetAdditionStatus(addition);
                 }
 
                 uint8_t east_get()
                 {
-                    return _element->properties.path.addition_status & 3;
+                    return _element->AsPath()->GetAdditionStatus() & 3;
                 }
                 void east_set(uint8_t value)
                 {
-                    _element->properties.path.addition_status &= ~(3 << 2);
-                    _element->properties.path.addition_status |= (value & 3) << 2;
+                    auto addition = _element->AsPath()->GetAdditionStatus();
+                    addition &= ~(3 << 2);
+                    addition |= (value & 3) << 2;
+                    _element->AsPath()->SetAdditionStatus(addition);
                 }
 
                 uint8_t south_get()
                 {
-                    return _element->properties.path.addition_status & 3;
+                    return _element->AsPath()->GetAdditionStatus() & 3;
                 }
                 void south_set(uint8_t value)
                 {
-                    _element->properties.path.addition_status &= ~(3 << 4);
-                    _element->properties.path.addition_status |= (value & 3) << 4;
+                    auto addition = _element->AsPath()->GetAdditionStatus();
+                    addition &= ~(3 << 4);
+                    addition |= (value & 3) << 4;
+                    _element->AsPath()->SetAdditionStatus(addition);
                 }
 
                 uint8_t west_get()
                 {
-                    return _element->properties.path.addition_status & 3;
+                    return _element->AsPath()->GetAdditionStatus() & 3;
                 }
                 void west_set(uint8_t value)
                 {
-                    _element->properties.path.addition_status &= ~(3 << 6);
-                    _element->properties.path.addition_status |= (value & 3) << 6;
+                    auto addition = _element->AsPath()->GetAdditionStatus();
+                    addition &= ~(3 << 6);
+                    addition |= (value & 3) << 6;
+                    _element->AsPath()->SetAdditionStatus(addition);
                 }
 
                 static void Register(duk_context* ctx)
@@ -242,10 +246,10 @@ namespace OpenRCT2::Scripting
             };
 
         protected:
-            rct_tile_element* _element;
+            TileElement* _element;
             bool VerifyPathAdditionExists()
             {
-                if (!footpath_element_has_path_scenery(_element))
+                if (!_element->AsPath()->HasAddition())
                 {
                     // TODO: Show warning in console that the path addition has been removed
                     return false;
@@ -254,25 +258,25 @@ namespace OpenRCT2::Scripting
             }
 
         public:
-            ScFootpathAddition(rct_tile_element* element)
+            ScFootpathAddition(TileElement* element)
                 : _element(element)
             {
             }
 
             void Remove()
             {
-                footpath_element_set_path_scenery(_element, 0);
+                _element->AsPath()->SetAddition(0);
             }
 
             uint8_t type_get()
             {
                 if (!VerifyPathAdditionExists())
                     return 0;
-                return footpath_element_get_path_scenery(_element);
+                return _element->AsPath()->GetAddition();
             }
             void type_set(uint8_t value)
             {
-                footpath_element_set_path_scenery(_element, value);
+                _element->AsPath()->SetAddition(value);
             }
 
             bool isBin_get()
@@ -280,8 +284,7 @@ namespace OpenRCT2::Scripting
                 if (!VerifyPathAdditionExists())
                     return false;
 
-                auto index = footpath_element_get_path_scenery_index(_element);
-                auto sceneryEntry = get_footpath_item_entry(index);
+                auto sceneryEntry = _element->AsPath()->GetAdditionEntry();
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN;
             }
             bool isBench_get()
@@ -289,8 +292,7 @@ namespace OpenRCT2::Scripting
                 if (!VerifyPathAdditionExists())
                     return false;
 
-                auto index = footpath_element_get_path_scenery_index(_element);
-                auto sceneryEntry = get_footpath_item_entry(index);
+                auto sceneryEntry = _element->AsPath()->GetAdditionEntry();
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH;
             }
             bool isLamp_get()
@@ -298,8 +300,7 @@ namespace OpenRCT2::Scripting
                 if (!VerifyPathAdditionExists())
                     return false;
 
-                auto index = footpath_element_get_path_scenery_index(_element);
-                auto sceneryEntry = get_footpath_item_entry(index);
+                auto sceneryEntry = _element->AsPath()->GetAdditionEntry();
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP;
             }
             bool isBreakable_get()
@@ -307,8 +308,7 @@ namespace OpenRCT2::Scripting
                 if (!VerifyPathAdditionExists())
                     return false;
 
-                auto index = footpath_element_get_path_scenery_index(_element);
-                auto sceneryEntry = get_footpath_item_entry(index);
+                auto sceneryEntry = _element->AsPath()->GetAdditionEntry();
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE;
             }
             bool isJumpingFountainWater_get()
@@ -316,8 +316,7 @@ namespace OpenRCT2::Scripting
                 if (!VerifyPathAdditionExists())
                     return false;
 
-                auto index = footpath_element_get_path_scenery_index(_element);
-                auto sceneryEntry = get_footpath_item_entry(index);
+                auto sceneryEntry = _element->AsPath()->GetAdditionEntry();
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
             }
             bool isJumpingFountainSnow_get()
@@ -325,8 +324,7 @@ namespace OpenRCT2::Scripting
                 if (!VerifyPathAdditionExists())
                     return false;
 
-                auto index = footpath_element_get_path_scenery_index(_element);
-                auto sceneryEntry = get_footpath_item_entry(index);
+                auto sceneryEntry = _element->AsPath()->GetAdditionEntry();
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW;
             }
             bool allowedOnQueue_get()
@@ -334,8 +332,7 @@ namespace OpenRCT2::Scripting
                 if (!VerifyPathAdditionExists())
                     return false;
 
-                auto index = footpath_element_get_path_scenery_index(_element);
-                auto sceneryEntry = get_footpath_item_entry(index);
+                auto sceneryEntry = _element->AsPath()->GetAdditionEntry();
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE;
             }
             bool allowedOnSlope_get()
@@ -343,8 +340,7 @@ namespace OpenRCT2::Scripting
                 if (!VerifyPathAdditionExists())
                     return false;
 
-                auto index = footpath_element_get_path_scenery_index(_element);
-                auto sceneryEntry = get_footpath_item_entry(index);
+                auto sceneryEntry = _element->AsPath()->GetAdditionEntry();
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE;
             }
             bool isQueueScreen_get()
@@ -352,8 +348,7 @@ namespace OpenRCT2::Scripting
                 if (!VerifyPathAdditionExists())
                     return false;
 
-                auto index = footpath_element_get_path_scenery_index(_element);
-                auto sceneryEntry = get_footpath_item_entry(index);
+                auto sceneryEntry = _element->AsPath()->GetAdditionEntry();
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN;
             }
 
@@ -387,36 +382,36 @@ namespace OpenRCT2::Scripting
 
         uint8_t footpathType_get()
         {
-            return footpath_element_get_type(_element);
+            return _element->AsPath()->GetPathEntryIndex();
         }
         void type_set(uint8_t index)
         {
-            auto entry = get_footpath_entry(index);
+            auto entry = get_path_surface_entry(index);
             if (entry == nullptr)
             {
                 // TODO: Give warning (most likely only happens when index > MAX_PATH_OBJECTS)
                 return;
             }
-            footpath_element_set_type(_element, index);
+            _element->AsPath()->SetPathEntryIndex(index);
         }
 
         bool isSloped_get()
         {
-            return footpath_element_is_sloped(_element);
+            return _element->AsPath()->IsSloped();
         }
         void isSlope_set(bool value)
         {
-            footpath_element_set_sloped(_element, value);
+            _element->AsPath()->SetSloped(value);
         }
 
         bool isQueue_get()
         {
-            return footpath_element_is_queue(_element);
+            return _element->AsPath()->IsQueue();
         }
 
         std::shared_ptr<ScFootpathAddition> addition_get()
         {
-            if (!footpath_element_has_path_scenery(_element))
+            if (!_element->AsPath()->HasAddition())
                 return nullptr;
 
             return std::make_shared<ScFootpathAddition>(_element);
@@ -424,29 +419,29 @@ namespace OpenRCT2::Scripting
 
         uint8_t edges_get()
         {
-            return footpath_element_get_edges(_element);
+            return _element->AsPath()->GetEdges();
         }
         void edges_set(uint8_t value)
         {
-            footpath_element_set_edges(_element, value);
+            _element->AsPath()->SetEdges(value);
         }
 
         uint8_t corners_get()
         {
-            return footpath_element_get_corners(_element);
+            return _element->AsPath()->GetCorners();
         }
         void corners_set(uint8_t value)
         {
-            footpath_element_set_corners(_element, value);
+            _element->AsPath()->SetCorners(value);
         }
 
         uint8_t rideIndex_get()
         {
-            if (!footpath_element_is_queue(_element))
+            if (!_element->AsPath()->IsQueue())
             {
                 // TODO: Show warning that "path is not a queue"
             }
-            return _element->properties.path.ride_index;
+            return _element->AsPath()->GetRideIndex();
         }
 
     public:
@@ -473,7 +468,7 @@ namespace OpenRCT2::Scripting
     {
         auto track_ride_index_get() const
         {
-            return _element->properties.track.ride_index;
+            return _element->AsTrack()->GetRideIndex();
         }
 
     public:
@@ -575,11 +570,11 @@ namespace OpenRCT2::Scripting
     class ScTile
     {
     private:
-        rct_tile_element* _first;
+        TileElement* _first;
         size_t _count = 0;
 
     public:
-        ScTile(rct_tile_element* first)
+        ScTile(TileElement* first)
             : _first(first)
         {
             _count = 0;

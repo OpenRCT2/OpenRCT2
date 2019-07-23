@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../common.h"
+#include "Duktape.hpp"
 
-#include <dukglue/dukglue.h>
 #include <memory>
 #include <string>
 #include <vector>

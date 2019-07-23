@@ -12,10 +12,9 @@
 #include "../common.h"
 #include "../ride/Ride.h"
 #include "../world/Map.h"
+#include "Duktape.hpp"
 #include "ScThing.hpp"
 #include "ScTile.hpp"
-
-#include <dukglue/dukglue.h>
 
 namespace OpenRCT2::Scripting
 {
@@ -62,7 +61,7 @@ namespace OpenRCT2::Scripting
             if (id >= 0 && id < MAX_SPRITES)
             {
                 auto sprite = get_sprite(id);
-                if (sprite != nullptr && sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL)
+                if (sprite != nullptr && sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
                 {
                     return std::make_shared<ScThing>(sprite);
                 }

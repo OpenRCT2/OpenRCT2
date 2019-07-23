@@ -9,10 +9,8 @@
 
 #pragma once
 
-#include "../core/Math.hpp"
 #include "../interface/InteractiveConsole.h"
-
-#include <dukglue/dukglue.h>
+#include "Duktape.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -50,7 +48,7 @@ namespace OpenRCT2::Scripting
                 {
                     const auto d = val.as_double();
                     const duk_int_t i = val.as_int();
-                    if (Math::AlmostEqual<double>(d, i))
+                    if (AlmostEqual<double>(d, i))
                     {
                         str = std::to_string(i);
                     }
@@ -83,6 +81,19 @@ namespace OpenRCT2::Scripting
         {
             dukglue_register_method(ctx, &ScConsole::clear, "clear");
             dukglue_register_method(ctx, &ScConsole::log, "log");
+        }
+
+    private:
+        // Taken from http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
+        template<class T>
+        static typename std::enable_if<!std::numeric_limits<T>::is_integer, bool>::type AlmostEqual(T x, T y, int32_t ulp = 20)
+        {
+            // the machine epsilon has to be scaled to the magnitude of the values used
+            // and multiplied by the desired precision in ULPs (units in the last place)
+            return std::abs(x - y) <= std::numeric_limits<T>::epsilon() * std::abs(x + y) * ulp
+                // unless the result is subnormal
+                || std::abs(x - y)
+                < (std::numeric_limits<T>::min)(); // TODO: Remove parentheses around min once the macro is removed
         }
     };
 } // namespace OpenRCT2::Scripting

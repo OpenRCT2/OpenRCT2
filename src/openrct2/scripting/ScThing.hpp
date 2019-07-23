@@ -11,8 +11,7 @@
 
 #include "../common.h"
 #include "../world/Sprite.h"
-
-#include <dukglue/dukglue.h>
+#include "Duktape.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -29,7 +28,7 @@ namespace OpenRCT2::Scripting
 
         std::string type_get()
         {
-            if (_sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            if (_sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 return "peep";
             }
@@ -39,31 +38,31 @@ namespace OpenRCT2::Scripting
         // x getter and setter
         int32_t x_get()
         {
-            return _sprite->unknown.x;
+            return _sprite->generic.x;
         }
         void x_set(int32_t value)
         {
-            _sprite->unknown.x = value;
+            _sprite->generic.x = value;
         }
 
         // y getter and setter
         int32_t y_get()
         {
-            return _sprite->unknown.y;
+            return _sprite->generic.y;
         }
         void y_set(int32_t value)
         {
-            _sprite->unknown.y = value;
+            _sprite->generic.y = value;
         }
 
         // z getter and setter
         int16_t z_get()
         {
-            return _sprite->unknown.z;
+            return _sprite->generic.z;
         }
         void z_set(int16_t value)
         {
-            _sprite->unknown.z = value;
+            _sprite->generic.z = value;
         }
 
         uint8_t tshirtColour_get()

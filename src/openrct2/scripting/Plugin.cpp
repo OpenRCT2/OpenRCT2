@@ -9,9 +9,9 @@
 
 #include "Plugin.h"
 
+#include "Duktape.hpp"
+
 #include <algorithm>
-#include <dukglue/dukglue.h>
-#include <duktape.h>
 #include <fstream>
 #include <memory>
 

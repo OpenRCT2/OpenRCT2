@@ -15,9 +15,9 @@
 #include "../management/NewsItem.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
+#include "Duktape.hpp"
 
 #include <algorithm>
-#include <dukglue/dukglue.h>
 
 namespace OpenRCT2::Scripting
 {

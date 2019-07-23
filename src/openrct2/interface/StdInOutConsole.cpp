@@ -11,9 +11,8 @@
 #include "../OpenRCT2.h"
 #include "../platform/Platform2.h"
 #include "../scripting/ScriptEngine.h"
+#include "../thirdparty/linenoise.hpp"
 #include "InteractiveConsole.h"
-
-#include <linenoise.hpp>
 
 using namespace OpenRCT2;
 
