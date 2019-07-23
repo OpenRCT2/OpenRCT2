@@ -9,6 +9,7 @@
 
 #ifndef DISABLE_NETWORK
 
+#    include <atomic>
 #    include <chrono>
 #    include <cmath>
 #    include <cstring>
@@ -196,7 +197,7 @@ private:
 class TcpSocket final : public ITcpSocket, protected Socket
 {
 private:
-    SOCKET_STATUS _status = SOCKET_STATUS_CLOSED;
+    std::atomic<SOCKET_STATUS> _status = SOCKET_STATUS_CLOSED;
     uint16_t _listeningPort = 0;
     SOCKET _socket = INVALID_SOCKET;
 
