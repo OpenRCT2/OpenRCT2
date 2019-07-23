@@ -153,6 +153,10 @@ static int32_t scrolling_text_get_matching_or_oldest(rct_string_id stringId, uin
 static uint8_t scrolling_text_get_colour(uint32_t character)
 {
     int32_t colour = character & 0x7F;
+    if (colour >= COLOUR_COUNT)
+    {
+        colour = COLOUR_BLACK;
+    }
     if (character & COLOUR_FLAG_TRANSLUCENT)
     {
         return ColourMapA[colour].light;
