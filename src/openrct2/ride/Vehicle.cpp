@@ -7153,7 +7153,7 @@ static void steam_particle_create(int16_t x, int16_t y, int16_t z)
     TileElement* tileElement = map_get_surface_element_at({ x, y });
     if (tileElement != nullptr && z > tileElement->base_height * 8)
     {
-        rct_steam_particle* steam = (rct_steam_particle*)create_sprite(SPRITE_IDENTIFIER_MISC);
+        rct_steam_particle* steam = &create_sprite(SPRITE_IDENTIFIER_MISC)->steam_particle;
         if (steam == nullptr)
             return;
 

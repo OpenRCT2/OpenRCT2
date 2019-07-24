@@ -485,7 +485,7 @@ static void sprite_steam_particle_update(rct_steam_particle* steam)
  */
 void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_sprite_generic* sprite = (rct_sprite_generic*)create_sprite(SPRITE_IDENTIFIER_MISC);
+    rct_sprite_generic* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 44;
@@ -518,7 +518,7 @@ static void sprite_misc_explosion_cloud_update(rct_sprite* sprite)
  */
 void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_sprite_generic* sprite = (rct_sprite_generic*)create_sprite(SPRITE_IDENTIFIER_MISC);
+    rct_sprite_generic* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 25;
