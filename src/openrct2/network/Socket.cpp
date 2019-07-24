@@ -197,7 +197,7 @@ private:
 class TcpSocket final : public ITcpSocket, protected Socket
 {
 private:
-    std::atomic<SOCKET_STATUS> _status = SOCKET_STATUS_CLOSED;
+    std::atomic<SOCKET_STATUS> _status = ATOMIC_VAR_INIT(SOCKET_STATUS_CLOSED);
     uint16_t _listeningPort = 0;
     SOCKET _socket = INVALID_SOCKET;
 
