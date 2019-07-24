@@ -9,20 +9,12 @@
 
 #include "Plugin.h"
 
+#include "..\OpenRCT2.h"
 #include "Duktape.hpp"
 
 #include <algorithm>
 #include <fstream>
 #include <memory>
-
-#ifdef _WIN32
-
-#else
-#    include <fcntl.h>
-#    include <sys/inotify.h>
-#    include <sys/types.h>
-#    include <unistd.h>
-#endif
 
 using namespace OpenRCT2::Scripting;
 
@@ -34,7 +26,11 @@ Plugin::Plugin(duk_context* context, const std::string& path)
 
 void Plugin::Load()
 {
-    std::string projectedVariables = "console,context,map,park,ui";
+    std::string projectedVariables = "console,context,map,network,park";
+    if (!gOpenRCT2Headless)
+    {
+        projectedVariables += ",ui";
+    }
     std::string code;
     {
         std::ifstream fs(_path);

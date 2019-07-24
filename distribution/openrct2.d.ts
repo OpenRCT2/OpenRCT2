@@ -264,10 +264,23 @@ export interface Ui {
     closeAllWindows(): void;
 }
 
+export interface Player {
+    name: string;
+}
+
+export interface Network {
+    players: number;
+
+    getPlayer(index: number): Player;
+    sendMessage(message: string);
+    sendMessage(players: number[], message: string);
+}
+
 declare global {
     var console: Console;
     var context: Context;
     var map: Map;
+    var network: Network;
     var park: Park;
     var ui: Ui;
 }
