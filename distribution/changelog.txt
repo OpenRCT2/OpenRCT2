@@ -1,5 +1,6 @@
 0.2.3+ (in development)
 ------------------------------------------------------------------------
+- Fix: [#7883] Headless server log is stored incorrectly if server name contains CJK in Ubuntu
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
 
 0.2.3 (2019-07-10)
