@@ -309,8 +309,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
             }
             auto& newBanner = *get_banner(newBannerIndex);
             newBanner = *get_banner(bannerIndex);
-            newBanner.x = loc.x / 32;
-            newBanner.y = loc.y / 32;
+            newBanner.position = TileCoordsXY(loc);
 
             // Use the new banner index
             tile_element_set_banner_index(&element, newBannerIndex);

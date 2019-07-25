@@ -59,7 +59,7 @@ public:
 
         auto banner = get_banner(_bannerIndex);
 
-        CoordsXY coords{ banner->x * 32, banner->y * 32 };
+        CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
 
         if (_isLarge)
         {
@@ -93,7 +93,7 @@ public:
     {
         auto banner = get_banner(_bannerIndex);
 
-        CoordsXY coords{ banner->x * 32, banner->y * 32 };
+        CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
 
         if (_isLarge)
         {

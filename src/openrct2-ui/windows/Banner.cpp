@@ -133,8 +133,8 @@ rct_window* window_banner_open(rct_windownumber number)
     window_init_scroll_widgets(w);
 
     auto banner = get_banner(w->number);
-    int32_t view_x = banner->x << 5;
-    int32_t view_y = banner->y << 5;
+    int32_t view_x = banner->position.x << 5;
+    int32_t view_y = banner->position.y << 5;
 
     TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
     while (1)
@@ -172,8 +172,8 @@ rct_window* window_banner_open(rct_windownumber number)
 static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     auto banner = get_banner(w->number);
-    int32_t x = banner->x << 5;
-    int32_t y = banner->y << 5;
+    int32_t x = banner->position.x << 5;
+    int32_t y = banner->position.y << 5;
 
     TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
 
@@ -343,8 +343,8 @@ static void window_banner_viewport_rotate(rct_window* w)
 
     auto banner = get_banner(w->number);
 
-    int32_t view_x = (banner->x << 5) + 16;
-    int32_t view_y = (banner->y << 5) + 16;
+    int32_t view_x = (banner->position.x << 5) + 16;
+    int32_t view_y = (banner->position.y << 5) + 16;
     int32_t view_z = w->frame_no;
 
     // Create viewport

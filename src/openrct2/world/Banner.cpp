@@ -119,7 +119,7 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
     auto banner = get_banner(bannerIndex);
     if (banner != nullptr)
     {
-        auto tileElement = map_get_first_element_at(banner->x, banner->y);
+        auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
         if (tileElement != nullptr)
         {
             do
@@ -140,7 +140,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
     if (banner == nullptr)
         return nullptr;
 
-    auto tileElement = map_get_first_element_at(banner->x, banner->y);
+    auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
     if (tileElement == nullptr)
         return nullptr;
 
@@ -256,8 +256,7 @@ void fix_duplicated_banners()
                             // Copy over the original banner, but update the location
                             auto& newBanner = *get_banner(newBannerIndex);
                             newBanner = *get_banner(bannerIndex);
-                            newBanner.x = x;
-                            newBanner.y = y;
+                            newBanner.position = { x, y };
 
                             // Duplicate user string too
                             rct_string_id stringIdx = newBanner.string_idx;

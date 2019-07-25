@@ -2860,8 +2860,8 @@ private:
 
         dst->colour = RCT1::GetColour(src->colour);
         dst->text_colour = src->text_colour;
-        dst->x = src->x;
-        dst->y = src->y;
+        dst->position.x = src->x;
+        dst->position.y = src->y;
     }
 
     void FixEntrancePositions()

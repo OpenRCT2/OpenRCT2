@@ -265,8 +265,8 @@ public:
             banner->text_colour = 2;
             banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
             banner->type = 0;
-            banner->x = _loc.x / 32;
-            banner->y = _loc.y / 32;
+            banner->position.x = _loc.x / 32;
+            banner->position.y = _loc.y / 32;
 
             ride_id_t rideIndex = banner_get_closest_ride_index(_loc.x, _loc.y, maxHeight);
             if (rideIndex != RIDE_ID_NULL)

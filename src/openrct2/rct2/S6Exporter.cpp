@@ -1197,8 +1197,8 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         dst.colour = src.colour;
     }
     dst.text_colour = src.text_colour;
-    dst.x = src.x;
-    dst.y = src.y;
+    dst.x = src.position.x;
+    dst.y = src.position.y;
 }
 
 enum : uint32_t

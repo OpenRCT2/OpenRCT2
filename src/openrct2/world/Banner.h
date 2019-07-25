@@ -26,8 +26,7 @@ struct Banner
     uint8_t colour;
     uint8_t ride_index;
     uint8_t text_colour;
-    uint8_t x;
-    uint8_t y;
+    TileCoordsXY position;
 };
 
 enum BANNER_FLAGS
