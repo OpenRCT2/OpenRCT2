@@ -63,6 +63,7 @@ void ScriptEngine::Initialise()
     ScNetwork::Register(ctx);
     ScPark::Register(ctx);
     ScPlayer::Register(ctx);
+    ScPlayerGroup::Register(ctx);
     ScTile::Register(ctx);
     ScTileElement::Register(ctx);
     ScThing::Register(ctx);

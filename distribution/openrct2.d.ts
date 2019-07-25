@@ -147,8 +147,8 @@ export interface CorruptElement extends TileElement {
 }
 
 export interface Tile {
-    x: number;
-    y: number;
+    readonly x: number;
+    readonly y: number;
     elements: TileElement[];
 
     getElement(index: number): TileElement;
@@ -162,7 +162,7 @@ export interface Ride {
     totalCustomers: number;
 }
 
-export type TileElementType =
+export type ThingType =
     "car" | "duck" | "peep";
 
 export interface Thing {
@@ -177,9 +177,9 @@ export interface Thing {
 }
 
 export interface Map {
-    size: { x: number; y: number; };
-    rides: number;
-    things: number;
+    readonly size: { x: number; y: number; };
+    readonly rides: number;
+    readonly things: number;
 
     getRide(id: number): Ride;
     getTile(x: number, y: number): Tile;
@@ -253,9 +253,9 @@ export interface WindowDesc {
 }
 
 export interface Ui {
-    width: number;
-    height: number;
-    windows: number;
+    readonly width: number;
+    readonly height: number;
+    readonly windows: number;
 
     getWindow(id: number): Window;
     getWindow(classification: string, id?: number): Window;
@@ -265,15 +265,65 @@ export interface Ui {
 }
 
 export interface Player {
+    readonly id: number;
+    readonly name: string;
+    group: number;
+    readonly ping: number;
+    readonly commandsRan: number;
+    readonly moneySpent: number;
+}
+
+export type PermissionType =
+    "chat" |
+    "terraform" |
+    "set_water_level" |
+    "toggle_pause" |
+    "create_ride" |
+    "remove_ride" |
+    "build_ride" |
+    "ride_properties" |
+    "scenery" |
+    "path" |
+    "clear_landscape" |
+    "guest" |
+    "staff" |
+    "park_properties" |
+    "park_funding" |
+    "kick_player" |
+    "modify_groups" |
+    "set_player_group" |
+    "cheat" |
+    "toggle_scenery_cluster" |
+    "passwordless_login" |
+    "modify_tile" |
+    "edit_scenario_options";
+
+export interface PlayerGroup {
+    readonly id: number;
     name: string;
+    permissions: PermissionType[];
+}
+
+export interface ServerInfo {
+    readonly name: string;
+    readonly description: string;
+    readonly greeting: string;
+    readonly providerName: string;
+    readonly providerEmail: string;
+    readonly providerWebsite: string;
 }
 
 export interface Network {
-    players: number;
+    readonly groups: number;
+    readonly players: number;
+    defaultGroup: number;
 
+    getServerInfo(): ServerInfo;
+    getGroup(index: number): PlayerGroup;
+    setGroups(groups: PlayerGroup[]): void;
     getPlayer(index: number): Player;
-    sendMessage(message: string);
-    sendMessage(players: number[], message: string);
+    sendMessage(message: string): void;
+    sendMessage(players: number[], message: string): void;
 }
 
 declare global {
