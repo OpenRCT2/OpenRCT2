@@ -43,7 +43,7 @@ void rct_money_effect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, 
     if (value == MONEY(0, 00))
         return;
 
-    rct_money_effect* moneyEffect = (rct_money_effect*)create_sprite(2);
+    rct_money_effect* moneyEffect = &create_sprite(SPRITE_IDENTIFIER_MISC)->money_effect;
     if (moneyEffect == nullptr)
         return;
 

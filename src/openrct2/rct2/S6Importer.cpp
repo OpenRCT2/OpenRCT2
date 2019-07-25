@@ -1106,7 +1106,7 @@ public:
             ImportSprite(dst, src);
         }
 
-        for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
+        for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
         {
             gSpriteListHead[i] = _s6.sprite_lists_head[i];
             gSpriteListCount[i] = _s6.sprite_lists_count[i];

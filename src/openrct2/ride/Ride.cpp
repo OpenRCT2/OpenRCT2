@@ -4482,7 +4482,7 @@ static rct_vehicle* vehicle_create_car(
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
     int32_t edx;
 
-    rct_vehicle* vehicle = (rct_vehicle*)create_sprite(1);
+    rct_vehicle* vehicle = &create_sprite(SPRITE_IDENTIFIER_VEHICLE)->vehicle;
     vehicle->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
     vehicle->ride = rideIndex;
     vehicle->ride_subtype = ride->subtype;
@@ -4721,7 +4721,7 @@ static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int
         lastTrain = train;
 
         // Add train to ride vehicle list
-        move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_TRAIN);
+        move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_VEHICLE_HEAD);
         for (int32_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
         {
             if (ride->vehicles[i] == SPRITE_INDEX_NULL)

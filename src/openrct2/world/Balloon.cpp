@@ -86,7 +86,7 @@ void rct_balloon::Pop()
 
 void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped)
 {
-    rct_sprite* sprite = create_sprite(2);
+    rct_sprite* sprite = create_sprite(SPRITE_IDENTIFIER_MISC);
     if (sprite != nullptr)
     {
         sprite->balloon.sprite_width = 13;

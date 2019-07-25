@@ -31,13 +31,13 @@ rct_vehicle* cable_lift_segment_create(
     bool head)
 {
     Ride* ride = get_ride(rideIndex);
-    rct_vehicle* current = &(create_sprite(1)->vehicle);
+    rct_vehicle* current = &(create_sprite(SPRITE_IDENTIFIER_VEHICLE)->vehicle);
     current->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
     current->ride = rideIndex;
     current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
     if (head)
     {
-        move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_TRAIN);
+        move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_VEHICLE_HEAD);
         ride->cable_lift = current->sprite_index;
     }
     current->type = head ? VEHICLE_TYPE_HEAD : VEHICLE_TYPE_TAIL;

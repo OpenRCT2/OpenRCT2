@@ -307,7 +307,7 @@ uint32_t rct_duck::GetFrameImage(int32_t direction) const
 
 void create_duck(int32_t targetX, int32_t targetY)
 {
-    rct_sprite* sprite = create_sprite(2);
+    rct_sprite* sprite = create_sprite(SPRITE_IDENTIFIER_MISC);
     if (sprite != nullptr)
     {
         sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;

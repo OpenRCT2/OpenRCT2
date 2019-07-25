@@ -1640,10 +1640,7 @@ Peep* Peep::Generate(const CoordsXYZ coords)
     if (gSpriteListCount[SPRITE_LIST_FREE] < 400)
         return nullptr;
 
-    Peep* peep = (Peep*)create_sprite(1);
-
-    move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP);
-
+    Peep* peep = &create_sprite(SPRITE_IDENTIFIER_PEEP)->peep;
     peep->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
     peep->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
     peep->outside_of_park = 1;

@@ -150,7 +150,7 @@ private:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_STAFF_IN_GAME);
         }
 
-        Peep* newPeep = &(create_sprite(GetFlags())->peep);
+        Peep* newPeep = &(create_sprite(SPRITE_IDENTIFIER_PEEP)->peep);
         if (newPeep == nullptr)
         {
             // Too many peeps exist already.
