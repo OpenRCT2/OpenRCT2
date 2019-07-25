@@ -294,11 +294,12 @@ namespace Editor
         map_remove_all_rides();
 
         //
-        for (auto& banner : gBanners)
+        for (BannerIndex i = 0; i < MAX_BANNERS; i++)
         {
-            if (banner.type == 255)
+            auto banner = get_banner(i);
+            if (banner->type == BANNER_NULL)
             {
-                banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+                banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
             }
         }
 

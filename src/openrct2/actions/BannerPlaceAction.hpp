@@ -90,7 +90,8 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        if (gBanners[_bannerIndex].type != BANNER_NULL)
+        auto banner = get_banner(_bannerIndex);
+        if (banner->type != BANNER_NULL)
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
@@ -129,7 +130,8 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        if (gBanners[_bannerIndex].type != BANNER_NULL)
+        auto banner = get_banner(_bannerIndex);
+        if (banner->type != BANNER_NULL)
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
@@ -137,7 +139,6 @@ public:
 
         TileElement* newTileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, baseHeight, 0);
         assert(newTileElement != nullptr);
-        auto banner = &gBanners[_bannerIndex];
 
         banner->flags = 0;
         banner->string_idx = STR_DEFAULT_SIGN;

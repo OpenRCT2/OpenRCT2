@@ -38,8 +38,6 @@ enum BANNER_FLAGS
     BANNER_FLAG_IS_WALL = (1 << 3)
 };
 
-extern Banner gBanners[MAX_BANNERS];
-
 void banner_init();
 BannerIndex create_new_banner(uint8_t flags);
 TileElement* banner_get_tile_element(BannerIndex bannerIndex);
@@ -47,3 +45,4 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex);
 uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z);
 void banner_reset_broken_index();
 void fix_duplicated_banners();
+Banner* get_banner(BannerIndex id);

@@ -127,7 +127,7 @@ void tile_element_remove_banner_entry(TileElement* tileElement)
     if (bannerIndex == BANNER_INDEX_NULL)
         return;
 
-    auto banner = &gBanners[bannerIndex];
+    auto banner = get_banner(bannerIndex);
     if (banner->type != BANNER_NULL)
     {
         rct_windownumber windowNumber = bannerIndex;

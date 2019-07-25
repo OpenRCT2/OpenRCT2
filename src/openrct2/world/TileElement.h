@@ -14,6 +14,7 @@
 #include "Footpath.h"
 #include "Location.hpp"
 
+struct Banner;
 struct rct_scenery_entry;
 struct rct_footpath_entry;
 
@@ -370,6 +371,7 @@ public:
     colour_t GetSecondaryColour() const;
     void SetSecondaryColour(colour_t colour);
 
+    Banner* GetBanner() const;
     BannerIndex GetBannerIndex() const;
     void SetBannerIndex(BannerIndex newIndex);
 
@@ -408,6 +410,7 @@ public:
     uint8_t GetAnimationFrame() const;
     void SetAnimationFrame(uint8_t frameNum);
 
+    Banner* GetBanner() const;
     BannerIndex GetBannerIndex() const;
     void SetBannerIndex(BannerIndex newIndex);
 
@@ -459,6 +462,9 @@ private:
     uint8_t unused; // 7
 #pragma clang diagnostic pop
 public:
+    Banner* GetBanner() const;
+    rct_scenery_entry* GetEntry() const;
+
     BannerIndex GetIndex() const;
     void SetIndex(BannerIndex newIndex);
 

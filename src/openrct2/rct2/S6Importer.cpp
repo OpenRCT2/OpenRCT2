@@ -1069,7 +1069,7 @@ public:
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
-                        auto dstBanner = &gBanners[bannerIndex];
+                        auto dstBanner = get_banner(bannerIndex);
                         ImportBanner(dstBanner, srcBanner);
                     }
                     else
@@ -1098,7 +1098,7 @@ public:
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
-                        auto dstBanner = &gBanners[bannerIndex];
+                        auto dstBanner = get_banner(bannerIndex);
                         ImportBanner(dstBanner, srcBanner);
                     }
                     else
@@ -1121,7 +1121,7 @@ public:
                 if (bannerIndex < std::size(_s6.banners))
                 {
                     auto srcBanner = &_s6.banners[bannerIndex];
-                    auto dstBanner = &gBanners[bannerIndex];
+                    auto dstBanner = get_banner(bannerIndex);
                     ImportBanner(dstBanner, srcBanner);
                 }
                 else

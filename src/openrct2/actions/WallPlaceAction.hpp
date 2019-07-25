@@ -259,7 +259,8 @@ public:
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
-            if (gBanners[_bannerId].type != BANNER_NULL)
+            auto banner = get_banner(_bannerId);
+            if (banner->type != BANNER_NULL)
             {
                 log_error("No free banners available");
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
@@ -348,13 +349,13 @@ public:
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
-            if (gBanners[_bannerId].type != BANNER_NULL)
+            auto banner = get_banner(_bannerId);
+            if (banner->type != BANNER_NULL)
             {
                 log_error("No free banners available");
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
             }
 
-            auto banner = &gBanners[_bannerId];
             banner->string_idx = STR_DEFAULT_SIGN;
             banner->colour = 2;
             banner->text_colour = 2;

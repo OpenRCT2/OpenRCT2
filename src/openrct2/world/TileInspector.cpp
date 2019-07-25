@@ -307,8 +307,8 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
             {
                 return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
             }
-            auto& newBanner = gBanners[newBannerIndex];
-            newBanner = gBanners[bannerIndex];
+            auto& newBanner = *get_banner(newBannerIndex);
+            newBanner = *get_banner(bannerIndex);
             newBanner.x = loc.x / 32;
             newBanner.y = loc.y / 32;
 
@@ -326,7 +326,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
                 {
                     return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
                 }
-                gBanners[newBannerIndex].string_idx = newStringIdx;
+                get_banner(newBannerIndex)->string_idx = newStringIdx;
             }
         }
 

@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../common.h"
 #include "../object/ObjectManager.h"
+#include "../world/Banner.h"
 #include "TileElement.h"
 
 colour_t LargeSceneryElement::GetPrimaryColour() const
@@ -36,6 +37,11 @@ void LargeSceneryElement::SetSecondaryColour(colour_t newColour)
     assert(newColour <= 31);
     colour[1] &= ~TILE_ELEMENT_COLOUR_MASK;
     colour[1] |= newColour;
+}
+
+Banner* LargeSceneryElement::GetBanner() const
+{
+    return get_banner(GetBannerIndex());
 }
 
 BannerIndex LargeSceneryElement::GetBannerIndex() const

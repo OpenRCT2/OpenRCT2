@@ -132,8 +132,9 @@ rct_window* window_banner_open(rct_windownumber number)
     w->number = number;
     window_init_scroll_widgets(w);
 
-    int32_t view_x = gBanners[w->number].x << 5;
-    int32_t view_y = gBanners[w->number].y << 5;
+    auto banner = get_banner(w->number);
+    int32_t view_x = banner->x << 5;
+    int32_t view_y = banner->y << 5;
 
     TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
     while (1)
@@ -170,7 +171,7 @@ rct_window* window_banner_open(rct_windownumber number)
  */
 static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    auto banner = &gBanners[w->number];
+    auto banner = get_banner(w->number);
     int32_t x = banner->x << 5;
     int32_t y = banner->y << 5;
 
@@ -196,8 +197,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         }
         case WIDX_BANNER_TEXT:
-            window_text_input_open(
-                w, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, gBanners[w->number].string_idx, 0, 32);
+            window_text_input_open(w, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, banner->string_idx, 0, 32);
             break;
         case WIDX_BANNER_NO_ENTRY:
         {
@@ -216,7 +216,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
  */
 static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    Banner* banner = &gBanners[w->number];
+    auto banner = get_banner(w->number);
 
     switch (widgetIndex)
     {
@@ -290,7 +290,7 @@ static void window_banner_textinput(rct_window* w, rct_widgetindex widgetIndex, 
  */
 static void window_banner_invalidate(rct_window* w)
 {
-    Banner* banner = &gBanners[w->number];
+    auto banner = get_banner(w->number);
     rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
     colour_btn->type = WWT_EMPTY;
 
@@ -341,7 +341,7 @@ static void window_banner_viewport_rotate(rct_window* w)
 
     view->width = 0;
 
-    Banner* banner = &gBanners[w->number];
+    auto banner = get_banner(w->number);
 
     int32_t view_x = (banner->x << 5) + 16;
     int32_t view_y = (banner->y << 5) + 16;

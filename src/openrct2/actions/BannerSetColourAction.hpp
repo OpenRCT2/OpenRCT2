@@ -101,7 +101,8 @@ private:
             intent.putExtra(INTENT_EXTRA_BANNER_INDEX, index);
             context_broadcast_intent(&intent);
 
-            gBanners[index].colour = _primaryColour;
+            auto banner = get_banner(index);
+            banner->colour = _primaryColour;
             map_invalidate_tile_zoom1(_loc.x, _loc.y, _loc.z, _loc.z + 32);
         }
 

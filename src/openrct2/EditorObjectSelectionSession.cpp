@@ -173,10 +173,13 @@ void setup_in_use_selection_flags()
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
             {
-                auto banner = &gBanners[iter.element->AsBanner()->GetIndex()];
-                type = banner->type;
-                assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
-                Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
+                auto banner = iter.element->AsBanner()->GetBanner();
+                if (banner != nullptr)
+                {
+                    type = banner->type;
+                    assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
+                    Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
+                }
                 break;
             }
         }

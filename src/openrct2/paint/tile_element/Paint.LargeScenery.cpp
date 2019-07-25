@@ -309,94 +309,97 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
             textColour = COLOUR_GREY;
         }
         textColour = (textColour << 19) | IMAGE_TYPE_REMAP;
-        BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
-        auto banner = &gBanners[bannerIndex];
-        rct_string_id stringId = banner->string_idx;
-        if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+        auto banner = tileElement->AsLargeScenery()->GetBanner();
+        if (banner != nullptr)
         {
-            Ride* ride = get_ride(banner->ride_index);
-            stringId = ride->name;
-            set_format_arg(0, uint32_t, ride->name_arguments);
-        }
-        utf8 signString[256];
-        format_string(signString, sizeof(signString), stringId, gCommonFormatArgs);
-        rct_large_scenery_text* text = entry->large_scenery.text;
-        int32_t y_offset = (text->offset[(direction & 1)].y * 2);
-        if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
-        {
-            // Draw vertical sign:
-            y_offset += 1;
-            utf8 fitStr[32];
-            large_scenery_sign_fit_text(signString, text, true, fitStr, sizeof(fitStr));
-            safe_strcpy(fitStr, fitStr, sizeof(fitStr));
-            const utf8* fitStrPtr = fitStr;
-            int32_t height2 = large_scenery_sign_text_height(fitStr, text);
-            uint32_t codepoint;
-            while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0)
+            auto stringId = banner->string_idx;
+            if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
             {
-                utf8 str[5] = { 0 };
-                utf8_write_codepoint(str, codepoint);
-                large_scenery_sign_paint_line(
-                    session, str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
-                    y_offset - height2);
-                y_offset += large_scenery_sign_get_glyph(text, codepoint)->height * 2;
+                auto ride = get_ride(banner->ride_index);
+                stringId = ride->name;
+                set_format_arg(0, uint32_t, ride->name_arguments);
             }
-        }
-        else
-        {
-            y_offset -= (direction & 1);
-            if (text->flags & LARGE_SCENERY_TEXT_FLAG_TWO_LINE)
+            utf8 signString[256];
+            format_string(signString, sizeof(signString), stringId, gCommonFormatArgs);
+            rct_large_scenery_text* text = entry->large_scenery.text;
+            int32_t y_offset = (text->offset[(direction & 1)].y * 2);
+            if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
             {
-                // Draw two-line sign:
-                int32_t width = large_scenery_sign_text_width(signString, text);
-                if (width > text->max_width)
+                // Draw vertical sign:
+                y_offset += 1;
+                utf8 fitStr[32];
+                large_scenery_sign_fit_text(signString, text, true, fitStr, sizeof(fitStr));
+                safe_strcpy(fitStr, fitStr, sizeof(fitStr));
+                const utf8* fitStrPtr = fitStr;
+                int32_t height2 = large_scenery_sign_text_height(fitStr, text);
+                uint32_t codepoint;
+                while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0)
                 {
-                    y_offset -= large_scenery_sign_get_glyph(text, 'A')->height + 1;
-                    utf8* src = signString;
-                    for (int32_t i = 0; i < 2; i++)
-                    {
-                        utf8 str1[64] = { 0 };
-                        utf8* dst = str1;
-                        utf8* srcold = src;
-                        utf8* spacesrc = nullptr;
-                        utf8* spacedst = nullptr;
-                        int32_t w = 0;
-                        uint32_t codepoint = utf8_get_next(src, (const utf8**)&src);
-                        do
-                        {
-                            w += large_scenery_sign_get_glyph(text, codepoint)->width;
-                            if (codepoint == ' ')
-                            {
-                                spacesrc = src;
-                                spacedst = dst;
-                            }
-                        } while (w <= text->max_width && (dst = utf8_write_codepoint(dst, codepoint)) != nullptr
-                                 && (srcold = src) != nullptr && (codepoint = utf8_get_next(src, (const utf8**)&src)) != '\0');
-                        src = srcold;
-                        if (spacesrc && codepoint)
-                        {
-                            *spacedst = 0;
-                            src = spacesrc;
-                        }
-                        large_scenery_sign_paint_line(
-                            session, str1, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
-                            y_offset);
-                        y_offset += (large_scenery_sign_get_glyph(text, 'A')->height + 1) * 2;
-                    }
-                }
-                else
-                {
+                    utf8 str[5] = { 0 };
+                    utf8_write_codepoint(str, codepoint);
                     large_scenery_sign_paint_line(
-                        session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
-                        y_offset);
+                        session, str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
+                        y_offset - height2);
+                    y_offset += large_scenery_sign_get_glyph(text, codepoint)->height * 2;
                 }
             }
             else
             {
-                // Draw one-line sign:
-                large_scenery_sign_paint_line(
-                    session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
-                    y_offset);
+                y_offset -= (direction & 1);
+                if (text->flags & LARGE_SCENERY_TEXT_FLAG_TWO_LINE)
+                {
+                    // Draw two-line sign:
+                    int32_t width = large_scenery_sign_text_width(signString, text);
+                    if (width > text->max_width)
+                    {
+                        y_offset -= large_scenery_sign_get_glyph(text, 'A')->height + 1;
+                        utf8* src = signString;
+                        for (int32_t i = 0; i < 2; i++)
+                        {
+                            utf8 str1[64] = { 0 };
+                            utf8* dst = str1;
+                            utf8* srcold = src;
+                            utf8* spacesrc = nullptr;
+                            utf8* spacedst = nullptr;
+                            int32_t w = 0;
+                            uint32_t codepoint = utf8_get_next(src, (const utf8**)&src);
+                            do
+                            {
+                                w += large_scenery_sign_get_glyph(text, codepoint)->width;
+                                if (codepoint == ' ')
+                                {
+                                    spacesrc = src;
+                                    spacedst = dst;
+                                }
+                            } while (w <= text->max_width && (dst = utf8_write_codepoint(dst, codepoint)) != nullptr
+                                     && (srcold = src) != nullptr
+                                     && (codepoint = utf8_get_next(src, (const utf8**)&src)) != '\0');
+                            src = srcold;
+                            if (spacesrc && codepoint)
+                            {
+                                *spacedst = 0;
+                                src = spacesrc;
+                            }
+                            large_scenery_sign_paint_line(
+                                session, str1, entry->large_scenery.text, entry->large_scenery.text_image, textColour,
+                                direction, y_offset);
+                            y_offset += (large_scenery_sign_get_glyph(text, 'A')->height + 1) * 2;
+                        }
+                    }
+                    else
+                    {
+                        large_scenery_sign_paint_line(
+                            session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour,
+                            direction, y_offset);
+                    }
+                }
+                else
+                {
+                    // Draw one-line sign:
+                    large_scenery_sign_paint_line(
+                        session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
+                        y_offset);
+                }
             }
         }
         return;
@@ -429,7 +432,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     set_format_arg(7, uint8_t, textColour);
     BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
     uint16_t scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
-    auto banner = &gBanners[bannerIndex];
+    auto banner = get_banner(bannerIndex);
     set_format_arg(0, rct_string_id, banner->string_idx);
     if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
     {

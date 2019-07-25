@@ -324,7 +324,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             sceneryEntry = tileElement->AsWall()->GetEntry();
             if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                auto banner = &gBanners[tileElement->AsWall()->GetBannerIndex()];
+                auto banner = tileElement->AsWall()->GetBanner();
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
                 set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
                 set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -337,7 +337,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                auto banner = &gBanners[tileElement->AsLargeScenery()->GetBannerIndex()];
+                auto banner = tileElement->AsLargeScenery()->GetBanner();
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
                 set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
                 set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -348,7 +348,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
 
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            auto banner = &gBanners[tileElement->AsBanner()->GetIndex()];
+            auto banner = tileElement->AsBanner()->GetBanner();
             sceneryEntry = get_banner_entry(banner->type);
 
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);

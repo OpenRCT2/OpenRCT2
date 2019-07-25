@@ -2257,7 +2257,7 @@ private:
                 if (index < std::size(_s4.banners))
                 {
                     auto srcBanner = &_s4.banners[index];
-                    auto dstBanner = &gBanners[index];
+                    auto dstBanner = get_banner(index);
                     ImportBanner(dstBanner, srcBanner);
                 }
                 break;
