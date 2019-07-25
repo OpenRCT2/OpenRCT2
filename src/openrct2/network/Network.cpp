@@ -19,6 +19,7 @@
 #include "../actions/PeepPickupAction.hpp"
 #include "../core/Guard.hpp"
 #include "../platform/platform.h"
+#include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/SawyerCoding.h"
@@ -2832,6 +2833,12 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
     const char* text = packet.ReadString();
     if (text)
     {
+        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT, {
+            { "player", (int32_t)connection.Player->Id },
+            { "message", std::string(text) }
+        });
+
         const char* formatted = FormatChat(connection.Player, text);
         chat_history_add(formatted);
         Server_Send_CHAT(formatted);

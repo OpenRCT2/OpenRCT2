@@ -28,6 +28,10 @@ export interface Configuration {
     has(key: string): boolean;
 }
 
+export type HookType =
+    "interval.tick" | "interval.day" |
+    "network.chat";
+
 export interface Context {
     /**
      * The user's current configuration.
@@ -42,7 +46,7 @@ export interface Context {
     /**
      * Subscribes to the given hook.
      */
-    subscribe(hook: string, callback: Function): IDisposable;
+    subscribe(hook: HookType, callback: Function): IDisposable;
 }
 
 export interface IntentDesc

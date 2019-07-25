@@ -20,6 +20,7 @@ HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
     static const std::unordered_map<std::string, HOOK_TYPE> LookupTable({
         { "interval.tick", HOOK_TYPE::INTERVAL_TICK },
         { "interval.day", HOOK_TYPE::INTERVAL_DAY },
+        { "network.chat", HOOK_TYPE::NETWORK_CHAT },
     });
     auto result = LookupTable.find(name);
     return (result != LookupTable.end()) ? result->second : HOOK_TYPE::UNDEFINED;
@@ -88,6 +89,41 @@ void HookEngine::Call(HOOK_TYPE type)
         function.push();
         duk_pcall(function.context(), 0);
         duk_pop(function.context());
+    }
+}
+
+void HookEngine::Call(HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args)
+{
+    auto& hookList = GetHookList(type);
+    for (auto& hook : hookList.Hooks)
+    {
+        ScriptExecutionInfo::PluginScope scope(_execInfo, hook.Owner);
+
+        const auto& function = hook.Function;
+        auto ctx = function.context();
+        function.push();
+
+        auto objIdx = duk_push_object(ctx);
+        for (const auto& arg : args)
+        {
+            if (arg.second.type() == typeid(int32_t))
+            {
+                auto val = std::any_cast<int32_t>(arg.second);
+                duk_push_int(ctx, val);
+            }
+            else if (arg.second.type() == typeid(std::string))
+            {
+                const auto& val = std::any_cast<std::string>(arg.second);
+                duk_push_string(ctx, val.c_str());
+            }
+            else
+            {
+                throw std::runtime_error("Not implemented");
+            }
+            duk_put_prop_string(ctx, objIdx, arg.first.data());
+        }
+        duk_pcall(ctx, 1);
+        duk_pop(ctx);
     }
 }
 

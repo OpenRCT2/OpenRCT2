@@ -12,8 +12,10 @@
 #include "../common.h"
 #include "Duktape.hpp"
 
+#include <any>
 #include <memory>
 #include <string>
+#include <tuple>
 #include <vector>
 
 namespace OpenRCT2::Scripting
@@ -25,6 +27,7 @@ namespace OpenRCT2::Scripting
     {
         INTERVAL_TICK,
         INTERVAL_DAY,
+        NETWORK_CHAT,
         COUNT,
         UNDEFINED = -1,
     };
@@ -77,6 +80,7 @@ namespace OpenRCT2::Scripting
         void Unsubscribe(HOOK_TYPE type, uint32_t cookie);
         void UnsubscribeAll(std::shared_ptr<const Plugin> owner);
         void Call(HOOK_TYPE type);
+        void Call(HOOK_TYPE type, const std::initializer_list<std::pair<std::string_view, std::any>>& args);
 
     private:
         HookList& GetHookList(HOOK_TYPE type);
