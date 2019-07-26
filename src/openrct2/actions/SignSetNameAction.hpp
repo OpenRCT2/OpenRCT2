@@ -70,7 +70,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        auto banner = get_banner(_bannerIndex);
+        auto banner = GetBanner(_bannerIndex);
 
         int32_t x = banner->position.x << 5;
         int32_t y = banner->position.y << 5;

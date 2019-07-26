@@ -63,7 +63,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        auto banner = get_banner(_bannerIndex);
+        auto banner = GetBanner(_bannerIndex);
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Position.x = banner->position.x * 32 + 16;
@@ -113,7 +113,7 @@ public:
     {
         auto res = MakeResult();
 
-        auto banner = get_banner(_bannerIndex);
+        auto banner = GetBanner(_bannerIndex);
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Position.x = banner->position.x * 32 + 16;

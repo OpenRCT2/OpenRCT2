@@ -41,7 +41,7 @@ void LargeSceneryElement::SetSecondaryColour(colour_t newColour)
 
 Banner* LargeSceneryElement::GetBanner() const
 {
-    return get_banner(GetBannerIndex());
+    return ::GetBanner(GetBannerIndex());
 }
 
 BannerIndex LargeSceneryElement::GetBannerIndex() const

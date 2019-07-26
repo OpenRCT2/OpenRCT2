@@ -1177,7 +1177,7 @@ void S6Exporter::ExportBanners()
 {
     for (BannerIndex i = 0; i < RCT2_MAX_BANNERS_IN_PARK; i++)
     {
-        auto src = get_banner(i);
+        auto src = GetBanner(i);
         auto dst = &_s6.banners[i];
         ExportBanner(*dst, *src);
     }

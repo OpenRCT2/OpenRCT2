@@ -90,7 +90,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        auto banner = get_banner(_bannerIndex);
+        auto banner = GetBanner(_bannerIndex);
         if (banner->type != BANNER_NULL)
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
@@ -130,7 +130,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        auto banner = get_banner(_bannerIndex);
+        auto banner = GetBanner(_bannerIndex);
         if (banner->type != BANNER_NULL)
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);

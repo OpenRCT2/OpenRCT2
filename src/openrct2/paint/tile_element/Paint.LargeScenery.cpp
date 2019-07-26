@@ -432,7 +432,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     set_format_arg(7, uint8_t, textColour);
     BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
     uint16_t scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
-    auto banner = get_banner(bannerIndex);
+    auto banner = GetBanner(bannerIndex);
     set_format_arg(0, rct_string_id, banner->string_idx);
     if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
     {

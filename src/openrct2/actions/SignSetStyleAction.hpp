@@ -57,7 +57,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        auto banner = get_banner(_bannerIndex);
+        auto banner = GetBanner(_bannerIndex);
 
         CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
 
@@ -91,7 +91,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        auto banner = get_banner(_bannerIndex);
+        auto banner = GetBanner(_bannerIndex);
 
         CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
 

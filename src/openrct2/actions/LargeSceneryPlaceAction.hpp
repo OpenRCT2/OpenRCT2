@@ -136,7 +136,7 @@ public:
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
-            auto banner = get_banner(_bannerId);
+            auto banner = GetBanner(_bannerId);
             if (banner->type != BANNER_NULL)
             {
                 log_error("No free banners available");
@@ -253,7 +253,7 @@ public:
                 return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
-            auto banner = get_banner(_bannerId);
+            auto banner = GetBanner(_bannerId);
             if (banner->type != BANNER_NULL)
             {
                 log_error("No free banners available");

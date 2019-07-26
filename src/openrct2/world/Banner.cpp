@@ -116,7 +116,7 @@ BannerIndex create_new_banner(uint8_t flags)
 
 TileElement* banner_get_tile_element(BannerIndex bannerIndex)
 {
-    auto banner = get_banner(bannerIndex);
+    auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
         auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
@@ -136,7 +136,7 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
 
 WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
 {
-    auto banner = get_banner(bannerIndex);
+    auto banner = GetBanner(bannerIndex);
     if (banner == nullptr)
         return nullptr;
 
@@ -254,8 +254,8 @@ void fix_duplicated_banners()
                             Guard::Assert(!activeBanners[newBannerIndex]);
 
                             // Copy over the original banner, but update the location
-                            auto& newBanner = *get_banner(newBannerIndex);
-                            newBanner = *get_banner(bannerIndex);
+                            auto& newBanner = *GetBanner(newBannerIndex);
+                            newBanner = *GetBanner(bannerIndex);
                             newBanner.position = { x, y };
 
                             // Duplicate user string too
@@ -287,7 +287,7 @@ void fix_duplicated_banners()
 
 Banner* BannerElement::GetBanner() const
 {
-    return get_banner(GetIndex());
+    return ::GetBanner(GetIndex());
 }
 
 rct_scenery_entry* BannerElement::GetEntry() const
@@ -336,7 +336,7 @@ void BannerElement::ResetAllowedEdges()
     flags |= 0b00001111;
 }
 
-Banner* get_banner(BannerIndex id)
+Banner* GetBanner(BannerIndex id)
 {
     if (id < std::size(_banners))
     {

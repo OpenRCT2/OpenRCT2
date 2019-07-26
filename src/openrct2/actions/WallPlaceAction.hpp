@@ -259,7 +259,7 @@ public:
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
-            auto banner = get_banner(_bannerId);
+            auto banner = GetBanner(_bannerId);
             if (banner->type != BANNER_NULL)
             {
                 log_error("No free banners available");
@@ -349,7 +349,7 @@ public:
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
-            auto banner = get_banner(_bannerId);
+            auto banner = GetBanner(_bannerId);
             if (banner->type != BANNER_NULL)
             {
                 log_error("No free banners available");

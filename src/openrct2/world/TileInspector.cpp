@@ -307,8 +307,8 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
             {
                 return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
             }
-            auto& newBanner = *get_banner(newBannerIndex);
-            newBanner = *get_banner(bannerIndex);
+            auto& newBanner = *GetBanner(newBannerIndex);
+            newBanner = *GetBanner(bannerIndex);
             newBanner.position = TileCoordsXY(loc);
 
             // Use the new banner index
@@ -325,7 +325,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
                 {
                     return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
                 }
-                get_banner(newBannerIndex)->string_idx = newStringIdx;
+                GetBanner(newBannerIndex)->string_idx = newStringIdx;
             }
         }
 
