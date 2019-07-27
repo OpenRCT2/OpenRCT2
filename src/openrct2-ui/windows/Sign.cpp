@@ -153,8 +153,9 @@ rct_window* window_sign_open(rct_windownumber number)
     w->number = number;
     window_init_scroll_widgets(w);
 
-    int32_t view_x = gBanners[w->number].x << 5;
-    int32_t view_y = gBanners[w->number].y << 5;
+    auto banner = GetBanner(w->number);
+    int32_t view_x = banner->position.x << 5;
+    int32_t view_y = banner->position.y << 5;
 
     TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
@@ -202,13 +203,10 @@ rct_window* window_sign_open(rct_windownumber number)
  */
 static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_banner* banner = &gBanners[w->number];
-    int32_t x = banner->x << 5;
-    int32_t y = banner->y << 5;
-
-    rct_string_id string_id;
-
-    TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
+    auto banner = GetBanner(w->number);
+    int32_t x = banner->position.x << 5;
+    int32_t y = banner->position.y << 5;
+    auto tile_element = map_get_first_element_at(x / 32, y / 32);
 
     switch (widgetIndex)
     {
@@ -240,18 +238,17 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         }
         case WIDX_SIGN_TEXT:
+        {
+            auto stringId = banner->string_idx;
             if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
             {
                 Ride* ride = get_ride(banner->ride_index);
                 set_format_arg(16, uint32_t, ride->name_arguments);
-                string_id = ride->name;
+                stringId = ride->name;
             }
-            else
-            {
-                string_id = gBanners[w->number].string_idx;
-            }
-            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
+            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, stringId, 0, 32);
             break;
+        }
     }
 }
 
@@ -371,10 +368,10 @@ static void window_sign_viewport_rotate(rct_window* w)
 
     view->width = 0;
 
-    rct_banner* banner = &gBanners[w->number];
+    auto banner = GetBanner(w->number);
 
-    int32_t view_x = (banner->x << 5) + 16;
-    int32_t view_y = (banner->y << 5) + 16;
+    int32_t view_x = (banner->position.x << 5) + 16;
+    int32_t view_y = (banner->position.y << 5) + 16;
     int32_t view_z = w->frame_no;
 
     // Create viewport
@@ -412,8 +409,9 @@ rct_window* window_sign_small_open(rct_windownumber number)
     w->colours[1] = COLOUR_DARK_BROWN;
     w->colours[2] = COLOUR_DARK_BROWN;
 
-    int32_t view_x = gBanners[w->number].x << 5;
-    int32_t view_y = gBanners[w->number].y << 5;
+    auto banner = GetBanner(w->number);
+    int32_t view_x = banner->position.x << 5;
+    int32_t view_y = banner->position.y << 5;
 
     TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
@@ -460,13 +458,10 @@ rct_window* window_sign_small_open(rct_windownumber number)
  */
 static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_banner* banner = &gBanners[w->number];
-    int32_t x = banner->x << 5;
-    int32_t y = banner->y << 5;
-
-    rct_string_id string_id;
-
-    TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
+    auto banner = GetBanner(w->number);
+    int32_t x = banner->position.x << 5;
+    int32_t y = banner->position.y << 5;
+    auto tile_element = map_get_first_element_at(x / 32, y / 32);
 
     switch (widgetIndex)
     {
@@ -491,21 +486,20 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
             TileCoordsXYZD wallLocation = { x >> 5, y >> 5, tile_element->base_height, tile_element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
+            break;
         }
-        break;
         case WIDX_SIGN_TEXT:
+        {
+            auto stringId = banner->string_idx;
             if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
             {
                 Ride* ride = get_ride(banner->ride_index);
                 set_format_arg(16, uint32_t, ride->name_arguments);
-                string_id = ride->name;
+                stringId = ride->name;
             }
-            else
-            {
-                string_id = gBanners[w->number].string_idx;
-            }
-            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
+            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, stringId, 0, 32);
             break;
+        }
     }
 }
 

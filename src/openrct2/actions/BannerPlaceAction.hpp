@@ -90,7 +90,8 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        if (gBanners[_bannerIndex].type != BANNER_NULL)
+        auto banner = GetBanner(_bannerIndex);
+        if (banner->type != BANNER_NULL)
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
@@ -129,7 +130,8 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        if (gBanners[_bannerIndex].type != BANNER_NULL)
+        auto banner = GetBanner(_bannerIndex);
+        if (banner->type != BANNER_NULL)
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
@@ -137,15 +139,14 @@ public:
 
         TileElement* newTileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, baseHeight, 0);
         assert(newTileElement != nullptr);
-        rct_banner* banner = &gBanners[_bannerIndex];
 
         banner->flags = 0;
         banner->string_idx = STR_DEFAULT_SIGN;
         banner->text_colour = 2;
         banner->type = _bannerType;
         banner->colour = _primaryColour;
-        banner->x = _loc.x / 32;
-        banner->y = _loc.y / 32;
+        banner->position.x = _loc.x / 32;
+        banner->position.y = _loc.y / 32;
         newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
         BannerElement* bannerElement = newTileElement->AsBanner();
         bannerElement->clearance_height = newTileElement->base_height + 2;

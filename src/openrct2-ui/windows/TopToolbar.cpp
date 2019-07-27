@@ -1080,15 +1080,18 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            rct_banner* banner = &gBanners[tile_element->AsBanner()->GetIndex()];
-            rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
-            if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+            auto banner = tile_element->AsBanner()->GetBanner();
+            if (banner != nullptr)
             {
-                auto repaintScenery = BannerSetColourAction(
-                    { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
-                    gWindowSceneryPrimaryColour);
+                auto scenery_entry = get_banner_entry(banner->type);
+                if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+                {
+                    auto repaintScenery = BannerSetColourAction(
+                        { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
+                        gWindowSceneryPrimaryColour);
 
-                GameActions::Execute(&repaintScenery);
+                    GameActions::Execute(&repaintScenery);
+                }
             }
             break;
         }
@@ -1164,15 +1167,17 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            int32_t bannerIndex = tileElement->AsBanner()->GetIndex();
-            rct_banner* banner = &gBanners[bannerIndex];
-            rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
-            if (sceneryEntry != nullptr)
+            auto banner = tileElement->AsBanner()->GetBanner();
+            if (banner != nullptr)
             {
-                int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_BANNERS, banner->type);
-                if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
+                auto sceneryEntry = get_banner_entry(banner->type);
+                if (sceneryEntry != nullptr)
                 {
-                    gWindowSceneryEyedropperEnabled = false;
+                    int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_BANNERS, banner->type);
+                    if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
+                    {
+                        gWindowSceneryEyedropperEnabled = false;
+                    }
                 }
             }
             break;

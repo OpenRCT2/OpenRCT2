@@ -430,8 +430,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
     uint16_t scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
 
-    uint8_t bannerIndex = tile_element->AsWall()->GetBannerIndex();
-    rct_banner* banner = &gBanners[bannerIndex];
+    auto banner = tile_element->AsWall()->GetBanner();
 
     set_format_arg(0, rct_string_id, banner->string_idx);
     if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)

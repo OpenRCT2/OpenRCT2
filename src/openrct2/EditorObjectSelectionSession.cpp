@@ -125,7 +125,6 @@ void setup_in_use_selection_flags()
     do
     {
         uint16_t type;
-        rct_banner* banner;
 
         switch (iter.element->GetType())
         {
@@ -173,11 +172,16 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(OBJECT_TYPE_LARGE_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
-                banner = &gBanners[iter.element->AsBanner()->GetIndex()];
-                type = banner->type;
-                assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
-                Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
+            {
+                auto banner = iter.element->AsBanner()->GetBanner();
+                if (banner != nullptr)
+                {
+                    type = banner->type;
+                    assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
+                    Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
+                }
                 break;
+            }
         }
     } while (tile_element_iterator_next(&iter));
 

@@ -63,12 +63,12 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        rct_banner* banner = &gBanners[_bannerIndex];
+        auto banner = GetBanner(_bannerIndex);
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position.x = banner->x * 32 + 16;
-        res->Position.y = banner->y * 32 + 16;
-        res->Position.z = tile_element_height(banner->x, banner->y);
+        res->Position.x = banner->position.x * 32 + 16;
+        res->Position.y = banner->position.y * 32 + 16;
+        res->Position.z = tile_element_height(banner->position.x, banner->position.y);
 
         TileElement* tileElement = banner_get_tile_element(_bannerIndex);
 
@@ -113,12 +113,12 @@ public:
     {
         auto res = MakeResult();
 
-        rct_banner* banner = &gBanners[_bannerIndex];
+        auto banner = GetBanner(_bannerIndex);
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position.x = banner->x * 32 + 16;
-        res->Position.y = banner->y * 32 + 16;
-        res->Position.z = tile_element_height(banner->x, banner->y);
+        res->Position.x = banner->position.x * 32 + 16;
+        res->Position.y = banner->position.y * 32 + 16;
+        res->Position.z = tile_element_height(banner->position.x, banner->position.y);
 
         TileElement* tileElement = banner_get_tile_element(_bannerIndex);
 

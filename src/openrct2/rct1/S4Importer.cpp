@@ -2254,10 +2254,12 @@ private:
                 dst2->SetPosition(src2->GetPosition());
                 dst2->SetAllowedEdges(src2->GetAllowedEdges());
 
-                rct_banner* srcBanner = &_s4.banners[index];
-                rct_banner* dstBanner = &gBanners[index];
-                ImportBanner(dstBanner, srcBanner);
-
+                if (index < std::size(_s4.banners))
+                {
+                    auto srcBanner = &_s4.banners[index];
+                    auto dstBanner = GetBanner(index);
+                    ImportBanner(dstBanner, srcBanner);
+                }
                 break;
             }
             default:
@@ -2831,10 +2833,16 @@ private:
         }
     }
 
-    void ImportBanner(rct_banner* dst, rct_banner* src)
+    void ImportBanner(Banner* dst, const RCT12Banner* src)
     {
-        *dst = *src;
-        dst->colour = RCT1::GetColour(src->colour);
+        *dst = {};
+        dst->type = src->type;
+
+        dst->flags = 0;
+        if (src->flags & BANNER_FLAG_NO_ENTRY)
+        {
+            dst->flags |= BANNER_FLAG_NO_ENTRY;
+        }
 
         dst->string_idx = STR_DEFAULT_SIGN;
         if (is_user_string_id(src->string_idx))
@@ -2849,6 +2857,11 @@ private:
                 }
             }
         }
+
+        dst->colour = RCT1::GetColour(src->colour);
+        dst->text_colour = src->text_colour;
+        dst->position.x = src->x;
+        dst->position.y = src->y;
     }
 
     void FixEntrancePositions()

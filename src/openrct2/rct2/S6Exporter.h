@@ -60,4 +60,6 @@ private:
     void ExportPeepSpawns();
     void ExportRideMeasurements();
     void ExportRideMeasurement(RCT12RideMeasurement& dst, const RideMeasurement& src);
+    void ExportBanners();
+    void ExportBanner(RCT12Banner& dst, const Banner& src);
 };

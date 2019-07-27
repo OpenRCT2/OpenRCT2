@@ -67,8 +67,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
         }
 
-        rct_banner* banner = &gBanners[bannerElement->GetIndex()];
-
+        auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             log_error("Invalid banner index. index = ", bannerElement->GetIndex());
@@ -107,8 +106,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
         }
 
-        rct_banner* banner = &gBanners[bannerElement->GetIndex()];
-
+        auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             log_error("Invalid banner index. index = ", bannerElement->GetIndex());
