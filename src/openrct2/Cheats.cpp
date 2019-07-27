@@ -95,7 +95,7 @@ void CheatsSerialise(DataSerialiser& ds)
 
     if (ds.IsSaving())
     {
-        MemoryStream& stream = ds.GetStream();
+        IStream& stream = ds.GetStream();
 
         // Temporarily write 0, will be updated after every cheat is written.
         uint64_t countOffset = stream.GetPosition();

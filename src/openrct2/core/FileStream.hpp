@@ -216,4 +216,9 @@ public:
         size_t readBytes = fread(buffer, 1, (size_t)length, _file);
         return readBytes;
     }
+
+    const void* GetData() const override
+    {
+        return nullptr;
+    }
 };
