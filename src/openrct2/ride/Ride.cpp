@@ -540,21 +540,26 @@ bool track_block_get_next_from_zero(
 
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        auto trackElement = tileElement->AsTrack();
+        if (trackElement == nullptr)
             continue;
 
-        if (tileElement->AsTrack()->GetRideIndex() != ride->id)
+        if (trackElement->GetRideIndex() != ride->id)
             continue;
 
-        if (tileElement->AsTrack()->GetSequenceIndex() != 0)
+        if (trackElement->GetSequenceIndex() != 0)
             continue;
 
         if (tileElement->IsGhost() != isGhost)
             continue;
 
-        const rct_preview_track* nextTrackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
-        const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(
-            ride, tileElement->AsTrack()->GetTrackType());
+        auto nextTrackBlock = get_track_def_from_ride(ride, trackElement->GetTrackType());
+        if (nextTrackBlock == nullptr)
+            continue;
+
+        auto nextTrackCoordinate = get_track_coord_from_ride(ride, trackElement->GetTrackType());
+        if (nextTrackCoordinate == nullptr)
+            continue;
 
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate->rotation_begin)
             | (nextTrackCoordinate->rotation_begin & (1 << 2));
@@ -592,20 +597,30 @@ bool track_block_get_next_from_zero(
  */
 bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction)
 {
-    ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
-    Ride* ride = get_ride(rideIndex);
+    auto inputElement = input->element->AsTrack();
+    if (inputElement == nullptr)
+        return false;
 
-    const rct_preview_track* trackBlock = get_track_def_from_ride(ride, input->element->AsTrack()->GetTrackType());
-    uint8_t sequence = input->element->AsTrack()->GetSequenceIndex();
-    trackBlock += sequence;
+    auto rideIndex = inputElement->GetRideIndex();
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
 
-    const rct_track_coordinates* trackCoordinate = get_track_coord_from_ride(ride, input->element->AsTrack()->GetTrackType());
+    auto trackBlock = get_track_def_from_ride(ride, inputElement->GetTrackType());
+    if (trackBlock == nullptr)
+        return false;
+
+    trackBlock += inputElement->GetSequenceIndex();
+
+    auto trackCoordinate = get_track_coord_from_ride(ride, inputElement->GetTrackType());
+    if (trackCoordinate == nullptr)
+        return false;
 
     int32_t x = input->x;
     int32_t y = input->y;
-    int32_t OriginZ = input->element->base_height * 8;
+    int32_t OriginZ = inputElement->base_height * 8;
 
-    uint8_t rotation = input->element->GetDirection();
+    uint8_t rotation = inputElement->GetDirection();
 
     CoordsXY coords = { x, y };
     CoordsXY trackCoordOffset = { trackCoordinate->x, trackCoordinate->y };
@@ -649,22 +664,27 @@ bool track_block_get_previous_from_zero(
         outTrackBeginEnd->end_y = y;
         outTrackBeginEnd->begin_element = nullptr;
         outTrackBeginEnd->begin_direction = direction_reverse(directionStart);
-        return 0;
+        return false;
     }
 
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        auto trackElement = tileElement->AsTrack();
+        if (trackElement == nullptr)
             continue;
 
-        if (tileElement->AsTrack()->GetRideIndex() != ride->id)
+        if (trackElement->GetRideIndex() != ride->id)
             continue;
 
-        const rct_preview_track* nextTrackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
-        const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(
-            ride, tileElement->AsTrack()->GetTrackType());
+        auto nextTrackBlock = get_track_def_from_ride(ride, trackElement->GetTrackType());
+        if (nextTrackBlock == nullptr)
+            continue;
 
-        nextTrackBlock += tileElement->AsTrack()->GetSequenceIndex();
+        auto nextTrackCoordinate = get_track_coord_from_ride(ride, trackElement->GetTrackType());
+        if (nextTrackCoordinate == nullptr)
+            continue;
+
+        nextTrackBlock += trackElement->GetSequenceIndex();
         if ((nextTrackBlock + 1)->index != 255)
             continue;
 
@@ -693,12 +713,15 @@ bool track_block_get_previous_from_zero(
         outTrackBeginEnd->begin_y = coords.y;
 
         outTrackBeginEnd->begin_z = tileElement->base_height * 8;
-        outTrackBeginEnd->begin_z += get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType())->z
-            - nextTrackBlock->z;
 
+        auto nextTrackBlock2 = get_track_def_from_ride(ride, trackElement->GetTrackType());
+        if (nextTrackBlock2 == nullptr)
+            continue;
+
+        outTrackBeginEnd->begin_z += nextTrackBlock2->z - nextTrackBlock->z;
         outTrackBeginEnd->begin_direction = nextRotation;
         outTrackBeginEnd->end_direction = direction_reverse(directionStart);
-        return 1;
+        return true;
     } while (!(tileElement++)->IsLastForTile());
 
     outTrackBeginEnd->end_x = x;
@@ -706,7 +729,7 @@ bool track_block_get_previous_from_zero(
     outTrackBeginEnd->begin_z = z;
     outTrackBeginEnd->begin_element = nullptr;
     outTrackBeginEnd->end_direction = direction_reverse(directionStart);
-    return 0;
+    return false;
 }
 
 /**
@@ -719,18 +742,28 @@ bool track_block_get_previous_from_zero(
  */
 bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, track_begin_end* outTrackBeginEnd)
 {
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-    Ride* ride = get_ride(rideIndex);
+    auto trackElement = tileElement->AsTrack();
+    if (trackElement == nullptr)
+        return false;
 
-    const rct_preview_track* trackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
-    uint8_t sequence = tileElement->AsTrack()->GetSequenceIndex();
-    trackBlock += sequence;
+    auto rideIndex = trackElement->GetRideIndex();
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
 
-    const rct_track_coordinates* trackCoordinate = get_track_coord_from_ride(ride, tileElement->AsTrack()->GetTrackType());
+    auto trackBlock = get_track_def_from_ride(ride, trackElement->GetTrackType());
+    if (trackBlock == nullptr)
+        return false;
 
-    int32_t z = tileElement->base_height * 8;
+    trackBlock += trackElement->GetSequenceIndex();
 
-    uint8_t rotation = tileElement->GetDirection();
+    auto trackCoordinate = get_track_coord_from_ride(ride, trackElement->GetTrackType());
+    if (trackCoordinate == nullptr)
+        return false;
+
+    int32_t z = trackElement->base_height * 8;
+
+    uint8_t rotation = trackElement->GetDirection();
     CoordsXY coords = { x, y };
     CoordsXY offsets = { trackBlock->x, trackBlock->y };
     coords += offsets.Rotate(direction_reverse(rotation));
