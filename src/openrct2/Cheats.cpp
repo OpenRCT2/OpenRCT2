@@ -138,10 +138,10 @@ void CheatsSerialise(DataSerialiser& ds)
 
         for (uint16_t i = 0; i < count; i++)
         {
-            CheatType type;
-            ds << reinterpret_cast<int32_t&>(type);
+            int32_t type = 0;
+            ds << type;
 
-            switch (type)
+            switch (static_cast<CheatType>(type))
             {
                 case CheatType::SandboxMode:
                     ds << gCheatsSandboxMode;
@@ -205,6 +205,8 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::EnableAllDrawableTrackPieces:
                     ds << gCheatsEnableAllDrawableTrackPieces;
+                    break;
+                default:
                     break;
             }
         }
