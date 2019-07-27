@@ -82,6 +82,7 @@ namespace OpenRCT2
         MemoryStream parkData;
         MemoryStream spriteSpatialData;
         MemoryStream parkParams;
+        MemoryStream cheatData;
         std::string name;      // Name of play
         std::string filePath;  // File path of replay.
         uint64_t timeRecorded; // Posix Time.
@@ -228,8 +229,11 @@ namespace OpenRCT2
             replayData->spriteSpatialData.Write(gSpriteSpatialIndex, sizeof(gSpriteSpatialIndex));
             replayData->timeRecorded = std::chrono::seconds(std::time(nullptr)).count();
 
-            DataSerialiser parkParams(true, replayData->parkParams);
-            SerialiseParkParameters(parkParams);
+            DataSerialiser parkParamsDs(true, replayData->parkParams);
+            SerialiseParkParameters(parkParamsDs);
+
+            DataSerialiser cheatDataDs(true, replayData->cheatData);
+            SerialiseCheats(cheatDataDs);
 
             if (_mode != ReplayMode::NORMALISATION)
                 _mode = ReplayMode::RECORDING;
@@ -441,8 +445,14 @@ namespace OpenRCT2
                 std::memcpy(gSpriteSpatialIndex, data.spriteSpatialData.GetData(), data.spriteSpatialData.GetLength());
 
                 // Load all map global variables.
-                DataSerialiser parkParams(false, data.parkParams);
-                SerialiseParkParameters(parkParams);
+                DataSerialiser parkParamsDs(false, data.parkParams);
+                SerialiseParkParameters(parkParamsDs);
+
+                // New cheats might not be serialised, make sure they are using their defaults.
+                CheatsReset();
+
+                DataSerialiser cheatDataDs(false, data.cheatData);
+                SerialiseCheats(cheatDataDs);
 
                 game_load_init();
                 fix_invalid_vehicle_sprite_sizes();
@@ -547,7 +557,15 @@ namespace OpenRCT2
             // Reset position of all streams.
             data.parkData.SetPosition(0);
             data.parkParams.SetPosition(0);
+            data.cheatData.SetPosition(0);
             data.spriteSpatialData.SetPosition(0);
+
+            return true;
+        }
+
+        bool SerialiseCheats(DataSerialiser& serialiser)
+        {
+            CheatsSerialise(serialiser);
 
             return true;
         }
@@ -556,28 +574,22 @@ namespace OpenRCT2
         {
             serialiser << _guestGenerationProbability;
             serialiser << _suggestedGuestMaximum;
-            serialiser << gCheatsSandboxMode;
-            serialiser << gCheatsDisableClearanceChecks;
-            serialiser << gCheatsDisableSupportLimits;
-            serialiser << gCheatsDisableTrainLengthLimit;
-            serialiser << gCheatsEnableChainLiftOnAllTrack;
-            serialiser << gCheatsShowAllOperatingModes;
-            serialiser << gCheatsShowVehiclesFromOtherTrackTypes;
-            serialiser << gCheatsFastLiftHill;
-            serialiser << gCheatsDisableBrakesFailure;
-            serialiser << gCheatsDisableAllBreakdowns;
-            serialiser << gCheatsBuildInPauseMode;
-            serialiser << gCheatsIgnoreRideIntensity;
-            serialiser << gCheatsDisableVandalism;
-            serialiser << gCheatsDisableLittering;
-            serialiser << gCheatsNeverendingMarketing;
-            serialiser << gCheatsFreezeWeather;
-            serialiser << gCheatsDisablePlantAging;
-            serialiser << gCheatsAllowArbitraryRideTypeChanges;
-            serialiser << gCheatsDisableRideValueAging;
             serialiser << gConfigGeneral.show_real_names_of_guests;
-            serialiser << gCheatsIgnoreResearchStatus;
-            serialiser << gCheatsEnableAllDrawableTrackPieces;
+
+            // To make this a little bit less volatile against updates
+            // we reserve some space for future additions.
+            uint64_t tempStorage = 0;
+
+            // If another park parameter has to be added simply swap tempStorage.
+            // and ensure the length read/write will stay uint64_t
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
 
             return true;
         }
@@ -640,6 +652,7 @@ namespace OpenRCT2
             serialiser << data.timeRecorded;
             serialiser << data.parkData;
             serialiser << data.parkParams;
+            serialiser << data.cheatData;
             serialiser << data.spriteSpatialData;
             serialiser << data.tickStart;
             serialiser << data.tickEnd;
