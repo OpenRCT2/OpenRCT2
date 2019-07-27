@@ -115,5 +115,6 @@ enum
 void CheatsReset();
 const char* CheatsGetName(CheatType cheatType);
 void CheatsSet(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0);
+void CheatsSerialise(class DataSerialiser& ds);
 
 #endif
