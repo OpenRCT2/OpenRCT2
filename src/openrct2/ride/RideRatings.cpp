@@ -1629,18 +1629,44 @@ static void ride_ratings_apply_max_lateral_g_penalty(
     }
 }
 
-static void ride_ratings_apply_excessive_lateral_g_penalty(rating_tuple* ratings, Ride* ride)
+static rating_tuple ride_ratings_get_excessive_lateral_g_penalty(Ride* ride)
 {
-#ifndef ORIGINAL_RATINGS
+    rating_tuple result = { 0 };
     if (ride->max_lateral_g > FIXED_2DP(2, 80))
     {
-        ride_ratings_add(ratings, 0, FIXED_2DP(3, 75), FIXED_2DP(2, 00));
+        result.intensity = FIXED_2DP(3, 75);
+        result.nausea = FIXED_2DP(2, 00);
     }
+
     if (ride->max_lateral_g > FIXED_2DP(3, 10))
     {
-        ratings->excitement /= 2;
-        ride_ratings_add(ratings, 0, FIXED_2DP(8, 50), FIXED_2DP(4, 00));
+        // Remove half of the ride_ratings_get_gforce_ratings
+        result.excitement = (ride->max_positive_vertical_g * 5242) >> 16;
+
+        // Apply maximum negative G force factor
+        fixed16_2dp gforce = ride->max_negative_vertical_g;
+        result.excitement += (std::clamp<fixed16_2dp>(gforce, -FIXED_2DP(2, 50), FIXED_2DP(0, 00)) * -15728) >> 16;
+
+        // Apply lateral G force factor
+        result.excitement += (std::min<fixed16_2dp>(FIXED_2DP(1, 50), ride->max_lateral_g) * 26214) >> 16;
+
+        // Remove half of the ride_ratings_get_gforce_ratings
+        result.excitement /= 2;
+        result.excitement *= -1;
+        result.intensity = FIXED_2DP(12, 25);
+        result.nausea = FIXED_2DP(6, 00);
     }
+    return result;
+}
+
+static void ride_ratings_apply_excessive_lateral_g_penalty(
+    rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
+{
+#ifndef ORIGINAL_RATINGS
+    rating_tuple subRating = ride_ratings_get_excessive_lateral_g_penalty(ride);
+    ride_ratings_add(
+        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
+        (subRating.nausea * nauseaMultiplier) >> 16);
 #endif
 }
 
@@ -1694,7 +1720,7 @@ static void ride_ratings_calculate_spiral_roller_coaster(Ride* ride)
         ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
     }
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 36864, 30384, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1732,7 +1758,7 @@ static void ride_ratings_calculate_stand_up_roller_coaster(Ride* ride)
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
     ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 50), 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 59578);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1772,7 +1798,7 @@ static void ride_ratings_calculate_suspended_swinging_coaster(Ride* ride)
     ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1, 50), 2, 2, 2);
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 32768, 23831, 79437);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1815,7 +1841,7 @@ static void ride_ratings_calculate_inverted_roller_coaster(Ride* ride)
     if (ride->inversions == 0)
         ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 30), 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 29789, 55606);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1853,7 +1879,7 @@ static void ride_ratings_calculate_junior_roller_coaster(Ride* ride)
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 1, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 20480, 23831, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -1962,7 +1988,7 @@ static void ride_ratings_calculate_mini_suspended_coaster(Ride* ride)
     ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1, 30), 2, 2, 2);
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0xC80000, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2035,7 +2061,7 @@ static void ride_ratings_calculate_wooden_wild_mouse(Ride* ride)
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0xAA0000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 3, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 102400, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2075,7 +2101,7 @@ static void ride_ratings_calculate_steeplechase(Ride* ride)
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0xF00000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 20480, 20852, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2198,7 +2224,7 @@ static void ride_ratings_calculate_bobsleigh_coaster(Ride* ride)
     ride_ratings_apply_max_lateral_g_penalty(&ratings, ride, FIXED_2DP(1, 20), 2, 2, 2);
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 65536, 23831, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2274,7 +2300,7 @@ static void ride_ratings_calculate_looping_roller_coaster(Ride* ride)
         ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
     }
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2312,7 +2338,7 @@ static void ride_ratings_calculate_dinghy_slide(Ride* ride)
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0x8C0000, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 65536, 29789, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2352,7 +2378,7 @@ static void ride_ratings_calculate_mine_train_coaster(Ride* ride)
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 40960, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2440,7 +2466,7 @@ static void ride_ratings_calculate_corkscrew_roller_coaster(Ride* ride)
         ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
     }
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -2998,7 +3024,7 @@ static void ride_ratings_calculate_vertical_drop_roller_coaster(Ride* ride)
     ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 10), 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 1, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 40960, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3095,7 +3121,7 @@ static void ride_ratings_calculate_flying_roller_coaster(Ride* ride)
 
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 1);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 38130, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3132,7 +3158,7 @@ static void ride_ratings_calculate_virginia_reel(Ride* ride)
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0xD20000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 110592, 29789, 59578);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3248,7 +3274,7 @@ static void ride_ratings_calculate_lay_down_roller_coaster(Ride* ride)
         ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
     }
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 38130, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3331,7 +3357,7 @@ static void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0xC80000, 2, 1, 1);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 1);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 28672, 23831, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3371,7 +3397,7 @@ static void ride_ratings_calculate_heartline_twister_coaster(Ride* ride)
 
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 1, 4, 1, 1);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 44683, 89367);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3518,7 +3544,7 @@ static void ride_ratings_calculate_twister_roller_coaster(Ride* ride)
         ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
     }
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 32768, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3558,7 +3584,7 @@ static void ride_ratings_calculate_wooden_roller_coaster(Ride* ride)
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 40960, 34555, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3597,7 +3623,7 @@ static void ride_ratings_calculate_side_friction_roller_coaster(Ride* ride)
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0xFA0000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 28672, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3637,7 +3663,7 @@ static void ride_ratings_calculate_wild_mouse(Ride* ride)
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0xAA0000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 102400, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3682,7 +3708,7 @@ static void ride_ratings_calculate_multi_dimension_roller_coaster(Ride* ride)
     if (ride->inversions == 0)
         ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 1, 1);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 38130, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3728,7 +3754,7 @@ static void ride_ratings_calculate_giga_coaster(Ride* ride)
         ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
     }
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 36864, 30384, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3895,7 +3921,7 @@ static void ride_ratings_calculate_compact_inverted_coaster(Ride* ride)
     if (ride->inversions == 0)
         ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 30), 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 30980, 55606);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3933,7 +3959,7 @@ static void ride_ratings_calculate_water_coaster(Ride* ride)
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x70000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 1, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 20480, 23831, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -3967,7 +3993,7 @@ static void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride)
     ride_ratings_apply_scenery(&ratings, ride, 11155);
     ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 34, 2, 1, 1);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 59578);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -4008,7 +4034,7 @@ static void ride_ratings_calculate_inverted_hairpin_coaster(Ride* ride)
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0xAA0000, 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 3, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 102400, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -4154,7 +4180,7 @@ static void ride_ratings_calculate_inverted_impulse_coaster(Ride* ride)
     ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 20, 2, 2, 2);
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 29789, 55606);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -4193,7 +4219,7 @@ static void ride_ratings_calculate_mini_roller_coaster(Ride* ride)
     ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 50), 2, 2, 2);
     ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 20480, 23831, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -4229,7 +4255,7 @@ static void ride_ratings_calculate_mine_ride(Ride* ride)
     ride_ratings_apply_scenery(&ratings, ride, 16732);
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0x10E0000, 2, 2, 2);
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 40960, 29789, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -4275,7 +4301,7 @@ static void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride)
         ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
     }
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride);
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
