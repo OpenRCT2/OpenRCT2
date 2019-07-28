@@ -1631,7 +1631,7 @@ static void ride_ratings_apply_max_lateral_g_penalty(
 
 static rating_tuple ride_ratings_get_excessive_lateral_g_penalty(Ride* ride)
 {
-    rating_tuple result = { 0 };
+    rating_tuple result{};
     if (ride->max_lateral_g > FIXED_2DP(2, 80))
     {
         result.intensity = FIXED_2DP(3, 75);
