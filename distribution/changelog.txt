@@ -3,6 +3,7 @@
 - Fix: [#7883] Headless server log is stored incorrectly if server name contains CJK in Ubuntu
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
 - Fix: [#9625] Show correct cost in scenery selection.
+- Fix: [#9669] The tile inspector shortcut key does not work with debugging tools disabled.
 
 0.2.3 (2019-07-10)
 ------------------------------------------------------------------------
