@@ -14,6 +14,9 @@
 #include "../common.h"
 #include "../world/Location.hpp"
 
+#include <string>
+#include <string_view>
+
 #define RCT12_MAX_RIDES_IN_PARK 255
 #define RCT12_MAX_AWARDS 4
 #define RCT12_MAX_NEWS_ITEMS 61
@@ -540,3 +543,8 @@ assert_struct_size(RCT12Banner, 8);
 #pragma pack(pop)
 
 bool is_user_string_id(rct_string_id stringId);
+
+namespace RCT12
+{
+    std::string RemoveFormatCodes(const std::string_view& s);
+}

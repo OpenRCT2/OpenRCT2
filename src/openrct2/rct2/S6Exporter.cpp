@@ -1253,7 +1253,16 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         dst.flags = src.flags;
 
         dst.string_idx = STR_DEFAULT_SIGN;
-        auto stringId = AllocateUserString(src.text);
+
+        auto bannerText = src.text;
+        if (!(src.flags & BANNER_FLAG_IS_WALL) && !(src.flags & BANNER_FLAG_IS_LARGE_SCENERY))
+        {
+            char codeBuffer[32]{};
+            utf8_write_codepoint(codeBuffer, FORMAT_COLOUR_CODE_START + src.text_colour);
+            bannerText = codeBuffer + bannerText;
+        }
+
+        auto stringId = AllocateUserString(bannerText);
         if (stringId != opt::nullopt)
         {
             dst.string_idx = *stringId;

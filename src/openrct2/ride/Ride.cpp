@@ -872,7 +872,7 @@ void Ride::FormatStatusTo(void* argsV) const
         && race_winner != SPRITE_INDEX_NULL)
     {
         auto sprite = get_sprite(race_winner);
-        if (sprite != nullptr)
+        if (sprite != nullptr && sprite->IsPeep())
         {
             auto peep = sprite->AsPeep();
             set_format_arg_on(args, 0, rct_string_id, STR_RACE_WON_BY);

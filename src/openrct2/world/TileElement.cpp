@@ -128,7 +128,7 @@ void tile_element_remove_banner_entry(TileElement* tileElement)
     if (banner != nullptr)
     {
         window_close_by_number(WC_BANNER, bannerIndex);
-        banner = {};
+        *banner = {};
     }
 }
 
