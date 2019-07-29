@@ -449,6 +449,13 @@ public:
         gWidePathTileLoopY = _s6.wide_path_tile_loop_y;
         // pad_13CE778
 
+        // Fix and set dynamic variables
+        map_strip_ghost_flag_from_elements();
+        map_update_tile_pointers();
+        game_convert_strings_to_utf8();
+        map_count_remaining_land_rights();
+        determine_ride_entrance_and_exit_locations();
+
         // Park name, must be after user strings are loaded
         // Eventually format_string should be something that the S6 user strings can be passed directly to
         {
@@ -458,13 +465,6 @@ public:
             park.Name = parkName;
             user_string_free(_s6.park_name);
         }
-
-        // Fix and set dynamic variables
-        map_strip_ghost_flag_from_elements();
-        map_update_tile_pointers();
-        game_convert_strings_to_utf8();
-        map_count_remaining_land_rights();
-        determine_ride_entrance_and_exit_locations();
 
         // We try to fix the cycles on import, hence the 'true' parameter
         check_for_sprite_list_cycles(true);
