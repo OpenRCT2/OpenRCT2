@@ -1283,7 +1283,9 @@ static std::string GetTruncatedRCT2String(const std::string_view& src)
     auto rct2encoded = utf8_to_rct2(src);
     if (rct2encoded.size() > RCT12_USER_STRING_MAX_LENGTH - 1)
     {
-        log_warning("The user string '%s' is too long for the S6 file format and has therefore been truncated.", std::string(src).c_str());
+        log_warning(
+            "The user string '%s' is too long for the S6 file format and has therefore been truncated.",
+            std::string(src).c_str());
 
         rct2encoded.resize(RCT12_USER_STRING_MAX_LENGTH - 1);
         for (size_t i = 0; i < rct2encoded.size(); i++)
