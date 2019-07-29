@@ -89,6 +89,11 @@ struct rct_object_entry
         };
     };
 
+    std::string_view GetName() const
+    {
+        return std::string_view(name, std::size(name));
+    }
+
     void SetName(const char* value)
     {
         auto src = value;

@@ -18,6 +18,8 @@
 #include "RideTypes.h"
 #include "Vehicle.h"
 
+#include <string_view>
+
 interface IObjectManager;
 class StationObject;
 struct Peep;
@@ -140,6 +142,20 @@ struct rct_ride_entry
     uint8_t shop_item_secondary;                                       // 0x1C1
     rct_string_id capacity;
     void* obj;
+
+    const rct_ride_entry_vehicle* GetVehicle(size_t id) const
+    {
+        if (id < std::size(vehicles))
+        {
+            return &vehicles[id];
+        }
+        return nullptr;
+    }
+
+    const rct_ride_entry_vehicle* GetDefaultVehicle() const
+    {
+        return GetVehicle(default_vehicle);
+    }
 };
 
 struct RideStation
@@ -979,7 +995,7 @@ extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 /** Helper macros until rides are stored in this module. */
 Ride* get_ride(int32_t index);
 rct_ride_entry* get_ride_entry(int32_t index);
-void get_ride_entry_name(char* name, int32_t index);
+std::string_view get_ride_entry_name(size_t index);
 RideMeasurement* get_ride_measurement(int32_t index);
 
 /**

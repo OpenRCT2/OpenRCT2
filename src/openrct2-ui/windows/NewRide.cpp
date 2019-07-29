@@ -932,8 +932,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window* w
 
 static int32_t get_num_track_designs(ride_list_item item)
 {
-    char entry[DAT_NAME_LENGTH + 1];
-    const char* entryPtr = nullptr;
+    std::string entryName;
     rct_ride_entry* rideEntry = nullptr;
 
     if (item.type < 0x80)
@@ -941,22 +940,20 @@ static int32_t get_num_track_designs(ride_list_item item)
         rideEntry = get_ride_entry(item.entry_index);
         if (RideGroupManager::RideTypeIsIndependent(item.type))
         {
-            get_ride_entry_name(entry, item.entry_index);
-            entryPtr = entry;
+            entryName = get_ride_entry_name(item.entry_index);
         }
     }
 
-    ITrackDesignRepository* repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-
+    auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
     if (rideEntry != nullptr && RideGroupManager::RideTypeHasRideGroups(item.type))
     {
-        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
-        return (int32_t)repo->GetCountForRideGroup(item.type, rideGroup);
+        auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
+        if (rideGroup != nullptr)
+        {
+            return (int32_t)repo->GetCountForRideGroup(item.type, rideGroup);
+        }
     }
-    else
-    {
-        return (int32_t)repo->GetCountForObjectEntry(item.type, String::ToStd(entryPtr));
-    }
+    return (int32_t)repo->GetCountForObjectEntry(item.type, entryName);
 }
 
 /**
