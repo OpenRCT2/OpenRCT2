@@ -1268,8 +1268,14 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
             dst.string_idx = *stringId;
         }
 
-        dst.colour = src.colour;
-        dst.ride_index = src.ride_index;
+        if (src.flags & BANNER_FLAG_LINKED_TO_RIDE)
+        {
+            dst.ride_index = src.ride_index;
+        }
+        else
+        {
+            dst.colour = src.colour;
+        }
         dst.text_colour = src.text_colour;
         dst.x = src.position.x;
         dst.y = src.position.y;
