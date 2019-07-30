@@ -5587,7 +5587,7 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
             _collectTrackDesignScenery = !track_design_save_contains_tile_element(tileElement);
-            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            track_design_save_select_tile_element(interactionType, { mapX, mapY }, tileElement, _collectTrackDesignScenery);
             break;
     }
 }
@@ -5610,7 +5610,7 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            track_design_save_select_tile_element(interactionType, { mapX, mapY }, tileElement, _collectTrackDesignScenery);
             break;
     }
 }

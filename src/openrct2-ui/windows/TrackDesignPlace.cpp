@@ -464,7 +464,7 @@ static void window_track_place_attempt_placement(
  */
 static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    set_format_arg(0, char*, _trackDesign->name.get());
+    set_format_arg(0, char*, _trackDesign->name.c_str());
     window_draw_widgets(w, dpi);
 
     // Draw mini tile preview

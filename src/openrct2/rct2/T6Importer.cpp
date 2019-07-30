@@ -26,7 +26,7 @@ class TD6Importer final : public ITrackImporter
 {
 private:
     MemoryStream _stream;
-    std::unique_ptr<const utf8> name;
+    std::string _name;
 
 public:
     TD6Importer()
@@ -38,7 +38,7 @@ public:
         const utf8* extension = Path::GetExtension(path);
         if (String::Equals(extension, ".td6", true))
         {
-            name.reset(String::Duplicate(GetNameFromTrackPath(path).c_str()));
+            _name = GetNameFromTrackPath(path);
             auto fs = FileStream(path, FILE_MODE_OPEN);
             return LoadFromStream(&fs);
         }
@@ -170,7 +170,7 @@ public:
             td->scenery_elements.push_back(sceneryElement);
         }
 
-        td->name = std::move(name);
+        td->name = _name;
         return td;
     }
 };

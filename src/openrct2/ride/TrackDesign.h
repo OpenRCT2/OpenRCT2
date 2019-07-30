@@ -34,7 +34,6 @@ struct TrackDesign
     uint8_t track_flags;
     uint8_t colour_scheme;
     rct_vehicle_colour vehicle_colours[RCT2_MAX_CARS_PER_TRAIN];
-    uint8_t pad_48;
     uint8_t entrance_style;
     uint8_t total_air_time;
     uint8_t depart_flags;
@@ -73,7 +72,7 @@ struct TrackDesign
     std::vector<rct_td6_entrance_element> entrance_elements;
     std::vector<rct_td6_scenery_element> scenery_elements;
 
-    std::unique_ptr<const utf8> name;
+    std::string name;
 
 public:
     rct_string_id CreateTrackDesign(const Ride& ride);
@@ -147,7 +146,6 @@ extern bool gTrackDesignSaveMode;
 extern ride_id_t gTrackDesignSaveRideIndex;
 
 std::unique_ptr<TrackDesign> track_design_open(const utf8* path);
-void track_design_dispose(rct_track_td6* td6);
 
 void track_design_mirror(TrackDesign* td6);
 
@@ -171,8 +169,7 @@ void track_design_save_init();
 void track_design_save_reset_scenery();
 bool track_design_save_contains_tile_element(const TileElement* tileElement);
 void track_design_save_select_nearby_scenery(ride_id_t rideIndex);
-void track_design_save_select_tile_element(
-    int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement, bool collect);
+void track_design_save_select_tile_element(int32_t interactionType, CoordsXY loc, TileElement* tileElement, bool collect);
 
 bool track_design_are_entrance_and_exit_placed();
 
