@@ -353,9 +353,8 @@ void S6Exporter::Export()
     _s6.saved_view_y = gSavedViewY;
     _s6.saved_view_zoom = gSavedViewZoom;
     _s6.saved_view_rotation = gSavedViewRotation;
-    std::memcpy(_s6.map_animations, gAnimatedObjects, sizeof(_s6.map_animations));
-    _s6.num_map_animations = gNumMapAnimations;
-    // pad_0138B582
+
+    ExportMapAnimations();
 
     _s6.ride_ratings_calc_data = gRideRatingsCalcData;
     ExportRideMeasurements();
@@ -1279,6 +1278,23 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         dst.text_colour = src.text_colour;
         dst.x = src.position.x;
         dst.y = src.position.y;
+    }
+}
+
+void S6Exporter::ExportMapAnimations()
+{
+    const auto& mapAnimations = GetMapAnimations();
+    auto numAnimations = std::min(mapAnimations.size(), std::size(_s6.map_animations));
+    _s6.num_map_animations = (uint16_t)numAnimations;
+    for (size_t i = 0; i < numAnimations; i++)
+    {
+        const auto& src = mapAnimations[i];
+        auto& dst = _s6.map_animations[i];
+
+        dst.type = src.type;
+        dst.x = src.location.x;
+        dst.y = src.location.y;
+        dst.baseZ = src.location.z;
     }
 }
 

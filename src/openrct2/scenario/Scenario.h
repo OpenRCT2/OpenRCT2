@@ -260,7 +260,7 @@ struct rct_s6_data
     uint16_t saved_view_y;
     uint8_t saved_view_zoom;
     uint8_t saved_view_rotation;
-    rct_map_animation map_animations[RCT2_MAX_ANIMATED_OBJECTS];
+    RCT12MapAnimation map_animations[RCT2_MAX_ANIMATED_OBJECTS];
     uint16_t num_map_animations;
     uint8_t pad_0138B582[2];
     rct_ride_rating_calc_data ride_ratings_calc_data;

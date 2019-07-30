@@ -382,13 +382,6 @@ public:
         gSavedViewZoom = _s6.saved_view_zoom;
         gSavedViewRotation = _s6.saved_view_rotation;
 
-        for (size_t i = 0; i < RCT2_MAX_ANIMATED_OBJECTS; i++)
-        {
-            gAnimatedObjects[i] = _s6.map_animations[i];
-        }
-        gNumMapAnimations = _s6.num_map_animations;
-        // pad_0138B582
-
         gRideRatingsCalcData = _s6.ride_ratings_calc_data;
         ImportRideMeasurements();
         gNextGuestNumber = _s6.next_guest_index;
@@ -1545,6 +1538,7 @@ void load_from_sv6(const char* path)
         objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
+        AutoCreateMapAnimations();
         sprite_position_tween_reset();
         gScreenAge = 0;
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
@@ -1583,6 +1577,7 @@ void load_from_sc6(const char* path)
         objManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
+        AutoCreateMapAnimations();
         sprite_position_tween_reset();
         return;
     }

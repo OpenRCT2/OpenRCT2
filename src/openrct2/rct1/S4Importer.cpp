@@ -189,7 +189,6 @@ public:
         ImportRideMeasurements();
         ImportSprites();
         ImportTileElements();
-        ImportMapAnimations();
         ImportPeepSpawns();
         ImportFinance();
         ImportResearch();
@@ -1798,18 +1797,6 @@ private:
                 gPeepSpawns.push_back(spawn);
             }
         }
-    }
-
-    void ImportMapAnimations()
-    {
-        // This is sketchy, ideally we should try to re-create them
-        rct_map_animation* s4Animations = _s4.map_animations;
-        for (size_t i = 0; i < RCT1_MAX_ANIMATED_OBJECTS; i++)
-        {
-            gAnimatedObjects[i] = s4Animations[i];
-            gAnimatedObjects[i].baseZ /= 2;
-        }
-        gNumMapAnimations = _s4.num_map_animations;
     }
 
     void ImportFinance()

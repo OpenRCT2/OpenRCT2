@@ -675,7 +675,7 @@ struct rct1_s4
     uint16_t view_y;
     uint8_t view_zoom;
     uint8_t view_rotation;
-    rct_map_animation map_animations[RCT1_MAX_ANIMATED_OBJECTS];
+    RCT12MapAnimation map_animations[RCT1_MAX_ANIMATED_OBJECTS];
     uint32_t num_map_animations;
     uint8_t unk_1CADBC[12];
     uint16_t scrolling_text_step;
