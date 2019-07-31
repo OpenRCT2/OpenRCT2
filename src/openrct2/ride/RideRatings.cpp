@@ -1253,20 +1253,20 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
     intensity += specialTrackElementsRating.intensity;
     nausea += specialTrackElementsRating.nausea;
 
-    rating_tuple var_10E_rating = get_flat_turns_rating(ride);
-    excitement += var_10E_rating.excitement;
-    intensity += var_10E_rating.intensity;
-    nausea += var_10E_rating.nausea;
+    rating_tuple flatTurnsRating = get_flat_turns_rating(ride);
+    excitement += flatTurnsRating.excitement;
+    intensity += flatTurnsRating.intensity;
+    nausea += flatTurnsRating.nausea;
 
-    rating_tuple var_110_rating = get_banked_turns_rating(ride);
-    excitement += var_110_rating.excitement;
-    intensity += var_110_rating.intensity;
-    nausea += var_110_rating.nausea;
+    rating_tuple bankedTurnsRating = get_banked_turns_rating(ride);
+    excitement += bankedTurnsRating.excitement;
+    intensity += bankedTurnsRating.intensity;
+    nausea += bankedTurnsRating.nausea;
 
-    rating_tuple var_112_rating = get_sloped_turns_rating(ride);
-    excitement += var_112_rating.excitement;
-    intensity += var_112_rating.intensity;
-    nausea += var_112_rating.nausea;
+    rating_tuple slopedTurnsRating = get_sloped_turns_rating(ride);
+    excitement += slopedTurnsRating.excitement;
+    intensity += slopedTurnsRating.intensity;
+    nausea += slopedTurnsRating.nausea;
 
     auto inversions = (ride->type == RIDE_TYPE_MINI_GOLF) ? ride->holes : ride->inversions;
     rating_tuple inversionsRating = get_inversions_ratings(inversions);
