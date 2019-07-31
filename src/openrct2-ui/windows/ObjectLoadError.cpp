@@ -119,7 +119,7 @@ private:
                 }
                 else
                 {
-                    throw std::runtime_error("Non 200 status");
+                    std::printf("  Failed to download %s\n", name.c_str());
                 }
                 QueueNextDownload();
             });
