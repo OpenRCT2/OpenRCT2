@@ -98,9 +98,15 @@ public:
         td->max_positive_vertical_g = td6.max_positive_vertical_g;
         td->max_negative_vertical_g = td6.max_negative_vertical_g;
         td->max_lateral_g = td6.max_lateral_g;
-        // Only one sort this out
-        td->inversions = td6.inversions;
-        td->holes = td6.holes;
+
+        if (td->type == RIDE_TYPE_MINI_GOLF)
+        {
+            td->holes = td6.holes;
+        }
+        else
+        {
+            td->inversions = td6.inversions;
+        }
 
         td->drops = td6.drops;
         td->highest_drop_height = td6.highest_drop_height;

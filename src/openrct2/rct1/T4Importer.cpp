@@ -230,9 +230,14 @@ private:
         td->max_negative_vertical_g = td4Base.max_negative_vertical_g;
         td->max_lateral_g = td4Base.max_lateral_g;
 
-        // Only one sort this out
-        td->inversions = td4Base.num_inversions;
-        td->holes = td4Base.num_holes;
+        if (td->type == RIDE_TYPE_MINI_GOLF)
+        {
+            td->holes = td4Base.num_holes;
+        }
+        else
+        {
+            td->inversions = td4Base.num_inversions;
+        }
 
         td->drops = td4Base.num_drops;
         td->highest_drop_height = td4Base.highest_drop_height / 2;
