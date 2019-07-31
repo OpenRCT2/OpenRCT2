@@ -838,8 +838,8 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     uint16_t trackCost = costPerTrackPiece[ride->type];
     uint8_t dl = ride->drops;
 
-    dl = dl >> 6;
-    dl = dl & 3;
+    dl >>= 6;
+    dl &= 3;
     upkeep += trackCost * dl;
 
     uint32_t totalLength = ride_get_total_length(ride) >> 16;
@@ -908,8 +908,8 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     }
 
     // multiply by 5/8
-    upkeep = upkeep * 10;
-    upkeep = upkeep >> 4;
+    upkeep *= 10;
+    upkeep >>= 4;
     return upkeep;
 }
 
