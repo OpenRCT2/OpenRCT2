@@ -586,36 +586,35 @@ static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t i, y;
-    rct_string_id format, formatSecondary;
-    Ride* ride;
-
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[1]].mid_light);
 
-    y = 0;
-    for (i = 0; i < w->no_list_items; i++)
+    auto y = 0;
+    for (auto i = 0; i < w->no_list_items; i++)
     {
-        format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
-
-        // Background highlight
+        rct_string_id format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
         if (i == w->selected_list_item)
         {
+            // Background highlight
             gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
             format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
         }
 
         // Get ride
-        ride = get_ride(w->list_item_positions[i]);
+        auto ride = get_ride(w->list_item_positions[i]);
+        if (ride == nullptr)
+            continue;
 
         // Ride name
         ride->FormatNameTo(gCommonFormatArgs);
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, 159);
 
         // Ride information
-        formatSecondary = 0;
+        auto formatSecondaryEnabled = true;
+        rct_string_id formatSecondary = 0;
         switch (_window_ride_list_information_type)
         {
             case INFORMATION_TYPE_STATUS:
+                formatSecondaryEnabled = false;
                 ride->FormatStatusTo(gCommonFormatArgs);
 
                 // Make test red and bold if broken down or crashed
@@ -741,7 +740,10 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 break;
         }
 
-        set_format_arg(0, rct_string_id, formatSecondary);
+        if (formatSecondaryEnabled)
+        {
+            set_format_arg(0, rct_string_id, formatSecondary);
+        }
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 160, y - 1, 157);
         y += SCROLLABLE_ROW_HEIGHT;
     }
@@ -805,7 +807,7 @@ void window_ride_list_refresh_list(rct_window* w)
                 while (--current_list_position >= 0)
                 {
                     otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    auto strB = ride->GetName();
+                    auto strB = otherRide->GetName();
                     if (_strcmpi(strA.c_str(), strB.c_str()) >= 0)
                         break;
 
