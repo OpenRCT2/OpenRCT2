@@ -836,11 +836,11 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     uint16_t upkeep = initialUpkeepCosts[ride->type];
 
     uint16_t trackCost = costPerTrackPiece[ride->type];
-    uint8_t dl = ride->drops;
+    uint8_t dropFactor = ride->drops;
 
-    dl >>= 6;
-    dl &= 3;
-    upkeep += trackCost * dl;
+    dropFactor >>= 6;
+    dropFactor &= 3;
+    upkeep += trackCost * dropFactor;
 
     uint32_t totalLength = ride_get_total_length(ride) >> 16;
 
@@ -1185,6 +1185,7 @@ static rating_tuple get_inversions_ratings(uint16_t inversions)
 static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
+
     if (type == RIDE_TYPE_GHOST_TRAIN)
     {
         if (ride->HasSpinningTunnel())
@@ -1223,15 +1224,17 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
             nausea += 23;
         }
     }
+
     uint8_t helixSections = ride_get_helix_sections(ride);
-    int32_t al = std::min<int32_t>(helixSections, 9);
-    excitement += (al * 254862) >> 16;
 
-    al = std::min<int32_t>(helixSections, 11);
-    intensity += (al * 148945) >> 16;
+    int32_t helixesUpTo9 = std::min<int32_t>(helixSections, 9);
+    excitement += (helixesUpTo9 * 254862) >> 16;
 
-    al = std::clamp<int32_t>(helixSections - 5, 0, 10);
-    nausea += (al * 0x140000) >> 16;
+    int32_t helixesUpTo11 = std::min<int32_t>(helixSections, 11);
+    intensity += (helixesUpTo11 * 148945) >> 16;
+
+    int32_t helixesOver5UpTo10 = std::clamp<int32_t>(helixSections - 5, 0, 10);
+    nausea += (helixesOver5UpTo10 * 0x140000) >> 16;
 
     rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
     return rating;
@@ -1282,14 +1285,13 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
 static rating_tuple ride_ratings_get_sheltered_ratings(Ride* ride)
 {
     int32_t shelteredLengthShifted = (ride->sheltered_length) >> 16;
-    uint32_t eax = std::min(shelteredLengthShifted, 1000);
-    int32_t excitement = (eax * 9175) >> 16;
 
-    eax = std::min(shelteredLengthShifted, 2000);
-    int32_t intensity = (eax * 0x2666) >> 16;
+    uint32_t shelteredLengthUpTo1000 = std::min(shelteredLengthShifted, 1000);
+    uint32_t shelteredLengthUpTo2000 = std::min(shelteredLengthShifted, 2000);
 
-    eax = std::min(shelteredLengthShifted, 1000);
-    int32_t nausea = (eax * 0x4000) >> 16;
+    int32_t excitement = (shelteredLengthUpTo1000 * 9175) >> 16;
+    int32_t intensity = (shelteredLengthUpTo2000 * 0x2666) >> 16;
+    int32_t nausea = (shelteredLengthUpTo1000 * 0x4000) >> 16;
 
     /*eax = (ride->var_11C * 30340) >> 16;*/
     /*nausea += eax;*/
