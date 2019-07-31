@@ -76,16 +76,12 @@ static void window_ride_list_resize(rct_window *w);
 static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_list_update(rct_window *w);
-static void window_ride_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_ride_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_ride_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_ride_list_invalidate(rct_window *w);
 static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_ride_list_events = {
     nullptr,
-    window_ride_list_mouseup,
+    nullptr,
     window_ride_list_resize,
     window_ride_list_mousedown,
     window_ride_list_dropdown,
@@ -99,10 +95,10 @@ static rct_window_event_list window_ride_list_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_ride_list_scrollgetsize,
-    window_ride_list_scrollmousedown,
     nullptr,
-    window_ride_list_scrollmouseover,
+    nullptr,
+    nullptr,
+    nullptr,
     nullptr,
     nullptr,
     nullptr,
@@ -111,10 +107,11 @@ static rct_window_event_list window_ride_list_events = {
     nullptr,
     window_ride_list_invalidate,
     window_ride_list_paint,
-    window_ride_list_scrollpaint
+    nullptr
 };
 
 enum {
+    INFORMATION_TYPE_NAME,
     INFORMATION_TYPE_STATUS,
     INFORMATION_TYPE_POPULARITY,
     INFORMATION_TYPE_SATISFACTION,
@@ -133,7 +130,27 @@ enum {
     DROPDOWN_LIST_COUNT
 };
 
+static constexpr const size_t ride_info_type_column_width[DROPDOWN_LIST_COUNT] = {
+    160,
+    120,
+    30,
+    30,
+    60,
+    50,
+    60,
+    50,
+    100,
+    60,
+    60,
+    40,
+    30,
+    30,
+    30,
+    60
+};
+
 static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+    STR_RIDE_ATTRACTION_NAME,
     STR_STATUS,
     STR_POPULARITY,
     STR_SATISFACTION,
@@ -158,6 +175,7 @@ static constexpr const rct_string_id ride_list_statusbar_count_strings[PAGE_COUN
 };
 
 static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
+    false,
     false,
     false,
     false,
@@ -188,6 +206,216 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window*
 static void window_ride_list_close_all(rct_window* w);
 static void window_ride_list_open_all(rct_window* w);
 
+class RideListWindow : public rct_window
+{
+    void OnClick(rct_widgetindex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                window_close(this);
+                break;
+            case WIDX_SORT:
+                list_information_type = _window_ride_list_information_type;
+                no_list_items = 0;
+                selected_list_item = -1;
+                window_ride_list_refresh_list(this);
+                break;
+            case WIDX_TAB_1:
+            case WIDX_TAB_2:
+            case WIDX_TAB_3:
+                if (page != widgetIndex - WIDX_TAB_1)
+                {
+                    page = widgetIndex - WIDX_TAB_1;
+                    no_list_items = 0;
+                    frame_no = 0;
+                    selected_list_item = -1;
+                    if (page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_RUNNING_COST)
+                    {
+                        _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
+                    }
+                    window_ride_list_refresh_list(this);
+                }
+                break;
+            case WIDX_CLOSE_LIGHT:
+                window_ride_list_close_all(this);
+                break;
+            case WIDX_OPEN_LIGHT:
+                window_ride_list_open_all(this);
+                break;
+            case WIDX_QUICK_DEMOLISH:
+                if (network_get_mode() != NETWORK_MODE_CLIENT)
+                {
+                    _quickDemolishMode = !_quickDemolishMode;
+                }
+                else
+                {
+                    _quickDemolishMode = false;
+                }
+                window_invalidate(this);
+                break;
+        }
+    }
+
+    void OnListViewMessage(ListViewMessage& msg) override
+    {
+        switch (msg.Kind)
+        {
+            case ListViewMessageKind::GetDetails:
+                msg.Columns = DROPDOWN_LIST_COUNT;
+                msg.Height = SCROLLABLE_ROW_HEIGHT;
+                msg.Count = no_list_items;
+                break;
+            case ListViewMessageKind::GetColumn:
+                msg.Width = ride_info_type_column_width[msg.ColumnIndex];
+                set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, ride_info_type_string_mapping[msg.ColumnIndex]);
+                if ((gParkFlags & PARK_FLAGS_NO_MONEY) && ride_info_type_money_mapping[msg.ColumnIndex])
+                {
+                    msg.Width = 0;
+                }
+                if (page != PAGE_RIDES && msg.ColumnIndex >= INFORMATION_TYPE_QUEUE_LENGTH)
+                {
+                    msg.Width = 0;
+                }
+                break;
+            case ListViewMessageKind::GetCell:
+            {
+                auto r = get_ride(list_item_positions[msg.ItemIndex]);
+                if (r != nullptr)
+                {
+                    msg.Flags = 1;
+                    switch (msg.ColumnIndex)
+                    {
+                        case INFORMATION_TYPE_NAME:
+                            r->FormatNameTo(msg.FormatArgsBuffer);
+                            msg.Flags = 0;
+                            break;
+                        case INFORMATION_TYPE_STATUS:
+                            r->FormatStatusTo(msg.FormatArgsBuffer);
+                            msg.Flags = 0;
+                            break;
+                        case INFORMATION_TYPE_POPULARITY:
+                            if (r->popularity != 255)
+                            {
+                                set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
+                                set_format_arg_on(msg.FormatArgsBuffer, 2, int16_t, (int16_t)r->popularity * 4);
+                            }
+                            break;
+                        case INFORMATION_TYPE_SATISFACTION:
+                            if (r->satisfaction != 255)
+                            {
+                                set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
+                                set_format_arg_on(msg.FormatArgsBuffer, 2, int16_t, (int16_t)r->satisfaction * 5);
+                            }
+                            break;
+                        case INFORMATION_TYPE_PROFIT:
+                        {
+                            rct_string_id str = STR_BLACK_STRING;
+                            if (r->profit < 0)
+                                str = STR_RED_STRINGID;
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, str);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, rct_string_id, STR_CHEAT_CURRENCY_FORMAT);
+                            set_format_arg_on(msg.FormatArgsBuffer, 4, money32, r->profit);
+                            break;
+                        }
+                        case INFORMATION_TYPE_TOTAL_CUSTOMERS:
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, uint16_t, (uint16_t)r->total_customers);
+                            break;
+                        case INFORMATION_TYPE_TOTAL_PROFIT:
+                            if (r->total_profit != MONEY32_UNDEFINED)
+                            {
+                                set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_BLACK_STRING);
+                                set_format_arg_on(msg.FormatArgsBuffer, 2, rct_string_id, STR_CHEAT_CURRENCY_FORMAT);
+                                set_format_arg_on(msg.FormatArgsBuffer, 4, money32, r->profit);
+                            }
+                            break;
+                        case INFORMATION_TYPE_CUSTOMERS:
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, uint16_t, (uint16_t)ride_customers_per_hour(r));
+                            break;
+                        case INFORMATION_TYPE_AGE:
+                        {
+                            rct_string_id str = STR_RIDE_LIST_BUILT_X_YEARS_AGO_LABEL;
+                            auto age = date_get_year(gDateMonthsElapsed - r->build_date);
+                            if (age == 0)
+                                str = STR_RIDE_LIST_BUILT_THIS_YEAR_LABEL;
+                            else if (age == 1)
+                                str = STR_RIDE_LIST_BUILT_LAST_YEAR_LABEL;
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, str);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, int16_t, age);
+                            msg.Flags = 0;
+                            break;
+                        }
+                        case INFORMATION_TYPE_INCOME:
+                        {
+                            rct_string_id str = STR_BLACK_STRING;
+                            if (r->profit < 0)
+                                str = STR_RED_STRINGID;
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, str);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, rct_string_id, STR_CHEAT_CURRENCY_FORMAT);
+                            set_format_arg_on(msg.FormatArgsBuffer, 4, money32, r->income_per_hour);
+                            break;
+                        }
+                        case INFORMATION_TYPE_RUNNING_COST:
+                            if (r->upkeep_cost != (money16)(uint16_t)0xFFFF)
+                            {
+                                set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_RED_STRINGID);
+                                set_format_arg_on(msg.FormatArgsBuffer, 2, rct_string_id, STR_CHEAT_CURRENCY_FORMAT);
+                                set_format_arg_on(msg.FormatArgsBuffer, 4, money32, (money32)r->upkeep_cost * 16);
+                            }
+                            break;
+                        case INFORMATION_TYPE_QUEUE_LENGTH:
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, int16_t, (int16_t)r->GetTotalQueueLength());
+                            break;
+                        case INFORMATION_TYPE_QUEUE_TIME:
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, int16_t, (int16_t)r->GetMaxQueueTime());
+                            break;
+                        case INFORMATION_TYPE_RELIABILITY:
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, int16_t, (int16_t)r->reliability_percentage);
+                            break;
+                        case INFORMATION_TYPE_DOWN_TIME:
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, int16_t, (int16_t)r->downtime);
+                            break;
+                        case INFORMATION_TYPE_GUESTS_FAVOURITE:
+                            set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
+                            set_format_arg_on(msg.FormatArgsBuffer, 2, uint16_t, r->guests_favourite);
+                            break;
+                    }
+                }
+                break;
+            }
+            case ListViewMessageKind::Select:
+            {
+                // Open ride window
+                auto rideIndex = list_item_positions[msg.ItemIndex];
+                auto r = get_ride(rideIndex);
+                if (r != nullptr)
+                {
+                    if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
+                    {
+                        ride_action_modify(r, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+                        window_ride_list_refresh_list(this);
+                    }
+                    else
+                    {
+                        auto intent = Intent(WC_RIDE);
+                        intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+                        context_open_intent(&intent);
+                    }
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+};
+
 /**
  *
  *  rct2: 0x006B30BC
@@ -200,7 +428,7 @@ rct_window* window_ride_list_open()
     window = window_bring_to_front_by_class(WC_RIDE_LIST);
     if (window == nullptr)
     {
-        window = window_create_auto_pos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
+        window = CreateWindow<RideListWindow>(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
         window->widgets = window_ride_list_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OPEN_CLOSE_ALL) | (1 << WIDX_CURRENT_INFORMATION_TYPE)
             | (1 << WIDX_INFORMATION_TYPE_DROPDOWN) | (1 << WIDX_SORT) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2)
@@ -216,8 +444,8 @@ rct_window* window_ride_list_open()
         window->frame_no = 0;
         window->min_width = 340;
         window->min_height = 240;
-        window->max_width = 400;
-        window->max_height = 700;
+        window->max_width = 400 * 3;
+        window->max_height = 700 * 2;
         window_ride_list_refresh_list(window);
     }
     _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
@@ -225,59 +453,6 @@ rct_window* window_ride_list_open()
     _quickDemolishMode = false;
 
     return window;
-}
-
-/**
- *
- *  rct2: 0x006B3511
- */
-static void window_ride_list_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        case WIDX_SORT:
-            w->list_information_type = _window_ride_list_information_type;
-            w->no_list_items = 0;
-            w->selected_list_item = -1;
-            window_ride_list_refresh_list(w);
-            break;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-            if (w->page != widgetIndex - WIDX_TAB_1)
-            {
-                w->page = widgetIndex - WIDX_TAB_1;
-                w->no_list_items = 0;
-                w->frame_no = 0;
-                w->selected_list_item = -1;
-                if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_RUNNING_COST)
-                {
-                    _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
-                }
-                window_ride_list_refresh_list(w);
-            }
-            break;
-        case WIDX_CLOSE_LIGHT:
-            window_ride_list_close_all(w);
-            break;
-        case WIDX_OPEN_LIGHT:
-            window_ride_list_open_all(w);
-            break;
-        case WIDX_QUICK_DEMOLISH:
-            if (network_get_mode() != NETWORK_MODE_CLIENT)
-            {
-                _quickDemolishMode = !_quickDemolishMode;
-            }
-            else
-            {
-                _quickDemolishMode = false;
-            }
-            window_invalidate(w);
-            break;
-    }
 }
 
 /**
@@ -415,75 +590,6 @@ static void window_ride_list_update(rct_window* w)
 
 /**
  *
- *  rct2: 0x006B35A1
- */
-static void window_ride_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
-{
-    int32_t top;
-
-    *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
-    if (w->selected_list_item != -1)
-    {
-        w->selected_list_item = -1;
-        window_invalidate(w);
-    }
-
-    top = *height - window_ride_list_widgets[WIDX_LIST].bottom + window_ride_list_widgets[WIDX_LIST].top + 21;
-    if (top < 0)
-        top = 0;
-    if (top < w->scrolls[0].v_top)
-    {
-        w->scrolls[0].v_top = top;
-        window_invalidate(w);
-    }
-}
-
-/**
- *
- *  rct2: 0x006B361F
- */
-static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
-{
-    int32_t index;
-
-    index = y / SCROLLABLE_ROW_HEIGHT;
-    if (index >= w->no_list_items)
-        return;
-
-    // Open ride window
-    auto rideIndex = w->list_item_positions[index];
-    auto ride = get_ride(rideIndex);
-    if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
-    {
-        ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
-        window_ride_list_refresh_list(w);
-    }
-    else
-    {
-        auto intent = Intent(WC_RIDE);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
-        context_open_intent(&intent);
-    }
-}
-
-/**
- *
- *  rct2: 0x006B35EF
- */
-static void window_ride_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
-{
-    int32_t index;
-
-    index = y / SCROLLABLE_ROW_HEIGHT;
-    if (index >= w->no_list_items)
-        return;
-
-    w->selected_list_item = index;
-    window_invalidate(w);
-}
-
-/**
- *
  *  rct2: 0x006B3182
  */
 static void window_ride_list_invalidate(rct_window* w)
@@ -578,175 +684,6 @@ static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(
         dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK, w->x + 4,
         w->widgets[WIDX_LIST].bottom + w->y + 2);
-}
-
-/**
- *
- *  rct2: 0x006B3240
- */
-static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
-{
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[1]].mid_light);
-
-    auto y = 0;
-    for (auto i = 0; i < w->no_list_items; i++)
-    {
-        rct_string_id format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
-        if (i == w->selected_list_item)
-        {
-            // Background highlight
-            gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
-            format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
-        }
-
-        // Get ride
-        auto ride = get_ride(w->list_item_positions[i]);
-        if (ride == nullptr)
-            continue;
-
-        // Ride name
-        ride->FormatNameTo(gCommonFormatArgs);
-        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, 159);
-
-        // Ride information
-        auto formatSecondaryEnabled = true;
-        rct_string_id formatSecondary = 0;
-        switch (_window_ride_list_information_type)
-        {
-            case INFORMATION_TYPE_STATUS:
-                formatSecondaryEnabled = false;
-                ride->FormatStatusTo(gCommonFormatArgs);
-
-                // Make test red and bold if broken down or crashed
-                if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
-                {
-                    format = STR_RED_OUTLINED_STRING;
-                }
-                break;
-            case INFORMATION_TYPE_POPULARITY:
-                formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
-                if (ride->popularity != 255)
-                {
-                    formatSecondary = STR_POPULARITY_LABEL;
-                    set_format_arg(2, uint16_t, ride->popularity * 4);
-                }
-                break;
-            case INFORMATION_TYPE_SATISFACTION:
-                formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
-                if (ride->satisfaction != 255)
-                {
-                    formatSecondary = STR_SATISFACTION_LABEL;
-                    set_format_arg(2, uint16_t, ride->satisfaction * 5);
-                }
-                break;
-            case INFORMATION_TYPE_PROFIT:
-                formatSecondary = 0;
-                if (ride->profit != MONEY32_UNDEFINED)
-                {
-                    formatSecondary = STR_PROFIT_LABEL;
-                    set_format_arg(2, int32_t, ride->profit);
-                }
-                break;
-            case INFORMATION_TYPE_TOTAL_CUSTOMERS:
-                formatSecondary = STR_RIDE_LIST_TOTAL_CUSTOMERS_LABEL;
-                set_format_arg(2, uint32_t, ride->total_customers);
-                break;
-            case INFORMATION_TYPE_TOTAL_PROFIT:
-                formatSecondary = 0;
-                if (ride->total_profit != MONEY32_UNDEFINED)
-                {
-                    formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
-                    set_format_arg(2, int32_t, ride->total_profit);
-                }
-                break;
-            case INFORMATION_TYPE_CUSTOMERS:
-                formatSecondary = STR_RIDE_LIST_CUSTOMERS_PER_HOUR_LABEL;
-                set_format_arg(2, uint32_t, ride_customers_per_hour(ride));
-                break;
-            case INFORMATION_TYPE_AGE:
-            {
-                int16_t age = date_get_year(gDateMonthsElapsed - ride->build_date);
-                switch (age)
-                {
-                    case 0:
-                        formatSecondary = STR_RIDE_LIST_BUILT_THIS_YEAR_LABEL;
-                        break;
-                    case 1:
-                        formatSecondary = STR_RIDE_LIST_BUILT_LAST_YEAR_LABEL;
-                        break;
-                    default:
-                        formatSecondary = STR_RIDE_LIST_BUILT_X_YEARS_AGO_LABEL;
-                        break;
-                }
-                set_format_arg(2, int16_t, age);
-                break;
-            }
-            case INFORMATION_TYPE_INCOME:
-                formatSecondary = 0;
-                if (ride->income_per_hour != MONEY32_UNDEFINED)
-                {
-                    formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
-                    set_format_arg(2, int32_t, ride->income_per_hour);
-                }
-                break;
-            case INFORMATION_TYPE_RUNNING_COST:
-                formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
-                if (ride->upkeep_cost != (money16)(uint16_t)0xFFFF)
-                {
-                    formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
-                    set_format_arg(2, int32_t, ride->upkeep_cost * 16);
-                }
-                break;
-            case INFORMATION_TYPE_QUEUE_LENGTH:
-                set_format_arg(2, uint16_t, ride->GetTotalQueueLength());
-                formatSecondary = STR_QUEUE_EMPTY;
-                {
-                    uint16_t arg;
-                    std::memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
-
-                    if (arg == 1)
-                        formatSecondary = STR_QUEUE_ONE_PERSON;
-                    else if (arg > 1)
-                        formatSecondary = STR_QUEUE_PEOPLE;
-                }
-                break;
-            case INFORMATION_TYPE_QUEUE_TIME:
-                set_format_arg(2, uint16_t, ride->GetMaxQueueTime());
-                formatSecondary = STR_QUEUE_TIME_LABEL;
-                {
-                    uint16_t arg;
-                    std::memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
-
-                    if (arg > 1)
-                        formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
-                }
-                break;
-            case INFORMATION_TYPE_RELIABILITY:
-                set_format_arg(2, uint16_t, ride->reliability_percentage);
-                formatSecondary = STR_RELIABILITY_LABEL;
-                break;
-            case INFORMATION_TYPE_DOWN_TIME:
-                set_format_arg(2, uint16_t, ride->downtime);
-                formatSecondary = STR_DOWN_TIME_LABEL;
-                break;
-            case INFORMATION_TYPE_GUESTS_FAVOURITE:
-                formatSecondary = 0;
-                if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
-                {
-                    set_format_arg(2, uint16_t, ride->guests_favourite);
-                    formatSecondary = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
-                                                                  : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
-                }
-                break;
-        }
-
-        if (formatSecondaryEnabled)
-        {
-            set_format_arg(0, rct_string_id, formatSecondary);
-        }
-        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 160, y - 1, 157);
-        y += SCROLLABLE_ROW_HEIGHT;
-    }
 }
 
 /**

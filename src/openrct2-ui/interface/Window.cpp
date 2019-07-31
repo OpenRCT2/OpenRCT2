@@ -87,7 +87,7 @@ static bool window_fits_on_screen(int32_t x, int32_t y, int32_t width, int32_t h
 
 rct_window* window_create(
     int32_t x, int32_t y, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
-    uint16_t flags)
+    uint16_t flags, std::unique_ptr<rct_window> newWindow)
 {
     // Check if there are any window slots left
     // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
@@ -128,7 +128,12 @@ rct_window* window_create(
         }
     }
 
-    auto itNew = g_window_list.insert(itDestPos, std::make_unique<rct_window>());
+    if (newWindow == nullptr)
+    {
+        newWindow = std::make_unique<rct_window>();
+    }
+
+    auto itNew = g_window_list.insert(itDestPos, std::move(newWindow));
     auto w = itNew->get();
 
     // Setup window
@@ -175,7 +180,8 @@ rct_window* window_create(
 }
 
 rct_window* window_create_auto_pos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags)
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags,
+    std::unique_ptr<rct_window> newWindow)
 {
     auto uiContext = GetContext()->GetUiContext();
     auto screenWidth = uiContext->GetWidth();
@@ -314,7 +320,7 @@ foundSpace:
     if (x + width > screenWidth)
         x = screenWidth - width;
 
-    return window_create(x, y, width, height, event_handlers, cls, flags);
+    return window_create(x, y, width, height, event_handlers, cls, flags, std::move(newWindow));
 }
 
 rct_window* window_create_centred(

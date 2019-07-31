@@ -18,6 +18,8 @@
 #include <list>
 #include <memory>
 
+#undef CreateWindow
+
 struct rct_drawpixelinfo;
 struct rct_window;
 union rct_window_event;
@@ -594,11 +596,19 @@ void window_set_window_limit(int32_t value);
 
 rct_window* window_create(
     int32_t x, int32_t y, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
-    uint16_t flags);
+    uint16_t flags, std::unique_ptr<rct_window> w = nullptr);
 rct_window* window_create_auto_pos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags,
+    std::unique_ptr<rct_window> w = nullptr);
 rct_window* window_create_centred(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
+
+template<typename T>
+T* CreateWindow(int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags)
+{
+    return static_cast<T*>(window_create_auto_pos(width, height, event_handlers, cls, flags, std::make_unique<T>()));
+}
+
 void window_close(rct_window* window);
 void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);

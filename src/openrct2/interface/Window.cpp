@@ -1440,6 +1440,8 @@ void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (w->event_handlers->mouse_up != nullptr)
         w->event_handlers->mouse_up(w, widgetIndex);
+    else
+        w->OnClick(widgetIndex);
 }
 
 void window_event_resize_call(rct_window* w)
@@ -1526,12 +1528,37 @@ void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, 
     {
         w->event_handlers->get_scroll_size(w, scrollIndex, width, height);
     }
+    else
+    {
+        ListViewMessage msg;
+        msg.Kind = ListViewMessageKind::GetDetails;
+        msg.ScrollIndex = scrollIndex;
+        w->OnListViewMessage(msg);
+        *height = (int32_t)(msg.Count * msg.Height);
+    }
 }
 
 void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     if (w->event_handlers->scroll_mousedown != nullptr)
         w->event_handlers->scroll_mousedown(w, scrollIndex, x, y);
+    else
+    {
+        // Get list view details
+        ListViewMessage msg;
+        msg.Kind = ListViewMessageKind::GetDetails;
+        msg.ScrollIndex = scrollIndex;
+        w->OnListViewMessage(msg);
+
+        auto index = y / msg.Height;
+        if (index < w->no_list_items)
+        {
+            msg.Kind = ListViewMessageKind::Select;
+            msg.ScrollIndex = scrollIndex;
+            msg.ItemIndex = index;
+            w->OnListViewMessage(msg);
+        }
+    }
 }
 
 void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
@@ -1544,6 +1571,21 @@ void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, int3
 {
     if (w->event_handlers->scroll_mouseover != nullptr)
         w->event_handlers->scroll_mouseover(w, scrollIndex, x, y);
+    else
+    {
+        // Get list view details
+        ListViewMessage msg;
+        msg.Kind = ListViewMessageKind::GetDetails;
+        msg.ScrollIndex = scrollIndex;
+        w->OnListViewMessage(msg);
+
+        auto index = y / msg.Height;
+        if (index < w->no_list_items)
+        {
+            w->selected_list_item = (int16_t)index;
+            window_invalidate(w);
+        }
+    }
 }
 
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text)
@@ -1601,7 +1643,117 @@ void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi)
 void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     if (w->event_handlers->scroll_paint != nullptr)
+    {
         w->event_handlers->scroll_paint(w, dpi, scrollIndex);
+    }
+    else
+    {
+        // Get list view details
+        ListViewMessage msg;
+        msg.Kind = ListViewMessageKind::GetDetails;
+        msg.ScrollIndex = scrollIndex;
+        w->OnListViewMessage(msg);
+
+        auto numColumns = msg.Columns;
+        auto itemHeight = (int32_t)msg.Height;
+
+        // Currently max out at 32 columns
+        int32_t columnWidths[32]{};
+        numColumns = std::min(numColumns, std::size(columnWidths));
+        for (size_t c = 0; c < numColumns; c++)
+        {
+            uint8_t argBuffer[32]{};
+            msg.Kind = ListViewMessageKind::GetColumn;
+            msg.ScrollIndex = scrollIndex;
+            msg.ColumnIndex = c;
+            msg.FormatArgsBuffer = argBuffer;
+            w->OnListViewMessage(msg);
+            columnWidths[c] = (int32_t)msg.Width;
+        }
+
+        // Background
+        gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[1]].mid_light);
+
+        // For each visible item
+        auto y = 0;
+        auto drawColumnHeaders = false;
+        if (drawColumnHeaders)
+        {
+            auto x = 0;
+            for (size_t c = 0; c < numColumns; c++)
+            {
+                uint8_t argBuffer[32]{};
+                msg.Kind = ListViewMessageKind::GetColumn;
+                msg.ScrollIndex = scrollIndex;
+                msg.ColumnIndex = c;
+                msg.FormatArgsBuffer = argBuffer;
+                w->OnListViewMessage(msg);
+
+                auto columnWidth = columnWidths[c];
+                if (columnWidth != 0)
+                {
+                    if (c & 1)
+                    {
+                        gfx_fill_rect(dpi, x, y, x + columnWidth, y + itemHeight - 1, ColourMapA[w->colours[1]].mid_dark);
+                    }
+                    if (msg.Flags & 1)
+                    {
+                        gfx_draw_string_right_clipped(dpi, STR_BLACK_STRING, argBuffer, COLOUR_BLACK, x, y - 1, columnWidth);
+                    }
+                    else
+                    {
+                        gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, argBuffer, COLOUR_BLACK, x, y - 1, columnWidth);
+                    }
+                    x += columnWidth;
+                }
+            }
+            y += itemHeight;
+        }
+
+        for (size_t i = 0; i < w->no_list_items; i++)
+        {
+            if (y + itemHeight >= dpi->y && y < dpi->y + dpi->height)
+            {
+                rct_string_id format = STR_BLACK_STRING;
+                if (i == w->selected_list_item)
+                {
+                    // Background highlight
+                    gfx_filter_rect(dpi, 0, y, dpi->x + dpi->width, y + itemHeight - 1, PALETTE_DARKEN_1);
+                    format = STR_WINDOW_COLOUR_2_STRINGID;
+                }
+
+                auto x = 0;
+                for (size_t j = 0; j < numColumns; j++)
+                {
+                    uint8_t argBuffer[32]{};
+                    msg.Kind = ListViewMessageKind::GetCell;
+                    msg.ScrollIndex = scrollIndex;
+                    msg.ItemIndex = i;
+                    msg.ColumnIndex = j;
+                    msg.FormatArgsBuffer = argBuffer;
+                    w->OnListViewMessage(msg);
+
+                    auto columnWidth = columnWidths[j];
+                    if (columnWidth != 0)
+                    {
+                        if (msg.Flags & 1)
+                        {
+                            gfx_draw_string_right_clipped(
+                                dpi, format, argBuffer, COLOUR_BLACK, x + columnWidth, y - 1, columnWidth);
+                        }
+                        else
+                        {
+                            gfx_draw_string_left_clipped(dpi, format, argBuffer, COLOUR_BLACK, x, y - 1, columnWidth);
+                        }
+                        x += columnWidth;
+                        // Padding
+                        x += 4;
+                    }
+                }
+            }
+            y += itemHeight;
+        }
+    }
 }
 
 /**

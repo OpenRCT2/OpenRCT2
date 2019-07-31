@@ -17,6 +17,29 @@
 struct rct_research_item;
 struct rct_object_entry;
 
+enum class ListViewMessageKind
+{
+    None,
+    GetDetails,
+    GetColumn,
+    GetCell,
+    Select,
+};
+
+struct ListViewMessage
+{
+    ListViewMessageKind Kind{};
+    uint8_t ScrollIndex{};       // GetDetails
+    size_t Columns{};            // GetDetails
+    size_t Count{};              // GetDetails
+    size_t Width{};              // GetColumn
+    size_t Height{};             // GetDetails
+    size_t ItemIndex{};          // GetCell
+    size_t ColumnIndex{};        // GetColumn, GetCell
+    uint8_t Flags{};             // GetColumn, GetCell
+    uint8_t* FormatArgsBuffer{}; // GetColumn, GetCell
+};
+
 /**
  * Window structure
  * size: 0x4C0
@@ -101,6 +124,14 @@ struct rct_window
     uint8_t colours[6];                    // 0x4BA
     uint8_t visibility;                    // VISIBILITY_CACHE
     uint16_t viewport_smart_follow_sprite; // Smart following of sprites. Handles setting viewport target sprite etc
+
+    virtual ~rct_window() = default;
+    virtual void OnClick(rct_widgetindex widgetIndex)
+    {
+    }
+    virtual void OnListViewMessage(ListViewMessage& msg)
+    {
+    }
 };
 
 // rct2: 0x01420078
