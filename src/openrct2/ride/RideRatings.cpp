@@ -735,7 +735,7 @@ static void ride_ratings_calculate_value(Ride* ride)
     {
         int32_t months, multiplier, divisor, summand;
     };
-    static const row age_table_new[] = {
+    static const row ageTableNew[] = {
         { 5, 3, 2, 0 },       // 1.5x
         { 13, 6, 5, 0 },      // 1.2x
         { 40, 1, 1, 0 },      // 1x
@@ -749,7 +749,7 @@ static void ride_ratings_calculate_value(Ride* ride)
     };
 
 #ifdef ORIGINAL_RATINGS
-    static const row age_table_old[] = {
+    static const row ageTableOld[] = {
         { 5, 1, 1, 30 },      // +30
         { 13, 1, 1, 10 },     // +10
         { 40, 1, 1, 0 },      // 1x
@@ -779,27 +779,27 @@ static void ride_ratings_calculate_value(Ride* ride)
         monthsOld = gDateMonthsElapsed - ride->build_date;
     }
 
-    const row* age_table = age_table_new;
-    size_t table_size = std::size(age_table_new);
+    const row* ageTable = ageTableNew;
+    size_t tableSize = std::size(ageTableNew);
 
 #ifdef ORIGINAL_RATINGS
-    age_table = age_table_old;
-    table_size = std::size(age_table_old);
+    ageTable = ageTableOld;
+    tableSize = std::size(ageTableOld);
 #endif
 
-    row last_row = age_table[table_size - 1];
+    row lastRow = ageTable[tableSize - 1];
 
     // Ride is older than oldest age in the table?
-    if (monthsOld >= last_row.months)
+    if (monthsOld >= lastRow.months)
     {
-        value = (value * last_row.multiplier) / last_row.divisor + last_row.summand;
+        value = (value * lastRow.multiplier) / lastRow.divisor + lastRow.summand;
     }
     else
     {
         // Find the first hit in the table that matches this ride's age
-        for (size_t it = 0; it < table_size; it++)
+        for (size_t it = 0; it < tableSize; it++)
         {
-            row curr = age_table[it];
+            row curr = ageTable[it];
 
             if (monthsOld < curr.months)
             {
@@ -1004,8 +1004,8 @@ static void ride_ratings_apply_intensity_penalty(rating_tuple* ratings)
 static void set_unreliability_factor(Ride* ride)
 {
     // The bigger the difference in lift speed and minimum the higher the unreliability
-    uint8_t lift_speed_adjustment = RideLiftData[ride->type].minimum_speed;
-    ride->unreliability_factor += (ride->lift_hill_speed - lift_speed_adjustment) * 2;
+    uint8_t minLiftSpeed = RideLiftData[ride->type].minimum_speed;
+    ride->unreliability_factor += (ride->lift_hill_speed - minLiftSpeed) * 2;
 }
 
 static uint32_t get_proximity_score_helper_1(uint16_t x, uint16_t max, uint32_t multiplier)
@@ -1098,22 +1098,22 @@ static ShelteredEights get_num_of_sheltered_eighths(Ride* ride)
 
 static rating_tuple get_flat_turns_rating(Ride* ride)
 {
-    int32_t no_3_plus_turns = get_turn_count_3_elements(ride, 0);
-    int32_t no_2_turns = get_turn_count_2_elements(ride, 0);
-    int32_t no_1_turns = get_turn_count_1_element(ride, 0);
+    int32_t num3PlusTurns = get_turn_count_3_elements(ride, 0);
+    int32_t num2Turns = get_turn_count_2_elements(ride, 0);
+    int32_t num1Turns = get_turn_count_1_element(ride, 0);
 
     rating_tuple rating;
-    rating.excitement = (no_3_plus_turns * 0x28000) >> 16;
-    rating.excitement += (no_2_turns * 0x30000) >> 16;
-    rating.excitement += (no_1_turns * 63421) >> 16;
+    rating.excitement = (num3PlusTurns * 0x28000) >> 16;
+    rating.excitement += (num2Turns * 0x30000) >> 16;
+    rating.excitement += (num1Turns * 63421) >> 16;
 
-    rating.intensity = (no_3_plus_turns * 81920) >> 16;
-    rating.intensity += (no_2_turns * 49152) >> 16;
-    rating.intensity += (no_1_turns * 21140) >> 16;
+    rating.intensity = (num3PlusTurns * 81920) >> 16;
+    rating.intensity += (num2Turns * 49152) >> 16;
+    rating.intensity += (num1Turns * 21140) >> 16;
 
-    rating.nausea = (no_3_plus_turns * 0x50000) >> 16;
-    rating.nausea += (no_2_turns * 0x32000) >> 16;
-    rating.nausea += (no_1_turns * 42281) >> 16;
+    rating.nausea = (num3PlusTurns * 0x50000) >> 16;
+    rating.nausea += (num2Turns * 0x32000) >> 16;
+    rating.nausea += (num1Turns * 42281) >> 16;
 
     return rating;
 }
@@ -1124,22 +1124,22 @@ static rating_tuple get_flat_turns_rating(Ride* ride)
  */
 static rating_tuple get_banked_turns_rating(Ride* ride)
 {
-    int32_t no_3_plus_turns = get_turn_count_3_elements(ride, 1);
-    int32_t no_2_turns = get_turn_count_2_elements(ride, 1);
-    int32_t no_1_turns = get_turn_count_1_element(ride, 1);
+    int32_t num3PlusTurns = get_turn_count_3_elements(ride, 1);
+    int32_t num2Turns = get_turn_count_2_elements(ride, 1);
+    int32_t num1Turns = get_turn_count_1_element(ride, 1);
 
     rating_tuple rating;
-    rating.excitement = (no_3_plus_turns * 0x3C000) >> 16;
-    rating.excitement += (no_2_turns * 0x3C000) >> 16;
-    rating.excitement += (no_1_turns * 73992) >> 16;
+    rating.excitement = (num3PlusTurns * 0x3C000) >> 16;
+    rating.excitement += (num2Turns * 0x3C000) >> 16;
+    rating.excitement += (num1Turns * 73992) >> 16;
 
-    rating.intensity = (no_3_plus_turns * 0x14000) >> 16;
-    rating.intensity += (no_2_turns * 49152) >> 16;
-    rating.intensity += (no_1_turns * 21140) >> 16;
+    rating.intensity = (num3PlusTurns * 0x14000) >> 16;
+    rating.intensity += (num2Turns * 49152) >> 16;
+    rating.intensity += (num1Turns * 21140) >> 16;
 
-    rating.nausea = (no_3_plus_turns * 0x50000) >> 16;
-    rating.nausea += (no_2_turns * 0x32000) >> 16;
-    rating.nausea += (no_1_turns * 48623) >> 16;
+    rating.nausea = (num3PlusTurns * 0x50000) >> 16;
+    rating.nausea += (num2Turns * 0x32000) >> 16;
+    rating.nausea += (num1Turns * 48623) >> 16;
 
     return rating;
 }
@@ -1152,17 +1152,17 @@ static rating_tuple get_sloped_turns_rating(Ride* ride)
 {
     rating_tuple rating;
 
-    int32_t no_4_plus_turns = get_turn_count_4_plus_elements(ride, 2);
-    int32_t no_3_turns = get_turn_count_3_elements(ride, 2);
-    int32_t no_2_turns = get_turn_count_2_elements(ride, 2);
-    int32_t no_1_turns = get_turn_count_1_element(ride, 2);
+    int32_t num4PlusTurns = get_turn_count_4_plus_elements(ride, 2);
+    int32_t num3Turns = get_turn_count_3_elements(ride, 2);
+    int32_t num2Turns = get_turn_count_2_elements(ride, 2);
+    int32_t num1Turns = get_turn_count_1_element(ride, 2);
 
-    rating.excitement = (std::min(no_4_plus_turns, 4) * 0x78000) >> 16;
-    rating.excitement += (std::min(no_3_turns, 6) * 273066) >> 16;
-    rating.excitement += (std::min(no_2_turns, 6) * 0x3AAAA) >> 16;
-    rating.excitement += (std::min(no_1_turns, 7) * 187245) >> 16;
+    rating.excitement = (std::min(num4PlusTurns, 4) * 0x78000) >> 16;
+    rating.excitement += (std::min(num3Turns, 6) * 273066) >> 16;
+    rating.excitement += (std::min(num2Turns, 6) * 0x3AAAA) >> 16;
+    rating.excitement += (std::min(num1Turns, 7) * 187245) >> 16;
     rating.intensity = 0;
-    rating.nausea = (std::min(no_4_plus_turns, 8) * 0x78000) >> 16;
+    rating.nausea = (std::min(num4PlusTurns, 8) * 0x78000) >> 16;
 
     return rating;
 }
@@ -1223,14 +1223,14 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
             nausea += 23;
         }
     }
-    uint8_t helix_sections = ride_get_helix_sections(ride);
-    int32_t al = std::min<int32_t>(helix_sections, 9);
+    uint8_t helixSections = ride_get_helix_sections(ride);
+    int32_t al = std::min<int32_t>(helixSections, 9);
     excitement += (al * 254862) >> 16;
 
-    al = std::min<int32_t>(helix_sections, 11);
+    al = std::min<int32_t>(helixSections, 11);
     intensity += (al * 148945) >> 16;
 
-    al = std::clamp<int32_t>(helix_sections - 5, 0, 10);
+    al = std::clamp<int32_t>(helixSections - 5, 0, 10);
     nausea += (al * 0x140000) >> 16;
 
     rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
@@ -1245,10 +1245,10 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
 
-    rating_tuple special_track_element_rating = get_special_track_elements_rating(ride->type, ride);
-    excitement += special_track_element_rating.excitement;
-    intensity += special_track_element_rating.intensity;
-    nausea += special_track_element_rating.nausea;
+    rating_tuple specialTrackElementsRating = get_special_track_elements_rating(ride->type, ride);
+    excitement += specialTrackElementsRating.excitement;
+    intensity += specialTrackElementsRating.intensity;
+    nausea += specialTrackElementsRating.nausea;
 
     rating_tuple var_10E_rating = get_flat_turns_rating(ride);
     excitement += var_10E_rating.excitement;
@@ -1266,10 +1266,10 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
     nausea += var_112_rating.nausea;
 
     auto inversions = (ride->type == RIDE_TYPE_MINI_GOLF) ? ride->holes : ride->inversions;
-    rating_tuple inversions_rating = get_inversions_ratings(inversions);
-    excitement += inversions_rating.excitement;
-    intensity += inversions_rating.intensity;
-    nausea += inversions_rating.nausea;
+    rating_tuple inversionsRating = get_inversions_ratings(inversions);
+    excitement += inversionsRating.excitement;
+    intensity += inversionsRating.intensity;
+    nausea += inversionsRating.nausea;
 
     rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
     return rating;
@@ -1281,14 +1281,14 @@ static rating_tuple ride_ratings_get_turns_ratings(Ride* ride)
  */
 static rating_tuple ride_ratings_get_sheltered_ratings(Ride* ride)
 {
-    int32_t sheltered_length_shifted = (ride->sheltered_length) >> 16;
-    uint32_t eax = std::min(sheltered_length_shifted, 1000);
+    int32_t shelteredLengthShifted = (ride->sheltered_length) >> 16;
+    uint32_t eax = std::min(shelteredLengthShifted, 1000);
     int32_t excitement = (eax * 9175) >> 16;
 
-    eax = std::min(sheltered_length_shifted, 2000);
+    eax = std::min(shelteredLengthShifted, 2000);
     int32_t intensity = (eax * 0x2666) >> 16;
 
-    eax = std::min(sheltered_length_shifted, 1000);
+    eax = std::min(shelteredLengthShifted, 1000);
     int32_t nausea = (eax * 0x4000) >> 16;
 
     /*eax = (ride->var_11C * 30340) >> 16;*/
@@ -1306,9 +1306,9 @@ static rating_tuple ride_ratings_get_sheltered_ratings(Ride* ride)
         nausea += 15;
     }
 
-    uint8_t lowerval = ride->num_sheltered_sections & 0x1F;
-    lowerval = std::min<uint8_t>(lowerval, 11);
-    excitement += (lowerval * 774516) >> 16;
+    uint8_t lowerVal = ride->num_sheltered_sections & 0x1F;
+    lowerVal = std::min<uint8_t>(lowerVal, 11);
+    excitement += (lowerVal * 774516) >> 16;
 
     rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
     return rating;
@@ -4317,7 +4317,7 @@ static void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride)
 #pragma region Ride rating calculation function table
 
 // rct2: 0x0097E050
-static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYPE_COUNT] = {
+static const ride_ratings_calculation RideRatingsCalculateFuncTable[RIDE_TYPE_COUNT] = {
     ride_ratings_calculate_spiral_roller_coaster,          // SPIRAL_ROLLER_COASTER
     ride_ratings_calculate_stand_up_roller_coaster,        // STAND_UP_ROLLER_COASTER
     ride_ratings_calculate_suspended_swinging_coaster,     // SUSPENDED_SWINGING_COASTER
@@ -4413,7 +4413,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYP
 
 static ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
 {
-    return ride_ratings_calculate_func_table[rideType];
+    return RideRatingsCalculateFuncTable[rideType];
 }
 
 #pragma endregion
