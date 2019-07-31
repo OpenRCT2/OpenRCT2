@@ -642,7 +642,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                     {
                         y1 = tile->y_offset;
                     }
-                    if (y2 > tile->y_offset)
+                    if (y2 < tile->y_offset)
                     {
                         y2 = tile->y_offset;
                     }
