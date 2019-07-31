@@ -1230,8 +1230,7 @@ static rating_tuple get_special_track_elements_rating(uint8_t type, Ride* ride)
     al = std::min<int32_t>(helix_sections, 11);
     intensity += (al * 148945) >> 16;
 
-    al = std::max<int32_t>(helix_sections - 5, 0);
-    al = std::min(al, 10);
+    al = std::clamp<int32_t>(helix_sections - 5, 0, 10);
     nausea += (al * 0x140000) >> 16;
 
     rating_tuple rating = { (ride_rating)excitement, (ride_rating)intensity, (ride_rating)nausea };
