@@ -1544,14 +1544,18 @@ void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, int3
         w->event_handlers->scroll_mousedown(w, scrollIndex, x, y);
     else
     {
-        auto index = w->GetListViewItemIndexAt(scrollIndex, y);
-        if (index != std::numeric_limits<size_t>::max())
+        auto relativeY = y - w->scrolls[scrollIndex].v_top;
+        if (relativeY >= 13)
         {
-            ListViewMessage msg;
-            msg.Kind = ListViewMessageKind::Select;
-            msg.ScrollIndex = scrollIndex;
-            msg.ItemIndex = index;
-            w->OnListViewMessage(msg);
+            auto index = w->GetListViewItemIndexAt(scrollIndex, y);
+            if (index != std::numeric_limits<size_t>::max())
+            {
+                ListViewMessage msg;
+                msg.Kind = ListViewMessageKind::Select;
+                msg.ScrollIndex = scrollIndex;
+                msg.ItemIndex = index;
+                w->OnListViewMessage(msg);
+            }
         }
     }
 }
@@ -1560,6 +1564,28 @@ void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, int3
 {
     if (w->event_handlers->scroll_mousedrag != nullptr)
         w->event_handlers->scroll_mousedrag(w, scrollIndex, x, y);
+    else
+    {
+        auto relativeY = y - w->scrolls[scrollIndex].v_top;
+        if (relativeY < 13)
+        {
+            auto c = w->GetListViewColumnAt(scrollIndex, x);
+            if (c != std::numeric_limits<size_t>::max())
+            {
+                if (w->_listViewColumnPressed != c)
+                {
+                    w->_listViewColumnPressed = c;
+                    window_invalidate(w);
+                }
+                return;
+            }
+        }
+        if (w->_listViewColumnPressed != std::numeric_limits<size_t>::max())
+        {
+            w->_listViewColumnPressed = std::numeric_limits<size_t>::max();
+            window_invalidate(w);
+        }
+    }
 }
 
 void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
@@ -1568,10 +1594,25 @@ void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, int3
         w->event_handlers->scroll_mouseover(w, scrollIndex, x, y);
     else
     {
-        auto index = w->GetListViewItemIndexAt(scrollIndex, y);
-        if (index != (size_t)w->selected_list_item)
+        auto relativeY = y - w->scrolls[scrollIndex].v_top;
+        if (relativeY >= 13)
         {
-            w->selected_list_item = (int16_t)index;
+            auto index = w->GetListViewItemIndexAt(scrollIndex, y);
+            if (index != (size_t)w->selected_list_item)
+            {
+                w->selected_list_item = (int16_t)index;
+                window_invalidate(w);
+            }
+        }
+        if (w->_listViewColumnPressed != std::numeric_limits<size_t>::max())
+        {
+            ListViewMessage msg;
+            msg.Kind = ListViewMessageKind::Sort;
+            msg.ScrollIndex = scrollIndex;
+            msg.ColumnIndex = w->_listViewColumnPressed;
+            w->OnListViewMessage(msg);
+
+            w->_listViewColumnPressed = std::numeric_limits<size_t>::max();
             window_invalidate(w);
         }
     }
@@ -1707,7 +1748,7 @@ void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32
                     auto columnWidth = columnWidths[j];
                     if (columnWidth != 0)
                     {
-                        if (msg.Flags & 1)
+                        if (msg.Flags & ListViewFlags::AlignRight)
                         {
                             gfx_draw_string_right_clipped(
                                 dpi, format, argBuffer, COLOUR_BLACK, x + columnWidth, y, columnWidth);
@@ -1746,15 +1787,34 @@ void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32
                 auto columnWidth = columnWidths[c];
                 if (columnWidth != 0)
                 {
-                    gfx_fill_rect_inset(dpi, x, y, x + columnWidth, y + 13 - 1, w->colours[1], 0);
-                    if (msg.Flags & 1)
+                    auto boxFlags = 0;
+                    if (c == w->_listViewColumnPressed)
                     {
-                        gfx_draw_string_right_clipped(dpi, STR_BLACK_STRING, argBuffer, COLOUR_BLACK, x, y, columnWidth);
+                        boxFlags = INSET_RECT_FLAG_BORDER_INSET;
+                    }
+                    gfx_fill_rect_inset(dpi, x, y, x + columnWidth, y + 13 - 1, w->colours[1], boxFlags);
+
+                    if (msg.Flags & ListViewFlags::AlignRight)
+                    {
+                        gfx_draw_string_right_clipped(
+                            dpi, STR_BLACK_STRING, argBuffer, COLOUR_BLACK, x + columnWidth, y, columnWidth);
                     }
                     else
                     {
                         gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, argBuffer, COLOUR_BLACK, x, y, columnWidth);
                     }
+
+                    if (msg.Flags & ListViewFlags::SortAscending)
+                    {
+                        set_format_arg_on(argBuffer, 0, rct_string_id, STR_UP);
+                        gfx_draw_string_right(dpi, STR_BLACK_STRING, argBuffer, COLOUR_BLACK, x + columnWidth - 1, y);
+                    }
+                    else if (msg.Flags & ListViewFlags::SortDescending)
+                    {
+                        set_format_arg_on(argBuffer, 0, rct_string_id, STR_DOWN);
+                        gfx_draw_string_right(dpi, STR_BLACK_STRING, argBuffer, COLOUR_BLACK, x + columnWidth - 1, y);
+                    }
+
                     x += columnWidth;
                     x++;
                 }
@@ -1773,10 +1833,47 @@ size_t rct_window::GetListViewItemIndexAt(uint8_t scrollIndex, int32_t theY)
 
     theY -= 13;
 
-    auto index = theY / msg.Height;
-    if (index < no_list_items)
+    if (msg.Height != 0)
     {
-        return index;
+        auto index = theY / msg.Height;
+        if (index < no_list_items)
+        {
+            return index;
+        }
+    }
+    return std::numeric_limits<size_t>::max();
+}
+
+size_t rct_window::GetListViewColumnAt(uint8_t scrollIndex, int32_t theX)
+{
+    // Get list view details
+    ListViewMessage msg;
+    msg.Kind = ListViewMessageKind::GetDetails;
+    msg.ScrollIndex = scrollIndex;
+    OnListViewMessage(msg);
+
+    auto cx = 0;
+    auto numColumns = msg.Columns;
+    for (size_t c = 0; c < numColumns; c++)
+    {
+        uint8_t argBuffer[32]{};
+        msg.Kind = ListViewMessageKind::GetColumn;
+        msg.ScrollIndex = scrollIndex;
+        msg.ColumnIndex = c;
+        msg.Flags = 0;
+        msg.Width = 0;
+        msg.FormatArgsBuffer = argBuffer;
+        OnListViewMessage(msg);
+
+        if (msg.Width != 0)
+        {
+            if (theX >= cx && theX < cx + (int32_t)msg.Width)
+            {
+                return c;
+            }
+            cx += (int32_t)msg.Width;
+            cx++;
+        }
     }
     return std::numeric_limits<size_t>::max();
 }

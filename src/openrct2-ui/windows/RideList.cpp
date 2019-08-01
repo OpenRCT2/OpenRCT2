@@ -201,6 +201,7 @@ static constexpr const rct_string_id page_names[] = {
 // clang-format on
 
 static int32_t _window_ride_list_information_type;
+static int32_t _sortType = 0;
 
 static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w);
 static void window_ride_list_close_all(rct_window* w);
@@ -277,22 +278,26 @@ class RideListWindow : public rct_window
                 {
                     msg.Width = 0;
                 }
+                if (list_information_type == msg.ColumnIndex)
+                {
+                    msg.Flags = (_sortType & 1) ? ListViewFlags::SortDescending : ListViewFlags::SortAscending;
+                }
                 break;
             case ListViewMessageKind::GetCell:
             {
                 auto r = get_ride(list_item_positions[msg.ItemIndex]);
                 if (r != nullptr)
                 {
-                    msg.Flags = 1;
+                    msg.Flags = ListViewFlags::AlignRight;
                     switch (msg.ColumnIndex)
                     {
                         case INFORMATION_TYPE_NAME:
                             r->FormatNameTo(msg.FormatArgsBuffer);
-                            msg.Flags = 0;
+                            msg.Flags &= ~ListViewFlags::AlignRight;
                             break;
                         case INFORMATION_TYPE_STATUS:
                             r->FormatStatusTo(msg.FormatArgsBuffer);
-                            msg.Flags = 0;
+                            msg.Flags &= ~ListViewFlags::AlignRight;
                             break;
                         case INFORMATION_TYPE_POPULARITY:
                             if (r->popularity != 255)
@@ -344,7 +349,7 @@ class RideListWindow : public rct_window
                                 str = STR_RIDE_LIST_BUILT_LAST_YEAR_LABEL;
                             set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, str);
                             set_format_arg_on(msg.FormatArgsBuffer, 2, int16_t, age);
-                            msg.Flags = 0;
+                            msg.Flags &= ~ListViewFlags::AlignRight;
                             break;
                         }
                         case INFORMATION_TYPE_INCOME:
@@ -384,6 +389,7 @@ class RideListWindow : public rct_window
                         case INFORMATION_TYPE_GUESTS_FAVOURITE:
                             set_format_arg_on(msg.FormatArgsBuffer, 0, rct_string_id, STR_COMMA16);
                             set_format_arg_on(msg.FormatArgsBuffer, 2, uint16_t, r->guests_favourite);
+                            msg.Flags &= ~ListViewFlags::AlignRight;
                             break;
                     }
                 }
@@ -410,6 +416,21 @@ class RideListWindow : public rct_window
                 }
                 break;
             }
+            case ListViewMessageKind::Sort:
+                if (_window_ride_list_information_type == (int32_t)msg.ColumnIndex)
+                {
+                    _sortType ^= 1;
+                }
+                else
+                {
+                    _sortType = 0;
+                }
+                _window_ride_list_information_type = (int32_t)msg.ColumnIndex;
+                list_information_type = _window_ride_list_information_type;
+                no_list_items = 0;
+                selected_list_item = -1;
+                window_ride_list_refresh_list(this);
+                break;
             default:
                 break;
         }
@@ -738,6 +759,7 @@ void window_ride_list_refresh_list(rct_window* w)
         int32_t current_list_position = list_index;
         switch (w->list_information_type)
         {
+            case INFORMATION_TYPE_NAME:
             case INFORMATION_TYPE_STATUS:
             {
                 auto strA = ride->GetName();
@@ -899,6 +921,12 @@ void window_ride_list_refresh_list(rct_window* w)
 
     w->no_list_items = list_index;
     w->selected_list_item = -1;
+
+    if (_sortType & 1)
+    {
+        std::reverse(std::begin(w->list_item_positions), std::begin(w->list_item_positions) + w->no_list_items);
+    }
+
     window_invalidate(w);
 }
 

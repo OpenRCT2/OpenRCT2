@@ -11,6 +11,7 @@
 
 #include "Window.h"
 
+#include <limits>
 #include <list>
 #include <memory>
 
@@ -24,6 +25,14 @@ enum class ListViewMessageKind
     GetColumn,
     GetCell,
     Select,
+    Sort,
+};
+
+namespace ListViewFlags
+{
+    constexpr uint8_t AlignRight = 1 << 0;
+    constexpr uint8_t SortAscending = 1 << 1;
+    constexpr uint8_t SortDescending = 1 << 2;
 };
 
 struct ListViewMessage
@@ -125,6 +134,8 @@ struct rct_window
     uint8_t visibility;                    // VISIBILITY_CACHE
     uint16_t viewport_smart_follow_sprite; // Smart following of sprites. Handles setting viewport target sprite etc
 
+    size_t _listViewColumnPressed = std::numeric_limits<size_t>::max();
+
     virtual ~rct_window() = default;
     virtual void OnClick(rct_widgetindex widgetIndex)
     {
@@ -134,6 +145,7 @@ struct rct_window
     }
 
     size_t GetListViewItemIndexAt(uint8_t scrollIndex, int32_t theY);
+    size_t GetListViewColumnAt(uint8_t scrollIndex, int32_t theX);
 };
 
 // rct2: 0x01420078
