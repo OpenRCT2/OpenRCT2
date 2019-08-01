@@ -1876,8 +1876,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 rct_string_id rideType = RideNaming[ride->type].name;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_DARK_GREEN, x, y);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 11);
-                set_format_arg(0, rct_string_id, ride->name);
-                set_format_arg(0 + sizeof(rct_string_id), uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gCommonFormatArgs);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 22);
                 // Track
                 int16_t trackType = trackElement->GetTrackType();
@@ -2033,10 +2032,11 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (wallEntry.flags & WALL_SCENERY_IS_BANNER)
                 {
                     auto banner = tileElement->AsWall()->GetBanner();
-                    if (banner != nullptr)
+                    if (banner != nullptr && !banner->IsNull())
                     {
-                        gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &banner->string_idx, COLOUR_DARK_GREEN, x, y + 11);
+                        uint8_t args[32]{};
+                        banner->FormatTextTo(args);
+                        gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_DARK_GREEN, x, y + 11);
                     }
                 }
                 else
@@ -2078,11 +2078,11 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (largeSceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto banner = sceneryElement->GetBanner();
-                    if (banner != nullptr)
+                    if (banner != nullptr && !banner->IsNull())
                     {
-                        auto stringId = banner->string_idx;
-                        gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &stringId, COLOUR_DARK_GREEN, x, y + 22);
+                        uint8_t args[32]{};
+                        banner->FormatTextTo(args);
+                        gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_DARK_GREEN, x, y + 22);
                     }
                 }
                 else
@@ -2107,19 +2107,11 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Details
                 // Banner info
                 auto banner = tileElement->AsBanner()->GetBanner();
-                if (banner != nullptr)
+                if (banner != nullptr && !banner->IsNull())
                 {
-                    if (banner->flags & BANNER_FLAG_NO_ENTRY)
-                    {
-                        rct_string_id noEntryStringIdx = STR_NO_ENTRY;
-                        gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &noEntryStringIdx, COLOUR_DARK_GREEN, x, y);
-                    }
-                    else
-                    {
-                        gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &banner->string_idx, COLOUR_DARK_GREEN, x, y);
-                    }
+                    uint8_t args[32]{};
+                    banner->FormatTextTo(args);
+                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_DARK_GREEN, x, y + 22);
                 }
 
                 // Properties

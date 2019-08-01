@@ -313,20 +313,6 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
 
             // Use the new banner index
             tile_element_set_banner_index(&element, newBannerIndex);
-
-            // Duplicate user string if needed
-            rct_string_id stringIdx = newBanner.string_idx;
-            if (is_user_string_id(stringIdx))
-            {
-                utf8 buffer[USER_STRING_MAX_LENGTH];
-                format_string(buffer, USER_STRING_MAX_LENGTH, stringIdx, nullptr);
-                rct_string_id newStringIdx = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-                if (newStringIdx == 0)
-                {
-                    return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
-                }
-                GetBanner(newBannerIndex)->string_idx = newStringIdx;
-            }
         }
 
         TileElement* const pastedElement = tile_element_insert(loc.x / 32, loc.y / 32, element.base_height, 0);

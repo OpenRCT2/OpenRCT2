@@ -28,7 +28,6 @@
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
-#include "../localisation/User.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../network/network.h"
@@ -141,11 +140,10 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
             int32_t i;
             FOR_ALL_RIDES (i, ride)
             {
-                char name[128];
-                format_string(name, 128, ride->name, &ride->name_arguments);
+                auto name = ride->GetName();
                 console.WriteFormatLine(
                     "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", i, ride->type, ride->subtype,
-                    ride->mode, name);
+                    ride->mode, name.c_str());
             }
         }
         else if (argv[0] == "set")
@@ -444,10 +442,9 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             int32_t i;
             FOR_ALL_STAFF (i, peep)
             {
-                char name[128];
-                format_string(name, 128, peep->name_string_idx, &peep->id);
+                auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name);
+                    "staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name.c_str());
             }
         }
         else if (argv[0] == "set")
@@ -1155,12 +1152,6 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
     return 0;
 }
 
-static int32_t cc_reset_user_strings([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
-{
-    reset_user_strings();
-    return 0;
-}
-
 static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
@@ -1693,7 +1684,6 @@ static constexpr const console_command console_command_table[] = {
     { "quit", cc_close, "Closes the console.", "quit" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences" },
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
-    { "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]" },
     { "say", cc_say, "Say to other players.", "say <message>" },

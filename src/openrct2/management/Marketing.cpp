@@ -74,8 +74,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
             Ride* ride = get_ride(campaign.RideId);
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {

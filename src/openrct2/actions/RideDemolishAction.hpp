@@ -142,7 +142,7 @@ private:
             if (banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
             {
                 banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-                banner->string_idx = STR_DEFAULT_SIGN;
+                banner->text = {};
             }
         }
 

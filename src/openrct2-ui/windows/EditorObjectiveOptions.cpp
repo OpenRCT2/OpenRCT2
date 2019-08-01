@@ -1144,9 +1144,6 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
  */
 static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    rct_string_id stringId;
-    Ride* ride;
-
     int32_t colour = ColourMapA[w->colours[1]].mid_light;
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, colour);
 
@@ -1161,18 +1158,15 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], INSET_RECT_F_E0);
 
         // Highlighted
+        auto stringId = STR_BLACK_STRING;
         if (i == w->selected_list_item)
         {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
             gfx_filter_rect(dpi, 0, y, w->width, y + 11, PALETTE_DARKEN_1);
         }
-        else
-        {
-            stringId = STR_BLACK_STRING;
-        }
 
         // Checkbox mark
-        ride = get_ride(w->list_item_positions[i]);
+        auto ride = get_ride(w->list_item_positions[i]);
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
         {
             gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
@@ -1181,7 +1175,9 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         }
 
         // Ride name
-        gfx_draw_string_left(dpi, stringId, &ride->name, COLOUR_BLACK, 15, y);
+        uint32_t args[32]{};
+        ride->FormatNameTo(args);
+        gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, 15, y);
     }
 }
 

@@ -486,10 +486,12 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         }
         case WIDX_RENAME:
-            window_text_input_open(
-                w, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, peep->name_string_idx, peep->id,
-                32);
+        {
+            auto peepName = peep->GetName();
+            window_text_input_raw_open(
+                w, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, peepName.c_str(), 32);
             break;
+        }
     }
 }
 
@@ -778,8 +780,7 @@ void window_staff_stats_invalidate(rct_window* w)
 
     Peep* peep = GET_PEEP(w->number);
 
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
+    peep->FormatNameTo(gCommonFormatArgs);
 
     window_staff_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_staff_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -813,8 +814,7 @@ void window_staff_options_invalidate(rct_window* w)
 
     Peep* peep = GET_PEEP(w->number);
 
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
+    peep->FormatNameTo(gCommonFormatArgs);
 
     switch (peep->staff_type)
     {
@@ -891,8 +891,7 @@ void window_staff_overview_invalidate(rct_window* w)
 
     Peep* peep = GET_PEEP(w->number);
 
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
+    peep->FormatNameTo(gCommonFormatArgs);
 
     window_staff_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_staff_overview_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -953,11 +952,8 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw the centred label
-    uint32_t argument1, argument2;
     Peep* peep = GET_PEEP(w->number);
-    get_arguments_from_action(peep, &argument1, &argument2);
-    set_format_arg(0, uint32_t, argument1);
-    set_format_arg(4, uint32_t, argument2);
+    peep->FormatActionTo(gCommonFormatArgs);
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
     int32_t x = (widget->left + widget->right) / 2 + w->x;
     int32_t y = w->y + widget->top;

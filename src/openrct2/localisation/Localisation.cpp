@@ -386,26 +386,6 @@ static void format_append_string(char** dest, size_t* size, const utf8* string)
     }
 }
 
-static void format_append_string_n(char** dest, size_t* size, const utf8* string, size_t maxlen)
-{
-    if ((*size) == 0)
-        return;
-    size_t length = std::min(maxlen, strlen(string));
-    if (length < (*size))
-    {
-        std::memcpy((*dest), string, length);
-        (*dest) += length;
-        (*size) -= length;
-    }
-    else
-    {
-        std::memcpy((*dest), string, (*size) - 1);
-        (*dest) += (*size) - 1;
-        *(*dest)++ = '\0';
-        (*size) = 0;
-    }
-}
-
 static void format_integer(char** dest, size_t* size, int64_t value)
 {
     int32_t digit;
@@ -1257,16 +1237,14 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
     }
     else if (format <= USER_STRING_END)
     {
+        // User strings should no longer be used
+        assert(false);
+
         // Custom string
         format -= 0x8000;
 
         // Bits 10, 11 represent number of bytes to pop off arguments
         *args += (format & 0xC00) >> 9;
-        format &= ~0xC00;
-
-        format_append_string_n(dest, size, gUserStrings[format], USER_STRING_MAX_LENGTH);
-        if ((*size) > 0)
-            *(*dest) = '\0';
     }
     else if (format <= REAL_NAME_END)
     {
@@ -1280,8 +1258,6 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
         format_push_char(real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)]);
         format_push_char('.');
         *(*dest) = '\0';
-
-        *args += 4;
     }
     else
     {

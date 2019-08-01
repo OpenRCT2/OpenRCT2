@@ -582,8 +582,7 @@ static void window_guest_common_invalidate(rct_window* w)
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
     auto peep = GET_PEEP(w->number);
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
+    peep->FormatNameTo(gCommonFormatArgs);
 
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -714,9 +713,11 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
         }
         break;
         case WIDX_RENAME:
-            window_text_input_open(
-                w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, peep->name_string_idx, peep->id, 32);
+        {
+            auto peepName = peep->GetName();
+            window_text_input_raw_open(w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, peepName.c_str(), 32);
             break;
+        }
         case WIDX_LOCATE:
             window_scroll_to_viewport(w);
             break;
@@ -1080,11 +1081,8 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw the centred label
-    uint32_t argument1, argument2;
     Peep* peep = GET_PEEP(w->number);
-    get_arguments_from_action(peep, &argument1, &argument2);
-    set_format_arg(0, uint32_t, argument1);
-    set_format_arg(4, uint32_t, argument2);
+    peep->FormatActionTo(gCommonFormatArgs);
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
     int32_t x = (widget->left + widget->right) / 2 + w->x;
     int32_t y = w->y + widget->top - 1;
@@ -1705,20 +1703,15 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
-    rct_string_id ride_string_id = STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE;
-    uint32_t ride_string_arguments = 0;
-    if (peep->favourite_ride != 0xFF)
+    set_format_arg(0, rct_string_id, STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
+    if (peep->favourite_ride != RIDE_ID_NULL)
     {
         auto ride = get_ride(peep->favourite_ride);
         if (ride != nullptr)
         {
-            ride_string_arguments = ride->name_arguments;
-            ride_string_id = ride->name;
+            ride->FormatNameTo(gCommonFormatArgs);
         }
     }
-    set_format_arg(0, rct_string_id, ride_string_id);
-    set_format_arg(2, uint32_t, ride_string_arguments);
-
     gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, COLOUR_BLACK, x, y, w->width - 14);
 }
 
@@ -1749,8 +1742,7 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         auto ride = get_ride(w->list_item_positions[list_index]);
         if (ride != nullptr)
         {
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
         }
     }
@@ -1961,8 +1953,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             break;
         case SHOP_ITEM_PHOTO:
             ride = get_ride(peep->photo1_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_UMBRELLA:
             set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour) | ShopItems[item].Image);
@@ -1978,8 +1969,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                 case VOUCHER_TYPE_RIDE_FREE:
                     ride = get_ride(peep->voucher_arguments);
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-                    set_format_arg(8, rct_string_id, ride->name);
-                    set_format_arg(10, uint32_t, ride->name_arguments);
+                    ride->FormatNameTo(gCommonFormatArgs + 8);
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
@@ -2000,18 +1990,15 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             break;
         case SHOP_ITEM_PHOTO2:
             ride = get_ride(peep->photo2_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_PHOTO3:
             ride = get_ride(peep->photo3_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_PHOTO4:
             ride = get_ride(peep->photo4_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
     }
 

@@ -123,17 +123,12 @@ void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerI
 
 void tile_element_remove_banner_entry(TileElement* tileElement)
 {
-    BannerIndex bannerIndex = tile_element_get_banner_index(tileElement);
-    if (bannerIndex == BANNER_INDEX_NULL)
-        return;
-
+    auto bannerIndex = tile_element_get_banner_index(tileElement);
     auto banner = GetBanner(bannerIndex);
-    if (banner->type != BANNER_NULL)
+    if (banner != nullptr)
     {
-        rct_windownumber windowNumber = bannerIndex;
-        window_close_by_number(WC_BANNER, windowNumber);
-        banner->type = BANNER_NULL;
-        user_string_free(banner->string_idx);
+        window_close_by_number(WC_BANNER, bannerIndex);
+        *banner = {};
     }
 }
 

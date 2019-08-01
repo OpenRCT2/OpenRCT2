@@ -258,6 +258,9 @@ rct_sprite_checksum sprite_checksum()
 
                 if (copy.generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
                 {
+                    // Name is pointer and will not be the same across clients
+                    copy.peep.name = {};
+
                     // We set this to 0 because as soon the client selects a guest the window will remove the
                     // invalidation flags causing the sprite checksum to be different than on server, the flag does not affect
                     // game state.
@@ -679,7 +682,7 @@ void sprite_remove(rct_sprite* sprite)
     auto peep = sprite->AsPeep();
     if (peep != nullptr)
     {
-        user_string_free(peep->name_string_idx);
+        peep->SetName({});
     }
 
     move_sprite_to_list(sprite, SPRITE_LIST_FREE);

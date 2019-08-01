@@ -371,9 +371,6 @@ public:
             String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
         }
         std::memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
-        // Clear all of the strings, since we will probably have a higher limit on user strings in the future than RCT2.
-        user_string_clear_all();
-        std::memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
         gCurrentTicks = _s6.game_ticks_1;
         gCurrentRealTimeTicks = 0;
 
@@ -456,15 +453,8 @@ public:
         map_count_remaining_land_rights();
         determine_ride_entrance_and_exit_locations();
 
-        // Park name, must be after user strings are loaded
-        // Eventually format_string should be something that the S6 user strings can be passed directly to
-        {
-            char parkName[128]{};
-            format_string(parkName, sizeof(parkName), _s6.park_name, &_s6.park_name_args);
-            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-            park.Name = parkName;
-            user_string_free(_s6.park_name);
-        }
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        park.Name = GetUserString(_s6.park_name);
 
         // We try to fix the cycles on import, hence the 'true' parameter
         check_for_sprite_list_cycles(true);
@@ -523,8 +513,16 @@ public:
 
         // pad_046;
         dst->status = src->status;
-        dst->name = src->name;
-        dst->name_arguments = src->name_arguments;
+
+        dst->default_name_number = src->name_arguments_number;
+        if (is_user_string_id(src->name))
+        {
+            dst->custom_name = GetUserString(src->name);
+        }
+        else
+        {
+            dst->default_name_number = src->name_arguments_number;
+        }
 
         dst->overall_view = src->overall_view;
 
@@ -841,7 +839,11 @@ public:
         *dst = {};
         dst->type = src->type;
         dst->flags = src->flags;
-        dst->string_idx = src->string_idx;
+
+        if (!(src->flags & BANNER_FLAG_LINKED_TO_RIDE) && is_user_string_id(src->string_idx))
+        {
+            dst->text = GetUserString(src->string_idx);
+        }
 
         if (src->flags & BANNER_FLAG_LINKED_TO_RIDE)
         {
@@ -1284,7 +1286,10 @@ public:
     void ImportSpritePeep(Peep* dst, const RCT2SpritePeep* src)
     {
         ImportSpriteCommonProperties((rct_sprite_common*)dst, src);
-        dst->name_string_idx = src->name_string_idx;
+        if (is_user_string_id(src->name_string_idx))
+        {
+            dst->SetName(GetUserString(src->name_string_idx));
+        }
         dst->next_x = src->next_x;
         dst->next_y = src->next_y;
         dst->next_z = src->next_z;
@@ -1513,6 +1518,14 @@ public:
         dst->sprite_right = src->sprite_right;
         dst->sprite_bottom = src->sprite_bottom;
         dst->sprite_direction = src->sprite_direction;
+    }
+
+    std::string GetUserString(rct_string_id stringId)
+    {
+        const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
+        std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
+        auto withoutFormatCodes = RCT12::RemoveFormatCodes(originalStringView);
+        return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
     }
 };
 

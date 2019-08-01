@@ -205,7 +205,6 @@ static void ride_breakdown_update(Ride* ride);
 static void ride_call_closest_mechanic(Ride* ride);
 static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection);
 static void ride_entrance_exit_connected(Ride* ride);
-static void ride_set_name_to_vehicle_default(Ride* ride, rct_ride_entry* rideEntry);
 static int32_t ride_get_new_breakdown_problem(Ride* ride);
 static void ride_inspection_update(Ride* ride);
 static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus);
@@ -259,9 +258,8 @@ rct_ride_entry* Ride::GetRideEntry() const
     rct_ride_entry* rideEntry = get_ride_entry(subtype);
     if (rideEntry == nullptr)
     {
-        char oldname[128];
-        format_string(oldname, 128, name, &name_arguments);
-        log_error("Invalid ride subtype for ride %s", oldname);
+        auto rideName = GetName();
+        log_error("Invalid ride subtype for ride %s", rideName.c_str());
     }
     return rideEntry;
 }
@@ -837,80 +835,63 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
     return 0;
 }
 
-/**
- *
- *  rct2: 0x006AF561
- */
-void ride_get_status(const Ride* ride, rct_string_id* formatSecondary, int32_t* argument)
+void Ride::FormatStatusTo(void* argsV) const
 {
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-    {
-        *formatSecondary = STR_CRASHED;
-        return;
-    }
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-    {
-        *formatSecondary = STR_BROKEN_DOWN;
-        return;
-    }
-    if (ride->status == RIDE_STATUS_CLOSED)
-    {
-        *formatSecondary = STR_CLOSED;
+    auto args = (uint8_t*)argsV;
 
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+    if (lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_CRASHED);
+    }
+    else if (lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_BROKEN_DOWN);
+    }
+    else if (status == RIDE_STATUS_CLOSED)
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_CLOSED);
+        if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_IS_SHOP))
         {
-            *argument = ride->num_riders;
-
-            if (*argument == 1)
+            if (num_riders != 0)
             {
-                *formatSecondary = STR_CLOSED_WITH_PERSON;
-            }
-            else if (*argument > 1)
-            {
-                *formatSecondary = STR_CLOSED_WITH_PEOPLE;
+                set_format_arg_on(args, 0, rct_string_id, num_riders == 1 ? STR_CLOSED_WITH_PERSON : STR_CLOSED_WITH_PEOPLE);
+                set_format_arg_on(args, 2, uint16_t, num_riders);
             }
         }
-
-        return;
     }
-    else if (ride->status == RIDE_STATUS_SIMULATING)
+    else if (status == RIDE_STATUS_SIMULATING)
     {
-        *formatSecondary = STR_SIMULATING;
-        return;
+        set_format_arg_on(args, 0, rct_string_id, STR_SIMULATING);
     }
-    else if (ride->status == RIDE_STATUS_TESTING)
+    else if (status == RIDE_STATUS_TESTING)
     {
-        *formatSecondary = STR_TEST_RUN;
-        return;
+        set_format_arg_on(args, 0, rct_string_id, STR_TEST_RUN);
     }
-    if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
-        && ride->race_winner != SPRITE_INDEX_NULL && (GET_PEEP(ride->race_winner))->sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+    else if (
+        mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+        && race_winner != SPRITE_INDEX_NULL)
     {
-        Peep* peep = GET_PEEP(ride->race_winner);
-        if (peep->name_string_idx == STR_GUEST_X)
+        auto sprite = get_sprite(race_winner);
+        if (sprite != nullptr && sprite->IsPeep())
         {
-            *argument = peep->id;
-            *formatSecondary = STR_RACE_WON_BY_GUEST;
+            auto peep = sprite->AsPeep();
+            set_format_arg_on(args, 0, rct_string_id, STR_RACE_WON_BY);
+            peep->FormatNameTo(args + 2);
         }
         else
         {
-            *argument = peep->name_string_idx;
-            *formatSecondary = STR_RACE_WON_BY;
+            set_format_arg_on(args, 0, rct_string_id, STR_RACE_WON_BY);
+            set_format_arg_on(args, 2, rct_string_id, STR_NONE);
         }
+    }
+    else if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_IS_SHOP))
+    {
+        set_format_arg_on(args, 0, rct_string_id, num_riders == 1 ? STR_PERSON_ON_RIDE : STR_PEOPLE_ON_RIDE);
+        set_format_arg_on(args, 2, uint16_t, num_riders);
     }
     else
     {
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
-        {
-            *argument = ride->num_riders;
-            *formatSecondary = STR_PERSON_ON_RIDE;
-            if (*argument != 1)
-                *formatSecondary = STR_PEOPLE_ON_RIDE;
-        }
-        else
-        {
-            *formatSecondary = STR_OPEN;
-        }
+        set_format_arg_on(args, 0, rct_string_id, STR_OPEN);
     }
 }
 
@@ -1010,16 +991,14 @@ static int32_t ride_check_if_construction_allowed(Ride* ride)
     }
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 6);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
         return 0;
     }
 
     if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
     {
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 6);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);
         return 0;
     }
@@ -1942,8 +1921,7 @@ int32_t ride_modify(CoordsXYE* input)
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
     {
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        ride->FormatNameTo(gCommonFormatArgs + 6);
         context_show_error(
             STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         return 0;
@@ -2637,8 +2615,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
  */
 void ride_breakdown_add_news_item(Ride* ride)
 {
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
     if (gConfigNotifications.ride_broken_down)
     {
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, ride->id);
@@ -2664,8 +2641,7 @@ static void ride_breakdown_status_update(Ride* ride)
         if (!(ride->not_fixed_timeout & 15) && ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING
             && ride->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             if (gConfigNotifications.ride_warnings)
             {
                 news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_STILL_NOT_FIXED, ride->id);
@@ -3346,8 +3322,7 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!entrance.isNull() && !ride_entrance_exit_is_reachable(entrance))
         {
             // name of ride is parameter of the format string
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             if (gConfigNotifications.ride_warnings)
             {
                 news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride->id);
@@ -3358,8 +3333,7 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!exit.isNull() && !ride_entrance_exit_is_reachable(exit))
         {
             // name of ride is parameter of the format string
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             if (gConfigNotifications.ride_warnings)
             {
                 news_item_add_to_queue(1, STR_EXIT_NOT_CONNECTED, ride->id);
@@ -3443,8 +3417,7 @@ static void ride_shop_connected(Ride* ride)
     }
 
     // Name of ride is parameter of the format string
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
     if (gConfigNotifications.ride_warnings)
     {
         news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride->id);
@@ -3459,108 +3432,109 @@ static void ride_shop_connected(Ride* ride)
 
 static void ride_track_set_map_tooltip(TileElement* tileElement)
 {
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
-
-    set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-    set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-    set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
-
-    rct_string_id formatSecondary;
-    int32_t arg1 = 0;
-    ride_get_status(ride, &formatSecondary, &arg1);
-    set_map_tooltip_format_arg(8, rct_string_id, formatSecondary);
-    set_map_tooltip_format_arg(10, uint32_t, arg1);
+    if (ride != nullptr)
+    {
+        set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+        auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 2);
+        ride->FormatStatusTo(gMapTooltipFormatArgs + 2 + nameArgLen);
+    }
 }
 
 static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
 {
-    ride_id_t rideIndex = tileElement->AsPath()->GetRideIndex();
+    auto rideIndex = tileElement->AsPath()->GetRideIndex();
     auto ride = get_ride(rideIndex);
-
-    set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-    set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-    set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
-
-    rct_string_id formatSecondary;
-    int32_t arg1 = 0;
-    ride_get_status(ride, &formatSecondary, &arg1);
-    set_map_tooltip_format_arg(8, rct_string_id, formatSecondary);
-    set_map_tooltip_format_arg(10, uint32_t, arg1);
+    if (ride != nullptr)
+    {
+        set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+        auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 2);
+        ride->FormatStatusTo(gMapTooltipFormatArgs + 2 + nameArgLen);
+    }
 }
 
 static void ride_station_set_map_tooltip(TileElement* tileElement)
 {
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
-    auto stationIndex = tileElement->AsTrack()->GetStationIndex();
-    for (int32_t i = stationIndex; i >= 0; i--)
-        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
-            stationIndex--;
-
-    set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-    set_map_tooltip_format_arg(2, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
-    set_map_tooltip_format_arg(4, rct_string_id, ride->name);
-    set_map_tooltip_format_arg(6, uint32_t, ride->name_arguments);
-    set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
-    set_map_tooltip_format_arg(12, uint16_t, stationIndex + 1);
-
-    rct_string_id formatSecondary;
-    int32_t arg1;
-    ride_get_status(ride, &formatSecondary, &arg1);
-    set_map_tooltip_format_arg(14, rct_string_id, formatSecondary);
-    set_map_tooltip_format_arg(16, uint32_t, arg1);
-}
-
-static void ride_entrance_set_map_tooltip(TileElement* tileElement)
-{
-    ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
-    auto ride = get_ride(rideIndex);
-
-    // Get the station
-    auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
-    for (int32_t i = stationIndex; i >= 0; i--)
-        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
-            stationIndex--;
-
-    if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+    if (ride != nullptr)
     {
-        // Get the queue length
-        int32_t queueLength = 0;
-        if (!ride_get_entrance_location(ride, stationIndex).isNull())
-            queueLength = ride->stations[stationIndex].QueueLength;
-
-        set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
-        set_map_tooltip_format_arg(2, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
-        set_map_tooltip_format_arg(4, rct_string_id, ride->name);
-        set_map_tooltip_format_arg(6, uint32_t, ride->name_arguments);
-        set_map_tooltip_format_arg(12, uint16_t, stationIndex + 1);
-        if (queueLength == 0)
-        {
-            set_map_tooltip_format_arg(14, rct_string_id, STR_QUEUE_EMPTY);
-        }
-        else if (queueLength == 1)
-        {
-            set_map_tooltip_format_arg(14, rct_string_id, STR_QUEUE_ONE_PERSON);
-        }
-        else
-        {
-            set_map_tooltip_format_arg(14, rct_string_id, STR_QUEUE_PEOPLE);
-        }
-        set_map_tooltip_format_arg(16, uint16_t, queueLength);
-    }
-    else
-    {
-        // Get the station
-        stationIndex = tileElement->AsEntrance()->GetStationIndex();
+        auto stationIndex = tileElement->AsTrack()->GetStationIndex();
         for (int32_t i = stationIndex; i >= 0; i--)
             if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
                 stationIndex--;
 
-        set_map_tooltip_format_arg(0, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
-        set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-        set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
-        set_map_tooltip_format_arg(10, uint16_t, stationIndex + 1);
+        size_t argPos = 0;
+        set_map_tooltip_format_arg(argPos, rct_string_id, STR_RIDE_MAP_TIP);
+        argPos += sizeof(rct_string_id);
+        set_map_tooltip_format_arg(argPos, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
+        argPos += sizeof(rct_string_id);
+        argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
+        set_map_tooltip_format_arg(
+            argPos, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
+        argPos += sizeof(rct_string_id);
+        set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
+        argPos += sizeof(uint16_t);
+        ride->FormatStatusTo(gMapTooltipFormatArgs + argPos);
+    }
+}
+
+static void ride_entrance_set_map_tooltip(TileElement* tileElement)
+{
+    auto rideIndex = tileElement->AsEntrance()->GetRideIndex();
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+    {
+        // Get the station
+        auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
+        for (int32_t i = stationIndex; i >= 0; i--)
+            if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+                stationIndex--;
+
+        if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+        {
+            // Get the queue length
+            int32_t queueLength = 0;
+            if (!ride_get_entrance_location(ride, stationIndex).isNull())
+                queueLength = ride->stations[stationIndex].QueueLength;
+
+            size_t argPos = 0;
+            set_map_tooltip_format_arg(argPos, rct_string_id, STR_RIDE_MAP_TIP);
+            argPos += sizeof(rct_string_id);
+            set_map_tooltip_format_arg(
+                argPos, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
+            argPos += sizeof(rct_string_id);
+            argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
+            set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
+            argPos += sizeof(uint16_t);
+            if (queueLength == 0)
+            {
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_QUEUE_EMPTY);
+            }
+            else if (queueLength == 1)
+            {
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_QUEUE_ONE_PERSON);
+            }
+            else
+            {
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_QUEUE_PEOPLE);
+            }
+            argPos += sizeof(rct_string_id);
+            set_map_tooltip_format_arg(argPos, uint16_t, queueLength);
+        }
+        else
+        {
+            // Get the station
+            stationIndex = tileElement->AsEntrance()->GetStationIndex();
+            for (int32_t i = stationIndex; i >= 0; i--)
+                if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+                    stationIndex--;
+
+            set_map_tooltip_format_arg(0, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
+            auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 2);
+            set_map_tooltip_format_arg(2 + nameArgLen, uint16_t, stationIndex + 1);
+        }
     }
 }
 
@@ -5743,17 +5717,23 @@ static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour*
     return false;
 }
 
-static bool ride_name_exists(char* name)
+bool Ride::NameExists(const std::string_view& name, ride_id_t excludeRideId)
 {
-    char buffer[256];
+    char buffer[256]{};
+    uint32_t formatArgs[32]{};
+
     Ride* ride;
     int32_t i;
     FOR_ALL_RIDES (i, ride)
     {
-        format_string(buffer, 256, ride->name, &ride->name_arguments);
-        if ((strcmp(buffer, name) == 0) && ride_has_any_track_elements(ride))
+        if (i != excludeRideId)
         {
-            return true;
+            ride->FormatNameTo(formatArgs);
+            format_string(buffer, 256, STR_STRINGID, formatArgs);
+            if (std::string_view(buffer) == name && ride_has_any_track_elements(ride))
+            {
+                return true;
+            }
         }
     }
     return false;
@@ -5833,76 +5813,20 @@ money32 ride_get_common_price(Ride* forRide)
     return MONEY32_UNDEFINED;
 }
 
-void ride_set_name_to_default(Ride* ride, rct_ride_entry* rideEntry)
+void Ride::SetNameToDefault()
 {
-    if (RideGroupManager::RideTypeIsIndependent(ride->type))
-    {
-        ride_set_name_to_vehicle_default(ride, rideEntry);
-    }
-    else
-    {
-        ride_set_name_to_track_default(ride, rideEntry);
-    }
-}
+    char rideNameBuffer[256]{};
+    uint8_t rideNameArgs[32]{};
 
-void ride_set_name_to_track_default(Ride* ride, rct_ride_entry* rideEntry)
-{
-    char rideNameBuffer[256];
-    ride_name_args name_args;
-
-    ride->name = STR_NONE;
-
-    if (RideGroupManager::RideTypeHasRideGroups(ride->type))
-    {
-        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
-        name_args.type_name = rideGroup->Naming.name;
-    }
-    else
-    {
-        name_args.type_name = RideNaming[ride->type].name;
-    }
-
-    name_args.number = 0;
+    // Increment default name number until we find a unique name
+    custom_name = {};
+    default_name_number = 0;
     do
     {
-        name_args.number++;
-        format_string(rideNameBuffer, 256, 1, &name_args);
-    } while (ride_name_exists(rideNameBuffer));
-
-    ride->name = 1;
-    ride->name_arguments_type_name = name_args.type_name;
-    ride->name_arguments_number = name_args.number;
-}
-
-static void ride_set_name_to_vehicle_default(Ride* ride, rct_ride_entry* rideEntry)
-{
-    char rideNameBuffer[256];
-    ride_name_args name_args;
-
-    ride->name = 1;
-    ride->name_arguments_type_name = rideEntry->naming.name;
-    rct_string_id rideNameStringId = 0;
-    name_args.type_name = rideEntry->naming.name;
-    name_args.number = 0;
-
-    do
-    {
-        name_args.number++;
-        format_string(rideNameBuffer, 256, ride->name, &name_args);
-    } while (ride_name_exists(rideNameBuffer));
-
-    ride->name_arguments_type_name = name_args.type_name;
-    ride->name_arguments_number = name_args.number;
-
-    rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, rideNameBuffer);
-    if (rideNameStringId != 0)
-    {
-        ride->name = rideNameStringId;
-    }
-    else
-    {
-        ride_set_name_to_track_default(ride, rideEntry);
-    }
+        default_name_number++;
+        FormatNameTo(rideNameArgs);
+        format_string(rideNameBuffer, 256, STR_STRINGID, &rideNameArgs);
+    } while (Ride::NameExists(rideNameBuffer, id));
 }
 
 /**
@@ -7305,8 +7229,7 @@ void Ride::Crash(uint8_t vehicleIndex)
         }
     }
 
-    set_format_arg(0, rct_string_id, name);
-    set_format_arg(2, uint32_t, name_arguments);
+    FormatNameTo(gCommonFormatArgs);
     if (gConfigNotifications.ride_crashed)
     {
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, id);
@@ -7317,24 +7240,9 @@ void ride_reset_all_names()
 {
     int32_t i;
     Ride* ride;
-    char rideNameBuffer[256];
-    ride_name_args name_args;
-
     FOR_ALL_RIDES (i, ride)
     {
-        ride->name = STR_NONE;
-
-        name_args.type_name = RideNaming[ride->type].name;
-        name_args.number = 0;
-        do
-        {
-            name_args.number++;
-            format_string(rideNameBuffer, 256, 1, &name_args);
-        } while (ride_name_exists(rideNameBuffer));
-
-        ride->name = 1;
-        ride->name_arguments_type_name = name_args.type_name;
-        ride->name_arguments_number = name_args.number;
+        ride->SetNameToDefault();
     }
 }
 
@@ -7404,7 +7312,7 @@ rct_vehicle* ride_get_broken_vehicle(Ride* ride)
  */
 void Ride::Delete()
 {
-    user_string_free(name);
+    custom_name = {};
     measurement = {};
     type = RIDE_TYPE_NULL;
 }
@@ -7974,5 +7882,52 @@ void ride_clear_leftover_entrances(Ride* ride)
             tile_element_remove(it.element);
             tile_element_iterator_restart_for_tile(&it);
         }
+    }
+}
+
+std::string Ride::GetName() const
+{
+    uint8_t args[32]{};
+    FormatNameTo(args);
+    return format_string(STR_STRINGID, args);
+}
+
+size_t Ride::FormatNameTo(void* argsV) const
+{
+    auto args = (uint8_t*)argsV;
+    if (!custom_name.empty())
+    {
+        auto str = custom_name.c_str();
+        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
+        set_format_arg_on(args, 2, void*, str);
+        return sizeof(rct_string_id) + sizeof(void*);
+    }
+    else
+    {
+        auto rideTypeName = RideNaming[type].name;
+        if (RideGroupManager::RideTypeIsIndependent(type))
+        {
+            auto rideEntry = GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                rideTypeName = rideEntry->naming.name;
+            }
+        }
+        else if (RideGroupManager::RideTypeHasRideGroups(type))
+        {
+            auto rideEntry = GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                auto rideGroup = RideGroupManager::GetRideGroup(type, rideEntry);
+                if (rideGroup != nullptr)
+                {
+                    rideTypeName = rideGroup->Naming.name;
+                }
+            }
+        }
+        set_format_arg_on(args, 0, rct_string_id, 1);
+        set_format_arg_on(args, 2, rct_string_id, rideTypeName);
+        set_format_arg_on(args, 4, uint16_t, default_name_number);
+        return sizeof(rct_string_id) + sizeof(rct_string_id) + sizeof(uint16_t);
     }
 }

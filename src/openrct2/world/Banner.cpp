@@ -32,6 +32,47 @@
 
 static Banner _banners[MAX_BANNERS];
 
+std::string Banner::GetText() const
+{
+    uint8_t args[32]{};
+    FormatTextTo(args);
+    return format_string(STR_STRINGID, args);
+}
+
+size_t Banner::FormatTextTo(void* argsV) const
+{
+    auto args = (uint8_t*)argsV;
+    if (flags & BANNER_FLAG_NO_ENTRY)
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_NO_ENTRY);
+        return sizeof(rct_string_id);
+    }
+    else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
+    {
+        auto ride = get_ride(ride_index);
+        if (ride != nullptr)
+        {
+            return ride->FormatNameTo(args);
+        }
+        else
+        {
+            set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
+            return sizeof(rct_string_id);
+        }
+    }
+    else if (text.empty())
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
+        return sizeof(rct_string_id);
+    }
+    else
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
+        set_format_arg_on(args, 2, const char*, text.c_str());
+        return sizeof(rct_string_id) + sizeof(const char*);
+    }
+}
+
 /**
  *
  *  rct2: 0x006B7EAB
@@ -63,7 +104,7 @@ static BannerIndex BannerGetNewIndex()
 {
     for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
-        if (_banners[bannerIndex].type == BANNER_NULL)
+        if (_banners[bannerIndex].IsNull())
         {
             return bannerIndex;
         }
@@ -79,7 +120,7 @@ void banner_init()
 {
     for (auto& banner : _banners)
     {
-        banner.type = BANNER_NULL;
+        banner = {};
     }
 }
 
@@ -107,7 +148,7 @@ BannerIndex create_new_banner(uint8_t flags)
 
         banner->flags = 0;
         banner->type = 0;
-        banner->string_idx = STR_DEFAULT_SIGN;
+        banner->text = {};
         banner->colour = 2;
         banner->text_colour = 2;
     }
@@ -257,21 +298,6 @@ void fix_duplicated_banners()
                             auto& newBanner = *GetBanner(newBannerIndex);
                             newBanner = *GetBanner(bannerIndex);
                             newBanner.position = { x, y };
-
-                            // Duplicate user string too
-                            rct_string_id stringIdx = newBanner.string_idx;
-                            if (is_user_string_id(stringIdx))
-                            {
-                                utf8 buffer[USER_STRING_MAX_LENGTH];
-                                format_string(buffer, USER_STRING_MAX_LENGTH, stringIdx, nullptr);
-                                rct_string_id newStringIdx = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-                                if (newStringIdx == 0)
-                                {
-                                    log_error("Failed to allocate user string for banner");
-                                    continue;
-                                }
-                                newBanner.string_idx = newStringIdx;
-                            }
 
                             tileElement->AsBanner()->SetIndex(newBannerIndex);
                         }

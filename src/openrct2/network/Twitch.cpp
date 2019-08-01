@@ -422,10 +422,12 @@ namespace Twitch
         Peep* peep;
         FOR_ALL_GUESTS (spriteIndex, peep)
         {
-            if (is_user_string_id(peep->name_string_idx))
+            if (peep->name != nullptr)
             {
-                utf8 buffer[256];
-                format_string(buffer, 256, peep->name_string_idx, nullptr);
+                uint8_t args[32]{};
+                char buffer[256]{};
+                peep->FormatNameTo(args);
+                format_string(buffer, sizeof(buffer), STR_STRINGID, args);
 
                 AudienceMember* member = nullptr;
                 for (AudienceMember& m : members)
@@ -503,13 +505,14 @@ namespace Twitch
                 }
 
                 AudienceMember* member = &members[memberIndex];
-                if (!is_user_string_id(peep->name_string_idx) && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
+                if (peep->name == nullptr && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // Rename peep and add flags
-                    rct_string_id newStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, member->Name);
-                    if (newStringId != 0)
+                    auto memLen = std::strlen(member->Name) + 1;
+                    peep->name = (char*)std::malloc(memLen);
+                    if (peep->name != nullptr)
                     {
-                        peep->name_string_idx = newStringId;
+                        std::memcpy(peep->name, member->Name, memLen);
 
                         uint32_t flags = peep->peep_flags | PEEP_FLAGS_TWITCH;
                         if (member->ShouldTrack)

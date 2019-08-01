@@ -51,9 +51,6 @@ int32_t get_string_length(const utf8* text);
 money32 string_to_money(const char* string_to_monetise);
 void money_to_string(money32 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
 
-void user_string_clear_all();
-rct_string_id user_string_allocate(int32_t base, const utf8* text);
-void user_string_free(rct_string_id id);
 bool is_user_string_id(rct_string_id stringId);
 
 #define MAX_USER_STRINGS 1024
@@ -64,18 +61,10 @@ bool is_user_string_id(rct_string_id stringId);
 #define REAL_NAME_START 0xA000
 #define REAL_NAME_END 0xDFFF
 
-// Constants used by user_string_allocate
-enum
-{
-    USER_STRING_HIGH_ID_NUMBER = 1 << 2,
-    USER_STRING_DUPLICATION_PERMITTED = 1 << 7
-};
-
 // Real name data
 extern const char real_name_initials[16];
 extern const char* real_names[1024];
 
-extern utf8 gUserStrings[MAX_USER_STRINGS][USER_STRING_MAX_LENGTH];
 extern thread_local char gCommonStringFormatBuffer[512];
 extern thread_local uint8_t gCommonFormatArgs[80];
 extern thread_local uint8_t gMapTooltipFormatArgs[40];

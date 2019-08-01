@@ -55,9 +55,8 @@ protected:
         Ride* ride;
         FOR_ALL_RIDES ((*outRideIndex), ride)
         {
-            char thisName[256];
-            format_string(thisName, sizeof(thisName), ride->name, &ride->name_arguments);
-            if (!_strnicmp(thisName, name, sizeof(thisName)))
+            auto thisName = ride->GetName();
+            if (!_strnicmp(thisName.c_str(), name, sizeof(thisName)))
                 return ride;
         }
 

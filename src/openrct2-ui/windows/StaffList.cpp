@@ -660,7 +660,6 @@ static constexpr const uint32_t staffCostumeSprites[] = {
 void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
-    uint32_t argument_1, argument_2;
     uint8_t selectedTab;
     Peep* peep;
 
@@ -694,13 +693,10 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
                     format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
-                set_format_arg(0, rct_string_id, peep->name_string_idx);
-                set_format_arg(2, uint32_t, peep->id);
+                peep->FormatNameTo(gCommonFormatArgs);
                 gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, nameColumnSize);
 
-                get_arguments_from_action(peep, &argument_1, &argument_2);
-                set_format_arg(0, uint32_t, argument_1);
-                set_format_arg(4, uint32_t, argument_2);
+                peep->FormatActionTo(gCommonFormatArgs);
                 gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, actionOffset, y, actionColumnSize);
 
                 // True if a patrol path is set for the worker

@@ -59,29 +59,17 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
         }
 
-        if (_name.empty())
+        if (!_name.empty() && Ride::NameExists(_name, ride->id))
         {
             return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_INVALID_RIDE_ATTRACTION_NAME);
+                GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERROR_EXISTING_NAME);
         }
-
-        rct_string_id newUserStringId = user_string_allocate(
-            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-        if (newUserStringId == 0)
-        {
-            // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
-        }
-        user_string_free(newUserStringId);
 
         return std::make_unique<GameActionResult>();
     }
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id newUserStringId = user_string_allocate(
-            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-
         Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
@@ -89,8 +77,14 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
         }
 
-        user_string_free(ride->name);
-        ride->name = newUserStringId;
+        if (_name.empty())
+        {
+            ride->SetNameToDefault();
+        }
+        else
+        {
+            ride->custom_name = _name;
+        }
 
         scrolling_text_invalidate();
         gfx_invalidate_screen();

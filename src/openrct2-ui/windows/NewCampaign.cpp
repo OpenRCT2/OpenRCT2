@@ -103,16 +103,11 @@ static int32_t ride_value_compare(const void* a, const void* b)
 
 static int32_t ride_name_compare(const void* a, const void* b)
 {
-    char rideAName[256], rideBName[256];
-    Ride *rideA, *rideB;
-
-    rideA = get_ride(*((uint8_t*)a));
-    rideB = get_ride(*((uint8_t*)b));
-
-    format_string(rideAName, 256, rideA->name, &rideA->name_arguments);
-    format_string(rideBName, 256, rideB->name, &rideB->name_arguments);
-
-    return _strcmpi(rideAName, rideBName);
+    auto rideA = get_ride(*((uint8_t*)a));
+    auto rideB = get_ride(*((uint8_t*)b));
+    auto rideAName = rideA->GetName();
+    auto rideBName = rideB->GetName();
+    return _strcmpi(rideAName.c_str(), rideBName.c_str());
 }
 
 /**
@@ -289,9 +284,21 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                     if (window_new_campaign_rides[i] == RIDE_ID_NULL)
                         break;
 
-                    Ride* ride = get_ride(window_new_campaign_rides[i]);
+                    auto ride = get_ride(window_new_campaign_rides[i]);
+                    if (ride == nullptr)
+                        break;
+
+                    // HACK until dropdown items have longer argument buffers
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = ((uint64_t)ride->name_arguments << 16ULL) | ride->name;
+                    if (ride->custom_name.empty())
+                    {
+                        ride->FormatNameTo(&gDropdownItemsArgs[i]);
+                    }
+                    else
+                    {
+                        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
+                        set_format_arg_on((uint8_t*)&gDropdownItemsArgs[i], 0, const char*, ride->custom_name.c_str());
+                    }
                     numItems++;
                 }
 
@@ -356,9 +363,12 @@ static void window_new_campaign_invalidate(rct_window* w)
             window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
             if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED)
             {
-                Ride* ride = get_ride(w->campaign.ride_id);
-                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = ride->name;
-                set_format_arg(0, uint32_t, ride->name_arguments);
+                auto ride = get_ride(w->campaign.ride_id);
+                if (ride != nullptr)
+                {
+                    window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
+                    ride->FormatNameTo(gCommonFormatArgs);
+                }
             }
             break;
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:

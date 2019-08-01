@@ -141,7 +141,7 @@ public:
         assert(newTileElement != nullptr);
 
         banner->flags = 0;
-        banner->string_idx = STR_DEFAULT_SIGN;
+        banner->text = {};
         banner->text_colour = 2;
         banner->type = _bannerType;
         banner->colour = _primaryColour;

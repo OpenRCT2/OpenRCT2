@@ -58,44 +58,20 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
-        if (_name.empty())
-        {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER);
-        }
-
-        Peep* peep = GET_PEEP(_spriteIndex);
+        auto peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_STAFF)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
-
-        rct_string_id newUserStringId = user_string_allocate(
-            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-        if (newUserStringId == 0)
-        {
-            // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::UNKNOWN, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, gGameCommandErrorText);
-        }
-        user_string_free(newUserStringId);
 
         return std::make_unique<GameActionResult>();
     }
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id newUserStringId = user_string_allocate(
-            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-        if (newUserStringId == 0)
-        {
-            // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::UNKNOWN, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, gGameCommandErrorText);
-        }
-
-        Peep* peep = GET_PEEP(_spriteIndex);
+        auto peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_STAFF)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
@@ -103,18 +79,16 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
-        set_format_arg(0, uint32_t, peep->id);
-        utf8* curName = gCommonStringFormatBuffer;
-        rct_string_id curId = peep->name_string_idx;
-        format_string(curName, 256, curId, gCommonFormatArgs);
-
-        if (strcmp(curName, _name.c_str()) == 0)
+        auto curName = peep->GetName();
+        if (curName == _name)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::OK, STR_NONE);
         }
 
-        user_string_free(peep->name_string_idx);
-        peep->name_string_idx = newUserStringId;
+        if (!peep->SetName(_name))
+        {
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, STR_NONE);
+        }
 
         peep_update_name_sort(peep);
 

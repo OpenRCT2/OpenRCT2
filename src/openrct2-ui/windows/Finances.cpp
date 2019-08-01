@@ -1191,8 +1191,14 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
             case ADVERTISING_CAMPAIGN_RIDE:
             {
                 auto ride = get_ride(campaign->RideId);
-                set_format_arg(0, rct_string_id, ride->name);
-                set_format_arg(2, uint32_t, ride->name_arguments);
+                if (ride != nullptr)
+                {
+                    ride->FormatNameTo(gCommonFormatArgs);
+                }
+                else
+                {
+                    set_format_arg(0, rct_string_id, STR_NONE);
+                }
                 break;
             }
             case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:

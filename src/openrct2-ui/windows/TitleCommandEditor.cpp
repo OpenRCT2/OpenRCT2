@@ -623,16 +623,28 @@ static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex
         if (spriteIdentifier == SPRITE_IDENTIFIER_PEEP)
         {
             validSprite = true;
-            Peep* peep = GET_PEEP(spriteIndex);
-            format_string(command.SpriteName, USER_STRING_MAX_LENGTH, peep->name_string_idx, &peep->id);
+            auto peep = GET_PEEP(spriteIndex);
+            if (peep != nullptr)
+            {
+                uint8_t formatArgs[32]{};
+                peep->FormatNameTo(formatArgs);
+                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->id);
+            }
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_VEHICLE)
         {
             validSprite = true;
-            rct_vehicle* vehicle = GET_VEHICLE(spriteIndex);
-            Ride* ride = get_ride(vehicle->ride);
-            set_format_arg(16, uint32_t, ride->name_arguments);
-            format_string(command.SpriteName, USER_STRING_MAX_LENGTH, ride->name, &ride->name_arguments);
+            auto vehicle = GET_VEHICLE(spriteIndex);
+            if (vehicle != nullptr)
+            {
+                auto ride = get_ride(vehicle->ride);
+                if (ride != nullptr)
+                {
+                    uint8_t formatArgs[32]{};
+                    ride->FormatNameTo(formatArgs);
+                    format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, formatArgs);
+                }
+            }
         }
         else if (spriteIdentifier == SPRITE_IDENTIFIER_LITTER)
         {

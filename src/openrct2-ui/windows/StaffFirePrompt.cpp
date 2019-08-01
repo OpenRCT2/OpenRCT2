@@ -127,8 +127,7 @@ static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     Peep* peep = &get_sprite(w->number)->peep;
 
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
+    peep->FormatNameTo(gCommonFormatArgs);
 
     int32_t x = w->x + WW / 2;
     int32_t y = w->y + (WH / 2) - 3;

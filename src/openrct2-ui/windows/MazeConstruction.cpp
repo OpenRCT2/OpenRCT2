@@ -417,11 +417,15 @@ static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex wid
  */
 static void window_maze_construction_invalidate(rct_window* w)
 {
-    Ride* ride = get_ride(_currentRideIndex);
-
-    // Set window title arguments
-    set_format_arg(4, rct_string_id, ride->name);
-    set_format_arg(6, uint32_t, ride->name_arguments);
+    auto ride = get_ride(_currentRideIndex);
+    if (ride != nullptr)
+    {
+        ride->FormatNameTo(gCommonFormatArgs + 4);
+    }
+    else
+    {
+        set_format_arg(4, rct_string_id, STR_NONE);
+    }
 }
 
 /**

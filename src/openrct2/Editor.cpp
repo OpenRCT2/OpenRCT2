@@ -303,16 +303,6 @@ namespace Editor
             }
         }
 
-        //
-        {
-            int32_t i;
-            Ride* ride;
-            FOR_ALL_RIDES (i, ride)
-            {
-                user_string_free(ride->name);
-            }
-        }
-
         ride_init_all();
 
         //
@@ -321,7 +311,7 @@ namespace Editor
             auto peep = get_sprite(i)->AsPeep();
             if (peep != nullptr)
             {
-                user_string_free(peep->name_string_idx);
+                peep->SetName({});
             }
         }
 

@@ -1974,13 +1974,13 @@ static void window_ride_init_viewport(rct_window* w)
  */
 static void window_ride_rename(rct_window* w)
 {
-    Ride* ride;
-
-    ride = get_ride(w->number);
-    set_format_arg(16, uint32_t, ride->name_arguments);
-    window_text_input_open(
-        w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, ride->name, ride->name_arguments,
-        32);
+    auto ride = get_ride(w->number);
+    if (ride != nullptr)
+    {
+        auto rideName = ride->GetName();
+        window_text_input_raw_open(
+            w, WIDX_RENAME, STR_RIDE_ATTRACTION_NAME, STR_ENTER_NEW_NAME_FOR_THIS_RIDE_ATTRACTION, rideName.c_str(), 32);
+    }
 }
 
 /**
@@ -2568,9 +2568,8 @@ static void window_ride_main_invalidate(rct_window* w)
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
         w->disabled_widgets |= (1 << WIDX_DEMOLISH);
 
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
-    set_format_arg(6, uint16_t, RideNaming[ride->type].name);
+    ride->FormatNameTo(gCommonFormatArgs);
+
     uint32_t spriteIds[] = {
         SPR_CLOSED,
         SPR_OPEN,
@@ -2693,15 +2692,11 @@ static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* ar
     auto ride = get_ride(w->number);
     if (ride != nullptr)
     {
-        rct_string_id formatSecondary;
-        int32_t argument;
-        ride_get_status(ride, &formatSecondary, &argument);
-        std::memcpy(arguments, &formatSecondary, sizeof(formatSecondary));
-        std::memcpy((void*)((uintptr_t)arguments + 2), &argument, sizeof(argument));
-        stringId = STR_RED_OUTLINED_STRING;
-        if (formatSecondary != STR_BROKEN_DOWN && formatSecondary != STR_CRASHED)
+        ride->FormatStatusTo(arguments);
+        stringId = STR_BLACK_STRING;
+        if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
         {
-            stringId = STR_BLACK_STRING;
+            stringId = STR_RED_OUTLINED_STRING;
         }
     }
     return stringId;
@@ -3012,8 +3007,8 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     ride = get_ride(w->number);
     rideEntry = ride->GetRideEntry();
 
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    w->widgets[WIDX_TITLE].text = STR_ARG_20_STRINGID;
+    ride->FormatNameTo(gCommonFormatArgs + 20);
 
     // Widget setup
     carsPerTrain = ride->num_cars_per_train - rideEntry->zero_cars;
@@ -3570,8 +3565,7 @@ static void window_ride_operating_invalidate(rct_window* w)
 
     ride = get_ride(w->number);
 
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     // Widget setup
     w->pressed_widgets &= ~(
@@ -4146,8 +4140,8 @@ static void window_ride_maintenance_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+
+    ride->FormatNameTo(gCommonFormatArgs);
 
     window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL].text = RideInspectionIntervalNames[ride->inspection_interval];
 
@@ -4281,8 +4275,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 auto peep = (&(get_sprite(ride->mechanic)->peep))->AsStaff();
                 if (peep != nullptr && peep->IsMechanic())
                 {
-                    set_format_arg(0, rct_string_id, peep->name_string_idx);
-                    set_format_arg(2, uint32_t, peep->id);
+                    peep->FormatNameTo(gCommonFormatArgs);
                     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x + 4, y, 280, stringId, COLOUR_BLACK);
                 }
             }
@@ -4698,8 +4691,8 @@ static void window_ride_colour_invalidate(rct_window* w)
     ride = get_ride(w->number);
     rideEntry = ride->GetRideEntry();
 
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    w->widgets[WIDX_TITLE].text = STR_ARG_16_STRINGID;
+    ride->FormatNameTo(gCommonFormatArgs + 16);
 
     // Track colours
     int32_t colourScheme = w->ride_colour;
@@ -5212,8 +5205,7 @@ static void window_ride_music_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     // Set selected music
     window_ride_music_widgets[WIDX_MUSIC].text = MusicStyleNames[ride->music];
@@ -5540,8 +5532,7 @@ static void window_ride_measurements_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN_NOT_POSSIBLE;
     window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_EMPTY;
@@ -5988,9 +5979,7 @@ static void window_ride_graphs_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     ride = get_ride(w->number);
-
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     // Set pressed graph button type
     w->pressed_widgets &= ~(1 << WIDX_GRAPH_VELOCITY);
@@ -6523,8 +6512,9 @@ static void window_ride_income_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+
+    w->widgets[WIDX_TITLE].text = STR_ARG_14_STRINGID;
+    ride->FormatNameTo(gCommonFormatArgs + 14);
 
     rideEntry = ride->GetRideEntry();
 
@@ -6798,8 +6788,7 @@ static void window_ride_customer_invalidate(rct_window* w)
     window_ride_set_pressed_tab(w);
 
     Ride* ride = get_ride(w->number);
-    set_format_arg(0, rct_string_id, ride->name);
-    set_format_arg(2, uint32_t, ride->name_arguments);
+    ride->FormatNameTo(gCommonFormatArgs);
 
     window_ride_customer_widgets[WIDX_SHOW_GUESTS_THOUGHTS].type = WWT_FLATBTN;
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))

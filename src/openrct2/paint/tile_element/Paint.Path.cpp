@@ -454,8 +454,7 @@ static void sub_6A4101(
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
                 set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
-                set_format_arg(2, rct_string_id, ride->name);
-                set_format_arg(4, uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gCommonFormatArgs + 2);
             }
             else
             {
@@ -478,8 +477,8 @@ static void sub_6A4101(
             uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
             sub_98199C(
-                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode), 0, 0, 1, 1, 21,
-                height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
+                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode, COLOUR_BLACK), 0, 0, 1, 1,
+                21, height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
         }
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;

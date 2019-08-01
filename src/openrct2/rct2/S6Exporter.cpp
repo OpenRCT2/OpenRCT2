@@ -344,7 +344,6 @@ void S6Exporter::Export()
     safe_strcpy(_s6.scenario_filename, gScenarioFileName, sizeof(_s6.scenario_filename));
     std::memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));
     ExportBanners();
-    std::memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));
     _s6.game_ticks_1 = gCurrentTicks;
 
     this->ExportRides();
@@ -413,6 +412,8 @@ void S6Exporter::Export()
 
     scenario_fix_ghosts(&_s6);
     game_convert_strings_to_rct2(&_s6);
+
+    ExportUserStrings();
 }
 
 void S6Exporter::ExportPeepSpawns()
@@ -446,10 +447,10 @@ uint32_t S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32_t
 void S6Exporter::ExportParkName()
 {
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-    auto stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, park.Name.c_str());
-    if (stringId != 0)
+    auto stringId = AllocateUserString(park.Name);
+    if (stringId != opt::nullopt)
     {
-        _s6.park_name = stringId;
+        _s6.park_name = *stringId;
         _s6.park_name_args = 0;
     }
     else
@@ -496,8 +497,30 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     // pad_046;
     dst->status = src->status;
-    dst->name = src->name;
-    dst->name_arguments = src->name_arguments;
+
+    bool useDefaultName = true;
+    if (!src->custom_name.empty())
+    {
+        // Custom name, allocate user string for ride
+        auto rideName = utf8_to_rct2(src->custom_name);
+        auto stringId = AllocateUserString(rideName);
+        if (stringId != opt::nullopt)
+        {
+            dst->name = *stringId;
+            dst->name_arguments = 0;
+            useDefaultName = false;
+        }
+        else
+        {
+            log_warning("Unable to allocate user string for ride #%d (%s).", (int)src->id, src->custom_name.c_str());
+        }
+    }
+    if (useDefaultName)
+    {
+        // Default name with number
+        dst->name = RideNaming[src->type].name;
+        dst->name_arguments_number = src->default_name_number;
+    }
 
     dst->overall_view = src->overall_view;
 
@@ -964,7 +987,44 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const rct_vehicle* 
 void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 {
     ExportSpriteCommonProperties(dst, (const rct_sprite_common*)src);
-    dst->name_string_idx = src->name_string_idx;
+
+    auto generateName = true;
+    if (src->name != nullptr)
+    {
+        auto stringId = AllocateUserString(src->name);
+        if (stringId != opt::nullopt)
+        {
+            dst->name_string_idx = *stringId;
+            generateName = false;
+        }
+        else
+        {
+            log_warning(
+                "Unable to allocate user string for peep #%d (%s) during S6 export.", (int)src->sprite_index, src->name);
+        }
+    }
+    if (generateName)
+    {
+        if (src->type == PeepType::PEEP_TYPE_STAFF)
+        {
+            static constexpr const rct_string_id staffNames[] = {
+                STR_HANDYMAN_X,
+                STR_MECHANIC_X,
+                STR_SECURITY_GUARD_X,
+                STR_ENTERTAINER_X,
+            };
+            dst->name_string_idx = staffNames[src->staff_type % sizeof(staffNames)];
+        }
+        else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        {
+            dst->name_string_idx = get_real_name_string_id_from_id(src->id);
+        }
+        else
+        {
+            dst->name_string_idx = STR_GUEST_X;
+        }
+    }
+
     dst->next_x = src->next_x;
     dst->next_y = src->next_y;
     dst->next_z = src->next_z;
@@ -1185,20 +1245,96 @@ void S6Exporter::ExportBanners()
 
 void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
 {
+    dst = {};
     dst.type = src.type;
-    dst.flags = src.flags;
-    dst.string_idx = src.string_idx;
-    if (src.flags & BANNER_FLAG_LINKED_TO_RIDE)
+
+    if (!src.IsNull())
     {
-        dst.ride_index = src.ride_index;
+        dst.flags = src.flags;
+
+        dst.string_idx = STR_DEFAULT_SIGN;
+
+        auto bannerText = src.text;
+        if (!(src.flags & BANNER_FLAG_IS_WALL) && !(src.flags & BANNER_FLAG_IS_LARGE_SCENERY))
+        {
+            char codeBuffer[32]{};
+            utf8_write_codepoint(codeBuffer, FORMAT_COLOUR_CODE_START + src.text_colour);
+            bannerText = codeBuffer + bannerText;
+        }
+
+        auto stringId = AllocateUserString(bannerText);
+        if (stringId != opt::nullopt)
+        {
+            dst.string_idx = *stringId;
+        }
+
+        if (src.flags & BANNER_FLAG_LINKED_TO_RIDE)
+        {
+            dst.ride_index = src.ride_index;
+        }
+        else
+        {
+            dst.colour = src.colour;
+        }
+        dst.text_colour = src.text_colour;
+        dst.x = src.position.x;
+        dst.y = src.position.y;
     }
-    else
+}
+
+opt::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& value)
+{
+    auto nextId = _userStrings.size();
+    if (nextId < RCT12_MAX_USER_STRINGS)
     {
-        dst.colour = src.colour;
+        _userStrings.emplace_back(value);
+        return (uint16_t)(USER_STRING_START + nextId);
     }
-    dst.text_colour = src.text_colour;
-    dst.x = src.position.x;
-    dst.y = src.position.y;
+    return {};
+}
+
+static std::string GetTruncatedRCT2String(const std::string_view& src)
+{
+    auto rct2encoded = utf8_to_rct2(src);
+    if (rct2encoded.size() > RCT12_USER_STRING_MAX_LENGTH - 1)
+    {
+        log_warning(
+            "The user string '%s' is too long for the S6 file format and has therefore been truncated.",
+            std::string(src).c_str());
+
+        rct2encoded.resize(RCT12_USER_STRING_MAX_LENGTH - 1);
+        for (size_t i = 0; i < rct2encoded.size(); i++)
+        {
+            if (rct2encoded[i] == (char)(uint8_t)0xFF)
+            {
+                if (i > RCT12_USER_STRING_MAX_LENGTH - 4)
+                {
+                    // This codepoint was truncated, remove codepoint altogether
+                    rct2encoded.resize(i);
+                    break;
+                }
+                else
+                {
+                    // Skip the next two bytes which represent the unicode character
+                    i += 2;
+                }
+            }
+        }
+    }
+    return rct2encoded;
+}
+
+void S6Exporter::ExportUserStrings()
+{
+    auto numUserStrings = std::min<size_t>(_userStrings.size(), RCT12_MAX_USER_STRINGS);
+    for (size_t i = 0; i < numUserStrings; i++)
+    {
+        auto dst = _s6.custom_strings[i];
+        const auto& src = _userStrings[i];
+        auto encodedSrc = GetTruncatedRCT2String(src);
+        auto stringLen = std::min<size_t>(encodedSrc.size(), RCT12_USER_STRING_MAX_LENGTH - 1);
+        std::memcpy(dst, encodedSrc.data(), stringLen);
+    }
 }
 
 enum : uint32_t
@@ -1253,8 +1389,9 @@ int32_t scenario_save(const utf8* path, int32_t flags)
         }
         result = true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
+        log_error("Unable to save park: '%s'", e.what());
     }
     delete s6exporter;
 

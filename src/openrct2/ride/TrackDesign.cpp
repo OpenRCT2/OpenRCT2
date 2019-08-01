@@ -1721,14 +1721,7 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, Ride**
     }
 
     auto ride = get_ride(rideIndex);
-    rct_string_id new_ride_name = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, "");
-    if (new_ride_name != 0)
-    {
-        rct_string_id old_name = ride->name;
-        ride->name = new_ride_name;
-        user_string_free(old_name);
-    }
-
+    ride->custom_name = {};
     ride->entrance_style = td6->entrance_style;
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
@@ -1796,9 +1789,7 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, Ride**
     else
     {
         _currentTrackPieceDirection = backup_rotation;
-        user_string_free(ride->name);
-        ride->type = RIDE_TYPE_NULL;
-        ride->measurement = {};
+        ride->Delete();
         byte_9D8150 = false;
         return false;
     }

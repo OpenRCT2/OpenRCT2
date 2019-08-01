@@ -537,9 +537,11 @@ void Guest::UpdateEasterEggInteractions()
 
 int32_t Guest::GetEasterEggNameId() const
 {
-    char buffer[256];
+    uint8_t args[32]{};
+    char buffer[256]{};
 
-    format_string(buffer, 256, this->name_string_idx, &this->id);
+    FormatNameTo(args);
+    format_string(buffer, sizeof(buffer), STR_STRINGID, args);
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
         if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
@@ -682,9 +684,12 @@ void Guest::HandleEasterEggName()
  */
 int32_t Guest::CheckEasterEggName(int32_t index) const
 {
-    char buffer[256];
+    uint8_t args[32]{};
+    char buffer[256]{};
 
-    format_string(buffer, 256, this->name_string_idx, &this->id);
+    FormatNameTo(args);
+    format_string(buffer, sizeof(buffer), STR_STRINGID, args);
+
     return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
 }
 
@@ -1688,9 +1693,8 @@ loc_69B221:
     UpdateSpriteType();
     if (peep_flags & PEEP_FLAGS_TRACKING)
     {
-        set_format_arg(0, rct_string_id, name_string_idx);
-        set_format_arg(2, uint32_t, id);
-        set_format_arg(6, rct_string_id, ShopItems[shopItem].Naming.Indefinite);
+        auto nameArgLen = FormatNameTo(gCommonFormatArgs);
+        set_format_arg(nameArgLen, rct_string_id, ShopItems[shopItem].Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
             news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index);
@@ -3849,8 +3853,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
                 ride->last_issue_time = gCurrentTicks;
 
-                set_format_arg(0, rct_string_id, ride->name);
-                set_format_arg(2, uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gCommonFormatArgs);
                 if (gConfigNotifications.ride_warnings)
                 {
                     news_item_add_to_queue(NEWS_ITEM_RIDE, STR_GUESTS_GETTING_STUCK_ON_RIDE, current_ride);
@@ -4011,10 +4014,8 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
 
     if (peep_flags & PEEP_FLAGS_TRACKING)
     {
-        set_format_arg(0, rct_string_id, name_string_idx);
-        set_format_arg(2, uint32_t, id);
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        auto nameArgLen = FormatNameTo(gCommonFormatArgs);
+        ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
 
         rct_string_id msg_string;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
@@ -5167,10 +5168,8 @@ void Guest::UpdateRideLeaveExit()
 
     if (peep_flags & PEEP_FLAGS_TRACKING)
     {
-        set_format_arg(0, rct_string_id, name_string_idx);
-        set_format_arg(2, uint32_t, id);
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32_t, ride->name_arguments);
+        auto nameArgLen = FormatNameTo(gCommonFormatArgs);
+        ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
 
         if (gConfigNotifications.guest_left_ride)
         {

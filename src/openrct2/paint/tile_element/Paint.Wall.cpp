@@ -411,52 +411,42 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         return;
     }
 
-    set_format_arg(0, uint32_t, 0);
-    set_format_arg(4, uint32_t, 0);
-
-    uint8_t secondaryColour = tile_element->AsWall()->GetSecondaryColour();
-
+    auto secondaryColour = tile_element->AsWall()->GetSecondaryColour();
     if (dword_141F710 != 0)
     {
         secondaryColour = COLOUR_GREY;
     }
-
     if (direction == 0)
     {
-        secondaryColour |= 0x80;
-    }
-
-    set_format_arg(7, uint8_t, secondaryColour);
-
-    uint16_t scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
-
-    auto banner = tile_element->AsWall()->GetBanner();
-
-    set_format_arg(0, rct_string_id, banner->string_idx);
-    if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
-    {
-        Ride* ride = get_ride(banner->ride_index);
-        set_format_arg(0, rct_string_id, ride->name);
-        set_format_arg(2, uint32_t, ride->name_arguments);
-    }
-
-    utf8 signString[256];
-    rct_string_id stringId = STR_SCROLLING_SIGN_TEXT;
-    if (gConfigGeneral.upper_case_banners)
-    {
-        format_string_to_upper(signString, sizeof(signString), stringId, gCommonFormatArgs);
+        secondaryColour = ColourMapA[secondaryColour].light;
     }
     else
     {
-        format_string(signString, sizeof(signString), stringId, gCommonFormatArgs);
+        secondaryColour = ColourMapA[secondaryColour].mid_dark;
     }
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
+    uint16_t scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
+    auto banner = tile_element->AsWall()->GetBanner();
+    if (banner != nullptr && !banner->IsNull())
+    {
+        banner->FormatTextTo(gCommonFormatArgs);
+        utf8 signString[256];
+        if (gConfigGeneral.upper_case_banners)
+        {
+            format_string_to_upper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
+        }
+        else
+        {
+            format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
+        }
 
-    uint16_t string_width = gfx_get_string_width(signString);
-    uint16_t scroll = (gCurrentTicks / 2) % string_width;
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-    sub_98199C(
-        session, scrolling_text_setup(session, stringId, scroll, scrollingMode), 0, 0, 1, 1, 13, height + 8, boundsOffset.x,
-        boundsOffset.y, boundsOffset.z);
+        uint16_t string_width = gfx_get_string_width(signString);
+        uint16_t scroll = (gCurrentTicks / 2) % string_width;
+
+        sub_98199C(
+            session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, scroll, scrollingMode, secondaryColour), 0, 0, 1, 1,
+            13, height + 8, boundsOffset.x, boundsOffset.y, boundsOffset.z);
+    }
 }

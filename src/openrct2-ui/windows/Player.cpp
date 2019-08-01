@@ -475,7 +475,6 @@ void window_player_statistics_close(rct_window* w)
 {
     if (w->error.var_480)
     {
-        user_string_free(w->error.var_480);
         w->error.var_480 = 0;
     }
 }

@@ -781,18 +781,10 @@ private:
         }
 
         // Ride name
-        dst->name = 0;
         if (is_user_string_id(src->name))
         {
-            std::string rideName = GetUserString(src->name);
-            if (!rideName.empty())
-            {
-                rct_string_id rideNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, rideName.c_str());
-                if (rideNameStringId != 0)
-                {
-                    dst->name = rideNameStringId;
-                }
-            }
+            auto rideName = GetUserString(src->name);
+            dst->custom_name = rct2_to_utf8(rideName, RCT2_LANGUAGE_ID_ENGLISH_UK);
         }
 
         dst->status = src->status;
@@ -1440,18 +1432,9 @@ private:
         dst->sprite_direction = src->sprite_direction;
 
         // Peep name
-        dst->name_string_idx = src->name_string_idx;
         if (is_user_string_id(src->name_string_idx))
         {
-            std::string peepName = GetUserString(src->name_string_idx);
-            if (!peepName.empty())
-            {
-                rct_string_id peepNameStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, peepName.c_str());
-                if (peepNameStringId != 0)
-                {
-                    dst->name_string_idx = peepNameStringId;
-                }
-            }
+            dst->SetName(GetUserString(src->name_string_idx));
         }
 
         dst->outside_of_park = src->outside_of_park;
@@ -2844,18 +2827,9 @@ private:
             dst->flags |= BANNER_FLAG_NO_ENTRY;
         }
 
-        dst->string_idx = STR_DEFAULT_SIGN;
         if (is_user_string_id(src->string_idx))
         {
-            std::string bannerText = GetUserString(src->string_idx);
-            if (!bannerText.empty())
-            {
-                rct_string_id bannerTextStringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, bannerText.c_str());
-                if (bannerTextStringId != 0)
-                {
-                    dst->string_idx = bannerTextStringId;
-                }
-            }
+            dst->text = GetUserString(src->string_idx);
         }
 
         dst->colour = RCT1::GetColour(src->colour);
@@ -2930,8 +2904,10 @@ private:
 
     std::string GetUserString(rct_string_id stringId)
     {
-        const char* originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
-        return rct2_to_utf8(originalString, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
+        std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
+        auto withoutFormatCodes = RCT12::RemoveFormatCodes(originalStringView);
+        return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
     }
 
     void FixLandOwnership()
@@ -3059,10 +3035,9 @@ private:
         Ride* ride;
         FOR_ALL_RIDES (i, ride)
         {
-            if (ride->name == 0)
+            if (ride->custom_name.empty())
             {
-                auto rideEntry = get_ride_entry(ride->subtype);
-                ride_set_name_to_default(ride, rideEntry);
+                ride->SetNameToDefault();
             }
         }
     }

@@ -273,7 +273,6 @@
 		C68878A020289B200084B384 /* LanguagePack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B31FFF935B00A52E21 /* LanguagePack.cpp */; };
 		C68878A120289B200084B384 /* Localisation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B51FFF935B00A52E21 /* Localisation.cpp */; };
 		C68878A220289B200084B384 /* RealNames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B71FFF935B00A52E21 /* RealNames.cpp */; };
-		C68878A320289B200084B384 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53B91FFF935B00A52E21 /* User.cpp */; };
 		C68878A420289B200084B384 /* UTF8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53BB1FFF935B00A52E21 /* UTF8.cpp */; };
 		C68878A520289B2A0084B384 /* Award.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B01F8E185600A9330D /* Award.cpp */; };
 		C68878A620289B2A0084B384 /* Finance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B21F8E185600A9330D /* Finance.cpp */; };
@@ -684,8 +683,6 @@
 		4C7B53B61FFF935B00A52E21 /* Localisation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Localisation.h; sourceTree = "<group>"; };
 		4C7B53B71FFF935B00A52E21 /* RealNames.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RealNames.cpp; sourceTree = "<group>"; };
 		4C7B53B81FFF935B00A52E21 /* StringIds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringIds.h; sourceTree = "<group>"; };
-		4C7B53B91FFF935B00A52E21 /* User.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = User.cpp; sourceTree = "<group>"; };
-		4C7B53BA1FFF935B00A52E21 /* user.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user.h; sourceTree = "<group>"; };
 		4C7B53BB1FFF935B00A52E21 /* UTF8.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UTF8.cpp; sourceTree = "<group>"; };
 		4C7B53C61FFF94F900A52E21 /* ConversionTables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConversionTables.cpp; sourceTree = "<group>"; };
 		4C7B53C91FFF991000A52E21 /* Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Language.h; sourceTree = "<group>"; };
@@ -2752,8 +2749,6 @@
 				4C7B53B61FFF935B00A52E21 /* Localisation.h */,
 				4C7B53B71FFF935B00A52E21 /* RealNames.cpp */,
 				4C7B53B81FFF935B00A52E21 /* StringIds.h */,
-				4C7B53B91FFF935B00A52E21 /* User.cpp */,
-				4C7B53BA1FFF935B00A52E21 /* user.h */,
 				4C7B53BB1FFF935B00A52E21 /* UTF8.cpp */,
 			);
 			path = localisation;
@@ -3933,7 +3928,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7C44AF82030E8D3007E099F /* AVX2Drawing.cpp in Sources */,
-				C68878A320289B200084B384 /* User.cpp in Sources */,
 				F70839931FFC0B61002DCEFA /* Scenario.cpp in Sources */,
 				C688791C20289B9B0084B384 /* Facility.cpp in Sources */,
 				C688790C20289B9B0084B384 /* CarRide.cpp in Sources */,
