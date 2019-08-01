@@ -72,7 +72,6 @@ namespace OpenRCT2
         constexpr uint32_t BANNERS          = 0x33;
         constexpr uint32_t ANIMATIONS       = 0x34;
         constexpr uint32_t STAFF            = 0x35;
-        constexpr uint32_t STRINGS          = 0x36;
 
         constexpr uint32_t DERIVED          = 0x50;
         // clang-format on
@@ -106,7 +105,6 @@ namespace OpenRCT2
             ReadWriteClimateChunk(os);
             ReadWriteResearchChunk(os);
             ReadWriteNotificationsChunk(os);
-            ReadWriteStringsChunk(os);
             ReadWriteInterfaceChunk(os);
 
             // Initial cash will eventually be removed
@@ -114,7 +112,6 @@ namespace OpenRCT2
             String::Set(gS6Info.name, sizeof(gS6Info.name), gScenarioName.c_str());
             String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName.c_str());
 
-            AutoCreateMapAnimations();
             AutoDeriveVariables();
         }
 
@@ -138,7 +135,6 @@ namespace OpenRCT2
             ReadWriteClimateChunk(os);
             ReadWriteResearchChunk(os);
             ReadWriteNotificationsChunk(os);
-            ReadWriteStringsChunk(os);
             ReadWriteInterfaceChunk(os);
         }
 
@@ -210,9 +206,8 @@ namespace OpenRCT2
                 cs.ReadWriteAs<uint8_t, uint32_t>(gS6Info.category);
                 ReadWriteStringTable(cs, gScenarioName, "en-GB");
 
-                std::string parkName(128, '\0');
-                format_string(parkName.data(), parkName.size(), gParkName, &gParkNameArgs);
-                ReadWriteStringTable(cs, parkName, "en-GB");
+                auto& park = GetContext()->GetGameState()->GetPark();
+                ReadWriteStringTable(cs, park.Name, "en-GB");
 
                 ReadWriteStringTable(cs, gScenarioDetails, "en-GB");
 
@@ -316,7 +311,8 @@ namespace OpenRCT2
         void ReadWriteParkChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::PARK, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gParkNameArgs);
+                auto& park = GetContext()->GetGameState()->GetPark();
+                cs.ReadWrite(park.Name);
                 cs.ReadWrite(gCash);
                 cs.ReadWrite(gBankLoan);
                 cs.ReadWrite(gMaxBankLoan);
@@ -473,8 +469,8 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.lifecycle_flags);
 
                     // Meta
-                    cs.ReadWrite(ride.name);
-                    cs.ReadWrite(ride.name_arguments);
+                    cs.ReadWrite(ride.custom_name);
+                    cs.ReadWrite(ride.default_name_number);
 
                     cs.ReadWrite(ride.price);
                     cs.ReadWrite(ride.price_secondary);
@@ -694,7 +690,7 @@ namespace OpenRCT2
         void ReadWriteThingsChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::THINGS, [](OrcaStream::ChunkStream& cs) {
-                for (size_t i = 0; i < NUM_SPRITE_LISTS; i++)
+                for (size_t i = 0; i < SPRITE_LIST_COUNT; i++)
                 {
                     cs.ReadWrite(gSpriteListHead[i]);
                     cs.ReadWrite(gSpriteListCount[i]);
@@ -705,76 +701,6 @@ namespace OpenRCT2
                     cs.ReadWrite(sprite);
                 }
             });
-        }
-
-        void ReadWriteStringsChunk(OrcaStream& os)
-        {
-            os.ReadWriteChunk(ParkFileChunkType::STRINGS, [](OrcaStream::ChunkStream& cs) {
-                if (cs.GetMode() == OrcaStream::Mode::READING)
-                {
-                    user_string_clear_all();
-                    for (size_t i = 0; i < MAX_USER_STRINGS; i++)
-                    {
-                        auto src = cs.Read<std::string>();
-                        if (src.size() >= USER_STRING_MAX_LENGTH)
-                        {
-                            src.resize(USER_STRING_MAX_LENGTH - 1);
-                        }
-                        std::memcpy(&gUserStrings[i][0], src.data(), src.size());
-                    }
-                }
-                else
-                {
-                    for (size_t i = 0; i < MAX_USER_STRINGS; i++)
-                    {
-                        std::string_view s(&gUserStrings[i][0], 32);
-                        cs.Write(s);
-                    }
-                }
-            });
-        }
-
-        void AutoCreateMapAnimations()
-        {
-            // Automatically create map animations from tile elements
-            // TODO this should also be done when importing S4 and S6 files
-            tile_element_iterator it;
-            tile_element_iterator_begin(&it);
-            while (tile_element_iterator_next(&it))
-            {
-                auto el = it.element;
-                switch (el->GetType())
-                {
-                    case TILE_ELEMENT_TYPE_PATH:
-                    {
-                        auto path = el->AsPath();
-                        if (path->HasQueueBanner())
-                        {
-                            map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, it.x * 32, it.y * 32, path->base_height);
-                        }
-                        break;
-                    }
-                    case TILE_ELEMENT_TYPE_ENTRANCE:
-                    {
-                        auto entrance = el->AsEntrance();
-                        switch (entrance->GetEntranceType())
-                        {
-                            case ENTRANCE_TYPE_PARK_ENTRANCE:
-                                if (entrance->GetSequenceIndex() == 0)
-                                {
-                                    map_animation_create(
-                                        MAP_ANIMATION_TYPE_PARK_ENTRANCE, it.x * 32, it.y * 32, entrance->base_height);
-                                }
-                                break;
-                            case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                                map_animation_create(
-                                    MAP_ANIMATION_TYPE_RIDE_ENTRANCE, it.x * 32, it.y * 32, entrance->base_height);
-                                break;
-                        }
-                        break;
-                    }
-                }
-            }
         }
 
         void AutoDeriveVariables()
