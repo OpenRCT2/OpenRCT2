@@ -255,13 +255,7 @@ void get_ride_entry_name(char* name, int32_t index)
 
 rct_ride_entry* Ride::GetRideEntry() const
 {
-    rct_ride_entry* rideEntry = get_ride_entry(subtype);
-    if (rideEntry == nullptr)
-    {
-        auto rideName = GetName();
-        log_error("Invalid ride subtype for ride %s", rideName.c_str());
-    }
-    return rideEntry;
+    return get_ride_entry(subtype);
 }
 
 /**
