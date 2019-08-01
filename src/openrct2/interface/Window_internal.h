@@ -132,6 +132,8 @@ struct rct_window
     virtual void OnListViewMessage(ListViewMessage& msg)
     {
     }
+
+    size_t GetListViewItemIndexAt(uint8_t scrollIndex, int32_t theY);
 };
 
 // rct2: 0x01420078
