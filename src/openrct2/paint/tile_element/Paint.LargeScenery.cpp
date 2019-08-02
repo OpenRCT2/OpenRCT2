@@ -411,31 +411,31 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         return;
     }
     // Draw scrolling text:
-    set_format_arg(0, uint32_t, 0);
-    set_format_arg(4, uint32_t, 0);
     uint8_t textColour = tileElement->AsLargeScenery()->GetSecondaryColour();
     if (dword_F4387C)
     {
         textColour = COLOUR_GREY;
     }
-    if (direction == 3)
+    if (direction == 0)
     {
-        textColour |= (1 << 7);
+        textColour = ColourMapA[textColour].mid_dark;
+    }
+    else
+    {
+        textColour = ColourMapA[textColour].light;
     }
     // 6B809A:
-    set_format_arg(7, uint8_t, textColour);
     uint16_t scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
     auto banner = tileElement->AsLargeScenery()->GetBanner();
     banner->FormatTextTo(gCommonFormatArgs);
     utf8 signString[256];
-    rct_string_id stringId = STR_SCROLLING_SIGN_TEXT;
     if (gConfigGeneral.upper_case_banners)
     {
-        format_string_to_upper(signString, sizeof(signString), STR_STRINGID, gCommonFormatArgs);
+        format_string_to_upper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
     }
     else
     {
-        format_string(signString, sizeof(signString), STR_STRINGID, gCommonFormatArgs);
+        format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
     }
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -443,8 +443,8 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     uint16_t string_width = gfx_get_string_width(signString);
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
     sub_98199C(
-        session, scrolling_text_setup(session, stringId, scroll, scrollMode, banner->colour), 0, 0, 1, 1, 21, height + 25,
-        boxoffset.x, boxoffset.y, boxoffset.z);
+        session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, scroll, scrollMode, textColour), 0, 0, 1, 1, 21,
+        height + 25, boxoffset.x, boxoffset.y, boxoffset.z);
 
     large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
 }
