@@ -546,6 +546,7 @@ namespace OpenRCT2
                         gCurrentLoadedPath = path;
                         gFirstTimeSaving = true;
                         game_fix_save_vars();
+                        AutoCreateMapAnimations();
                         sprite_position_tween_reset();
                         gScreenAge = 0;
                         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;

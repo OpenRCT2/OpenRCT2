@@ -333,7 +333,6 @@ BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_
  */
 void map_init(int32_t size)
 {
-    gNumMapAnimations = 0;
     gNextFreeTileElementPointerIndex = 0;
 
     for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
@@ -362,6 +361,7 @@ void map_init(int32_t size)
     gMapBaseZ = 7;
     map_update_tile_pointers();
     map_remove_out_of_range_elements();
+    AutoCreateMapAnimations();
 
     auto intent = Intent(INTENT_ACTION_MAP);
     context_broadcast_intent(&intent);

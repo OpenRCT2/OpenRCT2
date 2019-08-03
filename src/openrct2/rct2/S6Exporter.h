@@ -66,6 +66,7 @@ private:
     void ExportRideMeasurement(RCT12RideMeasurement& dst, const RideMeasurement& src);
     void ExportBanners();
     void ExportBanner(RCT12Banner& dst, const Banner& src);
+    void ExportMapAnimations();
 
     opt::optional<uint16_t> AllocateUserString(const std::string_view& value);
     void ExportUserStrings();
