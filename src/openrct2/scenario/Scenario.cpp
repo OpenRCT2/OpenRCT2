@@ -646,9 +646,27 @@ void scenario_fix_ghosts(rct_s6_data* s6)
     }
 }
 
+static void ride_all_has_any_track_elements(bool* rideIndexArray)
+{
+    tile_element_iterator it;
+
+    std::fill_n(rideIndexArray, MAX_RIDES, false);
+
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            continue;
+        if (it.element->IsGhost())
+            continue;
+
+        rideIndexArray[it.element->AsTrack()->GetRideIndex()] = true;
+    }
+}
+
 void scenario_remove_trackless_rides(rct_s6_data* s6)
 {
-    bool rideHasTrack[MAX_RIDES];
+    bool rideHasTrack[RCT12_MAX_RIDES_IN_PARK];
     ride_all_has_any_track_elements(rideHasTrack);
     for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {

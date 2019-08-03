@@ -1571,34 +1571,31 @@ void window_guest_rides_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_2);
     widget_invalidate(w, WIDX_TAB_3);
 
-    Peep* peep = GET_PEEP(w->number);
-
-    // Every 2048 ticks do a full window_invalidate
-    int32_t number_of_ticks = gScenarioTicks - peep->time_in_park;
-    if (!(number_of_ticks & 0x7FF))
-        window_invalidate(w);
-
-    uint8_t curr_list_position = 0;
-    for (ride_id_t ride_id = 0; ride_id < MAX_RIDES; ride_id++)
+    auto peep = GET_PEEP(w->number);
+    auto guest = peep->AsGuest();
+    if (guest != nullptr)
     {
-        // Offset to the ride_id bit in peep_rides_been_on
-        uint8_t ride_id_bit = ride_id % 8;
-        uint8_t ride_id_offset = ride_id / 8;
-        if (peep->rides_been_on[ride_id_offset] & (1 << ride_id_bit))
+        // Every 2048 ticks do a full window_invalidate
+        int32_t number_of_ticks = gScenarioTicks - peep->time_in_park;
+        if (!(number_of_ticks & 0x7FF))
+            window_invalidate(w);
+
+        uint8_t curr_list_position = 0;
+        for (const auto& ride : GetRideManager())
         {
-            Ride* ride = get_ride(ride_id);
-            if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+            if (guest->HasRidden(&ride) && gRideClassifications[ride.type] == RIDE_CLASS_RIDE)
             {
-                w->list_item_positions[curr_list_position] = ride_id;
+                w->list_item_positions[curr_list_position] = ride.id;
                 curr_list_position++;
             }
         }
-    }
-    // If there are new items
-    if (w->no_list_items != curr_list_position)
-    {
-        w->no_list_items = curr_list_position;
-        window_invalidate(w);
+
+        // If there are new items
+        if (w->no_list_items != curr_list_position)
+        {
+            w->no_list_items = curr_list_position;
+            window_invalidate(w);
+        }
     }
 }
 

@@ -482,7 +482,7 @@ public:
             auto src = &_s6.rides[index];
             if (src->type != RIDE_TYPE_NULL)
             {
-                auto dst = get_ride(index);
+                auto dst = GetOrAllocateRide(index);
                 ImportRide(dst, src, index);
             }
         }

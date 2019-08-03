@@ -12,3 +12,4 @@
 #include <cstdint>
 
 typedef uint8_t ride_id_t;
+struct Ride;

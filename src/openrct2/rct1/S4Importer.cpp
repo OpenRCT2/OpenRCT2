@@ -741,7 +741,7 @@ private:
         {
             if (_s4.rides[i].type != RIDE_TYPE_NULL)
             {
-                ImportRide(get_ride(i), &_s4.rides[i], i);
+                ImportRide(GetOrAllocateRide(i), &_s4.rides[i], i);
             }
         }
     }

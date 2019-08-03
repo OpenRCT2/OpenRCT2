@@ -493,13 +493,11 @@ int32_t Park::CalculateParkRating() const
 
 money32 Park::CalculateParkValue() const
 {
-    money32 result = 0;
-
     // Sum ride values
-    for (int32_t i = 0; i < MAX_RIDES; i++)
+    money32 result = 0;
+    for (const auto& ride : GetRideManager())
     {
-        auto ride = get_ride(i);
-        result += CalculateRideValue(ride);
+        result += CalculateRideValue(&ride);
     }
 
     // +7.00 per guest

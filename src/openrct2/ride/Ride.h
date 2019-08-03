@@ -40,6 +40,7 @@ struct Staff;
 #define MAX_STATIONS 4
 #define MAX_RIDES 255
 #define RIDE_ID_NULL 255
+#define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
 constexpr uint16_t const MAX_INVERSIONS = RCT12_MAX_INVERSIONS;
@@ -201,8 +202,8 @@ struct RideMeasurement
  */
 struct Ride
 {
-    ride_id_t id;
-    uint8_t type;
+    ride_id_t id = RIDE_ID_NULL;
+    uint8_t type = RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
     uint8_t subtype;
@@ -544,7 +545,6 @@ enum
 
 enum
 {
-    RIDE_TYPE_NULL = 255,
     RIDE_TYPE_SPIRAL_ROLLER_COASTER = 0,
     RIDE_TYPE_STAND_UP_ROLLER_COASTER,
     RIDE_TYPE_SUSPENDED_SWINGING_COASTER,
@@ -990,24 +990,92 @@ struct rct_ride_properties
 
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
-/** Helper macros until rides are stored in this module. */
-Ride* get_ride(int32_t index);
+Ride* get_ride(ride_id_t index);
+
+struct RideManager
+{
+    const Ride* operator[](ride_id_t id) const
+    {
+        return get_ride(id);
+    }
+
+    Ride* operator[](ride_id_t id)
+    {
+        return get_ride(id);
+    }
+
+    class Iterator
+    {
+        friend RideManager;
+
+    private:
+        RideManager& _rideManager;
+        size_t _index{};
+        size_t _endIndex{};
+
+    public:
+        using difference_type = ride_id_t;
+        using value_type = Ride;
+        using pointer = const Ride*;
+        using reference = const Ride&;
+        using iterator_category = std::forward_iterator_tag;
+
+    private:
+        Iterator(RideManager& rideManager, size_t beginIndex, size_t endIndex)
+            : _rideManager(rideManager)
+            , _index(beginIndex)
+            , _endIndex(endIndex)
+        {
+            if (_index < _endIndex && _rideManager[(ride_id_t)_index] == nullptr)
+            {
+                ++(*this);
+            }
+        }
+
+    public:
+        Iterator& operator++()
+        {
+            do
+            {
+                _index++;
+            } while (_index < _endIndex && _rideManager[(ride_id_t)_index] == nullptr);
+            return *this;
+        }
+        Iterator operator++(int)
+        {
+            auto result = *this;
+            ++(*this);
+            return result;
+        }
+        bool operator==(Iterator other) const
+        {
+            return _index == other._index;
+        }
+        bool operator!=(Iterator other) const
+        {
+            return !(*this == other);
+        }
+        Ride& operator*()
+        {
+            return *_rideManager[(ride_id_t)_index];
+        }
+    };
+
+    Iterator begin();
+    Iterator end();
+};
+
+RideManager GetRideManager();
+ride_id_t GetNextFreeRideId();
+Ride* GetOrAllocateRide(ride_id_t index);
 rct_ride_entry* get_ride_entry(int32_t index);
 std::string_view get_ride_entry_name(size_t index);
 RideMeasurement* get_ride_measurement(int32_t index);
-
-/**
- * Helper macro loop for enumerating through all the non null rides.
- */
-#define FOR_ALL_RIDES(i, ride)                                                                                                 \
-    for (i = 0; i < MAX_RIDES; i++)                                                                                            \
-        if ((ride = get_ride(i))->type != RIDE_TYPE_NULL)
 
 extern money16 gTotalRideValueForMoney;
 
 extern const uint8_t gRideClassifications[MAX_RIDES];
 
-extern Ride gRideList[MAX_RIDES];
 extern const rct_string_id ColourSchemeNames[4];
 
 extern uint16_t gRideCount;
@@ -1130,7 +1198,6 @@ uint8_t ride_get_helix_sections(Ride* ride);
 
 bool ride_type_has_flag(int32_t rideType, uint32_t flag);
 bool ride_has_any_track_elements(const Ride* ride);
-void ride_all_has_any_track_elements(bool* rideIndexArray);
 
 void ride_construction_set_default_next_piece();
 
@@ -1208,5 +1275,9 @@ LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
+
+#define FOR_ALL_RIDES(i, ride)                                                                                                 \
+    for (auto& __ride : GetRideManager())                                                                                      \
+        if ((ride = &__ride) != nullptr && (i = __ride.id) != RIDE_ID_NULL)
 
 #endif

@@ -462,9 +462,14 @@ void S6Exporter::ExportParkName()
 
 void S6Exporter::ExportRides()
 {
+    const Ride nullRide{};
     for (int32_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
     {
-        auto src = get_ride(index);
+        const auto* src = get_ride(index);
+        if (src == nullptr)
+        {
+            src = &nullRide;
+        }
         auto dst = &_s6.rides[index];
         *dst = {};
         if (src->type == RIDE_TYPE_NULL)

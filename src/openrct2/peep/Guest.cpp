@@ -1883,18 +1883,17 @@ Ride* Guest::FindBestRideToGoOn()
     // Pick the most exciting ride
     auto rideConsideration = FindRidesToGoOn();
     Ride* mostExcitingRide = nullptr;
-    for (int32_t i = 0; i < MAX_RIDES; i++)
+    for (auto& ride : GetRideManager())
     {
-        if (rideConsideration[i])
+        if (rideConsideration.size() > ride.id && rideConsideration[ride.id])
         {
-            auto ride = get_ride(i);
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
+            if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
-                if (ShouldGoOnRide(ride, 0, false, true) && ride_has_ratings(ride))
+                if (ShouldGoOnRide(&ride, 0, false, true) && ride_has_ratings(&ride))
                 {
-                    if (mostExcitingRide == nullptr || ride->excitement > mostExcitingRide->excitement)
+                    if (mostExcitingRide == nullptr || ride.excitement > mostExcitingRide->excitement)
                     {
-                        mostExcitingRide = ride;
+                        mostExcitingRide = &ride;
                     }
                 }
             }
@@ -2372,13 +2371,13 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount)
     audio_play_sound_at_location(SoundId::Purchase, x, y, z);
 }
 
-void Guest::SetHasRidden(Ride* ride)
+void Guest::SetHasRidden(const Ride* ride)
 {
     rides_been_on[ride->id / 8] |= 1 << (ride->id % 8);
     SetHasRiddenRideType(ride->type);
 }
 
-bool Guest::HasRidden(Ride* ride) const
+bool Guest::HasRidden(const Ride* ride) const
 {
     return rides_been_on[ride->id / 8] & (1 << (ride->id % 8));
 }

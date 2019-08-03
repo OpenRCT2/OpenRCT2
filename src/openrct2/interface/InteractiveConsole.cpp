@@ -1225,16 +1225,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     map_reorganise_elements();
     int32_t tileElementCount = gNextFreeTileElement - gTileElements - 1;
 
-    int32_t rideCount = 0;
-    for (int32_t i = 0; i < MAX_RIDES; ++i)
-    {
-        Ride* ride = get_ride(i);
-        if (ride->type != RIDE_TYPE_NULL)
-        {
-            rideCount++;
-        }
-    }
-
+    int32_t rideCount = ride_get_count();
     int32_t spriteCount = 0;
     for (int32_t i = 1; i < SPRITE_LIST_COUNT; ++i)
     {

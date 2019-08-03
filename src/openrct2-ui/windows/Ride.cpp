@@ -958,7 +958,7 @@ struct ride_overall_view {
     uint8_t zoom;
 };
 
-static ride_overall_view ride_overall_views[MAX_RIDES] = {};
+static std::vector<ride_overall_view> ride_overall_views = {};
 
 static constexpr const int32_t window_ride_tab_animation_divisor[] = { 0, 0, 2, 2, 4, 2, 8, 8, 2, 0 };
 static constexpr const int32_t window_ride_tab_animation_frames[] = { 0, 0, 4, 16, 8, 16, 8, 8, 8, 0 };
@@ -1498,10 +1498,15 @@ static void window_ride_update_overall_view(Ride* ride)
         maxz = std::max(maxz, z2);
     }
 
-    auto view = &ride_overall_views[ride->id];
-    view->x = (minx + maxx) / 2 + 16;
-    view->y = (miny + maxy) / 2 + 16;
-    view->z = (minz + maxz) / 2 - 8;
+    if (ride->id >= ride_overall_views.size())
+    {
+        ride_overall_views.resize(ride->id + 1);
+    }
+
+    auto& view = ride_overall_views[ride->id];
+    view.x = (minx + maxx) / 2 + 16;
+    view.y = (miny + maxy) / 2 + 16;
+    view.z = (minz + maxz) / 2 - 8;
 
     // Calculate size to determine from how far away to view the ride
     int32_t dx = maxx - minx;
@@ -1514,12 +1519,12 @@ static void window_ride_update_overall_view(Ride* ride)
     {
         // Each farther zoom level shows twice as many tiles (log)
         // Appropriate zoom is lowered by one to fill the entire view with the ride
-        view->zoom = std::clamp<int32_t>(std::ceil(std::log(size / 80)) - 1, 0, 3);
+        view.zoom = std::clamp<int32_t>(std::ceil(std::log(size / 80)) - 1, 0, 3);
     }
     else
     {
         // Small rides or stalls are zoomed in all the way.
-        view->zoom = 0;
+        view.zoom = 0;
     }
 }
 
@@ -1906,14 +1911,15 @@ static void window_ride_init_viewport(rct_window* w)
             w->viewport_focus_coordinates.var_480 = 0;
         }
 
-        ride_overall_view* view = &ride_overall_views[w->number];
-
-        focus.coordinate.x = view->x;
-        focus.coordinate.y = view->y;
-        focus.coordinate.z = view->z;
-        focus.coordinate.zoom = view->zoom;
-
-        focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+        if (w->number < ride_overall_views.size())
+        {
+            const auto& view = ride_overall_views[w->number];
+            focus.coordinate.x = view.x;
+            focus.coordinate.y = view.y;
+            focus.coordinate.z = view.z;
+            focus.coordinate.zoom = view.zoom;
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+        }
     }
     focus.coordinate.var_480 = w->viewport_focus_coordinates.var_480;
 

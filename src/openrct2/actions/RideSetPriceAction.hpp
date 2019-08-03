@@ -159,35 +159,42 @@ public:
 private:
     void RideSetCommonPrice(int32_t shopItem) const
     {
-        Ride* ride = get_ride(0);
-        for (uint8_t rideId = 0; rideId < MAX_RIDES; rideId++, ride++)
+        for (auto& ride : GetRideManager())
         {
-            // Unplaced rides have a type of NULL
-            if (ride->type == RIDE_TYPE_NULL)
-                continue;
-
-            rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-
-            if (ride->type != RIDE_TYPE_TOILETS || shopItem != SHOP_ITEM_ADMISSION)
+            auto invalidate = false;
+            auto rideEntry = get_ride_entry(ride.subtype);
+            if (ride.type == RIDE_TYPE_TOILETS && shopItem == SHOP_ITEM_ADMISSION)
             {
-                if (rideEntry->shop_item == shopItem)
+                if (ride.price != _price)
                 {
-                    ride->price = _price;
-                    window_invalidate_by_number(WC_RIDE, rideId);
+                    ride.price = _price;
+                    invalidate = true;
                 }
             }
-            else
+            else if (rideEntry != nullptr && rideEntry->shop_item == shopItem)
             {
-                ride->price = _price;
-                window_invalidate_by_number(WC_RIDE, rideId);
+                if (ride.price != _price)
+                {
+                    ride.price = _price;
+                    invalidate = true;
+                }
             }
-
-            // If the shop item is the same or an on-ride photo
-            if (rideEntry->shop_item_secondary == shopItem
-                || (rideEntry->shop_item_secondary == SHOP_ITEM_NONE && shop_item_is_photo(shopItem)))
+            if (rideEntry != nullptr)
             {
-                ride->price_secondary = _price;
-                window_invalidate_by_number(WC_RIDE, rideId);
+                // If the shop item is the same or an on-ride photo
+                if (rideEntry->shop_item_secondary == shopItem
+                    || (rideEntry->shop_item_secondary == SHOP_ITEM_NONE && shop_item_is_photo(shopItem)))
+                {
+                    if (ride.price_secondary != _price)
+                    {
+                        ride.price_secondary = _price;
+                        invalidate = true;
+                    }
+                }
+            }
+            if (invalidate)
+            {
+                window_invalidate_by_number(WC_RIDE, ride.id);
             }
         }
     }
