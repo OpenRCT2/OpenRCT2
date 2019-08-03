@@ -770,26 +770,29 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
 static void track_list_load_designs(ride_list_item item)
 {
     auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-    if (!RideGroupManager::RideTypeHasRideGroups(item.type))
+    if (RideGroupManager::RideTypeHasRideGroups(item.type))
     {
-        char entry[9];
-        const char* entryPtr = nullptr;
+        auto rideEntry = get_ride_entry(item.entry_index);
+        if (rideEntry != nullptr)
+        {
+            auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
+            if (rideGroup != nullptr)
+            {
+                _trackDesigns = repo->GetItemsForRideGroup(item.type, rideGroup);
+            }
+        }
+    }
+    else
+    {
+        std::string entryName;
         if (item.type < 0x80)
         {
             if (RideGroupManager::RideTypeIsIndependent(item.type))
             {
-                get_ride_entry_name(entry, item.entry_index);
-                entryPtr = entry;
+                entryName = get_ride_entry_name(item.entry_index);
             }
         }
-
-        _trackDesigns = repo->GetItemsForObjectEntry(item.type, String::ToStd(entryPtr));
-    }
-    else
-    {
-        auto rideEntry = get_ride_entry(item.entry_index);
-        auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
-        _trackDesigns = repo->GetItemsForRideGroup(item.type, rideGroup);
+        _trackDesigns = repo->GetItemsForObjectEntry(item.type, entryName);
     }
 
     window_track_list_filter_list();

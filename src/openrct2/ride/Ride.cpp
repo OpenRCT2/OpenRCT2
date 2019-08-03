@@ -240,17 +240,20 @@ rct_ride_entry* get_ride_entry(int32_t index)
     return result;
 }
 
-void get_ride_entry_name(char* name, int32_t index)
+std::string_view get_ride_entry_name(size_t index)
 {
-    if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
+    if (index >= (size_t)object_entry_group_counts[OBJECT_TYPE_RIDE])
     {
         log_error("invalid index %d for ride type", index);
-        return;
+        return {};
     }
 
-    const auto entryName = object_entry_get_entry(OBJECT_TYPE_RIDE, index)->name;
-    std::memcpy(name, entryName, 8);
-    name[8] = '\0';
+    auto objectEntry = object_entry_get_entry(OBJECT_TYPE_RIDE, index);
+    if (objectEntry != nullptr)
+    {
+        return objectEntry->GetName();
+    }
+    return {};
 }
 
 rct_ride_entry* Ride::GetRideEntry() const
@@ -6678,8 +6681,7 @@ uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCa
 // Finds track pieces that a given ride entry has sprites for
 uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
 {
-    uint64_t supportedPieces = 0xFFFFFFFFFFFFFFFFULL;
-    uint16_t trackPieceRequiredSprites[55] = {
+    static constexpr uint16_t trackPieceRequiredSprites[55] = {
         0x0001u, 0x0001u, 0x0001u, 0x0000u, 0x0006u, 0x0002u, 0x0020u, 0x000E,  0x0003u, 0x0006u, 0x0007u,
         0x0002u, 0x0004u, 0x0001u, 0x0001u, 0x0001u, 0x0001u, 0x0061u, 0x000E,  0x1081u, 0x0001u, 0x0020u,
         0x0020u, 0x0001u, 0x0001u, 0x0000u, 0x0001u, 0x0001u, 0x000C,  0x0061u, 0x0002u, 0x000E,  0x0480u,
@@ -6689,13 +6691,19 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
 
     // Only check default vehicle; it's assumed the others will have correct sprites if this one does (I've yet to find an
     // exception, at least)
-    for (int32_t j = 0; j < 55; j++)
+    auto supportedPieces = std::numeric_limits<uint64_t>::max();
+    auto defaultVehicle = rideEntry->GetDefaultVehicle();
+    if (defaultVehicle != nullptr)
     {
-        if ((rideEntry->vehicles[rideEntry->default_vehicle].sprite_flags & trackPieceRequiredSprites[j])
-            != trackPieceRequiredSprites[j])
-            supportedPieces &= ~(1ULL << j);
+        const auto defaultSpriteFlags = defaultVehicle->sprite_flags;
+        for (size_t i = 0; i < std::size(trackPieceRequiredSprites); i++)
+        {
+            if ((defaultSpriteFlags & trackPieceRequiredSprites[i]) != trackPieceRequiredSprites[i])
+            {
+                supportedPieces &= ~(1ULL << i);
+            }
+        }
     }
-
     return supportedPieces;
 }
 
