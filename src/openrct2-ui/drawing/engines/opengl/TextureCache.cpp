@@ -134,6 +134,40 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, const Palet
     return (*it.first).second;
 }
 
+BasicTextureInfo TextureCache::GetOrLoadBitmapTexture(uint32_t image, const void* pixels, size_t width, size_t height)
+{
+    uint32_t index;
+
+    image &= 0x7FFFF;
+
+    // Try to read cached texture first.
+    {
+        shared_lock lock(_mutex);
+
+        index = _indexMap[image];
+        if (index != UNUSED_INDEX)
+        {
+            const auto& info = _textureCache[index];
+            return {
+                info.index,
+                info.normalizedBounds,
+            };
+        }
+    }
+
+    // Load new texture.
+    unique_lock lock(_mutex);
+
+    index = uint32_t(_textureCache.size());
+
+    AtlasTextureInfo info = LoadBitmapTexture(image, pixels, width, height);
+
+    _textureCache.push_back(info);
+    _indexMap[image] = index;
+
+    return info;
+}
+
 void TextureCache::CreateTextures()
 {
     if (!_initialized)
@@ -267,6 +301,17 @@ AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, const PaletteMap
 
     DeleteDPI(dpi);
 
+    return cacheInfo;
+}
+
+AtlasTextureInfo TextureCache::LoadBitmapTexture(uint32_t image, const void* pixels, size_t width, size_t height)
+{
+    auto cacheInfo = AllocateImage(int32_t(width), int32_t(height));
+    cacheInfo.image = image;
+    glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
+    glTexSubImage3D(
+        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, GLsizei(width), GLsizei(height), 1,
+        GL_RED_INTEGER, GL_UNSIGNED_BYTE, reinterpret_cast<const GLvoid*>(pixels));
     return cacheInfo;
 }
 
