@@ -1399,7 +1399,7 @@ void Guest::CheckIfLost()
 {
     if (!(peep_flags & PEEP_FLAGS_LOST))
     {
-        if (gRideCount < 2)
+        if (ride_get_count() < 2)
             return;
         peep_flags ^= PEEP_FLAGS_21;
 
@@ -6510,7 +6510,7 @@ static bool peep_should_watch_ride(TileElement* tileElement)
             return false;
     }
 
-    if (gRideClassifications[ride->type] != RIDE_CLASS_RIDE)
+    if (!ride->IsRide())
     {
         return false;
     }

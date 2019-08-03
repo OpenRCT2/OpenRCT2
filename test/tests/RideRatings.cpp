@@ -68,7 +68,6 @@ TEST_F(RideRatings, all)
     load_from_sv6(path.c_str());
 
     // Check ride count to check load was successful
-    ASSERT_EQ(gRideCount, 134);
     ASSERT_EQ(ride_get_count(), 134);
 
     CalculateRatingsForAllRides();

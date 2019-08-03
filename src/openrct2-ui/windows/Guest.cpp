@@ -1583,7 +1583,7 @@ void window_guest_rides_update(rct_window* w)
         uint8_t curr_list_position = 0;
         for (const auto& ride : GetRideManager())
         {
-            if (guest->HasRidden(&ride) && gRideClassifications[ride.type] == RIDE_CLASS_RIDE)
+            if (ride.IsRide() && guest->HasRidden(&ride))
             {
                 w->list_item_positions[curr_list_position] = ride.id;
                 curr_list_position++;

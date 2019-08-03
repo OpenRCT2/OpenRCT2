@@ -12,6 +12,7 @@
 #include "../interface/Window.h"
 #include "Window.h"
 
+#include <algorithm>
 #include <iterator>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -1040,7 +1041,7 @@ static void window_editor_objective_options_rides_update(rct_window* w)
     numItems = 0;
     FOR_ALL_RIDES (i, ride)
     {
-        if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+        if (ride->IsRide())
         {
             w->list_item_positions[numItems] = i;
             numItems++;
@@ -1187,20 +1188,9 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
  */
 static void window_editor_objective_options_update_disabled_widgets(rct_window* w)
 {
-    Ride* ride;
-    int32_t i, numRides;
-
     // Check if there are any rides (not shops or facilities)
-    numRides = 0;
-    FOR_ALL_RIDES (i, ride)
-    {
-        if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
-        {
-            numRides++;
-        }
-    }
-
-    if (numRides != 0)
+    const auto& rideManager = GetRideManager();
+    if (std::any_of(rideManager.begin(), rideManager.end(), [](const Ride& ride) { return ride.IsRide(); }))
     {
         w->disabled_widgets &= ~(1 << WIDX_TAB_2);
     }

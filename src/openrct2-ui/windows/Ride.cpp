@@ -1264,32 +1264,32 @@ static void window_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, in
 static void window_ride_draw_tab_main(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_MAIN;
-
     if (!(w->disabled_widgets & (1LL << widgetIndex)))
     {
-        int32_t spriteIndex = 0;
-        int32_t rideType = get_ride(w->number)->type;
-
-        switch (gRideClassifications[rideType])
+        auto ride = get_ride(w->number);
+        if (ride != nullptr)
         {
-            case RIDE_CLASS_RIDE:
-                spriteIndex = SPR_TAB_RIDE_0;
-                if (w->page == WINDOW_RIDE_PAGE_MAIN)
-                    spriteIndex += (w->frame_no / 4) % 16;
-                break;
-            case RIDE_CLASS_SHOP_OR_STALL:
-                spriteIndex = SPR_TAB_SHOPS_AND_STALLS_0;
-                if (w->page == WINDOW_RIDE_PAGE_MAIN)
-                    spriteIndex += (w->frame_no / 4) % 16;
-                break;
-            case RIDE_CLASS_KIOSK_OR_FACILITY:
-                spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
-                if (w->page == WINDOW_RIDE_PAGE_MAIN)
-                    spriteIndex += (w->frame_no / 4) % 8;
-                break;
+            int32_t spriteIndex = 0;
+            switch (ride->GetClassification())
+            {
+                case RideClassification::Ride:
+                    spriteIndex = SPR_TAB_RIDE_0;
+                    if (w->page == WINDOW_RIDE_PAGE_MAIN)
+                        spriteIndex += (w->frame_no / 4) % 16;
+                    break;
+                case RideClassification::ShopOrStall:
+                    spriteIndex = SPR_TAB_SHOPS_AND_STALLS_0;
+                    if (w->page == WINDOW_RIDE_PAGE_MAIN)
+                        spriteIndex += (w->frame_no / 4) % 16;
+                    break;
+                case RideClassification::KioskOrFacility:
+                    spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
+                    if (w->page == WINDOW_RIDE_PAGE_MAIN)
+                        spriteIndex += (w->frame_no / 4) % 8;
+                    break;
+            }
+            gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
         }
-
-        gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
     }
 }
 
@@ -2296,8 +2296,9 @@ static void populate_vehicle_type_dropdown(Ride* ride)
     bool selectionShouldBeExpanded;
     int32_t rideTypeIterator, rideTypeIteratorMax;
     if (gCheatsShowVehiclesFromOtherTrackTypes
-        && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-             || ride->type == RIDE_TYPE_MINI_GOLF))
+        && !(
+            ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
+            || ride->type == RIDE_TYPE_MINI_GOLF))
     {
         selectionShouldBeExpanded = true;
         rideTypeIterator = 0;
@@ -6837,7 +6838,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y = w->y + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     // Customers currently on ride
-    if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+    if (ride->IsRide())
     {
         int16_t customersOnRide = ride->num_riders;
         gfx_draw_string_left(dpi, STR_CUSTOMERS_ON_RIDE, &customersOnRide, COLOUR_BLACK, x, y);
@@ -6878,7 +6879,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     // Queue time
-    if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+    if (ride->IsRide())
     {
         queueTime = ride->GetMaxQueueTime();
         stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
@@ -6912,7 +6913,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     // Guests favourite
-    if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+    if (ride->IsRide())
     {
         stringId = ride->guests_favourite == 1 ? STR_FAVOURITE_RIDE_OF_GUEST : STR_FAVOURITE_RIDE_OF_GUESTS;
         gfx_draw_string_left(dpi, stringId, &ride->guests_favourite, COLOUR_BLACK, x, y);

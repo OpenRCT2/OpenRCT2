@@ -194,6 +194,13 @@ struct RideMeasurement
     uint8_t altitude[MAX_ITEMS]{};
 };
 
+enum class RideClassification
+{
+    Ride,
+    ShopOrStall,
+    KioskOrFacility
+};
+
 /**
  * Ride structure.
  *
@@ -388,6 +395,7 @@ private:
 
 public:
     bool CanBreakDown() const;
+    RideClassification GetClassification() const;
     bool IsRide() const;
     void Renew();
     void Delete();
@@ -469,13 +477,6 @@ assert_struct_size(ride_name_args, 4);
  */
 #define TYPE_TO_RIDE_ENTRY_SLOTS 492
 extern uint8_t gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
-
-enum
-{
-    RIDE_CLASS_RIDE,
-    RIDE_CLASS_SHOP_OR_STALL,
-    RIDE_CLASS_KIOSK_OR_FACILITY
-};
 
 // Constants used by the lifecycle_flags property at 0x1D0
 enum
@@ -1061,8 +1062,17 @@ struct RideManager
         }
     };
 
+    size_t size() const;
     Iterator begin();
     Iterator end();
+    Iterator begin() const
+    {
+        return ((RideManager*)this)->begin();
+    }
+    Iterator end() const
+    {
+        return ((RideManager*)this)->end();
+    }
 };
 
 RideManager GetRideManager();
@@ -1074,11 +1084,7 @@ RideMeasurement* get_ride_measurement(int32_t index);
 
 extern money16 gTotalRideValueForMoney;
 
-extern const uint8_t gRideClassifications[MAX_RIDES];
-
 extern const rct_string_id ColourSchemeNames[4];
-
-extern uint16_t gRideCount;
 
 extern money32 _currentTrackPrice;
 

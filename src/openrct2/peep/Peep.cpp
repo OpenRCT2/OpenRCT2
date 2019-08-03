@@ -1208,8 +1208,6 @@ void peep_problem_warnings_update()
             disgust_counter = 0, bathroom_counter = 0, vandalism_counter = 0;
     uint8_t* warning_throttle = gPeepWarningThrottle;
 
-    gRideCount = ride_get_count(); // refactor this to somewhere else
-
     FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0 || peep->thoughts[0].freshness > 5)

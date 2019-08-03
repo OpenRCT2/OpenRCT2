@@ -303,7 +303,7 @@ void S6Exporter::Export()
     // _s6.game_version_number
     _s6.completed_company_value_record = gScenarioCompanyValueRecord;
     _s6.loan_hash = GetLoanHash(gInitialCash, gBankLoan, gMaxBankLoan);
-    _s6.ride_count = gRideCount;
+    _s6.ride_count = ride_get_count();
     // pad_013587CA
     _s6.historical_profit = gHistoricalProfit;
     // pad_013587D4

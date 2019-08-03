@@ -182,7 +182,7 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
             // Check if any rides exist
             FOR_ALL_RIDES (i, ride)
             {
-                if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+                if (ride->IsRide())
                 {
                     return true;
                 }
