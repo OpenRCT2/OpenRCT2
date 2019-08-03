@@ -569,7 +569,7 @@ void OpenGLDrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, 
     if (colour & 0x1000000)
     {
         // cross-pattern
-        command.flags = DrawRectCommand::FLAG_CROSS_HATCH;
+        command.flags |= DrawRectCommand::FLAG_CROSS_HATCH;
     }
     else if (colour & 0x2000000)
     {
