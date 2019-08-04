@@ -184,15 +184,12 @@ ride_id_t GetNextFreeRideId()
 
 Ride* GetOrAllocateRide(ride_id_t index)
 {
-    Ride* result{};
-    if (index < _rides.size())
+    if (_rides.size() <= index)
     {
-        result = &_rides[index];
+        _rides.resize(index + 1);
     }
-    else
-    {
-        result = &_rides.emplace_back();
-    }
+
+    auto result = &_rides[index];
     result->id = index;
     return result;
 }
@@ -204,6 +201,7 @@ Ride* get_ride(ride_id_t index)
         auto& ride = _rides[index];
         if (ride.type != RIDE_TYPE_NULL)
         {
+            assert(ride.id == index);
             return &ride;
         }
     }
