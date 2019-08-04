@@ -1870,7 +1870,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     }
 
     auto ride = get_ride(rideIndex);
-    if (ride->type == RIDE_TYPE_NULL)
+    if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", ride->id);
         return MONEY32_UNDEFINED;

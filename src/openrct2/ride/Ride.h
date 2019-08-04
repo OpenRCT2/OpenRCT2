@@ -18,6 +18,7 @@
 #include "RideTypes.h"
 #include "Vehicle.h"
 
+#include <limits>
 #include <string_view>
 
 interface IObjectManager;
@@ -39,10 +40,10 @@ struct Staff;
 #define MAX_CARS_PER_TRAIN 255
 #define MAX_STATIONS 4
 #define MAX_RIDES 255
-#define RIDE_ID_NULL 255
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
+constexpr ride_id_t RIDE_ID_NULL = std::numeric_limits<ride_id_t>::max();
 constexpr uint16_t const MAX_INVERSIONS = RCT12_MAX_INVERSIONS;
 constexpr uint16_t const MAX_GOLF_HOLES = RCT12_MAX_GOLF_HOLES;
 constexpr uint16_t const MAX_HELICES = RCT12_MAX_HELICES;

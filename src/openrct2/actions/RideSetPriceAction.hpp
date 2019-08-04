@@ -57,14 +57,8 @@ public:
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
 
-        if (_rideIndex >= MAX_RIDES || _rideIndex == RIDE_ID_NULL)
-        {
-            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
-        }
-
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -86,7 +80,7 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
 
         Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);

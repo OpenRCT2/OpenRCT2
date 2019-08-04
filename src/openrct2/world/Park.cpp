@@ -509,7 +509,7 @@ money32 Park::CalculateParkValue() const
 money32 Park::CalculateRideValue(const Ride* ride) const
 {
     money32 result = 0;
-    if (ride->type != RIDE_TYPE_NULL && ride->value != RIDE_VALUE_UNDEFINED)
+    if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
         result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
     }

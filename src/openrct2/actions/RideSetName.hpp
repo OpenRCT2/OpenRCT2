@@ -52,8 +52,8 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Ride* ride = get_ride(_rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
@@ -70,8 +70,8 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Ride* ride = get_ride(_rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);

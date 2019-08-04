@@ -60,14 +60,8 @@ public:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, errorTitle);
         }
 
-        if (_rideIndex >= MAX_RIDES || _rideIndex == RIDE_ID_NULL)
-        {
-            log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
-        }
-
         Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
@@ -147,7 +141,7 @@ public:
         auto errorTitle = _isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                   : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
         Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);

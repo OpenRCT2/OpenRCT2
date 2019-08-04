@@ -194,8 +194,8 @@ static void ride_ratings_update_state_1()
 static void ride_ratings_update_state_2()
 {
     const ride_id_t rideIndex = gRideRatingsCalcData.current_ride;
-    Ride* ride = get_ride(rideIndex);
-    if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED)
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -268,8 +268,8 @@ static void ride_ratings_update_state_2()
  */
 static void ride_ratings_update_state_3()
 {
-    Ride* ride = get_ride(gRideRatingsCalcData.current_ride);
-    if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED)
+    auto ride = get_ride(gRideRatingsCalcData.current_ride);
+    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -298,8 +298,8 @@ static void ride_ratings_update_state_4()
  */
 static void ride_ratings_update_state_5()
 {
-    Ride* ride = get_ride(gRideRatingsCalcData.current_ride);
-    if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED)
+    auto ride = get_ride(gRideRatingsCalcData.current_ride);
+    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
