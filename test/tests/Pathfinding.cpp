@@ -50,16 +50,16 @@ public:
     }
 
 protected:
-    static Ride* FindRideByName(const char* name, ride_id_t* outRideIndex)
+    static Ride* FindRideByName(const char* name)
     {
-        Ride* ride;
-        FOR_ALL_RIDES ((*outRideIndex), ride)
+        for (auto& ride : GetRideManager())
         {
-            auto thisName = ride->GetName();
+            auto thisName = ride.GetName();
             if (!_strnicmp(thisName.c_str(), name, sizeof(thisName)))
-                return ride;
+            {
+                return &ride;
+            }
         }
-
         return nullptr;
     }
 
@@ -197,8 +197,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     ASSERT_PRED_FORMAT1(AssertIsStartPosition, scenario.start);
     TileCoordsXYZ pos = scenario.start;
 
-    ride_id_t rideIndex;
-    Ride* ride = FindRideByName(scenario.name, &rideIndex);
+    auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
     auto entrancePos = ride_get_entrance_location(ride, 0);
@@ -206,8 +205,8 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
         entrancePos.x - TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y - TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
 
-    const auto succeeded = FindPath(&pos, goal, scenario.steps, rideIndex) ? ::testing::AssertionSuccess()
-                                                                           : ::testing::AssertionFailure()
+    const auto succeeded = FindPath(&pos, goal, scenario.steps, ride->id) ? ::testing::AssertionSuccess()
+                                                                          : ::testing::AssertionFailure()
             << "Failed to find path from " << scenario.start << " to " << goal << " in " << scenario.steps << " steps; reached "
             << pos << " before giving up.";
 
@@ -236,8 +235,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     TileCoordsXYZ pos = scenario.start;
     ASSERT_PRED_FORMAT1(AssertIsStartPosition, scenario.start);
 
-    ride_id_t rideIndex;
-    Ride* ride = FindRideByName(scenario.name, &rideIndex);
+    auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
     auto entrancePos = ride_get_entrance_location(ride, 0);
@@ -245,7 +243,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
         entrancePos.x + TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y + TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
 
-    EXPECT_FALSE(FindPath(&pos, goal, 10000, rideIndex));
+    EXPECT_FALSE(FindPath(&pos, goal, 10000, ride->id));
 }
 
 INSTANTIATE_TEST_CASE_P(

@@ -1016,7 +1016,7 @@ struct RideManager
         size_t _endIndex{};
 
     public:
-        using difference_type = ride_id_t;
+        using difference_type = intptr_t;
         using value_type = Ride;
         using pointer = const Ride*;
         using reference = const Ride&;
@@ -1147,7 +1147,7 @@ void ride_remove_peeps(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);
-int32_t ride_get_total_length(Ride* ride);
+int32_t ride_get_total_length(const Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
 TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
@@ -1282,9 +1282,5 @@ LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
-
-#define FOR_ALL_RIDES(i, ride)                                                                                                 \
-    for (auto& __ride : GetRideManager())                                                                                      \
-        if ((ride = &__ride) != nullptr && (i = __ride.id) != RIDE_ID_NULL)
 
 #endif

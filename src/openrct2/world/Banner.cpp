@@ -209,8 +209,6 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  */
 uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
 {
-    Ride* ride;
-
     static constexpr const LocationXY16 NeighbourCheckOrder[] = { { 32, 0 },    { -32, 0 },   { 0, 32 },
                                                                   { 0, -32 },   { -32, +32 }, { +32, -32 },
                                                                   { +32, +32 }, { -32, +32 }, { 0, 0 } };
@@ -224,15 +222,14 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
         }
     }
 
-    uint8_t index;
-    ride_id_t rideIndex = RIDE_ID_NULL;
-    int32_t resultDistance = std::numeric_limits<int32_t>::max();
-    FOR_ALL_RIDES (index, ride)
+    auto rideIndex = RIDE_ID_NULL;
+    auto resultDistance = std::numeric_limits<int32_t>::max();
+    for (auto& ride : GetRideManager())
     {
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
-        LocationXY8 location = ride->overall_view;
+        LocationXY8 location = ride.overall_view;
         if (location.xy == RCT_XY8_UNDEFINED)
             continue;
 
@@ -242,10 +239,9 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
         if (distance < resultDistance)
         {
             resultDistance = distance;
-            rideIndex = index;
+            rideIndex = ride.id;
         }
     }
-
     return rideIndex;
 }
 

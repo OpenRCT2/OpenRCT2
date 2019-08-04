@@ -421,16 +421,13 @@ int32_t Park::CalculateParkRating() const
         int32_t totalRideUptime = 0;
         int32_t totalRideIntensity = 0;
         int32_t totalRideExcitement = 0;
-
-        int32_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            totalRideUptime += 100 - ride->downtime;
-            if (ride->excitement != RIDE_RATING_UNDEFINED)
+            totalRideUptime += 100 - ride.downtime;
+            if (ride_has_ratings(&ride))
             {
-                totalRideExcitement += ride->excitement / 8;
-                totalRideIntensity += ride->intensity / 8;
+                totalRideExcitement += ride.excitement / 8;
+                totalRideIntensity += ride.intensity / 8;
                 excitingRideCount++;
             }
             rideCount++;
@@ -524,21 +521,19 @@ money32 Park::CalculateCompanyValue() const
 money16 Park::CalculateTotalRideValueForMoney() const
 {
     money16 totalRideValue = 0;
-    int32_t i;
-    Ride* ride;
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        if (ride->status != RIDE_STATUS_OPEN)
+        if (ride.status != RIDE_STATUS_OPEN)
             continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
             continue;
 
         // Add ride value
-        if (ride->value != RIDE_VALUE_UNDEFINED)
+        if (ride.value != RIDE_VALUE_UNDEFINED)
         {
-            money16 rideValue = (money16)(ride->value - ride->price);
+            money16 rideValue = (money16)(ride.value - ride.price);
             if (rideValue > 0)
             {
                 totalRideValue += rideValue * 2;
@@ -553,44 +548,42 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
     uint32_t suggestedMaxGuests = 0;
 
     // TODO combine the two ride loops
-    int32_t i;
-    Ride* ride;
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        if (ride->status != RIDE_STATUS_OPEN)
+        if (ride.status != RIDE_STATUS_OPEN)
             continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
             continue;
 
         // Add guest score for ride type
-        suggestedMaxGuests += rideBonusValue[ride->type];
+        suggestedMaxGuests += rideBonusValue[ride.type];
     }
 
     // If difficult guest generation, extra guests are available for good rides
     if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
     {
         suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
                 continue;
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+            if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                 continue;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_TRACK))
                 continue;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+            if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
                 continue;
-            if (ride->stations[0].SegmentLength < (600 << 16))
+            if (ride.stations[0].SegmentLength < (600 << 16))
                 continue;
-            if (ride->excitement < RIDE_RATING(6, 00))
+            if (ride.excitement < RIDE_RATING(6, 00))
                 continue;
 
             // Bonus guests for good ride
-            suggestedMaxGuests += rideBonusValue[ride->type] * 2;
+            suggestedMaxGuests += rideBonusValue[ride.type] * 2;
         }
     }
 

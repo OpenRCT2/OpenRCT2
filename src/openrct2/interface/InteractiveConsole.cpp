@@ -368,11 +368,9 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                         auto price = arg1;
                         if (int_valid[0])
                         {
-                            uint16_t rideId{};
-                            Ride* ride;
-                            FOR_ALL_RIDES (rideId, ride)
+                            for (const auto& ride : GetRideManager())
                             {
-                                auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                                auto rideSetPrice = RideSetPriceAction(ride.id, price, true);
                                 GameActions::Execute(&rideSetPrice);
                             }
                         }

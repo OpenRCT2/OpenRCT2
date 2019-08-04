@@ -1912,13 +1912,11 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
     if (item_standard_flags & PEEP_ITEM_MAP)
     {
         // Consider rides that peep hasn't been on yet
-        int32_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (!HasRidden(ride))
+            if (!HasRidden(&ride))
             {
-                rideConsideration[i] = true;
+                rideConsideration[ride.id] = true;
             }
         }
     }
@@ -1951,13 +1949,11 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
         }
 
         // Always take the tall rides into consideration (realistic as you can usually see them from anywhere in the park)
-        int32_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (ride->highest_drop_height > 66 || ride->excitement >= RIDE_RATING(8, 00))
+            if (ride.highest_drop_height > 66 || ride.excitement >= RIDE_RATING(8, 00))
             {
-                rideConsideration[i] = true;
+                rideConsideration[ride.id] = true;
             }
         }
     }
@@ -3154,8 +3150,6 @@ static void peep_leave_park(Peep* peep)
  */
 static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
 {
-    Ride* ride;
-
     if (peep->state != PEEP_STATE_SITTING && peep->state != PEEP_STATE_WATCHING && peep->state != PEEP_STATE_WALKING)
     {
         return;
@@ -3166,8 +3160,8 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
         return;
     if (peep->guest_heading_to_ride_id != RIDE_ID_NULL)
     {
-        ride = get_ride(peep->guest_heading_to_ride_id);
-        if (ride->type == rideType)
+        auto ride = get_ride(peep->guest_heading_to_ride_id);
+        if (ride != nullptr && ride->type == rideType)
         {
             return;
         }
@@ -3179,12 +3173,11 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
     if ((peep->item_standard_flags & PEEP_ITEM_MAP) && rideType != RIDE_TYPE_FIRST_AID)
     {
         // Consider all rides in the park
-        int32_t i;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (ride->type == rideType)
+            if (ride.type == rideType)
             {
-                rideConsideration[i >> 5] |= (1u << (i & 0x1F));
+                rideConsideration[ride.id >> 5] |= (1u << (ride.id & 0x1F));
             }
         }
     }
@@ -3206,8 +3199,8 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
                             continue;
 
                         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                        ride = get_ride(rideIndex);
-                        if (ride->type == rideType)
+                        auto ride = get_ride(rideIndex);
+                        if (ride != nullptr && ride->type == rideType)
                         {
                             rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
                         }
@@ -3226,8 +3219,8 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
         if (!(rideConsideration[i >> 5] & (1u << (i & 0x1F))))
             continue;
 
-        ride = get_ride(i);
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
+        auto ride = get_ride(i);
+        if (ride != nullptr && !(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
         {
             if (peep->ShouldGoOnRide(ride, 0, false, true))
             {
@@ -3242,14 +3235,17 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
     int32_t closestRideDistance = std::numeric_limits<int32_t>::max();
     for (int32_t i = 0; i < numPotentialRides; i++)
     {
-        ride = get_ride(potentialRides[i]);
-        int32_t rideX = ride->stations[0].Start.x * 32;
-        int32_t rideY = ride->stations[0].Start.y * 32;
-        int32_t distance = abs(rideX - peep->x) + abs(rideY - peep->y);
-        if (distance < closestRideDistance)
+        auto ride = get_ride(potentialRides[i]);
+        if (ride != nullptr)
         {
-            closestRideIndex = potentialRides[i];
-            closestRideDistance = distance;
+            int32_t rideX = ride->stations[0].Start.x * 32;
+            int32_t rideY = ride->stations[0].Start.y * 32;
+            int32_t distance = abs(rideX - peep->x) + abs(rideY - peep->y);
+            if (distance < closestRideDistance)
+            {
+                closestRideIndex = potentialRides[i];
+                closestRideDistance = distance;
+            }
         }
     }
     if (closestRideIndex == RIDE_ID_NULL)
@@ -3270,8 +3266,6 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
  */
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags)
 {
-    Ride* ride;
-
     if (peep->state != PEEP_STATE_SITTING && peep->state != PEEP_STATE_WATCHING && peep->state != PEEP_STATE_WALKING)
     {
         return;
@@ -3282,8 +3276,9 @@ static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeF
         return;
     if (peep->guest_heading_to_ride_id != RIDE_ID_NULL)
     {
-        ride = get_ride(peep->guest_heading_to_ride_id);
-        if (ride_type_has_flag(
+        auto ride = get_ride(peep->guest_heading_to_ride_id);
+        if (ride != nullptr
+            && ride_type_has_flag(
                 ride->type, RIDE_TYPE_FLAG_IS_BATHROOM | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_SELLS_FOOD))
         {
             return;
@@ -3301,12 +3296,11 @@ static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeF
     if (peep->item_standard_flags & PEEP_ITEM_MAP)
     {
         // Consider all rides in the park
-        int32_t i;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (ride_type_has_flag(ride->type, rideTypeFlags))
+            if (ride_type_has_flag(ride.type, rideTypeFlags))
             {
-                rideConsideration[i >> 5] |= (1u << (i & 0x1F));
+                rideConsideration[ride.id >> 5] |= (1u << (ride.id & 0x1F));
             }
         }
     }
@@ -3328,8 +3322,8 @@ static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeF
                             continue;
 
                         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                        ride = get_ride(rideIndex);
-                        if (ride_type_has_flag(ride->type, rideTypeFlags))
+                        auto ride = get_ride(rideIndex);
+                        if (ride != nullptr && ride_type_has_flag(ride->type, rideTypeFlags))
                         {
                             rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
                         }
@@ -3348,8 +3342,8 @@ static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeF
         if (!(rideConsideration[i >> 5] & (1u << (i & 0x1F))))
             continue;
 
-        ride = get_ride(i);
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
+        auto ride = get_ride(i);
+        if (ride != nullptr && !(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
         {
             if (peep->ShouldGoOnRide(ride, 0, false, true))
             {
@@ -3364,14 +3358,17 @@ static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeF
     int32_t closestRideDistance = std::numeric_limits<int32_t>::max();
     for (int32_t i = 0; i < numPotentialRides; i++)
     {
-        ride = get_ride(potentialRides[i]);
-        int32_t rideX = ride->stations[0].Start.x * 32;
-        int32_t rideY = ride->stations[0].Start.y * 32;
-        int32_t distance = abs(rideX - peep->x) + abs(rideY - peep->y);
-        if (distance < closestRideDistance)
+        auto ride = get_ride(potentialRides[i]);
+        if (ride != nullptr)
         {
-            closestRideIndex = potentialRides[i];
-            closestRideDistance = distance;
+            int32_t rideX = ride->stations[0].Start.x * 32;
+            int32_t rideY = ride->stations[0].Start.y * 32;
+            int32_t distance = abs(rideX - peep->x) + abs(rideY - peep->y);
+            if (distance < closestRideDistance)
+            {
+                closestRideIndex = potentialRides[i];
+                closestRideDistance = distance;
+            }
         }
     }
     if (closestRideIndex == RIDE_ID_NULL)

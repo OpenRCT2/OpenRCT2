@@ -177,25 +177,23 @@ rct_window* window_new_campaign_open(int16_t campaignType)
  */
 static void window_new_campaign_get_shop_items()
 {
-    int32_t i, numItems;
-    Ride* ride;
-
     uint64_t items = 0;
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-        if (rideEntry == nullptr)
+        auto rideEntry = ride.GetRideEntry();
+        if (rideEntry != nullptr)
         {
-            continue;
+            auto itemType = rideEntry->shop_item;
+            if (itemType != SHOP_ITEM_NONE && shop_item_is_food_or_drink(itemType))
+            {
+                items |= 1ULL << itemType;
+            }
         }
-        uint8_t itemType = rideEntry->shop_item;
-        if (itemType != SHOP_ITEM_NONE && shop_item_is_food_or_drink(itemType))
-            items |= 1ULL << itemType;
     }
 
     //
-    numItems = 0;
-    for (i = 0; i < 64; i++)
+    auto numItems = 0;
+    for (auto i = 0; i < 64; i++)
     {
         if (items & (1ULL << i))
         {

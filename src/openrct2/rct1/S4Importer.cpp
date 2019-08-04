@@ -1081,16 +1081,14 @@ private:
 
     void FixRideVehicleLinks(const uint16_t* spriteIndexMap)
     {
-        uint8_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            for (uint8_t j = 0; j < std::size(ride->vehicles); j++)
+            for (uint8_t j = 0; j < std::size(ride.vehicles); j++)
             {
-                uint16_t originalIndex = ride->vehicles[j];
+                uint16_t originalIndex = ride.vehicles[j];
                 if (originalIndex != SPRITE_INDEX_NULL)
                 {
-                    ride->vehicles[j] = spriteIndexMap[originalIndex];
+                    ride.vehicles[j] = spriteIndexMap[originalIndex];
                 }
             }
         }
@@ -1368,15 +1366,13 @@ private:
             }
         }
 
-        int i;
-        Ride* ride;
-        Peep* peep;
-
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            FixRidePeepLinks(ride, spriteIndexMap);
+            FixRidePeepLinks(&ride, spriteIndexMap);
         }
 
+        int32_t i;
+        Peep* peep;
         FOR_ALL_GUESTS (i, peep)
         {
             FixPeepNextInQueue(peep, spriteIndexMap);
@@ -3018,13 +3014,11 @@ private:
      */
     void SetDefaultNames()
     {
-        ride_id_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (ride->custom_name.empty())
+            if (ride.custom_name.empty())
             {
-                ride->SetNameToDefault();
+                ride.SetNameToDefault();
             }
         }
     }

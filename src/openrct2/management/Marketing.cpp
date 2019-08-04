@@ -161,10 +161,6 @@ void marketing_set_guest_campaign(Peep* peep, int32_t campaignType)
 
 bool marketing_is_campaign_type_applicable(int32_t campaignType)
 {
-    int32_t i;
-    Ride* ride;
-    rct_ride_entry* rideEntry;
-
     switch (campaignType)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
@@ -180,9 +176,9 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
             // fall-through
         case ADVERTISING_CAMPAIGN_RIDE:
             // Check if any rides exist
-            FOR_ALL_RIDES (i, ride)
+            for (auto& ride : GetRideManager())
             {
-                if (ride->IsRide())
+                if (ride.IsRide())
                 {
                     return true;
                 }
@@ -191,17 +187,16 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
 
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
             // Check if any food or drink stalls exist
-            FOR_ALL_RIDES (i, ride)
+            for (auto& ride : GetRideManager())
             {
-                rideEntry = get_ride_entry(ride->subtype);
-                if (rideEntry == nullptr)
+                auto rideEntry = ride.GetRideEntry();
+                if (rideEntry != nullptr)
                 {
-                    continue;
-                }
-                if (shop_item_is_food_or_drink(rideEntry->shop_item)
-                    || shop_item_is_food_or_drink(rideEntry->shop_item_secondary))
-                {
-                    return true;
+                    if (shop_item_is_food_or_drink(rideEntry->shop_item)
+                        || shop_item_is_food_or_drink(rideEntry->shop_item_secondary))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

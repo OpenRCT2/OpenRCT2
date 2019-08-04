@@ -78,30 +78,26 @@ const ShopItemDescriptor ShopItems[SHOP_ITEM_COUNT] = {
 
 money32 shop_item_get_common_price(Ride* forRide, int32_t shopItem)
 {
-    rct_ride_entry* rideEntry;
-    Ride* ride;
-    int32_t i;
-
-    FOR_ALL_RIDES (i, ride)
+    for (const auto& ride : GetRideManager())
     {
-        if (ride != forRide)
+        if (&ride != forRide)
         {
-            rideEntry = get_ride_entry(ride->subtype);
+            auto rideEntry = ride.GetRideEntry();
             if (rideEntry == nullptr)
             {
                 continue;
             }
             if (rideEntry->shop_item == shopItem)
             {
-                return ride->price;
+                return ride.price;
             }
             if (rideEntry->shop_item_secondary == shopItem)
             {
-                return ride->price_secondary;
+                return ride.price_secondary;
             }
-            if (shop_item_is_photo(shopItem) && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
+            if (shop_item_is_photo(shopItem) && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
             {
-                return ride->price_secondary;
+                return ride.price_secondary;
             }
         }
     }

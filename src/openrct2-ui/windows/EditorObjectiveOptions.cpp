@@ -1030,20 +1030,17 @@ static void window_editor_objective_options_rides_resize(rct_window* w)
  */
 static void window_editor_objective_options_rides_update(rct_window* w)
 {
-    int32_t i, numItems;
-    Ride* ride;
-
     w->frame_no++;
     window_event_invalidate_call(w);
     window_event_resize_call(w);
     widget_invalidate(w, WIDX_TAB_2);
 
-    numItems = 0;
-    FOR_ALL_RIDES (i, ride)
+    auto numItems = 0;
+    for (auto& ride : GetRideManager())
     {
-        if (ride->IsRide())
+        if (ride.IsRide())
         {
-            w->list_item_positions[numItems] = i;
+            w->list_item_positions[numItems] = ride.id;
             numItems++;
         }
     }

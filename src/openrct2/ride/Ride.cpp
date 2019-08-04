@@ -868,7 +868,7 @@ void Ride::FormatStatusTo(void* argsV) const
     }
 }
 
-int32_t ride_get_total_length(Ride* ride)
+int32_t ride_get_total_length(const Ride* ride)
 {
     int32_t i, totalLength = 0;
     for (i = 0; i < ride->num_stations; i++)
