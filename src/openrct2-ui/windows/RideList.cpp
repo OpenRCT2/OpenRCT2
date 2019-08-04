@@ -534,10 +534,10 @@ static void window_ride_list_invalidate(rct_window* w)
         {
             auto c = (RideClassification)w->page;
             allClosed = std::all_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
-                return ride.GetClassification() == c&& ride.status == RIDE_STATUS_OPEN;
+                return ride.GetClassification() == c && ride.status == RIDE_STATUS_OPEN;
             });
             allOpen = std::all_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
-                return ride.GetClassification() == c&& ride.status != RIDE_STATUS_OPEN;
+                return ride.GetClassification() == c && ride.status != RIDE_STATUS_OPEN;
             });
         }
 

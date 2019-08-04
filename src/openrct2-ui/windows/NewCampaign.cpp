@@ -314,7 +314,7 @@ static void window_new_campaign_dropdown(rct_window* w, rct_widgetindex widgetIn
     if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
         return;
 
-    if (dropdownIndex < 0 || dropdownIndex >= window_new_campaign_rides.size())
+    if (dropdownIndex < 0 || (size_t)dropdownIndex >= window_new_campaign_rides.size())
         return;
 
     if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)

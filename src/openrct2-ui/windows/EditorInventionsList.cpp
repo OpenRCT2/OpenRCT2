@@ -186,7 +186,7 @@ static void research_rides_setup()
     }
 
     // Set research required for rides in use
-    for (const auto &ride : GetRideManager())
+    for (const auto& ride : GetRideManager())
     {
         Editor::SetSelectedObject(OBJECT_TYPE_RIDE, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED);
     }

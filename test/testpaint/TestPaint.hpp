@@ -16,6 +16,7 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
+#include <openrct2/rct12/RCT12.h>
 #include <vector>
 
 #define gRideEntries RCT2_ADDRESS(0x009ACFA4, rct_ride_entry*)
@@ -78,5 +79,7 @@ enum Verbosity
     QUIET,
     NORMAL,
 };
+
+extern Ride gRideList[RCT12_MAX_RIDES_IN_PARK];
 
 int generatePaintCode(uint8_t rideType);

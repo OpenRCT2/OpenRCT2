@@ -143,7 +143,15 @@ RideManager GetRideManager()
 
 size_t RideManager::size() const
 {
-    return ride_get_count();
+    size_t count = 0;
+    for (size_t i = 0; i < _rides.size(); i++)
+    {
+        if (_rides[i].type != RIDE_TYPE_NULL)
+        {
+            count++;
+        }
+    }
+    return count;
 }
 
 RideManager::Iterator RideManager::begin()
@@ -297,12 +305,7 @@ uint8_t* get_ride_entry_indices_for_ride_type(uint8_t rideType)
 
 int32_t ride_get_count()
 {
-    int32_t count = 0;
-    for ([[maybe_unused]] auto& ride : GetRideManager())
-    {
-        count++;
-    }
-    return count;
+    return (int32_t)GetRideManager().size();
 }
 
 int32_t Ride::GetTotalQueueLength() const
