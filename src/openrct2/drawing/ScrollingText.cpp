@@ -1572,6 +1572,7 @@ static void scrolling_text_set_bitmap_for_ttf(
         {
             if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END)
             {
+                codepoint -= FORMAT_COLOUR_CODE_START;
                 auto g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
                 if (g1 != nullptr)
                 {
