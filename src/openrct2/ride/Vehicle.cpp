@@ -9826,8 +9826,11 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
         {
             TileElement* tileElement = map_get_path_element_at(
                 xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
+            auto ride = get_ride(vehicle->ride);
 
-            if (tileElement)
+            // Many New Element parks have invisible rides hacked into the path.
+            // Limit path blocking to Miniature Railway to prevent peeps getting stuck everywhere.
+            if (tileElement && ride != nullptr && ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
             {
                 if (!playedClaxon && !tileElement->AsPath()->IsBlockedByVehicle())
                 {
