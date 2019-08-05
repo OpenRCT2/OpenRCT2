@@ -127,7 +127,7 @@ TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
 
 money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags)
 {
-    auto action = FootpathRemoveAction(x, y, z);
+    auto action = FootpathRemoveAction({ x, y, z * 8 });
     action.SetFlags(flags);
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
