@@ -404,24 +404,6 @@ int32_t game_do_command_p(
             // Second call to actually perform the operation
             new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
-            if (replayManager != nullptr)
-            {
-                bool recordCommand = false;
-                bool commandExecutes = (flags & GAME_COMMAND_FLAG_APPLY) && (flags & GAME_COMMAND_FLAG_GHOST) == 0
-                    && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
-
-                if (replayManager->IsRecording() && commandExecutes)
-                    recordCommand = true;
-                else if (replayManager->IsNormalising() && commandExecutes && (flags & GAME_COMMAND_FLAG_REPLAY) != 0)
-                    recordCommand = true;
-
-                if (recordCommand && gGameCommandNestLevel == 1)
-                {
-                    replayManager->AddGameCommand(
-                        gCurrentTicks, *eax, original_ebx, *ecx, original_edx, original_esi, original_edi, original_ebp, 0);
-                }
-            }
-
             *edx = *ebx;
 
             if (*edx != MONEY32_UNDEFINED && *edx < cost)

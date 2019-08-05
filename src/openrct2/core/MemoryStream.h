@@ -42,7 +42,7 @@ public:
 
     MemoryStream& operator=(MemoryStream&& mv);
 
-    const void* GetData() const;
+    const void* GetData() const override;
     void* GetDataCopy() const;
     void* TakeData();
 

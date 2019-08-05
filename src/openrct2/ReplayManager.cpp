@@ -37,40 +37,21 @@
 
 namespace OpenRCT2
 {
-    // NOTE: This is currently very close to what the network version uses.
-    //       Should be refactored once the old game commands are gone.
     struct ReplayCommand
     {
+        uint32_t tick = 0;
+        GameAction::Ptr action;
+        uint32_t commandIndex = 0;
+
         ReplayCommand() = default;
 
-        ReplayCommand(uint32_t t, uint32_t* args, uint8_t cb, uint32_t id)
-        {
-            tick = t;
-            eax = args[0];
-            ebx = args[1];
-            ecx = args[2];
-            edx = args[3];
-            esi = args[4];
-            edi = args[5];
-            ebp = args[6];
-            callback = cb;
-            action = nullptr;
-            commandIndex = id;
-        }
-
         ReplayCommand(uint32_t t, std::unique_ptr<GameAction>&& ga, uint32_t id)
-        {
-            tick = t;
-            action = std::move(ga);
-            commandIndex = id;
-        }
+            : tick(t)
+            , action(std::move(ga))
+            , commandIndex(id)
 
-        uint32_t tick = 0;
-        uint32_t eax = 0, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
-        GameAction::Ptr action;
-        uint8_t playerid = 0;
-        uint8_t callback = 0;
-        uint32_t commandIndex = 0;
+        {
+        }
 
         bool operator<(const ReplayCommand& comp) const
         {
@@ -101,6 +82,7 @@ namespace OpenRCT2
         MemoryStream parkData;
         MemoryStream spriteSpatialData;
         MemoryStream parkParams;
+        MemoryStream cheatData;
         std::string name;      // Name of play
         std::string filePath;  // File path of replay.
         uint64_t timeRecorded; // Posix Time.
@@ -113,7 +95,7 @@ namespace OpenRCT2
 
     class ReplayManager final : public IReplayManager
     {
-        static constexpr uint16_t ReplayVersion = 2;
+        static constexpr uint16_t ReplayVersion = 3;
         static constexpr uint32_t ReplayMagic = 0x5243524F; // ORCR.
         static constexpr int ReplayCompressionLevel = 9;
 
@@ -143,25 +125,6 @@ namespace OpenRCT2
         virtual bool IsNormalising() const override
         {
             return _mode == ReplayMode::NORMALISATION;
-        }
-
-        virtual void AddGameCommand(
-            uint32_t tick, uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi, uint32_t ebp,
-            uint8_t callback) override
-        {
-            if (_currentRecording == nullptr)
-                return;
-
-            uint32_t args[7];
-            args[0] = eax;
-            args[1] = ebx;
-            args[2] = ecx;
-            args[3] = edx;
-            args[4] = esi;
-            args[5] = edi;
-            args[6] = ebp;
-
-            _currentRecording->commands.emplace(gCurrentTicks, args, callback, _commandId++);
         }
 
         virtual void AddGameAction(uint32_t tick, const GameAction* action) override
@@ -266,8 +229,11 @@ namespace OpenRCT2
             replayData->spriteSpatialData.Write(gSpriteSpatialIndex, sizeof(gSpriteSpatialIndex));
             replayData->timeRecorded = std::chrono::seconds(std::time(nullptr)).count();
 
-            DataSerialiser parkParams(true, replayData->parkParams);
-            SerialiseParkParameters(parkParams);
+            DataSerialiser parkParamsDs(true, replayData->parkParams);
+            SerialiseParkParameters(parkParamsDs);
+
+            DataSerialiser cheatDataDs(true, replayData->cheatData);
+            SerialiseCheats(cheatDataDs);
 
             if (_mode != ReplayMode::NORMALISATION)
                 _mode = ReplayMode::RECORDING;
@@ -381,12 +347,6 @@ namespace OpenRCT2
                 return false;
             }
 
-            if (!TranslateDeprecatedGameCommands(*replayData))
-            {
-                log_error("Unable to translate deprecated game commands.");
-                return false;
-            }
-
             if (!LoadReplayDataMap(*replayData))
             {
                 log_error("Unable to load map.");
@@ -461,144 +421,6 @@ namespace OpenRCT2
         }
 
     private:
-        bool ConvertDeprecatedGameCommand(const ReplayCommand& command, ReplayCommand& result)
-        {
-            // NOTE: If game actions are being ported it is required to implement temporarily
-            //       a mapping from game command to game action. This will allow the normalisation
-            //       stage to save a new replay file with the game action being used instead of the
-            //       old game command. Once normalised the code will be no longer required.
-
-            /* Example case
-            case GAME_COMMAND_RAISE_WATER:
-            {
-                uint32_t param1 = command.ebp;
-                uint32_t param2 = command.edi;
-                result.action = std::make_unique<LandRaiseWaterAction>(param1, param2, ...);
-            }
-            */
-
-            switch (command.esi)
-            {
-                case GAME_COMMAND_COUNT: // prevent default without case warning.
-                    break;
-                case GAME_COMMAND_PLACE_TRACK:
-                {
-                    ride_id_t rideId = command.edx & 0xFF;
-                    int32_t trackType = (command.edx >> 8) & 0xFF;
-                    CoordsXYZD origin = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF),
-                                          (int32_t)(command.edi & 0xFFFF), (uint8_t)((command.ebx >> 8) & 0xFF) };
-                    int32_t brakeSpeed = (command.edi >> 16) & 0xFF;
-                    int32_t colour = (command.edi >> 24) & 0x0F;
-                    int32_t seatRotation = (command.edi >> 28) & 0x0F;
-                    int32_t liftHillAndAlternativeState = (command.edx >> 16);
-
-                    result.action = std::make_unique<TrackPlaceAction>(
-                        rideId, trackType, origin, brakeSpeed, colour, seatRotation, liftHillAndAlternativeState);
-                    result.action->SetFlags(command.ebx & 0xFF);
-                    break;
-                }
-                case GAME_COMMAND_SET_RIDE_SETTING:
-                {
-                    ride_id_t rideId = command.edx & 0xFF;
-                    RideSetSetting setting = static_cast<RideSetSetting>((command.edx >> 8) & 0xFF);
-                    uint8_t value = (command.ebx >> 8) & 0xFF;
-
-                    result.action = std::make_unique<RideSetSettingAction>(rideId, setting, value);
-                    result.action->SetFlags(command.ebx & 0xFF);
-                    break;
-                }
-                case GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT:
-                {
-                    CoordsXY loc = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF) };
-                    Direction direction = (command.ebx >> 8) & 0xFF;
-                    ride_id_t rideId = command.edx & 0xFF;
-                    uint8_t stationNum = command.edi & 0xFF;
-                    bool isExit = ((command.edx >> 8) & 0xFF) != 0;
-                    result.action = std::make_unique<RideEntranceExitPlaceAction>(loc, direction, rideId, stationNum, isExit);
-                    result.action->SetFlags(command.ebx & 0xFF);
-                    break;
-                }
-                case GAME_COMMAND_PLACE_PATH:
-                {
-                    CoordsXYZ loc = { (int32_t)(command.eax & 0xFFFF), (int32_t)(command.ecx & 0xFFFF),
-                                      (int32_t)(command.edx & 0xFF) * 8 };
-                    uint8_t slope = (command.ebx >> 8) & 0xFF;
-                    uint8_t type = (command.edx >> 8) & 0xFF;
-                    result.action = std::make_unique<FootpathPlaceAction>(loc, slope, type);
-                    result.action->SetFlags(command.ebx & 0xFF);
-                    break;
-                }
-                case GAME_COMMAND_CHEAT:
-                {
-                    int32_t param1 = command.edx;
-                    int32_t param2 = command.edi;
-                    CheatType cheatType = static_cast<CheatType>(command.ecx);
-
-                    result.action = std::make_unique<SetCheatAction>(cheatType, param1, param2);
-                    result.action->SetFlags(command.ebx & 0xFF);
-                    break;
-                }
-                case GAME_COMMAND_MODIFY_TILE:
-                {
-                    int32_t param1 = command.edx;
-                    int32_t param2 = command.edi;
-                    CoordsXY loc = { static_cast<int16_t>((command.ecx & 0xFF) * 32),
-                                     static_cast<int16_t>(((command.ecx >> 8) & 0xFF) * 32) };
-                    TileModifyType type = static_cast<TileModifyType>(command.eax & 0xFF);
-
-                    if (type == TileModifyType::AnyPaste)
-                    {
-                        TileElement copiedElement{};
-                        uint32_t data[2] = { command.edx, command.edi };
-                        std::memcpy(&copiedElement, &data[0], 8);
-                        result.action = std::make_unique<TileModifyAction>(loc, type, 0, 0, copiedElement);
-                    }
-                    else
-                    {
-                        result.action = std::make_unique<TileModifyAction>(loc, type, param1, param2);
-                    }
-                    result.action->SetFlags(command.ebx & 0xFF);
-                    break;
-                }
-                default:
-                    throw std::runtime_error("Deprecated game command requires replay translation.");
-            }
-
-            return true;
-        }
-
-        bool TranslateDeprecatedGameCommands(ReplayRecordData& data)
-        {
-            for (auto it = data.commands.begin(); it != data.commands.end(); it++)
-            {
-                const ReplayCommand& replayCommand = *it;
-
-                if (replayCommand.action == nullptr)
-                {
-                    // Check if we can create a game action with the command id.
-                    uint32_t commandId = replayCommand.esi;
-                    if (GameActions::IsValidId(commandId))
-                    {
-                        // Convert
-                        ReplayCommand converted;
-                        converted.commandIndex = replayCommand.commandIndex;
-
-                        if (!ConvertDeprecatedGameCommand(replayCommand, converted))
-                        {
-                            return false;
-                        }
-
-                        // Remove deprecated command.
-                        data.commands.erase(it);
-
-                        // Insert new game action, iterator points to the replaced element.
-                        it = data.commands.emplace(std::move(converted));
-                    }
-                }
-            }
-            return true;
-        }
-
         bool LoadReplayDataMap(ReplayRecordData& data)
         {
             try
@@ -623,8 +445,14 @@ namespace OpenRCT2
                 std::memcpy(gSpriteSpatialIndex, data.spriteSpatialData.GetData(), data.spriteSpatialData.GetLength());
 
                 // Load all map global variables.
-                DataSerialiser parkParams(false, data.parkParams);
-                SerialiseParkParameters(parkParams);
+                DataSerialiser parkParamsDs(false, data.parkParams);
+                SerialiseParkParameters(parkParamsDs);
+
+                // New cheats might not be serialised, make sure they are using their defaults.
+                CheatsReset();
+
+                DataSerialiser cheatDataDs(false, data.cheatData);
+                SerialiseCheats(cheatDataDs);
 
                 game_load_init();
                 fix_invalid_vehicle_sprite_sizes();
@@ -729,7 +557,15 @@ namespace OpenRCT2
             // Reset position of all streams.
             data.parkData.SetPosition(0);
             data.parkParams.SetPosition(0);
+            data.cheatData.SetPosition(0);
             data.spriteSpatialData.SetPosition(0);
+
+            return true;
+        }
+
+        bool SerialiseCheats(DataSerialiser& serialiser)
+        {
+            CheatsSerialise(serialiser);
 
             return true;
         }
@@ -738,27 +574,22 @@ namespace OpenRCT2
         {
             serialiser << _guestGenerationProbability;
             serialiser << _suggestedGuestMaximum;
-            serialiser << gCheatsSandboxMode;
-            serialiser << gCheatsDisableClearanceChecks;
-            serialiser << gCheatsDisableSupportLimits;
-            serialiser << gCheatsDisableTrainLengthLimit;
-            serialiser << gCheatsEnableChainLiftOnAllTrack;
-            serialiser << gCheatsShowAllOperatingModes;
-            serialiser << gCheatsShowVehiclesFromOtherTrackTypes;
-            serialiser << gCheatsFastLiftHill;
-            serialiser << gCheatsDisableBrakesFailure;
-            serialiser << gCheatsDisableAllBreakdowns;
-            serialiser << gCheatsBuildInPauseMode;
-            serialiser << gCheatsIgnoreRideIntensity;
-            serialiser << gCheatsDisableVandalism;
-            serialiser << gCheatsDisableLittering;
-            serialiser << gCheatsNeverendingMarketing;
-            serialiser << gCheatsFreezeWeather;
-            serialiser << gCheatsDisablePlantAging;
-            serialiser << gCheatsAllowArbitraryRideTypeChanges;
-            serialiser << gCheatsDisableRideValueAging;
             serialiser << gConfigGeneral.show_real_names_of_guests;
-            serialiser << gCheatsIgnoreResearchStatus;
+
+            // To make this a little bit less volatile against updates
+            // we reserve some space for future additions.
+            uint64_t tempStorage = 0;
+
+            // If another park parameter has to be added simply swap tempStorage.
+            // and ensure the length read/write will stay uint64_t
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
+            serialiser << tempStorage;
 
             return true;
         }
@@ -768,47 +599,27 @@ namespace OpenRCT2
             serialiser << command.tick;
             serialiser << command.commandIndex;
 
-            bool isGameAction = false;
+            uint32_t actionType = 0;
             if (serialiser.IsSaving())
             {
-                isGameAction = command.action != nullptr;
+                actionType = command.action->GetType();
             }
-            serialiser << isGameAction;
+            serialiser << actionType;
 
-            if (isGameAction)
+            if (serialiser.IsLoading())
             {
-                uint32_t actionType = 0;
-                if (serialiser.IsSaving())
-                {
-                    actionType = command.action->GetType();
-                }
-                serialiser << actionType;
-
-                if (serialiser.IsLoading())
-                {
-                    command.action = GameActions::Create(actionType);
-                    Guard::Assert(command.action != nullptr);
-                }
-
-                command.action->Serialise(serialiser);
+                command.action = GameActions::Create(actionType);
+                Guard::Assert(command.action != nullptr);
             }
-            else
-            {
-                serialiser << command.eax;
-                serialiser << command.ebx;
-                serialiser << command.ecx;
-                serialiser << command.edx;
-                serialiser << command.esi;
-                serialiser << command.edi;
-                serialiser << command.ebp;
-                serialiser << command.callback;
-            }
+
+            command.action->Serialise(serialiser);
+
             return true;
         }
 
         bool Compatible(ReplayRecordData& data)
         {
-            return data.version == 1 && ReplayVersion == 2;
+            return data.version == ReplayVersion;
         }
 
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)
@@ -841,6 +652,7 @@ namespace OpenRCT2
             serialiser << data.timeRecorded;
             serialiser << data.parkData;
             serialiser << data.parkParams;
+            serialiser << data.cheatData;
             serialiser << data.spriteSpatialData;
             serialiser << data.tickStart;
             serialiser << data.tickEnd;
@@ -946,26 +758,13 @@ namespace OpenRCT2
 
                 bool isPositionValid = false;
 
-                if (command.action != nullptr)
-                {
-                    GameAction* action = command.action.get();
-                    action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
+                GameAction* action = command.action.get();
+                action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
-                    GameActionResult::Ptr result = GameActions::Execute(action);
-                    if (result->Error == GA_ERROR::OK)
-                    {
-                        isPositionValid = true;
-                    }
-                }
-                else
+                GameActionResult::Ptr result = GameActions::Execute(action);
+                if (result->Error == GA_ERROR::OK)
                 {
-                    uint32_t flags = command.ebx | GAME_COMMAND_FLAG_REPLAY;
-                    int32_t res = game_do_command(
-                        command.eax, flags, command.ecx, command.edx, command.esi, command.edi, command.ebp);
-                    if (res != MONEY32_UNDEFINED)
-                    {
-                        isPositionValid = true;
-                    }
+                    isPositionValid = true;
                 }
 
                 // Focus camera on event.

@@ -106,7 +106,7 @@ namespace GameActions
         action->Serialise(dsOut);
 
         // Serialise into new action.
-        MemoryStream& stream = dsOut.GetStream();
+        IStream& stream = dsOut.GetStream();
         stream.SetPosition(0);
 
         DataSerialiser dsIn(false, stream);

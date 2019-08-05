@@ -26,11 +26,15 @@ set(TITLE_SEQUENCE_SHA1 "19263f8ca383345959473e64da4785a60f00f420")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.11/objects.zip")
 set(OBJECTS_SHA1 "8674120086929f9196560d77cada631fb478d7c0")
 
+set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.2/replays.zip")
+set(REPLAYS_SHA1 "6E034E5299A8EC30A8D0A1B93F6A30A3A6429FEC")
+
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
+option(DOWNLOAD_REPLAYS "Download replays during installation." ON)
 
 # Options
 option(STATIC "Create a static build.")
@@ -285,6 +289,16 @@ if (DOWNLOAD_OBJECTS)
             file(DOWNLOAD ${OBJECTS_URL} \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/objects.zip EXPECTED_HASH SHA1=${OBJECTS_SHA1} SHOW_PROGRESS)\n\
             execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/ \"${CMAKE_COMMAND}\" -E tar xf objects.zip)\n\
             file(REMOVE \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/object/objects.zip)\n\
+        endif ()")
+endif ()
+if (DOWNLOAD_REPLAYS)
+    install(CODE
+        "if (EXISTS \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/testdata/replays/)\n\
+            message(\"Using cached replays\")\n\
+        else () \n\
+	    file(DOWNLOAD ${REPLAYS_URL} \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/testdata/replays/replays.zip EXPECTED_HASH SHA1=${REPLAYS_SHA1} SHOW_PROGRESS)\n\
+            execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/testdata/replays/ \"${CMAKE_COMMAND}\" -E tar xf replays.zip)\n\
+            file(REMOVE \$ENV{DESTDIR}/${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/testdata/replays/replays.zip)\n\
         endif ()")
 endif ()
 install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
