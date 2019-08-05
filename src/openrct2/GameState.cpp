@@ -105,25 +105,35 @@ void GameState::Update()
     // We use this variable to always advance ticks in normal speed.
     gCurrentRealTimeTicks += realtimeTicksElapsed;
 
-    // Determine how many times we need to update the game
-    if (gGameSpeed > 1)
-    {
-        // Update more often if game speed is above normal.
-        numUpdates = 1 << (gGameSpeed - 1);
-    }
+    network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
         && network_get_authstatus() == NETWORK_AUTH_OK)
     {
-        if (network_get_server_tick() - gCurrentTicks >= 10)
+        numUpdates = std::clamp<uint32_t>(network_get_server_tick() - gCurrentTicks, 0, 10);
+    }
+    else
+    {
+        // Determine how many times we need to update the game
+        if (gGameSpeed > 1)
         {
-            // Make sure client doesn't fall behind the server too much
-            numUpdates += 10;
+            // Update more often if game speed is above normal.
+            numUpdates = 1 << (gGameSpeed - 1);
+        }
+    }
+
+    bool isPaused = game_is_paused();
+    if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.pause_server_if_no_clients)
+    {
+        // If we are headless we always have 1 player (host), pause if no one else is around.
+        if (gOpenRCT2Headless && network_get_num_players() == 1)
+        {
+            isPaused |= true;
         }
     }
 
     bool didRunSingleFrame = false;
-    if (game_is_paused())
+    if (isPaused)
     {
         if (gDoSingleUpdate && network_get_mode() == NETWORK_MODE_NONE)
         {
@@ -139,8 +149,6 @@ void GameState::Update()
             map_animation_invalidate_all();
 
             // Special case because we set numUpdates to 0, otherwise in game_logic_update.
-            network_update();
-
             network_process_pending();
         }
     }
@@ -221,19 +229,7 @@ void GameState::UpdateLogic()
     if (gScreenAge == 0)
         gScreenAge--;
 
-    network_update();
-
     GetContext()->GetReplayManager()->Update();
-
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NETWORK_AUTH_OK)
-    {
-        // Don't run ahead of the server but can be on same tick.
-        if (gCurrentTicks > network_get_server_tick())
-        {
-            return;
-        }
-    }
 
     if (network_get_mode() == NETWORK_MODE_SERVER)
     {
