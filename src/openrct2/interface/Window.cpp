@@ -209,21 +209,16 @@ void window_set_window_limit(int32_t value)
  *
  * @param window The window to close (esi).
  */
-void window_close(rct_window* window)
+void window_close(rct_window* w)
 {
-    if (window == nullptr)
+    auto itWindow = window_get_iterator(w);
+    if (itWindow == g_window_list.end())
         return;
 
-    // Make a copy of the window class and number in case
-    // the window order is changed by the close event.
-    rct_windowclass cls = window->classification;
-    rct_windownumber number = window->number;
+    // Explicit copy of the shared ptr to keep the memory valid.
+    std::shared_ptr<rct_window> window = *itWindow;
 
-    window_event_close_call(window);
-
-    window = window_find_by_number(cls, number);
-    if (window == nullptr)
-        return;
+    window_event_close_call(window.get());
 
     // Remove viewport
     if (window->viewport != nullptr)
@@ -233,16 +228,9 @@ void window_close(rct_window* window)
     }
 
     // Invalidate the window (area)
-    window_invalidate(window);
+    window_invalidate(window.get());
 
-    for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
-    {
-        if ((*it).get() == window)
-        {
-            g_window_list.erase(it);
-            break;
-        }
-    }
+    g_window_list.erase(itWindow);
 }
 
 template<typename _TPred> static void window_close_by_condition(_TPred pred, uint32_t flags = WindowCloseFlags::None)
