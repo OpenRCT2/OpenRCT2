@@ -2054,7 +2054,7 @@ int32_t guest_path_finding(Guest* peep)
     /* Find the ride's closest entrance station to the peep.
      * At the same time, count how many entrance stations there are and
      * which stations are entrance stations. */
-    uint16_t closestDist = 0xFFFF;
+    uint16_t bestScore = 0xFFFF;
     uint8_t closestStationNum = 0;
 
     int32_t numEntranceStations = 0;
@@ -2073,11 +2073,11 @@ int32_t guest_path_finding(Guest* peep)
 
         int16_t stationX = (int16_t)(entranceLocation.x * 32);
         int16_t stationY = (int16_t)(entranceLocation.y * 32);
-        uint16_t dist = abs(stationX - peep->next_x) + abs(stationY - peep->next_y);
-
-        if (dist < closestDist)
+        uint16_t score = abs(stationX - peep->next_x) + abs(stationY - peep->next_y);
+        score += abs(entranceLocation.z - peep->next_z) * 2;
+        if (score < bestScore)
         {
-            closestDist = dist;
+            bestScore = score;
             closestStationNum = stationNum;
             continue;
         }
