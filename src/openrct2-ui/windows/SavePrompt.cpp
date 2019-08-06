@@ -16,6 +16,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/network.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
 
@@ -134,7 +135,7 @@ rct_window* window_save_prompt_open()
          * and game_load_or_quit() are not called by the original binary anymore.
          */
 
-        if (gScreenAge < 3840)
+        if (gScreenAge < 3840 && network_get_mode() == NETWORK_MODE_NONE)
         {
             game_load_or_quit_no_save_prompt();
             return nullptr;
@@ -175,9 +176,13 @@ rct_window* window_save_prompt_open()
     window->enabled_widgets = enabled_widgets;
     window_init_scroll_widgets(window);
 
-    // Pause the game
-    gGamePaused |= GAME_PAUSED_MODAL;
-    audio_stop_all_music_and_sounds();
+    // Pause the game if not network play.
+    if (network_get_mode() == NETWORK_MODE_NONE)
+    {
+        gGamePaused |= GAME_PAUSED_MODAL;
+        audio_stop_all_music_and_sounds();
+    }
+
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 
     stringId = window_save_prompt_labels[prompt_mode][0];
@@ -198,8 +203,12 @@ rct_window* window_save_prompt_open()
 static void window_save_prompt_close(rct_window* w)
 {
     // Unpause the game
-    gGamePaused &= ~GAME_PAUSED_MODAL;
-    audio_unpause_sounds();
+    if (network_get_mode() == NETWORK_MODE_NONE)
+    {
+        gGamePaused &= ~GAME_PAUSED_MODAL;
+        audio_unpause_sounds();
+    }
+
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
