@@ -18,6 +18,7 @@
 #include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../core/Random.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -424,11 +425,10 @@ static int32_t scenario_create_ducks()
 {
     int32_t i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
 
-    r = scenario_rand();
-    x = ((r >> 16) & 0xFFFF) & 0x7F;
-    y = (r & 0xFFFF) & 0x7F;
-    x = (x + 64) * 32;
-    y = (y + 64) * 32;
+    x = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
+    y = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
+
+    Guard::Assert(map_is_location_valid({ x, y }));
 
     if (!map_is_location_in_park({ x, y }))
         return 0;
@@ -445,6 +445,11 @@ static int32_t scenario_create_ducks()
     {
         for (j = 0; j < 7; j++)
         {
+            Guard::Assert(map_is_location_valid({ x2, y2 }));
+
+            if (!map_is_location_in_park({ x2, y2 }))
+                continue;
+
             waterZ = (tile_element_water_height({ x2, y2 }));
             if (waterZ == centreWaterZ)
                 c++;
@@ -468,7 +473,13 @@ static int32_t scenario_create_ducks()
         r = scenario_rand();
         x2 = (r >> 16) & 0x7F;
         y2 = (r & 0xFFFF) & 0x7F;
-        create_duck(x + x2 - 64, y + y2 - 64);
+
+        int32_t targetX = x + x2 - 64;
+        Guard::Assert(targetX >= 0 && targetX < (MAXIMUM_MAP_SIZE_TECHNICAL * 32));
+        int32_t targetY = y + y2 - 64;
+        Guard::Assert(targetY >= 0 && targetY < (MAXIMUM_MAP_SIZE_TECHNICAL * 32));
+        Guard::Assert(map_is_location_valid({ targetX, targetY }));
+        create_duck(targetX, targetY);
     }
 
     return 1;
