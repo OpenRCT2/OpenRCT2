@@ -112,7 +112,7 @@ private:
     {
         bool getGhostPath = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-        TileElement* tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, _loc.z / 32);
+        TileElement* tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, _loc.z / 8);
         TileElement* footpathElement = nullptr;
         if (tileElement != nullptr)
         {
