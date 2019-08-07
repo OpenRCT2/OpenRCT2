@@ -230,7 +230,10 @@ void window_close(rct_window* w)
     // Invalidate the window (area)
     window_invalidate(window.get());
 
-    g_window_list.erase(itWindow);
+    // The window list may have been modified in the close event
+    itWindow = window_get_iterator(w);
+    if (itWindow != g_window_list.end())
+        g_window_list.erase(itWindow);
 }
 
 template<typename _TPred> static void window_close_by_condition(_TPred pred, uint32_t flags = WindowCloseFlags::None)
