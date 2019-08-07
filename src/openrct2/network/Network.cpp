@@ -50,7 +50,6 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include "../ParkImporter.h"
 #    include "../Version.h"
 #    include "../actions/GameAction.h"
-#    include "../actions/PauseToggleAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/FileStream.hpp"
@@ -661,12 +660,6 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
     listening_port = port;
     _serverState.gamestateSnapshotsEnabled = gConfigNetwork.desync_debugging;
     _advertiser = CreateServerAdvertiser(listening_port);
-
-    if (gConfigNetwork.pause_server_if_no_clients)
-    {
-        auto pauseToggleAction = PauseToggleAction();
-        GameActions::Execute(&pauseToggleAction);
-    }
 
     return true;
 }
@@ -2043,12 +2036,6 @@ void Network::ProcessDisconnectedClients()
             it++;
         }
     }
-
-    if (gConfigNetwork.pause_server_if_no_clients && game_is_not_paused() && client_connection_list.empty())
-    {
-        auto pauseToggleAction = PauseToggleAction();
-        GameActions::Execute(&pauseToggleAction);
-    }
 }
 
 void Network::ProcessGameCommands()
@@ -2123,12 +2110,6 @@ void Network::EnqueueGameAction(const GameAction* action)
 
 void Network::AddClient(std::unique_ptr<ITcpSocket>&& socket)
 {
-    if (gConfigNetwork.pause_server_if_no_clients && game_is_paused())
-    {
-        auto pauseToggleAction = PauseToggleAction();
-        GameActions::Execute(&pauseToggleAction);
-    }
-
     // Log connection info.
     char addr[128];
     snprintf(addr, sizeof(addr), "Client joined from %s", socket->GetHostName());
