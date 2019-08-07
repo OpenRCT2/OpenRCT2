@@ -356,7 +356,7 @@ void S6Exporter::Export()
 
     ExportMapAnimations();
 
-    _s6.ride_ratings_calc_data = gRideRatingsCalcData;
+    ExportRideRatingsCalcData();
     ExportRideMeasurements();
     _s6.next_guest_index = gNextGuestNumber;
     _s6.grass_and_scenery_tilepos = gGrassSceneryTileLoopPosition;
@@ -724,6 +724,30 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->cable_lift = src->cable_lift;
 
     // pad_208[0x58];
+}
+
+void S6Exporter::ExportRideRatingsCalcData()
+{
+    const auto& src = gRideRatingsCalcData;
+    auto& dst = _s6.ride_ratings_calc_data;
+    dst.proximity_x = src.proximity_x;
+    dst.proximity_y = src.proximity_y;
+    dst.proximity_z = src.proximity_z;
+    dst.proximity_start_x = src.proximity_start_x;
+    dst.proximity_start_y = src.proximity_start_y;
+    dst.proximity_start_z = src.proximity_start_z;
+    dst.current_ride = src.current_ride;
+    dst.state = src.state;
+    dst.proximity_track_type = src.proximity_track_type;
+    dst.proximity_base_height = src.proximity_base_height;
+    dst.proximity_total = src.proximity_total;
+    for (size_t i = 0; i < std::size(dst.proximity_scores); i++)
+    {
+        dst.proximity_scores[i] = src.proximity_scores[i];
+    }
+    dst.num_brakes = src.num_brakes;
+    dst.num_reversers = src.num_reversers;
+    dst.station_flags = src.station_flags;
 }
 
 void S6Exporter::ExportRideMeasurements()

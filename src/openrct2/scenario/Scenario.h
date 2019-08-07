@@ -263,7 +263,7 @@ struct rct_s6_data
     RCT12MapAnimation map_animations[RCT2_MAX_ANIMATED_OBJECTS];
     uint16_t num_map_animations;
     uint8_t pad_0138B582[2];
-    rct_ride_rating_calc_data ride_ratings_calc_data;
+    RCT2RideRatingCalculationData ride_ratings_calc_data;
     uint8_t pad_0138B5D0[60];
     RCT12RideMeasurement ride_measurements[8];
     uint32_t next_guest_index;
