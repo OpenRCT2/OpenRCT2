@@ -240,6 +240,8 @@ CoordsXY translate_3d_to_2d_with_z(int32_t rotation, CoordsXYZ pos);
 TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z);
 TileElement* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, int32_t trackType);
 TileElement* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t sequence);
+TrackElement* map_get_track_element_at_of_type(CoordsXYZD location, int32_t trackType);
+TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t trackType, int32_t sequence);
 TileElement* map_get_track_element_at_of_type_from_ride(
     int32_t x, int32_t y, int32_t z, int32_t trackType, ride_id_t rideIndex);
 TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, ride_id_t rideIndex);
