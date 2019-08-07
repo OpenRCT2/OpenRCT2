@@ -110,7 +110,7 @@ static constexpr const CoordsXY SpiralSlideWalkingPath[64] = {
 };
 
 /** rct2: 0x00981F4C, 0x00981F4E */
-static constexpr const LocationXY16 _WatchingPositionOffsets[] = {
+static constexpr const CoordsXY _WatchingPositionOffsets[] = {
     {  7,  5 },
     {  5, 25 },
     { 25,  5 },
@@ -2351,7 +2351,6 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount)
 
     window_invalidate_by_number(WC_PEEP, sprite_index);
 
-    gUnk141F568 = gUnk13CA740;
     finance_payment(-amount, gCommandExpenditureType);
 
     if (gConfigGeneral.show_guest_purchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
@@ -5383,12 +5382,12 @@ void Guest::UpdateWalking()
                     LITTER_TYPE_EMPTY_BURGER_BOX,
                     LITTER_TYPE_EMPTY_CUP,
                 };
-                int32_t ebp = litter_types[scenario_rand() & 0x3];
+                int32_t litterType = litter_types[scenario_rand() & 0x3];
                 int32_t litterX = x + (scenario_rand() & 0x7) - 3;
                 int32_t litterY = y + (scenario_rand() & 0x7) - 3;
                 int32_t litterDirection = (scenario_rand() & 0x3);
 
-                litter_create(litterX, litterY, z, litterDirection, ebp);
+                litter_create(litterX, litterY, z, litterDirection, litterType);
             }
         }
     }
@@ -5402,12 +5401,12 @@ void Guest::UpdateWalking()
                 if (container & (1u << pos_stnd))
                     break;
 
-            int32_t bp = 0;
+            int32_t litterType = 0;
 
             if (pos_stnd != 32)
             {
                 item_standard_flags &= ~(1u << pos_stnd);
-                bp = item_standard_litter[pos_stnd];
+                litterType = item_standard_litter[pos_stnd];
             }
             else
             {
@@ -5416,7 +5415,7 @@ void Guest::UpdateWalking()
                     if (container & (1u << pos_extr))
                         break;
                 item_extra_flags &= ~(1u << pos_extr);
-                bp = item_extra_litter[pos_extr];
+                litterType = item_extra_litter[pos_extr];
             }
 
             window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -5426,7 +5425,7 @@ void Guest::UpdateWalking()
             int32_t litterY = y + (scenario_rand() & 0x7) - 3;
             int32_t litterDirection = (scenario_rand() & 0x3);
 
-            litter_create(litterX, litterY, z, litterDirection, bp);
+            litter_create(litterX, litterY, z, litterDirection, litterType);
         }
     }
 
@@ -6002,12 +6001,12 @@ void Guest::UpdateUsingBin()
                     UpdateSpriteType();
                     continue;
                 }
-                uint8_t bp = item_standard_litter[cur_container];
+                uint8_t litterType = item_standard_litter[cur_container];
 
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create(litterX, litterY, z, scenario_rand() & 3, bp);
+                litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
                 item_standard_flags &= ~(1 << cur_container);
                 window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -6036,12 +6035,12 @@ void Guest::UpdateUsingBin()
                     UpdateSpriteType();
                     continue;
                 }
-                uint8_t bp = item_extra_litter[cur_container];
+                uint8_t litterType = item_extra_litter[cur_container];
 
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create(litterX, litterY, z, scenario_rand() & 3, bp);
+                litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
                 item_extra_flags &= ~(1 << cur_container);
                 window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 

@@ -256,7 +256,6 @@ money32 Park::GetCompanyValue() const
 void Park::Initialise()
 {
     Name = format_string(STR_UNNAMED_PARK, nullptr);
-    gUnk13CA740 = 0;
     gStaffHandymanColour = COLOUR_BRIGHT_RED;
     gStaffMechanicColour = COLOUR_LIGHT_BLUE;
     gStaffSecurityColour = COLOUR_YELLOW;
