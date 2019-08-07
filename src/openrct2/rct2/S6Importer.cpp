@@ -752,9 +752,12 @@ public:
             if (src.ride_index != RCT12_RIDE_ID_NULL)
             {
                 auto ride = get_ride(src.ride_index);
-                ride->measurement = std::make_unique<RideMeasurement>();
-                ride->measurement->ride = ride;
-                ImportRideMeasurement(*ride->measurement, src);
+                if (ride != nullptr)
+                {
+                    ride->measurement = std::make_unique<RideMeasurement>();
+                    ride->measurement->ride = ride;
+                    ImportRideMeasurement(*ride->measurement, src);
+                }
             }
         }
     }
