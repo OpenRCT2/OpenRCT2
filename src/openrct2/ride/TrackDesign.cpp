@@ -1750,7 +1750,7 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, Ride**
     int32_t mapSize = gMapSize << 4;
 
     _currentTrackPieceDirection = 0;
-    int32_t z = place_virtual_track(td6, PTD_OPERATION_GET_PLACE_Z, true, get_ride(0), mapSize, mapSize, 16);
+    int32_t z = place_virtual_track(td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), mapSize, mapSize, 16);
 
     if (_trackDesignPlaceStateHasScenery)
     {
