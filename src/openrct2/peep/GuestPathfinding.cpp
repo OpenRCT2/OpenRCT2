@@ -505,6 +505,20 @@ static bool path_is_thin_junction(TileElement* path, TileCoordsXYZ loc)
     return thin_junction;
 }
 
+static int32_t CalculateHeuristicPathingScore(TileCoordsXYZ loc1, TileCoordsXYZ loc2)
+{
+    auto xDelta = abs(loc1.x - loc2.x) * 32;
+    auto yDelta = abs(loc1.y - loc2.y) * 32;
+    auto zDelta = abs(loc1.z - loc2.z) * 2;
+
+    if (xDelta < yDelta)
+        xDelta >>= 4;
+    else
+        yDelta >>= 4;
+
+    return xDelta + yDelta + zDelta;
+}
+
 /**
  * Searches for the tile with the best heuristic score within the search limits
  * starting from the given tile x,y,z and going in the given direction test_edge.
@@ -784,16 +798,7 @@ static void peep_pathfind_heuristic_search(
          * Ignore for now. */
 
         // Calculate the heuristic score of this map element.
-        uint16_t x_delta = abs(gPeepPathFindGoalPosition.x - loc.x) * 32;
-        uint16_t y_delta = abs(gPeepPathFindGoalPosition.y - loc.y) * 32;
-        if (x_delta < y_delta)
-            x_delta >>= 4;
-        else
-            y_delta >>= 4;
-        uint16_t new_score = x_delta + y_delta;
-        uint16_t z_delta = abs(gPeepPathFindGoalPosition.z - loc.z);
-        z_delta <<= 1;
-        new_score += z_delta;
+        uint16_t new_score = CalculateHeuristicPathingScore(loc, gPeepPathFindGoalPosition);
 
         /* If this map element is the search goal the current search path ends here. */
         if (new_score == 0)
@@ -2054,7 +2059,7 @@ int32_t guest_path_finding(Guest* peep)
     /* Find the ride's closest entrance station to the peep.
      * At the same time, count how many entrance stations there are and
      * which stations are entrance stations. */
-    uint16_t bestScore = 0xFFFF;
+    auto bestScore = std::numeric_limits<int32_t>::max();
     uint8_t closestStationNum = 0;
 
     int32_t numEntranceStations = 0;
@@ -2070,11 +2075,9 @@ int32_t guest_path_finding(Guest* peep)
         entranceStations |= (1 << stationNum);
 
         TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, stationNum);
-
-        int16_t stationX = (int16_t)(entranceLocation.x * 32);
-        int16_t stationY = (int16_t)(entranceLocation.y * 32);
-        uint16_t score = abs(stationX - peep->next_x) + abs(stationY - peep->next_y);
-        score += abs(entranceLocation.z - peep->next_z) * 2;
+        auto score = CalculateHeuristicPathingScore(
+            { entranceLocation.x, entranceLocation.y, entranceLocation.z },
+            { peep->next_x / 32, peep->next_y / 32, peep->next_z });
         if (score < bestScore)
         {
             bestScore = score;

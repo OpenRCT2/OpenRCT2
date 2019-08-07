@@ -7,8 +7,7 @@
 - Fix: [#9625] Show correct cost in scenery selection.
 - Fix: [#9669] The tile inspector shortcut key does not work with debugging tools disabled.
 - Fix: [#9717] Scroll bars do not render correctly when using OpenGL renderer.
-- Fix: [#9729] Peeps do not take into account height difference when
-deciding to pathfind to a ride entrance. (original bug)
+- Fix: [#9729] Peeps do not take into account height difference when deciding to pathfind to a ride entrance. (original bug)
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
 
 0.2.3 (2019-07-10)
