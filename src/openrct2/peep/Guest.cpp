@@ -1399,7 +1399,7 @@ void Guest::CheckIfLost()
 {
     if (!(peep_flags & PEEP_FLAGS_LOST))
     {
-        if (gRideCount < 2)
+        if (ride_get_count() < 2)
             return;
         peep_flags ^= PEEP_FLAGS_21;
 
@@ -1883,18 +1883,17 @@ Ride* Guest::FindBestRideToGoOn()
     // Pick the most exciting ride
     auto rideConsideration = FindRidesToGoOn();
     Ride* mostExcitingRide = nullptr;
-    for (int32_t i = 0; i < MAX_RIDES; i++)
+    for (auto& ride : GetRideManager())
     {
-        if (rideConsideration[i])
+        if (rideConsideration.size() > ride.id && rideConsideration[ride.id])
         {
-            auto ride = get_ride(i);
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
+            if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
-                if (ShouldGoOnRide(ride, 0, false, true) && ride_has_ratings(ride))
+                if (ShouldGoOnRide(&ride, 0, false, true) && ride_has_ratings(&ride))
                 {
-                    if (mostExcitingRide == nullptr || ride->excitement > mostExcitingRide->excitement)
+                    if (mostExcitingRide == nullptr || ride.excitement > mostExcitingRide->excitement)
                     {
-                        mostExcitingRide = ride;
+                        mostExcitingRide = &ride;
                     }
                 }
             }
@@ -1913,13 +1912,11 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
     if (item_standard_flags & PEEP_ITEM_MAP)
     {
         // Consider rides that peep hasn't been on yet
-        int32_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (!HasRidden(ride))
+            if (!HasRidden(&ride))
             {
-                rideConsideration[i] = true;
+                rideConsideration[ride.id] = true;
             }
         }
     }
@@ -1952,13 +1949,11 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
         }
 
         // Always take the tall rides into consideration (realistic as you can usually see them from anywhere in the park)
-        int32_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (ride->highest_drop_height > 66 || ride->excitement >= RIDE_RATING(8, 00))
+            if (ride.highest_drop_height > 66 || ride.excitement >= RIDE_RATING(8, 00))
             {
-                rideConsideration[i] = true;
+                rideConsideration[ride.id] = true;
             }
         }
     }
@@ -2372,13 +2367,13 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount)
     audio_play_sound_at_location(SoundId::Purchase, x, y, z);
 }
 
-void Guest::SetHasRidden(Ride* ride)
+void Guest::SetHasRidden(const Ride* ride)
 {
     rides_been_on[ride->id / 8] |= 1 << (ride->id % 8);
     SetHasRiddenRideType(ride->type);
 }
 
-bool Guest::HasRidden(Ride* ride) const
+bool Guest::HasRidden(const Ride* ride) const
 {
     return rides_been_on[ride->id / 8] & (1 << (ride->id % 8));
 }
@@ -3149,14 +3144,8 @@ static void peep_leave_park(Peep* peep)
     window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 }
 
-/**
- *
- *  rct2: 0x00695B70
- */
-static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
+template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool considerOnlyCloseRides, T predicate)
 {
-    Ride* ride;
-
     if (peep->state != PEEP_STATE_SITTING && peep->state != PEEP_STATE_WATCHING && peep->state != PEEP_STATE_WALKING)
     {
         return;
@@ -3167,231 +3156,119 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
         return;
     if (peep->guest_heading_to_ride_id != RIDE_ID_NULL)
     {
-        ride = get_ride(peep->guest_heading_to_ride_id);
-        if (ride->type == rideType)
+        auto ride = get_ride(peep->guest_heading_to_ride_id);
+        if (ride != nullptr && predicate(*ride))
         {
             return;
         }
     }
 
-    uint32_t rideConsideration[8]{};
-
-    // FIX Originally checked for a toy,.likely a mistake and should be a map
-    if ((peep->item_standard_flags & PEEP_ITEM_MAP) && rideType != RIDE_TYPE_FIRST_AID)
+    std::bitset<MAX_RIDES> rideConsideration;
+    if (!considerOnlyCloseRides && (peep->item_standard_flags & PEEP_ITEM_MAP))
     {
         // Consider all rides in the park
-        int32_t i;
-        FOR_ALL_RIDES (i, ride)
+        for (const auto& ride : GetRideManager())
         {
-            if (ride->type == rideType)
+            if (predicate(ride))
             {
-                rideConsideration[i >> 5] |= (1u << (i & 0x1F));
+                rideConsideration[ride.id] = true;
             }
         }
     }
     else
     {
         // Take nearby rides into consideration
+        constexpr auto searchRadius = 10 * 32;
         int32_t cx = floor2(peep->x, 32);
         int32_t cy = floor2(peep->y, 32);
-        for (int32_t x = cx - 320; x <= cx + 320; x += 32)
+        for (auto x = cx - searchRadius; x <= cx + searchRadius; x += 32)
         {
-            for (int32_t y = cy - 320; y <= cy + 320; y += 32)
+            for (auto y = cy - searchRadius; y <= cy + searchRadius; y += 32)
             {
-                if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32))
+                if (map_is_location_valid({ x, y }))
                 {
-                    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
-                    do
+                    auto tileElement = map_get_first_element_at(x >> 5, y >> 5);
+                    if (tileElement != nullptr)
                     {
-                        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-                            continue;
-
-                        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                        ride = get_ride(rideIndex);
-                        if (ride->type == rideType)
+                        do
                         {
-                            rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
-                        }
-                    } while (!(tileElement++)->IsLastForTile());
+                            if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+                            {
+                                auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+                                auto ride = get_ride(rideIndex);
+                                if (ride != nullptr && predicate(*ride))
+                                {
+                                    rideConsideration[rideIndex] = true;
+                                }
+                            }
+                        } while (!(tileElement++)->IsLastForTile());
+                    }
                 }
             }
         }
     }
 
     // Filter the considered rides
-    uint8_t potentialRides[256];
-    uint8_t* nextPotentialRide = &potentialRides[0];
-    int32_t numPotentialRides = 0;
-    for (int32_t i = 0; i < MAX_RIDES; i++)
+    uint8_t potentialRides[MAX_RIDES];
+    size_t numPotentialRides = 0;
+    for (auto& ride : GetRideManager())
     {
-        if (!(rideConsideration[i >> 5] & (1u << (i & 0x1F))))
-            continue;
-
-        ride = get_ride(i);
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
+        if (rideConsideration[ride.id])
         {
-            if (peep->ShouldGoOnRide(ride, 0, false, true))
+            if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
-                *nextPotentialRide++ = i;
-                numPotentialRides++;
+                if (peep->ShouldGoOnRide(&ride, 0, false, true))
+                {
+                    potentialRides[numPotentialRides++] = ride.id;
+                }
             }
         }
     }
 
     // Pick the closest ride
-    ride_id_t closestRideIndex = RIDE_ID_NULL;
-    int32_t closestRideDistance = std::numeric_limits<int32_t>::max();
-    for (int32_t i = 0; i < numPotentialRides; i++)
+    Ride* closestRide{};
+    auto closestRideDistance = std::numeric_limits<int32_t>::max();
+    for (size_t i = 0; i < numPotentialRides; i++)
     {
-        ride = get_ride(potentialRides[i]);
-        int32_t rideX = ride->stations[0].Start.x * 32;
-        int32_t rideY = ride->stations[0].Start.y * 32;
-        int32_t distance = abs(rideX - peep->x) + abs(rideY - peep->y);
-        if (distance < closestRideDistance)
+        auto ride = get_ride(potentialRides[i]);
+        if (ride != nullptr)
         {
-            closestRideIndex = potentialRides[i];
-            closestRideDistance = distance;
+            int32_t rideX = ride->stations[0].Start.x * 32;
+            int32_t rideY = ride->stations[0].Start.y * 32;
+            int32_t distance = abs(rideX - peep->x) + abs(rideY - peep->y);
+            if (distance < closestRideDistance)
+            {
+                closestRide = ride;
+                closestRideDistance = distance;
+            }
         }
     }
-    if (closestRideIndex == RIDE_ID_NULL)
-        return;
-
-    // Head to that ride
-    peep->guest_heading_to_ride_id = closestRideIndex;
-    peep->peep_is_lost_countdown = 200;
-    peep_reset_pathfind_goal(peep);
-    peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
-
-    peep->time_lost = 0;
+    if (closestRide != nullptr)
+    {
+        // Head to that ride
+        peep->guest_heading_to_ride_id = closestRide->id;
+        peep->peep_is_lost_countdown = 200;
+        peep_reset_pathfind_goal(peep);
+        peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_ACTION;
+        peep->time_lost = 0;
+    }
 }
 
-/**
- *
- *  rct2: 0x006958D0
- */
+static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
+{
+    auto considerOnlyCloseRides = rideType == RIDE_TYPE_FIRST_AID;
+    return peep_head_for_nearest_ride(
+        peep, considerOnlyCloseRides, [rideType](const Ride& ride) { return ride.type == rideType; });
+}
+
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags)
 {
-    Ride* ride;
-
-    if (peep->state != PEEP_STATE_SITTING && peep->state != PEEP_STATE_WATCHING && peep->state != PEEP_STATE_WALKING)
-    {
-        return;
-    }
-    if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
-        return;
-    if (peep->x == LOCATION_NULL)
-        return;
-    if (peep->guest_heading_to_ride_id != RIDE_ID_NULL)
-    {
-        ride = get_ride(peep->guest_heading_to_ride_id);
-        if (ride_type_has_flag(
-                ride->type, RIDE_TYPE_FLAG_IS_BATHROOM | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_SELLS_FOOD))
-        {
-            return;
-        }
-    }
-
     if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_BATHROOM) && peep->HasFood())
     {
         return;
     }
-
-    uint32_t rideConsideration[8]{};
-
-    // FIX Originally checked for a toy,.likely a mistake and should be a map
-    if (peep->item_standard_flags & PEEP_ITEM_MAP)
-    {
-        // Consider all rides in the park
-        int32_t i;
-        FOR_ALL_RIDES (i, ride)
-        {
-            if (ride_type_has_flag(ride->type, rideTypeFlags))
-            {
-                rideConsideration[i >> 5] |= (1u << (i & 0x1F));
-            }
-        }
-    }
-    else
-    {
-        // Take nearby rides into consideration
-        int32_t cx = floor2(peep->x, 32);
-        int32_t cy = floor2(peep->y, 32);
-        for (int32_t x = cx - 320; x <= cx + 320; x += 32)
-        {
-            for (int32_t y = cy - 320; y <= cy + 320; y += 32)
-            {
-                if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32))
-                {
-                    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
-                    do
-                    {
-                        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-                            continue;
-
-                        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                        ride = get_ride(rideIndex);
-                        if (ride_type_has_flag(ride->type, rideTypeFlags))
-                        {
-                            rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
-                        }
-                    } while (!(tileElement++)->IsLastForTile());
-                }
-            }
-        }
-    }
-
-    // Filter the considered rides
-    uint8_t potentialRides[256];
-    uint8_t* nextPotentialRide = &potentialRides[0];
-    int32_t numPotentialRides = 0;
-    for (int32_t i = 0; i < MAX_RIDES; i++)
-    {
-        if (!(rideConsideration[i >> 5] & (1u << (i & 0x1F))))
-            continue;
-
-        ride = get_ride(i);
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
-        {
-            if (peep->ShouldGoOnRide(ride, 0, false, true))
-            {
-                *nextPotentialRide++ = i;
-                numPotentialRides++;
-            }
-        }
-    }
-
-    // Pick the closest ride
-    ride_id_t closestRideIndex = RIDE_ID_NULL;
-    int32_t closestRideDistance = std::numeric_limits<int32_t>::max();
-    for (int32_t i = 0; i < numPotentialRides; i++)
-    {
-        ride = get_ride(potentialRides[i]);
-        int32_t rideX = ride->stations[0].Start.x * 32;
-        int32_t rideY = ride->stations[0].Start.y * 32;
-        int32_t distance = abs(rideX - peep->x) + abs(rideY - peep->y);
-        if (distance < closestRideDistance)
-        {
-            closestRideIndex = potentialRides[i];
-            closestRideDistance = distance;
-        }
-    }
-    if (closestRideIndex == RIDE_ID_NULL)
-        return;
-
-    // Head to that ride
-    peep->guest_heading_to_ride_id = closestRideIndex;
-    peep->peep_is_lost_countdown = 200;
-    peep_reset_pathfind_goal(peep);
-
-    // Invalidate windows
-    rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
-    if (w != nullptr)
-    {
-        window_event_invalidate_call(w);
-        window_invalidate(w);
-    }
-
-    peep->time_lost = 0;
+    peep_head_for_nearest_ride(
+        peep, false, [rideTypeFlags](const Ride& ride) { return ride_type_has_flag(ride.type, rideTypeFlags); });
 }
 
 /**
@@ -6511,7 +6388,7 @@ static bool peep_should_watch_ride(TileElement* tileElement)
             return false;
     }
 
-    if (gRideClassifications[ride->type] != RIDE_CLASS_RIDE)
+    if (!ride->IsRide())
     {
         return false;
     }

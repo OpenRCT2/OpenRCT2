@@ -58,5 +58,5 @@ struct rct_ride_rating_calc_data
 
 extern rct_ride_rating_calc_data gRideRatingsCalcData;
 
-void ride_ratings_update_ride(ride_id_t rideIndex);
+void ride_ratings_update_ride(const Ride& ride);
 void ride_ratings_update_all();

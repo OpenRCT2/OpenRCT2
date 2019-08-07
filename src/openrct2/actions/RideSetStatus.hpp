@@ -59,18 +59,19 @@ public:
     GameActionResult::Ptr Query() const override
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
-        Ride* ride = get_ride(_rideIndex);
-        res->ErrorTitle = _StatusErrorTitles[_status];
-        ride->FormatNameTo(res->ErrorMessageArgs.data() + 6);
 
-        if (_rideIndex >= MAX_RIDES || _rideIndex < 0)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             res->Error = GA_ERROR::INVALID_PARAMETERS;
-            res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
+            res->ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
+            res->ErrorMessage = STR_NONE;
             return res;
         }
 
+        res->ErrorTitle = _StatusErrorTitles[_status];
+        ride->FormatNameTo(res->ErrorMessageArgs.data() + 6);
         if (_status != ride->status)
         {
             if (_status == RIDE_STATUS_SIMULATING && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
@@ -107,18 +108,18 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
 
-        Ride* ride = get_ride(_rideIndex);
-        res->ErrorTitle = _StatusErrorTitles[_status];
-        ride->FormatNameTo(res->ErrorMessageArgs.data() + 6);
-
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             res->Error = GA_ERROR::INVALID_PARAMETERS;
-            res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
+            res->ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
+            res->ErrorMessage = STR_NONE;
             return res;
         }
 
+        res->ErrorTitle = _StatusErrorTitles[_status];
+        ride->FormatNameTo(res->ErrorMessageArgs.data() + 6);
         if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
         {
             res->Position.x = ride->overall_view.x * 32 + 16;

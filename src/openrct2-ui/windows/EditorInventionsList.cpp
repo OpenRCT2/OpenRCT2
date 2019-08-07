@@ -186,13 +186,9 @@ static void research_rides_setup()
     }
 
     // Set research required for rides in use
-    for (uint16_t rideIndex = 0; rideIndex < MAX_RIDES; rideIndex++)
+    for (const auto& ride : GetRideManager())
     {
-        auto ride = get_ride(rideIndex);
-        if (ride->type != RIDE_TYPE_NULL)
-        {
-            Editor::SetSelectedObject(OBJECT_TYPE_RIDE, ride->subtype, OBJECT_SELECTION_FLAG_SELECTED);
-        }
+        Editor::SetSelectedObject(OBJECT_TYPE_RIDE, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED);
     }
 }
 

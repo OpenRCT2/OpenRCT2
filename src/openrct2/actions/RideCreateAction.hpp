@@ -74,7 +74,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        ride_id_t rideIndex = ride_get_empty_slot();
+        auto rideIndex = GetNextFreeRideId();
         if (rideIndex == RIDE_ID_NULL)
         {
             // No more free slots available.
@@ -119,11 +119,11 @@ public:
         auto res = MakeResult();
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
-        ride_id_t rideIndex = ride_get_empty_slot();
+        auto rideIndex = GetNextFreeRideId();
 
         res->rideIndex = rideIndex;
 
-        auto ride = get_ride(rideIndex);
+        auto ride = GetOrAllocateRide(rideIndex);
         rideEntry = get_ride_entry(rideEntryIndex);
         if (rideEntry == nullptr)
         {

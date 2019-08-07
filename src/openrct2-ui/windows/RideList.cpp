@@ -527,30 +527,23 @@ static void window_ride_list_invalidate(rct_window* w)
         w->widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
         w->widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
 
-        int8_t allClosed = -1;
-        int8_t allOpen = -1;
-        int32_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        const auto& rideManager = GetRideManager();
+        auto allClosed = false;
+        auto allOpen = false;
+        if (std::size(rideManager) != 0)
         {
-            if (w->page != gRideClassifications[ride->type])
-                continue;
-            if (ride->status == RIDE_STATUS_OPEN)
-            {
-                if (allOpen == -1)
-                    allOpen = true;
-                allClosed = false;
-            }
-            else
-            {
-                if (allClosed == -1)
-                    allClosed = true;
-                allOpen = false;
-            }
+            auto c = (RideClassification)w->page;
+            allClosed = std::all_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
+                return ride.GetClassification() == c && ride.status == RIDE_STATUS_OPEN;
+            });
+            allOpen = std::all_of(rideManager.begin(), rideManager.end(), [c](const Ride& ride) {
+                return ride.GetClassification() == c && ride.status != RIDE_STATUS_OPEN;
+            });
         }
-        w->widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed == 1) * 2
+
+        w->widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2
             + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
-        w->widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen == 1) * 2
+        w->widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
             + widget_is_pressed(w, WIDX_OPEN_LIGHT);
         w->widgets[WIDX_QUICK_DEMOLISH].top = w->widgets[WIDX_OPEN_LIGHT].bottom + 3;
     }
@@ -731,7 +724,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 break;
             case INFORMATION_TYPE_GUESTS_FAVOURITE:
                 formatSecondary = 0;
-                if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+                if (ride->IsRide())
                 {
                     set_format_arg(2, uint16_t, ride->guests_favourite);
                     formatSecondary = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
@@ -782,13 +775,11 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window*
  */
 void window_ride_list_refresh_list(rct_window* w)
 {
-    int32_t i;
-    Ride *ride, *otherRide;
     int32_t list_index = 0;
-
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ridec : GetRideManager())
     {
-        if (w->page != gRideClassifications[ride->type]
+        auto ride = &ridec;
+        if (ride->GetClassification() != (RideClassification)w->page
             || (ride->status == RIDE_STATUS_CLOSED && !ride_has_any_track_elements(ride)))
             continue;
 
@@ -797,7 +788,7 @@ void window_ride_list_refresh_list(rct_window* w)
             ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
         }
 
-        w->list_item_positions[list_index] = i;
+        w->list_item_positions[list_index] = ride->id;
         int32_t current_list_position = list_index;
         switch (w->list_information_type)
         {
@@ -806,7 +797,7 @@ void window_ride_list_refresh_list(rct_window* w)
                 auto strA = ride->GetName();
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     auto strB = otherRide->GetName();
                     if (_strcmpi(strA.c_str(), strB.c_str()) >= 0)
                         break;
@@ -818,7 +809,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_POPULARITY:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->popularity * 4 <= otherRide->popularity * 4)
                         break;
 
@@ -828,7 +819,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_SATISFACTION:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->satisfaction * 5 <= otherRide->satisfaction * 5)
                         break;
 
@@ -838,7 +829,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_PROFIT:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->profit <= otherRide->profit)
                         break;
 
@@ -848,7 +839,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_TOTAL_CUSTOMERS:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->total_customers <= otherRide->total_customers)
                         break;
 
@@ -858,7 +849,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_TOTAL_PROFIT:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->total_profit <= otherRide->total_profit)
                         break;
 
@@ -868,7 +859,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_CUSTOMERS:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride_customers_per_hour(ride) <= ride_customers_per_hour(otherRide))
                         break;
 
@@ -878,7 +869,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_AGE:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->build_date <= otherRide->build_date)
                         break;
 
@@ -888,7 +879,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_INCOME:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->income_per_hour <= otherRide->income_per_hour)
                         break;
 
@@ -898,7 +889,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_RUNNING_COST:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->upkeep_cost <= otherRide->upkeep_cost)
                         break;
 
@@ -908,7 +899,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_QUEUE_LENGTH:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->GetTotalQueueLength() <= otherRide->GetTotalQueueLength())
                         break;
 
@@ -918,7 +909,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_QUEUE_TIME:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->GetMaxQueueTime() <= otherRide->GetMaxQueueTime())
                         break;
 
@@ -928,7 +919,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_RELIABILITY:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->reliability_percentage <= otherRide->reliability_percentage)
                         break;
 
@@ -938,7 +929,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_DOWN_TIME:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->downtime <= otherRide->downtime)
                         break;
 
@@ -948,7 +939,7 @@ void window_ride_list_refresh_list(rct_window* w)
             case INFORMATION_TYPE_GUESTS_FAVOURITE:
                 while (--current_list_position >= 0)
                 {
-                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    auto otherRide = get_ride(w->list_item_positions[current_list_position]);
                     if (ride->guests_favourite <= otherRide->guests_favourite)
                         break;
 
@@ -967,30 +958,22 @@ void window_ride_list_refresh_list(rct_window* w)
 
 static void window_ride_list_close_all(rct_window* w)
 {
-    int32_t i;
-    Ride* ride;
-
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        if (w->page != gRideClassifications[ride->type])
-            continue;
-        if (ride->status == RIDE_STATUS_CLOSED)
-            continue;
-        ride_set_status(ride, RIDE_STATUS_CLOSED);
+        if (ride.status != RIDE_STATUS_CLOSED && ride.GetClassification() == (RideClassification)w->page)
+        {
+            ride_set_status(&ride, RIDE_STATUS_CLOSED);
+        }
     }
 }
 
 static void window_ride_list_open_all(rct_window* w)
 {
-    int32_t i;
-    Ride* ride;
-
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        if (w->page != gRideClassifications[ride->type])
-            continue;
-        if (ride->status == RIDE_STATUS_OPEN)
-            continue;
-        ride_set_status(ride, RIDE_STATUS_OPEN);
+        if (ride.status != RIDE_STATUS_OPEN && ride.GetClassification() == (RideClassification)w->page)
+        {
+            ride_set_status(&ride, RIDE_STATUS_OPEN);
+        }
     }
 }

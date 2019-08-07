@@ -303,7 +303,7 @@ void S6Exporter::Export()
     // _s6.game_version_number
     _s6.completed_company_value_record = gScenarioCompanyValueRecord;
     _s6.loan_hash = GetLoanHash(gInitialCash, gBankLoan, gMaxBankLoan);
-    _s6.ride_count = gRideCount;
+    _s6.ride_count = ride_get_count();
     // pad_013587CA
     _s6.historical_profit = gHistoricalProfit;
     // pad_013587D4
@@ -462,9 +462,14 @@ void S6Exporter::ExportParkName()
 
 void S6Exporter::ExportRides()
 {
+    const Ride nullRide{};
     for (int32_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
     {
-        auto src = get_ride(index);
+        const auto* src = get_ride(index);
+        if (src == nullptr)
+        {
+            src = &nullRide;
+        }
         auto dst = &_s6.rides[index];
         *dst = {};
         if (src->type == RIDE_TYPE_NULL)

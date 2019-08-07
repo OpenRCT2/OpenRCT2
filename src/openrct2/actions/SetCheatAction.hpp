@@ -442,77 +442,59 @@ private:
 
     void FixBrokenRides() const
     {
-        ride_id_t rideIndex;
-        Ride* ride;
-
-        FOR_ALL_RIDES (rideIndex, ride)
+        for (auto& ride : GetRideManager())
         {
-            if ((ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING)
-                && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+            if ((ride.mechanic_status != RIDE_MECHANIC_STATUS_FIXING)
+                && (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
             {
-                auto mechanic = ride_get_assigned_mechanic(ride);
+                auto mechanic = ride_get_assigned_mechanic(&ride);
                 if (mechanic != nullptr)
                 {
                     mechanic->RemoveFromRide();
                 }
 
-                ride_fix_breakdown(ride, 0);
-                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                ride_fix_breakdown(&ride, 0);
+                ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
             }
         }
     }
 
     void RenewRides() const
     {
-        int32_t i;
-        Ride* ride;
-
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            ride->Renew();
+            ride.Renew();
         }
         window_invalidate_by_class(WC_RIDE);
     }
 
     void MakeDestructible() const
     {
-        int32_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
-                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
+            ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
         }
         window_invalidate_by_class(WC_RIDE);
     }
 
     void ResetRideCrashStatus() const
     {
-        int32_t i;
-        Ride* ride;
-
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            // Reset crash status
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-            // Reset crash history
-            ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
+            // Reset crash status and history
+            ride.lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
+            ride.last_crash_type = RIDE_CRASH_TYPE_NONE;
         }
         window_invalidate_by_class(WC_RIDE);
     }
 
     void Set10MinuteInspection() const
     {
-        int32_t i;
-        Ride* ride;
-
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
             // Set inspection interval to 10 minutes
-            ride->inspection_interval = RIDE_INSPECTION_EVERY_10_MINUTES;
+            ride.inspection_interval = RIDE_INSPECTION_EVERY_10_MINUTES;
         }
         window_invalidate_by_class(WC_RIDE);
     }
@@ -654,36 +636,34 @@ private:
 
     void RemoveAllGuests() const
     {
-        Peep* peep;
-        rct_vehicle* vehicle;
         uint16_t spriteIndex, nextSpriteIndex;
-        ride_id_t rideIndex;
-        Ride* ride;
-
-        FOR_ALL_RIDES (rideIndex, ride)
+        for (auto& ride : GetRideManager())
         {
-            ride->num_riders = 0;
+            ride.num_riders = 0;
 
             for (size_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
             {
-                ride->stations[stationIndex].QueueLength = 0;
-                ride->stations[stationIndex].LastPeepInQueue = SPRITE_INDEX_NULL;
+                ride.stations[stationIndex].QueueLength = 0;
+                ride.stations[stationIndex].LastPeepInQueue = SPRITE_INDEX_NULL;
             }
 
-            for (auto trainIndex : ride->vehicles)
+            for (auto trainIndex : ride.vehicles)
             {
                 spriteIndex = trainIndex;
                 while (spriteIndex != SPRITE_INDEX_NULL)
                 {
-                    vehicle = GET_VEHICLE(spriteIndex);
+                    auto vehicle = GET_VEHICLE(spriteIndex);
                     for (size_t i = 0, offset = 0; i < vehicle->num_peeps; i++)
                     {
                         while (vehicle->peep[i + offset] == SPRITE_INDEX_NULL)
                         {
                             offset++;
                         }
-                        peep = GET_PEEP(vehicle->peep[i + offset]);
-                        vehicle->mass -= peep->mass;
+                        auto peep = GET_PEEP(vehicle->peep[i + offset]);
+                        if (peep != nullptr)
+                        {
+                            vehicle->mass -= peep->mass;
+                        }
                     }
 
                     for (auto& peepInTrainIndex : vehicle->peep)
@@ -701,7 +681,7 @@ private:
 
         for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
         {
-            peep = &(get_sprite(spriteIndex)->peep);
+            auto peep = &(get_sprite(spriteIndex)->peep);
             nextSpriteIndex = peep->next;
             if (peep->type == PEEP_TYPE_GUEST)
             {

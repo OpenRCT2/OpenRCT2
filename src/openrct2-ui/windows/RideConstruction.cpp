@@ -607,7 +607,7 @@ static void window_ride_construction_close(rct_window* w)
     // If we demolish a ride all windows will be closed including the construction window,
     // the ride at this point is already gone.
     auto ride = get_ride(_currentRideIndex);
-    if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+    if (ride == nullptr)
     {
         return;
     }

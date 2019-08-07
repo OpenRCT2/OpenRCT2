@@ -763,8 +763,8 @@ public:
     bool UpdateWalkingFindBin();
     void SpendMoney(money16& peep_expend_type, money32 amount);
     void SpendMoney(money32 amount);
-    void SetHasRidden(Ride* ride);
-    bool HasRidden(Ride* ride) const;
+    void SetHasRidden(const Ride* ride);
+    bool HasRidden(const Ride* ride) const;
     void SetHasRiddenRideType(int32_t rideType);
     bool HasRiddenRideType(int32_t rideType) const;
     int32_t HasFoodStandardFlag() const;

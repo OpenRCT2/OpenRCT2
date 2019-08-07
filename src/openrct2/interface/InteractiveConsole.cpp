@@ -136,14 +136,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
     {
         if (argv[0] == "list")
         {
-            Ride* ride;
-            int32_t i;
-            FOR_ALL_RIDES (i, ride)
+            for (const auto& ride : GetRideManager())
             {
-                auto name = ride->GetName();
+                auto name = ride.GetName();
                 console.WriteFormatLine(
-                    "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", i, ride->type, ride->subtype,
-                    ride->mode, name.c_str());
+                    "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", ride.id, ride.type, ride.subtype,
+                    ride.mode, name.c_str());
             }
         }
         else if (argv[0] == "set")
@@ -215,7 +213,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     {
                         console.WriteFormatLine("Invalid ride mode.");
                     }
-                    else if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -242,12 +240,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    Ride* ride = get_ride(ride_index);
+                    auto ride = get_ride(ride_index);
                     if (mass <= 0)
                     {
                         console.WriteFormatLine("Friction value must be strictly positive");
                     }
-                    else if (ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -282,12 +280,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    Ride* ride = get_ride(ride_index);
+                    auto ride = get_ride(ride_index);
                     if (excitement <= 0)
                     {
                         console.WriteFormatLine("Excitement value must be strictly positive");
                     }
-                    else if (ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -313,12 +311,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    Ride* ride = get_ride(ride_index);
+                    auto ride = get_ride(ride_index);
                     if (intensity <= 0)
                     {
                         console.WriteFormatLine("Intensity value must be strictly positive");
                     }
-                    else if (ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -344,12 +342,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    Ride* ride = get_ride(ride_index);
+                    auto ride = get_ride(ride_index);
                     if (nausea <= 0)
                     {
                         console.WriteFormatLine("Nausea value must be strictly positive");
                     }
-                    else if (ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -370,11 +368,9 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                         auto price = arg1;
                         if (int_valid[0])
                         {
-                            uint16_t rideId{};
-                            Ride* ride;
-                            FOR_ALL_RIDES (rideId, ride)
+                            for (const auto& ride : GetRideManager())
                             {
-                                auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                                auto rideSetPrice = RideSetPriceAction(ride.id, price, true);
                                 GameActions::Execute(&rideSetPrice);
                             }
                         }
@@ -390,13 +386,11 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
 
                         if (int_valid[0] && int_valid[1])
                         {
-                            uint16_t rideId{};
-                            Ride* ride;
-                            FOR_ALL_RIDES (rideId, ride)
+                            for (const auto& ride : GetRideManager())
                             {
-                                if (ride->type == rideType)
+                                if (ride.type == rideType)
                                 {
-                                    auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                                    auto rideSetPrice = RideSetPriceAction(ride.id, price, true);
                                     GameActions::Execute(&rideSetPrice);
                                 }
                             }
@@ -1225,16 +1219,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     map_reorganise_elements();
     int32_t tileElementCount = gNextFreeTileElement - gTileElements - 1;
 
-    int32_t rideCount = 0;
-    for (int32_t i = 0; i < MAX_RIDES; ++i)
-    {
-        Ride* ride = get_ride(i);
-        if (ride->type != RIDE_TYPE_NULL)
-        {
-            rideCount++;
-        }
-    }
-
+    int32_t rideCount = ride_get_count();
     int32_t spriteCount = 0;
     for (int32_t i = 1; i < SPRITE_LIST_COUNT; ++i)
     {

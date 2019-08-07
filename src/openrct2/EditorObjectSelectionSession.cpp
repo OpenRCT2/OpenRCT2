@@ -187,8 +187,8 @@ void setup_in_use_selection_flags()
 
     for (uint8_t ride_index = 0; ride_index < 0xFF; ride_index++)
     {
-        Ride* ride = get_ride(ride_index);
-        if (ride->type != RIDE_TYPE_NULL)
+        auto ride = get_ride(ride_index);
+        if (ride != nullptr)
         {
             uint8_t type = ride->subtype;
             Editor::SetSelectedObject(OBJECT_TYPE_RIDE, type, OBJECT_SELECTION_FLAG_SELECTED);

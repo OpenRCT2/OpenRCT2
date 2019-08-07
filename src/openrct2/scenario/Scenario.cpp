@@ -49,6 +49,7 @@
 #include "ScenarioSources.h"
 
 #include <algorithm>
+#include <bitset>
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
@@ -516,24 +517,23 @@ uint32_t scenario_rand_max(uint32_t max)
 static bool scenario_prepare_rides_for_save()
 {
     int32_t isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
-    int32_t i;
-    Ride* ride;
     uint8_t rcs = 0;
 
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        const rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-
-        // If there are more than 5 roller coasters, only mark the first five.
-        if (isFiveCoasterObjective && rideEntry != nullptr
-            && (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+        const auto* rideEntry = ride.GetRideEntry();
+        if (rideEntry != nullptr)
         {
-            ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
-            rcs++;
-        }
-        else
-        {
-            ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            // If there are more than 5 roller coasters, only mark the first five.
+            if (isFiveCoasterObjective && (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+            {
+                ride.lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+                rcs++;
+            }
+            else
+            {
+                ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            }
         }
     }
 
@@ -554,7 +554,7 @@ static bool scenario_prepare_rides_for_save()
 
             if (isFiveCoasterObjective)
             {
-                ride = get_ride(it.element->AsTrack()->GetRideIndex());
+                auto ride = get_ride(it.element->AsTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
@@ -646,9 +646,24 @@ void scenario_fix_ghosts(rct_s6_data* s6)
     }
 }
 
+static void ride_all_has_any_track_elements(std::array<bool, RCT12_MAX_RIDES_IN_PARK> rideIndexArray)
+{
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            continue;
+        if (it.element->IsGhost())
+            continue;
+
+        rideIndexArray[it.element->AsTrack()->GetRideIndex()] = true;
+    }
+}
+
 void scenario_remove_trackless_rides(rct_s6_data* s6)
 {
-    bool rideHasTrack[MAX_RIDES];
+    std::array<bool, RCT12_MAX_RIDES_IN_PARK> rideHasTrack{};
     ride_all_has_any_track_elements(rideHasTrack);
     for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {
@@ -715,30 +730,27 @@ static void scenario_objective_check_park_value_by()
  **/
 static void scenario_objective_check_10_rollercoasters()
 {
-    int32_t i, rcs = 0;
-    uint8_t type_already_counted[256] = {};
-    Ride* ride;
-
-    FOR_ALL_RIDES (i, ride)
+    auto rcs = 0;
+    std::bitset<RIDE_TYPE_COUNT> type_already_counted;
+    for (const auto& ride : GetRideManager())
     {
-        uint8_t subtype_id = ride->subtype;
-        rct_ride_entry* rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == nullptr)
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype < RIDE_TYPE_COUNT)
         {
-            continue;
-        }
-
-        if (rideEntry != nullptr && ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER)
-            && ride->status == RIDE_STATUS_OPEN && ride->excitement >= RIDE_RATING(6, 00)
-            && type_already_counted[subtype_id] == 0)
-        {
-            type_already_counted[subtype_id]++;
-            rcs++;
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                {
+                    type_already_counted[ride.subtype] = true;
+                    rcs++;
+                }
+            }
         }
     }
-
     if (rcs >= 10)
+    {
         scenario_success();
+    }
 }
 
 /**
@@ -812,59 +824,59 @@ static void scenario_objective_check_monthly_ride_income()
  */
 static void scenario_objective_check_10_rollercoasters_length()
 {
-    int32_t i, rcs = 0;
-    uint8_t type_already_counted[256] = {};
-    int16_t objective_length = gScenarioObjectiveNumGuests;
-    Ride* ride;
-
-    FOR_ALL_RIDES (i, ride)
+    const auto objective_length = gScenarioObjectiveNumGuests;
+    std::bitset<RIDE_TYPE_COUNT> type_already_counted;
+    auto rcs = 0;
+    for (const auto& ride : GetRideManager())
     {
-        uint8_t subtype_id = ride->subtype;
-        rct_ride_entry* rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == nullptr)
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype < RIDE_TYPE_COUNT)
         {
-            continue;
-        }
-        if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && ride->status == RIDE_STATUS_OPEN
-            && ride->excitement >= RIDE_RATING(7, 00) && type_already_counted[subtype_id] == 0)
-        {
-            if ((ride_get_total_length(ride) >> 16) > objective_length)
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
             {
-                type_already_counted[subtype_id]++;
-                rcs++;
+                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                {
+                    if ((ride_get_total_length(&ride) >> 16) > objective_length)
+                    {
+                        type_already_counted[ride.subtype] = true;
+                        rcs++;
+                    }
+                }
             }
         }
     }
-
     if (rcs >= 10)
+    {
         scenario_success();
+    }
 }
 
 static void scenario_objective_check_finish_5_rollercoasters()
 {
-    money32 objectiveRideExcitement = gScenarioObjectiveCurrency;
+    const auto objectiveRideExcitement = gScenarioObjectiveCurrency;
 
     // Originally, this did not check for null rides, neither did it check if
     // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
-    int32_t i;
-    Ride* ride;
-    int32_t rcs = 0;
-    FOR_ALL_RIDES (i, ride)
+    auto rcs = 0;
+    for (const auto& ride : GetRideManager())
     {
-        const rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-        if (rideEntry == nullptr)
+        if (ride.status != RIDE_STATUS_CLOSED && ride.excitement >= objectiveRideExcitement)
         {
-            continue;
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                if ((ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+                    && ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+                {
+                    rcs++;
+                }
+            }
         }
-
-        if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objectiveRideExcitement
-            && (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && // Set on partially finished coasters
-            ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
-            rcs++;
     }
-
     if (rcs >= 5)
+    {
         scenario_success();
+    }
 }
 
 static void scenario_objective_check_replay_loan_and_park_value()

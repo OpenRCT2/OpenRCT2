@@ -93,11 +93,6 @@ public:
             log_warning("Invalid ride for track placement, rideIndex = %d", (int32_t)_rideIndex);
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
-        if (ride->type == RIDE_TYPE_NULL)
-        {
-            log_warning("Invalid ride type, rideIndex = %d", (int32_t)_rideIndex);
-            return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
-        }
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
         {

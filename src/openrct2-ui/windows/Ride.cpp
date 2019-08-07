@@ -958,7 +958,7 @@ struct ride_overall_view {
     uint8_t zoom;
 };
 
-static ride_overall_view ride_overall_views[MAX_RIDES] = {};
+static std::vector<ride_overall_view> ride_overall_views = {};
 
 static constexpr const int32_t window_ride_tab_animation_divisor[] = { 0, 0, 2, 2, 4, 2, 8, 8, 2, 0 };
 static constexpr const int32_t window_ride_tab_animation_frames[] = { 0, 0, 4, 16, 8, 16, 8, 8, 8, 0 };
@@ -1264,32 +1264,32 @@ static void window_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, in
 static void window_ride_draw_tab_main(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_MAIN;
-
     if (!(w->disabled_widgets & (1LL << widgetIndex)))
     {
-        int32_t spriteIndex = 0;
-        int32_t rideType = get_ride(w->number)->type;
-
-        switch (gRideClassifications[rideType])
+        auto ride = get_ride(w->number);
+        if (ride != nullptr)
         {
-            case RIDE_CLASS_RIDE:
-                spriteIndex = SPR_TAB_RIDE_0;
-                if (w->page == WINDOW_RIDE_PAGE_MAIN)
-                    spriteIndex += (w->frame_no / 4) % 16;
-                break;
-            case RIDE_CLASS_SHOP_OR_STALL:
-                spriteIndex = SPR_TAB_SHOPS_AND_STALLS_0;
-                if (w->page == WINDOW_RIDE_PAGE_MAIN)
-                    spriteIndex += (w->frame_no / 4) % 16;
-                break;
-            case RIDE_CLASS_KIOSK_OR_FACILITY:
-                spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
-                if (w->page == WINDOW_RIDE_PAGE_MAIN)
-                    spriteIndex += (w->frame_no / 4) % 8;
-                break;
+            int32_t spriteIndex = 0;
+            switch (ride->GetClassification())
+            {
+                case RideClassification::Ride:
+                    spriteIndex = SPR_TAB_RIDE_0;
+                    if (w->page == WINDOW_RIDE_PAGE_MAIN)
+                        spriteIndex += (w->frame_no / 4) % 16;
+                    break;
+                case RideClassification::ShopOrStall:
+                    spriteIndex = SPR_TAB_SHOPS_AND_STALLS_0;
+                    if (w->page == WINDOW_RIDE_PAGE_MAIN)
+                        spriteIndex += (w->frame_no / 4) % 16;
+                    break;
+                case RideClassification::KioskOrFacility:
+                    spriteIndex = SPR_TAB_KIOSKS_AND_FACILITIES_0;
+                    if (w->page == WINDOW_RIDE_PAGE_MAIN)
+                        spriteIndex += (w->frame_no / 4) % 8;
+                    break;
+            }
+            gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
         }
-
-        gfx_draw_sprite(dpi, spriteIndex, w->x + w->widgets[widgetIndex].left, w->y + w->widgets[widgetIndex].top, 0);
     }
 }
 
@@ -1498,10 +1498,15 @@ static void window_ride_update_overall_view(Ride* ride)
         maxz = std::max(maxz, z2);
     }
 
-    auto view = &ride_overall_views[ride->id];
-    view->x = (minx + maxx) / 2 + 16;
-    view->y = (miny + maxy) / 2 + 16;
-    view->z = (minz + maxz) / 2 - 8;
+    if (ride->id >= ride_overall_views.size())
+    {
+        ride_overall_views.resize(ride->id + 1);
+    }
+
+    auto& view = ride_overall_views[ride->id];
+    view.x = (minx + maxx) / 2 + 16;
+    view.y = (miny + maxy) / 2 + 16;
+    view.z = (minz + maxz) / 2 - 8;
 
     // Calculate size to determine from how far away to view the ride
     int32_t dx = maxx - minx;
@@ -1514,12 +1519,12 @@ static void window_ride_update_overall_view(Ride* ride)
     {
         // Each farther zoom level shows twice as many tiles (log)
         // Appropriate zoom is lowered by one to fill the entire view with the ride
-        view->zoom = std::clamp<int32_t>(std::ceil(std::log(size / 80)) - 1, 0, 3);
+        view.zoom = std::clamp<int32_t>(std::ceil(std::log(size / 80)) - 1, 0, 3);
     }
     else
     {
         // Small rides or stalls are zoomed in all the way.
-        view->zoom = 0;
+        view.zoom = 0;
     }
 }
 
@@ -1906,14 +1911,15 @@ static void window_ride_init_viewport(rct_window* w)
             w->viewport_focus_coordinates.var_480 = 0;
         }
 
-        ride_overall_view* view = &ride_overall_views[w->number];
-
-        focus.coordinate.x = view->x;
-        focus.coordinate.y = view->y;
-        focus.coordinate.z = view->z;
-        focus.coordinate.zoom = view->zoom;
-
-        focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+        if (w->number < ride_overall_views.size())
+        {
+            const auto& view = ride_overall_views[w->number];
+            focus.coordinate.x = view.x;
+            focus.coordinate.y = view.y;
+            focus.coordinate.z = view.z;
+            focus.coordinate.zoom = view.zoom;
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+        }
     }
     focus.coordinate.var_480 = w->viewport_focus_coordinates.var_480;
 
@@ -6832,7 +6838,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y = w->y + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
     // Customers currently on ride
-    if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+    if (ride->IsRide())
     {
         int16_t customersOnRide = ride->num_riders;
         gfx_draw_string_left(dpi, STR_CUSTOMERS_ON_RIDE, &customersOnRide, COLOUR_BLACK, x, y);
@@ -6873,7 +6879,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     // Queue time
-    if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+    if (ride->IsRide())
     {
         queueTime = ride->GetMaxQueueTime();
         stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
@@ -6907,7 +6913,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     // Guests favourite
-    if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+    if (ride->IsRide())
     {
         stringId = ride->guests_favourite == 1 ? STR_FAVOURITE_RIDE_OF_GUEST : STR_FAVOURITE_RIDE_OF_GUESTS;
         gfx_draw_string_left(dpi, stringId, &ride->guests_favourite, COLOUR_BLACK, x, y);

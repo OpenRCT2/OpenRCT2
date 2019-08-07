@@ -118,9 +118,9 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
 {
 }
 
-Ride* get_ride(int index)
+Ride* get_ride(ride_id_t index)
 {
-    if (index < 0 || index >= MAX_RIDES)
+    if (index >= RCT12_MAX_RIDES_IN_PARK)
     {
         log_error("invalid index %d for ride", index);
         return nullptr;

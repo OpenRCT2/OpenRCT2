@@ -1176,8 +1176,8 @@ void footpath_update_queue_chains()
     for (uint8_t* queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++)
     {
         ride_id_t rideIndex = *queueChainPtr;
-        Ride* ride = get_ride(rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
             continue;
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)

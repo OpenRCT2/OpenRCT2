@@ -54,7 +54,6 @@ ForEachMacros:
   - FOR_ALL_PEEPS
   - FOR_ALL_GUESTS
   - FOR_ALL_STAFF
-  - FOR_ALL_RIDES
 IncludeBlocks: 'Regroup'
 IncludeCategories:
   - Regex:           '^"'

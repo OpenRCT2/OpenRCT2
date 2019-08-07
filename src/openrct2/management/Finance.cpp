@@ -179,30 +179,27 @@ void finance_pay_interest()
  */
 void finance_pay_ride_upkeep()
 {
-    int32_t i;
-    Ride* ride;
-
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
+        if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
         {
-            ride->Renew();
+            ride.Renew();
         }
 
-        if (ride->status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            int16_t upkeep = ride->upkeep_cost;
+            int16_t upkeep = ride.upkeep_cost;
             if (upkeep != -1)
             {
-                ride->total_profit -= upkeep;
-                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+                ride.total_profit -= upkeep;
+                ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
                 finance_payment(upkeep, RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS);
             }
         }
 
-        if (ride->last_crash_type != RIDE_CRASH_TYPE_NONE)
+        if (ride.last_crash_type != RIDE_CRASH_TYPE_NONE)
         {
-            ride->last_crash_type--;
+            ride.last_crash_type--;
         }
     }
 }
@@ -283,13 +280,11 @@ void finance_update_daily_profit()
         current_profit -= current_loan / 600;
 
         // Ride costs
-        Ride* ride;
-        int32_t i;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (ride->status != RIDE_STATUS_CLOSED && ride->upkeep_cost != MONEY16_UNDEFINED)
+            if (ride.status != RIDE_STATUS_CLOSED && ride.upkeep_cost != MONEY16_UNDEFINED)
             {
-                current_profit -= 2 * ride->upkeep_cost;
+                current_profit -= 2 * ride.upkeep_cost;
             }
         }
     }

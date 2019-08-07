@@ -97,12 +97,11 @@ static void ride_ratings_add(rating_tuple* rating, int32_t excitement, int32_t i
  * processed will be overwritten.
  * Only purpose of this function currently is for testing.
  */
-void ride_ratings_update_ride(ride_id_t rideIndex)
+void ride_ratings_update_ride(const Ride& ride)
 {
-    Ride* ride = get_ride(rideIndex);
-    if (ride->type != RIDE_TYPE_NULL && ride->status != RIDE_STATUS_CLOSED)
+    if (ride.status != RIDE_STATUS_CLOSED)
     {
-        gRideRatingsCalcData.current_ride = rideIndex;
+        gRideRatingsCalcData.current_ride = ride.id;
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_INITIALISE;
         while (gRideRatingsCalcData.state != RIDE_RATINGS_STATE_FIND_NEXT_RIDE)
         {
@@ -162,8 +161,8 @@ static void ride_ratings_update_state_0()
         currentRide = 0;
     }
 
-    Ride* ride = get_ride(currentRide);
-    if (ride->type != RIDE_TYPE_NULL && ride->status != RIDE_STATUS_CLOSED)
+    auto ride = get_ride(currentRide);
+    if (ride != nullptr && ride->status != RIDE_STATUS_CLOSED)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_INITIALISE;
     }
@@ -195,8 +194,8 @@ static void ride_ratings_update_state_1()
 static void ride_ratings_update_state_2()
 {
     const ride_id_t rideIndex = gRideRatingsCalcData.current_ride;
-    Ride* ride = get_ride(rideIndex);
-    if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED)
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -269,8 +268,8 @@ static void ride_ratings_update_state_2()
  */
 static void ride_ratings_update_state_3()
 {
-    Ride* ride = get_ride(gRideRatingsCalcData.current_ride);
-    if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED)
+    auto ride = get_ride(gRideRatingsCalcData.current_ride);
+    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -299,8 +298,8 @@ static void ride_ratings_update_state_4()
  */
 static void ride_ratings_update_state_5()
 {
-    Ride* ride = get_ride(gRideRatingsCalcData.current_ride);
-    if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED)
+    auto ride = get_ride(gRideRatingsCalcData.current_ride);
+    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -810,14 +809,10 @@ static void ride_ratings_calculate_value(Ride* ride)
     }
 
     // Other ride of same type penalty
-    int32_t otherRidesOfSameType = 0;
-    Ride* ride2;
-    int32_t i;
-    FOR_ALL_RIDES (i, ride2)
-    {
-        if (ride2->type == ride->type && ride2->status == RIDE_STATUS_OPEN)
-            otherRidesOfSameType++;
-    }
+    const auto& rideManager = GetRideManager();
+    auto otherRidesOfSameType = std::count_if(rideManager.begin(), rideManager.end(), [ride](const Ride& r) {
+        return r.status == RIDE_STATUS_OPEN && r.type == ride->type;
+    });
     if (otherRidesOfSameType > 1)
         value -= value / 4;
 
@@ -2006,9 +2001,9 @@ static void ride_ratings_calculate_boat_hire(Ride* ride)
     ride->unreliability_factor = 7;
     set_unreliability_factor(ride);
 
-    // NOTE In the original game, the ratings were zeroed before calling set_unreliability_factor which is unusual as rest of
-    // the calculation functions do this before hand. This is because set_unreliability_factor alters the value of
-    // ebx (excitement). This is assumed to be a bug and therefore fixed.
+    // NOTE In the original game, the ratings were zeroed before calling set_unreliability_factor which is unusual as rest
+    // of the calculation functions do this before hand. This is because set_unreliability_factor alters the value of ebx
+    // (excitement). This is assumed to be a bug and therefore fixed.
 
     rating_tuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 90), RIDE_RATING(0, 80), RIDE_RATING(0, 90));
