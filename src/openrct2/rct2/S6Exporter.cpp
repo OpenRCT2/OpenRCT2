@@ -501,8 +501,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     if (!src->custom_name.empty())
     {
         // Custom name, allocate user string for ride
-        auto rideName = utf8_to_rct2(src->custom_name);
-        auto stringId = AllocateUserString(rideName);
+        auto stringId = AllocateUserString(src->custom_name);
         if (stringId != opt::nullopt)
         {
             dst->name = *stringId;
