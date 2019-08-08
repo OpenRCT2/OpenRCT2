@@ -2318,6 +2318,54 @@ TileElement* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t 
     return nullptr;
 }
 
+TrackElement* map_get_track_element_at_of_type(CoordsXYZD location, int32_t trackType)
+{
+    auto tileElement = map_get_first_element_at(location.x / 32, location.y / 32);
+    if (tileElement != nullptr)
+    {
+        do
+        {
+            auto trackElement = tileElement->AsTrack();
+            if (trackElement != nullptr)
+            {
+                if (trackElement->base_height != location.z / 8)
+                    continue;
+                if (trackElement->GetDirection() != location.direction)
+                    continue;
+                if (trackElement->GetTrackType() != trackType)
+                    continue;
+                return trackElement;
+            }
+        } while (!(tileElement++)->IsLastForTile());
+    }
+    return nullptr;
+}
+
+TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t trackType, int32_t sequence)
+{
+    auto tileElement = map_get_first_element_at(location.x / 32, location.y / 32);
+    if (tileElement != nullptr)
+    {
+        do
+        {
+            auto trackElement = tileElement->AsTrack();
+            if (trackElement != nullptr)
+            {
+                if (trackElement->base_height != location.z / 8)
+                    continue;
+                if (trackElement->GetDirection() != location.direction)
+                    continue;
+                if (trackElement->GetTrackType() != trackType)
+                    continue;
+                if (trackElement->GetSequenceIndex() != sequence)
+                    continue;
+                return trackElement;
+            }
+        } while (!(tileElement++)->IsLastForTile());
+    }
+    return nullptr;
+}
+
 /**
  * Gets the track element at x, y, z that is the given track type and sequence.
  * @param x x units, not tiles.
