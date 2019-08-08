@@ -216,7 +216,7 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
     {
         case NEWS_ITEM_RIDE:
             ride = get_ride(subject);
-            if (ride->overall_view.xy == RCT_XY8_UNDEFINED)
+            if (ride == nullptr || ride->overall_view.xy == RCT_XY8_UNDEFINED)
             {
                 *x = LOCATION_NULL;
                 break;
@@ -241,7 +241,7 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
 
             // Find which ride peep is on
             ride = get_ride(peep->current_ride);
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+            if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 *x = LOCATION_NULL;
                 break;
