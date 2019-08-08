@@ -18,6 +18,7 @@
 #include "../world/SpriteBase.h"
 
 #include <bitset>
+#include <optional>
 
 #define PEEP_MAX_THOUGHTS 5
 #define PEEP_THOUGHT_ITEM_NONE 255
@@ -698,8 +699,8 @@ public: // Peep
     Staff* AsStaff();
 
     void Update();
-    bool UpdateAction(CoordsXY& loc, int16_t& xy_distance);
-    bool UpdateAction();
+    std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
+    std::optional<CoordsXY> UpdateAction();
     void SetState(PeepState new_state);
     void Remove();
     void Invalidate();
