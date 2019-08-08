@@ -1068,15 +1068,15 @@ static void window_editor_objective_options_rides_scrollgetheight(
  */
 static void window_editor_objective_options_rides_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    Ride* ride;
-    int32_t i;
-
-    i = y / 12;
+    auto i = y / 12;
     if (i < 0 || i >= w->no_list_items)
         return;
 
-    ride = get_ride(w->list_item_positions[i]);
-    ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+    auto ride = get_ride(w->list_item_positions[i]);
+    if (ride != nullptr)
+    {
+        ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+    }
     window_invalidate(w);
 }
 
@@ -1165,17 +1165,20 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
 
         // Checkbox mark
         auto ride = get_ride(w->list_item_positions[i]);
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+        if (ride != nullptr)
         {
-            gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
-                                                                              : FONT_SPRITE_BASE_MEDIUM_DARK;
-            gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
-        }
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+            {
+                gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
+                                                                                  : FONT_SPRITE_BASE_MEDIUM_DARK;
+                gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
+            }
 
-        // Ride name
-        uint32_t args[32]{};
-        ride->FormatNameTo(args);
-        gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, 15, y);
+            // Ride name
+            uint32_t args[32]{};
+            ride->FormatNameTo(args);
+            gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, 15, y);
+        }
     }
 }
 

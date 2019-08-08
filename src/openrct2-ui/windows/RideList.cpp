@@ -798,11 +798,14 @@ void window_ride_list_refresh_list(rct_window* w)
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    auto strB = otherRide->GetName();
-                    if (_strcmpi(strA.c_str(), strB.c_str()) >= 0)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        auto strB = otherRide->GetName();
+                        if (_strcmpi(strA.c_str(), strB.c_str()) >= 0)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             }
@@ -810,140 +813,182 @@ void window_ride_list_refresh_list(rct_window* w)
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->popularity * 4 <= otherRide->popularity * 4)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->popularity * 4 <= otherRide->popularity * 4)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_SATISFACTION:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->satisfaction * 5 <= otherRide->satisfaction * 5)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->satisfaction * 5 <= otherRide->satisfaction * 5)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_PROFIT:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->profit <= otherRide->profit)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->profit <= otherRide->profit)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_TOTAL_CUSTOMERS:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->total_customers <= otherRide->total_customers)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->total_customers <= otherRide->total_customers)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_TOTAL_PROFIT:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->total_profit <= otherRide->total_profit)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->total_profit <= otherRide->total_profit)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_CUSTOMERS:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride_customers_per_hour(ride) <= ride_customers_per_hour(otherRide))
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride_customers_per_hour(ride) <= ride_customers_per_hour(otherRide))
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_AGE:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->build_date <= otherRide->build_date)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->build_date <= otherRide->build_date)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_INCOME:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->income_per_hour <= otherRide->income_per_hour)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->income_per_hour <= otherRide->income_per_hour)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_RUNNING_COST:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->upkeep_cost <= otherRide->upkeep_cost)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->upkeep_cost <= otherRide->upkeep_cost)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_QUEUE_LENGTH:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->GetTotalQueueLength() <= otherRide->GetTotalQueueLength())
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->GetTotalQueueLength() <= otherRide->GetTotalQueueLength())
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_QUEUE_TIME:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->GetMaxQueueTime() <= otherRide->GetMaxQueueTime())
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->GetMaxQueueTime() <= otherRide->GetMaxQueueTime())
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_RELIABILITY:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->reliability_percentage <= otherRide->reliability_percentage)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->reliability_percentage <= otherRide->reliability_percentage)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_DOWN_TIME:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->downtime <= otherRide->downtime)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->downtime <= otherRide->downtime)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
             case INFORMATION_TYPE_GUESTS_FAVOURITE:
                 while (--current_list_position >= 0)
                 {
                     auto otherRide = get_ride(w->list_item_positions[current_list_position]);
-                    if (ride->guests_favourite <= otherRide->guests_favourite)
-                        break;
+                    if (otherRide != nullptr)
+                    {
+                        if (ride->guests_favourite <= otherRide->guests_favourite)
+                            break;
 
-                    window_bubble_list_item(w, current_list_position);
+                        window_bubble_list_item(w, current_list_position);
+                    }
                 }
                 break;
         }

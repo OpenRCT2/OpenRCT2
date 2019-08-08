@@ -231,7 +231,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
             ride = get_ride(sprite->vehicle.ride);
-            if (ride->status == RIDE_STATUS_CLOSED)
+            if (ride != nullptr && ride->status == RIDE_STATUS_CLOSED)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                 ride->FormatNameTo(gMapTooltipFormatArgs + 2);
@@ -246,6 +246,9 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
             ride = get_ride(tile_element_get_ride_index(tileElement));
+            if (ride == nullptr)
+                return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+
             if (ride->status != RIDE_STATUS_CLOSED)
                 return info->type;
 

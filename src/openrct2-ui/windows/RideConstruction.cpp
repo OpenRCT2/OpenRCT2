@@ -522,8 +522,9 @@ rct_window* window_ride_construction_open()
     ride_id_t rideIndex = _currentRideIndex;
     close_ride_window_for_construction(rideIndex);
 
-    rct_window* w;
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return nullptr;
 
     _stationConstructed = ride->num_stations != 0;
     _deferClose = false;
@@ -533,7 +534,7 @@ rct_window* window_ride_construction_open()
         return context_open_window_view(WV_MAZE_CONSTRUCTION);
     }
 
-    w = window_create(0, 29, 166, 394, &window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
+    auto w = window_create(0, 29, 166, 394, &window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
 
     w->widgets = window_ride_construction_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE_SMALL)
@@ -1950,8 +1951,12 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         }
         else
         {
-            _stationConstructed = get_ride(w->number)->num_stations != 0;
-            window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
+            auto ride = get_ride(w->number);
+            if (ride != nullptr)
+            {
+                _stationConstructed = ride->num_stations != 0;
+                window_ride_construction_mouseup_demolish_next_piece(x, y, z, direction, type);
+            }
         }
     });
 
@@ -1980,7 +1985,7 @@ static void window_ride_construction_entrance_click(rct_window* w)
     if (tool_set(w, WIDX_ENTRANCE, TOOL_CROSSHAIR))
     {
         auto ride = get_ride(_currentRideIndex);
-        if (!ride_try_get_origin_element(ride, nullptr))
+        if (ride != nullptr && !ride_try_get_origin_element(ride, nullptr))
         {
             ride_initialise_construction_window(ride);
         }
@@ -2037,7 +2042,9 @@ static void window_ride_construction_exit_click(rct_window* w)
  */
 static void window_ride_construction_update(rct_window* w)
 {
-    Ride* ride = get_ride(_currentRideIndex);
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return;
 
     // Close construction window if ride is not closed,
     // editing ride while open will cause many issues until properly handled
@@ -2338,12 +2345,11 @@ static void window_ride_construction_draw_track_piece(
     rct_window* w, rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
     int32_t width, int32_t height)
 {
-    const rct_preview_track* trackBlock;
-    Ride* ride;
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
 
-    ride = get_ride(rideIndex);
-
-    trackBlock = get_track_def_from_ride(ride, trackType);
+    auto trackBlock = get_track_def_from_ride(ride, trackType);
     while ((trackBlock + 1)->index != 0xFF)
         trackBlock++;
 
@@ -2395,13 +2401,12 @@ static void sub_6CBCE2(
     rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx, int32_t originX,
     int32_t originY, int32_t originZ)
 {
-    Ride* ride;
-    const rct_preview_track* trackBlock;
-
     paint_session* session = paint_session_alloc(dpi, 0);
     trackDirection &= 3;
 
-    ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
 
     int16_t preserveMapSizeUnits = gMapSizeUnits;
     int16_t preserveMapSizeMinus2 = gMapSizeMinus2;
@@ -2413,7 +2418,7 @@ static void sub_6CBCE2(
     gMapSize = 256;
     gMapSizeMaxXY = (256 * 32) - 1;
 
-    trackBlock = get_track_def_from_ride(ride, trackType);
+    auto trackBlock = get_track_def_from_ride(ride, trackType);
     while (trackBlock->index != 255)
     {
         auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
@@ -2518,14 +2523,16 @@ void window_ride_construction_update_active_elements_impl()
  */
 void window_ride_construction_update_enabled_track_pieces()
 {
-    Ride* ride = get_ride(_currentRideIndex);
-    rct_ride_entry* rideEntry = ride->GetRideEntry();
-    int32_t rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type
-                                                                                     : ride->type;
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return;
 
+    auto rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
+    int32_t rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type
+                                                                                     : ride->type;
     if (gCheatsEnableAllDrawableTrackPieces)
     {
         _enabledRidePieces = RideTypePossibleTrackConfigurations[rideType];
@@ -3362,14 +3369,14 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
         rct_string_id trackPieceStringId = RideConfigurationStringIds[trackPiece];
         if (trackPieceStringId == STR_RAPIDS)
         {
-            Ride* ride = get_ride(_currentRideIndex);
-            if (ride->type == RIDE_TYPE_CAR_RIDE)
+            auto ride = get_ride(_currentRideIndex);
+            if (ride != nullptr && ride->type == RIDE_TYPE_CAR_RIDE)
                 trackPieceStringId = STR_LOG_BUMPS;
         }
         if (trackPieceStringId == STR_SPINNING_CONTROL_TOGGLE_TRACK)
         {
-            Ride* ride = get_ride(_currentRideIndex);
-            if (ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
+            auto ride = get_ride(_currentRideIndex);
+            if (ride != nullptr && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
                 trackPieceStringId = STR_BOOSTER;
         }
         gDropdownItemsFormat[i] = trackPieceStringId;
@@ -3755,7 +3762,10 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
 
     tool_cancel();
 
-    Ride* ride = get_ride(_currentRideIndex);
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return;
+
     if (_trackPlaceZ == 0)
     {
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, _currentTrackPieceType);
@@ -3927,8 +3937,8 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
 
         audio_play_sound_at_location(SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
 
-        Ride* ride = get_ride(gRideEntranceExitPlaceRideIndex);
-        if (ride_are_all_possible_entrances_and_exits_built(ride))
+        auto ride = get_ride(gRideEntranceExitPlaceRideIndex);
+        if (ride != nullptr && ride_are_all_possible_entrances_and_exits_built(ride))
         {
             tool_cancel();
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))

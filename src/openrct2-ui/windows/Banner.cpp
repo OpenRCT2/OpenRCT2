@@ -354,6 +354,7 @@ static void window_banner_viewport_rotate(rct_window* w)
         w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
         (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, SPRITE_INDEX_NULL);
 
-    w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+    if (w->viewport != nullptr)
+        w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
 }

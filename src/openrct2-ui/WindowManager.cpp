@@ -372,18 +372,14 @@ public:
 
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
-                rct_vehicle* vehicle = static_cast<rct_vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                int32_t viewVehicleIndex;
-                Ride* ride;
-                rct_window* w;
-
-                w = window_find_by_number(WC_RIDE, vehicle->ride);
+                auto vehicle = static_cast<rct_vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
+                auto w = window_find_by_number(WC_RIDE, vehicle->ride);
                 if (w == nullptr)
                     return;
 
-                ride = get_ride(vehicle->ride);
-                viewVehicleIndex = w->ride.view - 1;
-                if (viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
+                auto ride = get_ride(vehicle->ride);
+                auto viewVehicleIndex = w->ride.view - 1;
+                if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
                     return;
 
                 if (vehicle->sprite_index != ride->vehicles[viewVehicleIndex])

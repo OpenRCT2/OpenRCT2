@@ -1147,12 +1147,15 @@ int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
 
 int32_t track_get_actual_bank_3(rct_vehicle* vehicle, TileElement* tileElement)
 {
+    auto trackType = tileElement->AsTrack()->GetTrackType();
+    auto bankStart = TrackDefinitions[trackType].bank_start;
+    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    if (ride == nullptr)
+        return bankStart;
+
     bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
         ^ tileElement->AsTrack()->IsInverted();
-    int32_t trackType = tileElement->AsTrack()->GetTrackType();
-    int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-    int32_t bankStart = TrackDefinitions[trackType].bank_start;
-    return track_get_actual_bank_2(rideType, isInverted, bankStart);
+    return track_get_actual_bank_2(ride->type, isInverted, bankStart);
 }
 
 bool track_element_is_station(TileElement* trackElement)
