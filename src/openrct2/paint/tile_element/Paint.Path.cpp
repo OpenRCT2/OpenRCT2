@@ -442,7 +442,8 @@ static void sub_6A4101(
 
         direction--;
         // If text shown
-        if (direction < 2 && tile_element->AsPath()->GetRideIndex() != RIDE_ID_NULL && imageFlags == 0)
+        auto ride = get_ride(tile_element->AsPath()->GetRideIndex());
+        if (direction < 2 && ride != nullptr && imageFlags == 0)
         {
             uint16_t scrollingMode = railingEntry->scrolling_mode;
             scrollingMode += direction;
@@ -450,7 +451,6 @@ static void sub_6A4101(
             set_format_arg(0, uint32_t, 0);
             set_format_arg(4, uint32_t, 0);
 
-            Ride* ride = get_ride(tile_element->AsPath()->GetRideIndex());
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
                 set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
