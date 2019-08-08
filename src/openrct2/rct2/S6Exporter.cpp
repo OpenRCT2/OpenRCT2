@@ -364,7 +364,7 @@ void S6Exporter::Export()
     std::memcpy(_s6.staff_modes, gStaffModes, sizeof(_s6.staff_modes));
     // unk_13CA73E
     // pad_13CA73F
-    _s6.byte_13CA740 = gUnk13CA740;
+    // unk_13CA740
     _s6.climate = gClimate;
     // pad_13CA741;
     // byte_13CA742

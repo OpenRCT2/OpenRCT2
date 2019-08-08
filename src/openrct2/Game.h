@@ -153,9 +153,6 @@ extern std::string gCurrentLoadedPath;
 
 extern bool gLoadKeepWindowsOpen;
 
-extern uint8_t gUnk13CA740;
-extern uint8_t gUnk141F568;
-
 void game_increase_game_speed();
 void game_reduce_game_speed();
 

@@ -78,9 +78,6 @@ std::string gCurrentLoadedPath;
 
 bool gLoadKeepWindowsOpen = false;
 
-uint8_t gUnk13CA740;
-uint8_t gUnk141F568;
-
 uint32_t gCurrentTicks;
 uint32_t gCurrentRealTimeTicks;
 
@@ -297,10 +294,6 @@ void update_palette_effects()
  */
 static int32_t game_check_affordability(int32_t cost, uint32_t flags)
 {
-    // Only checked for game commands.
-    if (gUnk141F568 & 0xF0)
-        return cost;
-
     if (finance_check_affordability(cost, flags))
         return cost;
 
@@ -419,12 +412,10 @@ int32_t game_do_command_p(
             {
                 // Update money balance
                 finance_payment(cost, gCommandExpenditureType);
-                if (gUnk141F568 == gUnk13CA740)
-                {
-                    // Create a +/- money text effect
-                    if (cost != 0 && game_is_not_paused())
-                        rct_money_effect::Create(cost);
-                }
+
+                // Create a +/- money text effect
+                if (cost != 0 && game_is_not_paused())
+                    rct_money_effect::Create(cost);
             }
 
             // Start autosave timer after game command
@@ -441,9 +432,8 @@ int32_t game_do_command_p(
     gGameCommandNestLevel--;
 
     // Show error window
-    if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740
-        && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED)
-        && !(flags & GAME_COMMAND_FLAG_GHOST))
+    if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
+        && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST))
     {
         context_show_error(gGameCommandErrorTitle, gGameCommandErrorText);
     }

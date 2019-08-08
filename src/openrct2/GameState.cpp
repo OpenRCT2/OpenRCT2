@@ -198,9 +198,6 @@ void GameState::Update()
 
         context_update_map_tooltip();
 
-        // Input
-        gUnk141F568 = gUnk13CA740;
-
         context_handle_input();
     }
 

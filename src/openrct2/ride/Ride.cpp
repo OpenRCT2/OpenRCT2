@@ -5124,9 +5124,6 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
  */
 static void loc_6B51C0(const Ride* ride)
 {
-    if (gUnk141F568 != gUnk13CA740)
-        return;
-
     rct_window* w = window_get_main();
     if (w == nullptr)
         return;
@@ -5182,14 +5179,11 @@ static void loc_6B51C0(const Ride* ride)
  */
 static void ride_scroll_to_track_error(CoordsXYE* trackElement)
 {
-    if (gUnk141F568 == gUnk13CA740)
+    rct_window* w = window_get_main();
+    if (w != nullptr)
     {
-        rct_window* w = window_get_main();
-        if (w != nullptr)
-        {
-            window_scroll_to_location(w, trackElement->x, trackElement->y, trackElement->element->base_height * 8);
-            ride_modify(trackElement);
-        }
+        window_scroll_to_location(w, trackElement->x, trackElement->y, trackElement->element->base_height * 8);
+        ride_modify(trackElement);
     }
 }
 
