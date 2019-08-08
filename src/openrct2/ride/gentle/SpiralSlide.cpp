@@ -87,7 +87,9 @@ static void spiral_slide_paint_tile_front(
 {
     uint32_t image_id = 0;
 
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
 
     if (direction == 1)
     {

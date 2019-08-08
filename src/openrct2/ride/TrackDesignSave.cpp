@@ -150,9 +150,8 @@ static void track_design_save_callback(int32_t result, [[maybe_unused]] const ut
  */
 bool track_design_save(ride_id_t rideIndex)
 {
-    Ride* ride = get_ride(rideIndex);
-
-    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
     {
         context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
         return false;
@@ -753,8 +752,14 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6* td6)
  */
 static rct_track_td6* track_design_save_to_td6(ride_id_t rideIndex)
 {
-    rct_track_td6* td6 = (rct_track_td6*)calloc(1, sizeof(rct_track_td6));
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return nullptr;
+
+    auto td6 = (rct_track_td6*)calloc(1, sizeof(rct_track_td6));
+    if (td6 == nullptr)
+        return nullptr;
+
     td6->type = ride->type;
     auto object = object_entry_get_entry(OBJECT_TYPE_RIDE, ride->subtype);
 

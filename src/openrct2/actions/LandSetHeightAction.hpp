@@ -266,7 +266,7 @@ private:
                         int32_t maxHeight = rideEntry->max_height;
                         if (maxHeight == 0)
                         {
-                            maxHeight = RideData5[get_ride(rideIndex)->type].max_height;
+                            maxHeight = RideData5[ride->type].max_height;
                         }
                         int32_t zDelta = tileElement->clearance_height - _height;
                         if (zDelta >= 0 && zDelta / 2 > maxHeight)

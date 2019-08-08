@@ -1101,9 +1101,12 @@ private:
             if (src.ride_index != RCT12_RIDE_ID_NULL)
             {
                 auto ride = get_ride(src.ride_index);
-                ride->measurement = std::make_unique<RideMeasurement>();
-                ride->measurement->ride = ride;
-                ImportRideMeasurement(*ride->measurement, src);
+                if (ride != nullptr)
+                {
+                    ride->measurement = std::make_unique<RideMeasurement>();
+                    ride->measurement->ride = ride;
+                    ImportRideMeasurement(*ride->measurement, src);
+                }
             }
         }
     }
@@ -1168,7 +1171,10 @@ private:
 
     void ImportVehicle(rct_vehicle* dst, rct1_vehicle* src)
     {
-        Ride* ride = get_ride(src->ride);
+        auto ride = get_ride(src->ride);
+        if (ride == nullptr)
+            return;
+
         uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
         dst->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
@@ -2947,24 +2953,27 @@ private:
             }
 
             // Now, swap the entrance and exit.
-            Ride* ride = get_ride(0);
-            auto entranceCoords = ride->stations[0].Exit;
-            auto exitCoords = ride->stations[0].Entrance;
-            ride->stations[0].Entrance = entranceCoords;
-            ride->stations[0].Exit = exitCoords;
+            auto ride = get_ride(0);
+            if (ride != nullptr)
+            {
+                auto entranceCoords = ride->stations[0].Exit;
+                auto exitCoords = ride->stations[0].Entrance;
+                ride->stations[0].Entrance = entranceCoords;
+                ride->stations[0].Exit = exitCoords;
 
-            auto entranceElement = map_get_ride_exit_element_at(
-                entranceCoords.x * 32, entranceCoords.y * 32, entranceCoords.z, false);
-            entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
-            auto exitElement = map_get_ride_entrance_element_at(exitCoords.x * 32, exitCoords.y * 32, exitCoords.z, false);
-            exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
+                auto entranceElement = map_get_ride_exit_element_at(
+                    entranceCoords.x * 32, entranceCoords.y * 32, entranceCoords.z, false);
+                entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
+                auto exitElement = map_get_ride_entrance_element_at(exitCoords.x * 32, exitCoords.y * 32, exitCoords.z, false);
+                exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
-            // Trigger footpath update
-            footpath_queue_chain_reset();
-            footpath_connect_edges(
-                entranceCoords.x * 32, (entranceCoords.y) * 32, (TileElement*)entranceElement,
-                GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            footpath_update_queue_chains();
+                // Trigger footpath update
+                footpath_queue_chain_reset();
+                footpath_connect_edges(
+                    entranceCoords.x * 32, (entranceCoords.y) * 32, (TileElement*)entranceElement,
+                    GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                footpath_update_queue_chains();
+            }
         }
     }
 
@@ -3000,8 +3009,11 @@ private:
                         }
 
                         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                        Ride* ride = get_ride(rideIndex);
-                        ride->num_block_brakes++;
+                        auto ride = get_ride(rideIndex);
+                        if (ride != nullptr)
+                        {
+                            ride->num_block_brakes++;
+                        }
                     }
                 } while (!(tileElement++)->IsLastForTile());
             }

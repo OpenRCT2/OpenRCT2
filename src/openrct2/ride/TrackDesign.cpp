@@ -1721,6 +1721,9 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, Ride**
     }
 
     auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
+
     ride->custom_name = {};
     ride->entrance_style = td6->entrance_style;
 
@@ -1872,7 +1875,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for track placement, ride id = %d", ride->id);
+        log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
         return MONEY32_UNDEFINED;
     }
 

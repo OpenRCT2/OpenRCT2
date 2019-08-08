@@ -1355,7 +1355,10 @@ void vehicle_update_all()
  */
 static bool vehicle_close_restraints(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return true;
+
     bool restraintsClosed = true;
     uint16_t vehicle_id = vehicle->sprite_index;
 
@@ -1416,8 +1419,11 @@ static bool vehicle_open_restraints(rct_vehicle* vehicle)
         vehicle->var_4E = 0;
         vehicle->swing_sprite = 0;
 
-        Ride* ride = get_ride(vehicle->ride);
-        rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+        auto ride = get_ride(vehicle->ride);
+        if (ride == nullptr)
+            continue;
+
+        auto rideEntry = get_ride_entry(vehicle->ride_subtype);
         if (rideEntry == nullptr)
         {
             continue;
@@ -2040,7 +2046,10 @@ static void vehicle_update(rct_vehicle* vehicle)
  */
 static void vehicle_update_moving_to_end_of_station(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
     int32_t flags, station;
 
     switch (ride->mode)
@@ -2150,7 +2159,9 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
     if (num_peeps_on_train != num_used_seats)
         return;
 
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
     if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
         && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
@@ -2429,7 +2440,10 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
  */
 static void vehicle_update_dodgems_mode(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
     rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
     if (rideEntry == nullptr)
     {
@@ -2715,9 +2729,9 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
         return false;
     }
 
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-    Ride* ride = get_ride(rideIndex);
-    if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
+    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr || !(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
         /* Ride is not set to synchronise with adjacent stations. */
         return false;
@@ -2800,7 +2814,10 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
  */
 static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return false;
+
     int32_t station = vehicle->current_station;
     LocationXY8 location = ride->stations[station].Start;
     int32_t x = location.x * 32;
@@ -3018,7 +3035,10 @@ void vehicle_peep_easteregg_here_we_are(const rct_vehicle* vehicle)
  */
 void vehicle_update_test_finish(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TESTING;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
@@ -3057,7 +3077,10 @@ void vehicle_test_reset(rct_vehicle* vehicle)
 {
     vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TESTING;
 
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_NO_RAW_STATS;
     ride->max_speed = 0;
@@ -3146,7 +3169,10 @@ static void vehicle_update_travelling_boat_hire_setup(rct_vehicle* vehicle)
 static void vehicle_update_departing_boat_hire(rct_vehicle* vehicle)
 {
     vehicle->lost_time_out = 0;
-    Ride* ride = get_ride(vehicle->ride);
+
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
     ride->stations[vehicle->current_station].Depart &= STATION_DEPART_FLAG;
     uint8_t waitingTime = std::max(ride->min_waiting_time, static_cast<uint8_t>(3));
@@ -3397,7 +3423,9 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
  */
 static void vehicle_finish_departing(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
     if (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH)
     {
@@ -3440,7 +3468,9 @@ static void vehicle_finish_departing(rct_vehicle* vehicle)
  */
 static void vehicle_check_if_missing(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
@@ -3495,7 +3525,10 @@ static void vehicle_simulate_crash(rct_vehicle* vehicle)
 static void vehicle_update_collision_setup(rct_vehicle* vehicle)
 {
     auto ride = get_ride(vehicle->ride);
-    if (ride != nullptr && ride->status == RIDE_STATUS_SIMULATING)
+    if (ride == nullptr)
+        return;
+
+    if (ride->status == RIDE_STATUS_SIMULATING)
     {
         vehicle_simulate_crash(vehicle);
         return;
@@ -4031,7 +4064,10 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle)
         }
     }
 
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
     if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
     {
         uint8_t seat = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
@@ -4113,7 +4149,9 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle)
  */
 static void vehicle_update_waiting_for_cable_lift(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
     rct_vehicle* cableLift = GET_VEHICLE(ride->cable_lift);
 
@@ -4130,7 +4168,9 @@ static void vehicle_update_waiting_for_cable_lift(rct_vehicle* vehicle)
  */
 static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
     if (vehicle->sub_state == 0)
     {
@@ -4230,8 +4270,11 @@ static void loc_6DA9F9(rct_vehicle* vehicle, int32_t x, int32_t y, int32_t bx, i
 
         auto trackElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
 
-        Ride* ride = get_ride(vehicle->ride);
-        vehicle->track_type = (trackElement->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
+        auto ride = get_ride(vehicle->ride);
+        if (ride != nullptr)
+        {
+            vehicle->track_type = (trackElement->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
+        }
 
         vehicle->track_progress = 0;
         vehicle->SetState(VEHICLE_STATUS_TRAVELLING, vehicle->sub_state);
@@ -4403,7 +4446,9 @@ static void vehicle_update_motion_boat_hire(rct_vehicle* vehicle)
                 if (!vehicle_boat_is_location_accessible(TileCoordsXYZ(CoordsXYZ{ x, y, vehicle->track_z })))
                 {
                     // loc_6DA939:
-                    Ride* ride = get_ride(vehicle->ride);
+                    auto ride = get_ride(vehicle->ride);
+                    if (ride == nullptr)
+                        return;
 
                     bool do_loc_6DAA97 = false;
                     if (vehicle->sub_state != 1)
@@ -4536,7 +4581,10 @@ static void vehicle_update_motion_boat_hire(rct_vehicle* vehicle)
  */
 static void vehicle_update_boat_location(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
     LocationXY8 returnPosition = ride->boat_hire_return_position;
     uint8_t returnDirection = ride->boat_hire_return_direction & 3;
 
@@ -4642,8 +4690,13 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
  */
 static void vehicle_update_swinging(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
+    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+    if (rideEntry == nullptr)
+        return;
 
     // SubState for this ride means swinging state
     // 0 == first swing
@@ -4714,7 +4767,10 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle)
     if (_vehicleBreakdown == 0)
         return;
 
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
     if ((vehicle->ferris_wheel_var_1 -= 1) != 0)
         return;
 
@@ -4829,8 +4885,11 @@ static void vehicle_update_rotating(rct_vehicle* vehicle)
     if (_vehicleBreakdown == 0)
         return;
 
-    Ride* ride = get_ride(vehicle->ride);
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
+    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
     if (rideEntry == nullptr)
     {
         return;
@@ -5133,8 +5192,11 @@ static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
  */
 static void vehicle_kill_all_passengers(rct_vehicle* vehicle)
 {
-    uint16_t numFatalities = 0;
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
+    uint16_t numFatalities = 0;
     uint16_t spriteId = vehicle->sprite_index;
     for (rct_vehicle* curVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = curVehicle->next_vehicle_on_train)
     {
@@ -5142,7 +5204,6 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle)
         numFatalities += curVehicle->num_peeps;
     }
 
-    Ride* ride = get_ride(vehicle->ride);
     set_format_arg(0, uint16_t, numFatalities);
 
     uint8_t crashType = numFatalities == 0 ? RIDE_CRASH_TYPE_NO_FATALITIES : RIDE_CRASH_TYPE_FATALITIES;
@@ -5193,7 +5254,10 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle)
 static void vehicle_crash_on_land(rct_vehicle* vehicle)
 {
     auto ride = get_ride(vehicle->ride);
-    if (ride != nullptr && ride->status == RIDE_STATUS_SIMULATING)
+    if (ride == nullptr)
+        return;
+
+    if (ride->status == RIDE_STATUS_SIMULATING)
     {
         vehicle_simulate_crash(vehicle);
         return;
@@ -5251,7 +5315,10 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
 static void vehicle_crash_on_water(rct_vehicle* vehicle)
 {
     auto ride = get_ride(vehicle->ride);
-    if (ride != nullptr && ride->status == RIDE_STATUS_SIMULATING)
+    if (ride == nullptr)
+        return;
+
+    if (ride->status == RIDE_STATUS_SIMULATING)
     {
         vehicle_simulate_crash(vehicle);
         return;
@@ -5404,8 +5471,6 @@ static void vehicle_update_crash(rct_vehicle* vehicle)
  */
 static void vehicle_update_sound(rct_vehicle* vehicle)
 {
-    Ride* ride;
-    rct_ride_entry* rideEntry;
     // frictionVolume (bl) should be set before hand
     uint8_t frictionVolume = 255;
     SoundId frictionId = SoundId::Null;
@@ -5413,13 +5478,13 @@ static void vehicle_update_sound(rct_vehicle* vehicle)
     SoundId screamId = SoundId::Null;
     uint8_t screamVolume = 255;
 
-    ride = get_ride(vehicle->ride);
-    rideEntry = get_ride_entry(vehicle->ride_subtype);
-
-    if (rideEntry == nullptr)
-    {
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
         return;
-    }
+
+    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+    if (rideEntry == nullptr)
+        return;
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
@@ -6560,13 +6625,13 @@ static void apply_block_brakes(rct_vehicle* vehicle, bool is_block_brake_closed)
  */
 static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
-    rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-
-    if (vehicleEntry == nullptr)
-    {
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
         return;
-    }
+
+    auto vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    if (vehicleEntry == nullptr)
+        return;
 
     // Is chair lift type
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT)
@@ -6711,8 +6776,8 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
     int32_t trackType = trackElement->GetTrackType();
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
     {
-        Ride* ride = get_ride(vehicle->ride);
-        if (ride->IsBlockSectioned())
+        auto ride = get_ride(vehicle->ride);
+        if (ride != nullptr && ride->IsBlockSectioned())
         {
             audio_play_sound_at_location(SoundId::BlockBrakeClose, x, y, z);
         }
@@ -8046,10 +8111,14 @@ loc_6DB41D:
         vehicle_trigger_on_ride_photo(vehicle, tileElement);
     }
     {
-        uint16_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-        if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_STEEL_WILD_MOUSE)
+        ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+        if (ride != nullptr)
         {
-            vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
+            uint16_t rideType = ride->type;
+            if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_STEEL_WILD_MOUSE)
+            {
+                vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
+            }
         }
     }
     // Change from original: this used to check if the vehicle allowed doors.

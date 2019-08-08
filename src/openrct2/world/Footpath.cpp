@@ -801,8 +801,8 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_TRACK:
                     if (z == tileElement->base_height)
                     {
-                        Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                         {
                             continue;
                         }
@@ -929,8 +929,8 @@ static void loc_6A6C85(
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             return;
         }
@@ -2005,7 +2005,10 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const Til
             case TILE_ELEMENT_TYPE_TRACK:
                 if (tileElement->base_height == coords.z)
                 {
-                    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    if (ride == nullptr)
+                        continue;
+
                     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                         break;
 
@@ -2090,9 +2093,9 @@ void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement)
 {
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-        Ride* ride = get_ride(rideIndex);
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
             return;
     }
 

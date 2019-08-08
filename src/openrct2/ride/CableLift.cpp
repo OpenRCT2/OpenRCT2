@@ -27,18 +27,16 @@ static void cable_lift_update_travelling(rct_vehicle* vehicle);
 static void cable_lift_update_arriving(rct_vehicle* vehicle);
 
 rct_vehicle* cable_lift_segment_create(
-    ride_id_t rideIndex, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance,
-    bool head)
+    Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
-    Ride* ride = get_ride(rideIndex);
     rct_vehicle* current = &(create_sprite(SPRITE_IDENTIFIER_VEHICLE)->vehicle);
     current->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
-    current->ride = rideIndex;
+    current->ride = ride.id;
     current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
     if (head)
     {
         move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_VEHICLE_HEAD);
-        ride->cable_lift = current->sprite_index;
+        ride.cable_lift = current->sprite_index;
     }
     current->type = head ? VEHICLE_TYPE_HEAD : VEHICLE_TYPE_TAIL;
     current->var_44 = var_44;
@@ -79,7 +77,7 @@ rct_vehicle* cable_lift_segment_create(
 
     z = z * 8;
     current->track_z = z;
-    z += RideData5[ride->type].z_offset;
+    z += RideData5[ride.type].z_offset;
 
     sprite_move(16, 16, z, (rct_sprite*)current);
     current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
