@@ -2929,11 +2929,16 @@ static void ride_music_update(Ride* ride)
 static void ride_measurement_update(RideMeasurement* measurement)
 {
     auto ride = measurement->ride;
+    if (ride == nullptr || measurement->vehicle_index >= std::size(ride->vehicles))
+        return;
+
     auto spriteIndex = ride->vehicles[measurement->vehicle_index];
     if (spriteIndex == SPRITE_INDEX_NULL)
         return;
 
     auto vehicle = GET_VEHICLE(spriteIndex);
+    if (vehicle == nullptr)
+        return;
 
     if (measurement->flags & RIDE_MEASUREMENT_FLAG_UNLOADING)
     {
