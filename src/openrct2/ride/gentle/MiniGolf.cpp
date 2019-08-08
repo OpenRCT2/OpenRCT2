@@ -1204,7 +1204,14 @@ void vehicle_visual_mini_golf_player(
         return;
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(get_ride(vehicle->ride)->subtype);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
+    auto rideEntry = ride->GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
+
     rct_sprite* sprite = get_sprite(vehicle->peep[0]);
 
     uint8_t frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->animation_frame];
@@ -1237,8 +1244,13 @@ void vehicle_visual_mini_golf_ball(
         return;
     }
 
-    Ride* ride = get_ride(vehicle->ride);
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
+    auto rideEntry = ride->GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
 
     uint32_t image_id = rideEntry->vehicles[0].base_image_id;
     sub_98197C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z + 3);

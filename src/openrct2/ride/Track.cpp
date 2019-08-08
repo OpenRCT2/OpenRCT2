@@ -636,13 +636,16 @@ static void ride_remove_station(Ride* ride, int32_t x, int32_t y, int32_t z)
  */
 bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
+
     int32_t stationX0 = x;
     int32_t stationY0 = y;
     int32_t stationX1 = x;
     int32_t stationY1 = y;
     int32_t stationLength = 1;
 
-    Ride* ride = get_ride(rideIndex);
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
         if (ride->num_stations >= MAX_STATIONS)
@@ -787,6 +790,10 @@ bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t directio
  */
 bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
+
     int32_t removeX = x;
     int32_t removeY = y;
     int32_t stationX0 = x;
@@ -796,7 +803,6 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direc
     int32_t stationLength = 0;
     int32_t byte_F441D1 = -1;
 
-    Ride* ride = get_ride(rideIndex);
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
         TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(x, y, z, direction, rideIndex);
@@ -1111,9 +1117,13 @@ bool track_element_is_block_start(TileElement* trackElement)
 
 int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank)
 {
-    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-    bool isInverted = tileElement->AsTrack()->IsInverted();
-    return track_get_actual_bank_2(ride->type, isInverted, bank);
+    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    if (ride != nullptr)
+    {
+        bool isInverted = tileElement->AsTrack()->IsInverted();
+        return track_get_actual_bank_2(ride->type, isInverted, bank);
+    }
+    return bank;
 }
 
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)

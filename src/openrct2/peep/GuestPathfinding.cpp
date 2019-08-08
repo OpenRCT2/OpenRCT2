@@ -302,8 +302,8 @@ static uint8_t footpath_element_dest_in_dir(
                 if (loc.z != tileElement->base_height)
                     continue;
                 ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                Ride* ride = get_ride(rideIndex);
-                if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+                auto ride = get_ride(rideIndex);
+                if (ride != nullptr && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
                 {
                     *outRideIndex = rideIndex;
                     return PATH_SEARCH_SHOP_ENTRANCE;
@@ -670,8 +670,8 @@ static void peep_pathfind_heuristic_search(
                 /* For peeps heading for a shop, the goal is the shop
                  * tile. */
                 rideIndex = tileElement->AsTrack()->GetRideIndex();
-                Ride* ride = get_ride(rideIndex);
-                if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+                auto ride = get_ride(rideIndex);
+                if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
                     continue;
 
                 found = true;
@@ -2038,9 +2038,8 @@ int32_t guest_path_finding(Guest* peep)
 
     // Peep is heading for a ride.
     ride_id_t rideIndex = peep->guest_heading_to_ride_id;
-    Ride* ride = get_ride(rideIndex);
-
-    if (ride->status != RIDE_STATUS_OPEN)
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)

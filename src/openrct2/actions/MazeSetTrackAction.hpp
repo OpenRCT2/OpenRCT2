@@ -181,6 +181,14 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
+        {
+            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->ErrorMessage = STR_NONE;
+            return res;
+        }
+
         if (!map_check_free_elements_and_reorganise(1))
         {
             res->Error = GA_ERROR::NO_FREE_ELEMENTS;
@@ -198,13 +206,9 @@ public:
         uint8_t baseHeight = _loc.z / 8;
         uint8_t clearanceHeight = (_loc.z + 32) / 8;
 
-        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(
-            _loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        auto tileElement = map_get_track_element_at_of_type_from_ride(_loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
-            Ride* ride = get_ride(_rideIndex);
-            openrct2_assert(ride != nullptr, "Invalid ride index: %d\n", uint32_t(_rideIndex));
-
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
 
@@ -333,7 +337,6 @@ public:
 
         if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
         {
-            Ride* ride = get_ride(_rideIndex);
             tile_element_remove(tileElement);
             sub_6CB945(ride);
             ride->maze_tiles--;

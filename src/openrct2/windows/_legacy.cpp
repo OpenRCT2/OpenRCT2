@@ -45,11 +45,12 @@ money32 place_provisional_track_piece(
     ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y,
     int32_t z)
 {
-    Ride* ride;
-    money32 result;
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return MONEY32_UNDEFINED;
 
+    money32 result;
     ride_construction_remove_ghosts();
-    ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_MAZE)
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND

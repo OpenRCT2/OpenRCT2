@@ -759,13 +759,8 @@ bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, tr
  */
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output)
 {
-    if (ride == nullptr)
-    {
-        log_error("Trying to access invalid ride %d", ride->id);
-        return 0;
-    }
-
-    if (input == nullptr || input->element == nullptr || input->element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+    if (ride == nullptr || input == nullptr || input->element == nullptr
+        || input->element->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return 0;
 
     if (ride->type == RIDE_TYPE_MAZE)
@@ -1299,20 +1294,16 @@ void ride_restore_provisional_track_piece()
 
 void ride_remove_provisional_track_piece()
 {
-    if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
+    auto rideIndex = _currentRideIndex;
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr || !(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
     {
         return;
     }
-    Ride* ride;
-    int32_t x, y, z, direction;
 
-    ride_id_t rideIndex = _currentRideIndex;
-
-    x = _unkF440C5.x;
-    y = _unkF440C5.y;
-    z = _unkF440C5.z;
-
-    ride = get_ride(rideIndex);
+    int32_t x = _unkF440C5.x;
+    int32_t y = _unkF440C5.y;
+    int32_t z = _unkF440C5.z;
     if (ride->type == RIDE_TYPE_MAZE)
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
@@ -1324,7 +1315,7 @@ void ride_remove_provisional_track_piece()
     }
     else
     {
-        direction = _unkF440C5.direction;
+        int32_t direction = _unkF440C5.direction;
         if (!(direction & 4))
         {
             x -= CoordsDirectionDelta[direction].x;
@@ -1405,9 +1396,10 @@ void ride_construction_invalidate_current_track()
  */
 static void ride_construction_reset_current_piece()
 {
-    Ride* ride;
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return;
 
-    ride = get_ride(_currentRideIndex);
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK) || ride->num_stations == 0)
     {
         _currentTrackCurve = RideConstructionDefaultTrackType[ride->type] | 0x100;
@@ -1435,20 +1427,19 @@ static void ride_construction_reset_current_piece()
  */
 void ride_construction_set_default_next_piece()
 {
-    ride_id_t rideIndex;
+    auto rideIndex = _currentRideIndex;
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     int32_t x, y, z, direction, trackType, curve, bank, slope;
-    Ride* ride;
     track_begin_end trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
-
     _currentTrackPrice = MONEY32_UNDEFINED;
     switch (_rideConstructionState)
     {
         case RIDE_CONSTRUCTION_STATE_FRONT:
-            rideIndex = _currentRideIndex;
-            ride = get_ride(rideIndex);
-
             x = _currentTrackBegin.x;
             y = _currentTrackBegin.y;
             z = _currentTrackBegin.z;
@@ -1519,9 +1510,6 @@ void ride_construction_set_default_next_piece()
                 && slope != TRACK_SLOPE_DOWN_60;
             break;
         case RIDE_CONSTRUCTION_STATE_BACK:
-            rideIndex = _currentRideIndex;
-            ride = get_ride(rideIndex);
-
             x = _currentTrackBegin.x;
             y = _currentTrackBegin.y;
             z = _currentTrackBegin.z;
@@ -1970,6 +1958,8 @@ int32_t ride_initialise_construction_window(Ride* ride)
     input_set_flag(INPUT_FLAG_6, true);
 
     ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return 0;
 
     _currentTrackCurve = RideConstructionDefaultTrackType[ride->type] | 0x100;
     _currentTrackSlopeEnd = 0;
@@ -3909,7 +3899,9 @@ static int32_t ride_mode_check_station_present(Ride* ride)
  */
 static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
 {
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return 0;
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
         return 1;
@@ -4054,8 +4046,8 @@ static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
 static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* output)
 {
     ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
-    Ride* ride = get_ride(rideIndex);
-    if (ride->type == RIDE_TYPE_MAZE)
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
         return true;
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -4101,8 +4093,11 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
  */
 static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output)
 {
-    ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
-    Ride* ride = get_ride(rideIndex);
+    auto rideIndex = input->element->AsTrack()->GetRideIndex();
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
+
     if (ride->type == RIDE_TYPE_MAZE)
         return true;
 
@@ -4205,6 +4200,8 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
 
     ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
 
     auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && rideIndex == _currentRideIndex)
@@ -4359,7 +4356,9 @@ static void ride_set_block_points(CoordsXYE* startElement)
  */
 static void ride_set_start_finish_points(ride_id_t rideIndex, CoordsXYE* startElement)
 {
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
 
     switch (ride->type)
     {
@@ -4610,33 +4609,38 @@ static train_ref vehicle_create_train(
     ride_id_t rideIndex, int32_t x, int32_t y, int32_t z, int32_t vehicleIndex, int32_t* remainingDistance,
     TileElement* tileElement)
 {
-    Ride* ride = get_ride(rideIndex);
-
     train_ref train = { nullptr, nullptr };
-    for (int32_t carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++)
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
     {
-        const uint8_t vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex);
-        rct_vehicle* car = vehicle_create_car(
-            rideIndex, vehicle, carIndex, vehicleIndex, x, y, z, remainingDistance, tileElement);
-        if (carIndex == 0)
+        for (int32_t carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++)
         {
-            train.head = car;
+            const uint8_t vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex);
+            rct_vehicle* car = vehicle_create_car(
+                rideIndex, vehicle, carIndex, vehicleIndex, x, y, z, remainingDistance, tileElement);
+            if (carIndex == 0)
+            {
+                train.head = car;
+            }
+            else
+            {
+                // Link the previous car with this car
+                train.tail->next_vehicle_on_train = car->sprite_index;
+                train.tail->next_vehicle_on_ride = car->sprite_index;
+                car->prev_vehicle_on_ride = train.tail->sprite_index;
+            }
+            train.tail = car;
         }
-        else
-        {
-            // Link the previous car with this car
-            train.tail->next_vehicle_on_train = car->sprite_index;
-            train.tail->next_vehicle_on_ride = car->sprite_index;
-            car->prev_vehicle_on_ride = train.tail->sprite_index;
-        }
-        train.tail = car;
     }
     return train;
 }
 
 static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int32_t z, TileElement* tileElement)
 {
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     train_ref firstTrain = {};
     train_ref lastTrain = {};
     int32_t remainingDistance = 0;
@@ -5028,7 +5032,9 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
  */
 static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
 {
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
 
     if (ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT)
     {
@@ -5076,7 +5082,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
         int32_t remaining_distance = ebx;
         ebx -= edx;
 
-        rct_vehicle* current = cable_lift_segment_create(rideIndex, x, y, z, direction, var_44, remaining_distance, i == 0);
+        rct_vehicle* current = cable_lift_segment_create(*ride, x, y, z, direction, var_44, remaining_distance, i == 0);
         current->next_vehicle_on_train = SPRITE_INDEX_NULL;
         if (i == 0)
         {
@@ -5173,7 +5179,10 @@ static void ride_scroll_to_track_error(CoordsXYE* trackElement)
  */
 static TileElement* loc_6B4F6B(ride_id_t rideIndex, int32_t x, int32_t y)
 {
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return nullptr;
+
     TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
@@ -6196,6 +6205,9 @@ void ride_get_entrance_or_exit_position_from_screen_position(
     }
 
     ride = get_ride(gRideEntranceExitPlaceRideIndex);
+    if (ride == nullptr)
+        return;
+
     stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].Height;
 
     screen_get_map_xy_with_z(screenX, screenY, stationHeight * 8, &mapX, &mapY);
@@ -7311,9 +7323,9 @@ static bool check_for_adjacent_station(int32_t x, int32_t y, int32_t z, uint8_t 
         TileElement* stationElement = get_station_platform(adjX, adjY, z, 2);
         if (stationElement != nullptr)
         {
-            ride_id_t rideIndex = stationElement->AsTrack()->GetRideIndex();
-            Ride* ride = get_ride(rideIndex);
-            if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
+            auto rideIndex = stationElement->AsTrack()->GetRideIndex();
+            auto ride = get_ride(rideIndex);
+            if (ride != nullptr && (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
             {
                 found = true;
             }

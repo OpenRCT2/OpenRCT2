@@ -690,9 +690,12 @@ void peep_decrement_num_riders(Peep* peep)
 {
     if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE)
     {
-        Ride* ride = get_ride(peep->current_ride);
-        ride->num_riders = std::max(0, ride->num_riders - 1);
-        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+        auto ride = get_ride(peep->current_ride);
+        if (ride != nullptr)
+        {
+            ride->num_riders = std::max(0, ride->num_riders - 1);
+            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+        }
     }
 }
 
@@ -711,9 +714,12 @@ void peep_window_state_update(Peep* peep)
     {
         if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE)
         {
-            Ride* ride = get_ride(peep->current_ride);
-            ride->num_riders++;
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            auto ride = get_ride(peep->current_ride);
+            if (ride != nullptr)
+            {
+                ride->num_riders++;
+                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            }
         }
 
         window_invalidate_by_number(WC_PEEP, peep->sprite_index);
@@ -2371,6 +2377,8 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
     uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
     ride_id_t rideIndex = tile_element->AsEntrance()->GetRideIndex();
     auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
 
     // Store some details to determine when to override the default
     // behaviour (defined below) for when staff attempt to enter a ride
@@ -2942,9 +2950,8 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
 static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElement* tile_element)
 {
     ride_id_t rideIndex = tile_element->AsTrack()->GetRideIndex();
-    Ride* ride = get_ride(rideIndex);
-
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
         return false;
 
     auto guest = peep->AsGuest();
@@ -3555,7 +3562,9 @@ static void peep_release_balloon(Guest* peep, int16_t spawn_height)
  */
 void Peep::RemoveFromQueue()
 {
-    Ride* ride = get_ride(current_ride);
+    auto ride = get_ride(current_ride);
+    if (ride == nullptr)
+        return;
 
     auto& station = ride->stations[current_ride_station];
     // Make sure we don't underflow, building while paused might reset it to 0 where peeps have

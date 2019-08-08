@@ -73,8 +73,11 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
         // This sets the string parameters for the marketing types that have an argument.
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
-            Ride* ride = get_ride(campaign.RideId);
-            ride->FormatNameTo(gCommonFormatArgs);
+            auto ride = get_ride(campaign.RideId);
+            if (ride != nullptr)
+            {
+                ride->FormatNameTo(gCommonFormatArgs);
+            }
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {

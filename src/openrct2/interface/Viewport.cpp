@@ -708,8 +708,8 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
         if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE
             || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
         {
-            Ride* ride = get_ride(peep->current_ride);
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+            auto ride = get_ride(peep->current_ride);
+            if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 auto train = GET_VEHICLE(ride->vehicles[peep->current_train]);
                 if (train != nullptr)

@@ -785,7 +785,10 @@ void lightfx_add_lights_magic_vehicles()
                 -10, -10, -9, -8, -7, -6, -4, -2, 0, 2,  4,  6,  7,  8,  9,  10,
             };
 
-            Ride* ride = get_ride(vehicle->ride);
+            auto ride = get_ride(vehicle->ride);
+            if (ride == nullptr)
+                continue;
+
             switch (ride->type)
             {
                 case RIDE_TYPE_OBSERVATION_TOWER:

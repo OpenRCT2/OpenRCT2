@@ -33,8 +33,13 @@ enum
 static void paint_motionsimulator_vehicle(
     paint_session* session, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height, const TileElement* tileElement)
 {
-    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-    rct_ride_entry* rideEntry = ride->GetRideEntry();
+    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    if (ride == nullptr)
+        return;
+
+    auto rideEntry = ride->GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
 
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 

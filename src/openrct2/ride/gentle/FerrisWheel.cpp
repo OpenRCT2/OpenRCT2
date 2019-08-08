@@ -54,15 +54,15 @@ static void paint_ferris_wheel_structure(
 
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    Ride* ride = get_ride(rideIndex);
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle* vehicle = nullptr;
-    if (rideEntry == nullptr)
-    {
-        log_error("Error drawing Ferris Wheel, rideEntry is NULL.");
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
         return;
-    }
 
+    auto rideEntry = ride->GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
+
+    rct_vehicle* vehicle = nullptr;
     int8_t xOffset = !(direction & 1) ? axisOffset : 0;
     int8_t yOffset = (direction & 1) ? axisOffset : 0;
 

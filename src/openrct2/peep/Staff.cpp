@@ -1414,9 +1414,8 @@ void Staff::UpdateSweeping()
  */
 void Staff::UpdateHeadingToInspect()
 {
-    Ride* ride = get_ride(current_ride);
-
-    if (ride->type == RIDE_TYPE_NULL)
+    auto ride = get_ride(current_ride);
+    if (ride == nullptr)
     {
         SetState(PEEP_STATE_FALLING);
         return;
@@ -1527,9 +1526,8 @@ void Staff::UpdateHeadingToInspect()
  */
 void Staff::UpdateAnswering()
 {
-    Ride* ride = get_ride(current_ride);
-
-    if (ride->type == RIDE_TYPE_NULL || ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING)
+    auto ride = get_ride(current_ride);
+    if (ride == nullptr || ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING)
     {
         SetState(PEEP_STATE_FALLING);
         return;
@@ -2073,9 +2071,8 @@ static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
  */
 void Staff::UpdateFixing(int32_t steps)
 {
-    Ride* ride = get_ride(current_ride);
-
-    if (ride->type == RIDE_TYPE_NULL)
+    auto ride = get_ride(current_ride);
+    if (ride == nullptr)
     {
         SetState(PEEP_STATE_FALLING);
         return;
@@ -2754,10 +2751,13 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
  */
 void Staff::UpdateRideInspected(ride_id_t rideIndex)
 {
-    Ride* ride = get_ride(rideIndex);
-    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
-
-    ride->reliability += ((100 - ride->reliability_percentage) / 4) * (scenario_rand() & 0xFF);
-    ride->last_inspection = 0;
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+    {
+        ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+        ride->reliability += ((100 - ride->reliability_percentage) / 4) * (scenario_rand() & 0xFF);
+        ride->last_inspection = 0;
+        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN
+            | RIDE_INVALIDATE_RIDE_LIST;
+    }
 }
