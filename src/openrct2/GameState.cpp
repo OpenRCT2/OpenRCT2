@@ -228,6 +228,8 @@ void GameState::UpdateLogic()
 
     GetContext()->GetReplayManager()->Update();
 
+    network_update();
+
     if (network_get_mode() == NETWORK_MODE_SERVER)
     {
         if (network_gamestate_snapshots_enabled())
