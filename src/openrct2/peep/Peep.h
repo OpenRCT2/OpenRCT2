@@ -11,6 +11,7 @@
 #define _PEEP_H_
 
 #include "../common.h"
+#include "../core/Optional.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
@@ -18,7 +19,6 @@
 #include "../world/SpriteBase.h"
 
 #include <bitset>
-#include <optional>
 
 #define PEEP_MAX_THOUGHTS 5
 #define PEEP_THOUGHT_ITEM_NONE 255

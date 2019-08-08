@@ -48,7 +48,6 @@
 #include <algorithm>
 #include <iterator>
 #include <limits>
-#include <optional>
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 bool gPathFindDebug = false;
