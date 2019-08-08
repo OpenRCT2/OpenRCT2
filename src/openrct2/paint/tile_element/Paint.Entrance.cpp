@@ -69,7 +69,12 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     }
 #endif
 
-    Ride* ride = get_ride(tile_element->AsEntrance()->GetRideIndex());
+    auto ride = get_ride(tile_element->AsEntrance()->GetRideIndex());
+    if (ride == nullptr)
+    {
+        return;
+    }
+
     auto stationObj = ride_get_station_object(ride);
     if (stationObj == nullptr || stationObj->BaseImageId == 0)
     {
