@@ -698,7 +698,7 @@ public: // Peep
     Staff* AsStaff();
 
     void Update();
-    bool UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance);
+    bool UpdateAction(CoordsXY& loc, int16_t& xy_distance);
     bool UpdateAction();
     void SetState(PeepState new_state);
     void Remove();
