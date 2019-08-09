@@ -501,7 +501,7 @@ private:
         int32_t trackType = trackElement->GetTrackType();
         int32_t sequence = trackElement->GetSequenceIndex();
         int32_t direction = (_edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
-        Ride* ride = get_ride(trackElement->GetRideIndex());
+        auto ride = get_ride(trackElement->GetRideIndex());
         if (ride == nullptr)
         {
             return false;

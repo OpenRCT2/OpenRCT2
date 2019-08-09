@@ -271,7 +271,9 @@ bool window_ride_construction_update_state(
         liftHillAndAlternativeState |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
     }
 
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return true;
 
     if (_enabledRidePieces & (1ULL << TRACK_SLOPE_STEEP_LONG))
     {
@@ -403,9 +405,8 @@ bool window_ride_construction_update_state(
 
 void window_ride_construction_do_entrance_exit_check()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    Ride* ride = get_ride(_currentRideIndex);
-
+    auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    auto ride = get_ride(_currentRideIndex);
     if (w == nullptr || ride == nullptr)
     {
         return;
@@ -430,7 +431,7 @@ void window_ride_construction_do_entrance_exit_check()
 
 void window_ride_construction_do_station_check()
 {
-    Ride* ride = get_ride(_currentRideIndex);
+    auto ride = get_ride(_currentRideIndex);
     if (ride != nullptr)
     {
         _stationConstructed = ride->num_stations != 0;

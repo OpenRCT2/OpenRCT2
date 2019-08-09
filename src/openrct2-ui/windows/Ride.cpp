@@ -1418,7 +1418,9 @@ static void window_ride_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 static void window_ride_disable_tabs(rct_window* w)
 {
     uint32_t disabled_tabs = 0;
-    Ride* ride = get_ride(w->number & 0xFF);
+    auto ride = get_ride(w->number & 0xFF);
+    if (ride == nullptr)
+        return;
 
     uint8_t ride_type = ride->type; // ecx
 
@@ -1851,7 +1853,10 @@ static void window_ride_init_viewport(rct_window* w)
     if (w->page != WINDOW_RIDE_PAGE_MAIN)
         return;
 
-    Ride* ride = get_ride(w->number);
+    auto ride = get_ride(w->number);
+    if (ride == nullptr)
+        return;
+
     int32_t eax = w->viewport_focus_coordinates.var_480 - 1;
 
     union
@@ -3602,7 +3607,6 @@ static void window_ride_operating_update(rct_window* w)
 static void window_ride_operating_invalidate(rct_window* w)
 {
     rct_widget* widgets;
-    Ride* ride;
     rct_string_id format, caption, tooltip;
 
     widgets = window_ride_page_widgets[w->page];
@@ -3614,7 +3618,9 @@ static void window_ride_operating_invalidate(rct_window* w)
 
     window_ride_set_pressed_tab(w);
 
-    ride = get_ride(w->number);
+    auto ride = get_ride(w->number);
+    if (ride == nullptr)
+        return;
 
     ride->FormatNameTo(gCommonFormatArgs);
 
@@ -3865,13 +3871,12 @@ static void window_ride_operating_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_ride_locate_mechanic(rct_window* w)
 {
-    Ride* ride;
-    Peep* mechanic;
-
-    ride = get_ride(w->number);
+    auto ride = get_ride(w->number);
+    if (ride == nullptr)
+        return;
 
     // First check if there is a mechanic assigned
-    mechanic = ride_get_assigned_mechanic(ride);
+    Peep* mechanic = ride_get_assigned_mechanic(ride);
 
     // Otherwise find the closest mechanic
     if (mechanic == nullptr)
@@ -4732,13 +4737,10 @@ static void window_ride_colour_tooldrag(rct_window* w, rct_widgetindex widgetInd
  */
 static void window_ride_colour_invalidate(rct_window* w)
 {
-    rct_widget* widgets;
-    rct_ride_entry* rideEntry;
-    Ride* ride;
     TrackColour trackColour;
     vehicle_colour vehicleColour;
 
-    widgets = window_ride_page_widgets[w->page];
+    auto widgets = window_ride_page_widgets[w->page];
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
@@ -4747,8 +4749,13 @@ static void window_ride_colour_invalidate(rct_window* w)
 
     window_ride_set_pressed_tab(w);
 
-    ride = get_ride(w->number);
-    rideEntry = ride->GetRideEntry();
+    auto ride = get_ride(w->number);
+    if (ride == nullptr)
+        return;
+
+    auto rideEntry = ride->GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
 
     w->widgets[WIDX_TITLE].text = STR_ARG_16_STRINGID;
     ride->FormatNameTo(gCommonFormatArgs + 16);
@@ -5655,7 +5662,10 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
     }
     else
     {
-        Ride* ride = get_ride(w->number);
+        auto ride = get_ride(w->number);
+        if (ride == nullptr)
+            return;
+
         int32_t x = w->x + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].left + 4;
         int32_t y = w->y + window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
@@ -6895,7 +6905,6 @@ static void window_ride_customer_invalidate(rct_window* w)
  */
 static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    Ride* ride;
     int32_t x, y;
     uint8_t shopItem;
     int16_t popularity, satisfaction, queueTime, age;
@@ -6905,7 +6914,10 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 
-    ride = get_ride(w->number);
+    auto ride = get_ride(w->number);
+    if (ride == nullptr)
+        return;
+
     x = w->x + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     y = w->y + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 

@@ -791,13 +791,15 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
                 if (time_on_ride > 22)
                 {
-                    Ride* ride = get_ride(current_ride);
+                    auto ride = get_ride(current_ride);
+                    if (ride != nullptr)
+                    {
+                        PeepThoughtType thought_type = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE)
+                            ? PEEP_THOUGHT_TYPE_GET_OUT
+                            : PEEP_THOUGHT_TYPE_GET_OFF;
 
-                    PeepThoughtType thought_type = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE)
-                        ? PEEP_THOUGHT_TYPE_GET_OUT
-                        : PEEP_THOUGHT_TYPE_GET_OFF;
-
-                    InsertNewThought(thought_type, current_ride);
+                        InsertNewThought(thought_type, current_ride);
+                    }
                 }
             }
         }
@@ -1755,7 +1757,9 @@ loc_69B221:
  */
 void Guest::OnEnterRide(ride_id_t rideIndex)
 {
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
 
     // Calculate how satisfying the ride is for the peep. Can range from -140 to +105.
     int16_t satisfaction = peep_calculate_ride_satisfaction(this, ride);
@@ -2991,25 +2995,28 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         break;
                     case TILE_ELEMENT_TYPE_TRACK:
                         ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                        if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RIDE_STATUS_CLOSED
-                            && !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
+                        if (ride != nullptr)
                         {
-                            if (ride->type == RIDE_TYPE_MERRY_GO_ROUND)
+                            if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RIDE_STATUS_CLOSED
+                                && !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
                             {
-                                nearby_music |= 1;
-                                break;
-                            }
+                                if (ride->type == RIDE_TYPE_MERRY_GO_ROUND)
+                                {
+                                    nearby_music |= 1;
+                                    break;
+                                }
 
-                            if (ride->music == MUSIC_STYLE_ORGAN)
-                            {
-                                nearby_music |= 1;
-                                break;
-                            }
+                                if (ride->music == MUSIC_STYLE_ORGAN)
+                                {
+                                    nearby_music |= 1;
+                                    break;
+                                }
 
-                            if (ride->type == RIDE_TYPE_DODGEMS)
-                            {
-                                // Dodgems drown out music?
-                                nearby_music |= 2;
+                                if (ride->type == RIDE_TYPE_DODGEMS)
+                                {
+                                    // Dodgems drown out music?
+                                    nearby_music |= 2;
+                                }
                             }
                         }
                         break;
@@ -3956,7 +3963,9 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride
  */
 void Guest::UpdateRideFreeVehicleCheck()
 {
-    Ride* ride = get_ride(current_ride);
+    auto ride = get_ride(current_ride);
+    if (ride == nullptr)
+        return;
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
@@ -4127,7 +4136,9 @@ void Guest::UpdateRideEnterVehicle()
  */
 void Guest::UpdateRideLeaveVehicle()
 {
-    Ride* ride = get_ride(current_ride);
+    auto ride = get_ride(current_ride);
+    if (ride == nullptr)
+        return;
 
     rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
     uint8_t ride_station = vehicle->current_station;
@@ -4898,7 +4909,10 @@ void Guest::UpdateRideMazePathfinding()
         return;
     }
 
-    Ride* ride = get_ride(current_ride);
+    auto ride = get_ride(current_ride);
+    if (ride == nullptr)
+        return;
+
     if (var_37 == 16)
     {
         peep_update_ride_prepare_for_exit(this);

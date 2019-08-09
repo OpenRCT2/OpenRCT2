@@ -79,7 +79,7 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
 
-        Ride* ride = get_ride(_rideIndex);
+        auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));

@@ -547,7 +547,7 @@ private:
     {
         for (size_t i = 0; i < std::size(_s4.rides); i++)
         {
-            rct1_ride* ride = &_s4.rides[i];
+            auto ride = &_s4.rides[i];
             if (ride->type != RCT1_RIDE_TYPE_NULL)
             {
                 if (RCT1::RideTypeUsesVehicles(ride->type))

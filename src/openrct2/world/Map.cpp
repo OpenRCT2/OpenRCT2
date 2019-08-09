@@ -1484,8 +1484,8 @@ bool map_can_construct_with_clear_at(
                     crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
                     && tileElement->base_height == zLow && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
                 {
-                    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                    if (ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
+                    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    if (ride != nullptr && ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
                     {
                         continue;
                     }

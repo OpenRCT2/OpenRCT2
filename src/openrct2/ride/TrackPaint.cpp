@@ -324,8 +324,11 @@ static void track_paint_util_draw_station_impl(
     paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
     const TileElement* tileElement, int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     LocationXY16 position = session->MapPosition;
-    Ride* ride = get_ride(rideIndex);
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
@@ -529,8 +532,11 @@ void track_paint_util_draw_station_inverted(
     paint_session* session, ride_id_t rideIndex, uint8_t direction, int32_t height, const TileElement* tileElement,
     uint8_t stationVariant)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     LocationXY16 position = session->MapPosition;
-    Ride* ride = get_ride(rideIndex);
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 

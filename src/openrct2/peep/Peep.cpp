@@ -1232,7 +1232,7 @@ void peep_problem_warnings_update()
                     break;
                 }
                 ride = get_ride(peep->guest_heading_to_ride_id);
-                if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                     hunger_counter++;
                 break;
 
@@ -1243,7 +1243,7 @@ void peep_problem_warnings_update()
                     break;
                 }
                 ride = get_ride(peep->guest_heading_to_ride_id);
-                if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_DRINKS))
+                if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_DRINKS))
                     thirst_counter++;
                 break;
 
@@ -1254,7 +1254,7 @@ void peep_problem_warnings_update()
                     break;
                 }
                 ride = get_ride(peep->guest_heading_to_ride_id);
-                if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_BATHROOM))
+                if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_BATHROOM))
                     bathroom_counter++;
                 break;
 

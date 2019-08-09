@@ -241,22 +241,26 @@ GameActionResult::Ptr tile_inspector_rotate_element_at(CoordsXY loc, int32_t ele
                 tileElement->SetDirection(newRotation);
 
                 // Update ride's known entrance/exit rotation
-                Ride* ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-                uint8_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
-                auto entrance = ride_get_entrance_location(ride, stationIndex);
-                auto exit = ride_get_exit_location(ride, stationIndex);
-                uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
-                uint8_t z = tileElement->base_height;
+                auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                if (ride != nullptr)
+                {
+                    auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
+                    auto entrance = ride_get_entrance_location(ride, stationIndex);
+                    auto exit = ride_get_exit_location(ride, stationIndex);
+                    uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
+                    uint8_t z = tileElement->base_height;
 
-                // Make sure this is the correct entrance or exit
-                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
-                    && entrance.z == z)
-                {
-                    ride_set_entrance_location(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
-                }
-                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
-                {
-                    ride_set_exit_location(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
+                    // Make sure this is the correct entrance or exit
+                    if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
+                        && entrance.z == z)
+                    {
+                        ride_set_entrance_location(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
+                    }
+                    else if (
+                        entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
+                    {
+                        ride_set_exit_location(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
+                    }
                 }
                 break;
             }
@@ -426,19 +430,23 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(
             if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
             {
                 // Update the ride's known entrance or exit height
-                Ride* ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-                uint8_t entranceIndex = tileElement->AsEntrance()->GetStationIndex();
-                auto entrance = ride_get_entrance_location(ride, entranceIndex);
-                auto exit = ride_get_exit_location(ride, entranceIndex);
-                uint8_t z = tileElement->base_height;
+                auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                if (ride != nullptr)
+                {
+                    auto entranceIndex = tileElement->AsEntrance()->GetStationIndex();
+                    auto entrance = ride_get_entrance_location(ride, entranceIndex);
+                    auto exit = ride_get_exit_location(ride, entranceIndex);
+                    uint8_t z = tileElement->base_height;
 
-                // Make sure this is the correct entrance or exit
-                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
-                    && entrance.z == z)
-                    ride_set_entrance_location(
-                        ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
-                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
-                    ride_set_exit_location(ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
+                    // Make sure this is the correct entrance or exit
+                    if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
+                        && entrance.z == z)
+                        ride_set_entrance_location(
+                            ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
+                    else if (
+                        entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
+                        ride_set_exit_location(ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
+                }
             }
         }
 
@@ -671,8 +679,7 @@ GameActionResult::Ptr tile_inspector_entrance_make_usable(CoordsXY loc, int32_t 
     if (entranceElement == nullptr || entranceElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
-    Ride* ride = get_ride(entranceElement->AsEntrance()->GetRideIndex());
-
+    auto ride = get_ride(entranceElement->AsEntrance()->GetRideIndex());
     if (ride == nullptr)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
@@ -750,9 +757,12 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(
         int16_t originY = loc.y;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
-        ride_id_t rideIndex = trackElement->AsTrack()->GetRideIndex();
-        Ride* ride = get_ride(rideIndex);
-        const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
+        auto rideIndex = trackElement->AsTrack()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+
+        auto trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
@@ -851,9 +861,12 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
         int16_t originY = loc.y;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
-        ride_id_t rideIndex = trackElement->AsTrack()->GetRideIndex();
-        Ride* ride = get_ride(rideIndex);
-        const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
+        auto rideIndex = trackElement->AsTrack()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+
+        auto trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();

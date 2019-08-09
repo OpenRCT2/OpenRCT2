@@ -321,10 +321,10 @@ static void paint_river_rapids_station(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    Ride* ride = get_ride(rideIndex);
-
     paint_river_rapids_track_flat(session, rideIndex, trackSequence, direction, height, tileElement);
-    track_paint_util_draw_station_platform(session, ride, direction, height, 12, tileElement);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+        track_paint_util_draw_station_platform(session, ride, direction, height, 12, tileElement);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
