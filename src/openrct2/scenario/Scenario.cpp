@@ -667,8 +667,7 @@ void scenario_remove_trackless_rides(rct_s6_data* s6)
     ride_all_has_any_track_elements(rideHasTrack);
     for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {
-        rct2_ride* ride = &s6->rides[i];
-
+        auto ride = &s6->rides[i];
         if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
         {
             continue;

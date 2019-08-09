@@ -783,8 +783,6 @@ static void paint_splash_boats_station(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    Ride* ride = get_ride(rideIndex);
-
     if (direction & 1)
     {
         uint32_t imageId = (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW)
@@ -806,7 +804,9 @@ static void paint_splash_boats_station(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    track_paint_util_draw_station_platform(session, ride, direction, height, 7, tileElement);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+        track_paint_util_draw_station_platform(session, ride, direction, height, 7, tileElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 

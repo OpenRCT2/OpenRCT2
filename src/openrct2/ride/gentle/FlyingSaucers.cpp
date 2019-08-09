@@ -39,7 +39,6 @@ static void paint_flying_saucers(
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
     int32_t edges = edges_4x4[relativeTrackSequence];
-    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
@@ -47,9 +46,13 @@ static void paint_flying_saucers(
     uint32_t imageId = SPR_FLYING_SAUCERS_FLOOR | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
 
-    track_paint_util_paint_fences(
-        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, flying_saucers_fence_sprites,
-        session->CurrentRotation);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+    {
+        track_paint_util_paint_fences(
+            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
+            flying_saucers_fence_sprites, session->CurrentRotation);
+    }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);

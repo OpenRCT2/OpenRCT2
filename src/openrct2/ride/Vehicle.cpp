@@ -1518,9 +1518,9 @@ static bool vehicle_open_restraints(rct_vehicle* vehicle)
  */
 static void vehicle_update_measurements(rct_vehicle* vehicle)
 {
-    Ride* ride;
-
-    ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
     if (vehicle->status == VEHICLE_STATUS_TRAVELLING_BOAT)
     {
@@ -2236,7 +2236,9 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
 {
     vehicle->velocity = 0;
 
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
     if (vehicle->sub_state == 0)
     {
@@ -2484,7 +2486,10 @@ static void vehicle_update_dodgems_mode(rct_vehicle* vehicle)
  */
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
+
     bool shouldBreak = false;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
@@ -2916,13 +2921,16 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
 
                         /* Here all the of sync-ed stations are from the same ride */
                         ride = get_ride(rideId);
-                        for (int32_t i = 0; i < ride->num_vehicles; i++)
+                        if (ride != nullptr)
                         {
-                            rct_vehicle* v = GET_VEHICLE(ride->vehicles[i]);
-                            if (v->status != VEHICLE_STATUS_WAITING_TO_DEPART && v->velocity != 0)
+                            for (int32_t i = 0; i < ride->num_vehicles; i++)
                             {
-                                // Here at least one vehicle on the ride is moving.
-                                return false;
+                                rct_vehicle* v = GET_VEHICLE(ride->vehicles[i]);
+                                if (v->status != VEHICLE_STATUS_WAITING_TO_DEPART && v->velocity != 0)
+                                {
+                                    // Here at least one vehicle on the ride is moving.
+                                    return false;
+                                }
                             }
                         }
 
@@ -3188,12 +3196,13 @@ static void vehicle_update_departing_boat_hire(rct_vehicle* vehicle)
  */
 static void vehicle_update_departing(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-    if (rideEntry == nullptr)
-    {
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
         return;
-    }
+
+    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+    if (rideEntry == nullptr)
+        return;
 
     if (vehicle->sub_state == 0)
     {
@@ -3673,8 +3682,8 @@ static void vehicle_update_travelling(rct_vehicle* vehicle)
 {
     vehicle_check_if_missing(vehicle);
 
-    Ride* ride = get_ride(vehicle->ride);
-    if (_vehicleBreakdown == 0 && ride->mode == RIDE_MODE_ROTATING_LIFT)
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr || (_vehicleBreakdown == 0 && ride->mode == RIDE_MODE_ROTATING_LIFT))
         return;
 
     if (vehicle->sub_state == 2)
@@ -3849,9 +3858,11 @@ static void vehicle_update_travelling(rct_vehicle* vehicle)
  */
 static void vehicle_update_arriving(rct_vehicle* vehicle)
 {
-    uint8_t unkF64E35 = 1;
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
+    uint8_t unkF64E35 = 1;
     switch (ride->mode)
     {
         case RIDE_MODE_SWING:
@@ -6258,7 +6269,10 @@ int32_t vehicle_is_used_in_pairs(const rct_vehicle* vehicle)
 static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
 {
     _vehicleMotionTrackFlags = 0;
-    Ride* ride = get_ride(vehicle->ride);
+
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return _vehicleMotionTrackFlags;
 
     int32_t nextVelocity = vehicle->velocity + vehicle->acceleration;
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -7262,23 +7276,26 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                 ah &= 0x02;
                 if (al != ah)
                 {
-                    Ride* ride = get_ride(vehicle->ride);
-                    if (!ride_has_station_shelter(ride)
-                        || (vehicle->status != VEHICLE_STATUS_MOVING_TO_END_OF_STATION
-                            && vehicle->status != VEHICLE_STATUS_ARRIVING))
+                    auto ride = get_ride(vehicle->ride);
+                    if (ride != nullptr)
                     {
-                        int32_t index = vehicle->sprite_direction >> 1;
-                        if (vehicle->vehicle_sprite_type == 2)
+                        if (!ride_has_station_shelter(ride)
+                            || (vehicle->status != VEHICLE_STATUS_MOVING_TO_END_OF_STATION
+                                && vehicle->status != VEHICLE_STATUS_ARRIVING))
                         {
-                            index += 16;
+                            int32_t index = vehicle->sprite_direction >> 1;
+                            if (vehicle->vehicle_sprite_type == 2)
+                            {
+                                index += 16;
+                            }
+                            if (vehicle->vehicle_sprite_type == 6)
+                            {
+                                index += 32;
+                            }
+                            steam_particle_create(
+                                vehicle->x + SteamParticleOffsets[index].x, vehicle->y + SteamParticleOffsets[index].y,
+                                vehicle->z + SteamParticleOffsets[index].z);
                         }
-                        if (vehicle->vehicle_sprite_type == 6)
-                        {
-                            index += 32;
-                        }
-                        steam_particle_create(
-                            vehicle->x + SteamParticleOffsets[index].x, vehicle->y + SteamParticleOffsets[index].y,
-                            vehicle->z + SteamParticleOffsets[index].z);
                     }
                 }
                 vehicle->Invalidate();
@@ -8694,7 +8711,10 @@ static int32_t vehicle_update_track_motion_mini_golf(rct_vehicle* vehicle, int32
 {
     registers regs = {};
 
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return 0;
+
     rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
@@ -9558,7 +9578,10 @@ int32_t vehicle_update_track_motion(rct_vehicle* vehicle, int32_t* outStation)
 {
     registers regs = {};
 
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return 0;
+
     rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 

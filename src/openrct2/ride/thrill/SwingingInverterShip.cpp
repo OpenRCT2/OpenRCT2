@@ -126,9 +126,6 @@ static void paint_swinging_inverter_ship(
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
-
-    Ride* ride = get_ride(rideIndex);
-
     uint32_t imageId;
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
@@ -168,20 +165,24 @@ static void paint_swinging_inverter_ship(
         }
     }
 
-    switch (relativeTrackSequence)
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
     {
-        case 1:
-            paint_swinging_inverter_ship_structure(session, ride, direction, 48, height + 7);
-            break;
-        case 2:
-            paint_swinging_inverter_ship_structure(session, ride, direction, 16, height + 7);
-            break;
-        case 0:
-            paint_swinging_inverter_ship_structure(session, ride, direction, -16, height + 7);
-            break;
-        case 3:
-            paint_swinging_inverter_ship_structure(session, ride, direction, -48, height + 7);
-            break;
+        switch (relativeTrackSequence)
+        {
+            case 1:
+                paint_swinging_inverter_ship_structure(session, ride, direction, 48, height + 7);
+                break;
+            case 2:
+                paint_swinging_inverter_ship_structure(session, ride, direction, 16, height + 7);
+                break;
+            case 0:
+                paint_swinging_inverter_ship_structure(session, ride, direction, -16, height + 7);
+                break;
+            case 3:
+                paint_swinging_inverter_ship_structure(session, ride, direction, -48, height + 7);
+                break;
+        }
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

@@ -244,21 +244,24 @@ static void paint_magic_carpet(
             break;
     }
 
-    Ride* ride = get_ride(rideIndex);
-    switch (relativeTrackSequence)
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
     {
-        case 3:
-            paint_magic_carpet_structure(session, ride, direction, -48, height);
-            break;
-        case 0:
-            paint_magic_carpet_structure(session, ride, direction, -16, height);
-            break;
-        case 2:
-            paint_magic_carpet_structure(session, ride, direction, 16, height);
-            break;
-        case 1:
-            paint_magic_carpet_structure(session, ride, direction, 48, height);
-            break;
+        switch (relativeTrackSequence)
+        {
+            case 3:
+                paint_magic_carpet_structure(session, ride, direction, -48, height);
+                break;
+            case 0:
+                paint_magic_carpet_structure(session, ride, direction, -16, height);
+                break;
+            case 2:
+                paint_magic_carpet_structure(session, ride, direction, 16, height);
+                break;
+            case 1:
+                paint_magic_carpet_structure(session, ride, direction, 48, height);
+                break;
+        }
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

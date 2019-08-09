@@ -131,29 +131,32 @@ static void multi_dimension_rc_track_station(
     }
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 11);
 
-    Ride* ride = get_ride(rideIndex);
-    auto stationObj = ride_get_station_object(ride);
-    bool hasFence;
-    if (direction == 0 || direction == 2)
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
-    }
-    else
-    {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
-    }
+        auto stationObj = ride_get_station_object(ride);
+        bool hasFence;
+        if (direction == 0 || direction == 2)
+        {
+            hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
+            track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
+        }
+        else
+        {
+            hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
+            track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+        }
 
-    if (direction == 0 || direction == 2)
-    {
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
-    }
-    else
-    {
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+        if (direction == 0 || direction == 2)
+        {
+            hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
+            track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
+        }
+        else
+        {
+            hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
+            track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+        }
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);

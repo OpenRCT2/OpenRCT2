@@ -126,7 +126,7 @@ public:
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto trackType = tileElement->AsTrack()->GetTrackType();
 
-        Ride* ride = get_ride(rideIndex);
+        auto ride = get_ride(rideIndex);
         if (ride == nullptr)
         {
             log_warning("Ride not found. ride index = %d.", rideIndex);
@@ -322,7 +322,7 @@ public:
         auto trackType = tileElement->AsTrack()->GetTrackType();
         bool isLiftHill = tileElement->AsTrack()->HasChain();
 
-        Ride* ride = get_ride(rideIndex);
+        auto ride = get_ride(rideIndex);
         if (ride == nullptr)
         {
             log_warning("Ride not found. ride index = %d.", rideIndex);

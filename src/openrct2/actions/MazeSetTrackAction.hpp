@@ -154,7 +154,7 @@ public:
                 return res;
             }
 
-            Ride* ride = get_ride(_rideIndex);
+            auto ride = get_ride(_rideIndex);
             if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;

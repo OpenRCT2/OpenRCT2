@@ -219,7 +219,6 @@ static void paint_reverse_freefall_rc_station(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    Ride* ride = get_ride(rideIndex);
     uint32_t imageId;
 
     if (direction == 0 || direction == 2)
@@ -251,7 +250,9 @@ static void paint_reverse_freefall_rc_station(
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
-    track_paint_util_draw_station_platform(session, ride, direction, height, 5, tileElement);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+        track_paint_util_draw_station_platform(session, ride, direction, height, 5, tileElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);

@@ -347,8 +347,11 @@ static void paint_go_karts_station(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     LocationXY16 position = session->MapPosition;
-    Ride* ride = get_ride(rideIndex);
     auto stationObj = ride_get_station_object(ride);
 
     bool hasFence;

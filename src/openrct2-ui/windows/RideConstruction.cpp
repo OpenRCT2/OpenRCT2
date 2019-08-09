@@ -703,7 +703,10 @@ static void window_ride_construction_resize(rct_window* w)
         w->enabled_widgets |= (1 << WIDX_CONSTRUCT);
     }
 
-    Ride* ride = get_ride(_currentRideIndex);
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return;
+
     int32_t rideType = ride_get_alternative_type(ride);
 
     uint64_t disabledWidgets = 0;
@@ -1246,7 +1249,9 @@ static void window_ride_construction_resize(rct_window* w)
  */
 static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    Ride* ride = get_ride(_currentRideIndex);
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return;
 
     window_ride_construction_update_enabled_track_pieces();
     switch (widgetIndex)
@@ -2673,7 +2678,6 @@ void sub_6C94D8()
  */
 static void window_ride_construction_update_map_selection()
 {
-    Ride* ride;
     int32_t trackType, trackDirection, x, y;
 
     map_invalidate_map_selection_tiles();
@@ -2705,9 +2709,12 @@ static void window_ride_construction_update_map_selection()
             break;
     }
 
-    ride = get_ride(_currentRideIndex);
-    window_ride_construction_select_map_tiles(ride, trackType, trackDirection, x, y);
-    map_invalidate_map_selection_tiles();
+    auto ride = get_ride(_currentRideIndex);
+    if (ride != nullptr)
+    {
+        window_ride_construction_select_map_tiles(ride, trackType, trackDirection, x, y);
+        map_invalidate_map_selection_tiles();
+    }
 }
 
 /**
@@ -2716,11 +2723,12 @@ static void window_ride_construction_update_map_selection()
  */
 static void window_ride_construction_update_possible_ride_configurations()
 {
-    Ride* ride;
     int32_t trackType;
     int32_t edi;
 
-    ride = get_ride(_currentRideIndex);
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return;
 
     _currentlyShowingBrakeOrBoosterSpeed = false;
     if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
@@ -2818,8 +2826,10 @@ static void window_ride_construction_update_possible_ride_configurations()
  */
 static void window_ride_construction_update_widgets(rct_window* w)
 {
-    ride_id_t rideIndex = _currentRideIndex;
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return;
+
     int32_t rideType = ride_get_alternative_type(ride);
 
     w->hold_down_widgets = 0;
@@ -3464,7 +3474,6 @@ static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
 void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
 {
     int32_t x, y, z;
-    Ride* ride;
     const rct_preview_track* trackBlock;
 
     map_invalidate_map_selection_tiles();
@@ -3502,7 +3511,9 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
         return;
     }
     _currentTrackPieceType = trackType;
-    ride = get_ride(_currentRideIndex);
+    auto ride = get_ride(_currentRideIndex);
+    if (ride == nullptr)
+        return;
 
     // Re-using this other code, very slight difference from original
     //   - Original code checks for MSB mask instead of 255 on trackPart->var_00

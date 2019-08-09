@@ -257,7 +257,7 @@ private:
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
             {
                 ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                Ride* ride = get_ride(rideIndex);
+                auto ride = get_ride(rideIndex);
                 if (ride != nullptr)
                 {
                     rct_ride_entry* rideEntry = ride->GetRideEntry();

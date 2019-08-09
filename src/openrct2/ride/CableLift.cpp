@@ -222,7 +222,10 @@ static void cable_lift_update_arriving(rct_vehicle* vehicle)
 
 static bool sub_6DF01A_loop(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return false;
+
     for (; vehicle->remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
         uint8_t trackType = vehicle->track_type >> 2;
@@ -302,7 +305,10 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle)
 
 static bool sub_6DF21B_loop(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return false;
+
     for (; vehicle->remaining_distance < 0; _vehicleUnkF64E10++)
     {
         uint16_t trackProgress = vehicle->track_progress - 1;

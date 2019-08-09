@@ -165,7 +165,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Ride* ride = get_ride(_rideIndex);
+        auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid ride: #%d.", (int32_t)_rideIndex);
