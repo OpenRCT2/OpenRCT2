@@ -646,7 +646,7 @@ void scenario_fix_ghosts(rct_s6_data* s6)
     }
 }
 
-static void ride_all_has_any_track_elements(std::array<bool, RCT12_MAX_RIDES_IN_PARK> &rideIndexArray)
+static void ride_all_has_any_track_elements(std::array<bool, RCT12_MAX_RIDES_IN_PARK>& rideIndexArray)
 {
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
