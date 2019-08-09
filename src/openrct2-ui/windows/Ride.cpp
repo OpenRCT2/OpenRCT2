@@ -2011,9 +2011,6 @@ static void window_ride_rename(rct_window* w)
  */
 static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    ride_id_t rideIndex;
-    int32_t status;
-
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
@@ -2032,13 +2029,18 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_CONSTRUCTION:
-            rideIndex = (uint8_t)w->number;
-            ride_construct(get_ride(rideIndex));
-            if (window_find_by_number(WC_RIDE_CONSTRUCTION, rideIndex) != nullptr)
+        {
+            auto ride = get_ride(w->number);
+            if (ride != nullptr)
             {
-                window_close(w);
+                ride_construct(ride);
+                if (window_find_by_number(WC_RIDE_CONSTRUCTION, ride->id) != nullptr)
+                {
+                    window_close(w);
+                }
             }
             break;
+        }
         case WIDX_RENAME:
             window_ride_rename(w);
             break;
@@ -2052,29 +2054,31 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_SIMULATE_LIGHT:
         case WIDX_TEST_LIGHT:
         case WIDX_OPEN_LIGHT:
-            switch (widgetIndex)
-            {
-                default:
-                case WIDX_CLOSE_LIGHT:
-                    status = RIDE_STATUS_CLOSED;
-                    break;
-                case WIDX_SIMULATE_LIGHT:
-                    status = RIDE_STATUS_SIMULATING;
-                    break;
-                case WIDX_TEST_LIGHT:
-                    status = RIDE_STATUS_TESTING;
-                    break;
-                case WIDX_OPEN_LIGHT:
-                    status = RIDE_STATUS_OPEN;
-                    break;
-            }
-
+        {
             auto ride = get_ride(w->number);
             if (ride != nullptr)
             {
+                int32_t status;
+                switch (widgetIndex)
+                {
+                    default:
+                    case WIDX_CLOSE_LIGHT:
+                        status = RIDE_STATUS_CLOSED;
+                        break;
+                    case WIDX_SIMULATE_LIGHT:
+                        status = RIDE_STATUS_SIMULATING;
+                        break;
+                    case WIDX_TEST_LIGHT:
+                        status = RIDE_STATUS_TESTING;
+                        break;
+                    case WIDX_OPEN_LIGHT:
+                        status = RIDE_STATUS_OPEN;
+                        break;
+                }
                 ride_set_status(ride, status);
             }
             break;
+        }
     }
 }
 

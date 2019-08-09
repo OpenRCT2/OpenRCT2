@@ -458,7 +458,13 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
 
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
             if (info.sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
-                ride_construct(get_ride(info.sprite->vehicle.ride));
+            {
+                auto ride = get_ride(info.sprite->vehicle.ride);
+                if (ride != nullptr)
+                {
+                    ride_construct(ride);
+                }
+            }
             break;
         case VIEWPORT_INTERACTION_ITEM_RIDE:
             tileElement.x = info.x;
