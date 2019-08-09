@@ -4416,12 +4416,19 @@ static rct_vehicle* vehicle_create_car(
     ride_id_t rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, int32_t x, int32_t y, int32_t z,
     int32_t* remainingDistance, TileElement* tileElement)
 {
-    Ride* ride = get_ride(rideIndex);
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
-    int32_t edx;
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return nullptr;
 
-    rct_vehicle* vehicle = &create_sprite(SPRITE_IDENTIFIER_VEHICLE)->vehicle;
+    auto rideEntry = ride->GetRideEntry();
+    if (rideEntry == nullptr)
+        return nullptr;
+
+    auto vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
+    auto vehicle = &create_sprite(SPRITE_IDENTIFIER_VEHICLE)->vehicle;
+    if (vehicle == nullptr)
+        return nullptr;
+
     vehicle->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
     vehicle->ride = rideIndex;
     vehicle->ride_subtype = ride->subtype;
@@ -4429,7 +4436,7 @@ static rct_vehicle* vehicle_create_car(
     vehicle->vehicle_type = vehicleEntryIndex;
     vehicle->type = carIndex == 0 ? VEHICLE_TYPE_HEAD : VEHICLE_TYPE_TAIL;
     vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
-    edx = vehicleEntry->spacing >> 1;
+    auto edx = vehicleEntry->spacing >> 1;
     *remainingDistance -= edx;
     vehicle->remaining_distance = *remainingDistance;
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART))
@@ -4615,9 +4622,11 @@ static train_ref vehicle_create_train(
     {
         for (int32_t carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++)
         {
-            const uint8_t vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex);
-            rct_vehicle* car = vehicle_create_car(
-                rideIndex, vehicle, carIndex, vehicleIndex, x, y, z, remainingDistance, tileElement);
+            auto vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex);
+            auto car = vehicle_create_car(rideIndex, vehicle, carIndex, vehicleIndex, x, y, z, remainingDistance, tileElement);
+            if (car == nullptr)
+                break;
+
             if (carIndex == 0)
             {
                 train.head = car;

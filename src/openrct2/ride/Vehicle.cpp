@@ -1933,9 +1933,6 @@ static SoundIdVolume sub_6D7AC0(SoundId currentSoundId, uint8_t currentVolume, S
  */
 static void vehicle_update(rct_vehicle* vehicle)
 {
-    Ride* ride;
-    rct_ride_entry* rideEntry;
-
     // The cable lift uses the ride type of NULL
     if (vehicle->ride_subtype == RIDE_TYPE_NULL)
     {
@@ -1943,11 +1940,14 @@ static void vehicle_update(rct_vehicle* vehicle)
         return;
     }
 
-    rideEntry = get_ride_entry(vehicle->ride_subtype);
+    auto rideEntry = get_ride_entry(vehicle->ride_subtype);
+    if (rideEntry == nullptr)
+        return;
 
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return;
 
-    ride = get_ride(vehicle->ride);
     if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING)
         vehicle_update_measurements(vehicle);
 
@@ -1955,6 +1955,7 @@ static void vehicle_update(rct_vehicle* vehicle)
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         _vehicleBreakdown = ride->breakdown_reason_pending;
+        auto vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && ride->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)

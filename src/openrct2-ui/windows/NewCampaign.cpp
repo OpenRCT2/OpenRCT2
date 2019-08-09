@@ -94,19 +94,31 @@ static uint8_t window_new_campaign_shop_items[64];
 
 static int32_t ride_value_compare(const void* a, const void* b)
 {
-    Ride *rideA, *rideB;
+    auto valueA = 0;
+    auto rideA = get_ride(*((uint8_t*)a));
+    if (rideA != nullptr)
+        valueA = rideA->value;
 
-    rideA = get_ride(*((uint8_t*)a));
-    rideB = get_ride(*((uint8_t*)b));
-    return rideB->value - rideA->value;
+    auto valueB = 0;
+    auto rideB = get_ride(*((uint8_t*)b));
+    if (rideB != nullptr)
+        valueB = rideB->value;
+
+    return valueB - valueA;
 }
 
 static int32_t ride_name_compare(const void* a, const void* b)
 {
+    std::string rideAName;
     auto rideA = get_ride(*((uint8_t*)a));
+    if (rideA != nullptr)
+        rideAName = rideA->GetName();
+
+    std::string rideBName;
     auto rideB = get_ride(*((uint8_t*)b));
-    auto rideAName = rideA->GetName();
-    auto rideBName = rideB->GetName();
+    if (rideB != nullptr)
+        rideBName = rideB->GetName();
+
     return _strcmpi(rideAName.c_str(), rideBName.c_str());
 }
 

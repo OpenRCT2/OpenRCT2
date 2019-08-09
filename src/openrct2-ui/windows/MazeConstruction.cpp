@@ -170,18 +170,21 @@ static void window_maze_construction_close(rct_window* w)
     hide_gridlines();
 
     auto ride = get_ride(_currentRideIndex);
-    if (ride->overall_view.xy == RCT_XY8_UNDEFINED)
+    if (ride != nullptr)
     {
-        int32_t savedPausedState = gGamePaused;
-        gGamePaused = 0;
-        ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-        gGamePaused = savedPausedState;
-    }
-    else
-    {
-        auto intent = Intent(WC_RIDE);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
-        context_open_intent(&intent);
+        if (ride->overall_view.xy == RCT_XY8_UNDEFINED)
+        {
+            int32_t savedPausedState = gGamePaused;
+            gGamePaused = 0;
+            ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            gGamePaused = savedPausedState;
+        }
+        else
+        {
+            auto intent = Intent(WC_RIDE);
+            intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id);
+            context_open_intent(&intent);
+        }
     }
 }
 
@@ -376,8 +379,8 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
 
         audio_play_sound_at_location(SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
 
-        Ride* ride = get_ride(rideIndex);
-        if (ride_are_all_possible_entrances_and_exits_built(ride))
+        auto ride = get_ride(rideIndex);
+        if (ride != nullptr && ride_are_all_possible_entrances_and_exits_built(ride))
         {
             tool_cancel();
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))

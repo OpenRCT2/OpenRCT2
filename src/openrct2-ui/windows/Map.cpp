@@ -1602,11 +1602,13 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
                 ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-                colourA = RideKeyColours[RideColourKey[ride->type]];
+                if (ride != nullptr)
+                    colourA = RideKeyColours[RideColourKey[ride->type]];
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                colourA = RideKeyColours[RideColourKey[ride->type]];
+                if (ride != nullptr)
+                    colourA = RideKeyColours[RideColourKey[ride->type]];
                 break;
         }
     } while (!(tileElement++)->IsLastForTile());

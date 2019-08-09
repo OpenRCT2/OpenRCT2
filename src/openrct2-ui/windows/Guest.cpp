@@ -1950,7 +1950,8 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             break;
         case SHOP_ITEM_PHOTO:
             ride = get_ride(peep->photo1_ride_ref);
-            ride->FormatNameTo(gCommonFormatArgs + 6);
+            if (ride != nullptr)
+                ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_UMBRELLA:
             set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour) | ShopItems[item].Image);
@@ -1965,8 +1966,11 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                     break;
                 case VOUCHER_TYPE_RIDE_FREE:
                     ride = get_ride(peep->voucher_arguments);
-                    set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-                    ride->FormatNameTo(gCommonFormatArgs + 8);
+                    if (ride != nullptr)
+                    {
+                        set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
+                        ride->FormatNameTo(gCommonFormatArgs + 8);
+                    }
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
@@ -1987,15 +1991,18 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             break;
         case SHOP_ITEM_PHOTO2:
             ride = get_ride(peep->photo2_ride_ref);
-            ride->FormatNameTo(gCommonFormatArgs + 6);
+            if (ride != nullptr)
+                ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_PHOTO3:
             ride = get_ride(peep->photo3_ride_ref);
-            ride->FormatNameTo(gCommonFormatArgs + 6);
+            if (ride != nullptr)
+                ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_PHOTO4:
             ride = get_ride(peep->photo4_ride_ref);
-            ride->FormatNameTo(gCommonFormatArgs + 6);
+            if (ride != nullptr)
+                ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
     }
 
