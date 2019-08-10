@@ -755,7 +755,6 @@ public:
                 if (ride != nullptr)
                 {
                     ride->measurement = std::make_unique<RideMeasurement>();
-                    ride->measurement->ride = ride;
                     ImportRideMeasurement(*ride->measurement, src);
                 }
             }

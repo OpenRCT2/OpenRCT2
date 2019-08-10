@@ -729,34 +729,34 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 void S6Exporter::ExportRideMeasurements()
 {
     // Get all the ride measurements
-    std::vector<const RideMeasurement*> rideMeasurements;
+    std::vector<Ride*> ridesWithMeasurements;
     for (ride_id_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {
         auto ride = get_ride(i);
         if (ride != nullptr && ride->measurement != nullptr)
         {
-            rideMeasurements.push_back(ride->measurement.get());
+            ridesWithMeasurements.push_back(ride);
         }
     }
 
     // If there are more than S6 can hold, trim it by LRU
-    if (rideMeasurements.size() > RCT12_RIDE_MEASUREMENT_MAX_ITEMS)
+    if (ridesWithMeasurements.size() > RCT12_RIDE_MEASUREMENT_MAX_ITEMS)
     {
         // Sort in order of last recently used
-        std::sort(rideMeasurements.begin(), rideMeasurements.end(), [](const RideMeasurement* a, const RideMeasurement* b) {
-            return a->last_use_tick > b->last_use_tick;
+        std::sort(ridesWithMeasurements.begin(), ridesWithMeasurements.end(), [](const Ride* a, const Ride* b) {
+            return a->measurement->last_use_tick > b->measurement->last_use_tick;
         });
-        rideMeasurements.resize(RCT12_RIDE_MEASUREMENT_MAX_ITEMS);
+        ridesWithMeasurements.resize(RCT12_RIDE_MEASUREMENT_MAX_ITEMS);
     }
 
     // Convert ride measurements to S6 format
     uint8_t i{};
-    for (auto src : rideMeasurements)
+    for (auto src : ridesWithMeasurements)
     {
         auto& dst = _s6.ride_measurements[i];
-        ExportRideMeasurement(_s6.ride_measurements[i], *src);
+        ExportRideMeasurement(_s6.ride_measurements[i], *src->measurement.get());
 
-        auto rideId = src->ride->id;
+        auto rideId = src->id;
         dst.ride_index = rideId;
         _s6.rides[rideId].measurement_index = i;
         i++;
