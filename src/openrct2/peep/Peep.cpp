@@ -2375,10 +2375,6 @@ static void peep_return_to_centre_of_tile(Peep* peep)
 static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileElement* tile_element, uint8_t& pathing_result)
 {
     uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
-    ride_id_t rideIndex = tile_element->AsEntrance()->GetRideIndex();
-    auto ride = get_ride(rideIndex);
-    if (ride == nullptr)
-        return;
 
     // Store some details to determine when to override the default
     // behaviour (defined below) for when staff attempt to enter a ride
@@ -2405,6 +2401,11 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
     if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
+        auto rideIndex = tile_element->AsEntrance()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
+            return;
+
         auto guest = peep->AsGuest();
         if (guest == nullptr)
         {
