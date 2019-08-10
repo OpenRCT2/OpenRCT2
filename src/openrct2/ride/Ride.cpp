@@ -2917,13 +2917,12 @@ static void ride_music_update(Ride* ride)
  *
  *  rct2: 0x006B64F2
  */
-static void ride_measurement_update(RideMeasurement* measurement)
+static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
 {
-    auto ride = measurement->ride;
-    if (ride == nullptr || measurement->vehicle_index >= std::size(ride->vehicles))
+    if (measurement.vehicle_index >= std::size(ride.vehicles))
         return;
 
-    auto spriteIndex = ride->vehicles[measurement->vehicle_index];
+    auto spriteIndex = ride.vehicles[measurement.vehicle_index];
     if (spriteIndex == SPRITE_INDEX_NULL)
         return;
 
@@ -2931,19 +2930,19 @@ static void ride_measurement_update(RideMeasurement* measurement)
     if (vehicle == nullptr)
         return;
 
-    if (measurement->flags & RIDE_MEASUREMENT_FLAG_UNLOADING)
+    if (measurement.flags & RIDE_MEASUREMENT_FLAG_UNLOADING)
     {
         if (vehicle->status != VEHICLE_STATUS_DEPARTING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT)
             return;
 
-        measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
-        if (measurement->current_station == vehicle->current_station)
-            measurement->current_item = 0;
+        measurement.flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
+        if (measurement.current_station == vehicle->current_station)
+            measurement.current_item = 0;
     }
 
     if (vehicle->status == VEHICLE_STATUS_UNLOADING_PASSENGERS)
     {
-        measurement->flags |= RIDE_MEASUREMENT_FLAG_UNLOADING;
+        measurement.flags |= RIDE_MEASUREMENT_FLAG_UNLOADING;
         return;
     }
 
@@ -2954,10 +2953,10 @@ static void ride_measurement_update(RideMeasurement* measurement)
         if (vehicle->velocity == 0)
             return;
 
-    if (measurement->current_item >= RideMeasurement::MAX_ITEMS)
+    if (measurement.current_item >= RideMeasurement::MAX_ITEMS)
         return;
 
-    if (measurement->flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
+    if (measurement.flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
     {
         auto gForces = vehicle_get_g_forces(vehicle);
         gForces.VerticalG = std::clamp(gForces.VerticalG / 8, -127, 127);
@@ -2965,12 +2964,12 @@ static void ride_measurement_update(RideMeasurement* measurement)
 
         if (gScenarioTicks & 1)
         {
-            gForces.VerticalG = (gForces.VerticalG + measurement->vertical[measurement->current_item]) / 2;
-            gForces.LateralG = (gForces.LateralG + measurement->lateral[measurement->current_item]) / 2;
+            gForces.VerticalG = (gForces.VerticalG + measurement.vertical[measurement.current_item]) / 2;
+            gForces.LateralG = (gForces.LateralG + measurement.lateral[measurement.current_item]) / 2;
         }
 
-        measurement->vertical[measurement->current_item] = gForces.VerticalG & 0xFF;
-        measurement->lateral[measurement->current_item] = gForces.LateralG & 0xFF;
+        measurement.vertical[measurement.current_item] = gForces.VerticalG & 0xFF;
+        measurement.lateral[measurement.current_item] = gForces.LateralG & 0xFF;
     }
 
     auto velocity = std::min(std::abs((vehicle->velocity * 5) >> 16), 255);
@@ -2978,17 +2977,17 @@ static void ride_measurement_update(RideMeasurement* measurement)
 
     if (gScenarioTicks & 1)
     {
-        velocity = (velocity + measurement->velocity[measurement->current_item]) / 2;
-        altitude = (altitude + measurement->altitude[measurement->current_item]) / 2;
+        velocity = (velocity + measurement.velocity[measurement.current_item]) / 2;
+        altitude = (altitude + measurement.altitude[measurement.current_item]) / 2;
     }
 
-    measurement->velocity[measurement->current_item] = velocity & 0xFF;
-    measurement->altitude[measurement->current_item] = altitude & 0xFF;
+    measurement.velocity[measurement.current_item] = velocity & 0xFF;
+    measurement.altitude[measurement.current_item] = altitude & 0xFF;
 
     if (gScenarioTicks & 1)
     {
-        measurement->current_item++;
-        measurement->num_items = std::max(measurement->num_items, measurement->current_item);
+        measurement.current_item++;
+        measurement.num_items = std::max(measurement.num_items, measurement.current_item);
     }
 }
 
@@ -3009,7 +3008,7 @@ void ride_measurements_update()
         {
             if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
             {
-                ride_measurement_update(measurement);
+                ride_measurement_update(ride, *measurement);
             }
             else
             {
@@ -3027,7 +3026,7 @@ void ride_measurements_update()
                             measurement->current_station = vehicle->current_station;
                             measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
                             measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
-                            ride_measurement_update(measurement);
+                            ride_measurement_update(ride, *measurement);
                             break;
                         }
                     }
@@ -3079,7 +3078,6 @@ std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride)
     if (measurement == nullptr)
     {
         measurement = std::make_unique<RideMeasurement>();
-        measurement->ride = ride;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
             measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
