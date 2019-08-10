@@ -41,6 +41,7 @@
 #include <openrct2/object/StationObject.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/rct1/RCT1.h>
+#include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/ride/ShopItem.h>
@@ -48,10 +49,10 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesign.h>
+#include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-
 using namespace OpenRCT2;
 
 enum
@@ -950,6 +951,7 @@ static rct_window_event_list *window_ride_page_events[] = {
 static bool _collectTrackDesignScenery = false;
 static int32_t _lastSceneryX = 0;
 static int32_t _lastSceneryY = 0;
+static std::unique_ptr<TrackDesign> _trackDesign;
 
 // Cached overall view for each ride
 // (Re)calculated when the ride window is opened
@@ -5403,13 +5405,46 @@ void window_ride_measurements_design_cancel()
     }
 }
 
+static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* path)
+{
+    if (result == MODAL_RESULT_OK)
+    {
+        track_repository_scan();
+    }
+    gfx_invalidate_screen();
+};
+
 /**
  *
  *  rct2: 0x006AD4CD
  */
 static void window_ride_measurements_design_save(rct_window* w)
 {
-    track_design_save((uint8_t)w->number);
+    Ride* ride = get_ride(w->number);
+    _trackDesign = ride->SaveToTrackDesign();
+    if (!_trackDesign)
+    {
+        return;
+    }
+
+    if (gTrackDesignSaveMode)
+    {
+        auto errMessage = _trackDesign->CreateTrackDesignScenery();
+        if (errMessage != STR_NONE)
+        {
+            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage);
+            return;
+        }
+    }
+
+    auto trackName = ride->GetName();
+    auto intent = Intent(WC_LOADSAVE);
+    intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
+    intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
+    intent.putExtra(INTENT_EXTRA_PATH, trackName);
+    intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(&TrackDesignCallback));
+
+    context_open_intent(&intent);
 }
 
 /**
@@ -5512,7 +5547,9 @@ static void window_ride_measurements_dropdown(rct_window* w, rct_widgetindex wid
         dropdownIndex = gDropdownHighlightedIndex;
 
     if (dropdownIndex == 0)
-        track_design_save((uint8_t)w->number);
+    {
+        window_ride_measurements_design_save(w);
+    }
     else
         setup_scenery_selection(w);
 }
@@ -5550,7 +5587,7 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
             _collectTrackDesignScenery = !track_design_save_contains_tile_element(tileElement);
-            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            track_design_save_select_tile_element(interactionType, { mapX, mapY }, tileElement, _collectTrackDesignScenery);
             break;
     }
 }
@@ -5573,7 +5610,7 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            track_design_save_select_tile_element(interactionType, { mapX, mapY }, tileElement, _collectTrackDesignScenery);
             break;
     }
 }

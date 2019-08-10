@@ -60,6 +60,7 @@
 #include "Station.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrackDesign.h"
 
 #include <algorithm>
 #include <cassert>
@@ -2008,6 +2009,31 @@ void Ride::UpdateAll()
         ride.Update();
 
     ride_music_update_final();
+}
+
+std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign() const
+{
+    if (!(lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+    {
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+        return nullptr;
+    }
+
+    if (!ride_has_ratings(this))
+    {
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+        return nullptr;
+    }
+
+    auto td = std::make_unique<TrackDesign>();
+    auto errMessage = td->CreateTrackDesign(*this);
+    if (errMessage != STR_NONE)
+    {
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage);
+        return nullptr;
+    }
+
+    return td;
 }
 
 /**

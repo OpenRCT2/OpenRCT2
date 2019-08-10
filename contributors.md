@@ -141,6 +141,7 @@ The following people are not part of the development team, but have been contrib
 * Ted John (IntelOrca) - Windows
 * Michał Janiszewski (janisozaur) - Linux, Travis CI
 * Lewis Fox (LRFLEW) - macOS
+* Andrew Rimpici (Andy608) - macOS
 
 ## Documentation
 * (honzi)
