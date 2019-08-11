@@ -269,6 +269,13 @@ const std::array<NetworkAction, NETWORK_PERMISSION_COUNT> NetworkActions::Action
             GAME_COMMAND_SET_CLIMATE,
         },
     },
+    NetworkAction{
+        STR_ACTION_GUEST,
+        "PERMISSION_GUEST_CONTROL",
+        {
+            GAME_COMMAND_SEND_GUEST_TO,
+        },
+    },
 };
 
 #endif

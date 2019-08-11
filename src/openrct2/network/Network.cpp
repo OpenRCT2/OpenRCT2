@@ -1247,7 +1247,16 @@ void Network::SetupDefaultGroups()
     user->Id = 2;
     group_list.push_back(std::move(user));
 
-    SetDefaultGroup(1);
+    // Guest group
+    auto guest = std::make_unique<NetworkGroup>();
+    guest->SetName("Guest");
+    // TODO: Add permission for game actions relevant to this.
+    guest->ToggleActionPermission(NETWORK_PERMISSION_CHAT);
+    guest->ToggleActionPermission(NETWORK_PERMISSION_GUEST_CONTROL);
+    guest->Id = 3;
+    group_list.push_back(std::move(guest));
+
+    SetDefaultGroup(3);
 }
 
 void Network::LoadGroups()
