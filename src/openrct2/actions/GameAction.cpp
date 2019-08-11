@@ -311,17 +311,19 @@ namespace GameActions
                     NetworkPlayerId_t playerId = action->GetPlayer();
 
                     int32_t playerIndex = network_get_player_index(playerId.id);
-                    Guard::Assert(playerIndex != -1);
-
-                    network_set_player_last_action(playerIndex, action->GetType());
-                    if (result->Cost != 0)
+                    // Player list has priority, player might not exist in the list.
+                    if (playerIndex != -1)
                     {
-                        network_add_player_money_spent(playerIndex, result->Cost);
-                    }
+                        network_set_player_last_action(playerIndex, action->GetType());
+                        if (result->Cost != 0)
+                        {
+                            network_add_player_money_spent(playerIndex, result->Cost);
+                        }
 
-                    if (result->Position.x != LOCATION_NULL)
-                    {
-                        network_set_player_last_action_coord(playerId, gCommandPosition);
+                        if (result->Position.x != LOCATION_NULL)
+                        {
+                            network_set_player_last_action_coord(playerId, gCommandPosition);
+                        }
                     }
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)

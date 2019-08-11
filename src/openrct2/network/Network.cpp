@@ -1720,12 +1720,12 @@ void Network::Server_Send_TICK()
 
 void Network::Server_Send_PLAYERINFO(int32_t playerId)
 {
-    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32_t)NETWORK_COMMAND_PLAYERINFO << gCurrentTicks;
-
     auto* player = GetPlayerByID(playerId);
     if (player == nullptr)
         return;
+
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    *packet << (uint32_t)NETWORK_COMMAND_PLAYERINFO << gCurrentTicks;
 
     player->Write(*packet);
     SendPacketToClients(*packet);
@@ -1927,7 +1927,6 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
 // This is called at the end of each game tick, this where things should be processed that affects the game state.
 void Network::ProcessPending()
 {
-    ProcessGameCommands();
     if (GetMode() == NETWORK_MODE_SERVER)
     {
         ProcessDisconnectedClients();
@@ -1937,6 +1936,7 @@ void Network::ProcessPending()
         ProcessPlayerInfo();
     }
     ProcessPlayerList();
+    ProcessGameCommands();
 }
 
 void Network::ProcessPlayerList()
