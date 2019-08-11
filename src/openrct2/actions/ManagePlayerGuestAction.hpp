@@ -90,7 +90,7 @@ private:
 
         Peep* peep = OpenRCT2::GetContext()->GetGameState()->GetPark().GenerateGuest();
         peep->SetName(name);
-        peep->flags |= PEEP_FLAGS_CONTROLLED;
+        peep->peep_flags |= PEEP_FLAGS_CONTROLLED;
         peep->happiness = 255;
         peep->energy = 255;
         peep->hunger = 255;

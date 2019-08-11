@@ -1024,7 +1024,12 @@ void Peep::Update1()
 
     if (type == PEEP_TYPE_GUEST)
     {
-        SetState(PEEP_STATE_WALKING);
+        if ((peep_flags & PEEP_FLAGS_CONTROLLED) == 0)
+            SetState(PEEP_STATE_WALKING);
+        else
+        {
+            // Await input.
+        }
     }
     else
     {
