@@ -273,7 +273,7 @@ const std::array<NetworkAction, NETWORK_PERMISSION_COUNT> NetworkActions::Action
         STR_ACTION_GUEST,
         "PERMISSION_GUEST_CONTROL",
         {
-            GAME_COMMAND_SEND_GUEST_TO,
+            GAME_COMMAND_GUEST_COMMAND,
         },
     },
 };

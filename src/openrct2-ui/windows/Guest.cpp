@@ -14,6 +14,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/GuestPlayerCommandAction.hpp>
 #include <openrct2/actions/GuestSetFlagsAction.hpp>
 #include <openrct2/actions/PeepPickupAction.hpp>
 #include <openrct2/config/Config.h>
@@ -62,6 +63,7 @@ enum WINDOW_GUEST_WIDGET_IDX {
     WIDX_RENAME,
     WIDX_LOCATE,
     WIDX_TRACK,
+    WIDX_COMMAND,
 
     WIDX_RIDE_SCROLL = 11
 };
@@ -92,6 +94,7 @@ static rct_widget window_guest_overview_widgets[] = {
     { WWT_FLATBTN,          1, 167, 190, 69,  92,  SPR_RENAME,      STR_NAME_GUEST_TIP              },  // Rename Button
     { WWT_FLATBTN,          1, 167, 190, 93,  116, SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP          },  // Locate Button
     { WWT_FLATBTN,          1, 167, 190, 117, 140, SPR_TRACK_PEEP,  STR_TOGGLE_GUEST_TRACKING_TIP   },  // Track Button
+    { WWT_FRAME,          0, 0, 0, 0, 0, 0xFFFFFFFF,  STR_NONE },  // Command Dummy
     { WIDGETS_END },
 };
 
@@ -423,7 +426,8 @@ static constexpr const uint32_t window_guest_page_enabled_widgets[] = {
     (1 << WIDX_RENAME)|
     (1 << WIDX_PICKUP)|
     (1 << WIDX_LOCATE)|
-    (1 << WIDX_TRACK),
+    (1 << WIDX_TRACK) |
+    (1 << WIDX_COMMAND),
 
     (1 << WIDX_CLOSE) |
     (1 << WIDX_TAB_1) |
@@ -491,6 +495,15 @@ static constexpr const rct_size16 window_guest_page_sizes[][2] = {
     { 192, 159, 192, 171 }      // WINDOW_GUEST_DEBUG
 };
 // clang-format on
+
+static bool peep_can_be_controlled(Peep* peep)
+{
+    if ((peep->peep_flags & PEEP_FLAGS_CONTROLLED) == 0)
+        return false;
+
+    Peep* controlledPeep = network_get_player_controlled_peep(network_get_current_player_id());
+    return peep == controlledPeep;
+}
 
 /**
  *
@@ -605,7 +618,7 @@ void window_guest_disable_widgets(rct_window* w)
     Peep* peep = &get_sprite(w->number)->peep;
     uint64_t disabled_widgets = 0;
 
-    if (peep_can_be_picked_up(peep))
+    if (peep_can_be_picked_up(peep) || peep_can_be_controlled(peep))
     {
         if (w->disabled_widgets & (1 << WIDX_PICKUP))
             w->Invalidate();
@@ -694,22 +707,40 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_PICKUP:
         {
-            if (!peep_can_be_picked_up(peep))
+            if (peep_can_be_controlled(peep))
             {
-                return;
-            }
-            w->picked_peep_old_x = peep->x;
-            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, {}, network_get_current_player_id() };
-            pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActionResult* result) {
-                if (result->Error != GA_ERROR::OK)
-                    return;
-                rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
-                if (wind)
+                if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
                 {
-                    tool_set(wind, WC_PEEP__WIDX_PICKUP, TOOL_PICKER);
+                    if (w->classification == gCurrentToolWidget.window_classification
+                        && w->number == gCurrentToolWidget.window_number)
+                    {
+                        tool_cancel();
+                    }
                 }
-            });
-            GameActions::Execute(&pickupAction);
+                else
+                {
+                    tool_set(w, WIDX_COMMAND, TOOL_CROSSHAIR);
+                }
+            }
+            else
+            {
+                if (!peep_can_be_picked_up(peep))
+                {
+                    return;
+                }
+                w->picked_peep_old_x = peep->x;
+                PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, {}, network_get_current_player_id() };
+                pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActionResult* result) {
+                    if (result->Error != GA_ERROR::OK)
+                        return;
+                    rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
+                    if (wind)
+                    {
+                        tool_set(wind, WC_PEEP__WIDX_PICKUP, TOOL_PICKER);
+                    }
+                });
+                GameActions::Execute(&pickupAction);
+            }
         }
         break;
         case WIDX_RENAME:
@@ -1217,15 +1248,8 @@ void window_guest_overview_text_input(rct_window* w, rct_widgetindex widgetIndex
     guest_set_name(w->number, text);
 }
 
-/**
- *
- *  rct2: 0x696A5F
- */
-void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void tool_update_pickup(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    if (widgetIndex != WIDX_PICKUP)
-        return;
-
     map_invalidate_selection_rect();
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -1270,15 +1294,8 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gPickupPeepImage = imageId;
 }
 
-/**
- *
- *  rct2: 0x696A54
- */
-void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void tool_down_pickup(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    if (widgetIndex != WIDX_PICKUP)
-        return;
-
     int32_t dest_x, dest_y;
     TileElement* tileElement;
     footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &tileElement);
@@ -1298,19 +1315,78 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     GameActions::Execute(&pickupAction);
 }
 
+static void tool_abort_pickup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    PeepPickupAction pickupAction{
+        PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
+    };
+    GameActions::Execute(&pickupAction);
+}
+
+static void tool_update_command(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+{
+    // log_info("tool_update_command, %d, %d", x, y);
+}
+
+static void tool_down_command(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+{
+    log_info("tool_down_command, %d, %d", x, y);
+
+    int16_t mapX = x;
+    int16_t mapY = y;
+    TileElement* clickedElement = nullptr;
+
+    constexpr int32_t flags = VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH;
+    get_map_coordinates_from_pos(x, y, flags, &mapX, &mapY, nullptr, &clickedElement, nullptr);
+
+    if (clickedElement == nullptr)
+    {
+        screen_pos_to_map_pos(&mapX, &mapY, nullptr);
+    }
+
+    // TODO: Deal with queue and rides.
+    auto action = GuestPlayerCommandAction(GuestPlayerCommandType::MoveTo, { mapX, mapY, 0 });
+    GameActions::Execute(&action);
+}
+
+static void tool_abort_command(rct_window* w, rct_widgetindex widgetIndex)
+{
+}
+
+/**
+ *
+ *  rct2: 0x696A5F
+ */
+void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+{
+    if (widgetIndex == WIDX_PICKUP)
+        return tool_update_pickup(w, widgetIndex, x, y);
+    else if (widgetIndex == WIDX_COMMAND)
+        return tool_update_command(w, widgetIndex, x, y);
+}
+
+/**
+ *
+ *  rct2: 0x696A54
+ */
+void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+{
+    if (widgetIndex == WIDX_PICKUP)
+        return tool_down_pickup(w, widgetIndex, x, y);
+    else if (widgetIndex == WIDX_COMMAND)
+        return tool_down_command(w, widgetIndex, x, y);
+}
+
 /**
  *
  *  rct2: 0x696A49
  */
 void window_guest_overview_tool_abort(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (widgetIndex != WIDX_PICKUP)
-        return;
-
-    PeepPickupAction pickupAction{
-        PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
-    };
-    GameActions::Execute(&pickupAction);
+    if (widgetIndex == WIDX_PICKUP)
+        return tool_abort_pickup(w, widgetIndex);
+    else if (widgetIndex == WIDX_COMMAND)
+        return tool_abort_command(w, widgetIndex);
 }
 
 /**

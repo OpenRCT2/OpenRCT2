@@ -99,7 +99,7 @@ enum GAME_COMMAND
     GAME_COMMAND_GUEST_SET_FLAGS,          // GA
     GAME_COMMAND_SET_DATE,                 // GA
     GAME_COMMAND_MANAGE_PLAYER_GUEST,      // GA
-    GAME_COMMAND_SEND_GUEST_TO,            // GA
+    GAME_COMMAND_GUEST_COMMAND,            // GA
     GAME_COMMAND_COUNT,
 };
 

@@ -21,6 +21,7 @@
 #include "FootpathSceneryPlaceAction.hpp"
 #include "FootpathSceneryRemoveAction.hpp"
 #include "GameAction.h"
+#include "GuestPlayerCommandAction.hpp"
 #include "GuestSetFlagsAction.hpp"
 #include "GuestSetNameAction.hpp"
 #include "LandBuyRightsAction.hpp"
@@ -169,5 +170,6 @@ namespace GameActions
         Register<ParkSetDateAction>();
         Register<SetCheatAction>();
         Register<ManagePlayerGuestAction>();
+        Register<GuestPlayerCommandAction>();
     }
 } // namespace GameActions
