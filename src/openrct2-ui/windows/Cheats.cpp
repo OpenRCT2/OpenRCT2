@@ -1075,7 +1075,7 @@ static void window_cheats_text_input(rct_window* w, rct_widgetindex widgetIndex,
         {
             _moneySpinnerValue = val;
         }
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1271,9 +1271,9 @@ static void window_cheats_set_page(rct_window* w, int32_t page)
     }
     maxY += 6;
 
-    window_invalidate(w);
+    w->Invalidate();
     w->height = maxY;
     w->widgets[WIDX_BACKGROUND].bottom = maxY - 1;
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = maxY - 1;
-    window_invalidate(w);
+    w->Invalidate();
 }

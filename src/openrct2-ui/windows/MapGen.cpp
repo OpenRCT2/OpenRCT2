@@ -534,7 +534,7 @@ rct_window* window_mapgen_open()
     w->frame_no = 0;
 
     w->page = WINDOW_MAPGEN_PAGE_BASE;
-    window_invalidate(w);
+    w->Invalidate();
     w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
     w->enabled_widgets = PageEnabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
     w->hold_down_widgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
@@ -616,27 +616,27 @@ static void window_mapgen_base_mousedown(rct_window* w, rct_widgetindex widgetIn
     {
         case WIDX_MAP_SIZE_UP:
             _mapSize = std::min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_MAP_SIZE_DOWN:
             _mapSize = std::max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_BASE_HEIGHT_UP:
             _baseHeight = std::min(_baseHeight + 2, BASESIZE_MAX);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_BASE_HEIGHT_DOWN:
             _baseHeight = std::max(_baseHeight - 2, BASESIZE_MIN);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_WATER_LEVEL_UP:
             _waterLevel = std::min(_waterLevel + 2, WATERLEVEL_MAX);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_WATER_LEVEL_DOWN:
             _waterLevel = std::max(_waterLevel - 2, WATERLEVEL_MIN);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_FLOOR_TEXTURE:
             land_tool_show_surface_style_dropdown(w, widget, _floorTexture);
@@ -668,7 +668,7 @@ static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetInd
                 gLandToolTerrainSurface = type;
                 _floorTexture = type;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_WALL_TEXTURE:
             if (dropdownIndex == -1)
@@ -685,7 +685,7 @@ static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetInd
                 gLandToolTerrainEdge = type;
                 _wallTexture = type;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -729,7 +729,7 @@ static void window_mapgen_textinput(rct_window* w, rct_widgetindex widgetIndex, 
             break;
     }
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_mapgen_base_invalidate(rct_window* w)
@@ -916,55 +916,55 @@ static void window_mapgen_simplex_mousedown(rct_window* w, rct_widgetindex widge
     {
         case WIDX_SIMPLEX_LOW_UP:
             _simplex_low = std::min(_simplex_low + 1, 24);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_LOW_DOWN:
             _simplex_low = std::max(_simplex_low - 1, 0);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_HIGH_UP:
             _simplex_high = std::min(_simplex_high + 1, 36);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_HIGH_DOWN:
             _simplex_high = std::max(_simplex_high - 1, 0);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_BASE_FREQ_UP:
             _simplex_base_freq = std::min(_simplex_base_freq + 5, 1000);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_BASE_FREQ_DOWN:
             _simplex_base_freq = std::max(_simplex_base_freq - 5, 0);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_OCTAVES_UP:
             _simplex_octaves = std::min(_simplex_octaves + 1, 10);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_OCTAVES_DOWN:
             _simplex_octaves = std::max(_simplex_octaves - 1, 1);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_MAP_SIZE_UP:
             _mapSize = std::min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_MAP_SIZE_DOWN:
             _mapSize = std::max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_WATER_LEVEL_UP:
             _waterLevel = std::min(_waterLevel + 2, 54);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_WATER_LEVEL_DOWN:
             _waterLevel = std::max(_waterLevel - 2, 0);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX:
             _randomTerrain = !_randomTerrain;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_FLOOR_TEXTURE:
             land_tool_show_surface_style_dropdown(w, widget, _floorTexture);
@@ -974,7 +974,7 @@ static void window_mapgen_simplex_mousedown(rct_window* w, rct_widgetindex widge
             break;
         case WIDX_SIMPLEX_PLACE_TREES_CHECKBOX:
             _placeTrees ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -1000,7 +1000,7 @@ static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widget
                 gLandToolTerrainSurface = type;
                 _floorTexture = type;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SIMPLEX_WALL_TEXTURE:
             if (dropdownIndex == -1)
@@ -1017,7 +1017,7 @@ static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widget
                 gLandToolTerrainEdge = type;
                 _wallTexture = type;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -1356,7 +1356,7 @@ static void window_mapgen_set_page(rct_window* w, int32_t page)
     }
 
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_mapgen_set_pressed_tab(rct_window* w)

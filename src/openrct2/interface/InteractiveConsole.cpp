@@ -27,6 +27,7 @@
 #include "../drawing/Font.h"
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
@@ -907,7 +908,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
                 int32_t x = (int16_t)(int_val[0] * 32 + 16);
                 int32_t y = (int16_t)(int_val[1] * 32 + 16);
                 int32_t z = tile_element_height(x, y);
-                window_set_location(w, x, y, z);
+                w->SetLocation(x, y, z);
                 viewport_update_position(w);
                 console.Execute("get location");
             }

@@ -387,7 +387,7 @@ public:
                 if (vehicle->sprite_index != ride->vehicles[viewVehicleIndex])
                     return;
 
-                window_invalidate(w);
+                w->Invalidate();
                 break;
             }
 
@@ -401,7 +401,7 @@ public:
                     {
                         w->vehicleIndex = 0;
                     }
-                    window_invalidate(w);
+                    w->Invalidate();
                 }
                 break;
             }
@@ -432,7 +432,7 @@ public:
                 rct_window* w = window_find_by_number(WC_BANNER, bannerIndex);
                 if (w != nullptr)
                 {
-                    window_invalidate(w);
+                    w->Invalidate();
                 }
                 break;
             }
@@ -503,7 +503,7 @@ public:
             // Make sure the viewport has correct coordinates set.
             viewport_update_position(mainWindow);
 
-            window_invalidate(mainWindow);
+            mainWindow->Invalidate();
         }
     }
 

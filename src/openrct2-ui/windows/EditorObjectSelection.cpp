@@ -352,7 +352,7 @@ static void visible_list_refresh(rct_window* w)
             }
         }
     }
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_editor_object_selection_init_widgets()
@@ -485,7 +485,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             w->selected_list_item = -1;
             w->object_entry = nullptr;
             w->scrolls[0].v_top = 0;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_FILTER_RIDE_TAB_TRANSPORT:
         case WIDX_FILTER_RIDE_TAB_GENTLE:
@@ -505,12 +505,12 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             w->object_entry = nullptr;
             w->scrolls[0].v_top = 0;
             w->frame_no = 0;
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_ADVANCED:
             w->list_information_type ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_INSTALL_TRACK:
@@ -519,7 +519,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             {
                 w->selected_list_item = -1;
             }
-            window_invalidate(w);
+            w->Invalidate();
 
             auto intent = Intent(WC_LOADSAVE);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
@@ -534,7 +534,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             filter_update_counts();
             w->scrolls->v_top = 0;
             visible_list_refresh(w);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LIST_SORT_TYPE:
             if (_listSortType == RIDE_SORT_TYPE)
@@ -662,7 +662,7 @@ static void window_editor_object_selection_dropdown(rct_window* w, rct_widgetind
             w->scrolls->v_top = 0;
 
             visible_list_refresh(w);
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -695,7 +695,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window* w, int32
     if (object_selection_flags & OBJECT_SELECTION_FLAG_6)
         return;
 
-    window_invalidate(w);
+    w->Invalidate();
 
     const CursorState* state = context_get_cursor_state();
     audio_play_sound(SoundId::Click1, 0, state->x);
@@ -732,7 +732,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window* w, int32
     {
         filter_update_counts();
         visible_list_refresh(w);
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     if (_maxObjectsWasHit)
@@ -775,7 +775,7 @@ static void window_editor_object_selection_scroll_mouseover(rct_window* w, int32
             _loadedObject = object_repository_load_object(listItem->entry);
         }
 
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1213,7 +1213,7 @@ static void window_editor_object_set_page(rct_window* w, int32_t page)
     }
 
     visible_list_refresh(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_editor_object_selection_set_pressed_tab(rct_window* w)
@@ -1346,7 +1346,7 @@ static void window_editor_object_selection_textinput(rct_window* w, rct_widgetin
     w->scrolls->v_top = 0;
 
     visible_list_refresh(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static bool filter_selected(uint8_t objectFlag)

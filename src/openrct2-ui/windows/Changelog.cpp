@@ -147,12 +147,12 @@ static void window_changelog_resize(rct_window* w)
     w->min_height = MIN_WH;
     if (w->width < w->min_width)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->width = w->min_width;
     }
     if (w->height < w->min_height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->height = w->min_height;
     }
 }

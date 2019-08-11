@@ -210,7 +210,7 @@ rct_window* window_player_open(uint8_t id)
     }
 
     window->page = 0;
-    window_invalidate(window);
+    window->Invalidate();
 
     window->widgets = window_player_page_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
     window->enabled_widgets = window_player_page_enabled_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
@@ -319,7 +319,7 @@ void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     playerSetGroupAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {
-            window_invalidate(w);
+            w->Invalidate();
         }
     });
     GameActions::Execute(&playerSetGroupAction);
@@ -571,11 +571,11 @@ static void window_player_set_page(rct_window* w, int32_t page)
     w->event_handlers = window_player_page_events[page];
     w->pressed_widgets = 0;
     w->widgets = window_player_page_widgets[page];
-    window_invalidate(w);
+    w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     if (page == WINDOW_PLAYER_PAGE_OVERVIEW)
     {

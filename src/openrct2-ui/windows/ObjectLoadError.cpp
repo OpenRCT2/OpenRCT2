@@ -389,7 +389,7 @@ rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, 
     window->no_list_items = (uint16_t)numMissingObjects;
     file_path = path;
 
-    window_invalidate(window);
+    window->Invalidate();
     return window;
 }
 

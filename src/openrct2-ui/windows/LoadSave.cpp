@@ -343,12 +343,12 @@ static void window_loadsave_resize(rct_window* w)
 {
     if (w->width < w->min_width)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->width = w->min_width;
     }
     if (w->height < w->min_height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->height = w->min_height;
     }
 }
@@ -496,7 +496,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
             config_save_default();
             window_loadsave_sort_list();
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_SORT_DATE:
@@ -510,7 +510,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
             config_save_default();
             window_loadsave_sort_list();
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_DEFAULT:
@@ -573,7 +573,7 @@ static void window_loadsave_scrollmouseover(rct_window* w, int32_t scrollIndex, 
 
     w->selected_list_item = selectedItem;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
@@ -609,7 +609,7 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
             window_init_scroll_widgets(w);
 
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_NEW_FILE:
@@ -942,7 +942,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
         window_loadsave_sort_list();
     }
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_loadsave_invoke_callback(int32_t result, const utf8* path)

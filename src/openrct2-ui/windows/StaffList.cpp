@@ -229,7 +229,7 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_STAFF_LIST_QUICK_FIRE:
             _quick_fire_mode ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -245,12 +245,12 @@ static void window_staff_list_resize(rct_window* w)
     if (w->width < w->min_width)
     {
         w->width = w->min_width;
-        window_invalidate(w);
+        w->Invalidate();
     }
     if (w->height < w->min_height)
     {
         w->height = w->min_height;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -273,7 +273,7 @@ static void window_staff_list_mousedown(rct_window* w, rct_widgetindex widgetInd
                 break;
 
             _windowStaffListSelectedTab = (uint8_t)newSelectedTab;
-            window_invalidate(w);
+            w->Invalidate();
             w->scrolls[0].v_top = 0;
             window_staff_list_cancel_tools(w);
             break;
@@ -431,7 +431,7 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
     if (_windowStaffListHighlightedIndex != -1)
     {
         _windowStaffListHighlightedIndex = -1;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *height = staffCount * SCROLLABLE_ROW_HEIGHT;
@@ -442,7 +442,7 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
     if (i < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *width = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15;
@@ -495,7 +495,7 @@ void window_staff_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32
     if (i != _windowStaffListHighlightedIndex)
     {
         _windowStaffListHighlightedIndex = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

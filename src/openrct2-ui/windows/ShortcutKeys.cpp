@@ -193,7 +193,7 @@ static void window_shortcut_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_RESET:
             keyboard_shortcuts_reset();
             keyboard_shortcuts_save();
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -259,7 +259,7 @@ static void window_shortcut_scrollmouseover(rct_window* w, int32_t scrollIndex, 
 
     w->selected_list_item = selected_item;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
