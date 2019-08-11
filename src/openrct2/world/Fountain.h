@@ -22,19 +22,18 @@ struct JumpingFountain : rct_sprite_generic
     uint16_t Iteration;
 
     void Update();
-    static void StartAnimation(int32_t newType, int32_t newX, int32_t newY, const TileElement* tileElement);
+    static void StartAnimation(int32_t newType, const CoordsXY newLoc, const TileElement* tileElement);
 
 private:
     int32_t GetType() const;
     void AdvanceAnimation();
-    void GoToEdge(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
-    void Bounce(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections);
-    void Split(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
-    void Random(int32_t newX, int32_t newY, int32_t newZ, int32_t availableDirections) const;
-    void CreateNext(int32_t newX, int32_t newY, int32_t newZ, int32_t direction) const;
-    static void Create(
-        int32_t newType, int32_t newX, int32_t newY, int32_t newZ, int32_t direction, int32_t newFlags, int32_t iteration);
-    static bool IsJumpingFountain(int32_t newType, int32_t newX, int32_t newY, int32_t newZ);
+    void GoToEdge(CoordsXYZ newLoc, int32_t availableDirections) const;
+    void Bounce(CoordsXYZ newLoc, int32_t availableDirections);
+    void Split(CoordsXYZ newLoc, int32_t availableDirections) const;
+    void Random(CoordsXYZ newLoc, int32_t availableDirections) const;
+    void CreateNext(CoordsXYZ newLoc, int32_t direction) const;
+    static void Create(int32_t newType, CoordsXYZ newLoc, int32_t direction, int32_t newFlags, int32_t iteration);
+    static bool IsJumpingFountain(int32_t newType, CoordsXYZ newLoc);
 };
 
 enum

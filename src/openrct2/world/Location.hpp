@@ -85,6 +85,16 @@ struct CoordsXY
         return *this;
     }
 
+    const CoordsXY operator+(const CoordsXY& rhs) const
+    {
+        return { rhs.x + x, rhs.y + y };
+    }
+
+    const CoordsXY operator-(const CoordsXY& rhs) const
+    {
+        return { rhs.x - x, rhs.y - y };
+    }
+
     CoordsXY Rotate(int32_t direction)
     {
         CoordsXY rotatedCoords;
@@ -179,6 +189,13 @@ struct CoordsXYZ
     constexpr CoordsXYZ(int32_t _x, int32_t _y, int32_t _z)
         : x(_x)
         , y(_y)
+        , z(_z)
+    {
+    }
+
+    constexpr CoordsXYZ(CoordsXY c, int32_t _z)
+        : x(c.x)
+        , y(c.y)
         , z(_z)
     {
     }
