@@ -5504,6 +5504,12 @@ void Guest::UpdateWalking()
         }
     }
 
+    if (peep_flags & PEEP_FLAGS_CONTROLLED)
+    {
+        SetState(PEEP_STATE_1);
+        return;
+    }
+
     CheckIfLost();
     CheckCantFindRide();
     CheckCantFindExit();
