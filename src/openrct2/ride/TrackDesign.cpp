@@ -2117,7 +2117,7 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
 
     if (!gCheatsSandboxMode)
     {
-        if (!map_is_location_owned(floor2(x, 32), floor2(y, 32), z))
+        if (!map_is_location_owned({ x, y, z }))
         {
             return MONEY32_UNDEFINED;
         }

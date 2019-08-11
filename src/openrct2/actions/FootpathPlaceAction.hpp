@@ -69,7 +69,7 @@ public:
         }
 
         if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-            && !map_is_location_owned(_loc.x, _loc.y, _loc.z))
+            && !map_is_location_owned(_loc))
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }

@@ -122,7 +122,7 @@ public:
                     return std::make_unique<WallPlaceActionResult>(GA_ERROR::NOT_OWNED);
                 }
             }
-            else if (!map_is_location_owned(_loc.x, _loc.y, _loc.z))
+            else if (!map_is_location_owned(_loc))
             {
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NOT_OWNED);
             }

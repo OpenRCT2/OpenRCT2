@@ -781,7 +781,7 @@ bool Peep::Place(TileCoordsXYZ location, bool apply)
     destination.y += 16;
     destination.z = tileElement->base_height * 8 + 16;
 
-    if (!map_is_location_owned(location.x * 32, location.y * 32, destination.z))
+    if (!map_is_location_owned({ location.x * 32, location.y * 32, destination.z }))
     {
         gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
         return false;
@@ -2821,7 +2821,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
     }
 
     int16_t z = tile_element->base_height * 8;
-    if (map_is_location_owned(x, y, z))
+    if (map_is_location_owned({ x, y, z }))
     {
         if (peep->outside_of_park == 1)
         {

@@ -102,7 +102,7 @@ public:
         auto z = ride->stations[_stationNum].Height * 8;
         gCommandPosition.z = z;
 
-        if (!gCheatsSandboxMode && !map_is_location_owned(_loc.x, _loc.y, z))
+        if (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }
@@ -245,7 +245,7 @@ public:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, errorTitle);
         }
 
-        if (!gCheatsSandboxMode && !map_is_location_owned(loc.x, loc.y, loc.z))
+        if (!gCheatsSandboxMode && !map_is_location_owned(loc))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }

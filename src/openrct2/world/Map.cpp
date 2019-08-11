@@ -752,7 +752,7 @@ bool map_can_build_at(int32_t x, int32_t y, int32_t z)
         return true;
     if (gCheatsSandboxMode)
         return true;
-    if (map_is_location_owned(x, y, z))
+    if (map_is_location_owned({ x, y, z }))
         return true;
     return false;
 }
@@ -761,12 +761,12 @@ bool map_can_build_at(int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x00664F72
  */
-bool map_is_location_owned(int32_t x, int32_t y, int32_t z)
+bool map_is_location_owned(CoordsXYZ loc)
 {
     // This check is to avoid throwing lots of messages in logs.
-    if (map_is_location_valid({ x, y }))
+    if (map_is_location_valid({ loc.x, loc.y }))
     {
-        TileElement* tileElement = map_get_surface_element_at({ x, y });
+        TileElement* tileElement = map_get_surface_element_at({ loc.x, loc.y });
         if (tileElement != nullptr)
         {
             if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
@@ -774,8 +774,7 @@ bool map_is_location_owned(int32_t x, int32_t y, int32_t z)
 
             if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
             {
-                z /= 8;
-                if (z < tileElement->base_height || z - 2 > tileElement->base_height)
+                if (loc.z / 8 < tileElement->base_height || loc.z / 8 - 2 > tileElement->base_height)
                     return true;
             }
         }

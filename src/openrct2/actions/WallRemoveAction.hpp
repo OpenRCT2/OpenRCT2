@@ -52,7 +52,7 @@ public:
 
         const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
         if (!isGhost && !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-            && !map_is_location_owned(_loc.x, _loc.y, _loc.z))
+            && !map_is_location_owned({ _loc.x, _loc.y, _loc.z }))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }

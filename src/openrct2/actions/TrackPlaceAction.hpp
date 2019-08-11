@@ -172,7 +172,7 @@ public:
             tileCoords.x += track.x;
             tileCoords.y += track.y;
 
-            if (!map_is_location_owned(tileCoords.x, tileCoords.y, tileCoords.z) && !gCheatsSandboxMode)
+            if (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode)
             {
                 return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
             }

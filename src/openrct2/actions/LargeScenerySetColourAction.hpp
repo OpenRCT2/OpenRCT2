@@ -124,7 +124,7 @@ private:
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_owned(currentTile.x, currentTile.y, currentTile.z))
+                if (!map_is_location_owned(currentTile))
                 {
                     return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
                 }

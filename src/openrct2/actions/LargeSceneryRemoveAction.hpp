@@ -96,7 +96,7 @@ public:
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_owned(currentTile.x, currentTile.y, currentTile.z))
+                if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
                 {
                     return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
                 }
@@ -167,7 +167,7 @@ public:
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_owned(currentTile.x, currentTile.y, currentTile.z))
+                if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
                 {
                     return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
                 }

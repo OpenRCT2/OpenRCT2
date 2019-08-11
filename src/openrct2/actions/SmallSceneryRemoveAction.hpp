@@ -86,7 +86,7 @@ public:
             }
 
             // Check if the land is owned
-            if (!map_is_location_owned(_loc.x, _loc.y, _loc.z))
+            if (!map_is_location_owned(_loc))
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
                 res->ErrorTitle = STR_CANT_REMOVE_THIS;

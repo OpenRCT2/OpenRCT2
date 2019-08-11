@@ -296,7 +296,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             }
             else
             {
-                if (!gCheatsSandboxMode && !map_is_location_owned(info->x, info->y, tileElement->base_height << 4))
+                if (!gCheatsSandboxMode && !map_is_location_owned({ info->x, info->y, tileElement->base_height << 4 }))
                 {
                     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
                 }

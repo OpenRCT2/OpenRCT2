@@ -180,7 +180,7 @@ public:
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-            && !map_is_location_owned(_loc.x, _loc.y, targetHeight))
+            && !map_is_location_owned({ _loc, targetHeight }))
         {
             return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::NOT_OWNED, STR_LAND_NOT_OWNED_BY_PARK);
         }
