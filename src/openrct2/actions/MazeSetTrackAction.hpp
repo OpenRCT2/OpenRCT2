@@ -94,7 +94,7 @@ public:
             return res;
         }
 
-        if (!map_is_location_owned(_loc) && !gCheatsSandboxMode)
+        if (!map_is_location_owned({ _loc.x, _loc.y, _loc.z }) && !gCheatsSandboxMode)
         {
             res->Error = GA_ERROR::NOT_OWNED;
             res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
