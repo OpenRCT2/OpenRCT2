@@ -88,6 +88,8 @@ int32_t network_can_perform_action(uint32_t groupindex, uint32_t index);
 int32_t network_can_perform_command(uint32_t groupindex, int32_t index);
 void network_set_pickup_peep(uint8_t playerid, Peep* peep);
 Peep* network_get_pickup_peep(uint8_t playerid);
+Peep* network_get_player_controlled_peep(uint8_t playerId);
+void network_set_player_controlled_peep(uint8_t playerId, Peep* peep);
 void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x);
 int32_t network_get_pickup_peep_old_x(uint8_t playerid);
 

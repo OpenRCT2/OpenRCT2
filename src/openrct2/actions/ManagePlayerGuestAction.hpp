@@ -10,7 +10,9 @@
 #pragma once
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../world/Park.h"
 #include "GameAction.h"
 
 enum class ManagePlayerGuestMode : uint8_t
@@ -50,6 +52,12 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
+        int32_t playerIndex = network_get_player_index(_player);
+        if (playerIndex == -1)
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+
         return std::make_unique<GameActionResult>();
     }
 
@@ -71,6 +79,17 @@ public:
 private:
     GameActionResult::Ptr CreateGuest() const
     {
+        int32_t playerIndex = network_get_player_index(_player);
+        if (playerIndex == -1)
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+
+        Peep* peep = OpenRCT2::GetContext()->GetGameState()->GetPark().GenerateGuest();
+        peep->flags |= PEEP_FLAGS_CONTROLLED;
+
+        network_set_player_controlled_peep(_player, peep);
+
         return std::make_unique<GameActionResult>();
     }
 

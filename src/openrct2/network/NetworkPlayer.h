@@ -33,6 +33,7 @@ public:
     uint32_t LastActionTime = 0;
     LocationXYZ16 LastActionCoord = {};
     Peep* PickupPeep = nullptr;
+    Peep* ControlledPeep = nullptr;
     int32_t PickupPeepOldX = LOCATION_NULL;
     std::string KeyHash;
     uint32_t LastDemolishRideTime = 0;

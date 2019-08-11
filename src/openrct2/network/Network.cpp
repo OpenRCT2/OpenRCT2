@@ -15,6 +15,7 @@
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/LoadOrQuitAction.hpp"
+#include "../actions/ManagePlayerGuestAction.hpp"
 #include "../actions/NetworkModifyGroupAction.hpp"
 #include "../actions/PeepPickupAction.hpp"
 #include "../core/Guard.hpp"
@@ -2613,6 +2614,12 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
     Server_Send_MAP(&connection);
     Server_Send_EVENT_PLAYER_JOINED(player_name);
     Server_Send_GROUPLIST(connection);
+
+    if (connection.Player->Group == 3)
+    {
+        auto managePlayerGuestAction = ManagePlayerGuestAction(ManagePlayerGuestMode::Create, connection.Player->Id);
+        GameActions::Execute(&managePlayerGuestAction);
+    }
 }
 
 void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
@@ -3727,6 +3734,25 @@ int32_t network_can_perform_action(uint32_t groupindex, uint32_t index)
 int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
 {
     return gNetwork.group_list[groupindex]->CanPerformCommand(index);
+}
+
+Peep* network_get_player_controlled_peep(uint8_t playerId)
+{
+    NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
+    if (player)
+    {
+        return player->ControlledPeep;
+    }
+    return nullptr;
+}
+
+void network_set_player_controlled_peep(uint8_t playerId, Peep* peep)
+{
+    NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
+    if (player)
+    {
+        player->ControlledPeep = peep;
+    }
 }
 
 void network_set_pickup_peep(uint8_t playerid, Peep* peep)
