@@ -974,10 +974,10 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 
     if (vehicle->x != LOCATION_NULL)
     {
-        TileElement* tile_element = map_get_surface_element_at({ vehicle->x, vehicle->y });
+        auto surfaceElement = map_get_surface_element_at({ vehicle->x, vehicle->y });
 
         // vehicle underground
-        if (tile_element != nullptr && tile_element->base_height * 8 > vehicle->z)
+        if (surfaceElement != nullptr && surfaceElement->base_height * 8 > vehicle->z)
         {
             soundParam->volume = 0x30;
         }
@@ -1823,13 +1823,13 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         return;
     }
 
-    TileElement* tile_element = map_get_surface_element_at({ x, y });
+    auto surfaceElement = map_get_surface_element_at({ x, y });
     // If vehicle above ground.
-    if (tile_element != nullptr && tile_element->base_height * 8 <= z)
+    if (surfaceElement != nullptr && surfaceElement->base_height * 8 <= z)
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
-        tile_element = map_get_first_element_at(x / 32, y / 32);
+        auto tile_element = map_get_first_element_at(x / 32, y / 32);
 
         bool cover_found = false;
         do
@@ -7229,8 +7229,8 @@ static void vehicle_update_spinning_car(rct_vehicle* vehicle)
  */
 static void steam_particle_create(int16_t x, int16_t y, int16_t z)
 {
-    TileElement* tileElement = map_get_surface_element_at({ x, y });
-    if (tileElement != nullptr && z > tileElement->base_height * 8)
+    auto surfaceElement = map_get_surface_element_at({ x, y });
+    if (surfaceElement != nullptr && z > surfaceElement->base_height * 8)
     {
         rct_steam_particle* steam = &create_sprite(SPRITE_IDENTIFIER_MISC)->steam_particle;
         if (steam == nullptr)

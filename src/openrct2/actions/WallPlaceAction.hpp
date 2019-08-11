@@ -142,7 +142,7 @@ public:
         auto targetHeight = _loc.z;
         if (targetHeight == 0)
         {
-            TileElement* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+            auto* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
             if (surfaceElement == nullptr)
             {
                 log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -150,7 +150,7 @@ public:
             }
             targetHeight = surfaceElement->base_height * 8;
 
-            uint8_t slope = surfaceElement->AsSurface()->GetSlope();
+            uint8_t slope = surfaceElement->GetSlope();
             edgeSlope = EdgeSlopes[slope][_edge & 3];
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
@@ -159,16 +159,16 @@ public:
             }
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+        auto* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
         if (surfaceElement == nullptr)
         {
             log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
             return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
-        if (surfaceElement->AsSurface()->GetWaterHeight() > 0)
+        if (surfaceElement->GetWaterHeight() > 0)
         {
-            uint16_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() * 16;
+            uint16_t waterHeight = surfaceElement->GetWaterHeight() * 16;
 
             if (targetHeight < waterHeight && !gCheatsDisableClearanceChecks)
             {
@@ -186,21 +186,21 @@ public:
             uint8_t newEdge = (_edge + 2) & 3;
             uint8_t newBaseHeight = surfaceElement->base_height;
             newBaseHeight += 2;
-            if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+            if (surfaceElement->GetSlope() & (1 << newEdge))
             {
                 if (targetHeight / 8 < newBaseHeight)
                 {
                     return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
-                if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
                     newEdge = (newEdge - 1) & 3;
 
-                    if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+                    if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newEdge = (newEdge + 2) & 3;
-                        if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+                        if (surfaceElement->GetSlope() & (1 << newEdge))
                         {
                             newBaseHeight += 2;
                             if (targetHeight / 8 < newBaseHeight)
@@ -215,21 +215,21 @@ public:
             }
 
             newEdge = (_edge + 3) & 3;
-            if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+            if (surfaceElement->GetSlope() & (1 << newEdge))
             {
                 if (targetHeight / 8 < newBaseHeight)
                 {
                     return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
-                if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
                     newEdge = (newEdge - 1) & 3;
 
-                    if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+                    if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newEdge = (newEdge + 2) & 3;
-                        if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+                        if (surfaceElement->GetSlope() & (1 << newEdge))
                         {
                             newBaseHeight += 2;
                             if (targetHeight / 8 < newBaseHeight)
@@ -316,7 +316,7 @@ public:
         auto targetHeight = _loc.z;
         if (targetHeight == 0)
         {
-            TileElement* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+            auto* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
             if (surfaceElement == nullptr)
             {
                 log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -324,7 +324,7 @@ public:
             }
             targetHeight = surfaceElement->base_height * 8;
 
-            uint8_t slope = surfaceElement->AsSurface()->GetSlope();
+            uint8_t slope = surfaceElement->GetSlope();
             edgeSlope = EdgeSlopes[slope][_edge & 3];
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {

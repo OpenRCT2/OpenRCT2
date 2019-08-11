@@ -71,7 +71,7 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        TileElement *mapElement, *surfaceMapElement;
+        TileElement *mapElement;
         // Verify footpath exists at location, and retrieve coordinates
         mapElement = map_get_path_element_at(_location.x >> 5, _location.y >> 5, _location.z / 8);
         if (mapElement == nullptr)
@@ -81,12 +81,12 @@ public:
         }
 
         // Verify location is unowned
-        surfaceMapElement = map_get_surface_element_at(_location.x >> 5, _location.y >> 5);
+        auto surfaceMapElement = map_get_surface_element_at(_location.x >> 5, _location.y >> 5);
         if (surfaceMapElement == nullptr)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
-        if (surfaceMapElement->AsSurface()->GetOwnership() != OWNERSHIP_UNOWNED)
+        if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);

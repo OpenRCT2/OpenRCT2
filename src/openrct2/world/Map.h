@@ -143,8 +143,8 @@ TileElement* map_get_nth_element_at(int32_t x, int32_t y, int32_t n);
 void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements);
 int32_t map_height_from_slope(CoordsXY coords, int32_t slope, bool isSloped);
 BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t direction);
-TileElement* map_get_surface_element_at(int32_t x, int32_t y);
-TileElement* map_get_surface_element_at(CoordsXY coords);
+SurfaceElement* map_get_surface_element_at(int32_t x, int32_t y);
+SurfaceElement* map_get_surface_element_at(CoordsXY coords);
 TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z);
 WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
 SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
@@ -225,7 +225,7 @@ void map_invalidate_region(const LocationXY16& mins, const LocationXY16& maxs);
 int32_t map_get_tile_side(int32_t mapX, int32_t mapY);
 int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY);
 int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction);
-int32_t tile_element_get_corner_height(const TileElement* tileElement, int32_t direction);
+int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int32_t direction);
 
 void map_clear_all_elements();
 

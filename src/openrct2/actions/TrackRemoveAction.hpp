@@ -216,7 +216,7 @@ public:
                 }
             }
 
-            TileElement* surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto* surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
@@ -411,7 +411,7 @@ public:
                 }
             }
 
-            TileElement* surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto* surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
@@ -437,7 +437,7 @@ public:
 
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER))
             {
-                surfaceElement->AsSurface()->SetHasTrackThatNeedsWater(false);
+                surfaceElement->SetHasTrackThatNeedsWater(false);
             }
 
             invalidate_test_results(ride);

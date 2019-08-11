@@ -142,7 +142,7 @@ public:
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                SurfaceElement* surfaceElement = map_get_surface_element_at(entranceLoc)->AsSurface();
+                SurfaceElement* surfaceElement = map_get_surface_element_at(entranceLoc);
                 surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
             }
 

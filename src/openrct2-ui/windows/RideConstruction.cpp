@@ -2180,8 +2180,8 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
         _trackPlaceZ = 0;
         if (_trackPlaceShiftState)
         {
-            tileElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
-            mapZ = floor2(tileElement->base_height * 8, 16);
+            auto surfaceElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+            mapZ = floor2(surfaceElement->base_height * 8, 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = std::max<int16_t>(mapZ, 16);
             _trackPlaceZ = mapZ;

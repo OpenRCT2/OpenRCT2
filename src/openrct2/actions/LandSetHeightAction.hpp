@@ -101,8 +101,8 @@ public:
             }
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at(_coords);
-        TileElement* tileElement = CheckFloatingStructures(surfaceElement, _height);
+        auto* surfaceElement = map_get_surface_element_at(_coords);
+        TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
         if (tileElement != nullptr)
         {
             map_obstruction_set_error_text(tileElement);
@@ -128,7 +128,7 @@ public:
                     GA_ERROR::DISALLOWED, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
             }
 
-            tileElement = CheckUnremovableObstructions(surfaceElement, zCorner);
+            tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);
             if (tileElement != nullptr)
             {
                 map_obstruction_set_error_text(tileElement);
@@ -154,9 +154,9 @@ public:
             SmallSceneryRemoval();
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at(_coords);
+        auto* surfaceElement = map_get_surface_element_at(_coords);
         cost += GetSurfaceHeightChangeCost(surfaceElement);
-        SetSurfaceHeight(surfaceElement);
+        SetSurfaceHeight(reinterpret_cast<TileElement*>(surfaceElement));
 
         auto res = std::make_unique<GameActionResult>();
         res->Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
@@ -336,7 +336,7 @@ private:
         return nullptr;
     }
 
-    money32 GetSurfaceHeightChangeCost(TileElement * surfaceElement) const
+    money32 GetSurfaceHeightChangeCost(SurfaceElement * surfaceElement) const
     {
         money32 cost{ 0 };
         for (int32_t i = 0; i < 4; i += 1)

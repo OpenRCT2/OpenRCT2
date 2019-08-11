@@ -98,11 +98,10 @@ private:
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
             {
-                TileElement* tileElement = map_get_surface_element_at(x / 32, y / 32);
-                if (tileElement == nullptr)
+                auto* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+                if (surfaceElement == nullptr)
                     continue;
 
-                SurfaceElement* surfaceElement = tileElement->AsSurface();
                 uint8_t height = surfaceElement->base_height;
                 if (surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)
                     height += 2;

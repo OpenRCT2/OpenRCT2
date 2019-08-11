@@ -71,7 +71,7 @@ public:
             }
         }
 
-        SurfaceElement* surfaceElement = map_get_surface_element_at(_coords)->AsSurface();
+        SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
@@ -118,7 +118,7 @@ public:
         if (!gCheatsDisableClearanceChecks)
             wall_remove_at_z(_coords.x, _coords.y, surfaceHeight);
 
-        SurfaceElement* surfaceElement = map_get_surface_element_at(_coords)->AsSurface();
+        SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);

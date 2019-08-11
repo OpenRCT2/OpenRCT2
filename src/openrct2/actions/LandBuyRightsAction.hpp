@@ -125,7 +125,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, _ErrorTitles[0], STR_NONE);
         }
 
-        SurfaceElement* surfaceElement = map_get_surface_element_at(loc)->AsSurface();
+        SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);

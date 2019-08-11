@@ -130,7 +130,7 @@ private:
 
     GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY loc, bool isExecuting) const
     {
-        SurfaceElement* surfaceElement = map_get_surface_element_at(loc)->AsSurface();
+        SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);

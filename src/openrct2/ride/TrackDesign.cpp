@@ -1393,20 +1393,20 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                 continue;
             }
 
-            TileElement* tile_element = map_get_surface_element_at(mapCoord);
-            int16_t map_height = tile_element->base_height * 8;
-            if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            auto surfaceElement = map_get_surface_element_at(mapCoord);
+            int16_t map_height = surfaceElement->base_height * 8;
+            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
                 map_height += 16;
-                if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
                     map_height += 16;
                 }
             }
 
-            if (tile_element->AsSurface()->GetWaterHeight() > 0)
+            if (surfaceElement->GetWaterHeight() > 0)
             {
-                int16_t water_height = tile_element->AsSurface()->GetWaterHeight();
+                int16_t water_height = surfaceElement->GetWaterHeight();
                 water_height *= 16;
                 if (water_height > map_height)
                 {
@@ -1562,23 +1562,23 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         continue;
                     }
 
-                    TileElement* tileElement = map_get_surface_element_at(tile);
-                    if (tileElement == nullptr)
+                    auto surfaceElement = map_get_surface_element_at(tile);
+                    if (surfaceElement == nullptr)
                     {
                         return false;
                     }
 
-                    int32_t height = tileElement->base_height * 8;
-                    if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                    int32_t height = surfaceElement->base_height * 8;
+                    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     {
                         height += 16;
-                        if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                         {
                             height += 16;
                         }
                     }
 
-                    uint8_t water_height = tileElement->AsSurface()->GetWaterHeight() * 16;
+                    uint8_t water_height = surfaceElement->GetWaterHeight() * 16;
                     if (water_height > 0 && water_height > height)
                     {
                         height = water_height;
@@ -2126,11 +2126,11 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
     // Check support height
     if (!gCheatsDisableSupportLimits)
     {
-        TileElement* tileElement = map_get_surface_element_at({ x, y });
+        auto surfaceElement = map_get_surface_element_at({ x, y });
         uint8_t supportZ = (z + 32) >> 3;
-        if (supportZ > tileElement->base_height)
+        if (supportZ > surfaceElement->base_height)
         {
-            uint8_t supportHeight = (supportZ - tileElement->base_height) / 2;
+            uint8_t supportHeight = (supportZ - surfaceElement->base_height) / 2;
             uint8_t maxSupportHeight = RideData5[RIDE_TYPE_MAZE].max_height;
             if (supportHeight > maxSupportHeight)
             {

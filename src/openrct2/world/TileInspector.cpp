@@ -469,7 +469,7 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(
 
 GameActionResult::Ptr tile_inspector_surface_show_park_fences(CoordsXY loc, bool showFences, bool isExecuting)
 {
-    TileElement* const surfaceelement = map_get_surface_element_at(loc);
+    auto* const surfaceelement = map_get_surface_element_at(loc);
 
     // No surface element on tile
     if (surfaceelement == nullptr)
@@ -478,7 +478,7 @@ GameActionResult::Ptr tile_inspector_surface_show_park_fences(CoordsXY loc, bool
     if (isExecuting)
     {
         if (!showFences)
-            surfaceelement->AsSurface()->SetParkFences(0);
+            surfaceelement->SetParkFences(0);
         else
             update_park_fences(loc);
 
@@ -497,7 +497,7 @@ GameActionResult::Ptr tile_inspector_surface_show_park_fences(CoordsXY loc, bool
 
 GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t cornerIndex, bool isExecuting)
 {
-    TileElement* const surfaceElement = map_get_surface_element_at(loc);
+    auto* const surfaceElement = map_get_surface_element_at(loc);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -505,12 +505,12 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
 
     if (isExecuting)
     {
-        const uint8_t originalSlope = surfaceElement->AsSurface()->GetSlope();
+        const uint8_t originalSlope = surfaceElement->GetSlope();
         const bool diagonal = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
 
-        uint8_t newSlope = surfaceElement->AsSurface()->GetSlope() ^ (1 << cornerIndex);
-        surfaceElement->AsSurface()->SetSlope(newSlope);
-        if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        uint8_t newSlope = surfaceElement->GetSlope() ^ (1 << cornerIndex);
+        surfaceElement->SetSlope(newSlope);
+        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }
@@ -520,7 +520,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
         }
 
         // All corners are raised
-        if ((surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             uint8_t slope = TILE_ELEMENT_SLOPE_FLAT;
 
@@ -542,7 +542,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
                         break;
                 }
             }
-            surfaceElement->AsSurface()->SetSlope(slope);
+            surfaceElement->SetSlope(slope);
 
             // Update base and clearance heights
             surfaceElement->base_height += 2;
@@ -564,7 +564,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
 
 GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(CoordsXY loc, bool isExecuting)
 {
-    TileElement* const surfaceElement = map_get_surface_element_at(loc);
+    auto* const surfaceElement = map_get_surface_element_at(loc);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -572,13 +572,13 @@ GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(CoordsXY loc, bool 
 
     if (isExecuting)
     {
-        uint8_t newSlope = surfaceElement->AsSurface()->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
-        surfaceElement->AsSurface()->SetSlope(newSlope);
-        if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        uint8_t newSlope = surfaceElement->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+        surfaceElement->SetSlope(newSlope);
+        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 4;
         }
-        else if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        else if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }

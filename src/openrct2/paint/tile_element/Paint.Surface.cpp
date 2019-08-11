@@ -952,19 +952,19 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             continue;
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at(position);
+        auto surfaceElement = map_get_surface_element_at(position);
         if (surfaceElement == nullptr)
         {
             continue;
         }
 
-        const uint32_t surfaceSlope = viewport_surface_paint_setup_get_relative_slope(surfaceElement, rotation);
+        const uint32_t surfaceSlope = viewport_surface_paint_setup_get_relative_slope(reinterpret_cast<TileElement*>(surfaceElement), rotation);
         const uint8_t baseHeight = surfaceElement->base_height / 2;
         const corner_height& ch = corner_heights[surfaceSlope];
 
         descriptor.tile_coords = { position.x / 32, position.y / 32 };
-        descriptor.tile_element = surfaceElement;
-        descriptor.terrain = surfaceElement->AsSurface()->GetSurfaceStyle();
+        descriptor.tile_element = reinterpret_cast<TileElement*>(surfaceElement);
+        descriptor.terrain = surfaceElement->GetSurfaceStyle();
         descriptor.slope = surfaceSlope;
         descriptor.corner_heights.top = baseHeight + ch.top;
         descriptor.corner_heights.right = baseHeight + ch.right;

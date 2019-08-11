@@ -1198,15 +1198,15 @@ static void place_park_entrance_get_map_position(
     if (*mapX == LOCATION_NULL)
         return;
 
-    tileElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
-    *mapZ = tileElement->AsSurface()->GetWaterHeight();
+    auto surfaceElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
+    *mapZ = surfaceElement->GetWaterHeight();
     if (*mapZ == 0)
     {
-        *mapZ = tileElement->base_height / 2;
-        if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+        *mapZ = surfaceElement->base_height / 2;
+        if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
         {
             (*mapZ)++;
-            if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 (*mapZ)++;
             }
@@ -1541,15 +1541,16 @@ static constexpr const uint8_t RideColourKey[] = {
 
 static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
 {
-    TileElement* tileElement = map_get_surface_element_at(c);
-    uint16_t colour = TerrainColour[tileElement->AsSurface()->GetSurfaceStyle()];
-    if (tileElement->AsSurface()->GetWaterHeight() > 0)
+    auto* surfaceElement = map_get_surface_element_at(c);
+    uint16_t colour = TerrainColour[surfaceElement->GetSurfaceStyle()];
+    if (surfaceElement->GetWaterHeight() > 0)
         colour = WaterColour;
 
-    if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
+    if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
         colour = MAP_COLOUR_UNOWNED(colour);
 
     const int32_t maxSupportedTileElementType = (int32_t)std::size(ElementTypeAddColour);
+    auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     while (!(tileElement++)->IsLastForTile())
     {
         if (tileElement->IsGhost())
@@ -1577,7 +1578,7 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
     uint16_t colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
 
     // as an improvement we could use first_element to show underground stuff?
-    TileElement* tileElement = map_get_surface_element_at(c);
+    TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
     do
     {
         if (tileElement->IsGhost())

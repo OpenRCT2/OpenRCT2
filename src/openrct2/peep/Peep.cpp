@@ -763,11 +763,11 @@ void Peep::PickupAbort(int32_t old_x)
 // Returns true when a peep can be dropped at the given location. When apply is set to true the peep gets dropped.
 bool Peep::Place(TileCoordsXYZ location, bool apply)
 {
-    TileElement* tileElement = map_get_path_element_at(location.x, location.y, location.z);
-
-    if (!tileElement)
+    auto* pathElement = map_get_path_element_at(location.x, location.y, location.z);
+    TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
+    if (!pathElement)
     {
-        tileElement = map_get_surface_element_at(location.x, location.y);
+        tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(location.x, location.y));
     }
 
     if (!tileElement)
@@ -3176,14 +3176,14 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
                 return;
             }
 
-            tileElement = map_get_surface_element_at(newLoc);
-            if (tileElement == nullptr)
+            auto surfaceElement = map_get_surface_element_at(newLoc);
+            if (surfaceElement == nullptr)
             {
                 peep_return_to_centre_of_tile(this);
                 return;
             }
 
-            int16_t water_height = tileElement->AsSurface()->GetWaterHeight();
+            int16_t water_height = surfaceElement->GetWaterHeight();
             if (water_height)
             {
                 peep_return_to_centre_of_tile(this);
@@ -3203,7 +3203,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             // The peep is on a surface and not on a path
             next_x = newLoc.x & 0xFFE0;
             next_y = newLoc.y & 0xFFE0;
-            next_z = tileElement->base_height;
+            next_z = surfaceElement->base_height;
             SetNextFlags(0, false, true);
 
             height = GetZOnSlope(newLoc.x, newLoc.y);

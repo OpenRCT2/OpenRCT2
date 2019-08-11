@@ -257,7 +257,7 @@ void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements)
     gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
 }
 
-TileElement* map_get_surface_element_at(int32_t x, int32_t y)
+SurfaceElement* map_get_surface_element_at(int32_t x, int32_t y)
 {
     TileElement* tileElement = map_get_first_element_at(x, y);
 
@@ -273,10 +273,10 @@ TileElement* map_get_surface_element_at(int32_t x, int32_t y)
         tileElement++;
     }
 
-    return tileElement;
+    return tileElement->AsSurface();
 }
 
-TileElement* map_get_surface_element_at(const CoordsXY coords)
+SurfaceElement* map_get_surface_element_at(const CoordsXY coords)
 {
     return map_get_surface_element_at(coords.x / 32, coords.y / 32);
 }
@@ -381,14 +381,14 @@ void map_count_remaining_land_rights()
     {
         for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
         {
-            TileElement* element = map_get_surface_element_at(x, y);
+            auto* surfaceElement = map_get_surface_element_at(x, y);
             // Surface elements are sometimes hacked out to save some space for other map elements
-            if (element == nullptr)
+            if (surfaceElement == nullptr)
             {
                 continue;
             }
 
-            uint8_t flags = element->AsSurface()->GetOwnership();
+            uint8_t flags = surfaceElement->GetOwnership();
 
             // Do not combine this condition with (flags & OWNERSHIP_AVAILABLE)
             // As some RCT1 parks have owned tiles with the 'construction rights available' flag also set
@@ -463,8 +463,6 @@ void map_update_tile_pointers()
  */
 int16_t tile_element_height(int32_t x, int32_t y)
 {
-    TileElement* tileElement;
-
     // Off the map
     if ((unsigned)x >= 8192 || (unsigned)y >= 8192)
         return 16;
@@ -474,16 +472,16 @@ int16_t tile_element_height(int32_t x, int32_t y)
     int32_t y_tile = y & 0xFFFFFFE0;
 
     // Get the surface element for the tile
-    tileElement = map_get_surface_element_at({ x_tile, y_tile });
+    auto surfaceElement = map_get_surface_element_at({ x_tile, y_tile });
 
-    if (tileElement == nullptr)
+    if (surfaceElement == nullptr)
     {
         return 16;
     }
 
-    uint16_t height = (tileElement->base_height << 3);
+    uint16_t height = (surfaceElement->base_height << 3);
 
-    uint32_t slope = tileElement->AsSurface()->GetSlope();
+    uint32_t slope = surfaceElement->GetSlope();
     uint8_t extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height
     // Remove the extra height bit
     slope &= TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
@@ -615,8 +613,6 @@ int16_t tile_element_height(int32_t x, int32_t y)
 
 int16_t tile_element_water_height(int32_t x, int32_t y)
 {
-    TileElement* tileElement;
-
     // Off the map
     if ((unsigned)x >= 8192 || (unsigned)y >= 8192)
         return 0;
@@ -626,14 +622,14 @@ int16_t tile_element_water_height(int32_t x, int32_t y)
     int32_t y_tile = y & 0xFFFFFFE0;
 
     // Get the surface element for the tile
-    tileElement = map_get_surface_element_at({ x_tile, y_tile });
+    auto surfaceElement = map_get_surface_element_at({ x_tile, y_tile });
 
-    if (tileElement == nullptr)
+    if (surfaceElement == nullptr)
     {
         return 0;
     }
 
-    uint16_t height = (tileElement->AsSurface()->GetWaterHeight() << 4);
+    uint16_t height = (surfaceElement->GetWaterHeight() << 4);
 
     return height;
 }
@@ -766,15 +762,15 @@ bool map_is_location_owned(CoordsXYZ loc)
     // This check is to avoid throwing lots of messages in logs.
     if (map_is_location_valid({ loc.x, loc.y }))
     {
-        TileElement* tileElement = map_get_surface_element_at({ loc.x, loc.y });
-        if (tileElement != nullptr)
+        auto* surfaceElement = map_get_surface_element_at({ loc.x, loc.y });
+        if (surfaceElement != nullptr)
         {
-            if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
+            if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
                 return true;
 
-            if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+            if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
             {
-                if (loc.z / 8 < tileElement->base_height || loc.z / 8 - 2 > tileElement->base_height)
+                if (loc.z / 8 < surfaceElement->base_height || loc.z / 8 - 2 > surfaceElement->base_height)
                     return true;
             }
         }
@@ -792,10 +788,10 @@ bool map_is_location_in_park(const CoordsXY coords)
 {
     if (map_is_location_valid(coords))
     {
-        TileElement* tileElement = map_get_surface_element_at(coords);
-        if (tileElement == nullptr)
+        auto surfaceElement = map_get_surface_element_at(coords);
+        if (surfaceElement == nullptr)
             return false;
-        if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
+        if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
             return true;
     }
 
@@ -807,14 +803,14 @@ bool map_is_location_owned_or_has_rights(int32_t x, int32_t y)
 {
     if (map_is_location_valid({ x, y }))
     {
-        TileElement* tileElement = map_get_surface_element_at({ x, y });
-        if (tileElement == nullptr)
+        auto surfaceElement = map_get_surface_element_at({ x, y });
+        if (surfaceElement == nullptr)
         {
             return false;
         }
-        if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
+        if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
             return true;
-        if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+        if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
             return true;
     }
     return false;
@@ -919,10 +915,10 @@ int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction)
     return z;
 }
 
-int32_t tile_element_get_corner_height(const TileElement* tileElement, int32_t direction)
+int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int32_t direction)
 {
-    int32_t z = tileElement->base_height;
-    int32_t slope = tileElement->AsSurface()->GetSlope();
+    int32_t z = surfaceElement->base_height;
+    int32_t slope = surfaceElement->GetSlope();
     return map_get_corner_height(z, slope, direction);
 }
 
@@ -938,10 +934,10 @@ uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int
     {
         for (int32_t xi = xMin; xi <= xMax; xi += 32)
         {
-            TileElement* tile_element = map_get_surface_element_at({ xi, yi });
-            if (tile_element != nullptr && min_height > tile_element->base_height)
+            auto* surfaceElement = map_get_surface_element_at({ xi, yi });
+            if (surfaceElement != nullptr && min_height > surfaceElement->base_height)
             {
-                min_height = tile_element->base_height;
+                min_height = surfaceElement->base_height;
             }
         }
     }
@@ -960,13 +956,13 @@ uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, in
     {
         for (int32_t xi = xMin; xi <= xMax; xi += 32)
         {
-            TileElement* tile_element = map_get_surface_element_at({ xi, yi });
-            if (tile_element != nullptr)
+            auto* surfaceElement = map_get_surface_element_at({ xi, yi });
+            if (surfaceElement != nullptr)
             {
-                uint8_t base_height = tile_element->base_height;
-                if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                uint8_t base_height = surfaceElement->base_height;
+                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     base_height += 2;
-                if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                     base_height += 2;
                 if (max_height < base_height)
                     max_height = base_height;
@@ -1550,10 +1546,10 @@ void map_update_tiles()
             interleaved_xy >>= 1;
         }
 
-        TileElement* tileElement = map_get_surface_element_at(x, y);
-        if (tileElement != nullptr)
+        auto* surfaceElement = map_get_surface_element_at(x, y);
+        if (surfaceElement != nullptr)
         {
-            tileElement->AsSurface()->UpdateGrassLength({ x * 32, y * 32 });
+            surfaceElement->UpdateGrassLength({ x * 32, y * 32 });
             scenery_update_tile(x * 32, y * 32);
         }
 
@@ -1610,7 +1606,7 @@ void map_remove_out_of_range_elements()
                 auto surfaceElement = map_get_surface_element_at({ x, y });
                 if (surfaceElement != nullptr)
                 {
-                    surfaceElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+                    surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
                     update_park_fences_around_tile({ x, y });
                 }
                 clear_elements_at(x, y);
@@ -1631,8 +1627,8 @@ void map_extend_boundary_surface()
     y = gMapSize - 2;
     for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
     {
-        existingTileElement = map_get_surface_element_at(x, y - 1)->AsSurface();
-        newTileElement = map_get_surface_element_at(x, y)->AsSurface();
+        existingTileElement = map_get_surface_element_at(x, y - 1);
+        newTileElement = map_get_surface_element_at(x, y);
         newTileElement->SetSurfaceStyle(existingTileElement->GetSurfaceStyle());
         newTileElement->SetEdgeStyle(existingTileElement->GetEdgeStyle());
         newTileElement->SetGrassLength(existingTileElement->GetGrassLength());
@@ -1673,8 +1669,8 @@ void map_extend_boundary_surface()
     x = gMapSize - 2;
     for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        existingTileElement = map_get_surface_element_at(x - 1, y)->AsSurface();
-        newTileElement = map_get_surface_element_at(x, y)->AsSurface();
+        existingTileElement = map_get_surface_element_at(x - 1, y);
+        newTileElement = map_get_surface_element_at(x, y);
 
         newTileElement->SetSurfaceStyle(existingTileElement->GetSurfaceStyle());
         newTileElement->SetEdgeStyle(existingTileElement->GetEdgeStyle());
@@ -1807,22 +1803,21 @@ static void clear_elements_at(int32_t x, int32_t y)
 
 int32_t map_get_highest_z(int32_t tileX, int32_t tileY)
 {
-    TileElement* tileElement;
     uint32_t z;
 
-    tileElement = map_get_surface_element_at(tileX, tileY);
-    if (tileElement == nullptr)
+    auto surfaceElement = map_get_surface_element_at(tileX, tileY);
+    if (surfaceElement == nullptr)
         return -1;
 
-    z = tileElement->base_height * 8;
+    z = surfaceElement->base_height * 8;
 
     // Raise z so that is above highest point of land and water on tile
-    if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
+    if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
         z += 16;
-    if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
+    if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
         z += 16;
 
-    z = std::max(z, tileElement->AsSurface()->GetWaterHeight() * 16);
+    z = std::max(z, surfaceElement->GetWaterHeight() * 16);
     return z;
 }
 
@@ -2188,27 +2183,27 @@ int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY)
  */
 bool map_surface_is_blocked(int16_t x, int16_t y)
 {
-    TileElement* tileElement;
     if (x >= 8192 || y >= 8192)
         return true;
 
-    tileElement = map_get_surface_element_at({ x, y });
+    auto surfaceElement = map_get_surface_element_at({ x, y });
 
-    if (tileElement == nullptr)
+    if (surfaceElement == nullptr)
     {
         return true;
     }
 
-    int16_t water_height = tileElement->AsSurface()->GetWaterHeight();
+    int16_t water_height = surfaceElement->GetWaterHeight();
     water_height *= 2;
-    if (water_height > tileElement->base_height)
+    if (water_height > surfaceElement->base_height)
         return true;
 
-    int16_t base_z = tileElement->base_height;
-    int16_t clear_z = tileElement->base_height + 2;
-    if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+    int16_t base_z = surfaceElement->base_height;
+    int16_t clear_z = surfaceElement->base_height + 2;
+    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         clear_z += 2;
 
+    auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     while (!(tileElement++)->IsLastForTile())
     {
         if (clear_z >= tileElement->clearance_height)
@@ -2511,11 +2506,10 @@ void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles)
 
 void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8_t ownership)
 {
-    TileElement* currentElement;
     for (const TileCoordsXY* tile = tiles.begin(); tile != tiles.end(); ++tile)
     {
-        currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
-        currentElement->AsSurface()->SetOwnership(ownership);
+        auto surfaceElement = map_get_surface_element_at((*tile).x, (*tile).y);
+        surfaceElement->SetOwnership(ownership);
         update_park_fences_around_tile({ (*tile).x * 32, (*tile).y * 32 });
     }
 }

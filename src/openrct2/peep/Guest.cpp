@@ -5464,9 +5464,9 @@ void Guest::UpdateWalking()
 
     if (GetNextIsSurface())
     {
-        TileElement* tile_element = map_get_surface_element_at({ next_x, next_y });
+        auto surfaceElement = map_get_surface_element_at({ next_x, next_y });
 
-        int32_t water_height = tile_element->AsSurface()->GetWaterHeight();
+        int32_t water_height = surfaceElement->GetWaterHeight();
         if (water_height)
         {
             Invalidate();
@@ -6484,11 +6484,11 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
  */
 static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView)
 {
-    TileElement *tileElement, *surfaceElement;
+    TileElement *tileElement;
 
-    surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
+    auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
     {
         return false;
@@ -6527,7 +6527,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 
     surfaceElement = map_get_surface_element_at({ x, y });
 
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
     {
         return false;
@@ -6559,7 +6559,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop B
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6603,7 +6603,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop C
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6644,7 +6644,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     surfaceElement = map_get_surface_element_at({ x, y });
 
     // TODO: extract loop A
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
 
     if (tileElement == nullptr)
     {
@@ -6676,7 +6676,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop B
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6720,7 +6720,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop C
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6761,7 +6761,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     surfaceElement = map_get_surface_element_at({ x, y });
 
     // TODO: extract loop A
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
     {
         return false;
@@ -6792,7 +6792,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop B
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,

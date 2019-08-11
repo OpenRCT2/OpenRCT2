@@ -78,11 +78,10 @@ private:
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
             {
-                TileElement* tileElement = map_get_surface_element_at(x / 32, y / 32);
-                if (tileElement == nullptr)
+                auto* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+                if (surfaceElement == nullptr)
                     continue;
 
-                SurfaceElement* surfaceElement = tileElement->AsSurface();
                 uint8_t height = surfaceElement->GetWaterHeight();
                 if (height == 0)
                     continue;
@@ -127,11 +126,11 @@ private:
         {
             for (int32_t x = _range.GetLeft(); x <= _range.GetRight(); x += 32)
             {
-                TileElement* tile_element = map_get_surface_element_at({ x, y });
-                if (tile_element == nullptr)
+                auto* surfaceElement = map_get_surface_element_at({ x, y });
+                if (surfaceElement == nullptr)
                     continue;
 
-                uint8_t height = tile_element->AsSurface()->GetWaterHeight();
+                uint8_t height = surfaceElement->GetWaterHeight();
                 if (height == 0)
                     continue;
 

@@ -124,13 +124,12 @@ public:
                         continue;
                 }
 
-                auto tileElement = map_get_surface_element_at({ x, y });
-                if (tileElement == nullptr)
+                auto surfaceElement = map_get_surface_element_at({ x, y });
+                if (surfaceElement == nullptr)
                 {
                     continue;
                 }
 
-                auto surfaceElement = tileElement->AsSurface();
                 if (_surfaceStyle != 0xFF)
                 {
                     uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
@@ -196,13 +195,12 @@ public:
                         continue;
                 }
 
-                auto tileElement = map_get_surface_element_at({ x, y });
-                if (tileElement == nullptr)
+                auto surfaceElement = map_get_surface_element_at({ x, y });
+                if (surfaceElement == nullptr)
                 {
                     continue;
                 }
 
-                auto surfaceElement = tileElement->AsSurface();
                 if (_surfaceStyle != 0xFF)
                 {
                     uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();

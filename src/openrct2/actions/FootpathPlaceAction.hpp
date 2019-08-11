@@ -252,12 +252,11 @@ private:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        auto tileElement = map_get_surface_element_at({ _loc.x, _loc.y });
-        if (tileElement == nullptr)
+        auto surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+        if (surfaceElement == nullptr)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
         }
-        auto surfaceElement = tileElement->AsSurface();
         int32_t supportHeight = zLow - surfaceElement->base_height;
         res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
@@ -314,12 +313,11 @@ private:
 
         gFootpathGroundFlags = gMapGroundFlags;
 
-        auto tileElement = map_get_surface_element_at({ _loc.x, _loc.y });
-        if (tileElement == nullptr)
+        auto surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+        if (surfaceElement == nullptr)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
         }
-        auto surfaceElement = tileElement->AsSurface();
         int32_t supportHeight = zLow - surfaceElement->base_height;
         res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
@@ -334,7 +332,7 @@ private:
         }
         else
         {
-            tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, zLow, 0b1111);
+            auto tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, zLow, 0b1111);
             assert(tileElement != nullptr);
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();
