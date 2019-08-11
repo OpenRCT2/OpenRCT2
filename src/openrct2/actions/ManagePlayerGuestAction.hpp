@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "GameAction.h"
 
@@ -85,10 +86,25 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
+        const char* name = network_get_player_name(playerIndex);
+
         Peep* peep = OpenRCT2::GetContext()->GetGameState()->GetPark().GenerateGuest();
+        peep->SetName(name);
         peep->flags |= PEEP_FLAGS_CONTROLLED;
+        peep->happiness = 255;
+        peep->energy = 255;
+        peep->hunger = 255;
+        peep->thirst = 255;
+        peep->nausea = 0;
 
         network_set_player_controlled_peep(_player, peep);
+
+        if (network_get_current_player_id() == _player)
+        {
+            auto intent = Intent(WC_PEEP);
+            intent.putExtra(INTENT_EXTRA_PEEP, peep);
+            context_open_intent(&intent);
+        }
 
         return std::make_unique<GameActionResult>();
     }
