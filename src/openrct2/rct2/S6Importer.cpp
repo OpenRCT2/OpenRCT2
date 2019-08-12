@@ -1528,6 +1528,20 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectR
     return std::make_unique<S6Importer>(objectRepository);
 }
 
+static void show_error(uint8_t gErrorType, const rct_string_id& gErrorStringId)
+{
+    rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
+    rct_string_id body_text = gErrorStringId;
+    if (gErrorType == ERROR_TYPE_GENERIC)
+    {
+        title_text = gErrorStringId;
+        body_text = 0xFFFF;
+    }
+    gErrorType = ERROR_TYPE_NONE;
+
+    context_show_error(title_text, body_text);
+}
+
 void load_from_sv6(const char* path)
 {
     auto context = OpenRCT2::GetContext();
@@ -1548,17 +1562,7 @@ void load_from_sv6(const char* path)
     {
         uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
         rct_string_id gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-
-        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text = gErrorStringId;
-        if (gErrorType == ERROR_TYPE_GENERIC)
-        {
-            title_text = gErrorStringId;
-            body_text = 0xFFFF;
-        }
-        gErrorType = ERROR_TYPE_NONE;
-
-        context_show_error(title_text, body_text);
+        show_error(gErrorType, gErrorStringId);
     }
     catch (const IOException& loadError)
     {
@@ -1566,32 +1570,14 @@ void load_from_sv6(const char* path)
         rct_string_id gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
 
-        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text = gErrorStringId;
-        if (gErrorType == ERROR_TYPE_GENERIC)
-        {
-            title_text = gErrorStringId;
-            body_text = 0xFFFF;
-        }
-        gErrorType = ERROR_TYPE_NONE;
-
-        context_show_error(title_text, body_text);
+        show_error(gErrorType, gErrorStringId);
     }
     catch (const std::exception&)
     {
         uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
         rct_string_id gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 
-        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text = gErrorStringId;
-        if (gErrorType == ERROR_TYPE_GENERIC)
-        {
-            title_text = gErrorStringId;
-            body_text = 0xFFFF;
-        }
-        gErrorType = ERROR_TYPE_NONE;
-
-        context_show_error(title_text, body_text);
+        show_error(gErrorType, gErrorStringId);
     }
 }
 
@@ -1621,16 +1607,7 @@ void load_from_sc6(const char* path)
         rct_string_id gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
 
-        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text = gErrorStringId;
-        if (gErrorType == ERROR_TYPE_GENERIC)
-        {
-            title_text = gErrorStringId;
-            body_text = 0xFFFF;
-        }
-        gErrorType = ERROR_TYPE_NONE;
-
-        context_show_error(title_text, body_text);
+        show_error(gErrorType, gErrorStringId);
     }
     catch (const IOException& loadError)
     {
@@ -1638,32 +1615,14 @@ void load_from_sc6(const char* path)
         rct_string_id gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
 
-        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text = gErrorStringId;
-        if (gErrorType == ERROR_TYPE_GENERIC)
-        {
-            title_text = gErrorStringId;
-            body_text = 0xFFFF;
-        }
-        gErrorType = ERROR_TYPE_NONE;
-
-        context_show_error(title_text, body_text);
+        show_error(gErrorType, gErrorStringId);
     }
     catch (const std::exception&)
     {
         uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
         rct_string_id gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 
-        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text = gErrorStringId;
-        if (gErrorType == ERROR_TYPE_GENERIC)
-        {
-            title_text = gErrorStringId;
-            body_text = 0xFFFF;
-        }
-        gErrorType = ERROR_TYPE_NONE;
-
-        context_show_error(title_text, body_text);
+        show_error(gErrorType, gErrorStringId);
     }
     gScreenAge = 0;
     gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
