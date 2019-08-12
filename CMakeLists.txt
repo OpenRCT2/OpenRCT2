@@ -7,6 +7,7 @@ endif()
 project(openrct2 CXX)
 
 include(cmake/platform.cmake)
+include(CMakeDependentOption)
 
 if (NOT MSVC)
     include(FindPkgConfig)
@@ -34,7 +35,8 @@ option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
-option(DOWNLOAD_REPLAYS "Download replays during installation." ON)
+CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
+    "WITH_TESTS" OFF)
 
 # Options
 option(STATIC "Create a static build.")
