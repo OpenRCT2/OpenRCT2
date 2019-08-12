@@ -1528,18 +1528,18 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectR
     return std::make_unique<S6Importer>(objectRepository);
 }
 
-static void show_error(uint8_t gErrorType, const rct_string_id& gErrorStringId)
+static void show_error(uint8_t errorType, const rct_string_id& errorStringId)
 {
-    rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-    rct_string_id body_text = gErrorStringId;
-    if (gErrorType == ERROR_TYPE_GENERIC)
+    rct_string_id titleText = STR_UNABLE_TO_LOAD_FILE;
+    rct_string_id bodyText = errorStringId;
+    if (errorType == ERROR_TYPE_GENERIC)
     {
-        title_text = gErrorStringId;
-        body_text = 0xFFFF;
+        titleText = errorStringId;
+        bodyText = 0xFFFF;
     }
-    gErrorType = ERROR_TYPE_NONE;
+    errorType = ERROR_TYPE_NONE;
 
-    context_show_error(title_text, body_text);
+    context_show_error(titleText, bodyText);
 }
 
 void load_from_sv6(const char* path)
@@ -1560,24 +1560,16 @@ void load_from_sv6(const char* path)
     }
     catch (const ObjectLoadException&)
     {
-        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
-        rct_string_id gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-        show_error(gErrorType, gErrorStringId);
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
     catch (const IOException& loadError)
     {
-        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
-        rct_string_id gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
-
-        show_error(gErrorType, gErrorStringId);
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const std::exception&)
     {
-        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
-        rct_string_id gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-
-        show_error(gErrorType, gErrorStringId);
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
 }
 
@@ -1603,26 +1595,17 @@ void load_from_sc6(const char* path)
     }
     catch (const ObjectLoadException& loadError)
     {
-        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
-        rct_string_id gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
-
-        show_error(gErrorType, gErrorStringId);
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const IOException& loadError)
     {
-        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
-        rct_string_id gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
-
-        show_error(gErrorType, gErrorStringId);
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const std::exception&)
     {
-        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
-        rct_string_id gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-
-        show_error(gErrorType, gErrorStringId);
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
     gScreenAge = 0;
     gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
