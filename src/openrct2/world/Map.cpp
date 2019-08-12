@@ -742,13 +742,13 @@ bool map_is_edge(const CoordsXY coords)
     return (coords.x < 32 || coords.y < 32 || coords.x >= gMapSizeUnits || coords.y >= gMapSizeUnits);
 }
 
-bool map_can_build_at(int32_t x, int32_t y, int32_t z)
+bool map_can_build_at(CoordsXYZ loc)
 {
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return true;
     if (gCheatsSandboxMode)
         return true;
-    if (map_is_location_owned({ x, y, z }))
+    if (map_is_location_owned(loc))
         return true;
     return false;
 }

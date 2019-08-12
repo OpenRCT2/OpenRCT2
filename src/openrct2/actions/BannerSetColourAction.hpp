@@ -74,7 +74,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
         }
 
-        if (!map_can_build_at(_loc.x, _loc.y, _loc.z - 16))
+        if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }

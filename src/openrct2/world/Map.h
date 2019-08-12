@@ -161,7 +161,7 @@ void map_restore_provisional_elements();
 void map_update_path_wide_flags();
 bool map_is_location_valid(CoordsXY coords);
 bool map_is_edge(CoordsXY coords);
-bool map_can_build_at(int32_t x, int32_t y, int32_t z);
+bool map_can_build_at(CoordsXYZ loc);
 bool map_is_location_owned(CoordsXYZ loc);
 bool map_is_location_in_park(CoordsXY coords);
 bool map_is_location_owned_or_has_rights(int32_t x, int32_t y);
