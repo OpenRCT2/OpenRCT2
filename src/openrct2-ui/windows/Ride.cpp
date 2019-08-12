@@ -3167,7 +3167,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_CAPACITY, &rideEntry->capacity, COLOUR_BLACK, x, y);
 
     // Excitement Factor
-    auto factor = rideEntry->excitement_multiplier;
+    auto factor = (int16_t)rideEntry->excitement_multiplier;
     if (factor > 0)
     {
         y += LIST_ROW_HEIGHT;
