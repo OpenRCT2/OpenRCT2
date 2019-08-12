@@ -3239,28 +3239,17 @@ void ride_check_all_reachable()
 /**
  *
  *  rct2: 0x006B7C59
- * @return 1 if the coordinate is reachable or has no entrance, 0 otherwise
+ * @return true if the coordinate is reachable or has no entrance, false otherwise
  */
-static int32_t ride_entrance_exit_is_reachable(TileCoordsXYZD coordinates)
+static bool ride_entrance_exit_is_reachable(TileCoordsXYZD coordinates)
 {
-    int32_t x, y, z;
-
     if (coordinates.isNull())
-        return 1;
+        return true;
 
-    x = coordinates.x;
-    y = coordinates.y;
-    z = coordinates.z;
-    uint8_t face_direction = coordinates.direction;
+    TileCoordsXYZ loc{ coordinates.x, coordinates.y, coordinates.z };
+    loc -= TileDirectionDelta[coordinates.z];
 
-    x *= 32;
-    y *= 32;
-    x -= CoordsDirectionDelta[face_direction].x;
-    y -= CoordsDirectionDelta[face_direction].y;
-    x /= 32;
-    y /= 32;
-
-    return map_coord_is_connected(x, y, z, face_direction);
+    return map_coord_is_connected(loc, coordinates.direction);
 }
 
 static void ride_entrance_exit_connected(Ride* ride)
@@ -3299,17 +3288,14 @@ static void ride_entrance_exit_connected(Ride* ride)
 
 static void ride_shop_connected(Ride* ride)
 {
-    int32_t x, y, count;
-
     LocationXY8 coordinates = ride->stations[0].Start;
     if (coordinates.xy == RCT_XY8_UNDEFINED)
         return;
 
-    x = coordinates.x;
-    y = coordinates.y;
+    TileCoordsXY loc = { coordinates.x, coordinates.y };
 
     TrackElement* trackElement = nullptr;
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
     do
     {
         if (tileElement == nullptr)
@@ -3347,11 +3333,7 @@ static void ride_shop_connected(Ride* ride)
     if (entrance_directions == 0)
         return;
 
-    // Turn x, y from tiles into units
-    x *= 32;
-    y *= 32;
-
-    for (count = 0; entrance_directions != 0; count++)
+    for (auto count = 0; entrance_directions != 0; count++)
     {
         if (!(entrance_directions & 1))
         {
@@ -3363,10 +3345,10 @@ static void ride_shop_connected(Ride* ride)
         // Flip direction north<->south, east<->west
         uint8_t face_direction = direction_reverse(count);
 
-        int32_t y2 = y - CoordsDirectionDelta[face_direction].y;
-        int32_t x2 = x - CoordsDirectionDelta[face_direction].x;
+        int32_t y2 = loc.y - TileDirectionDelta[face_direction].y;
+        int32_t x2 = loc.x - TileDirectionDelta[face_direction].x;
 
-        if (map_coord_is_connected(x2 / 32, y2 / 32, tileElement->base_height, face_direction))
+        if (map_coord_is_connected({ x2, y2, tileElement->base_height }, face_direction))
             return;
     }
 

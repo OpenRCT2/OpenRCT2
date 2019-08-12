@@ -229,6 +229,12 @@ struct TileCoordsXYZ
         return *this;
     }
 
+    TileCoordsXYZ& operator-=(const TileCoordsXY rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
     bool operator==(const TileCoordsXYZ& other) const
     {
         return x == other.x && y == other.y && z == other.z;

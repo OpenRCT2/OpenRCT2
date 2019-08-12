@@ -172,7 +172,7 @@ static bool staff_is_location_in_patrol_area(Peep* peep, int32_t x, int32_t y)
 bool staff_is_location_in_patrol(Peep* staff, int32_t x, int32_t y)
 {
     // Check if location is in the park
-    if (!map_is_location_owned_or_has_rights(x, y))
+    if (!map_is_location_owned_or_has_rights({ x, y }))
         return false;
 
     // Check if staff has patrol area

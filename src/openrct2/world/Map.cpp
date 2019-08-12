@@ -638,9 +638,9 @@ int16_t tile_element_water_height(int32_t x, int32_t y)
  * Checks if the tile at coordinate at height counts as connected.
  * @return 1 if connected, 0 otherwise
  */
-bool map_coord_is_connected(int32_t x, int32_t y, int32_t z, uint8_t faceDirection)
+bool map_coord_is_connected(const TileCoordsXYZ loc, uint8_t faceDirection)
 {
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
 
     do
     {
@@ -653,17 +653,17 @@ bool map_coord_is_connected(int32_t x, int32_t y, int32_t z, uint8_t faceDirecti
         {
             if (slopeDirection == faceDirection)
             {
-                if (z == tileElement->base_height + 2)
+                if (loc.z == tileElement->base_height + 2)
                     return true;
             }
-            else if (direction_reverse(slopeDirection) == faceDirection && z == tileElement->base_height)
+            else if (direction_reverse(slopeDirection) == faceDirection && loc.z == tileElement->base_height)
             {
                 return true;
             }
         }
         else
         {
-            if (z == tileElement->base_height)
+            if (loc.z == tileElement->base_height)
                 return true;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -799,11 +799,11 @@ bool map_is_location_in_park(const CoordsXY coords)
     return false;
 }
 
-bool map_is_location_owned_or_has_rights(int32_t x, int32_t y)
+bool map_is_location_owned_or_has_rights(CoordsXY loc)
 {
-    if (map_is_location_valid({ x, y }))
+    if (map_is_location_valid(loc))
     {
-        auto surfaceElement = map_get_surface_element_at({ x, y });
+        auto surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement == nullptr)
         {
             return false;

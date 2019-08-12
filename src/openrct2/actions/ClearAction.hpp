@@ -252,6 +252,7 @@ private:
 
     static bool MapCanClearAt(int32_t x, int32_t y)
     {
-        return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_owned_or_has_rights(x, y);
+        return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode
+            || map_is_location_owned_or_has_rights({ x, y });
     }
 };
