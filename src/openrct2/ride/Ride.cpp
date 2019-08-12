@@ -1202,10 +1202,17 @@ int32_t sub_6C683D(
     int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params, TileElement** output_element,
     uint16_t flags)
 {
-    // Find the relevant track piece
-    auto trackElement = map_get_track_element_at_of_type({ *x, *y, *z, (Direction)direction }, type);
+    // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
+    auto location = CoordsXYZD{ *x, *y, *z, (Direction)direction };
+    auto trackElement = map_get_track_element_at_of_type_seq(location, type, 0);
     if (trackElement == nullptr)
-        return 1;
+    {
+        trackElement = map_get_track_element_at_of_type(location, type);
+        if (trackElement == nullptr)
+        {
+            return 1;
+        }
+    }
 
     // Possibly z should be & 0xF8
     auto trackBlock = get_track_def_from_ride_index(trackElement->GetRideIndex(), type);
