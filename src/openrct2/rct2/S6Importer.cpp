@@ -1546,19 +1546,52 @@ void load_from_sv6(const char* path)
     }
     catch (const ObjectLoadException&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
+        rct_string_id gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+
+        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
+        rct_string_id body_text = gErrorStringId;
+        if (gErrorType == ERROR_TYPE_GENERIC)
+        {
+            title_text = gErrorStringId;
+            body_text = 0xFFFF;
+        }
+        gErrorType = ERROR_TYPE_NONE;
+
+        context_show_error(title_text, body_text);
     }
     catch (const IOException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
+        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
+        rct_string_id gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
+
+        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
+        rct_string_id body_text = gErrorStringId;
+        if (gErrorType == ERROR_TYPE_GENERIC)
+        {
+            title_text = gErrorStringId;
+            body_text = 0xFFFF;
+        }
+        gErrorType = ERROR_TYPE_NONE;
+
+        context_show_error(title_text, body_text);
     }
     catch (const std::exception&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
+        rct_string_id gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+
+        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
+        rct_string_id body_text = gErrorStringId;
+        if (gErrorType == ERROR_TYPE_GENERIC)
+        {
+            title_text = gErrorStringId;
+            body_text = 0xFFFF;
+        }
+        gErrorType = ERROR_TYPE_NONE;
+
+        context_show_error(title_text, body_text);
     }
 }
 
@@ -1584,20 +1617,53 @@ void load_from_sc6(const char* path)
     }
     catch (const ObjectLoadException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
+        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
+        rct_string_id gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
+
+        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
+        rct_string_id body_text = gErrorStringId;
+        if (gErrorType == ERROR_TYPE_GENERIC)
+        {
+            title_text = gErrorStringId;
+            body_text = 0xFFFF;
+        }
+        gErrorType = ERROR_TYPE_NONE;
+
+        context_show_error(title_text, body_text);
     }
     catch (const IOException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
+        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
+        rct_string_id gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
+
+        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
+        rct_string_id body_text = gErrorStringId;
+        if (gErrorType == ERROR_TYPE_GENERIC)
+        {
+            title_text = gErrorStringId;
+            body_text = 0xFFFF;
+        }
+        gErrorType = ERROR_TYPE_NONE;
+
+        context_show_error(title_text, body_text);
     }
     catch (const std::exception&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        uint8_t gErrorType = ERROR_TYPE_FILE_LOAD;
+        rct_string_id gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+
+        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
+        rct_string_id body_text = gErrorStringId;
+        if (gErrorType == ERROR_TYPE_GENERIC)
+        {
+            title_text = gErrorStringId;
+            body_text = 0xFFFF;
+        }
+        gErrorType = ERROR_TYPE_NONE;
+
+        context_show_error(title_text, body_text);
     }
     gScreenAge = 0;
     gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
