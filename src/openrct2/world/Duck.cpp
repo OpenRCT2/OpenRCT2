@@ -202,7 +202,7 @@ void rct_duck::UpdateSwim()
         {
             Invalidate();
             int16_t landZ = tile_element_height({ x, y });
-            int16_t waterZ = tile_element_water_height(x, y);
+            int16_t waterZ = tile_element_water_height({ x, y });
 
             if (z < landZ || waterZ == 0)
             {
@@ -223,7 +223,7 @@ void rct_duck::UpdateSwim()
                 int32_t newX = x + DuckMoveOffset[direction].x;
                 int32_t newY = y + DuckMoveOffset[direction].y;
                 landZ = tile_element_height({ newX, newY });
-                waterZ = tile_element_water_height(newX, newY);
+                waterZ = tile_element_water_height({ newX, newY });
 
                 if (z >= landZ && z == waterZ)
                 {
