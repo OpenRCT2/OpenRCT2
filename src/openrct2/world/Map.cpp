@@ -914,17 +914,16 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
     return map_get_corner_height(z, slope, direction);
 }
 
-uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax)
+uint8_t map_get_lowest_land_height(const MapRange range)
 {
-    xMin = std::max(xMin, 32);
-    yMin = std::max(yMin, 32);
-    xMax = std::min(xMax, (int32_t)gMapSizeMaxXY);
-    yMax = std::min(yMax, (int32_t)gMapSizeMaxXY);
+    MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
+                            std::min(range.GetRight(), (int32_t)gMapSizeMaxXY),
+                            std::min(range.GetBottom(), (int32_t)gMapSizeMaxXY) };
 
     uint8_t min_height = 0xFF;
-    for (int32_t yi = yMin; yi <= yMax; yi += 32)
+    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += 32)
     {
-        for (int32_t xi = xMin; xi <= xMax; xi += 32)
+        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += 32)
         {
             auto* surfaceElement = map_get_surface_element_at({ xi, yi });
             if (surfaceElement != nullptr && min_height > surfaceElement->base_height)
@@ -936,17 +935,16 @@ uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int
     return min_height;
 }
 
-uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax)
+uint8_t map_get_highest_land_height(const MapRange range)
 {
-    xMin = std::max(xMin, 32);
-    yMin = std::max(yMin, 32);
-    xMax = std::min(xMax, (int32_t)gMapSizeMaxXY);
-    yMax = std::min(yMax, (int32_t)gMapSizeMaxXY);
+    MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
+                            std::min(range.GetRight(), (int32_t)gMapSizeMaxXY),
+                            std::min(range.GetBottom(), (int32_t)gMapSizeMaxXY) };
 
     uint8_t max_height = 0;
-    for (int32_t yi = yMin; yi <= yMax; yi += 32)
+    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += 32)
     {
-        for (int32_t xi = xMin; xi <= xMax; xi += 32)
+        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += 32)
         {
             auto* surfaceElement = map_get_surface_element_at({ xi, yi });
             if (surfaceElement != nullptr)
@@ -964,9 +962,10 @@ uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, in
     return max_height;
 }
 
-bool map_is_location_at_edge(int32_t x, int32_t y)
+bool map_is_location_at_edge(const CoordsXY loc)
 {
-    return x < 32 || y < 32 || x >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32) || y >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+    return loc.x < 32 || loc.y < 32 || loc.x >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32)
+        || loc.y >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
 }
 
 /**
@@ -1203,7 +1202,7 @@ bool map_check_free_elements_and_reorganise(int32_t numElements)
  *
  *  rct2: 0x0068B1F6
  */
-TileElement* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags)
+TileElement* tile_element_insert(const TileCoordsXYZ loc, int32_t flags)
 {
     TileElement *originalTileElement, *newTileElement, *insertedElement;
 
@@ -1214,13 +1213,13 @@ TileElement* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags)
     }
 
     newTileElement = gNextFreeTileElement;
-    originalTileElement = gTileElementTilePointers[y * MAXIMUM_MAP_SIZE_TECHNICAL + x];
+    originalTileElement = gTileElementTilePointers[loc.y * MAXIMUM_MAP_SIZE_TECHNICAL + loc.x];
 
     // Set tile index pointer to point to new element block
-    gTileElementTilePointers[y * MAXIMUM_MAP_SIZE_TECHNICAL + x] = newTileElement;
+    gTileElementTilePointers[loc.y * MAXIMUM_MAP_SIZE_TECHNICAL + loc.x] = newTileElement;
 
     // Copy all elements that are below the insert height
-    while (z >= originalTileElement->base_height)
+    while (loc.z >= originalTileElement->base_height)
     {
         // Copy over map element
         *newTileElement = *originalTileElement;
@@ -1240,9 +1239,9 @@ TileElement* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags)
     // Insert new map element
     insertedElement = newTileElement;
     newTileElement->type = 0;
-    newTileElement->base_height = z;
+    newTileElement->base_height = loc.z;
     newTileElement->flags = flags;
-    newTileElement->clearance_height = z;
+    newTileElement->clearance_height = loc.z;
     std::memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
     newTileElement++;
 

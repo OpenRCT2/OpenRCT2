@@ -362,14 +362,8 @@ private:
         {
             case MAP_SELECT_TYPE_FULL:
             {
-                uint8_t minHeight = heightOffset
-                    + map_get_lowest_land_height(
-                                        validRange.GetLeft(), validRange.GetRight(), validRange.GetTop(),
-                                        validRange.GetBottom());
-                uint8_t maxHeight = heightOffset
-                    + map_get_highest_land_height(
-                                        validRange.GetLeft(), validRange.GetRight(), validRange.GetTop(),
-                                        validRange.GetBottom());
+                uint8_t minHeight = heightOffset + map_get_lowest_land_height(validRange);
+                uint8_t maxHeight = heightOffset + map_get_highest_land_height(validRange);
 
                 // Smooth the 4 corners
                 { // top-left

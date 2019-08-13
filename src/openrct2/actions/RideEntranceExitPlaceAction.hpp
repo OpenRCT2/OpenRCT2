@@ -192,7 +192,7 @@ public:
         res->Position.z = tile_element_height({ _loc.x, _loc.y });
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 
-        TileElement* tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, z / 8, 0b1111);
+        TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, z / 8 }, 0b1111);
         assert(tileElement != nullptr);
         tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
         tileElement->SetDirection(_direction);

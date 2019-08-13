@@ -394,7 +394,7 @@ public:
             return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS, gGameCommandErrorText);
         }
 
-        TileElement* tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, targetHeight / 8, 0);
+        TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, targetHeight / 8 }, 0);
         assert(tileElement != nullptr);
 
         map_animation_create(MAP_ANIMATION_TYPE_WALL, _loc.x, _loc.y, targetHeight / 8);
@@ -613,7 +613,7 @@ private:
 
         *wallAcrossTrack = false;
         gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
-        if (map_is_location_at_edge(_loc.x, _loc.y))
+        if (map_is_location_at_edge({ _loc.x, _loc.y }))
         {
             gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
             return false;

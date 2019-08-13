@@ -643,7 +643,7 @@ void game_fix_save_vars()
             if (surfaceElement == nullptr)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                auto tileElement = tile_element_insert(x, y, 14, 0);
+                auto tileElement = tile_element_insert({ x, y, 14 }, 0);
                 if (tileElement == nullptr)
                 {
                     log_error("Unable to fix: Map element limit reached.");

@@ -579,7 +579,8 @@ public:
                 ride->overall_view.y = mapLoc.y / 32;
             }
 
-            auto tileElement = tile_element_insert(mapLoc.x / 32, mapLoc.y / 32, baseZ, quarterTile.GetBaseQuarterOccupied());
+            auto tileElement = tile_element_insert(
+                { mapLoc.x / 32, mapLoc.y / 32, baseZ }, quarterTile.GetBaseQuarterOccupied());
             assert(tileElement != nullptr);
             tileElement->clearance_height = clearanceZ;
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);

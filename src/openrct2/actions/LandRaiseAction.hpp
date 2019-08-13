@@ -93,7 +93,7 @@ private:
         }
 
         uint8_t minHeight = map_get_lowest_land_height(
-            validRange.GetLeft(), validRange.GetRight(), validRange.GetTop(), validRange.GetBottom());
+            validRange);
 
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
         {

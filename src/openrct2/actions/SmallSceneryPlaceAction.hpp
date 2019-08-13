@@ -430,7 +430,7 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
 
-        TileElement* newElement = tile_element_insert(_loc.x / 32, _loc.y / 32, zLow, quarterTile.GetBaseQuarterOccupied());
+        TileElement* newElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, zLow }, quarterTile.GetBaseQuarterOccupied());
         assert(newElement != nullptr);
         res->tileElement = newElement;
         newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);

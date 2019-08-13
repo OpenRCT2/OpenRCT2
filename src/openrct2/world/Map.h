@@ -153,8 +153,8 @@ EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t 
 EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 int16_t tile_element_height(const CoordsXY loc);
 int16_t tile_element_water_height(const CoordsXY loc);
-uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax);
-uint8_t map_get_lowest_land_height(int32_t xMin, int32_t xMax, int32_t yMin, int32_t yMax);
+uint8_t map_get_highest_land_height(const MapRange range);
+uint8_t map_get_lowest_land_height(const MapRange range);
 bool map_coord_is_connected(const TileCoordsXYZ loc, uint8_t faceDirection);
 void map_remove_provisional_elements();
 void map_restore_provisional_elements();
@@ -174,7 +174,7 @@ void map_get_bounding_box(
 void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(int32_t num_elements);
-TileElement* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags);
+TileElement* tile_element_insert(const TileCoordsXYZ loc, int32_t flags);
 
 using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
 
@@ -248,7 +248,7 @@ TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z,
 TileElement* map_get_track_element_at_with_direction_from_ride(
     int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex);
 
-bool map_is_location_at_edge(int32_t x, int32_t y);
+bool map_is_location_at_edge(const CoordsXY loc);
 void map_obstruction_set_error_text(TileElement* tileElement);
 
 uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t base_z);

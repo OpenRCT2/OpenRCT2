@@ -89,7 +89,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(CoordsXY loc, int16_t ele
     {
         // Create new corrupt element
         TileElement* corruptElement = tile_element_insert(
-            loc.x / 32, loc.y / 32, -1, 0); // Ugly hack: -1 guarantees this to be placed first
+            { loc.x / 32, loc.y / 32, -1 }, 0); // Ugly hack: -1 guarantees this to be placed first
         if (corruptElement == nullptr)
         {
             log_warning("Failed to insert corrupt element.");
@@ -320,7 +320,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
             tile_element_set_banner_index(&element, newBannerIndex);
         }
 
-        TileElement* const pastedElement = tile_element_insert(loc.x / 32, loc.y / 32, element.base_height, 0);
+        TileElement* const pastedElement = tile_element_insert({ loc.x / 32, loc.y / 32, element.base_height }, 0);
 
         bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement = element;

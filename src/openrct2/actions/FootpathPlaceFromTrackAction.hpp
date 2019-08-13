@@ -246,7 +246,7 @@ private:
         }
         else
         {
-            auto tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, zLow, 0b1111);
+            auto tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, zLow }, 0b1111);
             assert(tileElement != nullptr);
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();

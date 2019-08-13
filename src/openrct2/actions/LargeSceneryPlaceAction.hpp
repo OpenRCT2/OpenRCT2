@@ -317,7 +317,7 @@ public:
             }
 
             TileElement* newTileElement = tile_element_insert(
-                curTile.x / 32, curTile.y / 32, zLow, quarterTile.GetBaseQuarterOccupied());
+                { curTile.x / 32, curTile.y / 32, zLow }, quarterTile.GetBaseQuarterOccupied());
             Guard::Assert(newTileElement != nullptr);
             map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
             newTileElement->SetType(TILE_ELEMENT_TYPE_LARGE_SCENERY);
