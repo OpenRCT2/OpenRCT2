@@ -149,11 +149,12 @@ private:
         _nextDownloadQueued = true;
     }
 
-    void DownloadObject(const rct_object_entry& entry, const std::string name, const std::string_view url)
+    void DownloadObject(const rct_object_entry& entry, const std::string name, const std::string url)
     {
         using namespace OpenRCT2::Network;
         try
         {
+            std::printf("Downloading %s\n", url.c_str());
             Http::Request req;
             req.method = Http::Method::GET;
             req.url = url;
@@ -201,7 +202,7 @@ private:
 
         auto& entry = _entries[_currentDownloadIndex];
         auto name = String::Trim(std::string(entry.name, sizeof(entry.name)));
-        std::printf("Downloading %s...\n", name.c_str());
+        log_verbose("Downloading object: [%s]:", name.c_str());
         _currentDownloadIndex++;
         UpdateProgress({ name, _lastDownloadSource, _currentDownloadIndex, _entries.size() });
         try
