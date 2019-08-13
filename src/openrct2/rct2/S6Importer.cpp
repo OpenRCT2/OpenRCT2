@@ -1528,18 +1528,13 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectR
     return std::make_unique<S6Importer>(objectRepository);
 }
 
-static void show_error(uint8_t errorType, const rct_string_id& errorStringId)
+static void show_error(uint8_t errorType, rct_string_id errorStringId)
 {
-    rct_string_id titleText = STR_UNABLE_TO_LOAD_FILE;
-    rct_string_id bodyText = errorStringId;
     if (errorType == ERROR_TYPE_GENERIC)
     {
-        titleText = errorStringId;
-        bodyText = 0xFFFF;
+        context_show_error(errorStringId, 0xFFFF);
     }
-    errorType = ERROR_TYPE_NONE;
-
-    context_show_error(titleText, bodyText);
+    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId);
 }
 
 void load_from_sv6(const char* path)
