@@ -6484,7 +6484,7 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
  */
 static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView)
 {
-    TileElement *tileElement;
+    TileElement* tileElement;
 
     auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
 

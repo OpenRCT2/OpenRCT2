@@ -92,8 +92,7 @@ private:
             audio_play_sound_at_location(SoundId::PlaceItem, _coords.x, _coords.y, tile_element_height(_coords));
         }
 
-        uint8_t minHeight = map_get_lowest_land_height(
-            validRange);
+        uint8_t minHeight = map_get_lowest_land_height(validRange);
 
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
         {

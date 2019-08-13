@@ -9917,8 +9917,7 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
 
         while (true)
         {
-            auto* pathElement = map_get_path_element_at(
-                { xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
+            auto* pathElement = map_get_path_element_at({ xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
             auto ride = get_ride(vehicle->ride);
 
             // Many New Element parks have invisible rides hacked into the path.
@@ -9993,8 +9992,7 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
                 }
             }
 
-            auto* pathElement = map_get_path_element_at(
-                { xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
+            auto* pathElement = map_get_path_element_at({ xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
             if (pathElement)
             {
                 pathElement->SetIsBlockedByVehicle(false);

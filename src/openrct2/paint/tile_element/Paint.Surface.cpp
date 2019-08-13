@@ -958,7 +958,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             continue;
         }
 
-        const uint32_t surfaceSlope = viewport_surface_paint_setup_get_relative_slope(reinterpret_cast<TileElement*>(surfaceElement), rotation);
+        const uint32_t surfaceSlope = viewport_surface_paint_setup_get_relative_slope(
+            reinterpret_cast<TileElement*>(surfaceElement), rotation);
         const uint8_t baseHeight = surfaceElement->base_height / 2;
         const corner_height& ch = corner_heights[surfaceSlope];
 

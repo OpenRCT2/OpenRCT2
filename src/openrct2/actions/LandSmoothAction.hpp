@@ -72,8 +72,8 @@ public:
     }
 
 private:
-    GameActionResult::Ptr SmoothLandTile(int32_t direction, bool isExecuting, int32_t x, int32_t y, SurfaceElement* surfaceElement)
-        const
+    GameActionResult::Ptr SmoothLandTile(
+        int32_t direction, bool isExecuting, int32_t x, int32_t y, SurfaceElement* surfaceElement) const
     {
         int32_t targetBaseZ = surfaceElement->base_height;
         int32_t slope = surfaceElement->GetSlope();

@@ -68,8 +68,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-            && !map_is_location_owned(_loc))
+        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
