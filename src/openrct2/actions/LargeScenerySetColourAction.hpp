@@ -62,7 +62,7 @@ private:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height(_loc.x, _loc.y);
+        res->Position.z = tile_element_height({ _loc.x, _loc.y });
         res->ErrorTitle = STR_CANT_REPAINT_THIS;
 
         if (_loc.x < 0 || _loc.y < 0 || _loc.x > gMapSizeMaxXY || _loc.y > gMapSizeMaxXY)

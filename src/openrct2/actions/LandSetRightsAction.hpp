@@ -97,7 +97,7 @@ private:
 
         CoordsXYZ centre{ (validRange.GetLeft() + validRange.GetRight()) / 2 + 16,
                           (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
-        centre.z = tile_element_height(centre.x, centre.y);
+        centre.z = tile_element_height({ centre.x, centre.y });
 
         res->Position = centre;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;

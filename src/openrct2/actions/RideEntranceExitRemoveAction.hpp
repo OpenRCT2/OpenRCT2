@@ -168,7 +168,7 @@ public:
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+        res->Position.z = tile_element_height({ res->Position.x, res->Position.y });
 
         footpath_queue_chain_reset();
         maze_entrance_hedge_replacement(_loc.x, _loc.y, tileElement);

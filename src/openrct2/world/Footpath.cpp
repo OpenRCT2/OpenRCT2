@@ -292,7 +292,7 @@ void footpath_get_coordinates_from_pos(
     {
         if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH)
         {
-            z = tile_element_height(position.x, position.y);
+            z = tile_element_height({ position.x, position.y });
         }
         position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
         position.x = std::clamp(position.x, minPosition.x, maxPosition.x);

@@ -124,7 +124,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+        res->Position.z = tile_element_height({ res->Position.x, res->Position.y });
 
         map_invalidate_tile_full(_loc.x, _loc.y);
         tile_element_remove(tileElement);

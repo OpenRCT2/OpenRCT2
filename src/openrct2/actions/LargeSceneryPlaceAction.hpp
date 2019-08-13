@@ -89,7 +89,7 @@ public:
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y);
+        int16_t surfaceHeight = tile_element_height({ _loc.x, _loc.y });
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = surfaceHeight;
@@ -214,7 +214,7 @@ public:
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
-        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y);
+        int16_t surfaceHeight = tile_element_height({ _loc.x, _loc.y });
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = surfaceHeight;

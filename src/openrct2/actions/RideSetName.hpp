@@ -97,7 +97,7 @@ public:
         auto res = std::make_unique<GameActionResult>();
         res->Position.x = ride->overall_view.x * 32 + 16;
         res->Position.y = ride->overall_view.y * 32 + 16;
-        res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+        res->Position.z = tile_element_height({ res->Position.x, res->Position.y });
 
         return res;
     }

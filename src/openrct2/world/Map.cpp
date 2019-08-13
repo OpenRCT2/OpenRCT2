@@ -461,18 +461,14 @@ void map_update_tile_pointers()
  * dx: return remember to & with 0xFFFF if you don't want water affecting results
  *  rct2: 0x00662783
  */
-int16_t tile_element_height(int32_t x, int32_t y)
+int16_t tile_element_height(const CoordsXY loc)
 {
     // Off the map
-    if ((unsigned)x >= 8192 || (unsigned)y >= 8192)
+    if ((unsigned)loc.x >= 8192 || (unsigned)loc.y >= 8192)
         return 16;
 
-    // Truncate subtile coordinates
-    int32_t x_tile = x & 0xFFFFFFE0;
-    int32_t y_tile = y & 0xFFFFFFE0;
-
     // Get the surface element for the tile
-    auto surfaceElement = map_get_surface_element_at({ x_tile, y_tile });
+    auto surfaceElement = map_get_surface_element_at(loc);
 
     if (surfaceElement == nullptr)
     {
@@ -493,8 +489,8 @@ int16_t tile_element_height(int32_t x, int32_t y)
 
     uint8_t TILE_SIZE = 31;
 
-    xl = x & 0x1f;
-    yl = y & 0x1f;
+    xl = loc.x & 0x1f;
+    yl = loc.y & 0x1f;
 
     // Slope logic:
     // Each of the four bits in slope represents that corner being raised

@@ -959,7 +959,7 @@ void Peep::UpdateFalling()
                         return;
                     }
                 }
-                int32_t map_height = tile_element_height(0xFFFF & x, 0xFFFF & y);
+                int32_t map_height = tile_element_height({ x, y });
                 if (map_height < z || map_height - 4 > z)
                     continue;
                 saved_height = map_height;
@@ -3159,8 +3159,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     if (type == PEEP_TYPE_STAFF || (GetNextIsSurface()))
     {
-        int16_t height = abs(tile_element_height(newLoc.x, newLoc.y) - z);
-
+        int16_t height = abs(tile_element_height(newLoc) - z);
         if (height <= 3 || (type == PEEP_TYPE_STAFF && height <= 32))
         {
             interaction_ride_index = 0xFF;
@@ -3248,7 +3247,7 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 
     if (GetNextIsSurface())
     {
-        return tile_element_height(tile_x, tile_y);
+        return tile_element_height({ tile_x, tile_y });
     }
 
     int32_t height = next_z * 8;

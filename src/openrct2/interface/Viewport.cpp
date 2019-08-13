@@ -221,7 +221,7 @@ void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t* z)
     for (int32_t i = 0; i < 6; i++)
     {
         pos = viewport_coord_to_map_coord(start_x, start_y, height);
-        height = tile_element_height((0xFFFF) & pos.x, (0xFFFF) & pos.y);
+        height = tile_element_height({ (0xFFFF) & pos.x, (0xFFFF) & pos.y });
 
         // HACK: This is to prevent the x and y values being set to values outside
         // of the map. This can happen when the height is larger than the map size.
@@ -640,7 +640,7 @@ void viewport_update_sprite_follow(rct_window* window)
     {
         rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
-        int32_t height = (tile_element_height(0xFFFF & sprite->generic.x, 0xFFFF & sprite->generic.y)) - 16;
+        int32_t height = (tile_element_height({ sprite->generic.x, sprite->generic.y })) - 16;
         int32_t underground = sprite->generic.z < height;
 
         viewport_set_underground_flag(underground, window, window->viewport);
@@ -733,7 +733,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
                 focus.type = VIEWPORT_FOCUS_TYPE_COORDINATE;
                 focus.coordinate.x = x;
                 focus.coordinate.y = y;
-                focus.coordinate.z = tile_element_height(x, y) + 32;
+                focus.coordinate.z = tile_element_height({ x, y }) + 32;
                 focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
             }
         }
@@ -1808,7 +1808,7 @@ void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y,
 
     for (int32_t i = 0; i < 5; i++)
     {
-        int32_t z = tile_element_height(map_pos.x, map_pos.y);
+        int32_t z = tile_element_height({ map_pos.x, map_pos.y });
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
         map_pos.x = std::clamp<int16_t>(map_pos.x, my_x, my_x + 31);
         map_pos.y = std::clamp<int16_t>(map_pos.y, my_y, my_y + 31);

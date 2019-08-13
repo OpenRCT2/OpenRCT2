@@ -78,7 +78,7 @@ private:
 
         auto x = (_range.GetLeft() + _range.GetRight()) / 2 + 16;
         auto y = (_range.GetTop() + _range.GetBottom()) / 2 + 16;
-        auto z = tile_element_height(x, y);
+        auto z = tile_element_height({ x, y });
         result->Position = CoordsXYZ(x, y, z);
 
         return result;

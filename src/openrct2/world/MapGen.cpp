@@ -236,7 +236,7 @@ static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
         return;
     }
 
-    surfaceZ = tile_element_height(x * 32 + 16, y * 32 + 16) / 8;
+    surfaceZ = tile_element_height({ x * 32 + 16, y * 32 + 16 }) / 8;
     tileElement = tile_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
     assert(tileElement != nullptr);
     tileElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);

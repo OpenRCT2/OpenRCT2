@@ -224,7 +224,7 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
             }
             *x = ride->overall_view.x * 32 + 16;
             *y = ride->overall_view.y * 32 + 16;
-            *z = tile_element_height(*x, *y);
+            *z = tile_element_height({ *x, *y });
             break;
         case NEWS_ITEM_PEEP_ON_RIDE:
             peep = GET_PEEP(subject);
@@ -268,7 +268,7 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
         case NEWS_ITEM_BLANK:
             *x = subject;
             *y = subject >> 16;
-            *z = tile_element_height(*x, *y);
+            *z = tile_element_height({ *x, *y });
             break;
         default:
             *x = LOCATION_NULL;

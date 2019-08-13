@@ -816,7 +816,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
 
     if (w->viewport)
     {
-        int16_t height = tile_element_height(x, y);
+        int16_t height = tile_element_height({ x, y });
         if (z < height - 16)
         {
             if (!(w->viewport->flags & 1 << 0))
@@ -927,7 +927,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
     }
     else
     {
-        z = tile_element_height(x, y);
+        z = tile_element_height({ x, y });
     }
 
     gCurrentRotation = (get_current_rotation() + direction) & 3;
@@ -957,7 +957,7 @@ void window_viewport_get_map_coords_by_cursor(
     get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, nullptr, nullptr, nullptr);
 
     // Get viewport coordinates centring around the tile.
-    int32_t base_height = tile_element_height(*map_x, *map_y);
+    int32_t base_height = tile_element_height({ *map_x, *map_y });
     int32_t dest_x, dest_y;
     centre_2d_coordinates(*map_x, *map_y, base_height, &dest_x, &dest_y, w->viewport);
 
@@ -974,7 +974,7 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int
 {
     // Get viewport coordinates centring around the tile.
     int32_t dest_x, dest_y;
-    int32_t base_height = tile_element_height(map_x, map_y);
+    int32_t base_height = tile_element_height({ map_x, map_y });
     centre_2d_coordinates(map_x, map_y, base_height, &dest_x, &dest_y, w->viewport);
 
     // Get mouse position to offset against.

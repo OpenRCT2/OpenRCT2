@@ -1181,7 +1181,7 @@ void Staff::UpdateMowing()
     {
         if (auto loc = UpdateAction())
         {
-            int16_t checkZ = tile_element_height((*loc).x, (*loc).y);
+            int16_t checkZ = tile_element_height(*loc);
             MoveTo((*loc).x, (*loc).y, checkZ);
             Invalidate();
             return;

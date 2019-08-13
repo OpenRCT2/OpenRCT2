@@ -99,7 +99,7 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t landHeight = tile_element_height(_loc.x, _loc.y);
+        int32_t landHeight = tile_element_height({ _loc.x, _loc.y });
         int16_t waterHeight = tile_element_water_height(_loc.x, _loc.y);
 
         int32_t surfaceHeight = landHeight;
@@ -159,7 +159,7 @@ public:
             x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
             y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
         }
-        landHeight = tile_element_height(x2, y2);
+        landHeight = tile_element_height({ x2, y2 });
         waterHeight = tile_element_water_height(x2, y2);
 
         surfaceHeight = landHeight;
@@ -302,7 +302,7 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t landHeight = tile_element_height(_loc.x, _loc.y);
+        int32_t landHeight = tile_element_height({ _loc.x, _loc.y });
         int16_t waterHeight = tile_element_water_height(_loc.x, _loc.y);
 
         int32_t surfaceHeight = landHeight;
@@ -352,7 +352,7 @@ public:
             x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
             y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
         }
-        landHeight = tile_element_height(x2, y2);
+        landHeight = tile_element_height({ x2, y2 });
         waterHeight = tile_element_water_height(x2, y2);
 
         surfaceHeight = landHeight;

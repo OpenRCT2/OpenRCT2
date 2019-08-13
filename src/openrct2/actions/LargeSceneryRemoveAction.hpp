@@ -56,7 +56,7 @@ public:
 
         const uint32_t flags = GetFlags();
 
-        int32_t z = tile_element_height(_loc.x, _loc.x);
+        int32_t z = tile_element_height({ _loc.x, _loc.x });
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = z;
@@ -126,7 +126,7 @@ public:
 
         const uint32_t flags = GetFlags();
 
-        int32_t z = tile_element_height(_loc.x, _loc.y);
+        int32_t z = tile_element_height({ _loc.x, _loc.y });
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = z;
