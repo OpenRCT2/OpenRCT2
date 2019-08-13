@@ -281,9 +281,9 @@ SurfaceElement* map_get_surface_element_at(const CoordsXY coords)
     return map_get_surface_element_at(coords.x / 32, coords.y / 32);
 }
 
-TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z)
+PathElement* map_get_path_element_at(const TileCoordsXYZ loc)
 {
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
 
     if (tileElement == nullptr)
         return nullptr;
@@ -295,10 +295,10 @@ TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != loc.z)
             continue;
 
-        return tileElement;
+        return tileElement->AsPath();
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;

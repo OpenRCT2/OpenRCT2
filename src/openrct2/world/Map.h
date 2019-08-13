@@ -145,7 +145,7 @@ int32_t map_height_from_slope(CoordsXY coords, int32_t slope, bool isSloped);
 BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t direction);
 SurfaceElement* map_get_surface_element_at(int32_t x, int32_t y);
 SurfaceElement* map_get_surface_element_at(CoordsXY coords);
-TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z);
+PathElement* map_get_path_element_at(const TileCoordsXYZ loc);
 WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
 SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);

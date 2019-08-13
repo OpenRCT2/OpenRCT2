@@ -9917,20 +9917,20 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
 
         while (true)
         {
-            TileElement* tileElement = map_get_path_element_at(
-                xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
+            auto* pathElement = map_get_path_element_at(
+                { xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
             auto ride = get_ride(vehicle->ride);
 
             // Many New Element parks have invisible rides hacked into the path.
             // Limit path blocking to Miniature Railway to prevent peeps getting stuck everywhere.
-            if (tileElement && ride != nullptr && ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
+            if (pathElement && ride != nullptr && ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
             {
-                if (!playedClaxon && !tileElement->AsPath()->IsBlockedByVehicle())
+                if (!playedClaxon && !pathElement->IsBlockedByVehicle())
                 {
                     vehicle_claxon(vehicle);
                 }
                 crossingBonus = 4;
-                tileElement->AsPath()->SetIsBlockedByVehicle(true);
+                pathElement->SetIsBlockedByVehicle(true);
             }
             else
             {
@@ -9993,11 +9993,11 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
                 }
             }
 
-            TileElement* tileElement = map_get_path_element_at(
-                xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
-            if (tileElement)
+            auto* pathElement = map_get_path_element_at(
+                { xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
+            if (pathElement)
             {
-                tileElement->AsPath()->SetIsBlockedByVehicle(false);
+                pathElement->SetIsBlockedByVehicle(false);
             }
         }
     }

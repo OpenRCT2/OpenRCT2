@@ -614,12 +614,12 @@ static bool staff_path_finding_handyman(Peep* peep)
         }
         else
         {
-            TileElement* tileElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+            auto* pathElement = map_get_path_element_at({ peep->next_x / 32, peep->next_y / 32, peep->next_z });
 
-            if (tileElement == nullptr)
+            if (pathElement == nullptr)
                 return true;
 
-            uint8_t pathDirections = (tileElement->AsPath()->GetEdges() & validDirections) & 0xF;
+            uint8_t pathDirections = (pathElement->GetEdges() & validDirections) & 0xF;
             if (pathDirections == 0)
             {
                 direction = staff_handyman_direction_rand_surface(peep, validDirections);
@@ -782,10 +782,10 @@ static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirect
  *
  *  rct2: 0x006C0121
  */
-static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections, TileElement* pathElement)
+static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
 {
     uint8_t direction = 0xFF;
-    uint8_t pathDirections = pathElement->AsPath()->GetEdges();
+    uint8_t pathDirections = pathElement->GetEdges();
     pathDirections &= validDirections;
 
     if (pathDirections == 0)
@@ -885,7 +885,7 @@ static bool staff_path_finding_mechanic(Peep* peep)
     }
     else
     {
-        TileElement* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        auto* pathElement = map_get_path_element_at({ peep->next_x / 32, peep->next_y / 32, peep->next_z });
         if (pathElement == nullptr)
             return true;
 
@@ -917,10 +917,10 @@ static bool staff_path_finding_mechanic(Peep* peep)
  *
  *  rct2: 0x006C050B
  */
-static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, TileElement* pathElement)
+static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
 {
     uint8_t direction = 0xFF;
-    uint8_t pathDirections = pathElement->AsPath()->GetEdges();
+    uint8_t pathDirections = pathElement->GetEdges();
     if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION)
     {
         pathDirections &= validDirections;
@@ -973,7 +973,7 @@ static bool staff_path_finding_misc(Peep* peep)
     }
     else
     {
-        TileElement* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        auto* pathElement = map_get_path_element_at({ peep->next_x / 32, peep->next_y / 32, peep->next_z });
         if (pathElement == nullptr)
             return true;
 

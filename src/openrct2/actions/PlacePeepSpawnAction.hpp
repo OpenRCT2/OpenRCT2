@@ -71,10 +71,9 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        TileElement *mapElement;
         // Verify footpath exists at location, and retrieve coordinates
-        mapElement = map_get_path_element_at(_location.x >> 5, _location.y >> 5, _location.z / 8);
-        if (mapElement == nullptr)
+        auto pathElement = map_get_path_element_at({ _location.x >> 5, _location.y >> 5, _location.z / 8 });
+        if (pathElement == nullptr)
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
