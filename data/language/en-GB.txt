@@ -3652,6 +3652,7 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Downloading [{STRING}] from {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Create Ducks
 STR_6332    :Remove Ducks
+STR_6333	:Random title sequence
 
 #############
 # Scenarios #

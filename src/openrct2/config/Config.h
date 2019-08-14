@@ -106,6 +106,7 @@ struct InterfaceConfiguration
     bool toolbar_show_mute;
     bool toolbar_show_chat;
     bool console_small_font;
+    bool random_title_sequence;
     utf8* current_theme_preset;
     utf8* current_title_sequence_preset;
     int32_t object_selection_filter_flags;
