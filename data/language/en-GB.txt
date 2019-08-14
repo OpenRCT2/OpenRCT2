@@ -3777,6 +3777,7 @@ STR_6326    :Can't simulate {POP16}{POP16}{POP16}{STRINGID}...
 STR_6327    :Transparent background for giant screenshots
 STR_6328    :{SMALLFONT}{BLACK}With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
 STR_6329    :{STRING}{STRINGID}
+STR_6330    :Downloading [{STRING}] from {STRING} ({COMMA16} / {COMMA16})
 
 #############
 # Scenarios #
