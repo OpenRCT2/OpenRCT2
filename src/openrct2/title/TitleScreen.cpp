@@ -225,6 +225,13 @@ void TitleScreen::TitleInitialise()
     {
         _sequencePlayer = GetContext()->GetUiContext()->GetTitleSequencePlayer();
     }
+    if (gConfigInterface.random_title_sequence) {
+        int total = TitleSequenceManager::GetCount();
+        int random = rand() % total --;
+        const utf8* randomSequence = title_sequence_manager_get_name(random);
+        ChangePresetSequence(random);
+        
+    }
     size_t seqId = title_get_config_sequence();
     if (seqId == SIZE_MAX)
     {
