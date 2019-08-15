@@ -914,7 +914,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 case WIDX_TITLE_SEQUENCE_RANDOM:
                     gConfigInterface.random_title_sequence ^=1;
                     config_save_default();
-                    printf("Random \n");
                     w->Invalidate();
                     break;
                 case WIDX_AUTO_OPEN_SHOPS:
