@@ -11,6 +11,7 @@
 #define _PEEP_H_
 
 #include "../common.h"
+#include "../core/Optional.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
@@ -698,8 +699,8 @@ public: // Peep
     Staff* AsStaff();
 
     void Update();
-    bool UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance);
-    bool UpdateAction();
+    std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
+    std::optional<CoordsXY> UpdateAction();
     void SetState(PeepState new_state);
     void Remove();
     void Invalidate();
