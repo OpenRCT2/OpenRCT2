@@ -1528,6 +1528,15 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectR
     return std::make_unique<S6Importer>(objectRepository);
 }
 
+static void show_error(uint8_t errorType, rct_string_id errorStringId)
+{
+    if (errorType == ERROR_TYPE_GENERIC)
+    {
+        context_show_error(errorStringId, 0xFFFF);
+    }
+    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId);
+}
+
 void load_from_sv6(const char* path)
 {
     auto context = OpenRCT2::GetContext();
@@ -1546,19 +1555,16 @@ void load_from_sv6(const char* path)
     }
     catch (const ObjectLoadException&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
     catch (const IOException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const std::exception&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
 }
 
@@ -1584,20 +1590,17 @@ void load_from_sc6(const char* path)
     }
     catch (const ObjectLoadException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const IOException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const std::exception&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
     gScreenAge = 0;
     gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
