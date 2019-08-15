@@ -5056,6 +5056,7 @@ void Guest::UpdateRideLeaveExit()
             MoveTo((*loc).x, (*loc).y, ride->stations[current_ride_station].Height * 8);
             Invalidate();
         }
+        return;
     }
 
     OnExitRide(current_ride);
