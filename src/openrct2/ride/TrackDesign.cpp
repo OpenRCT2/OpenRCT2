@@ -568,10 +568,10 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
 
 std::unique_ptr<TrackDesign> track_design_open(const utf8* path)
 {
-    auto trackImporter = TrackImporter::Create(path);
-    trackImporter->Load(path);
     try
     {
+        auto trackImporter = TrackImporter::Create(path);
+        trackImporter->Load(path);
         return trackImporter->Import();
     }
     catch (const std::exception& e)
