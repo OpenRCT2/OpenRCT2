@@ -2809,6 +2809,7 @@ bool Network::LoadMap(IStream* stream)
         importer->Import();
 
         sprite_position_tween_reset();
+        AutoCreateMapAnimations();
 
         // Read checksum
         [[maybe_unused]] uint32_t checksum = stream->ReadValue<uint32_t>();
