@@ -92,12 +92,14 @@ void screenshot_check()
     }
 }
 
-static void screenshot_get_rendered_palette(rct_palette* palette)
+static rct_palette screenshot_get_rendered_palette()
 {
+    rct_palette palette;
     for (int32_t i = 0; i < 256; i++)
     {
-        palette->entries[i] = gPalette[i];
+        palette.entries[i] = gPalette[i];
     }
+    return palette;
 }
 
 static std::string screenshot_get_park_name()
@@ -176,9 +178,7 @@ std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
         return "";
     }
 
-    rct_palette renderedPalette;
-    screenshot_get_rendered_palette(&renderedPalette);
-
+    auto renderedPalette = screenshot_get_rendered_palette();
     if (WriteDpiToFile(path->c_str(), dpi, renderedPalette))
     {
         return *path;
@@ -219,90 +219,181 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
     }
 }
 
-void screenshot_giant()
+enum class EdgeType
 {
-    int32_t originalRotation = get_current_rotation();
-    int32_t originalZoom = 0;
+    LEFT,
+    TOP,
+    RIGHT,
+    BOTTOM
+};
 
-    rct_window* mainWindow = window_get_main();
-    rct_viewport* vp = window_get_viewport(mainWindow);
-    if (mainWindow != nullptr && vp != nullptr)
-        originalZoom = vp->zoom;
-
-    int32_t rotation = originalRotation;
-    int32_t zoom = originalZoom;
-    int32_t mapSize = gMapSize;
-    int32_t resolutionWidth = (mapSize * 32 * 2) >> zoom;
-    int32_t resolutionHeight = (mapSize * 32 * 1) >> zoom;
-
-    resolutionWidth += 8;
-    resolutionHeight += 128;
-
-    rct_viewport viewport;
-    viewport.x = 0;
-    viewport.y = 0;
-    viewport.width = resolutionWidth;
-    viewport.height = resolutionHeight;
-    viewport.view_width = viewport.width;
-    viewport.view_height = viewport.height;
-    viewport.var_11 = 0;
-    viewport.flags = vp->flags;
-
-    int32_t centreX = (mapSize / 2) * 32 + 16;
-    int32_t centreY = (mapSize / 2) * 32 + 16;
-
-    int32_t z = tile_element_height({ centreX, centreY });
-
-    CoordsXYZ centreCoords3d = { centreX, centreY, z };
-    auto centreCoords2d = translate_3d_to_2d_with_z(rotation, centreCoords3d);
-
-    viewport.view_x = centreCoords2d.x - ((viewport.view_width << zoom) / 2);
-    viewport.view_y = centreCoords2d.y - ((viewport.view_height << zoom) / 2);
-    viewport.zoom = zoom;
-    gCurrentRotation = rotation;
-
-    // Ensure sprites appear regardless of rotation
-    reset_all_sprite_quadrant_placements();
-
-    rct_drawpixelinfo dpi;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = resolutionWidth;
-    dpi.height = resolutionHeight;
-    dpi.pitch = 0;
-    dpi.zoom_level = 0;
-    dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
-
-    if (gConfigGeneral.transparent_screenshot)
+static CoordsXY GetEdgeTile(int32_t mapSize, int32_t rotation, EdgeType edgeType, bool visible)
+{
+    int32_t lower = (visible ? 1 : 0) * 32;
+    int32_t upper = (visible ? mapSize - 2 : mapSize - 1) * 32;
+    switch (edgeType)
     {
-        std::memset(dpi.bits, PALETTE_INDEX_0, dpi.width * dpi.height);
-        viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+        default:
+        case EdgeType::LEFT:
+            switch (rotation)
+            {
+                default:
+                case 0:
+                    return { upper, lower };
+                case 1:
+                    return { upper, upper };
+                case 2:
+                    return { lower, upper };
+                case 3:
+                    return { lower, lower };
+            }
+        case EdgeType::TOP:
+            switch (rotation)
+            {
+                default:
+                case 0:
+                    return { lower, lower };
+                case 1:
+                    return { upper, lower };
+                case 2:
+                    return { upper, upper };
+                case 3:
+                    return { lower, upper };
+            }
+        case EdgeType::RIGHT:
+            switch (rotation)
+            {
+                default:
+                case 0:
+                    return { lower, upper };
+                case 1:
+                    return { lower, lower };
+                case 2:
+                    return { upper, lower };
+                case 3:
+                    return { upper, upper };
+            }
+        case EdgeType::BOTTOM:
+            switch (rotation)
+            {
+                default:
+                case 0:
+                    return { upper, upper };
+                case 1:
+                    return { lower, upper };
+                case 2:
+                    return { lower, lower };
+                case 3:
+                    return { upper, lower };
+            }
+    }
+}
+
+static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, int32_t zoom)
+{
+    // Get the tile coordinates of each corner
+    auto leftTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::LEFT, false);
+    auto topTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::TOP, true);
+    auto rightTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::RIGHT, false);
+    auto bottomTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::BOTTOM, false);
+
+    // Centre the coordinates so we don't have a hard crop at the edge of the visible tile
+    leftTileCoords += CoordsXY(16, 16);
+    topTileCoords += CoordsXY(16, 16);
+    rightTileCoords += CoordsXY(16, 16);
+    bottomTileCoords += CoordsXY(16, 16);
+
+    // For the top tile we want to add a certain amount to account for any tall elements
+    auto topTileHeight = tile_element_height(topTileCoords) + 128;
+
+    // Calculate the viewport bounds
+    int32_t left = translate_3d_to_2d_with_z(rotation, CoordsXYZ(leftTileCoords, 0)).x;
+    int32_t top = translate_3d_to_2d_with_z(rotation, CoordsXYZ(topTileCoords, topTileHeight)).y;
+    int32_t right = translate_3d_to_2d_with_z(rotation, CoordsXYZ(rightTileCoords, 0)).x;
+    int32_t bottom = translate_3d_to_2d_with_z(rotation, CoordsXYZ(bottomTileCoords, 0)).y;
+
+    rct_viewport viewport{};
+    viewport.view_x = left;
+    viewport.view_y = top;
+    viewport.view_width = right - left;
+    viewport.view_height = bottom - top;
+    viewport.width = viewport.view_width >> zoom;
+    viewport.height = viewport.view_height >> zoom;
+    viewport.zoom = zoom;
+    return viewport;
+}
+
+static rct_drawpixelinfo RenderViewport(const rct_viewport& viewport)
+{
+    rct_drawpixelinfo dpi;
+    dpi.width = viewport.width;
+    dpi.height = viewport.height;
+    dpi.bits = (uint8_t*)malloc((size_t)dpi.width * dpi.height);
+    if (dpi.bits == nullptr)
+    {
+        throw std::runtime_error("Giant screenshot failed, unable to allocate memory for image.");
+    }
+
+    if (viewport.flags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND)
+    {
+        std::memset(dpi.bits, PALETTE_INDEX_0, (size_t)dpi.width * dpi.height);
     }
 
     auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
     dpi.DrawingEngine = drawingEngine.get();
-
     viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
+    return dpi;
+}
 
-    auto path = screenshot_get_next_path();
-    if (path == opt::nullopt)
+void screenshot_giant()
+{
+    rct_drawpixelinfo dpi;
+    try
     {
-        log_error("Giant screenshot failed, unable to find a suitable destination path.");
-        context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
-        return;
+        auto path = screenshot_get_next_path();
+        if (path == opt::nullopt)
+        {
+            throw std::runtime_error("Giant screenshot failed, unable to find a suitable destination path.");
+        }
+
+        int32_t rotation = get_current_rotation();
+        int32_t zoom = 0;
+
+        auto mainWindow = window_get_main();
+        auto vp = window_get_viewport(mainWindow);
+        if (mainWindow != nullptr && vp != nullptr)
+        {
+            zoom = vp->zoom;
+        }
+
+        auto viewport = GetGiantViewport(gMapSize, rotation, zoom);
+        if (vp != nullptr)
+        {
+            viewport.flags = vp->flags;
+        }
+        if (gConfigGeneral.transparent_screenshot)
+        {
+            viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+        }
+
+        // Ensure sprites appear regardless of rotation
+        reset_all_sprite_quadrant_placements();
+        dpi = RenderViewport(viewport);
+
+        auto renderedPalette = screenshot_get_rendered_palette();
+        WriteDpiToFile(path->c_str(), &dpi, renderedPalette);
+
+        // Show user that screenshot saved successfully
+        set_format_arg(0, rct_string_id, STR_STRING);
+        set_format_arg(2, char*, path_get_filename(path->c_str()));
+        context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE);
     }
-
-    rct_palette renderedPalette;
-    screenshot_get_rendered_palette(&renderedPalette);
-
-    WriteDpiToFile(path->c_str(), &dpi, renderedPalette);
-
+    catch (const std::exception& e)
+    {
+        log_error("%s", e.what());
+        context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
+    }
     free(dpi.bits);
-
-    // Show user that screenshot saved successfully
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, char*, path_get_filename(path->c_str()));
-    context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE);
 }
 
 static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<IContext>& context, uint32_t iterationCount)
@@ -406,167 +497,18 @@ int32_t cmdline_for_gfxbench(const char** argv, int32_t argc)
     return 1;
 }
 
-int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
+static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewport)
 {
-    // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
-    for (int32_t i = 0; i < argc; i++)
-    {
-        if (argv[i][0] == '-')
-        {
-            // Setting argc to i works, because options can only be at the end of the command
-            argc = i;
-            break;
-        }
-    }
-
-    bool giantScreenshot = (argc == 5) && _stricmp(argv[2], "giant") == 0;
-    if (argc != 4 && argc != 8 && !giantScreenshot)
-    {
-        std::printf("Usage: openrct2 screenshot <file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
-        std::printf("Usage: openrct2 screenshot <file> <output_image> giant <zoom> <rotation>\n");
-        return -1;
-    }
-
-    core_init();
-    bool customLocation = false;
-    bool centreMapX = false;
-    bool centreMapY = false;
-    int32_t resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation = 0;
-
-    const char* inputPath = argv[0];
-    const char* outputPath = argv[1];
-    if (giantScreenshot)
-    {
-        resolutionWidth = 0;
-        resolutionHeight = 0;
-        customLocation = true;
-        centreMapX = true;
-        centreMapY = true;
-        customZoom = std::atoi(argv[3]);
-        customRotation = std::atoi(argv[4]) & 3;
-    }
-    else
-    {
-        resolutionWidth = std::atoi(argv[2]);
-        resolutionHeight = std::atoi(argv[3]);
-        if (argc == 8)
-        {
-            customLocation = true;
-            if (argv[4][0] == 'c')
-                centreMapX = true;
-            else
-                customX = std::atoi(argv[4]);
-
-            if (argv[5][0] == 'c')
-                centreMapY = true;
-            else
-                customY = std::atoi(argv[5]);
-
-            customZoom = std::atoi(argv[6]);
-            customRotation = std::atoi(argv[7]) & 3;
-        }
-        else
-        {
-            customZoom = 0;
-        }
-    }
-
-    gOpenRCT2Headless = true;
-    auto context = CreateContext();
-    if (!context->Initialise())
-    {
-        std::puts("Failed to initialize context.");
-        return -1;
-    }
-
-    drawing_engine_init();
-
-    try
-    {
-        context->LoadParkFromFile(inputPath);
-    }
-    catch (const std::exception& e)
-    {
-        std::printf("%s\n", e.what());
-        drawing_engine_dispose();
-        return -1;
-    }
-
-    gIntroState = INTRO_STATE_NONE;
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
-
-    int32_t mapSize = gMapSize;
-    if (resolutionWidth == 0 || resolutionHeight == 0)
-    {
-        resolutionWidth = (mapSize * 32 * 2) >> customZoom;
-        resolutionHeight = (mapSize * 32 * 1) >> customZoom;
-
-        resolutionWidth += 8;
-        resolutionHeight += 128;
-    }
-
-    rct_viewport viewport;
-    viewport.x = 0;
-    viewport.y = 0;
-    viewport.width = resolutionWidth;
-    viewport.height = resolutionHeight;
-    viewport.view_width = viewport.width;
-    viewport.view_height = viewport.height;
-    viewport.var_11 = 0;
-    viewport.flags = 0;
-
-    if (customLocation)
-    {
-        if (centreMapX)
-            customX = (mapSize / 2) * 32 + 16;
-        if (centreMapY)
-            customY = (mapSize / 2) * 32 + 16;
-
-        int32_t z = tile_element_height({ customX, customY });
-        CoordsXYZ coords3d = { customX, customY, z };
-
-        auto coords2d = translate_3d_to_2d_with_z(customRotation, coords3d);
-
-        viewport.view_x = coords2d.x - ((viewport.view_width << customZoom) / 2);
-        viewport.view_y = coords2d.y - ((viewport.view_height << customZoom) / 2);
-        viewport.zoom = customZoom;
-        gCurrentRotation = customRotation;
-    }
-    else
-    {
-        viewport.view_x = gSavedViewX - (viewport.view_width / 2);
-        viewport.view_y = gSavedViewY - (viewport.view_height / 2);
-        viewport.zoom = gSavedViewZoom;
-        gCurrentRotation = gSavedViewRotation;
-    }
-
     if (options->weather != 0)
     {
         if (options->weather < 1 || options->weather > 6)
         {
-            std::printf("Weather can only be set to an integer value from 1 till 6.");
-            drawing_engine_dispose();
-            return -1;
+            throw std::runtime_error("Weather can only be set to an integer value from 1 till 6.");
         }
 
         uint8_t customWeather = options->weather - 1;
         climate_force_weather(customWeather);
     }
-
-    // Ensure sprites appear regardless of rotation
-    reset_all_sprite_quadrant_placements();
-
-    rct_drawpixelinfo dpi;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = resolutionWidth;
-    dpi.height = resolutionHeight;
-    dpi.pitch = 0;
-    dpi.zoom_level = 0;
-    dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
-    dpi.DrawingEngine = context->GetDrawingEngine();
-
-    std::memset(dpi.bits, PALETTE_INDEX_0, dpi.width * dpi.height);
 
     if (options->hide_guests)
     {
@@ -607,16 +549,143 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }
+}
 
-    viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
+int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
+{
+    // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
+    for (int32_t i = 0; i < argc; i++)
+    {
+        if (argv[i][0] == '-')
+        {
+            // Setting argc to i works, because options can only be at the end of the command
+            argc = i;
+            break;
+        }
+    }
 
-    rct_palette renderedPalette;
-    screenshot_get_rendered_palette(&renderedPalette);
+    bool giantScreenshot = (argc == 5) && _stricmp(argv[2], "giant") == 0;
+    if (argc != 4 && argc != 8 && !giantScreenshot)
+    {
+        std::printf("Usage: openrct2 screenshot <file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
+        std::printf("Usage: openrct2 screenshot <file> <output_image> giant <zoom> <rotation>\n");
+        return -1;
+    }
 
-    WriteDpiToFile(outputPath, &dpi, renderedPalette);
+    int32_t exitCode = 1;
+    rct_drawpixelinfo dpi;
+    try
+    {
+        core_init();
+        bool customLocation = false;
+        bool centreMapX = false;
+        bool centreMapY = false;
 
+        const char* inputPath = argv[0];
+        const char* outputPath = argv[1];
+
+        gOpenRCT2Headless = true;
+        auto context = CreateContext();
+        if (!context->Initialise())
+        {
+            throw std::runtime_error("Failed to initialize context.");
+        }
+
+        drawing_engine_init();
+
+        context->LoadParkFromFile(inputPath);
+
+        gIntroState = INTRO_STATE_NONE;
+        gScreenFlags = SCREEN_FLAGS_PLAYING;
+
+        rct_viewport viewport{};
+        if (giantScreenshot)
+        {
+            auto zoom = std::atoi(argv[3]);
+            auto rotation = std::atoi(argv[4]) & 3;
+            viewport = GetGiantViewport(gMapSize, rotation, zoom);
+        }
+        else
+        {
+            int32_t resolutionWidth = std::atoi(argv[2]);
+            int32_t resolutionHeight = std::atoi(argv[3]);
+            int32_t customX = 0;
+            int32_t customY = 0;
+            int32_t customZoom = 0;
+            int32_t customRotation = 0;
+            if (argc == 8)
+            {
+                customLocation = true;
+                if (argv[4][0] == 'c')
+                    centreMapX = true;
+                else
+                    customX = std::atoi(argv[4]);
+
+                if (argv[5][0] == 'c')
+                    centreMapY = true;
+                else
+                    customY = std::atoi(argv[5]);
+
+                customZoom = std::atoi(argv[6]);
+                customRotation = std::atoi(argv[7]) & 3;
+            }
+
+            int32_t mapSize = gMapSize;
+            if (resolutionWidth == 0 || resolutionHeight == 0)
+            {
+                resolutionWidth = (mapSize * 32 * 2) >> customZoom;
+                resolutionHeight = (mapSize * 32 * 1) >> customZoom;
+
+                resolutionWidth += 8;
+                resolutionHeight += 128;
+            }
+
+            viewport.width = resolutionWidth;
+            viewport.height = resolutionHeight;
+            viewport.view_width = viewport.width;
+            viewport.view_height = viewport.height;
+            if (customLocation)
+            {
+                if (centreMapX)
+                    customX = (mapSize / 2) * 32 + 16;
+                if (centreMapY)
+                    customY = (mapSize / 2) * 32 + 16;
+
+                int32_t z = tile_element_height({ customX, customY });
+                CoordsXYZ coords3d = { customX, customY, z };
+
+                auto coords2d = translate_3d_to_2d_with_z(customRotation, coords3d);
+
+                viewport.view_x = coords2d.x - ((viewport.view_width << customZoom) / 2);
+                viewport.view_y = coords2d.y - ((viewport.view_height << customZoom) / 2);
+                viewport.zoom = customZoom;
+                gCurrentRotation = customRotation;
+            }
+            else
+            {
+                viewport.view_x = gSavedViewX - (viewport.view_width / 2);
+                viewport.view_y = gSavedViewY - (viewport.view_height / 2);
+                viewport.zoom = gSavedViewZoom;
+                gCurrentRotation = gSavedViewRotation;
+            }
+        }
+
+        ApplyOptions(options, viewport);
+
+        // Ensure sprites appear regardless of rotation
+        reset_all_sprite_quadrant_placements();
+
+        dpi = RenderViewport(viewport);
+        auto renderedPalette = screenshot_get_rendered_palette();
+        WriteDpiToFile(outputPath, &dpi, renderedPalette);
+    }
+    catch (const std::exception& e)
+    {
+        std::printf("%s\n", e.what());
+        exitCode = -1;
+    }
     free(dpi.bits);
     drawing_engine_dispose();
 
-    return 1;
+    return exitCode;
 }
