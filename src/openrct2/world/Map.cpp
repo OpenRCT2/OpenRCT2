@@ -1042,45 +1042,31 @@ void map_invalidate_map_selection_tiles()
         map_invalidate_tile_full(position.x, position.y);
 }
 
-void map_get_bounding_box(
-    int32_t ax, int32_t ay, int32_t bx, int32_t by, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
+static void map_get_bounding_box(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
 {
     uint32_t rotation = get_current_rotation();
-    auto screenCoord = translate_3d_to_2d(rotation, { ax, ay });
-    *left = screenCoord.x;
-    *right = screenCoord.x;
-    *top = screenCoord.y;
-    *bottom = screenCoord.y;
+    std::array<const CoordsXY, 4> corners{ CoordsXY{ _range.GetLeft(), _range.GetTop() },
+                                           CoordsXY{ _range.GetRight(), _range.GetTop() },
+                                           CoordsXY{ _range.GetRight(), _range.GetBottom() },
+                                           CoordsXY{ _range.GetLeft(), _range.GetBottom() } };
 
-    screenCoord = translate_3d_to_2d(rotation, { bx, ay });
-    if (screenCoord.x < *left)
-        *left = screenCoord.x;
-    if (screenCoord.x > *right)
-        *right = screenCoord.x;
-    if (screenCoord.y > *bottom)
-        *bottom = screenCoord.y;
-    if (screenCoord.y < *top)
-        *top = screenCoord.y;
+    *left = std::numeric_limits<int32_t>::max();
+    *top = std::numeric_limits<int32_t>::max();
+    *right = std::numeric_limits<int32_t>::min();
+    *bottom = std::numeric_limits<int32_t>::min();
 
-    screenCoord = translate_3d_to_2d(rotation, { bx, by });
-    if (screenCoord.x < *left)
-        *left = screenCoord.x;
-    if (screenCoord.x > *right)
-        *right = screenCoord.x;
-    if (screenCoord.y > *bottom)
-        *bottom = screenCoord.y;
-    if (screenCoord.y < *top)
-        *top = screenCoord.y;
-
-    screenCoord = translate_3d_to_2d(rotation, { ax, by });
-    if (screenCoord.x < *left)
-        *left = screenCoord.x;
-    if (screenCoord.x > *right)
-        *right = screenCoord.x;
-    if (screenCoord.y > *bottom)
-        *bottom = screenCoord.y;
-    if (screenCoord.y < *top)
-        *top = screenCoord.y;
+    for (const auto& corner : corners)
+    {
+        auto screenCoord = translate_3d_to_2d(rotation, corner);
+        if (screenCoord.x < *left)
+            *left = screenCoord.x;
+        if (screenCoord.x > *right)
+            *right = screenCoord.x;
+        if (screenCoord.y > *bottom)
+            *bottom = screenCoord.y;
+        if (screenCoord.y < *top)
+            *top = screenCoord.y;
+    }
 }
 
 /**
@@ -1098,7 +1084,7 @@ void map_invalidate_selection_rect()
     y0 = gMapSelectPositionA.y + 16;
     x1 = gMapSelectPositionB.x + 16;
     y1 = gMapSelectPositionB.y + 16;
-    map_get_bounding_box(x0, y0, x1, y1, &left, &top, &right, &bottom);
+    map_get_bounding_box({ x0, y0, x1, y1 }, &left, &top, &right, &bottom);
     left -= 32;
     right += 32;
     bottom += 32;
@@ -2089,7 +2075,7 @@ void map_invalidate_region(const LocationXY16& mins, const LocationXY16& maxs)
     x1 = maxs.x + 16;
     y1 = maxs.y + 16;
 
-    map_get_bounding_box(x0, y0, x1, y1, &left, &top, &right, &bottom);
+    map_get_bounding_box({ x0, y0, x1, y1 }, &left, &top, &right, &bottom);
 
     left -= 32;
     right += 32;

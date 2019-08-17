@@ -169,8 +169,6 @@ bool map_surface_is_blocked(int16_t x, int16_t y);
 void tile_element_remove(TileElement* tileElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
-void map_get_bounding_box(
-    int32_t ax, int32_t ay, int32_t bx, int32_t by, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom);
 void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(int32_t num_elements);
