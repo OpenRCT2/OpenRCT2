@@ -323,8 +323,11 @@ static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, int32_t 
     return viewport;
 }
 
-static rct_drawpixelinfo RenderViewport(const rct_viewport& viewport)
+static rct_drawpixelinfo RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& viewport)
 {
+    // Ensure sprites appear regardless of rotation
+    reset_all_sprite_quadrant_placements();
+
     rct_drawpixelinfo dpi;
     dpi.width = viewport.width;
     dpi.height = viewport.height;
@@ -339,8 +342,13 @@ static rct_drawpixelinfo RenderViewport(const rct_viewport& viewport)
         std::memset(dpi.bits, PALETTE_INDEX_0, (size_t)dpi.width * dpi.height);
     }
 
-    auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
-    dpi.DrawingEngine = drawingEngine.get();
+    std::unique_ptr<X8DrawingEngine> tempDrawingEngine;
+    if (drawingEngine == nullptr)
+    {
+        tempDrawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
+        drawingEngine = tempDrawingEngine.get();
+    }
+    dpi.DrawingEngine = drawingEngine;
     viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
     return dpi;
 }
@@ -376,10 +384,7 @@ void screenshot_giant()
             viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
         }
 
-        // Ensure sprites appear regardless of rotation
-        reset_all_sprite_quadrant_placements();
-        dpi = RenderViewport(viewport);
-
+        dpi = RenderViewport(nullptr, viewport);
         auto renderedPalette = screenshot_get_rendered_palette();
         WriteDpiToFile(path->c_str(), &dpi, renderedPalette);
 
@@ -406,62 +411,32 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     gIntroState = INTRO_STATE_NONE;
     gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-    int32_t mapSize = gMapSize;
-    int32_t resolutionWidth = (mapSize * 32 * 2);
-    int32_t resolutionHeight = (mapSize * 32 * 1);
-
-    resolutionWidth += 8;
-    resolutionHeight += 128;
-
-    rct_viewport viewport;
-    viewport.x = 0;
-    viewport.y = 0;
-    viewport.width = resolutionWidth;
-    viewport.height = resolutionHeight;
-    viewport.view_width = viewport.width;
-    viewport.view_height = viewport.height;
-    viewport.var_11 = 0;
-    viewport.flags = 0;
-
-    int32_t customX = (gMapSize / 2) * 32 + 16;
-    int32_t customY = (gMapSize / 2) * 32 + 16;
-
-    int32_t x = 0, y = 0;
-    int32_t z = tile_element_height({ customX, customY });
-    x = customY - customX;
-    y = ((customX + customY) / 2) - z;
-
-    viewport.view_x = x - ((viewport.view_width) / 2);
-    viewport.view_y = y - ((viewport.view_height) / 2);
-    viewport.zoom = 0;
-    gCurrentRotation = 0;
-
-    // Ensure sprites appear regardless of rotation
-    reset_all_sprite_quadrant_placements();
-
     rct_drawpixelinfo dpi;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = resolutionWidth;
-    dpi.height = resolutionHeight;
-    dpi.pitch = 0;
-    dpi.bits = (uint8_t*)malloc(dpi.width * dpi.height);
-
-    auto startTime = std::chrono::high_resolution_clock::now();
-    for (uint32_t i = 0; i < iterationCount; i++)
+    try
     {
-        // Render at various zoom levels
-        dpi.zoom_level = i & 3;
-        viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
-    }
-    auto endTime = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<float> duration = endTime - startTime;
-    char engine_name[128];
-    rct_string_id engine_id = DrawingEngineStringIds[drawing_engine_get_type()];
-    format_string(engine_name, sizeof(engine_name), engine_id, nullptr);
-    Console::WriteLine(
-        "Rendering %d times with drawing engine %s took %.2f seconds.", iterationCount, engine_name, duration.count());
+        auto startTime = std::chrono::high_resolution_clock::now();
+        for (uint32_t i = 0; i < iterationCount; i++)
+        {
+            // Render at various zoom levels
+            auto viewport = GetGiantViewport(gMapSize, get_current_rotation(), 0);
+            viewport.zoom = i & 3;
+            dpi = RenderViewport(nullptr, viewport);
+            free(dpi.bits);
+            dpi.bits = nullptr;
+        }
+        auto endTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<float> duration = endTime - startTime;
 
+        auto engineStringId = DrawingEngineStringIds[DRAWING_ENGINE_SOFTWARE];
+        auto engineName = format_string(engineStringId, nullptr);
+        std::printf(
+            "Rendering %u times with drawing engine %s took %.2f seconds.", iterationCount, engineName.c_str(),
+            duration.count());
+    }
+    catch (const std::exception& e)
+    {
+        std::fprintf(stderr, "%s", e.what());
+    }
     free(dpi.bits);
 }
 
@@ -672,10 +647,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
 
         ApplyOptions(options, viewport);
 
-        // Ensure sprites appear regardless of rotation
-        reset_all_sprite_quadrant_placements();
-
-        dpi = RenderViewport(viewport);
+        dpi = RenderViewport(nullptr, viewport);
         auto renderedPalette = screenshot_get_rendered_palette();
         WriteDpiToFile(outputPath, &dpi, renderedPalette);
     }
