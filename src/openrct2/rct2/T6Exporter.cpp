@@ -33,8 +33,16 @@ T6Exporter::T6Exporter(TrackDesign* trackDesign)
 
 bool T6Exporter::SaveTrack(const utf8* path)
 {
-    auto fs = FileStream(path, FILE_MODE_WRITE);
-    return SaveTrack(&fs);
+    try
+    {
+        auto fs = FileStream(path, FILE_MODE_WRITE);
+        return SaveTrack(&fs);
+    }
+    catch (const std::exception& e)
+    {
+        log_error("Unable to save track design: %s", e.what());
+        return false;
+    }
 }
 
 bool T6Exporter::SaveTrack(IStream* stream)
