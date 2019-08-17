@@ -773,15 +773,11 @@ bool Peep::Place(TileCoordsXYZ location, bool apply)
     if (!tileElement)
         return false;
 
-    CoordsXYZ destination = { location.x * 32, location.y * 32, location.z * 8 };
-
     // Set the coordinate of destination to be exactly
     // in the middle of a tile.
-    destination.x += 16;
-    destination.y += 16;
-    destination.z = tileElement->base_height * 8 + 16;
+    CoordsXYZ destination = { location.x * 32 + 16, location.y * 32 + 16, tileElement->base_height * 8 + 16 };
 
-    if (!map_is_location_owned({ location.x * 32, location.y * 32, destination.z }))
+    if (!map_is_location_owned(destination))
     {
         gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
         return false;

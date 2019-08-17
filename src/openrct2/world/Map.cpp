@@ -1606,6 +1606,43 @@ void map_remove_out_of_range_elements()
     }
 }
 
+static void map_extend_boundary_surface_extend_tile(const SurfaceElement& sourceTile, SurfaceElement& destTile)
+{
+    destTile.SetSurfaceStyle(sourceTile.GetSurfaceStyle());
+    destTile.SetEdgeStyle(sourceTile.GetEdgeStyle());
+    destTile.SetGrassLength(sourceTile.GetGrassLength());
+    destTile.SetOwnership(OWNERSHIP_UNOWNED);
+    destTile.SetWaterHeight(sourceTile.GetWaterHeight());
+
+    auto z = sourceTile.base_height;
+    auto slope = sourceTile.GetSlope() & TILE_ELEMENT_SLOPE_NW_SIDE_UP;
+    if (slope == TILE_ELEMENT_SLOPE_NW_SIDE_UP)
+    {
+        z += 2;
+        slope = TILE_ELEMENT_SLOPE_FLAT;
+        if (sourceTile.GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        {
+            slope = TILE_ELEMENT_SLOPE_N_CORNER_UP;
+            if (sourceTile.GetSlope() & TILE_ELEMENT_SLOPE_S_CORNER_UP)
+            {
+                slope = TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                if (sourceTile.GetSlope() & TILE_ELEMENT_SLOPE_E_CORNER_UP)
+                {
+                    slope = TILE_ELEMENT_SLOPE_FLAT;
+                }
+            }
+        }
+    }
+    if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
+        slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+    if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP)
+        slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+
+    destTile.SetSlope(slope);
+    destTile.base_height = z;
+    destTile.clearance_height = z;
+}
+
 /**
  * Copies the terrain and slope from the edge of the map to the new tiles. Used when increasing the size of the map.
  *  rct2: 0x0068AC15
@@ -1613,46 +1650,18 @@ void map_remove_out_of_range_elements()
 void map_extend_boundary_surface()
 {
     SurfaceElement *existingTileElement, *newTileElement;
-    int32_t x, y, z, slope;
+    int32_t x, y;
 
     y = gMapSize - 2;
     for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
     {
         existingTileElement = map_get_surface_element_at(x, y - 1);
         newTileElement = map_get_surface_element_at(x, y);
-        newTileElement->SetSurfaceStyle(existingTileElement->GetSurfaceStyle());
-        newTileElement->SetEdgeStyle(existingTileElement->GetEdgeStyle());
-        newTileElement->SetGrassLength(existingTileElement->GetGrassLength());
-        newTileElement->SetOwnership(OWNERSHIP_UNOWNED);
-        newTileElement->SetWaterHeight(existingTileElement->GetWaterHeight());
 
-        z = existingTileElement->base_height;
-        slope = existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_NW_SIDE_UP;
-        if (slope == TILE_ELEMENT_SLOPE_NW_SIDE_UP)
+        if (existingTileElement && newTileElement)
         {
-            z += 2;
-            slope = TILE_ELEMENT_SLOPE_FLAT;
-            if (existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-            {
-                slope = TILE_ELEMENT_SLOPE_N_CORNER_UP;
-                if (existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_S_CORNER_UP)
-                {
-                    slope = TILE_ELEMENT_SLOPE_W_CORNER_UP;
-                    if (existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_E_CORNER_UP)
-                    {
-                        slope = TILE_ELEMENT_SLOPE_FLAT;
-                    }
-                }
-            }
+            map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
-        if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
-            slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
-        if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP)
-            slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
-
-        newTileElement->SetSlope(slope);
-        newTileElement->base_height = z;
-        newTileElement->clearance_height = z;
 
         update_park_fences({ x << 5, y << 5 });
     }
@@ -1663,39 +1672,10 @@ void map_extend_boundary_surface()
         existingTileElement = map_get_surface_element_at(x - 1, y);
         newTileElement = map_get_surface_element_at(x, y);
 
-        newTileElement->SetSurfaceStyle(existingTileElement->GetSurfaceStyle());
-        newTileElement->SetEdgeStyle(existingTileElement->GetEdgeStyle());
-        newTileElement->SetGrassLength(existingTileElement->GetGrassLength());
-        newTileElement->SetOwnership(OWNERSHIP_UNOWNED);
-        newTileElement->SetWaterHeight(existingTileElement->GetWaterHeight());
-
-        z = existingTileElement->base_height;
-        slope = existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_NE_SIDE_UP;
-        if (slope == TILE_ELEMENT_SLOPE_NE_SIDE_UP)
+        if (existingTileElement && newTileElement)
         {
-            z += 2;
-            slope = TILE_ELEMENT_SLOPE_FLAT;
-            if (existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-            {
-                slope = TILE_ELEMENT_SLOPE_N_CORNER_UP;
-                if (existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_S_CORNER_UP)
-                {
-                    slope = TILE_ELEMENT_SLOPE_E_CORNER_UP;
-                    if (existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_W_CORNER_UP)
-                    {
-                        slope = TILE_ELEMENT_SLOPE_FLAT;
-                    }
-                }
-            }
+            map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
-        if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
-            slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
-        if (slope & TILE_ELEMENT_SLOPE_E_CORNER_UP)
-            slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
-
-        newTileElement->SetSlope(slope);
-        newTileElement->base_height = z;
-        newTileElement->clearance_height = z;
 
         update_park_fences({ x << 5, y << 5 });
     }
