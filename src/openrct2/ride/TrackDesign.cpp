@@ -1648,6 +1648,11 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                     TileElement* tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
                     z = gTrackPreviewOrigin.z / 8;
                     z += (entrance.z == (int8_t)(uint8_t)0x80) ? -1 : entrance.z;
+                    if (tile_element == nullptr)
+                    {
+                        _trackDesignPlaceCost = MONEY32_UNDEFINED;
+                        return false;
+                    }
 
                     do
                     {
