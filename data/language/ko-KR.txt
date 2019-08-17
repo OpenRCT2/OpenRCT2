@@ -3758,7 +3758,7 @@ STR_6299    :전체 다운로드
 STR_6300    :{SMALLFONT}{BLACK}빠진 오브젝트를 온라인에서 다운로드 할 수 있으면 모두 다운로드합니다.
 STR_6301    :{SMALLFONT}{BLACK}선택한 오브젝트의 이름을 클립보드에 복사합니다.
 STR_6302    :{SMALLFONT}{BLACK}빠진 오브젝트의 전체 목록을 클립보드에 복사합니다.
-STR_6303    :오브젝트 다운로드 중 ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6303    :[{POP16}{POP16}{STRING}] 다운로드 중 ({COMMA16} / {COMMA16})
 STR_6304    :오브젝트 스포이드
 STR_6305    :멀티스레딩
 STR_6306    :{SMALLFONT}{BLACK}렌더링을 하기 위해 여러 개의 스레드를 사용합니다. 실험적인 기능이므로 불안정할 수 있습니다.
@@ -3784,6 +3784,8 @@ STR_6325    :{SMALLFONT}{BLACK}놀이기구 가상 운행
 STR_6326    :{POP16}{POP16}{POP16}{STRINGID}의 가상 운행을 시작할 수 없습니다...
 STR_6327    :초대형 스크린 샷의 배경을 투명하게 처리
 STR_6328    :{SMALLFONT}{BLACK}이 설정을 켜면, 초대형 스크린 샷을 찍을 경우 배경색이 기본 검은색 대신 투명으로 처리됩니다.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :{POP16}{POP16}{POP16}{POP16}{STRING}에서 [{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{STRING}] 다운로드 중 ({COMMA16} / {COMMA16})
 
 
 #############
