@@ -110,7 +110,7 @@ LocationXYZ16 gCommandPosition;
 bool gMapLandRightsUpdateSuccess;
 
 static void clear_elements_at(int32_t x, int32_t y);
-static void translate_3d_to_2d(int32_t rotation, int32_t* x, int32_t* y);
+static CoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos);
 
 void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation)
 {
@@ -1045,48 +1045,42 @@ void map_invalidate_map_selection_tiles()
 void map_get_bounding_box(
     int32_t ax, int32_t ay, int32_t bx, int32_t by, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
 {
-    int32_t x, y;
-    x = ax;
-    y = ay;
     uint32_t rotation = get_current_rotation();
-    translate_3d_to_2d(rotation, &x, &y);
-    *left = x;
-    *right = x;
-    *top = y;
-    *bottom = y;
-    x = bx;
-    y = ay;
-    translate_3d_to_2d(rotation, &x, &y);
-    if (x < *left)
-        *left = x;
-    if (x > *right)
-        *right = x;
-    if (y > *bottom)
-        *bottom = y;
-    if (y < *top)
-        *top = y;
-    x = bx;
-    y = by;
-    translate_3d_to_2d(rotation, &x, &y);
-    if (x < *left)
-        *left = x;
-    if (x > *right)
-        *right = x;
-    if (y > *bottom)
-        *bottom = y;
-    if (y < *top)
-        *top = y;
-    x = ax;
-    y = by;
-    translate_3d_to_2d(rotation, &x, &y);
-    if (x < *left)
-        *left = x;
-    if (x > *right)
-        *right = x;
-    if (y > *bottom)
-        *bottom = y;
-    if (y < *top)
-        *top = y;
+    auto screenCoord = translate_3d_to_2d(rotation, { ax, ay });
+    *left = screenCoord.x;
+    *right = screenCoord.x;
+    *top = screenCoord.y;
+    *bottom = screenCoord.y;
+
+    screenCoord = translate_3d_to_2d(rotation, { bx, ay });
+    if (screenCoord.x < *left)
+        *left = screenCoord.x;
+    if (screenCoord.x > *right)
+        *right = screenCoord.x;
+    if (screenCoord.y > *bottom)
+        *bottom = screenCoord.y;
+    if (screenCoord.y < *top)
+        *top = screenCoord.y;
+
+    screenCoord = translate_3d_to_2d(rotation, { bx, by });
+    if (screenCoord.x < *left)
+        *left = screenCoord.x;
+    if (screenCoord.x > *right)
+        *right = screenCoord.x;
+    if (screenCoord.y > *bottom)
+        *bottom = screenCoord.y;
+    if (screenCoord.y < *top)
+        *top = screenCoord.y;
+
+    screenCoord = translate_3d_to_2d(rotation, { ax, by });
+    if (screenCoord.x < *left)
+        *left = screenCoord.x;
+    if (screenCoord.x > *right)
+        *right = screenCoord.x;
+    if (screenCoord.y > *bottom)
+        *bottom = screenCoord.y;
+    if (screenCoord.y < *top)
+        *top = screenCoord.y;
 }
 
 /**
@@ -1984,57 +1978,35 @@ bool sign_set_colour(
     return true;
 }
 
-static void translate_3d_to_2d(int32_t rotation, int32_t* x, int32_t* y)
+// TODO: This returns a screen CoordsXY
+static CoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos)
 {
-    int32_t rx, ry;
-
-    switch (rotation & 3)
-    {
-        default:
-        case 0:
-            rx = (*y) - (*x);
-            ry = (*x) + (*y);
-            break;
-        case 1:
-            rx = -(*x) - (*y);
-            ry = (*y) - (*x);
-            break;
-        case 2:
-            rx = (*x) - (*y);
-            ry = -(*x) - (*y);
-            break;
-        case 3:
-            rx = (*x) + (*y);
-            ry = (*x) - (*y);
-            break;
-    }
-    ry /= 2;
-
-    *x = rx;
-    *y = ry;
+    return translate_3d_to_2d_with_z(rotation, CoordsXYZ{ pos, 0 });
 }
 
+// TODO: This returns a screen CoordsXY
 CoordsXY translate_3d_to_2d_with_z(int32_t rotation, CoordsXYZ pos)
 {
     CoordsXY result = {};
+    // Use right shift to avoid issues like #9301
     switch (rotation & 3)
     {
         default:
         case 0:
             result.x = pos.y - pos.x;
-            result.y = (pos.x + pos.y) / 2 - pos.z;
+            result.y = ((pos.x + pos.y) >> 1) - pos.z;
             break;
         case 1:
             result.x = -pos.x - pos.y;
-            result.y = (pos.y - pos.x) / 2 - pos.z;
+            result.y = ((pos.y - pos.x) >> 1) - pos.z;
             break;
         case 2:
             result.x = pos.x - pos.y;
-            result.y = (-pos.x - pos.y) / 2 - pos.z;
+            result.y = ((-pos.x - pos.y) >> 1) - pos.z;
             break;
         case 3:
             result.x = pos.x + pos.y;
-            result.y = (pos.x - pos.y) / 2 - pos.z;
+            result.y = ((pos.x - pos.y) >> 1) - pos.z;
             break;
     }
     return result;
@@ -2049,12 +2021,12 @@ static void map_invalidate_tile_under_zoom(int32_t x, int32_t y, int32_t z0, int
 
     x += 16;
     y += 16;
-    translate_3d_to_2d(get_current_rotation(), &x, &y);
+    auto screenCoord = translate_3d_to_2d(get_current_rotation(), { x, y });
 
-    x1 = x - 32;
-    y1 = y - 32 - z1;
-    x2 = x + 32;
-    y2 = y + 32 - z0;
+    x1 = screenCoord.x - 32;
+    y1 = screenCoord.y - 32 - z1;
+    x2 = screenCoord.x + 32;
+    y2 = screenCoord.y + 32 - z0;
 
     for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
     {
