@@ -109,7 +109,7 @@ LocationXYZ16 gCommandPosition;
 
 bool gMapLandRightsUpdateSuccess;
 
-static void clear_elements_at(int32_t x, int32_t y);
+static void clear_elements_at(const CoordsXY& loc);
 static ScreenCoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos);
 
 void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation)
@@ -1551,7 +1551,7 @@ void map_remove_out_of_range_elements()
                     surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
                     update_park_fences_around_tile({ x, y });
                 }
-                clear_elements_at(x, y);
+                clear_elements_at({ x, y });
             }
         }
     }
@@ -1636,7 +1636,7 @@ void map_extend_boundary_surface()
  * Clears the provided element properly from a certain tile, and updates
  * the pointer (when needed) passed to this function to point to the next element.
  */
-static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
+static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
 {
     TileElement* element = *elementPtr;
     switch (element->GetType())
@@ -1658,24 +1658,23 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         case TILE_ELEMENT_TYPE_ENTRANCE:
         {
             int32_t rotation = element->GetDirectionWithOffset(1);
+            auto seqLoc = loc;
             switch (element->AsEntrance()->GetSequenceIndex())
             {
                 case 1:
-                    x += CoordsDirectionDelta[rotation].x;
-                    y += CoordsDirectionDelta[rotation].y;
+                    seqLoc += CoordsDirectionDelta[rotation];
                     break;
                 case 2:
-                    x -= CoordsDirectionDelta[rotation].x;
-                    y -= CoordsDirectionDelta[rotation].y;
+                    seqLoc -= CoordsDirectionDelta[rotation];
                     break;
             }
-            auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ x, y, element->base_height * 8 });
+            auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->base_height * 8 });
             GameActions::Execute(&parkEntranceRemoveAction);
             break;
         }
         case TILE_ELEMENT_TYPE_WALL:
         {
-            CoordsXYZD wallLocation = { x, y, element->base_height * 8, element->GetDirection() };
+            CoordsXYZD wallLocation = { loc.x, loc.y, element->base_height * 8, element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
         }
@@ -1683,14 +1682,15 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
             auto removeSceneryAction = LargeSceneryRemoveAction(
-                { x, y, element->base_height * 8, element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
+                { loc.x, loc.y, element->base_height * 8, element->GetDirection() },
+                element->AsLargeScenery()->GetSequenceIndex());
             GameActions::Execute(&removeSceneryAction);
         }
         break;
         case TILE_ELEMENT_TYPE_BANNER:
         {
             auto bannerRemoveAction = BannerRemoveAction(
-                { x, y, element->base_height * 8, element->AsBanner()->GetPosition() });
+                { loc.x, loc.y, element->base_height * 8, element->AsBanner()->GetPosition() });
             GameActions::Execute(&bannerRemoveAction);
             break;
         }
@@ -1704,23 +1704,23 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
  * Clears all elements properly from a certain tile.
  *  rct2: 0x0068AE2A
  */
-static void clear_elements_at(int32_t x, int32_t y)
+static void clear_elements_at(const CoordsXY& loc)
 {
     // Remove the spawn point (if there is one in the current tile)
     gPeepSpawns.erase(
         std::remove_if(
             gPeepSpawns.begin(), gPeepSpawns.end(),
-            [x, y](const auto& spawn) { return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y; }),
+            [x = loc.x, y = loc.y](const auto& spawn) { return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y; }),
         gPeepSpawns.end());
 
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at(loc.x / 32, loc.y / 32);
 
     // Remove all elements except the last one
     while (!tileElement->IsLastForTile())
-        clear_element_at(x, y, &tileElement);
+        clear_element_at(loc, &tileElement);
 
     // Remove the last element
-    clear_element_at(x, y, &tileElement);
+    clear_element_at(loc, &tileElement);
 }
 
 int32_t map_get_highest_z(int32_t tileX, int32_t tileY)
@@ -2114,7 +2114,7 @@ void map_clear_all_elements()
     {
         for (int32_t x = 0; x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); x += 32)
         {
-            clear_elements_at(x, y);
+            clear_elements_at({ x, y });
         }
     }
 }
