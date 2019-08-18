@@ -319,6 +319,7 @@ public:
     void SetPhotoTimeout();
     void SetPhotoTimeout(uint8_t newValue);
     void DecrementPhotoTimeout();
+    uint8_t GetPhotoTimeout() const;
 
     bool IsHighlighted() const;
     void SetHighlight(bool on);

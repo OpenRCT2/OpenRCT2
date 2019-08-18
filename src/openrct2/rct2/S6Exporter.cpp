@@ -194,10 +194,7 @@ void S6Exporter::Export()
     _s6.scenario_srand_0 = state.s0;
     _s6.scenario_srand_1 = state.s1;
 
-    std::memcpy(_s6.tile_elements, gTileElements, sizeof(_s6.tile_elements));
-
-    _s6.next_free_tile_element_pointer_index = gNextFreeTileElementPointerIndex;
-
+    ExportTileElements();
     ExportSprites();
     ExportParkName();
 
@@ -1323,6 +1320,173 @@ void S6Exporter::ExportMapAnimations()
         dst.x = src.location.x;
         dst.y = src.location.y;
         dst.baseZ = src.location.z;
+    }
+}
+
+void S6Exporter::ExportTileElements()
+{
+    for (uint32_t index = 0; index < RCT2_MAX_TILE_ELEMENTS; index++)
+    {
+        auto src = &gTileElements[index];
+        auto dst = &_s6.tile_elements[index];
+        if (src->base_height == 0xFF)
+        {
+            std::memcpy(dst, src, sizeof(*src));
+        }
+        else
+        {
+            auto tileElementType = (RCT12TileElementType)src->GetType();
+            // Todo: replace with setting invisibility bit
+            if (tileElementType == RCT12TileElementType::Corrupt || tileElementType == RCT12TileElementType::EightCarsCorrupt14
+                || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
+                std::memcpy(dst, src, sizeof(*dst));
+            else
+                ExportTileElement(dst, src);
+        }
+    }
+    _s6.next_free_tile_element_pointer_index = gNextFreeTileElementPointerIndex;
+}
+
+void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
+{
+    // Todo: allow for changing defition of OpenRCT2 tile element types - replace with a map
+    uint8_t tileElementType = src->GetType();
+    dst->ClearAs(tileElementType);
+    dst->SetDirection(src->GetDirection());
+    dst->flags = src->flags;
+    dst->base_height = src->base_height;
+    dst->clearance_height = src->clearance_height;
+
+    switch (tileElementType)
+    {
+        case TILE_ELEMENT_TYPE_SURFACE:
+        {
+            auto dst2 = dst->AsSurface();
+            auto src2 = src->AsSurface();
+
+            dst2->SetSlope(src2->GetSlope());
+            dst2->SetSurfaceStyle(src2->GetSurfaceStyle());
+            dst2->SetEdgeStyle(src2->GetEdgeStyle());
+            dst2->SetGrassLength(src2->GetGrassLength());
+            dst2->SetOwnership(src2->GetOwnership());
+            dst2->SetParkFences(src2->GetParkFences());
+            dst2->SetWaterHeight(src2->GetWaterHeight());
+            dst2->SetHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
+
+            break;
+        }
+        case TILE_ELEMENT_TYPE_PATH:
+        {
+            auto dst2 = dst->AsPath();
+            auto src2 = src->AsPath();
+
+            dst2->SetPathEntryIndex(src2->GetPathEntryIndex());
+            dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
+            dst2->SetSloped(src2->IsSloped());
+            dst2->SetSlopeDirection(src2->GetSlopeDirection());
+            dst2->SetRideIndex(src2->GetRideIndex());
+            dst2->SetStationIndex(src2->GetStationIndex());
+            dst2->SetWide(src2->IsWide());
+            dst2->SetIsQueue(src2->IsQueue());
+            dst2->SetHasQueueBanner(src2->HasQueueBanner());
+            dst2->SetEdges(src2->GetEdges());
+            dst2->SetCorners(src2->GetCorners());
+            dst2->SetAddition(src2->GetAddition());
+            dst2->SetAdditionIsGhost(src2->AdditionIsGhost());
+            dst2->SetAdditionStatus(src2->GetAdditionStatus());
+
+            break;
+        }
+        case TILE_ELEMENT_TYPE_TRACK:
+        {
+            auto dst2 = dst->AsTrack();
+            auto src2 = src->AsTrack();
+
+            dst2->SetTrackType(src2->GetTrackType());
+            dst2->SetSequenceIndex(src2->GetSequenceIndex());
+            dst2->SetRideIndex(src2->GetRideIndex());
+            dst2->SetColourScheme(src2->GetColourScheme());
+            dst2->SetStationIndex(src2->GetStationIndex());
+            dst2->SetHasChain(src2->HasChain());
+            dst2->SetHasCableLift(src2->HasCableLift());
+            dst2->SetInverted(src2->IsInverted());
+            dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+            dst2->SetHasGreenLight(src2->HasGreenLight());
+            dst2->SetSeatRotation(src2->GetSeatRotation());
+            dst2->SetMazeEntry(src2->GetMazeEntry());
+            dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+            // Skipping IsHighlighted()
+
+            break;
+        }
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+        {
+            auto dst2 = dst->AsSmallScenery();
+            auto src2 = src->AsSmallScenery();
+
+            dst2->SetEntryIndex(src2->GetEntryIndex());
+            dst2->SetAge(src2->GetAge());
+            dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
+            dst2->SetPrimaryColour(src2->GetPrimaryColour());
+            dst2->SetSecondaryColour(src2->GetSecondaryColour());
+            if (src2->NeedsSupports())
+                dst2->SetNeedsSupports();
+
+            break;
+        }
+        case TILE_ELEMENT_TYPE_ENTRANCE:
+        {
+            auto dst2 = dst->AsEntrance();
+            auto src2 = src->AsEntrance();
+
+            dst2->SetEntranceType(src2->GetEntranceType());
+            dst2->SetRideIndex(src2->GetRideIndex());
+            dst2->SetStationIndex(src2->GetStationIndex());
+            dst2->SetSequenceIndex(src2->GetSequenceIndex());
+            dst2->SetPathType(src2->GetPathType());
+
+            break;
+        }
+        case TILE_ELEMENT_TYPE_WALL:
+        {
+            auto dst2 = dst->AsWall();
+            auto src2 = src->AsWall();
+
+            dst2->SetEntryIndex(src2->GetEntryIndex());
+            dst2->SetSlope(src2->GetSlope());
+            dst2->SetPrimaryColour(src2->GetPrimaryColour());
+            dst2->SetSecondaryColour(src2->GetSecondaryColour());
+            dst2->SetTertiaryColour(src2->GetTertiaryColour());
+            dst2->SetAnimationFrame(src2->GetAnimationFrame());
+            dst2->SetBannerIndex(src2->GetBannerIndex());
+            dst2->SetAcrossTrack(src2->IsAcrossTrack());
+            dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
+            break;
+        }
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        {
+            auto dst2 = dst->AsLargeScenery();
+            auto src2 = src->AsLargeScenery();
+
+            dst2->SetEntryIndex(src2->GetEntryIndex());
+            dst2->SetSequenceIndex(src2->GetSequenceIndex());
+            dst2->SetPrimaryColour(src2->GetPrimaryColour());
+            dst2->SetSecondaryColour(src2->GetSecondaryColour());
+            dst2->SetBannerIndex(src2->GetBannerIndex());
+            break;
+        }
+        case TILE_ELEMENT_TYPE_BANNER:
+        {
+            auto dst2 = dst->AsBanner();
+            auto src2 = src->AsBanner();
+
+            dst2->SetIndex(src2->GetIndex());
+            dst2->SetPosition(src2->GetPosition());
+            dst2->SetAllowedEdges(src2->GetAllowedEdges());
+            break;
+        }
+        default:
+            assert(false);
     }
 }
 
