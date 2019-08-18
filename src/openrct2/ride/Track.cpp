@@ -1241,6 +1241,11 @@ void TrackElement::SetPhotoTimeout(uint8_t value)
     sequence |= (value << 4);
 }
 
+uint8_t TrackElement::GetPhotoTimeout() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) >> 4;
+}
+
 void TrackElement::DecrementPhotoTimeout()
 {
     // We should only touch the upper 4 bits, avoid underflow into the lower 4.

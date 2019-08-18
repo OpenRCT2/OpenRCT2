@@ -11,7 +11,9 @@
 
 #include "../localisation/Localisation.h"
 #include "../ride/Track.h"
+#include "../world/Banner.h"
 #include "../world/Footpath.h"
+#include "../world/LargeScenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
@@ -451,4 +453,465 @@ std::string RCT12::RemoveFormatCodes(const std::string_view& s)
     }
 
     return result;
+}
+
+uint8_t RCT12TileElement::GetBannerIndex()
+{
+    rct_scenery_entry* sceneryEntry;
+
+    switch (GetType())
+    {
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            sceneryEntry = get_large_scenery_entry(AsLargeScenery()->GetEntryIndex());
+            if (sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
+                return BANNER_INDEX_NULL;
+
+            return AsLargeScenery()->GetBannerIndex();
+        case TILE_ELEMENT_TYPE_WALL:
+            sceneryEntry = get_wall_entry(AsWall()->GetEntryIndex());
+            if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+                return BANNER_INDEX_NULL;
+
+            return AsWall()->GetBannerIndex();
+        case TILE_ELEMENT_TYPE_BANNER:
+            return AsBanner()->GetIndex();
+        default:
+            return BANNER_INDEX_NULL;
+    }
+}
+
+void RCT12TileElementBase::SetDirection(uint8_t direction)
+{
+    this->type &= ~TILE_ELEMENT_DIRECTION_MASK;
+    this->type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
+}
+
+void RCT12TileElement::ClearAs(uint8_t newType)
+{
+    type = newType;
+    flags = 0;
+    base_height = 2;
+    clearance_height = 2;
+    std::fill_n(pad_04, sizeof(pad_04), 0x00);
+}
+
+void RCT12LargeSceneryElement::SetEntryIndex(uint32_t newIndex)
+{
+    entryIndex &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
+    entryIndex |= (newIndex & TILE_ELEMENT_LARGE_TYPE_MASK);
+}
+
+void RCT12LargeSceneryElement::SetSequenceIndex(uint16_t sequence)
+{
+    entryIndex &= TILE_ELEMENT_LARGE_TYPE_MASK;
+    entryIndex |= (sequence << 10);
+}
+
+void RCT12LargeSceneryElement::SetPrimaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    colour[0] &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour[0] |= newColour;
+}
+
+void RCT12LargeSceneryElement::SetSecondaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    colour[1] &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour[1] |= newColour;
+}
+
+void RCT12LargeSceneryElement::SetBannerIndex(BannerIndex newIndex)
+{
+    type |= newIndex & 0xC0;
+    colour[0] |= (newIndex & 0x38) << 2;
+    colour[1] |= (newIndex & 7) << 5;
+}
+
+void RCT12SurfaceElement::SetSurfaceStyle(uint32_t newStyle)
+{
+    // Bit 3 for terrain is stored in element.type bit 0
+    if (newStyle & 8)
+        type |= 1;
+    else
+        type &= ~1;
+
+    // Bits 0, 1, 2 for terrain are stored in element.terrain bit 5, 6, 7
+    terrain &= ~0xE0;
+    terrain |= (newStyle & 7) << 5;
+}
+
+void RCT12SurfaceElement::SetEdgeStyle(uint32_t newStyle)
+{
+    // Bit 3 for terrain is stored in element.type bit 7
+    if (newStyle & 8)
+        type |= 128;
+    else
+        type &= ~128;
+
+    // Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
+    slope &= ~TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
+    slope |= (newStyle & 7) << 5;
+}
+
+void RCT12SurfaceElement::SetWaterHeight(uint32_t newWaterHeight)
+{
+    newWaterHeight &= 0x1F;
+    terrain &= ~TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+    terrain |= newWaterHeight;
+}
+
+void RCT12SurfaceElement::SetGrassLength(uint8_t newLength)
+{
+    grass_length = newLength;
+}
+
+void RCT12SurfaceElement::SetOwnership(uint8_t newOwnership)
+{
+    ownership &= ~TILE_ELEMENT_SURFACE_OWNERSHIP_MASK;
+    ownership |= (newOwnership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
+}
+
+void RCT12SurfaceElement::SetParkFences(uint8_t newParkFences)
+{
+    ownership &= ~TILE_ELEMENT_SURFACE_PARK_FENCE_MASK;
+    ownership |= (newParkFences & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+}
+
+void RCT12SurfaceElement::SetSlope(uint8_t newSlope)
+{
+    slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
+    slope |= (newSlope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+}
+
+void RCT12SurfaceElement::SetHasTrackThatNeedsWater(bool on)
+{
+    type &= ~SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
+    if (on)
+        type |= SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
+}
+
+void RCT12PathElement::SetPathEntryIndex(uint8_t newEntryIndex)
+{
+    entryIndex &= ~FOOTPATH_PROPERTIES_TYPE_MASK;
+    entryIndex |= (newEntryIndex << 4);
+}
+
+void RCT12PathElement::SetQueueBannerDirection(uint8_t direction)
+{
+    type &= ~FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK;
+    type |= (direction << 6);
+}
+
+void RCT12PathElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
+}
+
+void RCT12PathElement::SetAdditionStatus(uint8_t newStatus)
+{
+    additionStatus = newStatus;
+}
+
+void RCT12PathElement::SetEdges(uint8_t newEdges)
+{
+    edges &= ~FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+    edges |= (newEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK);
+}
+
+void RCT12PathElement::SetCorners(uint8_t newCorners)
+{
+    edges &= ~FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK;
+    edges |= (newCorners << 4);
+}
+
+void RCT12PathElement::SetSloped(bool isSloped)
+{
+    entryIndex &= ~FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+    if (isSloped)
+        entryIndex |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+}
+
+void RCT12PathElement::SetSlopeDirection(uint8_t newSlope)
+{
+    entryIndex &= ~FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    entryIndex |= newSlope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+}
+
+void RCT12PathElement::SetStationIndex(uint8_t newStationIndex)
+{
+    additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
+    additions |= ((newStationIndex << 4) & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK);
+}
+
+void RCT12PathElement::SetWide(bool isWide)
+{
+    type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
+    if (isWide)
+        type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
+}
+
+void RCT12PathElement::SetIsQueue(bool isQueue)
+{
+    type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
+    if (isQueue)
+        type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
+}
+
+void RCT12PathElement::SetHasQueueBanner(bool hasQueueBanner)
+{
+    entryIndex &= ~FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
+    if (hasQueueBanner)
+        entryIndex |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
+}
+
+void RCT12PathElement::SetAddition(uint8_t newAddition)
+{
+    additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
+    additions |= newAddition;
+}
+
+void RCT12PathElement::SetAdditionIsGhost(bool isGhost)
+{
+    additions &= ~FOOTPATH_ADDITION_FLAG_IS_GHOST;
+    if (isGhost)
+        additions |= FOOTPATH_ADDITION_FLAG_IS_GHOST;
+}
+
+void RCT12TrackElement::SetTrackType(uint8_t newType)
+{
+    trackType = newType;
+}
+
+void RCT12TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+}
+
+void RCT12TrackElement::SetStationIndex(uint8_t newStationIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    sequence |= (newStationIndex << 4);
+}
+
+void RCT12TrackElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
+}
+
+void RCT12TrackElement::SetColourScheme(uint8_t newColourScheme)
+{
+    colour &= ~0x3;
+    colour |= (newColourScheme & 0x3);
+}
+
+void RCT12TrackElement::SetHasCableLift(bool on)
+{
+    colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    if (on)
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+void RCT12TrackElement::SetInverted(bool inverted)
+{
+    if (inverted)
+    {
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+    else
+    {
+        colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+}
+
+void RCT12TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
+{
+    sequence &= ~0b11110000;
+    sequence |= ((speed >> 1) << 4);
+}
+
+void RCT12TrackElement::SetBlockBrakeClosed(bool isClosed)
+{
+    if (isClosed)
+    {
+        flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    }
+    else
+    {
+        flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    }
+}
+
+void RCT12TrackElement::SetHasGreenLight(uint8_t greenLight)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    if (greenLight)
+    {
+        sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    }
+}
+
+void RCT12TrackElement::SetHasChain(bool on)
+{
+    if (on)
+    {
+        type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    }
+    else
+    {
+        type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    }
+}
+
+void RCT12TrackElement::SetSeatRotation(uint8_t newSeatRotation)
+{
+    colour &= 0x0F;
+    colour |= (newSeatRotation << 4);
+}
+
+void RCT12TrackElement::SetMazeEntry(uint16_t newMazeEntry)
+{
+    mazeEntry = newMazeEntry;
+}
+
+void RCT12TrackElement::SetPhotoTimeout(uint8_t value)
+{
+    sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (value << 4);
+}
+
+void RCT12SmallSceneryElement::SetEntryIndex(uint8_t newIndex)
+{
+    this->entryIndex = newIndex;
+}
+
+void RCT12SmallSceneryElement::SetAge(uint8_t newAge)
+{
+    this->age = newAge;
+}
+
+void RCT12SmallSceneryElement::SetPrimaryColour(colour_t colour)
+{
+    assert(colour <= 31);
+    colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_1 |= colour;
+}
+
+void RCT12SmallSceneryElement::SetSecondaryColour(colour_t colour)
+{
+    assert(colour <= 31);
+    colour_2 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_2 |= colour;
+}
+
+void RCT12SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
+{
+    type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    type |= (newQuadrant << 6);
+}
+
+void RCT12SmallSceneryElement::SetNeedsSupports()
+{
+    colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
+}
+
+void RCT12WallElement::SetEntryIndex(uint8_t newIndex)
+{
+    entryIndex = newIndex;
+}
+
+void RCT12WallElement::SetBannerIndex(BannerIndex newIndex)
+{
+    banner_index = newIndex;
+}
+
+void RCT12WallElement::SetAcrossTrack(bool acrossTrack)
+{
+    animation &= ~WALL_ANIMATION_FLAG_ACROSS_TRACK;
+    if (acrossTrack)
+        animation |= WALL_ANIMATION_FLAG_ACROSS_TRACK;
+}
+
+void RCT12WallElement::SetAnimationIsBackwards(bool isBackwards)
+{
+    animation &= ~WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
+    if (isBackwards)
+        animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
+}
+void RCT12WallElement::SetSlope(uint8_t newSlope)
+{
+    type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    type |= (newSlope << 6);
+}
+
+void RCT12WallElement::SetPrimaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_1 |= newColour;
+}
+
+void RCT12WallElement::SetSecondaryColour(colour_t newColour)
+{
+    colour_1 &= TILE_ELEMENT_COLOUR_MASK;
+    colour_1 |= (newColour & 0x7) << 5;
+    flags &= ~0x60;
+    flags |= (newColour & 0x18) << 2;
+}
+
+void RCT12WallElement::SetTertiaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_3 |= newColour;
+}
+
+void RCT12WallElement::SetAnimationFrame(uint8_t frameNum)
+{
+    animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
+    animation |= (frameNum & 0xF) << 3;
+}
+
+void RCT12EntranceElement::SetEntranceType(uint8_t newType)
+{
+    entranceType = newType;
+}
+
+void RCT12EntranceElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
+}
+
+void RCT12EntranceElement::SetPathType(uint8_t newPathType)
+{
+    pathType = newPathType;
+}
+
+void RCT12EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
+{
+    index &= ~0xF;
+    index |= (newSequenceIndex & 0xF);
+}
+
+void RCT12EntranceElement::SetStationIndex(uint8_t stationIndex)
+{
+    index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    index |= (stationIndex << 4);
+}
+
+void RCT12BannerElement::SetIndex(BannerIndex newIndex)
+{
+    index = newIndex;
+}
+
+void RCT12BannerElement::SetPosition(uint8_t newPosition)
+{
+    position = newPosition;
+}
+
+void RCT12BannerElement::SetAllowedEdges(uint8_t newEdges)
+{
+    flags &= ~0b00001111;
+    flags |= (newEdges & 0b00001111);
 }

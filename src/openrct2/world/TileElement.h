@@ -83,6 +83,7 @@ struct TileElementBase
 struct TileElement : public TileElementBase
 {
     uint8_t pad_04[4];
+    uint8_t pad_08[8];
 
     template<typename TType, TileElementType TClass> TType* as() const
     {
@@ -129,7 +130,7 @@ public:
 
     void ClearAs(uint8_t newType);
 };
-assert_struct_size(TileElement, 8);
+assert_struct_size(TileElement, 16);
 
 struct SurfaceElement : TileElementBase
 {
@@ -138,6 +139,11 @@ private:
     uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
     uint8_t grass_length; // 6
     uint8_t ownership;    // 7
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
+
 public:
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newSlope);
@@ -165,7 +171,7 @@ public:
     bool HasTrackThatNeedsWater() const;
     void SetHasTrackThatNeedsWater(bool on);
 };
-assert_struct_size(SurfaceElement, 8);
+assert_struct_size(SurfaceElement, 16);
 
 struct PathElement : TileElementBase
 {
@@ -178,6 +184,10 @@ private:
         uint8_t additionStatus; // 7
         ride_id_t rideIndex;
     };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
 
 public:
     uint8_t GetPathEntryIndex() const;
@@ -241,7 +251,7 @@ public:
     bool ShouldDrawPathOverSupports();
     void SetShouldDrawPathOverSupports(bool on);
 };
-assert_struct_size(PathElement, 8);
+assert_struct_size(PathElement, 16);
 
 struct TrackElement : TileElementBase
 {
@@ -267,6 +277,10 @@ struct TrackElement : TileElementBase
         uint16_t mazeEntry; // 5
     };
     ride_id_t rideIndex; // 7
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
 
 public:
     uint8_t GetTrackType() const;
@@ -317,6 +331,7 @@ public:
     void SetPhotoTimeout();
     void SetPhotoTimeout(uint8_t newValue);
     void DecrementPhotoTimeout();
+    uint8_t GetPhotoTimeout() const;
 
     bool IsHighlighted() const;
     void SetHighlight(bool on);
@@ -326,7 +341,7 @@ public:
     uint8_t GetDoorAState() const;
     uint8_t GetDoorBState() const;
 };
-assert_struct_size(TrackElement, 8);
+assert_struct_size(TrackElement, 16);
 
 struct SmallSceneryElement : TileElementBase
 {
@@ -335,6 +350,11 @@ private:
     uint8_t age;        // 5
     uint8_t colour_1;   // 6
     uint8_t colour_2;   // 7
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
+
 public:
     uint8_t GetEntryIndex() const;
     void SetEntryIndex(uint8_t newIndex);
@@ -351,13 +371,18 @@ public:
     bool NeedsSupports() const;
     void SetNeedsSupports();
 };
-assert_struct_size(SmallSceneryElement, 8);
+assert_struct_size(SmallSceneryElement, 16);
 
 struct LargeSceneryElement : TileElementBase
 {
 private:
     uint16_t entryIndex; // 4
     uint8_t colour[2];   // 6
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
+
 public:
     uint32_t GetEntryIndex() const;
     void SetEntryIndex(uint32_t newIndex);
@@ -378,7 +403,7 @@ public:
     bool IsAccounted() const;
     void SetIsAccounted(bool isAccounted);
 };
-assert_struct_size(LargeSceneryElement, 8);
+assert_struct_size(LargeSceneryElement, 16);
 
 struct WallElement : TileElementBase
 {
@@ -391,6 +416,10 @@ private:
     };
     uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
 
 public:
     uint8_t GetEntryIndex() const;
@@ -423,7 +452,7 @@ public:
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
 };
-assert_struct_size(WallElement, 8);
+assert_struct_size(WallElement, 16);
 
 struct EntranceElement : TileElementBase
 {
@@ -432,6 +461,10 @@ private:
     uint8_t index;        // 5. 0bUSSS????, S = station index.
     uint8_t pathType;     // 6
     ride_id_t rideIndex;  // 7
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
 
 public:
     uint8_t GetEntranceType() const;
@@ -449,7 +482,7 @@ public:
     uint8_t GetPathType() const;
     void SetPathType(uint8_t newPathType);
 };
-assert_struct_size(EntranceElement, 8);
+assert_struct_size(EntranceElement, 16);
 
 struct BannerElement : TileElementBase
 {
@@ -460,6 +493,7 @@ private:
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t flags;  // 6
     uint8_t unused; // 7
+    uint8_t pad_08[8];
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;
@@ -475,13 +509,14 @@ public:
     void SetAllowedEdges(uint8_t newEdges);
     void ResetAllowedEdges();
 };
-assert_struct_size(BannerElement, 8);
+assert_struct_size(BannerElement, 16);
 
 struct CorruptElement : TileElementBase
 {
     uint8_t pad[4];
+    uint8_t pad_08[8];
 };
-assert_struct_size(CorruptElement, 8);
+assert_struct_size(CorruptElement, 16);
 #pragma pack(pop)
 
 class QuarterTile

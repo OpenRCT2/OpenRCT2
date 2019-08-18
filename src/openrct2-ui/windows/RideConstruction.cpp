@@ -2392,7 +2392,7 @@ static void window_ride_construction_draw_track_piece(
 }
 
 static TileElement _tempTrackTileElement;
-static TileElement _tempSideTrackTileElement = { 0x80, 0x8F, 128, 128, 0, 0, 0, 0 };
+static TileElement _tempSideTrackTileElement = { 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 static TileElement* _backupTileElementArrays[5];
 
 /**
