@@ -65,8 +65,6 @@ struct TileElementBase
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
 
-    uint8_t testPad[8];
-
     uint8_t GetType() const;
     void SetType(uint8_t newType);
     uint8_t GetDirection() const;
@@ -85,6 +83,7 @@ struct TileElementBase
 struct TileElement : public TileElementBase
 {
     uint8_t pad_04[4];
+    uint8_t pad_08[8];
 
     template<typename TType, TileElementType TClass> TType* as() const
     {
@@ -140,6 +139,8 @@ private:
     uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
     uint8_t grass_length; // 6
     uint8_t ownership;    // 7
+    uint8_t pad_08[8];
+
 public:
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newSlope);
@@ -180,6 +181,7 @@ private:
         uint8_t additionStatus; // 7
         ride_id_t rideIndex;
     };
+    uint8_t pad_08[8];
 
 public:
     uint8_t GetPathEntryIndex() const;
@@ -269,6 +271,7 @@ struct TrackElement : TileElementBase
         uint16_t mazeEntry; // 5
     };
     ride_id_t rideIndex; // 7
+    uint8_t pad_08[8];
 
 public:
     uint8_t GetTrackType() const;
@@ -338,6 +341,8 @@ private:
     uint8_t age;        // 5
     uint8_t colour_1;   // 6
     uint8_t colour_2;   // 7
+    uint8_t pad_08[8];
+
 public:
     uint8_t GetEntryIndex() const;
     void SetEntryIndex(uint8_t newIndex);
@@ -361,6 +366,8 @@ struct LargeSceneryElement : TileElementBase
 private:
     uint16_t entryIndex; // 4
     uint8_t colour[2];   // 6
+    uint8_t pad_08[8];
+
 public:
     uint32_t GetEntryIndex() const;
     void SetEntryIndex(uint32_t newIndex);
@@ -394,6 +401,7 @@ private:
     };
     uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    uint8_t pad_08[8];
 
 public:
     uint8_t GetEntryIndex() const;
@@ -435,6 +443,7 @@ private:
     uint8_t index;        // 5. 0bUSSS????, S = station index.
     uint8_t pathType;     // 6
     ride_id_t rideIndex;  // 7
+    uint8_t pad_08[8];
 
 public:
     uint8_t GetEntranceType() const;
@@ -463,6 +472,7 @@ private:
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t flags;  // 6
     uint8_t unused; // 7
+    uint8_t pad_08[8];
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;
@@ -483,6 +493,7 @@ assert_struct_size(BannerElement, 16);
 struct CorruptElement : TileElementBase
 {
     uint8_t pad[4];
+    uint8_t pad_08[8];
 };
 assert_struct_size(CorruptElement, 16);
 #pragma pack(pop)
