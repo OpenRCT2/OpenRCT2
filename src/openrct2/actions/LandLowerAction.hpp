@@ -88,7 +88,7 @@ private:
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, _coords.x, _coords.y, tile_element_height(_coords));
+            audio_play_sound_at_location(SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
         }
 
         uint8_t maxHeight = map_get_highest_land_height(validRange);

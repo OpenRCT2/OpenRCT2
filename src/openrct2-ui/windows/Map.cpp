@@ -1316,7 +1316,7 @@ static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y)
         money32 price = place_park_entrance(mapX, mapY, mapZ, direction);
         if (price != MONEY32_UNDEFINED)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+            audio_play_sound_at_location(SoundId::PlaceItem, { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z });
         }
     }
 }
@@ -1340,7 +1340,7 @@ static void window_map_set_peep_spawn_tool_down(int32_t x, int32_t y)
     bool result = place_peep_spawn({ mapX, mapY, mapZ, (uint8_t)direction });
     if (result)
     {
-        audio_play_sound_at_location(SoundId::PlaceItem, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+        audio_play_sound_at_location(SoundId::PlaceItem, { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z });
     }
 }
 

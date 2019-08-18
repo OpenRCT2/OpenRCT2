@@ -626,7 +626,7 @@ private:
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, _coords.x, _coords.y, centreZ);
+            audio_play_sound_at_location(SoundId::PlaceItem, { _coords.x, _coords.y, centreZ });
         }
         res->Cost += result->Cost;
         return res;

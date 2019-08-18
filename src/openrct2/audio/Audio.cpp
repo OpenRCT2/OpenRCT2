@@ -180,15 +180,15 @@ void audio_populate_devices()
     }
 }
 
-void audio_play_sound_at_location(SoundId soundId, int16_t x, int16_t y, int16_t z)
+void audio_play_sound_at_location(SoundId soundId, const CoordsXYZ& loc)
 {
     if (gGameSoundsOff)
         return;
 
     LocationXYZ16 location;
-    location.x = x;
-    location.y = y;
-    location.z = z;
+    location.x = loc.x;
+    location.y = loc.y;
+    location.z = loc.z;
 
     AudioParams params = audio_get_params_from_location(soundId, &location);
     if (params.in_range)

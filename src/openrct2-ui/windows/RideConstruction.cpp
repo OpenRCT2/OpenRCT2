@@ -1834,7 +1834,7 @@ static void window_ride_construction_construct(rct_window* w)
     {
         return;
     }
-    audio_play_sound_at_location(SoundId::PlaceItem, x, y, z);
+    audio_play_sound_at_location(SoundId::PlaceItem, { x, y, z });
 
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
@@ -3855,7 +3855,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
             {
                 window_close_by_class(WC_ERROR);
                 audio_play_sound_at_location(
-                    SoundId::PlaceItem, _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z);
+                    SoundId::PlaceItem, _currentTrackBegin);
                 break;
             }
         }
@@ -3946,7 +3946,7 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
         if (result->Error != GA_ERROR::OK)
             return;
 
-        audio_play_sound_at_location(SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
+        audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
 
         auto ride = get_ride(gRideEntranceExitPlaceRideIndex);
         if (ride != nullptr && ride_are_all_possible_entrances_and_exits_built(ride))

@@ -86,7 +86,7 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
     if (waterZ != 0 && particle->z >= waterZ && z <= waterZ)
     {
         // Splash
-        audio_play_sound_at_location(SoundId::Water2, particle->x, particle->y, waterZ);
+        audio_play_sound_at_location(SoundId::Water2, { particle->x, particle->y, waterZ });
         crash_splash_create(particle->x, particle->y, waterZ);
         sprite_remove((rct_sprite*)particle);
         return;

@@ -123,7 +123,7 @@ private:
         if (isExecuting)
         {
             map_count_remaining_land_rights();
-            audio_play_sound_at_location(SoundId::PlaceItem, centre.x, centre.y, centre.z);
+            audio_play_sound_at_location(SoundId::PlaceItem, centre);
         }
         return res;
     }
