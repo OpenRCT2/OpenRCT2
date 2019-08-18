@@ -64,7 +64,7 @@ struct TileElementBase
     uint8_t flags;            // 1
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
-    
+
     uint8_t testPad[8];
 
     uint8_t GetType() const;

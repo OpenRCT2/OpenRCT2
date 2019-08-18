@@ -626,7 +626,7 @@ void scenario_fix_ghosts(rct_s6_data* s6)
                 ;
         }
     }
-    
+
     // Remove all ghost elements
     RCT12TileElement* destinationElement = s6->tile_elements;
 

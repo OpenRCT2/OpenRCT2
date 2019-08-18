@@ -11,13 +11,13 @@
 
 #include "../localisation/Localisation.h"
 #include "../ride/Track.h"
+#include "../world/Banner.h"
 #include "../world/Footpath.h"
+#include "../world/LargeScenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "../world/Wall.h"
-#include "../world/Banner.h"
-#include "../world/LargeScenery.h"
 
 uint8_t RCT12TileElementBase::GetType() const
 {
