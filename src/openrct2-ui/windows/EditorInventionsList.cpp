@@ -232,7 +232,7 @@ static void move_research_item(rct_research_item* beforeItem)
     if (w != nullptr)
     {
         w->research_item = nullptr;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -388,17 +388,17 @@ static void window_editor_inventions_list_mouseup(rct_window* w, rct_widgetindex
             break;
         case WIDX_RANDOM_SHUFFLE:
             research_items_shuffle();
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_MOVE_ITEMS_TO_TOP:
             research_items_make_all_researched();
             window_init_scroll_widgets(w);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_MOVE_ITEMS_TO_BOTTOM:
             research_items_make_all_unresearched();
             window_init_scroll_widgets(w);
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -407,12 +407,12 @@ static void window_editor_inventions_list_resize(rct_window* w)
 {
     if (w->width < w->min_width)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->width = w->min_width;
     }
     if (w->height < w->min_height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->height = w->min_height;
     }
 }
@@ -434,7 +434,7 @@ static void window_editor_inventions_list_update(rct_window* w)
         return;
 
     _editorInventionsListDraggedItem = nullptr;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -478,7 +478,7 @@ static void window_editor_inventions_list_scrollmousedown(rct_window* w, int32_t
     if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 || research_item_is_always_researched(researchItem))
         return;
 
-    window_invalidate(w);
+    w->Invalidate();
     window_editor_inventions_list_drag_open(researchItem);
 }
 
@@ -494,7 +494,7 @@ static void window_editor_inventions_list_scrollmouseover(rct_window* w, int32_t
     if (researchItem != w->research_item)
     {
         w->research_item = researchItem;
-        window_invalidate(w);
+        w->Invalidate();
 
         // Prevent always-researched items from being highlighted when hovered over
         if (researchItem != nullptr && research_item_is_always_researched(researchItem))
@@ -836,7 +836,7 @@ static void window_editor_inventions_list_drag_cursor(
         rct_research_item* researchItem = get_research_item_at(x, y);
         if (researchItem != inventionListWindow->research_item)
         {
-            window_invalidate(inventionListWindow);
+            inventionListWindow->Invalidate();
         }
     }
 

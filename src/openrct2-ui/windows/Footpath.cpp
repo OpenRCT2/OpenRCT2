@@ -398,7 +398,7 @@ static void window_footpath_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     gFootpathSelectedId = pathId;
     footpath_provisional_update();
     _window_footpath_cost = MONEY32_UNDEFINED;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -1218,7 +1218,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 
     w->pressed_widgets = pressedWidgets;
     w->disabled_widgets = disabledWidgets;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**

@@ -158,12 +158,12 @@ static void window_land_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_MOUNTAINMODE:
             gLandMountainMode ^= 1;
             gLandPaintMode = 0;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_PAINTMODE:
             gLandMountainMode = 0;
             gLandPaintMode ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_PREVIEW:
             window_land_inputsize(w);
@@ -193,14 +193,14 @@ static void window_land_mousedown(rct_window* w, rct_widgetindex widgetIndex, rc
             gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INCREMENT:
             // Increment land tool size
             gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -230,7 +230,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
                 gLandToolTerrainSurface = type;
                 _selectedFloorTexture = type;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_WALL:
             if (dropdownIndex == -1)
@@ -247,7 +247,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
                 gLandToolTerrainEdge = type;
                 _selectedWallTexture = type;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -267,7 +267,7 @@ static void window_land_textinput(rct_window* w, rct_widgetindex widgetIndex, ch
         size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
 
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

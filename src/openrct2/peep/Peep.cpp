@@ -564,12 +564,12 @@ void Peep::StateReset()
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static constexpr const LocationXY16 word_981D7C[4] = { { -2, 0 }, { 0, 2 }, { 2, 0 }, { 0, -2 } };
+static constexpr const CoordsXY word_981D7C[4] = { { -2, 0 }, { 0, 2 }, { 2, 0 }, { 0, -2 } };
 
-bool Peep::UpdateAction()
+std::optional<CoordsXY> Peep::UpdateAction()
 {
-    int16_t actionX, actionY, xy_distance;
-    return UpdateAction(&actionX, &actionY, &xy_distance);
+    int16_t xy_distance;
+    return UpdateAction(xy_distance);
 }
 
 /**
@@ -580,7 +580,7 @@ bool Peep::UpdateAction()
  * has not yet been reached. xy_distance is how close the
  * peep is to the target.
  */
-bool Peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance)
+std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 {
     _unk_F1AEF0 = action_sprite_image_offset;
     if (action == PEEP_ACTION_NONE_1)
@@ -588,25 +588,24 @@ bool Peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance
         action = PEEP_ACTION_NONE_2;
     }
 
-    *actionX = x - destination_x;
-    *actionY = y - destination_y;
+    CoordsXY diffrenceLoc = { x - destination_x, y - destination_y };
 
-    int32_t x_delta = abs(*actionX);
-    int32_t y_delta = abs(*actionY);
+    int32_t x_delta = abs(diffrenceLoc.x);
+    int32_t y_delta = abs(diffrenceLoc.y);
 
-    *xy_distance = x_delta + y_delta;
+    xy_distance = x_delta + y_delta;
 
     if (action == PEEP_ACTION_NONE_1 || action == PEEP_ACTION_NONE_2)
     {
-        if (*xy_distance <= destination_tolerance)
+        if (xy_distance <= destination_tolerance)
         {
-            return false;
+            return {};
         }
         int32_t nextDirection = 0;
         if (x_delta < y_delta)
         {
             nextDirection = 8;
-            if (*actionY >= 0)
+            if (diffrenceLoc.y >= 0)
             {
                 nextDirection = 24;
             }
@@ -614,14 +613,14 @@ bool Peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance
         else
         {
             nextDirection = 16;
-            if (*actionX >= 0)
+            if (diffrenceLoc.x >= 0)
             {
                 nextDirection = 0;
             }
         }
         sprite_direction = nextDirection;
-        *actionX = x + word_981D7C[nextDirection / 8].x;
-        *actionY = y + word_981D7C[nextDirection / 8].y;
+        CoordsXY loc = { x, y };
+        loc += word_981D7C[nextDirection / 8];
         no_action_frame_num++;
         const rct_peep_animation* peepAnimation = g_peep_animation_entries[sprite_type].sprite_animation;
         const uint8_t* imageOffset = peepAnimation[action_sprite_type].frame_offsets;
@@ -630,7 +629,7 @@ bool Peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance
             no_action_frame_num = 0;
         }
         action_sprite_image_offset = imageOffset[no_action_frame_num];
-        return true;
+        return loc;
     }
 
     const rct_peep_animation* peepAnimation = g_peep_animation_entries[sprite_type].sprite_animation;
@@ -643,9 +642,7 @@ bool Peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance
         action = PEEP_ACTION_NONE_2;
         UpdateCurrentActionSpriteType();
         Invalidate();
-        *actionX = x;
-        *actionY = y;
-        return true;
+        return { { x, y } };
     }
     action_sprite_image_offset = peepAnimation[action_sprite_type].frame_offsets[action_frame];
 
@@ -653,9 +650,7 @@ bool Peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance
     if (action != PEEP_ACTION_THROW_UP || action_frame != 15)
     {
         Invalidate();
-        *actionX = x;
-        *actionY = y;
-        return true;
+        return { { x, y } };
     }
 
     // We are throwing up
@@ -677,9 +672,7 @@ bool Peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance
     audio_play_sound_at_location(soundId, x, y, z);
 
     Invalidate();
-    *actionX = x;
-    *actionY = y;
-    return true;
+    return { { x, y } };
 }
 
 /**
@@ -896,16 +889,14 @@ void Peep::UpdateFalling()
     if (action == PEEP_ACTION_DROWNING)
     {
         // Check to see if we are ready to drown.
-        int16_t actionX, actionY, xy_distance;
-
-        UpdateAction(&actionX, &actionY, &xy_distance);
+        UpdateAction();
         if (action == PEEP_ACTION_DROWNING)
             return;
 
         if (gConfigNotifications.guest_died)
         {
             FormatNameTo(gCommonFormatArgs);
-            news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, actionX | (actionY << 16));
+            news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16));
         }
 
         gParkRatingCasualtyPenalty = std::min(gParkRatingCasualtyPenalty + 25, 1000);
@@ -2342,9 +2333,8 @@ static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
         }
     }
 
-    int16_t xy_dist, x, y;
     if (peep->action < PEEP_ACTION_NONE_1)
-        peep->UpdateAction(&x, &y, &xy_dist);
+        peep->UpdateAction();
 
     if (peep->action != PEEP_ACTION_NONE_2)
         return true;
@@ -2375,10 +2365,6 @@ static void peep_return_to_centre_of_tile(Peep* peep)
 static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileElement* tile_element, uint8_t& pathing_result)
 {
     uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
-    ride_id_t rideIndex = tile_element->AsEntrance()->GetRideIndex();
-    auto ride = get_ride(rideIndex);
-    if (ride == nullptr)
-        return;
 
     // Store some details to determine when to override the default
     // behaviour (defined below) for when staff attempt to enter a ride
@@ -2405,6 +2391,11 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
 
     if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
+        auto rideIndex = tile_element->AsEntrance()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
+            return;
+
         auto guest = peep->AsGuest();
         if (guest == nullptr)
         {
@@ -3087,8 +3078,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             return;
     }
 
-    int16_t actionX, actionY, xy_dist;
-    if (!UpdateAction(&actionX, &actionY, &xy_dist))
+    std::optional<CoordsXY> loc;
+    if (!(loc = UpdateAction()))
     {
         pathing_result |= PATHING_DESTINATION_REACHED;
         uint8_t result = 0;
@@ -3107,20 +3098,21 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         if (result != 0)
             return;
 
-        if (!UpdateAction(&actionX, &actionY, &xy_dist))
+        if (!(loc = UpdateAction()))
             return;
     }
 
-    if ((actionX & 0xFFE0) == next_x && (actionY & 0xFFE0) == next_y)
+    auto newLoc = *loc;
+    if ((newLoc.x & 0xFFE0) == next_x && (newLoc.y & 0xFFE0) == next_y)
     {
-        int16_t height = GetZOnSlope(actionX, actionY);
+        int16_t height = GetZOnSlope(newLoc.x, newLoc.y);
         Invalidate();
-        MoveTo(actionX, actionY, height);
+        MoveTo(newLoc.x, newLoc.y, height);
         Invalidate();
         return;
     }
 
-    if (actionX < 32 || actionY < 32 || actionX >= gMapSizeUnits || actionY >= gMapSizeUnits)
+    if (newLoc.x < 32 || newLoc.y < 32 || newLoc.x >= gMapSizeUnits || newLoc.y >= gMapSizeUnits)
     {
         if (outside_of_park == 1)
         {
@@ -3130,7 +3122,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         return;
     }
 
-    TileElement* tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
+    TileElement* tileElement = map_get_first_element_at(newLoc.x / 32, newLoc.y / 32);
     int16_t base_z = std::max(0, (z / 8) - 2);
     int16_t top_z = (z / 8) + 1;
 
@@ -3145,13 +3137,13 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
-            peep_interact_with_path(this, actionX, actionY, tileElement);
+            peep_interact_with_path(this, newLoc.x, newLoc.y, tileElement);
             tile_result = tileElement;
             return;
         }
         else if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
-            if (peep_interact_with_shop(this, actionX, actionY, tileElement))
+            if (peep_interact_with_shop(this, newLoc.x, newLoc.y, tileElement))
             {
                 tile_result = tileElement;
                 return;
@@ -3159,7 +3151,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         }
         else if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
         {
-            peep_interact_with_entrance(this, actionX, actionY, tileElement, pathing_result);
+            peep_interact_with_entrance(this, newLoc.x, newLoc.y, tileElement, pathing_result);
             tile_result = tileElement;
             return;
         }
@@ -3167,7 +3159,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     if (type == PEEP_TYPE_STAFF || (GetNextIsSurface()))
     {
-        int16_t height = abs(tile_element_height(actionX, actionY) - z);
+        int16_t height = abs(tile_element_height(newLoc.x, newLoc.y) - z);
 
         if (height <= 3 || (type == PEEP_TYPE_STAFF && height <= 32))
         {
@@ -3178,13 +3170,13 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
                 SetState(PEEP_STATE_1);
             }
 
-            if (!map_is_location_in_park({ actionX & 0xFFE0, actionY & 0xFFE0 }))
+            if (!map_is_location_in_park(newLoc))
             {
                 peep_return_to_centre_of_tile(this);
                 return;
             }
 
-            tileElement = map_get_surface_element_at({ actionX, actionY });
+            tileElement = map_get_surface_element_at(newLoc);
             if (tileElement == nullptr)
             {
                 peep_return_to_centre_of_tile(this);
@@ -3209,14 +3201,14 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             }
 
             // The peep is on a surface and not on a path
-            next_x = actionX & 0xFFE0;
-            next_y = actionY & 0xFFE0;
+            next_x = newLoc.x & 0xFFE0;
+            next_y = newLoc.y & 0xFFE0;
             next_z = tileElement->base_height;
             SetNextFlags(0, false, true);
 
-            height = GetZOnSlope(actionX, actionY);
+            height = GetZOnSlope(newLoc.x, newLoc.y);
             Invalidate();
-            MoveTo(actionX, actionY, height);
+            MoveTo(newLoc.x, newLoc.y, height);
             Invalidate();
             return;
         }

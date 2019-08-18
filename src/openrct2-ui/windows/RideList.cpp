@@ -275,7 +275,7 @@ static void window_ride_list_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             {
                 _quickDemolishMode = false;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -290,12 +290,12 @@ static void window_ride_list_resize(rct_window* w)
     w->min_height = 124;
     if (w->width < w->min_width)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->width = w->min_width;
     }
     if (w->height < w->min_height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->height = w->min_height;
     }
 
@@ -379,7 +379,7 @@ static void window_ride_list_dropdown(rct_window* w, rct_widgetindex widgetIndex
             window_ride_list_open_all(w);
         }
 
-        window_invalidate(w);
+        w->Invalidate();
     }
     else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
     {
@@ -397,7 +397,7 @@ static void window_ride_list_dropdown(rct_window* w, rct_widgetindex widgetIndex
         }
 
         _window_ride_list_information_type = informationType;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -410,7 +410,7 @@ static void window_ride_list_update(rct_window* w)
     w->frame_no = (w->frame_no + 1) % 64;
     widget_invalidate(w, WIDX_TAB_1 + w->page);
     if (_window_ride_list_information_type != INFORMATION_TYPE_STATUS)
-        window_invalidate(w);
+        w->Invalidate();
 }
 
 /**
@@ -425,7 +425,7 @@ static void window_ride_list_scrollgetsize(rct_window* w, int32_t scrollIndex, i
     if (w->selected_list_item != -1)
     {
         w->selected_list_item = -1;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     top = *height - window_ride_list_widgets[WIDX_LIST].bottom + window_ride_list_widgets[WIDX_LIST].top + 21;
@@ -434,7 +434,7 @@ static void window_ride_list_scrollgetsize(rct_window* w, int32_t scrollIndex, i
     if (top < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = top;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -479,7 +479,7 @@ static void window_ride_list_scrollmouseover(rct_window* w, int32_t scrollIndex,
         return;
 
     w->selected_list_item = index;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -998,7 +998,7 @@ void window_ride_list_refresh_list(rct_window* w)
 
     w->no_list_items = list_index;
     w->selected_list_item = -1;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_ride_list_close_all(rct_window* w)

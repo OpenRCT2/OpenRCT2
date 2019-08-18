@@ -182,7 +182,6 @@ struct RideMeasurement
 {
     static constexpr size_t MAX_ITEMS = 4800;
 
-    Ride* ride{};
     uint8_t flags{};
     uint32_t last_use_tick{};
     uint16_t num_items{};
@@ -201,6 +200,8 @@ enum class RideClassification
     ShopOrStall,
     KioskOrFacility
 };
+
+struct TrackDesign;
 
 /**
  * Ride structure.
@@ -441,6 +442,8 @@ public:
 
     static void UpdateAll();
     static bool NameExists(const std::string_view& name, ride_id_t excludeRideId = RIDE_ID_NULL);
+
+    std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
 };
 
 #pragma pack(push, 1)

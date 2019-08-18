@@ -336,7 +336,7 @@ static void window_title_command_editor_mouseup(rct_window* w, rct_widgetindex w
                 command.Zoom = zoom;
                 snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Zoom);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_SELECT_SCENARIO:
             window_scenarioselect_open(scenario_select_callback, true);
@@ -501,7 +501,7 @@ static void window_title_command_editor_dropdown(rct_window* w, rct_widgetindex 
                 case TITLE_SCRIPT_LOADSC:
                     command.Scenario[0] = '\0';
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INPUT_DROPDOWN:
             switch (command.Type)
@@ -510,14 +510,14 @@ static void window_title_command_editor_dropdown(rct_window* w, rct_widgetindex 
                     if (dropdownIndex != command.Speed - 1)
                     {
                         command.Speed = (uint8_t)(dropdownIndex + 1);
-                        window_invalidate(w);
+                        w->Invalidate();
                     }
                     break;
                 case TITLE_SCRIPT_LOAD:
                     if (dropdownIndex != command.SaveIndex)
                     {
                         command.SaveIndex = (uint8_t)dropdownIndex;
-                        window_invalidate(w);
+                        w->Invalidate();
                     }
                     break;
             }
@@ -561,7 +561,7 @@ static void window_title_command_editor_textinput(rct_window* w, rct_widgetindex
                         snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
                     }
                 }
-                window_invalidate(w);
+                w->Invalidate();
             }
             else
             {
@@ -576,7 +576,7 @@ static void window_title_command_editor_textinput(rct_window* w, rct_widgetindex
                     command.X = (uint8_t)value;
                 }
                 snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
-                window_invalidate(w);
+                w->Invalidate();
             }
             else
             {
@@ -591,7 +591,7 @@ static void window_title_command_editor_textinput(rct_window* w, rct_widgetindex
                     command.Y = (uint8_t)value;
                 }
                 snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
-                window_invalidate(w);
+                w->Invalidate();
             }
             else
             {
@@ -673,7 +673,7 @@ static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex
             command.SpriteIndex = spriteIndex;
             window_follow_sprite(w, (size_t)command.SpriteIndex);
             tool_cancel();
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }

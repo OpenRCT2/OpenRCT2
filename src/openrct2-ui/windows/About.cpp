@@ -333,5 +333,5 @@ static void window_about_set_page(rct_window* w, int32_t page)
     w->pressed_widgets |= (page == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
 
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 }

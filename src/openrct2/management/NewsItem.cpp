@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
@@ -371,7 +372,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
                 window = window_find_by_class(WC_TOP_TOOLBAR);
                 if (window != nullptr)
                 {
-                    window_invalidate(window);
+                    window->Invalidate();
                     if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_SCENERY, TOOL_ARROW))
                     {
                         input_set_flag(INPUT_FLAG_6, true);

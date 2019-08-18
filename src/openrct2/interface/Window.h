@@ -610,7 +610,6 @@ rct_window* window_find_by_class(rct_windowclass cls);
 rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number);
 rct_window* window_find_from_point(int32_t x, int32_t y);
 rct_widgetindex window_find_widget_from_point(rct_window* w, int32_t x, int32_t y);
-void window_invalidate(rct_window* window);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
 void window_invalidate_all();
@@ -631,8 +630,6 @@ void window_push_others_below(rct_window* w1);
 
 rct_window* window_get_main();
 
-void window_set_location(rct_window* w, int32_t x, int32_t y, int32_t z);
-void window_scroll_to_viewport(rct_window* w);
 void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z);
 void window_rotate_camera(rct_window* w, int32_t direction);
 void window_viewport_get_map_coords_by_cursor(

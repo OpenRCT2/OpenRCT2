@@ -145,7 +145,7 @@ static void window_debug_paint_invalidate(rct_window* w)
     if (ResizeLanguage != currentLanguage)
     {
         ResizeLanguage = currentLanguage;
-        window_invalidate(w);
+        w->Invalidate();
 
         // Find the width of the longest string
         int16_t newWidth = 0;
@@ -171,7 +171,7 @@ static void window_debug_paint_invalidate(rct_window* w)
         w->widgets[WIDX_TOGGLE_SHOW_BOUND_BOXES].right = newWidth - 8;
         w->widgets[WIDX_TOGGLE_SHOW_DIRTY_VISUALS].right = newWidth - 8;
 
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);

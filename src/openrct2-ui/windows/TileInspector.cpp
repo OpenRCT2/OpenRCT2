@@ -591,7 +591,7 @@ static void window_tile_inspector_select_element_from_list(rct_window* w, int32_
         windowTileInspectorSelectedIndex = index;
     }
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_tile_inspector_load_tile(rct_window* w, TileElement* elementToSelect)
@@ -613,7 +613,7 @@ static void window_tile_inspector_load_tile(rct_window* w, TileElement* elementT
 
     windowTileInspectorElementCount = numItems;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_tile_inspector_insert_corrupt_element(int32_t elementIndex)
@@ -658,7 +658,7 @@ static void window_tile_inspector_copy_element(rct_window* w)
     // Copy value, in case the element gets moved
     tileInspectorCopiedElement = *window_tile_inspector_get_selected_element(w);
     windowTileInspectorElementCopied = true;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_tile_inspector_paste_element(rct_window* w)
@@ -989,12 +989,12 @@ static void window_tile_inspector_resize(rct_window* w)
     w->min_height = MIN_WH;
     if (w->width < w->min_width)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->width = w->min_width;
     }
     if (w->height < w->min_height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->height = w->min_height;
     }
 }
@@ -1325,7 +1325,7 @@ static void window_tile_inspector_scrollgetsize(rct_window* w, int32_t scrollInd
 static void window_tile_inspector_set_page(rct_window* w, const TILE_INSPECTOR_PAGE page)
 {
     // Invalidate the window already, because the size may change
-    window_invalidate(w);
+    w->Invalidate();
 
     // subtract current page height, then add new page height
     if (w->page != TILE_INSPECTOR_PAGE_DEFAULT)
@@ -1408,7 +1408,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
     if (w->page != page)
     {
         window_tile_inspector_set_page(w, page);
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     // X and Y spinners

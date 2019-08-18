@@ -292,20 +292,6 @@ void GameState::UpdateLogic()
     // Update windows
     // window_dispatch_update_all();
 
-    if (gErrorType != ERROR_TYPE_NONE)
-    {
-        rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text = gErrorStringId;
-        if (gErrorType == ERROR_TYPE_GENERIC)
-        {
-            title_text = gErrorStringId;
-            body_text = 0xFFFF;
-        }
-        gErrorType = ERROR_TYPE_NONE;
-
-        context_show_error(title_text, body_text);
-    }
-
     // Start autosave timer after update
     if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
     {

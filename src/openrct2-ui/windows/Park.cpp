@@ -609,7 +609,7 @@ rct_window* window_park_entrance_open()
     }
 
     window->page = WINDOW_PARK_PAGE_ENTRANCE;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_entrance_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
     window->event_handlers = &window_park_entrance_events;
@@ -655,7 +655,7 @@ static void window_park_entrance_mouseup(rct_window* w, rct_widgetindex widgetIn
             context_open_window(WC_LAND_RIGHTS);
             break;
         case WIDX_LOCATE:
-            window_scroll_to_viewport(w);
+            w->ScrollToViewport();
             break;
         case WIDX_RENAME:
         {
@@ -935,13 +935,13 @@ static void window_park_init_viewport(rct_window* w)
                 (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0, x, y,
                 z, w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, SPRITE_INDEX_NULL);
             w->flags |= (1 << 2);
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 
     if (w->viewport != nullptr)
         w->viewport->flags = viewportFlags;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 #pragma endregion
@@ -971,7 +971,7 @@ rct_window* window_park_rating_open()
 
     window->viewport = nullptr;
     window->page = WINDOW_PARK_PAGE_RATING;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_rating_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_RATING];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_RATING];
@@ -1092,7 +1092,7 @@ rct_window* window_park_guests_open()
 
     window->viewport = nullptr;
     window->page = WINDOW_PARK_PAGE_GUESTS;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_guests_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_GUESTS];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_GUESTS];
@@ -1463,7 +1463,7 @@ rct_window* window_park_objective_open()
 
     window->viewport = nullptr;
     window->page = WINDOW_PARK_PAGE_OBJECTIVE;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_objective_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
@@ -1471,7 +1471,7 @@ rct_window* window_park_objective_open()
     window_init_scroll_widgets(window);
     window->x = context_get_width() / 2 - 115;
     window->y = context_get_height() / 2 - 87;
-    window_invalidate(window);
+    window->Invalidate();
 
     return window;
 }
@@ -1536,7 +1536,7 @@ static void window_park_objective_textinput(rct_window* w, rct_widgetindex widge
     if (widgetIndex == WIDX_ENTER_NAME && text != nullptr && text[0] != 0)
     {
         scenario_success_submit_name(text);
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1638,7 +1638,7 @@ rct_window* window_park_awards_open()
 
     window->viewport = nullptr;
     window->page = WINDOW_PARK_PAGE_AWARDS;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_awards_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_AWARDS];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_AWARDS];
@@ -1766,7 +1766,7 @@ static void window_park_set_page(rct_window* w, int32_t page)
     w->event_handlers = window_park_page_events[page];
     w->widgets = window_park_page_widgets[page];
     window_park_set_disabled_tabs(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);

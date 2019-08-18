@@ -85,6 +85,10 @@ rct_sprite* get_sprite(size_t sprite_idx)
         return nullptr;
     }
     openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
+    if (sprite_idx >= MAX_SPRITES)
+    {
+        return nullptr;
+    }
     return &_spriteList[sprite_idx];
 }
 

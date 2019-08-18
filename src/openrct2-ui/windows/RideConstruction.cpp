@@ -3243,7 +3243,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
             break;
         default:
             w->pressed_widgets = pressedWidgets;
-            window_invalidate(w);
+            w->Invalidate();
             return;
     }
 
@@ -3337,7 +3337,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
         pressedWidgets |= (1 << WIDX_CHAIN_LIFT);
 
     w->pressed_widgets = pressedWidgets;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_ride_construction_select_map_tiles(

@@ -41,6 +41,11 @@ public:
     std::shared_ptr<SawyerChunk> ReadChunk();
 
     /**
+     * As above but for chunks without a header
+     */
+    std::shared_ptr<SawyerChunk> ReadChunkTrack();
+
+    /**
      * Reads the next chunk from the stream and copies it directly to the
      * destination buffer. If the chunk is larger than length, only length
      * is copied. If the chunk is smaller than length, the remaining space

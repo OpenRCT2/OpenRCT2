@@ -101,6 +101,10 @@ struct rct_window
     uint8_t colours[6];                    // 0x4BA
     uint8_t visibility;                    // VISIBILITY_CACHE
     uint16_t viewport_smart_follow_sprite; // Smart following of sprites. Handles setting viewport target sprite etc
+
+    void SetLocation(int32_t x, int32_t y, int32_t z);
+    void ScrollToViewport();
+    void Invalidate();
 };
 
 // rct2: 0x01420078

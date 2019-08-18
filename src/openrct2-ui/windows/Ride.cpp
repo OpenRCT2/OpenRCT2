@@ -41,6 +41,7 @@
 #include <openrct2/object/StationObject.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/rct1/RCT1.h>
+#include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/ride/ShopItem.h>
@@ -48,10 +49,10 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesign.h>
+#include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-
 using namespace OpenRCT2;
 
 enum
@@ -950,6 +951,7 @@ static rct_window_event_list *window_ride_page_events[] = {
 static bool _collectTrackDesignScenery = false;
 static int32_t _lastSceneryX = 0;
 static int32_t _lastSceneryY = 0;
+static std::unique_ptr<TrackDesign> _trackDesign;
 
 // Cached overall view for each ride
 // (Re)calculated when the ride window is opened
@@ -1624,7 +1626,7 @@ static rct_window* window_ride_open_station(Ride* ride, int32_t stationIndex)
     w->page = WINDOW_RIDE_PAGE_MAIN;
     w->width = 316;
     w->height = 180;
-    window_invalidate(w);
+    w->Invalidate();
 
     w->widgets = window_ride_page_widgets[w->page];
     w->enabled_widgets = window_ride_page_enabled_widgets[w->page];
@@ -1712,7 +1714,7 @@ rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
     rct_window* w = window_find_by_number(WC_RIDE, ride->id);
     if (w != nullptr)
     {
-        window_invalidate(w);
+        w->Invalidate();
 
         if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
             && gCurrentToolWidget.window_number == w->number)
@@ -1757,7 +1759,7 @@ rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
     w->page = WINDOW_RIDE_PAGE_MAIN;
     w->width = 316;
     w->height = 180;
-    window_invalidate(w);
+    w->Invalidate();
 
     w->widgets = window_ride_page_widgets[w->page];
     w->enabled_widgets = window_ride_page_enabled_widgets[w->page];
@@ -1769,7 +1771,7 @@ rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
 
     w->ride.view = view;
     window_ride_init_viewport(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     return w;
 }
@@ -1812,12 +1814,12 @@ static void window_ride_set_page(rct_window* w, int32_t page)
     w->pressed_widgets = 0;
     w->widgets = window_ride_page_widgets[page];
     window_ride_disable_tabs(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     if (listen != 0 && w->viewport != nullptr)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
@@ -1981,12 +1983,12 @@ static void window_ride_init_viewport(rct_window* w)
             focus.coordinate.z, focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
 
         w->flags |= WF_NO_SCROLLING;
-        window_invalidate(w);
+        w->Invalidate();
     }
     if (w->viewport)
     {
         w->viewport->flags = viewport_flags;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -2045,7 +2047,7 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_ride_rename(w);
             break;
         case WIDX_LOCATE:
-            window_scroll_to_viewport(w);
+            w->ScrollToViewport();
             break;
         case WIDX_DEMOLISH:
             context_open_detail_window(WD_DEMOLISH_RIDE, w->number);
@@ -2472,7 +2474,7 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
 
             w->ride.view = dropdownIndex;
             window_ride_init_viewport(w);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_OPEN:
         {
@@ -3165,7 +3167,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_CAPACITY, &rideEntry->capacity, COLOUR_BLACK, x, y);
 
     // Excitement Factor
-    auto factor = rideEntry->excitement_multiplier;
+    auto factor = (int16_t)rideEntry->excitement_multiplier;
     if (factor > 0)
     {
         y += LIST_ROW_HEIGHT;
@@ -3600,7 +3602,7 @@ static void window_ride_operating_update(rct_window* w)
     if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_OPERATING)
     {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_OPERATING;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -4181,7 +4183,7 @@ static void window_ride_maintenance_update(rct_window* w)
     if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAINTENANCE)
     {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MAINTENANCE;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -4616,7 +4618,7 @@ static void window_ride_colour_dropdown(rct_window* w, rct_widgetindex widgetInd
     {
         case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
             w->ride_colour = (uint16_t)dropdownIndex;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_TRACK_MAIN_COLOUR:
         {
@@ -4677,7 +4679,7 @@ static void window_ride_colour_dropdown(rct_window* w, rct_widgetindex widgetInd
         break;
         case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
             w->vehicleIndex = dropdownIndex;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_VEHICLE_MAIN_COLOUR:
         {
@@ -5403,13 +5405,46 @@ void window_ride_measurements_design_cancel()
     }
 }
 
+static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* path)
+{
+    if (result == MODAL_RESULT_OK)
+    {
+        track_repository_scan();
+    }
+    gfx_invalidate_screen();
+};
+
 /**
  *
  *  rct2: 0x006AD4CD
  */
 static void window_ride_measurements_design_save(rct_window* w)
 {
-    track_design_save((uint8_t)w->number);
+    Ride* ride = get_ride(w->number);
+    _trackDesign = ride->SaveToTrackDesign();
+    if (!_trackDesign)
+    {
+        return;
+    }
+
+    if (gTrackDesignSaveMode)
+    {
+        auto errMessage = _trackDesign->CreateTrackDesignScenery();
+        if (errMessage != STR_NONE)
+        {
+            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage);
+            return;
+        }
+    }
+
+    auto trackName = ride->GetName();
+    auto intent = Intent(WC_LOADSAVE);
+    intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
+    intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, _trackDesign.get());
+    intent.putExtra(INTENT_EXTRA_PATH, trackName);
+    intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(&TrackDesignCallback));
+
+    context_open_intent(&intent);
 }
 
 /**
@@ -5512,7 +5547,9 @@ static void window_ride_measurements_dropdown(rct_window* w, rct_widgetindex wid
         dropdownIndex = gDropdownHighlightedIndex;
 
     if (dropdownIndex == 0)
-        track_design_save((uint8_t)w->number);
+    {
+        window_ride_measurements_design_save(w);
+    }
     else
         setup_scenery_selection(w);
 }
@@ -5550,7 +5587,7 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
             _collectTrackDesignScenery = !track_design_save_contains_tile_element(tileElement);
-            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            track_design_save_select_tile_element(interactionType, { mapX, mapY }, tileElement, _collectTrackDesignScenery);
             break;
     }
 }
@@ -5573,7 +5610,7 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
+            track_design_save_select_tile_element(interactionType, { mapX, mapY }, tileElement, _collectTrackDesignScenery);
             break;
     }
 }
@@ -5881,7 +5918,7 @@ static void window_ride_set_graph(rct_window* w, int32_t type)
         w->list_information_type &= 0xFF00;
         w->list_information_type |= type;
     }
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -6559,7 +6596,7 @@ static void window_ride_income_update(rct_window* w)
     if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_INCOME)
     {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_INCOME;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -6862,7 +6899,7 @@ static void window_ride_customer_update(rct_window* w)
     if (ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_CUSTOMER)
     {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_CUSTOMER;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

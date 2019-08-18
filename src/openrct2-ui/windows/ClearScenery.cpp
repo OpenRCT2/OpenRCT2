@@ -141,15 +141,15 @@ static void window_clear_scenery_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_SMALL_SCENERY:
             gClearSmallScenery ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LARGE_SCENERY:
             gClearLargeScenery ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_FOOTPATH:
             gClearFootpath ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -163,14 +163,14 @@ static void window_clear_scenery_mousedown(rct_window* w, rct_widgetindex widget
             gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INCREMENT:
             // Increment land tool size, if it stays within the limit
             gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -189,7 +189,7 @@ static void window_clear_scenery_textinput(rct_window* w, rct_widgetindex widget
         size = std::max(MINIMUM_TOOL_SIZE, size);
         size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

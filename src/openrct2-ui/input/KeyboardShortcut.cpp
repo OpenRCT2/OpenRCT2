@@ -79,7 +79,7 @@ static void toggle_view_flag(int32_t viewportFlag)
     if (window != nullptr)
     {
         window->viewport->flags ^= viewportFlag;
-        window_invalidate(window);
+        window->Invalidate();
     }
 }
 
@@ -115,7 +115,7 @@ static void shortcut_pause_game()
         rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
         if (window != nullptr)
         {
-            window_invalidate(window);
+            window->Invalidate();
             window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_PAUSE);
         }
     }
@@ -353,7 +353,7 @@ static void shortcut_adjust_land()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_LAND);
             }
         }
@@ -372,7 +372,7 @@ static void shortcut_adjust_water()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_WATER);
             }
         }
@@ -391,7 +391,7 @@ static void shortcut_build_scenery()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_SCENERY);
             }
         }
@@ -410,7 +410,7 @@ static void shortcut_build_paths()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_PATH);
             }
         }
@@ -565,7 +565,7 @@ static void shortcut_clear_scenery()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY);
             }
         }
@@ -780,7 +780,7 @@ static void shortcut_open_scenery_picker()
         rct_window* window_toolbar = window_find_by_class(WC_TOP_TOOLBAR);
         if (window_toolbar != nullptr)
         {
-            window_invalidate(window_toolbar);
+            window_toolbar->Invalidate();
             window_event_mouse_up_call(window_toolbar, WC_TOP_TOOLBAR__WIDX_SCENERY);
         }
     }

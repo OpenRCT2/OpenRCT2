@@ -30,6 +30,23 @@ class ObjectDownloader
 private:
     static constexpr auto OPENRCT2_API_LEGACY_OBJECT_URL = "https://api.openrct2.io/objects/legacy/";
 
+    struct DownloadStatusInfo
+    {
+        std::string Name;
+        std::string Source;
+        size_t Count{};
+        size_t Total{};
+
+        bool operator==(const DownloadStatusInfo& rhs)
+        {
+            return Name == rhs.Name && Source == rhs.Source && Count == rhs.Count && Total == rhs.Total;
+        }
+        bool operator!=(const DownloadStatusInfo& rhs)
+        {
+            return !(*this == rhs);
+        }
+    };
+
     std::vector<rct_object_entry> _entries;
     std::vector<rct_object_entry> _downloadedEntries;
     size_t _currentDownloadIndex{};
@@ -37,12 +54,20 @@ private:
     std::mutex _queueMutex;
     bool _nextDownloadQueued{};
 
+    DownloadStatusInfo _lastDownloadStatusInfo;
+    DownloadStatusInfo _downloadStatusInfo;
+    std::mutex _downloadStatusInfoMutex;
+    std::string _lastDownloadSource;
+
     // TODO static due to INTENT_EXTRA_CALLBACK not allowing a std::function
     inline static bool _downloadingObjects;
 
 public:
     void Begin(const std::vector<rct_object_entry>& entries)
     {
+        _lastDownloadStatusInfo = {};
+        _downloadStatusInfo = {};
+        _lastDownloadSource = {};
         _entries = entries;
         _currentDownloadIndex = 0;
         _downloadingObjects = true;
@@ -68,23 +93,54 @@ public:
             _nextDownloadQueued = false;
             NextDownload();
         }
+        UpdateStatusBox();
     }
 
 private:
-    void UpdateProgress(const std::string& name, size_t count, size_t total)
+    void UpdateStatusBox()
     {
-        char str_downloading_objects[256]{};
-        uint8_t args[32]{};
-        set_format_arg_on(args, 0, int16_t, count);
-        set_format_arg_on(args, 2, int16_t, total);
-        set_format_arg_on(args, 4, char*, name.c_str());
+        std::lock_guard<std::mutex> guard(_downloadStatusInfoMutex);
+        if (_lastDownloadStatusInfo != _downloadStatusInfo)
+        {
+            _lastDownloadStatusInfo = _downloadStatusInfo;
 
-        format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, args);
+            if (_downloadStatusInfo == DownloadStatusInfo())
+            {
+                context_force_close_window_by_class(WC_NETWORK_STATUS);
+            }
+            else
+            {
+                char str_downloading_objects[256]{};
+                uint8_t args[32]{};
+                if (_downloadStatusInfo.Source.empty())
+                {
+                    set_format_arg_on(args, 0, int16_t, (int16_t)_downloadStatusInfo.Count);
+                    set_format_arg_on(args, 2, int16_t, (int16_t)_downloadStatusInfo.Total);
+                    set_format_arg_on(args, 4, char*, _downloadStatusInfo.Name.c_str());
+                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, args);
+                }
+                else
+                {
+                    set_format_arg_on(args, 0, char*, _downloadStatusInfo.Name.c_str());
+                    set_format_arg_on(args, sizeof(char*), char*, _downloadStatusInfo.Source.c_str());
+                    set_format_arg_on(args, sizeof(char*) + sizeof(char*), int16_t, (int16_t)_downloadStatusInfo.Count);
+                    set_format_arg_on(
+                        args, sizeof(char*) + sizeof(char*) + sizeof(int16_t), int16_t, (int16_t)_downloadStatusInfo.Total);
+                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, args);
+                }
 
-        auto intent = Intent(WC_NETWORK_STATUS);
-        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
-        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
-        context_open_intent(&intent);
+                auto intent = Intent(WC_NETWORK_STATUS);
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
+                intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
+                context_open_intent(&intent);
+            }
+        }
+    }
+
+    void UpdateProgress(const DownloadStatusInfo& info)
+    {
+        std::lock_guard<std::mutex> guard(_downloadStatusInfoMutex);
+        _downloadStatusInfo = info;
     }
 
     void QueueNextDownload()
@@ -93,11 +149,12 @@ private:
         _nextDownloadQueued = true;
     }
 
-    void DownloadObject(const rct_object_entry& entry, const std::string name, const std::string_view url)
+    void DownloadObject(const rct_object_entry& entry, const std::string name, const std::string url)
     {
         using namespace OpenRCT2::Network;
         try
         {
+            std::printf("Downloading %s\n", url.c_str());
             Http::Request req;
             req.method = Http::Method::GET;
             req.url = url;
@@ -139,15 +196,15 @@ private:
         {
             // Finished...
             _downloadingObjects = false;
-            context_force_close_window_by_class(WC_NETWORK_STATUS);
+            UpdateProgress({});
             return;
         }
 
         auto& entry = _entries[_currentDownloadIndex];
         auto name = String::Trim(std::string(entry.name, sizeof(entry.name)));
-        UpdateProgress(name, _currentDownloadIndex + 1, (int32_t)_entries.size());
-        std::printf("Downloading %s...\n", name.c_str());
+        log_verbose("Downloading object: [%s]:", name.c_str());
         _currentDownloadIndex++;
+        UpdateProgress({ name, _lastDownloadSource, _currentDownloadIndex, _entries.size() });
         try
         {
             Http::Request req;
@@ -160,9 +217,12 @@ private:
                     if (jresponse != nullptr)
                     {
                         auto objName = json_string_value(json_object_get(jresponse, "name"));
+                        auto source = json_string_value(json_object_get(jresponse, "source"));
                         auto downloadLink = json_string_value(json_object_get(jresponse, "download"));
                         if (downloadLink != nullptr)
                         {
+                            _lastDownloadSource = source;
+                            UpdateProgress({ name, source, _currentDownloadIndex, _entries.size() });
                             DownloadObject(entry, objName, downloadLink);
                         }
                         json_decref(jresponse);
@@ -389,7 +449,7 @@ rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, 
     window->no_list_items = (uint16_t)numMissingObjects;
     file_path = path;
 
-    window_invalidate(window);
+    window->Invalidate();
     return window;
 }
 

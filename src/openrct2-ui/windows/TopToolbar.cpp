@@ -3308,7 +3308,7 @@ static void top_toolbar_fastforward_menu_dropdown(int16_t dropdownIndex)
             gGameSpeed = dropdownIndex + 1;
             if (gGameSpeed >= 5)
                 gGameSpeed = 8;
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -3332,12 +3332,12 @@ static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex)
         if (dropdownIndex == 0)
         {
             window_rotate_camera(w, 1);
-            window_invalidate(w);
+            w->Invalidate();
         }
         else if (dropdownIndex == 1)
         {
             window_rotate_camera(w, -1);
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -3651,7 +3651,7 @@ static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex)
             default:
                 return;
         }
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

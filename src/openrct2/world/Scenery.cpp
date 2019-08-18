@@ -96,11 +96,11 @@ void scenery_update_tile(int32_t x, int32_t y)
                 {
                     if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER)
                     {
-                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_WATER, x, y, tileElement);
+                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_WATER, { x, y }, tileElement);
                     }
                     else if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)
                     {
-                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_SNOW, x, y, tileElement);
+                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_SNOW, { x, y }, tileElement);
                     }
                 }
             }
