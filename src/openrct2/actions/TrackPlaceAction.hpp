@@ -308,7 +308,7 @@ public:
 
             if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !byte_9D8150)
             {
-                auto surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+                auto surfaceElement = map_get_surface_element_at(mapLoc);
 
                 uint8_t waterHeight = surfaceElement->GetWaterHeight() * 2;
                 if (waterHeight == 0)
@@ -350,7 +350,7 @@ public:
             }
 
             // 6c5648 12 push
-            auto surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto surfaceElement = map_get_surface_element_at(mapLoc);
             if (!gCheatsDisableSupportLimits)
             {
                 int32_t ride_height = clearanceZ - surfaceElement->base_height;
@@ -505,7 +505,7 @@ public:
             res->GroundFlags = mapGroundFlags;
 
             // 6c5648 12 push
-            auto surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto surfaceElement = map_get_surface_element_at(mapLoc);
 
             int32_t supportHeight = baseZ - surfaceElement->base_height;
             if (supportHeight < 0)
@@ -672,7 +672,7 @@ public:
 
             if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
             {
-                auto* waterSurfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+                auto* waterSurfaceElement = map_get_surface_element_at(mapLoc);
                 waterSurfaceElement->SetHasTrackThatNeedsWater(true);
                 tileElement = reinterpret_cast<TileElement*>(waterSurfaceElement);
             }

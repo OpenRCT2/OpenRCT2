@@ -723,9 +723,9 @@ bool map_can_build_at(CoordsXYZ loc)
 bool map_is_location_owned(CoordsXYZ loc)
 {
     // This check is to avoid throwing lots of messages in logs.
-    if (map_is_location_valid({ loc.x, loc.y }))
+    if (map_is_location_valid(loc))
     {
-        auto* surfaceElement = map_get_surface_element_at({ loc.x, loc.y });
+        auto* surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement != nullptr)
         {
             if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)

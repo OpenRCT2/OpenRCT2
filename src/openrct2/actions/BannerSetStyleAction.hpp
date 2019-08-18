@@ -68,7 +68,7 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Position.x = banner->position.x * 32 + 16;
         res->Position.y = banner->position.y * 32 + 16;
-        res->Position.z = tile_element_height({ res->Position.x, res->Position.y });
+        res->Position.z = tile_element_height(res->Position);
 
         TileElement* tileElement = banner_get_tile_element(_bannerIndex);
 
@@ -118,7 +118,7 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Position.x = banner->position.x * 32 + 16;
         res->Position.y = banner->position.y * 32 + 16;
-        res->Position.z = tile_element_height({ res->Position.x, res->Position.y });
+        res->Position.z = tile_element_height(res->Position);
 
         TileElement* tileElement = banner_get_tile_element(_bannerIndex);
 

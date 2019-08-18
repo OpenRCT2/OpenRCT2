@@ -255,7 +255,7 @@ private:
 
         res->Position.x = _loc.x;
         res->Position.y = _loc.y;
-        res->Position.z = tile_element_height({ _loc.x, _loc.y });
+        res->Position.z = tile_element_height(_loc);
 
         return res;
     }

@@ -101,7 +101,7 @@ public:
             return res;
         }
 
-        auto surfaceElement = map_get_surface_element_at(_loc.x / 32, _loc.y / 32);
+        auto surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
             res->Error = GA_ERROR::UNKNOWN;

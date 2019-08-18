@@ -109,7 +109,7 @@ public:
 
         if (_loc.z == 0)
         {
-            res->Position.z = tile_element_height({ res->Position.x, res->Position.y });
+            res->Position.z = tile_element_height(res->Position);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY)
@@ -142,7 +142,7 @@ public:
         auto targetHeight = _loc.z;
         if (targetHeight == 0)
         {
-            auto* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+            auto* surfaceElement = map_get_surface_element_at(_loc);
             if (surfaceElement == nullptr)
             {
                 log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -159,7 +159,7 @@ public:
             }
         }
 
-        auto* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+        auto* surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
             log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -309,14 +309,14 @@ public:
 
         if (res->Position.z == 0)
         {
-            res->Position.z = tile_element_height({ res->Position.x, res->Position.y });
+            res->Position.z = tile_element_height(res->Position);
         }
 
         uint8_t edgeSlope = 0;
         auto targetHeight = _loc.z;
         if (targetHeight == 0)
         {
-            auto* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+            auto* surfaceElement = map_get_surface_element_at(_loc);
             if (surfaceElement == nullptr)
             {
                 log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);

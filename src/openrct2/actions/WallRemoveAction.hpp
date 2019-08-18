@@ -44,7 +44,7 @@ public:
         res->Cost = 0;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-        if (!map_is_location_valid({ _loc.x, _loc.y }))
+        if (!map_is_location_valid(_loc))
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
@@ -84,7 +84,7 @@ public:
 
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height({ res->Position.x, res->Position.y });
+        res->Position.z = tile_element_height(res->Position);
 
         tile_element_remove_banner_entry(wallElement);
         map_invalidate_tile_zoom1(_loc.x, _loc.y, wallElement->base_height * 8, (wallElement->base_height * 8) + 72);

@@ -60,7 +60,7 @@ public:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        if (!map_is_location_valid({ _loc.x, _loc.y }))
+        if (!map_is_location_valid(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
@@ -72,7 +72,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
         }
 
-        if (!map_can_build_at({ _loc.x, _loc.y, _loc.z }))
+        if (!map_can_build_at(_loc))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }

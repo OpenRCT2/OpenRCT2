@@ -99,8 +99,8 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t landHeight = tile_element_height({ _loc.x, _loc.y });
-        int16_t waterHeight = tile_element_water_height({ _loc.x, _loc.y });
+        int32_t landHeight = tile_element_height(_loc);
+        int16_t waterHeight = tile_element_water_height(_loc);
 
         int32_t surfaceHeight = landHeight;
         // If on water
@@ -185,7 +185,7 @@ public:
             return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::NOT_OWNED, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        auto* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+        auto* surfaceElement = map_get_surface_element_at(_loc);
 
         if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
         {
@@ -302,8 +302,8 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t landHeight = tile_element_height({ _loc.x, _loc.y });
-        int16_t waterHeight = tile_element_water_height({ _loc.x, _loc.y });
+        int32_t landHeight = tile_element_height(_loc);
+        int16_t waterHeight = tile_element_water_height(_loc);
 
         int32_t surfaceHeight = landHeight;
         // If on water

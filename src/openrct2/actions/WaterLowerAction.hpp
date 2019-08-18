@@ -63,8 +63,8 @@ private:
 
         res->Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
         res->Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
-        int16_t z = tile_element_height({ res->Position.x, res->Position.y });
-        int16_t waterHeight = tile_element_water_height({ res->Position.x, res->Position.y });
+        int16_t z = tile_element_height(res->Position);
+        int16_t waterHeight = tile_element_water_height(res->Position);
         if (waterHeight != 0)
         {
             z = waterHeight;

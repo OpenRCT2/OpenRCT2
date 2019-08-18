@@ -216,7 +216,7 @@ public:
                 }
             }
 
-            auto* surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto* surfaceElement = map_get_surface_element_at(mapLoc);
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
@@ -411,7 +411,7 @@ public:
                 }
             }
 
-            auto* surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto* surfaceElement = map_get_surface_element_at(mapLoc);
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);

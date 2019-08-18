@@ -80,7 +80,7 @@ public:
         }
 
         // Verify location is unowned
-        auto surfaceMapElement = map_get_surface_element_at(_location.x >> 5, _location.y >> 5);
+        auto surfaceMapElement = map_get_surface_element_at(_location);
         if (surfaceMapElement == nullptr)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);

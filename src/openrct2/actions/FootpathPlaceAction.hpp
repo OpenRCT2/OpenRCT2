@@ -63,7 +63,7 @@ public:
 
         gFootpathGroundFlags = 0;
 
-        if (map_is_edge({ _loc.x, _loc.y }))
+        if (map_is_edge(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
         }
@@ -251,7 +251,7 @@ private:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        auto surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+        auto surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
@@ -312,7 +312,7 @@ private:
 
         gFootpathGroundFlags = gMapGroundFlags;
 
-        auto surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+        auto surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
