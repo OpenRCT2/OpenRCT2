@@ -73,7 +73,7 @@ struct ShelteredEights
 
 using ride_ratings_calculation = void (*)(Ride* ride);
 
-rct_ride_rating_calc_data gRideRatingsCalcData;
+RideRatingCalculationData gRideRatingsCalcData;
 
 static ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType);
 

@@ -62,6 +62,7 @@ private:
     void ExportResearchList();
     void ExportMarketingCampaigns();
     void ExportPeepSpawns();
+    void ExportRideRatingsCalcData();
     void ExportRideMeasurements();
     void ExportRideMeasurement(RCT12RideMeasurement& dst, const RideMeasurement& src);
     void ExportBanners();

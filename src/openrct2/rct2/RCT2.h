@@ -692,6 +692,26 @@ public:
 };
 assert_struct_size(RCT2Sprite, 0x100);
 
+struct RCT2RideRatingCalculationData
+{
+    uint16_t proximity_x;
+    uint16_t proximity_y;
+    uint16_t proximity_z;
+    uint16_t proximity_start_x;
+    uint16_t proximity_start_y;
+    uint16_t proximity_start_z;
+    uint8_t current_ride;
+    uint8_t state;
+    uint8_t proximity_track_type;
+    uint8_t proximity_base_height;
+    uint16_t proximity_total;
+    uint16_t proximity_scores[26];
+    uint16_t num_brakes;
+    uint16_t num_reversers;
+    uint16_t station_flags;
+};
+assert_struct_size(RCT2RideRatingCalculationData, 76);
+
 #pragma pack(pop)
 
 #endif
