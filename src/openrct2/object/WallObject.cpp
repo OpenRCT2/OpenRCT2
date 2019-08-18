@@ -10,6 +10,7 @@
 #include "WallObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
@@ -38,6 +39,14 @@ void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     if (_legacyType.wall.price <= 0)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+    }
+
+    // Autofix this object (will be turned into an official object later).
+    auto identifier = GetIdentifier();
+    if (String::Equals(identifier, "XXWLBR03"))
+    {
+        _legacyType.wall.flags2 &= ~WALL_SCENERY_2_DOOR_SOUND_MASK;
+        _legacyType.wall.flags2 |= (1u << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
     }
 }
 
