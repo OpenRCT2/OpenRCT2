@@ -3489,7 +3489,7 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(x >> 5, y >> 5);
+        z = map_get_highest_z({ x, y });
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3531,7 +3531,7 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
             {
                 if (selectedTile.x < (256 * 32) && selectedTile.y < (256 * 32))
                 {
-                    z = map_get_highest_z(selectedTile.x / 32, selectedTile.y / 32);
+                    z = map_get_highest_z(selectedTile);
                     if (z > highestZ)
                         highestZ = z;
                 }
@@ -3755,7 +3755,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
             if (selectedTile.x >= (256 * 32) || selectedTile.y >= (256 * 32))
                 continue;
 
-            z = map_get_highest_z(selectedTile.x / 32, selectedTile.y / 32);
+            z = map_get_highest_z(selectedTile);
             if (z > highestZ)
                 highestZ = z;
         }
@@ -3769,7 +3769,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(x >> 5, y >> 5);
+        z = map_get_highest_z({ x, y });
 
     tool_cancel();
 

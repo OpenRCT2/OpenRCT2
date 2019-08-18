@@ -1723,11 +1723,11 @@ static void clear_elements_at(const CoordsXY& loc)
     clear_element_at(loc, &tileElement);
 }
 
-int32_t map_get_highest_z(int32_t tileX, int32_t tileY)
+int32_t map_get_highest_z(const CoordsXY& loc)
 {
     uint32_t z;
 
-    auto surfaceElement = map_get_surface_element_at(tileX, tileY);
+    auto surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)
         return -1;
 

@@ -200,7 +200,7 @@ void tile_element_iterator_restart_for_tile(tile_element_iterator* it);
 
 void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction);
 void map_update_tiles();
-int32_t map_get_highest_z(int32_t tileX, int32_t tileY);
+int32_t map_get_highest_z(const CoordsXY& loc);
 
 bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const TileElement* const elementToBeRemoved);
 
