@@ -1331,12 +1331,11 @@ void S6Exporter::ExportTileElements()
         auto dst = &_s6.tile_elements[index];
         if (src->base_height == 0xFF)
         {
-            std::memcpy(dst, src, sizeof(*src));
+            std::memcpy(dst, src, sizeof(*dst));
         }
         else
         {
             auto tileElementType = (RCT12TileElementType)src->GetType();
-            // Todo: replace with setting invisibility bit
             if (tileElementType == RCT12TileElementType::Corrupt || tileElementType == RCT12TileElementType::EightCarsCorrupt14
                 || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
                 std::memcpy(dst, src, sizeof(*dst));
