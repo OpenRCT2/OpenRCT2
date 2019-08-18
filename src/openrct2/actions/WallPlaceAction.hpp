@@ -117,7 +117,7 @@ public:
         {
             if (_loc.z == 0)
             {
-                if (!map_is_location_in_park({ _loc.x, _loc.y }))
+                if (!map_is_location_in_park(_loc))
                 {
                     return std::make_unique<WallPlaceActionResult>(GA_ERROR::NOT_OWNED);
                 }
@@ -613,7 +613,7 @@ private:
 
         *wallAcrossTrack = false;
         gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
-        if (map_is_location_at_edge({ _loc.x, _loc.y }))
+        if (map_is_location_at_edge(_loc))
         {
             gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
             return false;
