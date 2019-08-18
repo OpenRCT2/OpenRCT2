@@ -97,6 +97,7 @@ namespace OpenRCT2
         {
             auto& os = *_os;
             ReadWriteTilesChunk(os);
+            ReadWriteBannersChunk(os);
             ReadWriteRidesChunk(os);
             ReadWriteThingsChunk(os);
             ReadWriteScenarioChunk(os);
@@ -127,6 +128,7 @@ namespace OpenRCT2
             ReadWriteAuthoringChunk(os);
             ReadWriteObjectsChunk(os);
             ReadWriteTilesChunk(os);
+            ReadWriteBannersChunk(os);
             ReadWriteRidesChunk(os);
             ReadWriteThingsChunk(os);
             ReadWriteScenarioChunk(os);
@@ -450,6 +452,37 @@ namespace OpenRCT2
             {
                 throw std::runtime_error("No tiles chunk found.");
             }
+        }
+
+        void ReadWriteBannersChunk(OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::BANNERS, [](OrcaStream::ChunkStream& cs) {
+                std::vector<Banner> banners;
+                if (cs.GetMode() == OrcaStream::Mode::WRITING)
+                {
+                    for (BannerIndex i = 0; i < MAX_BANNERS; i++)
+                    {
+                        banners.push_back(*GetBanner(i));
+                    }
+                }
+                cs.ReadWriteVector(banners, [&cs](Banner& banner) {
+                    cs.ReadWrite(banner.type);
+                    cs.ReadWrite(banner.flags);
+                    cs.ReadWrite(banner.text);
+                    cs.ReadWrite(banner.colour);
+                    cs.ReadWrite(banner.ride_index);
+                    cs.ReadWrite(banner.text_colour);
+                    cs.ReadWrite(banner.position);
+                });
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    for (BannerIndex i = 0; i < MAX_BANNERS; i++)
+                    {
+                        auto banner = GetBanner(i);
+                        *banner = banners[i];
+                    }
+                }
+            });
         }
 
         void ReadWriteRidesChunk(OrcaStream& os)
