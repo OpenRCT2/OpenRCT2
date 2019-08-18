@@ -1951,8 +1951,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(
-                        SoundId::PlaceItem, result->Position);
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                     context_open_detail_window(WD_BANNER, bannerIndex);
                 }
             });

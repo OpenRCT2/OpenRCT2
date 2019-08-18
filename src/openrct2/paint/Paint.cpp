@@ -71,7 +71,8 @@ static void paint_session_add_ps_to_quadrant(paint_session* session, paint_struc
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
 static paint_struct* sub_9819_c(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, LocationXYZ16 boundBoxSize, LocationXYZ16 boundBoxOffset)
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, LocationXYZ16 boundBoxSize,
+    LocationXYZ16 boundBoxOffset)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
         return nullptr;

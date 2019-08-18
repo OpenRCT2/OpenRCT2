@@ -3854,8 +3854,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
             else
             {
                 window_close_by_class(WC_ERROR);
-                audio_play_sound_at_location(
-                    SoundId::PlaceItem, _currentTrackBegin);
+                audio_play_sound_at_location(SoundId::PlaceItem, _currentTrackBegin);
                 break;
             }
         }
