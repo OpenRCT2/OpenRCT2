@@ -187,14 +187,14 @@ void lightfx_prepare_light_list()
             continue;
         }
 
-        LocationXYZ16 coord_3d = { /* .x = */ entry->x,
-                                   /* .y = */ entry->y,
-                                   /* .z = */ entry->z };
+        CoordsXYZ coord_3d = { /* .x = */ entry->x,
+                               /* .y = */ entry->y,
+                               /* .z = */ entry->z };
 
-        LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, _current_view_rotation_front);
+        auto screenCoords = translate_3d_to_2d_with_z(_current_view_rotation_front, coord_3d);
 
-        entry->x = coord_2d.x; // - (_current_view_x_front);
-        entry->y = coord_2d.y; // - (_current_view_y_front);
+        entry->x = screenCoords.x; // - (_current_view_x_front);
+        entry->y = screenCoords.y; // - (_current_view_y_front);
 
         int32_t posOnScreenX = entry->x - _current_view_x_front;
         int32_t posOnScreenY = entry->y - _current_view_y_front;

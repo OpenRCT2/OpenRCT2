@@ -808,7 +808,7 @@ rct_window* window_get_main()
  */
 void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
 {
-    LocationXYZ16 location_3d = { (int16_t)x, (int16_t)y, (int16_t)z };
+    CoordsXYZ location_3d = { x, y, z };
 
     assert(w != nullptr);
 
@@ -834,7 +834,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             }
         }
 
-        LocationXY16 map_coordinate = coordinate_3d_to_2d(&location_3d, get_current_rotation());
+        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), location_3d);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
@@ -878,8 +878,8 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
         {
             if (!(w->flags & WF_NO_SCROLLING))
             {
-                w->saved_view_x = map_coordinate.x - (int16_t)(w->viewport->view_width * window_scroll_locations[i][0]);
-                w->saved_view_y = map_coordinate.y - (int16_t)(w->viewport->view_height * window_scroll_locations[i][1]);
+                w->saved_view_x = screenCoords.x - (int16_t)(w->viewport->view_width * window_scroll_locations[i][0]);
+                w->saved_view_y = screenCoords.y - (int16_t)(w->viewport->view_height * window_scroll_locations[i][1]);
                 w->flags |= WF_SCROLLING_TO_LOCATION;
             }
         }

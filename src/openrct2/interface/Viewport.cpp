@@ -95,6 +95,7 @@ void viewport_init_all()
     textinput_cancel();
 }
 
+// TODO: Return ScreenCoords, takein CoordsXYZ
 /**
  * Converts between 3d point of a sprite to 2d coordinates for centring on that
  * sprite
@@ -109,9 +110,9 @@ void centre_2d_coordinates(int32_t x, int32_t y, int32_t z, int32_t* out_x, int3
 {
     int32_t start_x = x;
 
-    LocationXYZ16 coord_3d = { (int16_t)x, (int16_t)y, (int16_t)z };
+    CoordsXYZ coord_3d = { x, y, z };
 
-    LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, get_current_rotation());
+    auto coord_2d = translate_3d_to_2d_with_z(get_current_rotation(), coord_3d);
 
     // If the start location was invalid
     // propagate the invalid location to the output.
