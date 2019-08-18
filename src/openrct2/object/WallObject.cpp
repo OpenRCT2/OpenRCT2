@@ -137,7 +137,7 @@ void WallObject::ReadJson(IReadObjectContext* context, const json_t* root)
     }
 
     // Door sound
-    auto jDoorSound = json_object_get(properties, "scrollingMode");
+    auto jDoorSound = json_object_get(properties, "doorSound");
     if (jDoorSound != nullptr)
     {
         auto doorSound = json_integer_value(jDoorSound);
