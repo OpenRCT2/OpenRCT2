@@ -212,6 +212,7 @@ struct RCT12TileElement : public RCT12TileElementBase
         return as<RCT12BannerElement, RCT12TileElementType::Banner>();
     }
     void ClearAs(uint8_t newType);
+    uint8_t GetBannerIndex();
 };
 assert_struct_size(RCT12TileElement, 8);
 struct RCT12SurfaceElement : RCT12TileElementBase

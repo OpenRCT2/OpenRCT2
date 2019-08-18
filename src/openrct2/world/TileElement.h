@@ -64,6 +64,8 @@ struct TileElementBase
     uint8_t flags;            // 1
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
+    
+    uint8_t testPad[8];
 
     uint8_t GetType() const;
     void SetType(uint8_t newType);
@@ -129,7 +131,7 @@ public:
 
     void ClearAs(uint8_t newType);
 };
-assert_struct_size(TileElement, 8);
+assert_struct_size(TileElement, 16);
 
 struct SurfaceElement : TileElementBase
 {
@@ -165,7 +167,7 @@ public:
     bool HasTrackThatNeedsWater() const;
     void SetHasTrackThatNeedsWater(bool on);
 };
-assert_struct_size(SurfaceElement, 8);
+assert_struct_size(SurfaceElement, 16);
 
 struct PathElement : TileElementBase
 {
@@ -241,7 +243,7 @@ public:
     bool ShouldDrawPathOverSupports();
     void SetShouldDrawPathOverSupports(bool on);
 };
-assert_struct_size(PathElement, 8);
+assert_struct_size(PathElement, 16);
 
 struct TrackElement : TileElementBase
 {
@@ -326,7 +328,7 @@ public:
     uint8_t GetDoorAState() const;
     uint8_t GetDoorBState() const;
 };
-assert_struct_size(TrackElement, 8);
+assert_struct_size(TrackElement, 16);
 
 struct SmallSceneryElement : TileElementBase
 {
@@ -351,7 +353,7 @@ public:
     bool NeedsSupports() const;
     void SetNeedsSupports();
 };
-assert_struct_size(SmallSceneryElement, 8);
+assert_struct_size(SmallSceneryElement, 16);
 
 struct LargeSceneryElement : TileElementBase
 {
@@ -378,7 +380,7 @@ public:
     bool IsAccounted() const;
     void SetIsAccounted(bool isAccounted);
 };
-assert_struct_size(LargeSceneryElement, 8);
+assert_struct_size(LargeSceneryElement, 16);
 
 struct WallElement : TileElementBase
 {
@@ -423,7 +425,7 @@ public:
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
 };
-assert_struct_size(WallElement, 8);
+assert_struct_size(WallElement, 16);
 
 struct EntranceElement : TileElementBase
 {
@@ -449,7 +451,7 @@ public:
     uint8_t GetPathType() const;
     void SetPathType(uint8_t newPathType);
 };
-assert_struct_size(EntranceElement, 8);
+assert_struct_size(EntranceElement, 16);
 
 struct BannerElement : TileElementBase
 {
@@ -475,13 +477,13 @@ public:
     void SetAllowedEdges(uint8_t newEdges);
     void ResetAllowedEdges();
 };
-assert_struct_size(BannerElement, 8);
+assert_struct_size(BannerElement, 16);
 
 struct CorruptElement : TileElementBase
 {
     uint8_t pad[4];
 };
-assert_struct_size(CorruptElement, 8);
+assert_struct_size(CorruptElement, 16);
 #pragma pack(pop)
 
 class QuarterTile

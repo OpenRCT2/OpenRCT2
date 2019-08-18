@@ -16,6 +16,8 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "../world/Wall.h"
+#include "../world/Banner.h"
+#include "../world/LargeScenery.h"
 
 uint8_t RCT12TileElementBase::GetType() const
 {
@@ -451,4 +453,29 @@ std::string RCT12::RemoveFormatCodes(const std::string_view& s)
     }
 
     return result;
+}
+
+uint8_t RCT12TileElement::GetBannerIndex()
+{
+    rct_scenery_entry* sceneryEntry;
+
+    switch (GetType())
+    {
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            sceneryEntry = get_large_scenery_entry(AsLargeScenery()->GetEntryIndex());
+            if (sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
+                return BANNER_INDEX_NULL;
+
+            return AsLargeScenery()->GetBannerIndex();
+        case TILE_ELEMENT_TYPE_WALL:
+            sceneryEntry = get_wall_entry(AsWall()->GetEntryIndex());
+            if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+                return BANNER_INDEX_NULL;
+
+            return AsWall()->GetBannerIndex();
+        case TILE_ELEMENT_TYPE_BANNER:
+            return AsBanner()->GetIndex();
+        default:
+            return BANNER_INDEX_NULL;
+    }
 }
