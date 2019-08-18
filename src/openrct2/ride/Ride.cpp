@@ -7643,8 +7643,8 @@ StationObject* ride_get_station_object(const Ride* ride)
 LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z)
 {
     CoordsXYZ coords3d = { x, y, z };
-    CoordsXY coords2d = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
-    LocationXY16 rotatedCoords = { (int16_t)coords2d.x, (int16_t)coords2d.y };
+    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
+    LocationXY16 rotatedCoords = { (int16_t)screenCoords.x, (int16_t)screenCoords.y };
     return rotatedCoords;
 }
 

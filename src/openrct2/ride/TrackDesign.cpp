@@ -2337,12 +2337,12 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     {
         gCurrentRotation = i;
 
-        CoordsXY pos2d = translate_3d_to_2d_with_z(i, centre);
-        pos2d.x -= offset.x;
-        pos2d.y -= offset.y;
+        auto screenCoords = translate_3d_to_2d_with_z(i, centre);
+        screenCoords.x -= offset.x;
+        screenCoords.y -= offset.y;
 
-        int32_t left = pos2d.x;
-        int32_t top = pos2d.y;
+        int32_t left = screenCoords.x;
+        int32_t top = screenCoords.y;
         int32_t right = left + size_x;
         int32_t bottom = top + size_y;
 

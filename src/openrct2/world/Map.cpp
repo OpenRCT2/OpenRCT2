@@ -110,7 +110,7 @@ LocationXYZ16 gCommandPosition;
 bool gMapLandRightsUpdateSuccess;
 
 static void clear_elements_at(int32_t x, int32_t y);
-static CoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos);
+static ScreenCoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos);
 
 void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation)
 {
@@ -1964,38 +1964,16 @@ bool sign_set_colour(
     return true;
 }
 
-// TODO: This returns a screen CoordsXY
-static CoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos)
+static ScreenCoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos)
 {
     return translate_3d_to_2d_with_z(rotation, CoordsXYZ{ pos, 0 });
 }
 
-// TODO: This returns a screen CoordsXY
-CoordsXY translate_3d_to_2d_with_z(int32_t rotation, CoordsXYZ pos)
+ScreenCoordsXY translate_3d_to_2d_with_z(int32_t rotation, const CoordsXYZ& pos)
 {
-    CoordsXY result = {};
+    auto rotated = pos.Rotate(rotation);
     // Use right shift to avoid issues like #9301
-    switch (rotation & 3)
-    {
-        default:
-        case 0:
-            result.x = pos.y - pos.x;
-            result.y = ((pos.x + pos.y) >> 1) - pos.z;
-            break;
-        case 1:
-            result.x = -pos.x - pos.y;
-            result.y = ((pos.y - pos.x) >> 1) - pos.z;
-            break;
-        case 2:
-            result.x = pos.x - pos.y;
-            result.y = ((-pos.x - pos.y) >> 1) - pos.z;
-            break;
-        case 3:
-            result.x = pos.x + pos.y;
-            result.y = ((pos.x - pos.y) >> 1) - pos.z;
-            break;
-    }
-    return result;
+    return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
 }
 
 static void map_invalidate_tile_under_zoom(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t maxZoom)

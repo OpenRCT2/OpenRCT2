@@ -233,7 +233,7 @@ bool map_large_scenery_get_origin(
     LargeSceneryElement** outElement);
 
 void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t offsetY, uint8_t rotation);
-CoordsXY translate_3d_to_2d_with_z(int32_t rotation, CoordsXYZ pos);
+ScreenCoordsXY translate_3d_to_2d_with_z(int32_t rotation, const CoordsXYZ& pos);
 
 TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z);
 TileElement* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, int32_t trackType);
