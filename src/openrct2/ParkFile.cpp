@@ -455,13 +455,26 @@ namespace OpenRCT2
         void ReadWriteRidesChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::RIDES, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWriteArray(gRideList, [&cs](Ride& ride) {
+                std::vector<ride_id_t> rideIds;
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    ride_init_all();
+                }
+                else
+                {
+                    for (const auto& ride : GetRideManager())
+                    {
+                        rideIds.push_back(ride.id);
+                    }
+                }
+                cs.ReadWriteVector(rideIds, [&cs](ride_id_t& rideId) {
+                    // Ride ID
+                    cs.ReadWrite(rideId);
+
+                    auto& ride = *GetOrAllocateRide(rideId);
+
                     // Status
                     cs.ReadWrite(ride.type);
-                    if (ride.type == RIDE_TYPE_NULL)
-                    {
-                        return true;
-                    }
                     cs.ReadWrite(ride.subtype);
                     cs.ReadWrite(ride.mode);
                     cs.ReadWrite(ride.status);
@@ -554,7 +567,6 @@ namespace OpenRCT2
                         if (hasMeasurement != 0)
                         {
                             ride.measurement = std::make_unique<RideMeasurement>();
-                            ride.measurement->ride = &ride;
                             ReadWriteRideMeasurement(cs, *ride.measurement);
                         }
                     }
@@ -660,13 +672,6 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.music_position);
                     return true;
                 });
-
-                // Correct ride IDs which are effectively constant
-                for (size_t i = 0; i < MAX_RIDES; i++)
-                {
-                    auto ride = &gRideList[i];
-                    ride->id = (ride_id_t)i;
-                }
             });
         }
 
