@@ -141,30 +141,30 @@ void map_update_tile_pointers();
 TileElement* map_get_first_element_at(int32_t x, int32_t y);
 TileElement* map_get_nth_element_at(int32_t x, int32_t y, int32_t n);
 void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements);
-int32_t map_height_from_slope(CoordsXY coords, int32_t slope, bool isSloped);
+int32_t map_height_from_slope(const CoordsXY& coords, int32_t slope, bool isSloped);
 BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t direction);
 SurfaceElement* map_get_surface_element_at(int32_t x, int32_t y);
-SurfaceElement* map_get_surface_element_at(CoordsXY coords);
-PathElement* map_get_path_element_at(const TileCoordsXYZ loc);
+SurfaceElement* map_get_surface_element_at(const CoordsXY& coords);
+PathElement* map_get_path_element_at(const TileCoordsXYZ& loc);
 WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
 SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
-int16_t tile_element_height(const CoordsXY loc);
-int16_t tile_element_water_height(const CoordsXY loc);
-uint8_t map_get_highest_land_height(const MapRange range);
-uint8_t map_get_lowest_land_height(const MapRange range);
-bool map_coord_is_connected(const TileCoordsXYZ loc, uint8_t faceDirection);
+int16_t tile_element_height(const CoordsXY& loc);
+int16_t tile_element_water_height(const CoordsXY& loc);
+uint8_t map_get_highest_land_height(const MapRange& range);
+uint8_t map_get_lowest_land_height(const MapRange& range);
+bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection);
 void map_remove_provisional_elements();
 void map_restore_provisional_elements();
 void map_update_path_wide_flags();
-bool map_is_location_valid(CoordsXY coords);
-bool map_is_edge(CoordsXY coords);
-bool map_can_build_at(CoordsXYZ loc);
-bool map_is_location_owned(CoordsXYZ loc);
-bool map_is_location_in_park(CoordsXY coords);
-bool map_is_location_owned_or_has_rights(CoordsXY loc);
+bool map_is_location_valid(const CoordsXY& coords);
+bool map_is_edge(const CoordsXY& coords);
+bool map_can_build_at(const CoordsXYZ& loc);
+bool map_is_location_owned(const CoordsXYZ& loc);
+bool map_is_location_in_park(const CoordsXY& coords);
+bool map_is_location_owned_or_has_rights(const CoordsXY& loc);
 bool map_surface_is_blocked(int16_t x, int16_t y);
 void tile_element_remove(TileElement* tileElement);
 void map_remove_all_rides();
@@ -172,7 +172,7 @@ void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(int32_t num_elements);
-TileElement* tile_element_insert(const TileCoordsXYZ loc, int32_t flags);
+TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t flags);
 
 using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
 
@@ -245,7 +245,7 @@ TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z,
 TileElement* map_get_track_element_at_with_direction_from_ride(
     int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex);
 
-bool map_is_location_at_edge(const CoordsXY loc);
+bool map_is_location_at_edge(const CoordsXY& loc);
 void map_obstruction_set_error_text(TileElement* tileElement);
 
 uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t base_z);

@@ -247,12 +247,12 @@ SurfaceElement* map_get_surface_element_at(int32_t x, int32_t y)
     return tileElement->AsSurface();
 }
 
-SurfaceElement* map_get_surface_element_at(const CoordsXY coords)
+SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
 {
     return map_get_surface_element_at(coords.x / 32, coords.y / 32);
 }
 
-PathElement* map_get_path_element_at(const TileCoordsXYZ loc)
+PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
 {
     TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
 
@@ -432,7 +432,7 @@ void map_update_tile_pointers()
  * dx: return remember to & with 0xFFFF if you don't want water affecting results
  *  rct2: 0x00662783
  */
-int16_t tile_element_height(const CoordsXY loc)
+int16_t tile_element_height(const CoordsXY& loc)
 {
     // Off the map
     if ((unsigned)loc.x >= 8192 || (unsigned)loc.y >= 8192)
@@ -578,7 +578,7 @@ int16_t tile_element_height(const CoordsXY loc)
     return height;
 }
 
-int16_t tile_element_water_height(const CoordsXY loc)
+int16_t tile_element_water_height(const CoordsXY& loc)
 {
     // Off the map
     if ((unsigned)loc.x >= 8192 || (unsigned)loc.y >= 8192)
@@ -601,7 +601,7 @@ int16_t tile_element_water_height(const CoordsXY loc)
  * Checks if the tile at coordinate at height counts as connected.
  * @return 1 if connected, 0 otherwise
  */
-bool map_coord_is_connected(const TileCoordsXYZ loc, uint8_t faceDirection)
+bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
 {
     TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
 
@@ -674,7 +674,7 @@ void map_update_path_wide_flags()
  *
  *  rct2: 0x006A7B84
  */
-int32_t map_height_from_slope(const CoordsXY coords, int32_t slope, bool isSloped)
+int32_t map_height_from_slope(const CoordsXY& coords, int32_t slope, bool isSloped)
 {
     if (!isSloped)
         return 0;
@@ -693,19 +693,19 @@ int32_t map_height_from_slope(const CoordsXY coords, int32_t slope, bool isSlope
     return 0;
 }
 
-bool map_is_location_valid(const CoordsXY coords)
+bool map_is_location_valid(const CoordsXY& coords)
 {
     const bool is_x_valid = coords.x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.x >= 0;
     const bool is_y_valid = coords.y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.y >= 0;
     return is_x_valid && is_y_valid;
 }
 
-bool map_is_edge(const CoordsXY coords)
+bool map_is_edge(const CoordsXY& coords)
 {
     return (coords.x < 32 || coords.y < 32 || coords.x >= gMapSizeUnits || coords.y >= gMapSizeUnits);
 }
 
-bool map_can_build_at(CoordsXYZ loc)
+bool map_can_build_at(const CoordsXYZ& loc)
 {
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return true;
@@ -720,7 +720,7 @@ bool map_can_build_at(CoordsXYZ loc)
  *
  *  rct2: 0x00664F72
  */
-bool map_is_location_owned(CoordsXYZ loc)
+bool map_is_location_owned(const CoordsXYZ& loc)
 {
     // This check is to avoid throwing lots of messages in logs.
     if (map_is_location_valid(loc))
@@ -747,7 +747,7 @@ bool map_is_location_owned(CoordsXYZ loc)
  *
  *  rct2: 0x00664F2C
  */
-bool map_is_location_in_park(const CoordsXY coords)
+bool map_is_location_in_park(const CoordsXY& coords)
 {
     if (map_is_location_valid(coords))
     {
@@ -762,7 +762,7 @@ bool map_is_location_in_park(const CoordsXY coords)
     return false;
 }
 
-bool map_is_location_owned_or_has_rights(CoordsXY loc)
+bool map_is_location_owned_or_has_rights(const CoordsXY& loc)
 {
     if (map_is_location_valid(loc))
     {
@@ -885,7 +885,7 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
     return map_get_corner_height(z, slope, direction);
 }
 
-uint8_t map_get_lowest_land_height(const MapRange range)
+uint8_t map_get_lowest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
                             std::min(range.GetRight(), (int32_t)gMapSizeMaxXY),
@@ -906,7 +906,7 @@ uint8_t map_get_lowest_land_height(const MapRange range)
     return min_height;
 }
 
-uint8_t map_get_highest_land_height(const MapRange range)
+uint8_t map_get_highest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
                             std::min(range.GetRight(), (int32_t)gMapSizeMaxXY),
@@ -933,7 +933,7 @@ uint8_t map_get_highest_land_height(const MapRange range)
     return max_height;
 }
 
-bool map_is_location_at_edge(const CoordsXY loc)
+bool map_is_location_at_edge(const CoordsXY& loc)
 {
     return loc.x < 32 || loc.y < 32 || loc.x >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32)
         || loc.y >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
@@ -1153,7 +1153,7 @@ bool map_check_free_elements_and_reorganise(int32_t numElements)
  *
  *  rct2: 0x0068B1F6
  */
-TileElement* tile_element_insert(const TileCoordsXYZ loc, int32_t flags)
+TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t flags)
 {
     TileElement *originalTileElement, *newTileElement, *insertedElement;
 
