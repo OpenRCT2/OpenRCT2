@@ -238,8 +238,12 @@ namespace OpenRCT2
             if (Initialise())
             {
                 Launch();
+                return EXIT_SUCCESS;
             }
-            return gExitCode;
+            else
+            {
+                return EXIT_FAILURE;
+            }
         }
 
         void WriteLine(const std::string& s) override

@@ -59,8 +59,12 @@ int main(int argc, const char** argv)
 
             context->RunOpenRCT2(argc, argv);
         }
+        return EXIT_SUCCESS;
     }
-    return gExitCode;
+    else
+    {
+        return EXIT_FAILURE;
+    }
 }
 
 #ifdef __ANDROID__

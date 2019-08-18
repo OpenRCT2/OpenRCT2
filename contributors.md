@@ -132,6 +132,7 @@ The following people are not part of the development team, but have been contrib
 * Steve Xu (stevexu-umich)
 * (aw20368)
 * Jim Armstrong (41northstudios)
+* Matthew Michaud (Sonic7662)
 
 ## Toolchain
 * (Balletie) - macOS
