@@ -137,35 +137,6 @@ void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation)
     }
 }
 
-LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, int32_t rotation)
-{
-    LocationXY16 coordinate_2d;
-
-    switch (rotation)
-    {
-        // this function has to use right-shift (... >> 1) since dividing
-        // by 2 with (... / 2) can differ by -1 and cause issues (see PR #9301)
-        default:
-        case 0:
-            coordinate_2d.x = coordinate_3d->y - coordinate_3d->x;
-            coordinate_2d.y = ((coordinate_3d->y + coordinate_3d->x) >> 1) - coordinate_3d->z;
-            break;
-        case 1:
-            coordinate_2d.x = -coordinate_3d->y - coordinate_3d->x;
-            coordinate_2d.y = ((coordinate_3d->y - coordinate_3d->x) >> 1) - coordinate_3d->z;
-            break;
-        case 2:
-            coordinate_2d.x = -coordinate_3d->y + coordinate_3d->x;
-            coordinate_2d.y = ((-coordinate_3d->y - coordinate_3d->x) >> 1) - coordinate_3d->z;
-            break;
-        case 3:
-            coordinate_2d.x = coordinate_3d->y + coordinate_3d->x;
-            coordinate_2d.y = ((-coordinate_3d->y + coordinate_3d->x) >> 1) - coordinate_3d->z;
-            break;
-    }
-    return coordinate_2d;
-}
-
 void tile_element_iterator_begin(tile_element_iterator* it)
 {
     it->x = 0;
