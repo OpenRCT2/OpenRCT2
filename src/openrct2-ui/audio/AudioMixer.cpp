@@ -223,7 +223,8 @@ namespace OpenRCT2::Audio
             {
                 auto channel = *it;
                 int32_t group = channel->GetGroup();
-                if (group != MIXER_GROUP_SOUND || gConfigSound.sound_enabled)
+                if ((group != MIXER_GROUP_SOUND || gConfigSound.sound_enabled) && gConfigSound.master_sound_enabled
+                    && gConfigSound.master_volume != 0)
                 {
                     MixChannel(channel, dst, length);
                 }
