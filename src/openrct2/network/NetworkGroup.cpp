@@ -127,4 +127,9 @@ bool NetworkGroup::CanPerformCommand(int32_t command) const
     return false;
 }
 
+void NetworkGroup::Serialise(DataSerialiser& ds)
+{
+    ds << Id << _name << ActionsAllowed;
+}
+
 #endif

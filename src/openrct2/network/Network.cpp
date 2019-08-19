@@ -23,6 +23,7 @@
 #include "../ui/WindowManager.h"
 #include "../util/SawyerCoding.h"
 #include "../world/Location.hpp"
+#include "NetworkGroups.h"
 
 #include <algorithm>
 #include <iterator>
@@ -133,10 +134,6 @@ public:
     void ProcessPlayerList();
     void ProcessPlayerInfo();
     void ProcessDisconnectedClients();
-    std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
-    NetworkPlayer* GetPlayerByID(uint8_t id);
-    std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
-    NetworkGroup* GetGroupByID(uint8_t id);
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
     void SendPacketToClients(NetworkPacket& packet, bool front = false, bool gameCmd = false);
     bool CheckSRAND(uint32_t tick, uint32_t srand0);
@@ -147,11 +144,19 @@ public:
     void KickPlayer(int32_t playerId);
     void SetPassword(const char* password);
     void ServerClientDisconnected();
+
+    std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
+    NetworkPlayer* GetPlayerByID(NetworkGroupId id);
+
+    NetworkGroups& GetGroups();
+
+    std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
+    NetworkGroup* GetGroupByID(NetworkGroupId id);
     NetworkGroup* AddGroup();
-    void RemoveGroup(uint8_t id);
-    uint8_t GetDefaultGroup();
-    uint8_t GetGroupIDByHash(const std::string& keyhash);
-    void SetDefaultGroup(uint8_t id);
+    void RemoveGroup(NetworkGroupId id);
+    NetworkGroupId GetDefaultGroup();
+    NetworkGroupId GetGroupIDByHash(const std::string& keyhash);
+    void SetDefaultGroup(NetworkGroupId id);
     void SaveGroups();
     void LoadGroups();
 
@@ -198,7 +203,7 @@ public:
     json_t* GetServerInfoAsJson() const;
 
     std::vector<std::unique_ptr<NetworkPlayer>> player_list;
-    std::vector<std::unique_ptr<NetworkGroup>> group_list;
+    NetworkGroups _groups;
     NetworkKey _key;
     std::vector<uint8_t> _challenge;
     std::map<uint32_t, GameAction::Callback_t> _gameActionCallbacks;
@@ -268,7 +273,6 @@ private:
     NetworkServerState_t _serverState;
     MemoryStream _serverGameState;
     uint32_t server_connect_time = 0;
-    uint8_t default_group = 0;
     uint32_t _actionId;
     uint32_t _lastUpdateTime = 0;
     uint32_t _currentDeltaTime = 0;
@@ -416,7 +420,7 @@ void Network::Close()
         GameActions::ClearQueue();
         GameActions::ResumeQueue();
         player_list.clear();
-        group_list.clear();
+        // group_list.clear();
         _serverTickData.clear();
         _pendingPlayerLists.clear();
         _pendingPlayerInfo.clear();
@@ -861,7 +865,7 @@ std::vector<std::unique_ptr<NetworkPlayer>>::iterator Network::GetPlayerIterator
     return player_list.end();
 }
 
-NetworkPlayer* Network::GetPlayerByID(uint8_t id)
+NetworkPlayer* Network::GetPlayerByID(NetworkGroupId id)
 {
     auto it = GetPlayerIteratorByID(id);
     if (it != player_list.end())
@@ -871,25 +875,14 @@ NetworkPlayer* Network::GetPlayerByID(uint8_t id)
     return nullptr;
 }
 
-std::vector<std::unique_ptr<NetworkGroup>>::iterator Network::GetGroupIteratorByID(uint8_t id)
+NetworkGroups& Network::GetGroups()
 {
-    auto it = std::find_if(
-        group_list.begin(), group_list.end(), [&id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; });
-    if (it != group_list.end())
-    {
-        return it;
-    }
-    return group_list.end();
+    return _groups;
 }
 
-NetworkGroup* Network::GetGroupByID(uint8_t id)
+NetworkGroup* Network::GetGroupByID(NetworkGroupId id)
 {
-    auto it = GetGroupIteratorByID(id);
-    if (it != group_list.end())
-    {
-        return it->get();
-    }
-    return nullptr;
+    return _groups.GetById(id);
 }
 
 const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
@@ -1072,40 +1065,13 @@ std::string Network::GetMasterServerUrl()
     }
 }
 
-NetworkGroup* Network::AddGroup()
+void Network::RemoveGroup(NetworkGroupId id)
 {
-    NetworkGroup* addedgroup = nullptr;
-    int32_t newid = -1;
-    // Find first unused group id
-    for (int32_t id = 0; id < 255; id++)
-    {
-        if (std::find_if(
-                group_list.begin(), group_list.end(),
-                [&id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; })
-            == group_list.end())
-        {
-            newid = id;
-            break;
-        }
-    }
-    if (newid != -1)
-    {
-        auto group = std::make_unique<NetworkGroup>();
-        group->Id = newid;
-        group->SetName("Group #" + std::to_string(newid));
-        addedgroup = group.get();
-        group_list.push_back(std::move(group));
-    }
-    return addedgroup;
-}
+    NetworkGroup* group = _groups.GetById(id);
+    if (group == nullptr)
+        return;
 
-void Network::RemoveGroup(uint8_t id)
-{
-    auto group = GetGroupIteratorByID(id);
-    if (group != group_list.end())
-    {
-        group_list.erase(group);
-    }
+    _groups.Remove(group);
 
     if (GetMode() == NETWORK_MODE_SERVER)
     {
@@ -1114,7 +1080,7 @@ void Network::RemoveGroup(uint8_t id)
     }
 }
 
-uint8_t Network::GetGroupIDByHash(const std::string& keyhash)
+NetworkGroupId Network::GetGroupIDByHash(const std::string& keyhash)
 {
     const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
 
@@ -1122,7 +1088,7 @@ uint8_t Network::GetGroupIDByHash(const std::string& keyhash)
     if (networkUser != nullptr && networkUser->GroupId.HasValue())
     {
         const uint8_t assignedGroup = networkUser->GroupId.GetValue();
-        if (GetGroupByID(assignedGroup) != nullptr)
+        if (_groups.GetById(assignedGroup) != nullptr)
         {
             groupId = assignedGroup;
         }
@@ -1136,130 +1102,33 @@ uint8_t Network::GetGroupIDByHash(const std::string& keyhash)
     return groupId;
 }
 
-uint8_t Network::GetDefaultGroup()
+NetworkGroupId Network::GetDefaultGroup()
 {
-    return default_group;
+    return 0;
 }
 
-void Network::SetDefaultGroup(uint8_t id)
+void Network::SetDefaultGroup(NetworkGroupId id)
 {
     if (GetGroupByID(id))
     {
-        default_group = id;
+        // default_group = id;
     }
 }
 
 void Network::SaveGroups()
 {
-    if (GetMode() == NETWORK_MODE_SERVER)
-    {
-        utf8 path[MAX_PATH];
-
-        platform_get_user_directory(path, nullptr, sizeof(path));
-        safe_strcat_path(path, "groups.json", sizeof(path));
-
-        json_t* jsonGroupsCfg = json_object();
-        json_t* jsonGroups = json_array();
-        for (auto& group : group_list)
-        {
-            json_array_append_new(jsonGroups, group->ToJson());
-        }
-        json_object_set_new(jsonGroupsCfg, "default_group", json_integer(default_group));
-        json_object_set_new(jsonGroupsCfg, "groups", jsonGroups);
-        try
-        {
-            Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
-        }
-        catch (const std::exception& ex)
-        {
-            log_error("Unable to save %s: %s", path, ex.what());
-        }
-
-        json_decref(jsonGroupsCfg);
-    }
+    Guard::Assert(GetMode() == NETWORK_MODE_SERVER);
+    _groups.Save();
 }
 
 void Network::SetupDefaultGroups()
 {
-    // Admin group
-    auto admin = std::make_unique<NetworkGroup>();
-    admin->SetName("Admin");
-    admin->ActionsAllowed.fill(0xFF);
-    admin->Id = 0;
-    group_list.push_back(std::move(admin));
-
-    // Spectator group
-    auto spectator = std::make_unique<NetworkGroup>();
-    spectator->SetName("Spectator");
-    spectator->ToggleActionPermission(NETWORK_PERMISSION_CHAT);
-    spectator->Id = 1;
-    group_list.push_back(std::move(spectator));
-
-    // User group
-    auto user = std::make_unique<NetworkGroup>();
-    user->SetName("User");
-    user->ActionsAllowed.fill(0xFF);
-    user->ToggleActionPermission(NETWORK_PERMISSION_KICK_PLAYER);
-    user->ToggleActionPermission(NETWORK_PERMISSION_MODIFY_GROUPS);
-    user->ToggleActionPermission(NETWORK_PERMISSION_SET_PLAYER_GROUP);
-    user->ToggleActionPermission(NETWORK_PERMISSION_CHEAT);
-    user->ToggleActionPermission(NETWORK_PERMISSION_PASSWORDLESS_LOGIN);
-    user->ToggleActionPermission(NETWORK_PERMISSION_MODIFY_TILE);
-    user->ToggleActionPermission(NETWORK_PERMISSION_EDIT_SCENARIO_OPTIONS);
-    user->Id = 2;
-    group_list.push_back(std::move(user));
-
-    SetDefaultGroup(1);
+    _groups.Reset();
 }
 
 void Network::LoadGroups()
 {
-    group_list.clear();
-
-    utf8 path[MAX_PATH];
-
-    platform_get_user_directory(path, nullptr, sizeof(path));
-    safe_strcat_path(path, "groups.json", sizeof(path));
-
-    json_t* json = nullptr;
-    if (platform_file_exists(path))
-    {
-        try
-        {
-            json = Json::ReadFromFile(path);
-        }
-        catch (const std::exception& e)
-        {
-            log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.what());
-        }
-    }
-
-    if (json == nullptr)
-    {
-        SetupDefaultGroups();
-    }
-    else
-    {
-        json_t* json_groups = json_object_get(json, "groups");
-        size_t groupCount = (size_t)json_array_size(json_groups);
-        for (size_t i = 0; i < groupCount; i++)
-        {
-            json_t* jsonGroup = json_array_get(json_groups, i);
-
-            auto newgroup = std::make_unique<NetworkGroup>(NetworkGroup::FromJson(jsonGroup));
-            group_list.push_back(std::move(newgroup));
-        }
-        json_t* jsonDefaultGroup = json_object_get(json, "default_group");
-        default_group = (uint8_t)json_integer_value(jsonDefaultGroup);
-        if (GetGroupByID(default_group) == nullptr)
-        {
-            default_group = 0;
-        }
-        json_decref(json);
-    }
-
-    // Host group should always contain all permissions.
-    group_list.at(0)->ActionsAllowed.fill(0xFF);
+    _groups.Load();
 }
 
 std::string Network::BeginLog(const std::string& directory, const std::string& midName, const std::string& filenameFormat)
@@ -1788,11 +1657,14 @@ void Network::Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id
 void Network::Server_Send_GROUPLIST(NetworkConnection& connection)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32_t)NETWORK_COMMAND_GROUPLIST << (uint8_t)group_list.size() << default_group;
-    for (auto& group : group_list)
-    {
-        group->Write(*packet);
-    }
+
+    *packet << (uint32_t)NETWORK_COMMAND_GROUPLIST;
+
+    DataSerialiser ds(true);
+    _groups.Serialise(ds);
+
+    packet->Write(static_cast<const uint8_t*>(ds.GetStream().GetData()), ds.GetStream().GetLength());
+
     connection.QueuePacket(std::move(packet));
 }
 
@@ -3065,16 +2937,10 @@ void Network::Client_Handle_SHOWERROR([[maybe_unused]] NetworkConnection& connec
 
 void Network::Client_Handle_GROUPLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
-    group_list.clear();
-    uint8_t size;
-    packet >> size >> default_group;
-    for (uint32_t i = 0; i < size; i++)
-    {
-        NetworkGroup group;
-        group.Read(packet);
-        auto newgroup = std::make_unique<NetworkGroup>(group);
-        group_list.push_back(std::move(newgroup));
-    }
+    DataSerialiser ds(false);
+    ds.GetStream().Write(packet.GetData(), packet.Size);
+    ds.GetStream().SetPosition(0);
+    _groups.Serialise(ds);
 }
 
 void Network::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
@@ -3323,32 +3189,29 @@ uint8_t network_get_player_group(uint32_t index)
 
 void network_set_player_group(uint32_t index, uint32_t groupindex)
 {
-    gNetwork.player_list[index]->Group = gNetwork.group_list[groupindex]->Id;
+    // gNetwork.player_list[index]->Group = gNetwork.group_list[groupindex]->Id;
 }
 
 int32_t network_get_group_index(uint8_t id)
 {
-    auto it = gNetwork.GetGroupIteratorByID(id);
-    if (it == gNetwork.group_list.end())
-    {
-        return -1;
-    }
-    return (int32_t)(gNetwork.GetGroupIteratorByID(id) - gNetwork.group_list.begin());
+    return -1;
 }
 
 uint8_t network_get_group_id(uint32_t index)
 {
-    return gNetwork.group_list[index]->Id;
+    // return gNetwork.group_list[index]->Id;
 }
 
 int32_t network_get_num_groups()
 {
-    return (int32_t)gNetwork.group_list.size();
+    // return (int32_t)gNetwork.group_list.size();
+    return 0;
 }
 
 const char* network_get_group_name(uint32_t index)
 {
-    return gNetwork.group_list[index]->GetName().c_str();
+    // return gNetwork.group_list[index]->GetName().c_str();
+    return "BROKEN";
 }
 
 void network_chat_show_connected_message()
@@ -3445,14 +3308,17 @@ GameActionResult::Ptr network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting)
 {
+    auto& groups = gNetwork.GetGroups();
+
     switch (type)
     {
         case ModifyGroupType::AddGroup:
         {
             if (isExecuting)
             {
-                NetworkGroup* newgroup = gNetwork.AddGroup();
-                if (newgroup == nullptr)
+                NetworkGroup* newGroup = groups.Create("Group");
+                newGroup->SetName(newGroup->GetName() + " #" + std::to_string(newGroup->Id));
+                if (newGroup == nullptr)
                 {
                     return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_DO_THIS);
                 }
@@ -3485,12 +3351,12 @@ GameActionResult::Ptr network_modify_groups(
             { // cant change admin group permissions
                 return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }
-            NetworkGroup* mygroup = nullptr;
+            NetworkGroup* myGroup = nullptr;
             NetworkPlayer* player = gNetwork.GetPlayerByID(actionPlayerId);
             if (player != nullptr && permissionState == PermissionState::Toggle)
             {
-                mygroup = gNetwork.GetGroupByID(player->Group);
-                if (mygroup == nullptr || !mygroup->CanPerformAction(permissionIndex))
+                myGroup = gNetwork.GetGroupByID(player->Group);
+                if (myGroup == nullptr || !myGroup->CanPerformAction(permissionIndex))
                 {
                     return std::make_unique<GameActionResult>(
                         GA_ERROR::DISALLOWED, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF);
@@ -3503,11 +3369,11 @@ GameActionResult::Ptr network_modify_groups(
                 {
                     if (permissionState != PermissionState::Toggle)
                     {
-                        if (mygroup != nullptr)
+                        if (myGroup != nullptr)
                         {
                             if (permissionState == PermissionState::SetAll)
                             {
-                                group->ActionsAllowed = mygroup->ActionsAllowed;
+                                group->ActionsAllowed = myGroup->ActionsAllowed;
                             }
                             else
                             {
@@ -3525,10 +3391,11 @@ GameActionResult::Ptr network_modify_groups(
         break;
         case ModifyGroupType::SetName:
         {
-            NetworkGroup* group = gNetwork.GetGroupByID(groupId);
-            const char* oldName = group->GetName().c_str();
+            NetworkGroup* group = groups.GetById(groupId);
+            if (group == nullptr)
+                break;
 
-            if (strcmp(oldName, name.c_str()) == 0)
+            if (group->GetName() == name)
             {
                 return std::make_unique<GameActionResult>();
             }
@@ -3541,10 +3408,7 @@ GameActionResult::Ptr network_modify_groups(
 
             if (isExecuting)
             {
-                if (group != nullptr)
-                {
-                    group->SetName(name);
-                }
+                group->SetName(name);
             }
         }
         break;
@@ -3556,7 +3420,7 @@ GameActionResult::Ptr network_modify_groups(
             }
             if (isExecuting)
             {
-                gNetwork.SetDefaultGroup(groupId);
+                groups.SetDefault(groups.GetById(groupId));
             }
         }
         break;
@@ -3566,7 +3430,7 @@ GameActionResult::Ptr network_modify_groups(
             break;
     }
 
-    gNetwork.SaveGroups();
+    groups.Save();
 
     return std::make_unique<GameActionResult>();
 }
@@ -3622,14 +3486,22 @@ rct_string_id network_get_action_name_string_id(uint32_t index)
     }
 }
 
-int32_t network_can_perform_action(uint32_t groupindex, uint32_t index)
+int32_t network_can_perform_action(NetworkGroupId groupId, uint32_t index)
 {
-    return gNetwork.group_list[groupindex]->CanPerformAction(index);
+    auto& groups = gNetwork.GetGroups();
+    NetworkGroup* group = groups.GetById(groupId);
+    if (group == nullptr)
+        return false;
+    return group->CanPerformAction(index);
 }
 
-int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
+int32_t network_can_perform_command(NetworkGroupId groupId, int32_t index)
 {
-    return gNetwork.group_list[groupindex]->CanPerformCommand(index);
+    auto& groups = gNetwork.GetGroups();
+    NetworkGroup* group = groups.GetById(groupId);
+    if (group == nullptr)
+        return false;
+    return group->CanPerformCommand(index);
 }
 
 void network_set_pickup_peep(uint8_t playerid, Peep* peep)

@@ -16,11 +16,13 @@
 #include <jansson.h>
 #include <string>
 
+using NetworkGroupId = int32_t;
+
 class NetworkGroup final
 {
 public:
     std::array<uint8_t, 8> ActionsAllowed{};
-    uint8_t Id = 0;
+    NetworkGroupId Id = 0;
 
     static NetworkGroup FromJson(const json_t* json);
 
@@ -32,6 +34,8 @@ public:
     void ToggleActionPermission(size_t index);
     bool CanPerformAction(size_t index) const;
     bool CanPerformCommand(int32_t command) const;
+
+    void Serialise(DataSerialiser& ds);
 
     json_t* ToJson() const;
 

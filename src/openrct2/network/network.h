@@ -84,8 +84,8 @@ std::unique_ptr<GameActionResult> network_kick_player(NetworkPlayerId_t playerId
 uint8_t network_get_default_group();
 int32_t network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32_t index);
-int32_t network_can_perform_action(uint32_t groupindex, uint32_t index);
-int32_t network_can_perform_command(uint32_t groupindex, int32_t index);
+int32_t network_can_perform_action(NetworkGroupId groupId, uint32_t index);
+int32_t network_can_perform_command(NetworkGroupId groupId, int32_t index);
 void network_set_pickup_peep(uint8_t playerid, Peep* peep);
 Peep* network_get_pickup_peep(uint8_t playerid);
 void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x);
