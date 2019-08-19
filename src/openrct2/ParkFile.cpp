@@ -866,7 +866,7 @@ int32_t scenario_save(const utf8* path, int32_t flags)
 class ParkFileImporter : public IParkImporter
 {
 private:
-    const IObjectRepository& _objectRepository;
+    [[maybe_unused]] const IObjectRepository& _objectRepository;
     std::unique_ptr<OpenRCT2::ParkFile> _parkFile;
 
 public:
