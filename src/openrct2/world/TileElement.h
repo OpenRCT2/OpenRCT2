@@ -78,7 +78,7 @@ struct TileElementBase
 
 /**
  * Map element structure
- * size: 0x08
+ * size: 0x10
  */
 struct TileElement : public TileElementBase
 {
