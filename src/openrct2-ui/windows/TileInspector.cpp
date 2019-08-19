@@ -663,10 +663,6 @@ static void window_tile_inspector_copy_element(rct_window* w)
 
 static void window_tile_inspector_paste_element(rct_window* w)
 {
-    // Construct the data to send using the surface's properties
-    int32_t data[4];
-    std::memcpy(&data[0], &tileInspectorCopiedElement, 8);
-    assert_struct_size(data, sizeof(tileInspectorCopiedElement));
     auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnyPaste, 0, 0, tileInspectorCopiedElement);
     GameActions::Execute(&modifyTile);
 }
