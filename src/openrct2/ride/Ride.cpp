@@ -3247,7 +3247,7 @@ static bool ride_entrance_exit_is_reachable(TileCoordsXYZD coordinates)
         return true;
 
     TileCoordsXYZ loc{ coordinates.x, coordinates.y, coordinates.z };
-    loc -= TileDirectionDelta[coordinates.z];
+    loc -= TileDirectionDelta[coordinates.direction];
 
     return map_coord_is_connected(loc, coordinates.direction);
 }
