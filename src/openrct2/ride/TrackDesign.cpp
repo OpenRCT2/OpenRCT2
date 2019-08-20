@@ -1137,15 +1137,15 @@ static bool TrackDesignPlaceSceneryElement(
                         return true;
                     }
 
-                    TileElement* tile_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
+                    auto* pathElement = map_get_path_element_at({ mapCoord.x / 32, mapCoord.y / 32, z });
 
-                    if (tile_element == nullptr)
+                    if (pathElement == nullptr)
                     {
                         return true;
                     }
 
                     footpath_queue_chain_reset();
-                    footpath_remove_edges_at(mapCoord.x, mapCoord.y, tile_element);
+                    footpath_remove_edges_at(mapCoord.x, mapCoord.y, reinterpret_cast<TileElement*>(pathElement));
 
                     flags = GAME_COMMAND_FLAG_APPLY;
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
@@ -1158,7 +1158,7 @@ static bool TrackDesignPlaceSceneryElement(
                             | GAME_COMMAND_FLAG_GHOST;
                     }
 
-                    footpath_connect_edges(mapCoord.x, mapCoord.y, tile_element, flags);
+                    footpath_connect_edges(mapCoord.x, mapCoord.y, reinterpret_cast<TileElement*>(pathElement), flags);
                     footpath_update_queue_chains();
                     return true;
                 }
@@ -1233,7 +1233,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
         gMapSelectionTiles.clear();
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
-        gMapSelectArrowPosition.z = tile_element_height(x, y);
+        gMapSelectArrowPosition.z = tile_element_height({ x, y });
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1393,20 +1393,20 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                 continue;
             }
 
-            TileElement* tile_element = map_get_surface_element_at(mapCoord);
-            int16_t map_height = tile_element->base_height * 8;
-            if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            auto surfaceElement = map_get_surface_element_at(mapCoord);
+            int16_t map_height = surfaceElement->base_height * 8;
+            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
                 map_height += 16;
-                if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
                     map_height += 16;
                 }
             }
 
-            if (tile_element->AsSurface()->GetWaterHeight() > 0)
+            if (surfaceElement->GetWaterHeight() > 0)
             {
-                int16_t water_height = tile_element->AsSurface()->GetWaterHeight();
+                int16_t water_height = surfaceElement->GetWaterHeight();
                 water_height *= 16;
                 if (water_height > map_height)
                 {
@@ -1449,7 +1449,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
         gMapSelectionTiles.clear();
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
-        gMapSelectArrowPosition.z = tile_element_height(x, y);
+        gMapSelectArrowPosition.z = tile_element_height({ x, y });
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1562,23 +1562,23 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         continue;
                     }
 
-                    TileElement* tileElement = map_get_surface_element_at(tile);
-                    if (tileElement == nullptr)
+                    auto surfaceElement = map_get_surface_element_at(tile);
+                    if (surfaceElement == nullptr)
                     {
                         return false;
                     }
 
-                    int32_t height = tileElement->base_height * 8;
-                    if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                    int32_t height = surfaceElement->base_height * 8;
+                    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     {
                         height += 16;
-                        if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                         {
                             height += 16;
                         }
                     }
 
-                    uint8_t water_height = tileElement->AsSurface()->GetWaterHeight() * 16;
+                    uint8_t water_height = surfaceElement->GetWaterHeight() * 16;
                     if (water_height > 0 && water_height > height)
                     {
                         height = water_height;
@@ -2117,7 +2117,7 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
 
     if (!gCheatsSandboxMode)
     {
-        if (!map_is_location_owned(floor2(x, 32), floor2(y, 32), z))
+        if (!map_is_location_owned({ x, y, z }))
         {
             return MONEY32_UNDEFINED;
         }
@@ -2126,11 +2126,11 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
     // Check support height
     if (!gCheatsDisableSupportLimits)
     {
-        TileElement* tileElement = map_get_surface_element_at({ x, y });
+        auto surfaceElement = map_get_surface_element_at({ x, y });
         uint8_t supportZ = (z + 32) >> 3;
-        if (supportZ > tileElement->base_height)
+        if (supportZ > surfaceElement->base_height)
         {
-            uint8_t supportHeight = (supportZ - tileElement->base_height) / 2;
+            uint8_t supportHeight = (supportZ - surfaceElement->base_height) / 2;
             uint8_t maxSupportHeight = RideData5[RIDE_TYPE_MAZE].max_height;
             if (supportHeight > maxSupportHeight)
             {
@@ -2184,7 +2184,7 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
         int32_t fx = floor2(x, 32);
         int32_t fy = floor2(y, 32);
         int32_t fz = z >> 3;
-        TileElement* tileElement = tile_element_insert(fx >> 5, fy >> 5, fz, 15);
+        TileElement* tileElement = tile_element_insert({ fx >> 5, fy >> 5, fz }, 15);
         tileElement->clearance_height = fz + 4;
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
         tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
@@ -2337,12 +2337,12 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     {
         gCurrentRotation = i;
 
-        CoordsXY pos2d = translate_3d_to_2d_with_z(i, centre);
-        pos2d.x -= offset.x;
-        pos2d.y -= offset.y;
+        auto screenCoords = translate_3d_to_2d_with_z(i, centre);
+        screenCoords.x -= offset.x;
+        screenCoords.y -= offset.y;
 
-        int32_t left = pos2d.x;
-        int32_t top = pos2d.y;
+        int32_t left = screenCoords.x;
+        int32_t top = screenCoords.y;
         int32_t right = left + size_x;
         int32_t bottom = top + size_y;
 

@@ -1834,7 +1834,7 @@ static void window_ride_construction_construct(rct_window* w)
     {
         return;
     }
-    audio_play_sound_at_location(SoundId::PlaceItem, x, y, z);
+    audio_play_sound_at_location(SoundId::PlaceItem, { x, y, z });
 
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
@@ -2180,8 +2180,8 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
         _trackPlaceZ = 0;
         if (_trackPlaceShiftState)
         {
-            tileElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
-            mapZ = floor2(tileElement->base_height * 8, 16);
+            auto surfaceElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+            mapZ = floor2(surfaceElement->base_height * 8, 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = std::max<int16_t>(mapZ, 16);
             _trackPlaceZ = mapZ;
@@ -3489,7 +3489,7 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(x >> 5, y >> 5);
+        z = map_get_highest_z({ x, y });
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3531,7 +3531,7 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
             {
                 if (selectedTile.x < (256 * 32) && selectedTile.y < (256 * 32))
                 {
-                    z = map_get_highest_z(selectedTile.x / 32, selectedTile.y / 32);
+                    z = map_get_highest_z(selectedTile);
                     if (z > highestZ)
                         highestZ = z;
                 }
@@ -3755,7 +3755,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
             if (selectedTile.x >= (256 * 32) || selectedTile.y >= (256 * 32))
                 continue;
 
-            z = map_get_highest_z(selectedTile.x / 32, selectedTile.y / 32);
+            z = map_get_highest_z(selectedTile);
             if (z > highestZ)
                 highestZ = z;
         }
@@ -3769,7 +3769,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(x >> 5, y >> 5);
+        z = map_get_highest_z({ x, y });
 
     tool_cancel();
 
@@ -3854,8 +3854,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
             else
             {
                 window_close_by_class(WC_ERROR);
-                audio_play_sound_at_location(
-                    SoundId::PlaceItem, _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z);
+                audio_play_sound_at_location(SoundId::PlaceItem, _currentTrackBegin);
                 break;
             }
         }
@@ -3946,7 +3945,7 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
         if (result->Error != GA_ERROR::OK)
             return;
 
-        audio_play_sound_at_location(SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
+        audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
 
         auto ride = get_ride(gRideEntranceExitPlaceRideIndex);
         if (ride != nullptr && ride_are_all_possible_entrances_and_exits_built(ride))

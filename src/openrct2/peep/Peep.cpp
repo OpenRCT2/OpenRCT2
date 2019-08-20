@@ -669,7 +669,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     SoundId coughs[4] = { SoundId::Cough1, SoundId::Cough2, SoundId::Cough3, SoundId::Cough4 };
     auto soundId = coughs[scenario_rand() & 3];
-    audio_play_sound_at_location(soundId, x, y, z);
+    audio_play_sound_at_location(soundId, { x, y, z });
 
     Invalidate();
     return { { x, y } };
@@ -763,25 +763,21 @@ void Peep::PickupAbort(int32_t old_x)
 // Returns true when a peep can be dropped at the given location. When apply is set to true the peep gets dropped.
 bool Peep::Place(TileCoordsXYZ location, bool apply)
 {
-    TileElement* tileElement = map_get_path_element_at(location.x, location.y, location.z);
-
-    if (!tileElement)
+    auto* pathElement = map_get_path_element_at(location);
+    TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
+    if (!pathElement)
     {
-        tileElement = map_get_surface_element_at(location.x, location.y);
+        tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(location.x, location.y));
     }
 
     if (!tileElement)
         return false;
 
-    CoordsXYZ destination = { location.x * 32, location.y * 32, location.z * 8 };
-
     // Set the coordinate of destination to be exactly
     // in the middle of a tile.
-    destination.x += 16;
-    destination.y += 16;
-    destination.z = tileElement->base_height * 8 + 16;
+    CoordsXYZ destination = { location.x * 32 + 16, location.y * 32 + 16, tileElement->base_height * 8 + 16 };
 
-    if (!map_is_location_owned(location.x * 32, location.y * 32, destination.z))
+    if (!map_is_location_owned(destination))
     {
         gGameCommandErrorTitle = STR_ERR_CANT_PLACE_PERSON_HERE;
         return false;
@@ -959,7 +955,7 @@ void Peep::UpdateFalling()
                         return;
                     }
                 }
-                int32_t map_height = tile_element_height(0xFFFF & x, 0xFFFF & y);
+                int32_t map_height = tile_element_height({ x, y });
                 if (map_height < z || map_height - 4 > z)
                     continue;
                 saved_height = map_height;
@@ -2821,7 +2817,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
     }
 
     int16_t z = tile_element->base_height * 8;
-    if (map_is_location_owned(x, y, z))
+    if (map_is_location_owned({ x, y, z }))
     {
         if (peep->outside_of_park == 1)
         {
@@ -3159,8 +3155,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     if (type == PEEP_TYPE_STAFF || (GetNextIsSurface()))
     {
-        int16_t height = abs(tile_element_height(newLoc.x, newLoc.y) - z);
-
+        int16_t height = abs(tile_element_height(newLoc) - z);
         if (height <= 3 || (type == PEEP_TYPE_STAFF && height <= 32))
         {
             interaction_ride_index = 0xFF;
@@ -3176,14 +3171,14 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
                 return;
             }
 
-            tileElement = map_get_surface_element_at(newLoc);
-            if (tileElement == nullptr)
+            auto surfaceElement = map_get_surface_element_at(newLoc);
+            if (surfaceElement == nullptr)
             {
                 peep_return_to_centre_of_tile(this);
                 return;
             }
 
-            int16_t water_height = tileElement->AsSurface()->GetWaterHeight();
+            int16_t water_height = surfaceElement->GetWaterHeight();
             if (water_height)
             {
                 peep_return_to_centre_of_tile(this);
@@ -3203,7 +3198,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             // The peep is on a surface and not on a path
             next_x = newLoc.x & 0xFFE0;
             next_y = newLoc.y & 0xFFE0;
-            next_z = tileElement->base_height;
+            next_z = surfaceElement->base_height;
             SetNextFlags(0, false, true);
 
             height = GetZOnSlope(newLoc.x, newLoc.y);
@@ -3248,7 +3243,7 @@ int32_t Peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 
     if (GetNextIsSurface())
     {
-        return tile_element_height(tile_x, tile_y);
+        return tile_element_height({ tile_x, tile_y });
     }
 
     int32_t height = next_z * 8;

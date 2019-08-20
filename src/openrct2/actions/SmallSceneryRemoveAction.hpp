@@ -56,7 +56,7 @@ public:
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
 
-        if (!map_is_location_valid({ _loc.x, _loc.y }))
+        if (!map_is_location_valid(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -86,7 +86,7 @@ public:
             }
 
             // Check if the land is owned
-            if (!map_is_location_owned(_loc.x, _loc.y, _loc.z))
+            if (!map_is_location_owned(_loc))
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
                 res->ErrorTitle = STR_CANT_REMOVE_THIS;
@@ -124,7 +124,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+        res->Position.z = tile_element_height(res->Position);
 
         map_invalidate_tile_full(_loc.x, _loc.y);
         tile_element_remove(tileElement);

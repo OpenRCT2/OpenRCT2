@@ -356,11 +356,10 @@ private:
         {
             for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
             {
-                auto tileElement = map_get_surface_element_at(x, y);
-                if (tileElement == nullptr)
+                auto surfaceElement = map_get_surface_element_at(x, y);
+                if (surfaceElement == nullptr)
                     continue;
 
-                auto surfaceElement = tileElement->AsSurface();
                 if (surfaceElement != nullptr && (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
                     && surfaceElement->GetWaterHeight() == 0 && surfaceElement->CanGrassGrow())
                 {
@@ -728,12 +727,12 @@ private:
         {
             for (coords.x = min; coords.x <= max; coords.x += 32)
             {
-                TileElement* surfaceElement = map_get_surface_element_at(coords);
+                auto* surfaceElement = map_get_surface_element_at(coords);
                 if (surfaceElement == nullptr)
                     continue;
 
                 // Ignore already owned tiles.
-                if (surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
+                if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
                     continue;
 
                 int32_t base_z = surfaceElement->base_height;
@@ -742,7 +741,7 @@ private:
                 // only own tiles that were not set to 0
                 if (destOwnership != OWNERSHIP_UNOWNED)
                 {
-                    surfaceElement->AsSurface()->SetOwnership(destOwnership);
+                    surfaceElement->SetOwnership(destOwnership);
                     update_park_fences_around_tile(coords);
                     uint16_t baseHeight = surfaceElement->base_height * 8;
                     map_invalidate_tile(coords.x, coords.y, baseHeight, baseHeight + 16);
@@ -757,8 +756,8 @@ private:
             int32_t y = spawn.y;
             if (x != PEEP_SPAWN_UNDEFINED)
             {
-                TileElement* surfaceElement = map_get_surface_element_at({ x, y });
-                surfaceElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+                auto* surfaceElement = map_get_surface_element_at({ x, y });
+                surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
                 update_park_fences_around_tile({ x, y });
                 uint16_t baseHeight = surfaceElement->base_height * 8;
                 map_invalidate_tile(x, y, baseHeight, baseHeight + 16);

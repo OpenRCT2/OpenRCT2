@@ -125,7 +125,7 @@ static int32_t SoundVolumeAdjust[RCT2SoundCount] =
 };
 // clang-format on
 
-AudioParams audio_get_params_from_location(SoundId soundId, const LocationXYZ16* location);
+static AudioParams audio_get_params_from_location(SoundId soundId, const CoordsXYZ& location);
 
 void audio_init()
 {
@@ -180,17 +180,12 @@ void audio_populate_devices()
     }
 }
 
-void audio_play_sound_at_location(SoundId soundId, int16_t x, int16_t y, int16_t z)
+void audio_play_sound_at_location(SoundId soundId, const CoordsXYZ& loc)
 {
     if (gGameSoundsOff)
         return;
 
-    LocationXYZ16 location;
-    location.x = x;
-    location.y = y;
-    location.z = z;
-
-    AudioParams params = audio_get_params_from_location(soundId, &location);
+    AudioParams params = audio_get_params_from_location(soundId, loc);
     if (params.in_range)
     {
         audio_play_sound(soundId, params.volume, params.pan);
@@ -203,7 +198,7 @@ void audio_play_sound_at_location(SoundId soundId, int16_t x, int16_t y, int16_t
  * @param location The location at which the sound effect is to be played.
  * @return The audio parameters to be used when playing this sound effect.
  */
-AudioParams audio_get_params_from_location(SoundId soundId, const LocationXYZ16* location)
+static AudioParams audio_get_params_from_location(SoundId soundId, const CoordsXYZ& location)
 {
     int32_t volumeDown = 0;
     AudioParams params;
@@ -211,14 +206,14 @@ AudioParams audio_get_params_from_location(SoundId soundId, const LocationXYZ16*
     params.volume = 0;
     params.pan = 0;
 
-    TileElement* element = map_get_surface_element_at({ location->x, location->y });
-    if (element && (element->base_height * 8) - 5 > location->z)
+    auto element = map_get_surface_element_at(location);
+    if (element && (element->base_height * 8) - 5 > location.z)
     {
         volumeDown = 10;
     }
 
     uint8_t rotation = get_current_rotation();
-    LocationXY16 pos2 = coordinate_3d_to_2d(location, rotation);
+    auto pos2 = translate_3d_to_2d_with_z(rotation, location);
 
     rct_viewport* viewport = nullptr;
     while ((viewport = window_get_previous_viewport(viewport)) != nullptr)

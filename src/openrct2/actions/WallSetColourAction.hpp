@@ -65,8 +65,7 @@ public:
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_in_park({ _loc.x, _loc.y })
-            && !gCheatsSandboxMode)
+        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_in_park(_loc) && !gCheatsSandboxMode)
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }

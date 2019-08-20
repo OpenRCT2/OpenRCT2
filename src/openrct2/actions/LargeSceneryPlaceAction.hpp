@@ -89,7 +89,7 @@ public:
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y);
+        int16_t surfaceHeight = tile_element_height(_loc);
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = surfaceHeight;
@@ -195,7 +195,7 @@ public:
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_OFF_EDGE_OF_MAP);
             }
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(curTile.x, curTile.y, zLow * 8)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned({ curTile, zLow * 8 })
                 && !gCheatsSandboxMode)
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
@@ -214,7 +214,7 @@ public:
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
-        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y);
+        int16_t surfaceHeight = tile_element_height(_loc);
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = surfaceHeight;
@@ -317,7 +317,7 @@ public:
             }
 
             TileElement* newTileElement = tile_element_insert(
-                curTile.x / 32, curTile.y / 32, zLow, quarterTile.GetBaseQuarterOccupied());
+                { curTile.x / 32, curTile.y / 32, zLow }, quarterTile.GetBaseQuarterOccupied());
             Guard::Assert(newTileElement != nullptr);
             map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
             newTileElement->SetType(TILE_ELEMENT_TYPE_LARGE_SCENERY);
@@ -369,11 +369,10 @@ private:
                 continue;
             }
 
-            TileElement* tileElement = map_get_surface_element_at({ curTile.x, curTile.y });
-            if (tileElement == nullptr)
+            auto* surfaceElement = map_get_surface_element_at(curTile);
+            if (surfaceElement == nullptr)
                 continue;
 
-            SurfaceElement* surfaceElement = tileElement->AsSurface();
             int32_t height = surfaceElement->base_height * 8;
             int32_t slope = surfaceElement->GetSlope();
 

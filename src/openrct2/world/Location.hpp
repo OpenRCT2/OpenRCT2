@@ -55,6 +55,19 @@ assert_struct_size(LocationXYZ16, 6);
 
 constexpr int32_t COORDS_NULL = -1;
 
+struct ScreenCoordsXY
+{
+    int32_t x = 0;
+    int32_t y = 0;
+
+    ScreenCoordsXY() = default;
+    constexpr ScreenCoordsXY(int32_t _x, int32_t _y)
+        : x(_x)
+        , y(_y)
+    {
+    }
+};
+
 /**
  * Tile coordinates use 1 x/y increment per tile and 1 z increment per step.
  * Regular ('big', 'sprite') coordinates use 32 x/y increments per tile and 8 z increments per step.
@@ -95,7 +108,7 @@ struct CoordsXY
         return { rhs.x - x, rhs.y - y };
     }
 
-    CoordsXY Rotate(int32_t direction)
+    CoordsXY Rotate(int32_t direction) const
     {
         CoordsXY rotatedCoords;
         switch (direction & 3)
@@ -179,23 +192,19 @@ struct TileCoordsXY
     int32_t x = 0, y = 0;
 };
 
-struct CoordsXYZ
+struct CoordsXYZ : public CoordsXY
 {
-    int32_t x = 0;
-    int32_t y = 0;
     int32_t z = 0;
 
     CoordsXYZ() = default;
     constexpr CoordsXYZ(int32_t _x, int32_t _y, int32_t _z)
-        : x(_x)
-        , y(_y)
+        : CoordsXY(_x, _y)
         , z(_z)
     {
     }
 
     constexpr CoordsXYZ(CoordsXY c, int32_t _z)
-        : x(c.x)
-        , y(c.y)
+        : CoordsXY(c)
         , z(_z)
     {
     }
@@ -229,6 +238,12 @@ struct TileCoordsXYZ
         return *this;
     }
 
+    TileCoordsXYZ& operator-=(const TileCoordsXY rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
     bool operator==(const TileCoordsXYZ& other) const
     {
         return x == other.x && y == other.y && z == other.z;
@@ -266,10 +281,16 @@ typedef uint8_t Direction;
     return dir < 4;
 }
 
-struct CoordsXYZD
+struct CoordsXYZD : public CoordsXYZ
 {
-    int32_t x, y, z;
-    Direction direction;
+    Direction direction = 0;
+
+    CoordsXYZD() = default;
+    constexpr CoordsXYZD(int32_t _x, int32_t _y, int32_t _z, Direction _d)
+        : CoordsXYZ(_x, _y, _z)
+        , direction(_d)
+    {
+    }
 
     bool isNull() const
     {

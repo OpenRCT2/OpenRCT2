@@ -22,10 +22,12 @@ struct rct_sprite_common
     uint8_t sprite_width;
     // Height from centre of sprite to top
     uint8_t sprite_height_positive;
+    // Screen Coordinates of sprite
     int16_t sprite_left;
     int16_t sprite_top;
     int16_t sprite_right;
     int16_t sprite_bottom;
+
     uint8_t sprite_direction;
 };
 

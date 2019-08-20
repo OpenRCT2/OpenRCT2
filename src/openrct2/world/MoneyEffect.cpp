@@ -100,7 +100,7 @@ void rct_money_effect::Create(money32 value)
         if (mapPosition.x == LOCATION_NULL)
             return;
 
-        mapPosition.z = tile_element_height(mapPosition.x, mapPosition.y);
+        mapPosition.z = tile_element_height({ mapPosition.x, mapPosition.y });
     }
     mapPosition.z += 10;
     CreateAt(-value, mapPosition.x, mapPosition.y, mapPosition.z, false);

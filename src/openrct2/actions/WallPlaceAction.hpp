@@ -109,7 +109,7 @@ public:
 
         if (_loc.z == 0)
         {
-            res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+            res->Position.z = tile_element_height(res->Position);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY)
@@ -117,12 +117,12 @@ public:
         {
             if (_loc.z == 0)
             {
-                if (!map_is_location_in_park({ _loc.x, _loc.y }))
+                if (!map_is_location_in_park(_loc))
                 {
                     return std::make_unique<WallPlaceActionResult>(GA_ERROR::NOT_OWNED);
                 }
             }
-            else if (!map_is_location_owned(_loc.x, _loc.y, _loc.z))
+            else if (!map_is_location_owned(_loc))
             {
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NOT_OWNED);
             }
@@ -142,7 +142,7 @@ public:
         auto targetHeight = _loc.z;
         if (targetHeight == 0)
         {
-            TileElement* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+            auto* surfaceElement = map_get_surface_element_at(_loc);
             if (surfaceElement == nullptr)
             {
                 log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -150,7 +150,7 @@ public:
             }
             targetHeight = surfaceElement->base_height * 8;
 
-            uint8_t slope = surfaceElement->AsSurface()->GetSlope();
+            uint8_t slope = surfaceElement->GetSlope();
             edgeSlope = EdgeSlopes[slope][_edge & 3];
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
@@ -159,16 +159,16 @@ public:
             }
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+        auto* surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
             log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
             return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
-        if (surfaceElement->AsSurface()->GetWaterHeight() > 0)
+        if (surfaceElement->GetWaterHeight() > 0)
         {
-            uint16_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() * 16;
+            uint16_t waterHeight = surfaceElement->GetWaterHeight() * 16;
 
             if (targetHeight < waterHeight && !gCheatsDisableClearanceChecks)
             {
@@ -186,21 +186,21 @@ public:
             uint8_t newEdge = (_edge + 2) & 3;
             uint8_t newBaseHeight = surfaceElement->base_height;
             newBaseHeight += 2;
-            if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+            if (surfaceElement->GetSlope() & (1 << newEdge))
             {
                 if (targetHeight / 8 < newBaseHeight)
                 {
                     return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
-                if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
                     newEdge = (newEdge - 1) & 3;
 
-                    if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+                    if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newEdge = (newEdge + 2) & 3;
-                        if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+                        if (surfaceElement->GetSlope() & (1 << newEdge))
                         {
                             newBaseHeight += 2;
                             if (targetHeight / 8 < newBaseHeight)
@@ -215,21 +215,21 @@ public:
             }
 
             newEdge = (_edge + 3) & 3;
-            if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+            if (surfaceElement->GetSlope() & (1 << newEdge))
             {
                 if (targetHeight / 8 < newBaseHeight)
                 {
                     return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
-                if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
                     newEdge = (newEdge - 1) & 3;
 
-                    if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+                    if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newEdge = (newEdge + 2) & 3;
-                        if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
+                        if (surfaceElement->GetSlope() & (1 << newEdge))
                         {
                             newBaseHeight += 2;
                             if (targetHeight / 8 < newBaseHeight)
@@ -309,14 +309,14 @@ public:
 
         if (res->Position.z == 0)
         {
-            res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+            res->Position.z = tile_element_height(res->Position);
         }
 
         uint8_t edgeSlope = 0;
         auto targetHeight = _loc.z;
         if (targetHeight == 0)
         {
-            TileElement* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+            auto* surfaceElement = map_get_surface_element_at(_loc);
             if (surfaceElement == nullptr)
             {
                 log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
@@ -324,7 +324,7 @@ public:
             }
             targetHeight = surfaceElement->base_height * 8;
 
-            uint8_t slope = surfaceElement->AsSurface()->GetSlope();
+            uint8_t slope = surfaceElement->GetSlope();
             edgeSlope = EdgeSlopes[slope][_edge & 3];
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
@@ -394,7 +394,7 @@ public:
             return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS, gGameCommandErrorText);
         }
 
-        TileElement* tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, targetHeight / 8, 0);
+        TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, targetHeight / 8 }, 0);
         assert(tileElement != nullptr);
 
         map_animation_create(MAP_ANIMATION_TYPE_WALL, _loc.x, _loc.y, targetHeight / 8);
@@ -613,7 +613,7 @@ private:
 
         *wallAcrossTrack = false;
         gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
-        if (map_is_location_at_edge(_loc.x, _loc.y))
+        if (map_is_location_at_edge(_loc))
         {
             gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
             return false;

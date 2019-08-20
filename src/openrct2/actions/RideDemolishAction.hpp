@@ -238,7 +238,7 @@ private:
         {
             int32_t x = (ride->overall_view.x * 32) + 16;
             int32_t y = (ride->overall_view.y * 32) + 16;
-            int32_t z = tile_element_height(x, y);
+            int32_t z = tile_element_height({ x, y });
 
             res->Position = { x, y, z };
         }
@@ -366,7 +366,7 @@ private:
         {
             int32_t x = (ride->overall_view.x * 32) + 16;
             int32_t y = (ride->overall_view.y * 32) + 16;
-            int32_t z = tile_element_height(x, y);
+            int32_t z = tile_element_height({ x, y });
 
             res->Position = { x, y, z };
         }

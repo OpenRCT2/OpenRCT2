@@ -94,15 +94,15 @@ public:
             return res;
         }
 
-        if (!map_is_location_owned(floor2(_loc.x, 32), floor2(_loc.y, 32), _loc.z) && !gCheatsSandboxMode)
+        if (!map_is_location_owned(_loc) && !gCheatsSandboxMode)
         {
             res->Error = GA_ERROR::NOT_OWNED;
             res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
             return res;
         }
 
-        TileElement* tileElement = map_get_surface_element_at(_loc.x / 32, _loc.y / 32);
-        if (tileElement == nullptr)
+        auto surfaceElement = map_get_surface_element_at(_loc);
+        if (surfaceElement == nullptr)
         {
             res->Error = GA_ERROR::UNKNOWN;
             res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
@@ -112,7 +112,7 @@ public:
         uint8_t baseHeight = _loc.z / 8;
         uint8_t clearanceHeight = (_loc.z + 32) / 8;
 
-        int8_t heightDifference = baseHeight - tileElement->base_height;
+        int8_t heightDifference = baseHeight - surfaceElement->base_height;
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
         {
             heightDifference = heightDifference >> 1;
@@ -125,7 +125,8 @@ public:
             }
         }
 
-        tileElement = map_get_track_element_at_of_type_from_ride(_loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(
+            _loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             if (_mode != GC_SET_MAZE_TRACK_BUILD)
@@ -215,7 +216,7 @@ public:
             uint16_t flooredX = floor2(_loc.x, 32);
             uint16_t flooredY = floor2(_loc.y, 32);
 
-            tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, baseHeight, 0xF);
+            tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0xF);
             assert(tileElement != nullptr);
 
             tileElement->clearance_height = clearanceHeight;

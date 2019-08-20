@@ -21,6 +21,7 @@
 #define SOUND_ID_NULL 0xFFFF
 
 enum class SoundId : uint8_t;
+struct CoordsXYZ;
 
 struct audio_device
 {
@@ -209,7 +210,7 @@ void audio_play_sound(SoundId soundId, int32_t volume, int32_t pan);
  * @param y The y coordinate of the location.
  * @param z The z coordinate of the location.
  */
-void audio_play_sound_at_location(SoundId soundId, int16_t x, int16_t y, int16_t z);
+void audio_play_sound_at_location(SoundId soundId, const CoordsXYZ& loc);
 /**
  * Populates the gAudioDevices array with the available audio devices.
  */

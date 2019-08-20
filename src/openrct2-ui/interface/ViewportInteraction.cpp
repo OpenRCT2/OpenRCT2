@@ -296,7 +296,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             }
             else
             {
-                if (!gCheatsSandboxMode && !map_is_location_owned(info->x, info->y, tileElement->base_height << 4))
+                if (!gCheatsSandboxMode && !map_is_location_owned({ info->x, info->y, tileElement->base_height << 4 }))
                 {
                     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
                 }
@@ -686,7 +686,7 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_
         int16_t z = originalZ;
         if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER)
         {
-            z = tile_element_height(map_pos.x, map_pos.y);
+            z = tile_element_height({ map_pos.x, map_pos.y });
         }
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
         map_pos.x = std::clamp<int16_t>(map_pos.x, my_x, my_x + 31);

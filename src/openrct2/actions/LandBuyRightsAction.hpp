@@ -93,7 +93,7 @@ private:
 
         CoordsXYZ centre{ (validRange.GetLeft() + validRange.GetRight()) / 2 + 16,
                           (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
-        centre.z = tile_element_height(centre.x, centre.y);
+        centre.z = tile_element_height(centre);
 
         res->Position = centre;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
@@ -125,7 +125,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, _ErrorTitles[0], STR_NONE);
         }
 
-        SurfaceElement* surfaceElement = map_get_surface_element_at(loc)->AsSurface();
+        SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);

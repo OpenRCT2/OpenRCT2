@@ -80,13 +80,13 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
     particle->velocity_z = vz & 0xFFFF;
 
     // Check collision with land / water
-    int16_t landZ = tile_element_height(x, y);
-    int16_t waterZ = tile_element_water_height(x, y);
+    int16_t landZ = tile_element_height({ x, y });
+    int16_t waterZ = tile_element_water_height({ x, y });
 
     if (waterZ != 0 && particle->z >= waterZ && z <= waterZ)
     {
         // Splash
-        audio_play_sound_at_location(SoundId::Water2, particle->x, particle->y, waterZ);
+        audio_play_sound_at_location(SoundId::Water2, { particle->x, particle->y, waterZ });
         crash_splash_create(particle->x, particle->y, waterZ);
         sprite_remove((rct_sprite*)particle);
         return;

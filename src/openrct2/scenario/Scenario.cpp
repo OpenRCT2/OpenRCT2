@@ -433,7 +433,7 @@ static int32_t scenario_create_ducks()
     if (!map_is_location_in_park({ x, y }))
         return 0;
 
-    centreWaterZ = (tile_element_water_height(x, y));
+    centreWaterZ = (tile_element_water_height({ x, y }));
     if (centreWaterZ == 0)
         return 0;
 
@@ -445,7 +445,7 @@ static int32_t scenario_create_ducks()
     {
         for (j = 0; j < 7; j++)
         {
-            waterZ = (tile_element_water_height(x2, y2));
+            waterZ = (tile_element_water_height({ x2, y2 }));
             if (waterZ == centreWaterZ)
                 c++;
 

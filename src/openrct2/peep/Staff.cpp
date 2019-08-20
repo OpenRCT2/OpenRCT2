@@ -172,7 +172,7 @@ static bool staff_is_location_in_patrol_area(Peep* peep, int32_t x, int32_t y)
 bool staff_is_location_in_patrol(Peep* staff, int32_t x, int32_t y)
 {
     // Check if location is in the park
-    if (!map_is_location_owned_or_has_rights(x, y))
+    if (!map_is_location_owned_or_has_rights({ x, y }))
         return false;
 
     // Check if staff has patrol area
@@ -511,17 +511,17 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
 {
     if (!(peep->GetNextIsSurface()))
     {
-        TileElement* tileElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
+        auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
-        if (peep->next_z != tileElement->base_height)
+        if (peep->next_z != surfaceElement->base_height)
             return 0xFF;
 
         if (peep->GetNextIsSloped())
         {
-            if (tileElement->AsSurface()->GetSlope() != PathSlopeToLandSlope[peep->GetNextDirection()])
+            if (surfaceElement->GetSlope() != PathSlopeToLandSlope[peep->GetNextDirection()])
                 return 0xFF;
         }
-        else if (tileElement->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+        else if (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
             return 0xFF;
     }
 
@@ -541,7 +541,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
             continue;
 
-        auto surfaceElement = map_get_surface_element_at(chosenTile)->AsSurface();
+        auto surfaceElement = map_get_surface_element_at(chosenTile);
         if (surfaceElement != nullptr)
         {
             if (std::abs(surfaceElement->base_height - peep->next_z) <= 2)
@@ -614,12 +614,12 @@ static bool staff_path_finding_handyman(Peep* peep)
         }
         else
         {
-            TileElement* tileElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+            auto* pathElement = map_get_path_element_at({ peep->next_x / 32, peep->next_y / 32, peep->next_z });
 
-            if (tileElement == nullptr)
+            if (pathElement == nullptr)
                 return true;
 
-            uint8_t pathDirections = (tileElement->AsPath()->GetEdges() & validDirections) & 0xF;
+            uint8_t pathDirections = (pathElement->GetEdges() & validDirections) & 0xF;
             if (pathDirections == 0)
             {
                 direction = staff_handyman_direction_rand_surface(peep, validDirections);
@@ -782,10 +782,10 @@ static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirect
  *
  *  rct2: 0x006C0121
  */
-static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections, TileElement* pathElement)
+static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
 {
     uint8_t direction = 0xFF;
-    uint8_t pathDirections = pathElement->AsPath()->GetEdges();
+    uint8_t pathDirections = pathElement->GetEdges();
     pathDirections &= validDirections;
 
     if (pathDirections == 0)
@@ -885,7 +885,7 @@ static bool staff_path_finding_mechanic(Peep* peep)
     }
     else
     {
-        TileElement* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        auto* pathElement = map_get_path_element_at({ peep->next_x / 32, peep->next_y / 32, peep->next_z });
         if (pathElement == nullptr)
             return true;
 
@@ -917,10 +917,10 @@ static bool staff_path_finding_mechanic(Peep* peep)
  *
  *  rct2: 0x006C050B
  */
-static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, TileElement* pathElement)
+static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
 {
     uint8_t direction = 0xFF;
-    uint8_t pathDirections = pathElement->AsPath()->GetEdges();
+    uint8_t pathDirections = pathElement->GetEdges();
     if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION)
     {
         pathDirections &= validDirections;
@@ -973,7 +973,7 @@ static bool staff_path_finding_misc(Peep* peep)
     }
     else
     {
-        TileElement* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        auto* pathElement = map_get_path_element_at({ peep->next_x / 32, peep->next_y / 32, peep->next_z });
         if (pathElement == nullptr)
             return true;
 
@@ -1181,7 +1181,7 @@ void Staff::UpdateMowing()
     {
         if (auto loc = UpdateAction())
         {
-            int16_t checkZ = tile_element_height((*loc).x, (*loc).y);
+            int16_t checkZ = tile_element_height(*loc);
             MoveTo((*loc).x, (*loc).y, checkZ);
             Invalidate();
             return;
@@ -1206,7 +1206,7 @@ void Staff::UpdateMowing()
         if (var_37 != 7)
             continue;
 
-        auto surfaceElement = map_get_surface_element_at(next_x / 32, next_y / 32)->AsSurface();
+        auto surfaceElement = map_get_surface_element_at(next_x / 32, next_y / 32);
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
@@ -1778,7 +1778,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
     if (!(peep->GetNextIsSurface()))
         return 0;
 
-    auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y })->AsSurface();
+    auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
     if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
     {
         if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
@@ -1916,11 +1916,11 @@ void Staff::UpdatePatrolling()
 
     if (GetNextIsSurface())
     {
-        TileElement* tile_element = map_get_surface_element_at({ next_x, next_y });
+        auto surfaceElement = map_get_surface_element_at({ next_x, next_y });
 
-        if (tile_element != nullptr)
+        if (surfaceElement != nullptr)
         {
-            int32_t water_height = tile_element->AsSurface()->GetWaterHeight();
+            int32_t water_height = surfaceElement->GetWaterHeight();
             if (water_height)
             {
                 Invalidate();
@@ -2571,7 +2571,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 
     if (action_frame == 0x13 || action_frame == 0x19 || action_frame == 0x1F || action_frame == 0x25 || action_frame == 0x2B)
     {
-        audio_play_sound_at_location(SoundId::MechanicFix, x, y, z);
+        audio_play_sound_at_location(SoundId::MechanicFix, { x, y, z });
     }
 
     return false;

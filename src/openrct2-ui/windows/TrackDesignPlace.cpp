@@ -338,7 +338,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
         if (cost != MONEY32_UNDEFINED)
         {
             window_close_by_class(WC_ERROR);
-            audio_play_sound_at_location(SoundId::PlaceItem, mapX, mapY, mapZ);
+            audio_play_sound_at_location(SoundId::PlaceItem, { mapX, mapY, mapZ });
 
             _currentRideIndex = rideIndex;
             if (track_design_are_entrance_and_exit_placed())
@@ -365,7 +365,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     }
 
     // Unable to build track
-    audio_play_sound_at_location(SoundId::Error, mapX, mapY, mapZ);
+    audio_play_sound_at_location(SoundId::Error, { mapX, mapY, mapZ });
 }
 
 /**
@@ -413,25 +413,24 @@ static void window_track_place_clear_provisional()
  */
 static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
 {
-    TileElement* tileElement;
     uint32_t z;
 
-    tileElement = map_get_surface_element_at(x >> 5, y >> 5);
-    z = tileElement->base_height * 8;
+    auto surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+    z = surfaceElement->base_height * 8;
 
     // Increase Z above slope
-    if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
     {
         z += 16;
 
         // Increase Z above double slope
-        if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             z += 16;
     }
 
     // Increase Z above water
-    if (tileElement->AsSurface()->GetWaterHeight() > 0)
-        z = std::max(z, tileElement->AsSurface()->GetWaterHeight() << 4);
+    if (surfaceElement->GetWaterHeight() > 0)
+        z = std::max(z, surfaceElement->GetWaterHeight() << 4);
 
     return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), x, y, z);
 }

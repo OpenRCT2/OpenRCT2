@@ -715,7 +715,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         {
             if (state == PEEP_STATE_WALKING || state == PEEP_STATE_SITTING)
             {
-                audio_play_sound_at_location(SoundId::Crash, x, y, z);
+                audio_play_sound_at_location(SoundId::Crash, { x, y, z });
 
                 sprite_misc_explosion_cloud_create(x, y, z + 16);
                 sprite_misc_explosion_flare_create(x, y, z + 16);
@@ -1831,7 +1831,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
         int32_t laughType = scenario_rand() & 7;
         if (laughType < 3)
         {
-            audio_play_sound_at_location(laughs[laughType], x, y, z);
+            audio_play_sound_at_location(laughs[laughType], { x, y, z });
         }
     }
 
@@ -2370,7 +2370,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount)
         }
     }
 
-    audio_play_sound_at_location(SoundId::Purchase, x, y, z);
+    audio_play_sound_at_location(SoundId::Purchase, { x, y, z });
 }
 
 void Guest::SetHasRidden(const Ride* ride)
@@ -2941,7 +2941,7 @@ static bool peep_really_liked_ride(Peep* peep, Ride* ride)
  */
 static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z)
 {
-    if ((tile_element_height(centre_x, centre_y)) > centre_z)
+    if ((tile_element_height({ centre_x, centre_y })) > centre_z)
         return PEEP_THOUGHT_TYPE_NONE;
 
     uint16_t num_scenery = 0;
@@ -5156,7 +5156,7 @@ void Guest::UpdateRideShopInteract()
     // Do not play toilet flush sound on title screen as it's considered loud and annoying
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        audio_play_sound_at_location(SoundId::ToiletFlush, x, y, z);
+        audio_play_sound_at_location(SoundId::ToiletFlush, { x, y, z });
     }
 
     sub_state = PEEP_SHOP_LEAVE;
@@ -5464,9 +5464,9 @@ void Guest::UpdateWalking()
 
     if (GetNextIsSurface())
     {
-        TileElement* tile_element = map_get_surface_element_at({ next_x, next_y });
+        auto surfaceElement = map_get_surface_element_at({ next_x, next_y });
 
-        int32_t water_height = tile_element->AsSurface()->GetWaterHeight();
+        int32_t water_height = surfaceElement->GetWaterHeight();
         if (water_height)
         {
             Invalidate();
@@ -6484,11 +6484,11 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
  */
 static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView)
 {
-    TileElement *tileElement, *surfaceElement;
+    TileElement* tileElement;
 
-    surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
+    auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
     {
         return false;
@@ -6527,7 +6527,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 
     surfaceElement = map_get_surface_element_at({ x, y });
 
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
     {
         return false;
@@ -6559,7 +6559,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop B
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6603,7 +6603,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop C
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6644,7 +6644,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     surfaceElement = map_get_surface_element_at({ x, y });
 
     // TODO: extract loop A
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
 
     if (tileElement == nullptr)
     {
@@ -6676,7 +6676,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop B
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6720,7 +6720,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop C
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6761,7 +6761,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     surfaceElement = map_get_surface_element_at({ x, y });
 
     // TODO: extract loop A
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
     {
         return false;
@@ -6792,7 +6792,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
     } while (!(tileElement++)->IsLastForTile());
 
     // TODO: Extract loop B
-    tileElement = surfaceElement;
+    tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -6932,7 +6932,7 @@ void Guest::UpdateSpriteType()
             if ((scenario_rand() & 0xFFFF) <= 13107)
             {
                 isBalloonPopped = true;
-                audio_play_sound_at_location(SoundId::BalloonPop, x, y, z);
+                audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
             }
             create_balloon(x, y, z + 9, balloon_colour, isBalloonPopped);
         }

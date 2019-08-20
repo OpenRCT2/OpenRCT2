@@ -666,12 +666,12 @@ void sprite_move(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
 void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
 {
     CoordsXYZ coords3d = { x, y, z };
-    CoordsXY newCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
+    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
 
-    sprite->generic.sprite_left = newCoords.x - sprite->generic.sprite_width;
-    sprite->generic.sprite_right = newCoords.x + sprite->generic.sprite_width;
-    sprite->generic.sprite_top = newCoords.y - sprite->generic.sprite_height_negative;
-    sprite->generic.sprite_bottom = newCoords.y + sprite->generic.sprite_height_positive;
+    sprite->generic.sprite_left = screenCoords.x - sprite->generic.sprite_width;
+    sprite->generic.sprite_right = screenCoords.x + sprite->generic.sprite_width;
+    sprite->generic.sprite_top = screenCoords.y - sprite->generic.sprite_height_negative;
+    sprite->generic.sprite_bottom = screenCoords.y + sprite->generic.sprite_height_positive;
     sprite->generic.x = x;
     sprite->generic.y = y;
     sprite->generic.z = z;
@@ -707,7 +707,7 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
 {
     TileElement* tileElement;
 
-    if (!map_is_location_owned(x & 0xFFE0, y & 0xFFE0, z))
+    if (!map_is_location_owned({ x, y, z }))
         return false;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);

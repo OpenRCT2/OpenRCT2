@@ -1355,15 +1355,15 @@ static void sub_6E1F34(
                     // If SHIFT pressed
                     if (gSceneryShiftPressed)
                     {
-                        TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                        auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                        if (tile_element == nullptr)
+                        if (surfaceElement == nullptr)
                         {
                             *grid_x = LOCATION_NULL;
                             return;
                         }
 
-                        int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                        int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                         z += gSceneryShiftPressZOffset;
 
                         z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1435,15 +1435,15 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (tile_element == nullptr)
+                    if (surfaceElement == nullptr)
                     {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1532,15 +1532,15 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (tile_element == nullptr)
+                    if (surfaceElement == nullptr)
                     {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1591,15 +1591,15 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (tile_element == nullptr)
+                    if (surfaceElement == nullptr)
                     {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1798,8 +1798,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                         if (result->Error == GA_ERROR::OK)
                         {
-                            audio_play_sound_at_location(
-                                SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
+                            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                         }
                     });
                     auto res = GameActions::Execute(&smallSceneryPlaceAction);
@@ -1828,7 +1827,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 {
                     return;
                 }
-                audio_play_sound_at_location(SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
+                audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
             });
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             break;
@@ -1875,8 +1874,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             wallPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(
-                        SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                 }
             });
             auto res = GameActions::Execute(&wallPlaceAction);
@@ -1926,12 +1924,11 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(
-                        SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                 }
                 else
                 {
-                    audio_play_sound_at_location(SoundId::Error, loc.x, loc.y, gSceneryPlaceZ);
+                    audio_play_sound_at_location(SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
                 }
             });
             auto res = GameActions::Execute(&sceneryPlaceAction);
@@ -1954,8 +1951,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(
-                        SoundId::PlaceItem, result->Position.x, result->Position.y, result->Position.z);
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                     context_open_detail_window(WD_BANNER, bannerIndex);
                 }
             });

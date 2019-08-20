@@ -859,7 +859,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     int16_t x = session->MapPosition.x, y = session->MapPosition.y;
 
-    TileElement* surface = map_get_surface_element_at({ session->MapPosition.x, session->MapPosition.y });
+    auto surface = map_get_surface_element_at({ session->MapPosition.x, session->MapPosition.y });
 
     uint16_t bl = height / 8;
     if (surface == nullptr)
@@ -876,14 +876,14 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         {
             // Diagonal path
 
-            if (surface->AsSurface()->GetSlope() != PathSlopeToLandSlope[tile_element->AsPath()->GetSlopeDirection()])
+            if (surface->GetSlope() != PathSlopeToLandSlope[tile_element->AsPath()->GetSlopeDirection()])
             {
                 hasSupports = true;
             }
         }
         else
         {
-            if (surface->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+            if (surface->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
             {
                 hasSupports = true;
             }

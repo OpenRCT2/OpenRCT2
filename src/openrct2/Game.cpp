@@ -638,27 +638,28 @@ void game_fix_save_vars()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            TileElement* tileElement = map_get_surface_element_at(x, y);
+            auto* surfaceElement = map_get_surface_element_at(x, y);
 
-            if (tileElement == nullptr)
+            if (surfaceElement == nullptr)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                tileElement = tile_element_insert(x, y, 14, 0);
+                auto tileElement = tile_element_insert({ x, y, 14 }, 0);
                 if (tileElement == nullptr)
                 {
                     log_error("Unable to fix: Map element limit reached.");
                     return;
                 }
+                surfaceElement = tileElement->AsSurface();
             }
 
             // Fix the invisible border tiles.
-            // At this point, we can be sure that tileElement is not NULL.
+            // At this point, we can be sure that surfaceElement is not NULL.
             if (x == 0 || x == gMapSize - 1 || y == 0 || y == gMapSize - 1)
             {
-                tileElement->base_height = 2;
-                tileElement->clearance_height = 2;
-                tileElement->AsSurface()->SetSlope(0);
-                tileElement->AsSurface()->SetWaterHeight(0);
+                surfaceElement->base_height = 2;
+                surfaceElement->clearance_height = 2;
+                surfaceElement->SetSlope(0);
+                surfaceElement->SetWaterHeight(0);
             }
         }
     }

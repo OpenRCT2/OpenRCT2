@@ -102,7 +102,7 @@ public:
         auto z = ride->stations[_stationNum].Height * 8;
         gCommandPosition.z = z;
 
-        if (!gCheatsSandboxMode && !map_is_location_owned(_loc.x, _loc.y, z))
+        if (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }
@@ -129,7 +129,7 @@ public:
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height(_loc.x, _loc.y);
+        res->Position.z = tile_element_height(_loc);
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         return res;
     }
@@ -189,10 +189,10 @@ public:
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height(_loc.x, _loc.y);
+        res->Position.z = tile_element_height(_loc);
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 
-        TileElement* tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, z / 8, 0b1111);
+        TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, z / 8 }, 0b1111);
         assert(tileElement != nullptr);
         tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
         tileElement->SetDirection(_direction);
@@ -245,7 +245,7 @@ public:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, errorTitle);
         }
 
-        if (!gCheatsSandboxMode && !map_is_location_owned(loc.x, loc.y, loc.z))
+        if (!gCheatsSandboxMode && !map_is_location_owned(loc))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }
@@ -272,7 +272,7 @@ public:
         auto res = MakeResult();
         res->Position.x = loc.x + 16;
         res->Position.y = loc.y + 16;
-        res->Position.z = tile_element_height(loc.x, loc.y);
+        res->Position.z = tile_element_height(loc);
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         return res;
     }

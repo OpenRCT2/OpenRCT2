@@ -107,12 +107,12 @@ void update_park_fences(const CoordsXY coords)
     if (map_is_edge(coords))
         return;
 
-    TileElement* surfaceElement = map_get_surface_element_at(coords);
+    auto surfaceElement = map_get_surface_element_at(coords);
     if (surfaceElement == nullptr)
         return;
 
     uint8_t newFences = 0;
-    if ((surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED) == 0)
+    if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) == 0)
     {
         bool fenceRequired = true;
 
@@ -162,12 +162,12 @@ void update_park_fences(const CoordsXY coords)
         }
     }
 
-    if (surfaceElement->AsSurface()->GetParkFences() != newFences)
+    if (surfaceElement->GetParkFences() != newFences)
     {
         int32_t z0 = surfaceElement->base_height * 8;
         int32_t z1 = z0 + 16;
         map_invalidate_tile(coords.x, coords.y, z0, z1);
-        surfaceElement->AsSurface()->SetParkFences(newFences);
+        surfaceElement->SetParkFences(newFences);
     }
 }
 

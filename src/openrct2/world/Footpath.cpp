@@ -292,7 +292,7 @@ void footpath_get_coordinates_from_pos(
     {
         if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH)
         {
-            z = tile_element_height(position.x, position.y);
+            z = tile_element_height({ position.x, position.y });
         }
         position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
         position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
@@ -1212,7 +1212,7 @@ void footpath_update_queue_chains()
  */
 static void footpath_fix_ownership(int32_t x, int32_t y)
 {
-    const TileElement* surfaceElement = map_get_surface_element_at({ x, y });
+    const auto* surfaceElement = map_get_surface_element_at({ x, y });
     uint16_t ownership;
 
     // Unlikely to be NULL unless deliberate.
@@ -1226,7 +1226,7 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         // If the tile is safe to own construction rights of, do not erase contruction rights.
         else
         {
-            ownership = surfaceElement->AsSurface()->GetOwnership();
+            ownership = surfaceElement->GetOwnership();
             // You can't own the entrance path.
             if (ownership == OWNERSHIP_OWNED || ownership == OWNERSHIP_AVAILABLE)
             {
@@ -1846,8 +1846,8 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
 
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
 {
-    auto pathElement = map_get_path_element_at(position.x, position.y, position.z);
-    return pathElement != nullptr && pathElement->AsPath()->IsBlockedByVehicle();
+    auto pathElement = map_get_path_element_at(position);
+    return pathElement != nullptr && pathElement->IsBlockedByVehicle();
 }
 
 /**
