@@ -2714,6 +2714,8 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         // Start of a new map load, clear the queue now as we have to buffer them
         // until the map is fully loaded.
         GameActions::ClearQueue();
+        _serverTickData.clear();
+        _clientMapLoaded = false;
     }
     if (size > chunk_buffer.size())
     {
@@ -2761,9 +2763,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         if (LoadMap(&ms))
         {
             game_load_init();
-            _serverTickData.clear();
             _serverState.tick = gCurrentTicks;
-            _serverTickData.clear();
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NETWORK_SERVER_STATE_OK;
             _clientMapLoaded = true;
