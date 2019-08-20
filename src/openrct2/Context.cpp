@@ -24,6 +24,7 @@
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "Version.h"
+#include "actions/GameAction.h"
 #include "audio/AudioContext.h"
 #include "audio/audio.h"
 #include "config/Config.h"
@@ -153,6 +154,7 @@ namespace OpenRCT2
                 _objectManager->UnloadAll();
             }
 
+            GameActions::ClearQueue();
             network_close();
             window_close_all();
             gfx_object_check_all_images_freed();

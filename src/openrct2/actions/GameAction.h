@@ -254,6 +254,12 @@ namespace GameActions
     void Initialize();
     void Register();
     bool IsValidId(uint32_t id);
+
+    void Enqueue(const GameAction* ga, uint32_t tick);
+    void Enqueue(GameAction::Ptr&& ga, uint32_t tick);
+    void ProcessQueue();
+    void ClearQueue();
+
     GameAction::Ptr Create(uint32_t id);
     GameAction::Ptr Clone(const GameAction* action);
 

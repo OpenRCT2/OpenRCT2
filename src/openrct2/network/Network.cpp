@@ -135,7 +135,6 @@ public:
     void ProcessPlayerInfo();
     void ProcessDisconnectedClients();
     void ProcessGameCommands();
-    void EnqueueGameAction(const GameAction* action);
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
     NetworkPlayer* GetPlayerByID(uint8_t id);
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
@@ -458,6 +457,7 @@ void Network::Close()
 
         client_connection_list.clear();
         game_command_queue.clear();
+        GameActions::ClearQueue();
         player_list.clear();
         group_list.clear();
         _serverTickData.clear();
@@ -2095,19 +2095,6 @@ void Network::ProcessGameCommands()
     }
 }
 
-void Network::EnqueueGameAction(const GameAction* action)
-{
-    std::unique_ptr<GameAction> ga = GameActions::Clone(action);
-    if (ga->GetPlayer() == -1 && GetMode() != NETWORK_MODE_NONE)
-    {
-        // Server can directly invoke actions and will have no player id assigned
-        // as that normally happens when receiving them over network.
-        ga->SetPlayer(network_get_current_player_id());
-    }
-
-    game_command_queue.emplace(gCurrentTicks, std::move(ga), _commandId++);
-}
-
 void Network::AddClient(std::unique_ptr<ITcpSocket>&& socket)
 {
     // Log connection info.
@@ -2722,6 +2709,12 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
     {
         return;
     }
+    if (offset == 0)
+    {
+        // Start of a new map load, clear the queue now as we have to buffer them
+        // until the map is fully loaded.
+        GameActions::ClearQueue();
+    }
     if (size > chunk_buffer.size())
     {
         chunk_buffer.resize(size);
@@ -2768,7 +2761,6 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         if (LoadMap(&ms))
         {
             game_load_init();
-            game_command_queue.clear();
             _serverTickData.clear();
             _serverState.tick = gCurrentTicks;
             _serverTickData.clear();
@@ -2955,12 +2947,11 @@ void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& conn
         if (itr != _gameActionCallbacks.end())
         {
             action->SetCallback(itr->second);
-
             _gameActionCallbacks.erase(itr);
         }
     }
 
-    game_command_queue.emplace(tick, std::move(action), _commandId++);
+    GameActions::Enqueue(std::move(action), tick);
 }
 
 void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
@@ -3029,7 +3020,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     // Set player to sender, should be 0 if sent from client.
     ga->SetPlayer(NetworkPlayerId_t{ connection.Player->Id });
 
-    game_command_queue.emplace(tick, std::move(ga), _commandId++);
+    GameActions::Enqueue(std::move(ga), tick);
 }
 
 void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
@@ -3830,11 +3821,6 @@ void network_send_game_action(const GameAction* action)
     }
 }
 
-void network_enqueue_game_action(const GameAction* action)
-{
-    gNetwork.EnqueueGameAction(action);
-}
-
 void network_send_password(const std::string& password)
 {
     utf8 keyPath[MAX_PATH];
@@ -3985,9 +3971,6 @@ bool network_check_desynchronisation()
     return false;
 }
 void network_request_gamestate_snapshot()
-{
-}
-void network_enqueue_game_action(const GameAction* action)
 {
 }
 void network_send_game_action(const GameAction* action)
