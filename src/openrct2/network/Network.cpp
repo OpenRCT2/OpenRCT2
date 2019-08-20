@@ -134,7 +134,6 @@ public:
     void ProcessPlayerList();
     void ProcessPlayerInfo();
     void ProcessDisconnectedClients();
-    void ProcessGameCommands();
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
     NetworkPlayer* GetPlayerByID(uint8_t id);
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
@@ -232,44 +231,6 @@ private:
     bool LoadMap(IStream* stream);
     bool SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
 
-    struct GameCommand
-    {
-        GameCommand(uint32_t t, uint32_t* args, uint8_t p, uint8_t cb, uint32_t id)
-        {
-            tick = t;
-            playerid = p;
-            action = nullptr;
-            commandIndex = id;
-        }
-
-        GameCommand(uint32_t t, std::unique_ptr<GameAction>&& ga, uint32_t id)
-        {
-            tick = t;
-            action = std::move(ga);
-            commandIndex = id;
-        }
-
-        ~GameCommand()
-        {
-        }
-
-        uint32_t tick = 0;
-        GameAction::Ptr action;
-        uint8_t playerid = 0;
-        uint32_t commandIndex = 0;
-        bool operator<(const GameCommand& comp) const
-        {
-            // First sort by tick
-            if (tick < comp.tick)
-                return true;
-            if (tick > comp.tick)
-                return false;
-
-            // If the ticks are equal sort by commandIndex
-            return commandIndex < comp.commandIndex;
-        }
-    };
-
     struct PlayerListUpdate
     {
         std::vector<NetworkPlayer> players;
@@ -301,7 +262,6 @@ private:
     uint32_t last_ping_sent_time = 0;
     uint8_t player_id = 0;
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
-    std::multiset<GameCommand> game_command_queue;
     std::vector<uint8_t> chunk_buffer;
     std::string _host;
     uint16_t _port = 0;
@@ -310,7 +270,6 @@ private:
     MemoryStream _serverGameState;
     uint32_t server_connect_time = 0;
     uint8_t default_group = 0;
-    uint32_t _commandId;
     uint32_t _actionId;
     uint32_t _lastUpdateTime = 0;
     uint32_t _currentDeltaTime = 0;
@@ -367,7 +326,6 @@ Network::Network()
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
     last_ping_sent_time = 0;
-    _commandId = 0;
     _actionId = 0;
     client_command_handlers.resize(NETWORK_COMMAND_MAX, nullptr);
     client_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Client_Handle_AUTH;
@@ -456,7 +414,6 @@ void Network::Close()
         CloseConnection();
 
         client_connection_list.clear();
-        game_command_queue.clear();
         GameActions::ClearQueue();
         player_list.clear();
         group_list.clear();
@@ -1917,7 +1874,6 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
 // This is called at the end of each game tick, this where things should be processed that affects the game state.
 void Network::ProcessPending()
 {
-    ProcessGameCommands();
     if (GetMode() == NETWORK_MODE_SERVER)
     {
         ProcessDisconnectedClients();
@@ -2035,63 +1991,6 @@ void Network::ProcessDisconnectedClients()
         {
             it++;
         }
-    }
-}
-
-void Network::ProcessGameCommands()
-{
-    while (game_command_queue.begin() != game_command_queue.end())
-    {
-        // run all the game commands at the current tick
-        const GameCommand& gc = (*game_command_queue.begin());
-
-        if (mode == NETWORK_MODE_CLIENT)
-        {
-            if (game_command_queue.begin()->tick < gCurrentTicks)
-            {
-                // Having old command from a tick where we have not been active yet or malicious server,
-                // the command is useless so lets not keep it.
-                log_warning(
-                    "Discarding game command from tick behind current tick, CMD: %08X, CMD Tick: %08X, Current Tick: %08X\n",
-                    gc.commandIndex, gc.tick, gCurrentTicks);
-
-                game_command_queue.erase(game_command_queue.begin());
-
-                // At this point we should not return, would add the possibility to skip commands this tick.
-                continue;
-            }
-
-            // exit the game command processing loop to still have a chance at finding desync.
-            if (game_command_queue.begin()->tick != gCurrentTicks)
-                break;
-        }
-
-        if (gc.action != nullptr)
-        {
-            // Remove ghost scenery so it doesn't interfere with incoming network command
-            switch (gc.action->GetType())
-            {
-                case GAME_COMMAND_PLACE_WALL:
-                case GAME_COMMAND_PLACE_LARGE_SCENERY:
-                case GAME_COMMAND_PLACE_BANNER:
-                case GAME_COMMAND_PLACE_SCENERY:
-                    scenery_remove_ghost_tool_placement();
-                    break;
-            }
-
-            GameAction* action = gc.action.get();
-            action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_NETWORKED);
-
-            Guard::Assert(action != nullptr);
-
-            GameActionResult::Ptr result = GameActions::Execute(action);
-            if (result->Error == GA_ERROR::OK)
-            {
-                Server_Send_GAME_ACTION(action);
-                Server_Send_PLAYERINFO(action->GetPlayer());
-            }
-        }
-        game_command_queue.erase(game_command_queue.begin());
     }
 }
 
