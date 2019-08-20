@@ -515,7 +515,7 @@ void Guest::UpdateEasterEggInteractions()
 
     if (peep_flags & PEEP_FLAGS_JOY)
     {
-        if (scenario_rand() <= 1456)
+        if (scenario_rand() <= 1456) // Mistake should be 0xFFFF
         {
             if (action == PEEP_ACTION_NONE_1 || action == PEEP_ACTION_NONE_2)
             {

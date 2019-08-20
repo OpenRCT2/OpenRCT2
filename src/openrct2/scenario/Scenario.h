@@ -25,6 +25,7 @@
 #include "../world/Sprite.h"
 
 using random_engine_t = Random::Rct2::Engine;
+using Probability16 = uint16_t;
 
 struct ParkLoadResult;
 
@@ -366,6 +367,44 @@ enum
 #define AUTOSAVE_PAUSE 0
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
+constexpr Probability16 GetProbability16(double value)
+{
+    return static_cast<Probability16>(value * 65535 / 100);
+}
+
+namespace Probability
+{
+    constexpr Probability16 _00_14_Percent = 0x005D; // 93
+    constexpr Probability16 _00_18_Percent = 0x0077; // 119
+    constexpr Probability16 _00_2_Percent = 0x0083;  // 131
+    constexpr Probability16 _00_5_Percent = 0x0147;  // 327
+    constexpr Probability16 _01_0_Percent = 0x028F;  // 655
+    constexpr Probability16 _01_4_Percent = 0x03A8;  // 936
+    constexpr Probability16 _02_0_Percent = 0x051E;  // 1310
+    constexpr Probability16 _02_2_Percent = 0x05B0;  // 1455
+    constexpr Probability16 _02_5_Percent = 0x0666;  // 1638
+    constexpr Probability16 _03_3_Percent = 0x0888;  // 2184
+    constexpr Probability16 _03_5_Percent = 0x0900;  // 2304
+    constexpr Probability16 _03_7_Percent = 0x097B;  // 2427
+    constexpr Probability16 _04_0_Percent = 0x0A3D;  // 2621
+    constexpr Probability16 _04_1_Percent = 0x0AAA;  // 2730
+    constexpr Probability16 _04_3_Percent = 0x0B21;  // 2849
+    constexpr Probability16 _05_0_Percent = 0x0CCC;  // 3276
+    constexpr Probability16 _06_2_Percent = 0x1000;  // 4096
+    constexpr Probability16 _06_6_Percent = 0x1111;  // 4369
+    constexpr Probability16 _08_3_Percent = 0x1555;  // 5461
+    constexpr Probability16 _10_0_Percent = 0x1999;  // 6553
+    constexpr Probability16 _11_1_Percent = 0x1C71;  // 7281
+    constexpr Probability16 _12_5_Percent = 0x2000;  // 8192
+    constexpr Probability16 _14_2_Percent = 0x2492;  // 9362
+    constexpr Probability16 _20_0_Percent = 0x3333;  // 13107
+    constexpr Probability16 _16_6_Percent = 0x2AAA;  // 10922
+    constexpr Probability16 _25_0_Percent = 0x4000;  // 16384
+    constexpr Probability16 _33_3_Percent = 0x5555;  // 21845
+    constexpr Probability16 _50_0_Percent = 0x8000;  // 32768
+    constexpr Probability16 _62_5_Percent = 0xA000;  // 40960
+};
+
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 extern uint32_t gScenarioTicks;
@@ -408,6 +447,7 @@ void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, c
 random_engine_t::result_type scenario_rand();
 #endif
 
+bool scenario_rand_probability16(Probability16 probability);
 uint32_t scenario_rand_max(uint32_t max);
 
 bool scenario_prepare_for_save();
