@@ -70,16 +70,11 @@ public:
         }
     }
 
-    void AddTask(std::function<void()> workFn, std::function<void()> completionFn)
+    void AddTask(std::function<void()> workFn, std::function<void()> completionFn = nullptr)
     {
         unique_lock lock(_mutex);
         _pending.emplace_back(workFn, completionFn);
         _condPending.notify_one();
-    }
-
-    void AddTask(std::function<void()> workFn)
-    {
-        return AddTask(workFn, nullptr);
     }
 
     void Join(std::function<void()> reportFn = nullptr)
