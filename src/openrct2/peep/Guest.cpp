@@ -439,7 +439,7 @@ void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 {
     passingPeep->tshirt_colour = COLOUR_BRIGHT_PURPLE;
     passingPeep->trousers_colour = COLOUR_BRIGHT_PURPLE;
-    invalidate_sprite_2((rct_sprite*)passingPeep);
+    passingPeep->Invalidate();
 }
 
 void Guest::GivePassingPeepsPizza(Guest* passingPeep)
@@ -455,15 +455,12 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
     {
         if (passingPeep->action == PEEP_ACTION_NONE_1 || passingPeep->action == PEEP_ACTION_NONE_2)
         {
-            Invalidate();
             passingPeep->action = PEEP_ACTION_WAVE_2;
             passingPeep->action_frame = 0;
             passingPeep->action_sprite_image_offset = 0;
             passingPeep->UpdateCurrentActionSpriteType();
-            invalidate_sprite_2((rct_sprite*)passingPeep);
         }
     }
-    invalidate_sprite_2((rct_sprite*)passingPeep);
 }
 
 void Guest::MakePassingPeepsSick(Guest* passingPeep)
@@ -479,7 +476,6 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
         passingPeep->action_frame = 0;
         passingPeep->action_sprite_image_offset = 0;
         passingPeep->UpdateCurrentActionSpriteType();
-        invalidate_sprite_2((rct_sprite*)passingPeep);
     }
 }
 
@@ -525,7 +521,6 @@ void Guest::UpdateEasterEggInteractions()
                 action_frame = 0;
                 action_sprite_image_offset = 0;
                 UpdateCurrentActionSpriteType();
-                Invalidate();
             }
         }
     }
@@ -1053,7 +1048,6 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     action_frame = 0;
                     action_sprite_image_offset = 0;
                     UpdateCurrentActionSpriteType();
-                    invalidate_sprite_2((rct_sprite*)this);
                 }
             }
         }
@@ -1236,11 +1230,9 @@ void Guest::UpdateSitting()
             z,
         };
 
-        Invalidate();
         MoveTo(loc.x, loc.y, loc.z);
 
         sprite_direction = ((var_37 + 2) & 3) * 8;
-        Invalidate();
         action = PEEP_ACTION_NONE_1;
         next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
         SwitchNextActionSpriteType();
@@ -1292,7 +1284,6 @@ void Guest::UpdateSitting()
             action_frame = 0;
             action_sprite_image_offset = 0;
             UpdateCurrentActionSpriteType();
-            Invalidate();
             return;
         }
 
@@ -1321,7 +1312,6 @@ void Guest::UpdateSitting()
         action_frame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
-        Invalidate();
         return;
     }
 }
@@ -2416,7 +2406,6 @@ void Guest::ReadMap()
         action_frame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
-        Invalidate();
     }
 }
 
@@ -3380,6 +3369,7 @@ void Guest::UpdateBuying()
         if (action != PEEP_ACTION_NONE_2)
         {
             UpdateAction();
+            Invalidate();
             return;
         }
 
@@ -3419,7 +3409,6 @@ void Guest::UpdateBuying()
                 action_sprite_image_offset = 0;
 
                 UpdateCurrentActionSpriteType();
-                Invalidate();
 
                 ride->no_primary_items_sold++;
             }
@@ -3486,8 +3475,6 @@ void Guest::UpdateRideAtEntrance()
     // this is the state it will return to.
     if (destination_tolerance != 0)
     {
-        Invalidate();
-
         int16_t xy_distance;
         if (auto loc = UpdateAction(xy_distance))
         {
@@ -3498,12 +3485,12 @@ void Guest::UpdateRideAtEntrance()
                 actionZ = entrance.z * 8 + 2;
             }
             MoveTo((*loc).x, (*loc).y, actionZ);
-            Invalidate();
         }
         else
         {
             destination_tolerance = 0;
             sprite_direction ^= (1 << 4);
+            Invalidate();
         }
     }
 
@@ -3703,8 +3690,6 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             sub_state = PEEP_RIDE_FREE_VEHICLE_CHECK;
         }
 
-        Invalidate();
-
         actionZ = ride->stations[current_ride_station].Height * 8;
 
         distanceThreshold += 4;
@@ -3714,7 +3699,6 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         }
 
         MoveTo((*loc).x, (*loc).y, actionZ);
-        Invalidate();
         return;
     }
 
@@ -3823,8 +3807,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
 {
     z += RideData5[ride->type].z;
 
-    sprite_move(x, y, z, (rct_sprite*)peep);
-    peep->Invalidate();
+    peep->MoveTo(x, y, z);
 
     Guard::Assert(peep->current_ride_station < MAX_STATIONS);
     auto exit = ride_get_exit_location(ride, peep->current_ride_station);
@@ -4058,9 +4041,7 @@ void Guest::UpdateRideApproachVehicle()
 {
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
     sub_state = PEEP_RIDE_ENTER_VEHICLE;
@@ -4098,9 +4079,7 @@ void Guest::UpdateRideEnterVehicle()
                     ride->cur_num_customers++;
 
                     vehicle->mass += seatedPeepAsGuest->mass;
-                    seatedPeepAsGuest->Invalidate();
-                    sprite_move(LOCATION_NULL, 0, 0, reinterpret_cast<rct_sprite*>(seatedPeepAsGuest));
-
+                    seatedPeepAsGuest->MoveTo(LOCATION_NULL, 0, 0);
                     seatedPeepAsGuest->SetState(PEEP_STATE_ON_RIDE);
                     seatedPeepAsGuest->time_on_ride = 0;
                     seatedPeepAsGuest->sub_state = PEEP_RIDE_ON_RIDE;
@@ -4114,7 +4093,6 @@ void Guest::UpdateRideEnterVehicle()
             vehicle->mass += mass;
             invalidate_sprite_2(reinterpret_cast<rct_sprite*>(vehicle));
 
-            Invalidate();
             MoveTo(LOCATION_NULL, 0, 0);
 
             SetState(PEEP_STATE_ON_RIDE);
@@ -4321,7 +4299,6 @@ void Guest::UpdateRideLeaveVehicle()
         exitWaypointLoc.z += 15;
 
     MoveTo(exitWaypointLoc.x, exitWaypointLoc.y, exitWaypointLoc.z);
-    Invalidate();
 
     waypointLoc.x += vehicleEntry->peep_loading_waypoints[var_37 / 4][1].x;
     waypointLoc.y += vehicleEntry->peep_loading_waypoints[var_37 / 4][1].y;
@@ -4387,9 +4364,7 @@ void Guest::UpdateRideApproachExit()
 {
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
 
@@ -4410,21 +4385,17 @@ void Guest::UpdateRideInExit()
 
     if (auto loc = UpdateAction(xy_distance))
     {
-        Invalidate();
-
         if (xy_distance >= 16)
         {
             int16_t actionZ = ride->stations[current_ride_station].Height * 8;
 
             actionZ += RideData5[ride->type].z;
             MoveTo((*loc).x, (*loc).y, actionZ);
-            Invalidate();
             return;
         }
 
         SwitchToSpecialSprite(0);
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
     }
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
@@ -4475,9 +4446,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         {
             actionZ = z;
         }
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, actionZ);
-        Invalidate();
         return;
     }
 
@@ -4549,9 +4518,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         {
             actionZ = z;
         }
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, actionZ);
-        Invalidate();
         return;
     }
 
@@ -4630,9 +4597,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
 
@@ -4761,7 +4726,6 @@ void Guest::UpdateRideOnSpiralSlide()
                 MoveTo(newX, newY, z);
 
                 sprite_direction = (var_37 & 0xC) * 2;
-                Invalidate();
 
                 var_37++;
                 return;
@@ -4773,11 +4737,10 @@ void Guest::UpdateRideOnSpiralSlide()
 
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
+
     uint8_t waypoint = 2;
     var_37 = (var_37 * 4 & 0x30) + waypoint;
 
@@ -4805,9 +4768,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
     // waypoint 0. Then it readies to leave the ride by the entrance.
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
 
@@ -4887,9 +4848,7 @@ void Guest::UpdateRideMazePathfinding()
 {
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
 
@@ -4911,7 +4870,6 @@ void Guest::UpdateRideMazePathfinding()
             action_frame = 0;
             action_sprite_image_offset = 0;
             UpdateCurrentActionSpriteType();
-            Invalidate();
         }
     }
 
@@ -5033,9 +4991,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
 }
@@ -5052,9 +5008,7 @@ void Guest::UpdateRideLeaveExit()
     {
         if (ride != nullptr)
         {
-            Invalidate();
             MoveTo((*loc).x, (*loc).y, ride->stations[current_ride_station].Height * 8);
-            Invalidate();
         }
         return;
     }
@@ -5093,7 +5047,6 @@ void Guest::UpdateRideLeaveExit()
             continue;
 
         MoveTo(x, y, height);
-        Invalidate();
         return;
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -5106,9 +5059,7 @@ void Guest::UpdateRideShopApproach()
 {
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
 
@@ -5178,9 +5129,7 @@ void Guest::UpdateRideShopLeave()
 {
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
 
         if ((x & 0xFFE0) != next_x)
             return;
@@ -5338,14 +5287,11 @@ void Guest::UpdateWalking()
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
-                Invalidate();
-
                 action = PEEP_ACTION_WAVE_2;
                 action_frame = 0;
                 action_sprite_image_offset = 0;
 
                 UpdateCurrentActionSpriteType();
-                Invalidate();
             }
         }
     }
@@ -5356,14 +5302,11 @@ void Guest::UpdateWalking()
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
-                Invalidate();
-
                 action = PEEP_ACTION_TAKE_PHOTO;
                 action_frame = 0;
                 action_sprite_image_offset = 0;
 
                 UpdateCurrentActionSpriteType();
-                Invalidate();
             }
         }
     }
@@ -5374,14 +5317,11 @@ void Guest::UpdateWalking()
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
-                Invalidate();
-
                 action = PEEP_ACTION_DRAW_PICTURE;
                 action_frame = 0;
                 action_sprite_image_offset = 0;
 
                 UpdateCurrentActionSpriteType();
-                Invalidate();
             }
         }
     }
@@ -5469,11 +5409,8 @@ void Guest::UpdateWalking()
         int32_t water_height = surfaceElement->GetWaterHeight();
         if (water_height)
         {
-            Invalidate();
             water_height *= 16;
             MoveTo(x, y, water_height);
-            Invalidate();
-
             SetState(PEEP_STATE_FALLING);
             return;
         }
@@ -5678,7 +5615,6 @@ void Guest::UpdateQueuing()
             action_frame = 0;
             action_sprite_image_offset = 0;
             UpdateCurrentActionSpriteType();
-            Invalidate();
         }
         if (time_in_queue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
         {
@@ -5719,7 +5655,6 @@ void Guest::UpdateQueuing()
                     action_frame = 0;
                     action_sprite_image_offset = 0;
                     UpdateCurrentActionSpriteType();
-                    Invalidate();
                     break;
                 default:
                     break;
@@ -5757,9 +5692,7 @@ void Guest::UpdateEnteringPark()
     }
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
     SetState(PEEP_STATE_FALLING);
@@ -5790,9 +5723,7 @@ void Guest::UpdateLeavingPark()
 
     if (auto loc = UpdateAction())
     {
-        Invalidate();
         MoveTo((*loc).x, (*loc).y, z);
-        Invalidate();
         return;
     }
 
@@ -5808,7 +5739,7 @@ void Guest::UpdateLeavingPark()
     PerformNextAction(pathingResult);
     if (!(pathingResult & PATHING_OUTSIDE_PARK))
         return;
-    peep_sprite_remove(this);
+    Remove();
 }
 
 /**
@@ -5830,7 +5761,6 @@ void Guest::UpdateWatching()
         destination_y = y;
 
         sprite_direction = (var_37 & 3) * 8;
-        Invalidate();
 
         action = PEEP_ACTION_NONE_1;
         next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
@@ -5848,7 +5778,7 @@ void Guest::UpdateWatching()
         {
             // 6917F6
             UpdateAction();
-
+            Invalidate();
             if (action != PEEP_ACTION_NONE_2)
                 return;
             action = PEEP_ACTION_NONE_1;
@@ -5863,7 +5793,6 @@ void Guest::UpdateWatching()
                     action_frame = 0;
                     action_sprite_image_offset = 0;
                     UpdateCurrentActionSpriteType();
-                    Invalidate();
                     return;
                 }
             }
@@ -5874,7 +5803,6 @@ void Guest::UpdateWatching()
                 action_frame = 0;
                 action_sprite_image_offset = 0;
                 UpdateCurrentActionSpriteType();
-                Invalidate();
                 return;
             }
 
@@ -5886,7 +5814,6 @@ void Guest::UpdateWatching()
                     action_frame = 0;
                     action_sprite_image_offset = 0;
                     UpdateCurrentActionSpriteType();
-                    Invalidate();
                     return;
                 }
             }
@@ -5936,6 +5863,7 @@ void Guest::UpdateUsingBin()
             if (action != PEEP_ACTION_NONE_2)
             {
                 UpdateAction();
+                Invalidate();
                 return;
             }
 
