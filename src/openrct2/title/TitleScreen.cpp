@@ -254,7 +254,7 @@ void TitleScreen::TitleInitialise()
             RCT1LLInstalled = true;
         }
        
-        int32_t random;
+        int32_t random = 0;
         bool safeSequence = false;
         //Ensure the random sequence chosen isn't from RCT1 or expansion if the player doesn't have it installed
         while (!safeSequence) {
