@@ -3705,7 +3705,7 @@ void ride_music_update_final()
                 rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
                 while (ride_music_params < gRideMusicParamsListEnd)
                 {
-                    if (ride_music_params->ride_id != (uint8_t)-1)
+                    if (ride_music_params->ride_id != RIDE_ID_NULL)
                     {
                         v8++;
                         if (v9 >= ride_music_params->volume)
@@ -3716,7 +3716,7 @@ void ride_music_update_final()
                     }
                     ride_music_params++;
                 }
-                if (v8 <= 2)
+                if (v8 <= AUDIO_MAX_RIDE_MUSIC)
                 {
                     break;
                 }

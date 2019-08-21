@@ -49,7 +49,7 @@ void* gTitleMusicChannel = nullptr;
 void* gRainSoundChannel = nullptr;
 
 rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-rct_ride_music_params gRideMusicParamsList[6];
+rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 rct_ride_music_params* gRideMusicParamsListEnd;
 
 rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];

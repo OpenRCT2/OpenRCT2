@@ -13,7 +13,7 @@
 #include "../ride/RideTypes.h"
 
 #define AUDIO_DEVICE_NAME_SIZE 256
-#define AUDIO_MAX_RIDE_MUSIC 2
+#define AUDIO_MAX_RIDE_MUSIC 32
 #define AUDIO_MAX_VEHICLE_SOUNDS 14
 #define NUM_DEFAULT_MUSIC_TRACKS 46
 #define AUDIO_PLAY_AT_CENTRE 0x8000
@@ -164,7 +164,7 @@ extern void* gRainSoundChannel;
 
 extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_info gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
-extern rct_ride_music_params gRideMusicParamsList[6];
+extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_params* gRideMusicParamsListEnd;
 
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
