@@ -881,6 +881,7 @@ void Peep::UpdateFalling()
     {
         // Check to see if we are ready to drown.
         UpdateAction();
+        Invalidate();
         if (action == PEEP_ACTION_DROWNING)
             return;
 

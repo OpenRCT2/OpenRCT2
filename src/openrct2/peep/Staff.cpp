@@ -1242,6 +1242,7 @@ void Staff::UpdateWatering()
         if (action != PEEP_ACTION_NONE_2)
         {
             UpdateAction();
+            Invalidate();
             return;
         }
 
@@ -1308,6 +1309,7 @@ void Staff::UpdateEmptyingBin()
         }
 
         UpdateAction();
+        Invalidate();
 
         if (action_frame != 11)
             return;
@@ -1531,6 +1533,7 @@ void Staff::UpdateAnswering()
             return;
         }
         UpdateAction();
+        Invalidate();
         return;
     }
     else if (sub_state <= 3)
@@ -2234,6 +2237,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
     }
 
     UpdateAction();
+    Invalidate();
 
     uint8_t actionFrame = (action == PEEP_ACTION_STAFF_FIX) ? 0x25 : 0x50;
     if (action_frame != actionFrame)
@@ -2275,6 +2279,8 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
     }
 
     UpdateAction();
+    Invalidate();
+
     if (action_frame != 0x65)
     {
         return false;
@@ -2384,6 +2390,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
     }
 
     UpdateAction();
+    Invalidate();
 
     return false;
 }
@@ -2530,6 +2537,8 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
     }
 
     UpdateAction();
+    Invalidate();
+
     if (action_frame == 0x28)
     {
         ride->mechanic_status = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
@@ -2625,6 +2634,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
     if (action != PEEP_ACTION_NONE_2)
     {
         UpdateAction();
+        Invalidate();
         return false;
     }
 

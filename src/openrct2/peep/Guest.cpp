@@ -3369,6 +3369,7 @@ void Guest::UpdateBuying()
         if (action != PEEP_ACTION_NONE_2)
         {
             UpdateAction();
+            Invalidate();
             return;
         }
 
@@ -5777,7 +5778,7 @@ void Guest::UpdateWatching()
         {
             // 6917F6
             UpdateAction();
-
+            Invalidate();
             if (action != PEEP_ACTION_NONE_2)
                 return;
             action = PEEP_ACTION_NONE_1;
@@ -5862,6 +5863,7 @@ void Guest::UpdateUsingBin()
             if (action != PEEP_ACTION_NONE_2)
             {
                 UpdateAction();
+                Invalidate();
                 return;
             }
 
