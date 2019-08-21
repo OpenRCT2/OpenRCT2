@@ -223,7 +223,6 @@ static void move_research_item(ResearchItem* beforeItem, int32_t scrollIndex)
                 gResearchItemsInvented.push_back(_editorInventionsListDraggedItem);
             }
         }
-
     }
     else if (scrollIndex == 1)
     {

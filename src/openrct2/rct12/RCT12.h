@@ -49,7 +49,6 @@ constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
 constexpr uint16_t const RCT12_MAX_GOLF_HOLES = 31;
 constexpr uint16_t const RCT12_MAX_HELICES = 31;
 
-<<<<<<< HEAD
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
@@ -57,14 +56,13 @@ enum class RCT12TrackDesignVersion : uint8_t
     TD6,
     unknown
 };
-=======
+
 // Everything before this point has been researched
 #define RCT12_RESEARCHED_ITEMS_SEPARATOR (-1)
 // Everything before this point and after separator still requires research
 #define RCT12_RESEARCHED_ITEMS_END (-2)
 // Extra end of list entry. Leftover from RCT1.
 #define RCT12_RESEARCHED_ITEMS_END_2 (-3)
->>>>>>> 04e9e626d... Split off RCT12ResearchItem
 
 #pragma pack(push, 1)
 
