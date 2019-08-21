@@ -10,13 +10,14 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
+#include "../sprites.h"
 #include "Drawing.h"
 
 #include <algorithm>
 #include <list>
 
-constexpr uint32_t BASE_IMAGE_ID = 29294;
-constexpr uint32_t MAX_IMAGES = 262144;
+constexpr uint32_t BASE_IMAGE_ID = SPR_IMAGE_LIST_BEGIN;
+constexpr uint32_t MAX_IMAGES = SPR_IMAGE_LIST_END - BASE_IMAGE_ID;
 constexpr uint32_t INVALID_IMAGE_ID = UINT32_MAX;
 
 struct ImageList
