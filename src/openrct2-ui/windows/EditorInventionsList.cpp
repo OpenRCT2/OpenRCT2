@@ -198,62 +198,30 @@ static void research_rides_setup()
  */
 static void move_research_item(ResearchItem* beforeItem, int32_t scrollIndex)
 {
-    research_remove(&_editorInventionsListDraggedItem);
-
-    if (scrollIndex == 0)
-    {
-        if (gResearchItemsInvented.empty())
-        {
-            gResearchItemsInvented.push_back(_editorInventionsListDraggedItem);
-        }
-        else
-        {
-            bool placed = false;
-            for (size_t i = 0; i < gResearchItemsInvented.size() && !placed; i++)
-            {
-                if (beforeItem == nullptr || gResearchItemsInvented[i].Equals(beforeItem))
-                {
-                    gResearchItemsInvented.insert((gResearchItemsInvented.begin() + i), _editorInventionsListDraggedItem);
-                    placed = true;
-                }
-            }
-            if (!placed)
-            {
-                // Still not found? Append to end of list.
-                gResearchItemsInvented.push_back(_editorInventionsListDraggedItem);
-            }
-        }
-    }
-    else if (scrollIndex == 1)
-    {
-        if (gResearchItemsUninvented.empty())
-        {
-            gResearchItemsUninvented.push_back(_editorInventionsListDraggedItem);
-        }
-        else
-        {
-            bool placed = false;
-            for (size_t i = 0; i < gResearchItemsUninvented.size() && !placed; i++)
-            {
-                if (beforeItem == nullptr || gResearchItemsUninvented[i].Equals(beforeItem))
-                {
-                    gResearchItemsUninvented.insert((gResearchItemsUninvented.begin() + i), _editorInventionsListDraggedItem);
-                    placed = true;
-                }
-            }
-            if (!placed)
-            {
-                gResearchItemsInvented.push_back(_editorInventionsListDraggedItem);
-            }
-        }
-    }
-
-    rct_window* w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
+    auto w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
     if (w != nullptr)
     {
         w->research_item = nullptr;
         w->Invalidate();
     }
+
+    research_remove(&_editorInventionsListDraggedItem);
+
+    auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
+    if (beforeItem != nullptr)
+    {
+        for (size_t i = 0; i < researchList.size(); i++)
+        {
+            if (researchList[i].Equals(beforeItem))
+            {
+                researchList.insert((researchList.begin() + i), _editorInventionsListDraggedItem);
+                return;
+            }
+        }
+    }
+
+    // Still not found? Append to end of list.
+    researchList.push_back(_editorInventionsListDraggedItem);
 }
 
 /**
@@ -290,8 +258,7 @@ static ResearchItem* window_editor_inventions_list_get_item_from_scroll_y_includ
             return &researchItem;
         }
     }
-
-    return &researchList.back();
+    return nullptr;
 }
 
 static ResearchItem* get_research_item_at(int32_t x, int32_t y, int32_t* outScrollId)
@@ -316,6 +283,7 @@ static ResearchItem* get_research_item_at(int32_t x, int32_t y, int32_t* outScro
         }
     }
 
+    *outScrollId = -1;
     return nullptr;
 }
 
@@ -827,7 +795,7 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, int32_t x, i
         y += LIST_ROW_HEIGHT;
     } while (researchItem != nullptr && research_item_is_always_researched(researchItem));
 
-    if (researchItem != nullptr)
+    if (scrollId != -1)
     {
         move_research_item(researchItem, scrollId);
     }
