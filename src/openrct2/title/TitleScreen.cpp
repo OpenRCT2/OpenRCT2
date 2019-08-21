@@ -27,6 +27,7 @@
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../ui/UiContext.h"
+#include "../util/Util.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
@@ -225,10 +226,66 @@ void TitleScreen::TitleInitialise()
     {
         _sequencePlayer = GetContext()->GetUiContext()->GetTitleSequencePlayer();
     }
-    if (gConfigInterface.random_title_sequence) {
-        int total = TitleSequenceManager::GetCount();
-        int random = rand() % total --;
-        const utf8* randomSequence = title_sequence_manager_get_name(random);
+    if (gConfigInterface.random_title_sequence)
+    {
+        
+        bool RCT1Installed = false, RCT1AAInstalled = false, RCT1LLInstalled = false;
+        int RCT1Count = 0, RCT1AACount = 0, RCT1LLCount = 0;
+        size_t scenarioCount = scenario_repository_get_count();
+        for (size_t s = 0; s < scenarioCount; s++ ) {
+            if (scenario_repository_get_by_index(s)->source_game == SCENARIO_SOURCE_RCT1) {
+                RCT1Count++;
+            }
+            if (scenario_repository_get_by_index(s)->source_game == SCENARIO_SOURCE_RCT1_AA) {
+                RCT1AACount++;
+            }
+            if (scenario_repository_get_by_index(s)->source_game == SCENARIO_SOURCE_RCT1_LL) {
+                RCT1LLCount++;
+            }
+        }
+        //Mega Park can show up in the scenario list even if RCT1 has been uninstalled, so it must be greater than 1
+        if (RCT1Count > 1) {
+            RCT1Installed = true;
+        }
+        if (RCT1AACount > 0) {
+            RCT1AAInstalled = true;
+        }
+        if (RCT1LLCount > 0) {
+            RCT1LLInstalled = true;
+        }
+       
+        int32_t random;
+        bool safeSequence = false;
+        //Ensure the random sequence chosen isn't from RCT1 or expansion if the player doesn't have it installed
+        while (!safeSequence) {
+            size_t total = TitleSequenceManager::GetCount();
+            random = 0;
+            random = util_rand() % (int32_t)total--;
+            const utf8* scName = title_sequence_manager_get_name(random);
+            std::string RCT1String = format_string(STR_TITLE_SEQUENCE_RCT1, gCommonFormatArgs);
+            std::string RCT1AAString = format_string(STR_TITLE_SEQUENCE_RCT1_AA, gCommonFormatArgs);
+            std::string RCT1LLString = format_string(STR_TITLE_SEQUENCE_RCT1_AA_LL, gCommonFormatArgs);
+            safeSequence = true;
+            if (scName == RCT1String) {
+                if (RCT1Installed) {
+                    safeSequence = true;
+                } else {
+                    safeSequence = false;
+                }
+            } if (scName == RCT1AAString) {
+                if (RCT1AAInstalled) {
+                    safeSequence = true;
+                } else {
+                    safeSequence = false;
+                }
+            } if (scName == RCT1LLString) {
+                if (RCT1LLInstalled) {
+                    safeSequence = true;
+                } else {
+                    safeSequence = false;
+                }
+            }
+        }
         ChangePresetSequence(random);
         
     }
