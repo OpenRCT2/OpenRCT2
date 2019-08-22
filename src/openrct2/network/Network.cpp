@@ -149,10 +149,6 @@ public:
     NetworkPlayer* GetPlayerByID(NetworkPlayerId_t id);
 
     NetworkGroups& GetGroups();
-
-    std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
-    NetworkGroup* GetGroupByID(NetworkGroupId id);
-    NetworkGroup* AddGroup();
     void RemoveGroup(NetworkGroupId id);
     NetworkGroupId GetDefaultGroup();
     NetworkGroupId GetGroupIDByHash(const std::string& keyhash);
@@ -880,11 +876,6 @@ NetworkGroups& Network::GetGroups()
     return _groups;
 }
 
-NetworkGroup* Network::GetGroupByID(NetworkGroupId id)
-{
-    return _groups.GetById(id);
-}
-
 const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 {
     static char formatted[1024];
@@ -1104,14 +1095,15 @@ NetworkGroupId Network::GetGroupIDByHash(const std::string& keyhash)
 
 NetworkGroupId Network::GetDefaultGroup()
 {
-    return 0;
+    return _groups.GetDefault()->Id;
 }
 
 void Network::SetDefaultGroup(NetworkGroupId id)
 {
-    if (GetGroupByID(id))
+    NetworkGroup* group = _groups.GetById(id);
+    if (group)
     {
-        // default_group = id;
+        _groups.SetDefault(group);
     }
 }
 
@@ -2445,7 +2437,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
         bool passwordless = false;
         if (connection.AuthStatus == NETWORK_AUTH_VERIFIED)
         {
-            const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
+            const NetworkGroup* group = _groups.GetById(GetGroupIDByHash(connection.Key.PublicKeyHash()));
             passwordless = group->CanPerformCommand(MISC_COMMAND_PASSWORDLESS_LOGIN);
         }
         if (!gameversion || network_get_version() != gameversion)
@@ -2695,7 +2687,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
 {
     if (connection.Player)
     {
-        NetworkGroup* group = GetGroupByID(connection.Player->Group);
+        NetworkGroup* group = _groups.GetById(connection.Player->Group);
         if (!group || !group->CanPerformCommand(MISC_COMMAND_CHAT))
         {
             return;
@@ -2766,7 +2758,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     }
 
     // Check if player's group permission allows command to run
-    NetworkGroup* group = GetGroupByID(connection.Player->Group);
+    NetworkGroup* group = _groups.GetById(connection.Player->Group);
     if (group == nullptr || group->CanPerformCommand(actionType) == false)
     {
         Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
@@ -3250,15 +3242,16 @@ void network_chat_show_server_greeting()
 GameActionResult::Ptr network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
+    NetworkGroups& groups = gNetwork.GetGroups();
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
 
-    NetworkGroup* fromgroup = gNetwork.GetGroupByID(actionPlayerId);
+    NetworkGroup* fromGroup = groups.GetById(player->Group);
     if (player == nullptr)
     {
         return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
     }
 
-    if (!gNetwork.GetGroupByID(groupId))
+    if (!groups.GetById(groupId))
     {
         return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
     }
@@ -3268,7 +3261,7 @@ GameActionResult::Ptr network_set_player_group(
         return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
     }
 
-    if (groupId == 0 && fromgroup && fromgroup->Id != 0)
+    if (groupId == 0 && fromGroup && fromGroup->Id != 0)
     {
         return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_SET_TO_THIS_GROUP);
     }
@@ -3291,7 +3284,7 @@ GameActionResult::Ptr network_set_player_group(
 
         // Log set player group event
         NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(actionPlayerId);
-        NetworkGroup* new_player_group = gNetwork.GetGroupByID(groupId);
+        NetworkGroup* new_player_group = groups.GetById(groupId);
         char log_msg[256];
         const char* args[3] = {
             player->Name.c_str(),
@@ -3308,7 +3301,7 @@ GameActionResult::Ptr network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting)
 {
-    auto& groups = gNetwork.GetGroups();
+    NetworkGroups& groups = gNetwork.GetGroups();
 
     switch (type)
     {
@@ -3355,7 +3348,7 @@ GameActionResult::Ptr network_modify_groups(
             NetworkPlayer* player = gNetwork.GetPlayerByID(actionPlayerId);
             if (player != nullptr && permissionState == PermissionState::Toggle)
             {
-                myGroup = gNetwork.GetGroupByID(player->Group);
+                myGroup = groups.GetById(player->Group);
                 if (myGroup == nullptr || !myGroup->CanPerformAction(permissionIndex))
                 {
                     return std::make_unique<GameActionResult>(
@@ -3364,7 +3357,7 @@ GameActionResult::Ptr network_modify_groups(
             }
             if (isExecuting)
             {
-                NetworkGroup* group = gNetwork.GetGroupByID(groupId);
+                NetworkGroup* group = groups.GetById(groupId);
                 if (group != nullptr)
                 {
                     if (permissionState != PermissionState::Toggle)
