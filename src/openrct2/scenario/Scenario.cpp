@@ -748,10 +748,10 @@ static void scenario_objective_check_park_value_by()
 static void scenario_objective_check_10_rollercoasters()
 {
     auto rcs = 0;
-    std::bitset<RIDE_TYPE_COUNT> type_already_counted;
+    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype < RIDE_TYPE_COUNT)
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
@@ -842,11 +842,11 @@ static void scenario_objective_check_monthly_ride_income()
 static void scenario_objective_check_10_rollercoasters_length()
 {
     const auto objective_length = gScenarioObjectiveNumGuests;
-    std::bitset<RIDE_TYPE_COUNT> type_already_counted;
+    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype < RIDE_TYPE_COUNT)
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
