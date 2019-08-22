@@ -2670,6 +2670,7 @@ static void window_ride_main_invalidate(rct_window* w)
     else
     {
         window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_DROPDOWN;
+        window_ride_main_widgets[WIDX_RIDE_TYPE].text = RideNaming[ride->type].name;
         window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WWT_BUTTON;
     }
 
