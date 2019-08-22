@@ -184,6 +184,12 @@ void NetworkGroups::Serialise(DataSerialiser& ds)
 
 void NetworkGroups::CreateDefaultGroups()
 {
+    // Host group
+    {
+        NetworkGroup* group = Create("Host");
+        group->ActionsAllowed.fill(0xFF);
+    }
+
     // Admin group
     {
         NetworkGroup* group = Create("Admin");
