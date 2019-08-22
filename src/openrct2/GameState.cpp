@@ -16,6 +16,7 @@
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ReplayManager.h"
+#include "actions/GameAction.h"
 #include "config/Config.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
@@ -150,6 +151,8 @@ void GameState::Update()
 
             // Special case because we set numUpdates to 0, otherwise in game_logic_update.
             network_process_pending();
+
+            GameActions::ProcessQueue();
         }
     }
 
@@ -298,10 +301,9 @@ void GameState::UpdateLogic()
         gLastAutoSaveUpdate = Platform::GetTicks();
     }
 
-    // Separated out processing commands in network_update which could call scenario_rand where gInUpdateCode is false.
-    // All commands that are received are first queued and then executed where gInUpdateCode is set to true.
-    network_process_pending();
+    GameActions::ProcessQueue();
 
+    network_process_pending();
     network_flush();
 
     gCurrentTicks++;

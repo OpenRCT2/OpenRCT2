@@ -705,6 +705,7 @@ void game_load_init()
 
     if (network_get_mode() != NETWORK_MODE_CLIENT)
     {
+        GameActions::ClearQueue();
         reset_sprite_spatial_index();
     }
     reset_all_sprite_quadrant_placements();
