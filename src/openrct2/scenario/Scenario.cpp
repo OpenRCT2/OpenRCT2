@@ -608,25 +608,6 @@ bool scenario_prepare_for_save()
  */
 void scenario_fix_ghosts(rct_s6_data* s6)
 {
-    // Build tile pointer cache (needed to get the first element at a certain location)
-    RCT12TileElement* tilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
-    for (size_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
-    {
-        tilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
-    }
-
-    RCT12TileElement* tileElement = s6->tile_elements;
-    RCT12TileElement** tile = tilePointers;
-    for (size_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
-    {
-        for (size_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
-        {
-            *tile++ = tileElement;
-            while (!(tileElement++)->IsLastForTile())
-                ;
-        }
-    }
-
     // Remove all ghost elements
     RCT12TileElement* destinationElement = s6->tile_elements;
 
@@ -634,8 +615,7 @@ void scenario_fix_ghosts(rct_s6_data* s6)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            // This is the equivalent of map_get_first_element_at(x, y), but on S6 data.
-            RCT12TileElement* originalElement = tilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
+            RCT12TileElement* originalElement = reinterpret_cast<RCT12TileElement*>(map_get_first_element_at(x, y));
             do
             {
                 if (originalElement->IsGhost())
