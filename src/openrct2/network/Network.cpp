@@ -146,7 +146,7 @@ public:
     void ServerClientDisconnected();
 
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
-    NetworkPlayer* GetPlayerByID(NetworkGroupId id);
+    NetworkPlayer* GetPlayerByID(NetworkPlayerId_t id);
 
     NetworkGroups& GetGroups();
 
@@ -865,7 +865,7 @@ std::vector<std::unique_ptr<NetworkPlayer>>::iterator Network::GetPlayerIterator
     return player_list.end();
 }
 
-NetworkPlayer* Network::GetPlayerByID(NetworkGroupId id)
+NetworkPlayer* Network::GetPlayerByID(NetworkPlayerId_t id)
 {
     auto it = GetPlayerIteratorByID(id);
     if (it != player_list.end())
@@ -3199,7 +3199,7 @@ int32_t network_get_group_index(uint8_t id)
 
 uint8_t network_get_group_id(uint32_t index)
 {
-    // return gNetwork.group_list[index]->Id;
+    return 0;
 }
 
 int32_t network_get_num_groups()

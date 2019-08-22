@@ -11,12 +11,11 @@
 
 #include "../common.h"
 #include "NetworkPacket.h"
+#include "NetworkTypes.h"
 
 #include <array>
 #include <jansson.h>
 #include <string>
-
-using NetworkGroupId = int32_t;
 
 class NetworkGroup final
 {

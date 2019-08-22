@@ -117,6 +117,8 @@ using NetworkPlayerId_t = NetworkObjectId_t<int32_t, 0>;
 using NetworkRideId_t = NetworkObjectId_t<ride_id_t, 1>;
 using NetworkCheatType_t = NetworkObjectId_t<int32_t, 2>;
 
+using NetworkGroupId = int32_t;
+
 enum NetworkStatisticsGroup
 {
     NETWORK_STATISTICS_GROUP_TOTAL = 0, // Entire network traffic.
