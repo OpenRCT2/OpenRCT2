@@ -125,6 +125,16 @@ static void research_invalidate_related_windows()
     window_invalidate_by_class(WC_RESEARCH);
 }
 
+static void research_mark_as_fully_completed()
+{
+    gResearchProgress = 0;
+    gResearchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
+    research_invalidate_related_windows();
+    // Reset funding to 0 if no more rides.
+    auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, 0);
+    GameActions::Execute(&gameAction);
+}
+
 /**
  *
  *  rct2: 0x00684BE5
@@ -133,6 +143,7 @@ static void research_next_design()
 {
     if (gResearchItemsUninvented.empty())
     {
+        research_mark_as_fully_completed();
         return;
     }
 
@@ -153,12 +164,7 @@ static void research_next_design()
             }
             else
             {
-                gResearchProgress = 0;
-                gResearchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
-                research_invalidate_related_windows();
-                // Reset funding to 0 if no more rides.
-                auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, 0);
-                GameActions::Execute(&gameAction);
+                research_mark_as_fully_completed();
                 return;
             }
         }
