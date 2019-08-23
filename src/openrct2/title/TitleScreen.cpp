@@ -256,15 +256,14 @@ void TitleScreen::TitleInitialise()
        
         int32_t random = 0;
         bool safeSequence = false;
+        std::string RCT1String = format_string(STR_TITLE_SEQUENCE_RCT1, gCommonFormatArgs);
+        std::string RCT1AAString = format_string(STR_TITLE_SEQUENCE_RCT1_AA, gCommonFormatArgs);
+        std::string RCT1LLString = format_string(STR_TITLE_SEQUENCE_RCT1_AA_LL, gCommonFormatArgs);
         //Ensure the random sequence chosen isn't from RCT1 or expansion if the player doesn't have it installed
         while (!safeSequence) {
             size_t total = TitleSequenceManager::GetCount();
-            random = 0;
-            random = util_rand() % (int32_t)total--;
+            random = util_rand() % (int32_t)total;
             const utf8* scName = title_sequence_manager_get_name(random);
-            std::string RCT1String = format_string(STR_TITLE_SEQUENCE_RCT1, gCommonFormatArgs);
-            std::string RCT1AAString = format_string(STR_TITLE_SEQUENCE_RCT1_AA, gCommonFormatArgs);
-            std::string RCT1LLString = format_string(STR_TITLE_SEQUENCE_RCT1_AA_LL, gCommonFormatArgs);
             safeSequence = true;
             if (scName == RCT1String) {
                 if (RCT1Installed) {
