@@ -149,14 +149,17 @@ namespace OpenRCT2
             // NOTE: We must shutdown all systems here before Instance is set back to null.
             //       If objects use GetContext() in their destructor things won't go well.
 
-            if (_objectManager)
+            GameActions::ClearQueue();
+            network_close();
+            window_close_all();
+
+            // Unload objects after closing all windows, this is to overcome windows like
+            // the object selection window which loads objects when closed.
+            if (_objectManager != nullptr)
             {
                 _objectManager->UnloadAll();
             }
 
-            GameActions::ClearQueue();
-            network_close();
-            window_close_all();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
             gfx_unload_g1();
