@@ -911,6 +911,12 @@ public:
         {
             _s6.peep_spawns[0].y = 1296;
         }
+        // #9926: Africa - Oasis has peeps spawning on the edge underground near the entrance
+        else if (String::Equals(_s6.scenario_filename, "Africa - Oasis.SC6"))
+        {
+            _s6.peep_spawns[0].y = 2128;
+            _s6.peep_spawns[0].z = 7;
+        }
 
         gPeepSpawns.clear();
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
