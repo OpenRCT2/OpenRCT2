@@ -132,6 +132,10 @@ namespace GameActions
                         "%08X\n",
                         queued.uniqueId, queued.tick, currentTick);
                 }
+                else if (queued.tick > currentTick)
+                {
+                    return;
+                }
             }
 
             // Remove ghost scenery so it doesn't interfere with incoming network command
@@ -293,7 +297,9 @@ namespace GameActions
         MemoryStream& output = ctx.output;
 
         char temp[128] = {};
-        snprintf(temp, sizeof(temp), "[%s] GA: %s (%08X) (", GetRealm(), action->GetName(), action->GetType());
+        snprintf(
+            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), gCurrentTicks, action->GetName(),
+            action->GetType());
 
         output.Write(temp, strlen(temp));
 
