@@ -2496,7 +2496,7 @@ private:
                 uint8_t researchItem = src->Assoc & 0x000000FF;
                 uint8_t researchType = (src->Assoc & 0x00FF0000) >> 16;
 
-                rct_research_item tmpResearchItem = {};
+                ResearchItem tmpResearchItem = {};
                 ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
                 dst->Assoc = (uint32_t)tmpResearchItem.rawValue;
             }
@@ -2540,7 +2540,7 @@ private:
         gTotalRideValueForMoney = _s4.total_ride_value_for_money;
     }
 
-    void ConvertResearchEntry(rct_research_item* dst, uint8_t srcItem, uint8_t srcType)
+    void ConvertResearchEntry(ResearchItem* dst, uint8_t srcItem, uint8_t srcType)
     {
         dst->rawValue = RESEARCHED_ITEMS_SEPARATOR;
         if (srcType == RCT1_RESEARCH_TYPE_RIDE)

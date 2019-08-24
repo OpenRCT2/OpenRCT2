@@ -14,7 +14,7 @@
 #include <list>
 #include <memory>
 
-struct rct_research_item;
+struct ResearchItem;
 struct rct_object_entry;
 
 /**
@@ -79,7 +79,7 @@ struct rct_window
     { // 0x494
         uint32_t highlighted_item;
         uint16_t ride_colour;
-        rct_research_item* research_item;
+        ResearchItem* research_item;
         rct_object_entry* object_entry;
         const scenario_index_entry* highlighted_scenario;
         struct
