@@ -289,26 +289,52 @@ static CoordsXY GetEdgeTile(int32_t mapSize, int32_t rotation, EdgeType edgeType
     }
 }
 
+static int32_t GetHighestBaseClearanceZ(CoordsXY location)
+{
+    int32_t z = 0;
+    auto element = map_get_first_element_at(location.x >> 5, location.y >> 5);
+    if (element != nullptr)
+    {
+        do
+        {
+            z = std::max<int32_t>(z, element->base_height);
+            z = std::max<int32_t>(z, element->clearance_height);
+        } while (!(element++)->IsLastForTile());
+    }
+    return z * 8;
+}
+
+static int32_t GetTallestVisibleTileTop(int32_t mapSize, int32_t rotation)
+{
+    int32_t minViewY = 0;
+    for (int32_t y = 1; y < mapSize - 1; y++)
+    {
+        for (int32_t x = 1; x < mapSize - 1; x++)
+        {
+            auto location = CoordsXY(x * 32, y * 32);
+            int32_t z = GetHighestBaseClearanceZ(location);
+            int32_t viewY = translate_3d_to_2d_with_z(rotation, CoordsXYZ(location, z)).y;
+            minViewY = std::min(minViewY, viewY);
+        }
+    }
+    return minViewY - 256;
+}
+
 static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, int32_t zoom)
 {
     // Get the tile coordinates of each corner
     auto leftTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::LEFT, false);
-    auto topTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::TOP, true);
     auto rightTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::RIGHT, false);
     auto bottomTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::BOTTOM, false);
 
     // Centre the coordinates so we don't have a hard crop at the edge of the visible tile
     leftTileCoords += CoordsXY(16, 16);
-    topTileCoords += CoordsXY(16, 16);
     rightTileCoords += CoordsXY(16, 16);
     bottomTileCoords += CoordsXY(16, 16);
 
-    // For the top tile we want to add a certain amount to account for any tall elements
-    auto topTileHeight = tile_element_height(topTileCoords) + 128;
-
     // Calculate the viewport bounds
     int32_t left = translate_3d_to_2d_with_z(rotation, CoordsXYZ(leftTileCoords, 0)).x;
-    int32_t top = translate_3d_to_2d_with_z(rotation, CoordsXYZ(topTileCoords, topTileHeight)).y;
+    int32_t top = GetTallestVisibleTileTop(mapSize, rotation);
     int32_t right = translate_3d_to_2d_with_z(rotation, CoordsXYZ(rightTileCoords, 0)).x;
     int32_t bottom = translate_3d_to_2d_with_z(rotation, CoordsXYZ(bottomTileCoords, 0)).y;
 
