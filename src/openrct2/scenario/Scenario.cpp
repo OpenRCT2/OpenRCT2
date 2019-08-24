@@ -422,21 +422,21 @@ void scenario_update()
  */
 static int32_t scenario_create_ducks()
 {
-    CoordsXY centerPos;
-    centerPos.x = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
-    centerPos.y = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
+    CoordsXY centrePos;
+    centrePos.x = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
+    centrePos.y = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
 
-    Guard::Assert(map_is_location_valid(centerPos));
+    Guard::Assert(map_is_location_valid(centrePos));
 
-    if (!map_is_location_in_park(centerPos))
+    if (!map_is_location_in_park(centrePos))
         return 0;
 
-    int32_t centreWaterZ = (tile_element_water_height(centerPos));
+    int32_t centreWaterZ = (tile_element_water_height(centrePos));
     if (centreWaterZ == 0)
         return 0;
 
     // Check 7x7 area around centre tile
-    CoordsXY innerPos{ centerPos.x - (32 * 3), centerPos.y - (32 * 3) };
+    CoordsXY innerPos{ centrePos.x - (32 * 3), centrePos.y - (32 * 3) };
     int32_t waterTiles = 0;
     for (int32_t y = 0; y < 7; y++)
     {
@@ -463,8 +463,8 @@ static int32_t scenario_create_ducks()
         return 0;
 
     // Set x, y to the centre of the tile
-    centerPos.x += 16;
-    centerPos.y += 16;
+    centrePos.x += 16;
+    centrePos.y += 16;
 
     int32_t duckCount = (scenario_rand() & 3) + 2;
     for (int32_t i = 0; i < duckCount; i++)
@@ -473,9 +473,9 @@ static int32_t scenario_create_ducks()
         innerPos.x = (r >> 16) & 0x7F;
         innerPos.y = (r & 0xFFFF) & 0x7F;
 
-        CoordsXY targetPos{ centerPos.x + innerPos.x - 64, centerPos.y + innerPos.y - 64 };
+        CoordsXY targetPos{ centrePos.x + innerPos.x - 64, centrePos.y + innerPos.y - 64 };
         Guard::Assert(map_is_location_valid(targetPos));
-        create_duck(targetPos.x, targetPos.y);
+        create_duck(targetPos);
     }
 
     return 1;
