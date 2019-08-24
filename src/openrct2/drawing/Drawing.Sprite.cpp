@@ -508,12 +508,9 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
     }
 }
 
-uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId, uint32_t tertiary_colour)
+uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
 {
-    if (!imageId.HasPrimary() && !imageId.HasSecondary() && !imageId.IsBlended())
-        return nullptr;
-
-    if (!imageId.HasSecondary())
+    if (imageId.IsRemap())
     {
         uint8_t palette_ref = imageId.GetRemap();
         if (!imageId.IsBlended())
@@ -532,20 +529,20 @@ uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId, uint32_t tertiary
             return g1->offset;
         }
     }
-    else
+    else if (imageId.HasSecondary())
     {
         uint8_t* palette_pointer = gPeepPalette;
 
         uint32_t primary_offset = palette_to_g1_offset[imageId.GetPrimary()];
         uint32_t secondary_offset = palette_to_g1_offset[imageId.GetSecondary()];
 
-        if (!imageId.HasPrimary())
+        if (imageId.HasTertiary())
         {
             palette_pointer = gOtherPalette;
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             assert(tertiary_colour < PALETTE_TO_G1_OFFSET_COUNT);
 #endif // DEBUG_LEVEL_2
-            uint32_t tertiary_offset = palette_to_g1_offset[tertiary_colour];
+            uint32_t tertiary_offset = palette_to_g1_offset[imageId.GetTertiary()];
             auto tertiary_palette = gfx_get_g1_element(tertiary_offset);
             if (tertiary_palette != nullptr)
             {
@@ -565,35 +562,18 @@ uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId, uint32_t tertiary
 
         return palette_pointer;
     }
+    else
+    {
+        return nullptr;
+    }
 }
 
-/**
- *
- *  rct2: 0x0067A28E
- * image_id (ebx)
- * image_id as below
- * 0b_111X_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX image_type
- * 0b_XXX1_11XX_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX image_sub_type (unknown pointer)
- * 0b_XXX1_1111_XXXX_XXXX_XXXX_XXXX_XXXX_XXXX secondary_colour
- * 0b_XXXX_XXXX_1111_1XXX_XXXX_XXXX_XXXX_XXXX primary_colour
- * 0b_XXXX_X111_1111_1XXX_XXXX_XXXX_XXXX_XXXX palette_ref
- * 0b_XXXX_XXXX_XXXX_X111_1111_1111_1111_1111 image_id (offset to g1)
- * x (cx)
- * y (dx)
- * dpi (esi)
- * tertiary_colour (ebp)
- */
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, uint32_t tertiary_colour)
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
 {
     if (imageId.HasValue())
     {
-        uint8_t* palette_pointer = gfx_draw_sprite_get_palette(imageId, tertiary_colour);
-        if (imageId.HasSecondary())
-        {
-            imageId = imageId.WithPrimary(imageId.GetPrimary());
-        }
-
-        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, palette_pointer, nullptr);
+        auto palette = gfx_draw_sprite_get_palette(imageId);
+        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, palette, nullptr);
     }
 }
 
@@ -786,7 +766,7 @@ void FASTCALL
     // Only BMP format is supported for masking
     if (!(imgMask->flags & G1_FLAG_BMP) || !(imgColour->flags & G1_FLAG_BMP))
     {
-        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), x, y, 0);
+        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), x, y);
         return;
     }
 

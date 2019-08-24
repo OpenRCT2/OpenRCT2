@@ -266,12 +266,21 @@ private:
     // clang-format on
 
     uint32_t _value = VALUE_UNDEFINED;
+    uint8_t _tertiary = 0;
 
 public:
     static ImageId FromUInt32(uint32_t value)
     {
         ImageId result;
         result._value = value;
+        return result;
+    }
+
+    static ImageId FromUInt32(uint32_t value, uint32_t tertiary)
+    {
+        ImageId result;
+        result._value = value;
+        result._tertiary = tertiary & 0xFF;
         return result;
     }
 
@@ -282,13 +291,18 @@ public:
     {
     }
 
-    ImageId(uint32_t index, colour_t primaryColour)
-        : ImageId(ImageId(index).WithPrimary(primaryColour))
+    ImageId(uint32_t index, uint8_t primaryColourOrPalette)
+        : ImageId(ImageId(index).WithPrimary(primaryColourOrPalette))
     {
     }
 
     ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour))
+    {
+    }
+
+    ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
+        : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour).WithTertiary(tertiaryColour))
     {
     }
 
@@ -304,12 +318,22 @@ public:
 
     bool HasPrimary() const
     {
-        return _value & FLAG_PRIMARY;
+        return (_value & FLAG_PRIMARY) || (_value & FLAG_SECONDARY);
     }
 
     bool HasSecondary() const
     {
         return _value & FLAG_SECONDARY;
+    }
+
+    bool HasTertiary() const
+    {
+        return !(_value & FLAG_PRIMARY) && (_value & FLAG_SECONDARY);
+    }
+
+    bool IsRemap() const
+    {
+        return (_value & FLAG_PRIMARY) && !(_value & FLAG_SECONDARY);
     }
 
     bool IsBlended() const
@@ -337,6 +361,11 @@ public:
         return (_value & MASK_SECONDARY) >> SHIFT_SECONDARY;
     }
 
+    colour_t GetTertiary() const
+    {
+        return _tertiary;
+    }
+
     ImageCatalogue GetCatalogue() const;
 
     ImageId WithIndex(uint32_t index)
@@ -357,6 +386,21 @@ public:
     {
         ImageId result = *this;
         result._value = (_value & ~MASK_SECONDARY) | ((colour << SHIFT_SECONDARY) & MASK_SECONDARY) | FLAG_SECONDARY;
+        return result;
+    }
+
+    ImageId WithTertiary(colour_t tertiary)
+    {
+        ImageId result = *this;
+        result._value &= ~FLAG_PRIMARY;
+        if (!(_value & FLAG_SECONDARY))
+        {
+            // Tertiary implies primary and secondary, so if colour was remap (8-bit primary) then
+            // we need to zero the secondary colour.
+            result._value &= ~MASK_SECONDARY;
+            result._value |= FLAG_SECONDARY;
+        }
+        result._tertiary = tertiary;
         return result;
     }
 };
@@ -454,8 +498,8 @@ void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x
 void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);
 void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint8_t colour);
 
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, uint32_t tertiary_colour);
-uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId, uint32_t tertiary_colour);
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y);
+uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId);
 void FASTCALL gfx_draw_sprite_palette_set_software(
     rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, uint8_t* palette_pointer, uint8_t* unknown_pointer);
 void FASTCALL
