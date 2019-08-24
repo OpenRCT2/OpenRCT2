@@ -402,10 +402,11 @@ bool gfx_load_csg()
  * Copies a sprite onto the buffer. There is no compression used on the sprite
  * image.
  *  rct2: 0x0067A690
+ * @param imageId Only flags are used.
  */
 void FASTCALL gfx_bmp_sprite_to_buffer(
     const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
-    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, int32_t image_type)
+    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId)
 {
     uint16_t zoom_level = dest_dpi->zoom_level;
     uint8_t zoom_amount = 1 << zoom_level;
@@ -413,7 +414,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
     uint32_t source_line_width = source_image->width * zoom_amount;
 
     // Image uses the palette pointer to remap the colours of the image
-    if (image_type & IMAGE_TYPE_REMAP)
+    if (imageId.HasPrimary())
     {
         assert(palette_pointer != nullptr);
 
@@ -442,7 +443,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
     // Image is transparent. It only uses source pointer for
     // telling if it needs to be drawn not for colour. Colour provided
     // by the palette pointer.
-    if (image_type & IMAGE_TYPE_TRANSPARENT)
+    if (imageId.IsBlended())
     { // Not tested
         assert(palette_pointer != nullptr);
         for (; height > 0; height -= zoom_amount)
@@ -507,16 +508,15 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
     }
 }
 
-uint8_t* FASTCALL gfx_draw_sprite_get_palette(int32_t image_id, uint32_t tertiary_colour)
+uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId, uint32_t tertiary_colour)
 {
-    int32_t image_type = (image_id & 0xE0000000);
-    if (image_type == 0)
+    if (!imageId.HasPrimary() && !imageId.HasSecondary() && !imageId.IsBlended())
         return nullptr;
 
-    if (!(image_type & IMAGE_TYPE_REMAP_2_PLUS))
+    if (!imageId.HasSecondary())
     {
-        uint8_t palette_ref = (image_id >> 19) & 0xFF;
-        if (!(image_type & IMAGE_TYPE_TRANSPARENT))
+        uint8_t palette_ref = imageId.GetRemap();
+        if (!imageId.IsBlended())
         {
             palette_ref &= 0x7F;
         }
@@ -536,10 +536,10 @@ uint8_t* FASTCALL gfx_draw_sprite_get_palette(int32_t image_id, uint32_t tertiar
     {
         uint8_t* palette_pointer = gPeepPalette;
 
-        uint32_t primary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
-        uint32_t secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
+        uint32_t primary_offset = palette_to_g1_offset[imageId.GetPrimary()];
+        uint32_t secondary_offset = palette_to_g1_offset[imageId.GetSecondary()];
 
-        if (!(image_type & IMAGE_TYPE_REMAP))
+        if (!imageId.HasPrimary())
         {
             palette_pointer = gOtherPalette;
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -583,17 +583,17 @@ uint8_t* FASTCALL gfx_draw_sprite_get_palette(int32_t image_id, uint32_t tertiar
  * dpi (esi)
  * tertiary_colour (ebp)
  */
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint32_t tertiary_colour)
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, uint32_t tertiary_colour)
 {
-    if (image_id != -1)
+    if (imageId.HasValue())
     {
-        uint8_t* palette_pointer = gfx_draw_sprite_get_palette(image_id, tertiary_colour);
-        if (image_id & IMAGE_TYPE_REMAP_2_PLUS)
+        uint8_t* palette_pointer = gfx_draw_sprite_get_palette(imageId, tertiary_colour);
+        if (imageId.HasSecondary())
         {
-            image_id |= IMAGE_TYPE_REMAP;
+            imageId = imageId.WithPrimary(imageId.GetPrimary());
         }
 
-        gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, nullptr);
+        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, palette_pointer, nullptr);
     }
 }
 
@@ -607,12 +607,9 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, int32_t image_id,
  * y (dx)
  */
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint8_t* palette_pointer, uint8_t* unknown_pointer)
+    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, uint8_t* palette_pointer, uint8_t* unknown_pointer)
 {
-    int32_t image_element = image_id & 0x7FFFF;
-    int32_t image_type = image_id & 0xE0000000;
-
-    const rct_g1_element* g1 = gfx_get_g1_element(image_element);
+    const auto* g1 = gfx_get_g1_element(imageId);
     if (g1 == nullptr)
     {
         return;
@@ -629,7 +626,8 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         zoomed_dpi.pitch = dpi->pitch;
         zoomed_dpi.zoom_level = dpi->zoom_level - 1;
         gfx_draw_sprite_palette_set_software(
-            &zoomed_dpi, image_type | (image_element - g1->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), x >> 1, y >> 1, palette_pointer,
+            unknown_pointer);
         return;
     }
 
@@ -757,16 +755,14 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         // We have to use a different method to move the source pointer for
         // rle encoded sprites so that will be handled within this function
         gfx_rle_sprite_to_buffer(
-            g1->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
+            g1->offset, dest_pointer, palette_pointer, dpi, imageId, source_start_y, height, source_start_x, width);
         return;
     }
-    uint8_t* source_pointer = g1->offset;
-    // Move the pointer to the start point of the source
-    source_pointer += g1->width * source_start_y + source_start_x;
-
-    if (!(g1->flags & G1_FLAG_1))
+    else if (!(g1->flags & G1_FLAG_1))
     {
-        gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1, dpi, height, width, image_type);
+        // Move the pointer to the start point of the source
+        auto source_pointer = g1->offset + (((size_t)g1->width * source_start_y) + source_start_x);
+        gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1, dpi, height, width, imageId);
     }
 }
 
@@ -790,7 +786,7 @@ void FASTCALL
     // Only BMP format is supported for masking
     if (!(imgMask->flags & G1_FLAG_BMP) || !(imgColour->flags & G1_FLAG_BMP))
     {
-        gfx_draw_sprite_software(dpi, colourImage, x, y, 0);
+        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), x, y, 0);
         return;
     }
 
@@ -829,6 +825,11 @@ void FASTCALL
     int32_t dstWrap = ((dpi->width + dpi->pitch) - width);
 
     mask_fn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
+}
+
+const rct_g1_element* gfx_get_g1_element(ImageId imageId)
+{
+    return gfx_get_g1_element(imageId.GetIndex());
 }
 
 const rct_g1_element* gfx_get_g1_element(int32_t image_id)

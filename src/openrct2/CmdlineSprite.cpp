@@ -238,14 +238,14 @@ static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
     if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION)
     {
         gfx_rle_sprite_to_buffer(
-            spriteHeader->offset, pixels, (uint8_t*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0,
+            spriteHeader->offset, pixels, (uint8_t*)spriteFilePalette, &dpi, ImageId(), 0, spriteHeader->height, 0,
             spriteHeader->width);
     }
     else
     {
         gfx_bmp_sprite_to_buffer(
             (uint8_t*)spriteFilePalette, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height,
-            spriteHeader->width, IMAGE_TYPE_DEFAULT);
+            spriteHeader->width, ImageId());
     }
 
     auto const pixels8 = dpi.bits;

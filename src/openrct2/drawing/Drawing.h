@@ -252,19 +252,32 @@ struct ImageId
 private:
     // clang-format off
     static constexpr uint32_t MASK_INDEX       = 0b00000000000001111111111111111111;
+    static constexpr uint32_t MASK_REMAP       = 0b00000111111110000000000000000000;
     static constexpr uint32_t MASK_PRIMARY     = 0b00000000111110000000000000000000;
     static constexpr uint32_t MASK_SECONDARY   = 0b00011111000000000000000000000000;
     static constexpr uint32_t FLAG_PRIMARY     = 0b00100000000000000000000000000000;
-    static constexpr uint32_t FLAG_TRANSPARENT = 0b01000000000000000000000000000000;
+    static constexpr uint32_t FLAG_BLEND       = 0b01000000000000000000000000000000;
     static constexpr uint32_t FLAG_SECONDARY   = 0b10000000000000000000000000000000;
+    static constexpr uint32_t SHIFT_REMAP      = 19;
     static constexpr uint32_t SHIFT_PRIMARY    = 19;
     static constexpr uint32_t SHIFT_SECONDARY  = 24;
+    static constexpr uint32_t INDEX_UNDEFINED  = 0b00000000000001111111111111111111;
+    static constexpr uint32_t VALUE_UNDEFINED  = INDEX_UNDEFINED;
     // clang-format on
 
-    uint32_t _value;
+    uint32_t _value = VALUE_UNDEFINED;
 
 public:
-    ImageId(uint32_t index)
+    static ImageId FromUInt32(uint32_t value)
+    {
+        ImageId result;
+        result._value = value;
+        return result;
+    }
+
+    ImageId() = default;
+
+    explicit ImageId(uint32_t index)
         : _value(index & MASK_INDEX)
     {
     }
@@ -284,22 +297,54 @@ public:
         return _value;
     }
 
+    bool HasValue() const
+    {
+        return GetIndex() != INDEX_UNDEFINED;
+    }
+
+    bool HasPrimary() const
+    {
+        return _value & FLAG_PRIMARY;
+    }
+
+    bool HasSecondary() const
+    {
+        return _value & FLAG_SECONDARY;
+    }
+
+    bool IsBlended() const
+    {
+        return _value & FLAG_BLEND;
+    }
+
     uint32_t GetIndex() const
     {
         return _value & MASK_INDEX;
     }
 
+    uint8_t GetRemap() const
+    {
+        return (_value & MASK_REMAP) >> SHIFT_REMAP;
+    }
+
     colour_t GetPrimary() const
     {
-        return _value & MASK_PRIMARY;
+        return (_value & MASK_PRIMARY) >> SHIFT_PRIMARY;
     }
 
     colour_t GetSecondary() const
     {
-        return _value & MASK_SECONDARY;
+        return (_value & MASK_SECONDARY) >> SHIFT_SECONDARY;
     }
 
     ImageCatalogue GetCatalogue() const;
+
+    ImageId WithIndex(uint32_t index)
+    {
+        ImageId result = *this;
+        result._value = (_value & ~MASK_INDEX) | (index & MASK_INDEX);
+        return result;
+    }
 
     ImageId WithPrimary(colour_t colour)
     {
@@ -390,6 +435,7 @@ bool gfx_load_csg();
 void gfx_unload_g1();
 void gfx_unload_g2();
 void gfx_unload_csg();
+const rct_g1_element* gfx_get_g1_element(ImageId imageId);
 const rct_g1_element* gfx_get_g1_element(int32_t image_id);
 void gfx_set_g1_element(int32_t imageId, const rct_g1_element* g1);
 bool is_csg_loaded();
@@ -398,21 +444,20 @@ void gfx_object_free_images(uint32_t baseImageId, uint32_t count);
 void gfx_object_check_all_images_freed();
 void FASTCALL gfx_bmp_sprite_to_buffer(
     const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
-    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, int32_t image_type);
+    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId);
 void FASTCALL gfx_rle_sprite_to_buffer(
     const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
-    const rct_drawpixelinfo* RESTRICT dpi, int32_t image_type, int32_t source_y_start, int32_t height, int32_t source_x_start,
+    const rct_drawpixelinfo* RESTRICT dpi, ImageId imageId, int32_t source_y_start, int32_t height, int32_t source_x_start,
     int32_t width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint32_t tertiary_colour);
 void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint8_t* palette);
 void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);
 void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint8_t colour);
 
-void FASTCALL
-    gfx_draw_sprite_software(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint32_t tertiary_colour);
-uint8_t* FASTCALL gfx_draw_sprite_get_palette(int32_t image_id, uint32_t tertiary_colour);
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, uint32_t tertiary_colour);
+uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId, uint32_t tertiary_colour);
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint8_t* palette_pointer, uint8_t* unknown_pointer);
+    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, uint8_t* palette_pointer, uint8_t* unknown_pointer);
 void FASTCALL
     gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);
 
