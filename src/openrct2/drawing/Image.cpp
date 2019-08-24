@@ -241,3 +241,13 @@ void gfx_object_check_all_images_freed()
 #endif
     }
 }
+
+size_t ImageListGetUsedCount()
+{
+    return _allocatedImageCount;
+}
+
+size_t ImageListGetMaximum()
+{
+    return MAX_IMAGES;
+}

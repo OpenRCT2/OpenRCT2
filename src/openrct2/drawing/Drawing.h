@@ -310,6 +310,8 @@ bool is_csg_loaded();
 uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count);
 void gfx_object_free_images(uint32_t baseImageId, uint32_t count);
 void gfx_object_check_all_images_freed();
+size_t ImageListGetUsedCount();
+size_t ImageListGetMaximum();
 void FASTCALL gfx_bmp_sprite_to_buffer(
     const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
     rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, int32_t image_type);
