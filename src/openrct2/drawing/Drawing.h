@@ -230,6 +230,92 @@ struct rct_size16
     int16_t height;
 };
 
+enum class ImageCatalogue
+{
+    UNKNOWN,
+    G1,
+    G2,
+    CSG,
+    OBJECT,
+    TEMPORARY,
+};
+
+/**
+ * Represents a specific image from a catalogue such as G1, G2, CSG etc. with remap
+ * colours and flags.
+ *
+ * This is currently all stored as a single 32-bit integer, but will allow easy
+ * extension to 64-bits or higher so that more images can be used.
+ */
+struct ImageId
+{
+private:
+    // clang-format off
+    static constexpr uint32_t MASK_INDEX       = 0b00000000000001111111111111111111;
+    static constexpr uint32_t MASK_PRIMARY     = 0b00000000111110000000000000000000;
+    static constexpr uint32_t MASK_SECONDARY   = 0b00011111000000000000000000000000;
+    static constexpr uint32_t FLAG_PRIMARY     = 0b00100000000000000000000000000000;
+    static constexpr uint32_t FLAG_TRANSPARENT = 0b01000000000000000000000000000000;
+    static constexpr uint32_t FLAG_SECONDARY   = 0b10000000000000000000000000000000;
+    static constexpr uint32_t SHIFT_PRIMARY    = 19;
+    static constexpr uint32_t SHIFT_SECONDARY  = 24;
+    // clang-format on
+
+    uint32_t _value;
+
+public:
+    ImageId(uint32_t index)
+        : _value(index & MASK_INDEX)
+    {
+    }
+
+    ImageId(uint32_t index, colour_t primaryColour)
+        : ImageId(ImageId(index).WithPrimary(primaryColour))
+    {
+    }
+
+    ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour)
+        : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour))
+    {
+    }
+
+    uint32_t ToUInt32() const
+    {
+        return _value;
+    }
+
+    uint32_t GetIndex() const
+    {
+        return _value & MASK_INDEX;
+    }
+
+    colour_t GetPrimary() const
+    {
+        return _value & MASK_PRIMARY;
+    }
+
+    colour_t GetSecondary() const
+    {
+        return _value & MASK_SECONDARY;
+    }
+
+    ImageCatalogue GetCatalogue() const;
+
+    ImageId WithPrimary(colour_t colour)
+    {
+        ImageId result = *this;
+        result._value = (_value & ~MASK_PRIMARY) | ((colour << SHIFT_PRIMARY) & MASK_PRIMARY) | FLAG_PRIMARY;
+        return result;
+    }
+
+    ImageId WithSecondary(colour_t colour)
+    {
+        ImageId result = *this;
+        result._value = (_value & ~MASK_SECONDARY) | ((colour << SHIFT_SECONDARY) & MASK_SECONDARY) | FLAG_SECONDARY;
+        return result;
+    }
+};
+
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
 #define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId)                                                                     \
     (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | (((primaryId) << 19) | ((secondaryId) << 24)))
