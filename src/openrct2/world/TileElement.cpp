@@ -154,6 +154,7 @@ void TileElement::ClearAs(uint8_t newType)
     base_height = 2;
     clearance_height = 2;
     std::fill_n(pad_04, sizeof(pad_04), 0x00);
+    std::fill_n(pad_08, sizeof(pad_08), 0x00);
 }
 
 void TileElementBase::Remove()
@@ -203,4 +204,17 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
             log_error("Tried to rotate QuarterTile invalid amount.");
             return QuarterTile{ 0 };
     }
+}
+
+bool TileElementBase::HasFlag(uint8_t flag) const
+{
+    return (flags & flag);
+}
+
+void TileElementBase::SetFlag(uint8_t flag, bool on)
+{
+    if (on)
+        flags |= flag;
+    else
+        flags &= ~flag;
 }

@@ -74,6 +74,9 @@ struct TileElementBase
     bool IsGhost() const;
     void SetGhost(bool isGhost);
     void Remove();
+
+    bool HasFlag(uint8_t flag) const;
+    void SetFlag(uint8_t flag, bool on);
 };
 
 /**
@@ -122,10 +125,6 @@ public:
     BannerElement* AsBanner() const
     {
         return as<BannerElement, TileElementType::Banner>();
-    }
-    CorruptElement* AsCorrupt() const
-    {
-        return as<CorruptElement, TileElementType::Corrupt>();
     }
 
     void ClearAs(uint8_t newType);
@@ -245,8 +244,6 @@ public:
 
     uint8_t GetAdditionStatus() const;
     void SetAdditionStatus(uint8_t newStatus);
-
-    uint8_t GetRCT1PathType() const;
 
     bool ShouldDrawPathOverSupports();
     void SetShouldDrawPathOverSupports(bool on);

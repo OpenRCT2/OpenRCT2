@@ -155,6 +155,19 @@ rct_sprite* get_sprite(size_t sprite_idx)
     return &sprite_list[sprite_idx];
 }
 
+bool TileElementBase::HasFlag(uint8_t flag) const
+{
+    return (flags & flag);
+}
+
+void TileElementBase::SetFlag(uint8_t flag, bool on)
+{
+    if (on)
+        flags |= flag;
+    else
+        flags &= ~flag;
+}
+
 bool TileElementBase::IsLastForTile() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;

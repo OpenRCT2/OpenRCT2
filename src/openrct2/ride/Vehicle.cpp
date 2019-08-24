@@ -5169,18 +5169,18 @@ static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
         return nullptr;
     }
 
-    uint8_t bl;
+    uint8_t quadrant;
     if ((x & 0x1F) >= 16)
     {
-        bl = 1;
+        quadrant = 1;
         if ((y & 0x1F) < 16)
-            bl = 2;
+            quadrant = 2;
     }
     else
     {
-        bl = 4;
+        quadrant = 4;
         if ((y & 0x1F) >= 16)
-            bl = 8;
+            quadrant = 8;
     }
 
     do
@@ -5191,7 +5191,7 @@ static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
         if (z / 8 >= tileElement->clearance_height)
             continue;
 
-        if (tileElement->flags & bl)
+        if (tileElement->flags & quadrant)
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
 
@@ -6769,7 +6769,8 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
             slowY = slowTrackBeginEnd.end_y;
             slowTileElement = *(slowTrackBeginEnd.begin_element);
             if (slowX == x && slowY == y && slowTileElement.base_height == tileElement->base_height
-                && slowTileElement.type == tileElement->type)
+                && slowTileElement.GetType() == tileElement->GetType()
+                && slowTileElement.GetDirection() == tileElement->GetDirection())
             {
                 return;
             }

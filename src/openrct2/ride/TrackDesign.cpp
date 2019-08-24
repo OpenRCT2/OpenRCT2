@@ -2411,7 +2411,7 @@ static void track_design_preview_clear_map()
     {
         TileElement* tile_element = &gTileElements[i];
         tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-        tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
+        tile_element->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, true);
         tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         tile_element->AsSurface()->SetWaterHeight(0);
         tile_element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);

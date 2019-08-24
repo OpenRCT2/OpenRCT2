@@ -65,8 +65,8 @@ static bool map_swap_elements_at(CoordsXY loc, int16_t first, int16_t second)
     // Swap the 'last map element for tile' flag if either one of them was last
     if ((firstElement)->IsLastForTile() || (secondElement)->IsLastForTile())
     {
-        firstElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
-        secondElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
+        firstElement->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, !firstElement->IsLastForTile());
+        secondElement->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, !secondElement->IsLastForTile());
     }
 
     return true;
@@ -324,11 +324,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
 
         bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement = element;
-        pastedElement->flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
-        if (lastForTile)
-        {
-            pastedElement->flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-        }
+        pastedElement->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, lastForTile);
 
         map_invalidate_tile_full(loc.x, loc.y);
 

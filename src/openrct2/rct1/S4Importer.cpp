@@ -2015,7 +2015,7 @@ private:
 
     void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
     {
-        // Todo: allow for changing defition of OpenRCT2 tile element types - replace with a map
+        // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
         uint8_t tileElementType = src->GetType();
         dst->ClearAs(tileElementType);
         dst->SetDirection(src->GetDirection());
@@ -2694,7 +2694,7 @@ private:
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
+                nextFreeTileElement->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, true);
                 nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
                 nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
                 nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
@@ -2708,7 +2708,7 @@ private:
         for (int32_t y = 0; y < 128 * 256; y++)
         {
             nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-            nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
+            nextFreeTileElement->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, true);
             nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
             nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
             nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
