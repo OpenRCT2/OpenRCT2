@@ -416,70 +416,66 @@ void scenario_update()
     }
     scenario_update_daynight_cycle();
 }
-
 /**
  *
  *  rct2: 0x006744A9
  */
 static int32_t scenario_create_ducks()
 {
-    int32_t i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
+    CoordsXY centerPos;
+    centerPos.x = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
+    centerPos.y = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
 
-    x = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
-    y = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
+    Guard::Assert(map_is_location_valid(centerPos));
 
-    Guard::Assert(map_is_location_valid({ x, y }));
-
-    if (!map_is_location_in_park({ x, y }))
+    if (!map_is_location_in_park(centerPos))
         return 0;
 
-    centreWaterZ = (tile_element_water_height({ x, y }));
+    int32_t centreWaterZ = (tile_element_water_height(centerPos));
     if (centreWaterZ == 0)
         return 0;
 
     // Check 7x7 area around centre tile
-    x2 = x - (32 * 3);
-    y2 = y - (32 * 3);
-    c = 0;
-    for (i = 0; i < 7; i++)
+    CoordsXY innerPos{ centerPos.x - (32 * 3), centerPos.y - (32 * 3) };
+    int32_t waterTiles = 0;
+    for (int32_t y = 0; y < 7; y++)
     {
-        for (j = 0; j < 7; j++)
+        for (int32_t x = 0; x < 7; x++)
         {
-            Guard::Assert(map_is_location_valid({ x2, y2 }));
-
-            if (!map_is_location_in_park({ x2, y2 }))
+            if (!map_is_location_valid(innerPos))
                 continue;
 
-            waterZ = (tile_element_water_height({ x2, y2 }));
-            if (waterZ == centreWaterZ)
-                c++;
+            if (!map_is_location_in_park(innerPos))
+                continue;
 
-            x2 += 32;
+            int32_t waterZ = (tile_element_water_height(innerPos));
+            if (waterZ == centreWaterZ)
+                waterTiles++;
+
+            innerPos.x += 32;
         }
-        x2 -= 224;
-        y2 += 32;
+        innerPos.x -= 224;
+        innerPos.y += 32;
     }
 
     // Must be at least 25 water tiles of the same height in 7x7 area
-    if (c < 25)
+    if (waterTiles < 25)
         return 0;
 
     // Set x, y to the centre of the tile
-    x += 16;
-    y += 16;
-    c = (scenario_rand() & 3) + 2;
-    for (i = 0; i < c; i++)
-    {
-        r = scenario_rand();
-        x2 = (r >> 16) & 0x7F;
-        y2 = (r & 0xFFFF) & 0x7F;
+    centerPos.x += 16;
+    centerPos.y += 16;
 
-        int32_t targetX = x + x2 - 64;
-        Guard::Assert(targetX >= 0 && targetX < (MAXIMUM_MAP_SIZE_TECHNICAL * 32));
-        int32_t targetY = y + y2 - 64;
-        Guard::Assert(targetY >= 0 && targetY < (MAXIMUM_MAP_SIZE_TECHNICAL * 32));
-        Guard::Assert(map_is_location_valid({ targetX, targetY }));
-        create_duck(targetX, targetY);
+    int32_t duckCount = (scenario_rand() & 3) + 2;
+    for (int32_t i = 0; i < duckCount; i++)
+    {
+        int32_t r = scenario_rand();
+        innerPos.x = (r >> 16) & 0x7F;
+        innerPos.y = (r & 0xFFFF) & 0x7F;
+
+        CoordsXY targetPos{ centerPos.x + innerPos.x - 64, centerPos.y + innerPos.y - 64 };
+        Guard::Assert(map_is_location_valid(targetPos));
+        create_duck(targetPos.x, targetPos.y);
     }
 
     return 1;
