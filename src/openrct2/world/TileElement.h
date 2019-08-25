@@ -71,12 +71,10 @@ struct TileElementBase
     void SetDirection(uint8_t direction);
     uint8_t GetDirectionWithOffset(uint8_t offset) const;
     bool IsLastForTile() const;
+    void SetLastForTile(bool on);
     bool IsGhost() const;
     void SetGhost(bool isGhost);
     void Remove();
-
-    bool HasFlag(uint8_t flag) const;
-    void SetFlag(uint8_t flag, bool on);
 };
 
 /**

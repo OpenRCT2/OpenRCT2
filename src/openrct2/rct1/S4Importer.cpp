@@ -2694,7 +2694,7 @@ private:
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                nextFreeTileElement->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, true);
+                nextFreeTileElement->SetLastForTile(true);
                 nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
                 nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
                 nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
@@ -2708,7 +2708,7 @@ private:
         for (int32_t y = 0; y < 128 * 256; y++)
         {
             nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-            nextFreeTileElement->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, true);
+            nextFreeTileElement->SetLastForTile(true);
             nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
             nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
             nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);

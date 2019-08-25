@@ -310,7 +310,7 @@ void map_init(int32_t size)
     {
         TileElement* tile_element = &gTileElements[i];
         tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-        tile_element->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, true);
+        tile_element->SetLastForTile(true);
         tile_element->base_height = 14;
         tile_element->clearance_height = 14;
         tile_element->AsSurface()->SetWaterHeight(0);
@@ -957,7 +957,7 @@ void tile_element_remove(TileElement* tileElement)
     }
 
     // Mark the latest element with the last element flag.
-    (tileElement - 1)->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, true);
+    (tileElement - 1)->SetLastForTile(true);
     tileElement->base_height = 0xFF;
 
     if ((tileElement + 1) == gNextFreeTileElement)
@@ -1181,8 +1181,7 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t flags)
         if ((newTileElement - 1)->IsLastForTile())
         {
             // No more elements above the insert element
-            (newTileElement - 1)->SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, false);
-            ;
+            (newTileElement - 1)->SetLastForTile(false);
             flags |= TILE_ELEMENT_FLAG_LAST_TILE;
             break;
         }

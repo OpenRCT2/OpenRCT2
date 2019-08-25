@@ -446,7 +446,7 @@ private:
         {
             TileElement tileElement = {};
             tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
-            tileElement.SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, true);
+            tileElement.SetLastForTile(true);
             tileElement.AsTrack()->SetTrackType(trackType);
             tileElement.base_height = 3;
             if (_invertedTrack)

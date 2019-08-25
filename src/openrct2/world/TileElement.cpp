@@ -49,6 +49,14 @@ bool TileElementBase::IsLastForTile() const
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
+void TileElementBase::SetLastForTile(bool on)
+{
+    if (on)
+        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    else
+        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+}
+
 bool TileElementBase::IsGhost() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
@@ -204,17 +212,4 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
             log_error("Tried to rotate QuarterTile invalid amount.");
             return QuarterTile{ 0 };
     }
-}
-
-bool TileElementBase::HasFlag(uint8_t flag) const
-{
-    return (flags & flag);
-}
-
-void TileElementBase::SetFlag(uint8_t flag, bool on)
-{
-    if (on)
-        flags |= flag;
-    else
-        flags &= ~flag;
 }

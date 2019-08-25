@@ -2454,7 +2454,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.SetDirection(trackDirection);
         _tempTrackTileElement.AsTrack()->SetHasChain((edx & 0x10000) != 0);
         _tempTrackTileElement.flags = quarterTile.GetBaseQuarterOccupied();
-        _tempTrackTileElement.SetFlag(TILE_ELEMENT_FLAG_LAST_TILE, true);
+        _tempTrackTileElement.SetLastForTile(true);
         _tempTrackTileElement.base_height = baseZ;
         _tempTrackTileElement.clearance_height = clearanceZ;
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
