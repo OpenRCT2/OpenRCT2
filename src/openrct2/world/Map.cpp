@@ -1285,8 +1285,8 @@ void map_obstruction_set_error_text(TileElement* tileElement)
  *  bl = bl
  */
 bool map_can_construct_with_clear_at(
-    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile bl, uint8_t flags, money32* price,
-    uint8_t crossingMode)
+    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
+    money32* price, uint8_t crossingMode)
 {
     int32_t al, ah, bh, cl, ch, water_height;
     al = ah = bh = cl = ch = water_height = 0;
@@ -1312,7 +1312,7 @@ bool map_can_construct_with_clear_at(
         {
             if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height && !(tileElement->IsGhost()))
             {
-                if (tileElement->flags & (bl.GetBaseQuarterOccupied()))
+                if (tileElement->flags & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     goto loc_68BABC;
                 }
@@ -1349,7 +1349,7 @@ bool map_can_construct_with_clear_at(
             canBuildCrossing = true;
         }
 
-        if (bl.GetZQuarterOccupied() != 0b1111)
+        if (quarterTile.GetZQuarterOccupied() != 0b1111)
         {
             if (tileElement->base_height >= zHigh)
             {
@@ -1390,8 +1390,8 @@ bool map_can_construct_with_clear_at(
                 }
                 bh = zLow + 4;
                 {
-                    auto baseQuarter = bl.GetBaseQuarterOccupied();
-                    auto zQuarter = bl.GetZQuarterOccupied();
+                    auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
+                    auto zQuarter = quarterTile.GetZQuarterOccupied();
                     if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || zLow >= al) && bh >= al))
                         && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || zLow >= ah) && bh >= ah))
                         && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || zLow >= cl) && bh >= cl))
