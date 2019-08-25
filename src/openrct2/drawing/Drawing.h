@@ -286,22 +286,22 @@ public:
 
     ImageId() = default;
 
-    explicit ImageId(uint32_t index)
+    explicit constexpr ImageId(uint32_t index)
         : _value(index & MASK_INDEX)
     {
     }
 
-    ImageId(uint32_t index, uint8_t primaryColourOrPalette)
+    constexpr ImageId(uint32_t index, uint8_t primaryColourOrPalette)
         : ImageId(ImageId(index).WithPrimary(primaryColourOrPalette))
     {
     }
 
-    ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour)
+    constexpr ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour))
     {
     }
 
-    ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
+    constexpr ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
         : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour).WithTertiary(tertiaryColour))
     {
     }
@@ -368,28 +368,28 @@ public:
 
     ImageCatalogue GetCatalogue() const;
 
-    ImageId WithIndex(uint32_t index)
+    constexpr ImageId WithIndex(uint32_t index)
     {
         ImageId result = *this;
         result._value = (_value & ~MASK_INDEX) | (index & MASK_INDEX);
         return result;
     }
 
-    ImageId WithPrimary(colour_t colour)
+    constexpr ImageId WithPrimary(colour_t colour)
     {
         ImageId result = *this;
         result._value = (_value & ~MASK_PRIMARY) | ((colour << SHIFT_PRIMARY) & MASK_PRIMARY) | FLAG_PRIMARY;
         return result;
     }
 
-    ImageId WithSecondary(colour_t colour)
+    constexpr ImageId WithSecondary(colour_t colour)
     {
         ImageId result = *this;
         result._value = (_value & ~MASK_SECONDARY) | ((colour << SHIFT_SECONDARY) & MASK_SECONDARY) | FLAG_SECONDARY;
         return result;
     }
 
-    ImageId WithTertiary(colour_t tertiary)
+    constexpr ImageId WithTertiary(colour_t tertiary)
     {
         ImageId result = *this;
         result._value &= ~FLAG_PRIMARY;
