@@ -594,7 +594,10 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
 
         drawing_engine_init();
 
-        context->LoadParkFromFile(inputPath);
+        if (!context->LoadParkFromFile(inputPath))
+        {
+            throw std::runtime_error("Failed to load park.");
+        }
 
         gIntroState = INTRO_STATE_NONE;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
@@ -605,6 +608,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             auto zoom = std::atoi(argv[3]);
             auto rotation = std::atoi(argv[4]) & 3;
             viewport = GetGiantViewport(gMapSize, rotation, zoom);
+            gCurrentRotation = rotation;
         }
         else
         {
