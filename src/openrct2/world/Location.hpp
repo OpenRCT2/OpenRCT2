@@ -267,6 +267,8 @@ struct TileCoordsXYZ
  */
 typedef uint8_t Direction;
 
+const Direction INVALID_DIRECTION = 0xFF;
+
 /**
  * Given a direction, return the direction that points the other way,
  * on the same axis.
