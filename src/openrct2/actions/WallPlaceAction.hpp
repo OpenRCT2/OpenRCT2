@@ -557,7 +557,7 @@ private:
             {
                 if (!(TrackCoordinates[trackType].rotation_begin & 4))
                 {
-                    direction = trackElement->GetDirectionWithOffset(2);
+                    direction = direction_reverse(trackElement->GetDirection());
                     if (direction == _edge)
                     {
                         const rct_preview_track* trackBlock = &TrackBlocks[trackType][sequence];

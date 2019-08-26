@@ -7078,7 +7078,7 @@ void sub_6CB945(Ride* ride)
                 uint8_t trackType = trackElement->AsTrack()->GetTrackType();
                 uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
-                uint8_t direction = (tileElement->GetDirection() - trackElement->GetDirectionWithOffset(2)) & 3;
+                Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;
 
                 if (!(TrackSequenceProperties[trackType][trackSequence] & (1 << direction)))
                 {

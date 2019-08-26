@@ -1198,7 +1198,7 @@ void footpath_update_queue_chains()
                     if (tileElement->AsEntrance()->GetRideIndex() != rideIndex)
                         continue;
 
-                    uint8_t direction = tileElement->GetDirectionWithOffset(2);
+                    Direction direction = direction_reverse(tileElement->GetDirection());
                     footpath_chain_ride_queue(rideIndex, i, location.x << 5, location.y << 5, tileElement, direction);
                 } while (!(tileElement++)->IsLastForTile());
             }
@@ -1877,7 +1877,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, TileElement* ti
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
                 footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
-                footpath_chain_ride_queue(255, 0, x, y, tileElement, tileElement->GetDirectionWithOffset(2));
+                footpath_chain_ride_queue(255, 0, x, y, tileElement, direction_reverse(tileElement->GetDirection()));
             }
             break;
     }

@@ -1740,7 +1740,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
     if (!found)
         return;
 
-    Direction direction = tileElement->GetDirectionWithOffset(2);
+    Direction direction = direction_reverse(tileElement->GetDirection());
     TileElement* lastPathElement = nullptr;
     TileElement* firstPathElement = nullptr;
 
