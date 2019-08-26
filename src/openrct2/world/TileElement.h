@@ -203,8 +203,8 @@ public:
     bool IsSloped() const;
     void SetSloped(bool isSloped);
 
-    uint8_t GetSlopeDirection() const;
-    void SetSlopeDirection(uint8_t newSlope);
+    Direction GetSlopeDirection() const;
+    void SetSlopeDirection(Direction newSlope);
 
     ride_id_t GetRideIndex() const;
     void SetRideIndex(ride_id_t newRideIndex);

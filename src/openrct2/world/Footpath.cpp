@@ -1411,15 +1411,15 @@ void PathElement::SetSloped(bool isSloped)
         entryIndex |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 }
 
-uint8_t PathElement::GetSlopeDirection() const
+Direction PathElement::GetSlopeDirection() const
 {
-    return entryIndex & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    return static_cast<Direction>(entryIndex & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
 }
 
-void PathElement::SetSlopeDirection(uint8_t newSlope)
+void PathElement::SetSlopeDirection(Direction newSlope)
 {
     entryIndex &= ~FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
-    entryIndex |= newSlope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    entryIndex |= static_cast<uint8_t>(newSlope) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
 }
 
 bool PathElement::IsQueue() const
