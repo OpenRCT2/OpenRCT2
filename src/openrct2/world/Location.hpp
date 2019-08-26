@@ -288,6 +288,22 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
     return dir < 4;
 }
 
+/**
+ * Given a direction, return the next cardinal direction, wrapping around if necessary. (TODO: Figure out if this is CW or CCW)
+ */
+[[maybe_unused]] static constexpr Direction direction_next(Direction dir)
+{
+    return (dir + 1) & 0x03;
+}
+
+/**
+ * Given a direction, return the previous cardinal direction, wrapping around if necessary. (TODO: Figure out if this is CW or CCW)
+ */
+[[maybe_unused]] static constexpr Direction direction_prev(Direction dir)
+{
+    return (dir - 1) & 0x03;
+}
+
 struct CoordsXYZD : public CoordsXYZ
 {
     Direction direction = 0;
