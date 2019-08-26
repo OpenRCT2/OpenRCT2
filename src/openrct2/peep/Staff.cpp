@@ -847,14 +847,14 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
         pathfind_logging_enable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        int32_t pathfindDirection = peep_pathfind_choose_direction(
+        Direction pathfindDirection = peep_pathfind_choose_direction(
             { peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        if (pathfindDirection == -1)
+        if (pathfindDirection == INVALID_DIRECTION)
         {
             /* Heuristic search failed for all directions.
              * Reset the pathfind_goal - this means that the pathfind_history

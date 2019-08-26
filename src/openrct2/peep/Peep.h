@@ -983,7 +983,7 @@ void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
 
-int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep);
+Direction peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep);
 void peep_reset_pathfind_goal(Peep* peep);
 
 bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
