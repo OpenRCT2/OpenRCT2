@@ -3442,6 +3442,10 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
                 argPos, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
             argPos += sizeof(rct_string_id);
             argPos += ride->FormatNameTo(gMapTooltipFormatArgs + argPos);
+
+            // String IDs have an extra pop16 for some reason
+            argPos += sizeof(uint16_t);
+
             set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
             argPos += sizeof(uint16_t);
             if (queueLength == 0)
@@ -3467,9 +3471,16 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
                 if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
                     stationIndex--;
 
-            set_map_tooltip_format_arg(0, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
-            auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 2);
-            set_map_tooltip_format_arg(2 + nameArgLen, uint16_t, stationIndex + 1);
+            size_t argPos = 0;
+            set_map_tooltip_format_arg(
+                argPos, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
+            argPos += sizeof(rct_string_id);
+            argPos += ride->FormatNameTo(gMapTooltipFormatArgs + 2);
+
+            // String IDs have an extra pop16 for some reason
+            argPos += sizeof(uint16_t);
+
+            set_map_tooltip_format_arg(argPos, uint16_t, stationIndex + 1);
         }
     }
 }
