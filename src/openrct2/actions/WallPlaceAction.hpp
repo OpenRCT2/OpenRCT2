@@ -643,7 +643,7 @@ private:
                 }
                 continue;
             }
-            if ((tileElement->GetOccupiedQuadrants()) == 0)
+            if (tileElement->GetOccupiedQuadrants() == 0)
                 continue;
 
             switch (elementType)
