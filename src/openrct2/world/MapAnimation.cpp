@@ -131,7 +131,6 @@ static bool map_animation_invalidate_queue_banner(int32_t x, int32_t y, int32_t 
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        // Change from original: originally checked type instead of flags, which was likely a bug.
         if (!(tileElement->AsPath()->IsQueue()))
             continue;
         if (!tileElement->AsPath()->HasQueueBanner())
