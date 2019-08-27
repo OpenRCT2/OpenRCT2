@@ -230,28 +230,22 @@ void TitleScreen::TitleInitialise()
     {
         
         bool RCT1Installed = false, RCT1AAInstalled = false, RCT1LLInstalled = false;
-        int RCT1Count = 0, RCT1AACount = 0, RCT1LLCount = 0;
+        int RCT1Count = 0;
         size_t scenarioCount = scenario_repository_get_count();
         for (size_t s = 0; s < scenarioCount; s++ ) {
             if (scenario_repository_get_by_index(s)->source_game == SCENARIO_SOURCE_RCT1) {
                 RCT1Count++;
             }
             if (scenario_repository_get_by_index(s)->source_game == SCENARIO_SOURCE_RCT1_AA) {
-                RCT1AACount++;
+                RCT1AAInstalled = true;
             }
             if (scenario_repository_get_by_index(s)->source_game == SCENARIO_SOURCE_RCT1_LL) {
-                RCT1LLCount++;
+                RCT1LLInstalled = true;
             }
         }
         //Mega Park can show up in the scenario list even if RCT1 has been uninstalled, so it must be greater than 1
         if (RCT1Count > 1) {
             RCT1Installed = true;
-        }
-        if (RCT1AACount > 0) {
-            RCT1AAInstalled = true;
-        }
-        if (RCT1LLCount > 0) {
-            RCT1LLInstalled = true;
         }
        
         int32_t random = 0;
@@ -266,23 +260,11 @@ void TitleScreen::TitleInitialise()
             const utf8* scName = title_sequence_manager_get_name(random);
             safeSequence = true;
             if (scName == RCT1String) {
-                if (RCT1Installed) {
-                    safeSequence = true;
-                } else {
-                    safeSequence = false;
-                }
+                safeSequence = RCT1Installed;
             } if (scName == RCT1AAString) {
-                if (RCT1AAInstalled) {
-                    safeSequence = true;
-                } else {
-                    safeSequence = false;
-                }
+                safeSequence = RCT1AAInstalled;
             } if (scName == RCT1LLString) {
-                if (RCT1LLInstalled) {
-                    safeSequence = true;
-                } else {
-                    safeSequence = false;
-                }
+                safeSequence = RCT1LLInstalled;
             }
         }
         ChangePresetSequence(random);
