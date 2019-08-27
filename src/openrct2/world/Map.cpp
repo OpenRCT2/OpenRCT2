@@ -1153,9 +1153,10 @@ bool map_check_free_elements_and_reorganise(int32_t numElements)
  *
  *  rct2: 0x0068B1F6
  */
-TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t flags)
+TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadrants)
 {
     TileElement *originalTileElement, *newTileElement, *insertedElement;
+    bool isLastForTile = false;
 
     if (!map_check_free_elements_and_reorganise(1))
     {
@@ -1182,7 +1183,7 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t flags)
         {
             // No more elements above the insert element
             (newTileElement - 1)->SetLastForTile(false);
-            flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+            isLastForTile = true;
             break;
         }
     }
@@ -1191,13 +1192,15 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t flags)
     insertedElement = newTileElement;
     newTileElement->type = 0;
     newTileElement->base_height = loc.z;
-    newTileElement->flags = flags;
+    newTileElement->flags = 0;
+    newTileElement->SetLastForTile(isLastForTile);
+    newTileElement->SetOccupiedQuadrants(occupiedQuadrants);
     newTileElement->clearance_height = loc.z;
     std::memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
     newTileElement++;
 
     // Insert rest of map elements above insert height
-    if (!(flags & TILE_ELEMENT_FLAG_LAST_TILE))
+    if (!isLastForTile)
     {
         do
         {
@@ -1312,7 +1315,7 @@ bool map_can_construct_with_clear_at(
         {
             if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height && !(tileElement->IsGhost()))
             {
-                if (tileElement->flags & (quarterTile.GetBaseQuarterOccupied()))
+                if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     goto loc_68BABC;
                 }

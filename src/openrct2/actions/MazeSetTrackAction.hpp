@@ -216,7 +216,7 @@ public:
             uint16_t flooredX = floor2(_loc.x, 32);
             uint16_t flooredY = floor2(_loc.y, 32);
 
-            tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0xF);
+            tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0b1111);
             assert(tileElement != nullptr);
 
             tileElement->clearance_height = clearanceHeight;

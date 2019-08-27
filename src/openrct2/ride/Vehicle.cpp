@@ -5191,7 +5191,7 @@ static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
         if (z / 8 >= tileElement->clearance_height)
             continue;
 
-        if (tileElement->flags & quadrant)
+        if (tileElement->GetOccupiedQuadrants() & quadrant)
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
 

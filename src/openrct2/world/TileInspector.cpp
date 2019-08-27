@@ -89,7 +89,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(CoordsXY loc, int16_t ele
     {
         // Create new corrupt element
         TileElement* corruptElement = tile_element_insert(
-            { loc.x / 32, loc.y / 32, -1 }, 0); // Ugly hack: -1 guarantees this to be placed first
+            { loc.x / 32, loc.y / 32, -1 }, 0b0000); // Ugly hack: -1 guarantees this to be placed first
         if (corruptElement == nullptr)
         {
             log_warning("Failed to insert corrupt element.");
@@ -320,7 +320,9 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
             tile_element_set_banner_index(&element, newBannerIndex);
         }
 
-        TileElement* const pastedElement = tile_element_insert({ loc.x / 32, loc.y / 32, element.base_height }, 0);
+        // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set them
+        // correctly _here_.
+        TileElement* const pastedElement = tile_element_insert({ loc.x / 32, loc.y / 32, element.base_height }, 0b0000);
 
         bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement = element;
@@ -1000,8 +1002,7 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_location(
         tileElement->AsSmallScenery()->SetSceneryQuadrant(quarterIndex);
 
         // Update collision
-        tileElement->flags &= 0xF0;
-        tileElement->flags |= 1 << ((quarterIndex + 2) & 3);
+        tileElement->SetOccupiedQuadrants(1 << ((quarterIndex + 2) & 3));
 
         map_invalidate_tile_full(loc.x, loc.y);
         if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
@@ -1023,7 +1024,9 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_collision(
 
     if (isExecuting)
     {
-        tileElement->flags ^= 1 << quarterIndex;
+        auto occupiedQuadrants = tileElement->GetOccupiedQuadrants();
+        occupiedQuadrants ^= 1 << quarterIndex;
+        tileElement->SetOccupiedQuadrants(occupiedQuadrants);
 
         map_invalidate_tile_full(loc.x, loc.y);
         if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)

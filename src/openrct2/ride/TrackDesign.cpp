@@ -2184,7 +2184,7 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
         int32_t fx = floor2(x, 32);
         int32_t fy = floor2(y, 32);
         int32_t fz = z >> 3;
-        TileElement* tileElement = tile_element_insert({ fx >> 5, fy >> 5, fz }, 15);
+        TileElement* tileElement = tile_element_insert({ fx >> 5, fy >> 5, fz }, 0b1111);
         tileElement->clearance_height = fz + 4;
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
         tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);

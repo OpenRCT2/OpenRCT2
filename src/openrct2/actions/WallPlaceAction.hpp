@@ -394,7 +394,7 @@ public:
             return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS, gGameCommandErrorText);
         }
 
-        TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, targetHeight / 8 }, 0);
+        TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, targetHeight / 8 }, 0b0000);
         assert(tileElement != nullptr);
 
         map_animation_create(MAP_ANIMATION_TYPE_WALL, _loc.x, _loc.y, targetHeight / 8);
@@ -643,7 +643,7 @@ private:
                 }
                 continue;
             }
-            if ((tileElement->flags & 0x0F) == 0)
+            if ((tileElement->GetOccupiedQuadrants()) == 0)
                 continue;
 
             switch (elementType)

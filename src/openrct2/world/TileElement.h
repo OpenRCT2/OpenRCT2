@@ -61,7 +61,7 @@ struct CorruptElement;
 struct TileElementBase
 {
     uint8_t type;             // 0
-    uint8_t flags;            // 1
+    uint8_t flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
 
@@ -75,6 +75,8 @@ struct TileElementBase
     bool IsGhost() const;
     void SetGhost(bool isGhost);
     void Remove();
+    uint8_t GetOccupiedQuadrants() const;
+    void SetOccupiedQuadrants(uint8_t quadrants);
 };
 
 /**
@@ -599,6 +601,7 @@ enum
 #define TILE_ELEMENT_QUADRANT_MASK 0b11000000
 #define TILE_ELEMENT_TYPE_MASK 0b00111100
 #define TILE_ELEMENT_DIRECTION_MASK 0b00000011
+#define TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK 0b00001111
 
 #define TILE_ELEMENT_COLOUR_MASK 0b00011111
 

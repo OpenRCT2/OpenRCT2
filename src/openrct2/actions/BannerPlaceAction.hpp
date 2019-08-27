@@ -137,7 +137,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        TileElement* newTileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0);
+        TileElement* newTileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0b0000);
         assert(newTileElement != nullptr);
 
         banner->flags = 0;
