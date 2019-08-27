@@ -498,61 +498,61 @@ int32_t cmdline_for_gfxbench(const char** argv, int32_t argc)
     return 1;
 }
 
-static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewport)
+static void ApplyOptions(const ScreenshotOptions* _options, rct_viewport& viewport)
 {
-    if (options->weather != 0)
+    if (_options->weather != 0)
     {
-        if (options->weather < 1 || options->weather > 6)
+        if (_options->weather < 1 || _options->weather > 6)
         {
             throw std::runtime_error("Weather can only be set to an integer value from 1 till 6.");
         }
 
-        uint8_t customWeather = options->weather - 1;
+        uint8_t customWeather = _options->weather - 1;
         climate_force_weather(customWeather);
     }
 
-    if (options->hide_guests)
+    if (_options->hide_guests)
     {
         viewport.flags |= VIEWPORT_FLAG_INVISIBLE_PEEPS;
     }
 
-    if (options->hide_sprites)
+    if (_options->hide_sprites)
     {
         viewport.flags |= VIEWPORT_FLAG_INVISIBLE_SPRITES;
     }
 
-    if (options->mowed_grass)
+    if (_options->mowed_grass)
     {
         CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_MOWED);
     }
 
-    if (options->clear_grass || options->tidy_up_park)
+    if (_options->clear_grass || _options->tidy_up_park)
     {
         CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_CLEAR_0);
     }
 
-    if (options->water_plants || options->tidy_up_park)
+    if (_options->water_plants || _options->tidy_up_park)
     {
         CheatsSet(CheatType::WaterPlants);
     }
 
-    if (options->fix_vandalism || options->tidy_up_park)
+    if (_options->fix_vandalism || _options->tidy_up_park)
     {
         CheatsSet(CheatType::FixVandalism);
     }
 
-    if (options->remove_litter || options->tidy_up_park)
+    if (_options->remove_litter || _options->tidy_up_park)
     {
         CheatsSet(CheatType::RemoveLitter);
     }
 
-    if (options->transparent || gConfigGeneral.transparent_screenshot)
+    if (_options->transparent || gConfigGeneral.transparent_screenshot)
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }
 }
 
-int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
+int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOptions* _options)
 {
     // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
     for (int32_t i = 0; i < argc; i++)
@@ -675,7 +675,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             }
         }
 
-        ApplyOptions(options, viewport);
+        ApplyOptions(_options, viewport);
 
         dpi = RenderViewport(nullptr, viewport);
         auto renderedPalette = screenshot_get_rendered_palette();

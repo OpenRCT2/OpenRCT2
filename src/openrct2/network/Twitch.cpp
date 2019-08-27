@@ -44,7 +44,7 @@ void twitch_update()
 #    include <vector>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Network;
+using namespace OpenRCT2::Networking;
 
 bool gTwitchEnable = false;
 

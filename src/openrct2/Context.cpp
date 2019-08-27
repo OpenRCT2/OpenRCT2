@@ -100,7 +100,7 @@ namespace OpenRCT2
 #endif
         StdInOutConsole _stdInOutConsole;
 #ifndef DISABLE_HTTP
-        Network::Http::Http _http;
+        Networking::Http::Http _http;
 #endif
 
         // Game states
@@ -721,7 +721,7 @@ namespace OpenRCT2
 #ifndef DISABLE_HTTP
                         // Download park and open it using its temporary filename
                         void* data;
-                        size_t dataSize = Network::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
+                        size_t dataSize = Networking::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
                         if (dataSize == 0)
                         {
                             title_load();
