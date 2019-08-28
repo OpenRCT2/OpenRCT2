@@ -393,6 +393,10 @@ template<> struct DataSerializerTraits<TileElement>
         {
             stream->WriteValue(tileElement.pad_04[i]);
         }
+        for (int i = 0; i < 8; ++i)
+        {
+            stream->WriteValue(tileElement.pad_08[i]);
+        }
     }
     static void decode(IStream* stream, TileElement& tileElement)
     {
@@ -403,6 +407,10 @@ template<> struct DataSerializerTraits<TileElement>
         for (int i = 0; i < 4; ++i)
         {
             tileElement.pad_04[i] = stream->ReadValue<uint8_t>();
+        }
+        for (int i = 0; i < 8; ++i)
+        {
+            tileElement.pad_08[i] = stream->ReadValue<uint8_t>();
         }
     }
     static void log(IStream* stream, const TileElement& tileElement)

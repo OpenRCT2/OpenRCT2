@@ -1613,10 +1613,11 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_SCENERY_CHECK_COLLISION_S].bottom = w->widgets[WIDX_SCENERY_CHECK_COLLISION_S].top + 13;
             w->widgets[WIDX_SCENERY_CHECK_COLLISION_W].top = GBBT(propertiesAnchor, 2) + 5 + 7 * 1;
             w->widgets[WIDX_SCENERY_CHECK_COLLISION_W].bottom = w->widgets[WIDX_SCENERY_CHECK_COLLISION_W].top + 13;
-            N = (tileElement->flags & (1 << ((2 - get_current_rotation()) & 3))) != 0;
-            E = (tileElement->flags & (1 << ((3 - get_current_rotation()) & 3))) != 0;
-            S = (tileElement->flags & (1 << ((0 - get_current_rotation()) & 3))) != 0;
-            W = (tileElement->flags & (1 << ((1 - get_current_rotation()) & 3))) != 0;
+            auto occupiedQuadrants = tileElement->GetOccupiedQuadrants();
+            N = (occupiedQuadrants & (1 << ((2 - get_current_rotation()) & 3))) != 0;
+            E = (occupiedQuadrants & (1 << ((3 - get_current_rotation()) & 3))) != 0;
+            S = (occupiedQuadrants & (1 << ((0 - get_current_rotation()) & 3))) != 0;
+            W = (occupiedQuadrants & (1 << ((1 - get_current_rotation()) & 3))) != 0;
             widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_N, N);
             widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_E, E);
             widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_COLLISION_S, S);

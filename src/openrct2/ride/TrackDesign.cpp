@@ -2184,7 +2184,7 @@ static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, 
         int32_t fx = floor2(x, 32);
         int32_t fy = floor2(y, 32);
         int32_t fz = z >> 3;
-        TileElement* tileElement = tile_element_insert({ fx >> 5, fy >> 5, fz }, 15);
+        TileElement* tileElement = tile_element_insert({ fx >> 5, fy >> 5, fz }, 0b1111);
         tileElement->clearance_height = fz + 4;
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
         tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
@@ -2411,7 +2411,7 @@ static void track_design_preview_clear_map()
     {
         TileElement* tile_element = &gTileElements[i];
         tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-        tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
+        tile_element->SetLastForTile(true);
         tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         tile_element->AsSurface()->SetWaterHeight(0);
         tile_element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);

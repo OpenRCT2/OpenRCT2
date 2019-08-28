@@ -61,7 +61,7 @@ struct CorruptElement;
 struct TileElementBase
 {
     uint8_t type;             // 0
-    uint8_t flags;            // 1
+    uint8_t flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
 
@@ -71,9 +71,12 @@ struct TileElementBase
     void SetDirection(uint8_t direction);
     uint8_t GetDirectionWithOffset(uint8_t offset) const;
     bool IsLastForTile() const;
+    void SetLastForTile(bool on);
     bool IsGhost() const;
     void SetGhost(bool isGhost);
     void Remove();
+    uint8_t GetOccupiedQuadrants() const;
+    void SetOccupiedQuadrants(uint8_t quadrants);
 };
 
 /**
@@ -122,10 +125,6 @@ public:
     BannerElement* AsBanner() const
     {
         return as<BannerElement, TileElementType::Banner>();
-    }
-    CorruptElement* AsCorrupt() const
-    {
-        return as<CorruptElement, TileElementType::Corrupt>();
     }
 
     void ClearAs(uint8_t newType);
@@ -245,8 +244,6 @@ public:
 
     uint8_t GetAdditionStatus() const;
     void SetAdditionStatus(uint8_t newStatus);
-
-    uint8_t GetRCT1PathType() const;
 
     bool ShouldDrawPathOverSupports();
     void SetShouldDrawPathOverSupports(bool on);
@@ -604,6 +601,7 @@ enum
 #define TILE_ELEMENT_QUADRANT_MASK 0b11000000
 #define TILE_ELEMENT_TYPE_MASK 0b00111100
 #define TILE_ELEMENT_DIRECTION_MASK 0b00000011
+#define TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK 0b00001111
 
 #define TILE_ELEMENT_COLOUR_MASK 0b00011111
 

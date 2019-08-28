@@ -49,6 +49,14 @@ bool TileElementBase::IsLastForTile() const
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
+void TileElementBase::SetLastForTile(bool on)
+{
+    if (on)
+        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    else
+        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+}
+
 bool TileElementBase::IsGhost() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
@@ -154,6 +162,7 @@ void TileElement::ClearAs(uint8_t newType)
     base_height = 2;
     clearance_height = 2;
     std::fill_n(pad_04, sizeof(pad_04), 0x00);
+    std::fill_n(pad_08, sizeof(pad_08), 0x00);
 }
 
 void TileElementBase::Remove()
@@ -203,4 +212,15 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
             log_error("Tried to rotate QuarterTile invalid amount.");
             return QuarterTile{ 0 };
     }
+}
+
+uint8_t TileElementBase::GetOccupiedQuadrants() const
+{
+    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+}
+
+void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
+{
+    flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
 }

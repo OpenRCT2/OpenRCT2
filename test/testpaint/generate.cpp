@@ -446,7 +446,7 @@ private:
         {
             TileElement tileElement = {};
             tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
-            tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+            tileElement.SetLastForTile(true);
             tileElement.AsTrack()->SetTrackType(trackType);
             tileElement.base_height = 3;
             if (_invertedTrack)
@@ -482,7 +482,7 @@ private:
             }
 
             // Get chain lift calls
-            tileElement.type |= 0x80;
+            tileElement.AsTrack()->SetHasChain(true);
             PaintIntercept::ClearCalls();
             CallOriginal(trackType, direction, trackSequence, height, &tileElement);
             numCalls = PaintIntercept::GetCalls(callBuffer);

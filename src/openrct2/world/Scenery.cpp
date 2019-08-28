@@ -137,7 +137,8 @@ void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
 
     // Check map elements above, presumably to see if map element is blocked from rain
     tileElementAbove = tileElement;
-    while (!(tileElementAbove->flags & 7))
+    // Change from original: RCT2 only checked for the first three quadrants, which was very likely to be a bug.
+    while (!(tileElementAbove->GetOccupiedQuadrants()))
     {
         tileElementAbove++;
 

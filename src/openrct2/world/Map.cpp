@@ -310,7 +310,7 @@ void map_init(int32_t size)
     {
         TileElement* tile_element = &gTileElements[i];
         tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-        tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
+        tile_element->SetLastForTile(true);
         tile_element->base_height = 14;
         tile_element->clearance_height = 14;
         tile_element->AsSurface()->SetWaterHeight(0);
@@ -957,7 +957,7 @@ void tile_element_remove(TileElement* tileElement)
     }
 
     // Mark the latest element with the last element flag.
-    (tileElement - 1)->flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    (tileElement - 1)->SetLastForTile(true);
     tileElement->base_height = 0xFF;
 
     if ((tileElement + 1) == gNextFreeTileElement)
@@ -1153,9 +1153,10 @@ bool map_check_free_elements_and_reorganise(int32_t numElements)
  *
  *  rct2: 0x0068B1F6
  */
-TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t flags)
+TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadrants)
 {
     TileElement *originalTileElement, *newTileElement, *insertedElement;
+    bool isLastForTile = false;
 
     if (!map_check_free_elements_and_reorganise(1))
     {
@@ -1178,11 +1179,11 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t flags)
         originalTileElement++;
         newTileElement++;
 
-        if ((newTileElement - 1)->flags & TILE_ELEMENT_FLAG_LAST_TILE)
+        if ((newTileElement - 1)->IsLastForTile())
         {
             // No more elements above the insert element
-            (newTileElement - 1)->flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
-            flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+            (newTileElement - 1)->SetLastForTile(false);
+            isLastForTile = true;
             break;
         }
     }
@@ -1191,13 +1192,15 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t flags)
     insertedElement = newTileElement;
     newTileElement->type = 0;
     newTileElement->base_height = loc.z;
-    newTileElement->flags = flags;
+    newTileElement->flags = 0;
+    newTileElement->SetLastForTile(isLastForTile);
+    newTileElement->SetOccupiedQuadrants(occupiedQuadrants);
     newTileElement->clearance_height = loc.z;
     std::memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
     newTileElement++;
 
     // Insert rest of map elements above insert height
-    if (!(flags & TILE_ELEMENT_FLAG_LAST_TILE))
+    if (!isLastForTile)
     {
         do
         {
@@ -1285,8 +1288,8 @@ void map_obstruction_set_error_text(TileElement* tileElement)
  *  bl = bl
  */
 bool map_can_construct_with_clear_at(
-    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile bl, uint8_t flags, money32* price,
-    uint8_t crossingMode)
+    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
+    money32* price, uint8_t crossingMode)
 {
     int32_t al, ah, bh, cl, ch, water_height;
     al = ah = bh = cl = ch = water_height = 0;
@@ -1312,7 +1315,7 @@ bool map_can_construct_with_clear_at(
         {
             if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height && !(tileElement->IsGhost()))
             {
-                if (tileElement->flags & (bl.GetBaseQuarterOccupied()))
+                if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     goto loc_68BABC;
                 }
@@ -1349,7 +1352,7 @@ bool map_can_construct_with_clear_at(
             canBuildCrossing = true;
         }
 
-        if (bl.GetZQuarterOccupied() != 0b1111)
+        if (quarterTile.GetZQuarterOccupied() != 0b1111)
         {
             if (tileElement->base_height >= zHigh)
             {
@@ -1390,8 +1393,8 @@ bool map_can_construct_with_clear_at(
                 }
                 bh = zLow + 4;
                 {
-                    auto baseQuarter = bl.GetBaseQuarterOccupied();
-                    auto zQuarter = bl.GetZQuarterOccupied();
+                    auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
+                    auto zQuarter = quarterTile.GetZQuarterOccupied();
                     if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || zLow >= al) && bh >= al))
                         && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || zLow >= ah) && bh >= ah))
                         && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || zLow >= cl) && bh >= cl))

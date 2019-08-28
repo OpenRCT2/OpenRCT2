@@ -160,6 +160,14 @@ bool TileElementBase::IsLastForTile() const
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
+void TileElementBase::SetLastForTile(bool on)
+{
+    if (on)
+        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    else
+        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+}
+
 uint8_t TileElementBase::GetType() const
 {
     return this->type & TILE_ELEMENT_TYPE_MASK;
@@ -440,4 +448,15 @@ bool rct_vehicle::IsGhost() const
 {
     auto r = get_ride(ride);
     return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
+}
+
+uint8_t TileElementBase::GetOccupiedQuadrants() const
+{
+    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+}
+
+void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
+{
+    flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
 }
