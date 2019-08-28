@@ -435,12 +435,15 @@ static int32_t scenario_create_ducks()
     if (centreWaterZ == 0)
         return 0;
 
-    // Check 7x7 area around centre tile
-    CoordsXY innerPos{ centrePos.x - (32 * 3), centrePos.y - (32 * 3) };
+    // Check NxN area around centre tile defined by SquareSize
+    constexpr int32_t SquareSize = 7;
+    constexpr int32_t SquareCentre = SquareSize / 2;
+
+    CoordsXY innerPos{ centrePos.x - (32 * SquareCentre), centrePos.y - (32 * SquareCentre) };
     int32_t waterTiles = 0;
-    for (int32_t y = 0; y < 7; y++)
+    for (int32_t y = 0; y < SquareSize; y++)
     {
-        for (int32_t x = 0; x < 7; x++)
+        for (int32_t x = 0; x < SquareSize; x++)
         {
             if (!map_is_location_valid(innerPos))
                 continue;
@@ -454,7 +457,7 @@ static int32_t scenario_create_ducks()
 
             innerPos.x += 32;
         }
-        innerPos.x -= 224;
+        innerPos.x -= SquareSize * 32;
         innerPos.y += 32;
     }
 
