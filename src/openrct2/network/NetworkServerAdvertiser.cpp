@@ -164,7 +164,7 @@ private:
 
     void SendRegistration(bool forceIPv4)
     {
-        using namespace OpenRCT2::Network;
+        using namespace OpenRCT2::Networking;
 
         _lastAdvertiseTime = platform_get_ticks();
 
@@ -199,7 +199,7 @@ private:
 
     void SendHeartbeat()
     {
-        using namespace OpenRCT2::Network;
+        using namespace OpenRCT2::Networking;
 
         Http::Request request;
         request.url = GetMasterServerUrl();

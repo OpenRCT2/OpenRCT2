@@ -151,7 +151,7 @@ private:
 
     void DownloadObject(const rct_object_entry& entry, const std::string name, const std::string url)
     {
-        using namespace OpenRCT2::Network;
+        using namespace OpenRCT2::Networking;
         try
         {
             std::printf("Downloading %s\n", url.c_str());
@@ -190,7 +190,7 @@ private:
 
     void NextDownload()
     {
-        using namespace OpenRCT2::Network;
+        using namespace OpenRCT2::Networking;
 
         if (!_downloadingObjects || _currentDownloadIndex >= _entries.size())
         {

@@ -17,7 +17,7 @@
 #    include <map>
 #    include <string>
 
-namespace OpenRCT2::Network::Http
+namespace OpenRCT2::Networking::Http
 {
     enum class Status
     {
@@ -68,6 +68,6 @@ namespace OpenRCT2::Network::Http
      */
     size_t DownloadPark(const char* url, void** outData);
 
-} // namespace OpenRCT2::Network::Http
+} // namespace OpenRCT2::Networking::Http
 
 #endif // DISABLE_HTTP
