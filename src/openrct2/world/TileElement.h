@@ -373,20 +373,18 @@ assert_struct_size(SmallSceneryElement, 16);
 struct LargeSceneryElement : TileElementBase
 {
 private:
-    uint16_t entryIndex; // 4
-    uint8_t colour[2];   // 6
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[8];
-#pragma clang diagnostic pop
+    uint32_t EntryIndex;
+    uint32_t BannerIndex;
+    uint8_t SequenceIndex;
+    uint8_t Colour[3];
 
 public:
     uint32_t GetEntryIndex() const;
     void SetEntryIndex(uint32_t newIndex);
     rct_scenery_entry* GetEntry() const;
 
-    uint16_t GetSequenceIndex() const;
-    void SetSequenceIndex(uint16_t newIndex);
+    uint8_t GetSequenceIndex() const;
+    void SetSequenceIndex(uint8_t newIndex);
 
     colour_t GetPrimaryColour() const;
     void SetPrimaryColour(colour_t colour);
@@ -394,8 +392,8 @@ public:
     void SetSecondaryColour(colour_t colour);
 
     Banner* GetBanner() const;
-    BannerIndex GetBannerIndex() const;
-    void SetBannerIndex(BannerIndex newIndex);
+    ::BannerIndex GetBannerIndex() const;
+    void SetBannerIndex(::BannerIndex newIndex);
 
     bool IsAccounted() const;
     void SetIsAccounted(bool isAccounted);
