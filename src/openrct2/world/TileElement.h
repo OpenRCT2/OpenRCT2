@@ -134,13 +134,15 @@ assert_struct_size(TileElement, 16);
 struct SurfaceElement : TileElementBase
 {
 private:
-    uint8_t slope;        // 4 0xE0 Edge Style, 0x1F Slope
-    uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
-    uint8_t grass_length; // 6
-    uint8_t ownership;    // 7
+    uint8_t Slope;
+    uint8_t WaterHeight;
+    uint8_t GrassLength;
+    uint8_t Ownership;
+    uint8_t SurfaceStyle;
+    uint8_t EdgeStyle;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_08[8];
+    uint8_t pad_08[6];
 #pragma clang diagnostic pop
 
 public:

@@ -18,56 +18,32 @@
 
 uint32_t SurfaceElement::GetSurfaceStyle() const
 {
-    uint32_t retVal = (terrain >> 5) & 7;
-    if (type & 1)
-        retVal |= (1 << 3);
-    return retVal;
+    return SurfaceStyle;
 }
 
 uint32_t SurfaceElement::GetEdgeStyle() const
 {
-    uint32_t terrain_edge = (slope >> 5) & 7;
-    if (type & 128)
-        terrain_edge |= (1 << 3);
-    return terrain_edge;
+    return EdgeStyle;
 }
 
 void SurfaceElement::SetSurfaceStyle(uint32_t newStyle)
 {
-    // Bit 3 for terrain is stored in element.type bit 0
-    if (newStyle & 8)
-        type |= 1;
-    else
-        type &= ~1;
-
-    // Bits 0, 1, 2 for terrain are stored in element.terrain bit 5, 6, 7
-    terrain &= ~0xE0;
-    terrain |= (newStyle & 7) << 5;
+    SurfaceStyle = newStyle;
 }
 
 void SurfaceElement::SetEdgeStyle(uint32_t newStyle)
 {
-    // Bit 3 for terrain is stored in element.type bit 7
-    if (newStyle & 8)
-        type |= 128;
-    else
-        type &= ~128;
-
-    // Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
-    slope &= ~TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
-    slope |= (newStyle & 7) << 5;
+    EdgeStyle = newStyle;
 }
 
 uint32_t SurfaceElement::GetWaterHeight() const
 {
-    return terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+    return WaterHeight;
 }
 
 void SurfaceElement::SetWaterHeight(uint32_t newWaterHeight)
 {
-    newWaterHeight &= 0x1F;
-    terrain &= ~TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
-    terrain |= newWaterHeight;
+    WaterHeight = newWaterHeight;
 }
 
 bool SurfaceElement::CanGrassGrow() const
@@ -88,20 +64,20 @@ bool SurfaceElement::CanGrassGrow() const
 
 uint8_t SurfaceElement::GetGrassLength() const
 {
-    return grass_length;
+    return GrassLength;
 }
 
 void SurfaceElement::SetGrassLength(uint8_t newLength)
 {
-    grass_length = newLength;
+    GrassLength = newLength;
 }
 
 void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, CoordsXY coords)
 {
-    uint8_t oldLength = grass_length & 0x7;
+    uint8_t oldLength = GrassLength & 0x7;
     uint8_t newLength = length & 0x7;
 
-    grass_length = length;
+    GrassLength = length;
 
     if (newLength == oldLength)
     {
@@ -130,7 +106,7 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
     if (!CanGrassGrow())
         return;
 
-    uint8_t grassLengthTmp = grass_length & 7;
+    uint8_t grassLengthTmp = GrassLength & 7;
 
     // Check if grass is underwater or outside park
     uint32_t waterHeight = GetWaterHeight() * 2;
@@ -147,7 +123,7 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
 
     int32_t z0 = base_height;
     int32_t z1 = base_height + 2;
-    if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+    if (Slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         z1 += 2;
 
     // Check objects above grass
@@ -162,17 +138,17 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
             uint8_t lengthNibble = (GetGrassLength() & 0xF0) >> 4;
             if (lengthNibble < 0xF)
             {
-                grass_length += 0x10;
+                GrassLength += 0x10;
             }
             else
             {
                 // Zeros the length nibble
-                grass_length += 0x10;
-                grass_length ^= 8;
-                if (grass_length & 8)
+                GrassLength += 0x10;
+                GrassLength ^= 8;
+                if (GrassLength & 8)
                 {
                     // Random growth rate (length nibble)
-                    grass_length |= scenario_rand() & 0x70;
+                    GrassLength |= scenario_rand() & 0x70;
                 }
                 else
                 {
@@ -204,35 +180,34 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
 
 uint8_t SurfaceElement::GetOwnership() const
 {
-    return (ownership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
+    return (Ownership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
 }
 
 void SurfaceElement::SetOwnership(uint8_t newOwnership)
 {
-    ownership &= ~TILE_ELEMENT_SURFACE_OWNERSHIP_MASK;
-    ownership |= (newOwnership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
+    Ownership &= ~TILE_ELEMENT_SURFACE_OWNERSHIP_MASK;
+    Ownership |= (newOwnership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
 }
 
 uint8_t SurfaceElement::GetParkFences() const
 {
-    return (ownership & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+    return (Ownership & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
 }
 
 void SurfaceElement::SetParkFences(uint8_t newParkFences)
 {
-    ownership &= ~TILE_ELEMENT_SURFACE_PARK_FENCE_MASK;
-    ownership |= (newParkFences & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+    Ownership &= ~TILE_ELEMENT_SURFACE_PARK_FENCE_MASK;
+    Ownership |= (newParkFences & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
 }
 
 uint8_t SurfaceElement::GetSlope() const
 {
-    return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    return Slope;
 }
 
 void SurfaceElement::SetSlope(uint8_t newSlope)
 {
-    slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
-    slope |= (newSlope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    Slope = newSlope;
 }
 
 bool SurfaceElement::HasTrackThatNeedsWater() const
