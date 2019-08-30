@@ -1197,6 +1197,7 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadr
     newTileElement->SetOccupiedQuadrants(occupiedQuadrants);
     newTileElement->clearance_height = loc.z;
     std::memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
+    std::memset(&newTileElement->pad_08, 0, sizeof(newTileElement->pad_08));
     newTileElement++;
 
     // Insert rest of map elements above insert height
