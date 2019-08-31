@@ -13,6 +13,8 @@
 #include "../object/Object.h"
 #include "Ride.h"
 
+typedef uint16_t track_type_t;
+
 #pragma pack(push, 1)
 struct rct_trackdefinition
 {
@@ -53,32 +55,27 @@ struct rct_track_coordinates
 enum
 {
     TRACK_ELEMENT_FLAG_TERMINAL_STATION = 1 << 3,
-    TRACK_ELEMENT_FLAG_INVERTED = 1 << 6,
+    TD6_TRACK_ELEMENT_FLAG_INVERTED = 1 << 6,
 };
 
 enum
 {
-    TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT = 1 << 7,
-};
-
-enum
-{
-    // Not anything to do with colour but uses
-    // that field in the map element
-
-    // Used for multi-dimension coaster
-    TRACK_ELEMENT_COLOUR_FLAG_INVERTED = (1 << 2),
-
+    TRACK_ELEMENT_FLAGS2_CHAIN_LIFT = 1 << 0,
+    TRACK_ELEMENT_FLAGS2_INVERTED = 1 << 1,
     // Used for giga coaster
-    TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
-
-    TRACK_ELEMENT_DOOR_A_MASK = 0b00011100,
-    TRACK_ELEMENT_DOOR_B_MASK = 0b11100000,
+    TRACK_ELEMENT_FLAGS2_CABLE_LIFT = 1 << 2,
+    TRACK_ELEMENT_FLAGS2_HIGHLIGHT = 1 << 3,
+    TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,
 };
 
-#define TRACK_ELEMENT_FLAG_MAGNITUDE_MASK 0x0F
-#define TRACK_ELEMENT_FLAG_COLOUR_MASK 0x30
-#define TRACK_ELEMENT_FLAG_STATION_NO_MASK 0x02
+enum
+{
+    TRACK_ELEMENT_COLOUR_SCHEME_MASK = 0b00000011,
+    // Not colour related, but shares the field.
+    TRACK_ELEMENT_COLOUR_DOOR_A_MASK = 0b00011100,
+    TRACK_ELEMENT_COLOUR_DOOR_B_MASK = 0b11100000,
+    TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK = 0b11110000,
+};
 
 #define MAX_STATION_PLATFORM_LENGTH 32
 

@@ -2127,12 +2127,15 @@ private:
                 dst2->SetInverted(src2->IsInverted());
                 dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
-                dst2->SetSeatRotation(4);
-                dst2->SetMazeEntry(src2->GetMazeEntry());
                 dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                dst2->SetDoorAState(src2->GetDoorAState());
+                dst2->SetDoorBState(src2->GetDoorBState());
+                auto ride = get_ride(dst2->GetRideIndex());
+                if (ride && ride->type == RIDE_TYPE_MAZE)
+                {
+                    dst2->SetMazeEntry(src2->GetMazeEntry());
+                }
                 // Skipping IsHighlighted()
-
-                // TODO: Import Door A and Door B states.
 
                 break;
             }

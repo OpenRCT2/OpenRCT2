@@ -1422,9 +1422,19 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetInverted(src2->IsInverted());
             dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
             dst2->SetHasGreenLight(src2->HasGreenLight());
-            dst2->SetSeatRotation(src2->GetSeatRotation());
-            dst2->SetMazeEntry(src2->GetMazeEntry());
             dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+            auto ride = get_ride(dst2->GetRideIndex());
+            if (ride)
+            {
+                if (ride->type == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
+                {
+                    dst2->SetSeatRotation(src2->GetSeatRotation());
+                }
+                else if (ride->type == RIDE_TYPE_MAZE)
+                {
+                    dst2->SetMazeEntry(src2->GetMazeEntry());
+                }
+            }
             // Skipping IsHighlighted()
 
             break;

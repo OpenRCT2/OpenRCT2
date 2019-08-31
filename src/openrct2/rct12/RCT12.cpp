@@ -175,7 +175,7 @@ uint8_t RCT12TrackElement::GetTrackType() const
 
 uint8_t RCT12TrackElement::GetSequenceIndex() const
 {
-    return sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    return sequence & RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
 }
 
 uint8_t RCT12TrackElement::GetRideIndex() const
@@ -190,22 +190,22 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    return (sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
 bool RCT12TrackElement::HasChain() const
 {
-    return type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    return type & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
 }
 
 bool RCT12TrackElement::HasCableLift() const
 {
-    return colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    return colour & RCT12_TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
 bool RCT12TrackElement::IsInverted() const
 {
-    return colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    return colour & RCT12_TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }
 
 uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
@@ -235,12 +235,12 @@ uint8_t RCT12TrackElement::GetPhotoTimeout() const
 
 uint8_t RCT12TrackElement::GetDoorAState() const
 {
-    return (colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+    return (colour & RCT12_TRACK_ELEMENT_DOOR_A_MASK) >> 2;
 }
 
 uint8_t RCT12TrackElement::GetDoorBState() const
 {
-    return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+    return (colour & RCT12_TRACK_ELEMENT_DOOR_B_MASK) >> 5;
 }
 
 uint8_t RCT12SmallSceneryElement::GetEntryIndex() const
@@ -685,13 +685,13 @@ void RCT12TrackElement::SetTrackType(uint8_t newType)
 
 void RCT12TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+    sequence &= ~RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (newSequenceIndex & RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK);
 }
 
 void RCT12TrackElement::SetStationIndex(uint8_t newStationIndex)
 {
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    sequence &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
     sequence |= (newStationIndex << 4);
 }
 
@@ -708,20 +708,20 @@ void RCT12TrackElement::SetColourScheme(uint8_t newColourScheme)
 
 void RCT12TrackElement::SetHasCableLift(bool on)
 {
-    colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    colour &= ~RCT12_TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
     if (on)
-        colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+        colour |= RCT12_TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
 void RCT12TrackElement::SetInverted(bool inverted)
 {
     if (inverted)
     {
-        colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        colour |= RCT12_TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
     }
     else
     {
-        colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        colour &= ~RCT12_TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
     }
 }
 
@@ -756,11 +756,11 @@ void RCT12TrackElement::SetHasChain(bool on)
 {
     if (on)
     {
-        type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        type |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
     }
     else
     {
-        type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        type &= ~RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
     }
 }
 
@@ -777,7 +777,7 @@ void RCT12TrackElement::SetMazeEntry(uint16_t newMazeEntry)
 
 void RCT12TrackElement::SetPhotoTimeout(uint8_t value)
 {
-    sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence &= RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
     sequence |= (value << 4);
 }
 
