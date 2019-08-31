@@ -421,12 +421,12 @@ uint8_t TileElementBase::GetDirectionWithOffset(uint8_t offset) const
 
 uint8_t SurfaceElement::GetSlope() const
 {
-    return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    return Slope;
 }
 
 uint32_t SurfaceElement::GetWaterHeight() const
 {
-    return terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+    return WaterHeight;
 }
 
 bool TrackElement::IsHighlighted() const
