@@ -28,11 +28,11 @@ private:
     CoordsXYZ _loc;
     uint8_t _slope;
     uint8_t _type;
-    uint8_t _direction = 0xFF;
+    Direction _direction = INVALID_DIRECTION;
 
 public:
     FootpathPlaceAction() = default;
-    FootpathPlaceAction(CoordsXYZ loc, uint8_t slope, uint8_t type, uint8_t direction = 0xFF)
+    FootpathPlaceAction(CoordsXYZ loc, uint8_t slope, uint8_t type, Direction direction = INVALID_DIRECTION)
         : _loc(loc)
         , _slope(slope)
         , _type(type)
@@ -127,7 +127,7 @@ public:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            if (_direction != 0xFF && !gCheatsDisableClearanceChecks)
+            if (_direction != INVALID_DIRECTION && !gCheatsDisableClearanceChecks)
             {
                 // It is possible, let's remove walls between the old and new piece of path
                 auto zLow = _loc.z / 8;

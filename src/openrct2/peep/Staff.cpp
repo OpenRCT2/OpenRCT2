@@ -514,15 +514,15 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
         auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
         if (peep->next_z != surfaceElement->base_height)
-            return 0xFF;
+            return INVALID_DIRECTION;
 
         if (peep->GetNextIsSloped())
         {
             if (surfaceElement->GetSlope() != PathSlopeToLandSlope[peep->GetNextDirection()])
-                return 0xFF;
+                return INVALID_DIRECTION;
         }
         else if (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
-            return 0xFF;
+            return INVALID_DIRECTION;
     }
 
     uint8_t chosenDirection = scenario_rand() & 0x3;
@@ -553,7 +553,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
             }
         }
     }
-    return 0xFF;
+    return INVALID_DIRECTION;
 }
 
 /**
@@ -600,13 +600,13 @@ static bool staff_path_finding_handyman(Peep* peep)
         litterDirection = staff_handyman_direction_to_nearest_litter(peep);
     }
 
-    uint8_t direction = 0xFF;
+    Direction direction = INVALID_DIRECTION;
     if (litterDirection == 0xFF && (peep->staff_orders & STAFF_ORDERS_MOWING) && peep->staff_mowing_timeout >= 12)
     {
         direction = staff_handyman_direction_to_uncut_grass(peep, validDirections);
     }
 
-    if (direction == 0xFF)
+    if (direction == INVALID_DIRECTION)
     {
         if (peep->GetNextIsSurface())
         {
@@ -784,7 +784,7 @@ static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirect
  */
 static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
 {
-    uint8_t direction = 0xFF;
+    Direction direction = INVALID_DIRECTION;
     uint8_t pathDirections = pathElement->GetEdges();
     pathDirections &= validDirections;
 
@@ -878,7 +878,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
 static bool staff_path_finding_mechanic(Peep* peep)
 {
     uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
-    uint8_t direction = 0xFF;
+    Direction direction = INVALID_DIRECTION;
     if (peep->GetNextIsSurface())
     {
         direction = staff_mechanic_direction_surface(peep);
@@ -919,7 +919,7 @@ static bool staff_path_finding_mechanic(Peep* peep)
  */
 static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
 {
-    uint8_t direction = 0xFF;
+    Direction direction = INVALID_DIRECTION;
     uint8_t pathDirections = pathElement->GetEdges();
     if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION)
     {
@@ -966,7 +966,7 @@ static bool staff_path_finding_misc(Peep* peep)
 {
     uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
-    uint8_t direction = 0xFF;
+    Direction direction = INVALID_DIRECTION;
     if (peep->GetNextIsSurface())
     {
         direction = staff_direction_surface(peep, scenario_rand() & 3);
