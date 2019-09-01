@@ -88,7 +88,7 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
         }
 
-        if (_direction != 0xFF && _direction > 15)
+        if (_direction != INVALID_DIRECTION && !direction_valid(_direction))
         {
             log_error("Direction invalid. direction = %u", _direction);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
