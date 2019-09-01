@@ -741,7 +741,7 @@ static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, TileElemen
             return true;
     }
 
-    for (int32_t direction = 0; direction < 4; direction++)
+    for (Direction direction : ALL_DIRECTIONS)
     {
         if ((action < 0) && (direction == tileElement->AsPath()->GetSlopeDirection()))
             continue;
@@ -980,7 +980,7 @@ void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int3
     neighbour_list_init(&neighbourList);
 
     footpath_update_queue_entrance_banner(x, y, tileElement);
-    for (int32_t direction = 0; direction < 4; direction++)
+    for (Direction direction : ALL_DIRECTIONS)
     {
         loc_6A6C85(x, y, direction, tileElement, flags, true, &neighbourList);
     }

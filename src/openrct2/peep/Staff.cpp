@@ -234,7 +234,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
     uint8_t total = 0;
     uint8_t pathcount = 0;
     uint8_t widecount = 0;
-    for (int32_t adjac_dir = 0; adjac_dir <= 3; adjac_dir++)
+    for (Direction adjac_dir : ALL_DIRECTIONS)
     {
         int32_t adjac_x = x + CoordsDirectionDelta[adjac_dir].x;
         int32_t adjac_y = y + CoordsDirectionDelta[adjac_dir].y;

@@ -344,23 +344,23 @@ static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenD
                 edges &= ~(1 << direction_reverse(chosenDirection));
                 loc.z = tileElement->base_height;
 
-                for (direction = 0; direction < 4; direction++)
+                for (Direction dir : ALL_DIRECTIONS)
                 {
-                    if (!(edges & (1 << direction)))
+                    if (!(edges & (1 << dir)))
                         continue;
 
-                    edges &= ~(1 << direction);
+                    edges &= ~(1 << dir);
                     if (edges != 0)
                         return PATH_SEARCH_JUNCTION;
 
                     if (tileElement->AsPath()->IsSloped())
                     {
-                        if (tileElement->AsPath()->GetSlopeDirection() == direction)
+                        if (tileElement->AsPath()->GetSlopeDirection() == dir)
                         {
                             loc.z += 2;
                         }
                     }
-                    return footpath_element_dest_in_dir(loc, direction, outRideIndex, level + 1);
+                    return footpath_element_dest_in_dir(loc, dir, outRideIndex, level + 1);
                 }
                 return PATH_SEARCH_DEAD_END;
         }
@@ -1889,7 +1889,7 @@ int32_t guest_path_finding(Guest* peep)
         /* If this tileElement is adjacent to any non-wide paths,
          * remove all of the edges to wide paths. */
         uint8_t adjustedEdges = edges;
-        for (Direction chosenDirection = 0; direction_valid(chosenDirection); chosenDirection++)
+        for (Direction chosenDirection : ALL_DIRECTIONS)
         {
             // If there is no path in that direction try another
             if (!(adjustedEdges & (1 << chosenDirection)))
@@ -1971,7 +1971,7 @@ int32_t guest_path_finding(Guest* peep)
     if (!peep->HasFood() && (scenario_rand() & 0xFFFF) >= 2184)
     {
         uint8_t adjustedEdges = edges;
-        for (Direction chosenDirection = 0; direction_valid(chosenDirection); chosenDirection++)
+        for (Direction chosenDirection : ALL_DIRECTIONS)
         {
             // If there is no path in that direction try another
             if (!(adjustedEdges & (1 << chosenDirection)))
