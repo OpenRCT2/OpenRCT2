@@ -1551,12 +1551,12 @@ loc_69B119:
     {
         if (price != 0)
         {
-            if (cash_in_pocket == 0)
+            if ((cash_in_pocket == 0) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                 return false;
             }
-            if (price > cash_in_pocket)
+            if ((price > cash_in_pocket) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
                 return false;
@@ -2052,7 +2052,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             }
 
             // Basic price checks
-            if (ridePrice != 0 && !peep_has_voucher_for_free_ride(this, ride))
+            if (ridePrice != 0 && !peep_has_voucher_for_free_ride(this, ride) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
                 if (ridePrice > cash_in_pocket)
                 {
@@ -2641,7 +2641,7 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
         && peep->voucher_arguments == peep->current_ride)
         return true;
 
-    if (peep->cash_in_pocket <= 0)
+    if ((peep->cash_in_pocket <= 0) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
         peep_update_ride_at_entrance_try_leave(peep);
