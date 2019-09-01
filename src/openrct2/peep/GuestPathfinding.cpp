@@ -275,7 +275,8 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
  *
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
-static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenDirection, ride_id_t* outRideIndex, int32_t level)
+static uint8_t footpath_element_dest_in_dir(
+    TileCoordsXYZ loc, Direction chosenDirection, ride_id_t* outRideIndex, int32_t level)
 {
     TileElement* tileElement;
     Direction direction;
@@ -596,8 +597,8 @@ static int32_t CalculateHeuristicPathingScore(TileCoordsXYZ loc1, TileCoordsXYZ 
  */
 static void peep_pathfind_heuristic_search(
     TileCoordsXYZ loc, Peep* peep, TileElement* currentTileElement, bool inPatrolArea, uint8_t counter, uint16_t* endScore,
-    Direction test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16], TileCoordsXYZ* endXYZ,
-    uint8_t* endSteps)
+    Direction test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16],
+    TileCoordsXYZ* endXYZ, uint8_t* endSteps)
 {
     uint8_t searchResult = PATH_SEARCH_FAILED;
 

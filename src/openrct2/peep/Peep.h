@@ -615,7 +615,7 @@ struct Peep : rct_sprite_common
     union
     {
         uint8_t maze_last_edge; // 0x78
-        Direction direction;      // Direction ?
+        Direction direction;    // Direction ?
     };
     uint8_t interaction_ride_index;
     uint16_t time_in_queue;    // 0x7A

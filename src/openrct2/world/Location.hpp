@@ -270,7 +270,8 @@ typedef uint8_t Direction;
 const Direction INVALID_DIRECTION = 0xFF;
 
 /**
- * Array of all valid cardinal directions, to make it easy to write range-based for loops like: for (Direction d : ALL_DIRECTIONS)
+ * Array of all valid cardinal directions, to make it easy to write range-based for loops like:
+ *   for (Direction d : ALL_DIRECTIONS)
  */
 constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 
@@ -289,7 +290,8 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 }
 
 /**
- * Given a direction, return the next cardinal direction, wrapping around if necessary. (TODO: Figure out if this is CW or CCW)
+ * Given a direction, return the next cardinal direction, wrapping around if necessary.
+ * (TODO: Figure out if this is CW or CCW)
  */
 [[maybe_unused]] static constexpr Direction direction_next(Direction dir)
 {
@@ -297,7 +299,8 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 }
 
 /**
- * Given a direction, return the previous cardinal direction, wrapping around if necessary. (TODO: Figure out if this is CW or CCW)
+ * Given a direction, return the previous cardinal direction, wrapping around if necessary.
+ * (TODO: Figure out if this is CW or CCW)
  */
 [[maybe_unused]] static constexpr Direction direction_prev(Direction dir)
 {
