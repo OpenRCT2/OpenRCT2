@@ -5386,7 +5386,7 @@ static void vehicle_update_crash(Vehicle* vehicle)
             if (curVehicle->crash_z <= 96)
             {
                 curVehicle->crash_z++;
-                if ((scenario_rand() & 0xFFFF) <= 0x1555)
+                if (!scenario_rand_probability16(Probability::_08_3_Percent))
                 {
                     auto xOffset = (scenario_rand() & 2) - 1;
                     auto yOffset = (scenario_rand() & 2) - 1;
@@ -5501,7 +5501,7 @@ static void vehicle_update_sound(Vehicle* vehicle)
                 if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != SoundId::Null)
                     goto loc_6D7A97;
 
-                if ((scenario_rand() & 0xFFFF) <= 0x5555)
+                if (!scenario_rand_probability16(Probability::_33_3_Percent))
                 {
                     vehicle->scream_sound_id = SoundId::TrainWhistle;
                     screamVolume = 255;
@@ -5520,7 +5520,7 @@ static void vehicle_update_sound(Vehicle* vehicle)
                 if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != SoundId::Null)
                     goto loc_6D7A97;
 
-                if ((scenario_rand() & 0xFFFF) <= 0x5555)
+                if (!scenario_rand_probability16(Probability::_33_3_Percent))
                 {
                     vehicle->scream_sound_id = SoundId::Tram;
                     screamVolume = 255;
@@ -6289,7 +6289,7 @@ static int32_t vehicle_update_motion_dodgems(Vehicle* vehicle)
             vehicle->sprite_direction &= 0x1E;
             vehicle->Invalidate();
         }
-        else if ((scenario_rand() & 0xFFFF) <= 2849)
+        else if (!scenario_rand_probability16(Probability::_04_3_Percent))
         {
             if (vehicle->var_35 & (1 << 6))
                 vehicle->sprite_direction -= 2;
@@ -7479,16 +7479,16 @@ static bool loc_6DB38B(Vehicle* vehicle, TileElement* tileElement)
 
 static void VehicleUpdateGoKartAttemptSwitchLanes(Vehicle* vehicle)
 {
-    uint16_t probability = 0x8000;
+    auto probability = Probability::_50_0_Percent;
     if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_6)
     {
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
     }
     else
     {
-        probability = 0x0A3D;
+        probability = Probability::_04_0_Percent;
     }
-    if ((scenario_rand() & 0xFFFF) <= probability)
+    if (!scenario_rand_probability16(probability))
     {
         // This changes "riding left" to "moving to right lane" and "riding right" to "moving to left lane".
         vehicle->TrackSubposition += 2;
@@ -8933,10 +8933,10 @@ loc_6DC743:
                 {
                     uint16_t rand16 = scenario_rand() & 0xFFFF;
                     regs.bl = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_C_14;
-                    if (rand16 <= 0xA000)
+                    if (rand16 <= Probability::_62_5_Percent)
                     {
                         regs.bl = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12;
-                        if (rand16 <= 0x900)
+                        if (rand16 <= Probability::_03_5_Percent)
                         {
                             regs.bl = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10;
                         }

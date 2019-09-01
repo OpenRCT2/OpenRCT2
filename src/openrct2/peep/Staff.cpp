@@ -655,7 +655,7 @@ static bool staff_path_finding_handyman(Peep* peep)
                 bool chooseRandom = true;
                 if (litterDirection != 0xFF && pathDirections & (1 << litterDirection))
                 {
-                    if ((scenario_rand() & 0xFFFF) >= 0x1999)
+                    if ((scenario_rand() & 0xFFFF) >= Probability::_10_0_Percent)
                     {
                         chooseRandom = false;
                         direction = litterDirection;
@@ -1082,7 +1082,8 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
  */
 static int32_t staff_path_finding_entertainer(Peep* peep)
 {
-    if (((scenario_rand() & 0xFFFF) <= 0x4000) && (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2))
+    if (!scenario_rand_probability16(Probability::_25_0_Percent)
+        && (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2))
     {
         peep->action = (scenario_rand() & 1) ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
         peep->action_frame = 0;

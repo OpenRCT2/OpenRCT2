@@ -174,7 +174,7 @@ void Duck::UpdateSwim()
         return;
 
     uint32_t randomNumber = scenario_rand();
-    if ((randomNumber & 0xFFFF) < 0x666)
+    if ((randomNumber & 0xFFFF) < Probability::_02_5_Percent)
     {
         if (randomNumber & 0x80000000)
         {
@@ -192,7 +192,7 @@ void Duck::UpdateSwim()
     else
     {
         int32_t currentMonth = date_get_month(gDateMonthsElapsed);
-        if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
+        if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < Probability::_00_33_Percent)
         {
             state = DUCK_STATE::FLY_AWAY;
             UpdateFlyAway();
@@ -212,7 +212,7 @@ void Duck::UpdateSwim()
             {
                 z = waterZ;
                 randomNumber = scenario_rand();
-                if ((randomNumber & 0xFFFF) <= 0xAAA)
+                if ((randomNumber & 0xFFFF) <= Probability::_04_1_Percent)
                 {
                     randomNumber >>= 16;
                     sprite_direction = randomNumber & 0x18;

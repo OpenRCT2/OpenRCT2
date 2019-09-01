@@ -507,9 +507,14 @@ random_engine_t::result_type scenario_rand()
     return gScenarioRand();
 }
 
+Probability16 scenario_rand_get_probability16()
+{
+    return scenario_rand() & 0xFFFF;
+}
+
 bool scenario_rand_probability16(Probability16 probability)
 {
-    return (scenario_rand() & 0xFFFF) > probability;
+    return scenario_rand_get_probability16() > probability;
 }
 
 uint32_t scenario_rand_max(uint32_t max)

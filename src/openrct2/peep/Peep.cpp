@@ -2668,7 +2668,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         // If there has been 2 vandalised tiles in the last 6
         if (vandalisedTiles & 0x3E && (vandalThoughtTimeout == 0))
         {
-            if ((scenario_rand() & 0xFFFF) <= 10922)
+            if (!scenario_rand_probability16(Probability::_16_6_Percent))
             {
                 peep->InsertNewThought(PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
                 peep->happiness_target = std::max(0, peep->happiness_target - 17);
@@ -2677,7 +2677,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         }
     }
 
-    if (vandalThoughtTimeout && (scenario_rand() & 0xFFFF) <= 4369)
+    if (vandalThoughtTimeout && !scenario_rand_probability16(Probability::_06_6_Percent))
     {
         vandalThoughtTimeout--;
     }
@@ -2716,7 +2716,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
         }
     }
 
-    if (crowded >= 10 && peep->state == PEEP_STATE_WALKING && (scenario_rand() & 0xFFFF) <= 21845)
+    if (crowded >= 10 && peep->state == PEEP_STATE_WALKING && !scenario_rand_probability16(Probability::_33_3_Percent))
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
         peep->happiness_target = std::max(0, peep->happiness_target - 14);
@@ -2729,7 +2729,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     uint8_t disgusting_count = ((peep->disgusting_count & 0xF) << 2) | sick_count;
     peep->disgusting_count = disgusting_count | disgusting_time;
 
-    if (disgusting_time & 0xC0 && (scenario_rand() & 0xFFFF) <= 4369)
+    if (disgusting_time & 0xC0 && !scenario_rand_probability16(Probability::_06_6_Percent))
     {
         // Reduce the disgusting time
         peep->disgusting_count -= 0x40;
@@ -2742,7 +2742,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             total_sick += (disgusting_count >> (2 * time)) & 0x3;
         }
 
-        if (total_sick >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
+        if (total_sick >= 3 && !scenario_rand_probability16(Probability::_16_6_Percent))
         {
             peep->InsertNewThought(PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = std::max(0, peep->happiness_target - 17);
@@ -2755,7 +2755,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
     litter_count = ((peep->litter_count & 0xF) << 2) | litter_count;
     peep->litter_count = litter_count | litter_time;
 
-    if (litter_time & 0xC0 && (scenario_rand() & 0xFFFF) <= 4369)
+    if (litter_time & 0xC0 && !scenario_rand_probability16(Probability::_06_6_Percent))
     {
         // Reduce the litter time
         peep->litter_count -= 0x40;
@@ -2768,7 +2768,7 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
             total_litter += (litter_count >> (2 * time)) & 0x3;
         }
 
-        if (total_litter >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
+        if (total_litter >= 3 && !scenario_rand_probability16(Probability::_16_6_Percent))
         {
             peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = std::max(0, peep->happiness_target - 17);

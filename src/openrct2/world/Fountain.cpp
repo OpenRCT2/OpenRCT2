@@ -57,8 +57,9 @@ static constexpr const std::array<CoordsXY, 8> _fountainDirectionsPositive = { C
                                                                                CoordsXY{ COORDS_XY_STEP, 0 },
                                                                                CoordsXY{ 0, 0 },
                                                                                CoordsXY{ 0, COORDS_XY_STEP } };
-constexpr auto _FountainChanceOfStoppingEdgeMode = 0x3333;   // 0.200
-constexpr auto _FountainChanceOfStoppingRandomMode = 0x2000; // 0.125
+
+constexpr auto _FountainChanceOfStoppingEdgeMode = Probability::_20_0_Percent;
+constexpr auto _FountainChanceOfStoppingRandomMode = Probability::_12_5_Percent;
 
 // rct2: 0x0097F040
 const uint8_t _fountainDirections[] = { 0, 1, 2, 3, 0, 1, 2, 3 };

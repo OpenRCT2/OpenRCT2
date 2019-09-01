@@ -447,7 +447,7 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
     // PEEP_FLAGS_2? It's cleared here but not set anywhere!
     if ((peep->peep_flags & PEEP_FLAGS_2))
     {
-        if ((scenario_rand() & 0xFFFF) <= 7281)
+        if (!scenario_rand_probability16(Probability::_11_1_Percent))
             peep->peep_flags &= ~PEEP_FLAGS_2;
 
         return 8;
@@ -1975,7 +1975,7 @@ int32_t guest_path_finding(Guest* peep)
      * In principle, peeps with food are not paying as much attention to
      * where they are going and are consequently more like to walk up
      * dead end paths, paths to ride exits, etc. */
-    if (!peep->HasFood() && (scenario_rand() & 0xFFFF) >= 2184)
+    if (!peep->HasFood() && (scenario_rand() & 0xFFFF) >= Probability::_03_3_Percent)
     {
         uint8_t adjustedEdges = edges;
         for (Direction chosenDirection : ALL_DIRECTIONS)
@@ -2007,10 +2007,10 @@ int32_t guest_path_finding(Guest* peep)
         // If at least 2 directions consult map
         if (bitcount(edges) >= 2)
         {
-            uint16_t probability = 1638;
+            auto probability = Probability::_02_5_Percent;
             if (peep->HeadingForRideOrParkExit())
             {
-                probability = 9362;
+                probability = Probability::_14_2_Percent;
             }
             if ((scenario_rand() & 0xFFFF) < probability)
             {

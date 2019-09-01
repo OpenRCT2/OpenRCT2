@@ -515,7 +515,7 @@ void Guest::UpdateEasterEggInteractions()
 
     if (peep_flags & PEEP_FLAGS_JOY)
     {
-        if (scenario_rand() <= 1456) // Mistake should be 0xFFFF
+        if (!scenario_rand_probability16(Probability::_02_2_Percent))
         {
             if (action == PEEP_ACTION_NONE_1 || action == PEEP_ACTION_NONE_2)
             {
@@ -822,7 +822,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((item_standard_flags & PEEP_ITEM_MAP) ? 8192U : 2184U))
+        if (scenario_rand_get_probability16()
+            <= ((item_standard_flags & PEEP_ITEM_MAP) ? Probability::_12_5_Percent : Probability::_03_3_Percent))
         {
             PickRideToGoOn();
         }
@@ -1276,7 +1277,7 @@ void Guest::UpdateSitting()
 
         if (HasFood())
         {
-            if ((scenario_rand() & 0xFFFF) > 1310)
+            if (scenario_rand_probability16(Probability::_02_0_Percent))
             {
                 TryGetUpFromSitting();
                 return;
@@ -1289,7 +1290,7 @@ void Guest::UpdateSitting()
         }
 
         int32_t rand = scenario_rand();
-        if ((rand & 0xFFFF) > 131)
+        if ((rand & 0xFFFF) > Probability::_00_2_Percent)
         {
             TryGetUpFromSitting();
             return;
@@ -2177,7 +2178,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             // there's a 90% chance that the peep will ignore it.
             if (!ride_has_ratings(ride) && (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES))
             {
-                if ((scenario_rand() & 0xFFFF) > 0x1999U)
+                if (scenario_rand_probability16(Probability::_10_0_Percent))
                 {
                     ChoseNotToGoOnRide(ride, peepAtRide, false);
                     return false;
@@ -3107,7 +3108,7 @@ static void peep_decide_whether_to_leave_park(Peep* peep)
     }
 
     // Approx 95% chance of staying in the park
-    if ((scenario_rand() & 0xFFFF) > 3276)
+    if (scenario_rand_probability16(Probability::_05_0_Percent))
     {
         return;
     }
@@ -4865,7 +4866,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (action >= PEEP_ACTION_NONE_1)
     {
-        if (energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
+        if (energy > 64 && !scenario_rand_probability16(Probability::_03_7_Percent))
         {
             action = PEEP_ACTION_JUMP;
             action_frame = 0;
@@ -5288,7 +5289,7 @@ void Guest::UpdateWalking()
     {
         if (action >= PEEP_ACTION_NONE_1)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
+            if ((0xFFFF & scenario_rand()) < Probability::_01_4_Percent)
             {
                 action = PEEP_ACTION_WAVE_2;
                 action_frame = 0;
@@ -5303,7 +5304,7 @@ void Guest::UpdateWalking()
     {
         if (action >= PEEP_ACTION_NONE_1)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
+            if ((0xFFFF & scenario_rand()) < Probability::_01_4_Percent)
             {
                 action = PEEP_ACTION_TAKE_PHOTO;
                 action_frame = 0;
@@ -5318,7 +5319,7 @@ void Guest::UpdateWalking()
     {
         if (action >= PEEP_ACTION_NONE_1)
         {
-            if ((0xFFFF & scenario_rand()) < 936)
+            if ((0xFFFF & scenario_rand()) < Probability::_01_4_Percent)
             {
                 action = PEEP_ACTION_DRAW_PICTURE;
                 action_frame = 0;
@@ -5333,7 +5334,7 @@ void Guest::UpdateWalking()
     {
         if (!GetNextIsSurface())
         {
-            if ((0xFFFF & scenario_rand()) <= 4096)
+            if (!scenario_rand_probability16(Probability::_06_2_Percent))
             {
                 static constexpr const uint8_t litter_types[] = {
                     LITTER_TYPE_EMPTY_CAN,
@@ -5353,7 +5354,7 @@ void Guest::UpdateWalking()
     else if (HasEmptyContainer())
     {
         if ((!GetNextIsSurface()) && ((uint32_t)(sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))
-            && ((0xFFFF & scenario_rand()) <= 4096))
+            && !scenario_rand_probability16(Probability::_06_2_Percent))
         {
             uint8_t pos_stnd = 0;
             for (int32_t container = HasEmptyContainerStandardFlag(); pos_stnd < 32; pos_stnd++)
@@ -5448,9 +5449,9 @@ void Guest::UpdateWalking()
     if (toilet > 140)
         return;
 
-    uint16_t chance = HasFood() ? 13107 : 2849;
+    auto chance = HasFood() ? Probability::_20_0_Percent : Probability::_04_3_Percent;
 
-    if ((scenario_rand() & 0xFFFF) > chance)
+    if (scenario_rand_probability16(chance))
         return;
 
     if (GetNextIsSurface() || GetNextIsSloped())
@@ -5615,7 +5616,7 @@ void Guest::UpdateQueuing()
         return;
     if (sprite_type == PEEP_SPRITE_TYPE_NORMAL)
     {
-        if (time_in_queue >= 2000 && (0xFFFF & scenario_rand()) <= 119)
+        if (time_in_queue >= 2000 && !scenario_rand_probability16(Probability::_00_18_Percent))
         {
             // Eat Food/Look at watch
             action = PEEP_ACTION_EAT_FOOD;
@@ -5623,7 +5624,7 @@ void Guest::UpdateQueuing()
             action_sprite_image_offset = 0;
             UpdateCurrentActionSpriteType();
         }
-        if (time_in_queue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
+        if (time_in_queue >= 3500 && !scenario_rand_probability16(Probability::_00_14_Percent))
         {
             // Create the I have been waiting in line ages thought
             InsertNewThought(PEEP_THOUGHT_TYPE_QUEUING_AGES, current_ride);
@@ -5671,7 +5672,7 @@ void Guest::UpdateQueuing()
     if (time_in_queue < 4300)
         return;
 
-    if (happiness <= 65 && (0xFFFF & scenario_rand()) < 2184)
+    if (happiness <= 65 && (0xFFFF & scenario_rand()) < Probability::_03_3_Percent)
     {
         // Give up queueing for the ride
         sprite_direction ^= (1 << 4);
@@ -5794,7 +5795,7 @@ void Guest::UpdateWatching()
         {
             if (HasFood())
             {
-                if ((scenario_rand() & 0xFFFF) <= 1310)
+                if (!scenario_rand_probability16(Probability::_02_0_Percent))
                 {
                     action = PEEP_ACTION_EAT_FOOD;
                     action_frame = 0;
@@ -5804,7 +5805,7 @@ void Guest::UpdateWatching()
                 }
             }
 
-            if ((scenario_rand() & 0xFFFF) <= 655)
+            if (!scenario_rand_probability16(Probability::_01_0_Percent))
             {
                 action = PEEP_ACTION_TAKE_PHOTO;
                 action_frame = 0;
@@ -5815,7 +5816,7 @@ void Guest::UpdateWatching()
 
             if ((standing_flags & 1))
             {
-                if ((scenario_rand() & 0xFFFF) <= 655)
+                if (!scenario_rand_probability16(Probability::_01_0_Percent))
                 {
                     action = PEEP_ACTION_WAVE;
                     action_frame = 0;
@@ -6237,7 +6238,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
         if ((peep->litter_count & 0xC0) != 0xC0 && (peep->disgusting_count & 0xC0) != 0xC0)
             return;
 
-        if ((scenario_rand() & 0xFFFF) > 3276)
+        if (scenario_rand_probability16(Probability::_05_0_Percent))
             return;
     }
 
@@ -6358,14 +6359,14 @@ static bool peep_should_watch_ride(TileElement* tileElement)
 
     if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT)
     {
-        if ((scenario_rand() & 0xFFFF) > 0x3333)
+        if (scenario_rand_probability16(Probability::_20_0_Percent))
         {
             return false;
         }
     }
     else if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT)
     {
-        if ((scenario_rand() & 0xFFFF) > 0x1000)
+        if (scenario_rand_probability16(Probability::_06_2_Percent))
         {
             return false;
         }
@@ -6867,12 +6868,12 @@ static item_pref_t item_order_preference[] = {
  */
 void Guest::UpdateSpriteType()
 {
-    if (sprite_type == PEEP_SPRITE_TYPE_BALLOON && (scenario_rand() & 0xFFFF) <= 327)
+    if (sprite_type == PEEP_SPRITE_TYPE_BALLOON && !scenario_rand_probability16(Probability::_00_5_Percent))
     {
         bool isBalloonPopped = false;
         if (x != LOCATION_NULL)
         {
-            if ((scenario_rand() & 0xFFFF) <= 13107)
+            if (!scenario_rand_probability16(Probability::_20_0_Percent))
             {
                 isBalloonPopped = true;
                 audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
