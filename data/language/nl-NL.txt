@@ -3231,7 +3231,7 @@ STR_5762    :Chinese yuan (CN¥)
 STR_5763    :Alle bestanden
 STR_5764    :Ongeldig attractietype
 STR_5765    :Kan attracties met een ongeldig type niet bewerken.
-STR_5766    :<available string id>
+STR_5766    :Hongaarse forint (Ft)
 STR_5767    :Inkomsten
 STR_5768    :Totaal aant. bez.
 STR_5769    :Totale winst

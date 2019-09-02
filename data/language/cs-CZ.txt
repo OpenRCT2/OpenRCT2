@@ -3235,7 +3235,7 @@ STR_5762    :Čínský jüan (CN¥)
 STR_5763    :Všechny soubory
 STR_5764    :Neplatný typ atrakce
 STR_5765    :Nelze upravovat atrakce neplatného typu
-STR_5766    :<available string id>
+STR_5766    :Maďarský Forint (Ft)
 STR_5767    :Příjem
 STR_5768    :Celkem zákazníků
 STR_5769    :Celkový zisk
