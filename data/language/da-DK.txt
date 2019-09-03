@@ -3237,7 +3237,7 @@ STR_5762    :Chinese Yuan (CN¥)
 STR_5763    :Alle filer
 STR_5764    :Ugyldig forlystelses type
 STR_5765    :Kan ikke redigere ugyldige forlystelses typer
-STR_5766    :<available string id>
+STR_5766    :Ungarsk Forint (Ft)
 STR_5767    :Indkomst
 STR_5768    :Total kunder
 STR_5769    :Total profit
