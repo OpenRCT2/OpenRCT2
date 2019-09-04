@@ -3214,6 +3214,7 @@ STR_5762    :Yuan Chinês(CN¥)
 STR_5763    :Todos os arquivos
 STR_5764    :Tipo de atração inválida
 STR_5765    :Não é possível editar atração de tipo inválido
+STR_5766    :Florim húngaro (Ft) 
 STR_5767    :Receita
 STR_5768    :Clientes totais
 STR_5769    :Lucro total
