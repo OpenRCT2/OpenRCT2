@@ -1541,6 +1541,8 @@ void map_restore_provisional_elements()
 void map_remove_out_of_range_elements()
 {
     int32_t mapMaxXY = gMapSizeMaxXY;
+    //#9955 ensure that we can remove elements
+    bool buildState = gCheatsBuildInPauseMode;
 
     for (int32_t y = 0; y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); y += 32)
     {
@@ -1559,6 +1561,8 @@ void map_remove_out_of_range_elements()
             }
         }
     }
+    //#9955 reset cheat state
+    CheatsSet(CheatType::BuildInPauseMode, buildState);
 }
 
 static void map_extend_boundary_surface_extend_tile(const SurfaceElement& sourceTile, SurfaceElement& destTile)
