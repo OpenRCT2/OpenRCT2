@@ -1543,6 +1543,7 @@ void map_remove_out_of_range_elements()
     int32_t mapMaxXY = gMapSizeMaxXY;
     //#9955 ensure that we can remove elements
     bool buildState = gCheatsBuildInPauseMode;
+    CheatsSet(CheatType::BuildInPauseMode, true);
 
     for (int32_t y = 0; y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); y += 32)
     {
