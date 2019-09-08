@@ -312,47 +312,49 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
  */
 static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    int32_t i;
-    int16_t mapX, mapY, mapZ;
-    money32 cost;
-    ride_id_t rideIndex;
-
     window_track_place_clear_provisional();
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
+    int16_t mapX, mapY;
     sub_68A15E(x, y, &mapX, &mapY, nullptr, nullptr);
     if (mapX == LOCATION_NULL)
         return;
 
     // Try increasing Z until a feasible placement is found
-    mapZ = window_track_place_get_base_z(mapX, mapY);
-    for (i = 0; i < 7; i++)
+    int16_t mapZ = window_track_place_get_base_z(mapX, mapY);
+    for (int32_t i = 0; i < 7; i++)
     {
         gDisableErrorWindowSound = true;
+        money32 cost = MONEY32_UNDEFINED;
+        ride_id_t rideIndex = RIDE_ID_NULL;
         window_track_place_attempt_placement(_trackDesign.get(), mapX, mapY, mapZ, 1, &cost, &rideIndex);
         gDisableErrorWindowSound = false;
 
         if (cost != MONEY32_UNDEFINED)
         {
-            window_close_by_class(WC_ERROR);
-            audio_play_sound_at_location(SoundId::PlaceItem, { mapX, mapY, mapZ });
+            auto ride = get_ride(rideIndex);
+            if (ride != nullptr)
+            {
+                window_close_by_class(WC_ERROR);
+                audio_play_sound_at_location(SoundId::PlaceItem, { mapX, mapY, mapZ });
 
-            _currentRideIndex = rideIndex;
-            if (track_design_are_entrance_and_exit_placed())
-            {
-                auto intent = Intent(WC_RIDE);
-                intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
-                context_open_intent(&intent);
-                window_close(w);
-            }
-            else
-            {
-                ride_initialise_construction_window(get_ride(rideIndex));
-                w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-                window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                _currentRideIndex = rideIndex;
+                if (track_design_are_entrance_and_exit_placed())
+                {
+                    auto intent = Intent(WC_RIDE);
+                    intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+                    context_open_intent(&intent);
+                    window_close(w);
+                }
+                else
+                {
+                    ride_initialise_construction_window(ride);
+                    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+                    window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                }
             }
             return;
         }
