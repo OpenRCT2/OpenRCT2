@@ -400,10 +400,13 @@ static void window_track_place_clear_provisional()
     if (_window_track_place_last_was_valid)
     {
         auto ride = get_ride(_window_track_place_ride_index);
-        place_virtual_track(
-            _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _window_track_place_last_valid_x,
-            _window_track_place_last_valid_y, _window_track_place_last_valid_z);
-        _window_track_place_last_was_valid = false;
+        if (ride != nullptr)
+        {
+            place_virtual_track(
+                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _window_track_place_last_valid_x,
+                _window_track_place_last_valid_y, _window_track_place_last_valid_z);
+            _window_track_place_last_was_valid = false;
+        }
     }
 }
 
