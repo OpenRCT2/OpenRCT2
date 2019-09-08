@@ -248,7 +248,7 @@ public:
             case WC_RIDE:
             {
                 auto ride = get_ride(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
-                return window_ride_main_open(ride);
+                return ride == nullptr ? nullptr : window_ride_main_open(ride);
             }
             case WC_TRACK_DESIGN_PLACE:
                 return window_track_place_open((track_design_file_ref*)intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
