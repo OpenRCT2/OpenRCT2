@@ -210,186 +210,188 @@ bool is_csg_loaded()
 
 uint8_t TrackElement::GetSeatRotation() const
 {
-    return colour >> 4;
+    return ColourScheme >> 4;
 }
 
 void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 {
-    colour &= 0x0F;
-    colour |= (newSeatRotation << 4);
+    ColourScheme &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
+    ColourScheme |= (newSeatRotation << 4);
 }
 
 bool TrackElement::IsTakingPhoto() const
 {
-    return (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
+    return OnridePhotoBits != 0;
 }
 
 void TrackElement::SetPhotoTimeout()
 {
-    sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    sequence |= (3 << 4);
+    OnridePhotoBits = 3;
+}
+
+void TrackElement::SetPhotoTimeout(uint8_t value)
+{
+    OnridePhotoBits = value;
+}
+
+uint8_t TrackElement::GetPhotoTimeout() const
+{
+    return OnridePhotoBits;
 }
 
 void TrackElement::DecrementPhotoTimeout()
 {
-    // We should only touch the upper 4 bits, avoid underflow into the lower 4.
-    if (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
-    {
-        sequence -= (1 << 4);
-    }
+    OnridePhotoBits = std::max(0, OnridePhotoBits - 1);
 }
 
 uint16_t TrackElement::GetMazeEntry() const
 {
-    return mazeEntry;
+    return MazeEntry;
 }
 
 void TrackElement::SetMazeEntry(uint16_t newMazeEntry)
 {
-    mazeEntry = newMazeEntry;
+    MazeEntry = newMazeEntry;
 }
 
 void TrackElement::MazeEntryAdd(uint16_t addVal)
 {
-    mazeEntry |= addVal;
+    MazeEntry |= addVal;
 }
 
 void TrackElement::MazeEntrySubtract(uint16_t subVal)
 {
-    mazeEntry &= ~subVal;
+    MazeEntry &= ~subVal;
 }
 
-uint8_t TrackElement::GetTrackType() const
+track_type_t TrackElement::GetTrackType() const
 {
-    return trackType;
+    return TrackType;
 }
 
-void TrackElement::SetTrackType(uint8_t newType)
+void TrackElement::SetTrackType(track_type_t newType)
 {
-    trackType = newType;
+    TrackType = newType;
 }
 
 uint8_t TrackElement::GetSequenceIndex() const
 {
-    return sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    return Sequence;
 }
 
 void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+    Sequence = newSequenceIndex;
 }
 
 uint8_t TrackElement::GetStationIndex() const
 {
-    return (sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return StationIndex;
 }
 
 void TrackElement::SetStationIndex(uint8_t newStationIndex)
 {
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    sequence |= (newStationIndex << 4);
+    StationIndex = newStationIndex;
 }
 
 uint8_t TrackElement::GetDoorAState() const
 {
-    return (colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+    return (ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_A_MASK) >> 2;
 }
 
 uint8_t TrackElement::GetDoorBState() const
 {
-    return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+    return (ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_B_MASK) >> 5;
 }
 
-uint8_t TrackElement::GetRideIndex() const
+ride_idnew_t TrackElement::GetRideIndex() const
 {
-    return rideIndex;
+    return RideIndex;
 }
 
-void TrackElement::SetRideIndex(uint8_t newRideIndex)
+void TrackElement::SetRideIndex(ride_idnew_t newRideIndex)
 {
-    rideIndex = newRideIndex;
+    RideIndex = newRideIndex;
 }
 
 uint8_t TrackElement::GetColourScheme() const
 {
-    return colour & 0x3;
+    return ColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK;
 }
 
 void TrackElement::SetColourScheme(uint8_t newColourScheme)
 {
-    colour &= ~0x3;
-    colour |= (newColourScheme & 0x3);
+    ColourScheme &= ~TRACK_ELEMENT_COLOUR_SCHEME_MASK;
+    ColourScheme |= (newColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK);
 }
 
 bool TrackElement::HasCableLift() const
 {
-    return colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    return Flags2 & TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
 }
 
 void TrackElement::SetHasCableLift(bool on)
 {
-    colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    Flags2 &= ~TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
     if (on)
-        colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
 }
 
 bool TrackElement::IsInverted() const
 {
-    return colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    return Flags2 & TRACK_ELEMENT_FLAGS2_INVERTED;
 }
 
 void TrackElement::SetInverted(bool inverted)
 {
     if (inverted)
     {
-        colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_INVERTED;
     }
     else
     {
-        colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_INVERTED;
     }
 }
 
 uint8_t TrackElement::GetBrakeBoosterSpeed() const
 {
-    return (sequence >> 4) << 1;
+    return BrakeBoosterSpeed << 1;
 }
 
 void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
-    sequence &= ~0b11110000;
-    sequence |= ((speed >> 1) << 4);
+    BrakeBoosterSpeed = (speed >> 1);
 }
 
-uint8_t TrackElement::HasGreenLight() const
+bool TrackElement::HasGreenLight() const
 {
-    return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT) != 0;
 }
 
-void TrackElement::SetHasGreenLight(uint8_t greenLight)
+void TrackElement::SetHasGreenLight(bool on)
 {
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    if (greenLight)
+    Flags2 &= ~TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT;
+    if (on)
     {
-        sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT;
     }
 }
 
 bool TrackElement::HasChain() const
 {
-    return type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_CHAIN_LIFT) != 0;
 }
 
 void TrackElement::SetHasChain(bool on)
 {
     if (on)
     {
-        type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
     }
     else
     {
-        type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
     }
 }
 
@@ -421,17 +423,17 @@ uint8_t TileElementBase::GetDirectionWithOffset(uint8_t offset) const
 
 uint8_t SurfaceElement::GetSlope() const
 {
-    return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    return Slope;
 }
 
 uint32_t SurfaceElement::GetWaterHeight() const
 {
-    return terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+    return WaterHeight;
 }
 
 bool TrackElement::IsHighlighted() const
 {
-    return (type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT);
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_HIGHLIGHT);
 }
 
 uint8_t PathElement::GetEdges() const

@@ -225,7 +225,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         if (RideData4[ride.type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE
             && trackElement.element->AsTrack()->IsInverted())
         {
-            trackFlags |= TRACK_ELEMENT_FLAG_INVERTED;
+            trackFlags |= TD6_TRACK_ELEMENT_FLAG_INVERTED;
         }
 
         track.flags = trackFlags;
@@ -1504,11 +1504,11 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 uint32_t seatRotation = track.flags & 0x0F;
 
                 int32_t liftHillAndAlternativeState = 0;
-                if (track.flags & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
+                if (track.flags & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
                 {
                     liftHillAndAlternativeState |= 1;
                 }
-                if (track.flags & TRACK_ELEMENT_FLAG_INVERTED)
+                if (track.flags & TD6_TRACK_ELEMENT_FLAG_INVERTED)
                 {
                     liftHillAndAlternativeState |= 2;
                 }

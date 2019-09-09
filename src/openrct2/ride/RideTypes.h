@@ -12,4 +12,5 @@
 #include <cstdint>
 
 typedef uint8_t ride_id_t;
+typedef uint32_t ride_idnew_t; // Temporary, old one can be removed after switching save format.
 struct Ride;

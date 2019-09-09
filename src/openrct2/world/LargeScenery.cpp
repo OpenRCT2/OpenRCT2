@@ -17,26 +17,24 @@
 
 colour_t LargeSceneryElement::GetPrimaryColour() const
 {
-    return colour[0] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[0];
 }
 
 colour_t LargeSceneryElement::GetSecondaryColour() const
 {
-    return colour[1] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[1];
 }
 
 void LargeSceneryElement::SetPrimaryColour(colour_t newColour)
 {
     assert(newColour <= 31);
-    colour[0] &= ~TILE_ELEMENT_COLOUR_MASK;
-    colour[0] |= newColour;
+    Colour[0] = newColour;
 }
 
 void LargeSceneryElement::SetSecondaryColour(colour_t newColour)
 {
     assert(newColour <= 31);
-    colour[1] &= ~TILE_ELEMENT_COLOUR_MASK;
-    colour[1] |= newColour;
+    Colour[1] = newColour;
 }
 
 Banner* LargeSceneryElement::GetBanner() const
@@ -46,14 +44,12 @@ Banner* LargeSceneryElement::GetBanner() const
 
 BannerIndex LargeSceneryElement::GetBannerIndex() const
 {
-    return (type & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2) | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
+    return BannerIndex;
 }
 
-void LargeSceneryElement::SetBannerIndex(BannerIndex newIndex)
+void LargeSceneryElement::SetBannerIndex(::BannerIndex newIndex)
 {
-    type |= newIndex & 0xC0;
-    colour[0] |= (newIndex & 0x38) << 2;
-    colour[1] |= (newIndex & 7) << 5;
+    this->BannerIndex = newIndex;
 }
 
 bool LargeSceneryElement::IsAccounted() const
@@ -75,7 +71,7 @@ void LargeSceneryElement::SetIsAccounted(bool isAccounted)
 
 uint32_t LargeSceneryElement::GetEntryIndex() const
 {
-    return entryIndex & TILE_ELEMENT_LARGE_TYPE_MASK;
+    return EntryIndex;
 }
 
 rct_scenery_entry* LargeSceneryElement::GetEntry() const
@@ -83,21 +79,19 @@ rct_scenery_entry* LargeSceneryElement::GetEntry() const
     return get_large_scenery_entry(GetEntryIndex());
 }
 
-uint16_t LargeSceneryElement::GetSequenceIndex() const
+uint8_t LargeSceneryElement::GetSequenceIndex() const
 {
-    return (entryIndex >> 10);
+    return SequenceIndex;
 }
 
 void LargeSceneryElement::SetEntryIndex(uint32_t newIndex)
 {
-    entryIndex &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
-    entryIndex |= (newIndex & TILE_ELEMENT_LARGE_TYPE_MASK);
+    EntryIndex = newIndex;
 }
 
-void LargeSceneryElement::SetSequenceIndex(uint16_t sequence)
+void LargeSceneryElement::SetSequenceIndex(uint8_t sequence)
 {
-    entryIndex &= TILE_ELEMENT_LARGE_TYPE_MASK;
-    entryIndex |= (sequence << 10);
+    SequenceIndex = sequence;
 }
 
 rct_scenery_entry* get_large_scenery_entry(int32_t entryIndex)

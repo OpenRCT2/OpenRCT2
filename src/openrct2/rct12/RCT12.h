@@ -57,6 +57,33 @@ enum class RCT12TrackDesignVersion : uint8_t
     unknown
 };
 
+enum
+{
+    RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT = 1 << 7,
+};
+
+enum
+{
+    RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK = 0b01110000,
+    RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK = 0b00001111,
+    RCT12_TRACK_ELEMENT_SEQUENCE_TAKING_PHOTO_MASK = 0b11110000,
+};
+
+enum
+{
+    // Not anything to do with colour but uses
+    // that field in the tile element
+
+    // Used for multi-dimension coaster
+    RCT12_TRACK_ELEMENT_COLOUR_FLAG_INVERTED = (1 << 2),
+
+    // Used for giga coaster
+    RCT12_TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
+
+    RCT12_TRACK_ELEMENT_DOOR_A_MASK = 0b00011100,
+    RCT12_TRACK_ELEMENT_DOOR_B_MASK = 0b11100000,
+};
+
 // Everything before this point has been researched
 #define RCT12_RESEARCHED_ITEMS_SEPARATOR (-1)
 // Everything before this point and after separator still requires research
