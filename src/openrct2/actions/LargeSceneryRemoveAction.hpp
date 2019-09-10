@@ -175,30 +175,33 @@ public:
 
             TileElement* sceneryElement = map_get_first_element_at(currentTile.x / 32, currentTile.y / 32);
             bool element_found = false;
-            do
+            if (sceneryElement != nullptr)
             {
-                if (sceneryElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
-                    continue;
+                do
+                {
+                    if (sceneryElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+                        continue;
 
-                if (sceneryElement->GetDirection() != _loc.direction)
-                    continue;
+                    if (sceneryElement->GetDirection() != _loc.direction)
+                        continue;
 
-                if (sceneryElement->AsLargeScenery()->GetSequenceIndex() != i)
-                    continue;
+                    if (sceneryElement->AsLargeScenery()->GetSequenceIndex() != i)
+                        continue;
 
-                if (sceneryElement->base_height != currentTile.z / 8)
-                    continue;
+                    if (sceneryElement->base_height != currentTile.z / 8)
+                        continue;
 
-                // If we are removing ghost elements
-                if ((flags & GAME_COMMAND_FLAG_GHOST) && sceneryElement->IsGhost() == false)
-                    continue;
+                    // If we are removing ghost elements
+                    if ((flags & GAME_COMMAND_FLAG_GHOST) && sceneryElement->IsGhost() == false)
+                        continue;
 
-                map_invalidate_tile_full(currentTile.x, currentTile.y);
-                tile_element_remove(sceneryElement);
+                    map_invalidate_tile_full(currentTile.x, currentTile.y);
+                    tile_element_remove(sceneryElement);
 
-                element_found = true;
-                break;
-            } while (!(sceneryElement++)->IsLastForTile());
+                    element_found = true;
+                    break;
+                } while (!(sceneryElement++)->IsLastForTile());
+            }
 
             if (element_found == false)
             {
