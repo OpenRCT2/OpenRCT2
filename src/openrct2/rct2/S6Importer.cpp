@@ -1058,17 +1058,14 @@ public:
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 // Skipping IsHighlighted()
-                auto ride = get_ride(dst2->GetRideIndex());
-                if (ride)
+                auto rideType = _s6.rides[src2->GetRideIndex()].type;
+                if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
                 {
-                    if (ride->type == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
-                    {
-                        dst2->SetSeatRotation(src2->GetSeatRotation());
-                    }
-                    else if (ride->type == RIDE_TYPE_MAZE)
-                    {
-                        dst2->SetMazeEntry(src2->GetMazeEntry());
-                    }
+                    dst2->SetSeatRotation(src2->GetSeatRotation());
+                }
+                else if (rideType == RIDE_TYPE_MAZE)
+                {
+                    dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
 
                 break;
