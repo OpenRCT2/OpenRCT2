@@ -72,7 +72,7 @@ private:
         res->Position.z = z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-        uint8_t minHeight = GetLowestHeight();
+        uint8_t minHeight = GetLowestHeight(validRange);
         bool hasChanged = false;
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
         {
@@ -119,12 +119,13 @@ private:
     }
 
 private:
-    uint8_t GetLowestHeight() const
+    uint8_t GetLowestHeight(MapRange validRange) const
     {
+        // The lowest height to lower the water to is the highest water level in the selection
         uint8_t minHeight{ 0 };
-        for (int32_t y = _range.GetTop(); y <= _range.GetBottom(); y += 32)
+        for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
         {
-            for (int32_t x = _range.GetLeft(); x <= _range.GetRight(); x += 32)
+            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
             {
                 auto* surfaceElement = map_get_surface_element_at({ x, y });
                 if (surfaceElement == nullptr)
