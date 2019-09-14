@@ -25,8 +25,8 @@
 #include <cmath>
 #include <iterator>
 
-uint16_t gSpriteListHead[6];
-uint16_t gSpriteListCount[6];
+uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
+uint16_t gSpriteListCount[SPRITE_LIST_COUNT];
 static rct_sprite _spriteList[MAX_SPRITES];
 
 static bool _spriteFlashingList[MAX_SPRITES];
@@ -85,6 +85,10 @@ rct_sprite* get_sprite(size_t sprite_idx)
         return nullptr;
     }
     openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
+    if (sprite_idx >= MAX_SPRITES)
+    {
+        return nullptr;
+    }
     return &_spriteList[sprite_idx];
 }
 
@@ -149,7 +153,7 @@ void reset_sprite_list()
     gSavedAge = 0;
     std::memset(_spriteList, 0, sizeof(_spriteList));
 
-    for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
+    for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
     {
         gSpriteListHead[i] = SPRITE_INDEX_NULL;
         gSpriteListCount[i] = 0;
@@ -258,6 +262,9 @@ rct_sprite_checksum sprite_checksum()
 
                 if (copy.generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
                 {
+                    // Name is pointer and will not be the same across clients
+                    copy.peep.name = {};
+
                     // We set this to 0 because as soon the client selects a guest the window will remove the
                     // invalidation flags causing the sprite checksum to be different than on server, the flag does not affect
                     // game state.
@@ -340,31 +347,51 @@ void sprite_clear_all_unused()
     }
 }
 
-/*
- * rct2: 0x0069EC6B
- * bl: if bl & 2 > 0, the sprite ends up in the MISC linked list.
- */
-rct_sprite* create_sprite(uint8_t bl)
+static constexpr uint16_t MAX_MISC_SPRITES = 300;
+
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
 {
-    SPRITE_LIST linkedListTypeOffset = SPRITE_LIST_UNKNOWN;
-    if ((bl & 2) != 0)
+    if (gSpriteListCount[SPRITE_LIST_FREE] == 0)
     {
-        // 69EC96;
-        uint16_t cx = 0x12C - gSpriteListCount[SPRITE_LIST_MISC];
-        if (cx >= gSpriteListCount[SPRITE_LIST_FREE])
+        // No free sprites.
+        return nullptr;
+    }
+
+    SPRITE_LIST linkedListIndex;
+    switch (spriteIdentifier)
+    {
+        case SPRITE_IDENTIFIER_VEHICLE:
+            linkedListIndex = SPRITE_LIST_VEHICLE;
+            break;
+        case SPRITE_IDENTIFIER_PEEP:
+            linkedListIndex = SPRITE_LIST_PEEP;
+            break;
+        case SPRITE_IDENTIFIER_MISC:
+            linkedListIndex = SPRITE_LIST_MISC;
+            break;
+        case SPRITE_IDENTIFIER_LITTER:
+            linkedListIndex = SPRITE_LIST_LITTER;
+            break;
+        default:
+            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
+            return nullptr;
+    }
+
+    if (linkedListIndex == SPRITE_LIST_MISC)
+    {
+        // Misc sprites are commonly used for effects, if there are less than MAX_MISC_SPRITES
+        // free it will fail to keep slots for more relevant sprites.
+        // Also there can't be more than MAX_MISC_SPRITES sprites in this list.
+        uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - gSpriteListCount[SPRITE_LIST_MISC];
+        if (miscSlotsRemaining >= gSpriteListCount[SPRITE_LIST_FREE])
         {
             return nullptr;
         }
-        linkedListTypeOffset = SPRITE_LIST_MISC;
-    }
-    else if (gSpriteListCount[SPRITE_LIST_FREE] == 0)
-    {
-        return nullptr;
     }
 
     rct_sprite_generic* sprite = &(get_sprite(gSpriteListHead[SPRITE_LIST_FREE]))->generic;
 
-    move_sprite_to_list((rct_sprite*)sprite, linkedListTypeOffset);
+    move_sprite_to_list((rct_sprite*)sprite, linkedListIndex);
 
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
@@ -465,7 +492,7 @@ static void sprite_steam_particle_update(rct_steam_particle* steam)
  */
 void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_sprite_generic* sprite = (rct_sprite_generic*)create_sprite(2);
+    rct_sprite_generic* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 44;
@@ -498,7 +525,7 @@ static void sprite_misc_explosion_cloud_update(rct_sprite* sprite)
  */
 void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_sprite_generic* sprite = (rct_sprite_generic*)create_sprite(2);
+    rct_sprite_generic* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 25;
@@ -639,12 +666,12 @@ void sprite_move(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
 void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite)
 {
     CoordsXYZ coords3d = { x, y, z };
-    CoordsXY newCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
+    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
 
-    sprite->generic.sprite_left = newCoords.x - sprite->generic.sprite_width;
-    sprite->generic.sprite_right = newCoords.x + sprite->generic.sprite_width;
-    sprite->generic.sprite_top = newCoords.y - sprite->generic.sprite_height_negative;
-    sprite->generic.sprite_bottom = newCoords.y + sprite->generic.sprite_height_positive;
+    sprite->generic.sprite_left = screenCoords.x - sprite->generic.sprite_width;
+    sprite->generic.sprite_right = screenCoords.x + sprite->generic.sprite_width;
+    sprite->generic.sprite_top = screenCoords.y - sprite->generic.sprite_height_negative;
+    sprite->generic.sprite_bottom = screenCoords.y + sprite->generic.sprite_height_positive;
     sprite->generic.x = x;
     sprite->generic.y = y;
     sprite->generic.z = z;
@@ -659,7 +686,7 @@ void sprite_remove(rct_sprite* sprite)
     auto peep = sprite->AsPeep();
     if (peep != nullptr)
     {
-        user_string_free(peep->name_string_idx);
+        peep->SetName({});
     }
 
     move_sprite_to_list(sprite, SPRITE_LIST_FREE);
@@ -680,7 +707,7 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
 {
     TileElement* tileElement;
 
-    if (!map_is_location_owned(x & 0xFFE0, y & 0xFFE0, z))
+    if (!map_is_location_owned({ x, y, z }))
         return false;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -736,11 +763,10 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
         }
     }
 
-    rct_litter* litter = (rct_litter*)create_sprite(1);
+    rct_litter* litter = (rct_litter*)create_sprite(SPRITE_IDENTIFIER_LITTER);
     if (litter == nullptr)
         return;
 
-    move_sprite_to_list((rct_sprite*)litter, SPRITE_LIST_LITTER);
     litter->sprite_direction = direction;
     litter->sprite_width = 6;
     litter->sprite_height_negative = 6;
@@ -787,9 +813,9 @@ static bool sprite_should_tween(rct_sprite* sprite)
 {
     switch (sprite->generic.linked_list_index)
     {
-        case SPRITE_LIST_TRAIN:
         case SPRITE_LIST_PEEP:
-        case SPRITE_LIST_UNKNOWN:
+        case SPRITE_LIST_VEHICLE_HEAD:
+        case SPRITE_LIST_VEHICLE:
             return true;
     }
     return false;
@@ -970,7 +996,7 @@ static bool index_is_in_list(uint16_t index, enum SPRITE_LIST sl)
 
 int32_t check_for_sprite_list_cycles(bool fix)
 {
-    for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
+    for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
     {
         rct_sprite* cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
         if (cycle_start != nullptr)

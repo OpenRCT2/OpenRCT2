@@ -127,7 +127,7 @@ TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
 
 money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags)
 {
-    auto action = FootpathRemoveAction(x, y, z);
+    auto action = FootpathRemoveAction({ x, y, z * 8 });
     action.SetFlags(flags);
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -292,7 +292,7 @@ void footpath_get_coordinates_from_pos(
     {
         if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH)
         {
-            z = tile_element_height(position.x, position.y);
+            z = tile_element_height({ position.x, position.y });
         }
         position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
         position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
@@ -801,8 +801,8 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_TRACK:
                     if (z == tileElement->base_height)
                     {
-                        Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                         {
                             continue;
                         }
@@ -929,8 +929,8 @@ static void loc_6A6C85(
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             return;
         }
@@ -1176,8 +1176,8 @@ void footpath_update_queue_chains()
     for (uint8_t* queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++)
     {
         ride_id_t rideIndex = *queueChainPtr;
-        Ride* ride = get_ride(rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
             continue;
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
@@ -1212,7 +1212,7 @@ void footpath_update_queue_chains()
  */
 static void footpath_fix_ownership(int32_t x, int32_t y)
 {
-    const TileElement* surfaceElement = map_get_surface_element_at({ x, y });
+    const auto* surfaceElement = map_get_surface_element_at({ x, y });
     uint16_t ownership;
 
     // Unlikely to be NULL unless deliberate.
@@ -1226,7 +1226,7 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         // If the tile is safe to own construction rights of, do not erase contruction rights.
         else
         {
-            ownership = surfaceElement->AsSurface()->GetOwnership();
+            ownership = surfaceElement->GetOwnership();
             // You can't own the entrance path.
             if (ownership == OWNERSHIP_OWNED || ownership == OWNERSHIP_AVAILABLE)
             {
@@ -1846,8 +1846,8 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
 
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
 {
-    auto pathElement = map_get_path_element_at(position.x, position.y, position.z);
-    return pathElement != nullptr && pathElement->AsPath()->IsBlockedByVehicle();
+    auto pathElement = map_get_path_element_at(position);
+    return pathElement != nullptr && pathElement->IsBlockedByVehicle();
 }
 
 /**
@@ -2005,7 +2005,10 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const Til
             case TILE_ELEMENT_TYPE_TRACK:
                 if (tileElement->base_height == coords.z)
                 {
-                    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    if (ride == nullptr)
+                        continue;
+
                     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                         break;
 
@@ -2090,9 +2093,9 @@ void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement)
 {
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-        Ride* ride = get_ride(rideIndex);
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
             return;
     }
 

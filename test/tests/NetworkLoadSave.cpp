@@ -90,6 +90,7 @@ static bool LoadMap(IStream* stream)
 static bool SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects)
 {
     bool result = false;
+    map_reorganise_elements();
     viewport_set_saved_view();
     try
     {

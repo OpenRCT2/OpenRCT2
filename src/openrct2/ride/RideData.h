@@ -80,7 +80,7 @@ struct rct_ride_data_5
 
 struct rct_ride_lift_data
 {
-    uint8_t sound_id;
+    SoundId sound_id;
     uint8_t minimum_speed;
     uint8_t maximum_speed;
 };

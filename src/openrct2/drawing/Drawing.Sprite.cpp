@@ -223,6 +223,7 @@ static rct_gx _csg = {};
 static bool _csgLoaded = false;
 
 static rct_g1_element _g1Temp = {};
+static std::vector<rct_g1_element> _imageListElements;
 bool gTinyFontAntiAliased = false;
 
 /**
@@ -246,8 +247,8 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
         }
 
         // Read element headers
-        _g1.elements.resize(324206);
         bool is_rctc = _g1.header.num_entries == SPR_RCTC_G1_END;
+        _g1.elements.resize(_g1.header.num_entries);
         read_and_convert_gxdat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
         gTinyFontAntiAliased = is_rctc;
 
@@ -834,65 +835,97 @@ const rct_g1_element* gfx_get_g1_element(int32_t image_id)
 {
     openrct2_assert(!gOpenRCT2NoGraphics, "gfx_get_g1_element called on headless instance");
 
-    if (image_id == (-1 & 0x7FFFF))
+    auto offset = (size_t)image_id;
+    if (offset == 0x7FFFF)
     {
         return nullptr;
     }
-
-    if (image_id == SPR_TEMP)
+    else if (offset == SPR_TEMP)
     {
         return &_g1Temp;
     }
-    else if (image_id < SPR_G2_BEGIN)
+    else if (offset < SPR_RCTC_G1_END)
     {
-        if (image_id >= (int32_t)_g1.elements.size())
+        if (offset < _g1.elements.size())
         {
-            return nullptr;
+            return &_g1.elements[offset];
         }
-        return &_g1.elements[image_id];
     }
-    if (image_id < SPR_CSG_BEGIN)
+    else if (offset < SPR_G2_END)
     {
-        const uint32_t idx = image_id - SPR_G2_BEGIN;
-        if (idx >= _g2.header.num_entries)
+        size_t idx = offset - SPR_G2_BEGIN;
+        if (idx < _g2.header.num_entries)
+        {
+            return &_g2.elements[idx];
+        }
+        else
         {
             log_warning("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
-            return nullptr;
         }
-        return &_g2.elements[idx];
     }
-
-    if (is_csg_loaded())
+    else if (offset < SPR_CSG_END)
     {
-        const uint32_t idx = image_id - SPR_CSG_BEGIN;
-        if (idx >= _csg.header.num_entries)
+        if (is_csg_loaded())
         {
-            openrct2_assert(idx < _csg.header.num_entries, "Invalid entry in csg.dat requested, idx = %u.", idx);
-            return nullptr;
+            size_t idx = offset - SPR_CSG_BEGIN;
+            if (idx < _csg.header.num_entries)
+            {
+                return &_csg.elements[idx];
+            }
+            else
+            {
+                log_warning("Invalid entry in csg.dat requested, idx = %u.", idx);
+            }
         }
-        return &_csg.elements[idx];
+    }
+    else if (offset < SPR_IMAGE_LIST_END)
+    {
+        size_t idx = offset - SPR_IMAGE_LIST_BEGIN;
+        if (idx < _imageListElements.size())
+        {
+            return &_imageListElements[idx];
+        }
     }
     return nullptr;
 }
 
 void gfx_set_g1_element(int32_t imageId, const rct_g1_element* g1)
 {
-    openrct2_assert(!gOpenRCT2NoGraphics, "gfx_set_g1_element called on headless instance");
+    bool isTemp = imageId == SPR_TEMP;
+    bool isValid = (imageId >= SPR_IMAGE_LIST_BEGIN && imageId < SPR_IMAGE_LIST_END)
+        || (imageId >= SPR_SCROLLING_TEXT_START && imageId < SPR_SCROLLING_TEXT_END);
+
 #ifdef DEBUG
-    openrct2_assert(
-        (imageId >= 0 && imageId < SPR_G2_BEGIN) || imageId == SPR_TEMP, "gfx_set_g1_element called with unexpected image id");
+    openrct2_assert(!gOpenRCT2NoGraphics, "gfx_set_g1_element called on headless instance");
+    openrct2_assert(isValid || isTemp, "gfx_set_g1_element called with unexpected image id");
     openrct2_assert(g1 != nullptr, "g1 was nullptr");
 #endif
 
-    if (imageId == SPR_TEMP)
+    if (g1 != nullptr)
     {
-        _g1Temp = *g1;
-    }
-    else if (imageId >= 0 && imageId < SPR_G2_BEGIN)
-    {
-        if (imageId < (int32_t)_g1.elements.size())
+        if (isTemp)
         {
-            _g1.elements[imageId] = *g1;
+            _g1Temp = *g1;
+        }
+        else if (isValid)
+        {
+            if (imageId < SPR_RCTC_G1_END)
+            {
+                if (imageId < (int32_t)_g1.elements.size())
+                {
+                    _g1.elements[imageId] = *g1;
+                }
+            }
+            else
+            {
+                size_t idx = (size_t)imageId - SPR_IMAGE_LIST_BEGIN;
+                // Grow the element buffer if necessary
+                while (idx >= _imageListElements.size())
+                {
+                    _imageListElements.resize(std::max<size_t>(256, _imageListElements.size() * 2));
+                }
+                _imageListElements[idx] = *g1;
+            }
         }
     }
 }

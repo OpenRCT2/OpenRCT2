@@ -524,12 +524,12 @@ private:
         rct_window* w = window_get_main();
         if (w != nullptr)
         {
-            int32_t z = tile_element_height(x, y);
+            int32_t z = tile_element_height({ x, y });
 
             // Prevent scroll adjustment due to window placement when in-game
             auto oldScreenFlags = gScreenFlags;
             gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
-            window_set_location(w, x, y, z);
+            w->SetLocation(x, y, z);
             gScreenFlags = oldScreenFlags;
 
             viewport_update_position(w);

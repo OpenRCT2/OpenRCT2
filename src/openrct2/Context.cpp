@@ -24,6 +24,7 @@
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "Version.h"
+#include "actions/GameAction.h"
 #include "audio/AudioContext.h"
 #include "audio/audio.h"
 #include "config/Config.h"
@@ -99,7 +100,7 @@ namespace OpenRCT2
 #endif
         StdInOutConsole _stdInOutConsole;
 #ifndef DISABLE_HTTP
-        Network::Http::Http _http;
+        Networking::Http::Http _http;
 #endif
 
         // Game states
@@ -148,13 +149,17 @@ namespace OpenRCT2
             // NOTE: We must shutdown all systems here before Instance is set back to null.
             //       If objects use GetContext() in their destructor things won't go well.
 
-            if (_objectManager)
+            GameActions::ClearQueue();
+            network_close();
+            window_close_all();
+
+            // Unload objects after closing all windows, this is to overcome windows like
+            // the object selection window which loads objects when closed.
+            if (_objectManager != nullptr)
             {
                 _objectManager->UnloadAll();
             }
 
-            network_close();
-            window_close_all();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
             gfx_unload_g1();
@@ -504,6 +509,7 @@ namespace OpenRCT2
 
         bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail) final override
         {
+            log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
             try
             {
                 auto fs = FileStream(path, FILE_MODE_OPEN);
@@ -545,6 +551,7 @@ namespace OpenRCT2
                         gCurrentLoadedPath = path;
                         gFirstTimeSaving = true;
                         game_fix_save_vars();
+                        AutoCreateMapAnimations();
                         sprite_position_tween_reset();
                         gScreenAge = 0;
                         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
@@ -714,7 +721,7 @@ namespace OpenRCT2
 #ifndef DISABLE_HTTP
                         // Download park and open it using its temporary filename
                         void* data;
-                        size_t dataSize = Network::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
+                        size_t dataSize = Networking::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
                         if (dataSize == 0)
                         {
                             title_load();

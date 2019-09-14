@@ -330,7 +330,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
 #    ifdef DISABLE_HTTP
     return {};
 #    else
-    using namespace OpenRCT2::Network;
+    using namespace OpenRCT2::Networking;
 
     auto p = std::make_shared<std::promise<std::vector<ServerListEntry>>>();
     auto f = p->get_future();

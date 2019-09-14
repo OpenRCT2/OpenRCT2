@@ -43,11 +43,6 @@ namespace OpenRCT2
         virtual bool IsRecording() const = 0;
         virtual bool IsNormalising() const = 0;
 
-        // NOTE: Will become obsolete eventually once all game actions are done.
-        virtual void AddGameCommand(
-            uint32_t tick, uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi, uint32_t ebp,
-            uint8_t callback)
-            = 0;
         virtual void AddGameAction(uint32_t tick, const GameAction* action) = 0;
 
         virtual bool StartRecording(const std::string& name, uint32_t maxTicks = k_MaxReplayTicks) = 0;

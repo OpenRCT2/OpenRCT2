@@ -72,11 +72,11 @@ public:
     }
 
 private:
-    GameActionResult::Ptr SmoothLandTile(int32_t direction, bool isExecuting, int32_t x, int32_t y, TileElement* surfaceElement)
-        const
+    GameActionResult::Ptr SmoothLandTile(
+        int32_t direction, bool isExecuting, int32_t x, int32_t y, SurfaceElement* surfaceElement) const
     {
         int32_t targetBaseZ = surfaceElement->base_height;
-        int32_t slope = surfaceElement->AsSurface()->GetSlope();
+        int32_t slope = surfaceElement->GetSlope();
         if (_isLowering)
         {
             slope = tile_element_lower_styles[direction][slope];
@@ -188,7 +188,7 @@ private:
 
             // change land of current tile
             int32_t targetBaseZ = surfaceElement->base_height;
-            int32_t slope = surfaceElement->AsSurface()->GetSlope();
+            int32_t slope = surfaceElement->GetSlope();
             int32_t oldSlope = slope;
             if (_isLowering)
             {
@@ -350,7 +350,7 @@ private:
         auto b = std::clamp(normRange.GetBottom(), 0, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
         auto validRange = MapRange{ l, t, r, b };
 
-        int32_t centreZ = tile_element_height(_coords.x, _coords.y);
+        int32_t centreZ = tile_element_height(_coords);
 
         auto res = MakeResult();
         res->ErrorTitle = _ErrorTitles[_isLowering ? 0 : 1];
@@ -362,14 +362,8 @@ private:
         {
             case MAP_SELECT_TYPE_FULL:
             {
-                uint8_t minHeight = heightOffset
-                    + map_get_lowest_land_height(
-                                        validRange.GetLeft(), validRange.GetRight(), validRange.GetTop(),
-                                        validRange.GetBottom());
-                uint8_t maxHeight = heightOffset
-                    + map_get_highest_land_height(
-                                        validRange.GetLeft(), validRange.GetRight(), validRange.GetTop(),
-                                        validRange.GetBottom());
+                uint8_t minHeight = heightOffset + map_get_lowest_land_height(validRange);
+                uint8_t maxHeight = heightOffset + map_get_highest_land_height(validRange);
 
                 // Smooth the 4 corners
                 { // top-left
@@ -398,11 +392,10 @@ private:
                 }
 
                 // Smooth the edges
-                TileElement* surfaceElement = nullptr;
                 int32_t z1, z2;
                 for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
                 {
-                    surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), y });
+                    auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), y });
                     z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
                     z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
                     res->Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetLeft(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
@@ -415,7 +408,7 @@ private:
 
                 for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
                 {
-                    surfaceElement = map_get_surface_element_at({ x, validRange.GetTop() });
+                    auto surfaceElement = map_get_surface_element_at({ x, validRange.GetTop() });
                     z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
                     z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
                     res->Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetTop() }, z1, z2, 0, -32, 0, 3, 1, 2);
@@ -434,7 +427,7 @@ private:
             {
                 auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
                 uint8_t newBaseZ = surfaceElement->base_height;
-                uint8_t newSlope = surfaceElement->AsSurface()->GetSlope();
+                uint8_t newSlope = surfaceElement->GetSlope();
 
                 if (raiseLand)
                 {
@@ -531,7 +524,7 @@ private:
                 // Get the two corners to raise
                 auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
                 uint8_t newBaseZ = surfaceElement->base_height;
-                uint8_t oldSlope = surfaceElement->AsSurface()->GetSlope();
+                uint8_t oldSlope = surfaceElement->GetSlope();
                 uint8_t newSlope = oldSlope;
                 int32_t rowIndex = selectionType - (MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1);
 
@@ -633,7 +626,7 @@ private:
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SOUND_PLACE_ITEM, _coords.x, _coords.y, centreZ);
+            audio_play_sound_at_location(SoundId::PlaceItem, { _coords.x, _coords.y, centreZ });
         }
         res->Cost += result->Cost;
         return res;

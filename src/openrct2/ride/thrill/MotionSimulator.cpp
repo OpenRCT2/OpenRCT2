@@ -33,8 +33,13 @@ enum
 static void paint_motionsimulator_vehicle(
     paint_session* session, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height, const TileElement* tileElement)
 {
-    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-    rct_ride_entry* rideEntry = ride->GetRideEntry();
+    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    if (ride == nullptr)
+        return;
+
+    auto rideEntry = ride->GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
 
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -132,14 +137,18 @@ static void paint_motionsimulator(
     trackSequence = track_map_2x2[direction][trackSequence];
 
     int32_t edges = edges_2x2[trackSequence];
-    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = { session->MapPosition.x, session->MapPosition.y };
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
-    track_paint_util_paint_fences(
-        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope,
-        session->CurrentRotation);
+
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+    {
+        track_paint_util_paint_fences(
+            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope,
+            session->CurrentRotation);
+    }
 
     switch (trackSequence)
     {

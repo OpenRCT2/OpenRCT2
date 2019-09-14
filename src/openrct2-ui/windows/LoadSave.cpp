@@ -17,6 +17,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Guard.hpp>
@@ -25,6 +26,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/platform/platform.h>
+#include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/title/TitleScreen.h>
@@ -143,6 +145,7 @@ struct LoadSaveListItem
 };
 
 static loadsave_callback _loadSaveCallback;
+static TrackDesign* _trackDesign;
 
 static std::vector<LoadSaveListItem> _listItems;
 static char _directory[MAX_PATH];
@@ -249,9 +252,10 @@ static int32_t window_loadsave_get_dir(const int32_t type, char* path, size_t pa
 
 static bool browse(bool isSave, char* path, size_t pathSize);
 
-rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback)
+rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* trackDesign)
 {
     _loadSaveCallback = callback;
+    _trackDesign = trackDesign;
     _type = type;
     _defaultName[0] = '\0';
 
@@ -339,12 +343,12 @@ static void window_loadsave_resize(rct_window* w)
 {
     if (w->width < w->min_width)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->width = w->min_width;
     }
     if (w->height < w->min_height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->height = w->min_height;
     }
 }
@@ -406,15 +410,14 @@ static bool browse(bool isSave, char* path, size_t pathSize)
         }
         else
         {
-            utf8 buffer[USER_STRING_MAX_LENGTH]{};
-            if (gParkName != STR_NONE)
-                format_string(buffer, pathSize, gParkName, nullptr);
-
-            // Use localized "Unnamed Park" if park name was empty
-            if (String::SizeOf(buffer) == 0)
-                format_string(buffer, pathSize, STR_UNNAMED_PARK, nullptr);
-
-            safe_strcat_path(path, buffer, pathSize);
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            auto buffer = park.Name;
+            if (buffer.empty())
+            {
+                // Use localised "Unnamed Park" if park name was empty.
+                buffer = format_string(STR_UNNAMED_PARK, nullptr);
+            }
+            safe_strcat_path(path, buffer.c_str(), pathSize);
         }
     }
 
@@ -493,7 +496,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
             config_save_default();
             window_loadsave_sort_list();
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_SORT_DATE:
@@ -507,7 +510,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
             config_save_default();
             window_loadsave_sort_list();
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_DEFAULT:
@@ -570,7 +573,7 @@ static void window_loadsave_scrollmouseover(rct_window* w, int32_t scrollIndex, 
 
     w->selected_list_item = selectedItem;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
@@ -606,7 +609,7 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
             window_init_scroll_widgets(w);
 
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_NEW_FILE:
@@ -939,7 +942,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
         window_loadsave_sort_list();
     }
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_loadsave_invoke_callback(int32_t result, const utf8* path)
@@ -1081,8 +1084,13 @@ static void window_loadsave_select(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
         {
+            save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
+
             path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
-            int32_t success = track_design_save_to_file(pathBuffer);
+
+            T6Exporter t6Export{ _trackDesign };
+
+            auto success = t6Export.SaveTrack(pathBuffer);
 
             if (success)
             {

@@ -37,7 +37,7 @@ enum
     RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
 };
 
-struct rct_ride_rating_calc_data
+struct RideRatingCalculationData
 {
     uint16_t proximity_x;
     uint16_t proximity_y;
@@ -56,7 +56,7 @@ struct rct_ride_rating_calc_data
     uint16_t station_flags;
 };
 
-extern rct_ride_rating_calc_data gRideRatingsCalcData;
+extern RideRatingCalculationData gRideRatingsCalcData;
 
-void ride_ratings_update_ride(ride_id_t rideIndex);
+void ride_ratings_update_ride(const Ride& ride);
 void ride_ratings_update_all();

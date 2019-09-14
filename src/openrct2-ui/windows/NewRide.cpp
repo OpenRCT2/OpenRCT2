@@ -589,7 +589,7 @@ static void window_new_ride_set_page(rct_window* w, int32_t page)
     }
 
     window_new_ride_refresh_widget_sizing(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
@@ -633,7 +633,7 @@ static void window_new_ride_refresh_widget_sizing(rct_window* w)
     // Handle new window size
     if (w->width != width || w->height != height)
     {
-        window_invalidate(w);
+        w->Invalidate();
 
         // Resize widgets to new window size
         window_new_ride_widgets[WIDX_BACKGROUND].right = width - 1;
@@ -646,7 +646,7 @@ static void window_new_ride_refresh_widget_sizing(rct_window* w)
 
         w->width = width;
         w->height = height;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     window_init_scroll_widgets(w);
@@ -774,9 +774,9 @@ static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
     w->new_ride.selected_ride_id = item.ride_type_and_entry;
 
-    audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
+    audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
     w->new_ride.selected_ride_countdown = 8;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -797,7 +797,7 @@ static void window_new_ride_scrollmouseover(rct_window* w, int32_t scrollIndex, 
 
     w->new_ride.highlighted_ride_id = item.ride_type_and_entry;
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -932,8 +932,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window* w
 
 static int32_t get_num_track_designs(ride_list_item item)
 {
-    char entry[DAT_NAME_LENGTH + 1];
-    const char* entryPtr = nullptr;
+    std::string entryName;
     rct_ride_entry* rideEntry = nullptr;
 
     if (item.type < 0x80)
@@ -941,22 +940,20 @@ static int32_t get_num_track_designs(ride_list_item item)
         rideEntry = get_ride_entry(item.entry_index);
         if (RideGroupManager::RideTypeIsIndependent(item.type))
         {
-            get_ride_entry_name(entry, item.entry_index);
-            entryPtr = entry;
+            entryName = get_ride_entry_name(item.entry_index);
         }
     }
 
-    ITrackDesignRepository* repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-
+    auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
     if (rideEntry != nullptr && RideGroupManager::RideTypeHasRideGroups(item.type))
     {
-        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
-        return (int32_t)repo->GetCountForRideGroup(item.type, rideGroup);
+        auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
+        if (rideGroup != nullptr)
+        {
+            return (int32_t)repo->GetCountForRideGroup(item.type, rideGroup);
+        }
     }
-    else
-    {
-        return (int32_t)repo->GetCountForObjectEntry(item.type, String::ToStd(entryPtr));
-    }
+    return (int32_t)repo->GetCountForObjectEntry(item.type, entryName);
 }
 
 /**

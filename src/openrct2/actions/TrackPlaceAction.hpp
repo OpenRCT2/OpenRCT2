@@ -87,15 +87,10 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Ride* ride = get_ride(_rideIndex);
+        auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid ride for track placement, rideIndex = %d", (int32_t)_rideIndex);
-            return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
-        }
-        if (ride->type == RIDE_TYPE_NULL)
-        {
-            log_warning("Invalid ride type, rideIndex = %d", (int32_t)_rideIndex);
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
@@ -165,7 +160,6 @@ public:
         }
 
         money32 cost = 0;
-        TileElement* tileElement;
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, _trackType);
         uint32_t numElements = 0;
         // First check if any of the track pieces are outside the park
@@ -177,7 +171,7 @@ public:
             tileCoords.x += track.x;
             tileCoords.y += track.y;
 
-            if (!map_is_location_owned(tileCoords.x, tileCoords.y, tileCoords.z) && !gCheatsSandboxMode)
+            if (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode)
             {
                 return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
             }
@@ -314,9 +308,9 @@ public:
 
             if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !byte_9D8150)
             {
-                tileElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+                auto surfaceElement = map_get_surface_element_at(mapLoc);
 
-                uint8_t waterHeight = tileElement->AsSurface()->GetWaterHeight() * 2;
+                uint8_t waterHeight = surfaceElement->GetWaterHeight() * 2;
                 if (waterHeight == 0)
                 {
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
@@ -327,9 +321,9 @@ public:
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
                 }
                 waterHeight -= 2;
-                if (waterHeight == tileElement->base_height)
+                if (waterHeight == surfaceElement->base_height)
                 {
-                    uint8_t slope = tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
+                    uint8_t slope = surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
                     if (slope == TILE_ELEMENT_SLOPE_W_CORNER_DN || slope == TILE_ELEMENT_SLOPE_S_CORNER_DN
                         || slope == TILE_ELEMENT_SLOPE_E_CORNER_DN || slope == TILE_ELEMENT_SLOPE_N_CORNER_DN)
                     {
@@ -356,10 +350,10 @@ public:
             }
 
             // 6c5648 12 push
-            tileElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto surfaceElement = map_get_surface_element_at(mapLoc);
             if (!gCheatsDisableSupportLimits)
             {
-                int32_t ride_height = clearanceZ - tileElement->base_height;
+                int32_t ride_height = clearanceZ - surfaceElement->base_height;
                 if (ride_height >= 0)
                 {
                     uint16_t maxHeight;
@@ -386,7 +380,7 @@ public:
                 }
             }
 
-            int32_t supportHeight = baseZ - tileElement->base_height;
+            int32_t supportHeight = baseZ - surfaceElement->base_height;
             if (supportHeight < 0)
             {
                 supportHeight = 10;
@@ -405,7 +399,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Ride* ride = get_ride(_rideIndex);
+        auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid ride for track placement, rideIndex = %d", (int32_t)_rideIndex);
@@ -440,7 +434,6 @@ public:
         }
 
         money32 cost = 0;
-        TileElement* tileElement;
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, _trackType);
 
         trackBlock = get_track_def_from_ride(ride, _trackType);
@@ -512,9 +505,9 @@ public:
             res->GroundFlags = mapGroundFlags;
 
             // 6c5648 12 push
-            tileElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto surfaceElement = map_get_surface_element_at(mapLoc);
 
-            int32_t supportHeight = baseZ - tileElement->base_height;
+            int32_t supportHeight = baseZ - surfaceElement->base_height;
             if (supportHeight < 0)
             {
                 supportHeight = 10;
@@ -586,7 +579,8 @@ public:
                 ride->overall_view.y = mapLoc.y / 32;
             }
 
-            tileElement = tile_element_insert(mapLoc.x / 32, mapLoc.y / 32, baseZ, quarterTile.GetBaseQuarterOccupied());
+            auto tileElement = tile_element_insert(
+                { mapLoc.x / 32, mapLoc.y / 32, baseZ }, quarterTile.GetBaseQuarterOccupied());
             assert(tileElement != nullptr);
             tileElement->clearance_height = clearanceZ;
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
@@ -678,9 +672,9 @@ public:
 
             if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
             {
-                TileElement* surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
-                surfaceElement->AsSurface()->SetHasTrackThatNeedsWater(true);
-                tileElement = surfaceElement;
+                auto* waterSurfaceElement = map_get_surface_element_at(mapLoc);
+                waterSurfaceElement->SetHasTrackThatNeedsWater(true);
+                tileElement = reinterpret_cast<TileElement*>(waterSurfaceElement);
             }
 
             if (!gCheatsDisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))

@@ -47,13 +47,12 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (!map_is_location_valid({ _loc.x, _loc.y }))
+        if (!map_is_location_valid(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-            && !map_is_location_owned(_loc.x, _loc.y, _loc.z / 8))
+        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }

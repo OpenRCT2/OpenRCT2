@@ -14,8 +14,8 @@ install:
 - ps: >-
     .\scripts\ps\appveyor_install.ps1
 platform:
-  - Win32
   - x64
+  - Win32
 configuration: Release
 before_build:
 - ps: Set-Content -Path '.\resources\version.h' -Value "#define OPENRCT2_FILE_VERSION $($env:APPVEYOR_BUILD_VERSION -replace "\.", ",")"

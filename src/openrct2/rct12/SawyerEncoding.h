@@ -13,7 +13,10 @@
 
 interface IStream;
 
+enum class RCT12TrackDesignVersion : uint8_t;
+
 namespace SawyerEncoding
 {
     bool ValidateChecksum(IStream* stream);
-}
+    RCT12TrackDesignVersion ValidateTrackChecksum(IStream* stream);
+} // namespace SawyerEncoding

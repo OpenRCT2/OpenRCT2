@@ -49,6 +49,14 @@ bool TileElementBase::IsLastForTile() const
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
+void TileElementBase::SetLastForTile(bool on)
+{
+    if (on)
+        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    else
+        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+}
+
 bool TileElementBase::IsGhost() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
@@ -123,17 +131,12 @@ void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerI
 
 void tile_element_remove_banner_entry(TileElement* tileElement)
 {
-    BannerIndex bannerIndex = tile_element_get_banner_index(tileElement);
-    if (bannerIndex == BANNER_INDEX_NULL)
-        return;
-
-    rct_banner* banner = &gBanners[bannerIndex];
-    if (banner->type != BANNER_NULL)
+    auto bannerIndex = tile_element_get_banner_index(tileElement);
+    auto banner = GetBanner(bannerIndex);
+    if (banner != nullptr)
     {
-        rct_windownumber windowNumber = bannerIndex;
-        window_close_by_number(WC_BANNER, windowNumber);
-        banner->type = BANNER_NULL;
-        user_string_free(banner->string_idx);
+        window_close_by_number(WC_BANNER, bannerIndex);
+        *banner = {};
     }
 }
 
@@ -159,6 +162,7 @@ void TileElement::ClearAs(uint8_t newType)
     base_height = 2;
     clearance_height = 2;
     std::fill_n(pad_04, sizeof(pad_04), 0x00);
+    std::fill_n(pad_08, sizeof(pad_08), 0x00);
 }
 
 void TileElementBase::Remove()
@@ -208,4 +212,15 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
             log_error("Tried to rotate QuarterTile invalid amount.");
             return QuarterTile{ 0 };
     }
+}
+
+uint8_t TileElementBase::GetOccupiedQuadrants() const
+{
+    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+}
+
+void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
+{
+    flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
 }

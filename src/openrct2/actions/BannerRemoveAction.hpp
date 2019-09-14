@@ -48,7 +48,7 @@ public:
         res->Position.z = _loc.z;
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 
-        if (!map_can_build_at(_loc.x, _loc.y, _loc.z - 16))
+        if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -67,8 +67,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
         }
 
-        rct_banner* banner = &gBanners[bannerElement->GetIndex()];
-
+        auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             log_error("Invalid banner index. index = ", bannerElement->GetIndex());
@@ -107,8 +106,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
         }
 
-        rct_banner* banner = &gBanners[bannerElement->GetIndex()];
-
+        auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             log_error("Invalid banner index. index = ", bannerElement->GetIndex());

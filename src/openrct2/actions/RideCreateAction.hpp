@@ -74,7 +74,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        ride_id_t rideIndex = ride_get_empty_slot();
+        auto rideIndex = GetNextFreeRideId();
         if (rideIndex == RIDE_ID_NULL)
         {
             // No more free slots available.
@@ -119,11 +119,11 @@ public:
         auto res = MakeResult();
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
-        ride_id_t rideIndex = ride_get_empty_slot();
+        auto rideIndex = GetNextFreeRideId();
 
         res->rideIndex = rideIndex;
 
-        auto ride = get_ride(rideIndex);
+        auto ride = GetOrAllocateRide(rideIndex);
         rideEntry = get_ride_entry(rideEntryIndex);
         if (rideEntry == nullptr)
         {
@@ -138,16 +138,7 @@ public:
         ride->subtype = rideEntryIndex;
         ride->SetColourPreset(_colour1);
         ride->overall_view.xy = RCT_XY8_UNDEFINED;
-
-        // Ride name
-        if (rideEntryIndex == RIDE_ENTRY_INDEX_NULL)
-        {
-            ride_set_name_to_track_default(ride, rideEntry);
-        }
-        else
-        {
-            ride_set_name_to_default(ride, rideEntry);
-        }
+        ride->SetNameToDefault();
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {

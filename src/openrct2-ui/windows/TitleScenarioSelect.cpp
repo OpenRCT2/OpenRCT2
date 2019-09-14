@@ -279,11 +279,11 @@ static void window_scenarioselect_mousedown(rct_window* w, rct_widgetindex widge
         gConfigInterface.scenarioselect_last_tab = w->selected_tab;
         config_save_default();
         initialise_list_items(w);
-        window_invalidate(w);
+        w->Invalidate();
         window_event_resize_call(w);
         window_event_invalidate_call(w);
         window_init_scroll_widgets(w);
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -340,7 +340,7 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
                 y -= scenarioItemHeight;
                 if (y < 0 && !listItem.scenario.is_locked)
                 {
-                    audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
+                    audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
                     gFirstTimeSaving = true;
                     _callback(listItem.scenario.scenario->path);
                     if (_titleEditor)
@@ -399,11 +399,11 @@ static void window_scenarioselect_scrollmouseover(rct_window* w, int32_t scrollI
     if (w->highlighted_scenario != selected)
     {
         w->highlighted_scenario = selected;
-        window_invalidate(w);
+        w->Invalidate();
     }
     else if (_showLockedInformation != originalShowLockedInformation)
     {
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

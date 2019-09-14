@@ -1080,15 +1080,18 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            rct_banner* banner = &gBanners[tile_element->AsBanner()->GetIndex()];
-            rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
-            if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+            auto banner = tile_element->AsBanner()->GetBanner();
+            if (banner != nullptr)
             {
-                auto repaintScenery = BannerSetColourAction(
-                    { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
-                    gWindowSceneryPrimaryColour);
+                auto scenery_entry = get_banner_entry(banner->type);
+                if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+                {
+                    auto repaintScenery = BannerSetColourAction(
+                        { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
+                        gWindowSceneryPrimaryColour);
 
-                GameActions::Execute(&repaintScenery);
+                    GameActions::Execute(&repaintScenery);
+                }
             }
             break;
         }
@@ -1164,15 +1167,17 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            int32_t bannerIndex = tileElement->AsBanner()->GetIndex();
-            rct_banner* banner = &gBanners[bannerIndex];
-            rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
-            if (sceneryEntry != nullptr)
+            auto banner = tileElement->AsBanner()->GetBanner();
+            if (banner != nullptr)
             {
-                int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_BANNERS, banner->type);
-                if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
+                auto sceneryEntry = get_banner_entry(banner->type);
+                if (sceneryEntry != nullptr)
                 {
-                    gWindowSceneryEyedropperEnabled = false;
+                    int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_BANNERS, banner->type);
+                    if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
+                    {
+                        gWindowSceneryEyedropperEnabled = false;
+                    }
                 }
             }
             break;
@@ -1350,15 +1355,15 @@ static void sub_6E1F34(
                     // If SHIFT pressed
                     if (gSceneryShiftPressed)
                     {
-                        TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                        auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                        if (tile_element == nullptr)
+                        if (surfaceElement == nullptr)
                         {
                             *grid_x = LOCATION_NULL;
                             return;
                         }
 
-                        int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                        int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                         z += gSceneryShiftPressZOffset;
 
                         z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1430,15 +1435,15 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (tile_element == nullptr)
+                    if (surfaceElement == nullptr)
                     {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1527,15 +1532,15 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (tile_element == nullptr)
+                    if (surfaceElement == nullptr)
                     {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1586,15 +1591,15 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (tile_element == nullptr)
+                    if (surfaceElement == nullptr)
                     {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1793,8 +1798,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                         if (result->Error == GA_ERROR::OK)
                         {
-                            audio_play_sound_at_location(
-                                SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                         }
                     });
                     auto res = GameActions::Execute(&smallSceneryPlaceAction);
@@ -1823,7 +1827,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 {
                     return;
                 }
-                audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
             });
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             break;
@@ -1870,7 +1874,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             wallPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                 }
             });
             auto res = GameActions::Execute(&wallPlaceAction);
@@ -1920,11 +1924,11 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                 }
                 else
                 {
-                    audio_play_sound_at_location(SOUND_ERROR, loc.x, loc.y, gSceneryPlaceZ);
+                    audio_play_sound_at_location(SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
                 }
             });
             auto res = GameActions::Execute(&sceneryPlaceAction);
@@ -1947,7 +1951,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                     context_open_detail_window(WD_BANNER, bannerIndex);
                 }
             });
@@ -2514,8 +2518,6 @@ static money32 try_place_ghost_scenery(
                 { map_tile.x, map_tile.y, gSceneryPlaceZ, rotation }, quadrant, type, primaryColour, secondaryColour);
             smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
             auto res = GameActions::Execute(&smallSceneryPlaceAction);
-
-            cost = res->Cost;
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
@@ -2539,6 +2541,7 @@ static money32 try_place_ghost_scenery(
             }
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
+            cost = res->Cost;
             break;
         }
         case 1:
@@ -2566,6 +2569,8 @@ static money32 try_place_ghost_scenery(
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
+
+            cost = res->Cost;
             break;
         }
         case 2:
@@ -2611,9 +2616,8 @@ static money32 try_place_ghost_scenery(
             sceneryPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&sceneryPlaceAction);
-
             if (res->Error != GA_ERROR::OK)
-                return res->Cost;
+                return MONEY32_UNDEFINED;
 
             gSceneryGhostPosition.x = map_tile.x;
             gSceneryGhostPosition.y = map_tile.y;
@@ -2634,6 +2638,7 @@ static money32 try_place_ghost_scenery(
             }
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
+            cost = res->Cost;
             break;
         }
         case 4:
@@ -2655,7 +2660,6 @@ static money32 try_place_ghost_scenery(
             bannerPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&bannerPlaceAction);
-
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
@@ -3300,7 +3304,7 @@ static void top_toolbar_fastforward_menu_dropdown(int16_t dropdownIndex)
             gGameSpeed = dropdownIndex + 1;
             if (gGameSpeed >= 5)
                 gGameSpeed = 8;
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -3324,12 +3328,12 @@ static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex)
         if (dropdownIndex == 0)
         {
             window_rotate_camera(w, 1);
-            window_invalidate(w);
+            w->Invalidate();
         }
         else if (dropdownIndex == 1)
         {
             window_rotate_camera(w, -1);
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -3643,7 +3647,7 @@ static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex)
             default:
                 return;
         }
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

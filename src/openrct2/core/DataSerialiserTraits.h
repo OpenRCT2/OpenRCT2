@@ -190,14 +190,13 @@ template<> struct DataSerializerTraits<NetworkRideId_t>
 
         stream->Write(rideId, strlen(rideId));
 
-        Ride* ride = get_ride(val.id);
-        if (ride)
+        auto ride = get_ride(val.id);
+        if (ride != nullptr)
         {
-            char rideName[256] = {};
-            format_string(rideName, 256, ride->name, &ride->name_arguments);
+            auto rideName = ride->GetName();
 
             stream->Write(" \"", 2);
-            stream->Write(rideName, strlen(rideName));
+            stream->Write(rideName.c_str(), rideName.size());
             stream->Write("\"", 1);
         }
     }
@@ -394,6 +393,10 @@ template<> struct DataSerializerTraits<TileElement>
         {
             stream->WriteValue(tileElement.pad_04[i]);
         }
+        for (int i = 0; i < 8; ++i)
+        {
+            stream->WriteValue(tileElement.pad_08[i]);
+        }
     }
     static void decode(IStream* stream, TileElement& tileElement)
     {
@@ -404,6 +407,10 @@ template<> struct DataSerializerTraits<TileElement>
         for (int i = 0; i < 4; ++i)
         {
             tileElement.pad_04[i] = stream->ReadValue<uint8_t>();
+        }
+        for (int i = 0; i < 8; ++i)
+        {
+            tileElement.pad_08[i] = stream->ReadValue<uint8_t>();
         }
     }
     static void log(IStream* stream, const TileElement& tileElement)

@@ -12,6 +12,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../ride/TrackDesign.h"
+#include "../../sprites.h"
 #include "../../world/Banner.h"
 #include "../../world/Scenery.h"
 #include "../Paint.h"
@@ -43,14 +44,25 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     height -= 16;
 
-    rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[tile_element->AsBanner()->GetIndex()].type);
+    auto bannerElement = tile_element->AsBanner();
+    if (bannerElement == nullptr)
+    {
+        return;
+    }
 
+    auto banner = bannerElement->GetBanner();
+    if (banner == nullptr)
+    {
+        return;
+    }
+
+    auto banner_scenery = get_banner_entry(banner->type);
     if (banner_scenery == nullptr)
     {
         return;
     }
 
-    direction += tile_element->AsBanner()->GetPosition();
+    direction += bannerElement->GetPosition();
     direction &= 3;
 
     boundBoxOffsetX = BannerBoundBoxes[direction][0].x;
@@ -67,7 +79,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     }
     else
     {
-        image_id |= (gBanners[tile_element->AsBanner()->GetIndex()].colour << 19) | IMAGE_TYPE_REMAP;
+        image_id |= (banner->colour << 19) | IMAGE_TYPE_REMAP;
     }
 
     sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
@@ -92,17 +104,13 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     scrollingMode += direction;
 
-    set_format_arg(0, uint32_t, 0);
-    set_format_arg(4, uint32_t, 0);
+    // We need to get the text colour code into the beginning of the string, so use a temporary buffer
+    char colouredBannerText[32]{};
+    utf8_write_codepoint(colouredBannerText, FORMAT_COLOUR_CODE_START + banner->text_colour);
 
-    if (gBanners[tile_element->AsBanner()->GetIndex()].flags & BANNER_FLAG_NO_ENTRY)
-    {
-        set_format_arg(0, rct_string_id, STR_NO_ENTRY);
-    }
-    else
-    {
-        set_format_arg(0, rct_string_id, gBanners[tile_element->AsBanner()->GetIndex()].string_idx);
-    }
+    set_format_arg(0, rct_string_id, STR_STRING_STRINGID);
+    set_format_arg(2, const char*, &colouredBannerText);
+    banner->FormatTextTo(gCommonFormatArgs + 2 + sizeof(const char*));
 
     if (gConfigGeneral.upper_case_banners)
     {
@@ -118,8 +126,6 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer);
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
-
-    sub_98199C(
-        session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22,
-        boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    auto scrollIndex = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode, COLOUR_BLACK);
+    sub_98199C(session, scrollIndex, 0, 0, 1, 1, 0x15, height + 22, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 }

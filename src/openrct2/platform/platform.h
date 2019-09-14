@@ -99,7 +99,7 @@ bool platform_original_rct1_data_exists(const utf8* path);
 time_t platform_file_get_modified_time(const utf8* path);
 bool platform_ensure_directory_exists(const utf8* path);
 bool platform_directory_delete(const utf8* path);
-utf8* platform_get_absolute_path(const utf8* relative_path, const utf8* base_path);
+std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path);
 bool platform_lock_single_instance();
 bool platform_place_string_on_clipboard(utf8* target);
 
@@ -113,7 +113,7 @@ uint32_t platform_get_ticks();
 void platform_sleep(uint32_t ms);
 void platform_get_openrct_data_path(utf8* outPath, size_t outSize);
 void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize);
-utf8* platform_get_username();
+std::string platform_get_username();
 bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize);
 utf8* platform_open_directory_browser(const utf8* title);
 uint8_t platform_get_locale_currency();

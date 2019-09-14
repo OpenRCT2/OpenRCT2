@@ -84,26 +84,23 @@ private:
 
         MapRange validRange = MapRange{ aX, aY, bX, bY };
 
-        res->Position = { _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y) };
+        res->Position = { _coords.x, _coords.y, tile_element_height(_coords) };
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SOUND_PLACE_ITEM, _coords.x, _coords.y, tile_element_height(_coords.x, _coords.y));
+            audio_play_sound_at_location(SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
         }
 
-        uint8_t minHeight = map_get_lowest_land_height(
-            validRange.GetLeft(), validRange.GetRight(), validRange.GetTop(), validRange.GetBottom());
+        uint8_t minHeight = map_get_lowest_land_height(validRange);
 
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
             {
-                TileElement* tileElement = map_get_surface_element_at(x / 32, y / 32);
-                if (tileElement == nullptr)
+                auto* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+                if (surfaceElement == nullptr)
                     continue;
-
-                SurfaceElement* surfaceElement = tileElement->AsSurface();
                 uint8_t height = surfaceElement->base_height;
 
                 if (height > minHeight)

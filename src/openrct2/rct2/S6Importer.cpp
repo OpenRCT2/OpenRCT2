@@ -47,6 +47,7 @@
 #include "../world/Entrance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
+#include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
@@ -215,9 +216,6 @@ public:
         ImportTileElements();
         ImportSprites();
 
-        gParkName = _s6.park_name;
-        // pad_013573D6
-        gParkNameArgs = _s6.park_name_args;
         gInitialCash = _s6.initial_cash;
         gBankLoan = _s6.current_loan;
         gParkFlags = _s6.park_flags;
@@ -323,7 +321,6 @@ public:
         _gameVersion = _s6.game_version_number;
         gScenarioCompanyValueRecord = _s6.completed_company_value_record;
         // _s6.loan_hash;
-        gRideCount = _s6.ride_count;
         // pad_013587CA
         gHistoricalProfit = _s6.historical_profit;
         // pad_013587D4
@@ -373,10 +370,6 @@ public:
             String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
         }
         std::memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
-        std::memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
-        // Clear all of the strings, since we will probably have a higher limit on user strings in the future than RCT2.
-        user_string_clear_all();
-        std::memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
         gCurrentTicks = _s6.game_ticks_1;
         gCurrentRealTimeTicks = 0;
 
@@ -388,14 +381,7 @@ public:
         gSavedViewZoom = _s6.saved_view_zoom;
         gSavedViewRotation = _s6.saved_view_rotation;
 
-        for (size_t i = 0; i < RCT2_MAX_ANIMATED_OBJECTS; i++)
-        {
-            gAnimatedObjects[i] = _s6.map_animations[i];
-        }
-        gNumMapAnimations = _s6.num_map_animations;
-        // pad_0138B582
-
-        gRideRatingsCalcData = _s6.ride_ratings_calc_data;
+        ImportRideRatingsCalcData();
         ImportRideMeasurements();
         gNextGuestNumber = _s6.next_guest_index;
         gGrassSceneryTileLoopPosition = _s6.grass_and_scenery_tilepos;
@@ -403,7 +389,7 @@ public:
         std::memcpy(gStaffModes, _s6.staff_modes, sizeof(_s6.staff_modes));
         // unk_13CA73E
         // pad_13CA73F
-        gUnk13CA740 = _s6.byte_13CA740;
+        // unk_13CA740
         gClimate = _s6.climate;
         // pad_13CA741;
         // byte_13CA742
@@ -459,6 +445,9 @@ public:
         map_count_remaining_land_rights();
         determine_ride_entrance_and_exit_locations();
 
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        park.Name = GetUserString(_s6.park_name);
+
         // We try to fix the cycles on import, hence the 'true' parameter
         check_for_sprite_list_cycles(true);
         check_for_spatial_index_cycles(true);
@@ -492,7 +481,7 @@ public:
             auto src = &_s6.rides[index];
             if (src->type != RIDE_TYPE_NULL)
             {
-                auto dst = get_ride(index);
+                auto dst = GetOrAllocateRide(index);
                 ImportRide(dst, src, index);
             }
         }
@@ -516,8 +505,16 @@ public:
 
         // pad_046;
         dst->status = src->status;
-        dst->name = src->name;
-        dst->name_arguments = src->name_arguments;
+
+        dst->default_name_number = src->name_arguments_number;
+        if (is_user_string_id(src->name))
+        {
+            dst->custom_name = GetUserString(src->name);
+        }
+        else
+        {
+            dst->default_name_number = src->name_arguments_number;
+        }
 
         dst->overall_view = src->overall_view;
 
@@ -748,6 +745,31 @@ public:
         // pad_208[0x58];
     }
 
+    void ImportRideRatingsCalcData()
+    {
+        const auto& src = _s6.ride_ratings_calc_data;
+        auto& dst = gRideRatingsCalcData;
+        dst = {};
+        dst.proximity_x = src.proximity_x;
+        dst.proximity_y = src.proximity_y;
+        dst.proximity_z = src.proximity_z;
+        dst.proximity_start_x = src.proximity_start_x;
+        dst.proximity_start_y = src.proximity_start_y;
+        dst.proximity_start_z = src.proximity_start_z;
+        dst.current_ride = src.current_ride;
+        dst.state = src.state;
+        dst.proximity_track_type = src.proximity_track_type;
+        dst.proximity_base_height = src.proximity_base_height;
+        dst.proximity_total = src.proximity_total;
+        for (size_t i = 0; i < std::size(src.proximity_scores); i++)
+        {
+            dst.proximity_scores[i] = src.proximity_scores[i];
+        }
+        dst.num_brakes = src.num_brakes;
+        dst.num_reversers = src.num_reversers;
+        dst.station_flags = src.station_flags;
+    }
+
     void ImportRideMeasurements()
     {
         for (const auto& src : _s6.ride_measurements)
@@ -755,9 +777,11 @@ public:
             if (src.ride_index != RCT12_RIDE_ID_NULL)
             {
                 auto ride = get_ride(src.ride_index);
-                ride->measurement = std::make_unique<RideMeasurement>();
-                ride->measurement->ride = ride;
-                ImportRideMeasurement(*ride->measurement, src);
+                if (ride != nullptr)
+                {
+                    ride->measurement = std::make_unique<RideMeasurement>();
+                    ImportRideMeasurement(*ride->measurement, src);
+                }
             }
         }
     }
@@ -826,7 +850,50 @@ public:
 
     void ImportResearchList()
     {
-        std::memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
+        bool invented = true;
+        for (size_t i = 0; i < sizeof(_s6.research_items); i++)
+        {
+            if (_s6.research_items[i].IsInventedEndMarker())
+            {
+                invented = false;
+                continue;
+            }
+            else if (_s6.research_items[i].IsUninventedEndMarker() || _s6.research_items[i].IsRandomEndMarker())
+            {
+                break;
+            }
+
+            RCT12ResearchItem* ri = &_s6.research_items[i];
+            if (invented)
+                gResearchItemsInvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+            else
+                gResearchItemsUninvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+        }
+    }
+
+    void ImportBanner(Banner* dst, const RCT12Banner* src)
+    {
+        *dst = {};
+        dst->type = src->type;
+        dst->flags = src->flags;
+
+        if (!(src->flags & BANNER_FLAG_LINKED_TO_RIDE) && is_user_string_id(src->string_idx))
+        {
+            dst->text = GetUserString(src->string_idx);
+        }
+
+        if (src->flags & BANNER_FLAG_LINKED_TO_RIDE)
+        {
+            dst->ride_index = src->ride_index;
+        }
+        else
+        {
+            dst->colour = src->colour;
+        }
+
+        dst->text_colour = src->text_colour;
+        dst->position.x = src->x;
+        dst->position.y = src->y;
     }
 
     void Initialise()
@@ -861,6 +928,12 @@ public:
         else if (String::Equals(_s6.scenario_filename, "Amity Airfield.SC6"))
         {
             _s6.peep_spawns[0].y = 1296;
+        }
+        // #9926: Africa - Oasis has peeps spawning on the edge underground near the entrance
+        else if (String::Equals(_s6.scenario_filename, "Africa - Oasis.SC6"))
+        {
+            _s6.peep_spawns[0].y = 2128;
+            _s6.peep_spawns[0].z = 7;
         }
 
         gPeepSpawns.clear();
@@ -983,10 +1056,17 @@ public:
                 dst2->SetInverted(src2->IsInverted());
                 dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
-                dst2->SetSeatRotation(src2->GetSeatRotation());
-                dst2->SetMazeEntry(src2->GetMazeEntry());
                 dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 // Skipping IsHighlighted()
+                auto rideType = _s6.rides[src2->GetRideIndex()].type;
+                if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
+                {
+                    dst2->SetSeatRotation(src2->GetSeatRotation());
+                }
+                else if (rideType == RIDE_TYPE_MAZE)
+                {
+                    dst2->SetMazeEntry(src2->GetMazeEntry());
+                }
 
                 break;
             }
@@ -1033,6 +1113,22 @@ public:
                 dst2->SetAcrossTrack(src2->IsAcrossTrack());
                 dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
 
+                // Import banner information
+                auto entry = dst2->GetEntry();
+                if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+                {
+                    auto bannerIndex = dst2->GetBannerIndex();
+                    if (bannerIndex < std::size(_s6.banners))
+                    {
+                        auto srcBanner = &_s6.banners[bannerIndex];
+                        auto dstBanner = GetBanner(bannerIndex);
+                        ImportBanner(dstBanner, srcBanner);
+                    }
+                    else
+                    {
+                        dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                    }
+                }
                 break;
             }
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
@@ -1046,6 +1142,22 @@ public:
                 dst2->SetSecondaryColour(src2->GetSecondaryColour());
                 dst2->SetBannerIndex(src2->GetBannerIndex());
 
+                // Import banner information
+                auto entry = dst2->GetEntry();
+                if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+                {
+                    auto bannerIndex = dst2->GetBannerIndex();
+                    if (bannerIndex < std::size(_s6.banners))
+                    {
+                        auto srcBanner = &_s6.banners[bannerIndex];
+                        auto dstBanner = GetBanner(bannerIndex);
+                        ImportBanner(dstBanner, srcBanner);
+                    }
+                    else
+                    {
+                        dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                    }
+                }
                 break;
             }
             case TILE_ELEMENT_TYPE_BANNER:
@@ -1057,6 +1169,17 @@ public:
                 dst2->SetPosition(src2->GetPosition());
                 dst2->SetAllowedEdges(src2->GetAllowedEdges());
 
+                auto bannerIndex = src2->GetIndex();
+                if (bannerIndex < std::size(_s6.banners))
+                {
+                    auto srcBanner = &_s6.banners[bannerIndex];
+                    auto dstBanner = GetBanner(bannerIndex);
+                    ImportBanner(dstBanner, srcBanner);
+                }
+                else
+                {
+                    dst2->SetIndex(BANNER_INDEX_NULL);
+                }
                 break;
             }
             default:
@@ -1099,7 +1222,7 @@ public:
             ImportSprite(dst, src);
         }
 
-        for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
+        for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
         {
             gSpriteListHead[i] = _s6.sprite_lists_head[i];
             gSpriteListCount[i] = _s6.sprite_lists_count[i];
@@ -1183,9 +1306,9 @@ public:
         dst->crash_x = src->crash_x;
         dst->sound2_flags = src->sound2_flags;
         dst->spin_sprite = src->spin_sprite;
-        dst->sound1_id = src->sound1_id;
+        dst->sound1_id = static_cast<SoundId>(src->sound1_id);
         dst->sound1_volume = src->sound1_volume;
-        dst->sound2_id = src->sound2_id;
+        dst->sound2_id = static_cast<SoundId>(src->sound2_id);
         dst->sound2_volume = src->sound2_volume;
         dst->sound_vector_factor = src->sound_vector_factor;
         dst->time_waiting = src->time_waiting;
@@ -1195,7 +1318,7 @@ public:
         dst->animation_frame = src->animation_frame;
         dst->var_C8 = src->var_C8;
         dst->var_CA = src->var_CA;
-        dst->scream_sound_id = src->scream_sound_id;
+        dst->scream_sound_id = static_cast<SoundId>(src->scream_sound_id);
         dst->var_CD = src->var_CD;
         dst->var_CE = src->var_CE;
         dst->var_CF = src->var_CF;
@@ -1213,7 +1336,10 @@ public:
     void ImportSpritePeep(Peep* dst, const RCT2SpritePeep* src)
     {
         ImportSpriteCommonProperties((rct_sprite_common*)dst, src);
-        dst->name_string_idx = src->name_string_idx;
+        if (is_user_string_id(src->name_string_idx))
+        {
+            dst->SetName(GetUserString(src->name_string_idx));
+        }
         dst->next_x = src->next_x;
         dst->next_y = src->next_y;
         dst->next_z = src->next_z;
@@ -1443,11 +1569,28 @@ public:
         dst->sprite_bottom = src->sprite_bottom;
         dst->sprite_direction = src->sprite_direction;
     }
+
+    std::string GetUserString(rct_string_id stringId)
+    {
+        const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
+        std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
+        auto withoutFormatCodes = RCT12::RemoveFormatCodes(originalStringView);
+        return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
+    }
 };
 
 std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectRepository)
 {
     return std::make_unique<S6Importer>(objectRepository);
+}
+
+static void show_error(uint8_t errorType, rct_string_id errorStringId)
+{
+    if (errorType == ERROR_TYPE_GENERIC)
+    {
+        context_show_error(errorStringId, 0xFFFF);
+    }
+    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId);
 }
 
 void load_from_sv6(const char* path)
@@ -1461,25 +1604,23 @@ void load_from_sv6(const char* path)
         objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
+        AutoCreateMapAnimations();
         sprite_position_tween_reset();
         gScreenAge = 0;
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
     }
     catch (const ObjectLoadException&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
     catch (const IOException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const std::exception&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
 }
 
@@ -1499,25 +1640,23 @@ void load_from_sc6(const char* path)
         objManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
+        AutoCreateMapAnimations();
         sprite_position_tween_reset();
         return;
     }
     catch (const ObjectLoadException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const IOException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
         log_error("Error loading: %s", loadError.what());
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const std::exception&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
     gScreenAge = 0;
     gLastAutoSaveUpdate = AUTOSAVE_PAUSE;

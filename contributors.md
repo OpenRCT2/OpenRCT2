@@ -131,6 +131,8 @@ The following people are not part of the development team, but have been contrib
 * Trevor Harkness (tharkne)
 * Steve Xu (stevexu-umich)
 * (aw20368)
+* Jim Armstrong (41northstudios)
+* Kenny Castro-Monroy (kennycastro007)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -140,6 +142,7 @@ The following people are not part of the development team, but have been contrib
 * Ted John (IntelOrca) - Windows
 * Michał Janiszewski (janisozaur) - Linux, Travis CI
 * Lewis Fox (LRFLEW) - macOS
+* Andrew Rimpici (Andy608) - macOS
 
 ## Documentation
 * (honzi)

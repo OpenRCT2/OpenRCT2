@@ -636,13 +636,16 @@ static void ride_remove_station(Ride* ride, int32_t x, int32_t y, int32_t z)
  */
 bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
+
     int32_t stationX0 = x;
     int32_t stationY0 = y;
     int32_t stationX1 = x;
     int32_t stationY1 = y;
     int32_t stationLength = 1;
 
-    Ride* ride = get_ride(rideIndex);
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
         if (ride->num_stations >= MAX_STATIONS)
@@ -787,6 +790,10 @@ bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t directio
  */
 bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return false;
+
     int32_t removeX = x;
     int32_t removeY = y;
     int32_t stationX0 = x;
@@ -796,7 +803,6 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direc
     int32_t stationLength = 0;
     int32_t byte_F441D1 = -1;
 
-    Ride* ride = get_ride(rideIndex);
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
         TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(x, y, z, direction, rideIndex);
@@ -1068,18 +1074,18 @@ void track_get_front(CoordsXYE* input, CoordsXYE* output)
 
 bool TrackElement::HasChain() const
 {
-    return type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    return Flags2 & TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
 }
 
 void TrackElement::SetHasChain(bool on)
 {
     if (on)
     {
-        type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
     }
     else
     {
-        type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
     }
 }
 
@@ -1111,9 +1117,13 @@ bool track_element_is_block_start(TileElement* trackElement)
 
 int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank)
 {
-    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-    bool isInverted = tileElement->AsTrack()->IsInverted();
-    return track_get_actual_bank_2(ride->type, isInverted, bank);
+    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    if (ride != nullptr)
+    {
+        bool isInverted = tileElement->AsTrack()->IsInverted();
+        return track_get_actual_bank_2(ride->type, isInverted, bank);
+    }
+    return bank;
 }
 
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
@@ -1137,12 +1147,15 @@ int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
 
 int32_t track_get_actual_bank_3(rct_vehicle* vehicle, TileElement* tileElement)
 {
+    auto trackType = tileElement->AsTrack()->GetTrackType();
+    auto bankStart = TrackDefinitions[trackType].bank_start;
+    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    if (ride == nullptr)
+        return bankStart;
+
     bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
         ^ tileElement->AsTrack()->IsInverted();
-    int32_t trackType = tileElement->AsTrack()->GetTrackType();
-    int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-    int32_t bankStart = TrackDefinitions[trackType].bank_start;
-    return track_get_actual_bank_2(rideType, isInverted, bankStart);
+    return track_get_actual_bank_2(ride->type, isInverted, bankStart);
 }
 
 bool track_element_is_station(TileElement* trackElement)
@@ -1202,150 +1215,159 @@ bool track_element_has_speed_setting(uint8_t trackType)
 
 uint8_t TrackElement::GetSeatRotation() const
 {
-    return colour >> 4;
+    return ColourScheme >> 4;
 }
 
 void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 {
-    colour &= 0x0F;
-    colour |= (newSeatRotation << 4);
+    ColourScheme &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
+    ColourScheme |= (newSeatRotation << 4);
 }
 
 bool TrackElement::IsTakingPhoto() const
 {
-    return (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
+    return OnridePhotoBits != 0;
 }
 
 void TrackElement::SetPhotoTimeout()
 {
-    sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    sequence |= (3 << 4);
+    OnridePhotoBits = 3;
 }
 
 void TrackElement::SetPhotoTimeout(uint8_t value)
 {
-    sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    sequence |= (value << 4);
+    OnridePhotoBits = value;
+}
+
+uint8_t TrackElement::GetPhotoTimeout() const
+{
+    return OnridePhotoBits;
 }
 
 void TrackElement::DecrementPhotoTimeout()
 {
-    // We should only touch the upper 4 bits, avoid underflow into the lower 4.
-    if (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
-    {
-        sequence -= (1 << 4);
-    }
+    OnridePhotoBits = std::max(0, OnridePhotoBits - 1);
 }
 
 uint16_t TrackElement::GetMazeEntry() const
 {
-    return mazeEntry;
+    return MazeEntry;
 }
 
 void TrackElement::SetMazeEntry(uint16_t newMazeEntry)
 {
-    mazeEntry = newMazeEntry;
+    MazeEntry = newMazeEntry;
 }
 
 void TrackElement::MazeEntryAdd(uint16_t addVal)
 {
-    mazeEntry |= addVal;
+    MazeEntry |= addVal;
 }
 
 void TrackElement::MazeEntrySubtract(uint16_t subVal)
 {
-    mazeEntry &= ~subVal;
+    MazeEntry &= ~subVal;
 }
 
-uint8_t TrackElement::GetTrackType() const
+uint16_t TrackElement::GetTrackType() const
 {
-    return trackType;
+    return TrackType;
 }
 
-void TrackElement::SetTrackType(uint8_t newType)
+void TrackElement::SetTrackType(uint16_t newType)
 {
-    trackType = newType;
+    TrackType = newType;
 }
 
 uint8_t TrackElement::GetSequenceIndex() const
 {
-    return sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    return Sequence;
 }
 
 void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+    Sequence = newSequenceIndex;
 }
 
 uint8_t TrackElement::GetStationIndex() const
 {
-    return (sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return StationIndex;
 }
 
 void TrackElement::SetStationIndex(uint8_t newStationIndex)
 {
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    sequence |= (newStationIndex << 4);
+    StationIndex = newStationIndex;
 }
 
 uint8_t TrackElement::GetDoorAState() const
 {
-    return (colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+    return (ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_A_MASK) >> 2;
 }
 
 uint8_t TrackElement::GetDoorBState() const
 {
-    return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+    return (ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_B_MASK) >> 5;
 }
 
-ride_id_t TrackElement::GetRideIndex() const
+void TrackElement::SetDoorAState(uint8_t newState)
 {
-    return rideIndex;
+    ColourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_A_MASK;
+    ColourScheme |= ((newState << 2) & TRACK_ELEMENT_COLOUR_DOOR_A_MASK);
 }
 
-void TrackElement::SetRideIndex(ride_id_t newRideIndex)
+void TrackElement::SetDoorBState(uint8_t newState)
 {
-    rideIndex = newRideIndex;
+    ColourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_B_MASK;
+    ColourScheme |= ((newState << 5) & TRACK_ELEMENT_COLOUR_DOOR_B_MASK);
+}
+
+ride_idnew_t TrackElement::GetRideIndex() const
+{
+    return RideIndex;
+}
+
+void TrackElement::SetRideIndex(ride_idnew_t newRideIndex)
+{
+    RideIndex = newRideIndex;
 }
 
 uint8_t TrackElement::GetColourScheme() const
 {
-    return colour & 0x3;
+    return ColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK;
 }
 
 void TrackElement::SetColourScheme(uint8_t newColourScheme)
 {
-    colour &= ~0x3;
-    colour |= (newColourScheme & 0x3);
+    ColourScheme &= ~TRACK_ELEMENT_COLOUR_SCHEME_MASK;
+    ColourScheme |= (newColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK);
 }
 
 bool TrackElement::HasCableLift() const
 {
-    return colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    return Flags2 & TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
 }
 
 void TrackElement::SetHasCableLift(bool on)
 {
-    colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    Flags2 &= ~TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
     if (on)
-        colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
 }
 
 bool TrackElement::IsInverted() const
 {
-    return colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    return Flags2 & TRACK_ELEMENT_FLAGS2_INVERTED;
 }
 
 void TrackElement::SetInverted(bool inverted)
 {
     if (inverted)
     {
-        colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_INVERTED;
     }
     else
     {
-        colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_INVERTED;
     }
 }
 
@@ -1385,37 +1407,36 @@ void TrackElement::SetIsIndestructible(bool isIndestructible)
 
 uint8_t TrackElement::GetBrakeBoosterSpeed() const
 {
-    return (sequence >> 4) << 1;
+    return BrakeBoosterSpeed << 1;
 }
 
 void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
-    sequence &= ~0b11110000;
-    sequence |= ((speed >> 1) << 4);
+    BrakeBoosterSpeed = (speed >> 1);
 }
 
-uint8_t TrackElement::HasGreenLight() const
+bool TrackElement::HasGreenLight() const
 {
-    return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT) != 0;
 }
 
-void TrackElement::SetHasGreenLight(uint8_t greenLight)
+void TrackElement::SetHasGreenLight(bool on)
 {
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    if (greenLight)
+    Flags2 &= ~TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT;
+    if (on)
     {
-        sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT;
     }
 }
 
 bool TrackElement::IsHighlighted() const
 {
-    return (type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT);
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_HIGHLIGHT);
 }
 
 void TrackElement::SetHighlight(bool on)
 {
-    type &= ~TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT;
+    Flags2 &= ~TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
     if (on)
-        type |= TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
 }

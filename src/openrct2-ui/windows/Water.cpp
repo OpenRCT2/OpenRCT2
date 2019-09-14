@@ -141,14 +141,14 @@ static void window_water_mousedown(rct_window* w, rct_widgetindex widgetIndex, r
             gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INCREMENT:
             // Increment land tool size
             gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -168,7 +168,7 @@ static void window_water_textinput(rct_window* w, rct_widgetindex widgetIndex, c
         size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
 
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

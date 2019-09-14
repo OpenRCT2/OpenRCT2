@@ -292,7 +292,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_SET_LAND_RIGHTS:
-            window_invalidate(w);
+            w->Invalidate();
             if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
                 break;
             _activeTool = 2;
@@ -308,7 +308,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 2)
                 _activeTool &= 0xF2;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LAND_SALE_CHECKBOX:
             _activeTool ^= 8;
@@ -316,7 +316,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 8)
                 _activeTool &= 0xF8;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX:
             _activeTool ^= 1;
@@ -324,7 +324,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 1)
                 _activeTool &= 0xF1;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX:
             _activeTool ^= 4;
@@ -332,10 +332,10 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 4)
                 _activeTool &= 0xF4;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
-            window_invalidate(w);
+            w->Invalidate();
             if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
                 break;
 
@@ -410,13 +410,13 @@ static void window_map_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct
             // Decrement land rights tool size
             _landRightsToolSize = std::max(MINIMUM_TOOL_SIZE, _landRightsToolSize - 1);
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LAND_TOOL_LARGER:
             // Increment land rights tool size
             _landRightsToolSize = std::min(MAXIMUM_TOOL_SIZE, _landRightsToolSize + 1);
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -437,7 +437,7 @@ static void window_map_update(rct_window* w)
     for (int32_t i = 0; i < 16; i++)
         map_window_set_pixels(w);
 
-    window_invalidate(w);
+    w->Invalidate();
 
     // Update tab animations
     w->list_information_type++;
@@ -524,20 +524,20 @@ static void window_map_toolabort(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_SET_LAND_RIGHTS:
-            window_invalidate(w);
+            w->Invalidate();
             hide_gridlines();
             hide_land_rights();
             hide_construction_rights();
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
             park_entrance_remove_ghost();
-            window_invalidate(w);
+            w->Invalidate();
             hide_gridlines();
             hide_land_rights();
             hide_construction_rights();
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
-            window_invalidate(w);
+            w->Invalidate();
             hide_gridlines();
             hide_land_rights();
             hide_construction_rights();
@@ -566,7 +566,7 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
     CoordsXY c = map_window_screen_to_map(x, y);
     int32_t mapX = std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
     int32_t mapY = std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
-    int32_t mapZ = tile_element_height(x, y);
+    int32_t mapZ = tile_element_height({ x, y });
 
     rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
@@ -638,7 +638,7 @@ static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, cha
             {
                 size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
                 _landRightsToolSize = size;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case WIDX_MAP_SIZE_SPINNER:
@@ -660,7 +660,7 @@ static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, cha
                     map_window_increase_map_size();
                     currentSize++;
                 }
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
     }
@@ -1097,7 +1097,7 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
     rct_vehicle *train, *vehicle;
     uint16_t train_index, vehicle_index;
 
-    for (train_index = gSpriteListHead[SPRITE_LIST_TRAIN]; train_index != SPRITE_INDEX_NULL; train_index = train->next)
+    for (train_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; train_index != SPRITE_INDEX_NULL; train_index = train->next)
     {
         train = GET_VEHICLE(train_index);
         for (vehicle_index = train_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train)
@@ -1198,15 +1198,15 @@ static void place_park_entrance_get_map_position(
     if (*mapX == LOCATION_NULL)
         return;
 
-    tileElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
-    *mapZ = tileElement->AsSurface()->GetWaterHeight();
+    auto surfaceElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
+    *mapZ = surfaceElement->GetWaterHeight();
     if (*mapZ == 0)
     {
-        *mapZ = tileElement->base_height / 2;
-        if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+        *mapZ = surfaceElement->base_height / 2;
+        if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
         {
             (*mapZ)++;
-            if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 (*mapZ)++;
             }
@@ -1316,7 +1316,7 @@ static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y)
         money32 price = place_park_entrance(mapX, mapY, mapZ, direction);
         if (price != MONEY32_UNDEFINED)
         {
-            audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+            audio_play_sound_at_location(SoundId::PlaceItem, { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z });
         }
     }
 }
@@ -1340,7 +1340,7 @@ static void window_map_set_peep_spawn_tool_down(int32_t x, int32_t y)
     bool result = place_peep_spawn({ mapX, mapY, mapZ, (uint8_t)direction });
     if (result)
     {
-        audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+        audio_play_sound_at_location(SoundId::PlaceItem, { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z });
     }
 }
 
@@ -1541,15 +1541,16 @@ static constexpr const uint8_t RideColourKey[] = {
 
 static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
 {
-    TileElement* tileElement = map_get_surface_element_at(c);
-    uint16_t colour = TerrainColour[tileElement->AsSurface()->GetSurfaceStyle()];
-    if (tileElement->AsSurface()->GetWaterHeight() > 0)
+    auto* surfaceElement = map_get_surface_element_at(c);
+    uint16_t colour = TerrainColour[surfaceElement->GetSurfaceStyle()];
+    if (surfaceElement->GetWaterHeight() > 0)
         colour = WaterColour;
 
-    if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
+    if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
         colour = MAP_COLOUR_UNOWNED(colour);
 
     const int32_t maxSupportedTileElementType = (int32_t)std::size(ElementTypeAddColour);
+    auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     while (!(tileElement++)->IsLastForTile())
     {
         if (tileElement->IsGhost())
@@ -1577,7 +1578,7 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
     uint16_t colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
 
     // as an improvement we could use first_element to show underground stuff?
-    TileElement* tileElement = map_get_surface_element_at(c);
+    TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
     do
     {
         if (tileElement->IsGhost())
@@ -1602,11 +1603,13 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
                 ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-                colourA = RideKeyColours[RideColourKey[ride->type]];
+                if (ride != nullptr)
+                    colourA = RideKeyColours[RideColourKey[ride->type]];
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                colourA = RideKeyColours[RideColourKey[ride->type]];
+                if (ride != nullptr)
+                    colourA = RideKeyColours[RideColourKey[ride->type]];
                 break;
         }
     } while (!(tileElement++)->IsLastForTile());

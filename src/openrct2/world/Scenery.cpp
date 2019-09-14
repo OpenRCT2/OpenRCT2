@@ -96,11 +96,11 @@ void scenery_update_tile(int32_t x, int32_t y)
                 {
                     if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER)
                     {
-                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_WATER, x, y, tileElement);
+                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_WATER, { x, y }, tileElement);
                     }
                     else if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)
                     {
-                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_SNOW, x, y, tileElement);
+                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_SNOW, { x, y }, tileElement);
                     }
                 }
             }
@@ -137,7 +137,8 @@ void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
 
     // Check map elements above, presumably to see if map element is blocked from rain
     tileElementAbove = tileElement;
-    while (!(tileElementAbove->flags & 7))
+    // Change from original: RCT2 only checked for the first three quadrants, which was very likely to be a bug.
+    while (!(tileElementAbove->GetOccupiedQuadrants()))
     {
         tileElementAbove++;
 
@@ -186,7 +187,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_0;
 
-        auto removeSceneryAction = SmallSceneryRemoveAction(x, y, z, gSceneryQuadrant, gSceneryPlaceObject);
+        auto removeSceneryAction = SmallSceneryRemoveAction({ x, y, z * 8 }, gSceneryQuadrant, gSceneryPlaceObject);
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         removeSceneryAction.Execute();
@@ -216,7 +217,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_2;
 
-        TileCoordsXYZD wallLocation = { x >> 5, y >> 5, z, gSceneryGhostWallRotation };
+        CoordsXYZD wallLocation = { x, y, z * 8, gSceneryGhostWallRotation };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY);
         wallRemoveAction.Execute();
@@ -226,7 +227,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_3;
 
-        auto removeSceneryAction = LargeSceneryRemoveAction(x, y, z, gSceneryPlaceRotation, 0);
+        auto removeSceneryAction = LargeSceneryRemoveAction({ x, y, z * 8, gSceneryPlaceRotation }, 0);
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
             | GAME_COMMAND_FLAG_NO_SPEND);

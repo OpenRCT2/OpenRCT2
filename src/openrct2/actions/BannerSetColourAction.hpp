@@ -74,7 +74,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
         }
 
-        if (!map_can_build_at(_loc.x, _loc.y, _loc.z - 16))
+        if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -101,7 +101,8 @@ private:
             intent.putExtra(INTENT_EXTRA_BANNER_INDEX, index);
             context_broadcast_intent(&intent);
 
-            gBanners[index].colour = _primaryColour;
+            auto banner = GetBanner(index);
+            banner->colour = _primaryColour;
             map_invalidate_tile_zoom1(_loc.x, _loc.y, _loc.z, _loc.z + 32);
         }
 

@@ -30,7 +30,48 @@
 #include <iterator>
 #include <limits>
 
-rct_banner gBanners[MAX_BANNERS];
+static Banner _banners[MAX_BANNERS];
+
+std::string Banner::GetText() const
+{
+    uint8_t args[32]{};
+    FormatTextTo(args);
+    return format_string(STR_STRINGID, args);
+}
+
+size_t Banner::FormatTextTo(void* argsV) const
+{
+    auto args = (uint8_t*)argsV;
+    if (flags & BANNER_FLAG_NO_ENTRY)
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_NO_ENTRY);
+        return sizeof(rct_string_id);
+    }
+    else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
+    {
+        auto ride = get_ride(ride_index);
+        if (ride != nullptr)
+        {
+            return ride->FormatNameTo(args);
+        }
+        else
+        {
+            set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
+            return sizeof(rct_string_id);
+        }
+    }
+    else if (text.empty())
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
+        return sizeof(rct_string_id);
+    }
+    else
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
+        set_format_arg_on(args, 2, const char*, text.c_str());
+        return sizeof(rct_string_id) + sizeof(const char*);
+    }
+}
 
 /**
  *
@@ -46,8 +87,8 @@ static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
             continue;
 
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-        Ride* ride = get_ride(rideIndex);
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
         if ((tileElement->clearance_height * 8) + 32 <= z)
@@ -63,7 +104,7 @@ static BannerIndex BannerGetNewIndex()
 {
     for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
-        if (gBanners[bannerIndex].type == BANNER_NULL)
+        if (_banners[bannerIndex].IsNull())
         {
             return bannerIndex;
         }
@@ -77,9 +118,9 @@ static BannerIndex BannerGetNewIndex()
  */
 void banner_init()
 {
-    for (auto& banner : gBanners)
+    for (auto& banner : _banners)
     {
-        banner.type = BANNER_NULL;
+        banner = {};
     }
 }
 
@@ -103,11 +144,11 @@ BannerIndex create_new_banner(uint8_t flags)
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_banner* banner = &gBanners[bannerIndex];
+        auto banner = &_banners[bannerIndex];
 
         banner->flags = 0;
         banner->type = 0;
-        banner->string_idx = STR_DEFAULT_SIGN;
+        banner->text = {};
         banner->colour = 2;
         banner->text_colour = 2;
     }
@@ -116,23 +157,31 @@ BannerIndex create_new_banner(uint8_t flags)
 
 TileElement* banner_get_tile_element(BannerIndex bannerIndex)
 {
-    rct_banner* banner = &gBanners[bannerIndex];
-    TileElement* tileElement = map_get_first_element_at(banner->x, banner->y);
-    do
+    auto banner = GetBanner(bannerIndex);
+    if (banner != nullptr)
     {
-        if (tile_element_get_banner_index(tileElement) == bannerIndex)
+        auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
+        if (tileElement != nullptr)
         {
-            return tileElement;
+            do
+            {
+                if (tile_element_get_banner_index(tileElement) == bannerIndex)
+                {
+                    return tileElement;
+                }
+            } while (!(tileElement++)->IsLastForTile());
         }
-    } while (!(tileElement++)->IsLastForTile());
+    }
     return nullptr;
 }
 
 WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
 {
-    rct_banner* banner = &gBanners[bannerIndex];
-    TileElement* tileElement = map_get_first_element_at(banner->x, banner->y);
+    auto banner = GetBanner(bannerIndex);
+    if (banner == nullptr)
+        return nullptr;
 
+    auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
     if (tileElement == nullptr)
         return nullptr;
 
@@ -160,8 +209,6 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  */
 uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
 {
-    Ride* ride;
-
     static constexpr const LocationXY16 NeighbourCheckOrder[] = { { 32, 0 },    { -32, 0 },   { 0, 32 },
                                                                   { 0, -32 },   { -32, +32 }, { +32, -32 },
                                                                   { +32, +32 }, { -32, +32 }, { 0, 0 } };
@@ -175,15 +222,14 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
         }
     }
 
-    uint8_t index;
-    ride_id_t rideIndex = RIDE_ID_NULL;
-    int32_t resultDistance = std::numeric_limits<int32_t>::max();
-    FOR_ALL_RIDES (index, ride)
+    auto rideIndex = RIDE_ID_NULL;
+    auto resultDistance = std::numeric_limits<int32_t>::max();
+    for (auto& ride : GetRideManager())
     {
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
-        LocationXY8 location = ride->overall_view;
+        LocationXY8 location = ride.overall_view;
         if (location.xy == RCT_XY8_UNDEFINED)
             continue;
 
@@ -193,10 +239,9 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
         if (distance < resultDistance)
         {
             resultDistance = distance;
-            rideIndex = index;
+            rideIndex = ride.id;
         }
     }
-
     return rideIndex;
 }
 
@@ -204,74 +249,77 @@ void banner_reset_broken_index()
 {
     for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
-        TileElement* tileElement = banner_get_tile_element(bannerIndex);
+        auto tileElement = banner_get_tile_element(bannerIndex);
         if (tileElement == nullptr)
-            gBanners[bannerIndex].type = BANNER_NULL;
+        {
+            _banners[bannerIndex].type = BANNER_NULL;
+        }
     }
 }
 
 void fix_duplicated_banners()
 {
     // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
-    bool activeBanners[std::size(gBanners)]{};
-    TileElement* tileElement;
+    bool activeBanners[std::size(_banners)]{};
     for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            tileElement = map_get_first_element_at(x, y);
-            do
+            auto tileElement = map_get_first_element_at(x, y);
+            if (tileElement != nullptr)
             {
-                // TODO: Handle walls and large-scenery that use banner indices too. Large scenery can be tricky, as they occupy
-                // multiple tiles that should both refer to the same banner index.
-                if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
+                do
                 {
-                    uint8_t bannerIndex = tileElement->AsBanner()->GetIndex();
-                    if (activeBanners[bannerIndex])
+                    // TODO: Handle walls and large-scenery that use banner indices too. Large scenery can be tricky, as they
+                    // occupy multiple tiles that should both refer to the same banner index.
+                    if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                     {
-                        log_info(
-                            "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", bannerIndex, x, y,
-                            tileElement->base_height);
-
-                        // Banner index is already in use by another banner, so duplicate it
-                        BannerIndex newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
-                        if (newBannerIndex == BANNER_INDEX_NULL)
+                        uint8_t bannerIndex = tileElement->AsBanner()->GetIndex();
+                        if (activeBanners[bannerIndex])
                         {
-                            log_error("Failed to create new banner.");
-                            continue;
-                        }
-                        Guard::Assert(!activeBanners[newBannerIndex]);
+                            log_info(
+                                "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", bannerIndex, x, y,
+                                tileElement->base_height);
 
-                        // Copy over the original banner, but update the location
-                        rct_banner& newBanner = gBanners[newBannerIndex];
-                        newBanner = gBanners[bannerIndex];
-                        newBanner.x = x;
-                        newBanner.y = y;
-
-                        // Duplicate user string too
-                        rct_string_id stringIdx = newBanner.string_idx;
-                        if (is_user_string_id(stringIdx))
-                        {
-                            utf8 buffer[USER_STRING_MAX_LENGTH];
-                            format_string(buffer, USER_STRING_MAX_LENGTH, stringIdx, nullptr);
-                            rct_string_id newStringIdx = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-                            if (newStringIdx == 0)
+                            // Banner index is already in use by another banner, so duplicate it
+                            BannerIndex newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
+                            if (newBannerIndex == BANNER_INDEX_NULL)
                             {
-                                log_error("Failed to allocate user string for banner");
+                                log_error("Failed to create new banner.");
                                 continue;
                             }
-                            newBanner.string_idx = newStringIdx;
+                            Guard::Assert(!activeBanners[newBannerIndex]);
+
+                            // Copy over the original banner, but update the location
+                            auto& newBanner = *GetBanner(newBannerIndex);
+                            newBanner = *GetBanner(bannerIndex);
+                            newBanner.position = { x, y };
+
+                            tileElement->AsBanner()->SetIndex(newBannerIndex);
                         }
 
-                        tileElement->AsBanner()->SetIndex(newBannerIndex);
+                        // Mark banner index as in-use
+                        activeBanners[bannerIndex] = true;
                     }
-
-                    // Mark banner index as in-use
-                    activeBanners[bannerIndex] = true;
-                }
-            } while (!(tileElement++)->IsLastForTile());
+                } while (!(tileElement++)->IsLastForTile());
+            }
         }
     }
+}
+
+Banner* BannerElement::GetBanner() const
+{
+    return ::GetBanner(GetIndex());
+}
+
+rct_scenery_entry* BannerElement::GetEntry() const
+{
+    auto banner = GetBanner();
+    if (banner != nullptr)
+    {
+        return get_banner_entry(banner->type);
+    }
+    return nullptr;
 }
 
 BannerIndex BannerElement::GetIndex() const
@@ -308,4 +356,13 @@ void BannerElement::SetAllowedEdges(uint8_t newEdges)
 void BannerElement::ResetAllowedEdges()
 {
     flags |= 0b00001111;
+}
+
+Banner* GetBanner(BannerIndex id)
+{
+    if (id < std::size(_banners))
+    {
+        return &_banners[id];
+    }
+    return nullptr;
 }

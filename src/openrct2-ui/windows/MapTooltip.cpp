@@ -134,7 +134,7 @@ static void window_map_tooltip_open()
     }
     else
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->x = x;
         w->y = y;
         w->width = width;
@@ -148,7 +148,7 @@ static void window_map_tooltip_open()
  */
 static void window_map_tooltip_update(rct_window* w)
 {
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**

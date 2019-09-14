@@ -78,16 +78,11 @@ std::string gCurrentLoadedPath;
 
 bool gLoadKeepWindowsOpen = false;
 
-uint8_t gUnk13CA740;
-uint8_t gUnk141F568;
-
 uint32_t gCurrentTicks;
 uint32_t gCurrentRealTimeTicks;
 
 rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
-uint8_t gErrorType;
-rct_string_id gErrorStringId;
 
 using namespace OpenRCT2;
 
@@ -297,10 +292,6 @@ void update_palette_effects()
  */
 static int32_t game_check_affordability(int32_t cost, uint32_t flags)
 {
-    // Only checked for game commands.
-    if (gUnk141F568 & 0xF0)
-        return cost;
-
     if (finance_check_affordability(cost, flags))
         return cost;
 
@@ -404,24 +395,6 @@ int32_t game_do_command_p(
             // Second call to actually perform the operation
             new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
-            if (replayManager != nullptr)
-            {
-                bool recordCommand = false;
-                bool commandExecutes = (flags & GAME_COMMAND_FLAG_APPLY) && (flags & GAME_COMMAND_FLAG_GHOST) == 0
-                    && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
-
-                if (replayManager->IsRecording() && commandExecutes)
-                    recordCommand = true;
-                else if (replayManager->IsNormalising() && commandExecutes && (flags & GAME_COMMAND_FLAG_REPLAY) != 0)
-                    recordCommand = true;
-
-                if (recordCommand && gGameCommandNestLevel == 1)
-                {
-                    replayManager->AddGameCommand(
-                        gCurrentTicks, *eax, original_ebx, *ecx, original_edx, original_esi, original_edi, original_ebp, 0);
-                }
-            }
-
             *edx = *ebx;
 
             if (*edx != MONEY32_UNDEFINED && *edx < cost)
@@ -437,12 +410,10 @@ int32_t game_do_command_p(
             {
                 // Update money balance
                 finance_payment(cost, gCommandExpenditureType);
-                if (gUnk141F568 == gUnk13CA740)
-                {
-                    // Create a +/- money text effect
-                    if (cost != 0 && game_is_not_paused())
-                        rct_money_effect::Create(cost);
-                }
+
+                // Create a +/- money text effect
+                if (cost != 0 && game_is_not_paused())
+                    rct_money_effect::Create(cost);
             }
 
             // Start autosave timer after game command
@@ -459,9 +430,8 @@ int32_t game_do_command_p(
     gGameCommandNestLevel--;
 
     // Show error window
-    if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740
-        && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED)
-        && !(flags & GAME_COMMAND_FLAG_GHOST))
+    if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
+        && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST))
     {
         context_show_error(gGameCommandErrorTitle, gGameCommandErrorText);
     }
@@ -555,16 +525,6 @@ void game_convert_strings_to_utf8()
     gScenarioName = rct2_to_utf8(gScenarioName, RCT2_LANGUAGE_ID_ENGLISH_UK);
     gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2_LANGUAGE_ID_ENGLISH_UK);
 
-    // User strings
-    for (auto* string : gUserStrings)
-    {
-        if (!str_is_null_or_empty(string))
-        {
-            rct2_to_utf8_self(string, RCT12_USER_STRING_MAX_LENGTH);
-            utf8_remove_formatting(string, true);
-        }
-    }
-
     // News items
     game_convert_news_items_to_utf8();
 }
@@ -644,10 +604,9 @@ void game_fix_save_vars()
                 continue;
             }
             set_format_arg(0, uint32_t, peep->id);
-            utf8* curName = gCommonStringFormatBuffer;
-            rct_string_id curId = peep->name_string_idx;
-            format_string(curName, 256, curId, gCommonFormatArgs);
-            log_warning("Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName, srcStation, rideIdx);
+            auto curName = peep->GetName();
+            log_warning(
+                "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
             int8_t station = ride_get_first_valid_station_exit(get_ride(rideIdx));
             if (station == -1)
             {
@@ -679,27 +638,28 @@ void game_fix_save_vars()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            TileElement* tileElement = map_get_surface_element_at(x, y);
+            auto* surfaceElement = map_get_surface_element_at(x, y);
 
-            if (tileElement == nullptr)
+            if (surfaceElement == nullptr)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                tileElement = tile_element_insert(x, y, 14, 0);
+                auto tileElement = tile_element_insert({ x, y, 14 }, 0b0000);
                 if (tileElement == nullptr)
                 {
                     log_error("Unable to fix: Map element limit reached.");
                     return;
                 }
+                surfaceElement = tileElement->AsSurface();
             }
 
             // Fix the invisible border tiles.
-            // At this point, we can be sure that tileElement is not NULL.
+            // At this point, we can be sure that surfaceElement is not NULL.
             if (x == 0 || x == gMapSize - 1 || y == 0 || y == gMapSize - 1)
             {
-                tileElement->base_height = 2;
-                tileElement->clearance_height = 2;
-                tileElement->AsSurface()->SetSlope(0);
-                tileElement->AsSurface()->SetWaterHeight(0);
+                surfaceElement->base_height = 2;
+                surfaceElement->clearance_height = 2;
+                surfaceElement->SetSlope(0);
+                surfaceElement->SetWaterHeight(0);
             }
         }
     }
@@ -745,6 +705,7 @@ void game_load_init()
 
     if (network_get_mode() != NETWORK_MODE_CLIENT)
     {
+        GameActions::ClearQueue();
         reset_sprite_spatial_index();
     }
     reset_all_sprite_quadrant_placements();

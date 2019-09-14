@@ -146,6 +146,7 @@ STR_0563    :Kényelmes, egyszerű biztonsági rudas vonatokban ülve élvezheti
 STR_0564    :Ez a fa pályán futó hullámvasút gyors, durva, hangos és „kontrollvesztett” utazási élményt nyújt, bőséges „légi idővel”
 STR_0565    :Egy egyszerű, kizárólag enyhe lejtőkre és fordulókra képes fa hullámvasút, amelyen a kocsikat csak az oldalirányú súrlódásos kerekek és a gravitáció tartja a pályán
 STR_0566    :Különálló hullámvasút-kocsik száguldanak egy szoros, cikcakkos alaprajzú, éles kanyarokat és rövid meredek eséseket tartalmazó pályán
+STR_0569    :A pálya alatti speciális rögzítőhámokban utazva az utasok megtapasztalhatják a repülés élményét, ahogy szelik a levegőt
 STR_0573    :Motoros, helikopter formájú kocsik haladnak egy acélpályán, a pedálozó utasok irányításával
 STR_0578    :A kocsik egy abroncsokkal körbefogott, meredek esésekkel és palástorsókkal teli pálya mentén haladnak
 STR_0579    :Egy enyhe minigolf-játék
@@ -1560,6 +1561,7 @@ STR_2214    :Szünet közben nem lehet építeni!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
+STR_2218    :{RED}{STRINGID} itt van: {STRINGID} és még nem érkezett vissza ide: {STRINGID}!{NEWLINE}Ellenőrizd, hogy nincs-e beragadva vagy elakadva
 STR_2219    :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
 STR_2220    :{WINDOW_COLOUR_2}Park értékelése: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park értékelése: {COMMA16}
@@ -2369,6 +2371,7 @@ STR_3137    :Közeli díszletek kiválasztása
 STR_3138    :Kiválasztás törlése
 STR_3139    :A kábeles felvonó nem tud üzemelni ebben a működési módban
 STR_3140    :A kábeles felvonószakasznak közvetlenül az állomás után kell kezdődnie
+STR_3141    :Nem lehetséges többkörös utazás kábeles felvonószakasszal
 STR_3142    :{WINDOW_COLOUR_2}Befogadóképesség: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Emberek megjelenítése a térképen
 STR_3144    :{SMALLFONT}{BLACK}Játékok és bódék megjelenítése a térképen
@@ -2422,6 +2425,7 @@ STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Nem csökkenthető tovább a térkép mérete
 STR_3214    :Nem növelhető tovább a térkép mérete
 STR_3215    :Túl közel van a térkép széléhez
+STR_3216    :{SMALLFONT}{BLACK}A park földtulajdonának kiválasztása stb.
 STR_3217    :Birtokolt föld
 STR_3218    :Birtokolt építési jogok
 STR_3219    :Eladó föld
@@ -2606,26 +2610,72 @@ STR_5187    :Pénzügyek
 STR_5188    :Új kampány
 STR_5189    :Kutatás
 STR_5190    :Térkép
+STR_5191    :Látkép
 STR_5192    :Friss hírek
+STR_5193    :Talaj
 STR_5194    :Víz
+STR_5195    :Díszlet törlése
+STR_5196    :Földjogok
+STR_5197    :Díszlet
+STR_5198    :Út
+STR_5199    :Játék építése
+STR_5200    :Játékterv lerakása
+STR_5201    :Új játék
+STR_5202    :Játékterv választás
+STR_5203    :Játék
+STR_5204    :Játéklista
+STR_5205    :Vendég
+STR_5206    :Vendéglista
+STR_5207    :Személyzet
+STR_5208    :Személyzeti lista
+STR_5209    :Hirdetőtábla 
+STR_5210    :Objektum választás
+STR_5211    :Találmányok listája
+STR_5212    :Pályabeállítások
+STR_5213    :Cél beállítások
 STR_5214    :Térkép generálása
+STR_5215    :Játékterv-kezelő
+STR_5216    :Játékterv-kezelő lista
 STR_5217    :Csalások
 STR_5218    :Témák
 STR_5219    :Beállítások
+STR_5220    :Gyorsbillentyűk 
+STR_5221    :Gyorsbillentyűk megváltoztatása
 STR_5222    :Betöltés/mentés
+STR_5223    :Mentés rákérdezés
+STR_5224    :Játék lerombolása rákérdezés
+STR_5225    :Alkalmazott kirúgása rákérdezés
+STR_5226    :Pálya törlése rákérdezés
+STR_5227    :Mentés felülírása rákérdezés
+STR_5228    :{SMALLFONT}{BLACK}Fő felhasználói felület
+STR_5229    :{SMALLFONT}{BLACK}Park
+STR_5230    :{SMALLFONT}{BLACK}Eszközök
+STR_5231    :{SMALLFONT}{BLACK}Játékok és vendégek
+STR_5232    :{SMALLFONT}{BLACK}Szerkesztők
+STR_5233    :{SMALLFONT}{BLACK}Egyéb
+STR_5234    :{SMALLFONT}{BLACK}Rákérdezések
+STR_5235    :{SMALLFONT}{BLACK}Beállítások
 STR_5236    :Ablak
 STR_5237    :Paletta
 STR_5238    :Jelenlegi téma:
 STR_5239    :Másolatkészítés
 STR_5240    :Írj be egy nevet a téma számára
 STR_5241    :Ez a téma nem változtatható meg
+STR_5242    :Már létezik ilyen nevű téma
+STR_5243    :Érvénytelen karaktereket tartalmaz
 STR_5244    :Témák
 STR_5245    :Felső eszköztár
 STR_5246    :Alsó eszköztár
 STR_5247    :Játéktervező alsó eszköztára
 STR_5248    :Pályaszerkesztő alsó eszköztára
+STR_5249    :Főcím menü gombok
+STR_5250    :Főcím kilépés gomb
+STR_5251    :Főcím beállítások gomb
+STR_5252    :Főcím pályaválasztás
+STR_5253    :Park információ
 STR_5254    :Létrehozás
 STR_5255    :{SMALLFONT}{BLACK}Egy teljesen új főcím létrehozása
+STR_5256    :Hozz létre egy új témát, amit módosíthatsz
 STR_5257    :{SMALLFONT}{BLACK}Új téma létehozása a jelenlegi alapján
 STR_5258    :{SMALLFONT}{BLACK}A jelenlegi téma törlése
 STR_5259    :{SMALLFONT}{BLACK}A jelenlegi téma átnevezése
@@ -3311,6 +3361,9 @@ STR_6133    :{SMALLFONT}{BLACK}Hozzáférés a még fel nem fedezett játékokho
 STR_6134    :Díszlet törlése
 STR_6135    :A kliens érvénytelen kérést küldött
 STR_6136    :A szerver érvénytelen kérést küldött
+STR_6137    :OpenRCT2, egy ingyenes és nyílt forráskódú Roller Coaster Tycoon 2 klón.
+STR_6138    :Az OpenRCT2 számos szerző munkája, a teljes lista a „contributors.md”-ben található. További információkért látogass el ide: http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Minden termék- és vállalatnév a vonatkozó tulajdonosok birtokában van. A használatuk nem jelent semmiféle kapcsolatot vagy jóváhagyást a részükről.
 STR_6140    :Változási napló...
 STR_6141    :RCT1 alsó eszköztár
 STR_6142    :{WINDOW_COLOUR_2}Pálya neve: {BLACK}{STRING}
@@ -3494,6 +3547,8 @@ STR_6325    :{SMALLFONT}{BLACK}Játék/épület szimulálása
 STR_6326    :{POP16}{POP16}{POP16}{STRINGID} nem szimulálható...
 STR_6327    :Átlátszó hátterű óriás képmentések
 STR_6328    :{SMALLFONT}{BLACK}Ha ez az opció ki van jelölve, az óriás képmentések átlátszó hátterűek lesznek az alapértelmezett fekete szín helyett.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :[{STRING}] letöltése innen: {STRING} ({COMMA16} / {COMMA16})
 
 #############
 # Scenarios #

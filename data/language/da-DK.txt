@@ -3237,7 +3237,7 @@ STR_5762    :Chinese Yuan (CN¥)
 STR_5763    :Alle filer
 STR_5764    :Ugyldig forlystelses type
 STR_5765    :Kan ikke redigere ugyldige forlystelses typer
-STR_5766    :<available string id>
+STR_5766    :Ungarsk Forint (Ft)
 STR_5767    :Indkomst
 STR_5768    :Total kunder
 STR_5769    :Total profit
@@ -3799,6 +3799,8 @@ STR_6325    :{SMALLFONT}{BLACK}Simulér forlystelse/attraktion
 STR_6326    :Kan ikke simulére {POP16}{POP16}{POP16}{STRINGID}...
 STR_6327    :Transparent baggrund for gigantisk Skærmbillede
 STR_6328    :{SMALLFONT}{BLACK}Med denne indstilling aktiveret, vil gigantisk skærmbillede have transparent baggrund i stedet for en standard sort baggrund.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :Henter [{STRING}] fra {STRING} ({COMMA16} / {COMMA16})
 
 #############
 # Scenarios #

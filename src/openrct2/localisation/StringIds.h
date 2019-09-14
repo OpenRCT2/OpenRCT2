@@ -3965,6 +3965,9 @@ enum
     STR_TRANSPARENT_SCREENSHOT = 6327,
     STR_TRANSPARENT_SCREENSHOT_TIP = 6328,
 
+    STR_STRING_STRINGID = 6329,
+    STR_DOWNLOADING_OBJECTS_FROM = 6330,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

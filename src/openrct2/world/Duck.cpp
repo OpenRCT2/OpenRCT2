@@ -122,8 +122,8 @@ void rct_duck::UpdateFlyToWater()
     int32_t newY = y + DuckMoveOffset[direction].y;
     int32_t manhattanDistanceN = abs(target_x - newX) + abs(target_y - newY);
 
-    TileElement* tileElement = map_get_surface_element_at({ target_x, target_y });
-    int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
+    auto surfaceElement = map_get_surface_element_at({ target_x, target_y });
+    int32_t waterHeight = surfaceElement->GetWaterHeight();
     if (waterHeight == 0)
     {
         state = DUCK_STATE::FLY_AWAY;
@@ -201,8 +201,8 @@ void rct_duck::UpdateSwim()
         else
         {
             Invalidate();
-            int16_t landZ = tile_element_height(x, y);
-            int16_t waterZ = tile_element_water_height(x, y);
+            int16_t landZ = tile_element_height({ x, y });
+            int16_t waterZ = tile_element_water_height({ x, y });
 
             if (z < landZ || waterZ == 0)
             {
@@ -222,8 +222,8 @@ void rct_duck::UpdateSwim()
                 int32_t direction = sprite_direction >> 3;
                 int32_t newX = x + DuckMoveOffset[direction].x;
                 int32_t newY = y + DuckMoveOffset[direction].y;
-                landZ = tile_element_height(newX, newY);
-                waterZ = tile_element_water_height(newX, newY);
+                landZ = tile_element_height({ newX, newY });
+                waterZ = tile_element_water_height({ newX, newY });
 
                 if (z >= landZ && z == waterZ)
                 {
@@ -307,7 +307,7 @@ uint32_t rct_duck::GetFrameImage(int32_t direction) const
 
 void create_duck(int32_t targetX, int32_t targetY)
 {
-    rct_sprite* sprite = create_sprite(2);
+    rct_sprite* sprite = create_sprite(SPRITE_IDENTIFIER_MISC);
     if (sprite != nullptr)
     {
         sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
@@ -367,7 +367,7 @@ void duck_update(rct_duck* duck)
 
 void duck_press(rct_duck* duck)
 {
-    audio_play_sound_at_location(SOUND_QUACK, duck->x, duck->y, duck->z);
+    audio_play_sound_at_location(SoundId::Quack, { duck->x, duck->y, duck->z });
 }
 
 void duck_remove_all()

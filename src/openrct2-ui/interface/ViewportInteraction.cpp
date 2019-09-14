@@ -14,6 +14,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/BalloonPressAction.hpp>
@@ -94,9 +95,14 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
             ride_set_map_tooltip(tileElement);
             break;
         case VIEWPORT_INTERACTION_ITEM_PARK:
-            set_map_tooltip_format_arg(0, rct_string_id, gParkName);
-            set_map_tooltip_format_arg(2, uint32_t, gParkNameArgs);
+        {
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            auto parkName = park.Name.c_str();
+
+            set_map_tooltip_format_arg(0, rct_string_id, STR_STRING);
+            set_map_tooltip_format_arg(2, const char*, parkName);
             break;
+        }
         default:
             info->type = VIEWPORT_INTERACTION_ITEM_NONE;
             break;
@@ -198,7 +204,6 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
 {
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
-    rct_banner* banner;
     Ride* ride;
     int32_t i, stationIndex;
 
@@ -226,21 +231,24 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
             ride = get_ride(sprite->vehicle.ride);
-            if (ride->status == RIDE_STATUS_CLOSED)
+            if (ride != nullptr && ride->status == RIDE_STATUS_CLOSED)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-                set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gMapTooltipFormatArgs + 2);
             }
             return info->type;
 
         case VIEWPORT_INTERACTION_ITEM_RIDE:
+        {
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
             ride = get_ride(tile_element_get_ride_index(tileElement));
+            if (ride == nullptr)
+                return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+
             if (ride->status != RIDE_STATUS_CLOSED)
                 return info->type;
 
@@ -288,20 +296,18 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             }
             else
             {
-                if (!gCheatsSandboxMode && !map_is_location_owned(info->x, info->y, tileElement->base_height << 4))
+                if (!gCheatsSandboxMode && !map_is_location_owned({ info->x, info->y, tileElement->base_height << 4 }))
                 {
                     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
                 }
 
-                set_map_tooltip_format_arg(2, rct_string_id, ride->name);
-                set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gMapTooltipFormatArgs + 2);
                 return info->type;
             }
 
-            set_map_tooltip_format_arg(4, rct_string_id, ride->name);
-            set_map_tooltip_format_arg(6, uint32_t, ride->name_arguments);
+            auto nameArgLen = ride->FormatNameTo(gMapTooltipFormatArgs + 4);
             set_map_tooltip_format_arg(
-                10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
+                4 + nameArgLen, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
 
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
                 stationIndex = tileElement->AsEntrance()->GetStationIndex();
@@ -312,18 +318,22 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
                 if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
                     stationIndex--;
             stationIndex++;
-            set_map_tooltip_format_arg(12, uint16_t, stationIndex);
+            set_map_tooltip_format_arg(4 + nameArgLen + 2, uint16_t, stationIndex);
             return info->type;
-
+        }
         case VIEWPORT_INTERACTION_ITEM_WALL:
             sceneryEntry = tileElement->AsWall()->GetEntry();
             if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                banner = &gBanners[tileElement->AsWall()->GetBannerIndex()];
-                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
-                set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                set_map_tooltip_format_arg(6, rct_string_id, sceneryEntry->name);
+                auto banner = tileElement->AsWall()->GetBanner();
+
+                size_t argPos = 0;
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                argPos += sizeof(rct_string_id);
+                argPos += banner->FormatTextTo(gMapTooltipFormatArgs + argPos);
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                argPos += sizeof(rct_string_id);
+                set_map_tooltip_format_arg(argPos, rct_string_id, sceneryEntry->name);
                 return info->type;
             }
             break;
@@ -332,29 +342,33 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
             {
-                banner = &gBanners[tileElement->AsLargeScenery()->GetBannerIndex()];
-                set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
-                set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-                set_map_tooltip_format_arg(6, rct_string_id, sceneryEntry->name);
+                auto banner = tileElement->AsLargeScenery()->GetBanner();
+
+                size_t argPos = 0;
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+                argPos += sizeof(rct_string_id);
+                argPos += banner->FormatTextTo(gMapTooltipFormatArgs + argPos);
+                set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+                argPos += sizeof(rct_string_id);
+                set_map_tooltip_format_arg(argPos, rct_string_id, sceneryEntry->name);
                 return info->type;
             }
             break;
 
         case VIEWPORT_INTERACTION_ITEM_BANNER:
-            banner = &gBanners[tileElement->AsBanner()->GetIndex()];
+        {
+            auto banner = tileElement->AsBanner()->GetBanner();
             sceneryEntry = get_banner_entry(banner->type);
 
-            set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-
-            if (banner->flags & BANNER_FLAG_NO_ENTRY)
-                set_map_tooltip_format_arg(2, rct_string_id, STR_NO_ENTRY);
-            else
-                set_map_tooltip_format_arg(2, rct_string_id, banner->string_idx);
-
-            set_map_tooltip_format_arg(4, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
-            set_map_tooltip_format_arg(6, rct_string_id, sceneryEntry->name);
+            size_t argPos = 0;
+            set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
+            argPos += sizeof(rct_string_id);
+            argPos += banner->FormatTextTo(gMapTooltipFormatArgs + argPos);
+            set_map_tooltip_format_arg(argPos, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
+            argPos += sizeof(rct_string_id);
+            set_map_tooltip_format_arg(argPos, rct_string_id, sceneryEntry->name);
             return info->type;
+        }
     }
 
     if (!(input_test_flag(INPUT_FLAG_6)) || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
@@ -444,7 +458,13 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
 
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
             if (info.sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
-                ride_construct(get_ride(info.sprite->vehicle.ride));
+            {
+                auto ride = get_ride(info.sprite->vehicle.ride);
+                if (ride != nullptr)
+                {
+                    ride_construct(ride);
+                }
+            }
             break;
         case VIEWPORT_INTERACTION_ITEM_RIDE:
             tileElement.x = info.x;
@@ -485,7 +505,7 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
 static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y)
 {
     auto removeSceneryAction = SmallSceneryRemoveAction(
-        x, y, tileElement->base_height, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+        { x, y, tileElement->base_height * 8 }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
         tileElement->AsSmallScenery()->GetEntryIndex());
 
     GameActions::Execute(&removeSceneryAction);
@@ -563,7 +583,7 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, int3
     }
     else
     {
-        TileCoordsXYZD wallLocation = { x >> 5, y >> 5, tileElement->base_height, tileElement->GetDirection() };
+        CoordsXYZD wallLocation = { x, y, tileElement->base_height * 8, tileElement->GetDirection() };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         GameActions::Execute(&wallRemoveAction);
     }
@@ -585,7 +605,8 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     else
     {
         auto removeSceneryAction = LargeSceneryRemoveAction(
-            x, y, tileElement->base_height, tileElement->GetDirection(), tileElement->AsLargeScenery()->GetSequenceIndex());
+            { x, y, tileElement->base_height * 8, tileElement->GetDirection() },
+            tileElement->AsLargeScenery()->GetSequenceIndex());
         GameActions::Execute(&removeSceneryAction);
     }
 }
@@ -665,7 +686,7 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_
         int16_t z = originalZ;
         if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER)
         {
-            z = tile_element_height(map_pos.x, map_pos.y);
+            z = tile_element_height({ map_pos.x, map_pos.y });
         }
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
         map_pos.x = std::clamp<int16_t>(map_pos.x, my_x, my_x + 31);

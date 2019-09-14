@@ -71,7 +71,7 @@ public:
             }
         }
 
-        SurfaceElement* surfaceElement = map_get_surface_element_at(_coords)->AsSurface();
+        SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
@@ -113,12 +113,12 @@ public:
         res->Position.y = _coords.y + 16;
         res->Position.z = _height * 8;
 
-        int32_t surfaceHeight = tile_element_height(_coords.x, _coords.y);
+        int32_t surfaceHeight = tile_element_height(_coords);
         footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
         if (!gCheatsDisableClearanceChecks)
             wall_remove_at_z(_coords.x, _coords.y, surfaceHeight);
 
-        SurfaceElement* surfaceElement = map_get_surface_element_at(_coords)->AsSurface();
+        SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);

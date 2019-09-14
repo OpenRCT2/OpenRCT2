@@ -45,11 +45,12 @@ money32 place_provisional_track_piece(
     ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y,
     int32_t z)
 {
-    Ride* ride;
-    money32 result;
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return MONEY32_UNDEFINED;
 
+    money32 result;
     ride_construction_remove_ghosts();
-    ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_MAZE)
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
@@ -270,7 +271,9 @@ bool window_ride_construction_update_state(
         liftHillAndAlternativeState |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
     }
 
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return true;
 
     if (_enabledRidePieces & (1ULL << TRACK_SLOPE_STEEP_LONG))
     {
@@ -402,9 +405,8 @@ bool window_ride_construction_update_state(
 
 void window_ride_construction_do_entrance_exit_check()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    Ride* ride = get_ride(_currentRideIndex);
-
+    auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    auto ride = get_ride(_currentRideIndex);
     if (w == nullptr || ride == nullptr)
     {
         return;
@@ -429,7 +431,7 @@ void window_ride_construction_do_entrance_exit_check()
 
 void window_ride_construction_do_station_check()
 {
-    Ride* ride = get_ride(_currentRideIndex);
+    auto ride = get_ride(_currentRideIndex);
     if (ride != nullptr)
     {
         _stationConstructed = ride->num_stations != 0;

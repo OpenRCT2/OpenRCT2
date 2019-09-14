@@ -89,7 +89,7 @@ public:
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y);
+        int16_t surfaceHeight = tile_element_height(_loc);
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = surfaceHeight;
@@ -136,7 +136,8 @@ public:
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
-            if (gBanners[_bannerId].type != BANNER_NULL)
+            auto banner = GetBanner(_bannerId);
+            if (banner->type != BANNER_NULL)
             {
                 log_error("No free banners available");
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
@@ -194,7 +195,7 @@ public:
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_OFF_EDGE_OF_MAP);
             }
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned(curTile.x, curTile.y, zLow * 8)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_owned({ curTile, zLow * 8 })
                 && !gCheatsSandboxMode)
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
@@ -213,7 +214,7 @@ public:
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
-        int16_t surfaceHeight = tile_element_height(_loc.x, _loc.y);
+        int16_t surfaceHeight = tile_element_height(_loc);
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = surfaceHeight;
@@ -252,20 +253,20 @@ public:
                 return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_BANNERS_IN_GAME);
             }
 
-            if (gBanners[_bannerId].type != BANNER_NULL)
+            auto banner = GetBanner(_bannerId);
+            if (banner->type != BANNER_NULL)
             {
                 log_error("No free banners available");
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
             }
 
-            rct_banner* banner = &gBanners[_bannerId];
-            banner->string_idx = STR_DEFAULT_SIGN;
+            banner->text = {};
             banner->colour = 2;
             banner->text_colour = 2;
             banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
             banner->type = 0;
-            banner->x = _loc.x / 32;
-            banner->y = _loc.y / 32;
+            banner->position.x = _loc.x / 32;
+            banner->position.y = _loc.y / 32;
 
             ride_id_t rideIndex = banner_get_closest_ride_index(_loc.x, _loc.y, maxHeight);
             if (rideIndex != RIDE_ID_NULL)
@@ -316,7 +317,7 @@ public:
             }
 
             TileElement* newTileElement = tile_element_insert(
-                curTile.x / 32, curTile.y / 32, zLow, quarterTile.GetBaseQuarterOccupied());
+                { curTile.x / 32, curTile.y / 32, zLow }, quarterTile.GetBaseQuarterOccupied());
             Guard::Assert(newTileElement != nullptr);
             map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
             newTileElement->SetType(TILE_ELEMENT_TYPE_LARGE_SCENERY);
@@ -368,11 +369,10 @@ private:
                 continue;
             }
 
-            TileElement* tileElement = map_get_surface_element_at({ curTile.x, curTile.y });
-            if (tileElement == nullptr)
+            auto* surfaceElement = map_get_surface_element_at(curTile);
+            if (surfaceElement == nullptr)
                 continue;
 
-            SurfaceElement* surfaceElement = tileElement->AsSurface();
             int32_t height = surfaceElement->base_height * 8;
             int32_t slope = surfaceElement->GetSlope();
 

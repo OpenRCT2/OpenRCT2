@@ -21,6 +21,7 @@
 #    include "../OpenRCT2.h"
 #    include "../config/Config.h"
 #    include "../core/Path.hpp"
+#    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
 #    include "../util/Util.h"
@@ -95,50 +96,25 @@ void platform_get_time_local(rct2_time* out_time)
     out_time->hour = timeinfo->tm_hour;
 }
 
-static size_t platform_utf8_to_multibyte(const utf8* path, char* buffer, size_t buffer_size)
-{
-    wchar_t* wpath = utf8_to_widechar(path);
-    setlocale(LC_CTYPE, "UTF-8");
-    size_t len = wcstombs(NULL, wpath, 0);
-    bool truncated = false;
-    if (len > buffer_size - 1)
-    {
-        truncated = true;
-        len = buffer_size - 1;
-    }
-    wcstombs(buffer, wpath, len);
-    buffer[len] = '\0';
-    if (truncated)
-        log_warning("truncated string %s", buffer);
-    free(wpath);
-    return len;
-}
-
 bool platform_file_exists(const utf8* path)
 {
-    char buffer[MAX_PATH];
-    platform_utf8_to_multibyte(path, buffer, MAX_PATH);
-    bool exists = access(buffer, F_OK) != -1;
-    log_verbose("file '%s' exists = %i", buffer, exists);
+    bool exists = access(path, F_OK) != -1;
+    log_verbose("file '%s' exists = %i", path, exists);
     return exists;
 }
 
 bool platform_directory_exists(const utf8* path)
 {
-    char buffer[MAX_PATH];
-    platform_utf8_to_multibyte(path, buffer, MAX_PATH);
     struct stat dirinfo;
-    int32_t result = stat(buffer, &dirinfo);
-    log_verbose("checking dir %s, result = %d, is_dir = %d", buffer, result, S_ISDIR(dirinfo.st_mode));
+    int32_t result = stat(path, &dirinfo);
+    log_verbose("checking dir %s, result = %d, is_dir = %d", path, result, S_ISDIR(dirinfo.st_mode));
     return result == 0 && S_ISDIR(dirinfo.st_mode);
 }
 
 bool platform_original_game_data_exists(const utf8* path)
 {
-    char buffer[MAX_PATH];
-    platform_utf8_to_multibyte(path, buffer, MAX_PATH);
     char checkPath[MAX_PATH];
-    safe_strcpy(checkPath, buffer, MAX_PATH);
+    safe_strcpy(checkPath, path, MAX_PATH);
     safe_strcat_path(checkPath, "Data", MAX_PATH);
     safe_strcat_path(checkPath, "g1.dat", MAX_PATH);
     return platform_file_exists(checkPath);
@@ -147,7 +123,7 @@ bool platform_original_game_data_exists(const utf8* path)
 bool platform_original_rct1_data_exists(const utf8* path)
 {
     char buffer[MAX_PATH], checkPath1[MAX_PATH], checkPath2[MAX_PATH];
-    platform_utf8_to_multibyte(path, buffer, MAX_PATH);
+    safe_strcpy(buffer, path, sizeof(path));
     safe_strcat_path(buffer, "Data", MAX_PATH);
     safe_strcpy(checkPath1, buffer, MAX_PATH);
     safe_strcpy(checkPath2, buffer, MAX_PATH);
@@ -186,7 +162,7 @@ bool platform_ensure_directory_exists(const utf8* path)
 {
     mode_t mask = openrct2_getumask();
     char buffer[MAX_PATH];
-    platform_utf8_to_multibyte(path, buffer, MAX_PATH);
+    safe_strcpy(buffer, path, sizeof(buffer));
 
     log_verbose("Create directory: %s", buffer);
     for (char* p = buffer + 1; *p != '\0'; p++)
@@ -286,19 +262,29 @@ bool platform_directory_delete(const utf8* path)
     return true;
 }
 
-utf8* platform_get_absolute_path(const utf8* relative_path, const utf8* base_path)
+std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path)
 {
-    utf8 path[MAX_PATH];
+    std::string result;
+    if (relative_path != nullptr)
+    {
+        std::string pathToResolve;
+        if (base_path == nullptr)
+        {
+            pathToResolve = std::string(relative_path);
+        }
+        else
+        {
+            pathToResolve = std::string(base_path) + std::string("/") + relative_path;
+        }
 
-    if (base_path != nullptr)
-    {
-        snprintf(path, MAX_PATH, "%s/%s", base_path, relative_path);
+        auto realpathResult = realpath(pathToResolve.c_str(), nullptr);
+        if (realpathResult != nullptr)
+        {
+            result = std::string(realpathResult);
+            free(realpathResult);
+        }
     }
-    else
-    {
-        safe_strcpy(path, base_path, MAX_PATH);
-    }
-    return realpath(path, NULL);
+    return result;
 }
 
 bool platform_lock_single_instance()
@@ -482,18 +468,15 @@ datetime64 platform_get_datetime_now_utc()
     return utcNow;
 }
 
-utf8* platform_get_username()
+std::string platform_get_username()
 {
-    struct passwd* pw = getpwuid(getuid());
-
-    if (pw)
+    std::string result;
+    auto pw = getpwuid(getuid());
+    if (pw != nullptr)
     {
-        return pw->pw_name;
+        result = std::string(pw->pw_name);
     }
-    else
-    {
-        return nullptr;
-    }
+    return result;
 }
 
 bool platform_process_is_elevated()

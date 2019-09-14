@@ -161,7 +161,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
                 tool_set(w, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
                 _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
                 show_land_rights();
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case WIDX_BUY_CONSTRUCTION_RIGHTS:
@@ -170,7 +170,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
                 tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, TOOL_UP_ARROW);
                 _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
                 show_construction_rights();
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
     }
@@ -185,14 +185,14 @@ static void window_land_rights_mousedown(rct_window* w, rct_widgetindex widgetIn
             gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INCREMENT:
             // Decrement land rights tool size
             gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -211,7 +211,7 @@ static void window_land_rights_textinput(rct_window* w, rct_widgetindex widgetIn
         size = std::max(MINIMUM_TOOL_SIZE, size);
         size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

@@ -3235,7 +3235,7 @@ STR_5762    :Čínský jüan (CN¥)
 STR_5763    :Všechny soubory
 STR_5764    :Neplatný typ atrakce
 STR_5765    :Nelze upravovat atrakce neplatného typu
-STR_5766    :<available string id>
+STR_5766    :Maďarský Forint (Ft)
 STR_5767    :Příjem
 STR_5768    :Celkem zákazníků
 STR_5769    :Celkový zisk
@@ -3796,6 +3796,8 @@ STR_6325    :{SMALLFONT}{BLACK}Simulovat atrakci
 STR_6326    :Nelze simulovat {POP16}{POP16}{POP16}{STRINGID}...
 STR_6327    :Průhledné pozadí pro velké screenshoty
 STR_6328    :{SMALLFONT}{BLACK}Velké snímky obrazovky budou mít průhledné pozadí namísto výchozí černé barvy.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :Stahování [{STRING}] od {STRING} ({COMMA16} / {COMMA16})
 
 ###############################################################################
 ## RCT2 Scenarios

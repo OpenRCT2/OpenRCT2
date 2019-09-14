@@ -71,7 +71,7 @@ public:
     GA_ERROR Error = GA_ERROR::OK;
     rct_string_id ErrorTitle = STR_NONE;
     rct_string_id ErrorMessage = STR_NONE;
-    std::array<uint8_t, 12> ErrorMessageArgs;
+    std::array<uint8_t, 32> ErrorMessageArgs;
     CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
     money32 Cost = 0;
     uint16_t ExpenditureType = 0;
@@ -254,6 +254,12 @@ namespace GameActions
     void Initialize();
     void Register();
     bool IsValidId(uint32_t id);
+
+    void Enqueue(const GameAction* ga, uint32_t tick);
+    void Enqueue(GameAction::Ptr&& ga, uint32_t tick);
+    void ProcessQueue();
+    void ClearQueue();
+
     GameAction::Ptr Create(uint32_t id);
     GameAction::Ptr Clone(const GameAction* action);
 

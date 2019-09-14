@@ -97,7 +97,7 @@ private:
 
         CoordsXYZ centre{ (validRange.GetLeft() + validRange.GetRight()) / 2 + 16,
                           (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
-        centre.z = tile_element_height(centre.x, centre.y);
+        centre.z = tile_element_height(centre);
 
         res->Position = centre;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
@@ -123,14 +123,14 @@ private:
         if (isExecuting)
         {
             map_count_remaining_land_rights();
-            audio_play_sound_at_location(SOUND_PLACE_ITEM, centre.x, centre.y, centre.z);
+            audio_play_sound_at_location(SoundId::PlaceItem, centre);
         }
         return res;
     }
 
     GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY loc, bool isExecuting) const
     {
-        SurfaceElement* surfaceElement = map_get_surface_element_at(loc)->AsSurface();
+        SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);

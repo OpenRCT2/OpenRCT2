@@ -26,13 +26,6 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-static constexpr const rct_string_id staffNames[] = {
-    STR_HANDYMAN_X,
-    STR_MECHANIC_X,
-    STR_SECURITY_GUARD_X,
-    STR_ENTERTAINER_X,
-};
-
 /* rct2: 0x009929FC */
 static constexpr const PeepSpriteType spriteTypes[] = {
     PEEP_SPRITE_TYPE_HANDYMAN,
@@ -150,7 +143,7 @@ private:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_STAFF_IN_GAME);
         }
 
-        Peep* newPeep = &(create_sprite(GetFlags())->peep);
+        Peep* newPeep = &(create_sprite(SPRITE_IDENTIFIER_PEEP)->peep);
         if (newPeep == nullptr)
         {
             // Too many peeps exist already.
@@ -217,7 +210,7 @@ private:
             {
                 spriteType = static_cast<PeepSpriteType>(PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + _entertainerType);
             }
-            newPeep->name_string_idx = staffNames[_staffType];
+            newPeep->name = nullptr;
             newPeep->sprite_type = spriteType;
 
             const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[spriteType].sprite_bounds;
@@ -281,7 +274,7 @@ private:
         uint32_t count = 0;
         uint16_t sprite_index;
         Peep* guest = nullptr;
-        TileElement* guest_tile = nullptr;
+        PathElement* guest_tile = nullptr;
 
         // Count number of walking guests
         FOR_ALL_GUESTS (sprite_index, guest)
@@ -289,7 +282,7 @@ private:
             if (guest->state == PEEP_STATE_WALKING)
             {
                 // Check the walking guest's tile. Only count them if they're on a path tile.
-                guest_tile = map_get_path_element_at(guest->next_x / 32, guest->next_y / 32, guest->next_z);
+                guest_tile = map_get_path_element_at({ guest->next_x / 32, guest->next_y / 32, guest->next_z });
                 if (guest_tile != nullptr)
                     ++count;
             }
@@ -303,7 +296,7 @@ private:
             {
                 if (guest->state == PEEP_STATE_WALKING)
                 {
-                    guest_tile = map_get_path_element_at(guest->next_x / 32, guest->next_y / 32, guest->next_z);
+                    guest_tile = map_get_path_element_at({ guest->next_x / 32, guest->next_y / 32, guest->next_z });
                     if (guest_tile != nullptr)
                     {
                         if (rand == 0)

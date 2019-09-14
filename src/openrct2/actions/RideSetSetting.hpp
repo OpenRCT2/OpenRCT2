@@ -60,14 +60,8 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_rideIndex >= MAX_RIDES || _rideIndex < 0)
-        {
-            log_warning("Invalid game command for ride %d", int32_t(_rideIndex));
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
-        }
-
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid ride: #%d.", (int32_t)_rideIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
@@ -171,8 +165,8 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid ride: #%d.", (int32_t)_rideIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
@@ -252,7 +246,7 @@ public:
         {
             res->Position.x = ride->overall_view.x * 32 + 16;
             res->Position.y = ride->overall_view.y * 32 + 16;
-            res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+            res->Position.z = tile_element_height(res->Position);
         }
         window_invalidate_by_number(WC_RIDE, _rideIndex);
         return res;

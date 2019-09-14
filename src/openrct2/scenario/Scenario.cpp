@@ -49,6 +49,7 @@
 #include "ScenarioSources.h"
 
 #include <algorithm>
+#include <bitset>
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
@@ -125,7 +126,7 @@ void scenario_begin()
             }
             if (localisedStringIds[1] != STR_NONE)
             {
-                park_set_name(language_get_string(localisedStringIds[1]));
+                park.Name = language_get_string(localisedStringIds[1]);
             }
             if (localisedStringIds[2] != STR_NONE)
             {
@@ -135,12 +136,9 @@ void scenario_begin()
     }
 
     // Set the last saved game path
-    char parkName[128];
-    format_string(parkName, 128, gParkName, &gParkNameArgs);
-
     char savePath[MAX_PATH];
     platform_get_user_directory(savePath, "save", sizeof(savePath));
-    safe_strcat_path(savePath, parkName, sizeof(savePath));
+    safe_strcat_path(savePath, park.Name.c_str(), sizeof(savePath));
     path_append_extension(savePath, ".sv6", sizeof(savePath));
     gScenarioSavePath = savePath;
 
@@ -435,7 +433,7 @@ static int32_t scenario_create_ducks()
     if (!map_is_location_in_park({ x, y }))
         return 0;
 
-    centreWaterZ = (tile_element_water_height(x, y));
+    centreWaterZ = (tile_element_water_height({ x, y }));
     if (centreWaterZ == 0)
         return 0;
 
@@ -447,7 +445,7 @@ static int32_t scenario_create_ducks()
     {
         for (j = 0; j < 7; j++)
         {
-            waterZ = (tile_element_water_height(x2, y2));
+            waterZ = (tile_element_water_height({ x2, y2 }));
             if (waterZ == centreWaterZ)
                 c++;
 
@@ -519,24 +517,23 @@ uint32_t scenario_rand_max(uint32_t max)
 static bool scenario_prepare_rides_for_save()
 {
     int32_t isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
-    int32_t i;
-    Ride* ride;
     uint8_t rcs = 0;
 
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        const rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-
-        // If there are more than 5 roller coasters, only mark the first five.
-        if (isFiveCoasterObjective && rideEntry != nullptr
-            && (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+        const auto* rideEntry = ride.GetRideEntry();
+        if (rideEntry != nullptr)
         {
-            ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
-            rcs++;
-        }
-        else
-        {
-            ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            // If there are more than 5 roller coasters, only mark the first five.
+            if (isFiveCoasterObjective && (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+            {
+                ride.lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+                rcs++;
+            }
+            else
+            {
+                ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            }
         }
     }
 
@@ -557,7 +554,7 @@ static bool scenario_prepare_rides_for_save()
 
             if (isFiveCoasterObjective)
             {
-                ride = get_ride(it.element->AsTrack()->GetRideIndex());
+                auto ride = get_ride(it.element->AsTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
@@ -579,10 +576,12 @@ static bool scenario_prepare_rides_for_save()
  */
 bool scenario_prepare_for_save()
 {
-    gS6Info.entry.flags = 255;
+    auto& park = GetContext()->GetGameState()->GetPark();
+    auto parkName = park.Name.c_str();
 
+    gS6Info.entry.flags = 255;
     if (gS6Info.name[0] == 0)
-        format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
+        String::Set(gS6Info.name, sizeof(gS6Info.name), parkName);
 
     gS6Info.objective_type = gScenarioObjectiveType;
     gS6Info.objective_arg_1 = gScenarioObjectiveYear;
@@ -606,11 +605,28 @@ bool scenario_prepare_for_save()
 
 /**
  * Modifies the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
- *
- * TODO: This employs some black casting magic that should go away once we export to our own format instead of SV6.
  */
 void scenario_fix_ghosts(rct_s6_data* s6)
 {
+    // Build tile pointer cache (needed to get the first element at a certain location)
+    RCT12TileElement* tilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+    for (size_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    {
+        tilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
+    }
+
+    RCT12TileElement* tileElement = s6->tile_elements;
+    RCT12TileElement** tile = tilePointers;
+    for (size_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (size_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            *tile++ = tileElement;
+            while (!(tileElement++)->IsLastForTile())
+                ;
+        }
+    }
+
     // Remove all ghost elements
     RCT12TileElement* destinationElement = s6->tile_elements;
 
@@ -618,15 +634,16 @@ void scenario_fix_ghosts(rct_s6_data* s6)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            RCT12TileElement* originalElement = reinterpret_cast<RCT12TileElement*>(map_get_first_element_at(x, y));
+            // This is the equivalent of map_get_first_element_at(x, y), but on S6 data.
+            RCT12TileElement* originalElement = tilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
             do
             {
                 if (originalElement->IsGhost())
                 {
-                    BannerIndex bannerIndex = tile_element_get_banner_index(reinterpret_cast<TileElement*>(originalElement));
+                    BannerIndex bannerIndex = originalElement->GetBannerIndex();
                     if (bannerIndex != BANNER_INDEX_NULL)
                     {
-                        rct_banner* banner = &s6->banners[bannerIndex];
+                        auto banner = &s6->banners[bannerIndex];
                         if (banner->type != BANNER_NULL)
                         {
                             banner->type = BANNER_NULL;
@@ -647,14 +664,28 @@ void scenario_fix_ghosts(rct_s6_data* s6)
     }
 }
 
+static void ride_all_has_any_track_elements(std::array<bool, RCT12_MAX_RIDES_IN_PARK>& rideIndexArray)
+{
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            continue;
+        if (it.element->IsGhost())
+            continue;
+
+        rideIndexArray[it.element->AsTrack()->GetRideIndex()] = true;
+    }
+}
+
 void scenario_remove_trackless_rides(rct_s6_data* s6)
 {
-    bool rideHasTrack[MAX_RIDES];
+    std::array<bool, RCT12_MAX_RIDES_IN_PARK> rideHasTrack{};
     ride_all_has_any_track_elements(rideHasTrack);
     for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {
-        rct2_ride* ride = &s6->rides[i];
-
+        auto ride = &s6->rides[i];
         if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
         {
             continue;
@@ -716,30 +747,27 @@ static void scenario_objective_check_park_value_by()
  **/
 static void scenario_objective_check_10_rollercoasters()
 {
-    int32_t i, rcs = 0;
-    uint8_t type_already_counted[256] = {};
-    Ride* ride;
-
-    FOR_ALL_RIDES (i, ride)
+    auto rcs = 0;
+    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
+    for (const auto& ride : GetRideManager())
     {
-        uint8_t subtype_id = ride->subtype;
-        rct_ride_entry* rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == nullptr)
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
         {
-            continue;
-        }
-
-        if (rideEntry != nullptr && ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER)
-            && ride->status == RIDE_STATUS_OPEN && ride->excitement >= RIDE_RATING(6, 00)
-            && type_already_counted[subtype_id] == 0)
-        {
-            type_already_counted[subtype_id]++;
-            rcs++;
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                {
+                    type_already_counted[ride.subtype] = true;
+                    rcs++;
+                }
+            }
         }
     }
-
     if (rcs >= 10)
+    {
         scenario_success();
+    }
 }
 
 /**
@@ -813,59 +841,59 @@ static void scenario_objective_check_monthly_ride_income()
  */
 static void scenario_objective_check_10_rollercoasters_length()
 {
-    int32_t i, rcs = 0;
-    uint8_t type_already_counted[256] = {};
-    int16_t objective_length = gScenarioObjectiveNumGuests;
-    Ride* ride;
-
-    FOR_ALL_RIDES (i, ride)
+    const auto objective_length = gScenarioObjectiveNumGuests;
+    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
+    auto rcs = 0;
+    for (const auto& ride : GetRideManager())
     {
-        uint8_t subtype_id = ride->subtype;
-        rct_ride_entry* rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == nullptr)
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
         {
-            continue;
-        }
-        if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && ride->status == RIDE_STATUS_OPEN
-            && ride->excitement >= RIDE_RATING(7, 00) && type_already_counted[subtype_id] == 0)
-        {
-            if ((ride_get_total_length(ride) >> 16) > objective_length)
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
             {
-                type_already_counted[subtype_id]++;
-                rcs++;
+                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                {
+                    if ((ride_get_total_length(&ride) >> 16) > objective_length)
+                    {
+                        type_already_counted[ride.subtype] = true;
+                        rcs++;
+                    }
+                }
             }
         }
     }
-
     if (rcs >= 10)
+    {
         scenario_success();
+    }
 }
 
 static void scenario_objective_check_finish_5_rollercoasters()
 {
-    money32 objectiveRideExcitement = gScenarioObjectiveCurrency;
+    const auto objectiveRideExcitement = gScenarioObjectiveCurrency;
 
     // Originally, this did not check for null rides, neither did it check if
     // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
-    int32_t i;
-    Ride* ride;
-    int32_t rcs = 0;
-    FOR_ALL_RIDES (i, ride)
+    auto rcs = 0;
+    for (const auto& ride : GetRideManager())
     {
-        const rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-        if (rideEntry == nullptr)
+        if (ride.status != RIDE_STATUS_CLOSED && ride.excitement >= objectiveRideExcitement)
         {
-            continue;
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                if ((ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+                    && ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+                {
+                    rcs++;
+                }
+            }
         }
-
-        if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objectiveRideExcitement
-            && (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && // Set on partially finished coasters
-            ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
-            rcs++;
     }
-
     if (rcs >= 5)
+    {
         scenario_success();
+    }
 }
 
 static void scenario_objective_check_replay_loan_and_park_value()

@@ -34,7 +34,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "0"
+#define NETWORK_STREAM_VERSION "11"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -50,7 +50,6 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include "../ParkImporter.h"
 #    include "../Version.h"
 #    include "../actions/GameAction.h"
-#    include "../actions/PauseToggleAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/FileStream.hpp"
@@ -135,8 +134,6 @@ public:
     void ProcessPlayerList();
     void ProcessPlayerInfo();
     void ProcessDisconnectedClients();
-    void ProcessGameCommands();
-    void EnqueueGameAction(const GameAction* action);
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
     NetworkPlayer* GetPlayerByID(uint8_t id);
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
@@ -234,44 +231,6 @@ private:
     bool LoadMap(IStream* stream);
     bool SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
 
-    struct GameCommand
-    {
-        GameCommand(uint32_t t, uint32_t* args, uint8_t p, uint8_t cb, uint32_t id)
-        {
-            tick = t;
-            playerid = p;
-            action = nullptr;
-            commandIndex = id;
-        }
-
-        GameCommand(uint32_t t, std::unique_ptr<GameAction>&& ga, uint32_t id)
-        {
-            tick = t;
-            action = std::move(ga);
-            commandIndex = id;
-        }
-
-        ~GameCommand()
-        {
-        }
-
-        uint32_t tick = 0;
-        GameAction::Ptr action;
-        uint8_t playerid = 0;
-        uint32_t commandIndex = 0;
-        bool operator<(const GameCommand& comp) const
-        {
-            // First sort by tick
-            if (tick < comp.tick)
-                return true;
-            if (tick > comp.tick)
-                return false;
-
-            // If the ticks are equal sort by commandIndex
-            return commandIndex < comp.commandIndex;
-        }
-    };
-
     struct PlayerListUpdate
     {
         std::vector<NetworkPlayer> players;
@@ -303,7 +262,6 @@ private:
     uint32_t last_ping_sent_time = 0;
     uint8_t player_id = 0;
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
-    std::multiset<GameCommand> game_command_queue;
     std::vector<uint8_t> chunk_buffer;
     std::string _host;
     uint16_t _port = 0;
@@ -312,7 +270,6 @@ private:
     MemoryStream _serverGameState;
     uint32_t server_connect_time = 0;
     uint8_t default_group = 0;
-    uint32_t _commandId;
     uint32_t _actionId;
     uint32_t _lastUpdateTime = 0;
     uint32_t _currentDeltaTime = 0;
@@ -369,7 +326,6 @@ Network::Network()
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
     last_ping_sent_time = 0;
-    _commandId = 0;
     _actionId = 0;
     client_command_handlers.resize(NETWORK_COMMAND_MAX, nullptr);
     client_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Client_Handle_AUTH;
@@ -458,7 +414,7 @@ void Network::Close()
         CloseConnection();
 
         client_connection_list.clear();
-        game_command_queue.clear();
+        GameActions::ClearQueue();
         player_list.clear();
         group_list.clear();
         _serverTickData.clear();
@@ -661,12 +617,6 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
     listening_port = port;
     _serverState.gamestateSnapshotsEnabled = gConfigNetwork.desync_debugging;
     _advertiser = CreateServerAdvertiser(listening_port);
-
-    if (gConfigNetwork.pause_server_if_no_clients)
-    {
-        auto pauseToggleAction = PauseToggleAction();
-        GameActions::Execute(&pauseToggleAction);
-    }
 
     return true;
 }
@@ -1356,8 +1306,8 @@ void Network::BeginChatLog()
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
 
 #    if defined(_WIN32) && !defined(__MINGW32__)
-    auto pathW = std::unique_ptr<wchar_t>(utf8_to_widechar(_chatLogPath.c_str()));
-    _chat_log_fs.open(pathW.get(), std::ios::out | std::ios::app);
+    auto pathW = String::ToWideChar(_chatLogPath.c_str());
+    _chat_log_fs.open(pathW.c_str(), std::ios::out | std::ios::app);
 #    else
     _chat_log_fs.open(_chatLogPath, std::ios::out | std::ios::app);
 #    endif
@@ -1382,8 +1332,8 @@ void Network::BeginServerLog()
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
 
 #    if defined(_WIN32) && !defined(__MINGW32__)
-    auto pathW = std::unique_ptr<wchar_t>(utf8_to_widechar(_serverLogPath.c_str()));
-    _server_log_fs.open(pathW.get(), std::ios::out | std::ios::app | std::ios::binary);
+    auto pathW = String::ToWideChar(_serverLogPath.c_str());
+    _server_log_fs.open(pathW.c_str(), std::ios::out | std::ios::app | std::ios::binary);
 #    else
     _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app | std::ios::binary);
 #    endif
@@ -1924,7 +1874,6 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
 // This is called at the end of each game tick, this where things should be processed that affects the game state.
 void Network::ProcessPending()
 {
-    ProcessGameCommands();
     if (GetMode() == NETWORK_MODE_SERVER)
     {
         ProcessDisconnectedClients();
@@ -2043,92 +1992,10 @@ void Network::ProcessDisconnectedClients()
             it++;
         }
     }
-
-    if (gConfigNetwork.pause_server_if_no_clients && game_is_not_paused() && client_connection_list.empty())
-    {
-        auto pauseToggleAction = PauseToggleAction();
-        GameActions::Execute(&pauseToggleAction);
-    }
-}
-
-void Network::ProcessGameCommands()
-{
-    while (game_command_queue.begin() != game_command_queue.end())
-    {
-        // run all the game commands at the current tick
-        const GameCommand& gc = (*game_command_queue.begin());
-
-        if (mode == NETWORK_MODE_CLIENT)
-        {
-            if (game_command_queue.begin()->tick < gCurrentTicks)
-            {
-                // Having old command from a tick where we have not been active yet or malicious server,
-                // the command is useless so lets not keep it.
-                log_warning(
-                    "Discarding game command from tick behind current tick, CMD: %08X, CMD Tick: %08X, Current Tick: %08X\n",
-                    gc.commandIndex, gc.tick, gCurrentTicks);
-
-                game_command_queue.erase(game_command_queue.begin());
-
-                // At this point we should not return, would add the possibility to skip commands this tick.
-                continue;
-            }
-
-            // exit the game command processing loop to still have a chance at finding desync.
-            if (game_command_queue.begin()->tick != gCurrentTicks)
-                break;
-        }
-
-        if (gc.action != nullptr)
-        {
-            // Remove ghost scenery so it doesn't interfere with incoming network command
-            switch (gc.action->GetType())
-            {
-                case GAME_COMMAND_PLACE_WALL:
-                case GAME_COMMAND_PLACE_LARGE_SCENERY:
-                case GAME_COMMAND_PLACE_BANNER:
-                case GAME_COMMAND_PLACE_SCENERY:
-                    scenery_remove_ghost_tool_placement();
-                    break;
-            }
-
-            GameAction* action = gc.action.get();
-            action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_NETWORKED);
-
-            Guard::Assert(action != nullptr);
-
-            GameActionResult::Ptr result = GameActions::Execute(action);
-            if (result->Error == GA_ERROR::OK)
-            {
-                Server_Send_GAME_ACTION(action);
-                Server_Send_PLAYERINFO(action->GetPlayer());
-            }
-        }
-        game_command_queue.erase(game_command_queue.begin());
-    }
-}
-
-void Network::EnqueueGameAction(const GameAction* action)
-{
-    std::unique_ptr<GameAction> ga = GameActions::Clone(action);
-    if (ga->GetPlayer() == -1 && GetMode() != NETWORK_MODE_NONE)
-    {
-        // Server can directly invoke actions and will have no player id assigned
-        // as that normally happens when receiving them over network.
-        ga->SetPlayer(network_get_current_player_id());
-    }
-
-    game_command_queue.emplace(gCurrentTicks, std::move(ga), _commandId++);
 }
 
 void Network::AddClient(std::unique_ptr<ITcpSocket>&& socket)
 {
-    if (gConfigNetwork.pause_server_if_no_clients && game_is_paused())
-    {
-        auto pauseToggleAction = PauseToggleAction();
-        GameActions::Execute(&pauseToggleAction);
-    }
-
     // Log connection info.
     char addr[128];
     snprintf(addr, sizeof(addr), "Client joined from %s", socket->GetHostName());
@@ -2741,6 +2608,14 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
     {
         return;
     }
+    if (offset == 0)
+    {
+        // Start of a new map load, clear the queue now as we have to buffer them
+        // until the map is fully loaded.
+        GameActions::ClearQueue();
+        _serverTickData.clear();
+        _clientMapLoaded = false;
+    }
     if (size > chunk_buffer.size())
     {
         chunk_buffer.resize(size);
@@ -2787,10 +2662,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         if (LoadMap(&ms))
         {
             game_load_init();
-            game_command_queue.clear();
-            _serverTickData.clear();
             _serverState.tick = gCurrentTicks;
-            _serverTickData.clear();
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NETWORK_SERVER_STATE_OK;
             _clientMapLoaded = true;
@@ -2828,6 +2700,7 @@ bool Network::LoadMap(IStream* stream)
         importer->Import();
 
         sprite_position_tween_reset();
+        AutoCreateMapAnimations();
 
         // Read checksum
         [[maybe_unused]] uint32_t checksum = stream->ReadValue<uint32_t>();
@@ -2872,6 +2745,7 @@ bool Network::LoadMap(IStream* stream)
 bool Network::SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const
 {
     bool result = false;
+    map_reorganise_elements();
     viewport_set_saved_view();
     try
     {
@@ -2973,12 +2847,11 @@ void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& conn
         if (itr != _gameActionCallbacks.end())
         {
             action->SetCallback(itr->second);
-
             _gameActionCallbacks.erase(itr);
         }
     }
 
-    game_command_queue.emplace(tick, std::move(action), _commandId++);
+    GameActions::Enqueue(std::move(action), tick);
 }
 
 void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
@@ -3047,7 +2920,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     // Set player to sender, should be 0 if sent from client.
     ga->SetPlayer(NetworkPlayerId_t{ connection.Player->Id });
 
-    game_command_queue.emplace(tick, std::move(ga), _commandId++);
+    GameActions::Enqueue(std::move(ga), tick);
 }
 
 void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
@@ -3848,11 +3721,6 @@ void network_send_game_action(const GameAction* action)
     }
 }
 
-void network_enqueue_game_action(const GameAction* action)
-{
-    gNetwork.EnqueueGameAction(action);
-}
-
 void network_send_password(const std::string& password)
 {
     utf8 keyPath[MAX_PATH];
@@ -4003,9 +3871,6 @@ bool network_check_desynchronisation()
     return false;
 }
 void network_request_gamestate_snapshot()
-{
-}
-void network_enqueue_game_action(const GameAction* action)
 {
 }
 void network_send_game_action(const GameAction* action)

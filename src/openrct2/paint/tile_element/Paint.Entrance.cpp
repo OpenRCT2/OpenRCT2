@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../Context.h"
 #include "../../Game.h"
+#include "../../GameState.h"
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
@@ -67,7 +69,12 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     }
 #endif
 
-    Ride* ride = get_ride(tile_element->AsEntrance()->GetRideIndex());
+    auto ride = get_ride(tile_element->AsEntrance()->GetRideIndex());
+    if (ride == nullptr)
+    {
+        return;
+    }
+
     auto stationObj = ride_get_station_object(ride);
     if (stationObj == nullptr || stationObj->BaseImageId == 0)
     {
@@ -163,8 +170,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
 
         if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            set_format_arg(2, rct_string_id, ride->name);
-            set_format_arg(4, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs + 2);
         }
         else
         {
@@ -187,8 +193,8 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
         sub_98199C(
-            session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, stationObj->ScrollingMode), 0, 0, 0x1C, 0x1C,
-            0x33, height + stationObj->Height, 2, 2, height + stationObj->Height);
+            session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, stationObj->ScrollingMode, COLOUR_BLACK), 0,
+            0, 0x1C, 0x1C, 0x33, height + stationObj->Height, 2, 2, height + stationObj->Height);
     }
 
     image_id = entranceImageId;
@@ -269,8 +275,10 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
 
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
                 {
-                    set_format_arg(0, rct_string_id, gParkName);
-                    set_format_arg(2, uint32_t, gParkNameArgs);
+                    const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                    auto name = park.Name.c_str();
+                    set_format_arg(0, rct_string_id, STR_STRING);
+                    set_format_arg(2, const char*, name);
                 }
                 else
                 {
@@ -297,7 +305,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                     break;
 
                 int32_t stsetup = scrolling_text_setup(
-                    session, STR_BANNER_TEXT_FORMAT, scroll, entrance->scrolling_mode + direction / 2);
+                    session, STR_BANNER_TEXT_FORMAT, scroll, entrance->scrolling_mode + direction / 2, COLOUR_BLACK);
                 int32_t text_height = height + entrance->text_height;
                 sub_98199C(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height);
             }

@@ -64,8 +64,8 @@ private:
 
         res->Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
         res->Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
-        int32_t z = tile_element_height(res->Position.x, res->Position.y);
-        int16_t waterHeight = tile_element_water_height(res->Position.x, res->Position.y);
+        int32_t z = tile_element_height(res->Position);
+        int16_t waterHeight = tile_element_water_height(res->Position);
         if (waterHeight != 0)
         {
             z = waterHeight;
@@ -79,11 +79,9 @@ private:
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
             {
-                TileElement* tileElement = map_get_surface_element_at(x / 32, y / 32);
-                if (tileElement == nullptr)
+                auto surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+                if (surfaceElement == nullptr)
                     continue;
-
-                SurfaceElement* surfaceElement = tileElement->AsSurface();
                 uint8_t height = surfaceElement->GetWaterHeight();
 
                 if (surfaceElement->base_height > maxHeight)
@@ -119,7 +117,7 @@ private:
 
         if (isExecuting && hasChanged)
         {
-            audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, res->Position.x, res->Position.y, res->Position.z);
+            audio_play_sound_at_location(SoundId::LayingOutWater, res->Position);
         }
         // Force ride construction to recheck area
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
@@ -135,14 +133,14 @@ private:
         {
             for (int32_t x = _range.GetLeft(); x <= _range.GetRight(); x += 32)
             {
-                TileElement* tile_element = map_get_surface_element_at({ x, y });
-                if (tile_element == nullptr)
+                auto* surfaceElement = map_get_surface_element_at({ x, y });
+                if (surfaceElement == nullptr)
                     continue;
 
-                uint8_t height = tile_element->base_height;
-                if (tile_element->AsSurface()->GetWaterHeight() > 0)
+                uint8_t height = surfaceElement->base_height;
+                if (surfaceElement->GetWaterHeight() > 0)
                 {
-                    height = tile_element->AsSurface()->GetWaterHeight() * 2;
+                    height = surfaceElement->GetWaterHeight() * 2;
                 }
 
                 if (maxHeight > height)

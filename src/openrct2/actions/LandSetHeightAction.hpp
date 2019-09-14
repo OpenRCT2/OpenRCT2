@@ -101,8 +101,8 @@ public:
             }
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at(_coords);
-        TileElement* tileElement = CheckFloatingStructures(surfaceElement, _height);
+        auto* surfaceElement = map_get_surface_element_at(_coords);
+        TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
         if (tileElement != nullptr)
         {
             map_obstruction_set_error_text(tileElement);
@@ -128,7 +128,7 @@ public:
                     GA_ERROR::DISALLOWED, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
             }
 
-            tileElement = CheckUnremovableObstructions(surfaceElement, zCorner);
+            tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);
             if (tileElement != nullptr)
             {
                 map_obstruction_set_error_text(tileElement);
@@ -144,7 +144,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         money32 cost = MONEY(0, 0);
-        auto surfaceHeight = tile_element_height(_coords.x, _coords.y);
+        auto surfaceHeight = tile_element_height(_coords);
         footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
 
         if (!gCheatsDisableClearanceChecks)
@@ -154,9 +154,9 @@ public:
             SmallSceneryRemoval();
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at(_coords);
+        auto* surfaceElement = map_get_surface_element_at(_coords);
         cost += GetSurfaceHeightChangeCost(surfaceElement);
-        SetSurfaceHeight(surfaceElement);
+        SetSurfaceHeight(reinterpret_cast<TileElement*>(surfaceElement));
 
         auto res = std::make_unique<GameActionResult>();
         res->Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
@@ -257,7 +257,7 @@ private:
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
             {
                 ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                Ride* ride = get_ride(rideIndex);
+                auto ride = get_ride(rideIndex);
                 if (ride != nullptr)
                 {
                     rct_ride_entry* rideEntry = ride->GetRideEntry();
@@ -266,7 +266,7 @@ private:
                         int32_t maxHeight = rideEntry->max_height;
                         if (maxHeight == 0)
                         {
-                            maxHeight = RideData5[get_ride(rideIndex)->type].max_height;
+                            maxHeight = RideData5[ride->type].max_height;
                         }
                         int32_t zDelta = tileElement->clearance_height - _height;
                         if (zDelta >= 0 && zDelta / 2 > maxHeight)
@@ -336,7 +336,7 @@ private:
         return nullptr;
     }
 
-    money32 GetSurfaceHeightChangeCost(TileElement * surfaceElement) const
+    money32 GetSurfaceHeightChangeCost(SurfaceElement * surfaceElement) const
     {
         money32 cost{ 0 };
         for (int32_t i = 0; i < 4; i += 1)

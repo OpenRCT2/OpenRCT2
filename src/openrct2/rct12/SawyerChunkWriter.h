@@ -41,6 +41,13 @@ public:
     void WriteChunk(const void* src, size_t length, SAWYER_ENCODING encoding);
 
     /**
+     * Writes a track chunk to the stream containing the given buffer.
+     * @param src The source buffer.
+     * @param length The size of the source buffer.
+     */
+    void WriteChunkTrack(const void* src, size_t length);
+
+    /**
      * Writes a chunk to the stream containing the given type.
      */
     template<typename T> void WriteChunk(const T* src, SAWYER_ENCODING encoding)

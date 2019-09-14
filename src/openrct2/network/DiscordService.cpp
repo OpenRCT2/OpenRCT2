@@ -12,6 +12,7 @@
 #    include "DiscordService.h"
 
 #    include "../Context.h"
+#    include "../GameState.h"
 #    include "../OpenRCT2.h"
 #    include "../core/Console.hpp"
 #    include "../core/String.hpp"
@@ -56,9 +57,12 @@ DiscordService::~DiscordService()
 
 static std::string GetParkName()
 {
-    utf8 parkName[128] = {};
-    format_string(parkName, sizeof(parkName), gParkName, &gParkNameArgs);
-    return std::string(parkName);
+    auto gameState = OpenRCT2::GetContext()->GetGameState();
+    if (gameState != nullptr)
+    {
+        return gameState->GetPark().Name;
+    }
+    return {};
 }
 
 void DiscordService::Update()

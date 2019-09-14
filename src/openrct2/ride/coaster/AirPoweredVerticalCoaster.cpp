@@ -216,8 +216,9 @@ static void air_powered_vertical_rc_track_station(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    Ride* ride = get_ride(rideIndex);
-    track_paint_util_draw_station_platform(session, ride, direction, height, 5, tileElement);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+        track_paint_util_draw_station_platform(session, ride, direction, height, 5, tileElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 

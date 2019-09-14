@@ -95,6 +95,7 @@ void viewport_init_all()
     textinput_cancel();
 }
 
+// TODO: Return ScreenCoords, takein CoordsXYZ
 /**
  * Converts between 3d point of a sprite to 2d coordinates for centring on that
  * sprite
@@ -109,9 +110,9 @@ void centre_2d_coordinates(int32_t x, int32_t y, int32_t z, int32_t* out_x, int3
 {
     int32_t start_x = x;
 
-    LocationXYZ16 coord_3d = { (int16_t)x, (int16_t)y, (int16_t)z };
+    CoordsXYZ coord_3d = { x, y, z };
 
-    LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, get_current_rotation());
+    auto coord_2d = translate_3d_to_2d_with_z(get_current_rotation(), coord_3d);
 
     // If the start location was invalid
     // propagate the invalid location to the output.
@@ -221,7 +222,7 @@ void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t* z)
     for (int32_t i = 0; i < 6; i++)
     {
         pos = viewport_coord_to_map_coord(start_x, start_y, height);
-        height = tile_element_height((0xFFFF) & pos.x, (0xFFFF) & pos.y);
+        height = tile_element_height({ (0xFFFF) & pos.x, (0xFFFF) & pos.y });
 
         // HACK: This is to prevent the x and y values being set to values outside
         // of the map. This can happen when the height is larger than the map size.
@@ -524,7 +525,7 @@ static void viewport_set_underground_flag(int32_t underground, rct_window* windo
             if (bit)
                 return;
         }
-        window_invalidate(window);
+        window->Invalidate();
     }
 }
 
@@ -640,7 +641,7 @@ void viewport_update_sprite_follow(rct_window* window)
     {
         rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
-        int32_t height = (tile_element_height(0xFFFF & sprite->generic.x, 0xFFFF & sprite->generic.y)) - 16;
+        int32_t height = (tile_element_height({ sprite->generic.x, sprite->generic.y })) - 16;
         int32_t underground = sprite->generic.z < height;
 
         viewport_set_underground_flag(underground, window, window->viewport);
@@ -708,8 +709,8 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
         if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE
             || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
         {
-            Ride* ride = get_ride(peep->current_ride);
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+            auto ride = get_ride(peep->current_ride);
+            if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 auto train = GET_VEHICLE(ride->vehicles[peep->current_train]);
                 if (train != nullptr)
@@ -733,7 +734,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
                 focus.type = VIEWPORT_FOCUS_TYPE_COORDINATE;
                 focus.coordinate.x = x;
                 focus.coordinate.y = y;
-                focus.coordinate.z = tile_element_height(x, y) + 32;
+                focus.coordinate.z = tile_element_height({ x, y }) + 32;
                 focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
             }
         }
@@ -794,7 +795,7 @@ void viewport_update_smart_vehicle_follow(rct_window* window)
  *  ebp: bottom
  */
 void viewport_render(
-    rct_drawpixelinfo* dpi, rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
+    rct_drawpixelinfo* dpi, const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom,
     std::vector<paint_session>* sessions)
 {
     if (right <= viewport->x)
@@ -884,7 +885,7 @@ static void viewport_paint_column(paint_session* session)
  *  ebp: bottom
  */
 void viewport_paint(
-    rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
+    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
     std::vector<paint_session>* sessions)
 {
     uint32_t viewFlags = viewport->flags;
@@ -1089,7 +1090,7 @@ void show_gridlines()
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES))
             {
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-                window_invalidate(mainWindow);
+                mainWindow->Invalidate();
             }
         }
     }
@@ -1111,7 +1112,7 @@ void hide_gridlines()
             if (!gConfigGeneral.always_show_gridlines)
             {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
-                window_invalidate(mainWindow);
+                mainWindow->Invalidate();
             }
         }
     }
@@ -1131,7 +1132,7 @@ void show_land_rights()
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP))
             {
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
-                window_invalidate(mainWindow);
+                mainWindow->Invalidate();
             }
         }
     }
@@ -1153,7 +1154,7 @@ void hide_land_rights()
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)
             {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_LAND_OWNERSHIP;
-                window_invalidate(mainWindow);
+                mainWindow->Invalidate();
             }
         }
     }
@@ -1173,7 +1174,7 @@ void show_construction_rights()
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS))
             {
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
-                window_invalidate(mainWindow);
+                mainWindow->Invalidate();
             }
         }
     }
@@ -1195,7 +1196,7 @@ void hide_construction_rights()
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)
             {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
-                window_invalidate(mainWindow);
+                mainWindow->Invalidate();
             }
         }
     }
@@ -1246,7 +1247,7 @@ void viewport_set_visibility(uint8_t mode)
                 break;
         }
         if (invalidate != 0)
-            window_invalidate(window);
+            window->Invalidate();
     }
 }
 
@@ -1808,7 +1809,7 @@ void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y,
 
     for (int32_t i = 0; i < 5; i++)
     {
-        int32_t z = tile_element_height(map_pos.x, map_pos.y);
+        int32_t z = tile_element_height({ map_pos.x, map_pos.y });
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
         map_pos.x = std::clamp<int16_t>(map_pos.x, my_x, my_x + 31);
         map_pos.y = std::clamp<int16_t>(map_pos.y, my_y, my_y + 31);

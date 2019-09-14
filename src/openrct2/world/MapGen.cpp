@@ -111,8 +111,6 @@ static void set_height(int32_t x, int32_t y, int32_t height)
 void mapgen_generate_blank(mapgen_settings* settings)
 {
     int32_t x, y;
-    TileElement* tileElement;
-
     map_clear_all_elements();
 
     map_init(settings->mapSize);
@@ -120,11 +118,11 @@ void mapgen_generate_blank(mapgen_settings* settings)
     {
         for (x = 1; x < settings->mapSize - 1; x++)
         {
-            tileElement = map_get_surface_element_at(x, y);
-            tileElement->AsSurface()->SetSurfaceStyle(settings->floor);
-            tileElement->AsSurface()->SetEdgeStyle(settings->wall);
-            tileElement->base_height = settings->height;
-            tileElement->clearance_height = settings->height;
+            auto surfaceElement = map_get_surface_element_at(x, y);
+            surfaceElement->SetSurfaceStyle(settings->floor);
+            surfaceElement->SetEdgeStyle(settings->wall);
+            surfaceElement->base_height = settings->height;
+            surfaceElement->clearance_height = settings->height;
         }
     }
 
@@ -134,7 +132,6 @@ void mapgen_generate_blank(mapgen_settings* settings)
 void mapgen_generate(mapgen_settings* settings)
 {
     int32_t x, y, mapSize, floorTexture, wallTexture, waterLevel;
-    TileElement* tileElement;
 
     mapSize = settings->mapSize;
     floorTexture = settings->floor;
@@ -169,11 +166,11 @@ void mapgen_generate(mapgen_settings* settings)
     {
         for (x = 1; x < mapSize - 1; x++)
         {
-            tileElement = map_get_surface_element_at(x, y);
-            tileElement->AsSurface()->SetSurfaceStyle(floorTexture);
-            tileElement->AsSurface()->SetEdgeStyle(wallTexture);
-            tileElement->base_height = settings->height;
-            tileElement->clearance_height = settings->height;
+            auto surfaceElement = map_get_surface_element_at(x, y);
+            surfaceElement->SetSurfaceStyle(floorTexture);
+            surfaceElement->SetEdgeStyle(wallTexture);
+            surfaceElement->base_height = settings->height;
+            surfaceElement->clearance_height = settings->height;
         }
     }
 
@@ -215,10 +212,10 @@ void mapgen_generate(mapgen_settings* settings)
     {
         for (x = 1; x < mapSize - 1; x++)
         {
-            tileElement = map_get_surface_element_at(x, y);
+            auto surfaceElement = map_get_surface_element_at(x, y);
 
-            if (tileElement->base_height < waterLevel + 6)
-                tileElement->AsSurface()->SetSurfaceStyle(beachTexture);
+            if (surfaceElement->base_height < waterLevel + 6)
+                surfaceElement->SetSurfaceStyle(beachTexture);
         }
     }
 
@@ -239,8 +236,8 @@ static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
         return;
     }
 
-    surfaceZ = tile_element_height(x * 32 + 16, y * 32 + 16) / 8;
-    tileElement = tile_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
+    surfaceZ = tile_element_height({ x * 32 + 16, y * 32 + 16 }) / 8;
+    tileElement = tile_element_insert({ x, y, surfaceZ }, 0b1111);
     assert(tileElement != nullptr);
     tileElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
     tileElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
@@ -312,10 +309,10 @@ static void mapgen_place_trees()
     {
         for (int32_t x = 1; x < gMapSize - 1; x++)
         {
-            TileElement* tileElement = map_get_surface_element_at(x, y);
+            auto* surfaceElement = map_get_surface_element_at(x, y);
 
             // Exclude water tiles
-            if (tileElement->AsSurface()->GetWaterHeight() > 0)
+            if (surfaceElement->GetWaterHeight() > 0)
                 continue;
 
             pos.x = x;
@@ -346,8 +343,8 @@ static void mapgen_place_trees()
         pos = availablePositions[i];
 
         int32_t type = -1;
-        TileElement* tileElement = map_get_surface_element_at(pos.x, pos.y);
-        switch (tileElement->AsSurface()->GetSurfaceStyle())
+        auto* surfaceElement = map_get_surface_element_at(pos.x, pos.y);
+        switch (surfaceElement->GetSurfaceStyle())
         {
             case TERRAIN_GRASS:
             case TERRAIN_DIRT:
@@ -387,7 +384,6 @@ static void mapgen_place_trees()
 static void mapgen_set_water_level(int32_t waterLevel)
 {
     int32_t x, y, mapSize;
-    TileElement* tileElement;
 
     mapSize = gMapSize;
 
@@ -395,9 +391,9 @@ static void mapgen_set_water_level(int32_t waterLevel)
     {
         for (x = 1; x < mapSize - 1; x++)
         {
-            tileElement = map_get_surface_element_at(x, y);
-            if (tileElement->base_height < waterLevel)
-                tileElement->AsSurface()->SetWaterHeight(waterLevel / 2);
+            auto surfaceElement = map_get_surface_element_at(x, y);
+            if (surfaceElement->base_height < waterLevel)
+                surfaceElement->SetWaterHeight(waterLevel / 2);
         }
     }
 }
@@ -441,7 +437,6 @@ static void mapgen_smooth_height(int32_t iterations)
 static void mapgen_set_height()
 {
     int32_t x, y, heightX, heightY, mapSize;
-    TileElement* tileElement;
 
     mapSize = _heightSize / 2;
     for (y = 1; y < mapSize - 1; y++)
@@ -458,11 +453,11 @@ static void mapgen_set_height()
 
             uint8_t baseHeight = (q00 + q01 + q10 + q11) / 4;
 
-            tileElement = map_get_surface_element_at(x, y);
-            tileElement->base_height = std::max(2, baseHeight * 2);
-            tileElement->clearance_height = tileElement->base_height;
+            auto surfaceElement = map_get_surface_element_at(x, y);
+            surfaceElement->base_height = std::max(2, baseHeight * 2);
+            surfaceElement->clearance_height = surfaceElement->base_height;
 
-            uint8_t currentSlope = tileElement->AsSurface()->GetSlope();
+            uint8_t currentSlope = surfaceElement->GetSlope();
 
             if (q00 > baseHeight)
                 currentSlope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
@@ -473,7 +468,7 @@ static void mapgen_set_height()
             if (q11 > baseHeight)
                 currentSlope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
 
-            tileElement->AsSurface()->SetSlope(currentSlope);
+            surfaceElement->SetSlope(currentSlope);
         }
     }
 }
@@ -817,7 +812,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         for (uint32_t x = 0; x < _heightMapData.width; x++)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
-            TileElement* const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
+            auto* const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
 
             // Read value from bitmap, and convert its range
             uint8_t value = dest[x + y * _heightMapData.width];
@@ -832,7 +827,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
             // Set water level
             if (surfaceElement->base_height < settings->water_level)
             {
-                surfaceElement->AsSurface()->SetWaterHeight(settings->water_level / 2);
+                surfaceElement->SetWaterHeight(settings->water_level / 2);
             }
         }
     }

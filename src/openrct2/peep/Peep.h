@@ -11,6 +11,7 @@
 #define _PEEP_H_
 
 #include "../common.h"
+#include "../core/Optional.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
@@ -538,16 +539,16 @@ struct Staff;
 
 struct Peep : rct_sprite_common
 {
-    rct_string_id name_string_idx; // 0x22
-    uint16_t next_x;               // 0x24
-    uint16_t next_y;               // 0x26
-    uint8_t next_z;                // 0x28
-    uint8_t next_flags;            // 0x29
-    uint8_t outside_of_park;       // 0x2A
-    PeepState state;               // 0x2B
-    uint8_t sub_state;             // 0x2C
-    PeepSpriteType sprite_type;    // 0x2D
-    PeepType type;                 // 0x2E
+    char* name;
+    uint16_t next_x;            // 0x24
+    uint16_t next_y;            // 0x26
+    uint8_t next_z;             // 0x28
+    uint8_t next_flags;         // 0x29
+    uint8_t outside_of_park;    // 0x2A
+    PeepState state;            // 0x2B
+    uint8_t sub_state;          // 0x2C
+    PeepSpriteType sprite_type; // 0x2D
+    PeepType type;              // 0x2E
     union
     {
         uint8_t staff_type;  // 0x2F
@@ -698,8 +699,8 @@ public: // Peep
     Staff* AsStaff();
 
     void Update();
-    bool UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance);
-    bool UpdateAction();
+    std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
+    std::optional<CoordsXY> UpdateAction();
     void SetState(PeepState new_state);
     void Remove();
     void Invalidate();
@@ -718,6 +719,10 @@ public: // Peep
     void RemoveFromQueue();
     void RemoveFromRide();
     void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
+    void FormatActionTo(void* args) const;
+    size_t FormatNameTo(void* args) const;
+    std::string GetName() const;
+    bool SetName(const std::string_view& value);
 
     // TODO: Make these private again when done refactoring
 public: // Peep
@@ -759,8 +764,8 @@ public:
     bool UpdateWalkingFindBin();
     void SpendMoney(money16& peep_expend_type, money32 amount);
     void SpendMoney(money32 amount);
-    void SetHasRidden(Ride* ride);
-    bool HasRidden(Ride* ride) const;
+    void SetHasRidden(const Ride* ride);
+    bool HasRidden(const Ride* ride) const;
     void SetHasRiddenRideType(int32_t rideType);
     bool HasRiddenRideType(int32_t rideType) const;
     int32_t HasFoodStandardFlag() const;
@@ -850,6 +855,8 @@ private:
     void UpdateRideInspected(ride_id_t rideIndex);
     void UpdateHeadingToInspect();
 };
+
+static_assert(sizeof(Peep) <= 256);
 
 struct rct_sprite_bounds
 {
@@ -957,8 +964,7 @@ void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-void get_arguments_from_action(Peep* peep, uint32_t* argument_1, uint32_t* argument_2);
-void peep_thought_set_format_args(rct_peep_thought* thought);
+void peep_thought_set_format_args(const rct_peep_thought* thought);
 int32_t get_peep_face_sprite_small(Peep* peep);
 int32_t get_peep_face_sprite_large(Peep* peep);
 void game_command_pickup_guest(
@@ -1001,5 +1007,7 @@ void increment_guests_in_park();
 void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
+
+rct_string_id get_real_name_string_id_from_id(uint32_t id);
 
 #endif

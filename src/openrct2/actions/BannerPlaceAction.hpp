@@ -60,7 +60,7 @@ public:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        if (!map_is_location_valid({ _loc.x, _loc.y }))
+        if (!map_is_location_valid(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
@@ -72,7 +72,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
         }
 
-        if (!map_can_build_at(_loc.x, _loc.y, _loc.z))
+        if (!map_can_build_at(_loc))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -90,7 +90,8 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        if (gBanners[_bannerIndex].type != BANNER_NULL)
+        auto banner = GetBanner(_bannerIndex);
+        if (banner->type != BANNER_NULL)
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
@@ -129,23 +130,23 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        if (gBanners[_bannerIndex].type != BANNER_NULL)
+        auto banner = GetBanner(_bannerIndex);
+        if (banner->type != BANNER_NULL)
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
         }
 
-        TileElement* newTileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, baseHeight, 0);
+        TileElement* newTileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0b0000);
         assert(newTileElement != nullptr);
-        rct_banner* banner = &gBanners[_bannerIndex];
 
         banner->flags = 0;
-        banner->string_idx = STR_DEFAULT_SIGN;
+        banner->text = {};
         banner->text_colour = 2;
         banner->type = _bannerType;
         banner->colour = _primaryColour;
-        banner->x = _loc.x / 32;
-        banner->y = _loc.y / 32;
+        banner->position.x = _loc.x / 32;
+        banner->position.y = _loc.y / 32;
         newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
         BannerElement* bannerElement = newTileElement->AsBanner();
         bannerElement->clearance_height = newTileElement->base_height + 2;

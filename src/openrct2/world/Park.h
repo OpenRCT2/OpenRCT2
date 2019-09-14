@@ -53,6 +53,8 @@ namespace OpenRCT2
     class Park final
     {
     public:
+        std::string Name;
+
         Park() = default;
         Park(const Park&) = delete;
 
@@ -87,8 +89,6 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-extern rct_string_id gParkName;
-extern uint32_t gParkNameArgs;
 extern uint32_t gParkFlags;
 extern uint16_t gParkRating;
 extern money16 gParkEntranceFee;
@@ -114,8 +114,6 @@ int32_t get_forced_park_rating();
 int32_t park_is_open();
 int32_t park_calculate_size();
 
-void reset_park_entry();
-
 void update_park_fences(CoordsXY coords);
 void update_park_fences_around_tile(CoordsXY coords);
 
@@ -123,7 +121,6 @@ uint8_t calculate_guest_initial_happiness(uint8_t percentage);
 
 void park_set_open(bool open);
 int32_t park_entrance_get_index(int32_t x, int32_t y, int32_t z);
-void park_set_name(const char* name);
 void park_set_entrance_fee(money32 value);
 money16 park_get_entrance_fee();
 

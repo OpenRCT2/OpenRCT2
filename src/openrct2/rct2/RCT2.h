@@ -11,6 +11,7 @@
 #define _RCT2_H_
 
 #include "../common.h"
+#include "../object/Object.h"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../ride/Vehicle.h"
@@ -267,6 +268,104 @@ struct rct2_ride
     uint8_t pad_208[0x58];                                     // 0x208
 };
 assert_struct_size(rct2_ride, 0x260);
+
+/* Track Entrance entry size: 0x06 */
+struct rct_td6_entrance_element
+{
+    int8_t z;          // 0x00
+    uint8_t direction; // 0x01
+    int16_t x;         // 0x02
+    int16_t y;         // 0x04
+};
+assert_struct_size(rct_td6_entrance_element, 0x06);
+
+/* Track Scenery entry  size: 0x16 */
+struct rct_td6_scenery_element
+{
+    rct_object_entry scenery_object; // 0x00
+    int8_t x;                        // 0x10
+    int8_t y;                        // 0x11
+    int8_t z;                        // 0x12
+    uint8_t flags;                   // 0x13 direction quadrant tertiary colour
+    uint8_t primary_colour;          // 0x14
+    uint8_t secondary_colour;        // 0x15
+};
+assert_struct_size(rct_td6_scenery_element, 0x16);
+
+/**
+ * Track design structure.
+ * size: 0xA3
+ */
+struct rct_track_td6
+{
+    uint8_t type; // 0x00
+    uint8_t vehicle_type;
+    union
+    {
+        // After loading the track this is converted to
+        // a cost but before its a flags register
+        money32 cost;   // 0x02
+        uint32_t flags; // 0x02
+    };
+    union
+    {
+        // After loading the track this is converted to
+        // a flags register
+        uint8_t ride_mode;   // 0x06
+        uint8_t track_flags; // 0x06
+    };
+    uint8_t version_and_colour_scheme;                           // 0x07 0b0000_VVCC
+    rct_vehicle_colour vehicle_colours[RCT2_MAX_CARS_PER_TRAIN]; // 0x08
+    union
+    {
+        uint8_t pad_48;
+        uint8_t track_spine_colour_rct1; // 0x48
+    };
+    union
+    {
+        uint8_t entrance_style;         // 0x49
+        uint8_t track_rail_colour_rct1; // 0x49
+    };
+    union
+    {
+        uint8_t total_air_time;            // 0x4A
+        uint8_t track_support_colour_rct1; // 0x4A
+    };
+    uint8_t depart_flags;             // 0x4B
+    uint8_t number_of_trains;         // 0x4C
+    uint8_t number_of_cars_per_train; // 0x4D
+    uint8_t min_waiting_time;         // 0x4E
+    uint8_t max_waiting_time;         // 0x4F
+    uint8_t operation_setting;
+    int8_t max_speed;                // 0x51
+    int8_t average_speed;            // 0x52
+    uint16_t ride_length;            // 0x53
+    uint8_t max_positive_vertical_g; // 0x55
+    int8_t max_negative_vertical_g;  // 0x56
+    uint8_t max_lateral_g;           // 0x57
+    union
+    {
+        uint8_t inversions; // 0x58
+        uint8_t holes;      // 0x58
+    };
+    uint8_t drops;                                              // 0x59
+    uint8_t highest_drop_height;                                // 0x5A
+    uint8_t excitement;                                         // 0x5B
+    uint8_t intensity;                                          // 0x5C
+    uint8_t nausea;                                             // 0x5D
+    money16 upkeep_cost;                                        // 0x5E
+    uint8_t track_spine_colour[RCT12_NUM_COLOUR_SCHEMES];       // 0x60
+    uint8_t track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];        // 0x64
+    uint8_t track_support_colour[RCT12_NUM_COLOUR_SCHEMES];     // 0x68
+    uint32_t flags2;                                            // 0x6C
+    rct_object_entry vehicle_object;                            // 0x70
+    uint8_t space_required_x;                                   // 0x80
+    uint8_t space_required_y;                                   // 0x81
+    uint8_t vehicle_additional_colour[RCT2_MAX_CARS_PER_TRAIN]; // 0x82
+    uint8_t lift_hill_speed_num_circuits;                       // 0xA2 0bCCCL_LLLL
+    // 0xA3 (data starts here in file)
+};
+assert_struct_size(rct_track_td6, 0xA3);
 
 /**
  * scores.dat file header.
@@ -592,6 +691,26 @@ public:
     RCT12SpriteSteamParticle steam_particle;
 };
 assert_struct_size(RCT2Sprite, 0x100);
+
+struct RCT2RideRatingCalculationData
+{
+    uint16_t proximity_x;
+    uint16_t proximity_y;
+    uint16_t proximity_z;
+    uint16_t proximity_start_x;
+    uint16_t proximity_start_y;
+    uint16_t proximity_start_z;
+    uint8_t current_ride;
+    uint8_t state;
+    uint8_t proximity_track_type;
+    uint8_t proximity_base_height;
+    uint16_t proximity_total;
+    uint16_t proximity_scores[26];
+    uint16_t num_brakes;
+    uint16_t num_reversers;
+    uint16_t station_flags;
+};
+assert_struct_size(RCT2RideRatingCalculationData, 76);
 
 #pragma pack(pop)
 

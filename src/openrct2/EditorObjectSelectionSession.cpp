@@ -125,7 +125,6 @@ void setup_in_use_selection_flags()
     do
     {
         uint16_t type;
-        rct_banner* banner;
 
         switch (iter.element->GetType())
         {
@@ -173,18 +172,23 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(OBJECT_TYPE_LARGE_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
-                banner = &gBanners[iter.element->AsBanner()->GetIndex()];
-                type = banner->type;
-                assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
-                Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
+            {
+                auto banner = iter.element->AsBanner()->GetBanner();
+                if (banner != nullptr)
+                {
+                    type = banner->type;
+                    assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
+                    Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
+                }
                 break;
+            }
         }
     } while (tile_element_iterator_next(&iter));
 
     for (uint8_t ride_index = 0; ride_index < 0xFF; ride_index++)
     {
-        Ride* ride = get_ride(ride_index);
-        if (ride->type != RIDE_TYPE_NULL)
+        auto ride = get_ride(ride_index);
+        if (ride != nullptr)
         {
             uint8_t type = ride->subtype;
             Editor::SetSelectedObject(OBJECT_TYPE_RIDE, type, OBJECT_SELECTION_FLAG_SELECTED);
@@ -288,7 +292,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
 
         for (auto rideType : rideEntry->ride_type)
         {
-            rct_research_item tmp = {};
+            ResearchItem tmp = {};
             tmp.type = RESEARCH_ENTRY_TYPE_RIDE;
             tmp.entryIndex = entry_index;
             tmp.baseRideType = rideType;
@@ -297,7 +301,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
     }
     else if (entry_type == OBJECT_TYPE_SCENERY_GROUP)
     {
-        rct_research_item tmp = {};
+        ResearchItem tmp = {};
         tmp.type = RESEARCH_ENTRY_TYPE_SCENERY;
         tmp.entryIndex = entry_index;
         research_remove(&tmp);

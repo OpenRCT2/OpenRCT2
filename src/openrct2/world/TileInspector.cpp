@@ -15,6 +15,7 @@
 #include "../common.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -64,8 +65,8 @@ static bool map_swap_elements_at(CoordsXY loc, int16_t first, int16_t second)
     // Swap the 'last map element for tile' flag if either one of them was last
     if ((firstElement)->IsLastForTile() || (secondElement)->IsLastForTile())
     {
-        firstElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
-        secondElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
+        firstElement->SetLastForTile(!firstElement->IsLastForTile());
+        secondElement->SetLastForTile(!secondElement->IsLastForTile());
     }
 
     return true;
@@ -88,7 +89,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(CoordsXY loc, int16_t ele
     {
         // Create new corrupt element
         TileElement* corruptElement = tile_element_insert(
-            loc.x / 32, loc.y / 32, -1, 0); // Ugly hack: -1 guarantees this to be placed first
+            { loc.x / 32, loc.y / 32, -1 }, 0b0000); // Ugly hack: -1 guarantees this to be placed first
         if (corruptElement == nullptr)
         {
             log_warning("Failed to insert corrupt element.");
@@ -132,7 +133,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(CoordsXY loc, int16_t ele
                 windowTileInspectorSelectedIndex++;
             }
 
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -175,7 +176,7 @@ GameActionResult::Ptr tile_inspector_remove_element_at(CoordsXY loc, int16_t ele
                 windowTileInspectorSelectedIndex = -1;
             }
 
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -203,7 +204,7 @@ GameActionResult::Ptr tile_inspector_swap_elements_at(CoordsXY loc, int16_t firs
             else if (windowTileInspectorSelectedIndex == second)
                 windowTileInspectorSelectedIndex = first;
 
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -241,22 +242,26 @@ GameActionResult::Ptr tile_inspector_rotate_element_at(CoordsXY loc, int32_t ele
                 tileElement->SetDirection(newRotation);
 
                 // Update ride's known entrance/exit rotation
-                Ride* ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-                uint8_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
-                auto entrance = ride_get_entrance_location(ride, stationIndex);
-                auto exit = ride_get_exit_location(ride, stationIndex);
-                uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
-                uint8_t z = tileElement->base_height;
+                auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                if (ride != nullptr)
+                {
+                    auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
+                    auto entrance = ride_get_entrance_location(ride, stationIndex);
+                    auto exit = ride_get_exit_location(ride, stationIndex);
+                    uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
+                    uint8_t z = tileElement->base_height;
 
-                // Make sure this is the correct entrance or exit
-                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
-                    && entrance.z == z)
-                {
-                    ride_set_entrance_location(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
-                }
-                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
-                {
-                    ride_set_exit_location(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
+                    // Make sure this is the correct entrance or exit
+                    if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
+                        && entrance.z == z)
+                    {
+                        ride_set_entrance_location(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
+                    }
+                    else if (
+                        entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
+                    {
+                        ride_set_exit_location(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
+                    }
                 }
                 break;
             }
@@ -307,38 +312,21 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
             {
                 return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
             }
-            rct_banner& newBanner = gBanners[newBannerIndex];
-            newBanner = gBanners[bannerIndex];
-            newBanner.x = loc.x / 32;
-            newBanner.y = loc.y / 32;
+            auto& newBanner = *GetBanner(newBannerIndex);
+            newBanner = *GetBanner(bannerIndex);
+            newBanner.position = TileCoordsXY(loc);
 
             // Use the new banner index
             tile_element_set_banner_index(&element, newBannerIndex);
-
-            // Duplicate user string if needed
-            rct_string_id stringIdx = newBanner.string_idx;
-            if (is_user_string_id(stringIdx))
-            {
-                utf8 buffer[USER_STRING_MAX_LENGTH];
-                format_string(buffer, USER_STRING_MAX_LENGTH, stringIdx, nullptr);
-                rct_string_id newStringIdx = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-                if (newStringIdx == 0)
-                {
-                    return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
-                }
-                gBanners[newBannerIndex].string_idx = newStringIdx;
-            }
         }
 
-        TileElement* const pastedElement = tile_element_insert(loc.x / 32, loc.y / 32, element.base_height, 0);
+        // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set them
+        // correctly _here_.
+        TileElement* const pastedElement = tile_element_insert({ loc.x / 32, loc.y / 32, element.base_height }, 0b0000);
 
         bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement = element;
-        pastedElement->flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
-        if (lastForTile)
-        {
-            pastedElement->flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-        }
+        pastedElement->SetLastForTile(lastForTile);
 
         map_invalidate_tile_full(loc.x, loc.y);
 
@@ -355,7 +343,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
             else if (windowTileInspectorSelectedIndex >= newIndex)
                 windowTileInspectorSelectedIndex++;
 
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -412,7 +400,7 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(CoordsXY loc, bool isExecu
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             windowTileInspectorSelectedIndex = -1;
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -441,19 +429,23 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(
             if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
             {
                 // Update the ride's known entrance or exit height
-                Ride* ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-                uint8_t entranceIndex = tileElement->AsEntrance()->GetStationIndex();
-                auto entrance = ride_get_entrance_location(ride, entranceIndex);
-                auto exit = ride_get_exit_location(ride, entranceIndex);
-                uint8_t z = tileElement->base_height;
+                auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                if (ride != nullptr)
+                {
+                    auto entranceIndex = tileElement->AsEntrance()->GetStationIndex();
+                    auto entrance = ride_get_entrance_location(ride, entranceIndex);
+                    auto exit = ride_get_exit_location(ride, entranceIndex);
+                    uint8_t z = tileElement->base_height;
 
-                // Make sure this is the correct entrance or exit
-                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
-                    && entrance.z == z)
-                    ride_set_entrance_location(
-                        ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
-                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
-                    ride_set_exit_location(ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
+                    // Make sure this is the correct entrance or exit
+                    if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
+                        && entrance.z == z)
+                        ride_set_entrance_location(
+                            ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
+                    else if (
+                        entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32 && exit.z == z)
+                        ride_set_exit_location(ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
+                }
             }
         }
 
@@ -466,7 +458,7 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -475,7 +467,7 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(
 
 GameActionResult::Ptr tile_inspector_surface_show_park_fences(CoordsXY loc, bool showFences, bool isExecuting)
 {
-    TileElement* const surfaceelement = map_get_surface_element_at(loc);
+    auto* const surfaceelement = map_get_surface_element_at(loc);
 
     // No surface element on tile
     if (surfaceelement == nullptr)
@@ -484,7 +476,7 @@ GameActionResult::Ptr tile_inspector_surface_show_park_fences(CoordsXY loc, bool
     if (isExecuting)
     {
         if (!showFences)
-            surfaceelement->AsSurface()->SetParkFences(0);
+            surfaceelement->SetParkFences(0);
         else
             update_park_fences(loc);
 
@@ -494,7 +486,7 @@ GameActionResult::Ptr tile_inspector_surface_show_park_fences(CoordsXY loc, bool
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -503,7 +495,7 @@ GameActionResult::Ptr tile_inspector_surface_show_park_fences(CoordsXY loc, bool
 
 GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t cornerIndex, bool isExecuting)
 {
-    TileElement* const surfaceElement = map_get_surface_element_at(loc);
+    auto* const surfaceElement = map_get_surface_element_at(loc);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -511,12 +503,12 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
 
     if (isExecuting)
     {
-        const uint8_t originalSlope = surfaceElement->AsSurface()->GetSlope();
+        const uint8_t originalSlope = surfaceElement->GetSlope();
         const bool diagonal = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
 
-        uint8_t newSlope = surfaceElement->AsSurface()->GetSlope() ^ (1 << cornerIndex);
-        surfaceElement->AsSurface()->SetSlope(newSlope);
-        if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        uint8_t newSlope = surfaceElement->GetSlope() ^ (1 << cornerIndex);
+        surfaceElement->SetSlope(newSlope);
+        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }
@@ -526,7 +518,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
         }
 
         // All corners are raised
-        if ((surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             uint8_t slope = TILE_ELEMENT_SLOPE_FLAT;
 
@@ -548,7 +540,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
                         break;
                 }
             }
-            surfaceElement->AsSurface()->SetSlope(slope);
+            surfaceElement->SetSlope(slope);
 
             // Update base and clearance heights
             surfaceElement->base_height += 2;
@@ -561,7 +553,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -570,7 +562,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
 
 GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(CoordsXY loc, bool isExecuting)
 {
-    TileElement* const surfaceElement = map_get_surface_element_at(loc);
+    auto* const surfaceElement = map_get_surface_element_at(loc);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -578,13 +570,13 @@ GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(CoordsXY loc, bool 
 
     if (isExecuting)
     {
-        uint8_t newSlope = surfaceElement->AsSurface()->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
-        surfaceElement->AsSurface()->SetSlope(newSlope);
-        if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        uint8_t newSlope = surfaceElement->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+        surfaceElement->SetSlope(newSlope);
+        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 4;
         }
-        else if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        else if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }
@@ -599,7 +591,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(CoordsXY loc, bool 
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -623,7 +615,7 @@ GameActionResult::Ptr tile_inspector_path_set_sloped(CoordsXY loc, int32_t eleme
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -647,7 +639,7 @@ GameActionResult::Ptr tile_inspector_path_set_broken(CoordsXY loc, int32_t eleme
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -672,7 +664,7 @@ GameActionResult::Ptr tile_inspector_path_toggle_edge(CoordsXY loc, int32_t elem
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -686,8 +678,7 @@ GameActionResult::Ptr tile_inspector_entrance_make_usable(CoordsXY loc, int32_t 
     if (entranceElement == nullptr || entranceElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
-    Ride* ride = get_ride(entranceElement->AsEntrance()->GetRideIndex());
-
+    auto ride = get_ride(entranceElement->AsEntrance()->GetRideIndex());
     if (ride == nullptr)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
@@ -713,7 +704,7 @@ GameActionResult::Ptr tile_inspector_entrance_make_usable(CoordsXY loc, int32_t 
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -738,7 +729,7 @@ GameActionResult::Ptr tile_inspector_wall_set_slope(CoordsXY loc, int32_t elemen
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -765,9 +756,12 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(
         int16_t originY = loc.y;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
-        ride_id_t rideIndex = trackElement->AsTrack()->GetRideIndex();
-        Ride* ride = get_ride(rideIndex);
-        const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
+        auto rideIndex = trackElement->AsTrack()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+
+        auto trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
@@ -866,9 +860,12 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
         int16_t originY = loc.y;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
-        ride_id_t rideIndex = trackElement->AsTrack()->GetRideIndex();
-        Ride* ride = get_ride(rideIndex);
-        const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
+        auto rideIndex = trackElement->AsTrack()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+
+        auto trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
@@ -959,7 +956,7 @@ GameActionResult::Ptr tile_inspector_track_set_block_brake(
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -984,7 +981,7 @@ GameActionResult::Ptr tile_inspector_track_set_indestructible(
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
             && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
-            window_invalidate(tileInspectorWindow);
+            tileInspectorWindow->Invalidate();
         }
     }
 
@@ -1005,8 +1002,7 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_location(
         tileElement->AsSmallScenery()->SetSceneryQuadrant(quarterIndex);
 
         // Update collision
-        tileElement->flags &= 0xF0;
-        tileElement->flags |= 1 << ((quarterIndex + 2) & 3);
+        tileElement->SetOccupiedQuadrants(1 << ((quarterIndex + 2) & 3));
 
         map_invalidate_tile_full(loc.x, loc.y);
         if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
@@ -1028,7 +1024,9 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_collision(
 
     if (isExecuting)
     {
-        tileElement->flags ^= 1 << quarterIndex;
+        auto occupiedQuadrants = tileElement->GetOccupiedQuadrants();
+        occupiedQuadrants ^= 1 << quarterIndex;
+        tileElement->SetOccupiedQuadrants(occupiedQuadrants);
 
         map_invalidate_tile_full(loc.x, loc.y);
         if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)

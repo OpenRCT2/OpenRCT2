@@ -362,7 +362,7 @@ namespace Config
             auto playerName = reader->GetString("player_name", "");
             if (playerName.empty())
             {
-                playerName = String::ToStd(platform_get_username());
+                playerName = platform_get_username();
                 if (playerName.empty())
                 {
                     playerName = "Player";

@@ -99,7 +99,7 @@ public:
 
         auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
         auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
-        auto heightMid = tile_element_height(xMid, yMid);
+        auto heightMid = tile_element_height({ xMid, yMid });
 
         res->Position.x = xMid;
         res->Position.y = yMid;
@@ -124,13 +124,12 @@ public:
                         continue;
                 }
 
-                auto tileElement = map_get_surface_element_at({ x, y });
-                if (tileElement == nullptr)
+                auto surfaceElement = map_get_surface_element_at({ x, y });
+                if (surfaceElement == nullptr)
                 {
                     continue;
                 }
 
-                auto surfaceElement = tileElement->AsSurface();
                 if (_surfaceStyle != 0xFF)
                 {
                     uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
@@ -178,7 +177,7 @@ public:
 
         auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
         auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
-        auto heightMid = tile_element_height(xMid, yMid);
+        auto heightMid = tile_element_height({ xMid, yMid });
 
         res->Position.x = xMid;
         res->Position.y = yMid;
@@ -196,13 +195,12 @@ public:
                         continue;
                 }
 
-                auto tileElement = map_get_surface_element_at({ x, y });
-                if (tileElement == nullptr)
+                auto surfaceElement = map_get_surface_element_at({ x, y });
+                if (surfaceElement == nullptr)
                 {
                     continue;
                 }
 
-                auto surfaceElement = tileElement->AsSurface();
                 if (_surfaceStyle != 0xFF)
                 {
                     uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
@@ -219,7 +217,7 @@ public:
                             surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
                             map_invalidate_tile_full(x, y);
-                            footpath_remove_litter(x, y, tile_element_height(x, y));
+                            footpath_remove_litter(x, y, tile_element_height({ x, y }));
                         }
                     }
                 }

@@ -27,7 +27,7 @@
 
 #    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
-namespace OpenRCT2::Network::Http
+namespace OpenRCT2::Networking::Http
 {
     Http::Http()
     {
@@ -221,6 +221,6 @@ namespace OpenRCT2::Network::Http
         return dataSize;
     }
 
-} // namespace OpenRCT2::Network::Http
+} // namespace OpenRCT2::Networking::Http
 
 #endif

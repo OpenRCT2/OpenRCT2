@@ -19,6 +19,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/interface/Viewport.h>
+#include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Sprite.h>
 
@@ -222,7 +223,8 @@ public:
                 uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
                 std::string defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
                 loadsave_callback callback = (loadsave_callback)intent->GetPointerExtra(INTENT_EXTRA_CALLBACK);
-                rct_window* w = window_loadsave_open(type, defaultName.c_str(), callback);
+                TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
+                rct_window* w = window_loadsave_open(type, defaultName.c_str(), callback, trackDesign);
 
                 return w;
             }
@@ -246,7 +248,7 @@ public:
             case WC_RIDE:
             {
                 auto ride = get_ride(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
-                return window_ride_main_open(ride);
+                return ride == nullptr ? nullptr : window_ride_main_open(ride);
             }
             case WC_TRACK_DESIGN_PLACE:
                 return window_track_place_open((track_design_file_ref*)intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
@@ -372,24 +374,20 @@ public:
 
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
-                rct_vehicle* vehicle = static_cast<rct_vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                int32_t viewVehicleIndex;
-                Ride* ride;
-                rct_window* w;
-
-                w = window_find_by_number(WC_RIDE, vehicle->ride);
+                auto vehicle = static_cast<rct_vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
+                auto w = window_find_by_number(WC_RIDE, vehicle->ride);
                 if (w == nullptr)
                     return;
 
-                ride = get_ride(vehicle->ride);
-                viewVehicleIndex = w->ride.view - 1;
-                if (viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
+                auto ride = get_ride(vehicle->ride);
+                auto viewVehicleIndex = w->ride.view - 1;
+                if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
                     return;
 
                 if (vehicle->sprite_index != ride->vehicles[viewVehicleIndex])
                     return;
 
-                window_invalidate(w);
+                w->Invalidate();
                 break;
             }
 
@@ -403,7 +401,7 @@ public:
                     {
                         w->vehicleIndex = 0;
                     }
-                    window_invalidate(w);
+                    w->Invalidate();
                 }
                 break;
             }
@@ -434,7 +432,7 @@ public:
                 rct_window* w = window_find_by_number(WC_BANNER, bannerIndex);
                 if (w != nullptr)
                 {
-                    window_invalidate(w);
+                    w->Invalidate();
                 }
                 break;
             }
@@ -505,7 +503,7 @@ public:
             // Make sure the viewport has correct coordinates set.
             viewport_update_position(mainWindow);
 
-            window_invalidate(mainWindow);
+            mainWindow->Invalidate();
         }
     }
 

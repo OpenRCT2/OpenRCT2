@@ -442,7 +442,8 @@ static void sub_6A4101(
 
         direction--;
         // If text shown
-        if (direction < 2 && tile_element->AsPath()->GetRideIndex() != RIDE_ID_NULL && imageFlags == 0)
+        auto ride = get_ride(tile_element->AsPath()->GetRideIndex());
+        if (direction < 2 && ride != nullptr && imageFlags == 0)
         {
             uint16_t scrollingMode = railingEntry->scrolling_mode;
             scrollingMode += direction;
@@ -450,12 +451,10 @@ static void sub_6A4101(
             set_format_arg(0, uint32_t, 0);
             set_format_arg(4, uint32_t, 0);
 
-            Ride* ride = get_ride(tile_element->AsPath()->GetRideIndex());
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
                 set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
-                set_format_arg(2, rct_string_id, ride->name);
-                set_format_arg(4, uint32_t, ride->name_arguments);
+                ride->FormatNameTo(gCommonFormatArgs + 2);
             }
             else
             {
@@ -478,8 +477,8 @@ static void sub_6A4101(
             uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
             sub_98199C(
-                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode), 0, 0, 1, 1, 21,
-                height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
+                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode, COLOUR_BLACK), 0, 0, 1, 1,
+                21, height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
         }
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
@@ -860,7 +859,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     int16_t x = session->MapPosition.x, y = session->MapPosition.y;
 
-    TileElement* surface = map_get_surface_element_at({ session->MapPosition.x, session->MapPosition.y });
+    auto surface = map_get_surface_element_at({ session->MapPosition.x, session->MapPosition.y });
 
     uint16_t bl = height / 8;
     if (surface == nullptr)
@@ -877,14 +876,14 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         {
             // Diagonal path
 
-            if (surface->AsSurface()->GetSlope() != PathSlopeToLandSlope[tile_element->AsPath()->GetSlopeDirection()])
+            if (surface->GetSlope() != PathSlopeToLandSlope[tile_element->AsPath()->GetSlopeDirection()])
             {
                 hasSupports = true;
             }
         }
         else
         {
-            if (surface->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+            if (surface->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
             {
                 hasSupports = true;
             }

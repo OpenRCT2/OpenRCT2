@@ -27,8 +27,8 @@
 #include "../drawing/Font.h"
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
-#include "../localisation/User.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../network/network.h"
@@ -137,15 +137,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
     {
         if (argv[0] == "list")
         {
-            Ride* ride;
-            int32_t i;
-            FOR_ALL_RIDES (i, ride)
+            for (const auto& ride : GetRideManager())
             {
-                char name[128];
-                format_string(name, 128, ride->name, &ride->name_arguments);
+                auto name = ride.GetName();
                 console.WriteFormatLine(
-                    "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", i, ride->type, ride->subtype,
-                    ride->mode, name);
+                    "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", ride.id, ride.type, ride.subtype,
+                    ride.mode, name.c_str());
             }
         }
         else if (argv[0] == "set")
@@ -212,12 +209,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    Ride* ride = get_ride(ride_index);
+                    auto ride = get_ride(ride_index);
                     if (mode <= 0 || mode > (RIDE_MODE_COUNT - 1))
                     {
                         console.WriteFormatLine("Invalid ride mode.");
                     }
-                    else if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -244,12 +241,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    Ride* ride = get_ride(ride_index);
+                    auto ride = get_ride(ride_index);
                     if (mass <= 0)
                     {
                         console.WriteFormatLine("Friction value must be strictly positive");
                     }
-                    else if (ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -284,12 +281,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    Ride* ride = get_ride(ride_index);
+                    auto ride = get_ride(ride_index);
                     if (excitement <= 0)
                     {
                         console.WriteFormatLine("Excitement value must be strictly positive");
                     }
-                    else if (ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -315,12 +312,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    Ride* ride = get_ride(ride_index);
+                    auto ride = get_ride(ride_index);
                     if (intensity <= 0)
                     {
                         console.WriteFormatLine("Intensity value must be strictly positive");
                     }
-                    else if (ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -346,12 +343,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    Ride* ride = get_ride(ride_index);
+                    auto ride = get_ride(ride_index);
                     if (nausea <= 0)
                     {
                         console.WriteFormatLine("Nausea value must be strictly positive");
                     }
-                    else if (ride->type == RIDE_TYPE_NULL)
+                    else if (ride == nullptr)
                     {
                         console.WriteFormatLine("No ride found with index %d", ride_index);
                     }
@@ -372,11 +369,9 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                         auto price = arg1;
                         if (int_valid[0])
                         {
-                            uint16_t rideId{};
-                            Ride* ride;
-                            FOR_ALL_RIDES (rideId, ride)
+                            for (const auto& ride : GetRideManager())
                             {
-                                auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                                auto rideSetPrice = RideSetPriceAction(ride.id, price, true);
                                 GameActions::Execute(&rideSetPrice);
                             }
                         }
@@ -392,13 +387,11 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
 
                         if (int_valid[0] && int_valid[1])
                         {
-                            uint16_t rideId{};
-                            Ride* ride;
-                            FOR_ALL_RIDES (rideId, ride)
+                            for (const auto& ride : GetRideManager())
                             {
-                                if (ride->type == rideType)
+                                if (ride.type == rideType)
                                 {
-                                    auto rideSetPrice = RideSetPriceAction(rideId, price, true);
+                                    auto rideSetPrice = RideSetPriceAction(ride.id, price, true);
                                     GameActions::Execute(&rideSetPrice);
                                 }
                             }
@@ -444,10 +437,9 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             int32_t i;
             FOR_ALL_STAFF (i, peep)
             {
-                char name[128];
-                format_string(name, 128, peep->name_string_idx, &peep->id);
+                auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name);
+                    "staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name.c_str());
             }
         }
         else if (argv[0] == "set")
@@ -915,8 +907,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             {
                 int32_t x = (int16_t)(int_val[0] * 32 + 16);
                 int32_t y = (int16_t)(int_val[1] * 32 + 16);
-                int32_t z = tile_element_height(x, y);
-                window_set_location(w, x, y, z);
+                int32_t z = tile_element_height({ x, y });
+                w->SetLocation(x, y, z);
                 viewport_update_position(w);
                 console.Execute("get location");
             }
@@ -1155,12 +1147,6 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
     return 0;
 }
 
-static int32_t cc_reset_user_strings([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
-{
-    reset_user_strings();
-    return 0;
-}
-
 static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
 {
     if (!argv.empty())
@@ -1225,6 +1211,8 @@ static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused
         }
     } while (tile_element_iterator_next(&it));
 
+    gfx_invalidate_screen();
+
     console.WriteFormatLine("Park fences have been removed.");
     return 0;
 }
@@ -1234,18 +1222,9 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     map_reorganise_elements();
     int32_t tileElementCount = gNextFreeTileElement - gTileElements - 1;
 
-    int32_t rideCount = 0;
-    for (int32_t i = 0; i < MAX_RIDES; ++i)
-    {
-        Ride* ride = get_ride(i);
-        if (ride->type != RIDE_TYPE_NULL)
-        {
-            rideCount++;
-        }
-    }
-
+    int32_t rideCount = ride_get_count();
     int32_t spriteCount = 0;
-    for (int32_t i = 1; i < NUM_SPRITE_LISTS; ++i)
+    for (int32_t i = 1; i < SPRITE_LIST_COUNT; ++i)
     {
         spriteCount += gSpriteListCount[i];
     }
@@ -1262,7 +1241,8 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     int32_t bannerCount = 0;
     for (BannerIndex i = 0; i < MAX_BANNERS; ++i)
     {
-        if (gBanners[i].type != BANNER_NULL)
+        auto banner = GetBanner(i);
+        if (banner->type != BANNER_NULL)
         {
             bannerCount++;
         }
@@ -1273,6 +1253,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, MAX_RIDES);
     console.WriteFormatLine("Staff: %d/%d", staffCount, STAFF_MAX_COUNT);
+    console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());
     return 0;
 }
 
@@ -1692,7 +1673,6 @@ static constexpr const console_command console_command_table[] = {
     { "quit", cc_close, "Closes the console.", "quit" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences" },
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
-    { "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]" },
     { "say", cc_say, "Say to other players.", "say <message>" },

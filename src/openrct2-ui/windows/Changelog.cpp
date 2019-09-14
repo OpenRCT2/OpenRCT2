@@ -147,12 +147,12 @@ static void window_changelog_resize(rct_window* w)
     w->min_height = MIN_WH;
     if (w->width < w->min_width)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->width = w->min_width;
     }
     if (w->height < w->min_height)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->height = w->min_height;
     }
 }
@@ -213,7 +213,7 @@ static std::string GetChangelogText()
 {
     auto path = GetChangelogPath();
 #if defined(_WIN32) && !defined(__MINGW32__)
-    auto pathW = String::ToUtf16(path);
+    auto pathW = String::ToWideChar(path);
     auto fs = std::ifstream(pathW, std::ios::in);
 #else
     auto fs = std::ifstream(path, std::ios::in);

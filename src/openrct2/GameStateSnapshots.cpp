@@ -202,7 +202,6 @@ struct GameStateSnapshots : public IGameStateSnapshots
 
     void CompareSpriteDataPeep(const Peep& spriteBase, const Peep& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(Peep, name_string_idx);
         COMPARE_FIELD(Peep, next_x);
         COMPARE_FIELD(Peep, next_y);
         COMPARE_FIELD(Peep, next_z);

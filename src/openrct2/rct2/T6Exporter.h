@@ -9,4 +9,24 @@
 
 #pragma once
 
-void reset_user_strings();
+#include "../common.h"
+#include "../ride/TrackDesign.h"
+
+#include <vector>
+
+interface IStream;
+
+/**
+ * Class to export RollerCoaster Tycoon 2 track designs (*.TD6).
+ */
+class T6Exporter final
+{
+public:
+    T6Exporter(TrackDesign* trackDesign);
+
+    bool SaveTrack(const utf8* path);
+    bool SaveTrack(IStream* stream);
+
+private:
+    TrackDesign* _trackDesign;
+};

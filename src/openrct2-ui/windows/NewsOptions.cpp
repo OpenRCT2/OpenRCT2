@@ -244,11 +244,11 @@ static void window_news_options_invalidate(rct_window* w)
 
     if (w->height != y)
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->height = y;
         w->widgets[WIDX_BACKGROUND].bottom = y - 1;
         w->widgets[WIDX_TAB_CONTENT_PANEL].bottom = y - 1;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -264,7 +264,7 @@ static void window_news_options_set_page(rct_window* w, int32_t page)
     {
         w->page = page;
         w->frame_no = 0;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

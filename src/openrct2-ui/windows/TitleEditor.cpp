@@ -535,7 +535,7 @@ static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetI
                 w->scrolls[0].v_top = 0;
                 w->frame_no = 0;
                 window_event_resize_call(w);
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         }
@@ -571,7 +571,7 @@ static void window_title_editor_dropdown(rct_window* w, rct_widgetindex widgetIn
     if (widgetIndex == WIDX_TITLE_EDITOR_PRESETS_DROPDOWN)
     {
         window_title_editor_load_sequence(dropdownIndex);
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -610,7 +610,7 @@ static void window_title_editor_scrollgetsize(rct_window* w, int32_t scrollIndex
     if (i < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *width = SCROLL_WIDTH;
@@ -688,7 +688,7 @@ static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetI
                             window_title_editor_load_sequence(newIndex);
                         }
                         config_save_default();
-                        window_invalidate(w);
+                        w->Invalidate();
                     }
                     else
                     {

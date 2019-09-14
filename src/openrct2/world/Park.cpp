@@ -44,8 +44,6 @@
 
 using namespace OpenRCT2;
 
-rct_string_id gParkName;
-uint32_t gParkNameArgs;
 uint32_t gParkFlags;
 uint16_t gParkRating;
 money16 gParkEntranceFee;
@@ -80,17 +78,6 @@ int32_t _suggestedGuestMaximum;
 int32_t _guestGenerationProbability;
 
 /**
- *
- *  rct2: 0x00667104
- */
-void reset_park_entry()
-{
-    gParkName = 0;
-    reset_park_entrance();
-    gPeepSpawns.clear();
-}
-
-/**
  * Choose a random peep spawn and iterates through until defined spawn is found.
  */
 static PeepSpawn* get_random_peep_spawn()
@@ -120,12 +107,12 @@ void update_park_fences(const CoordsXY coords)
     if (map_is_edge(coords))
         return;
 
-    TileElement* surfaceElement = map_get_surface_element_at(coords);
+    auto surfaceElement = map_get_surface_element_at(coords);
     if (surfaceElement == nullptr)
         return;
 
     uint8_t newFences = 0;
-    if ((surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED) == 0)
+    if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) == 0)
     {
         bool fenceRequired = true;
 
@@ -175,12 +162,12 @@ void update_park_fences(const CoordsXY coords)
         }
     }
 
-    if (surfaceElement->AsSurface()->GetParkFences() != newFences)
+    if (surfaceElement->GetParkFences() != newFences)
     {
         int32_t z0 = surfaceElement->base_height * 8;
         int32_t z1 = z0 + 16;
         map_invalidate_tile(coords.x, coords.y, z0, z1);
-        surfaceElement->AsSurface()->SetParkFences(newFences);
+        surfaceElement->SetParkFences(newFences);
     }
 }
 
@@ -191,16 +178,6 @@ void update_park_fences_around_tile(const CoordsXY coords)
     update_park_fences({ coords.x - 32, coords.y });
     update_park_fences({ coords.x, coords.y + 32 });
     update_park_fences({ coords.x, coords.y - 32 });
-}
-
-void park_set_name(const char* name)
-{
-    auto nameId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, name);
-    if (nameId != 0)
-    {
-        user_string_free(gParkName);
-        gParkName = nameId;
-    }
 }
 
 void set_forced_park_rating(int32_t rating)
@@ -278,8 +255,7 @@ money32 Park::GetCompanyValue() const
 
 void Park::Initialise()
 {
-    gUnk13CA740 = 0;
-    gParkName = STR_UNNAMED_PARK;
+    Name = format_string(STR_UNNAMED_PARK, nullptr);
     gStaffHandymanColour = COLOUR_BRIGHT_RED;
     gStaffMechanicColour = COLOUR_LIGHT_BLUE;
     gStaffSecurityColour = COLOUR_YELLOW;
@@ -302,10 +278,8 @@ void Park::Initialise()
 
     gParkEntranceFee = MONEY(10, 00);
 
-    for (auto& peepSpawn : gPeepSpawns)
-    {
-        peepSpawn.x = PEEP_SPAWN_UNDEFINED;
-    }
+    gPeepSpawns.clear();
+    reset_park_entrance();
 
     gResearchPriorities = (1 << RESEARCH_CATEGORY_TRANSPORT) | (1 << RESEARCH_CATEGORY_GENTLE)
         | (1 << RESEARCH_CATEGORY_ROLLERCOASTER) | (1 << RESEARCH_CATEGORY_THRILL) | (1 << RESEARCH_CATEGORY_WATER)
@@ -446,16 +420,13 @@ int32_t Park::CalculateParkRating() const
         int32_t totalRideUptime = 0;
         int32_t totalRideIntensity = 0;
         int32_t totalRideExcitement = 0;
-
-        int32_t i;
-        Ride* ride;
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            totalRideUptime += 100 - ride->downtime;
-            if (ride->excitement != RIDE_RATING_UNDEFINED)
+            totalRideUptime += 100 - ride.downtime;
+            if (ride_has_ratings(&ride))
             {
-                totalRideExcitement += ride->excitement / 8;
-                totalRideIntensity += ride->intensity / 8;
+                totalRideExcitement += ride.excitement / 8;
+                totalRideIntensity += ride.intensity / 8;
                 excitingRideCount++;
             }
             rideCount++;
@@ -518,13 +489,11 @@ int32_t Park::CalculateParkRating() const
 
 money32 Park::CalculateParkValue() const
 {
-    money32 result = 0;
-
     // Sum ride values
-    for (int32_t i = 0; i < MAX_RIDES; i++)
+    money32 result = 0;
+    for (const auto& ride : GetRideManager())
     {
-        auto ride = get_ride(i);
-        result += CalculateRideValue(ride);
+        result += CalculateRideValue(&ride);
     }
 
     // +7.00 per guest
@@ -536,7 +505,7 @@ money32 Park::CalculateParkValue() const
 money32 Park::CalculateRideValue(const Ride* ride) const
 {
     money32 result = 0;
-    if (ride->type != RIDE_TYPE_NULL && ride->value != RIDE_VALUE_UNDEFINED)
+    if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
         result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
     }
@@ -551,21 +520,19 @@ money32 Park::CalculateCompanyValue() const
 money16 Park::CalculateTotalRideValueForMoney() const
 {
     money16 totalRideValue = 0;
-    int32_t i;
-    Ride* ride;
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        if (ride->status != RIDE_STATUS_OPEN)
+        if (ride.status != RIDE_STATUS_OPEN)
             continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
             continue;
 
         // Add ride value
-        if (ride->value != RIDE_VALUE_UNDEFINED)
+        if (ride.value != RIDE_VALUE_UNDEFINED)
         {
-            money16 rideValue = (money16)(ride->value - ride->price);
+            money16 rideValue = (money16)(ride.value - ride.price);
             if (rideValue > 0)
             {
                 totalRideValue += rideValue * 2;
@@ -580,44 +547,42 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
     uint32_t suggestedMaxGuests = 0;
 
     // TODO combine the two ride loops
-    int32_t i;
-    Ride* ride;
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        if (ride->status != RIDE_STATUS_OPEN)
+        if (ride.status != RIDE_STATUS_OPEN)
             continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
             continue;
 
         // Add guest score for ride type
-        suggestedMaxGuests += rideBonusValue[ride->type];
+        suggestedMaxGuests += rideBonusValue[ride.type];
     }
 
     // If difficult guest generation, extra guests are available for good rides
     if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
     {
         suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
-        FOR_ALL_RIDES (i, ride)
+        for (auto& ride : GetRideManager())
         {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
                 continue;
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            if (ride.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+            if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                 continue;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_TRACK))
                 continue;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+            if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
                 continue;
-            if (ride->stations[0].SegmentLength < (600 << 16))
+            if (ride.stations[0].SegmentLength < (600 << 16))
                 continue;
-            if (ride->excitement < RIDE_RATING(6, 00))
+            if (ride.excitement < RIDE_RATING(6, 00))
                 continue;
 
             // Bonus guests for good ride
-            suggestedMaxGuests += rideBonusValue[ride->type] * 2;
+            suggestedMaxGuests += rideBonusValue[ride.type] * 2;
         }
     }
 

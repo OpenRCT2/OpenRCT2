@@ -59,8 +59,8 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Ride* ride = get_ride(_rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
@@ -105,8 +105,8 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Ride* ride = get_ride(_rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
@@ -136,12 +136,13 @@ private:
         ride_clear_leftover_entrances(ride);
         news_item_disable_news(NEWS_ITEM_RIDE, _rideIndex);
 
-        for (auto& banner : gBanners)
+        for (BannerIndex i = 0; i < MAX_BANNERS; i++)
         {
-            if (banner.type != BANNER_NULL && banner.flags & BANNER_FLAG_LINKED_TO_RIDE && banner.ride_index == _rideIndex)
+            auto banner = GetBanner(i);
+            if (banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
             {
-                banner.flags &= 0xFB;
-                banner.string_idx = STR_DEFAULT_SIGN;
+                banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+                banner->text = {};
             }
         }
 
@@ -237,7 +238,7 @@ private:
         {
             int32_t x = (ride->overall_view.x * 32) + 16;
             int32_t y = (ride->overall_view.y * 32) + 16;
-            int32_t z = tile_element_height(x, y);
+            int32_t z = tile_element_height({ x, y });
 
             res->Position = { x, y, z };
         }
@@ -267,7 +268,7 @@ private:
 
     money32 MazeRemoveTrack(uint16_t x, uint16_t y, uint16_t z, uint8_t direction) const
     {
-        auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
+        auto setMazeTrack = MazeSetTrackAction(CoordsXYZD{ x, y, z, direction }, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
         auto execRes = GameActions::ExecuteNested(&setMazeTrack);
@@ -294,7 +295,7 @@ private:
             if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if (it.element->AsTrack()->GetRideIndex() != _rideIndex)
+            if (it.element->AsTrack()->GetRideIndex() != (ride_idnew_t)_rideIndex)
                 continue;
 
             int32_t x = it.x * 32, y = it.y * 32;
@@ -365,7 +366,7 @@ private:
         {
             int32_t x = (ride->overall_view.x * 32) + 16;
             int32_t y = (ride->overall_view.y * 32) + 16;
-            int32_t z = tile_element_height(x, y);
+            int32_t z = tile_element_height({ x, y });
 
             res->Position = { x, y, z };
         }

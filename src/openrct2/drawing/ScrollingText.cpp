@@ -19,20 +19,16 @@
 #include <algorithm>
 #include <mutex>
 
-#pragma pack(push, 1)
-/* size: 0xA12 */
 struct rct_draw_scroll_text
 {
-    rct_string_id string_id; // 0x00
-    uint32_t string_args_0;  // 0x02
-    uint32_t string_args_1;  // 0x06
-    uint16_t position;       // 0x0A
-    uint16_t mode;           // 0x0C
-    uint32_t id;             // 0x0E
-    uint8_t bitmap[64 * 40]; // 0x12
+    rct_string_id string_id;
+    uint8_t string_args[32];
+    colour_t colour;
+    uint16_t position;
+    uint16_t mode;
+    uint32_t id;
+    uint8_t bitmap[64 * 40];
 };
-assert_struct_size(rct_draw_scroll_text, 0xA12);
-#pragma pack(pop)
 
 #define MAX_SCROLLING_TEXT_ENTRIES 32
 
@@ -42,9 +38,9 @@ static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
 
 static void scrolling_text_set_bitmap_for_sprite(
-    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets);
+    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
 static void scrolling_text_set_bitmap_for_ttf(
-    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets);
+    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
 
 void scrolling_text_initialise_bitmaps()
 {
@@ -130,7 +126,8 @@ static uint8_t* font_sprite_get_codepoint_bitmap(int32_t codepoint)
     }
 }
 
-static int32_t scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16_t scroll, uint16_t scrollingMode)
+static int32_t scrolling_text_get_matching_or_oldest(
+    rct_string_id stringId, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     uint32_t oldestId = 0xFFFFFFFF;
     int32_t scrollIndex = -1;
@@ -144,11 +141,9 @@ static int32_t scrolling_text_get_matching_or_oldest(rct_string_id stringId, uin
         }
 
         // If exact match return the matching index
-        uint32_t stringArgs0, stringArgs1;
-        std::memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32_t));
-        std::memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32_t));
-        if (scrollText->string_id == stringId && scrollText->string_args_0 == stringArgs0
-            && scrollText->string_args_1 == stringArgs1 && scrollText->position == scroll && scrollText->mode == scrollingMode)
+        if (scrollText->string_id == stringId
+            && std::memcmp(scrollText->string_args, gCommonFormatArgs, sizeof(scrollText->string_args)) == 0
+            && scrollText->colour == colour && scrollText->position == scroll && scrollText->mode == scrollingMode)
         {
             scrollText->id = _drawSCrollNextIndex;
             return i + SPR_SCROLLING_TEXT_START;
@@ -157,28 +152,15 @@ static int32_t scrolling_text_get_matching_or_oldest(rct_string_id stringId, uin
     return scrollIndex;
 }
 
-static uint8_t scrolling_text_get_colour(uint32_t character)
-{
-    int32_t colour = character & 0x7F;
-    if (character & COLOUR_FLAG_TRANSLUCENT)
-    {
-        return ColourMapA[colour].light;
-    }
-    else
-    {
-        return ColourMapA[colour].mid_dark;
-    }
-}
-
 static void scrolling_text_format(utf8* dst, size_t size, rct_draw_scroll_text* scrollText)
 {
     if (gConfigGeneral.upper_case_banners)
     {
-        format_string_to_upper(dst, size, scrollText->string_id, &scrollText->string_args_0);
+        format_string_to_upper(dst, size, scrollText->string_id, scrollText->string_args);
     }
     else
     {
-        format_string(dst, size, scrollText->string_id, &scrollText->string_args_0);
+        format_string(dst, size, scrollText->string_id, scrollText->string_args);
     }
 }
 
@@ -1454,20 +1436,12 @@ void scrolling_text_invalidate()
     {
         rct_draw_scroll_text& scrollText = _drawScrollTextList[i];
         scrollText.string_id = 0;
-        scrollText.string_args_0 = 0;
-        scrollText.string_args_1 = 0;
+        std::memset(scrollText.string_args, 0, sizeof(scrollText.string_args));
     }
 }
 
-/**
- *
- *  rct2: 0x006C42D9
- * @param stringId (ax)
- * @param scroll (cx)
- * @param scrollingMode (bp)
- * @returns ebx
- */
-int32_t scrolling_text_setup(paint_session* session, rct_string_id stringId, uint16_t scroll, uint16_t scrollingMode)
+int32_t scrolling_text_setup(
+    paint_session* session, rct_string_id stringId, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
 
@@ -1480,19 +1454,15 @@ int32_t scrolling_text_setup(paint_session* session, rct_string_id stringId, uin
 
     _drawSCrollNextIndex++;
 
-    int32_t scrollIndex = scrolling_text_get_matching_or_oldest(stringId, scroll, scrollingMode);
+    int32_t scrollIndex = scrolling_text_get_matching_or_oldest(stringId, scroll, scrollingMode, colour);
     if (scrollIndex >= SPR_SCROLLING_TEXT_START)
         return scrollIndex;
 
     // Setup scrolling text
-    uint32_t stringArgs0, stringArgs1;
-    std::memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32_t));
-    std::memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32_t));
-
-    rct_draw_scroll_text* scrollText = &_drawScrollTextList[scrollIndex];
+    auto scrollText = &_drawScrollTextList[scrollIndex];
     scrollText->string_id = stringId;
-    scrollText->string_args_0 = stringArgs0;
-    scrollText->string_args_1 = stringArgs1;
+    std::memcpy(scrollText->string_args, gCommonFormatArgs, sizeof(scrollText->string_args));
+    scrollText->colour = colour;
     scrollText->position = scroll;
     scrollText->mode = scrollingMode;
     scrollText->id = _drawSCrollNextIndex;
@@ -1506,11 +1476,11 @@ int32_t scrolling_text_setup(paint_session* session, rct_string_id stringId, uin
     std::fill_n(scrollText->bitmap, 320 * 8, 0x00);
     if (LocalisationService_UseTrueTypeFont())
     {
-        scrolling_text_set_bitmap_for_ttf(scrollString, scroll, scrollText->bitmap, scrollingModePositions);
+        scrolling_text_set_bitmap_for_ttf(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
     }
     else
     {
-        scrolling_text_set_bitmap_for_sprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions);
+        scrolling_text_set_bitmap_for_sprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
     }
 
     uint32_t imageId = SPR_SCROLLING_TEXT_START + scrollIndex;
@@ -1519,9 +1489,9 @@ int32_t scrolling_text_setup(paint_session* session, rct_string_id stringId, uin
 }
 
 static void scrolling_text_set_bitmap_for_sprite(
-    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets)
+    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
-    uint8_t characterColour = scrolling_text_get_colour(gCommonFormatArgs[7]);
+    auto characterColour = colour;
 
     utf8* ch = text;
     while (true)
@@ -1582,18 +1552,16 @@ static void scrolling_text_set_bitmap_for_sprite(
     }
 }
 
-static void scrolling_text_set_bitmap_for_ttf(utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets)
+static void scrolling_text_set_bitmap_for_ttf(
+    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
 #ifndef NO_TTF
     TTFFontDescriptor* fontDesc = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
     if (fontDesc->font == nullptr)
     {
-        scrolling_text_set_bitmap_for_sprite(text, scroll, bitmap, scrollPositionOffsets);
+        scrolling_text_set_bitmap_for_sprite(text, scroll, bitmap, scrollPositionOffsets, colour);
         return;
     }
-
-    // Currently only supports one colour
-    uint8_t colour = 0;
 
     utf8* dstCh = text;
     utf8* ch = text;
@@ -1604,7 +1572,12 @@ static void scrolling_text_set_bitmap_for_ttf(utf8* text, int32_t scroll, uint8_
         {
             if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END)
             {
-                colour = (uint8_t)codepoint;
+                codepoint -= FORMAT_COLOUR_CODE_START;
+                auto g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
+                if (g1 != nullptr)
+                {
+                    colour = g1->offset[codepoint * 4];
+                }
             }
         }
         else
@@ -1613,19 +1586,6 @@ static void scrolling_text_set_bitmap_for_ttf(utf8* text, int32_t scroll, uint8_
         }
     }
     *dstCh = 0;
-
-    if (colour == 0)
-    {
-        colour = scrolling_text_get_colour(gCommonFormatArgs[7]);
-    }
-    else
-    {
-        const rct_g1_element* g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
-        if (g1 != nullptr)
-        {
-            colour = g1->offset[(colour - FORMAT_COLOUR_CODE_START) * 4];
-        }
-    }
 
     TTFSurface* surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
     if (surface == nullptr)

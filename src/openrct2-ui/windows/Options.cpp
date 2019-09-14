@@ -683,34 +683,34 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     gConfigGeneral.uncap_fps ^= 1;
                     drawing_engine_set_vsync(gConfigGeneral.use_vsync);
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_USE_VSYNC_CHECKBOX:
                     gConfigGeneral.use_vsync ^= 1;
                     drawing_engine_set_vsync(gConfigGeneral.use_vsync);
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_SHOW_FPS_CHECKBOX:
                     gConfigGeneral.show_fps ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_MULTITHREADING_CHECKBOX:
                     gConfigGeneral.multithreading ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_MINIMIZE_FOCUS_LOSS:
                     gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
                     platform_refresh_video(false);
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_STEAM_OVERLAY_PAUSE:
                     gConfigGeneral.steam_overlay_pause ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
             }
             break;
@@ -738,39 +738,39 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 case WIDX_DAY_NIGHT_CHECKBOX:
                     gConfigGeneral.day_night_cycle ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
                     gConfigGeneral.enable_light_fx ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
                     gConfigGeneral.upper_case_banners ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
                     gConfigGeneral.disable_lightning_effect ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
                     gConfigGeneral.render_weather_effects ^= 1;
                     gConfigGeneral.render_weather_gloom = gConfigGeneral.render_weather_effects;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     gfx_invalidate_screen();
                     break;
                 case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
                     gConfigGeneral.show_guest_purchases ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
                     gConfigGeneral.transparent_screenshot ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
             }
             break;
@@ -784,7 +784,7 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 case WIDX_SOUND_CHECKBOX:
                     gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
 
                 case WIDX_MASTER_SOUND_CHECKBOX:
@@ -795,7 +795,7 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                         audio_unpause_sounds();
                     window_invalidate_by_class(WC_TOP_TOOLBAR);
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
 
                 case WIDX_MUSIC_CHECKBOX:
@@ -805,13 +805,13 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                         audio_stop_ride_music();
                     }
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
 
                 case WIDX_AUDIO_FOCUS_CHECKBOX:
                     gConfigSound.audio_focus = !gConfigSound.audio_focus;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
             }
             break;
@@ -825,63 +825,63 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 case WIDX_SCREEN_EDGE_SCROLLING:
                     gConfigGeneral.edge_scrolling ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_TRAP_CURSOR:
                     gConfigGeneral.trap_cursor ^= 1;
                     config_save_default();
                     context_set_cursor_trap(gConfigGeneral.trap_cursor);
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_ZOOM_TO_CURSOR:
                     gConfigGeneral.zoom_to_cursor ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_TOOLBAR_SHOW_FINANCES:
                     gConfigInterface.toolbar_show_finances ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     window_invalidate_by_class(WC_TOP_TOOLBAR);
                     break;
                 case WIDX_TOOLBAR_SHOW_RESEARCH:
                     gConfigInterface.toolbar_show_research ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     window_invalidate_by_class(WC_TOP_TOOLBAR);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHEATS:
                     gConfigInterface.toolbar_show_cheats ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     window_invalidate_by_class(WC_TOP_TOOLBAR);
                     break;
                 case WIDX_TOOLBAR_SHOW_NEWS:
                     gConfigInterface.toolbar_show_news ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     window_invalidate_by_class(WC_TOP_TOOLBAR);
                     break;
                 case WIDX_TOOLBAR_SHOW_MUTE:
                     gConfigInterface.toolbar_show_mute ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     window_invalidate_by_class(WC_TOP_TOOLBAR);
                     break;
                 case WIDX_TOOLBAR_SHOW_CHAT:
                     gConfigInterface.toolbar_show_chat ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     window_invalidate_by_class(WC_TOP_TOOLBAR);
                     break;
                 case WIDX_INVERT_DRAG:
                     gConfigGeneral.invert_viewport_drag ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_THEMES_BUTTON:
                     context_open_window(WC_THEMES);
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
             }
             break;
@@ -892,13 +892,13 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 case WIDX_REAL_NAME_CHECKBOX:
                     gConfigGeneral.show_real_names_of_guests ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     peep_update_names(gConfigGeneral.show_real_names_of_guests);
                     break;
                 case WIDX_AUTO_STAFF_PLACEMENT:
                     gConfigGeneral.auto_staff_placement ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_TITLE_SEQUENCE_BUTTON:
                     window_title_editor_open(0);
@@ -911,12 +911,12 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 case WIDX_AUTO_OPEN_SHOPS:
                     gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_ALLOW_EARLY_COMPLETION:
                     gConfigGeneral.allow_early_completion ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
             }
             break;
@@ -933,22 +933,22 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral
                                                                                 .allow_loading_with_incorrect_checksum;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
                     gConfigGeneral.save_plugin_data ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_STAY_CONNECTED_AFTER_DESYNC:
                     gConfigNetwork.stay_connected = !gConfigNetwork.stay_connected;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_ALWAYS_NATIVE_LOADSAVE:
                     gConfigGeneral.use_native_browse_dialog = !gConfigGeneral.use_native_browse_dialog;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_PATH_TO_RCT1_BUTTON:
                 {
@@ -970,7 +970,7 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                             context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE);
                         }
                     }
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 }
                 case WIDX_PATH_TO_RCT1_CLEAR:
@@ -979,7 +979,7 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                         SafeFree(gConfigGeneral.rct1_path);
                         config_save_default();
                     }
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
             }
             break;
@@ -994,27 +994,27 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 case WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX:
                     gConfigTwitch.enable_follower_peep_names ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX:
                     gConfigTwitch.enable_follower_peep_tracking ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_CHAT_PEEP_NAMES_CHECKBOX:
                     gConfigTwitch.enable_chat_peep_names ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_CHAT_PEEP_TRACKING_CHECKBOX:
                     gConfigTwitch.enable_chat_peep_tracking ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_NEWS_CHECKBOX:
                     gConfigTwitch.enable_news ^= 1;
                     config_save_default();
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_API_URL_BUTTON:
                     window_text_input_raw_open(
@@ -1420,7 +1420,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                         bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
                         platform_refresh_video(recreate_window);
                         config_save_default();
-                        window_invalidate(w);
+                        w->Invalidate();
                     }
                     break;
                 case WIDX_SCALE_QUALITY_DROPDOWN:
@@ -1546,7 +1546,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                         config_save_default();
                         audio_start_title_music();
                     }
-                    window_invalidate(w);
+                    w->Invalidate();
                     break;
                 case WIDX_TITLE_MUSIC_DROPDOWN:
                     if ((dropdownIndex == 1 || dropdownIndex == 3)
@@ -1558,7 +1558,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     {
                         gConfigSound.title_music = (int8_t)dropdownIndex;
                         config_save_default();
-                        window_invalidate(w);
+                        w->Invalidate();
                     }
 
                     audio_stop_title_music();
@@ -1589,7 +1589,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     {
                         title_sequence_change_preset((size_t)dropdownIndex);
                         config_save_default();
-                        window_invalidate(w);
+                        w->Invalidate();
                     }
                     break;
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
@@ -1597,7 +1597,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     {
                         gConfigGeneral.default_inspection_interval = (uint8_t)dropdownIndex;
                         config_save_default();
-                        window_invalidate(w);
+                        w->Invalidate();
                     }
                     break;
                 case WIDX_SCENARIO_GROUPING_DROPDOWN:
@@ -1606,7 +1606,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                         gConfigGeneral.scenario_select_mode = dropdownIndex;
                         gConfigInterface.scenarioselect_last_tab = 0;
                         config_save_default();
-                        window_invalidate(w);
+                        w->Invalidate();
                         window_close_by_class(WC_SCENARIO_SELECT);
                     }
                     break;
@@ -1621,7 +1621,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     {
                         gConfigGeneral.autosave_frequency = (uint8_t)dropdownIndex;
                         config_save_default();
-                        window_invalidate(w);
+                        w->Invalidate();
                     }
                     break;
             }
@@ -2210,11 +2210,11 @@ static void window_options_set_page(rct_window* w, int32_t page)
     w->pressed_widgets = 0;
     w->widgets = window_options_page_widgets[page];
 
-    window_invalidate(w);
+    w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_options_set_pressed_tab(rct_window* w)

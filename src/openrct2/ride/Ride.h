@@ -18,6 +18,9 @@
 #include "RideTypes.h"
 #include "Vehicle.h"
 
+#include <limits>
+#include <string_view>
+
 interface IObjectManager;
 class StationObject;
 struct Peep;
@@ -37,9 +40,10 @@ struct Staff;
 #define MAX_CARS_PER_TRAIN 255
 #define MAX_STATIONS 4
 #define MAX_RIDES 255
-#define RIDE_ID_NULL 255
+#define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
+constexpr ride_id_t RIDE_ID_NULL = std::numeric_limits<ride_id_t>::max();
 constexpr uint16_t const MAX_INVERSIONS = RCT12_MAX_INVERSIONS;
 constexpr uint16_t const MAX_GOLF_HOLES = RCT12_MAX_GOLF_HOLES;
 constexpr uint16_t const MAX_HELICES = RCT12_MAX_HELICES;
@@ -140,6 +144,20 @@ struct rct_ride_entry
     uint8_t shop_item_secondary;                                       // 0x1C1
     rct_string_id capacity;
     void* obj;
+
+    const rct_ride_entry_vehicle* GetVehicle(size_t id) const
+    {
+        if (id < std::size(vehicles))
+        {
+            return &vehicles[id];
+        }
+        return nullptr;
+    }
+
+    const rct_ride_entry_vehicle* GetDefaultVehicle() const
+    {
+        return GetVehicle(default_vehicle);
+    }
 };
 
 struct RideStation
@@ -164,7 +182,6 @@ struct RideMeasurement
 {
     static constexpr size_t MAX_ITEMS = 4800;
 
-    Ride* ride{};
     uint8_t flags{};
     uint32_t last_use_tick{};
     uint16_t num_items{};
@@ -177,6 +194,15 @@ struct RideMeasurement
     uint8_t altitude[MAX_ITEMS]{};
 };
 
+enum class RideClassification
+{
+    Ride,
+    ShopOrStall,
+    KioskOrFacility
+};
+
+struct TrackDesign;
+
 /**
  * Ride structure.
  *
@@ -185,8 +211,8 @@ struct RideMeasurement
  */
 struct Ride
 {
-    ride_id_t id;
-    uint8_t type;
+    ride_id_t id = RIDE_ID_NULL;
+    uint8_t type = RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
     uint8_t subtype;
@@ -195,16 +221,8 @@ struct Ride
     VehicleColour vehicle_colours[MAX_CARS_PER_TRAIN];
     // 0 = closed, 1 = open, 2 = test
     uint8_t status;
-    rct_string_id name;
-    union
-    {
-        uint32_t name_arguments;
-        struct
-        {
-            rct_string_id name_arguments_type_name;
-            uint16_t name_arguments_number;
-        };
-    };
+    std::string custom_name;
+    uint16_t default_name_number;
     LocationXY8 overall_view;
     uint16_t vehicles[MAX_VEHICLES_PER_RIDE]; // Points to the first car in the train
     uint8_t depart_flags;
@@ -379,6 +397,7 @@ private:
 
 public:
     bool CanBreakDown() const;
+    RideClassification GetClassification() const;
     bool IsRide() const;
     void Renew();
     void Delete();
@@ -416,7 +435,15 @@ public:
     void QueueInsertGuestAtFront(int32_t stationIndex, Peep* peep);
     Peep* GetQueueHeadGuest(int32_t stationIndex) const;
 
+    void SetNameToDefault();
+    std::string GetName() const;
+    size_t FormatNameTo(void* args) const;
+    void FormatStatusTo(void* args) const;
+
     static void UpdateAll();
+    static bool NameExists(const std::string_view& name, ride_id_t excludeRideId = RIDE_ID_NULL);
+
+    std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
 };
 
 #pragma pack(push, 1)
@@ -454,13 +481,6 @@ assert_struct_size(ride_name_args, 4);
  */
 #define TYPE_TO_RIDE_ENTRY_SLOTS 492
 extern uint8_t gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
-
-enum
-{
-    RIDE_CLASS_RIDE,
-    RIDE_CLASS_SHOP_OR_STALL,
-    RIDE_CLASS_KIOSK_OR_FACILITY
-};
 
 // Constants used by the lifecycle_flags property at 0x1D0
 enum
@@ -530,7 +550,6 @@ enum
 
 enum
 {
-    RIDE_TYPE_NULL = 255,
     RIDE_TYPE_SPIRAL_ROLLER_COASTER = 0,
     RIDE_TYPE_STAND_UP_ROLLER_COASTER,
     RIDE_TYPE_SUSPENDED_SWINGING_COASTER,
@@ -976,27 +995,100 @@ struct rct_ride_properties
 
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
-/** Helper macros until rides are stored in this module. */
-Ride* get_ride(int32_t index);
-rct_ride_entry* get_ride_entry(int32_t index);
-void get_ride_entry_name(char* name, int32_t index);
-RideMeasurement* get_ride_measurement(int32_t index);
+Ride* get_ride(ride_id_t index);
 
-/**
- * Helper macro loop for enumerating through all the non null rides.
- */
-#define FOR_ALL_RIDES(i, ride)                                                                                                 \
-    for (i = 0; i < MAX_RIDES; i++)                                                                                            \
-        if ((ride = get_ride(i))->type != RIDE_TYPE_NULL)
+struct RideManager
+{
+    const Ride* operator[](ride_id_t id) const
+    {
+        return get_ride(id);
+    }
+
+    Ride* operator[](ride_id_t id)
+    {
+        return get_ride(id);
+    }
+
+    class Iterator
+    {
+        friend RideManager;
+
+    private:
+        RideManager& _rideManager;
+        size_t _index{};
+        size_t _endIndex{};
+
+    public:
+        using difference_type = intptr_t;
+        using value_type = Ride;
+        using pointer = const Ride*;
+        using reference = const Ride&;
+        using iterator_category = std::forward_iterator_tag;
+
+    private:
+        Iterator(RideManager& rideManager, size_t beginIndex, size_t endIndex)
+            : _rideManager(rideManager)
+            , _index(beginIndex)
+            , _endIndex(endIndex)
+        {
+            if (_index < _endIndex && _rideManager[(ride_id_t)_index] == nullptr)
+            {
+                ++(*this);
+            }
+        }
+
+    public:
+        Iterator& operator++()
+        {
+            do
+            {
+                _index++;
+            } while (_index < _endIndex && _rideManager[(ride_id_t)_index] == nullptr);
+            return *this;
+        }
+        Iterator operator++(int)
+        {
+            auto result = *this;
+            ++(*this);
+            return result;
+        }
+        bool operator==(Iterator other) const
+        {
+            return _index == other._index;
+        }
+        bool operator!=(Iterator other) const
+        {
+            return !(*this == other);
+        }
+        Ride& operator*()
+        {
+            return *_rideManager[(ride_id_t)_index];
+        }
+    };
+
+    size_t size() const;
+    Iterator begin();
+    Iterator end();
+    Iterator begin() const
+    {
+        return ((RideManager*)this)->begin();
+    }
+    Iterator end() const
+    {
+        return ((RideManager*)this)->end();
+    }
+};
+
+RideManager GetRideManager();
+ride_id_t GetNextFreeRideId();
+Ride* GetOrAllocateRide(ride_id_t index);
+rct_ride_entry* get_ride_entry(int32_t index);
+std::string_view get_ride_entry_name(size_t index);
+RideMeasurement* get_ride_measurement(int32_t index);
 
 extern money16 gTotalRideValueForMoney;
 
-extern const uint8_t gRideClassifications[MAX_RIDES];
-
-extern Ride gRideList[MAX_RIDES];
 extern const rct_string_id ColourSchemeNames[4];
-
-extern uint16_t gRideCount;
 
 extern money32 _currentTrackPrice;
 
@@ -1053,13 +1145,12 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(Ride* ride);
-int32_t ride_modify(CoordsXYE* input);
+bool ride_modify(CoordsXYE* input);
 void ride_remove_peeps(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
-void ride_get_status(const Ride* ride, rct_string_id* formatSecondary, int32_t* argument);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);
-int32_t ride_get_total_length(Ride* ride);
+int32_t ride_get_total_length(const Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
 TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
@@ -1092,9 +1183,7 @@ int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 money32 ride_get_common_price(Ride* forRide);
 rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
 money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex, uint8_t* outRideColour);
-void ride_set_name_to_default(Ride* ride, rct_ride_entry* rideEntry);
 
-void ride_set_name_to_track_default(Ride* ride, rct_ride_entry* rideEntry);
 void ride_clear_for_construction(Ride* ride);
 void ride_entrance_exit_place_provisional_ghost();
 void ride_entrance_exit_remove_ghost();
@@ -1119,7 +1208,6 @@ uint8_t ride_get_helix_sections(Ride* ride);
 
 bool ride_type_has_flag(int32_t rideType, uint32_t flag);
 bool ride_has_any_track_elements(const Ride* ride);
-void ride_all_has_any_track_elements(bool* rideIndexArray);
 
 void ride_construction_set_default_next_piece();
 

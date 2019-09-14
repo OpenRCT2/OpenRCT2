@@ -169,6 +169,11 @@ void WallElement::SetEntryIndex(uint8_t newIndex)
     entryIndex = newIndex;
 }
 
+Banner* WallElement::GetBanner() const
+{
+    return ::GetBanner(GetBannerIndex());
+}
+
 BannerIndex WallElement::GetBannerIndex() const
 {
     return banner_index;

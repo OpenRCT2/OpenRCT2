@@ -12,6 +12,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/GuestSetFlagsAction.hpp>
 #include <openrct2/actions/PeepPickupAction.hpp>
@@ -534,7 +535,7 @@ rct_window* window_guest_open(Peep* peep)
     }
 
     window->page = 0;
-    window_invalidate(window);
+    window->Invalidate();
 
     window->widgets = window_guest_page_widgets[WINDOW_GUEST_OVERVIEW];
     window->enabled_widgets = window_guest_page_enabled_widgets[WINDOW_GUEST_OVERVIEW];
@@ -581,8 +582,7 @@ static void window_guest_common_invalidate(rct_window* w)
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
     auto peep = GET_PEEP(w->number);
-    set_format_arg(0, rct_string_id, peep->name_string_idx);
-    set_format_arg(2, uint32_t, peep->id);
+    peep->FormatNameTo(gCommonFormatArgs);
 
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -608,13 +608,13 @@ void window_guest_disable_widgets(rct_window* w)
     if (peep_can_be_picked_up(peep))
     {
         if (w->disabled_widgets & (1 << WIDX_PICKUP))
-            window_invalidate(w);
+            w->Invalidate();
     }
     else
     {
         disabled_widgets = (1 << WIDX_PICKUP);
         if (!(w->disabled_widgets & (1 << WIDX_PICKUP)))
-            window_invalidate(w);
+            w->Invalidate();
     }
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
@@ -713,11 +713,13 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
         }
         break;
         case WIDX_RENAME:
-            window_text_input_open(
-                w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, peep->name_string_idx, peep->id, 32);
+        {
+            auto peepName = peep->GetName();
+            window_text_input_raw_open(w, widgetIndex, STR_GUEST_RENAME_TITLE, STR_GUEST_RENAME_PROMPT, peepName.c_str(), 32);
             break;
+        }
         case WIDX_LOCATE:
-            window_scroll_to_viewport(w);
+            w->ScrollToViewport();
             break;
         case WIDX_TRACK:
         {
@@ -766,11 +768,11 @@ void window_guest_set_page(rct_window* w, int32_t page)
     w->pressed_widgets = 0;
     w->widgets = window_guest_page_widgets[page];
     window_guest_disable_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     if (listen && w->viewport)
         w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
@@ -835,9 +837,9 @@ void window_guest_viewport_init(rct_window* w)
                 w->viewport->flags = origViewportFlags;
             }
             w->flags |= WF_NO_SCROLLING;
-            window_invalidate(w);
+            w->Invalidate();
         }
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1079,11 +1081,8 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw the centred label
-    uint32_t argument1, argument2;
     Peep* peep = GET_PEEP(w->number);
-    get_arguments_from_action(peep, &argument1, &argument2);
-    set_format_arg(0, uint32_t, argument1);
-    set_format_arg(4, uint32_t, argument2);
+    peep->FormatActionTo(gCommonFormatArgs);
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
     int32_t x = (widget->left + widget->right) / 2 + w->x;
     int32_t y = w->y + widget->top - 1;
@@ -1347,7 +1346,7 @@ void window_guest_stats_update(rct_window* w)
     Peep* peep = GET_PEEP(w->number);
     peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_STATS;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -1572,34 +1571,31 @@ void window_guest_rides_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_2);
     widget_invalidate(w, WIDX_TAB_3);
 
-    Peep* peep = GET_PEEP(w->number);
-
-    // Every 2048 ticks do a full window_invalidate
-    int32_t number_of_ticks = gScenarioTicks - peep->time_in_park;
-    if (!(number_of_ticks & 0x7FF))
-        window_invalidate(w);
-
-    uint8_t curr_list_position = 0;
-    for (ride_id_t ride_id = 0; ride_id < MAX_RIDES; ride_id++)
+    auto peep = GET_PEEP(w->number);
+    auto guest = peep->AsGuest();
+    if (guest != nullptr)
     {
-        // Offset to the ride_id bit in peep_rides_been_on
-        uint8_t ride_id_bit = ride_id % 8;
-        uint8_t ride_id_offset = ride_id / 8;
-        if (peep->rides_been_on[ride_id_offset] & (1 << ride_id_bit))
+        // Every 2048 ticks do a full window_invalidate
+        int32_t number_of_ticks = gScenarioTicks - peep->time_in_park;
+        if (!(number_of_ticks & 0x7FF))
+            w->Invalidate();
+
+        uint8_t curr_list_position = 0;
+        for (const auto& ride : GetRideManager())
         {
-            Ride* ride = get_ride(ride_id);
-            if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+            if (ride.IsRide() && guest->HasRidden(&ride))
             {
-                w->list_item_positions[curr_list_position] = ride_id;
+                w->list_item_positions[curr_list_position] = ride.id;
                 curr_list_position++;
             }
         }
-    }
-    // If there are new items
-    if (w->no_list_items != curr_list_position)
-    {
-        w->no_list_items = curr_list_position;
-        window_invalidate(w);
+
+        // If there are new items
+        if (w->no_list_items != curr_list_position)
+        {
+            w->no_list_items = curr_list_position;
+            w->Invalidate();
+        }
     }
 }
 
@@ -1614,7 +1610,7 @@ void window_guest_rides_scroll_get_size(rct_window* w, int32_t scrollIndex, int3
     if (w->selected_list_item != -1)
     {
         w->selected_list_item = -1;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     int32_t visable_height = *height - window_guest_rides_widgets[WIDX_RIDE_SCROLL].bottom
@@ -1626,7 +1622,7 @@ void window_guest_rides_scroll_get_size(rct_window* w, int32_t scrollIndex, int3
     if (visable_height < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = visable_height;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1663,7 +1659,7 @@ void window_guest_rides_scroll_mouse_over(rct_window* w, int32_t scrollIndex, in
         return;
     w->selected_list_item = index;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -1704,20 +1700,15 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
-    rct_string_id ride_string_id = STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE;
-    uint32_t ride_string_arguments = 0;
-    if (peep->favourite_ride != 0xFF)
+    set_format_arg(0, rct_string_id, STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
+    if (peep->favourite_ride != RIDE_ID_NULL)
     {
         auto ride = get_ride(peep->favourite_ride);
         if (ride != nullptr)
         {
-            ride_string_arguments = ride->name_arguments;
-            ride_string_id = ride->name;
+            ride->FormatNameTo(gCommonFormatArgs);
         }
     }
-    set_format_arg(0, rct_string_id, ride_string_id);
-    set_format_arg(2, uint32_t, ride_string_arguments);
-
     gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, COLOUR_BLACK, x, y, w->width - 14);
 }
 
@@ -1748,8 +1739,7 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         auto ride = get_ride(w->list_item_positions[list_index]);
         if (ride != nullptr)
         {
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            ride->FormatNameTo(gCommonFormatArgs);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
         }
     }
@@ -1873,7 +1863,7 @@ void window_guest_thoughts_update(rct_window* w)
     if (peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_THOUGHTS)
     {
         peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1936,21 +1926,23 @@ void window_guest_inventory_update(rct_window* w)
     if (peep->window_invalidate_flags & PEEP_INVALIDATE_PEEP_INVENTORY)
     {
         peep->window_invalidate_flags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
 static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item)
 {
-    Ride* ride;
+    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+    auto parkName = park.Name.c_str();
 
     // Default arguments
     set_format_arg(0, uint32_t, ShopItems[item].Image);
     set_format_arg(4, rct_string_id, ShopItems[item].Naming.Display);
-    set_format_arg(6, rct_string_id, gParkName);
-    set_format_arg(8, uint32_t, gParkNameArgs);
+    set_format_arg(6, rct_string_id, STR_STRING);
+    set_format_arg(8, const char*, parkName);
 
     // Special overrides
+    Ride* ride{};
     switch (item)
     {
         case SHOP_ITEM_BALLOON:
@@ -1958,8 +1950,8 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             break;
         case SHOP_ITEM_PHOTO:
             ride = get_ride(peep->photo1_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            if (ride != nullptr)
+                ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_UMBRELLA:
             set_format_arg(0, uint32_t, SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour) | ShopItems[item].Image);
@@ -1969,19 +1961,21 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
-                    set_format_arg(8, rct_string_id, gParkName);
-                    set_format_arg(10, uint32_t, gParkNameArgs);
+                    set_format_arg(8, rct_string_id, STR_STRING);
+                    set_format_arg(10, const char*, parkName);
                     break;
                 case VOUCHER_TYPE_RIDE_FREE:
                     ride = get_ride(peep->voucher_arguments);
-                    set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-                    set_format_arg(8, rct_string_id, ride->name);
-                    set_format_arg(10, uint32_t, ride->name_arguments);
+                    if (ride != nullptr)
+                    {
+                        set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
+                        ride->FormatNameTo(gCommonFormatArgs + 8);
+                    }
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
-                    set_format_arg(8, rct_string_id, gParkName);
-                    set_format_arg(10, uint32_t, gParkNameArgs);
+                    set_format_arg(8, rct_string_id, STR_STRING);
+                    set_format_arg(10, const char*, parkName);
                     break;
                 case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
                     set_format_arg(6, rct_string_id, STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
@@ -1997,18 +1991,18 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
             break;
         case SHOP_ITEM_PHOTO2:
             ride = get_ride(peep->photo2_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            if (ride != nullptr)
+                ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_PHOTO3:
             ride = get_ride(peep->photo3_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            if (ride != nullptr)
+                ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
         case SHOP_ITEM_PHOTO4:
             ride = get_ride(peep->photo4_ride_ref);
-            set_format_arg(6, rct_string_id, ride->name);
-            set_format_arg(8, uint32_t, ride->name_arguments);
+            if (ride != nullptr)
+                ride->FormatNameTo(gCommonFormatArgs + 6);
             break;
     }
 
@@ -2070,7 +2064,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
 void window_guest_debug_update(rct_window* w)
 {
     w->frame_no++;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
