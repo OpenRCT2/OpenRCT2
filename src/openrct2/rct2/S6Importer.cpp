@@ -535,7 +535,7 @@ public:
             if (src->exits[i].xy == RCT_XY8_UNDEFINED)
                 ride_clear_exit_location(dst, i);
             else
-                ride_set_exit_location(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
+                ride_set_exit_location(dst, i, { src->exits[i].x, src->exits[i].y, src->station_heights[i], 0 });
 
             dst->stations[i].LastPeepInQueue = src->last_peep_in_queue[i];
 
