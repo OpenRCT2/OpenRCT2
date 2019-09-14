@@ -24,6 +24,7 @@
 - Fix: [#9970] Wait for quarter load fails.
 - Fix: [#10017] Ghost elements influencing ride excitement.
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
+- Improved: [#9987] Minimum load rounding.
 
 0.2.3 (2019-07-10)
 ------------------------------------------------------------------------

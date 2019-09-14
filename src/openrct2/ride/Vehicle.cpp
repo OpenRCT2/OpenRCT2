@@ -2363,60 +2363,24 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
                 return;
             }
 
+            // any load: load=4 , full: load=3 , 3/4s: load=2 , half: load=1 , quarter: load=0
             uint8_t load = ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK;
-            if (load == 3)
-            {
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
-                return;
-            }
 
-            uint8_t three_quater_seats = (3 * num_seats_on_train) / 4;
-            if (three_quater_seats != 0 && num_peeps_on_train >= three_quater_seats)
-            {
+            // We want to wait for ceiling((load+1)/4 * num_seats_on_train) peeps, the +3 below is used instead of
+            // ceil() to prevent issues on different cpus/platforms with floats. Note that vanilla RCT1/2 rounded
+            // down here; our change reflects the expected behaviour for waiting for a minimum load target (see #9987)
+            uint8_t peepTarget = ((load + 1) * num_seats_on_train + 3) / 4;
+
+            if (load == 4) // take care of "any load" special case
+                peepTarget = 1;
+
+            if (num_peeps_on_train >= peepTarget)
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
-                return;
-            }
 
-            if (load == 2)
-            {
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
-                return;
-            }
-
-            if (num_seats_on_train / 2 != 0 && num_peeps_on_train >= num_seats_on_train / 2)
-            {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
-                return;
-            }
-
-            if (load == 1)
-            {
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
-                return;
-            }
-
-            if (num_seats_on_train / 4 != 0 && num_peeps_on_train >= num_seats_on_train / 4)
-            {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
-                return;
-            }
-
-            if (load == 0)
-            {
-                train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
-                return;
-            }
-
-            if (num_peeps_on_train != 0)
-            {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
-            }
             train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
             return;
         }
+
         vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
         train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
         return;
