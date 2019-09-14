@@ -1549,14 +1549,14 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 loc_69B119:
     if (!hasVoucher)
     {
-        if (price != 0)
+        if ((price != 0) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            if ((cash_in_pocket == 0) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+            if (cash_in_pocket == 0)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                 return false;
             }
-            if ((price > cash_in_pocket) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+            if (price > cash_in_pocket)
             {
                 InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
                 return false;
