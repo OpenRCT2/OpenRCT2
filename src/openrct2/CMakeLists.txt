@@ -136,6 +136,13 @@ if (NOT MINGW AND NOT MSVC)
     target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${ICU_INCLUDE_DIRS})
         
     if (STATIC)
+        # Assume libicu static libraries are in the same place as the dynamic ones
+        string(REPLACE ".so" ".a" ICU_STATIC_LIBRARIES ${ICU_LIBRARIES})
+        # Also need libicudata when linking statically
+        set(ICU_DATA_STATIC_LIBRARIES "${ICU_STATIC_LIBRARIES}")
+        string(REPLACE "libicuuc" "libicudata" ICU_DATA_STATIC_LIBRARIES ${ICU_DATA_STATIC_LIBRARIES})
+        list(APPEND ICU_STATIC_LIBRARIES "${ICU_DATA_STATIC_LIBRARIES}")
+
         target_link_libraries(${PROJECT_NAME} ${ICU_STATIC_LIBRARIES})
     else ()
         target_link_libraries(${PROJECT_NAME} ${ICU_LIBRARIES})
