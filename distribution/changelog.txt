@@ -4,6 +4,7 @@
 - Feature: [#9918] Increase image list capacity by about 100k units.
 - Change: [#1349] Increase the number of ride music played simultaneously from 2 to 32.
 - Fix: [#4927] Giant screenshot cut off at bottom and top.
+- Fix: [#7572] Queue paths connect to regular paths through fences.
 - Fix: [#7690] Problem with guests freezing on certain tiles of path.
 - Fix: [#7883] Headless server log is stored incorrectly if server name contains CJK in Ubuntu
 - Fix: [#8136] Excessive lateral G penalty is too excessive.

@@ -450,7 +450,11 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
 }
 
 /**
- *
+ * Returns true if the edge of tile x, y specified by direction is occupied by a fence
+ * between heights z0 and z1.
+ * 
+ * Note that there may still be a fence on the opposing tile.
+ *  
  *  rct2: 0x006E59DC
  */
 bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
@@ -688,16 +692,27 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
     return nullptr;
 }
 
-static bool sub_footpath_disconnect_queue_from_path(
+/**
+ * Attempt to connect a newly disconnected queue tile to the specified path tile
+ */
+static bool footpath_reconnect_queue_to_path(
     int32_t x, int32_t y, TileElement* tileElement, int32_t action, int32_t direction)
 {
     if (((tileElement->AsPath()->GetEdges() & (1 << direction)) == 0) ^ (action < 0))
         return false;
-    if ((action < 0) && fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction))
-        return false;
 
     int32_t x1 = x + CoordsDirectionDelta[direction].x;
     int32_t y1 = y + CoordsDirectionDelta[direction].y;
+
+    if (action < 0)
+    {
+        if (fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction))
+            return false;
+
+        if (fence_in_the_way(x1, y1, tileElement->base_height, tileElement->clearance_height, direction_reverse(direction)))
+            return false;
+    }
+
     int32_t z = tileElement->base_height;
     TileElement* otherTileElement = footpath_get_element(x1, y1, z - 2, z, direction);
     if (otherTileElement != nullptr && !otherTileElement->AsPath()->IsQueue())
@@ -737,7 +752,7 @@ static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, TileElemen
     if (action < 0)
     {
         uint8_t direction = tileElement->AsPath()->GetSlopeDirection();
-        if (sub_footpath_disconnect_queue_from_path(x, y, tileElement, action, direction))
+        if (footpath_reconnect_queue_to_path(x, y, tileElement, action, direction))
             return true;
     }
 
@@ -745,7 +760,7 @@ static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, TileElemen
     {
         if ((action < 0) && (direction == tileElement->AsPath()->GetSlopeDirection()))
             continue;
-        if (sub_footpath_disconnect_queue_from_path(x, y, tileElement, action, direction))
+        if (footpath_reconnect_queue_to_path(x, y, tileElement, action, direction))
             return true;
     }
 
