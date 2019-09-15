@@ -10,11 +10,12 @@
 - Fix: [#9179] Crash when modifying a ride occasionally.
 - Fix: [#9533] Door sounds not playing.
 - Fix: [#9574] Text overflow in scenario objective window when using CJK languages.
+- Fix: [#9603] Don't render audio when master volume is turned off.
 - Fix: [#9625] Show correct cost in scenery selection.
 - Fix: [#9669] The tile inspector shortcut key does not work with debugging tools disabled.
+- Fix: [#9675] Guest entry point limit can be bypassed in scenario editor.
 - Fix: [#9717] Scroll bars do not render correctly when using OpenGL renderer.
 - Fix: [#9729] Peeps do not take into account height difference when deciding to pathfind to a ride entrance (original bug).
-- Fix: [#9603] Don't render audio when master volume is turned off.
 - Fix: [#9926] Africa - Oasis park has wrong peep spawn (original bug).
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
 

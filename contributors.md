@@ -133,6 +133,7 @@ The following people are not part of the development team, but have been contrib
 * (aw20368)
 * Jim Armstrong (41northstudios)
 * Kenny Castro-Monroy (kennycastro007)
+* Joseph Atkins-Turkish (Spacerat)
 
 ## Toolchain
 * (Balletie) - macOS

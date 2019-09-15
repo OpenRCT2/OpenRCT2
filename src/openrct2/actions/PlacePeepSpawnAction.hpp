@@ -19,8 +19,6 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-static int32_t _nextPeepSpawnIndex = 0;
-
 DEFINE_GAME_ACTION(PlacePeepSpawnAction, GAME_COMMAND_PLACE_PEEP_SPAWN, GameActionResult)
 {
 private:
@@ -100,17 +98,14 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
         res->Position = CoordsXYZ{ _location.x, _location.y, _location.z / 8 };
 
-        // If we have reached our max peep spawns, use peep spawn next to last one set.
-        if (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
+        // If we have reached our max peep spawns, remove the oldest spawns
+        while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
         {
-            auto peepSpawnIndex = _nextPeepSpawnIndex;
-            _nextPeepSpawnIndex = (peepSpawnIndex + 1) % (int32_t)gPeepSpawns.size();
-
-            // Before the new location is set, clear the old location
-            int32_t prevX = gPeepSpawns[peepSpawnIndex].x;
-            gPeepSpawns[peepSpawnIndex].x = PEEP_SPAWN_UNDEFINED;
-
-            map_invalidate_tile_full(prevX, gPeepSpawns[peepSpawnIndex].y);
+            auto oldestSpawn = gPeepSpawns.begin();
+            auto oldX = oldestSpawn->x;
+            auto oldY = oldestSpawn->y;
+            gPeepSpawns.erase(oldestSpawn);
+            map_invalidate_tile_full(oldX, oldY);
         }
 
         // Shift the spawn point to the middle of the tile
