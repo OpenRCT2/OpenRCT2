@@ -452,9 +452,9 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
 /**
  * Returns true if the edge of tile x, y specified by direction is occupied by a fence
  * between heights z0 and z1.
- * 
+ *
  * Note that there may still be a fence on the opposing tile.
- *  
+ *
  *  rct2: 0x006E59DC
  */
 bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
@@ -695,8 +695,7 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
 /**
  * Attempt to connect a newly disconnected queue tile to the specified path tile
  */
-static bool footpath_reconnect_queue_to_path(
-    int32_t x, int32_t y, TileElement* tileElement, int32_t action, int32_t direction)
+static bool footpath_reconnect_queue_to_path(int32_t x, int32_t y, TileElement* tileElement, int32_t action, int32_t direction)
 {
     if (((tileElement->AsPath()->GetEdges() & (1 << direction)) == 0) ^ (action < 0))
         return false;
