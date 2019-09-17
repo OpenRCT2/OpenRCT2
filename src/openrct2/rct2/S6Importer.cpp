@@ -39,6 +39,7 @@
 #include "../ride/RideRatings.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
+#include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../util/SawyerCoding.h"
@@ -1050,13 +1051,23 @@ public:
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(src2->GetRideIndex());
                 dst2->SetColourScheme(src2->GetColourScheme());
-                dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(src2->HasCableLift());
                 dst2->SetInverted(src2->IsInverted());
-                dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
-                dst2->SetHasGreenLight(src2->HasGreenLight());
-                dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                if (track_element_is_station(dst))
+                {
+                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetHasGreenLight(src2->HasGreenLight());
+                }
+                if (track_element_has_speed_setting(dst2->GetTrackType()))
+                {
+                    dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                }
+                if (dst2->GetTrackType() == TRACK_ELEM_ON_RIDE_PHOTO)
+                {
+                    dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                }
+
                 // Skipping IsHighlighted()
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
                 if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)

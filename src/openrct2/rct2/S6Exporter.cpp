@@ -1416,8 +1416,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetSequenceIndex(src2->GetSequenceIndex());
             dst2->SetRideIndex(src2->GetRideIndex());
             dst2->SetColourScheme(src2->GetColourScheme());
-            if (dst2->GetTrackType() == TRACK_ELEM_END_STATION || dst2->GetTrackType() == TRACK_ELEM_BEGIN_STATION
-                || dst2->GetTrackType() == TRACK_ELEM_MIDDLE_STATION)
+            if (track_element_is_station(src))
             {
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
