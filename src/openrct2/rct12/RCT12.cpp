@@ -190,7 +190,11 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    {
+        return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    }
+    return 0;
 }
 
 bool RCT12TrackElement::HasChain() const
@@ -210,12 +214,20 @@ bool RCT12TrackElement::IsInverted() const
 
 uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 {
-    return (sequence >> 4) << 1;
+    if (track_element_has_speed_setting(GetTrackType()))
+    {
+        return (sequence >> 4) << 1;
+    }
+    return 0;
 }
 
 bool RCT12TrackElement::HasGreenLight() const
 {
-    return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    {
+        return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+    }
+    return false;
 }
 
 uint8_t RCT12TrackElement::GetSeatRotation() const
@@ -230,7 +242,11 @@ uint16_t RCT12TrackElement::GetMazeEntry() const
 
 uint8_t RCT12TrackElement::GetPhotoTimeout() const
 {
-    return sequence >> 4;
+    if (GetTrackType() == TRACK_ELEM_ON_RIDE_PHOTO)
+    {
+        return sequence >> 4;
+    }
+    return 0;
 }
 
 uint8_t RCT12TrackElement::GetDoorAState() const
@@ -691,8 +707,11 @@ void RCT12TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 
 void RCT12TrackElement::SetStationIndex(uint8_t newStationIndex)
 {
-    sequence &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
-    sequence |= (newStationIndex << 4);
+    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    {
+        sequence &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
+        sequence |= (newStationIndex << 4);
+    }
 }
 
 void RCT12TrackElement::SetRideIndex(uint8_t newRideIndex)
@@ -727,8 +746,11 @@ void RCT12TrackElement::SetInverted(bool inverted)
 
 void RCT12TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
-    sequence &= ~0b11110000;
-    sequence |= ((speed >> 1) << 4);
+    if (track_element_has_speed_setting(GetTrackType()))
+    {
+        sequence &= ~0b11110000;
+        sequence |= ((speed >> 1) << 4);
+    }
 }
 
 void RCT12TrackElement::SetBlockBrakeClosed(bool isClosed)
@@ -745,10 +767,13 @@ void RCT12TrackElement::SetBlockBrakeClosed(bool isClosed)
 
 void RCT12TrackElement::SetHasGreenLight(uint8_t greenLight)
 {
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    if (greenLight)
+    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
     {
-        sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+        sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+        if (greenLight)
+        {
+            sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+        }
     }
 }
 
@@ -777,8 +802,11 @@ void RCT12TrackElement::SetMazeEntry(uint16_t newMazeEntry)
 
 void RCT12TrackElement::SetPhotoTimeout(uint8_t value)
 {
-    sequence &= RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
-    sequence |= (value << 4);
+    if (GetTrackType() == TRACK_ELEM_ON_RIDE_PHOTO)
+    {
+        sequence &= RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
+        sequence |= (value << 4);
+    }
 }
 
 void RCT12SmallSceneryElement::SetEntryIndex(uint8_t newIndex)

@@ -1054,19 +1054,10 @@ public:
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(src2->HasCableLift());
                 dst2->SetInverted(src2->IsInverted());
-                if (track_element_is_station(dst))
-                {
-                    dst2->SetStationIndex(src2->GetStationIndex());
-                    dst2->SetHasGreenLight(src2->HasGreenLight());
-                }
-                if (track_element_has_speed_setting(dst2->GetTrackType()))
-                {
-                    dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
-                }
-                if (dst2->GetTrackType() == TRACK_ELEM_ON_RIDE_PHOTO)
-                {
-                    dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
-                }
+                dst2->SetStationIndex(src2->GetStationIndex());
+                dst2->SetHasGreenLight(src2->HasGreenLight());
+                dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
 
                 // Skipping IsHighlighted()
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
