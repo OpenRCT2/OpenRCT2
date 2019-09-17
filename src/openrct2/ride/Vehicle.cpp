@@ -7459,6 +7459,7 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
     {
         return;
     }
+
     if ((vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL) && (tileElement->GetAnimationFrame() == '\0'))
     {
         tileElement->SetAnimationIsBackwards(false);
@@ -7466,6 +7467,7 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
+
     if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
     {
         tileElement->SetAnimationIsBackwards(false);
@@ -7546,6 +7548,7 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
+
     if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
     {
         tileElement->SetAnimationIsBackwards(true);
