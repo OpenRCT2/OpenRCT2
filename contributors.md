@@ -134,6 +134,7 @@ The following people are not part of the development team, but have been contrib
 * Jim Armstrong (41northstudios)
 * Kenny Castro-Monroy (kennycastro007)
 * Joseph Atkins-Turkish (Spacerat)
+* Tulio Paschoalin Leao (tupaschoal)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -175,7 +176,7 @@ The following people are not part of the development team, but have been contrib
 * Korean - (telk5093), (NeverDruid); small fixes: (kexplo)
 * Norwegian - Hugo Wallenburg (Goddesen)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
-* Portuguese (BR) - (kaudy), (renansimoes)
+* Portuguese (BR) - (kaudy), (renansimoes), Tulio Paschoalin Leao (tupaschoal)
 * Russian - (Soosisya)
 * Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
