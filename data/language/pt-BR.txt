@@ -4460,7 +4460,7 @@ STR_DTLS    :Uma barreira foi construída oferecendo energia hidroelétrica bara
 <Antarctic - Ecological Salvage>
 STR_SCNR    :Antártica - Resgate Ecológico
 STR_PARK    :Aventuras Geladas
-STR_DTLS    :A agência de ambiente voltou-se para você para transformar uma grande velha refinaria ecológica de petróleo em uma atração turística de alto nível. Terreno é barato, mas o juros do empréstimo é alto. Você pode vender os prédios velhos para melhorar a situação.
+STR_DTLS    :Ajude a agência de ambiente a transformar uma grande e velha refinaria ecológica de petróleo em atração turística de alto nível. Terrenos baratos, mas juros do empréstimo não. Pode-se vender os prédios velhos para melhorar a situação.
 
 <Asia - Great Wall of China Tourism Enhancement>
 STR_SCNR    :Ásia - Melhorias Turísticas na Grande Muralha da China
@@ -4505,7 +4505,7 @@ STR_DTLS    :As pessoas do Havaí estão entediadas de surfar e estão procurand
 <North America - Grand Canyon>
 STR_SCNR    :América do Norte - Grand Canyon
 STR_PARK    :Calamidades do Canyon
-STR_DTLS    :Você tem que construir um parque num terreno limitado nos dois lados desse tesouro natural - você tem a oportunidade de comprar terrenos vizinhos dos Índios Nativos Americanos. Você precisa completar o objetivo para suprir a população da cidade local.
+STR_DTLS    :Você tem que construir um parque num terreno limitado nos dois lados desse tesouro natural - tenha a oportunidade de comprar terrenos vizinhos dos Índios Nativos Americanos. Você precisa completar o objetivo para suprir a população da cidade local.
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :América do Norte - Paraíso da Montanha-Russa
@@ -4553,7 +4553,8 @@ STR_DTLS    :Mostre sua inventiva, utópica visão do futuro - mostre um projeto
 <Mythological - Animatronic Film Set>
 STR_SCNR    :Mitológico - Set de Filmagem Animatrônico
 STR_PARK    :Travessuras Animatrônicas
-STR_DTLS    :Você recebeu uma tarefa de gerir e melhorar um parque temático existente, que foi construído num velho set de filme. Construa um tributo para os animadores pioneiros de stop-motion que foram os primeiros a trazer criaturas míticas à vida na tela prateada.
+STR_DTLS    :Você foi designado para gerir e melhorar um parque temático existente, que foi construído num velho set de filme. Faça um tributo aos animadores pioneiros de stop-motion, os primeiros a trazer criaturas míticas à vida na tela prateada.
+
 
 <Mythological - Cradle of Civilisation>
 STR_SCNR    :Mitológico - Berço da Civilização
@@ -4573,7 +4574,7 @@ STR_DTLS    :Você recebeu a tarefa de construir um parque temático da Era Jur�
 <Prehistoric - Stone Age>
 STR_SCNR    :Pré-Histórico - Idade da Pedra
 STR_PARK    :Passeio Rochoso
-STR_DTLS    :Para frustrar os desenvolvedores da rodovia e preservar os misteriosos círculos de pedra antigos, você precisará construir um parque temático da Idade da Pedra e obter lucro. No entanto, atrair visitantes pode representar um desafio, já que o terreno é um pouco inóspito.
+STR_DTLS    :Frustre os construtores da rodovia e preserve os misteriosos círculos de pedra antigos ao construir um parque temático da Idade da Pedra e lucrar. No entanto, atrair visitantes pode ser desafiador, já que o terreno é um pouco inóspito.
 
 <Roaring Twenties - Prison Island>
 STR_SCNR    :Anos 20 - Ilha-Prisão
