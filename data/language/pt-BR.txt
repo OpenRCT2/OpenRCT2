@@ -4555,7 +4555,6 @@ STR_SCNR    :Mitológico - Set de Filmagem Animatrônico
 STR_PARK    :Travessuras Animatrônicas
 STR_DTLS    :Você foi designado para gerir e melhorar um parque temático existente, que foi construído num velho set de filme. Faça um tributo aos animadores pioneiros de stop-motion, os primeiros a trazer criaturas míticas à vida na tela prateada.
 
-
 <Mythological - Cradle of Civilisation>
 STR_SCNR    :Mitológico - Berço da Civilização
 STR_PARK    :Loucura Mitológica
