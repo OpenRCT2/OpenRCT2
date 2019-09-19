@@ -2121,17 +2121,17 @@ private:
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(src2->GetRideIndex());
                 dst2->SetColourScheme(src2->GetColourScheme());
-                dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(false);
                 dst2->SetInverted(src2->IsInverted());
-                dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
-                dst2->SetHasGreenLight(src2->HasGreenLight());
-                dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 dst2->SetDoorAState(src2->GetDoorAState());
                 dst2->SetDoorBState(src2->GetDoorBState());
-                auto ride = get_ride(dst2->GetRideIndex());
-                if (ride && ride->type == RIDE_TYPE_MAZE)
+                dst2->SetStationIndex(src2->GetStationIndex());
+                dst2->SetHasGreenLight(src2->HasGreenLight());
+                dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+
+                if (_s4.rides[src2->GetRideIndex()].type == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
