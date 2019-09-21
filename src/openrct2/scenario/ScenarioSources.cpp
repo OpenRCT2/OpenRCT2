@@ -416,18 +416,3 @@ namespace ScenarioSources
         }
     }
 } // namespace ScenarioSources
-
-bool scenario_get_source_desc(const utf8* name, source_desc* outDesc)
-{
-    return ScenarioSources::TryGetByName(name, outDesc);
-}
-
-bool scenario_get_source_desc_by_id(uint8_t id, source_desc* outDesc)
-{
-    return ScenarioSources::TryGetById(id, outDesc);
-}
-
-void scenario_normalise_name(utf8* buffer, size_t bufferSize, utf8* name)
-{
-    ScenarioSources::NormaliseName(buffer, bufferSize, name);
-}

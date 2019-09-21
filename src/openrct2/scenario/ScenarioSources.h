@@ -27,10 +27,6 @@ namespace ScenarioSources
     void NormaliseName(utf8* buffer, size_t bufferSize, const utf8* name);
 } // namespace ScenarioSources
 
-bool scenario_get_source_desc(const utf8* name, source_desc* outDesc);
-bool scenario_get_source_desc_by_id(uint8_t id, source_desc* outDesc);
-void scenario_normalise_name(utf8* buffer, size_t bufferSize, utf8* name);
-
 // RCT1 scenario index map
 enum
 {

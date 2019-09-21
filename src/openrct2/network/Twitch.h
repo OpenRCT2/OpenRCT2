@@ -14,6 +14,9 @@
 
 extern bool gTwitchEnable;
 
-void twitch_update();
+namespace Twitch
+{
+    void Update();
+}
 
 #endif

@@ -1652,7 +1652,7 @@
 		F76C840D1EC4E7CC00FA49E2 /* Socket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
 		F76C840E1EC4E7CC00FA49E2 /* Socket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
 		F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Twitch.cpp; sourceTree = "<group>"; };
-		F76C84101EC4E7CC00FA49E2 /* twitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = twitch.h; sourceTree = "<group>"; };
+		F76C84101EC4E7CC00FA49E2 /* Twitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Twitch.h; sourceTree = "<group>"; };
 		F76C84121EC4E7CC00FA49E2 /* BannerObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BannerObject.cpp; sourceTree = "<group>"; };
 		F76C84131EC4E7CC00FA49E2 /* BannerObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BannerObject.h; sourceTree = "<group>"; };
 		F76C84141EC4E7CC00FA49E2 /* EntranceObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EntranceObject.cpp; sourceTree = "<group>"; };
@@ -2832,7 +2832,7 @@
 				F76C840D1EC4E7CC00FA49E2 /* Socket.cpp */,
 				F76C840E1EC4E7CC00FA49E2 /* Socket.h */,
 				F76C840F1EC4E7CC00FA49E2 /* Twitch.cpp */,
-				F76C84101EC4E7CC00FA49E2 /* twitch.h */,
+				F76C84101EC4E7CC00FA49E2 /* Twitch.h */,
 			);
 			path = network;
 			sourceTree = "<group>";
