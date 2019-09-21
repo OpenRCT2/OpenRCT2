@@ -16,7 +16,7 @@ namespace Twitch
     void Update()
     {
     }
-}
+} // namespace Twitch
 
 #else
 
