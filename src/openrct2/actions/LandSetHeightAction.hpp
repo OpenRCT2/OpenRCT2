@@ -339,7 +339,7 @@ private:
     money32 GetSurfaceHeightChangeCost(SurfaceElement * surfaceElement) const
     {
         money32 cost{ 0 };
-        for (int32_t i = 0; i < 4; i += 1)
+        for (Direction i : ALL_DIRECTIONS)
         {
             int32_t cornerHeight = tile_element_get_corner_height(surfaceElement, i);
             cornerHeight -= map_get_corner_height(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);

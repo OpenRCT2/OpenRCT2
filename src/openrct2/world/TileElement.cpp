@@ -28,18 +28,18 @@ void TileElementBase::SetType(uint8_t newType)
     this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
 }
 
-uint8_t TileElementBase::GetDirection() const
+Direction TileElementBase::GetDirection() const
 {
     return this->type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-void TileElementBase::SetDirection(uint8_t direction)
+void TileElementBase::SetDirection(Direction direction)
 {
     this->type &= ~TILE_ELEMENT_DIRECTION_MASK;
     this->type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
 }
 
-uint8_t TileElementBase::GetDirectionWithOffset(uint8_t offset) const
+Direction TileElementBase::GetDirectionWithOffset(uint8_t offset) const
 {
     return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }

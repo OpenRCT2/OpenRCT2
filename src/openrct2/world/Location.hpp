@@ -267,6 +267,14 @@ struct TileCoordsXYZ
  */
 typedef uint8_t Direction;
 
+const Direction INVALID_DIRECTION = 0xFF;
+
+/**
+ * Array of all valid cardinal directions, to make it easy to write range-based for loops like:
+ *   for (Direction d : ALL_DIRECTIONS)
+ */
+constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
+
 /**
  * Given a direction, return the direction that points the other way,
  * on the same axis.
@@ -279,6 +287,24 @@ typedef uint8_t Direction;
 [[maybe_unused]] static constexpr bool direction_valid(Direction dir)
 {
     return dir < 4;
+}
+
+/**
+ * Given a direction, return the next cardinal direction, wrapping around if necessary.
+ * (TODO: Figure out if this is CW or CCW)
+ */
+[[maybe_unused]] static constexpr Direction direction_next(Direction dir)
+{
+    return (dir + 1) & 0x03;
+}
+
+/**
+ * Given a direction, return the previous cardinal direction, wrapping around if necessary.
+ * (TODO: Figure out if this is CW or CCW)
+ */
+[[maybe_unused]] static constexpr Direction direction_prev(Direction dir)
+{
+    return (dir - 1) & 0x03;
 }
 
 struct CoordsXYZD : public CoordsXYZ

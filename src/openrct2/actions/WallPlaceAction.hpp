@@ -54,7 +54,7 @@ DEFINE_GAME_ACTION(WallPlaceAction, GAME_COMMAND_PLACE_WALL, WallPlaceActionResu
 private:
     int32_t _wallType{ -1 };
     CoordsXYZ _loc;
-    uint8_t _edge{ std::numeric_limits<uint8_t>::max() };
+    Direction _edge{ INVALID_DIRECTION };
     int32_t _primaryColour;
     int32_t _secondaryColour;
     int32_t _tertiaryColour;
@@ -557,7 +557,7 @@ private:
             {
                 if (!(TrackCoordinates[trackType].rotation_begin & 4))
                 {
-                    direction = trackElement->GetDirectionWithOffset(2);
+                    direction = direction_reverse(trackElement->GetDirection());
                     if (direction == _edge)
                     {
                         const rct_preview_track* trackBlock = &TrackBlocks[trackType][sequence];

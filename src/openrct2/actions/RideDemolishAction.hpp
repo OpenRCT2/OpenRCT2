@@ -332,7 +332,7 @@ private:
                 { 16, 0 },
             };
 
-            for (uint8_t dir = 0; dir < 4; dir++)
+            for (Direction dir : ALL_DIRECTIONS)
             {
                 const LocationXY16& off = DirOffsets[dir];
                 money32 removePrice = MazeRemoveTrack(x + off.x, y + off.y, z, dir);

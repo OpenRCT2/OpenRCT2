@@ -755,7 +755,7 @@ static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, TileElemen
             return true;
     }
 
-    for (int32_t direction = 0; direction < 4; direction++)
+    for (Direction direction : ALL_DIRECTIONS)
     {
         if ((action < 0) && (direction == tileElement->AsPath()->GetSlopeDirection()))
             continue;
@@ -994,7 +994,7 @@ void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int3
     neighbour_list_init(&neighbourList);
 
     footpath_update_queue_entrance_banner(x, y, tileElement);
-    for (int32_t direction = 0; direction < 4; direction++)
+    for (Direction direction : ALL_DIRECTIONS)
     {
         loc_6A6C85(x, y, direction, tileElement, flags, true, &neighbourList);
     }
@@ -1212,7 +1212,7 @@ void footpath_update_queue_chains()
                     if (tileElement->AsEntrance()->GetRideIndex() != rideIndex)
                         continue;
 
-                    uint8_t direction = tileElement->GetDirectionWithOffset(2);
+                    Direction direction = direction_reverse(tileElement->GetDirection());
                     footpath_chain_ride_queue(rideIndex, i, location.x << 5, location.y << 5, tileElement, direction);
                 } while (!(tileElement++)->IsLastForTile());
             }
@@ -1425,15 +1425,15 @@ void PathElement::SetSloped(bool isSloped)
         entryIndex |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 }
 
-uint8_t PathElement::GetSlopeDirection() const
+Direction PathElement::GetSlopeDirection() const
 {
-    return entryIndex & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    return static_cast<Direction>(entryIndex & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
 }
 
-void PathElement::SetSlopeDirection(uint8_t newSlope)
+void PathElement::SetSlopeDirection(Direction newSlope)
 {
     entryIndex &= ~FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
-    entryIndex |= newSlope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    entryIndex |= static_cast<uint8_t>(newSlope) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
 }
 
 bool PathElement::IsQueue() const
@@ -1891,7 +1891,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, TileElement* ti
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
                 footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
-                footpath_chain_ride_queue(255, 0, x, y, tileElement, tileElement->GetDirectionWithOffset(2));
+                footpath_chain_ride_queue(255, 0, x, y, tileElement, direction_reverse(tileElement->GetDirection()));
             }
             break;
     }
