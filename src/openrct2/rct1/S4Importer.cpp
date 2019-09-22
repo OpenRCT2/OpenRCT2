@@ -2621,7 +2621,7 @@ private:
         if (scNumber != -1)
         {
             source_desc sourceDesc;
-            if (scenario_get_source_desc_by_id(scNumber, &sourceDesc))
+            if (ScenarioSources::TryGetById(scNumber, &sourceDesc))
             {
                 rct_string_id localisedStringIds[3];
                 if (language_get_localised_scenario_strings(sourceDesc.title, localisedStringIds))

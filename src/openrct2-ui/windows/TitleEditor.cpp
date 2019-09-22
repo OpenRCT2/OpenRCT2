@@ -1001,7 +1001,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 const char* name = "";
                 source_desc desc;
-                if (scenario_get_source_desc_by_id(command->SaveIndex, &desc))
+                if (ScenarioSources::TryGetById(command->SaveIndex, &desc))
                 {
                     name = desc.title;
                 }

@@ -49,8 +49,8 @@
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
+#include <openrct2/network/Twitch.h>
 #include <openrct2/network/network.h>
-#include <openrct2/network/twitch.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/scenario/Scenario.h>

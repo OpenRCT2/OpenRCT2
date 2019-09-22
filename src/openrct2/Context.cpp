@@ -46,8 +46,8 @@
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/Http.h"
+#include "network/Twitch.h"
 #include "network/network.h"
-#include "network/twitch.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
@@ -994,7 +994,7 @@ namespace OpenRCT2
             }
 #endif
 
-            twitch_update();
+            Twitch::Update();
             chat_update();
             _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Update();

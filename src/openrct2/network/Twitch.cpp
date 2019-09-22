@@ -9,11 +9,14 @@
 
 #ifdef DISABLE_TWITCH
 
-#    include "twitch.h"
+#    include "Twitch.h"
 
-void twitch_update()
+namespace Twitch
 {
-}
+    void Update()
+    {
+    }
+} // namespace Twitch
 
 #else
 
@@ -37,7 +40,7 @@ void twitch_update()
 #    include "../util/Util.h"
 #    include "../world/Sprite.h"
 #    include "Http.h"
-#    include "twitch.h"
+#    include "Twitch.h"
 
 #    include <jansson.h>
 #    include <memory>
@@ -132,7 +135,7 @@ namespace Twitch
         return true;
     }
 
-    static void Update()
+    void Update()
     {
         if (!_twitchIdle)
             return;
@@ -583,10 +586,5 @@ namespace Twitch
         }
     }
 } // namespace Twitch
-
-void twitch_update()
-{
-    Twitch::Update();
-}
 
 #endif
