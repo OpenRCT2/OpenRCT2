@@ -21,6 +21,7 @@
 - Fix: [#9902] Doors/Portcullis do not check to make sure doors are open causing double opens.
 - Fix: [#9926] Africa - Oasis park has wrong peep spawn (original bug).
 - Fix: [#9957] When using 'no money' cheat, guests complain of running out of cash.
+- Fix: [#9970] Wait for quarter load fails.
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
 
 0.2.3 (2019-07-10)

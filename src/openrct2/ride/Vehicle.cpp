@@ -2406,7 +2406,6 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
 
             if (load == 0)
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
                 train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
                 return;
             }
