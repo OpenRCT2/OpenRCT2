@@ -1549,7 +1549,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 loc_69B119:
     if (!hasVoucher)
     {
-        if ((price != 0) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             if (cash_in_pocket == 0)
             {
@@ -2641,7 +2641,7 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
         && peep->voucher_arguments == peep->current_ride)
         return true;
 
-    if ((peep->cash_in_pocket <= 0) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (peep->cash_in_pocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         peep->InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
         peep_update_ride_at_entrance_try_leave(peep);
