@@ -230,6 +230,181 @@ struct rct_size16
     int16_t height;
 };
 
+enum class ImageCatalogue
+{
+    UNKNOWN,
+    G1,
+    G2,
+    CSG,
+    OBJECT,
+    TEMPORARY,
+};
+
+/**
+ * Represents a specific image from a catalogue such as G1, G2, CSG etc. with remap
+ * colours and flags.
+ *
+ * This is currently all stored as a single 32-bit integer, but will allow easy
+ * extension to 64-bits or higher so that more images can be used.
+ */
+struct ImageId
+{
+private:
+    // clang-format off
+    static constexpr uint32_t MASK_INDEX       = 0b00000000000001111111111111111111;
+    static constexpr uint32_t MASK_REMAP       = 0b00000111111110000000000000000000;
+    static constexpr uint32_t MASK_PRIMARY     = 0b00000000111110000000000000000000;
+    static constexpr uint32_t MASK_SECONDARY   = 0b00011111000000000000000000000000;
+    static constexpr uint32_t FLAG_PRIMARY     = 0b00100000000000000000000000000000;
+    static constexpr uint32_t FLAG_BLEND       = 0b01000000000000000000000000000000;
+    static constexpr uint32_t FLAG_SECONDARY   = 0b10000000000000000000000000000000;
+    static constexpr uint32_t SHIFT_REMAP      = 19;
+    static constexpr uint32_t SHIFT_PRIMARY    = 19;
+    static constexpr uint32_t SHIFT_SECONDARY  = 24;
+    static constexpr uint32_t INDEX_UNDEFINED  = 0b00000000000001111111111111111111;
+    static constexpr uint32_t VALUE_UNDEFINED  = INDEX_UNDEFINED;
+    // clang-format on
+
+    uint32_t _value = VALUE_UNDEFINED;
+    uint8_t _tertiary = 0;
+
+public:
+    static ImageId FromUInt32(uint32_t value)
+    {
+        ImageId result;
+        result._value = value;
+        return result;
+    }
+
+    static ImageId FromUInt32(uint32_t value, uint32_t tertiary)
+    {
+        ImageId result;
+        result._value = value;
+        result._tertiary = tertiary & 0xFF;
+        return result;
+    }
+
+    ImageId() = default;
+
+    explicit constexpr ImageId(uint32_t index)
+        : _value(index & MASK_INDEX)
+    {
+    }
+
+    constexpr ImageId(uint32_t index, uint8_t primaryColourOrPalette)
+        : ImageId(ImageId(index).WithPrimary(primaryColourOrPalette))
+    {
+    }
+
+    constexpr ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour)
+        : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour))
+    {
+    }
+
+    constexpr ImageId(uint32_t index, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
+        : ImageId(ImageId(index).WithPrimary(primaryColour).WithSecondary(secondaryColour).WithTertiary(tertiaryColour))
+    {
+    }
+
+    uint32_t ToUInt32() const
+    {
+        return _value;
+    }
+
+    bool HasValue() const
+    {
+        return GetIndex() != INDEX_UNDEFINED;
+    }
+
+    bool HasPrimary() const
+    {
+        return (_value & FLAG_PRIMARY) || (_value & FLAG_SECONDARY);
+    }
+
+    bool HasSecondary() const
+    {
+        return _value & FLAG_SECONDARY;
+    }
+
+    bool HasTertiary() const
+    {
+        return !(_value & FLAG_PRIMARY) && (_value & FLAG_SECONDARY);
+    }
+
+    bool IsRemap() const
+    {
+        return (_value & FLAG_PRIMARY) && !(_value & FLAG_SECONDARY);
+    }
+
+    bool IsBlended() const
+    {
+        return _value & FLAG_BLEND;
+    }
+
+    uint32_t GetIndex() const
+    {
+        return _value & MASK_INDEX;
+    }
+
+    uint8_t GetRemap() const
+    {
+        return (_value & MASK_REMAP) >> SHIFT_REMAP;
+    }
+
+    colour_t GetPrimary() const
+    {
+        return (_value & MASK_PRIMARY) >> SHIFT_PRIMARY;
+    }
+
+    colour_t GetSecondary() const
+    {
+        return (_value & MASK_SECONDARY) >> SHIFT_SECONDARY;
+    }
+
+    colour_t GetTertiary() const
+    {
+        return _tertiary;
+    }
+
+    ImageCatalogue GetCatalogue() const;
+
+    constexpr ImageId WithIndex(uint32_t index)
+    {
+        ImageId result = *this;
+        result._value = (_value & ~MASK_INDEX) | (index & MASK_INDEX);
+        return result;
+    }
+
+    constexpr ImageId WithPrimary(colour_t colour)
+    {
+        ImageId result = *this;
+        result._value = (_value & ~MASK_PRIMARY) | ((colour << SHIFT_PRIMARY) & MASK_PRIMARY) | FLAG_PRIMARY;
+        return result;
+    }
+
+    constexpr ImageId WithSecondary(colour_t colour)
+    {
+        ImageId result = *this;
+        result._value = (_value & ~MASK_SECONDARY) | ((colour << SHIFT_SECONDARY) & MASK_SECONDARY) | FLAG_SECONDARY;
+        return result;
+    }
+
+    constexpr ImageId WithTertiary(colour_t tertiary)
+    {
+        ImageId result = *this;
+        result._value &= ~FLAG_PRIMARY;
+        if (!(_value & FLAG_SECONDARY))
+        {
+            // Tertiary implies primary and secondary, so if colour was remap (8-bit primary) then
+            // we need to zero the secondary colour.
+            result._value &= ~MASK_SECONDARY;
+            result._value |= FLAG_SECONDARY;
+        }
+        result._tertiary = tertiary;
+        return result;
+    }
+};
+
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
 #define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId)                                                                     \
     (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | (((primaryId) << 19) | ((secondaryId) << 24)))
@@ -304,6 +479,7 @@ bool gfx_load_csg();
 void gfx_unload_g1();
 void gfx_unload_g2();
 void gfx_unload_csg();
+const rct_g1_element* gfx_get_g1_element(ImageId imageId);
 const rct_g1_element* gfx_get_g1_element(int32_t image_id);
 void gfx_set_g1_element(int32_t imageId, const rct_g1_element* g1);
 bool is_csg_loaded();
@@ -314,21 +490,20 @@ size_t ImageListGetUsedCount();
 size_t ImageListGetMaximum();
 void FASTCALL gfx_bmp_sprite_to_buffer(
     const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
-    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, int32_t image_type);
+    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, ImageId imageId);
 void FASTCALL gfx_rle_sprite_to_buffer(
     const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
-    const rct_drawpixelinfo* RESTRICT dpi, int32_t image_type, int32_t source_y_start, int32_t height, int32_t source_x_start,
+    const rct_drawpixelinfo* RESTRICT dpi, ImageId imageId, int32_t source_y_start, int32_t height, int32_t source_x_start,
     int32_t width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint32_t tertiary_colour);
 void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint8_t* palette);
 void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);
 void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint8_t colour);
 
-void FASTCALL
-    gfx_draw_sprite_software(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint32_t tertiary_colour);
-uint8_t* FASTCALL gfx_draw_sprite_get_palette(int32_t image_id, uint32_t tertiary_colour);
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y);
+uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId);
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint8_t* palette_pointer, uint8_t* unknown_pointer);
+    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, uint8_t* palette_pointer, uint8_t* unknown_pointer);
 void FASTCALL
     gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);
 

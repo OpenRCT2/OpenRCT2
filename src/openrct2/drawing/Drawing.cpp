@@ -15,6 +15,7 @@
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
 #include "../platform/platform.h"
+#include "../sprites.h"
 #include "../util/Util.h"
 #include "../world/Water.h"
 
@@ -464,6 +465,32 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
     {PALETTE_TRANSLUCENT_LIGHT_PINK,        PALETTE_TRANSLUCENT_LIGHT_PINK_HIGHLIGHT,       PALETTE_TRANSLUCENT_LIGHT_PINK_SHADOW},
 };
 // clang-format on
+
+ImageCatalogue ImageId::GetCatalogue() const
+{
+    auto index = GetIndex();
+    if (index == SPR_TEMP)
+    {
+        return ImageCatalogue::TEMPORARY;
+    }
+    else if (index < SPR_RCTC_G1_END)
+    {
+        return ImageCatalogue::G1;
+    }
+    else if (index < SPR_G2_END)
+    {
+        return ImageCatalogue::G2;
+    }
+    else if (index < SPR_CSG_END)
+    {
+        return ImageCatalogue::CSG;
+    }
+    else if (index < SPR_IMAGE_LIST_END)
+    {
+        return ImageCatalogue::OBJECT;
+    }
+    return ImageCatalogue::UNKNOWN;
+}
 
 void (*mask_fn)(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
