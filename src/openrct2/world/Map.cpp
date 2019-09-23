@@ -605,6 +605,9 @@ bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
 {
     TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
 
+    if (tileElement == nullptr)
+        return false;
+
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1096,6 +1099,8 @@ void map_reorganise_elements()
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
             TileElement* startElement = map_get_first_element_at(x, y);
+            if (startElement == nullptr)
+                return;
             TileElement* endElement = startElement;
             while (!(endElement++)->IsLastForTile())
                 ;
@@ -1310,6 +1315,8 @@ bool map_can_construct_with_clear_at(
     }
 
     TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
+        return false;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
@@ -1728,6 +1735,8 @@ static void clear_elements_at(const CoordsXY& loc)
         gPeepSpawns.end());
 
     TileElement* tileElement = map_get_first_element_at(loc.x / 32, loc.y / 32);
+    if (tileElement == nullptr)
+        return;
 
     // Remove all elements except the last one
     while (!tileElement->IsLastForTile())
@@ -2142,6 +2151,8 @@ void map_clear_all_elements()
 TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -2164,6 +2175,8 @@ TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
 TileElement* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, int32_t trackType)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -2188,10 +2201,10 @@ TileElement* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, i
 TileElement* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t sequence)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
-        if (tileElement == nullptr)
-            break;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
         if (tileElement->base_height != z)
@@ -2264,6 +2277,8 @@ TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t 
 TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, int32_t z, int32_t trackType, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -2290,6 +2305,8 @@ TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, in
 TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -2316,6 +2333,8 @@ TileElement* map_get_track_element_at_with_direction_from_ride(
     int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -2346,6 +2365,8 @@ void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t o
 WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
