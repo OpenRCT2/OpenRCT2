@@ -209,6 +209,8 @@ static void ride_ratings_update_state_2()
     TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
+        if (tileElement->IsGhost())
+            continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
         if (tileElement->base_height != z)
@@ -313,6 +315,8 @@ static void ride_ratings_update_state_5()
     TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
+        if (tileElement->IsGhost())
+            continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
         if (tileElement->base_height != z)
@@ -417,6 +421,9 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
+        if (tileElement->IsGhost())
+            continue;
+
         switch (tileElement->GetType())
         {
             case TILE_ELEMENT_TYPE_SURFACE:
@@ -466,6 +473,9 @@ static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTi
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
+        if (tileElement->IsGhost())
+            continue;
+
         switch (tileElement->GetType())
         {
             case TILE_ELEMENT_TYPE_PATH:
@@ -537,6 +547,9 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
+        if (tileElement->IsGhost())
+            continue;
+
         int32_t waterHeight;
         switch (tileElement->GetType())
         {
