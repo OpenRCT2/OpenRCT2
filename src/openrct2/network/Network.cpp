@@ -91,7 +91,9 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include <string>
 #    include <vector>
 
-#    pragma comment(lib, "Ws2_32.lib")
+#    if defined(_WIN32)
+#        pragma comment(lib, "Ws2_32.lib")
+#    endif
 
 using namespace OpenRCT2;
 
