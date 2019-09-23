@@ -1830,6 +1830,8 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
         auto tile_element = map_get_first_element_at(x / 32, y / 32);
+        if (tile_element == nullptr)
+            return;
 
         bool cover_found = false;
         do
@@ -4635,6 +4637,8 @@ static void vehicle_update_boat_location(rct_vehicle* vehicle)
 static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
 {
     TileElement* tileElement = map_get_first_element_at(location.x, location.y);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->IsGhost())
