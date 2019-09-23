@@ -81,6 +81,8 @@ static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     ride_id_t resultRideIndex = RIDE_ID_NULL;
+    if (tileElement == nullptr)
+        return resultRideIndex;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
