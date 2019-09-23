@@ -959,6 +959,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     bool found = false;
                     do
                     {
+                        if (tileElement == nullptr)
+                            break;
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                             continue;
                         if (tileElement->base_height != next_z)
@@ -2948,7 +2950,8 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
         for (int16_t y = initial_y; y < final_y; y += 32)
         {
             TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
-
+            if (tileElement == nullptr)
+                continue;
             do
             {
                 Ride* ride;
@@ -4176,6 +4179,8 @@ void Guest::UpdateRideLeaveVehicle()
                     continue;
 
                 TileElement* inner_map = map_get_first_element_at(vehicle->track_x / 32, vehicle->track_y / 32);
+                if (inner_map == nullptr)
+                    continue;
                 for (;; inner_map++)
                 {
                     if (inner_map->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -4937,6 +4942,8 @@ void Guest::UpdateRideMazePathfinding()
     maze_type mazeType = maze_type::invalid;
 
     auto tileElement = map_get_first_element_at(targetLoc.x / 32, targetLoc.y / 32);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (stationHeight != tileElement->base_height)
@@ -5033,6 +5040,8 @@ void Guest::UpdateRideLeaveExit()
 
     // Find the station track element
     TileElement* tileElement = map_get_first_element_at(targetLoc.x / 32, targetLoc.y / 32);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -5452,6 +5461,8 @@ void Guest::UpdateWalking()
         return;
 
     TileElement* tileElement = map_get_first_element_at(next_x / 32, next_y / 32);
+    if (tileElement == nullptr)
+        return;
 
     for (;; tileElement++)
     {
@@ -5868,6 +5879,8 @@ void Guest::UpdateUsingBin()
             }
 
             TileElement* tileElement = map_get_first_element_at(next_x / 32, next_y / 32);
+            if (tileElement == nullptr)
+                return;
 
             for (;; tileElement++)
             {
@@ -6036,6 +6049,8 @@ bool Guest::UpdateWalkingFindBench()
         return false;
 
     TileElement* tileElement = map_get_first_element_at(next_x / 32, next_y / 32);
+    if (tileElement == nullptr)
+        return false;
 
     for (;; tileElement++)
     {
@@ -6131,6 +6146,8 @@ bool Guest::UpdateWalkingFindBin()
         return false;
 
     TileElement* tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    if (tileElement == nullptr)
+        return false;
 
     for (;; tileElement++)
     {
@@ -6232,6 +6249,8 @@ static void peep_update_walking_break_scenery(Peep* peep)
         return;
 
     TileElement* tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    if (tileElement == nullptr)
+        return;
 
     for (;; tileElement++)
     {
@@ -6875,6 +6894,8 @@ void Guest::UpdateSpriteType()
             TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
             while (true)
             {
+                if (tileElement == nullptr)
+                    break;
                 if ((z / 8) < tileElement->base_height)
                     break;
 
