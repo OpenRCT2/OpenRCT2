@@ -239,6 +239,8 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
     nextTileElement = map_get_first_element_at(loc.x, loc.y);
     do
     {
+        if (nextTileElement == nullptr)
+            break;
         if (nextTileElement->IsGhost())
             continue;
         if (nextTileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1209,6 +1211,8 @@ Direction peep_pathfind_choose_direction(TileCoordsXYZ loc, Peep* peep)
     bool isThin = false;
     do
     {
+        if (dest_tile_element == nullptr)
+            break;
         if (dest_tile_element->base_height != loc.z)
             continue;
         if (dest_tile_element->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1767,6 +1771,8 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         nextTile += TileDirectionDelta[direction];
 
         tileElement = map_get_first_element_at(nextTile.x, nextTile.y);
+        if (tileElement == nullptr)
+            break;
         found = false;
         do
         {
