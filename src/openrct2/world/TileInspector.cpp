@@ -355,6 +355,8 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(CoordsXY loc, bool isExecu
     if (isExecuting)
     {
         const TileElement* const firstElement = map_get_first_element_at(loc.x / 32, loc.y / 32);
+        if (firstElement == nullptr)
+            return {};
 
         // Count elements on tile
         int32_t numElement = 0;
@@ -787,6 +789,8 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(
 
             bool found = false;
             TileElement* tileElement = map_get_first_element_at(elem.x >> 5, elem.y >> 5);
+            if (tileElement == nullptr)
+                return {};
             do
             {
                 if (tileElement->base_height != elemZ / 8)
@@ -891,6 +895,8 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
 
             bool found = false;
             TileElement* tileElement = map_get_first_element_at(elem.x >> 5, elem.y >> 5);
+            if (tileElement == nullptr)
+                return {};
             do
             {
                 if (tileElement->base_height != elemZ / 8)
