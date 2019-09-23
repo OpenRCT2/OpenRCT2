@@ -114,10 +114,10 @@ static bool entrance_has_direction(TileElement* tileElement, int32_t direction)
 TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
 {
     TileElement* tileElement = map_get_first_element_at(x, y);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
-        if (tileElement == nullptr)
-            break;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z)
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
@@ -490,6 +490,8 @@ static TileElement* footpath_connect_corners_get_neighbour(int32_t x, int32_t y,
     }
 
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -662,6 +664,8 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
     int32_t slope;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -786,6 +790,8 @@ static void loc_6A6D7E(
     else
     {
         TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+        if (tileElement == nullptr)
+            return;
         do
         {
             switch (tileElement->GetType())
@@ -1294,6 +1300,8 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
         return FOOTPATH_SEARCH_SUCCESS;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1619,6 +1627,8 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
 static void footpath_clear_wide(int32_t x, int32_t y)
 {
     TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1636,6 +1646,8 @@ static void footpath_clear_wide(int32_t x, int32_t y)
 static TileElement* footpath_can_be_wide(int32_t x, int32_t y, uint8_t height)
 {
     TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1687,6 +1699,8 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
     // y -= 0x20;
 
     TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1925,6 +1939,8 @@ static void footpath_remove_edges_towards_here(
     y += CoordsDirectionDelta[direction].y;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1954,6 +1970,8 @@ static void footpath_remove_edges_towards(int32_t x, int32_t y, int32_t z0, int3
     }
 
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1991,6 +2009,8 @@ static void footpath_remove_edges_towards(int32_t x, int32_t y, int32_t z0, int3
 bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const TileElement* const elementToBeRemoved)
 {
     TileElement* tileElement = map_get_first_element_at(coords.x, coords.y);
+    if (tileElement == nullptr)
+        return false;
     do
     {
         // Don't check the element that gets removed
@@ -2080,6 +2100,8 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, TileElement* pathE
                 continue;
 
             TileElement* tileElement = map_get_first_element_at(x + xOffset, y + yOffset);
+            if (tileElement == nullptr)
+                return;
             do
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
