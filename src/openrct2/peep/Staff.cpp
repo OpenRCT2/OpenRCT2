@@ -268,6 +268,8 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
 
         /* Search through all adjacent map elements */
         TileElement* test_element = map_get_first_element_at(adjac_x / 32, adjac_y / 32);
+        if (test_element == nullptr)
+            return false;
         bool pathfound = false;
         bool widefound = false;
         do
@@ -474,7 +476,8 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
     int16_t nextZ = ((peep->z + 8) & 0xFFF0) / 8;
 
     TileElement* tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
-
+    if (tileElement == nullptr)
+        return nextDirection;
     do
     {
         if (tileElement->base_height != nextZ)
@@ -489,6 +492,8 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
     nextTile.y = (peep->y & 0xFFE0) + CoordsDirectionDelta[nextDirection].y;
 
     tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
+    if (tileElement == nullptr)
+        return nextDirection;
 
     do
     {
@@ -1250,6 +1255,8 @@ void Staff::UpdateWatering()
         int32_t actionY = next_y + CoordsDirectionDelta[var_37].y;
 
         TileElement* tile_element = map_get_first_element_at(actionX / 32, actionY / 32);
+        if (tile_element == nullptr)
+            return;
 
         do
         {
@@ -1315,6 +1322,8 @@ void Staff::UpdateEmptyingBin()
             return;
 
         TileElement* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+        if (tile_element == nullptr)
+            return;
 
         for (;; tile_element++)
         {
