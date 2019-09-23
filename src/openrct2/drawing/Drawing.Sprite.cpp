@@ -510,7 +510,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(
 
 uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
 {
-    if (imageId.IsRemap())
+    if (!imageId.HasSecondary())
     {
         uint8_t palette_ref = imageId.GetRemap();
         if (!imageId.IsBlended())
@@ -529,7 +529,7 @@ uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
             return g1->offset;
         }
     }
-    else if (imageId.HasSecondary())
+    else
     {
         uint8_t* palette_pointer = gPeepPalette;
 
@@ -561,10 +561,6 @@ uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
         }
 
         return palette_pointer;
-    }
-    else
-    {
-        return nullptr;
     }
 }
 
