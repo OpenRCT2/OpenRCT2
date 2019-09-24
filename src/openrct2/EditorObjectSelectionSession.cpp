@@ -530,20 +530,23 @@ int32_t editor_remove_unused_objects()
     int32_t numUnselectedObjects = 0;
     for (int32_t i = 0; i < numObjects; i++)
     {
-        if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_IN_USE)
-            && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
+        if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
         {
-            const ObjectRepositoryItem* item = &items[i];
-            uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
-
-            if (objectType >= OBJECT_TYPE_SCENERY_GROUP)
+            if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_IN_USE)
+                && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
             {
-                continue;
-            }
+                const ObjectRepositoryItem* item = &items[i];
+                uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
 
-            _numSelectedObjectsForType[objectType]--;
-            _objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_SELECTED;
-            numUnselectedObjects++;
+                if (objectType >= OBJECT_TYPE_SCENERY_GROUP)
+                {
+                    continue;
+                }
+
+                _numSelectedObjectsForType[objectType]--;
+                _objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_SELECTED;
+                numUnselectedObjects++;
+            }
         }
     }
     unload_unselected_objects();

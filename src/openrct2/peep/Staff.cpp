@@ -1714,6 +1714,8 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
     if (!tileElement->AsPath()->HasAddition())
         return 0;
     rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
+    if (sceneryEntry == nullptr)
+        return 0;
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
         return 0;
