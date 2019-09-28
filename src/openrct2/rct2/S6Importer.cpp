@@ -1056,8 +1056,14 @@ public:
                 dst2->SetInverted(src2->IsInverted());
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
-                dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
-                dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                if (track_element_has_speed_setting(dst2->GetTrackType()))
+                {
+                    dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                }
+                else
+                {
+                    dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                }
 
                 // Skipping IsHighlighted()
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;

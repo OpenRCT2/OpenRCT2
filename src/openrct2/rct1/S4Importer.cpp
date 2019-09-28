@@ -2128,8 +2128,14 @@ private:
                 dst2->SetDoorBState(src2->GetDoorBState());
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
-                dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
-                dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                if (track_element_has_speed_setting(dst2->GetTrackType()))
+                {
+                    dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                }
+                else
+                {
+                    dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                }
 
                 if (_s4.rides[src2->GetRideIndex()].type == RIDE_TYPE_MAZE)
                 {
