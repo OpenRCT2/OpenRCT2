@@ -2128,11 +2128,13 @@ private:
                 dst2->SetDoorBState(src2->GetDoorBState());
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
-                if (track_element_has_speed_setting(dst2->GetTrackType()))
+
+                auto trackType = dst2->GetTrackType();
+                if (track_element_has_speed_setting(trackType))
                 {
                     dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 }
-                else
+                else if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
                 {
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
