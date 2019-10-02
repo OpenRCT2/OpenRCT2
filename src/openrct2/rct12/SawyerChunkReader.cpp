@@ -68,6 +68,9 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
     try
     {
         auto header = _stream->ReadValue<sawyercoding_chunk_header>();
+        if (header.length >= MAX_UNCOMPRESSED_CHUNK_SIZE)
+            throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
+
         switch (header.encoding)
         {
             case CHUNK_ENCODING_NONE:
