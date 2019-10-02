@@ -227,7 +227,7 @@ void balloon_update(rct_balloon* balloon);
 ///////////////////////////////////////////////////////////////
 // Duck
 ///////////////////////////////////////////////////////////////
-void create_duck(int32_t targetX, int32_t targetY);
+void create_duck(const CoordsXY& pos);
 void duck_update(rct_duck* duck);
 void duck_press(rct_duck* duck);
 void duck_remove_all();

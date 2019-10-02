@@ -18,6 +18,7 @@
 #include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../core/Random.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -415,60 +416,69 @@ void scenario_update()
     }
     scenario_update_daynight_cycle();
 }
-
 /**
  *
  *  rct2: 0x006744A9
  */
 static int32_t scenario_create_ducks()
 {
-    int32_t i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
+    CoordsXY centrePos;
+    centrePos.x = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
+    centrePos.y = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
 
-    r = scenario_rand();
-    x = ((r >> 16) & 0xFFFF) & 0x7F;
-    y = (r & 0xFFFF) & 0x7F;
-    x = (x + 64) * 32;
-    y = (y + 64) * 32;
+    Guard::Assert(map_is_location_valid(centrePos));
 
-    if (!map_is_location_in_park({ x, y }))
+    if (!map_is_location_in_park(centrePos))
         return 0;
 
-    centreWaterZ = (tile_element_water_height({ x, y }));
+    int32_t centreWaterZ = (tile_element_water_height(centrePos));
     if (centreWaterZ == 0)
         return 0;
 
-    // Check 7x7 area around centre tile
-    x2 = x - (32 * 3);
-    y2 = y - (32 * 3);
-    c = 0;
-    for (i = 0; i < 7; i++)
-    {
-        for (j = 0; j < 7; j++)
-        {
-            waterZ = (tile_element_water_height({ x2, y2 }));
-            if (waterZ == centreWaterZ)
-                c++;
+    // Check NxN area around centre tile defined by SquareSize
+    constexpr int32_t SquareSize = 7;
+    constexpr int32_t SquareCentre = SquareSize / 2;
 
-            x2 += 32;
+    CoordsXY innerPos{ centrePos.x - (32 * SquareCentre), centrePos.y - (32 * SquareCentre) };
+    int32_t waterTiles = 0;
+    for (int32_t y = 0; y < SquareSize; y++)
+    {
+        for (int32_t x = 0; x < SquareSize; x++)
+        {
+            if (!map_is_location_valid(innerPos))
+                continue;
+
+            if (!map_is_location_in_park(innerPos))
+                continue;
+
+            int32_t waterZ = (tile_element_water_height(innerPos));
+            if (waterZ == centreWaterZ)
+                waterTiles++;
+
+            innerPos.x += 32;
         }
-        x2 -= 224;
-        y2 += 32;
+        innerPos.x -= SquareSize * 32;
+        innerPos.y += 32;
     }
 
     // Must be at least 25 water tiles of the same height in 7x7 area
-    if (c < 25)
+    if (waterTiles < 25)
         return 0;
 
     // Set x, y to the centre of the tile
-    x += 16;
-    y += 16;
-    c = (scenario_rand() & 3) + 2;
-    for (i = 0; i < c; i++)
+    centrePos.x += 16;
+    centrePos.y += 16;
+
+    int32_t duckCount = (scenario_rand() & 3) + 2;
+    for (int32_t i = 0; i < duckCount; i++)
     {
-        r = scenario_rand();
-        x2 = (r >> 16) & 0x7F;
-        y2 = (r & 0xFFFF) & 0x7F;
-        create_duck(x + x2 - 64, y + y2 - 64);
+        int32_t r = scenario_rand();
+        innerPos.x = (r >> 16) & 0x7F;
+        innerPos.y = (r & 0xFFFF) & 0x7F;
+
+        CoordsXY targetPos{ centrePos.x + innerPos.x - 64, centrePos.y + innerPos.y - 64 };
+        Guard::Assert(map_is_location_valid(targetPos));
+        create_duck(targetPos);
     }
 
     return 1;
