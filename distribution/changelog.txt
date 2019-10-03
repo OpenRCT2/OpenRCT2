@@ -24,6 +24,7 @@
 - Fix: [#9957] When using 'no money' cheat, guests complain of running out of cash.
 - Fix: [#9970] Wait for quarter load fails.
 - Fix: [#10017] Ghost elements influencing ride excitement.
+- Fix: [#10036] Do not allocate large chunks of memory for save file classification.
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
 - Improved: [#9987] Minimum load rounding.
 
