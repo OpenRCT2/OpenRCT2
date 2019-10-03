@@ -356,6 +356,8 @@ TileElement* ride_get_station_exit_element(int32_t x, int32_t y, int32_t z)
     TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
+        if (tileElement == nullptr)
+            break;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE && z == tileElement->base_height)
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
