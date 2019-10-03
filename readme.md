@@ -169,14 +169,7 @@ make # you can parallelise your build job with e.g. -j8 or consider using ninja
 DESTDIR=. make install # the install target creates all the necessary files in places we expect them
 ```
 
-You can also use Ninja in place of Make, if you prefer;
-```
-mkdir build
-cd build
-cmake ../ -G Ninja #any other arguments you want, for example -DCMAKE_BUILD_TYPE=RelWithDebInfo
-ninja #No need to specify parallel, it does that automatically
-DESTDIR=. ninja install
-```
+You can also use Ninja in place of Make, if you prefer, see Wiki for details.
 
 Detailed instructions can be found on our [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
