@@ -21,6 +21,7 @@
 - Fix: [#9729] Peeps do not take into account height difference when deciding to pathfind to a ride entrance (original bug).
 - Fix: [#9902] Doors/Portcullis do not check to make sure doors are open causing double opens.
 - Fix: [#9926] Africa - Oasis park has wrong peep spawn (original bug).
+- Fix: [#9955] Resizing map in while pause mode does not work and may result in freezes.
 - Fix: [#9957] When using 'no money' cheat, guests complain of running out of cash.
 - Fix: [#9970] Wait for quarter load fails.
 - Fix: [#10017] Ghost elements influencing ride excitement.
