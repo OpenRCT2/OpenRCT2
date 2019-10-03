@@ -1541,28 +1541,33 @@ void map_restore_provisional_elements()
 void map_remove_out_of_range_elements()
 {
     int32_t mapMaxXY = gMapSizeMaxXY;
-    //#9955 ensure that we can remove elements
+    // Ensure that we can remove elements
     bool buildState = gCheatsBuildInPauseMode;
     CheatsSet(CheatType::BuildInPauseMode, true);
 
-    for (int32_t y = 0; y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); y += 32)
+    // Since we might lack cheat permission, check if the cheat has really been turned on.
+    if (gCheatsBuildInPauseMode)
     {
-        for (int32_t x = 0; x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); x += 32)
+        for (int32_t y = 0; y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); y += 32)
         {
-            if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY)
+            for (int32_t x = 0; x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); x += 32)
             {
-                // Note this purposely does not use LandSetRightsAction as X Y coordinates are outside of normal range.
-                auto surfaceElement = map_get_surface_element_at({ x, y });
-                if (surfaceElement != nullptr)
+                if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY)
                 {
-                    surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-                    update_park_fences_around_tile({ x, y });
+                    // Note this purposely does not use LandSetRightsAction as X Y coordinates are outside of normal range.
+                    auto surfaceElement = map_get_surface_element_at({ x, y });
+                    if (surfaceElement != nullptr)
+                    {
+                        surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
+                        update_park_fences_around_tile({ x, y });
+                    }
+                    clear_elements_at({ x, y });
                 }
-                clear_elements_at({ x, y });
             }
         }
     }
-    //#9955 reset cheat state
+
+    //#Reset cheat state
     CheatsSet(CheatType::BuildInPauseMode, buildState);
 }
 
