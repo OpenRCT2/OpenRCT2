@@ -39,6 +39,7 @@ int main(int argc, const char** argv)
 #endif
 {
     std::unique_ptr<IContext> context;
+    int32_t rc = EXIT_SUCCESS;
     int runGame = cmdline_run(argv, argc);
     core_init();
     RegisterBitmapReader();
@@ -57,11 +58,13 @@ int main(int argc, const char** argv)
             auto uiContext = to_shared(CreateUiContext(env));
             context = CreateContext(env, audioContext, uiContext);
         }
-        if (context->RunOpenRCT2(argc, argv) == EXIT_SUCCESS) {
-            return EXIT_SUCCESS;
-        }
+        rc = context->RunOpenRCT2(argc, argv);
     }
-    return EXIT_FAILURE;
+    else if (runGame == -1)
+    {
+        rc = EXIT_FAILURE;
+    }
+    return rc;
 }
 
 #ifdef __ANDROID__

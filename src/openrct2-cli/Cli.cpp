@@ -18,6 +18,7 @@ using namespace OpenRCT2;
  */
 int main(int argc, const char** argv)
 {
+    int32_t rc = EXIT_SUCCESS;
     int runGame = cmdline_run(argv, argc);
     core_init();
     if (runGame == 1)
@@ -27,9 +28,11 @@ int main(int argc, const char** argv)
 
         // Run OpenRCT2 with a plain context
         auto context = CreateContext();
-        if((context->RunOpenRCT2(argc, argv)) == EXIT_SUCCESS) {
-            return EXIT_SUCCESS;
-        }
+        rc = context->RunOpenRCT2(argc, argv);
     }
-    return EXIT_FAILURE;
+    else if (runGame == -1)
+    {
+        rc = EXIT_FAILURE;
+    }
+    return rc;
 }
