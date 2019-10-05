@@ -27,7 +27,9 @@ int main(int argc, const char** argv)
 
         // Run OpenRCT2 with a plain context
         auto context = CreateContext();
-        context->RunOpenRCT2(argc, argv);
+        if((context->RunOpenRCT2(argc, argv)) == EXIT_SUCCESS) {
+            return EXIT_SUCCESS;
+        }
     }
-    return gExitCode;
+    return EXIT_FAILURE;
 }

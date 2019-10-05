@@ -38,6 +38,7 @@ int NormalisedMain(int argc, const char** argv)
 int main(int argc, const char** argv)
 #endif
 {
+    std::unique_ptr<IContext> context;
     int runGame = cmdline_run(argv, argc);
     core_init();
     RegisterBitmapReader();
@@ -46,8 +47,7 @@ int main(int argc, const char** argv)
         if (gOpenRCT2Headless)
         {
             // Run OpenRCT2 with a plain context
-            auto context = CreateContext();
-            context->RunOpenRCT2(argc, argv);
+            context = CreateContext();
         }
         else
         {
@@ -55,12 +55,13 @@ int main(int argc, const char** argv)
             auto env = to_shared(CreatePlatformEnvironment());
             auto audioContext = to_shared(CreateAudioContext());
             auto uiContext = to_shared(CreateUiContext(env));
-            auto context = CreateContext(env, audioContext, uiContext);
-
-            context->RunOpenRCT2(argc, argv);
+            context = CreateContext(env, audioContext, uiContext);
+        }
+        if (context->RunOpenRCT2(argc, argv) == EXIT_SUCCESS) {
+            return EXIT_SUCCESS;
         }
     }
-    return gExitCode;
+    return EXIT_FAILURE;
 }
 
 #ifdef __ANDROID__
