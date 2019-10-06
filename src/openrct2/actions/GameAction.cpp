@@ -76,6 +76,7 @@ namespace GameActions
     static GameActionFactory _actions[GAME_COMMAND_COUNT];
     static std::multiset<QueuedGameAction> _actionQueue;
     static uint32_t _nextUniqueId = 0;
+    static bool _suspended = false;
 
     GameActionFactory Register(uint32_t id, GameActionFactory factory)
     {
@@ -93,6 +94,16 @@ namespace GameActions
             return _actions[id] != nullptr;
         }
         return false;
+    }
+
+    void SuspendQueue()
+    {
+        _suspended = true;
+    }
+
+    void ResumeQueue()
+    {
+        _suspended = false;
     }
 
     void Enqueue(const GameAction* ga, uint32_t tick)
@@ -114,6 +125,12 @@ namespace GameActions
 
     void ProcessQueue()
     {
+        if (_suspended)
+        {
+            // Do nothing if suspended, this is usually the case between connect and map loads.
+            return;
+        }
+
         const uint32_t currentTick = gCurrentTicks;
 
         while (_actionQueue.begin() != _actionQueue.end())

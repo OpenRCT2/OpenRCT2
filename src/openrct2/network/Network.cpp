@@ -34,7 +34,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "17"
+#define NETWORK_STREAM_VERSION "18"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -417,6 +417,7 @@ void Network::Close()
 
         client_connection_list.clear();
         GameActions::ClearQueue();
+        GameActions::ResumeQueue();
         player_list.clear();
         group_list.clear();
         _serverTickData.clear();
@@ -492,6 +493,11 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
 
     BeginChatLog();
     BeginServerLog();
+
+    // We need to wait for the map load before we execute any actions.
+    // If the client has the title screen running then theres a potential
+    // risk of tick collision with the server map and title screen map.
+    GameActions::SuspendQueue();
 
     utf8 keyPath[MAX_PATH];
     network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
@@ -2615,6 +2621,8 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         // Start of a new map load, clear the queue now as we have to buffer them
         // until the map is fully loaded.
         GameActions::ClearQueue();
+        GameActions::SuspendQueue();
+
         _serverTickData.clear();
         _clientMapLoaded = false;
     }
@@ -2637,6 +2645,9 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
     std::memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
     if (offset + chunksize == size)
     {
+        // Allow queue processing of game actions again.
+        GameActions::ResumeQueue();
+
         context_force_close_window_by_class(WC_NETWORK_STATUS);
         bool has_to_free = false;
         uint8_t* data = &chunk_buffer[0];

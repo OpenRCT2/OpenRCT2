@@ -25,6 +25,7 @@
 - Fix: [#9955] Resizing map in while pause mode does not work and may result in freezes.
 - Fix: [#9957] When using 'no money' cheat, guests complain of running out of cash.
 - Fix: [#9970] Wait for quarter load fails.
+- Fix: [#9994] Game action tick collision during server connect and map load.
 - Fix: [#10017] Ghost elements influencing ride excitement.
 - Fix: [#10036] Do not allocate large chunks of memory for save file classification.
 - Improved: [#9466] Add the rain weather effect to the OpenGL renderer.
