@@ -2109,14 +2109,14 @@ static void window_ride_construction_update(rct_window* w)
 static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_t screenY, int32_t* outX, int32_t* outY)
 {
     int16_t mapX, mapY, mapZ;
-    int32_t interactionType, direction;
-    TileElement* tileElement;
-    rct_viewport* viewport;
+    int32_t interactionType;
+    rct_viewport* viewport = nullptr;
 
     if (!_trackPlaceCtrlState)
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
         {
+            TileElement* tileElement;
             get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapX, &mapY, &interactionType, &tileElement, &viewport);
             if (interactionType != 0)
             {
@@ -2173,7 +2173,7 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
 
     if (!_trackPlaceCtrlState)
     {
-        sub_68A15E(screenX, screenY, &mapX, &mapY, &direction, &tileElement);
+        sub_68A15E(screenX, screenY, &mapX, &mapY, nullptr, nullptr);
         if (mapX == LOCATION_NULL)
             return false;
 
