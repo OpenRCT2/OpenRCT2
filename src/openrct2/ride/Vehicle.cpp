@@ -910,23 +910,23 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
     uint16_t sound_priority = vehicle_get_sound_priority_factor(vehicle);
     rct_vehicle_sound_params* soundParam;
     // Find a sound param of lower priority to use
-    for (soundParam = &gVehicleSoundParamsList[0];
-         soundParam < gVehicleSoundParamsListEnd && sound_priority <= soundParam->priority; soundParam++)
+    for (soundParam = &vehicleSoundParamsList[0];
+         soundParam < vehicleSoundParamsListEnd && sound_priority <= soundParam->priority; soundParam++)
         ;
 
-    if (soundParam >= &gVehicleSoundParamsList[std::size(gVehicleSoundParamsList)])
+    if (soundParam >= &vehicleSoundParamsList[std::size(vehicleSoundParamsList)])
         return;
 
-    if (gVehicleSoundParamsListEnd < &gVehicleSoundParamsList[std::size(gVehicleSoundParamsList)])
+    if (vehicleSoundParamsListEnd < &vehicleSoundParamsList[std::size(vehicleSoundParamsList)])
     {
-        gVehicleSoundParamsListEnd++;
+        vehicleSoundParamsListEnd++;
     }
 
     // Shift all sound params down one if using a free space
-    if (soundParam != gVehicleSoundParamsListEnd)
+    if (soundParam != vehicleSoundParamsListEnd)
     {
         std::memmove(
-            soundParam + 1, soundParam, ((gVehicleSoundParamsListEnd - soundParam) - 1) * sizeof(rct_vehicle_sound_params));
+            soundParam + 1, soundParam, ((vehicleSoundParamsListEnd - soundParam) - 1) * sizeof(rct_vehicle_sound_params));
     }
 
     soundParam->priority = sound_priority;
@@ -1252,9 +1252,12 @@ void vehicle_sounds_update()
     if (gAudioCurrentDevice == -1 || gGameSoundsOff || !gConfigSound.sound_enabled || gOpenRCT2Headless)
         return;
 
+    rct_vehicle_sound_params vehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
+    rct_vehicle_sound_params* vehicleSoundParamsListEnd;
+
     vehicle_sounds_update_window_setup();
 
-    gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
+    vehicleSoundParamsListEnd = &vehicleSoundParamsList[0];
     for (uint16_t i = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
     {
         vehicle_update_sound_params(&get_sprite(i)->vehicle);
@@ -1266,8 +1269,8 @@ void vehicle_sounds_update()
         if (vehicle_sound.id != SOUND_ID_NULL)
         {
             bool keepPlaying = false;
-            for (rct_vehicle_sound_params* vehicle_sound_params = &gVehicleSoundParamsList[0];
-                 vehicle_sound_params != gVehicleSoundParamsListEnd; vehicle_sound_params++)
+            for (rct_vehicle_sound_params* vehicle_sound_params = &vehicleSoundParamsList[0];
+                 vehicle_sound_params != vehicleSoundParamsListEnd; vehicle_sound_params++)
             {
                 if (vehicle_sound.id == vehicle_sound_params->id)
                 {
@@ -1291,8 +1294,8 @@ void vehicle_sounds_update()
         }
     }
 
-    for (rct_vehicle_sound_params* vehicleSoundParams = &gVehicleSoundParamsList[0];
-         vehicleSoundParams < gVehicleSoundParamsListEnd; vehicleSoundParams++)
+    for (rct_vehicle_sound_params* vehicleSoundParams = &vehicleSoundParamsList[0];
+         vehicleSoundParams < vehicleSoundParamsListEnd; vehicleSoundParams++)
     {
         uint8_t panVol = vehicle_sounds_update_get_pan_volume(vehicleSoundParams);
 
