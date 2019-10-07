@@ -658,13 +658,16 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
  */
 void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
 {
-    int16_t my_x, my_y;
+    int16_t mapX, mapY;
+    CoordsXY initialPos{};
     int32_t interactionType;
-    TileElement* myTileElement;
+    TileElement* tileElement;
     rct_viewport* viewport;
     get_map_coordinates_from_pos(
-        screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType,
-        &myTileElement, &viewport);
+        screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &mapX, &mapY, &interactionType,
+        &tileElement, &viewport);
+    initialPos.x = mapX;
+    initialPos.y = mapY;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
@@ -672,27 +675,27 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
         return;
     }
 
-    int16_t originalZ = 0;
+    int16_t waterHeight = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER)
     {
-        originalZ = myTileElement->AsSurface()->GetWaterHeight() << 4;
+        waterHeight = tileElement->AsSurface()->GetWaterHeight() << 4;
     }
 
-    LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
-    LocationXY16 map_pos = { (int16_t)(my_x + 16), (int16_t)(my_y + 16) };
+    LocationXY16 initialVPPos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
+    LocationXY16 mapPos = { (int16_t)(initialPos.x + 16), (int16_t)(initialPos.y + 16) };
 
     for (int32_t i = 0; i < 5; i++)
     {
-        int16_t z = originalZ;
+        int16_t z = waterHeight;
         if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER)
         {
-            z = tile_element_height({ map_pos.x, map_pos.y });
+            z = tile_element_height({ mapPos.x, mapPos.y });
         }
-        map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        map_pos.x = std::clamp<int16_t>(map_pos.x, my_x, my_x + 31);
-        map_pos.y = std::clamp<int16_t>(map_pos.y, my_y, my_y + 31);
+        mapPos = viewport_coord_to_map_coord(initialVPPos.x, initialVPPos.y, z);
+        mapPos.x = std::clamp<int16_t>(mapPos.x, initialPos.x, initialPos.x + 31);
+        mapPos.y = std::clamp<int16_t>(mapPos.y, initialPos.y, initialPos.y + 31);
     }
 
-    *x = map_pos.x & ~0x1F;
-    *y = map_pos.y & ~0x1F;
+    *x = mapPos.x & ~0x1F;
+    *y = mapPos.y & ~0x1F;
 }
