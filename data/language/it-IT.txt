@@ -553,8 +553,8 @@ STR_1167    :Impossibile alzare il livello dell'acqua in questo punto...
 STR_1168    :Opzioni
 STR_1169    :(Nessuno)
 STR_1170    :{STRING}
-STR_1171    :{RED}Chiuso - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Chiuso
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Costruisci sentieri e corsie d'attesa
 STR_1174    :Un'insegna è d'intralcio
 STR_1175    :Impossibile costruirlo su un sentiero in pendenza
@@ -1110,8 +1110,8 @@ STR_1726    :Il terreno non è in vendita!
 STR_1727    :I diritti di costruzione non sono in vendita!
 STR_1728    :Impossibile comprare i diritti di costruzione qui...
 STR_1729    :Questo terreno non è di proprietà del parco!
-STR_1730    :{RED}Chiuso - - 
-STR_1731    :{WHITE}{STRINGID} - - 
+STR_1730    :{RED}Chiuso
+STR_1731    :{WHITE}{STRINGID}
 STR_1732    :Costruisci
 STR_1733    :Modalità
 STR_1734    :{WINDOW_COLOUR_2}Numero di giri:
@@ -2239,7 +2239,7 @@ STR_2977    :Nome del dipendente
 STR_2978    :Digita il nome di questo dipendente:
 STR_2979    :Impossibile battezzare il dipendente...
 STR_2980    :Troppe insegne nella partita
-STR_2981    :{RED}Vietato l'ingresso - - 
+STR_2981    :{RED}Vietato l'ingresso
 STR_2982    :Testo dell'insegna
 STR_2983    :Digita il testo di questa insegna:
 STR_2984    :Impossibile fissare il testo dell'insegna...
@@ -3225,7 +3225,7 @@ STR_5762    :Yuan cinesi (CN¥)
 STR_5763    :Tutti i file
 STR_5764    :Tipo di attrazione non valida
 STR_5765    :Non è possibile modificare attrazioni non valide
-STR_5766    :<available string id>
+STR_5766    :Fiorino Ungherese (Ft)
 STR_5767    :Fatturato
 STR_5768    :Clienti totali
 STR_5769    :Profitto totale
@@ -3764,6 +3764,30 @@ STR_6303    :Scaricamento oggetto ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :Apri selezione scenario
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Opzione sperimentale per utilizzare più thread per il rendering, potrebbe causare instabilità.
+STR_6307    :Schema colore: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :Reconnessione
+STR_6310    :{WINDOW_COLOUR_2}Posizione: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Successivo: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(surface)
+STR_6313    :(slope {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerance {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Obiettivo Pathfind: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Storico Pathfind:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6318    :Network desync rilevato.{NEWLINE}File log: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Blocco freno chiuso
+STR_6320    :{WINDOW_COLOUR_2}Indistruttibile
+STR_6321    :{WINDOW_COLOUR_2}L'aggiunta è rotta
+STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6323    :Simulazione
+STR_6324    :Simula
+STR_6325    :{SMALLFONT}{BLACK}Simula attrazione
+STR_6326    :Non è stato possibile simulare {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Sfondo trasparente per schermata gigante
+STR_6328    :{SMALLFONT}{BLACK}Con questa opzione attivata, le schermate giganti avranno uno sfondo trasparente invece di quello nero
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :Scaricamento [{STRING}] da {STRING} ({COMMA16} / {COMMA16})
 
 #############
 # Scenarios #
