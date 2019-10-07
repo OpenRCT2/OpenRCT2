@@ -53,8 +53,6 @@ rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 rct_ride_music_params* gRideMusicParamsListEnd;
 
 rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
-rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
-rct_vehicle_sound_params* gVehicleSoundParamsListEnd;
 
 // clang-format off
 static int32_t SoundVolumeAdjust[RCT2SoundCount] =
