@@ -2173,7 +2173,7 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
 
     if (!_trackPlaceCtrlState)
     {
-        sub_68A15E(screenX, screenY, &mapX, &mapY, nullptr, nullptr);
+        sub_68A15E(screenX, screenY, &mapX, &mapY);
         if (mapX == LOCATION_NULL)
             return false;
 

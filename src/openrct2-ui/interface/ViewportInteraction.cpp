@@ -656,7 +656,7 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
  *
  *  rct2: 0x0068A15E
  */
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_t* direction, TileElement** tileElement)
+void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
 {
     int16_t my_x, my_y;
     int32_t interactionType;
@@ -693,37 +693,6 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_
         map_pos.y = std::clamp<int16_t>(map_pos.y, my_y, my_y + 31);
     }
 
-    // Determine to which edge the cursor is closest
-    int32_t myDirection;
-    int32_t mod_x = map_pos.x & 0x1F;
-    int32_t mod_y = map_pos.y & 0x1F;
-    if (mod_x < mod_y)
-    {
-        if (mod_x + mod_y < 32)
-        {
-            myDirection = 0;
-        }
-        else
-        {
-            myDirection = 1;
-        }
-    }
-    else
-    {
-        if (mod_x + mod_y < 32)
-        {
-            myDirection = 3;
-        }
-        else
-        {
-            myDirection = 2;
-        }
-    }
-
     *x = map_pos.x & ~0x1F;
     *y = map_pos.y & ~0x1F;
-    if (direction != nullptr)
-        *direction = myDirection;
-    if (tileElement != nullptr)
-        *tileElement = myTileElement;
 }
