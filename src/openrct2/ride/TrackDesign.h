@@ -21,15 +21,14 @@ struct Ride;
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
-/* Track Entrance entry size: 0x06 */
+/* Track Entrance entry */
 struct TrackDesignEntranceElement
 {
-    int8_t z;          // 0x00
-    uint8_t direction; // 0x01
-    int16_t x;         // 0x02
-    int16_t y;         // 0x04
+    int8_t z;
+    uint8_t direction;
+    int16_t x;
+    int16_t y;
 };
-assert_struct_size(TrackDesignEntranceElement, 0x06);
 
 /**
  * Track design structure.
