@@ -2101,7 +2101,7 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, TileElement* pathE
 
             TileElement* tileElement = map_get_first_element_at(x + xOffset, y + yOffset);
             if (tileElement == nullptr)
-                return;
+                continue;
             do
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)

@@ -477,7 +477,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 
     TileElement* tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
     if (tileElement == nullptr)
-        return nextDirection;
+        return 0xFF;
     do
     {
         if (tileElement->base_height != nextZ)
@@ -493,7 +493,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 
     tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
     if (tileElement == nullptr)
-        return nextDirection;
+        return 0xFF;
 
     do
     {

@@ -1771,9 +1771,9 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         nextTile += TileDirectionDelta[direction];
 
         tileElement = map_get_first_element_at(nextTile.x, nextTile.y);
+        found = false;
         if (tileElement == nullptr)
             break;
-        found = false;
         do
         {
             if (tileElement == firstPathElement)

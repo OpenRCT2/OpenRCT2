@@ -199,11 +199,12 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_1;
         TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
-        if (tileElement == nullptr)
-            return;
 
         do
         {
+            if (tileElement == nullptr)
+                break;
+              
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                 continue;
 

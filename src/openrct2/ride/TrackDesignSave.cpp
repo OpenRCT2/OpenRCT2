@@ -526,7 +526,7 @@ static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex
         {
             tileElement = map_get_first_element_at(x, y);
             if (tileElement == nullptr)
-                return;
+                continue;
             do
             {
                 int32_t interactionType = VIEWPORT_INTERACTION_ITEM_NONE;

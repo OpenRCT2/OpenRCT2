@@ -208,7 +208,10 @@ static void ride_ratings_update_state_2()
 
     TileElement* tileElement = map_get_first_element_at(x, y);
     if (tileElement == nullptr)
+    {
+        gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
+    }
     do
     {
         if (tileElement->IsGhost())
@@ -316,7 +319,10 @@ static void ride_ratings_update_state_5()
 
     TileElement* tileElement = map_get_first_element_at(x, y);
     if (tileElement == nullptr)
+    {
+        gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
+    }
     do
     {
         if (tileElement->IsGhost())
@@ -1449,7 +1455,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
             // Count scenery items on this tile
             TileElement* tileElement = map_get_first_element_at(xx, yy);
             if (tileElement == nullptr)
-                return 0;
+                continue;
             do
             {
                 if (tileElement->IsGhost())

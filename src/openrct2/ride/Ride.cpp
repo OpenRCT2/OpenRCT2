@@ -6313,7 +6313,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(
             mapY -= CoordsDirectionDelta[direction].y;
             tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
             if (tileElement == nullptr)
-                continue;
+                break;
             bool goToNextTile = false;
 
             do
@@ -6915,7 +6915,7 @@ void sub_6CB945(Ride* ride)
                 }
                 tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
                 if (tileElement == nullptr)
-                    continue;
+                    break;
 
                 bool trackFound = false;
                 do
@@ -6964,7 +6964,7 @@ void sub_6CB945(Ride* ride)
                 bool trackFound = false;
                 tileElement = map_get_first_element_at(blockLocation.x >> 5, blockLocation.y >> 5);
                 if (tileElement == nullptr)
-                    continue;
+                    break;
                 do
                 {
                     if (blockLocation.z != tileElement->base_height)
@@ -7031,7 +7031,7 @@ void sub_6CB945(Ride* ride)
 
         TileElement* tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
         if (tileElement == nullptr)
-            return;
+            continue;
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)

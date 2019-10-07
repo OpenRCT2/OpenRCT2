@@ -1100,7 +1100,7 @@ void map_reorganise_elements()
         {
             TileElement* startElement = map_get_first_element_at(x, y);
             if (startElement == nullptr)
-                return;
+                continue;
             TileElement* endElement = startElement;
             while (!(endElement++)->IsLastForTile())
                 ;

@@ -434,7 +434,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     CoordsXY exitLoc = { location.x * 32, location.y * 32 };
     tileElement = map_get_first_element_at(location.x, location.y);
     if (tileElement == nullptr)
-        return STR_NONE;
+        return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)

@@ -460,7 +460,7 @@ static bool map_animation_invalidate_large_scenery(int32_t x, int32_t y, int32_t
     bool wasInvalidated = false;
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement == nullptr)
-        return wasInvalidated;
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -557,7 +557,7 @@ static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
     bool wasInvalidated = false;
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement == nullptr)
-        return wasInvalidated;
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
