@@ -356,7 +356,7 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(CoordsXY loc, bool isExecu
     {
         const TileElement* const firstElement = map_get_first_element_at(loc.x / 32, loc.y / 32);
         if (firstElement == nullptr)
-            return std::make_unique(GA_ERROR::UNKNOWN, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
         // Count elements on tile
         int32_t numElement = 0;
