@@ -300,7 +300,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             entranceDirection -= _saveDirection;
             entranceDirection &= TILE_ELEMENT_DIRECTION_MASK;
 
-            rct_td6_entrance_element entrance{};
+            TrackDesignEntranceElement entrance{};
             entrance.direction = entranceDirection;
 
             x -= gTrackPreviewOrigin.x;

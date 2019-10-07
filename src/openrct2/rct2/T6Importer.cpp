@@ -159,11 +159,16 @@ public:
                 td->track_elements.push_back(trackElement);
             }
 
-            rct_td6_entrance_element entranceElement{};
+            rct_td6_entrance_element t6EntranceElement{};
             for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
             {
                 _stream.SetPosition(_stream.GetPosition() - 1);
-                _stream.Read(&entranceElement, sizeof(rct_td6_entrance_element));
+                _stream.Read(&t6EntranceElement, sizeof(rct_td6_entrance_element));
+                TrackDesignEntranceElement entranceElement{};
+                entranceElement.z = t6EntranceElement.z;
+                entranceElement.direction = t6EntranceElement.direction;
+                entranceElement.x = t6EntranceElement.x;
+                entranceElement.y = t6EntranceElement.y;
                 td->entrance_elements.push_back(entranceElement);
             }
         }
