@@ -267,7 +267,6 @@ private:
                     mazeElement.type = t4MazeElement.type;
                     td->maze_elements.push_back(mazeElement);
                 }
-
             }
         }
         else
