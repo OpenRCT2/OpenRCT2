@@ -2203,6 +2203,8 @@ TileElement* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t 
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
+        if (tileElement == nullptr)
+            break;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
         if (tileElement->base_height != z)
