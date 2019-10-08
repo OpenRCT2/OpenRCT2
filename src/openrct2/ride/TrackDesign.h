@@ -53,6 +53,35 @@ struct TrackDesignTrackElement
     uint8_t flags; // 0x01
 };
 
+/* Maze Element entry   size: 0x04 */
+struct TrackDesignMazeElement
+{
+    union
+    {
+        uint32_t all;
+        struct
+        {
+            int8_t x;
+            int8_t y;
+            union
+            {
+                uint16_t maze_entry;
+                struct
+                {
+                    uint8_t direction;
+                    uint8_t type;
+                };
+            };
+        };
+    };
+
+    TrackDesignMazeElement() = default;
+    TrackDesignMazeElement(const rct_td46_maze_element& formerMazeElement)
+        : all(formerMazeElement.all)
+    {
+    }
+};
+
 struct TrackDesign
 {
     uint8_t type;
@@ -96,7 +125,7 @@ struct TrackDesign
     uint8_t lift_hill_speed;
     uint8_t num_circuits;
 
-    std::vector<rct_td46_maze_element> maze_elements;
+    std::vector<TrackDesignMazeElement> maze_elements;
     std::vector<TrackDesignTrackElement> track_elements;
     std::vector<TrackDesignEntranceElement> entrance_elements;
     std::vector<TrackDesignSceneryElement> scenery_elements;
