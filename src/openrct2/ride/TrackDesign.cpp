@@ -201,7 +201,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
 
     do
     {
-        rct_td46_track_element track{};
+        TrackDesignTrackElement track{};
         track.type = trackElement.element->AsTrack()->GetTrackType();
         // TODO move to RCT2 limit
         if (track.type == TRACK_ELEM_255)
