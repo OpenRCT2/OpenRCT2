@@ -39,12 +39,6 @@ struct TrackDesignTrackElement
 {
     uint8_t type;  // 0x00
     uint8_t flags; // 0x01
-    TrackDesignTrackElement() = default;
-    TrackDesignTrackElement(const rct_td46_track_element& formerTrackElement)
-        : type(formerTrackElement.type)
-        , flags(formerTrackElement.flags)
-    {
-    }
 };
 
 struct TrackDesign
