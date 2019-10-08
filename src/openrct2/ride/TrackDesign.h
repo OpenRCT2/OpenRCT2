@@ -21,6 +21,15 @@ struct Ride;
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
+/* Track Entrance entry */
+struct TrackDesignEntranceElement
+{
+    int8_t z;
+    uint8_t direction;
+    int16_t x;
+    int16_t y;
+};
+
 /**
  * Track design structure.
  */
@@ -69,7 +78,7 @@ struct TrackDesign
 
     std::vector<rct_td46_maze_element> maze_elements;
     std::vector<rct_td46_track_element> track_elements;
-    std::vector<rct_td6_entrance_element> entrance_elements;
+    std::vector<TrackDesignEntranceElement> entrance_elements;
     std::vector<rct_td6_scenery_element> scenery_elements;
 
     std::string name;
