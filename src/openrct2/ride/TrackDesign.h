@@ -30,6 +30,18 @@ struct TrackDesignEntranceElement
     int16_t y;
 };
 
+/* Track Scenery entry  size: 0x16 */
+struct TrackDesignSceneryElement
+{
+    rct_object_entry scenery_object; // 0x00
+    int8_t x;                        // 0x10
+    int8_t y;                        // 0x11
+    int8_t z;                        // 0x12
+    uint8_t flags;                   // 0x13 direction quadrant tertiary colour
+    uint8_t primary_colour;          // 0x14
+    uint8_t secondary_colour;        // 0x15
+};
+
 /**
  * Track design structure.
  */
@@ -87,7 +99,7 @@ struct TrackDesign
     std::vector<rct_td46_maze_element> maze_elements;
     std::vector<TrackDesignTrackElement> track_elements;
     std::vector<TrackDesignEntranceElement> entrance_elements;
-    std::vector<rct_td6_scenery_element> scenery_elements;
+    std::vector<TrackDesignSceneryElement> scenery_elements;
 
     std::string name;
 
@@ -190,7 +202,7 @@ void track_design_save_select_tile_element(int32_t interactionType, CoordsXY loc
 
 bool track_design_are_entrance_and_exit_placed();
 
-extern std::vector<rct_td6_scenery_element> _trackSavedTileElementsDesc;
+extern std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 extern std::vector<const TileElement*> _trackSavedTileElements;
 
 #endif

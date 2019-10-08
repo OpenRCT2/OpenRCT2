@@ -40,7 +40,7 @@ bool gTrackDesignSaveMode = false;
 ride_id_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
 
 std::vector<const TileElement*> _trackSavedTileElements;
-std::vector<rct_td6_scenery_element> _trackSavedTileElementsDesc;
+std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 
 static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, TileElement* tileElement);
 static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy);
@@ -193,7 +193,7 @@ static void track_design_save_push_tile_element(CoordsXY loc, TileElement* tileE
 static void track_design_save_push_tile_element_desc(
     const rct_object_entry* entry, CoordsXYZ loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
-    rct_td6_scenery_element item{};
+    TrackDesignSceneryElement item{};
     item.scenery_object = *entry;
     item.x = loc.x / 32;
     item.y = loc.y / 32;
@@ -363,7 +363,7 @@ static void track_design_save_pop_tile_element_desc(const rct_object_entry* entr
     size_t removeIndex = SIZE_MAX;
     for (size_t i = 0; i < _trackSavedTileElementsDesc.size(); i++)
     {
-        rct_td6_scenery_element* item = &_trackSavedTileElementsDesc[i];
+        TrackDesignSceneryElement* item = &_trackSavedTileElementsDesc[i];
         if (item->x != loc.x / 32)
             continue;
         if (item->y != loc.y / 32)
