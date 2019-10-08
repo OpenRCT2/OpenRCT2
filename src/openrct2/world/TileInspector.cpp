@@ -99,7 +99,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(CoordsXY loc, int16_t ele
 
         // Set the base height to be the same as the selected element
         TileElement* const selectedElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex + 1);
-        if (!selectedElement)
+        if (selectedElement == nullptr)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
         }
@@ -153,7 +153,7 @@ GameActionResult::Ptr tile_inspector_remove_element_at(CoordsXY loc, int16_t ele
     {
         // Forcefully remove the element
         TileElement* const tileElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
-        if (!tileElement)
+        if (tileElement == nullptr)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
         }
@@ -218,7 +218,7 @@ GameActionResult::Ptr tile_inspector_rotate_element_at(CoordsXY loc, int32_t ele
         uint8_t newRotation, pathEdges, pathCorners;
 
         TileElement* const tileElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
-        if (!tileElement)
+        if (tileElement == nullptr)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
         }
@@ -741,10 +741,10 @@ GameActionResult::Ptr tile_inspector_wall_set_slope(CoordsXY loc, int32_t elemen
 GameActionResult::Ptr tile_inspector_track_base_height_offset(
     CoordsXY loc, int32_t elementIndex, int8_t offset, bool isExecuting)
 {
-    TileElement* const trackElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
-
     if (offset == 0)
         return std::make_unique<GameActionResult>();
+
+    TileElement* const trackElement = map_get_nth_element_at(loc.x / 32, loc.y / 32, elementIndex);
 
     if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
