@@ -33,6 +33,14 @@ struct TrackDesignEntranceElement
 /**
  * Track design structure.
  */
+
+/* Track Element entry  size: 0x02 */
+struct TrackDesignTrackElement
+{
+    uint8_t type;  // 0x00
+    uint8_t flags; // 0x01
+};
+
 struct TrackDesign
 {
     uint8_t type;
@@ -77,7 +85,7 @@ struct TrackDesign
     uint8_t num_circuits;
 
     std::vector<rct_td46_maze_element> maze_elements;
-    std::vector<rct_td46_track_element> track_elements;
+    std::vector<TrackDesignTrackElement> track_elements;
     std::vector<TrackDesignEntranceElement> entrance_elements;
     std::vector<rct_td6_scenery_element> scenery_elements;
 

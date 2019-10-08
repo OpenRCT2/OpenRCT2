@@ -266,11 +266,14 @@ private:
         }
         else
         {
-            rct_td46_track_element trackElement{};
+            rct_td46_track_element t4TrackElement{};
             for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
             {
                 _stream.SetPosition(_stream.GetPosition() - 1);
-                _stream.Read(&trackElement, sizeof(rct_td46_track_element));
+                _stream.Read(&t4TrackElement, sizeof(rct_td46_track_element));
+                TrackDesignTrackElement trackElement{};
+                trackElement.type = t4TrackElement.type;
+                trackElement.flags = trackElement.flags;
                 td->track_elements.push_back(trackElement);
             }
         }
