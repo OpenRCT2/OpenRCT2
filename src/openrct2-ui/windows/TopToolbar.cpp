@@ -1581,7 +1581,7 @@ static void sub_6E1F34(
             // If CTRL not pressed
             if (!gSceneryCtrlPressed)
             {
-                sub_68A15E(x, y, grid_x, grid_y, nullptr, nullptr);
+                sub_68A15E(x, y, grid_x, grid_y);
 
                 if (*grid_x == LOCATION_NULL)
                     return;

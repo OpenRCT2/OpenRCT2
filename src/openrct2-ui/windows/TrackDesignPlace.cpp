@@ -254,7 +254,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // Get the tool map position
-    sub_68A15E(x, y, &mapX, &mapY, nullptr, nullptr);
+    sub_68A15E(x, y, &mapX, &mapY);
     if (mapX == LOCATION_NULL)
     {
         window_track_place_clear_provisional();
@@ -319,7 +319,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     int16_t mapX, mapY;
-    sub_68A15E(x, y, &mapX, &mapY, nullptr, nullptr);
+    sub_68A15E(x, y, &mapX, &mapY);
     if (mapX == LOCATION_NULL)
         return;
 
