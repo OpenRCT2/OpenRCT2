@@ -74,12 +74,6 @@ struct TrackDesignMazeElement
             };
         };
     };
-
-    TrackDesignMazeElement() = default;
-    TrackDesignMazeElement(const rct_td46_maze_element& formerMazeElement)
-        : all(formerMazeElement.all)
-    {
-    }
 };
 
 struct TrackDesign
