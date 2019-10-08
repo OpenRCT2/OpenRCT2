@@ -809,7 +809,7 @@ static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_
 }
 
 static bool TrackDesignPlaceSceneryElementGetEntry(
-    uint8_t& entry_type, uint8_t& entry_index, const rct_td6_scenery_element& scenery)
+    uint8_t& entry_type, uint8_t& entry_index, const TrackDesignSceneryElement& scenery)
 {
     if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
     {
@@ -850,7 +850,7 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
 }
 
 static bool TrackDesignPlaceSceneryElementRemoveGhost(
-    CoordsXY mapCoord, const rct_td6_scenery_element& scenery, uint8_t rotation, int32_t originZ)
+    CoordsXY mapCoord, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
     uint8_t entry_type, entry_index;
     if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
@@ -905,7 +905,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
     return true;
 }
 
-static bool TrackDesignPlaceSceneryElementGetPlaceZ(const rct_td6_scenery_element& scenery)
+static bool TrackDesignPlaceSceneryElementGetPlaceZ(const TrackDesignSceneryElement& scenery)
 {
     int32_t z = scenery.z * 8 + _trackDesignPlaceZ;
     if (z < _trackDesignPlaceSceneryZ)
@@ -920,7 +920,7 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(const rct_td6_scenery_elemen
 }
 
 static bool TrackDesignPlaceSceneryElement(
-    CoordsXY mapCoord, uint8_t mode, const rct_td6_scenery_element& scenery, uint8_t rotation, int32_t originZ)
+    CoordsXY mapCoord, uint8_t mode, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
@@ -1193,7 +1193,7 @@ static bool TrackDesignPlaceSceneryElement(
  *  rct2: 0x006D0964
  */
 static int32_t track_design_place_all_scenery(
-    const std::vector<rct_td6_scenery_element>& sceneryList, int32_t originX, int32_t originY, int32_t originZ)
+    const std::vector<TrackDesignSceneryElement>& sceneryList, int32_t originX, int32_t originY, int32_t originZ)
 {
     for (uint8_t mode = 0; mode <= 1; mode++)
     {

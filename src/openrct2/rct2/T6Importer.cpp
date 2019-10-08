@@ -176,8 +176,16 @@ public:
         for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
         {
             _stream.SetPosition(_stream.GetPosition() - 1);
-            rct_td6_scenery_element sceneryElement{};
-            _stream.Read(&sceneryElement, sizeof(rct_td6_scenery_element));
+            rct_td6_scenery_element t6SceneryElement{};
+            _stream.Read(&t6SceneryElement, sizeof(rct_td6_scenery_element));
+            TrackDesignSceneryElement sceneryElement{};
+            sceneryElement.scenery_object = t6SceneryElement.scenery_object;
+            sceneryElement.x = t6SceneryElement.x;
+            sceneryElement.y = t6SceneryElement.y;
+            sceneryElement.z = t6SceneryElement.z;
+            sceneryElement.flags = t6SceneryElement.flags;
+            sceneryElement.primary_colour = t6SceneryElement.primary_colour;
+            sceneryElement.secondary_colour = t6SceneryElement.secondary_colour;
             td->scenery_elements.push_back(sceneryElement);
         }
 
