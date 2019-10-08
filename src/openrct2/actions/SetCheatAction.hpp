@@ -765,10 +765,13 @@ private:
             if (x != PEEP_SPAWN_UNDEFINED)
             {
                 auto* surfaceElement = map_get_surface_element_at({ x, y });
-                surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-                update_park_fences_around_tile({ x, y });
-                uint16_t baseHeight = surfaceElement->base_height * 8;
-                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+                if (surfaceElement != nullptr)
+                {
+                    surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
+                    update_park_fences_around_tile({ x, y });
+                    uint16_t baseHeight = surfaceElement->base_height * 8;
+                    map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+                }
             }
         }
 

@@ -2423,7 +2423,10 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
     for (const TileCoordsXY* tile = tiles.begin(); tile != tiles.end(); ++tile)
     {
         auto surfaceElement = map_get_surface_element_at((*tile).x, (*tile).y);
-        surfaceElement->SetOwnership(ownership);
-        update_park_fences_around_tile({ (*tile).x * 32, (*tile).y * 32 });
+        if (surfaceElement != nullptr)
+        {
+            surfaceElement->SetOwnership(ownership);
+            update_park_fences_around_tile({ (*tile).x * 32, (*tile).y * 32 });
+        }
     }
 }

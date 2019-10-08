@@ -517,6 +517,8 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
     if (!(peep->GetNextIsSurface()))
     {
         auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
+        if (surfaceElement == nullptr)
+            return INVALID_DIRECTION;
 
         if (peep->next_z != surfaceElement->base_height)
             return INVALID_DIRECTION;

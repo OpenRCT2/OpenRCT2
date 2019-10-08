@@ -1391,6 +1391,8 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
             }
 
             auto surfaceElement = map_get_surface_element_at(mapCoord);
+            if (surfaceElement == nullptr)
+                continue;
             int16_t map_height = surfaceElement->base_height * 8;
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {

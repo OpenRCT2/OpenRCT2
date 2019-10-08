@@ -102,6 +102,9 @@ public:
         }
 
         auto* surfaceElement = map_get_surface_element_at(_coords);
+        if (surfaceElement == nullptr)
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+
         TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
         if (tileElement != nullptr)
         {
@@ -155,6 +158,9 @@ public:
         }
 
         auto* surfaceElement = map_get_surface_element_at(_coords);
+        if (surfaceElement == nullptr)
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+
         cost += GetSurfaceHeightChangeCost(surfaceElement);
         SetSurfaceHeight(reinterpret_cast<TileElement*>(surfaceElement));
 

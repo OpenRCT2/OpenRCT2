@@ -143,7 +143,10 @@ public:
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
                 SurfaceElement* surfaceElement = map_get_surface_element_at(entranceLoc);
-                surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
+                if (surfaceElement != nullptr)
+                {
+                    surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
+                }
             }
 
             TileElement* newElement = tile_element_insert({ entranceLoc.x / 32, entranceLoc.y / 32, zLow }, 0b1111);

@@ -422,6 +422,8 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
     uint32_t z;
 
     auto surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+    if (surfaceElement == nullptr)
+        return 0;
     z = surfaceElement->base_height * 8;
 
     // Increase Z above slope
