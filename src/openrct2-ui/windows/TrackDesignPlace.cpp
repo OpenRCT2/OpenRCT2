@@ -620,14 +620,7 @@ static void window_track_place_draw_mini_preview_track(
             if (draw_mini_preview_is_pixel_in_bounds(pixelPosition))
             {
                 uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
-
-                bool isExit = false;
-                if (entrance.direction & (1 << 7))
-                {
-                    isExit = true;
-                }
-
-                uint8_t colour = isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
                 for (int32_t i = 0; i < 4; i++)
                 {
                     pixel[338 + i] = colour; // x + 2, y + 2

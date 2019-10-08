@@ -172,6 +172,7 @@ public:
                 entranceElement.direction = t6EntranceElement.direction;
                 entranceElement.x = t6EntranceElement.x;
                 entranceElement.y = t6EntranceElement.y;
+                entranceElement.isExit = t6EntranceElement.direction >> 7;
                 td->entrance_elements.push_back(entranceElement);
             }
         }

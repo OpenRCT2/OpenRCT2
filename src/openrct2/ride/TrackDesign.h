@@ -28,6 +28,7 @@ struct TrackDesignEntranceElement
     uint8_t direction;
     int16_t x;
     int16_t y;
+    uint8_t isExit;
 };
 
 /* Track Scenery entry  size: 0x16 */
