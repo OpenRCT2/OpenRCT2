@@ -204,7 +204,7 @@ void scenery_remove_ghost_tool_placement()
         {
             if (tileElement == nullptr)
                 break;
-              
+
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
