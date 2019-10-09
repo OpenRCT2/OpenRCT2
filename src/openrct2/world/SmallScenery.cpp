@@ -24,16 +24,13 @@
 #include "Scenery.h"
 #include "Surface.h"
 
-/**
- *
- *  rct2: 0x006E0D6E, 0x006B8D88
- */
-int32_t map_place_scenery_clear_func(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
+static int32_t map_place_clear_func(
+    TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price, bool is_scenery)
 {
     if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
 
-    if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
+    if (is_scenery && !(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
         return 1;
 
     rct_scenery_entry* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
@@ -63,36 +60,20 @@ int32_t map_place_scenery_clear_func(TileElement** tile_element, int32_t x, int3
 
 /**
  *
+ *  rct2: 0x006E0D6E, 0x006B8D88
+ */
+int32_t map_place_scenery_clear_func(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
+{
+    return map_place_clear_func(tile_element, x, y, flags, price, /*is_scenery=*/true);
+}
+
+/**
+ *
  *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
  */
 int32_t map_place_non_scenery_clear_func(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
 {
-    if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
-        return 1;
-
-    rct_scenery_entry* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
-
-    if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
-    {
-        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_IS_TREE))
-            return 1;
-    }
-
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        *price += scenery->small_scenery.removal_price * 10;
-
-    if (flags & GAME_COMMAND_FLAG_GHOST)
-        return 0;
-
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
-        return 0;
-
-    map_invalidate_tile(x, y, (*tile_element)->base_height * 8, (*tile_element)->clearance_height * 8);
-
-    tile_element_remove(*tile_element);
-
-    (*tile_element)--;
-    return 0;
+    return map_place_clear_func(tile_element, x, y, flags, price, /*is_scenery=*/false);
 }
 
 bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags)
