@@ -1612,40 +1612,9 @@ void window_relocate_windows(int32_t width, int32_t height)
  */
 void window_resize_gui(int32_t width, int32_t height)
 {
+    window_resize_gui_scenario_editor(width, height);
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
-    {
-        window_resize_gui_scenario_editor(width, height);
         return;
-    }
-    rct_window* mainWind = window_get_main();
-    if (mainWind != nullptr)
-    {
-        rct_viewport* viewport = mainWind->viewport;
-        mainWind->width = width;
-        mainWind->height = height;
-        viewport->width = width;
-        viewport->height = height;
-        viewport->view_width = width << viewport->zoom;
-        viewport->view_height = height << viewport->zoom;
-        if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WWT_VIEWPORT)
-        {
-            mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
-            mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;
-        }
-    }
-
-    rct_window* topWind = window_find_by_class(WC_TOP_TOOLBAR);
-    if (topWind != nullptr)
-    {
-        topWind->width = std::max(640, width);
-    }
-
-    rct_window* bottomWind = window_find_by_class(WC_BOTTOM_TOOLBAR);
-    if (bottomWind != nullptr)
-    {
-        bottomWind->y = height - 32;
-        bottomWind->width = std::max(640, width);
-    }
 
     rct_window* titleWind = window_find_by_class(WC_TITLE_MENU);
     if (titleWind != nullptr)
