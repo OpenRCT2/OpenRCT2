@@ -330,7 +330,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             // If this is the exit version
             if (i == 1)
             {
-                entrance.isExit = 1;
+                entrance.isExit = true;
             }
             entrance_elements.push_back(entrance);
         }
