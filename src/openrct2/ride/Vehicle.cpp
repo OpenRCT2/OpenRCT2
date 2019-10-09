@@ -9884,6 +9884,9 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
         while (true)
         {
             auto* pathElement = map_get_path_element_at({ xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height });
+            if (pathElement == nullptr)
+                break;
+
             auto ride = get_ride(vehicle->ride);
 
             // Many New Element parks have invisible rides hacked into the path.
