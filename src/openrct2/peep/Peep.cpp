@@ -484,6 +484,8 @@ bool Peep::CheckForPath()
 
     do
     {
+        if (tile_element == nullptr)
+            break;
         if (tile_element->GetType() == map_type)
         {
             if (height == tile_element->base_height)
@@ -2541,6 +2543,8 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             TileElement* nextTileElement = map_get_first_element_at(next_x / 32, next_y / 32);
             do
             {
+                if (nextTileElement == nullptr)
+                    break;
                 if (nextTileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                     continue;
 
@@ -3092,6 +3096,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     }
 
     TileElement* tileElement = map_get_first_element_at(newLoc.x / 32, newLoc.y / 32);
+    if (tileElement == nullptr)
+        return;
     int16_t base_z = std::max(0, (z / 8) - 2);
     int16_t top_z = (z / 8) + 1;
 

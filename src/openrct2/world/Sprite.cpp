@@ -711,6 +711,8 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
         return false;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return false;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)

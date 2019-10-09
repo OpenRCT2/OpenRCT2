@@ -139,6 +139,8 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElem
     ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -175,6 +177,8 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
     ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)

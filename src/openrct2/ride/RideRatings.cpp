@@ -207,6 +207,11 @@ static void ride_ratings_update_state_2()
     int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
     TileElement* tileElement = map_get_first_element_at(x, y);
+    if (tileElement == nullptr)
+    {
+        gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+        return;
+    }
     do
     {
         if (tileElement->IsGhost())
@@ -313,6 +318,11 @@ static void ride_ratings_update_state_5()
     int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
     TileElement* tileElement = map_get_first_element_at(x, y);
+    if (tileElement == nullptr)
+    {
+        gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+        return;
+    }
     do
     {
         if (tileElement->IsGhost())
@@ -419,6 +429,8 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
         return;
 
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->IsGhost())
@@ -471,6 +483,8 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
 static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTileElement, int32_t x, int32_t y)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->IsGhost())
@@ -545,6 +559,8 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
     int32_t x = gRideRatingsCalcData.proximity_x;
     int32_t y = gRideRatingsCalcData.proximity_y;
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->IsGhost())
@@ -1438,6 +1454,8 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         {
             // Count scenery items on this tile
             TileElement* tileElement = map_get_first_element_at(xx, yy);
+            if (tileElement == nullptr)
+                continue;
             do
             {
                 if (tileElement->IsGhost())

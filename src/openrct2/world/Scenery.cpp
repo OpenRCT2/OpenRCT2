@@ -73,6 +73,8 @@ void scenery_update_tile(int32_t x, int32_t y)
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
@@ -200,6 +202,9 @@ void scenery_remove_ghost_tool_placement()
 
         do
         {
+            if (tileElement == nullptr)
+                break;
+
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                 continue;
 

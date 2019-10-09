@@ -4944,6 +4944,8 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 
     bool success = false;
     TileElement* tileElement = map_get_first_element_at(location.x, location.y);
+    if (tileElement == nullptr)
+        return success;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -5182,6 +5184,8 @@ static TileElement* loc_6B4F6B(ride_id_t rideIndex, int32_t x, int32_t y)
         return nullptr;
 
     TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -6251,6 +6255,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(
             if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32))
             {
                 tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
+                if (tileElement == nullptr)
+                    continue;
                 do
                 {
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -6306,6 +6312,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(
             mapX -= CoordsDirectionDelta[direction].x;
             mapY -= CoordsDirectionDelta[direction].y;
             tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
+            if (tileElement == nullptr)
+                break;
             bool goToNextTile = false;
 
             do
@@ -6648,6 +6656,8 @@ static int32_t ride_get_track_length(Ride* ride)
         z = ride->stations[i].Height;
 
         tileElement = map_get_first_element_at(x >> 5, y >> 5);
+        if (tileElement == nullptr)
+            continue;
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -6904,6 +6914,8 @@ void sub_6CB945(Ride* ride)
                     location.y -= CoordsDirectionDelta[direction].y;
                 }
                 tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
+                if (tileElement == nullptr)
+                    break;
 
                 bool trackFound = false;
                 do
@@ -6951,6 +6963,8 @@ void sub_6CB945(Ride* ride)
 
                 bool trackFound = false;
                 tileElement = map_get_first_element_at(blockLocation.x >> 5, blockLocation.y >> 5);
+                if (tileElement == nullptr)
+                    break;
                 do
                 {
                     if (blockLocation.z != tileElement->base_height)
@@ -7016,6 +7030,8 @@ void sub_6CB945(Ride* ride)
         CoordsXY location = { locationCoords.x * 32, locationCoords.y * 32 };
 
         TileElement* tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
+        if (tileElement == nullptr)
+            continue;
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
@@ -7031,6 +7047,8 @@ void sub_6CB945(Ride* ride)
 
             bool shouldRemove = true;
             TileElement* trackElement = map_get_first_element_at(nextLocation.x >> 5, nextLocation.y >> 5);
+            if (trackElement == nullptr)
+                continue;
             do
             {
                 if (trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)

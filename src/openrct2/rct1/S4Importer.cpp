@@ -2743,6 +2743,8 @@ private:
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 TileElement* tileElement = map_get_first_element_at(x, y);
+                if (tileElement == nullptr)
+                    continue;
                 do
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
@@ -2998,6 +3000,8 @@ private:
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
                 TileElement* tileElement = map_get_first_element_at(x, y);
+                if (tileElement == nullptr)
+                    continue;
                 do
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
