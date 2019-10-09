@@ -379,7 +379,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
                 if (tileElement->AsTrack()->GetRideIndex() != ride.id)
                     continue;
 
-                rct_td46_maze_element maze{};
+                TrackDesignMazeElement maze{};
 
                 maze.maze_entry = tileElement->AsTrack()->GetMazeEntry();
                 maze.x = (x - startLoc.x) / 32;
@@ -418,7 +418,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     // Add something that stops this from walking off the end
 
     uint8_t entranceDirection = tileElement->GetDirection();
-    rct_td46_maze_element mazeEntrance{};
+    TrackDesignMazeElement mazeEntrance{};
     mazeEntrance.direction = entranceDirection;
     mazeEntrance.type = 8;
     mazeEntrance.x = (int8_t)((entranceLoc.x - startLoc.x) / 32);
@@ -445,7 +445,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     // Add something that stops this from walking off the end
 
     uint8_t exit_direction = tileElement->GetDirection();
-    rct_td46_maze_element mazeExit{};
+    TrackDesignMazeElement mazeExit{};
     mazeExit.direction = exit_direction;
     mazeExit.type = 0x80;
     mazeExit.x = (int8_t)((exitLoc.x - startLoc.x) / 32);
