@@ -169,7 +169,7 @@ public:
                 _stream.Read(&t6EntranceElement, sizeof(rct_td6_entrance_element));
                 TrackDesignEntranceElement entranceElement{};
                 entranceElement.z = t6EntranceElement.z;
-                entranceElement.direction = t6EntranceElement.direction;
+                entranceElement.direction = t6EntranceElement.direction & 0x7F;
                 entranceElement.x = t6EntranceElement.x;
                 entranceElement.y = t6EntranceElement.y;
                 entranceElement.isExit = t6EntranceElement.direction >> 7;
