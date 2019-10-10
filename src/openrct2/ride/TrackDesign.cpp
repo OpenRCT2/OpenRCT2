@@ -330,7 +330,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             // If this is the exit version
             if (i == 1)
             {
-                entrance.direction |= (1 << 7);
+                entrance.isExit = true;
             }
             entrance_elements.push_back(entrance);
         }
@@ -1635,12 +1635,6 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
             case PTD_OPERATION_PLACE_TRACK_PREVIEW:
             {
                 rotation = (rotation + entrance.direction) & 3;
-                bool isExit = false;
-                if (entrance.direction & (1 << 7))
-                {
-                    isExit = true;
-                }
-
                 if (_trackDesignPlaceOperation != PTD_OPERATION_PLACE_QUERY)
                 {
                     LocationXY16 tile = {
@@ -1686,7 +1680,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
 
                         gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-                            { x, y }, rotation, ride->id, stationIndex, isExit);
+                            { x, y }, rotation, ride->id, stationIndex, entrance.isExit);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
                                                                    : GameActions::QueryNested(&rideEntranceExitPlaceAction);
