@@ -864,7 +864,7 @@ static int32_t get_train_mass(rct_vehicle* first_vehicle)
  *
  *  rct2: 0x006BB9FF
  */
-static void vehicle_update_sound_params(rct_vehicle* vehicle, rct_vehicle_sound_params vehicleSoundParamsList, rct_vehicle_sound_params* vehicleSoundParamsListEnd)
+static void vehicle_update_sound_params(rct_vehicle* vehicle, std::array <rct_vehicle_sound_params, AUDIO_MAX_VEHICLE_SOUNDS> vehicleSoundParamsList, rct_vehicle_sound_params* vehicleSoundParamsListEnd)
 {
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
@@ -1252,7 +1252,7 @@ void vehicle_sounds_update()
     if (gAudioCurrentDevice == -1 || gGameSoundsOff || !gConfigSound.sound_enabled || gOpenRCT2Headless)
         return;
 
-    rct_vehicle_sound_params vehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
+    std::array <rct_vehicle_sound_params, AUDIO_MAX_VEHICLE_SOUNDS> vehicleSoundParamsList;
     rct_vehicle_sound_params* vehicleSoundParamsListEnd;
 
     vehicle_sounds_update_window_setup();
