@@ -138,32 +138,32 @@ public:
 
         if (td->type == RIDE_TYPE_MAZE)
         {
-            rct_td46_maze_element t4MazeElement{};
-            t4MazeElement.all = !0;
-            while (t4MazeElement.all != 0)
+            rct_td46_maze_element t6MazeElement{};
+            t6MazeElement.all = !0;
+            while (t6MazeElement.all != 0)
             {
-                _stream.Read(&t4MazeElement, sizeof(rct_td46_maze_element));
-                if (t4MazeElement.all != 0)
+                _stream.Read(&t6MazeElement, sizeof(rct_td46_maze_element));
+                if (t6MazeElement.all != 0)
                 {
                     TrackDesignMazeElement mazeElement{};
-                    mazeElement.x = t4MazeElement.x;
-                    mazeElement.y = t4MazeElement.y;
-                    mazeElement.direction = t4MazeElement.direction;
-                    mazeElement.type = t4MazeElement.type;
+                    mazeElement.x = t6MazeElement.x;
+                    mazeElement.y = t6MazeElement.y;
+                    mazeElement.direction = t6MazeElement.direction;
+                    mazeElement.type = t6MazeElement.type;
                     td->maze_elements.push_back(mazeElement);
                 }
             }
         }
         else
         {
-            rct_td46_track_element t4TrackElement{};
+            rct_td46_track_element t6TrackElement{};
             for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
             {
                 _stream.SetPosition(_stream.GetPosition() - 1);
-                _stream.Read(&t4TrackElement, sizeof(rct_td46_track_element));
+                _stream.Read(&t6TrackElement, sizeof(rct_td46_track_element));
                 TrackDesignTrackElement trackElement{};
-                trackElement.type = t4TrackElement.type;
-                trackElement.flags = trackElement.flags;
+                trackElement.type = t6TrackElement.type;
+                trackElement.flags = t6TrackElement.flags;
                 td->track_elements.push_back(trackElement);
             }
 

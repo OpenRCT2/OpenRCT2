@@ -278,7 +278,7 @@ private:
                 _stream.Read(&t4TrackElement, sizeof(rct_td46_track_element));
                 TrackDesignTrackElement trackElement{};
                 trackElement.type = t4TrackElement.type;
-                trackElement.flags = trackElement.flags;
+                trackElement.flags = t4TrackElement.flags;
                 td->track_elements.push_back(trackElement);
             }
         }
