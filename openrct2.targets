@@ -153,7 +153,7 @@
               if (!String.IsNullOrEmpty(CheckFile))
               {
                   string checkSha1 = GetSha1FromCheckFile(CheckFile, Name);
-                  if (String.Equals(checkSha1, Sha1, StringComparison.OrdinalIgnoreCase))
+                  if (String.Equals(checkSha1, Sha1, StringComparison.OrdinalIgnoreCase) && Directory.Exists(OutputDirectory))
                   {
                       Log.LogMessage(MessageImportance.Normal, String.Format("{0} up to date", Name));
                       return true;
