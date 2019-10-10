@@ -172,7 +172,7 @@ The following people are not part of the development team, but have been contrib
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
-* Italian - Luca Andrea Rossi (LucaRed)
+* Italian - Luca Andrea Rossi (LucaRed), Precious Ugo Abara (48cfu)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
 * Korean - (telk5093), (NeverDruid); small fixes: (kexplo)
 * Norwegian - Hugo Wallenburg (Goddesen)
