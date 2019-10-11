@@ -147,7 +147,7 @@ rct_window* window_view_clipping_open()
     }
 
     // Window is not open - create it.
-    window = window_create(32, 32, WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
+    window = window_create(ScreenCoordsXY(32, 32), WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
     window->widgets = window_view_clipping_widgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
         | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)

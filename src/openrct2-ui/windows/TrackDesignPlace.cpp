@@ -158,7 +158,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
 
     _window_track_place_mini_preview.resize(TRACK_MINI_PREVIEW_SIZE);
 
-    rct_window* w = window_create(0, 29, 200, 124, &window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
+    rct_window* w = window_create(ScreenCoordsXY(0, 29), 200, 124, &window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
     w->widgets = window_track_place_widgets;
     w->enabled_widgets = 1 << WIDX_CLOSE | 1 << WIDX_ROTATE | 1 << WIDX_MIRROR | 1 << WIDX_SELECT_DIFFERENT_DESIGN;
     window_init_scroll_widgets(w);

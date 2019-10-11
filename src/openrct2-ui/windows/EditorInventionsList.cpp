@@ -751,8 +751,9 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
     w = window_create(
-        gTooltipCursorX - (stringWidth / 2), gTooltipCursorY - 7, stringWidth, 14, &window_editor_inventions_list_drag_events,
-        WC_EDITOR_INVENTION_LIST_DRAG, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
+        ScreenCoordsXY(gTooltipCursorX - (stringWidth / 2), gTooltipCursorY - 7), stringWidth, 14,
+        &window_editor_inventions_list_drag_events, WC_EDITOR_INVENTION_LIST_DRAG,
+        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     w->widgets = window_editor_inventions_list_drag_widgets;
     w->colours[1] = COLOUR_WHITE;
     input_window_position_begin(w, 0, gTooltipCursorX, gTooltipCursorY);

@@ -208,8 +208,8 @@ void window_dropdown_show_text_custom_width(
 
     // Create the window
     w = window_create(
-        x, y + extray, window_dropdown_widgets[WIDX_BACKGROUND].right + 1, window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
-        &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
+        ScreenCoordsXY(x, y + extray), window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
+        window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
     w->widgets = window_dropdown_widgets;
     if (colour & COLOUR_FLAG_TRANSLUCENT)
         w->flags |= WF_TRANSPARENT;
@@ -288,8 +288,8 @@ void window_dropdown_show_image(
 
     // Create the window
     w = window_create(
-        x, y + extray, window_dropdown_widgets[WIDX_BACKGROUND].right + 1, window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
-        &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
+        ScreenCoordsXY(x, y + extray), window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
+        window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
     w->widgets = window_dropdown_widgets;
     if (colour & COLOUR_FLAG_TRANSLUCENT)
         w->flags |= WF_TRANSPARENT;

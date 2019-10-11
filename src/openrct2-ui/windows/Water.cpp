@@ -90,7 +90,7 @@ rct_window* window_water_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(context_get_width() - 76, 29, 76, 77, &window_water_events, WC_WATER, 0);
+    window = window_create(ScreenCoordsXY(context_get_width() - 76, 29), 76, 77, &window_water_events, WC_WATER, 0);
     window->widgets = window_water_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);

@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "../ride/RideTypes.h"
+#include "../world/Location.hpp"
 
 #include <functional>
 #include <limits>
@@ -593,7 +594,7 @@ void window_update_all();
 void window_set_window_limit(int32_t value);
 
 rct_window* window_create(
-    int32_t x, int32_t y, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    ScreenCoordsXY screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
     uint16_t flags);
 rct_window* window_create_auto_pos(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);

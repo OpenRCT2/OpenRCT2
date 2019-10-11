@@ -612,7 +612,7 @@ rct_window* window_cheats_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(32, 32, WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
+    window = window_create(ScreenCoordsXY(32, 32), WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
     window->widgets = window_cheats_money_widgets;
     window->enabled_widgets = window_cheats_page_enabled_widgets[0];
     window->hold_down_widgets = window_cheats_page_hold_down_widgets[0];
