@@ -320,11 +320,6 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
                 return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
             }
 
-            if (z == 0xFF)
-            {
-                z = 0x80;
-            }
-
             entrance.z = z;
 
             // If this is the exit version
@@ -1643,7 +1638,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                     };
                     TileElement* tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
                     z = gTrackPreviewOrigin.z / 8;
-                    z += (entrance.z == (int8_t)(uint8_t)0x80) ? -1 : entrance.z;
+                    z += entrance.z;
                     if (tile_element == nullptr)
                     {
                         _trackDesignPlaceCost = MONEY32_UNDEFINED;
@@ -1698,8 +1693,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 }
                 else
                 {
-                    z = (entrance.z == (int8_t)(uint8_t)0x80) ? -1 : entrance.z;
-                    z *= 8;
+                    z = entrance.z * 8;
                     z += gTrackPreviewOrigin.z;
 
                     auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ x, y, z }, false);
