@@ -7,21 +7,12 @@ RUN dnf update -y
 RUN dnf install -y \
         make \
         cmake \
-        git \
-        sudo \
-        wget \
-        gawk \
-        sudo \
-        fakeroot \
-        file \
-        patch \
         ninja-build
 
 # Install MingW packages
 RUN dnf install -y \
         mingw32-binutils \
         mingw32-boost \
-#        mingw32-cmake \
         mingw32-crt \
         mingw32-curl \
         mingw32-fontconfig \
@@ -38,14 +29,9 @@ RUN dnf install -y \
         mingw32-speexdsp \
         mingw-w64-tools \
         mingw32-winpthreads \
-        mingw32-win-iconv \
         mingw32-zlib
 
-RUN useradd --create-home --comment "Fedora Build User" build && \
-    groupadd sudo && \
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers; \
-    echo 'Defaults:nobody !requiretty' >> /etc/sudoers; \
-    gpasswd -a build sudo
+RUN useradd --create-home --comment "Fedora Build User" build
 
 USER build
 
