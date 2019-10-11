@@ -42,7 +42,6 @@ pushd build
 	elif [[ $TARGET == "windows" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker pull openrct2/openrct2:mingw-fedora || docker build -t openrct2/openrct2:mingw-fedora -f $PARENT/dockerfiles/mingw-fedora/Dockerfile $PARENT/dockerfiles/mingw-fedora/
 		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:mingw-fedora bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS"
 	else
 		echo "Unkown target $TARGET"

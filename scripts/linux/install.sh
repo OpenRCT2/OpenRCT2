@@ -112,7 +112,7 @@ elif [[ $(uname) == "Linux" ]]; then
 			docker pull openrct2/openrct2:ubuntu_amd64
 			;;
 		"windows")
-			docker pull openrct2/openrct2:mingw-arch
+			docker pull openrct2/openrct2:mingw-fedora || docker build -t openrct2/openrct2:mingw-fedora -f dockerfiles/mingw-fedora/Dockerfile dockerfiles/mingw-fedora/
 			;;
 		"docker64")
 			docker pull openrct2/openrct2:64bit-only
