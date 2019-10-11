@@ -200,7 +200,6 @@ else ()
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_RANGE_LOOP_ANALYSIS -Wrange-loop-analysis)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_TAUTOLOGICAL_ZERO_COMPARE -Wtautological-unsigned-zero-compare)
     ADD_CHECK_CXX_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CLOBBERED -Wno-clobbered)
-    ADD_CHECK_CXX_FLAG(CMAKE_CXX_FLAGS CXX_WNNO_CAST_FUNCTION_TYPE -Wno-cast-function-type)
     # Disabled due to problems compiling OpenSSL on macOS.
     # ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DOCUMENTATION -Wdocumentation)
 
@@ -225,6 +224,10 @@ else ()
 
     if(APPLE)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=objc-method-access")
+    endif()
+
+    if(MINGW)
+       ADD_CHECK_CXX_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CAST_FUNCTION_TYPE -Wno-cast-function-type)
     endif()
 
     # On mingw all code is already PIC, this will avoid compiler error on redefining this option
