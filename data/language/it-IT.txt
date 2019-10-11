@@ -477,7 +477,7 @@ STR_1091    :Modalità spettacolo circense
 STR_1092    :Lancio in discesa
 STR_1093    :Modalità casa distorta
 STR_1094    :Modalità caduta libera
-STR_1095    :Mod. circuito continuo sezi. a blocchi
+STR_1095    :Mod. circuito continuo sez. a blocchi
 STR_1096    :Lancio a motore (without passing station)
 STR_1097    :Mod. lancio a motore sez. a blocchi
 STR_1098    :In viaggio verso la fine della {POP16}{STRINGID}
@@ -2018,12 +2018,12 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :Tutte le ricerche sono completate
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
+STR_2681    :{MEDIUMFONT}{BLACK}Incrementa il tuo denaro di {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Arriva un largo numero di visitatori
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Basso:
 STR_2687    :Alto:
-STR_2688    :Base Frequency:
+STR_2688    :Frequenza Base:
 STR_2689    :Ottavi:
 STR_2690    :Generazione Mappa
 STR_2691    :Base height:
@@ -2552,7 +2552,7 @@ STR_3328    :Impossibile passare alla fase successiva dell'editor...
 STR_3329    :L'entrata del parco non è stata ancora costruita
 STR_3330    :Il parco deve possedere del terreno
 STR_3331    :Il percorso dall'entrata del parco al bordo della mappa non è completo o è troppo complesso. Dev'essere di larghezza singola con il minor numero possibile di collegamenti e curve
-STR_3332    :L'entrata del parco è oriantata nel senso sbagliato o non ha un percorso che conduce al bordo della mappa
+STR_3332    :L'entrata del parco è orientata nel senso sbagliato o non ha un percorso che conduce al bordo della mappa
 STR_3333    :Esporta oggetti di plug-in insieme alle partite salvate
 STR_3334    :{SMALLFONT}{BLACK}Scegli se salvare gli eventuali dati necessari degli oggetti di plug-in (dati non forniti con il prodotto principale) all'interno dei file di scenario o delle partite salvate, permettendone così l'accesso anche a chi non possiede questi dati addizionali
 STR_3335    :Editor di percorsi - Selezione tipo percorso e veicoli
@@ -2753,11 +2753,11 @@ STR_5251    :Pulsante Opzioni Titolo
 STR_5252    :Selezione Titolo Scenario
 STR_5253    :Informazioni Parco
 STR_5254    :Crea
-STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
-STR_5256    :Create a new theme to make changes to
-STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
-STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
-STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
+STR_5255    :{SMALLFONT}{BLACK} Crea una nuova sequenza di titoli da zero
+STR_5256    :Crea un nuovo tema da modificare
+STR_5257    :{SMALLFONT}{BLACK}Crea un nuovo tema basato sul tema corrente
+STR_5258    :{SMALLFONT}{BLACK}Elimina il tema corrente
+STR_5259    :{SMALLFONT}{BLACK}Rinomina il tema corrente
 STR_5260    :Schermata gigante
 STR_5261    :Filtro
 STR_5262    :Wacky Worlds
@@ -2770,8 +2770,8 @@ STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Controlli e interfaccia
 STR_5270    :{SMALLFONT}{BLACK}Varie
 STR_5271    :{SMALLFONT}{BLACK}Twitch
-STR_5272    :{SMALLFONT}{BLACK}Sceneri piccoli
-STR_5273    :{SMALLFONT}{BLACK}Sceneri grandi
+STR_5272    :{SMALLFONT}{BLACK}Scenari piccoli
+STR_5273    :{SMALLFONT}{BLACK}Scenari grandi
 STR_5274    :{SMALLFONT}{BLACK}Percorso
 STR_5275    :Cerca per oggetti
 STR_5276    :Inserisci il nome di un oggetto da cercare
@@ -3009,7 +3009,7 @@ STR_5511    :(UNKNOWN)
 STR_5512    :Salva partita con nome...
 STR_5513    :Salvataggio veloce
 STR_5514    :Disattiva vandalismi
-STR_5515    :{SMALLFONT}{BLACK}Impedisce ai visitatori di vandalizzare il parco quando sono arrabbiati
+STR_5515    :{SMALLFONT}{BLACK}Impedisce ai visitatori del parco di compiere atti vandalici quando sono arrabbiati
 STR_5516    :{SMALLFONT}{BLACK}Nero
 STR_5517    :{SMALLFONT}{BLACK}Grigio
 STR_5518    :{SMALLFONT}{BLACK}Bianco
@@ -3306,7 +3306,7 @@ STR_5844    :{SMALLFONT}{BLACK}Connettiti al server multigiocatore{NEWLINE}anche
 STR_5845    :{SMALLFONT}{BLACK}Aggiungi un pulsante{NEWLINE}per debuggare nella barra.{NEWLINE}Abilita le shortcut nellatastiera per la console sviluppatori
 STR_5846    :{SMALLFONT}{BLACK}Imposta i salvataggi automatici di OpenRCT2 spesso
 STR_5847    :{SMALLFONT}{BLACK}Seleziona la sequenza del parco utilizzata nei titoli.{NEWLINE}La sequenza del titolo in RCT1/2 richiede l'importazione degli scenari per funzionare
-STR_5848    :{SMALLFONT}{BLACK}Crea e gestici sequenze di titoli personalizzate
+STR_5848    :{SMALLFONT}{BLACK}Crea e gestisci sequenze di titoli personalizzate
 STR_5849    :{SMALLFONT}{BLACK}Colloca sulla mappa{NEWLINE}i nuovi membri del personale automaticamente
 STR_5851    :{SMALLFONT}{BLACK}Imposta l'intervallo predefinito di inspezione{NEWLINE}nelle nuove attrazioni
 STR_5852    :{SMALLFONT}{BLACK}Imposta il nome del canale TwitchTV che sarà utilizzato per l'integrazione di Twitch
@@ -3766,7 +3766,7 @@ STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Opzione sperimentale per utilizzare più thread per il rendering, potrebbe causare instabilità.
 STR_6307    :Schema colore: {BLACK}{STRINGID}
 STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
-STR_6309    :Reconnessione
+STR_6309    :Riconnessione
 STR_6310    :{WINDOW_COLOUR_2}Posizione: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Successivo: {BLACK}{INT32} {INT32} {INT32}
 STR_6312    :(surface)
@@ -4105,7 +4105,7 @@ STR_DTLS    :Un castello con un paio di montagne russe deve diventare un parco t
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :Un parco che ha molti dei suoi sentieri e montange russe sotterranee
+STR_DTLS    :Un parco che ha molti dei suoi sentieri e montagne russe sotterranee
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
