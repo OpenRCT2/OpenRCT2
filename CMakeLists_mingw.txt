@@ -11,7 +11,12 @@ SET(CMAKE_SYSTEM_PROCESSOR x86)
 if(APPLE)
      SET(TARGET_ENVIRONMENT /usr/local/mingw-w32-bin_i686-darwin/i686-w64-mingw32)
 else()
-     SET(TARGET_ENVIRONMENT /usr/i686-w64-mingw32)
+     # fedora has a different root for mingw
+     if(EXISTS /usr/i686-w64-mingw32/sys-root/mingw)
+          SET(TARGET_ENVIRONMENT /usr/i686-w64-mingw32/sys-root/mingw)
+     else()
+          SET(TARGET_ENVIRONMENT /usr/i686-w64-mingw32)
+     endif(EXISTS /usr/i686-w64-mingw32/sys-root/mingw)
 endif(APPLE)
 
 # here is the target environment located
