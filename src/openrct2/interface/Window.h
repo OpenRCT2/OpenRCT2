@@ -648,8 +648,8 @@ void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t to
 void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi);
 void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w);
 
-void window_set_position(rct_window* w, int32_t x, int32_t y);
-void window_move_position(rct_window* w, int32_t dx, int32_t dy);
+void window_set_position(rct_window* w, ScreenCoordsXY screenCoords);
+void window_move_position(rct_window* w, ScreenCoordsXY screenCoords);
 void window_resize(rct_window* w, int32_t dw, int32_t dh);
 void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 

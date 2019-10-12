@@ -1241,26 +1241,26 @@ void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w)
     viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }
 
-void window_set_position(rct_window* w, int32_t x, int32_t y)
+void window_set_position(rct_window* w, ScreenCoordsXY screenCoords)
 {
-    window_move_position(w, x - w->x, y - w->y);
+    window_move_position(w, ScreenCoordsXY(screenCoords.x - w->x, screenCoords.y - w->y));
 }
 
-void window_move_position(rct_window* w, int32_t dx, int32_t dy)
+void window_move_position(rct_window* w, ScreenCoordsXY deltaCoords)
 {
-    if (dx == 0 && dy == 0)
+    if (deltaCoords.x == 0 && deltaCoords.y == 0)
         return;
 
     // Invalidate old region
     w->Invalidate();
 
     // Translate window and viewport
-    w->x += dx;
-    w->y += dy;
+    w->x += deltaCoords.x;
+    w->y += deltaCoords.y;
     if (w->viewport != nullptr)
     {
-        w->viewport->x += dx;
-        w->viewport->y += dy;
+        w->viewport->x += deltaCoords.x;
+        w->viewport->y += deltaCoords.y;
     }
 
     // Invalidate new region
@@ -1919,7 +1919,7 @@ void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t
         w->y = originalY;
     }
 
-    window_set_position(w, newWindowCoords.x, newWindowCoords.y);
+    window_set_position(w, newWindowCoords);
 }
 
 int32_t window_can_resize(rct_window* w)
