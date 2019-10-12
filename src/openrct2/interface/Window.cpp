@@ -1477,22 +1477,22 @@ void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, 
     }
 }
 
-void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->scroll_mousedown != nullptr)
-        w->event_handlers->scroll_mousedown(w, scrollIndex, x, y);
+        w->event_handlers->scroll_mousedown(w, scrollIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->scroll_mousedrag != nullptr)
-        w->event_handlers->scroll_mousedrag(w, scrollIndex, x, y);
+        w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->scroll_mouseover != nullptr)
-        w->event_handlers->scroll_mouseover(w, scrollIndex, x, y);
+        w->event_handlers->scroll_mouseover(w, scrollIndex, screenCoords.x, screenCoords.y);
 }
 
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text)

@@ -693,9 +693,9 @@ void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, Scree
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex);
 void window_event_unknown_0E_call(rct_window* w);
 void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
-void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
-void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
-void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
+void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text);
 void window_event_viewport_rotate_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);

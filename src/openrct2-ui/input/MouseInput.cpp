@@ -620,7 +620,7 @@ static void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, int32
     window_event_unknown_15_call(w, scroll_id, scroll_area);
     if (scroll_area == SCROLL_PART_VIEW)
     {
-        window_event_scroll_mousedown_call(w, scroll_id, eax, ebx);
+        window_event_scroll_mousedown_call(w, scroll_id, ScreenCoordsXY(eax, ebx));
         return;
     }
 
@@ -716,7 +716,7 @@ static void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, in
     switch (scroll_part)
     {
         case SCROLL_PART_VIEW:
-            window_event_scroll_mousedrag_call(w, scroll_id, x, y);
+            window_event_scroll_mousedrag_call(w, scroll_id, ScreenCoordsXY(x, y));
             break;
         case SCROLL_PART_HSCROLLBAR_LEFT:
             input_scroll_part_update_hleft(w, widgetIndex, scroll_id);
@@ -934,7 +934,7 @@ static void input_widget_over(int32_t x, int32_t y, rct_window* w, rct_widgetind
             window_tooltip_close();
         else
         {
-            window_event_scroll_mouseover_call(w, edx, eax, ebx);
+            window_event_scroll_mouseover_call(w, edx, ScreenCoordsXY(eax, ebx));
             input_update_tooltip(w, widgetIndex, x, y);
         }
     }
