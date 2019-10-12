@@ -3225,7 +3225,7 @@ STR_5762    :Yuan Chinois (CN¥)
 STR_5763    :Tous les fichiers
 STR_5764    :Type d'attraction invalide
 STR_5765    :Impossible d'éditer les attractions de type invalide
-STR_5766    :<available string id>
+STR_5766    :Forint Hongrois (Ft)
 STR_5767    :Revenu
 STR_5768    :Clients total
 STR_5769    :Bénéfice total
@@ -3790,6 +3790,8 @@ STR_6325    :{SMALLFONT}{BLACK}Simule l'attraction
 STR_6326    :Impossible de similar {POP16}{POP16}{POP16}{STRINGID}...
 STR_6327    :Fond transparent pour les captures d'écran géantes
 STR_6328    :{SMALLFONT}{BLACK}Quand cette option est activée, les captures d'écran auront un fond transparent plutôt qu'un fond noir.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :Téléchargement [{STRING}] depuis {STRING} ({COMMA16} / {COMMA16})
 
 #############
 # Scenarios #
