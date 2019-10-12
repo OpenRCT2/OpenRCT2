@@ -278,7 +278,7 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
     rct_widgetindex widgetIndex;
 
     // Get window and widget under cursor position
-    w = window_find_from_point(x, y);
+    w = window_find_from_point(ScreenCoordsXY(x, y));
     widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(w, x, y);
     widget = widgetIndex == -1 ? nullptr : &w->widgets[widgetIndex];
 
@@ -1094,7 +1094,7 @@ void process_mouse_over(int32_t x, int32_t y)
 
     cursorId = CURSOR_ARROW;
     set_map_tooltip_format_arg(0, rct_string_id, STR_NONE);
-    window = window_find_from_point(x, y);
+    window = window_find_from_point(ScreenCoordsXY(x, y));
 
     if (window != nullptr)
     {

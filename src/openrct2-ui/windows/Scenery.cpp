@@ -748,7 +748,7 @@ static void window_scenery_periodic_update(rct_window* w)
 static void window_scenery_update(rct_window* w)
 {
     const CursorState* state = context_get_cursor_state();
-    rct_window* other = window_find_from_point(state->x, state->y);
+    rct_window* other = window_find_from_point(ScreenCoordsXY(state->x, state->y));
     if (other == w)
     {
         int32_t window_x = state->x - w->x + 26;

@@ -545,7 +545,7 @@ void window_all_wheel_input()
     // Check window cursor is over
     if (!(input_test_flag(INPUT_FLAG_5)))
     {
-        rct_window* w = window_find_from_point(cursorState->x, cursorState->y);
+        rct_window* w = window_find_from_point(ScreenCoordsXY(cursorState->x, cursorState->y));
         if (w != nullptr)
         {
             // Check if main window

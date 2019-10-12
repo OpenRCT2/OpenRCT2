@@ -619,7 +619,7 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
     rct_viewport* viewport;
     Peep *peep, *closestPeep;
 
-    w = window_find_from_point(x, y);
+    w = window_find_from_point(ScreenCoordsXY(x, y));
     if (w == nullptr)
         return nullptr;
 

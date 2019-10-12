@@ -396,17 +396,18 @@ void window_close_all_except_flags(uint16_t flags)
  *
  *  rct2: 0x006EA845
  */
-rct_window* window_find_from_point(int32_t x, int32_t y)
+rct_window* window_find_from_point(ScreenCoordsXY screenCoords)
 {
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
         auto& w = *it;
-        if (x < w->x || x >= w->x + w->width || y < w->y || y >= w->y + w->height)
+        if (screenCoords.x < w->x || screenCoords.x >= w->x + w->width || screenCoords.y < w->y
+            || screenCoords.y >= w->y + w->height)
             continue;
 
         if (w->flags & WF_NO_BACKGROUND)
         {
-            auto widgetIndex = window_find_widget_from_point(w.get(), x, y);
+            auto widgetIndex = window_find_widget_from_point(w.get(), screenCoords.x, screenCoords.y);
             if (widgetIndex == -1)
                 continue;
         }
