@@ -1584,7 +1584,8 @@ public:
     {
         const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
         std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
-        auto withoutFormatCodes = removeFormatCodes ? RCT12::RemoveFormatCodes(originalStringView) : std::string(originalString);
+        auto withoutFormatCodes = removeFormatCodes ? RCT12::RemoveFormatCodes(originalStringView)
+                                                    : std::string(originalString);
         return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
     }
 };
