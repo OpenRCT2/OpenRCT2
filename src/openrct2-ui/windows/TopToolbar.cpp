@@ -3067,7 +3067,7 @@ static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
     rct_window* window = window_find_from_point(ScreenCoordsXY(x, y));
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+    rct_widgetindex widget_index = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];
@@ -3110,7 +3110,7 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
     rct_window* window = window_find_from_point(ScreenCoordsXY(x, y));
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+    rct_widgetindex widget_index = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];

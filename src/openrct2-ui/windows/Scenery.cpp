@@ -756,7 +756,7 @@ static void window_scenery_update(rct_window* w)
 
         if (window_y < 44 || window_x <= w->width)
         {
-            rct_widgetindex widgetIndex = window_find_widget_from_point(w, state->x, state->y);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(state->x, state->y));
             if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL)
             {
                 w->scenery.hover_counter++;

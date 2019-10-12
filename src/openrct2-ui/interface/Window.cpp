@@ -556,7 +556,7 @@ void window_all_wheel_input()
             }
 
             // Check scroll view, cursor is over
-            rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->x, cursorState->y);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(cursorState->x, cursorState->y));
             if (widgetIndex != -1)
             {
                 rct_widget* widget = &w->widgets[widgetIndex];

@@ -266,7 +266,7 @@ static ResearchItem* get_research_item_at(int32_t x, int32_t y, int32_t* outScro
     rct_window* w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
     if (w != nullptr && w->x <= x && w->y < y && w->x + w->width > x && w->y + w->height > y)
     {
-        rct_widgetindex widgetIndex = window_find_widget_from_point(w, x, y);
+        rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(x, y));
         rct_widget* widget = &w->widgets[widgetIndex];
         if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
         {

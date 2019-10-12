@@ -279,7 +279,7 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
 
     // Get window and widget under cursor position
     w = window_find_from_point(ScreenCoordsXY(x, y));
-    widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(w, x, y);
+    widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(w, ScreenCoordsXY(x, y));
     widget = widgetIndex == -1 ? nullptr : &w->widgets[widgetIndex];
 
     switch (_inputState)
@@ -1100,7 +1100,7 @@ void process_mouse_over(int32_t x, int32_t y)
     {
         int32_t ebx, edi;
         rct_window* subWindow;
-        rct_widgetindex widgetId = window_find_widget_from_point(window, x, y);
+        rct_widgetindex widgetId = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
         if (widgetId != -1)
         {
             switch (window->widgets[widgetId].type)

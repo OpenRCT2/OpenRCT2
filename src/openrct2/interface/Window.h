@@ -610,7 +610,7 @@ void window_close_all_except_flags(uint16_t flags);
 rct_window* window_find_by_class(rct_windowclass cls);
 rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number);
 rct_window* window_find_from_point(ScreenCoordsXY screenCoords);
-rct_widgetindex window_find_widget_from_point(rct_window* w, int32_t x, int32_t y);
+rct_widgetindex window_find_widget_from_point(rct_window* w, ScreenCoordsXY screenCoords);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
 void window_invalidate_all();

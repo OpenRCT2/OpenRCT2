@@ -407,7 +407,7 @@ rct_window* window_find_from_point(ScreenCoordsXY screenCoords)
 
         if (w->flags & WF_NO_BACKGROUND)
         {
-            auto widgetIndex = window_find_widget_from_point(w.get(), screenCoords.x, screenCoords.y);
+            auto widgetIndex = window_find_widget_from_point(w.get(), screenCoords);
             if (widgetIndex == -1)
                 continue;
         }
@@ -426,7 +426,7 @@ rct_window* window_find_from_point(ScreenCoordsXY screenCoords)
  * returns widget_index (edx)
  * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
  */
-rct_widgetindex window_find_widget_from_point(rct_window* w, int32_t x, int32_t y)
+rct_widgetindex window_find_widget_from_point(rct_window* w, ScreenCoordsXY screenCoords)
 {
     // Invalidate the window
     window_event_invalidate_call(w);
@@ -442,7 +442,8 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, int32_t x, int32_t 
         }
         else if (widget->type != WWT_EMPTY)
         {
-            if (x >= w->x + widget->left && x <= w->x + widget->right && y >= w->y + widget->top && y <= w->y + widget->bottom)
+            if (screenCoords.x >= w->x + widget->left && screenCoords.x <= w->x + widget->right
+                && screenCoords.y >= w->y + widget->top && screenCoords.y <= w->y + widget->bottom)
             {
                 widget_index = i;
             }
