@@ -1521,18 +1521,18 @@ rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetInd
     return result;
 }
 
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     int32_t cursorId = CURSOR_ARROW;
     if (w->event_handlers->cursor != nullptr)
-        w->event_handlers->cursor(w, widgetIndex, x, y, &cursorId);
+        w->event_handlers->cursor(w, widgetIndex, screenCoords.x, screenCoords.y, &cursorId);
     return cursorId;
 }
 
-void window_event_moved_call(rct_window* w, int32_t x, int32_t y)
+void window_event_moved_call(rct_window* w, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->moved != nullptr)
-        w->event_handlers->moved(w, x, y);
+        w->event_handlers->moved(w, screenCoords.x, screenCoords.y);
 }
 
 void window_event_invalidate_call(rct_window* w)
@@ -1892,18 +1892,18 @@ static void window_snap_bottom(rct_window* w, int32_t proximity)
         w->y = topMost - w->height;
 }
 
-void window_move_and_snap(rct_window* w, int32_t newWindowX, int32_t newWindowY, int32_t snapProximity)
+void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
 {
     int32_t originalX = w->x;
     int32_t originalY = w->y;
     int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
 
-    newWindowY = std::clamp(newWindowY, minY, context_get_height() - 34);
+    newWindowCoords.y = std::clamp(newWindowCoords.y, minY, context_get_height() - 34);
 
     if (snapProximity > 0)
     {
-        w->x = newWindowX;
-        w->y = newWindowY;
+        w->x = newWindowCoords.x;
+        w->y = newWindowCoords.y;
 
         window_snap_right(w, snapProximity);
         window_snap_bottom(w, snapProximity);
@@ -1913,13 +1913,13 @@ void window_move_and_snap(rct_window* w, int32_t newWindowX, int32_t newWindowY,
         if (w->x == originalX && w->y == originalY)
             return;
 
-        newWindowX = w->x;
-        newWindowY = w->y;
+        newWindowCoords.x = w->x;
+        newWindowCoords.y = w->y;
         w->x = originalX;
         w->y = originalY;
     }
 
-    window_set_position(w, newWindowX, newWindowY);
+    window_set_position(w, newWindowCoords.x, newWindowCoords.y);
 }
 
 int32_t window_can_resize(rct_window* w)

@@ -462,7 +462,7 @@ static void input_window_position_continue(rct_window* w, int32_t lastX, int32_t
     int32_t snapProximity;
 
     snapProximity = (w->flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
-    window_move_and_snap(w, newX - lastX, newY - lastY, snapProximity);
+    window_move_and_snap(w, ScreenCoordsXY(newX - lastX, newY - lastY), snapProximity);
 }
 
 static void input_window_position_end(rct_window* w, int32_t x, int32_t y)
@@ -470,7 +470,7 @@ static void input_window_position_end(rct_window* w, int32_t x, int32_t y)
     _inputState = INPUT_STATE_NORMAL;
     gTooltipTimeout = 0;
     gTooltipWidget = _dragWidget;
-    window_event_moved_call(w, x, y);
+    window_event_moved_call(w, ScreenCoordsXY(x, y));
 }
 
 static void input_window_resize_begin(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
@@ -1163,13 +1163,13 @@ void process_mouse_over(int32_t x, int32_t y)
                         break;
                     }
                     // Same as default but with scroll_x/y
-                    cursorId = window_event_cursor_call(window, widgetId, scroll_x, scroll_y);
+                    cursorId = window_event_cursor_call(window, widgetId, ScreenCoordsXY(scroll_x, scroll_y));
                     if (cursorId == -1)
                         cursorId = CURSOR_ARROW;
                     break;
                 }
                 default:
-                    cursorId = window_event_cursor_call(window, widgetId, x, y);
+                    cursorId = window_event_cursor_call(window, widgetId, ScreenCoordsXY(x, y));
                     if (cursorId == -1)
                         cursorId = CURSOR_ARROW;
                     break;

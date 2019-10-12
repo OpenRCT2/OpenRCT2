@@ -700,8 +700,8 @@ void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, cha
 void window_event_viewport_rotate_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
 rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex);
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-void window_event_moved_call(rct_window* w, int32_t x, int32_t y);
+int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+void window_event_moved_call(rct_window* w, ScreenCoordsXY screenCoords);
 void window_event_invalidate_call(rct_window* w);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi);
 void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
@@ -709,7 +709,7 @@ void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32
 void invalidate_all_windows_after_input();
 void textinput_cancel();
 
-void window_move_and_snap(rct_window* w, int32_t newWindowX, int32_t newWindowY, int32_t snapProximity);
+void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
 int32_t window_can_resize(rct_window* w);
 
 void window_start_textbox(
