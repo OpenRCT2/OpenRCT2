@@ -510,7 +510,7 @@ public:
         dst->default_name_number = src->name_arguments_number;
         if (is_user_string_id(src->name))
         {
-            dst->custom_name = GetUserString(src->name);
+            dst->custom_name = GetUserString(src->name, false);
         }
         else
         {
@@ -1580,11 +1580,11 @@ public:
         dst->sprite_direction = src->sprite_direction;
     }
 
-    std::string GetUserString(rct_string_id stringId)
+    std::string GetUserString(rct_string_id stringId, bool removeFormatCodes = true)
     {
         const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
         std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
-        auto withoutFormatCodes = RCT12::RemoveFormatCodes(originalStringView);
+        auto withoutFormatCodes = removeFormatCodes ? RCT12::RemoveFormatCodes(originalStringView) : std::string(originalString);
         return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
     }
 };
