@@ -340,11 +340,11 @@ static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex w
     switch (widgetIndex)
     {
         case WIDX_MAZE_DIRECTION_GROUPBOX:
-            ride_construction_toolupdate_construct(x, y);
+            ride_construction_toolupdate_construct(ScreenCoordsXY(x, y));
             break;
         case WIDX_MAZE_ENTRANCE:
         case WIDX_MAZE_EXIT:
-            ride_construction_toolupdate_entrance_exit(x, y);
+            ride_construction_toolupdate_entrance_exit(ScreenCoordsXY(x, y));
             break;
     }
 }
@@ -406,7 +406,7 @@ static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex wid
     switch (widgetIndex)
     {
         case WIDX_MAZE_DIRECTION_GROUPBOX:
-            ride_construction_tooldown_construct(x, y);
+            ride_construction_tooldown_construct(ScreenCoordsXY(x, y));
             break;
         case WIDX_MAZE_ENTRANCE:
         case WIDX_MAZE_EXIT:

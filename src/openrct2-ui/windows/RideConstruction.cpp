@@ -480,7 +480,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
 static void ride_selected_track_set_seat_rotation(int32_t seatRotation);
 static void loc_6C7502(int32_t al);
 static void ride_construction_set_brakes_speed(int32_t brakesSpeed);
-static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t screenY);
+static void ride_construction_tooldown_entrance_exit(ScreenCoordsXY screenCoords);
 
 static uint8_t _currentPossibleRideConfigurations[32];
 
@@ -2216,11 +2216,11 @@ static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex w
     switch (widgetIndex)
     {
         case WIDX_CONSTRUCT:
-            ride_construction_toolupdate_construct(x, y);
+            ride_construction_toolupdate_construct(ScreenCoordsXY(x, y));
             break;
         case WIDX_ENTRANCE:
         case WIDX_EXIT:
-            ride_construction_toolupdate_entrance_exit(x, y);
+            ride_construction_toolupdate_entrance_exit(ScreenCoordsXY(x, y));
             break;
     }
 }
@@ -2234,11 +2234,11 @@ static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex wid
     switch (widgetIndex)
     {
         case WIDX_CONSTRUCT:
-            ride_construction_tooldown_construct(x, y);
+            ride_construction_tooldown_construct(ScreenCoordsXY(x, y));
             break;
         case WIDX_ENTRANCE:
         case WIDX_EXIT:
-            ride_construction_tooldown_entrance_exit(x, y);
+            ride_construction_tooldown_entrance_exit(ScreenCoordsXY(x, y));
             break;
     }
 }
@@ -3473,7 +3473,7 @@ static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
  *
  *  rct2: 0x006CC6A8
  */
-void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
+void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
 {
     int32_t x, y, z;
     const rct_preview_track* trackBlock;
@@ -3482,7 +3482,7 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    if (!ride_get_place_position_from_screen_position(screenX, screenY, &x, &y))
+    if (!ride_get_place_position_from_screen_position(screenCoords.x, screenCoords.y, &x, &y))
     {
         ride_construction_invalidate_current_track();
         map_invalidate_map_selection_tiles();
@@ -3684,7 +3684,7 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
  *
  *  rct2: 0x006CD354
  */
-void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY)
+void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
 {
     int32_t x, y, direction;
     uint8_t stationNum;
@@ -3694,7 +3694,7 @@ void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    ride_get_entrance_or_exit_position_from_screen_position(screenX, screenY, &x, &y, &direction);
+    ride_get_entrance_or_exit_position_from_screen_position(screenCoords.x, screenCoords.y, &x, &y, &direction);
     if (gRideEntranceExitPlaceDirection == 255)
     {
         ride_construction_invalidate_current_track();
@@ -3732,7 +3732,7 @@ void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY
  *
  *  rct2: 0x006CCA73
  */
-void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
+void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
 {
     const CursorState* state = context_get_cursor_state();
     ride_id_t rideIndex;
@@ -3766,7 +3766,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    if (!ride_get_place_position_from_screen_position(screenX, screenY, &x, &y))
+    if (!ride_get_place_position_from_screen_position(screenCoords.x, screenCoords.y, &x, &y))
         return;
 
     z = _trackPlaceZ;
@@ -3927,7 +3927,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
  *
  *  rct2: 0x006CCA73
  */
-static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t screenY)
+static void ride_construction_tooldown_entrance_exit(ScreenCoordsXY screenCoords)
 {
     ride_construction_invalidate_current_track();
     map_invalidate_selection_rect();
@@ -3935,7 +3935,7 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     int32_t mapX, mapY, direction;
-    ride_get_entrance_or_exit_position_from_screen_position(screenX, screenY, &mapX, &mapY, &direction);
+    ride_get_entrance_or_exit_position_from_screen_position(screenCoords.x, screenCoords.y, &mapX, &mapY, &direction);
     if (gRideEntranceExitPlaceDirection == 255)
         return;
 
