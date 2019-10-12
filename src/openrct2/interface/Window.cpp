@@ -1433,28 +1433,28 @@ void window_event_unknown_08_call(rct_window* w)
         w->event_handlers->unknown_08(w);
 }
 
-void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->tool_update != nullptr)
-        w->event_handlers->tool_update(w, widgetIndex, x, y);
+        w->event_handlers->tool_update(w, widgetIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->tool_down != nullptr)
-        w->event_handlers->tool_down(w, widgetIndex, x, y);
+        w->event_handlers->tool_down(w, widgetIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->tool_drag != nullptr)
-        w->event_handlers->tool_drag(w, widgetIndex, x, y);
+        w->event_handlers->tool_drag(w, widgetIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->tool_up != nullptr)
-        w->event_handlers->tool_up(w, widgetIndex, x, y);
+        w->event_handlers->tool_up(w, widgetIndex, screenCoords.x, screenCoords.y);
 }
 
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex)

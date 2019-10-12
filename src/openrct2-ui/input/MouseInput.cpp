@@ -387,7 +387,7 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
                         break;
                     }
 
-                    window_event_tool_drag_call(w, gCurrentToolWidget.widget_index, x, y);
+                    window_event_tool_drag_call(w, gCurrentToolWidget.widget_index, ScreenCoordsXY(x, y));
                     break;
                 case MOUSE_STATE_LEFT_RELEASE:
                     _inputState = INPUT_STATE_RESET;
@@ -399,7 +399,7 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
                                 gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                             if (w != nullptr)
                             {
-                                window_event_tool_up_call(w, gCurrentToolWidget.widget_index, x, y);
+                                window_event_tool_up_call(w, gCurrentToolWidget.widget_index, ScreenCoordsXY(x, y));
                             }
                         }
                         else if (!(_inputFlags & INPUT_FLAG_4))
@@ -1049,7 +1049,7 @@ static void input_widget_left(int32_t x, int32_t y, rct_window* w, rct_widgetind
                 w = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                 if (w != nullptr)
                 {
-                    window_event_tool_down_call(w, gCurrentToolWidget.widget_index, x, y);
+                    window_event_tool_down_call(w, gCurrentToolWidget.widget_index, ScreenCoordsXY(x, y));
                     _inputFlags |= INPUT_FLAG_4;
                 }
             }
@@ -1194,7 +1194,7 @@ void process_mouse_tool(int32_t x, int32_t y)
         if (!w)
             tool_cancel();
         else
-            window_event_tool_update_call(w, gCurrentToolWidget.widget_index, x, y);
+            window_event_tool_update_call(w, gCurrentToolWidget.widget_index, ScreenCoordsXY(x, y));
     }
 }
 
