@@ -81,7 +81,6 @@ static void input_handle_chat(int32_t key)
 static void game_handle_key_scroll()
 {
     rct_window* mainWindow;
-    int32_t scrollX, scrollY;
 
     mainWindow = window_get_main();
     if (mainWindow == nullptr)
@@ -99,16 +98,14 @@ static void game_handle_key_scroll()
     if (gChatOpen)
         return;
 
-    scrollX = 0;
-    scrollY = 0;
     const uint8_t* keysState = context_get_keys_state();
-    get_keyboard_map_scroll(keysState, &scrollX, &scrollY);
+    auto scrollCoords = get_keyboard_map_scroll(keysState);
 
-    if (scrollX != 0 || scrollY != 0)
+    if (scrollCoords.x != 0 || scrollCoords.y != 0)
     {
         window_unfollow_sprite(mainWindow);
     }
-    input_scroll_viewport(scrollX, scrollY);
+    input_scroll_viewport(scrollCoords.x, scrollCoords.y);
 }
 
 static int32_t input_scancode_to_rct_keycode(int32_t sdl_key)
