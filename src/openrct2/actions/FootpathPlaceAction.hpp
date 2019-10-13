@@ -440,6 +440,8 @@ private:
         tileElement = map_get_first_element_at(x, y);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z
                 && (tileElement->AsPath()->IsSloped() == isSloped)
                 && (tileElement->AsPath()->GetSlopeDirection() == (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)))

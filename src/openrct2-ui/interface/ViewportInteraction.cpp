@@ -528,6 +528,8 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, int32
         footpath_provisional_update();
 
     tileElement2 = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement2 == nullptr)
+        return;
     do
     {
         if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z)

@@ -1094,6 +1094,8 @@ static TileElement* footpath_get_tile_element_to_remove()
     tileElement = map_get_first_element_at(x, y);
     do
     {
+        if (tileElement == nullptr)
+            break;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
             if (tileElement->base_height == z)
