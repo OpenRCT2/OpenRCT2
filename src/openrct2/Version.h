@@ -18,7 +18,7 @@
 #    define OPENRCT2_ARCHITECTURE "x86-64"
 #elif defined(__i386__) || defined(_M_IX86)
 #    define OPENRCT2_ARCHITECTURE "x86"
-#elif defined(__aarch64__)
+#elif defined(__aarch64__) || defined(_M_ARM64)
 #    define OPENRCT2_ARCHITECTURE "AArch64"
 #elif defined(__arm__) || defined(_M_ARM)
 #    if defined(__ARM_ARCH_7A__)
