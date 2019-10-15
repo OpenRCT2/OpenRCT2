@@ -96,6 +96,7 @@ void rct_duck::Invalidate()
 
 void rct_duck::Remove()
 {
+    Invalidate();
     sprite_remove((rct_sprite*)this);
 }
 
@@ -383,6 +384,7 @@ void duck_remove_all()
         nextSpriteIndex = sprite->next;
         if (sprite->type == SPRITE_MISC_DUCK)
         {
+            invalidate_sprite_0((rct_sprite*)sprite);
             sprite_remove((rct_sprite*)sprite);
         }
     }
