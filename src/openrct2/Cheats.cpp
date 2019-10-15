@@ -30,7 +30,7 @@
 using namespace OpenRCT2;
 
 // TODO: Refactor this. Cheat variables should contain the cheat type
-// and a serialisation method.
+// and a serialisation method. abc
 bool gCheatsSandboxMode = false;
 bool gCheatsDisableClearanceChecks = false;
 bool gCheatsDisableSupportLimits = false;
