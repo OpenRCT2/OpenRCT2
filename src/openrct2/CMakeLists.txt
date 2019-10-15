@@ -85,7 +85,8 @@ endif ()
 
 # Third party libraries
 if (MSVC)
-    find_package(jansson 2.5 REQUIRED)
+    find_package(jansson CONFIG REQUIRED)
+    set(JANSSON_LIBRARIES "jansson::jansson")
     find_package(png 1.6 REQUIRED)
     find_package(zlib REQUIRED)
 
