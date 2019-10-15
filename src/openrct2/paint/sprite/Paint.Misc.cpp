@@ -184,7 +184,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
         }
 
         case SPRITE_MISC_DUCK:
-            if (dpi->zoom_level == 0)
+            if (dpi->zoom_level <= 1)
             {
                 const rct_duck* duck = &misc->duck;
                 uint32_t imageId = duck_get_frame_image(&misc->duck, imageDirection);
