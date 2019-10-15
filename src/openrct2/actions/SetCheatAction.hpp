@@ -233,6 +233,9 @@ public:
             case CheatType::CreateDucks:
                 CreateDucks(_param1);
                 break;
+            case CheatType::RemoveDucks:
+                duck_remove_all();
+                break;
             default:
             {
                 log_error("Unabled cheat: %d", _cheatType.id);

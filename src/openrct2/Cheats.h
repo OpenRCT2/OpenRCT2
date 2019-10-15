@@ -84,6 +84,7 @@ enum class CheatType : int32_t
     IgnoreResearchStatus,
     EnableAllDrawableTrackPieces,
     CreateDucks,
+    RemoveDucks,
     Count,
 };
 

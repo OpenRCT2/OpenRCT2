@@ -3969,6 +3969,7 @@ enum
     STR_DOWNLOADING_OBJECTS_FROM = 6330,
 
     STR_CREATE_DUCKS = 6331,
+    STR_REMOVE_DUCKS = 6332,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
