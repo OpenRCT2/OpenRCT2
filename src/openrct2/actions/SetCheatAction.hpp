@@ -230,6 +230,9 @@ public:
             case CheatType::EnableAllDrawableTrackPieces:
                 gCheatsEnableAllDrawableTrackPieces = _param1 != 0;
                 break;
+            case CheatType::CreateDucks:
+                CreateDucks(_param1);
+                break;
             default:
             {
                 log_error("Unabled cheat: %d", _cheatType.id);
@@ -343,6 +346,8 @@ private:
                 return { { 0, 5 }, { 0, 0 } };
             case CheatType::SetForcedParkRating:
                 return { { 0, 999 }, { 0, 0 } };
+            case CheatType::CreateDucks:
+                return { { 0, 100 }, { 0, 0 } };
             default:
                 return { { 0, 0 }, { 0, 0 } };
         }
@@ -771,5 +776,18 @@ private:
     {
         auto parkSetParameter = ParkSetParameterAction(isOpen ? ParkParameter::Open : ParkParameter::Close);
         GameActions::ExecuteNested(&parkSetParameter);
+    }
+
+    void CreateDucks(int count) const
+    {
+        for (int i = 0; i < count; i++)
+        {
+            // 100 attempts at finding some water to create a few ducks at
+            for (int32_t attempts = 0; attempts < 100; attempts++)
+            {
+                if (scenario_create_ducks())
+                    break;
+            }
+        }
     }
 };

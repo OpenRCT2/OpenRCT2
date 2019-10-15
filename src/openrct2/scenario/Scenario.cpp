@@ -82,7 +82,6 @@ money32 gScenarioCompanyValueRecord;
 
 char gScenarioFileName[MAX_PATH];
 
-static int32_t scenario_create_ducks();
 static void scenario_objective_check();
 
 using namespace OpenRCT2;
@@ -420,7 +419,7 @@ void scenario_update()
  *
  *  rct2: 0x006744A9
  */
-static int32_t scenario_create_ducks()
+bool scenario_create_ducks()
 {
     CoordsXY centrePos;
     centrePos.x = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
@@ -429,11 +428,11 @@ static int32_t scenario_create_ducks()
     Guard::Assert(map_is_location_valid(centrePos));
 
     if (!map_is_location_in_park(centrePos))
-        return 0;
+        return false;
 
     int32_t centreWaterZ = (tile_element_water_height(centrePos));
     if (centreWaterZ == 0)
-        return 0;
+        return false;
 
     // Check NxN area around centre tile defined by SquareSize
     constexpr int32_t SquareSize = 7;
@@ -463,7 +462,7 @@ static int32_t scenario_create_ducks()
 
     // Must be at least 25 water tiles of the same height in 7x7 area
     if (waterTiles < 25)
-        return 0;
+        return false;
 
     // Set x, y to the centre of the tile
     centrePos.x += 16;
@@ -481,7 +480,7 @@ static int32_t scenario_create_ducks()
         create_duck(targetPos);
     }
 
-    return 1;
+    return true;
 }
 
 const random_engine_t::state_type& scenario_rand_state()
