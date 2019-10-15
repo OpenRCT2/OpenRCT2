@@ -421,9 +421,14 @@ void scenario_update()
  */
 bool scenario_create_ducks()
 {
+    // Check NxN area around centre tile defined by SquareSize
+    constexpr int32_t SquareSize = 7;
+    constexpr int32_t SquareCentre = SquareSize / 2;
+    constexpr int32_t SquareTileSize = SquareCentre * 32;
+
     CoordsXY centrePos;
-    centrePos.x = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
-    centrePos.y = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
+    centrePos.x = SquareTileSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
+    centrePos.y = SquareTileSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
 
     Guard::Assert(map_is_location_valid(centrePos));
 
@@ -433,10 +438,6 @@ bool scenario_create_ducks()
     int32_t centreWaterZ = (tile_element_water_height(centrePos));
     if (centreWaterZ == 0)
         return false;
-
-    // Check NxN area around centre tile defined by SquareSize
-    constexpr int32_t SquareSize = 7;
-    constexpr int32_t SquareCentre = SquareSize / 2;
 
     CoordsXY innerPos{ centrePos.x - (32 * SquareCentre), centrePos.y - (32 * SquareCentre) };
     int32_t waterTiles = 0;
@@ -472,10 +473,11 @@ bool scenario_create_ducks()
     for (int32_t i = 0; i < duckCount; i++)
     {
         int32_t r = scenario_rand();
-        innerPos.x = (r >> 16) & 0x7F;
-        innerPos.y = (r & 0xFFFF) & 0x7F;
+        innerPos.x = (r >> 16) & (SquareTileSize - 1);
+        innerPos.y = (r & 0xFFFF) & (SquareTileSize - 1);
 
-        CoordsXY targetPos{ centrePos.x + innerPos.x - 64, centrePos.y + innerPos.y - 64 };
+        CoordsXY targetPos{ centrePos.x + innerPos.x - SquareTileSize, centrePos.y + innerPos.y - SquareTileSize };
+
         Guard::Assert(map_is_location_valid(targetPos));
         create_duck(targetPos);
     }
