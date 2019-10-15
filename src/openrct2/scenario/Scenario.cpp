@@ -424,11 +424,11 @@ bool scenario_create_ducks()
     // Check NxN area around centre tile defined by SquareSize
     constexpr int32_t SquareSize = 7;
     constexpr int32_t SquareCentre = SquareSize / 2;
-    constexpr int32_t SquareTileSize = SquareCentre * 32;
+    constexpr int32_t SquareRadiusSize = SquareCentre * 32;
 
     CoordsXY centrePos;
-    centrePos.x = SquareTileSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
-    centrePos.y = SquareTileSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
+    centrePos.x = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
+    centrePos.y = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
 
     Guard::Assert(map_is_location_valid(centrePos));
 
@@ -473,10 +473,10 @@ bool scenario_create_ducks()
     for (int32_t i = 0; i < duckCount; i++)
     {
         int32_t r = scenario_rand();
-        innerPos.x = (r >> 16) & (SquareTileSize - 1);
-        innerPos.y = (r & 0xFFFF) & (SquareTileSize - 1);
+        innerPos.x = (r >> 16) & (SquareRadiusSize - 1);
+        innerPos.y = (r & 0xFFFF) & (SquareRadiusSize - 1);
 
-        CoordsXY targetPos{ centrePos.x + innerPos.x - SquareTileSize, centrePos.y + innerPos.y - SquareTileSize };
+        CoordsXY targetPos{ centrePos.x + innerPos.x - SquareRadiusSize, centrePos.y + innerPos.y - SquareRadiusSize };
 
         Guard::Assert(map_is_location_valid(targetPos));
         create_duck(targetPos);
