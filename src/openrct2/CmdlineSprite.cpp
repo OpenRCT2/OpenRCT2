@@ -621,7 +621,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             // Get palette option, if present
             bool keep_palette = false;
             json_t* palette = json_object_get(sprite_description, "palette");
-            if (palette && json_is_string(palette))
+            if (json_is_string(palette))
             {
                 const char* option = json_string_value(palette);
                 if (strncmp(option, "keep", 4) == 0)

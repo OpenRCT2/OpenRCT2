@@ -442,7 +442,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
                                                                                      : STR_WINDOW_COLOUR_2_STRINGID;
 
     // Text for each tab
-    for (int32_t i = 0; i < 8; i++)
+    for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
     {
         rct_widget* widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
         if (widget->type == WWT_EMPTY)

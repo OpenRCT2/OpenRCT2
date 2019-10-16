@@ -55,15 +55,13 @@ private:
     int32_t _wallType{ -1 };
     CoordsXYZ _loc;
     Direction _edge{ INVALID_DIRECTION };
-    int32_t _primaryColour;
-    int32_t _secondaryColour;
-    int32_t _tertiaryColour;
+    int32_t _primaryColour{ 0 };
+    int32_t _secondaryColour{ 0 };
+    int32_t _tertiaryColour{ 0 };
     BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
-    WallPlaceAction()
-    {
-    }
+    WallPlaceAction() = default;
 
     WallPlaceAction(
         int32_t wallType, CoordsXYZ loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
