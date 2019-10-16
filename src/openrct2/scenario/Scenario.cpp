@@ -469,12 +469,12 @@ bool scenario_create_ducks()
     centrePos.x += 16;
     centrePos.y += 16;
 
-    int32_t duckCount = (scenario_rand() & 3) + 2;
-    for (int32_t i = 0; i < duckCount; i++)
+    uint32_t duckCount = (scenario_rand() % 4) + 2;
+    for (uint32_t i = 0; i < duckCount; i++)
     {
-        int32_t r = scenario_rand();
-        innerPos.x = (r >> 16) & (SquareRadiusSize - 1);
-        innerPos.y = (r & 0xFFFF) & (SquareRadiusSize - 1);
+        uint32_t r = scenario_rand();
+        innerPos.x = (r >> 16) % SquareRadiusSize;
+        innerPos.y = (r & 0xFFFF) % SquareRadiusSize;
 
         CoordsXY targetPos{ centrePos.x + innerPos.x - SquareRadiusSize, centrePos.y + innerPos.y - SquareRadiusSize };
 
