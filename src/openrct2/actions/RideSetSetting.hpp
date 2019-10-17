@@ -181,6 +181,7 @@ public:
 
                 ride->mode = _value;
                 ride->UpdateMaxVehicles();
+                ride->UpdateNumberOfCircuits();
                 break;
             case RideSetSetting::Departure:
                 ride->depart_flags = _value;

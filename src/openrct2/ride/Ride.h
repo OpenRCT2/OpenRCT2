@@ -408,6 +408,7 @@ public:
     void SetNumVehicles(int32_t numVehicles);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
     void UpdateMaxVehicles();
+    void UpdateNumberOfCircuits();
 
     bool HasSpinningTunnel() const;
     bool HasWaterSplash() const;
