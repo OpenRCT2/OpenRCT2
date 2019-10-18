@@ -157,7 +157,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
         safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
 
-        stringHeight = chat_history_draw_string(dpi, (void*)&lineCh, x, y, _chatWidth - 10) + 5;
+        stringHeight = chat_history_draw_string(dpi, (void*)&lineCh, ScreenCoordsXY(x, y), _chatWidth - 10) + 5;
         gfx_set_dirty_blocks(x, y - stringHeight, x + _chatWidth, y + 20);
 
         if ((y - stringHeight) < 50)
@@ -275,7 +275,7 @@ static void chat_clear_input()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width)
+int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, ScreenCoordsXY screenCoords, int32_t width)
 {
     int32_t fontSpriteBase, lineHeight, lineY, numLines;
 
@@ -291,20 +291,20 @@ int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, 
 
     gCurrentFontFlags = 0;
 
-    int32_t expectedY = y - (numLines * lineHeight);
+    int32_t expectedY = screenCoords.y - (numLines * lineHeight);
     if (expectedY < 50)
     {
         return (numLines * lineHeight); // Skip drawing, return total height.
     }
 
-    lineY = y;
+    lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x, lineY - (numLines * lineHeight));
+        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, screenCoords.x, lineY - (numLines * lineHeight));
         buffer = get_string_end(buffer) + 1;
         lineY += lineHeight;
     }
-    return lineY - y;
+    return lineY - screenCoords.y;
 }
 
 // Wrap string without drawing, useful to get the height of a wrapped string.
