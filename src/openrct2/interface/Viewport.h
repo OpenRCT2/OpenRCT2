@@ -157,6 +157,9 @@ void get_map_coordinates_from_pos(
 void get_map_coordinates_from_pos_window(
     rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport);
+void get_map_coordinates_from_pos_window(
+    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
+    TileElement** tileElement, rct_viewport** viewport);
 
 int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info* info);
 int32_t viewport_interaction_left_over(int32_t x, int32_t y);
