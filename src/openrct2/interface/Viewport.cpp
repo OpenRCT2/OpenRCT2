@@ -1667,7 +1667,7 @@ void get_map_coordinates_from_pos_window(
     TileElement** tileElement, rct_viewport** viewport)
 {
   ScreenCoordsXY screenCoords(screenX, screenY);
-  CoordsXY mapCoords(0, 0);
+  CoordsXY mapCoords();
 
   get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
 
