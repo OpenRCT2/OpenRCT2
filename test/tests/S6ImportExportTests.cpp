@@ -29,6 +29,7 @@
 #include <openrct2/ride/Ride.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
+#include <stdio.h>
 #include <string>
 
 using namespace OpenRCT2;
