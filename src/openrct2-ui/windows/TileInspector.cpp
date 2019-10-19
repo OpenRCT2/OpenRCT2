@@ -603,6 +603,8 @@ static void window_tile_inspector_load_tile(rct_window* w, TileElement* elementT
     int16_t numItems = 0;
     do
     {
+        if (element == nullptr)
+            break;
         if (element == elementToSelect)
         {
             windowTileInspectorSelectedIndex = numItems;
@@ -2170,6 +2172,8 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     do
     {
+        if (tileElement == nullptr)
+            break;
         const bool selectedRow = i == windowTileInspectorSelectedIndex;
         const bool hoveredRow = i == windowTileInspectorHighlightedIndex;
         int32_t type = tileElement->GetType();

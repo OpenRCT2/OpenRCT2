@@ -280,20 +280,17 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             int16_t y = location.y * 32;
 
             TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+            if (tileElement == nullptr)
+                continue;
+
             do
             {
-                if (tileElement == nullptr)
-                    break;
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                     continue;
                 if (tileElement->base_height == z)
                     break;
             } while (!(tileElement++)->IsLastForTile());
 
-            if (tileElement == nullptr)
-            {
-                continue;
-            }
             // Add something that stops this from walking off the end
 
             Direction entranceDirection = tileElement->GetDirection();
@@ -402,7 +399,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     do
     {
         if (tileElement == nullptr)
-            break;
+            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
