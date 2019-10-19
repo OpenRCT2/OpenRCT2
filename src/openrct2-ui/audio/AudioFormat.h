@@ -26,7 +26,7 @@ namespace OpenRCT2::Audio
 
         [[nodiscard]] int32_t BytesPerSample() const
         {
-            return (SDL_AUDIO_BITSIZE(format)) / 8;
+            return (SDL_AUDIO_BITSIZE(format)) / 8; // NOLINT(hicpp-signed-bitwise)
         }
 
         [[nodiscard]] int32_t GetByteRate() const
