@@ -1399,7 +1399,8 @@ static bool is_pixel_present_rle(const uint8_t* esi, int16_t x_start_point, int1
  * @param y (dx)
  * @return value originally stored in 0x00141F569
  */
-static bool is_sprite_interacted_with_palette_set(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16_t y, const uint8_t* palette)
+static bool is_sprite_interacted_with_palette_set(
+    rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16_t y, const uint8_t* palette)
 {
     const rct_g1_element* g1 = gfx_get_g1_element(imageId & 0x7FFFF);
     if (g1 == nullptr)
@@ -1591,7 +1592,8 @@ static void set_interaction_info_from_paint_session(paint_session* session)
 
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
-            if (is_sprite_interacted_with(dpi, attached_ps->image_id, (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF))
+            if (is_sprite_interacted_with(
+                    dpi, attached_ps->image_id, (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF))
             {
                 store_interaction_info(ps);
             }
