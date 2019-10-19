@@ -194,3 +194,17 @@ void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, 
 void window_tooltip_close();
 
 rct_window* window_scenery_scatter_open();
+
+#ifndef LEFT_CLOSEBOX
+    // close button on right of window
+    #define WINDOW_SKELETON \
+        { WWT_FRAME,    0,  0,  WW - 1, 0,  WH, 0xFFFFFFFF,                                 STR_NONE }, \
+        { WWT_CAPTION,  0,  1,  WW - 2, 1,  14, WINDOW_TITLE,                          STR_WINDOW_TITLE_TIP }, \
+        { WWT_CLOSEBOX, 0,  WW - 13, WW - 3, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP }
+#else
+    // close button on left of window
+    #define WINDOW_SKELETON \
+        { WWT_FRAME,    0,  0,  WW - 1, 0,  WH, 0xFFFFFFFF,                                 STR_NONE }, \
+        { WWT_CAPTION,  0,  13,  WW - 2, 1,  14, WINDOW_TITLE,                          STR_WINDOW_TITLE_TIP }, \
+        { WWT_CLOSEBOX, 0,  2, 12, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP }
+#endif

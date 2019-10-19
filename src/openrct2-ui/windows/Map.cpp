@@ -38,6 +38,10 @@
 
 constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
+#define WINDOW_TITLE STR_MAP_LABEL
+#define WH 259
+#define WW 245
+
 // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
 using MapCoordsXY = TileCoordsXY;
@@ -76,9 +80,7 @@ enum WINDOW_MAP_WIDGET_IDX {
 validate_global_widx(WC_MAP, WIDX_ROTATE_90);
 
 static rct_widget window_map_widgets[] = {
-    { WWT_FRAME,            0,  0,      244,    0,      258,    STR_NONE,                               STR_NONE },
-    { WWT_CAPTION,          0,  1,      243,    1,      14,     STR_MAP_LABEL,                          STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  232,    242,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      244,    43,     257,    STR_NONE,                               STR_NONE },
     { WWT_COLOURBTN,        1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOW_PEOPLE_ON_MAP_TIP },
     { WWT_COLOURBTN,        1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
@@ -710,8 +712,10 @@ static void window_map_invalidate(rct_window* w)
     w->widgets[WIDX_RESIZE].right = w->width - 1;
     w->widgets[WIDX_RESIZE].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
-    w->widgets[WIDX_CLOSE].left = w->width - 2 - 11;
-    w->widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
+    #ifndef LEFT_CLOSEBOX
+        w->widgets[WIDX_CLOSE].left = w->width - 2 - 11;
+        w->widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
+    #endif
     w->widgets[WIDX_MAP].right = w->width - 4;
 
     if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)

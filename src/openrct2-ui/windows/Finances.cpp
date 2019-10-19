@@ -27,6 +27,10 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
+#define WINDOW_TITLE 0
+#define WH 0
+#define WW 0
+
 // clang-format off
 enum
 {
@@ -89,10 +93,8 @@ enum
 
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,  309,    0xFFFFFFFF,                 STR_NONE                                }, \
-    { WWT_CAPTION,          0,  1,      528,    1,  14,     STR_FINANCIAL_SUMMARY,      STR_WINDOW_TITLE_TIP                    }, \
-    { WWT_CLOSEBOX,         0,  517,    527,    2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                    }, \
-    { WWT_RESIZE,           1,  0,      529,    43, 309,    0xFFFFFFFF,                 STR_NONE                                }, \
+    WINDOW_SKELETON,
+    { WWT_RESIZE,           1,  0,      529,    43, 309,    0xFFFFFFFF,                 STR_NONE                                },
     TAB_WIDGETS,
     { WWT_SCROLL,           1,  130,    520,     50,    260,    SCROLL_HORIZONTAL,                  STR_NONE },
       SPINNER_WIDGETS      (1,  64,     160,    279,    292,    STR_FINANCES_SUMMARY_LOAN_VALUE,    STR_NONE), // NB: 3 widgets.
@@ -101,9 +103,7 @@ static rct_widget _windowFinancesSummaryWidgets[] =
 
 static rct_widget _windowFinancesCashWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_FINANCIAL_GRAPH,    STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -111,9 +111,7 @@ static rct_widget _windowFinancesCashWidgets[] =
 
 static rct_widget _windowFinancesParkValueWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PARK_VALUE_GRAPH,   STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -121,9 +119,7 @@ static rct_widget _windowFinancesParkValueWidgets[] =
 
 static rct_widget _windowFinancesProfitWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PROFIT_GRAPH,       STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -131,9 +127,7 @@ static rct_widget _windowFinancesProfitWidgets[] =
 
 static rct_widget _windowFinancesMarketingWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_MARKETING,                          STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,                             STR_NONE },
     TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      526,    47,     91,     STR_MARKETING_CAMPAIGNS_IN_OPERATION,   STR_NONE },
@@ -149,9 +143,7 @@ static rct_widget _windowFinancesMarketingWidgets[] =
 
 static rct_widget _windowFinancesResearchWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      319,    0,      206,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      318,    1,      14,     STR_RESEARCH_FUNDING,                   STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  307,    317,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      319,    43,     206,    0xFFFFFFFF,                             STR_NONE },
     TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      316,    47,     91,     STR_RESEARCH_FUNDING_,                  STR_NONE },
@@ -659,6 +651,14 @@ static void window_finances_summary_invalidate(rct_window* w)
 
     window_finances_set_pressed_tab(w);
     set_format_arg(6, money32, gBankLoan);
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_TITLE].text = STR_FINANCIAL_SUMMARY;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_TITLE].right = 528;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_BACKGROUND].bottom = 310;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_BACKGROUND].right = 529;
+    #ifndef LEFT_CLOSEBOX
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_CLOSE].left = 517;
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY][WIDX_CLOSE].right = 527;
+    #endif
 }
 
 /**
@@ -828,6 +828,14 @@ static void window_finances_financial_graph_invalidate(rct_window* w)
     }
 
     window_finances_set_pressed_tab(w);
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_TITLE].text = STR_FINANCIAL_GRAPH;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_TITLE].right = 528;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_BACKGROUND].bottom = 257;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_BACKGROUND].right = 529;
+    #ifndef LEFT_CLOSEBOX
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_CLOSE].left = 517;
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH][WIDX_CLOSE].right = 527;
+    #endif
 }
 
 /**
@@ -921,6 +929,8 @@ static void window_finances_park_value_graph_update(rct_window* w)
         w->frame_no = 0;
 
     w->Invalidate();
+    _windowFinancesPageWidgets[WIDX_BACKGROUND]->bottom = 257;
+    _windowFinancesPageWidgets[WIDX_BACKGROUND]->right = 529;
 }
 
 /**
@@ -936,6 +946,12 @@ static void window_finances_park_value_graph_invalidate(rct_window* w)
     }
 
     window_finances_set_pressed_tab(w);
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH][WIDX_TITLE].text = STR_PARK_VALUE_GRAPH;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH][WIDX_TITLE].right = 528;
+    #ifndef LEFT_CLOSEBOX
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH][WIDX_CLOSE].left = 517;
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH][WIDX_CLOSE].right = 527;
+    #endif
 }
 
 /**
@@ -1038,6 +1054,14 @@ static void window_finances_profit_graph_invalidate(rct_window* w)
     }
 
     window_finances_set_pressed_tab(w);
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_TITLE].text = STR_PROFIT_GRAPH;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_TITLE].right = 528;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_BACKGROUND].bottom = 257;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_BACKGROUND].right = 529;
+    #ifndef LEFT_CLOSEBOX
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_CLOSE].left = 517;
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH][WIDX_CLOSE].right = 527;
+    #endif
 }
 
 /**
@@ -1171,6 +1195,14 @@ static void window_finances_marketing_invalidate(rct_window* w)
             campaignButton->type = WWT_EMPTY;
         }
     }
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_TITLE].text = STR_MARKETING;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_TITLE].right = 528;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_BACKGROUND].bottom = 257;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_BACKGROUND].right = 529;
+    #ifndef LEFT_CLOSEBOX
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_CLOSE].left = 517;
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING][WIDX_CLOSE].right = 527;
+    #endif
 }
 
 /**
@@ -1356,6 +1388,14 @@ static void window_finances_research_update(rct_window* w)
  */
 static void window_finances_research_invalidate(rct_window* w)
 {
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_TITLE].text = STR_RESEARCH_FUNDING;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_TITLE].right = 318;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_BACKGROUND].bottom = 206;
+    _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_BACKGROUND].right = 319;
+    #ifndef LEFT_CLOSEBOX
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_CLOSE].left = 307;
+        _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH][WIDX_CLOSE].right = 317;
+    #endif
     if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH])
     {
         w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH];

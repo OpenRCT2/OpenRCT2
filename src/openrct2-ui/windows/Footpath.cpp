@@ -24,6 +24,10 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
+#define WINDOW_TITLE STR_FOOTPATHS
+#define WH 381
+#define WW 106
+
 // clang-format off
 enum
 {
@@ -67,9 +71,7 @@ enum WINDOW_FOOTPATH_WIDGET_IDX
 };
 
 static rct_widget window_footpath_widgets[] = {
-    {WWT_FRAME,    0, 0,  105, 0,   380, 0xFFFFFFFF,                        STR_NONE},
-    {WWT_CAPTION,  0, 1,  104, 1,   14,  STR_FOOTPATHS,                     STR_WINDOW_TITLE_TIP},
-    {WWT_CLOSEBOX, 0, 93, 103, 2,   13,  STR_CLOSE_X,                       STR_CLOSE_WINDOW_TIP},
+    WINDOW_SKELETON,
     // Type group
     {WWT_GROUPBOX, 0, 3,  102, 17,  71,  STR_TYPE,                          STR_NONE},
     {WWT_FLATBTN,  1, 6,  52,  30,  65,  0xFFFFFFFF,                        STR_FOOTPATH_TIP},

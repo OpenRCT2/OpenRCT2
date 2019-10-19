@@ -31,6 +31,10 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
 
+#define WINDOW_TITLE STR_STRINGID
+#define WH 224
+#define WW 230
+
 // clang-format off
 enum WINDOW_PARK_PAGE {
     WINDOW_PARK_PAGE_ENTRANCE,
@@ -75,9 +79,7 @@ enum WINDOW_PARK_WIDGET_IDX {
 #pragma region Widgets
 
 #define MAIN_PARK_WIDGETS(WW) \
-    { WWT_FRAME,            0,  0,          WW - 1,      0,      223,    0xFFFFFFFF,                           STR_NONE },                     /* panel / background */    \
-    { WWT_CAPTION,          0,  1,          WW - 2,      1,      14,     STR_STRINGID,                         STR_WINDOW_TITLE_TIP },         /* title bar          */    \
-    { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3,      2,      13,     STR_CLOSE_X,                          STR_CLOSE_WINDOW_TIP },         /* close x button     */    \
+    WINDOW_SKELETON, \
     { WWT_RESIZE,           1,  0,          WW - 1,      43,     173,    0xFFFFFFFF,                           STR_NONE },                     /* tab content panel  */    \
     { WWT_TAB,              1,  3,          33,          17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_ENTRANCE_TAB_TIP },    /* tab 1              */    \
     { WWT_TAB,              1,  34,         64,          17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_RATING_TAB_TIP },      /* tab 2              */    \
@@ -1799,8 +1801,10 @@ static void window_park_anchor_border_widgets(rct_window* w)
     w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
-    w->widgets[WIDX_CLOSE].left = w->width - 13;
-    w->widgets[WIDX_CLOSE].right = w->width - 3;
+    #ifndef LEFT_CLOSEBOX
+        w->widgets[WIDX_CLOSE].left = w->width - 13;
+        w->widgets[WIDX_CLOSE].right = w->width - 3;
+    #endif
 }
 
 static void window_park_set_pressed_tab(rct_window* w)

@@ -20,6 +20,10 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
 
+#define WINDOW_TITLE 0
+#define WH 54
+#define WW 260
+
 // clang-format off
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -32,9 +36,7 @@ enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 };
 
 static rct_widget window_save_prompt_widgets[] = {
-    { WWT_FRAME,            0,  0,      259,    0,  53, STR_NONE,                   STR_NONE },                 // panel / background
-    { WWT_CAPTION,          0,  1,      258,    1,  14, 0,                          STR_WINDOW_TITLE_TIP },     // title bar
-    { WWT_CLOSEBOX,         0,  247,    257,    2,  13, STR_CLOSE_X_WHITE,          STR_CLOSE_WINDOW_TIP },     // close x button
+    WINDOW_SKELETON,
     { WWT_LABEL_CENTRED,    0,  2,      257,    19, 30, 0,                          STR_NONE },                 // question/label
     { WWT_BUTTON,           0,  8,      85,     35, 48, STR_SAVE_PROMPT_SAVE,       STR_NONE },     // save
     { WWT_BUTTON,           0,  91,     168,    35, 48, STR_SAVE_PROMPT_DONT_SAVE,  STR_NONE },     // don't save
@@ -53,7 +55,7 @@ enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
 static rct_widget window_quit_prompt_widgets[] = {
     { WWT_FRAME,            0,  0,      176,    0,  37, STR_NONE,                   STR_NONE },                 // panel / background
     { WWT_CAPTION,          0,  1,      175,    1,  14, STR_QUIT_GAME_PROMPT_TITLE, STR_WINDOW_TITLE_TIP },     // title bar
-    { WWT_CLOSEBOX,         0,  164,    174,    2,  13, STR_CLOSE_X_WHITE,          STR_CLOSE_WINDOW_TIP },     // close x button
+    WINDOW_SKELETON,     // close x button
     { WWT_BUTTON,           0,  8,      85,     19, 32, STR_OK,                     STR_NONE },     // ok
     { WWT_BUTTON,           0,  91,     168,    19, 32, STR_CANCEL,                 STR_NONE },     // cancel
     { WIDGETS_END },
@@ -169,6 +171,7 @@ rct_window* window_save_prompt_open()
         log_warning("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
+
     window = window_create_centred(
         width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 

@@ -15,6 +15,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 
+#define WINDOW_TITLE STR_SHORTCUTS_TITLE
 constexpr int32_t WW = 420;
 constexpr int32_t WH = 280;
 
@@ -32,9 +33,7 @@ enum WINDOW_SHORTCUT_WIDGET_IDX {
 
 // 0x9DE48C
 static rct_widget window_shortcut_widgets[] = {
-    { WWT_FRAME,            0,  0,      WW - 1, 0,      WH - 1,     STR_NONE,                   STR_NONE },
-    { WWT_CAPTION,          0,  1,      WW - 2, 1,      14,         STR_SHORTCUTS_TITLE,        STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  WW-13,  WW - 3, 2,      13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_SCROLL,           0,  4,      WW - 5, 18,     WH - 18,    SCROLL_VERTICAL,            STR_SHORTCUT_LIST_TIP },
     { WWT_BUTTON,           0,  4,      153,    WH-15,  WH - 4,     STR_SHORTCUT_ACTION_RESET,  STR_SHORTCUT_ACTION_RESET_TIP },
     { WIDGETS_END }
@@ -262,8 +261,10 @@ static void window_shortcut_invalidate(rct_window* w)
     window_shortcut_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_shortcut_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
     window_shortcut_widgets[WIDX_TITLE].right = w->width - 2;
-    window_shortcut_widgets[WIDX_CLOSE].right = w->width - 3;
-    window_shortcut_widgets[WIDX_CLOSE].left = w->width - 13;
+    #ifndef LEFT_CLOSEBOX
+        window_shortcut_widgets[WIDX_CLOSE].right = w->width - 3;
+        window_shortcut_widgets[WIDX_CLOSE].left = w->width - 13;
+    #endif
     window_shortcut_widgets[WIDX_SCROLL].right = w->width - 5;
     window_shortcut_widgets[WIDX_SCROLL].bottom = w->height - 18;
     window_shortcut_widgets[WIDX_RESET].top = w->height - 15;

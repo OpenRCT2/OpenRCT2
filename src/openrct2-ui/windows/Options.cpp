@@ -200,6 +200,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_NEWS_CHECKBOX
 };
 
+#define WINDOW_TITLE STR_OPTIONS_TITLE
 constexpr int32_t WW = 310;
 constexpr int32_t WH = 332;
 
@@ -212,9 +213,7 @@ constexpr int32_t WH = 332;
 #endif
 
 #define MAIN_OPTIONS_WIDGETS \
-    { WWT_FRAME,            0,  0,      WW-1,   0,      WH-1,   STR_NONE,               STR_NONE }, \
-    { WWT_CAPTION,          0,  1,      WW-2,   1,      14,     STR_OPTIONS_TITLE,      STR_WINDOW_TITLE_TIP }, \
-    { WWT_CLOSEBOX,         0,  WW-13,  WW-3,   2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, \
+    WINDOW_SKELETON, \
     { WWT_RESIZE,           1,  0,      WW-1,   43,     WH-1,   0xFFFFFFFF,             STR_NONE }, \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_DISPLAY_TIP }, \
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_RENDERING_TIP }, \

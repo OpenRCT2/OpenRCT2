@@ -20,6 +20,10 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
+#define WINDOW_TITLE 0
+#define WH 0
+#define WW 0
+
 // clang-format off
 enum {
     WINDOW_RESEARCH_PAGE_DEVELOPMENT,
@@ -55,9 +59,7 @@ enum {
 #pragma region Widgets
 
 static rct_widget window_research_development_widgets[] = {
-    { WWT_FRAME,            0,  0,      299,    0,      195,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      298,    1,      14,     STR_RESEARCH_AND_DEVELOPMENT,           STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  287,    297,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      299,    43,     195,    0xFFFFFFFF,                             STR_NONE },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_RESEARCH_AND_DEVELOPMENT_TIP },
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_RESEARCH_TIP },
@@ -68,9 +70,7 @@ static rct_widget window_research_development_widgets[] = {
 };
 
 static rct_widget window_research_funding_widgets[] = {
-    { WWT_FRAME,            0,  0,      319,    0,      206,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      318,    1,      14,     STR_RESEARCH_FUNDING,                   STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  307,    317,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      319,    43,     206,    0xFFFFFFFF,                             STR_NONE },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_RESEARCH_AND_DEVELOPMENT_TIP },
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_RESEARCH_TIP },
@@ -320,6 +320,14 @@ static void window_research_development_invalidate(rct_window* w)
             ? SPR_NEW_RIDE
             : SPR_NEW_SCENERY;
     }
+    window_research_development_widgets[WIDX_TITLE].text = STR_RESEARCH_AND_DEVELOPMENT;
+    window_research_development_widgets[WIDX_TITLE].right = 298;
+    window_research_development_widgets[WIDX_BACKGROUND].right = 299;
+    window_research_development_widgets[WIDX_BACKGROUND].bottom = 195;
+    #ifndef LEFT_CLOSEBOX
+        window_research_development_widgets[WIDX_CLOSE].left = 287;
+        window_research_development_widgets[WIDX_CLOSE].right = 297;
+    #endif
 }
 
 /**
@@ -550,6 +558,15 @@ static void window_research_funding_invalidate(rct_window* w)
             w->pressed_widgets &= ~widgetMask;
         }
     }
+
+    window_research_funding_widgets[WIDX_TITLE].text = STR_RESEARCH_FUNDING;
+    window_research_funding_widgets[WIDX_TITLE].right = 318;
+    window_research_funding_widgets[WIDX_BACKGROUND].right = 319;
+    window_research_funding_widgets[WIDX_BACKGROUND].bottom = 206;
+    #ifndef LEFT_CLOSEBOX
+        window_research_funding_widgets[WIDX_CLOSE].left = 307;
+        window_research_funding_widgets[WIDX_CLOSE].right = 317;
+    #endif
 }
 
 /**

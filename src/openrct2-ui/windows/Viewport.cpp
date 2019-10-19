@@ -15,6 +15,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
+#define WINDOW_TITLE STR_VIEWPORT_NO
+#define WH 0
+#define WW 0
 constexpr int32_t INITIAL_WIDTH = 500;
 constexpr int32_t INITIAL_HEIGHT = 350;
 
@@ -31,9 +34,7 @@ enum {
 };
 
 static rct_widget window_viewport_widgets[] = {
-    { WWT_FRAME,            0,  0,  0,  0,  0,  0xFFFFFFFF,         STR_NONE                },  // panel / background
-    { WWT_CAPTION,          0,  1,  0,  1,  14, STR_VIEWPORT_NO,    STR_WINDOW_TITLE_TIP    },  // title bar
-    { WWT_CLOSEBOX,         0,  0,  0,  2,  13, STR_CLOSE_X,        STR_CLOSE_WINDOW_TIP    },  // close x button
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,  0,  14, 0,  0xFFFFFFFF,         STR_NONE                },  // resize
     { WWT_VIEWPORT,         0,  3,  0,  17, 0,  0xFFFFFFFF,         STR_NONE                },  // viewport
 
@@ -116,8 +117,10 @@ static void window_viewport_anchor_border_widgets(rct_window* w)
     w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
-    w->widgets[WIDX_CLOSE].left = w->width - 13;
-    w->widgets[WIDX_CLOSE].right = w->width - 3;
+    #ifndef LEFT_CLOSEBOX
+        w->widgets[WIDX_CLOSE].left = w->width - 13;
+        w->widgets[WIDX_CLOSE].right = w->width - 3;
+    #endif
 }
 
 static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)

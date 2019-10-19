@@ -15,6 +15,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 
+#define WINDOW_TITLE STR_SHORTCUT_CHANGE_TITLE
 constexpr int32_t WW = 250;
 constexpr int32_t WH = 60;
 
@@ -27,9 +28,7 @@ enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {
 
 // 0x9DE4E0
 static rct_widget window_shortcut_change_widgets[] = {
-    { WWT_FRAME,            0,  0,          WW - 1, 0,      WH - 1,     STR_NONE,                   STR_NONE },
-    { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_SHORTCUT_CHANGE_TITLE,  STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  WW-13,      WW - 3, 2,      13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WIDGETS_END }
 };
 

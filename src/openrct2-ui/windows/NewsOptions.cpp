@@ -16,6 +16,10 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
+#define WINDOW_TITLE STR_NOTIFICATION_SETTINGS
+#define WH 300
+#define WW 400
+
 // clang-format off
 enum {
     NOTIFICATION_CATEGORY_PARK,
@@ -63,9 +67,7 @@ enum WINDOW_NEWS_WIDGET_IDX {
 };
 
 static rct_widget window_news_options_widgets[] = {
-    { WWT_FRAME,            0,  0,          399,    0,      299,    0xFFFFFFFF,                     STR_NONE },             // panel / background
-    { WWT_CAPTION,          0,  1,          398,    1,      14,     STR_NOTIFICATION_SETTINGS,      STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX,         0,  387,        397,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }, // close x button
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,          399,    43,     299,    0xFFFFFFFF,                     STR_NONE },             // tab content panel
     { WWT_TAB,              1,  3,          33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 1
     { WWT_TAB,              1,  34,         64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 2

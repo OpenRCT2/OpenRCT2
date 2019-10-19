@@ -25,6 +25,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
+#define WINDOW_TITLE STR_OPTIONS
 constexpr int32_t WW = 250;
 constexpr int32_t WH = 90;
 
@@ -39,9 +40,7 @@ enum WINDOW_TEXT_INPUT_WIDGET_IDX {
 
 // 0x9DE4E0
 static rct_widget window_text_input_widgets[] = {
-    { WWT_FRAME,     1,  0,        WW - 1,   0,        WH - 1,  STR_NONE,     STR_NONE },
-    { WWT_CAPTION,   1,  1,        WW - 2,   1,        14,      STR_OPTIONS,  STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,  1,  WW - 13,  WW - 3,   2,        13,      STR_CLOSE_X,  STR_CLOSE_WINDOW_TIP },
+    WINDOW_SKELETON,
     { WWT_BUTTON,    1,  WW - 80,  WW - 10,  WH - 22,  WH - 9,  STR_CANCEL,   STR_NONE },
     { WWT_BUTTON,    1,  10,       80,       WH - 22,  WH - 9,  STR_OK,       STR_NONE },
     { WIDGETS_END }

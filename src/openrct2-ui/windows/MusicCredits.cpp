@@ -14,6 +14,10 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
 
+#define WINDOW_TITLE STR_MUSIC_ACKNOWLEDGEMENTS
+#define WH 314
+#define WW 510
+
 // clang-format off
 enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -22,9 +26,7 @@ enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
 };
 
 static rct_widget window_music_credits_widgets[] = {
-    { WWT_FRAME,    0,  0,      509,    0,  313,    0xFFFFFFFF,                 STR_NONE },             // panel / background
-    { WWT_CAPTION,  0,  1,      508,    1,  14,     STR_MUSIC_ACKNOWLEDGEMENTS, STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX, 0,  497,    507,    2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, // close x button
+    WINDOW_SKELETON,
     { WWT_SCROLL,   0,  4,      505,    18, 309,    SCROLL_VERTICAL,            STR_NONE },             // scroll
     { WIDGETS_END },
 };

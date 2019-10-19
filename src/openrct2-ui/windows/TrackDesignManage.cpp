@@ -16,6 +16,10 @@
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/util/Util.h>
 
+#define WINDOW_TITLE STR_STRING
+#define WH 44
+#define WW 250
+
 #pragma region Widgets
 
 // clang-format off
@@ -31,9 +35,7 @@ enum {
 };
 
 static rct_widget window_track_manage_widgets[] = {
-    { WWT_FRAME,            0,  0,      249,    0,      43,     STR_NONE,                   STR_NONE                },
-    { WWT_CAPTION,          0,  1,      248,    1,      14,     STR_STRING,                     STR_WINDOW_TITLE_TIP    },
-    { WWT_CLOSEBOX,         0,  237,    247,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP    },
+    WINDOW_SKELETON,
     { WWT_BUTTON,           0,  10,     119,    24,     35,     STR_TRACK_MANAGE_RENAME,    STR_NONE                },
     { WWT_BUTTON,           0,  130,    239,    24,     35,     STR_TRACK_MANAGE_DELETE,    STR_NONE                },
     { WIDGETS_END }
@@ -42,7 +44,7 @@ static rct_widget window_track_manage_widgets[] = {
 static rct_widget window_track_delete_prompt_widgets[] = {
     { WWT_FRAME,            0,  0,      249,    0,      73,     STR_NONE,                   STR_NONE                },
     { WWT_CAPTION,          0,  1,      248,    1,      14,     STR_DELETE_FILE,            STR_WINDOW_TITLE_TIP    },
-    { WWT_CLOSEBOX,         0,  237,    247,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP    },
+    WINDOW_SKELETON,
     { WWT_BUTTON,           0,  10,     119,    54,     65,     STR_TRACK_MANAGE_DELETE,    STR_NONE                },
     { WWT_BUTTON,           0,  130,    239,    54,     65,     STR_CANCEL,                 STR_NONE                },
     { WIDGETS_END }

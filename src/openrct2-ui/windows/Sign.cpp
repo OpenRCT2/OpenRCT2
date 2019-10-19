@@ -25,6 +25,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 
+#define WINDOW_TITLE STR_SIGN
 constexpr int32_t WW = 113;
 constexpr int32_t WH = 96;
 
@@ -42,9 +43,7 @@ enum WINDOW_SIGN_WIDGET_IDX {
 
 // 0x9AEE00
 static rct_widget window_sign_widgets[] = {
-        { WWT_FRAME,    0, 0,       WW - 1,     0,          WH - 1,     0xFFFFFFFF,     STR_NONE },                         // panel / background
-        { WWT_CAPTION,  0, 1,       WW - 2,     1,          14,         STR_SIGN,       STR_WINDOW_TITLE_TIP },             // title bar
-        { WWT_CLOSEBOX, 0, WW - 13, WW - 3,     2,          13,         STR_CLOSE_X,    STR_CLOSE_WINDOW_TIP },             // close x button
+        WINDOW_SKELETON,             // close x button
         { WWT_VIEWPORT, 1, 3,       WW - 26,    17,         WH - 20,    STR_VIEWPORT,   STR_NONE },                         // Viewport
         { WWT_FLATBTN,  1, WW - 25, WW - 2,     19,         42,         SPR_RENAME,     STR_CHANGE_SIGN_TEXT_TIP },         // change sign button
         { WWT_FLATBTN,  1, WW - 25, WW - 2,     67,         90,         SPR_DEMOLISH,   STR_DEMOLISH_SIGN_TIP },            // demolish button

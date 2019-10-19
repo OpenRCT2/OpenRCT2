@@ -18,6 +18,7 @@
 
 constexpr int32_t WW = 400;
 constexpr int32_t WH = 350;
+#define WINDOW_TITLE STR_ABOUT
 constexpr int32_t TABHEIGHT = 50;
 
 // clang-format off
@@ -45,21 +46,19 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 };
 
 #define WIDGETS_MAIN \
-      WWT_FRAME,            0,  0,              WW - 1,         0,          WH - 1,     0xFFFFFFFF,                             STR_NONE },             /* panel / background */ \
-    { WWT_CAPTION,          0,  1,              WW - 2,         1,          14,         STR_ABOUT,                              STR_WINDOW_TITLE_TIP }, /* title bar */ \
-    { WWT_CLOSEBOX,         0,  WW - 13,        WW - 3,         2,          13,         STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP }, /* close x button */ \
+    WINDOW_SKELETON, \
     { WWT_IMGBTN,           1,  0,              WW - 1,         TABHEIGHT,  WH - 1,     0xFFFFFFFF,                             STR_NONE },             /* page background */ \
     { WWT_TAB,              1,  3,              93,             17,         TABHEIGHT,  IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },             /* about OpenRCT2 button */ \
-    { WWT_TAB,              1,  94,             184,            17,         TABHEIGHT,  IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE                /* about RCT2 button */
+    { WWT_TAB,              1,  94,             184,            17,         TABHEIGHT,  IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE }             /* about RCT2 button */
 
 static rct_widget window_about_openrct2_widgets[] = {
-    { WIDGETS_MAIN },
+    WIDGETS_MAIN,
     { WWT_BUTTON,           1,  100,            299,            WH - 50,    WH - 39,    STR_CHANGELOG_ELLIPSIS,                 STR_NONE },             // changelog button
     { WIDGETS_END }
 };
 
 static rct_widget window_about_rct2_widgets[] = {
-    { WIDGETS_MAIN },
+    WIDGETS_MAIN,
     { WWT_BUTTON,           1,  100,            299,            WH - 50,    WH - 39,    STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS,    STR_NONE },             // music credits button
     { WIDGETS_END },
 };

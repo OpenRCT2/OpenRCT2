@@ -52,6 +52,7 @@ option(ENABLE_LIGHTFX "Enable lighting effects." ON)
 option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
 
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
+option(LEFT_CLOSEBOX "Place window close button on the left.")
 
 if (FORCE32)
     set(TARGET_M "-m32")
@@ -124,6 +125,9 @@ if (ENABLE_LIGHTFX)
 endif ()
 if (ENABLE_SCRIPTING)
     add_definitions(-DENABLE_SCRIPTING)
+endif ()
+if (LEFT_CLOSEBOX)
+    add_definitions(-DLEFT_CLOSEBOX)
 endif ()
 
 if (NOT DISABLE_DISCORD_RPC)

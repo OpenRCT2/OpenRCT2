@@ -24,6 +24,10 @@
 
 #pragma region Widgets
 
+#define WINDOW_TITLE STR_RIDE_CONSTRUCTION_WINDOW_TITLE
+#define WH 200
+#define WW 166
+
 // clang-format off
 enum {
     WIDX_BACKGROUND,
@@ -43,9 +47,7 @@ enum {
 };
 
 static rct_widget window_maze_construction_widgets[] = {
-    { WWT_FRAME,            0,  0,      165,    0,      199,    0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_CAPTION,          0,  1,      164,    1,      14,     STR_RIDE_CONSTRUCTION_WINDOW_TITLE, STR_WINDOW_TITLE_TIP                                    },
-    { WWT_CLOSEBOX,         0,  153,    163,    2,      13,     STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP                                    },
+    WINDOW_SKELETON,
     { WWT_GROUPBOX,         0,  3,      162,    17,     71,     STR_RIDE_CONSTRUCTION_MODE,         STR_NONE                                                },
     { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
     { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },

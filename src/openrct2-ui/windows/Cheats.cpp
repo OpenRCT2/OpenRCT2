@@ -176,6 +176,7 @@ enum WINDOW_CHEATS_WIDGET_IDX
 
 #pragma region MEASUREMENTS
 
+#define WINDOW_TITLE STR_CHEAT_TITLE
 constexpr int32_t WW = 249;
 constexpr int32_t WH = 300;
 constexpr int32_t TAB_HEIGHT = 43;
@@ -205,9 +206,7 @@ constexpr int32_t TXTO = 3;  // Text horizontal offset from button left (for but
 #pragma endregion
 
 #define MAIN_CHEATS_WIDGETS \
-    { WWT_FRAME,            0,  0,          WW - 1, 0,      WH - 1,     0xFFFFFFFF,             STR_NONE },                 /* panel / background   */ \
-    { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_CHEAT_TITLE,        STR_WINDOW_TITLE_TIP },     /* title bar            */ \
-    { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3, 2,      13,         STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },     /* close x button       */ \
+    WINDOW_SKELETON, \
     { WWT_IMGBTN,           1,  0,          WW - 1, 43,     WH - 1,     0xFFFFFFFF,             STR_NONE },                 /* tab content panel    */ \
     { WWT_TAB,              1,  3,          33,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCIAL_CHEATS_TIP }, /* tab 1                */ \
     { WWT_TAB,              1,  34,         64,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_GUEST_CHEATS_TIP },     /* tab 2                */ \
