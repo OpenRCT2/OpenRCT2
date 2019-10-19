@@ -41,8 +41,7 @@ struct GameState_t
 
 static bool LoadFileToBuffer(MemoryStream& stream, const std::string& filePath)
 {
-    FILE* fp = nullptr;
-    fopen_s(&fp, filePath.c_str(), "rb");
+    FILE* fp = fopen(filePath.c_str(), "rb");
     EXPECT_NE(fp, nullptr);
     if (fp == nullptr)
         return false;
@@ -126,7 +125,7 @@ static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
     }
 }
 
-#define COMPARE_FIELD(field) ASSERT_EQ(left.field, right.field)
+#define COMPARE_FIELD(field) EXPECT_EQ(left.field, right.field)
 
 void CompareSpriteDataCommon(const rct_sprite_common& left, const rct_sprite_common& right)
 {
