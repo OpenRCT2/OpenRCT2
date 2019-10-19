@@ -232,11 +232,11 @@ target_link_libraries(test_pathfinding ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_pathfinding)
 add_test(NAME pathfinding COMMAND test_pathfinding)
 
-# LoadSave test
-set(NETWORKLOADSAVE_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/NetworkLoadSave.cpp"
+# S6 Import/Export test
+set(S6IMPORTEXPORT_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/S6ImportExportTests.cpp"
                                  "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
-add_executable(test_networkloadsave ${NETWORKLOADSAVE_TEST_SOURCES})
-SET_CHECK_CXX_FLAGS(test_networkloadsave)
-target_link_libraries(test_networkloadsave ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
-target_link_platform_libraries(test_networkloadsave)
-add_test(NAME networkloadsave COMMAND test_networkloadsave)
+add_executable(test_s6importexporttests ${S6IMPORTEXPORT_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_s6importexporttests)
+target_link_libraries(test_s6importexporttests ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_s6importexporttests)
+add_test(NAME s6importexporttests COMMAND test_s6importexporttests)
