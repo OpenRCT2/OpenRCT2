@@ -1217,7 +1217,8 @@ void viewport_set_visibility(uint8_t mode)
 
         switch (mode)
         {
-            case 0: { // Set all these flags to 0, and invalidate if any were active
+            case 0:
+            { // Set all these flags to 0, and invalidate if any were active
                 uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES
                     | VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_SEETHROUGH_PATHS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS
                     | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS | VIEWPORT_FLAG_PATH_HEIGHTS
