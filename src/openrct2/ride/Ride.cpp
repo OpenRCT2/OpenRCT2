@@ -6265,7 +6265,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(
                         continue;
                     if (tileElement->AsTrack()->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                         continue;
-                    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+                    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_MAZE)
                     {
                         gRideEntranceExitPlaceDirection = direction_reverse(direction);
                         *outDirection = direction_reverse(direction);
@@ -7077,7 +7077,7 @@ void sub_6CB945(Ride* ride)
                 }
 
                 uint8_t stationId = 0;
-                if (trackType != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+                if (trackType != TRACK_ELEM_MAZE)
                 {
                     stationId = trackElement->AsTrack()->GetStationIndex();
                 }
