@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <openrct2/common.h>
+#include <openrct2/world/Location.hpp>
 
 #define SHIFT 0x100
 #define CTRL 0x200
@@ -131,7 +132,7 @@ namespace OpenRCT2
 
             void Set(int32_t key);
             int32_t GetFromKey(int32_t key);
-            void GetKeyboardMapScroll(const uint8_t* keysState, int32_t* x, int32_t* y) const;
+            ScreenCoordsXY GetKeyboardMapScroll(const uint8_t* keysState) const;
         };
     } // namespace Input
 } // namespace OpenRCT2
@@ -151,4 +152,4 @@ void keyboard_shortcut_handle(int32_t key);
 void keyboard_shortcut_handle_command(int32_t shortcutIndex);
 void keyboard_shortcut_format_string(char* buffer, size_t size, uint16_t shortcutKey);
 
-void get_keyboard_map_scroll(const uint8_t* keysState, int32_t* x, int32_t* y);
+ScreenCoordsXY get_keyboard_map_scroll(const uint8_t* keysState);
