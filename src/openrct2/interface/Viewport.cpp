@@ -14,6 +14,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../core/JobPool.hpp"
 #include "../drawing/Drawing.h"
 #include "../paint/Paint.h"
@@ -60,7 +61,7 @@ static rct_drawpixelinfo _viewportDpi2;
 static uint8_t _interactionSpriteType;
 static int16_t _interactionMapX;
 static int16_t _interactionMapY;
-static uint16_t _unk9AC154;
+static uint16_t _interactionFlags;
 
 static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi);
 
@@ -1212,7 +1213,7 @@ void viewport_set_visibility(uint8_t mode)
 
     if (window != nullptr)
     {
-        rct_viewport* edi = window->viewport;
+        rct_viewport* vp = window->viewport;
         uint32_t invalidate = 0;
 
         switch (mode)
@@ -1224,26 +1225,26 @@ void viewport_set_visibility(uint8_t mode)
                     | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS | VIEWPORT_FLAG_PATH_HEIGHTS
                     | VIEWPORT_FLAG_INVISIBLE_PEEPS | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL;
 
-                invalidate += edi->flags & mask;
-                edi->flags &= ~mask;
+                invalidate += vp->flags & mask;
+                vp->flags &= ~mask;
                 break;
             }
             case 1: // 6CB79D
             case 4: // 6CB7C4
                 // Set underground on, invalidate if it was off
-                invalidate += !(edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-                edi->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                invalidate += !(vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+                vp->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 break;
             case 2: // 6CB7EB
                 // Set track heights on, invalidate if off
-                invalidate += !(edi->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
-                edi->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
+                invalidate += !(vp->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
+                vp->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
                 break;
             case 3: // 6CB7B1
             case 5: // 6CB7D8
                 // Set underground off, invalidate if it was on
-                invalidate += edi->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                edi->flags &= ~((uint16_t)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+                invalidate += vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                vp->flags &= ~((uint16_t)VIEWPORT_FLAG_UNDERGROUND_INSIDE);
                 break;
         }
         if (invalidate != 0)
@@ -1270,7 +1271,7 @@ static void store_interaction_info(paint_struct* ps)
     else
         mask = 1 << (ps->sprite_type - 1);
 
-    if (!(_unk9AC154 & mask))
+    if (!(_interactionFlags & mask))
     {
         _interactionSpriteType = ps->sprite_type;
         _interactionMapX = ps->map_x;
@@ -1282,7 +1283,7 @@ static void store_interaction_info(paint_struct* ps)
 /**
  * rct2: 0x00679236, 0x00679662, 0x00679B0D, 0x00679FF1
  */
-static bool pixel_is_present_bmp(uint32_t imageType, const rct_g1_element* g1, const uint8_t* index, const uint8_t* palette)
+static bool is_pixel_present_bmp(uint32_t imageType, const rct_g1_element* g1, const uint8_t* index, const uint8_t* palette)
 {
     // Probably used to check for corruption
     if (!(g1->flags & G1_FLAG_BMP))
@@ -1398,7 +1399,7 @@ static bool is_pixel_present_rle(const uint8_t* esi, int16_t x_start_point, int1
  * @param y (dx)
  * @return value originally stored in 0x00141F569
  */
-static bool sub_679074(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16_t y, const uint8_t* palette)
+static bool is_sprite_interacted_with_palette_set(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16_t y, const uint8_t* palette)
 {
     const rct_g1_element* g1 = gfx_get_g1_element(imageId & 0x7FFFF);
     if (g1 == nullptr)
@@ -1426,7 +1427,7 @@ static bool sub_679074(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16
                 /* .zoom_level = */ (uint16_t)(dpi->zoom_level - 1),
             };
 
-            return sub_679074(&zoomed_dpi, imageId - g1->zoomed_offset, x / 2, y / 2, palette);
+            return is_sprite_interacted_with_palette_set(&zoomed_dpi, imageId - g1->zoomed_offset, x / 2, y / 2, palette);
         }
     }
 
@@ -1528,60 +1529,18 @@ static bool sub_679074(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16
 
     if (!(g1->flags & G1_FLAG_1))
     {
-        return pixel_is_present_bmp(imageType, g1, offset, palette);
+        return is_pixel_present_bmp(imageType, g1, offset, palette);
     }
 
-    // Adding assert here, possibly dead code below. Remove after some time.
-    assert(false);
-
-    // The code below is untested.
-    int32_t total_no_pixels = g1->width * g1->height;
-    uint8_t* source_pointer = g1->offset;
-    uint8_t* new_source_pointer_start = (uint8_t*)malloc(total_no_pixels);
-    uint8_t* new_source_pointer = (*&new_source_pointer_start); // 0x9E3D28;
-    intptr_t ebx1;
-    int32_t ecx;
-    while (total_no_pixels > 0)
-    {
-        int8_t no_pixels = *source_pointer;
-        if (no_pixels >= 0)
-        {
-            source_pointer++;
-            total_no_pixels -= no_pixels;
-            std::memcpy((char*)new_source_pointer, (char*)source_pointer, no_pixels);
-            new_source_pointer += no_pixels;
-            source_pointer += no_pixels;
-            continue;
-        }
-        ecx = no_pixels;
-        no_pixels &= 0x7;
-        ecx >>= 3; // SAR
-        uintptr_t eax = ((int32_t)no_pixels) << 8;
-        ecx = -ecx; // Odd
-        eax = (eax & 0xFF00) + *(source_pointer + 1);
-        total_no_pixels -= ecx;
-        source_pointer += 2;
-        ebx1 = (uintptr_t)new_source_pointer - eax;
-        eax = (uintptr_t)source_pointer;
-        source_pointer = (uint8_t*)ebx1;
-        ebx1 = eax;
-        eax = 0;
-        std::memcpy((char*)new_source_pointer, (char*)source_pointer, ecx);
-        new_source_pointer += ecx;
-        source_pointer = (uint8_t*)ebx1;
-    }
-
-    bool output = pixel_is_present_bmp(imageType, g1, new_source_pointer_start + (uintptr_t)offset, palette);
-    free(new_source_pointer_start);
-
-    return output;
+    Guard::Assert(false, "Invalid image type encountered.");
+    return false;
 }
 
 /**
  *
  *  rct2: 0x00679023
  */
-static bool sub_679023(rct_drawpixelinfo* dpi, int32_t imageId, int32_t x, int32_t y)
+static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, int32_t x, int32_t y)
 {
     const uint8_t* palette = nullptr;
     imageId &= ~IMAGE_TYPE_TRANSPARENT;
@@ -1604,14 +1563,14 @@ static bool sub_679023(rct_drawpixelinfo* dpi, int32_t imageId, int32_t x, int32
     {
         _currentImageType = 0;
     }
-    return sub_679074(dpi, imageId, x, y, palette);
+    return is_sprite_interacted_with_palette_set(dpi, imageId, x, y, palette);
 }
 
 /**
  *
  *  rct2: 0x0068862C
  */
-static void sub_68862C(paint_session* session)
+static void set_interaction_info_from_paint_session(paint_session* session)
 {
     paint_struct* ps = &session->PaintHead;
     rct_drawpixelinfo* dpi = &session->DPI;
@@ -1623,7 +1582,7 @@ static void sub_68862C(paint_session* session)
         while (next_ps != nullptr)
         {
             ps = next_ps;
-            if (sub_679023(dpi, ps->image_id, ps->x, ps->y))
+            if (is_sprite_interacted_with(dpi, ps->image_id, ps->x, ps->y))
             {
                 store_interaction_info(ps);
             }
@@ -1632,7 +1591,7 @@ static void sub_68862C(paint_session* session)
 
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
-            if (sub_679023(dpi, attached_ps->image_id, (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF))
+            if (is_sprite_interacted_with(dpi, attached_ps->image_id, (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF))
             {
                 store_interaction_info(ps);
             }
@@ -1666,7 +1625,7 @@ void get_map_coordinates_from_pos_window(
     rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport)
 {
-    _unk9AC154 = flags & 0xFFFF;
+    _interactionFlags = flags & 0xFFFF;
     _interactionSpriteType = 0;
     if (window != nullptr && window->viewport != nullptr)
     {
@@ -1694,7 +1653,7 @@ void get_map_coordinates_from_pos_window(
             paint_session* session = paint_session_alloc(dpi, myviewport->flags);
             paint_session_generate(session);
             paint_session_arrange(session);
-            sub_68862C(session);
+            set_interaction_info_from_paint_session(session);
             paint_session_free(session);
         }
         if (viewport != nullptr)
