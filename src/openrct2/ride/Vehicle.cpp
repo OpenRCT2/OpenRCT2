@@ -6116,7 +6116,7 @@ GForces vehicle_get_g_forces(const rct_vehicle* vehicle)
             break;
         case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
         case TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP:
-        case 255:
+        case TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP:
             vertFactor = (((uint16_t)(-(vehicle->track_progress - 137))) / 4) + 55;
             // 6D7614
             break;
