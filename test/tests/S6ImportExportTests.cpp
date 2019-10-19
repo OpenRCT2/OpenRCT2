@@ -127,7 +127,7 @@ static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
 
 #define COMPARE_FIELD(field) EXPECT_EQ(left.field, right.field)
 
-void CompareSpriteDataCommon(const rct_sprite_common& left, const rct_sprite_common& right)
+static void CompareSpriteDataCommon(const rct_sprite_common& left, const rct_sprite_common& right)
 {
     COMPARE_FIELD(sprite_identifier);
     COMPARE_FIELD(type);
@@ -153,7 +153,7 @@ void CompareSpriteDataCommon(const rct_sprite_common& left, const rct_sprite_com
     COMPARE_FIELD(sprite_direction);
 }
 
-void CompareSpriteDataPeep(const Peep& left, const Peep& right)
+static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
 {
     COMPARE_FIELD(next_x);
     COMPARE_FIELD(next_y);
@@ -269,7 +269,7 @@ void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(item_standard_flags);
 }
 
-void CompareSpriteDataVehicle(const rct_vehicle& left, const rct_vehicle& right)
+static void CompareSpriteDataVehicle(const rct_vehicle& left, const rct_vehicle& right)
 {
     COMPARE_FIELD(vehicle_sprite_type);
     COMPARE_FIELD(bank_rotation);
@@ -343,17 +343,17 @@ void CompareSpriteDataVehicle(const rct_vehicle& left, const rct_vehicle& right)
     COMPARE_FIELD(target_seat_rotation);
 }
 
-void CompareSpriteDataLitter(const rct_litter& left, const rct_litter& right)
+static void CompareSpriteDataLitter(const rct_litter& left, const rct_litter& right)
 {
     COMPARE_FIELD(creationTick);
 }
 
-void CompareSpriteDataSteamParticle(const rct_steam_particle& left, const rct_steam_particle& right)
+static void CompareSpriteDataSteamParticle(const rct_steam_particle& left, const rct_steam_particle& right)
 {
     COMPARE_FIELD(time_to_move);
 }
 
-void CompareSpriteDataMoneyEffect(const rct_money_effect& left, const rct_money_effect& right)
+static void CompareSpriteDataMoneyEffect(const rct_money_effect& left, const rct_money_effect& right)
 {
     COMPARE_FIELD(move_delay);
     COMPARE_FIELD(num_movements);
@@ -363,7 +363,7 @@ void CompareSpriteDataMoneyEffect(const rct_money_effect& left, const rct_money_
     COMPARE_FIELD(wiggle);
 }
 
-void CompareSpriteDataCrashedVehicleParticle(
+static void CompareSpriteDataCrashedVehicleParticle(
     const rct_crashed_vehicle_particle& left, const rct_crashed_vehicle_particle& right)
 {
     COMPARE_FIELD(time_to_live);
@@ -380,7 +380,7 @@ void CompareSpriteDataCrashedVehicleParticle(
     COMPARE_FIELD(acceleration_z);
 }
 
-void CompareSpriteDataJumpingFountain(const JumpingFountain& left, const JumpingFountain& right)
+static void CompareSpriteDataJumpingFountain(const JumpingFountain& left, const JumpingFountain& right)
 {
     COMPARE_FIELD(NumTicksAlive);
     COMPARE_FIELD(FountainFlags);
@@ -389,14 +389,14 @@ void CompareSpriteDataJumpingFountain(const JumpingFountain& left, const Jumping
     COMPARE_FIELD(Iteration);
 }
 
-void CompareSpriteDataBalloon(const rct_balloon& left, const rct_balloon& right)
+static void CompareSpriteDataBalloon(const rct_balloon& left, const rct_balloon& right)
 {
     COMPARE_FIELD(popped);
     COMPARE_FIELD(time_to_move);
     COMPARE_FIELD(colour);
 }
 
-void CompareSpriteDataDuck(const rct_duck& left, const rct_duck& right)
+static void CompareSpriteDataDuck(const rct_duck& left, const rct_duck& right)
 {
     COMPARE_FIELD(target_x);
     COMPARE_FIELD(target_y);
