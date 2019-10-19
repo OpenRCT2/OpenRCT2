@@ -396,17 +396,18 @@ void window_close_all_except_flags(uint16_t flags)
  *
  *  rct2: 0x006EA845
  */
-rct_window* window_find_from_point(int32_t x, int32_t y)
+rct_window* window_find_from_point(ScreenCoordsXY screenCoords)
 {
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
         auto& w = *it;
-        if (x < w->x || x >= w->x + w->width || y < w->y || y >= w->y + w->height)
+        if (screenCoords.x < w->x || screenCoords.x >= w->x + w->width || screenCoords.y < w->y
+            || screenCoords.y >= w->y + w->height)
             continue;
 
         if (w->flags & WF_NO_BACKGROUND)
         {
-            auto widgetIndex = window_find_widget_from_point(w.get(), x, y);
+            auto widgetIndex = window_find_widget_from_point(w.get(), screenCoords);
             if (widgetIndex == -1)
                 continue;
         }
@@ -425,7 +426,7 @@ rct_window* window_find_from_point(int32_t x, int32_t y)
  * returns widget_index (edx)
  * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
  */
-rct_widgetindex window_find_widget_from_point(rct_window* w, int32_t x, int32_t y)
+rct_widgetindex window_find_widget_from_point(rct_window* w, ScreenCoordsXY screenCoords)
 {
     // Invalidate the window
     window_event_invalidate_call(w);
@@ -441,7 +442,8 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, int32_t x, int32_t 
         }
         else if (widget->type != WWT_EMPTY)
         {
-            if (x >= w->x + widget->left && x <= w->x + widget->right && y >= w->y + widget->top && y <= w->y + widget->bottom)
+            if (screenCoords.x >= w->x + widget->left && screenCoords.x <= w->x + widget->right
+                && screenCoords.y >= w->y + widget->top && screenCoords.y <= w->y + widget->bottom)
             {
                 widget_index = i;
             }
@@ -1239,26 +1241,26 @@ void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w)
     viewport_render(dpi, w->viewport, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height);
 }
 
-void window_set_position(rct_window* w, int32_t x, int32_t y)
+void window_set_position(rct_window* w, ScreenCoordsXY screenCoords)
 {
-    window_move_position(w, x - w->x, y - w->y);
+    window_move_position(w, ScreenCoordsXY(screenCoords.x - w->x, screenCoords.y - w->y));
 }
 
-void window_move_position(rct_window* w, int32_t dx, int32_t dy)
+void window_move_position(rct_window* w, ScreenCoordsXY deltaCoords)
 {
-    if (dx == 0 && dy == 0)
+    if (deltaCoords.x == 0 && deltaCoords.y == 0)
         return;
 
     // Invalidate old region
     w->Invalidate();
 
     // Translate window and viewport
-    w->x += dx;
-    w->y += dy;
+    w->x += deltaCoords.x;
+    w->y += deltaCoords.y;
     if (w->viewport != nullptr)
     {
-        w->viewport->x += dx;
-        w->viewport->y += dy;
+        w->viewport->x += deltaCoords.x;
+        w->viewport->y += deltaCoords.y;
     }
 
     // Invalidate new region
@@ -1431,28 +1433,28 @@ void window_event_unknown_08_call(rct_window* w)
         w->event_handlers->unknown_08(w);
 }
 
-void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->tool_update != nullptr)
-        w->event_handlers->tool_update(w, widgetIndex, x, y);
+        w->event_handlers->tool_update(w, widgetIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->tool_down != nullptr)
-        w->event_handlers->tool_down(w, widgetIndex, x, y);
+        w->event_handlers->tool_down(w, widgetIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->tool_drag != nullptr)
-        w->event_handlers->tool_drag(w, widgetIndex, x, y);
+        w->event_handlers->tool_drag(w, widgetIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->tool_up != nullptr)
-        w->event_handlers->tool_up(w, widgetIndex, x, y);
+        w->event_handlers->tool_up(w, widgetIndex, screenCoords.x, screenCoords.y);
 }
 
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex)
@@ -1475,22 +1477,22 @@ void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, 
     }
 }
 
-void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->scroll_mousedown != nullptr)
-        w->event_handlers->scroll_mousedown(w, scrollIndex, x, y);
+        w->event_handlers->scroll_mousedown(w, scrollIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->scroll_mousedrag != nullptr)
-        w->event_handlers->scroll_mousedrag(w, scrollIndex, x, y);
+        w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords.x, screenCoords.y);
 }
 
-void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->scroll_mouseover != nullptr)
-        w->event_handlers->scroll_mouseover(w, scrollIndex, x, y);
+        w->event_handlers->scroll_mouseover(w, scrollIndex, screenCoords.x, screenCoords.y);
 }
 
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text)
@@ -1519,18 +1521,18 @@ rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetInd
     return result;
 }
 
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     int32_t cursorId = CURSOR_ARROW;
     if (w->event_handlers->cursor != nullptr)
-        w->event_handlers->cursor(w, widgetIndex, x, y, &cursorId);
+        w->event_handlers->cursor(w, widgetIndex, screenCoords.x, screenCoords.y, &cursorId);
     return cursorId;
 }
 
-void window_event_moved_call(rct_window* w, int32_t x, int32_t y)
+void window_event_moved_call(rct_window* w, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->moved != nullptr)
-        w->event_handlers->moved(w, x, y);
+        w->event_handlers->moved(w, screenCoords.x, screenCoords.y);
 }
 
 void window_event_invalidate_call(rct_window* w)
@@ -1890,18 +1892,18 @@ static void window_snap_bottom(rct_window* w, int32_t proximity)
         w->y = topMost - w->height;
 }
 
-void window_move_and_snap(rct_window* w, int32_t newWindowX, int32_t newWindowY, int32_t snapProximity)
+void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
 {
     int32_t originalX = w->x;
     int32_t originalY = w->y;
     int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
 
-    newWindowY = std::clamp(newWindowY, minY, context_get_height() - 34);
+    newWindowCoords.y = std::clamp(newWindowCoords.y, minY, context_get_height() - 34);
 
     if (snapProximity > 0)
     {
-        w->x = newWindowX;
-        w->y = newWindowY;
+        w->x = newWindowCoords.x;
+        w->y = newWindowCoords.y;
 
         window_snap_right(w, snapProximity);
         window_snap_bottom(w, snapProximity);
@@ -1911,13 +1913,13 @@ void window_move_and_snap(rct_window* w, int32_t newWindowX, int32_t newWindowY,
         if (w->x == originalX && w->y == originalY)
             return;
 
-        newWindowX = w->x;
-        newWindowY = w->y;
+        newWindowCoords.x = w->x;
+        newWindowCoords.y = w->y;
         w->x = originalX;
         w->y = originalY;
     }
 
-    window_set_position(w, newWindowX, newWindowY);
+    window_set_position(w, newWindowCoords);
 }
 
 int32_t window_can_resize(rct_window* w)

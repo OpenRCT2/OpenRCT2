@@ -448,8 +448,8 @@ rct_window* window_scenery_open()
     window_scenery_init();
 
     window = window_create(
-        context_get_width() - WINDOW_SCENERY_WIDTH, 0x1D, WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT, &window_scenery_events,
-        WC_SCENERY, WF_NO_SCROLLING);
+        ScreenCoordsXY(context_get_width() - WINDOW_SCENERY_WIDTH, 0x1D), WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT,
+        &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
     window->widgets = window_scenery_widgets;
 
     window->enabled_widgets = (1 << WIDX_SCENERY_CLOSE) | (1 << WIDX_SCENERY_ROTATE_OBJECTS_BUTTON) | (1 << WIDX_SCENERY_TAB_1)
@@ -748,7 +748,7 @@ static void window_scenery_periodic_update(rct_window* w)
 static void window_scenery_update(rct_window* w)
 {
     const CursorState* state = context_get_cursor_state();
-    rct_window* other = window_find_from_point(state->x, state->y);
+    rct_window* other = window_find_from_point(ScreenCoordsXY(state->x, state->y));
     if (other == w)
     {
         int32_t window_x = state->x - w->x + 26;
@@ -756,7 +756,7 @@ static void window_scenery_update(rct_window* w)
 
         if (window_y < 44 || window_x <= w->width)
         {
-            rct_widgetindex widgetIndex = window_find_widget_from_point(w, state->x, state->y);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(state->x, state->y));
             if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL)
             {
                 w->scenery.hover_counter++;

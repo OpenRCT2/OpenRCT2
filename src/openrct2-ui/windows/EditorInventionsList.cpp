@@ -266,7 +266,7 @@ static ResearchItem* get_research_item_at(int32_t x, int32_t y, int32_t* outScro
     rct_window* w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
     if (w != nullptr && w->x <= x && w->y < y && w->x + w->width > x && w->y + w->height > y)
     {
-        rct_widgetindex widgetIndex = window_find_widget_from_point(w, x, y);
+        rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(x, y));
         rct_widget* widget = &w->widgets[widgetIndex];
         if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
         {
@@ -751,8 +751,9 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
     w = window_create(
-        gTooltipCursorX - (stringWidth / 2), gTooltipCursorY - 7, stringWidth, 14, &window_editor_inventions_list_drag_events,
-        WC_EDITOR_INVENTION_LIST_DRAG, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
+        ScreenCoordsXY(gTooltipCursorX - (stringWidth / 2), gTooltipCursorY - 7), stringWidth, 14,
+        &window_editor_inventions_list_drag_events, WC_EDITOR_INVENTION_LIST_DRAG,
+        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     w->widgets = window_editor_inventions_list_drag_widgets;
     w->colours[1] = COLOUR_WHITE;
     input_window_position_begin(w, 0, gTooltipCursorX, gTooltipCursorY);

@@ -86,7 +86,7 @@ static bool window_fits_on_screen(int32_t x, int32_t y, int32_t width, int32_t h
 }
 
 rct_window* window_create(
-    int32_t x, int32_t y, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    ScreenCoordsXY screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
     uint16_t flags)
 {
     // Check if there are any window slots left
@@ -141,12 +141,12 @@ rct_window* window_create(
     if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
     {
         w->flags |= WF_WHITE_BORDER_MASK;
-        audio_play_sound(SoundId::WindowOpen, 0, x + (width / 2));
+        audio_play_sound(SoundId::WindowOpen, 0, screenCoords.x + (width / 2));
     }
 
     w->number = 0;
-    w->x = x;
-    w->y = y;
+    w->x = screenCoords.x;
+    w->y = screenCoords.y;
     w->width = width;
     w->height = height;
     w->viewport = nullptr;
@@ -314,7 +314,7 @@ foundSpace:
     if (x + width > screenWidth)
         x = screenWidth - width;
 
-    return window_create(x, y, width, height, event_handlers, cls, flags);
+    return window_create(ScreenCoordsXY(x, y), width, height, event_handlers, cls, flags);
 }
 
 rct_window* window_create_centred(
@@ -326,7 +326,7 @@ rct_window* window_create_centred(
 
     int32_t x = (screenWidth - width) / 2;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2);
-    return window_create(x, y, width, height, event_handlers, cls, flags);
+    return window_create(ScreenCoordsXY(x, y), width, height, event_handlers, cls, flags);
 }
 
 static int32_t window_get_widget_index(rct_window* w, rct_widget* widget)
@@ -545,7 +545,7 @@ void window_all_wheel_input()
     // Check window cursor is over
     if (!(input_test_flag(INPUT_FLAG_5)))
     {
-        rct_window* w = window_find_from_point(cursorState->x, cursorState->y);
+        rct_window* w = window_find_from_point(ScreenCoordsXY(cursorState->x, cursorState->y));
         if (w != nullptr)
         {
             // Check if main window
@@ -556,7 +556,7 @@ void window_all_wheel_input()
             }
 
             // Check scroll view, cursor is over
-            rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->x, cursorState->y);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(cursorState->x, cursorState->y));
             if (widgetIndex != -1)
             {
                 rct_widget* widget = &w->widgets[widgetIndex];

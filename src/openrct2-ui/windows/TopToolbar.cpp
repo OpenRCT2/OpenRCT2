@@ -341,7 +341,7 @@ static colour_t _tertiaryColour;
 rct_window* window_top_toolbar_open()
 {
     rct_window* window = window_create(
-        0, 0, context_get_width(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WC_TOP_TOOLBAR,
+        ScreenCoordsXY(0, 0), context_get_width(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WC_TOP_TOOLBAR,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_top_toolbar_widgets;
 
@@ -3064,10 +3064,10 @@ static money32 selection_lower_land(uint8_t flags)
  */
 static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
 {
-    rct_window* window = window_find_from_point(x, y);
+    rct_window* window = window_find_from_point(ScreenCoordsXY(x, y));
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+    rct_widgetindex widget_index = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];
@@ -3107,10 +3107,10 @@ static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
  */
 static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
 {
-    rct_window* window = window_find_from_point(x, y);
+    rct_window* window = window_find_from_point(ScreenCoordsXY(x, y));
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+    rct_widgetindex widget_index = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];

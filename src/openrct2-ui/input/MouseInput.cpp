@@ -278,8 +278,8 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
     rct_widgetindex widgetIndex;
 
     // Get window and widget under cursor position
-    w = window_find_from_point(x, y);
-    widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(w, x, y);
+    w = window_find_from_point(ScreenCoordsXY(x, y));
+    widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(w, ScreenCoordsXY(x, y));
     widget = widgetIndex == -1 ? nullptr : &w->widgets[widgetIndex];
 
     switch (_inputState)
@@ -387,7 +387,7 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
                         break;
                     }
 
-                    window_event_tool_drag_call(w, gCurrentToolWidget.widget_index, x, y);
+                    window_event_tool_drag_call(w, gCurrentToolWidget.widget_index, ScreenCoordsXY(x, y));
                     break;
                 case MOUSE_STATE_LEFT_RELEASE:
                     _inputState = INPUT_STATE_RESET;
@@ -399,7 +399,7 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
                                 gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                             if (w != nullptr)
                             {
-                                window_event_tool_up_call(w, gCurrentToolWidget.widget_index, x, y);
+                                window_event_tool_up_call(w, gCurrentToolWidget.widget_index, ScreenCoordsXY(x, y));
                             }
                         }
                         else if (!(_inputFlags & INPUT_FLAG_4))
@@ -462,7 +462,7 @@ static void input_window_position_continue(rct_window* w, int32_t lastX, int32_t
     int32_t snapProximity;
 
     snapProximity = (w->flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
-    window_move_and_snap(w, newX - lastX, newY - lastY, snapProximity);
+    window_move_and_snap(w, ScreenCoordsXY(newX - lastX, newY - lastY), snapProximity);
 }
 
 static void input_window_position_end(rct_window* w, int32_t x, int32_t y)
@@ -470,7 +470,7 @@ static void input_window_position_end(rct_window* w, int32_t x, int32_t y)
     _inputState = INPUT_STATE_NORMAL;
     gTooltipTimeout = 0;
     gTooltipWidget = _dragWidget;
-    window_event_moved_call(w, x, y);
+    window_event_moved_call(w, ScreenCoordsXY(x, y));
 }
 
 static void input_window_resize_begin(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
@@ -620,7 +620,7 @@ static void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, int32
     window_event_unknown_15_call(w, scroll_id, scroll_area);
     if (scroll_area == SCROLL_PART_VIEW)
     {
-        window_event_scroll_mousedown_call(w, scroll_id, eax, ebx);
+        window_event_scroll_mousedown_call(w, scroll_id, ScreenCoordsXY(eax, ebx));
         return;
     }
 
@@ -716,7 +716,7 @@ static void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, in
     switch (scroll_part)
     {
         case SCROLL_PART_VIEW:
-            window_event_scroll_mousedrag_call(w, scroll_id, x, y);
+            window_event_scroll_mousedrag_call(w, scroll_id, ScreenCoordsXY(x, y));
             break;
         case SCROLL_PART_HSCROLLBAR_LEFT:
             input_scroll_part_update_hleft(w, widgetIndex, scroll_id);
@@ -934,7 +934,7 @@ static void input_widget_over(int32_t x, int32_t y, rct_window* w, rct_widgetind
             window_tooltip_close();
         else
         {
-            window_event_scroll_mouseover_call(w, edx, eax, ebx);
+            window_event_scroll_mouseover_call(w, edx, ScreenCoordsXY(eax, ebx));
             input_update_tooltip(w, widgetIndex, x, y);
         }
     }
@@ -1049,7 +1049,7 @@ static void input_widget_left(int32_t x, int32_t y, rct_window* w, rct_widgetind
                 w = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                 if (w != nullptr)
                 {
-                    window_event_tool_down_call(w, gCurrentToolWidget.widget_index, x, y);
+                    window_event_tool_down_call(w, gCurrentToolWidget.widget_index, ScreenCoordsXY(x, y));
                     _inputFlags |= INPUT_FLAG_4;
                 }
             }
@@ -1094,13 +1094,13 @@ void process_mouse_over(int32_t x, int32_t y)
 
     cursorId = CURSOR_ARROW;
     set_map_tooltip_format_arg(0, rct_string_id, STR_NONE);
-    window = window_find_from_point(x, y);
+    window = window_find_from_point(ScreenCoordsXY(x, y));
 
     if (window != nullptr)
     {
         int32_t ebx, edi;
         rct_window* subWindow;
-        rct_widgetindex widgetId = window_find_widget_from_point(window, x, y);
+        rct_widgetindex widgetId = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
         if (widgetId != -1)
         {
             switch (window->widgets[widgetId].type)
@@ -1163,13 +1163,13 @@ void process_mouse_over(int32_t x, int32_t y)
                         break;
                     }
                     // Same as default but with scroll_x/y
-                    cursorId = window_event_cursor_call(window, widgetId, scroll_x, scroll_y);
+                    cursorId = window_event_cursor_call(window, widgetId, ScreenCoordsXY(scroll_x, scroll_y));
                     if (cursorId == -1)
                         cursorId = CURSOR_ARROW;
                     break;
                 }
                 default:
-                    cursorId = window_event_cursor_call(window, widgetId, x, y);
+                    cursorId = window_event_cursor_call(window, widgetId, ScreenCoordsXY(x, y));
                     if (cursorId == -1)
                         cursorId = CURSOR_ARROW;
                     break;
@@ -1194,7 +1194,7 @@ void process_mouse_tool(int32_t x, int32_t y)
         if (!w)
             tool_cancel();
         else
-            window_event_tool_update_call(w, gCurrentToolWidget.widget_index, x, y);
+            window_event_tool_update_call(w, gCurrentToolWidget.widget_index, ScreenCoordsXY(x, y));
     }
 }
 

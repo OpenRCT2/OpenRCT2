@@ -216,7 +216,7 @@ rct_window* window_footpath_open()
         return window;
     }
 
-    window = window_create(0, 29, 106, 381, &window_footpath_events, WC_FOOTPATH, 0);
+    window = window_create(ScreenCoordsXY(0, 29), 106, 381, &window_footpath_events, WC_FOOTPATH, 0);
     window->widgets = window_footpath_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_FOOTPATH_TYPE) | (1 << WIDX_QUEUELINE_TYPE)
         | (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW) | (1 << WIDX_DIRECTION_SE)
