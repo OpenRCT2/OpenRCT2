@@ -48,6 +48,7 @@ option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_LIGHTFX "Enable lighting effects." ON)
 
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
+option(LEFT_CLOSEBOX "Place window close button on the left.")
 
 if (FORCE32)
     set(TARGET_M "-m32")
@@ -113,6 +114,9 @@ if (DISABLE_TTF)
 endif ()
 if (ENABLE_LIGHTFX)
     add_definitions(-D__ENABLE_LIGHTFX__)
+endif ()
+if (LEFT_CLOSEBOX)
+    add_definitions(-DLEFT_CLOSEBOX)
 endif ()
 
 if (CXX_WARN_SUGGEST_FINAL_TYPES)
