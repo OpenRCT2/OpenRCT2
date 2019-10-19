@@ -1217,8 +1217,7 @@ void viewport_set_visibility(uint8_t mode)
 
         switch (mode)
         {
-            case 0:
-            { // Set all these flags to 0, and invalidate if any were active
+            case 0: { // Set all these flags to 0, and invalidate if any were active
                 uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES
                     | VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_SEETHROUGH_PATHS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS
                     | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS | VIEWPORT_FLAG_PATH_HEIGHTS
@@ -1666,15 +1665,15 @@ void get_map_coordinates_from_pos_window(
     rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport)
 {
-  ScreenCoordsXY screenCoords(screenX, screenY);
-  CoordsXY mapCoords;
+    ScreenCoordsXY screenCoords(screenX, screenY);
+    CoordsXY mapCoords;
 
-  get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
+    get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
 
-  if (x != nullptr)
-    *x = mapCoords.x;
-  if (y != nullptr)
-    *y = mapCoords.y;
+    if (x != nullptr)
+        *x = mapCoords.x;
+    if (y != nullptr)
+        *y = mapCoords.y;
 }
 
 void get_map_coordinates_from_pos_window(
@@ -1688,7 +1687,8 @@ void get_map_coordinates_from_pos_window(
         rct_viewport* myviewport = window->viewport;
         screenCoords.x -= (int32_t)myviewport->x;
         screenCoords.y -= (int32_t)myviewport->y;
-        if (screenCoords.x >= 0 && screenCoords.x < (int32_t)myviewport->width && screenCoords.y >= 0 && screenCoords.y < (int32_t)myviewport->height)
+        if (screenCoords.x >= 0 && screenCoords.x < (int32_t)myviewport->width && screenCoords.y >= 0
+            && screenCoords.y < (int32_t)myviewport->height)
         {
             screenCoords.x <<= myviewport->zoom;
             screenCoords.y <<= myviewport->zoom;
@@ -1698,7 +1698,7 @@ void get_map_coordinates_from_pos_window(
             screenCoords.x &= (0xFFFF << myviewport->zoom) & 0xFFFF;
             screenCoords.y &= (0xFFFF << myviewport->zoom) & 0xFFFF;
             _viewportDpi1.x = screenCoords.x;
-            _viewportDpi1.y = screenCoords.y ;
+            _viewportDpi1.y = screenCoords.y;
             rct_drawpixelinfo* dpi = &_viewportDpi2;
             dpi->y = _viewportDpi1.y;
             dpi->height = 1;
