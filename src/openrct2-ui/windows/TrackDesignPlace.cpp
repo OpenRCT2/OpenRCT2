@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/TrackDesignAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
@@ -446,23 +447,19 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
 static void window_track_place_attempt_placement(
     TrackDesign* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex)
 {
-    int32_t eax, ebx, ecx, edx, esi, edi, ebp;
-    money32 result;
+    auto tdAction = TrackDesignAction({ x, y, z }, *_trackDesign);
+    tdAction.SetFlags(bl);
+    auto res = (bl & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&tdAction) : GameActions::Query(&tdAction);
 
-    edx = esi = ebp = 0;
-    eax = x;
-    ebx = bl;
-    ecx = y;
-    edi = z;
-
-    gActiveTrackDesign = _trackDesign.get();
-    result = game_do_command_p(GAME_COMMAND_PLACE_TRACK_DESIGN, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-    gActiveTrackDesign = nullptr;
-
-    if (cost != nullptr)
-        *cost = result;
-    if (rideIndex != nullptr)
-        *rideIndex = edi & 0xFF;
+    if (res->Error != GA_ERROR::OK)
+    {
+        *cost = MONEY32_UNDEFINED;
+    }
+    else
+    {
+        *cost = res->Cost;
+    }
+    *rideIndex = dynamic_cast<TrackDesignActionResult*>(res.get())->rideIndex;
 }
 
 /**

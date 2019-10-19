@@ -195,6 +195,7 @@ extern LocationXYZ16 gTrackPreviewOrigin;
 
 extern bool byte_9D8150;
 
+extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;
 extern ride_id_t gTrackDesignSaveRideIndex;
 

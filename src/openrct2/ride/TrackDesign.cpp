@@ -86,7 +86,7 @@ static int16_t _trackDesignPlaceSceneryZ;
 
 // Previously all flags in byte_F4414E
 static bool _trackDesignPlaceStateEntranceExitPlaced = false;
-static bool _trackDesignPlaceStateSceneryUnavailable = false;
+bool _trackDesignPlaceStateSceneryUnavailable = false;
 static bool _trackDesignPlaceStateHasScenery = false;
 static bool _trackDesignPlaceStatePlaceScenery = true;
 
