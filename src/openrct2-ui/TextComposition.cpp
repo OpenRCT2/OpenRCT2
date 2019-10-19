@@ -106,13 +106,15 @@ void TextComposition::HandleMessage(const SDL_Event* e)
 
             uint16_t modifier = e->key.keysym.mod;
             SDL_Keycode key = e->key.keysym.sym;
+            SDL_Scancode scancode = e->key.keysym.scancode;
             if (key == SDLK_KP_ENTER)
             {
                 // Map Keypad enter to regular enter.
                 key = SDLK_RETURN;
+                scancode = SDL_SCANCODE_RETURN;
             }
 
-            GetContext()->GetUiContext()->SetKeysPressed(key, e->key.keysym.scancode);
+            GetContext()->GetUiContext()->SetKeysPressed(key, scancode);
 
             // Text input
             if (_session.Buffer == nullptr)

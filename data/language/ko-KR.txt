@@ -614,85 +614,85 @@ STR_1229    :열차
 STR_1230    :열차
 STR_1231    :열차
 STR_1232    :열차
-STR_1233    :{COMMA16} 열차
-STR_1234    :{COMMA16} 열차
+STR_1233    :열차 {COMMA16}대
+STR_1234    :열차 {COMMA16}대
 STR_1235    :열차 {COMMA16}
 STR_1236    :보트
 STR_1237    :보트
 STR_1238    :보트
 STR_1239    :보트
-STR_1240    :{COMMA16} 보트
-STR_1241    :{COMMA16} 보트
+STR_1240    :보트 {COMMA16}대
+STR_1241    :보트 {COMMA16}대
 STR_1242    :보트 {COMMA16}
 STR_1243    :트랙
 STR_1244    :트랙
 STR_1245    :트랙
 STR_1246    :트랙
-STR_1247    :{COMMA16} 트랙
-STR_1248    :{COMMA16} 트랙
+STR_1247    :트랙 {COMMA16}개
+STR_1248    :트랙 {COMMA16}개
 STR_1249    :트랙 {COMMA16}
 STR_1250    :도킹 승강장
 STR_1251    :도킹 승강장
 STR_1252    :도킹 승강장
 STR_1253    :도킹 승강장
-STR_1254    :{COMMA16} 도킹 승강장
-STR_1255    :{COMMA16} 도킹 승강장
+STR_1254    :도킹 승강장 {COMMA16}개
+STR_1255    :도킹 승강장 {COMMA16}개
 STR_1256    :도킹 승강장 {COMMA16}
 STR_1257    :탑승장
 STR_1258    :탑승장
 STR_1259    :탑승장
 STR_1260    :탑승장
-STR_1261    :{COMMA16} 탑승장
-STR_1262    :{COMMA16} 탑승장
+STR_1261    :탑승장 {COMMA16}개
+STR_1262    :탑승장 {COMMA16}개
 STR_1263    :탑승장 {COMMA16}
-STR_1264    :차
-STR_1265    :차
-STR_1266    :차
-STR_1267    :차
-STR_1268    :{COMMA16} 차
-STR_1269    :{COMMA16} 차
+STR_1264    :대의 차량
+STR_1265    :대의 차량
+STR_1266    :차3
+STR_1267    :차4
+STR_1268    :차량 {COMMA16}대
+STR_1269    :차량 {COMMA16}대
 STR_1270    :차 {COMMA16}
 STR_1271    :건물
 STR_1272    :건물
 STR_1273    :건물
 STR_1274    :건물
-STR_1275    :{COMMA16} 건물
-STR_1276    :{COMMA16} 건물
+STR_1275    :건물 {COMMA16}개
+STR_1276    :건물 {COMMA16}개
 STR_1277    :건물 {COMMA16}
 STR_1278    :구조물
 STR_1279    :구조물
 STR_1280    :구조물
 STR_1281    :구조물
-STR_1282    :{COMMA16} 구조물
-STR_1283    :{COMMA16} 구조물
+STR_1282    :구조물 {COMMA16}개
+STR_1283    :구조물 {COMMA16}개
 STR_1284    :구조물 {COMMA16}
 STR_1285    :배
 STR_1286    :배
 STR_1287    :배
 STR_1288    :배
-STR_1289    :{COMMA16} 배
-STR_1290    :{COMMA16} 배
+STR_1289    :배 {COMMA16}대
+STR_1290    :배 {COMMA16}대
 STR_1291    :배 {COMMA16}
 STR_1292    :객실
 STR_1293    :객실
 STR_1294    :객실
 STR_1295    :객실
-STR_1296    :{COMMA16} 객실
-STR_1297    :{COMMA16} 객실
+STR_1296    :객실 {COMMA16}개
+STR_1297    :객실 {COMMA16}개
 STR_1298    :객실 {COMMA16}
 STR_1299    :휠
 STR_1300    :휠
 STR_1301    :휠
 STR_1302    :휠
-STR_1303    :{COMMA16} 휠
-STR_1304    :{COMMA16} 휠
+STR_1303    :휠 {COMMA16}개
+STR_1304    :휠 {COMMA16}개
 STR_1305    :휠 {COMMA16}
 STR_1306    :링
 STR_1307    :링
 STR_1308    :링
 STR_1309    :링
-STR_1310    :{COMMA16} 링
-STR_1311    :{COMMA16} 링
+STR_1310    :링 {COMMA16}개
+STR_1311    :링 {COMMA16}개
 STR_1312    :링 {COMMA16}
 STR_1313    :플레이어
 STR_1314    :플레이어
@@ -3223,7 +3223,7 @@ STR_5762    :중국 위안 (CN¥)
 STR_5763    :모든 파일
 STR_5764    :잘못된 놀이기구 종류
 STR_5765    :놀이기구를 유효하지 않은 종류로 수정할 수 없습니다
-STR_5766    :<사용 가능한 문자열 아이디>
+STR_5766    :헝가리 포린트 (Ft)
 STR_5767    :수익
 STR_5768    :총 고객 수
 STR_5769    :총 수익
@@ -3378,7 +3378,7 @@ STR_5919    :{COMMA16}
 STR_5920    :날씨 효과 표현
 STR_5921    :{SMALLFONT}{BLACK}이 설정을 켜면, 폭풍우가 치는 동안 비와 흐린 색상을 표현합니다.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}최대 {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}열차당 최대 {COMMA16} {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}열차당 최대 {COMMA16}{STRINGID}
 STR_5924    :지면 상세정보
 STR_5925    :보도 상세정보
 STR_5926    :트랙 상세정보

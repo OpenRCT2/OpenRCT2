@@ -285,7 +285,7 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
     switch (_inputState)
     {
         case INPUT_STATE_RESET:
-            window_tooltip_reset(x, y);
+            window_tooltip_reset(ScreenCoordsXY(x, y));
             // fall-through
         case INPUT_STATE_NORMAL:
             switch (state)
@@ -1428,7 +1428,7 @@ void input_state_widget_pressed(
                 STR_COLOUR_LIGHT_PINK_TIP,
             };
 
-            window_tooltip_show(colourTooltips[dropdown_index], x, y);
+            window_tooltip_show(colourTooltips[dropdown_index], ScreenCoordsXY(x, y));
         }
 
         if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
@@ -1461,7 +1461,7 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, int
             if (_tooltipNotShownTicks > 50)
             {
                 gTooltipTimeout = 0;
-                window_tooltip_open(w, widgetIndex, x, y);
+                window_tooltip_open(w, widgetIndex, ScreenCoordsXY(x, y));
             }
         }
     }

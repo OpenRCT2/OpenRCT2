@@ -5371,9 +5371,9 @@ static void vehicle_update_crash(rct_vehicle* vehicle)
                 curVehicle->crash_z++;
                 if ((scenario_rand() & 0xFFFF) <= 0x1555)
                 {
-                    sprite_misc_explosion_cloud_create(
-                        curVehicle->x + ((scenario_rand() & 2) - 1), curVehicle->y + ((scenario_rand() & 2) - 1),
-                        curVehicle->z);
+                    auto xOffset = (scenario_rand() & 2) - 1;
+                    auto yOffset = (scenario_rand() & 2) - 1;
+                    sprite_misc_explosion_cloud_create(curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z);
                 }
             }
             if (curVehicle->var_C8 + 7281 > 0xFFFF)
