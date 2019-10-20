@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"
+#include "../actions/MazePlaceTrackAction.hpp"
 #include "../actions/FootpathPlaceFromTrackAction.hpp"
 #include "../actions/FootpathRemoveAction.hpp"
 #include "../actions/LargeSceneryPlaceAction.hpp"
@@ -1353,9 +1354,11 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
 
                     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-                    cost = game_do_command(
-                        mapCoord.x, flags | (maze_entry & 0xFF) << 8, mapCoord.y, ride->id | (maze_entry & 0xFF00),
-                        GAME_COMMAND_PLACE_MAZE_DESIGN, z, 0);
+                    auto mazePlace = MazePlaceTrackAction({ mapCoord, z }, ride->id, maze_entry);
+                    mazePlace.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
+                                                               : GameActions::QueryNested(&mazePlace);
+                    cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     break;
             }
 
