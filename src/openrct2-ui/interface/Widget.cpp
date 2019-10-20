@@ -869,8 +869,8 @@ bool widget_is_active_tool(rct_window* w, rct_widgetindex widgetIndex)
  *  edi: widget
  */
 void widget_scroll_get_part(
-    rct_window* w, rct_widget* widget, int32_t x, int32_t y, int32_t* output_x, int32_t* output_y, int32_t* output_scroll_area,
-    int32_t* scroll_id)
+    rct_window* w, rct_widget* widget, ScreenCoordsXY screenCoords, ScreenCoordsXY& retScreenCoords,
+    int32_t* output_scroll_area, int32_t* scroll_id)
 {
     *scroll_id = 0;
     for (rct_widget* iterator = w->widgets; iterator != widget; iterator++)
@@ -881,7 +881,7 @@ void widget_scroll_get_part(
         }
     }
 
-    if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE) && y >= (w->y + widget->bottom - 11))
+    if ((w->scrolls[*scroll_id].flags & HSCROLLBAR_VISIBLE) && screenCoords.y >= (w->y + widget->bottom - 11))
     {
         // horizontal scrollbar
         int32_t rightOffset = 0;
@@ -892,23 +892,23 @@ void widget_scroll_get_part(
             rightOffset = 11;
         }
 
-        if (x <= iteratorLeft)
+        if (screenCoords.x <= iteratorLeft)
         {
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_LEFT;
         }
-        else if (x >= iteratorRight + rightOffset)
+        else if (screenCoords.x >= iteratorRight + rightOffset)
         {
             *output_scroll_area = SCROLL_PART_NONE;
         }
-        else if (x >= iteratorRight + rightOffset - 10)
+        else if (screenCoords.x >= iteratorRight + rightOffset - 10)
         {
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT;
         }
-        else if (x < (widget->left + w->x + w->scrolls[*scroll_id].h_thumb_left))
+        else if (screenCoords.x < (widget->left + w->x + w->scrolls[*scroll_id].h_thumb_left))
         {
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_LEFT_TROUGH;
         }
-        else if (x > (widget->left + w->x + w->scrolls[*scroll_id].h_thumb_right))
+        else if (screenCoords.x > (widget->left + w->x + w->scrolls[*scroll_id].h_thumb_right))
         {
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH;
         }
@@ -917,7 +917,7 @@ void widget_scroll_get_part(
             *output_scroll_area = SCROLL_PART_HSCROLLBAR_THUMB;
         }
     }
-    else if ((w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE) && (x >= w->x + widget->right - 11))
+    else if ((w->scrolls[*scroll_id].flags & VSCROLLBAR_VISIBLE) && (screenCoords.x >= w->x + widget->right - 11))
     {
         // vertical scrollbar
         int32_t bottomOffset = 0;
@@ -928,23 +928,23 @@ void widget_scroll_get_part(
             bottomOffset = 11;
         }
 
-        if (y <= iteratorTop)
+        if (screenCoords.y <= iteratorTop)
         {
             *output_scroll_area = SCROLL_PART_VSCROLLBAR_TOP;
         }
-        else if (y >= (iteratorBottom - bottomOffset))
+        else if (screenCoords.y >= (iteratorBottom - bottomOffset))
         {
             *output_scroll_area = SCROLL_PART_NONE;
         }
-        else if (y >= (iteratorBottom - bottomOffset - 10))
+        else if (screenCoords.y >= (iteratorBottom - bottomOffset - 10))
         {
             *output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM;
         }
-        else if (y < (widget->top + w->y + w->scrolls[*scroll_id].v_thumb_top))
+        else if (screenCoords.y < (widget->top + w->y + w->scrolls[*scroll_id].v_thumb_top))
         {
             *output_scroll_area = SCROLL_PART_VSCROLLBAR_TOP_TROUGH;
         }
-        else if (y > (widget->top + w->y + w->scrolls[*scroll_id].v_thumb_bottom))
+        else if (screenCoords.y > (widget->top + w->y + w->scrolls[*scroll_id].v_thumb_bottom))
         {
             *output_scroll_area = SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH;
         }
@@ -957,18 +957,18 @@ void widget_scroll_get_part(
     {
         // view
         *output_scroll_area = SCROLL_PART_VIEW;
-        *output_x = x - widget->left;
-        *output_y = y - widget->top;
-        *output_x -= w->x;
-        *output_y -= w->y;
-        if (*output_x <= 0 || *output_y <= 0)
+        retScreenCoords.x = screenCoords.x - widget->left;
+        retScreenCoords.y = screenCoords.y - widget->top;
+        retScreenCoords.x -= w->x;
+        retScreenCoords.y -= w->y;
+        if (retScreenCoords.x <= 0 || retScreenCoords.y <= 0)
         {
             *output_scroll_area = SCROLL_PART_NONE;
         }
         else
         {
-            *output_x += w->scrolls[*scroll_id].h_left - 1;
-            *output_y += w->scrolls[*scroll_id].v_top - 1;
+            retScreenCoords.x += w->scrolls[*scroll_id].h_left - 1;
+            retScreenCoords.y += w->scrolls[*scroll_id].v_top - 1;
         }
     }
 }

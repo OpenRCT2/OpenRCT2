@@ -271,13 +271,14 @@ static ResearchItem* get_research_item_at(int32_t x, int32_t y, int32_t* outScro
         if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
         {
             gPressedWidget.widget_index = widgetIndex;
-            int32_t outX, outY, outScrollArea;
-            widget_scroll_get_part(w, widget, x, y, &outX, &outY, &outScrollArea, outScrollId);
+            int32_t outScrollArea;
+            ScreenCoordsXY outScrollCoords;
+            widget_scroll_get_part(w, widget, ScreenCoordsXY(x, y), outScrollCoords, &outScrollArea, outScrollId);
             if (outScrollArea == SCROLL_PART_VIEW)
             {
                 *outScrollId = *outScrollId == 0 ? 0 : 1;
 
-                int32_t scrollY = y - (w->y + widget->top) + w->scrolls[*outScrollId].v_top + 5;
+                int32_t scrollY = outScrollCoords.y + 6;
                 return window_editor_inventions_list_get_item_from_scroll_y_include_seps(*outScrollId, scrollY);
             }
         }
