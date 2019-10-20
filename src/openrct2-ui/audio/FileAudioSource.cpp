@@ -35,12 +35,9 @@ namespace OpenRCT2::Audio
             Unload();
         }
 
-        [[nodiscard]] uint64_t GetLength() const override
-        {
-            return _dataLength;
-        }
+        [[nodiscard]] uint64_t GetLength() const override { return _dataLength; }
 
-        [[nodiscard]] AudioFormat GetFormat() const override
+            [[nodiscard]] AudioFormat GetFormat() const override
         {
             return _format;
         }
