@@ -1041,7 +1041,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     nullptr,
     game_command_place_track_design,
     nullptr,
-    game_command_place_maze_design,
+    nullptr,
     nullptr,
     nullptr,
     nullptr,

@@ -207,8 +207,6 @@ int32_t place_virtual_track(
 
 void game_command_place_track_design(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void game_command_place_maze_design(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
