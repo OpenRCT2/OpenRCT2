@@ -255,7 +255,7 @@ namespace OpenRCT2::Audio
         void MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t length)
         {
             int32_t byteRate = _format.GetByteRate();
-            int32_t numSamples = length / byteRate;
+            auto numSamples = static_cast<int32_t>(length / byteRate);
             double rate = 1;
             if (_format.format == AUDIO_S16SYS)
             {
@@ -281,7 +281,7 @@ namespace OpenRCT2::Audio
 
             // Read raw PCM from channel
             int32_t readSamples = numSamples * rate;
-            size_t readLength = (size_t)(readSamples / cvt.len_ratio) * byteRate;
+            auto readLength = static_cast<size_t>(readSamples / cvt.len_ratio) * byteRate;
             _channelBuffer.resize(readLength);
             size_t bytesRead = channel->Read(_channelBuffer.data(), readLength);
 
@@ -309,7 +309,7 @@ namespace OpenRCT2::Audio
             // Apply effects
             if (rate != 1)
             {
-                int32_t inRate = bufferLen / byteRate;
+                auto inRate = static_cast<int32_t>(bufferLen / byteRate);
                 int32_t outRate = numSamples;
                 if (bytesRead != readLength)
                 {
