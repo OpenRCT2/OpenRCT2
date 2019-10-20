@@ -756,7 +756,7 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     w->widgets = window_editor_inventions_list_drag_widgets;
     w->colours[1] = COLOUR_WHITE;
-    input_window_position_begin(w, 0, gTooltipCursorX, gTooltipCursorY);
+    input_window_position_begin(w, 0, ScreenCoordsXY(gTooltipCursorX, gTooltipCursorY));
 }
 
 /**
