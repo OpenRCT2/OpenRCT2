@@ -83,6 +83,8 @@ enum class CheatType : int32_t
     DisableRideValueAging,
     IgnoreResearchStatus,
     EnableAllDrawableTrackPieces,
+    CreateDucks,
+    RemoveDucks,
     Count,
 };
 
@@ -108,6 +110,7 @@ enum
 
 #define CHEATS_GIVE_GUESTS_MONEY MONEY(1000, 00)
 #define CHEATS_TRAM_INCREMENT 250
+#define CHEATS_DUCK_INCREMENT 20
 #define CHEATS_STAFF_FAST_SPEED 0xFF
 #define CHEATS_STAFF_NORMAL_SPEED 0x60
 #define CHEATS_STAFF_FREEZE_SPEED 0

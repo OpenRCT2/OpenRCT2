@@ -126,7 +126,9 @@ enum WINDOW_CHEATS_WIDGET_IDX
 
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
     WIDX_OPEN_CLOSE_PARK,
+    WIDX_CREATE_DUCKS,
     WIDX_PARK_PARAMETERS,
+    WIDX_REMOVE_DUCKS,
     WIDX_OWN_ALL_LAND,
     WIDX_FORCE_PARK_RATING,
     WIDX_PARK_RATING_SPINNER,
@@ -269,7 +271,9 @@ static rct_widget window_cheats_misc_widgets[] =
     MAIN_CHEATS_WIDGETS,
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(0),         HPL(7.25),      STR_CHEAT_GENERAL_GROUP,            STR_NONE },                             // General group
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(1),         HPL(1),         STR_CHEAT_OPEN_PARK,                STR_CHEAT_OPEN_PARK_TIP },              // open / close park
+    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(2),         HPL(2),         STR_CREATE_DUCKS,                   STR_CREATE_DUCKS },                     // Create ducks
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(1),         HPL(1),         STR_CHEAT_PARK_PARAMETERS,          STR_CHEAT_PARK_PARAMETERS_TIP },        // Park parameters
+    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(2),         HPL(2),         STR_REMOVE_DUCKS,                   STR_REMOVE_DUCKS },                     // Remove ducks
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },           // Own all land
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_FORCE_PARK_RATING,              STR_NONE },                             // Force park rating
       SPINNER_WIDGETS      (1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE),                              // park rating (3 widgets)
@@ -535,6 +539,8 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     MAIN_CHEAT_ENABLED_WIDGETS |
     (1ULL << WIDX_FREEZE_WEATHER) |
     (1ULL << WIDX_OPEN_CLOSE_PARK) |
+    (1ULL << WIDX_CREATE_DUCKS) |
+    (1ULL << WIDX_REMOVE_DUCKS) |
     (1ULL << WIDX_WEATHER) |
     (1ULL << WIDX_WEATHER_DROPDOWN_BUTTON) |
     (1ULL << WIDX_CLEAR_GRASS) |
@@ -924,6 +930,12 @@ static void window_cheats_misc_mouseup(rct_window* w, rct_widgetindex widgetInde
             break;
         case WIDX_OPEN_CLOSE_PARK:
             CheatsSet(CheatType::OpenClosePark);
+            break;
+        case WIDX_CREATE_DUCKS:
+            CheatsSet(CheatType::CreateDucks, CHEATS_DUCK_INCREMENT);
+            break;
+        case WIDX_REMOVE_DUCKS:
+            CheatsSet(CheatType::RemoveDucks);
             break;
         case WIDX_CLEAR_GRASS:
             CheatsSet(CheatType::SetGrassLength, GRASS_LENGTH_CLEAR_0);
