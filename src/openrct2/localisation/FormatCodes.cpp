@@ -96,7 +96,7 @@ const char* format_get_token(uint32_t code)
     return nullptr;
 }
 
-bool utf8_should_use_sprite_for_codepoint(int32_t codepoint)
+bool utf8_should_use_sprite_for_codepoint(char32_t codepoint)
 {
     switch (codepoint)
     {
