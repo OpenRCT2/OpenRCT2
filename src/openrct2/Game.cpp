@@ -603,11 +603,18 @@ void game_fix_save_vars()
             {
                 continue;
             }
+            Ride* ride = get_ride(rideIdx);
+            if (ride == nullptr)
+            {
+                log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, spriteIndex);
+                peep->current_ride = RIDE_ID_NULL;
+                continue;
+            }
             set_format_arg(0, uint32_t, peep->id);
             auto curName = peep->GetName();
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", spriteIndex, curName.c_str(), srcStation, rideIdx);
-            int8_t station = ride_get_first_valid_station_exit(get_ride(rideIdx));
+            int8_t station = ride_get_first_valid_station_exit(ride);
             if (station == -1)
             {
                 log_warning("Couldn't find station, removing peep %u", spriteIndex);
