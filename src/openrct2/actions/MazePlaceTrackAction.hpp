@@ -21,9 +21,8 @@ private:
     uint16_t _mazeEntry{ 0 };
 
 public:
-    MazePlaceTrackAction()
-    {
-    }
+    MazePlaceTrackAction() = default;
+
     MazePlaceTrackAction(CoordsXYZ location, NetworkRideId_t rideIndex, uint16_t mazeEntry)
         : _loc(location)
         , _rideIndex(rideIndex)
