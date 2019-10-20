@@ -13,7 +13,6 @@
 #include "../ride/TrackData.h"
 #include "GameAction.h"
 
-
 DEFINE_GAME_ACTION(MazePlaceTrackAction, GAME_COMMAND_PLACE_MAZE_DESIGN, GameActionResult)
 {
 private:
