@@ -14,7 +14,6 @@
 #include "OpenGLShaderProgram.h"
 
 #include <SDL_pixels.h>
-#include <vector>
 
 class DrawRectShader final : public OpenGLShaderProgram
 {

@@ -15,136 +15,98 @@
 
 #pragma pack(push, 1)
 
-struct ivec2
+namespace detail
 {
-    union
+    template<typename T_> struct vec2
     {
-        GLint x;
-        GLint s;
-        GLint r;
-    };
-    union
-    {
-        GLint y;
-        GLint t;
-        GLint g;
-    };
-};
+        using ValueType = T_;
 
-struct vec2
-{
-    union
-    {
-        GLfloat x;
-        GLfloat s;
-        GLfloat r;
+        union
+        {
+            ValueType x;
+            ValueType s;
+            ValueType r;
+        };
+        union
+        {
+            ValueType y;
+            ValueType t;
+            ValueType g;
+        };
     };
-    union
-    {
-        GLfloat y;
-        GLfloat t;
-        GLfloat g;
-    };
-};
 
-struct ivec3
-{
-    union
-    {
-        GLint x;
-        GLint s;
-        GLint r;
-    };
-    union
-    {
-        GLint y;
-        GLint t;
-        GLint g;
-    };
-    union
-    {
-        GLint z;
-        GLint p;
-        GLint b;
-    };
-};
+    template struct vec2<GLfloat>;
+    template struct vec2<GLint>;
 
-struct vec3f
-{
-    union
+    template<typename T_> struct vec3
     {
-        GLfloat x;
-        GLfloat s;
-        GLfloat r;
-    };
-    union
-    {
-        GLfloat y;
-        GLfloat t;
-        GLfloat g;
-    };
-    union
-    {
-        GLfloat z;
-        GLfloat p;
-        GLfloat b;
-    };
-};
+        using ValueType = T_;
 
-struct ivec4
-{
-    union
-    {
-        GLint x;
-        GLint s;
-        GLint r;
+        union
+        {
+            ValueType x;
+            ValueType s;
+            ValueType r;
+        };
+        union
+        {
+            ValueType y;
+            ValueType t;
+            ValueType g;
+        };
+        union
+        {
+            ValueType z;
+            ValueType p;
+            ValueType b;
+        };
     };
-    union
-    {
-        GLint y;
-        GLint t;
-        GLint g;
-    };
-    union
-    {
-        GLint z;
-        GLint p;
-        GLint b;
-    };
-    union
-    {
-        GLint w;
-        GLint q;
-        GLint a;
-    };
-};
 
-struct vec4
-{
-    union
+    template struct vec3<GLfloat>;
+    template struct vec3<GLint>;
+
+    template<typename T_> struct vec4
     {
-        GLfloat x;
-        GLfloat s;
-        GLfloat r;
+        using ValueType = T_;
+
+        union
+        {
+            ValueType x;
+            ValueType s;
+            ValueType r;
+        };
+        union
+        {
+            ValueType y;
+            ValueType t;
+            ValueType g;
+        };
+        union
+        {
+            ValueType z;
+            ValueType p;
+            ValueType b;
+        };
+        union
+        {
+            ValueType w;
+            ValueType q;
+            ValueType a;
+        };
     };
-    union
-    {
-        GLfloat y;
-        GLfloat t;
-        GLfloat g;
-    };
-    union
-    {
-        GLfloat z;
-        GLfloat p;
-        GLfloat b;
-    };
-    union
-    {
-        GLfloat w;
-        GLfloat q;
-        GLfloat a;
-    };
-};
+
+    template struct vec4<GLfloat>;
+    template struct vec4<GLint>;
+
+} // namespace detail
+
+using vec2 = detail::vec2<GLfloat>;
+using ivec2 = detail::vec2<GLint>;
+
+using vec3 = detail::vec3<GLfloat>;
+using ivec3 = detail::vec3<GLint>;
+
+using vec4 = detail::vec4<GLfloat>;
+using ivec4 = detail::vec4<GLint>;
 
 #pragma pack(pop)
