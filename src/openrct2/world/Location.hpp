@@ -66,6 +66,11 @@ struct ScreenCoordsXY
         , y(_y)
     {
     }
+
+    const ScreenCoordsXY operator-(const ScreenCoordsXY& rhs) const
+    {
+        return { rhs.x - x, rhs.y - y };
+    }
 };
 
 /**

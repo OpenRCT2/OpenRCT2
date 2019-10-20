@@ -105,7 +105,7 @@ static void game_handle_key_scroll()
     {
         window_unfollow_sprite(mainWindow);
     }
-    input_scroll_viewport(scrollCoords.x, scrollCoords.y);
+    input_scroll_viewport(scrollCoords);
 }
 
 static int32_t input_scancode_to_rct_keycode(int32_t sdl_key)
