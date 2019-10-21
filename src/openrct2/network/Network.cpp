@@ -1353,6 +1353,11 @@ void Network::BeginServerLog()
     {
         format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, nullptr);
     }
+    else
+    {
+        logMessage[0] = '\0';
+        assert(0 && "Uninitialized mode");
+    }
     AppendServerLog(logMessage);
 }
 
@@ -1375,6 +1380,11 @@ void Network::CloseServerLog()
     else if (GetMode() == NETWORK_MODE_SERVER)
     {
         format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
+    }
+    else
+    {
+        logMessage[0] = '\0';
+        assert(0 && "Uninitialized mode");
     }
     AppendServerLog(logMessage);
     _server_log_fs.close();
