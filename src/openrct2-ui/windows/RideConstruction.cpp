@@ -139,8 +139,8 @@ static void window_ride_construction_resize(rct_window *w);
 static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_construction_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_construction_update(rct_window *w);
-static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_ride_construction_invalidate(rct_window *w);
 static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static bool track_piece_direction_is_diagonal(const uint8_t direction);
@@ -2211,16 +2211,16 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
  *
  *  rct2: 0x006C8229
  */
-static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     switch (widgetIndex)
     {
         case WIDX_CONSTRUCT:
-            ride_construction_toolupdate_construct(ScreenCoordsXY(x, y));
+            ride_construction_toolupdate_construct(screenCoords);
             break;
         case WIDX_ENTRANCE:
         case WIDX_EXIT:
-            ride_construction_toolupdate_entrance_exit(ScreenCoordsXY(x, y));
+            ride_construction_toolupdate_entrance_exit(screenCoords);
             break;
     }
 }
@@ -2229,16 +2229,16 @@ static void window_ride_construction_toolupdate(rct_window* w, rct_widgetindex w
  *
  *  rct2: 0x006C8248
  */
-static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_ride_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     switch (widgetIndex)
     {
         case WIDX_CONSTRUCT:
-            ride_construction_tooldown_construct(ScreenCoordsXY(x, y));
+            ride_construction_tooldown_construct(screenCoords);
             break;
         case WIDX_ENTRANCE:
         case WIDX_EXIT:
-            ride_construction_tooldown_entrance_exit(ScreenCoordsXY(x, y));
+            ride_construction_tooldown_entrance_exit(screenCoords);
             break;
     }
 }

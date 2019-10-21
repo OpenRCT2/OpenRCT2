@@ -115,7 +115,7 @@ static void window_title_command_editor_mouseup(rct_window * w, rct_widgetindex 
 static void window_title_command_editor_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
 static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_title_command_editor_update(rct_window * w);
-static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_title_command_editor_invalidate(rct_window * w);
 static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
 static void window_title_command_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
@@ -610,10 +610,10 @@ static void window_title_command_editor_update(rct_window* w)
     }
 }
 
-static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     viewport_interaction_info info;
-    viewport_interaction_get_item_left(x, y, &info);
+    viewport_interaction_get_item_left(screenCoords.x, screenCoords.y, &info);
 
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {

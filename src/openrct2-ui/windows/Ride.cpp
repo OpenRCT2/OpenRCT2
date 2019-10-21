@@ -559,8 +559,8 @@ static void window_ride_colour_resize(rct_window *w);
 static void window_ride_colour_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_colour_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_colour_update(rct_window *w);
-static void window_ride_colour_tooldown(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_ride_colour_tooldrag(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_ride_colour_tooldown(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_ride_colour_tooldrag(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_ride_colour_invalidate(rct_window *w);
 static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -579,8 +579,8 @@ static void window_ride_measurements_resize(rct_window *w);
 static void window_ride_measurements_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_measurements_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_measurements_update(rct_window *w);
-static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_ride_measurements_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_ride_measurements_invalidate(rct_window *w);
 static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -4722,20 +4722,20 @@ static void window_ride_colour_update(rct_window* w)
  *
  *  rct2: 0x006B04EC
  */
-static void window_ride_colour_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_ride_colour_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
-        window_ride_set_track_colour_scheme(w, x, y);
+        window_ride_set_track_colour_scheme(w, screenCoords.x, screenCoords.y);
 }
 
 /**
  *
  *  rct2: 0x006B04F3
  */
-static void window_ride_colour_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_ride_colour_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
-        window_ride_set_track_colour_scheme(w, x, y);
+        window_ride_set_track_colour_scheme(w, screenCoords.x, screenCoords.y);
 }
 
 /**
@@ -5570,17 +5570,17 @@ static void window_ride_measurements_update(rct_window* w)
  *
  *  rct2: 0x006D2AE7
  */
-static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     TileElement* tileElement;
     int16_t mapX, mapY;
     int32_t interactionType;
 
-    _lastSceneryX = x;
-    _lastSceneryY = y;
+    _lastSceneryX = screenCoords.x;
+    _lastSceneryY = screenCoords.y;
     _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
-    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &tileElement, nullptr);
+    get_map_coordinates_from_pos(screenCoords.x, screenCoords.y, 0xFCCF, &mapX, &mapY, &interactionType, &tileElement, nullptr);
     switch (interactionType)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
@@ -5593,18 +5593,18 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
     }
 }
 
-static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
-    if (x == _lastSceneryX && y == _lastSceneryY)
+    if (screenCoords.x == _lastSceneryX && screenCoords.y == _lastSceneryY)
         return;
-    _lastSceneryX = x;
-    _lastSceneryY = y;
+    _lastSceneryX = screenCoords.x;
+    _lastSceneryY = screenCoords.y;
 
     TileElement* tileElement;
     int16_t mapX, mapY;
     int32_t interactionType;
 
-    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &tileElement, nullptr);
+    get_map_coordinates_from_pos(screenCoords.x, screenCoords.y, 0xFCCF, &mapX, &mapY, &interactionType, &tileElement, nullptr);
     switch (interactionType)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
