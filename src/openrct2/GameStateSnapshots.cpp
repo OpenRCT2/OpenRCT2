@@ -9,7 +9,7 @@ static constexpr uint32_t InvalidTick = 0xFFFFFFFF;
 
 struct GameStateSnapshot_t
 {
-    GameStateSnapshot_t& operator=(GameStateSnapshot_t&& mv)
+    GameStateSnapshot_t& operator=(GameStateSnapshot_t&& mv) noexcept
     {
         tick = mv.tick;
         storedSprites = std::move(mv.storedSprites);
