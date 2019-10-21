@@ -3778,6 +3778,8 @@ STR_6327    :Fundo transparente para capturas de tela gigantes
 STR_6328    :{SMALLFONT}{BLACK}Com essa opção habilitada, capturas de tela gigantes terão fundo transparente em vez da cor preta padrão.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Baixando [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Criar Patos
+STR_6332    :Remover Patos
 
 #############
 # Scenarios #

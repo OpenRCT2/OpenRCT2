@@ -3798,6 +3798,8 @@ STR_6327    :Průhledné pozadí pro velké screenshoty
 STR_6328    :{SMALLFONT}{BLACK}Velké snímky obrazovky budou mít průhledné pozadí namísto výchozí černé barvy.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Stahování [{STRING}] od {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Přivolat kachny
+STR_6332    :Zmizet kachny
 
 ###############################################################################
 ## RCT2 Scenarios
