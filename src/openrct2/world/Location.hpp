@@ -105,12 +105,12 @@ struct CoordsXY
 
     const CoordsXY operator+(const CoordsXY& rhs) const
     {
-        return { rhs.x + x, rhs.y + y };
+        return { x + rhs.x, y + rhs.y };
     }
 
     const CoordsXY operator-(const CoordsXY& rhs) const
     {
-        return { rhs.x - x, rhs.y - y };
+        return { x - rhs.x, y - rhs.y };
     }
 
     CoordsXY Rotate(int32_t direction) const
