@@ -31,11 +31,19 @@ enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
     WIDX_CANCEL
 };
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0, WW - 13, WW - 3,     2,          13,     STR_CLOSE_X_WHITE,      STR_CLOSE_WINDOW_TIP }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0, 2, 12,     2,          13,     STR_CLOSE_X_WHITE,      STR_CLOSE_WINDOW_TIP }
+#endif
+
 // 0x009AEBA0
 static rct_widget window_ride_demolish_widgets[] = {
     { WWT_FRAME,            0, 0,       WW - 1,     0,          WH - 1, STR_NONE,               STR_NONE },
     { WWT_CAPTION,          0, 1,       WW - 2,     1,          14,     STR_DEMOLISH_RIDE,      STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0, WW - 13, WW - 3,     2,          13,     STR_CLOSE_X_WHITE,      STR_CLOSE_WINDOW_TIP },
+    CLOSEBOX_WIDGET,
     { WWT_BUTTON,           0, 10,      94,         WH - 20,    WH - 9, STR_DEMOLISH,           STR_NONE },
     { WWT_BUTTON,           0, WW - 95, WW - 11,    WH - 20,    WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
     { WIDGETS_END }

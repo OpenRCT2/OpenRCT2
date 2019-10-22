@@ -31,10 +31,20 @@ enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
     WIDX_CANCEL
 };
 
+#ifndef LEFT_CLOSEBOX
+    // close button on right of window
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  247,    257,    2,  13, STR_CLOSE_X_WHITE,          STR_CLOSE_WINDOW_TIP }
+#else
+    // close button on left of window
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,    2,     12,    2,  13, STR_CLOSE_X_WHITE,          STR_CLOSE_WINDOW_TIP }
+#endif
+
 static rct_widget window_save_prompt_widgets[] = {
     { WWT_FRAME,            0,  0,      259,    0,  53, STR_NONE,                   STR_NONE },                 // panel / background
     { WWT_CAPTION,          0,  1,      258,    1,  14, 0,                          STR_WINDOW_TITLE_TIP },     // title bar
-    { WWT_CLOSEBOX,         0,  247,    257,    2,  13, STR_CLOSE_X_WHITE,          STR_CLOSE_WINDOW_TIP },     // close x button
+    CLOSEBOX_WIDGET,
     { WWT_LABEL_CENTRED,    0,  2,      257,    19, 30, 0,                          STR_NONE },                 // question/label
     { WWT_BUTTON,           0,  8,      85,     35, 48, STR_SAVE_PROMPT_SAVE,       STR_NONE },     // save
     { WWT_BUTTON,           0,  91,     168,    35, 48, STR_SAVE_PROMPT_DONT_SAVE,  STR_NONE },     // don't save

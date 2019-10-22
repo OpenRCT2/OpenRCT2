@@ -66,10 +66,18 @@ enum WINDOW_FOOTPATH_WIDGET_IDX
     WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL,
 };
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        {WWT_CLOSEBOX, 0, 93, 103, 2,   13,  STR_CLOSE_X,                       STR_CLOSE_WINDOW_TIP}
+#else
+    #define CLOSEBOX_WIDGET \
+        {WWT_CLOSEBOX, 0, 2, 12, 2,   13,  STR_CLOSE_X,                       STR_CLOSE_WINDOW_TIP}
+#endif
+
 static rct_widget window_footpath_widgets[] = {
     {WWT_FRAME,    0, 0,  105, 0,   380, 0xFFFFFFFF,                        STR_NONE},
     {WWT_CAPTION,  0, 1,  104, 1,   14,  STR_FOOTPATHS,                     STR_WINDOW_TITLE_TIP},
-    {WWT_CLOSEBOX, 0, 93, 103, 2,   13,  STR_CLOSE_X,                       STR_CLOSE_WINDOW_TIP},
+    CLOSEBOX_WIDGET,
     // Type group
     {WWT_GROUPBOX, 0, 3,  102, 17,  71,  STR_TYPE,                          STR_NONE},
     {WWT_FLATBTN,  1, 6,  52,  30,  65,  0xFFFFFFFF,                        STR_FOOTPATH_TIP},

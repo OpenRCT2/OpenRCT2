@@ -70,10 +70,18 @@ validate_global_widx(WC_PEEP, WIDX_PICKUP);
 
 static constexpr int32_t TabWidth = 30;
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX, 0, 179, 189,            2,   13,  STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX, 0, 2, 12,            2,   13,  STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP }
+#endif
+
 #define MAIN_GUEST_WIDGETS \
     { WWT_FRAME,    0, 0,   191,            0,   156, 0xFFFFFFFF,                   STR_NONE },                         /* Panel / Background */    \
     { WWT_CAPTION,  0, 1,   190,            1,   14,  STR_STRINGID,                 STR_WINDOW_TITLE_TIP },             /* Title */                 \
-    { WWT_CLOSEBOX, 0, 179, 189,            2,   13,  STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP },             /* Close x button */        \
+    CLOSEBOX_WIDGET, \
     { WWT_RESIZE,   1, 0,   191,            43,  156, 0xFFFFFFFF,                   STR_NONE },                         /* Resize */                \
     { WWT_TAB,      1, 3,   TabWidth + 3,   17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_VIEW_TIP },          /* Tab 1 */                 \
     { WWT_TAB,      1, 34,  TabWidth + 34,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_NEEDS_TIP },         /* Tab 2 */                 \

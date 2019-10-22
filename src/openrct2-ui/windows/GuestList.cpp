@@ -69,10 +69,18 @@ static constexpr const rct_string_id viewNames[VIEW_COUNT] = {
     STR_THOUGHTS,
 };
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  337,    347,    2,  13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  2,    12,    2,  13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }
+#endif
+
 static rct_widget window_guest_list_widgets[] = {
     { WWT_FRAME,            0,  0,      349,    0,  329,    0xFFFFFFFF,             STR_NONE },                     // panel / background
     { WWT_CAPTION,          0,  1,      348,    1,  14,     STR_GUESTS,             STR_WINDOW_TITLE_TIP },         // title bar
-    { WWT_CLOSEBOX,         0,  337,    347,    2,  13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },         // close x button
+    CLOSEBOX_WIDGET,
     { WWT_RESIZE,           1,  0,      349,    43, 329,    0xFFFFFFFF,             STR_NONE },                     // tab content panel
     { WWT_DROPDOWN,         1,  5,      84,     59, 70,     STR_PAGE_1,             STR_NONE },                     // page dropdown
     { WWT_BUTTON,           1,  73,     83,     60, 69,     STR_DROPDOWN_GLYPH,     STR_NONE },                     // page dropdown button

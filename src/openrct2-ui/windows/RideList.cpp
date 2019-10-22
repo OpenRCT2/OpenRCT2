@@ -50,10 +50,21 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
     WIDX_QUICK_DEMOLISH,
 };
 
+#ifndef LEFT_CLOSEBOX
+    // close button on right of window
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }
+#else
+    // close button on left of window
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  2,       12,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }
+#endif
+
+
 static rct_widget window_ride_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      339,    0,      239,    0xFFFFFFFF,                 STR_NONE },                                 // panel / background
-    { WWT_CAPTION,          0,  1,      338,    1,      14,     0xFFFFFFFF,                 STR_WINDOW_TITLE_TIP },                     // title bar
-    { WWT_CLOSEBOX,         0,  0,    10,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },                     // close x button
+    { WWT_FRAME,            0,  0,      339,    0,      239,    0xFFFFFFFF,                 STR_NONE },
+    { WWT_CAPTION,          0,  1,      338,    1,      14,     0xFFFFFFFF,                 STR_WINDOW_TITLE_TIP },
+    CLOSEBOX_WIDGET,
     { WWT_RESIZE,           1,  0,      339,    43,     239,    0xFFFFFFFF,                 STR_NONE },                                 // tab page background
     { WWT_FLATBTN,          1,  315,    338,    60,     83,     SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES },              // open / close all toggle
     { WWT_DROPDOWN,         1,  150,    273,    46,     57,     0xFFFFFFFF,                 STR_NONE },                                 // current information type

@@ -87,12 +87,26 @@ enum
     { WWT_TAB,      1,  127,    157,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_MARKETING_TAB_TIP     }, \
     { WWT_TAB,      1,  158,    188,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_RESEARCH_TIP               }
 
+#ifndef LEFT_CLOSEBOX
+    // close button on right of window
+    #define CLOSEBOX_WIDGET_FINANCES \
+        { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }
+    #define CLOSEBOX_WIDGET_RESEARCH_FUNDING \
+        { WWT_CLOSEBOX,         0,  307,    317,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }
+#else
+    // close button on left of window
+    #define CLOSEBOX_WIDGET_FINANCES \
+        { WWT_CLOSEBOX,         0,  2,        12,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }
+    #define CLOSEBOX_WIDGET_RESEARCH_FUNDING \
+        { WWT_CLOSEBOX,         0,  2,        12,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }
+#endif
+
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
-    { WWT_FRAME,            0,  0,      529,    0,  309,    0xFFFFFFFF,                 STR_NONE                                }, \
-    { WWT_CAPTION,          0,  1,      528,    1,  14,     STR_FINANCIAL_SUMMARY,      STR_WINDOW_TITLE_TIP                    }, \
-    { WWT_CLOSEBOX,         0,  517,    527,    2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                    }, \
-    { WWT_RESIZE,           1,  0,      529,    43, 309,    0xFFFFFFFF,                 STR_NONE                                }, \
+    { WWT_FRAME,            0,  0,      529,    0,  309,    0xFFFFFFFF,                 STR_NONE                                },
+    { WWT_CAPTION,          0,  1,      528,    1,  14,     STR_FINANCIAL_SUMMARY,      STR_WINDOW_TITLE_TIP },
+    CLOSEBOX_WIDGET_FINANCES,
+    { WWT_RESIZE,           1,  0,      529,    43, 309,    0xFFFFFFFF,                 STR_NONE                                },
     TAB_WIDGETS,
     { WWT_SCROLL,           1,  130,    520,     50,    260,    SCROLL_HORIZONTAL,                  STR_NONE },
       SPINNER_WIDGETS      (1,  64,     160,    279,    290,    STR_FINANCES_SUMMARY_LOAN_VALUE,    STR_NONE), // NB: 3 widgets.
@@ -103,7 +117,7 @@ static rct_widget _windowFinancesCashWidgets[] =
 {
     { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
     { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_FINANCIAL_GRAPH,    STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
+    CLOSEBOX_WIDGET_FINANCES,
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -113,7 +127,7 @@ static rct_widget _windowFinancesParkValueWidgets[] =
 {
     { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
     { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PARK_VALUE_GRAPH,   STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
+    CLOSEBOX_WIDGET_FINANCES,
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -123,7 +137,7 @@ static rct_widget _windowFinancesProfitWidgets[] =
 {
     { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
     { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PROFIT_GRAPH,       STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
+    CLOSEBOX_WIDGET_FINANCES,
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -132,8 +146,8 @@ static rct_widget _windowFinancesProfitWidgets[] =
 static rct_widget _windowFinancesMarketingWidgets[] =
 {
     { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_MARKETING,                          STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
+    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_MARKETING,          STR_WINDOW_TITLE_TIP },
+    CLOSEBOX_WIDGET_FINANCES,
     { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,                             STR_NONE },
     TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      526,    47,     91,     STR_MARKETING_CAMPAIGNS_IN_OPERATION,   STR_NONE },
@@ -150,8 +164,8 @@ static rct_widget _windowFinancesMarketingWidgets[] =
 static rct_widget _windowFinancesResearchWidgets[] =
 {
     { WWT_FRAME,            0,  0,      319,    0,      206,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      318,    1,      14,     STR_RESEARCH_FUNDING,                   STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  307,    317,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
+    { WWT_CAPTION,          0,  1,      318,    1,      14,     STR_RESEARCH_FUNDING,   STR_WINDOW_TITLE_TIP },
+    CLOSEBOX_WIDGET_RESEARCH_FUNDING,
     { WWT_RESIZE,           1,  0,      319,    43,     206,    0xFFFFFFFF,                             STR_NONE },
     TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      316,    47,     91,     STR_RESEARCH_FUNDING_,                  STR_NONE },
