@@ -204,9 +204,9 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         TrackDesignTrackElement track{};
         track.type = trackElement.element->AsTrack()->GetTrackType();
         // TODO move to RCT2 limit
-        if (track.type == TRACK_ELEM_255)
+        if (track.type == TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
         {
-            track.type = TRACK_ELEM_255_ALIAS;
+            track.type = TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS;
         }
 
         uint8_t trackFlags;
@@ -220,7 +220,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         }
 
         if (trackElement.element->AsTrack()->HasChain())
-            trackFlags |= (1 << 7);
+            trackFlags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         trackFlags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
         if (RideData4[ride.type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE
             && trackElement.element->AsTrack()->IsInverted())
@@ -280,20 +280,17 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             int16_t y = location.y * 32;
 
             TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+            if (tileElement == nullptr)
+                continue;
+
             do
             {
-                if (tileElement == nullptr)
-                    break;
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                     continue;
                 if (tileElement->base_height == z)
                     break;
             } while (!(tileElement++)->IsLastForTile());
 
-            if (tileElement == nullptr)
-            {
-                continue;
-            }
             // Add something that stops this from walking off the end
 
             Direction entranceDirection = tileElement->GetDirection();
@@ -402,7 +399,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     do
     {
         if (tileElement == nullptr)
-            break;
+            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -1458,9 +1455,9 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
     for (const auto& track : td6->track_elements)
     {
         uint8_t trackType = track.type;
-        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS)
         {
-            trackType = 0xFF;
+            trackType = TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP;
         }
 
         track_design_update_max_min_coordinates(x, y, z);

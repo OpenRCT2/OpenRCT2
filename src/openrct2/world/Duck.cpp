@@ -91,11 +91,12 @@ rct_duck* rct_sprite::AsDuck()
 
 void rct_duck::Invalidate()
 {
-    invalidate_sprite_0((rct_sprite*)this);
+    invalidate_sprite_1((rct_sprite*)this);
 }
 
 void rct_duck::Remove()
 {
+    Invalidate();
     sprite_remove((rct_sprite*)this);
 }
 
@@ -123,7 +124,7 @@ void rct_duck::UpdateFlyToWater()
     int32_t manhattanDistanceN = abs(target_x - newX) + abs(target_y - newY);
 
     auto surfaceElement = map_get_surface_element_at({ target_x, target_y });
-    int32_t waterHeight = surfaceElement->GetWaterHeight();
+    int32_t waterHeight = surfaceElement != nullptr ? surfaceElement->GetWaterHeight() : 0;
     if (waterHeight == 0)
     {
         state = DUCK_STATE::FLY_AWAY;
@@ -383,6 +384,7 @@ void duck_remove_all()
         nextSpriteIndex = sprite->next;
         if (sprite->type == SPRITE_MISC_DUCK)
         {
+            invalidate_sprite_1((rct_sprite*)sprite);
             sprite_remove((rct_sprite*)sprite);
         }
     }

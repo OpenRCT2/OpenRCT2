@@ -1177,16 +1177,16 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
     {
         case SPRITE_MISC_STEAM_PARTICLE:
         {
-            auto src = (const RCT12SpriteSteamParticle*)csrc;
-            auto dst = (rct_steam_particle*)cdst;
+            auto src = (const rct_steam_particle*)csrc;
+            auto dst = (RCT12SpriteSteamParticle*)cdst;
             dst->time_to_move = src->time_to_move;
             dst->frame = src->frame;
             break;
         }
         case SPRITE_MISC_MONEY_EFFECT:
         {
-            auto src = (const RCT12SpriteMoneyEffect*)csrc;
-            auto dst = (rct_money_effect*)cdst;
+            auto src = (const rct_money_effect*)csrc;
+            auto dst = (RCT12SpriteMoneyEffect*)cdst;
             dst->move_delay = src->move_delay;
             dst->num_movements = src->num_movements;
             dst->vertical = src->vertical;
@@ -1197,8 +1197,8 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
         }
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
         {
-            auto src = (const RCT12SpriteCrashedVehicleParticle*)csrc;
-            auto dst = (rct_crashed_vehicle_particle*)cdst;
+            auto src = (const rct_crashed_vehicle_particle*)csrc;
+            auto dst = (RCT12SpriteCrashedVehicleParticle*)cdst;
             dst->frame = src->frame;
             dst->time_to_live = src->time_to_live;
             dst->frame = src->frame;
@@ -1217,8 +1217,8 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const rct_sprite_common
         case SPRITE_MISC_EXPLOSION_FLARE:
         case SPRITE_MISC_CRASH_SPLASH:
         {
-            auto src = (const rct_sprite_generic*)csrc;
-            auto dst = (RCT12SpriteParticle*)cdst;
+            auto src = (const RCT12SpriteParticle*)csrc;
+            auto dst = (rct_sprite_generic*)cdst;
             dst->frame = src->frame;
             break;
         }

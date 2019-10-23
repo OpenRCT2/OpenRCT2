@@ -3801,6 +3801,8 @@ STR_6327    :Transparent baggrund for gigantisk Skærmbillede
 STR_6328    :{SMALLFONT}{BLACK}Med denne indstilling aktiveret, vil gigantisk skærmbillede have transparent baggrund i stedet for en standard sort baggrund.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Henter [{STRING}] fra {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Anbring ænder
+STR_6332    :Fjern ænder
 
 #############
 # Scenarios #

@@ -144,6 +144,8 @@ private:
         {
             tileEdited = false;
             tileElement = map_get_first_element_at(x, y);
+            if (tileElement == nullptr)
+                return totalCost;
             do
             {
                 auto type = tileElement->GetType();
@@ -241,6 +243,8 @@ private:
                 auto tileElement = map_get_first_element_at(x, y);
                 do
                 {
+                    if (tileElement == nullptr)
+                        break;
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                     {
                         tileElement->AsLargeScenery()->SetIsAccounted(false);

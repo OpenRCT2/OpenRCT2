@@ -12938,7 +12938,7 @@ static void multi_dimension_rc_track_multidim_flat_to_90_deg_down_quarter_loop(
 }
 
 /** rct2: 0x00793388 */
-static void multi_dimension_rc_track_elem_255(
+static void multi_dimension_rc_track_multidim_inverted_90_deg_up_to_flat_quarter_loop(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
@@ -13332,8 +13332,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_multi_dimension_rc(int32_t trackTy
             return multi_dimension_rc_track_multidim_90_deg_up_to_inverted_flat_quarter_loop;
         case TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP:
             return multi_dimension_rc_track_multidim_flat_to_90_deg_down_quarter_loop;
-        case TRACK_ELEM_255:
-            return multi_dimension_rc_track_elem_255;
+        case TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP:
+            return multi_dimension_rc_track_multidim_inverted_90_deg_up_to_flat_quarter_loop;
     }
     return nullptr;
 }

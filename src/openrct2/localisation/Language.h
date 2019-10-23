@@ -99,7 +99,7 @@ utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint);
 int32_t utf8_insert_codepoint(utf8* dst, uint32_t codepoint);
 bool utf8_is_codepoint_start(const utf8* text);
 void utf8_remove_format_codes(utf8* text, bool allowcolours);
-int32_t utf8_get_codepoint_length(int32_t codepoint);
+int32_t utf8_get_codepoint_length(char32_t codepoint);
 int32_t utf8_length(const utf8* text);
 
 std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId);

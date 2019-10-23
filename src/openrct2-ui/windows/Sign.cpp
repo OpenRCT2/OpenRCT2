@@ -160,6 +160,8 @@ rct_window* window_sign_open(rct_windownumber number)
     int32_t view_y = banner->position.y << 5;
 
     TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    if (tile_element == nullptr)
+        return nullptr;
 
     while (1)
     {
@@ -216,6 +218,8 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             int32_t x = banner->position.x << 5;
             int32_t y = banner->position.y << 5;
             auto tile_element = map_get_first_element_at(x / 32, y / 32);
+            if (tile_element == nullptr)
+                return;
             while (1)
             {
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
@@ -405,6 +409,8 @@ rct_window* window_sign_small_open(rct_windownumber number)
     int32_t view_y = banner->position.y << 5;
 
     TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    if (tile_element == nullptr)
+        return nullptr;
 
     while (1)
     {
@@ -460,6 +466,8 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
             int32_t x = banner->position.x << 5;
             int32_t y = banner->position.y << 5;
             auto tile_element = map_get_first_element_at(x / 32, y / 32);
+            if (tile_element == nullptr)
+                return;
             while (true)
             {
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)

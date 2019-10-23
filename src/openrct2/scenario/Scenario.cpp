@@ -82,7 +82,6 @@ money32 gScenarioCompanyValueRecord;
 
 char gScenarioFileName[MAX_PATH];
 
-static int32_t scenario_create_ducks();
 static void scenario_objective_check();
 
 using namespace OpenRCT2;
@@ -420,24 +419,25 @@ void scenario_update()
  *
  *  rct2: 0x006744A9
  */
-static int32_t scenario_create_ducks()
+bool scenario_create_ducks()
 {
+    // Check NxN area around centre tile defined by SquareSize
+    constexpr int32_t SquareSize = 7;
+    constexpr int32_t SquareCentre = SquareSize / 2;
+    constexpr int32_t SquareRadiusSize = SquareCentre * 32;
+
     CoordsXY centrePos;
-    centrePos.x = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
-    centrePos.y = 64 + (scenario_rand_max(MAXIMUM_MAP_SIZE_PRACTICAL) * 32);
+    centrePos.x = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
+    centrePos.y = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
 
     Guard::Assert(map_is_location_valid(centrePos));
 
     if (!map_is_location_in_park(centrePos))
-        return 0;
+        return false;
 
     int32_t centreWaterZ = (tile_element_water_height(centrePos));
     if (centreWaterZ == 0)
-        return 0;
-
-    // Check NxN area around centre tile defined by SquareSize
-    constexpr int32_t SquareSize = 7;
-    constexpr int32_t SquareCentre = SquareSize / 2;
+        return false;
 
     CoordsXY innerPos{ centrePos.x - (32 * SquareCentre), centrePos.y - (32 * SquareCentre) };
     int32_t waterTiles = 0;
@@ -463,25 +463,26 @@ static int32_t scenario_create_ducks()
 
     // Must be at least 25 water tiles of the same height in 7x7 area
     if (waterTiles < 25)
-        return 0;
+        return false;
 
     // Set x, y to the centre of the tile
     centrePos.x += 16;
     centrePos.y += 16;
 
-    int32_t duckCount = (scenario_rand() & 3) + 2;
-    for (int32_t i = 0; i < duckCount; i++)
+    uint32_t duckCount = (scenario_rand() % 4) + 2;
+    for (uint32_t i = 0; i < duckCount; i++)
     {
-        int32_t r = scenario_rand();
-        innerPos.x = (r >> 16) & 0x7F;
-        innerPos.y = (r & 0xFFFF) & 0x7F;
+        uint32_t r = scenario_rand();
+        innerPos.x = (r >> 16) % SquareRadiusSize;
+        innerPos.y = (r & 0xFFFF) % SquareRadiusSize;
 
-        CoordsXY targetPos{ centrePos.x + innerPos.x - 64, centrePos.y + innerPos.y - 64 };
+        CoordsXY targetPos{ centrePos.x + innerPos.x - SquareRadiusSize, centrePos.y + innerPos.y - SquareRadiusSize };
+
         Guard::Assert(map_is_location_valid(targetPos));
         create_duck(targetPos);
     }
 
-    return 1;
+    return true;
 }
 
 const random_engine_t::state_type& scenario_rand_state()

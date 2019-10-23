@@ -365,6 +365,8 @@ static bool map_animation_invalidate_track_whirlpool(int32_t x, int32_t y, int32
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
