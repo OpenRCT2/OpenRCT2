@@ -670,8 +670,11 @@ static void window_loadsave_compute_max_date_width()
 static void window_loadsave_invalidate(rct_window* w)
 {
     window_loadsave_widgets[WIDX_TITLE].right = w->width - 2;
-    window_loadsave_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
+    #ifndef LEFT_CLOSEBOX
+        // close button has to move if it's on the right side
+        window_loadsave_widgets[WIDX_CLOSE].left = w->width - 13;
+        window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
+    #endif
     window_loadsave_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_loadsave_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
     window_loadsave_widgets[WIDX_RESIZE].top = w->height - 1;

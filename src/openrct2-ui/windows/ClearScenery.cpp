@@ -1,4 +1,4 @@
-/*****************************************************************************
+ /*****************************************************************************
  * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -31,18 +31,19 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 
 #ifndef LEFT_CLOSEBOX
     // close button on right of window
-    #define CLOSEBOX_WIDGET \
+    #define TITLEBAR \
+        { WWT_CAPTION,  0,  1,  96, 1,  14, STR_CLEAR_SCENERY,                          STR_WINDOW_TITLE_TIP }, \
         { WWT_CLOSEBOX, 0,  85, 95, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP }
 #else
     // close button on left of window
-    #define CLOSEBOX_WIDGET \
+    #define TITLEBAR \
+        { WWT_CAPTION,  0,  14,  96, 1,  14, STR_CLEAR_SCENERY,                         STR_WINDOW_TITLE_TIP }, \
         { WWT_CLOSEBOX, 0,  2, 12, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP }
 #endif
 
 static rct_widget window_clear_scenery_widgets[] = {
     { WWT_FRAME,    0,  0,  97, 0,  93, 0xFFFFFFFF,                                 STR_NONE },                         // panel / background
-    { WWT_CAPTION,  0,  1,  96, 1,  14, STR_CLEAR_SCENERY,                          STR_WINDOW_TITLE_TIP },             // title bar
-    CLOSEBOX_WIDGET,
+    TITLEBAR,
     { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                         // preview box
     { WWT_TRNBTN,   1,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP },      // decrement size
     { WWT_TRNBTN,   1,  54, 69, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP },       // increment size

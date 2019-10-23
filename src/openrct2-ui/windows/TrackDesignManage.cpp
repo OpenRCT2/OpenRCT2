@@ -30,10 +30,18 @@ enum {
     WIDX_PROMPT_CANCEL = 4,
 };
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  237,    247,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP    }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP    }
+#endif
+
 static rct_widget window_track_manage_widgets[] = {
     { WWT_FRAME,            0,  0,      249,    0,      43,     STR_NONE,                   STR_NONE                },
     { WWT_CAPTION,          0,  1,      248,    1,      14,     STR_STRING,                     STR_WINDOW_TITLE_TIP    },
-    { WWT_CLOSEBOX,         0,  237,    247,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP    },
+    CLOSEBOX_WIDGET,
     { WWT_BUTTON,           0,  10,     119,    24,     35,     STR_TRACK_MANAGE_RENAME,    STR_NONE                },
     { WWT_BUTTON,           0,  130,    239,    24,     35,     STR_TRACK_MANAGE_DELETE,    STR_NONE                },
     { WIDGETS_END }
@@ -42,7 +50,7 @@ static rct_widget window_track_manage_widgets[] = {
 static rct_widget window_track_delete_prompt_widgets[] = {
     { WWT_FRAME,            0,  0,      249,    0,      73,     STR_NONE,                   STR_NONE                },
     { WWT_CAPTION,          0,  1,      248,    1,      14,     STR_DELETE_FILE,            STR_WINDOW_TITLE_TIP    },
-    { WWT_CLOSEBOX,         0,  237,    247,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP    },
+    CLOSEBOX_WIDGET,
     { WWT_BUTTON,           0,  10,     119,    54,     65,     STR_TRACK_MANAGE_DELETE,    STR_NONE                },
     { WWT_BUTTON,           0,  130,    239,    54,     65,     STR_CANCEL,                 STR_NONE                },
     { WIDGETS_END }

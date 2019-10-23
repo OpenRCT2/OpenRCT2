@@ -74,10 +74,18 @@ enum WINDOW_PARK_WIDGET_IDX {
 
 #pragma region Widgets
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  217,    227,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }
+#endif
+
 #define MAIN_PARK_WIDGETS \
     { WWT_FRAME,            0,  0,      229,    0,      223,    0xFFFFFFFF,                     STR_NONE },                     /* panel / background */    \
     { WWT_CAPTION,          0,  1,      228,    1,      14,     STR_STRINGID,                   STR_WINDOW_TITLE_TIP },         /* title bar          */    \
-    { WWT_CLOSEBOX,         0,  217,    227,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },         /* close x button     */    \
+    CLOSEBOX_WIDGET, \
     { WWT_RESIZE,           1,  0,      229,    43,     173,    0xFFFFFFFF,                     STR_NONE },                     /* tab content panel  */    \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_ENTRANCE_TAB_TIP },    /* tab 1              */    \
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_RATING_TAB_TIP },      /* tab 2              */    \
@@ -1782,8 +1790,10 @@ static void window_park_anchor_border_widgets(rct_window* w)
     w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
-    w->widgets[WIDX_CLOSE].left = w->width - 13;
-    w->widgets[WIDX_CLOSE].right = w->width - 3;
+    #ifndef LEFT_CLOSEBOX
+        w->widgets[WIDX_CLOSE].left = w->width - 13;
+        w->widgets[WIDX_CLOSE].right = w->width - 3;
+    #endif
 }
 
 static void window_park_set_pressed_tab(rct_window* w)

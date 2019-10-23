@@ -1,4 +1,4 @@
-/*****************************************************************************
+ /*****************************************************************************
  * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -68,10 +68,20 @@ enum {
     WIDX_SCENARIOLIST
 };
 
+#ifndef LEFT_CLOSEBOX
+    // close button on right of window
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX, 0,  721,    731,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }
+#else
+    // close button on left of window
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX, 0,  2,    12,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }
+#endif
+
 static rct_widget window_scenarioselect_widgets[] = {
     { WWT_FRAME,    0,  0,      733,    0,      333,    0xFFFFFFFF,                 STR_NONE },             // panel / background
     { WWT_CAPTION,  0,  1,      732,    1,      14,     STR_SELECT_SCENARIO,        STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX, 0,  721,    731,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, // close x button
+    CLOSEBOX_WIDGET,
     { WWT_IMGBTN,   1,  0,      733,    50,     333,    0xFFFFFFFF,                 STR_NONE },             // tab content panel
     { WWT_TAB,      1,  3,      93,     17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 1
     { WWT_TAB,      1,  94,     184,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 2
@@ -418,8 +428,10 @@ static void window_scenarioselect_invalidate(rct_window* w)
     int32_t windowWidth = w->width;
     window_scenarioselect_widgets[WIDX_BACKGROUND].right = windowWidth - 1;
     window_scenarioselect_widgets[WIDX_TITLEBAR].right = windowWidth - 2;
-    window_scenarioselect_widgets[WIDX_CLOSE].left = windowWidth - 13;
-    window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
+    #ifndef LEFT_CLOSEBOX
+        window_scenarioselect_widgets[WIDX_CLOSE].left = windowWidth - 13;
+        window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
+    #endif
     window_scenarioselect_widgets[WIDX_TABCONTENT].right = windowWidth - 1;
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
 

@@ -37,11 +37,21 @@ enum WINDOW_TEXT_INPUT_WIDGET_IDX {
     WIDX_OKAY
 };
 
+#ifndef LEFT_CLOSEBOX
+    // close button on right side of window
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX, 1, WW - 13, WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }
+#else
+    // close button on left side of window
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX, 1, 2, 12, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }
+#endif
+
 // 0x9DE4E0
 static rct_widget window_text_input_widgets[] = {
         { WWT_FRAME, 1, 0, WW - 1, 0, WH - 1, STR_NONE, STR_NONE },
         { WWT_CAPTION, 1, 1, WW - 2, 1, 14, STR_OPTIONS, STR_WINDOW_TITLE_TIP },
-        { WWT_CLOSEBOX, 1, WW - 13, WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },
+        CLOSEBOX_WIDGET,
         { WWT_BUTTON,          1, WW - 80, WW - 10, WH - 21, WH - 10, STR_CANCEL, STR_NONE },
         { WWT_BUTTON,          1, 10, 80, WH - 21, WH - 10, STR_OK, STR_NONE },
         { WIDGETS_END }
