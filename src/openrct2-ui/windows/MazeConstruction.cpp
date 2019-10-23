@@ -41,10 +41,18 @@ enum {
     WIDX_MAZE_EXIT,
 };
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  153,    163,    2,      13,     STR_CLOSE_X,  STR_CLOSE_WINDOW_TIP   }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,  STR_CLOSE_WINDOW_TIP   }
+#endif
+
 static rct_widget window_maze_construction_widgets[] = {
     { WWT_FRAME,            0,  0,      165,    0,      199,    0xFFFFFFFF,                         STR_NONE                                                },
     { WWT_CAPTION,          0,  1,      164,    1,      14,     STR_RIDE_CONSTRUCTION_WINDOW_TITLE, STR_WINDOW_TITLE_TIP                                    },
-    { WWT_CLOSEBOX,         0,  153,    163,    2,      13,     STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP                                    },
+    CLOSEBOX_WIDGET,
     { WWT_GROUPBOX,         0,  3,      162,    17,     71,     STR_RIDE_CONSTRUCTION_MODE,         STR_NONE                                                },
     { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
     { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },

@@ -244,10 +244,18 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 // Checkbox - given topleft corner
 #define CHK(x, y) x, x + 13, y + 2, y + 15
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,     0,  WW - 13,        WW - 3,             2,              13,         STR_CLOSE_X,        STR_CLOSE_WINDOW_TIP }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,     0,  2,        12,             2,              13,         STR_CLOSE_X,        STR_CLOSE_WINDOW_TIP }
+#endif
+
 #define MAIN_TILE_INSPECTOR_WIDGETS \
     { WWT_FRAME,        0,  0,              WW - 1,             0,              WH - 1,     0xFFFFFFFF,                 STR_NONE },                 /* panel / background */    \
     { WWT_CAPTION,      0,  1,              WW - 2,             1,              14,         STR_TILE_INSPECTOR_TITLE,   STR_WINDOW_TITLE_TIP },     /* title bar */             \
-    { WWT_CLOSEBOX,     0,  WW - 13,        WW - 3,             2,              13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button */        \
+    CLOSEBOX_WIDGET,     /* close x button */        \
     { WWT_SCROLL,       1,  3,              WW - 4,             57,             WH - PADDING_BOTTOM,    2,              STR_NONE },                 /* Element list */          \
       SPINNER_WIDGETS  (1,  20,             70,                 23,             34,         STR_NONE,                   STR_NONE),                  /* Spinner X (3 widgets) */ \
       SPINNER_WIDGETS  (1,  90,             140,                23,             34,         STR_NONE,                   STR_NONE),                  /* Spinner Y (3 widgets) */ \

@@ -32,17 +32,18 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 #ifndef LEFT_CLOSEBOX
     // close button on right of window
     #define TITLEBAR \
+        { WWT_FRAME,    0,  0,  97, 0,  93, 0xFFFFFFFF,                                 STR_NONE }, \
         { WWT_CAPTION,  0,  1,  96, 1,  14, STR_CLEAR_SCENERY,                          STR_WINDOW_TITLE_TIP }, \
         { WWT_CLOSEBOX, 0,  85, 95, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP }
 #else
-    // close button on left of window
+    // close button on left of window (caption must be shifted due to length)
     #define TITLEBAR \
-        { WWT_CAPTION,  0,  14,  96, 1,  14, STR_CLEAR_SCENERY,                         STR_WINDOW_TITLE_TIP }, \
-        { WWT_CLOSEBOX, 0,  2, 12, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP }
+        { WWT_FRAME,    0,  0,  99, 0,  93, 0xFFFFFFFF,                                 STR_NONE }, \
+        { WWT_CAPTION,  0,  11,  98, 1,  14, STR_CLEAR_SCENERY,                         STR_WINDOW_TITLE_TIP }, \
+        { WWT_CLOSEBOX, 0,  1, 11, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP }
 #endif
 
 static rct_widget window_clear_scenery_widgets[] = {
-    { WWT_FRAME,    0,  0,  97, 0,  93, 0xFFFFFFFF,                                 STR_NONE },                         // panel / background
     TITLEBAR,
     { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                         // preview box
     { WWT_TRNBTN,   1,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP },      // decrement size

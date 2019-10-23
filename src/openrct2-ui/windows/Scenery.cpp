@@ -142,10 +142,18 @@ validate_global_widx(WC_SCENERY, WIDX_SCENERY_TAB_1);
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX, 0, 621, 631, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX, 0, 2, 12, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }
+#endif
+
 static rct_widget window_scenery_widgets[] = {
     { WWT_FRAME, 0, 0, 633, 0, 141, 0xFFFFFFFF, STR_NONE },                             // 1                0x009DE298
     { WWT_CAPTION, 0, 1, 632, 1, 14, 0xFFFFFFFF, STR_WINDOW_TITLE_TIP },                // 2                0x009DE2A8
-    { WWT_CLOSEBOX, 0, 621, 631, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },            // 4                0x009DE2B8
+    CLOSEBOX_WIDGET,            // 4                0x009DE2B8
     { WWT_RESIZE, 1, 0, 633, 43, 141, 0xFFFFFFFF, STR_NONE },                           // 8                0x009DE2C8
     { WWT_TAB, 1, 3, 33, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                  // 10               0x009DE2D8
     { WWT_TAB, 1, 34, 64, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                 // 20               0x009DE2E8
@@ -1081,8 +1089,10 @@ void window_scenery_invalidate(rct_window* w)
     window_scenery_widgets[WIDX_SCENERY_TAB_CONTENT_PANEL].right = w->width - 1;
     window_scenery_widgets[WIDX_SCENERY_TAB_CONTENT_PANEL].bottom = w->height - 1;
     window_scenery_widgets[WIDX_SCENERY_TITLE].right = w->width - 2;
-    window_scenery_widgets[WIDX_SCENERY_CLOSE].left = w->width - 13;
-    window_scenery_widgets[WIDX_SCENERY_CLOSE].right = window_scenery_widgets[WIDX_SCENERY_CLOSE].left + 10;
+    #ifndef LEFT_CLOSEBOX
+        window_scenery_widgets[WIDX_SCENERY_CLOSE].left = w->width - 13;
+        window_scenery_widgets[WIDX_SCENERY_CLOSE].right = window_scenery_widgets[WIDX_SCENERY_CLOSE].left + 10;
+    #endif
     window_scenery_widgets[WIDX_SCENERY_LIST].right = w->width - 26;
     window_scenery_widgets[WIDX_SCENERY_LIST].bottom = w->height - 14;
 

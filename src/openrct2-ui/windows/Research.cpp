@@ -54,10 +54,18 @@ enum {
 
 #pragma region Widgets
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  287,    297,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP }
+#endif
+
 static rct_widget window_research_development_widgets[] = {
     { WWT_FRAME,            0,  0,      299,    0,      195,    0xFFFFFFFF,                             STR_NONE },
     { WWT_CAPTION,          0,  1,      298,    1,      14,     STR_RESEARCH_AND_DEVELOPMENT,           STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  287,    297,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
+    CLOSEBOX_WIDGET,
     { WWT_RESIZE,           1,  0,      299,    43,     195,    0xFFFFFFFF,                             STR_NONE },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_RESEARCH_AND_DEVELOPMENT_TIP },
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_RESEARCH_TIP },

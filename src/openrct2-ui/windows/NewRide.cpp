@@ -179,10 +179,18 @@ enum {
     WIDX_RESEARCH_FUNDING_BUTTON
 };
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  588,    598,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                }
+#endif
+
 static rct_widget window_new_ride_widgets[] = {
     { WWT_FRAME,            0,  0,      600,    0,      WH - 1, 0xFFFFFFFF,                             STR_NONE                            },
     { WWT_CAPTION,          0,  1,      599,    1,      14,     0xFFFFFFFF,                             STR_WINDOW_TITLE_TIP                },
-    { WWT_CLOSEBOX,         0,  588,    598,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                },
+    CLOSEBOX_WIDGET,
     { WWT_RESIZE,           1,  0,      600,    43,     WH - 1, 0xFFFFFFFF,                             STR_NONE                            },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_TRANSPORT_RIDES_TIP             },
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_GENTLE_RIDES_TIP                },
@@ -641,8 +649,10 @@ static void window_new_ride_refresh_widget_sizing(rct_window* w)
         window_new_ride_widgets[WIDX_PAGE_BACKGROUND].right = width - 1;
         window_new_ride_widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
         window_new_ride_widgets[WIDX_TITLE].right = width - 2;
-        window_new_ride_widgets[WIDX_CLOSE].left = width - 13;
-        window_new_ride_widgets[WIDX_CLOSE].right = width - 3;
+        #ifndef LEFT_CLOSEBOX
+            window_new_ride_widgets[WIDX_CLOSE].left = width - 13;
+            window_new_ride_widgets[WIDX_CLOSE].right = width - 3;
+        #endif
 
         w->width = width;
         w->height = height;

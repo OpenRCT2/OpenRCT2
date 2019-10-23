@@ -60,10 +60,18 @@ enum WINDOW_NEWS_WIDGET_IDX {
     WIDX_CHECKBOX_0
 };
 
+#ifndef LEFT_CLOSEBOX
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  387,        397,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }
+#else
+    #define CLOSEBOX_WIDGET \
+        { WWT_CLOSEBOX,         0,  2,        12,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }
+#endif
+
 static rct_widget window_news_options_widgets[] = {
     { WWT_FRAME,            0,  0,          399,    0,      299,    0xFFFFFFFF,                     STR_NONE },             // panel / background
     { WWT_CAPTION,          0,  1,          398,    1,      14,     STR_NOTIFICATION_SETTINGS,      STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX,         0,  387,        397,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }, // close x button
+    CLOSEBOX_WIDGET,
     { WWT_RESIZE,           1,  0,          399,    43,     299,    0xFFFFFFFF,                     STR_NONE },             // tab content panel
     { WWT_TAB,              1,  3,          33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 1
     { WWT_TAB,              1,  34,         64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 2
