@@ -32,9 +32,8 @@
 
 #include <algorithm>
 
-#define TRACK_MAX_SAVED_TILE_ELEMENTS 1500
-#define TRACK_NEARBY_SCENERY_DISTANCE 1
-#define TRACK_TD6_MAX_ELEMENTS 8192
+constexpr size_t TRACK_MAX_SAVED_TILE_ELEMENTS = 1500;
+constexpr int32_t TRACK_NEARBY_SCENERY_DISTANCE = 1;
 
 bool gTrackDesignSaveMode = false;
 ride_id_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
