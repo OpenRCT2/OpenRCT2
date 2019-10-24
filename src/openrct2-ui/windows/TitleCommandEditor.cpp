@@ -69,16 +69,16 @@ enum WINDOW_WATER_WIDGET_IDX {
     WIDX_CANCEL
 };
 
-#define WW 200
-#define WH 120
-#define BY 32
-#define BY2 70
-#define WS 16
-#define WHA ((WW-WS*2)/2)
+constexpr int32_t WW = 200;
+constexpr int32_t WH = 120;
+constexpr int32_t BY = 32;
+constexpr int32_t BY2 = 70;
+constexpr int32_t WS = 16;
+constexpr int32_t WHA = (WW-WS*2)/2;
 
 static bool _window_title_command_editor_insert;
 static int32_t _window_title_command_editor_index;
-#define BUF_SIZE 50
+constexpr size_t BUF_SIZE = 50;
 static char textbox1Buffer[BUF_SIZE];
 static char textbox2Buffer[BUF_SIZE];
 static TitleCommand command = { TITLE_SCRIPT_LOAD, { 0 } };

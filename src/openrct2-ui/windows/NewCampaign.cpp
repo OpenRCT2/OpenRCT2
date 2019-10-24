@@ -20,7 +20,7 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 
-#define SELECTED_RIDE_UNDEFINED ((uint16_t)0xFFFF)
+constexpr uint16_t SELECTED_RIDE_UNDEFINED = 0xFFFF;
 
 // clang-format off
 enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {

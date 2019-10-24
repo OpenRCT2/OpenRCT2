@@ -91,8 +91,8 @@ static rct_window_event_list window_land_rights_events = {
 };
 // clang-format on
 
-#define LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS 0
-#define LAND_RIGHTS_MODE_BUY_LAND 1
+constexpr uint8_t LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS = 0;
+constexpr uint8_t LAND_RIGHTS_MODE_BUY_LAND = 1;
 
 static uint8_t _landRightsMode;
 static money32 _landRightsCost;

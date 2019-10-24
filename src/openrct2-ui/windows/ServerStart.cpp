@@ -46,8 +46,8 @@ enum {
     WIDX_LOAD_SERVER
 };
 
-#define WW 300
-#define WH 154
+constexpr int32_t WW = 300;
+constexpr int32_t WH = 154;
 
 static rct_widget window_server_start_widgets[] = {
     { WWT_FRAME,            0,  0,      WW-1,   0,          WH-1,   STR_NONE,                       STR_NONE },                 // panel / background

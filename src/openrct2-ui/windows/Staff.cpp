@@ -31,8 +31,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
 
-#define WW 190
-#define WH 180
+constexpr int32_t WW = 190;
+constexpr int32_t WH = 180;
 
 // clang-format off
 enum WINDOW_STAFF_PAGE {

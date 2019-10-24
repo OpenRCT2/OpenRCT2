@@ -45,8 +45,8 @@ static DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
 
 #pragma region Widgets
 
-#define WW 180
-#define WH 155
+constexpr int32_t WW = 180;
+constexpr int32_t WH = 155;
 
 static rct_widget window_view_clipping_widgets[] = {
     { WWT_FRAME,        0,  0,          WW - 1,     0,      WH - 1,     STR_NONE,                               STR_NONE }, // panel / background

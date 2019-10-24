@@ -200,33 +200,33 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 };
 
 // Window sizes
-#define WW 400
-#define WH 170
-#define MIN_WW WW
-#define MAX_WW WW
-#define MIN_WH 130
-#define MAX_WH 800
+constexpr int32_t WW = 400;
+constexpr int32_t WH = 170;
+constexpr int32_t MIN_WW = WW;
+constexpr int32_t MAX_WW = WW;
+constexpr int32_t MIN_WH = 130;
+constexpr int32_t MAX_WH = 800;
 
 // Button space for top buttons
-#define BW (WW - 5)     // Button's right side
-#define BX (BW - 23)    // Button's left side
-#define BY 17           // Button's Top
-#define BH (BY + 23)    // Button's Bottom
-#define BS 24
+constexpr int32_t BW = WW - 5;     // Button's right side
+constexpr int32_t BX = BW - 23;    // Button's left side
+constexpr int32_t BY = 17;         // Button's Top
+constexpr int32_t BH = BY + 23;    // Button's Bottom
+constexpr int32_t BS = 24;
 
 // Column offsets for the table headers
-#define COL_X_TYPE 3                    // Type
-#define COL_X_BH   (COL_X_TYPE + 312)   // Base height
-#define COL_X_CH   (COL_X_BH + 20)      // Clearance height
-#define COL_X_GF   (COL_X_CH + 20)      // Ghost flag
-#define COL_X_LF   (COL_X_GF + 12)      // Last for tile flag
+constexpr int32_t COL_X_TYPE = 3;                // Type
+constexpr int32_t COL_X_BH = COL_X_TYPE + 312;   // Base height
+constexpr int32_t COL_X_CH = COL_X_BH + 20;      // Clearance height
+constexpr int32_t COL_X_GF = COL_X_CH + 20;      // Ghost flag
+constexpr int32_t COL_X_LF = COL_X_GF + 12;      // Last for tile flag
 
-#define PADDING_BOTTOM 15
-#define GROUPBOX_PADDING 6
-#define HORIZONTAL_GROUPBOX_PADDING 5
-#define VERTICAL_GROUPBOX_PADDING 4
-#define BUTTONW 130
-#define BUTTONH 17
+constexpr int32_t PADDING_BOTTOM = 15;
+constexpr int32_t GROUPBOX_PADDING = 6;
+constexpr int32_t HORIZONTAL_GROUPBOX_PADDING = 5;
+constexpr int32_t VERTICAL_GROUPBOX_PADDING = 4;
+constexpr int32_t BUTTONW = 130;
+constexpr int32_t BUTTONH = 17;
 
 // Calculates the .left, .right, .top and .bottom for buttons in a group box.
 // Buttons are used as reference points for all other widgets in the group boxes.
@@ -275,10 +275,10 @@ static rct_widget DefaultWidgets[] = {
 };
 
 // Group boxes .top and .bottom for a given window height offsets from the bottom
-#define SUR_GBPB PADDING_BOTTOM                 // Surface group box properties bottom
-#define SUR_GBPT (SUR_GBPB + 16 + 4 * 21)       // Surface group box properties top
-#define SUR_GBDB (SUR_GBPT + GROUPBOX_PADDING)  // Surface group box details bottom
-#define SUR_GBDT (SUR_GBDB + 20 + 4 * 11)       // Surface group box details top
+constexpr int32_t SUR_GBPB = PADDING_BOTTOM;               // Surface group box properties bottom
+constexpr int32_t SUR_GBPT = SUR_GBPB + 16 + 4 * 21;       // Surface group box properties top
+constexpr int32_t SUR_GBDB = SUR_GBPT + GROUPBOX_PADDING;  // Surface group box details bottom
+constexpr int32_t SUR_GBDT = SUR_GBDB + 20 + 4 * 11;       // Surface group box details top
 static rct_widget SurfaceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - SUR_GBPT, 0) + 3, GBBB(WH - SUR_GBPT, 0) - 3,   STR_NONE, STR_NONE),  // WIDX_SURFACE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
@@ -292,10 +292,10 @@ static rct_widget SurfaceWidgets[] = {
     { WIDGETS_END },
 };
 
-#define PAT_GBPB PADDING_BOTTOM                 // Path group box properties bottom
-#define PAT_GBPT (PAT_GBPB + 16 + 5 * 21)       // Path group box properties top
-#define PAT_GBDB (PAT_GBPT + GROUPBOX_PADDING)  // Path group box info bottom
-#define PAT_GBDT (PAT_GBDB + 20 + 2 * 11)       // Path group box info top
+constexpr int32_t PAT_GBPB = PADDING_BOTTOM;               // Path group box properties bottom
+constexpr int32_t PAT_GBPT = PAT_GBPB + 16 + 5 * 21;       // Path group box properties top
+constexpr int32_t PAT_GBDB = PAT_GBPT + GROUPBOX_PADDING;  // Path group box info bottom
+constexpr int32_t PAT_GBDT = PAT_GBDB + 20 + 2 * 11;       // Path group box info top
 static rct_widget PathWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - PAT_GBPT, 0) + 3, GBBB(WH - PAT_GBPT, 0) - 3,  STR_NONE,  STR_NONE),  // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
@@ -312,10 +312,10 @@ static rct_widget PathWidgets[] = {
     { WIDGETS_END },
 };
 
-#define TRA_GBPB PADDING_BOTTOM                 // Track group box properties bottom
-#define TRA_GBPT (TRA_GBPB + 16 + 5 * 21)       // Track group box properties top
-#define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)  // Track group box info bottom
-#define TRA_GBDT (TRA_GBDB + 20 + 7 * 11)       // Track group box info top
+constexpr int32_t TRA_GBPB = PADDING_BOTTOM;               // Track group box properties bottom
+constexpr int32_t TRA_GBPT = TRA_GBPB + 16 + 5 * 21;       // Track group box properties top
+constexpr int32_t TRA_GBDB = TRA_GBPT + GROUPBOX_PADDING;  // Track group box info bottom
+constexpr int32_t TRA_GBDT = TRA_GBDB + 20 + 7 * 11;       // Track group box info top
 static rct_widget TrackWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 0),  STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,    STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
@@ -326,10 +326,10 @@ static rct_widget TrackWidgets[] = {
     { WIDGETS_END },
 };
 
-#define SCE_GBPB PADDING_BOTTOM                 // Scenery group box properties bottom
-#define SCE_GBPT (SCE_GBPB + 16 + 4 * 21)       // Scenery group box properties top
-#define SCE_GBDB (SCE_GBPT + GROUPBOX_PADDING)  // Scenery group box info bottom
-#define SCE_GBDT (SCE_GBDB + 20 + 3 * 11)       // Scenery group box info top
+constexpr int32_t SCE_GBPB = PADDING_BOTTOM;               // Scenery group box properties bottom
+constexpr int32_t SCE_GBPT = SCE_GBPB + 16 + 4 * 21;       // Scenery group box properties top
+constexpr int32_t SCE_GBDB = SCE_GBPT + GROUPBOX_PADDING;  // Scenery group box info bottom
+constexpr int32_t SCE_GBDT = SCE_GBDB + 20 + 3 * 11;       // Scenery group box info top
 static rct_widget SceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - SCE_GBPT, 0) + 3, GBBB(WH - SCE_GBPT, 0) - 3,  STR_NONE,   STR_NONE),  // WIDX_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
@@ -345,10 +345,10 @@ static rct_widget SceneryWidgets[] = {
 };
 
 
-#define ENT_GBPB PADDING_BOTTOM                 // Entrance group box properties bottom
-#define ENT_GBPT (ENT_GBPB + 16 + 2 * 21)       // Entrance group box properties top
-#define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)  // Entrance group box info bottom
-#define ENT_GBDT (ENT_GBDB + 20 + 4 * 11)       // Entrance group box info top
+constexpr int32_t ENT_GBPB = PADDING_BOTTOM;               // Entrance group box properties bottom
+constexpr int32_t ENT_GBPT = ENT_GBPB + 16 + 2 * 21;       // Entrance group box properties top
+constexpr int32_t ENT_GBDB = ENT_GBPT + GROUPBOX_PADDING;  // Entrance group box info bottom
+constexpr int32_t ENT_GBDT = ENT_GBDB + 20 + 4 * 11;       // Entrance group box info top
 static rct_widget EntranceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - ENT_GBPT, 0) + 3, GBBB(WH - ENT_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_ENTRANCE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
@@ -356,10 +356,10 @@ static rct_widget EntranceWidgets[] = {
     { WIDGETS_END },
 };
 
-#define WALL_GBPB PADDING_BOTTOM                    // Wall group box properties bottom
-#define WALL_GBPT (WALL_GBPB + 16 + 2 * 21)     // Wall group box properties top
-#define WALL_GBDB (WALL_GBPT + GROUPBOX_PADDING)    // Wall group box info bottom
-#define WALL_GBDT (WALL_GBDB + 20 + 2 * 11)     // Wall group box info top
+constexpr int32_t WALL_GBPB = PADDING_BOTTOM;                  // Wall group box properties bottom
+constexpr int32_t WALL_GBPT = WALL_GBPB + 16 + 2 * 21;         // Wall group box properties top
+constexpr int32_t WALL_GBDB = WALL_GBPT + GROUPBOX_PADDING;    // Wall group box info bottom
+constexpr int32_t WALL_GBDT = WALL_GBDB + 20 + 2 * 11;         // Wall group box info top
 static rct_widget WallWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - WALL_GBPT, 0) + 3, GBBB(WH - WALL_GBPT, 0) - 3, STR_NONE,  STR_NONE),  // WIDX_WALL_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
@@ -368,20 +368,20 @@ static rct_widget WallWidgets[] = {
     { WIDGETS_END },
 };
 
-#define LAR_GBPB PADDING_BOTTOM                 // Large scenery group box properties bottom
-#define LAR_GBPT (LAR_GBPB + 16 + 1 * 21)       // Large scenery group box properties top
-#define LAR_GBDB (LAR_GBPT + GROUPBOX_PADDING)  // Large scenery group box info bottom
-#define LAR_GBDT (LAR_GBDB + 20 + 3 * 11)       // Large scenery group box info top
+constexpr int32_t LAR_GBPB = PADDING_BOTTOM;               // Large scenery group box properties bottom
+constexpr int32_t LAR_GBPT = LAR_GBPB + 16 + 1 * 21;       // Large scenery group box properties top
+constexpr int32_t LAR_GBDB = LAR_GBPT + GROUPBOX_PADDING;  // Large scenery group box info bottom
+constexpr int32_t LAR_GBDT = LAR_GBDB + 20 + 3 * 11;       // Large scenery group box info top
 static rct_widget LargeSceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - LAR_GBPT, 0) + 3, GBBB(WH - LAR_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_LARGE_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     { WIDGETS_END },
 };
 
-#define BAN_GBPB PADDING_BOTTOM                 // Banner group box properties bottom
-#define BAN_GBPT (BAN_GBPB + 16 + 3 * 21)       // Banner group box properties top
-#define BAN_GBDB (BAN_GBPT + GROUPBOX_PADDING)  // Banner group box info bottom
-#define BAN_GBDT (BAN_GBDB + 20 + 1 * 11)       // Banner group box info top
+constexpr int32_t BAN_GBPB = PADDING_BOTTOM;               // Banner group box properties bottom
+constexpr int32_t BAN_GBPT = BAN_GBPB + 16 + 3 * 21;       // Banner group box properties top
+constexpr int32_t BAN_GBDB = BAN_GBPT + GROUPBOX_PADDING;  // Banner group box info bottom
+constexpr int32_t BAN_GBDT = BAN_GBDB + 20 + 1 * 11;       // Banner group box info top
 static rct_widget BannerWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - BAN_GBPT, 0) + 3, GBBB(WH - BAN_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
@@ -393,10 +393,10 @@ static rct_widget BannerWidgets[] = {
     { WIDGETS_END },
 };
 
-#define COR_GBPB PADDING_BOTTOM                 // Corrupt element group box properties bottom
-#define COR_GBPT (COR_GBPB + 16 + 2 * 21)       // Corrupt element group box properties top
-#define COR_GBDB (COR_GBPT + GROUPBOX_PADDING)  // Corrupt element group box info bottom
-#define COR_GBDT (COR_GBDB + 20 + 0 * 11)       // Corrupt element group box info top
+constexpr int32_t COR_GBPB = PADDING_BOTTOM;               // Corrupt element group box properties bottom
+constexpr int32_t COR_GBPT = COR_GBPB + 16 + 2 * 21;       // Corrupt element group box properties top
+constexpr int32_t COR_GBDB = COR_GBPT + GROUPBOX_PADDING;  // Corrupt element group box info bottom
+constexpr int32_t COR_GBDT = COR_GBDB + 20 + 0 * 11;       // Corrupt element group box info top
 static rct_widget CorruptWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - COR_GBPT, 0) + 3, GBBB(WH - COR_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_CORRUPT_SPINNER_HEIGHT{,_INCREASE,_DECREASE}

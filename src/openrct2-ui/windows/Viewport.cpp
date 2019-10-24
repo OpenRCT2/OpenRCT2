@@ -15,8 +15,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-#define INITIAL_WIDTH 500
-#define INITIAL_HEIGHT 350
+constexpr int32_t INITIAL_WIDTH = 500;
+constexpr int32_t INITIAL_HEIGHT = 350;
 
 // clang-format off
 enum {

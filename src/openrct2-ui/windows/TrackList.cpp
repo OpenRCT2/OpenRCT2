@@ -97,7 +97,7 @@ static rct_window_event_list window_track_list_events = {
 };
 // clang-format on
 
-#define TRACK_DESIGN_INDEX_UNLOADED UINT16_MAX
+constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
 
 ride_list_item _window_track_list_item;
 

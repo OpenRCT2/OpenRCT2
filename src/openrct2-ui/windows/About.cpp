@@ -16,9 +16,9 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/sprites.h>
 
-#define WW 400
-#define WH 350
-#define TABHEIGHT 50
+constexpr int32_t WW = 400;
+constexpr int32_t WH = 350;
+constexpr int32_t TABHEIGHT = 50;
 
 // clang-format off
 enum

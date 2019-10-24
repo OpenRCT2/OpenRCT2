@@ -22,8 +22,8 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 
-#define WW 113
-#define WH 96
+constexpr int32_t WW = 113;
+constexpr int32_t WH = 96;
 
 // clang-format off
 enum WINDOW_BANNER_WIDGET_IDX {

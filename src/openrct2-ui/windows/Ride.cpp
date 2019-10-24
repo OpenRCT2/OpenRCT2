@@ -202,7 +202,7 @@ enum {
     WIDX_SHOW_GUESTS_QUEUING
 };
 
-#define RCT1_LIGHT_OFFSET 4
+constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 
 #define MAIN_RIDE_WIDGETS \
     { WWT_FRAME,            0,  0,      315,    0,      206,    0xFFFFFFFF,                     STR_NONE                                    }, \

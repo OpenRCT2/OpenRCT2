@@ -16,8 +16,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Sprite.h>
 
-#define WW 200
-#define WH 100
+constexpr int32_t WW = 200;
+constexpr int32_t WH = 100;
 
 // clang-format off
 enum WINDOW_STAFF_FIRE_WIDGET_IDX {
