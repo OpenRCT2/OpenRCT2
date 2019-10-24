@@ -15,6 +15,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 
+#define WINDOW_TITLE STR_SHORTCUTS_TITLE
 #define WW 420
 #define WH 280
 
@@ -30,19 +31,9 @@ enum WINDOW_SHORTCUT_WIDGET_IDX {
     WIDX_RESET
 };
 
-#ifndef LEFT_CLOSEBOX
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  WW-13,  WW - 3, 2,      13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }
-#else
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  2,  12, 2,      13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }
-#endif
-
 // 0x9DE48C
 static rct_widget window_shortcut_widgets[] = {
-    { WWT_FRAME,            0,  0,      WW - 1, 0,      WH - 1,     STR_NONE,                   STR_NONE },
-    { WWT_CAPTION,          0,  1,      WW - 2, 1,      14,         STR_SHORTCUTS_TITLE,        STR_WINDOW_TITLE_TIP },
-    CLOSEBOX_WIDGET,
+    WINDOW_SKELETON,
     { WWT_SCROLL,           0,  4,      WW - 5, 18,     WH - 18,    SCROLL_VERTICAL,            STR_SHORTCUT_LIST_TIP },
     { WWT_BUTTON,           0,  4,      153,    WH-15,  WH - 4,     STR_SHORTCUT_ACTION_RESET,  STR_SHORTCUT_ACTION_RESET_TIP },
     { WIDGETS_END }

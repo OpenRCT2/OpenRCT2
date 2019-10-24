@@ -26,6 +26,7 @@
 
 #pragma region Widgets
 
+#define WINDOW_TITLE STR_INVENTION_LIST
 #define WW 600
 #define WH 400
 
@@ -44,18 +45,8 @@ enum {
     WIDX_RANDOM_SHUFFLE
 };
 
-#ifndef LEFT_CLOSEBOX
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP    }
-#else
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP    }
-#endif
-
 static rct_widget window_editor_inventions_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      599,    0,      399,    STR_NONE,               STR_NONE                },
-    { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_INVENTION_LIST,     STR_WINDOW_TITLE_TIP    },
-    CLOSEBOX_WIDGET,
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      599,    43,     399,    STR_NONE,               STR_NONE                },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE          },
     { WWT_SCROLL,           1,  4,      371,    56,     216,    SCROLL_VERTICAL,        STR_NONE                },

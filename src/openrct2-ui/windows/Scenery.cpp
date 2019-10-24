@@ -26,8 +26,9 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 
-#define WINDOW_SCENERY_WIDTH 634
-#define WINDOW_SCENERY_HEIGHT 180
+#define WINDOW_TITLE 0xFFFFFFFF
+#define WW 634
+#define WH 180
 #define SCENERY_BUTTON_WIDTH 66
 #define SCENERY_BUTTON_HEIGHT 80
 #define SCENERY_WINDOW_TABS (MAX_SCENERY_GROUP_OBJECTS + 1) // The + 1 is for the 'Miscellaneous' tab
@@ -142,18 +143,8 @@ validate_global_widx(WC_SCENERY, WIDX_SCENERY_TAB_1);
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
-#ifndef LEFT_CLOSEBOX
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX, 0, 621, 631, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }
-#else
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX, 0, 2, 12, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }
-#endif
-
 static rct_widget window_scenery_widgets[] = {
-    { WWT_FRAME, 0, 0, 633, 0, 141, 0xFFFFFFFF, STR_NONE },                             // 1                0x009DE298
-    { WWT_CAPTION, 0, 1, 632, 1, 14, 0xFFFFFFFF, STR_WINDOW_TITLE_TIP },                // 2                0x009DE2A8
-    CLOSEBOX_WIDGET,            // 4                0x009DE2B8
+    WINDOW_SKELETON,
     { WWT_RESIZE, 1, 0, 633, 43, 141, 0xFFFFFFFF, STR_NONE },                           // 8                0x009DE2C8
     { WWT_TAB, 1, 3, 33, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                  // 10               0x009DE2D8
     { WWT_TAB, 1, 34, 64, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                 // 20               0x009DE2E8
@@ -456,7 +447,7 @@ rct_window* window_scenery_open()
     window_scenery_init();
 
     window = window_create(
-        ScreenCoordsXY(context_get_width() - WINDOW_SCENERY_WIDTH, 0x1D), WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT,
+        ScreenCoordsXY(context_get_width() - WW, 0x1D), WW, WH,
         &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
     window->widgets = window_scenery_widgets;
 
@@ -486,10 +477,10 @@ rct_window* window_scenery_open()
     gWindowSceneryEyedropperEnabled = false;
     gWindowSceneryClusterEnabled = 0; // build cluster tool state
 
-    window->min_width = WINDOW_SCENERY_WIDTH;
-    window->max_width = WINDOW_SCENERY_WIDTH;
-    window->min_height = WINDOW_SCENERY_HEIGHT;
-    window->max_height = WINDOW_SCENERY_HEIGHT;
+    window->min_width = WW;
+    window->max_width = WW;
+    window->min_height = WH;
+    window->max_height = WH;
 
     return window;
 }
@@ -772,10 +763,10 @@ static void window_scenery_update(rct_window* w)
                 {
                     if (input_get_state() != INPUT_STATE_SCROLL_LEFT)
                     {
-                        w->min_width = WINDOW_SCENERY_WIDTH;
-                        w->max_width = WINDOW_SCENERY_WIDTH;
-                        w->min_height = WINDOW_SCENERY_HEIGHT;
-                        w->max_height = WINDOW_SCENERY_HEIGHT;
+                        w->min_width = WW;
+                        w->max_width = WW;
+                        w->min_height = WH;
+                        w->max_height = WH;
                     }
                 }
                 else
@@ -783,10 +774,10 @@ static void window_scenery_update(rct_window* w)
                     int32_t windowHeight = std::min(463, w->scrolls[0].v_bottom + 62);
                     if (context_get_height() < 600)
                         windowHeight = std::min(374, windowHeight);
-                    windowHeight = std::max(WINDOW_SCENERY_HEIGHT, windowHeight);
+                    windowHeight = std::max(WH, windowHeight);
 
-                    w->min_width = WINDOW_SCENERY_WIDTH;
-                    w->max_width = WINDOW_SCENERY_WIDTH;
+                    w->min_width = WW;
+                    w->max_width = WW;
                     w->min_height = windowHeight;
                     w->max_height = windowHeight;
                 }
@@ -798,10 +789,10 @@ static void window_scenery_update(rct_window* w)
         w->scenery.hover_counter = 0;
         if (input_get_state() != INPUT_STATE_SCROLL_LEFT)
         {
-            w->min_width = WINDOW_SCENERY_WIDTH;
-            w->max_width = WINDOW_SCENERY_WIDTH;
-            w->min_height = WINDOW_SCENERY_HEIGHT;
-            w->max_height = WINDOW_SCENERY_HEIGHT;
+            w->min_width = WW;
+            w->max_width = WW;
+            w->min_height = WH;
+            w->max_height = WH;
         }
     }
 

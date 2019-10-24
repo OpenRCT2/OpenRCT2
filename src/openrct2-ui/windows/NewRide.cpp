@@ -34,6 +34,7 @@
 #include <openrct2/world/Park.h>
 
 #define AVAILABILITY_STRING_SIZE 256
+#define WINDOW_TITLE 0xFFFFFFFF
 #define WH 382
 #define WW 601
 
@@ -179,18 +180,8 @@ enum {
     WIDX_RESEARCH_FUNDING_BUTTON
 };
 
-#ifndef LEFT_CLOSEBOX
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  588,    598,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                }
-#else
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                }
-#endif
-
 static rct_widget window_new_ride_widgets[] = {
-    { WWT_FRAME,            0,  0,      600,    0,      WH - 1, 0xFFFFFFFF,                             STR_NONE                            },
-    { WWT_CAPTION,          0,  1,      599,    1,      14,     0xFFFFFFFF,                             STR_WINDOW_TITLE_TIP                },
-    CLOSEBOX_WIDGET,
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      600,    43,     WH - 1, 0xFFFFFFFF,                             STR_NONE                            },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_TRANSPORT_RIDES_TIP             },
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_GENTLE_RIDES_TIP                },

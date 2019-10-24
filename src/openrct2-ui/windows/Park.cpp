@@ -31,6 +31,10 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
 
+#define WINDOW_TITLE STR_STRINGID
+#define WH 224
+#define WW 230
+
 // clang-format off
 enum WINDOW_PARK_PAGE {
     WINDOW_PARK_PAGE_ENTRANCE,
@@ -74,18 +78,8 @@ enum WINDOW_PARK_WIDGET_IDX {
 
 #pragma region Widgets
 
-#ifndef LEFT_CLOSEBOX
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  217,    227,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }
-#else
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }
-#endif
-
 #define MAIN_PARK_WIDGETS \
-    { WWT_FRAME,            0,  0,      229,    0,      223,    0xFFFFFFFF,                     STR_NONE },                     /* panel / background */    \
-    { WWT_CAPTION,          0,  1,      228,    1,      14,     STR_STRINGID,                   STR_WINDOW_TITLE_TIP },         /* title bar          */    \
-    CLOSEBOX_WIDGET, \
+    WINDOW_SKELETON, \
     { WWT_RESIZE,           1,  0,      229,    43,     173,    0xFFFFFFFF,                     STR_NONE },                     /* tab content panel  */    \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_ENTRANCE_TAB_TIP },    /* tab 1              */    \
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_PARK_RATING_TAB_TIP },      /* tab 2              */    \

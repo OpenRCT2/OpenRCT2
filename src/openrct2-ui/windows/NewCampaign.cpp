@@ -21,6 +21,9 @@
 #include <openrct2/ride/ShopItem.h>
 
 #define SELECTED_RIDE_UNDEFINED ((uint16_t)0xFFFF)
+#define WINDOW_TITLE 0
+#define WH 107
+#define WW 350
 
 // clang-format off
 enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
@@ -37,18 +40,8 @@ enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
     WIDX_START_BUTTON
 };
 
-#ifndef LEFT_CLOSEBOX
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,      337,    347,    2,      13,         STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }
-#else
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,      2,    12,    2,      13,         STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }
-#endif
-
 static rct_widget window_new_campaign_widgets[] = {
-    { WWT_FRAME,            0,      0,      349,    0,      106,        0xFFFFFFFF,                                     STR_NONE },             // panel / background
-    { WWT_CAPTION,          0,      1,      348,    1,      14,         0,                                              STR_WINDOW_TITLE_TIP }, // title bar
-    CLOSEBOX_WIDGET, // close x button
+    WINDOW_SKELETON,
     { WWT_LABEL,            0,      14,     139,    24,     35,         0,                                              STR_NONE },             // ride label
     { WWT_DROPDOWN,         0,      100,    341,    24,     35,         0,                                              STR_NONE },             // ride dropdown
     { WWT_BUTTON,           0,      330,    340,    25,     34,         STR_DROPDOWN_GLYPH,                             STR_NONE },             // ride dropdown button

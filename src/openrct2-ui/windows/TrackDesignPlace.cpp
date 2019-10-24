@@ -27,6 +27,9 @@
 #include <openrct2/world/Surface.h>
 #include <vector>
 
+#define WINDOW_TITLE STR_STRING
+#define WH 124
+#define WW 200
 #define TRACK_MINI_PREVIEW_WIDTH 168
 #define TRACK_MINI_PREVIEW_HEIGHT 78
 #define TRACK_MINI_PREVIEW_SIZE (TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT)
@@ -51,18 +54,8 @@ enum {
 
 validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
-#ifndef LEFT_CLOSEBOX
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  187,    197,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP    }
-#else
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP    }
-#endif
-
 static rct_widget window_track_place_widgets[] = {
-    { WWT_FRAME,            0,  0,      199,    0,      123,    0xFFFFFFFF,                     STR_NONE                                    },
-    { WWT_CAPTION,          0,  1,      198,    1,      14,     STR_STRING,                     STR_WINDOW_TITLE_TIP                        },
-    CLOSEBOX_WIDGET,
+    WINDOW_SKELETON,
     { WWT_FLATBTN,          0,  173,    196,    83,     106,    SPR_ROTATE_ARROW,               STR_ROTATE_90_TIP                           },
     { WWT_FLATBTN,          0,  173,    196,    59,     82,     SPR_MIRROR_ARROW,               STR_MIRROR_IMAGE_TIP                        },
     { WWT_BUTTON,           0,  4,      195,    109,    120,    STR_SELECT_A_DIFFERENT_DESIGN,  STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP  },

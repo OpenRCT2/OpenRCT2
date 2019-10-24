@@ -34,24 +34,15 @@ enum {
     WIDX_CANCEL
 };
 
+#define WINDOW_TITLE STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE
 #define WW 380
 #define WH 448
 #define WW_LESS_PADDING (WW - 4)
 #define PREVIEW_BUTTONS_LEFT (WW - 25)
 #define ACTION_BUTTONS_LEFT (WW - 100)
 
-#ifndef LEFT_CLOSEBOX
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  WW - 13,      WW - 3,             2,      13,     STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP    }
-#else
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  2,                12,             2,      13,     STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP    }
-#endif
-
 static rct_widget window_install_track_widgets[] = {
-    { WWT_FRAME,            0,  0,                      WW - 1,             0,      WH-1,   STR_NONE,                               STR_NONE                },
-    { WWT_CAPTION,          0,  1,                      WW - 2,             1,      14,     STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE,  STR_WINDOW_TITLE_TIP    },
-    CLOSEBOX_WIDGET,
+    WINDOW_SKELETON,
     { WWT_FLATBTN,          0,  4,                      WW - 5,             18,     236,    STR_NONE,                               STR_NONE                },
     { WWT_FLATBTN,          0,  PREVIEW_BUTTONS_LEFT,   WW_LESS_PADDING,    422,    445,    SPR_ROTATE_ARROW,                       STR_ROTATE_90_TIP       },
     { WWT_FLATBTN,          0,  PREVIEW_BUTTONS_LEFT,   WW_LESS_PADDING,    398,    421,    SPR_SCENERY,                            STR_TOGGLE_SCENERY_TIP  },

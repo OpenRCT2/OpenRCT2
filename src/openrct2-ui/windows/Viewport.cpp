@@ -15,6 +15,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
+#define WINDOW_TITLE STR_VIEWPORT_NO
+#define WH 0
+#define WW 0
 #define INITIAL_WIDTH 500
 #define INITIAL_HEIGHT 350
 
@@ -31,9 +34,7 @@ enum {
 };
 
 static rct_widget window_viewport_widgets[] = {
-    { WWT_FRAME,            0,  0,  0,  0,  0,  0xFFFFFFFF,         STR_NONE                },  // panel / background
-    { WWT_CAPTION,          0,  1,  0,  1,  14, STR_VIEWPORT_NO,    STR_WINDOW_TITLE_TIP    },  // title bar
-    { WWT_CLOSEBOX,         0,  2,  12,  2,  13, STR_CLOSE_X,        STR_CLOSE_WINDOW_TIP    },  // close x button
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,  0,  14, 0,  0xFFFFFFFF,         STR_NONE                },  // resize
     { WWT_VIEWPORT,         0,  3,  0,  17, 0,  0xFFFFFFFF,         STR_NONE                },  // viewport
 

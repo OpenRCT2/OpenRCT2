@@ -28,6 +28,10 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
+#define WINDOW_TITLE STR_SCENARIO_OPTIONS_FINANCIAL
+#define WH 149
+#define WW 280
+
 #pragma region Widgets
 
 // clang-format off
@@ -108,18 +112,8 @@ enum {
     WIDX_HARD_GUEST_GENERATION
 };
 
-#ifndef LEFT_CLOSEBOX
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP }
-#else
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX,         0,  2,    12,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP }
-#endif
-
 static rct_widget window_editor_scenario_options_financial_widgets[] = {
-    { WWT_FRAME,            0,  0,      279,    0,      148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_FINANCIAL,         STR_WINDOW_TITLE_TIP                        },
-    CLOSEBOX_WIDGET,
+    WINDOW_SKELETON,
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
     { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },

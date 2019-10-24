@@ -24,6 +24,9 @@
 #include <openrct2/util/Util.h>
 #include <vector>
 
+#define WINDOW_TITLE STR_SELECT_SCENARIO
+#define WW 734
+#define WH 334
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 
 // clang-format off
@@ -68,20 +71,8 @@ enum {
     WIDX_SCENARIOLIST
 };
 
-#ifndef LEFT_CLOSEBOX
-    // close button on right of window
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX, 0,  721,    731,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }
-#else
-    // close button on left of window
-    #define CLOSEBOX_WIDGET \
-        { WWT_CLOSEBOX, 0,  2,    12,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }
-#endif
-
 static rct_widget window_scenarioselect_widgets[] = {
-    { WWT_FRAME,    0,  0,      733,    0,      333,    0xFFFFFFFF,                 STR_NONE },             // panel / background
-    { WWT_CAPTION,  0,  1,      732,    1,      14,     STR_SELECT_SCENARIO,        STR_WINDOW_TITLE_TIP }, // title bar
-    CLOSEBOX_WIDGET,
+    WINDOW_SKELETON,
     { WWT_IMGBTN,   1,  0,      733,    50,     333,    0xFFFFFFFF,                 STR_NONE },             // tab content panel
     { WWT_TAB,      1,  3,      93,     17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 1
     { WWT_TAB,      1,  94,     184,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 2
