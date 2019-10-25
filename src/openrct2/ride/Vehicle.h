@@ -240,8 +240,7 @@ struct rct_vehicle : rct_sprite_common
     };
     uint8_t animation_frame; // 0xC5
     uint8_t pad_C6[0x2];
-    uint16_t var_C8;
-    uint16_t var_CA;
+    uint32_t additional_animation_var;
     SoundId scream_sound_id; // 0xCC
     uint8_t var_CD;
     union

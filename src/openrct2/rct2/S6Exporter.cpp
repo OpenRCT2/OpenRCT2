@@ -1002,8 +1002,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const rct_vehicle* 
     dst->powered_acceleration = src->powered_acceleration;
     dst->dodgems_collision_direction = src->dodgems_collision_direction;
     dst->animation_frame = src->animation_frame;
-    dst->var_C8 = src->var_C8;
-    dst->var_CA = src->var_CA;
+    dst->additional_animation_var = src->additional_animation_var;
     dst->scream_sound_id = static_cast<uint8_t>(src->scream_sound_id);
     dst->var_CD = src->var_CD;
     dst->var_CE = src->var_CE;

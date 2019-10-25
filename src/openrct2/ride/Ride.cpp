@@ -4455,7 +4455,7 @@ static rct_vehicle* vehicle_create_car(
     vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
     vehicle->var_C4 = 0;
     vehicle->animation_frame = 0;
-    vehicle->var_C8 = 0;
+    vehicle->additional_animation_var = 0;
     vehicle->scream_sound_id = SoundId::Null;
     vehicle->vehicle_sprite_type = 0;
     vehicle->bank_rotation = 0;
