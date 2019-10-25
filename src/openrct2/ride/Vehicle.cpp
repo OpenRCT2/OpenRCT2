@@ -7259,8 +7259,10 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                                 switch (vehicle->vehicle_sprite_type)
                                 {
                                     case 2:
+                                        // uphill
                                         return 1;
                                     case 6:
+                                        // downhill
                                         return 2;
                                     default:
                                         return 0;
