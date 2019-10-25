@@ -1088,7 +1088,7 @@ namespace OpenRCT2
 
     std::unique_ptr<IContext> CreateContext()
     {
-        return std::make_unique<Context>(CreatePlatformEnvironment(), CreateDummyAudioContext(), CreateDummyUiContext());
+        return CreateContext(CreatePlatformEnvironment(), CreateDummyAudioContext(), CreateDummyUiContext());
     }
 
     std::unique_ptr<IContext> CreateContext(
