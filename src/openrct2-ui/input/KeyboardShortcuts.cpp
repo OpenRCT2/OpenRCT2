@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 #include <algorithm>
+#include <map>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/common.h>
 #include <openrct2/core/Console.hpp>
@@ -153,7 +154,122 @@ std::string KeyboardShortcuts::GetShortcutString(int32_t shortcut) const
         format_string(formatBuffer, sizeof(formatBuffer), STR_CMD_PLUS, nullptr);
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
-    String::Append(buffer, sizeof(buffer), SDL_GetKeyName(SDL_GetKeyFromScancode((SDL_Scancode)(shortcutKey & 0xFF))));
+
+    static const std::map<const SDL_Scancode, const rct_string_id> specialCharNames = {
+        { SDL_SCANCODE_BACKSPACE, STR_SHORTCUT_BACKSPACE },
+        { SDL_SCANCODE_TAB, STR_SHORTCUT_TAB },
+        { SDL_SCANCODE_CLEAR, STR_SHORTCUT_CLEAR },
+        { SDL_SCANCODE_RETURN, STR_SHORTCUT_RETURN },
+        { SDL_SCANCODE_LALT, STR_SHORTCUT_ALT },
+        { SDL_SCANCODE_PAUSE, STR_SHORTCUT_PAUSE },
+        { SDL_SCANCODE_CAPSLOCK, STR_SHORTCUT_CAPS },
+        { SDL_SCANCODE_ESCAPE, STR_SHORTCUT_ESCAPE },
+        { SDL_SCANCODE_SPACE, STR_SHORTCUT_SPACEBAR },
+        { SDL_SCANCODE_PAGEUP, STR_SHORTCUT_PGUP },
+        { SDL_SCANCODE_PAGEDOWN, STR_SHORTCUT_PGDN },
+        { SDL_SCANCODE_END, STR_SHORTCUT_END },
+        { SDL_SCANCODE_HOME, STR_SHORTCUT_HOME },
+        { SDL_SCANCODE_LEFT, STR_SHORTCUT_LEFT },
+        { SDL_SCANCODE_UP, STR_SHORTCUT_UP },
+        { SDL_SCANCODE_RIGHT, STR_SHORTCUT_RIGHT },
+        { SDL_SCANCODE_DOWN, STR_SHORTCUT_DOWN },
+        { SDL_SCANCODE_SELECT, STR_SHORTCUT_SELECT },
+        { SDL_SCANCODE_PRINTSCREEN, STR_SHORTCUT_PRINT },
+        { SDL_SCANCODE_EXECUTE, STR_SHORTCUT_EXECUTE },
+        { SDL_SCANCODE_SYSREQ, STR_SHORTCUT_SNAPSHOT },
+        { SDL_SCANCODE_INSERT, STR_SHORTCUT_INSERT },
+        { SDL_SCANCODE_DELETE, STR_SHORTCUT_DELETE },
+        { SDL_SCANCODE_HELP, STR_SHORTCUT_HELP },
+        { SDL_SCANCODE_0, STR_SHORTCUT_0 },
+        { SDL_SCANCODE_1, STR_SHORTCUT_1 },
+        { SDL_SCANCODE_2, STR_SHORTCUT_2 },
+        { SDL_SCANCODE_3, STR_SHORTCUT_3 },
+        { SDL_SCANCODE_4, STR_SHORTCUT_4 },
+        { SDL_SCANCODE_5, STR_SHORTCUT_5 },
+        { SDL_SCANCODE_6, STR_SHORTCUT_6 },
+        { SDL_SCANCODE_7, STR_SHORTCUT_7 },
+        { SDL_SCANCODE_8, STR_SHORTCUT_8 },
+        { SDL_SCANCODE_9, STR_SHORTCUT_9 },
+        { SDL_SCANCODE_A, STR_SHORTCUT_A },
+        { SDL_SCANCODE_B, STR_SHORTCUT_B },
+        { SDL_SCANCODE_C, STR_SHORTCUT_C },
+        { SDL_SCANCODE_D, STR_SHORTCUT_D },
+        { SDL_SCANCODE_E, STR_SHORTCUT_E },
+        { SDL_SCANCODE_F, STR_SHORTCUT_F },
+        { SDL_SCANCODE_G, STR_SHORTCUT_G },
+        { SDL_SCANCODE_H, STR_SHORTCUT_H },
+        { SDL_SCANCODE_I, STR_SHORTCUT_I },
+        { SDL_SCANCODE_J, STR_SHORTCUT_J },
+        { SDL_SCANCODE_K, STR_SHORTCUT_K },
+        { SDL_SCANCODE_L, STR_SHORTCUT_L },
+        { SDL_SCANCODE_M, STR_SHORTCUT_M },
+        { SDL_SCANCODE_N, STR_SHORTCUT_N },
+        { SDL_SCANCODE_O, STR_SHORTCUT_O },
+        { SDL_SCANCODE_P, STR_SHORTCUT_P },
+        { SDL_SCANCODE_Q, STR_SHORTCUT_Q },
+        { SDL_SCANCODE_R, STR_SHORTCUT_R },
+        { SDL_SCANCODE_S, STR_SHORTCUT_S },
+        { SDL_SCANCODE_T, STR_SHORTCUT_T },
+        { SDL_SCANCODE_U, STR_SHORTCUT_U },
+        { SDL_SCANCODE_V, STR_SHORTCUT_V },
+        { SDL_SCANCODE_W, STR_SHORTCUT_W },
+        { SDL_SCANCODE_X, STR_SHORTCUT_X },
+        { SDL_SCANCODE_Y, STR_SHORTCUT_Y },
+        { SDL_SCANCODE_Z, STR_SHORTCUT_Z },
+        { SDL_SCANCODE_APPLICATION, STR_SHORTCUT_MENU },
+        { SDL_SCANCODE_KP_0, STR_SHORTCUT_NUMPAD_0 },
+        { SDL_SCANCODE_KP_1, STR_SHORTCUT_NUMPAD_1 },
+        { SDL_SCANCODE_KP_2, STR_SHORTCUT_NUMPAD_2 },
+        { SDL_SCANCODE_KP_3, STR_SHORTCUT_NUMPAD_3 },
+        { SDL_SCANCODE_KP_4, STR_SHORTCUT_NUMPAD_4 },
+        { SDL_SCANCODE_KP_5, STR_SHORTCUT_NUMPAD_5 },
+        { SDL_SCANCODE_KP_6, STR_SHORTCUT_NUMPAD_6 },
+        { SDL_SCANCODE_KP_7, STR_SHORTCUT_NUMPAD_7 },
+        { SDL_SCANCODE_KP_8, STR_SHORTCUT_NUMPAD_8 },
+        { SDL_SCANCODE_KP_9, STR_SHORTCUT_NUMPAD_9 },
+        { SDL_SCANCODE_KP_MULTIPLY, STR_SHORTCUT_NUMPAD_MULTIPLY },
+        { SDL_SCANCODE_KP_PLUS, STR_SHORTCUT_NUMPAD_PLUS },
+        { SDL_SCANCODE_KP_MINUS, STR_SHORTCUT_NUMPAD_MINUS },
+        { SDL_SCANCODE_KP_PERIOD, STR_SHORTCUT_NUMPAD_PERIOD },
+        { SDL_SCANCODE_KP_DIVIDE, STR_SHORTCUT_NUMPAD_DIVIDE },
+        { SDL_SCANCODE_F1, STR_SHORTCUT_F1 },
+        { SDL_SCANCODE_F2, STR_SHORTCUT_F2 },
+        { SDL_SCANCODE_F3, STR_SHORTCUT_F3 },
+        { SDL_SCANCODE_F4, STR_SHORTCUT_F4 },
+        { SDL_SCANCODE_F5, STR_SHORTCUT_F5 },
+        { SDL_SCANCODE_F6, STR_SHORTCUT_F6 },
+        { SDL_SCANCODE_F7, STR_SHORTCUT_F7 },
+        { SDL_SCANCODE_F8, STR_SHORTCUT_F8 },
+        { SDL_SCANCODE_F9, STR_SHORTCUT_F9 },
+        { SDL_SCANCODE_F10, STR_SHORTCUT_F10 },
+        { SDL_SCANCODE_F11, STR_SHORTCUT_F11 },
+        { SDL_SCANCODE_F12, STR_SHORTCUT_F12 },
+        { SDL_SCANCODE_F13, STR_SHORTCUT_F13 },
+        { SDL_SCANCODE_F14, STR_SHORTCUT_F14 },
+        { SDL_SCANCODE_F15, STR_SHORTCUT_F15 },
+        { SDL_SCANCODE_F16, STR_SHORTCUT_F16 },
+        { SDL_SCANCODE_F17, STR_SHORTCUT_F17 },
+        { SDL_SCANCODE_F18, STR_SHORTCUT_F18 },
+        { SDL_SCANCODE_F19, STR_SHORTCUT_F19 },
+        { SDL_SCANCODE_F20, STR_SHORTCUT_F20 },
+        { SDL_SCANCODE_F21, STR_SHORTCUT_F21 },
+        { SDL_SCANCODE_F22, STR_SHORTCUT_F22 },
+        { SDL_SCANCODE_F23, STR_SHORTCUT_F23 },
+        { SDL_SCANCODE_F24, STR_SHORTCUT_F24 },
+        { SDL_SCANCODE_NUMLOCKCLEAR, STR_SHORTCUT_NUMLOCK },
+        { SDL_SCANCODE_SCROLLLOCK, STR_SHORTCUT_SCROLL },
+    };
+
+    SDL_Scancode scanCode = static_cast<SDL_Scancode>(shortcutKey & 0xFF);
+    auto keyPair = specialCharNames.find(scanCode);
+    if (keyPair != specialCharNames.end())
+    {
+        format_string(formatBuffer, sizeof(formatBuffer), keyPair->second, nullptr);
+        String::Append(buffer, sizeof(buffer), formatBuffer);
+    }
+    else
+        String::Append(buffer, sizeof(buffer), SDL_GetKeyName(SDL_GetKeyFromScancode(scanCode)));
+
     return std::string(buffer);
 }
 
