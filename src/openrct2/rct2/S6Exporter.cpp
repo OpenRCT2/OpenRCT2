@@ -1815,7 +1815,7 @@ enum : uint32_t
  *  rct2: 0x006754F5
  * @param flags bit 0: pack objects, 1: save as scenario
  */
-int32_t scenario_save_old(const utf8* path, int32_t flags)
+[[maybe_unused]] static int32_t scenario_save_old(const utf8* path, int32_t flags)
 {
     if (flags & S6_SAVE_FLAG_SCENARIO)
     {

@@ -253,9 +253,14 @@ namespace OpenRCT2
                 return v;
             }
 
+#if defined(_MSC_VER) || defined(__clang__)
             template<> void ReadWrite(std::string_view& v) = delete;
+#endif
 
-            template<> void ReadWrite(std::string& v)
+#if defined(_MSC_VER) || defined(__clang__)
+            template<>
+#endif
+            void ReadWrite(std::string& v)
             {
                 if (_mode == Mode::READING)
                 {
@@ -280,7 +285,10 @@ namespace OpenRCT2
                 }
             }
 
-            template<> void Write(const std::string_view& v)
+#if defined(_MSC_VER) || defined(__clang__)
+            template<>
+#endif
+            void Write(const std::string_view& v)
             {
                 if (_mode == Mode::READING)
                 {
