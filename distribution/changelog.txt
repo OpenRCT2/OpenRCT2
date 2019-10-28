@@ -1,4 +1,4 @@
-0.2.3+ (in development)
+0.2.4 (2019-10-28)
 ------------------------------------------------------------------------
 - Feature: [#9285] Remember current group in scenario list window.
 - Feature: [#9918] Increase image list capacity by about 100k units.
