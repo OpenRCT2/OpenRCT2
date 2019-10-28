@@ -1,0 +1,35 @@
+name: CI
+on: [push]
+jobs:
+  build-appimage:
+    name: Build AppImage
+    runs-on: ubuntu-latest
+    container:
+      image: openrct2/openrct2:ubuntu_amd64
+    steps:
+      - uses: actions/checkout@v1
+      - name: Get pre-reqs
+        run: |
+          git clone https://github.com/discordapp/discord-rpc -b v3.4.0
+          git clone https://github.com/janisozaur/rapidjson discord-rpc/thirdparty/rapidjson -b patch-1
+          mkdir bin && cd bin
+          apt-get update
+          apt-get install -y wget libcairo2
+          wget https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy*.AppImage
+      - name: Build OpenRCT2
+        working-directory: bin
+        run: |
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+          ninja -v
+          DESTDIR=AppDir ninja install
+      - name: Build AppImage
+        working-directory: bin
+        run: |
+          ./linuxdeploy*.AppImage --appimage-extract-and-run --appdir AppDir/ --output appimage --desktop-file AppDir/usr/share/applications/openrct2.desktop
+          mkdir artifacts
+          mv OpenRCT2*.AppImage artifacts
+      - uses: actions/upload-artifact@master
+        with:
+          name: OpenRCT2-AppImage
+          path: bin/artifacts
