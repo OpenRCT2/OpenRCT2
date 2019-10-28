@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -387,7 +387,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
+                            store_mouse_input(MOUSE_STATE_LEFT_PRESS, ScreenCoordsXY(x, y));
                             _cursorState.left = CURSOR_PRESSED;
                             _cursorState.old = 1;
                             break;
@@ -395,7 +395,7 @@ public:
                             _cursorState.middle = CURSOR_PRESSED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
+                            store_mouse_input(MOUSE_STATE_RIGHT_PRESS, ScreenCoordsXY(x, y));
                             _cursorState.right = CURSOR_PRESSED;
                             _cursorState.old = 2;
                             break;
@@ -414,7 +414,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
+                            store_mouse_input(MOUSE_STATE_LEFT_RELEASE, ScreenCoordsXY(x, y));
                             _cursorState.left = CURSOR_RELEASED;
                             _cursorState.old = 3;
                             break;
@@ -422,7 +422,7 @@ public:
                             _cursorState.middle = CURSOR_RELEASED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
+                            store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, ScreenCoordsXY(x, y));
                             _cursorState.right = CURSOR_RELEASED;
                             _cursorState.old = 4;
                             break;
@@ -447,13 +447,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
+                        store_mouse_input(MOUSE_STATE_RIGHT_PRESS, ScreenCoordsXY(x, y));
                         _cursorState.right = CURSOR_PRESSED;
                         _cursorState.old = 2;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
+                        store_mouse_input(MOUSE_STATE_LEFT_PRESS, ScreenCoordsXY(x, y));
                         _cursorState.left = CURSOR_PRESSED;
                         _cursorState.old = 1;
                     }
@@ -468,13 +468,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
+                        store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, ScreenCoordsXY(x, y));
                         _cursorState.right = CURSOR_RELEASED;
                         _cursorState.old = 4;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
+                        store_mouse_input(MOUSE_STATE_LEFT_RELEASE, ScreenCoordsXY(x, y));
                         _cursorState.left = CURSOR_RELEASED;
                         _cursorState.old = 3;
                     }
@@ -639,7 +639,7 @@ private:
             height = 480;
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
-        uint32_t flags = SDL_WINDOW_RESIZABLE;
+        uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
         if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL)
         {
             flags |= SDL_WINDOW_OPENGL;
@@ -784,9 +784,10 @@ private:
         DrawRainFunc drawFunc)
     {
         rct_window* w{};
-        for (auto i = window_get_index(original_w) + 1;; i++)
+        auto itStart = window_get_iterator(original_w);
+        for (auto it = std::next(itStart);; it++)
         {
-            if (i >= g_window_list.size())
+            if (it == g_window_list.end())
             {
                 // Loop ended, draw rain for original_w
                 auto vp = original_w->viewport;
@@ -806,7 +807,7 @@ private:
                 return;
             }
 
-            w = g_window_list[i].get();
+            w = it->get();
             if (right <= w->x || bottom <= w->y)
             {
                 continue;

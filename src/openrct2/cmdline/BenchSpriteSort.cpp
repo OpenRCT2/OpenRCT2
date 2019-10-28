@@ -105,7 +105,7 @@ static std::vector<paint_session> extract_paint_session(const std::string parkFi
         int32_t customY = (gMapSize / 2) * 32 + 16;
 
         int32_t x = 0, y = 0;
-        int32_t z = tile_element_height(customX, customY) & 0xFFFF;
+        int32_t z = tile_element_height({ customX, customY });
         x = customY - customX;
         y = ((customX + customY) / 2) - z;
 

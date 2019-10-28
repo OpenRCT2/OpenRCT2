@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -305,7 +305,7 @@ namespace Imaging
             default:
             {
 #if defined(_WIN32) && !defined(__MINGW32__)
-                auto pathW = String::ToUtf16(path);
+                auto pathW = String::ToWideChar(path);
                 std::ifstream fs(pathW, std::ios::binary);
 #else
                 std::ifstream fs(path.data(), std::ios::binary);
@@ -331,7 +331,7 @@ namespace Imaging
             case IMAGE_FORMAT::PNG:
             {
 #if defined(_WIN32) && !defined(__MINGW32__)
-                auto pathW = String::ToUtf16(path);
+                auto pathW = String::ToWideChar(path);
                 std::ofstream fs(pathW, std::ios::binary);
 #else
                 std::ofstream fs(path.data(), std::ios::binary);

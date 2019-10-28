@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
@@ -100,7 +101,7 @@ static void news_item_tick_current()
     if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
     {
         // Play sound
-        audio_play_sound(SOUND_NEWS_ITEM, 0, context_get_width() / 2);
+        audio_play_sound(SoundId::NewsItem, 0, context_get_width() / 2);
     }
 }
 
@@ -216,14 +217,14 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
     {
         case NEWS_ITEM_RIDE:
             ride = get_ride(subject);
-            if (ride->overall_view.xy == RCT_XY8_UNDEFINED)
+            if (ride == nullptr || ride->overall_view.xy == RCT_XY8_UNDEFINED)
             {
                 *x = LOCATION_NULL;
                 break;
             }
             *x = ride->overall_view.x * 32 + 16;
             *y = ride->overall_view.y * 32 + 16;
-            *z = tile_element_height(*x, *y);
+            *z = tile_element_height({ *x, *y });
             break;
         case NEWS_ITEM_PEEP_ON_RIDE:
             peep = GET_PEEP(subject);
@@ -241,7 +242,7 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
 
             // Find which ride peep is on
             ride = get_ride(peep->current_ride);
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+            if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 *x = LOCATION_NULL;
                 break;
@@ -267,7 +268,7 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
         case NEWS_ITEM_BLANK:
             *x = subject;
             *y = subject >> 16;
-            *z = tile_element_height(*x, *y);
+            *z = tile_element_height({ *x, *y });
             break;
         default:
             *x = LOCATION_NULL;
@@ -371,7 +372,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
                 window = window_find_by_class(WC_TOP_TOOLBAR);
                 if (window != nullptr)
                 {
-                    window_invalidate(window);
+                    window->Invalidate();
                     if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_SCENERY, TOOL_ARROW))
                     {
                         input_set_flag(INPUT_FLAG_6, true);

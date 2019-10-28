@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,7 @@ currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
     {   "HKD",  100,    CURRENCY_PREFIX,    "$",            CURRENCY_PREFIX,    "HKD",  STR_HONG_KONG_DOLLAR},  // Hong Kong Dollar
     {   "TWD",  1000,   CURRENCY_PREFIX,    "NT$",          CURRENCY_PREFIX,    "NT$",  STR_NEW_TAIWAN_DOLLAR}, // New Taiwan Dollar
     {   "CNY",  100,    CURRENCY_PREFIX,    "CN\xC2\xA5",   CURRENCY_PREFIX,    "CNY",  STR_CHINESE_YUAN    },  // Chinese Yuan
+    {   "HUF",  1000,   CURRENCY_SUFFIX,    " Ft",          CURRENCY_SUFFIX,    " Ft",  STR_HUNGARIAN_FORINT},  // Hungarian Forint
     {   "CTM",  10,     CURRENCY_PREFIX,    "Ctm",          CURRENCY_PREFIX,    "Ctm",  STR_CUSTOM_CURRENCY },  // Customizable currency
 };
 // clang-format on

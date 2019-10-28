@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ClimateSetAction.hpp>
+#include <openrct2/actions/ScenarioSetSettingAction.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/StringIds.h>
@@ -470,11 +471,11 @@ static void window_editor_scenario_options_set_page(rct_window* w, int32_t page)
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
     w->event_handlers = window_editor_scenario_options_page_events[page];
     w->widgets = window_editor_scenario_options_widgets[page];
-    window_invalidate(w);
+    w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 #pragma region Financial
@@ -508,18 +509,19 @@ static void window_editor_scenario_options_financial_mouseup(rct_window* w, rct_
                 newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
             }
 
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETNOMONEY, newMoneySetting,
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::NoMoney, newMoneySetting);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
         }
         case WIDX_FORBID_MARKETING:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS,
-                gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::ForbidMarketingCampaigns, gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
+        }
     }
 }
 
@@ -561,115 +563,106 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
         case WIDX_INITIAL_CASH_INCREASE:
             if (gInitialCash < MONEY(1000000, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETINITIALCASH, gInitialCash + MONEY(500, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::InitialCash, gInitialCash + MONEY(500, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_CASH, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INITIAL_CASH_DECREASE:
             if (gInitialCash > MONEY(0, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETINITIALCASH, gInitialCash - MONEY(500, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::InitialCash, gInitialCash - MONEY(500, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_CASH, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INITIAL_LOAN_INCREASE:
             if (gBankLoan < MONEY(5000000, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETINITIALLOAN, gBankLoan + MONEY(1000, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::InitialLoan, gBankLoan + MONEY(1000, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INITIAL_LOAN_DECREASE:
             if (gBankLoan > MONEY(0, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETINITIALLOAN, gBankLoan - MONEY(1000, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::InitialLoan, gBankLoan - MONEY(1000, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_MAXIMUM_LOAN_INCREASE:
             if (gMaxBankLoan < MONEY(5000000, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE, gMaxBankLoan + MONEY(1000, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan + MONEY(1000, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_MAXIMUM_LOAN_DECREASE:
             if (gMaxBankLoan > MONEY(0, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE, gMaxBankLoan - MONEY(1000, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan - MONEY(1000, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INTEREST_RATE_INCREASE:
             if (gBankLoanInterestRate < 80)
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE, gBankLoanInterestRate + 1,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::AnnualInterestRate, gBankLoanInterestRate + 1);
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INTEREST_RATE_DECREASE:
             if (gBankLoanInterestRate > 0)
             {
-                if (gBankLoanInterestRate > 80)
-                {
-                    game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE, 80,
-                        GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-                }
-                else
-                {
-                    game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE, gBankLoanInterestRate - 1,
-                        GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-                }
+                auto interest = std::min(80, gBankLoanInterestRate - 1);
+                auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 
@@ -820,17 +813,21 @@ static void window_editor_scenario_options_guests_mouseup(rct_window* w, rct_wid
             window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_GUEST_PREFER_LESS_INTENSE_RIDES:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES,
-                gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::GuestsPreferLessIntenseRides, gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
+        }
         case WIDX_GUEST_PREFER_MORE_INTENSE_RIDES:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES,
-                gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::GuestsPreferMoreIntenseRides, gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
+        }
     }
 }
 
@@ -854,106 +851,106 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
         case WIDX_CASH_PER_GUEST_INCREASE:
             if (gGuestInitialCash < MONEY(1000, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST, gGuestInitialCash + MONEY(1, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash + MONEY(1, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CASH_PER_GUEST_DECREASE:
             if (gGuestInitialCash > MONEY(0, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST, gGuestInitialCash - MONEY(1, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash - MONEY(1, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
             if (gGuestInitialHappiness < 250)
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS, gGuestInitialHappiness + 4,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::GuestInitialHappiness, gGuestInitialHappiness + 4);
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
             if (gGuestInitialHappiness > 40)
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS, gGuestInitialHappiness - 4,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::GuestInitialHappiness, gGuestInitialHappiness - 4);
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
             if (gGuestInitialHunger > 40)
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER, gGuestInitialHunger - 4,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::GuestInitialHunger, gGuestInitialHunger - 4);
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
             if (gGuestInitialHunger < 250)
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER, gGuestInitialHunger + 4,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::GuestInitialHunger, gGuestInitialHunger + 4);
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_GUEST_INITIAL_THIRST_INCREASE:
             if (gGuestInitialThirst > 40)
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST, gGuestInitialThirst - 4,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::GuestInitialThirst, gGuestInitialThirst - 4);
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_GUEST_INITIAL_THIRST_DECREASE:
             if (gGuestInitialThirst < 250)
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST, gGuestInitialThirst + 4,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::GuestInitialThirst, gGuestInitialThirst + 4);
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -1097,35 +1094,46 @@ static void window_editor_scenario_options_park_mouseup(rct_window* w, rct_widge
             window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_FORBID_TREE_REMOVAL:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL,
-                gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::ForbidTreeRemoval, gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
+        }
         case WIDX_FORBID_LANDSCAPE_CHANGES:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES,
-                gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::ForbidLandscapeChanges, gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
+        }
         case WIDX_FORBID_HIGH_CONSTRUCTION:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION,
-                gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::ForbidHighConstruction, gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
+        }
         case WIDX_HARD_PARK_RATING:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL,
-                gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::ParkRatingHigherDifficultyLevel, gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
+        }
         case WIDX_HARD_GUEST_GENERATION:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL,
-                gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(
+                ScenarioSetSetting::GuestGenerationHigherDifficultyLevel,
+                gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
+        }
     }
 }
 
@@ -1151,80 +1159,80 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
         case WIDX_LAND_COST_INCREASE:
             if (gLandPrice < MONEY(200, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND, gLandPrice + MONEY(1, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::CostToBuyLand, gLandPrice + MONEY(1, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LAND_COST_DECREASE:
             if (gLandPrice > MONEY(5, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND, gLandPrice - MONEY(1, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::CostToBuyLand, gLandPrice - MONEY(1, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
             if (gConstructionRightsPrice < MONEY(200, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS,
-                    gConstructionRightsPrice + MONEY(1, 00), GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice + MONEY(1, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
             if (gConstructionRightsPrice > MONEY(5, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS,
-                    gConstructionRightsPrice - MONEY(1, 00), GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice - MONEY(1, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_ENTRY_PRICE_INCREASE:
             if (gParkEntranceFee < MAX_ENTRANCE_FEE)
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE, gParkEntranceFee + MONEY(1, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee + MONEY(1, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_ENTRY_PRICE_DECREASE:
             if (gParkEntranceFee > MONEY(0, 00))
             {
-                game_do_command(
-                    0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE, gParkEntranceFee - MONEY(1, 00),
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee - MONEY(1, 00));
+                GameActions::Execute(&scenarioSetSetting);
             }
             else
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
             dropdownWidget = widget - 1;
@@ -1268,12 +1276,12 @@ static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widg
     switch (widgetIndex)
     {
         case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD, dropdownIndex,
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-            window_invalidate(w);
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ParkChargeMethod, dropdownIndex);
+            GameActions::Execute(&scenarioSetSetting);
+            w->Invalidate();
             break;
-
+        }
         case WIDX_CLIMATE_DROPDOWN:
             if (gClimate != (uint8_t)dropdownIndex)
             {

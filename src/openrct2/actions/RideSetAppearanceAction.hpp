@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -68,14 +68,8 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_rideIndex >= MAX_RIDES || _rideIndex == RIDE_ID_NULL)
-        {
-            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
-        }
-
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -114,7 +108,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Ride* ride = get_ride(_rideIndex);
+        auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
@@ -169,7 +163,7 @@ public:
         {
             res->Position.x = ride->overall_view.x * 32 + 16;
             res->Position.y = ride->overall_view.y * 32 + 16;
-            res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+            res->Position.z = tile_element_height(res->Position);
         }
 
         return res;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,15 +29,15 @@ static void paint_merry_go_round_structure(
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
     height += 7;
 
-    Ride* ride = get_ride(rideIndex);
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle* vehicle = nullptr;
-
-    if (rideEntry == nullptr)
-    {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
         return;
-    }
 
+    auto rideEntry = ride->GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
+
+    rct_vehicle* vehicle = nullptr;
     uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
@@ -71,7 +71,7 @@ static void paint_merry_go_round_structure(
     uint32_t imageId = (baseImageId + imageOffset) | imageColourFlags;
     sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level == 0 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t peep = 0; peep <= 14; peep += 2)
@@ -110,16 +110,19 @@ static void paint_merry_go_round(
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
-    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
 
-    track_paint_util_paint_fences(
-        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-        session->CurrentRotation);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+    {
+        track_paint_util_paint_fences(
+            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+            session->CurrentRotation);
+    }
 
     switch (trackSequence)
     {

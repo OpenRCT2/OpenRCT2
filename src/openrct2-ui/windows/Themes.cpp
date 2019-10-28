@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -465,22 +465,22 @@ static void window_themes_resize(rct_window* w)
         if (w->width < w->min_width)
         {
             w->width = w->min_width;
-            window_invalidate(w);
+            w->Invalidate();
         }
         if (w->height < w->min_height)
         {
             w->height = w->min_height;
-            window_invalidate(w);
+            w->Invalidate();
         }
         if (w->width > w->max_width)
         {
             w->width = w->max_width;
-            window_invalidate(w);
+            w->Invalidate();
         }
         if (w->height > w->max_height)
         {
             w->height = w->max_height;
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -508,7 +508,7 @@ static void window_themes_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             w->scrolls[0].v_top = 0;
             w->frame_no = 0;
             window_event_resize_call(w);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_THEMES_PRESETS_DROPDOWN:
             theme_manager_load_available_themes();
@@ -628,7 +628,7 @@ void window_themes_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* wi
     if (i < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *width = 420;
@@ -727,7 +727,7 @@ static void window_themes_textinput(rct_window* w, rct_widgetindex widgetIndex, 
                     {
                         theme_rename(text);
                     }
-                    window_invalidate(w);
+                    w->Invalidate();
                 }
                 else
                 {
@@ -904,12 +904,10 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 gfx_draw_string_left(dpi, theme_desc_get_name(wc), nullptr, w->colours[1], 2, y + 4);
 
                 uint8_t colour = theme_get_colour(wc, j);
-                uint32_t image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT
-                    | SPR_PALETTE_BTN;
+                uint32_t image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | SPR_PALETTE_BTN;
                 if (i == _colour_index_1 && j == _colour_index_2)
                 {
-                    image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT
-                        | SPR_PALETTE_BTN_PRESSED;
+                    image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | SPR_PALETTE_BTN_PRESSED;
                 }
                 gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, y + _button_offset_y, 0);
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -115,7 +115,7 @@ static void paint_pirate_ship_structure(
         session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
         height);
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if (dpi->zoom_level <= 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
@@ -170,8 +170,11 @@ static void paint_pirate_ship(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
-    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     uint32_t imageId;

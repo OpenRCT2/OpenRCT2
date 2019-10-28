@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -147,7 +147,7 @@ rct_window* window_view_clipping_open()
     }
 
     // Window is not open - create it.
-    window = window_create(32, 32, WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
+    window = window_create(ScreenCoordsXY(32, 32), WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
     window->widgets = window_view_clipping_widgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
         | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)
@@ -165,7 +165,7 @@ rct_window* window_view_clipping_open()
     if (mainWindow != nullptr)
     {
         mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
-        window_invalidate(mainWindow);
+        mainWindow->Invalidate();
     }
 
     _toolActive = false;
@@ -181,7 +181,7 @@ static void window_view_clipping_close()
     if (mainWindow != nullptr)
     {
         mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
-        window_invalidate(mainWindow);
+        mainWindow->Invalidate();
     }
 }
 
@@ -216,9 +216,9 @@ static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIn
             if (mainWindow != nullptr)
             {
                 mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
-                window_invalidate(mainWindow);
+                mainWindow->Invalidate();
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CLIP_HEIGHT_VALUE:
             // Toggle display of the cut height value in RAW vs UNITS
@@ -230,7 +230,7 @@ static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIn
             {
                 gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_RAW;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CLIP_SELECTOR:
             // Activate the selection tool
@@ -269,14 +269,14 @@ static void window_view_clipping_mousedown(rct_window* w, rct_widgetindex widget
                 window_view_clipping_set_clipheight(w, gClipHeight + 1);
             mainWindow = window_get_main();
             if (mainWindow != nullptr)
-                window_invalidate(mainWindow);
+                mainWindow->Invalidate();
             break;
         case WIDX_CLIP_HEIGHT_DECREASE:
             if (gClipHeight > 0)
                 window_view_clipping_set_clipheight(w, gClipHeight - 1);
             mainWindow = window_get_main();
             if (mainWindow != nullptr)
-                window_invalidate(mainWindow);
+                mainWindow->Invalidate();
             break;
     }
 }
@@ -295,7 +295,7 @@ static void window_view_clipping_update(rct_window* w)
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            window_invalidate(mainWindow);
+            mainWindow->Invalidate();
         }
     }
 

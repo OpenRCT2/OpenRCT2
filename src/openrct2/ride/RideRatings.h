@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,7 +37,7 @@ enum
     RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
 };
 
-struct rct_ride_rating_calc_data
+struct RideRatingCalculationData
 {
     uint16_t proximity_x;
     uint16_t proximity_y;
@@ -56,7 +56,7 @@ struct rct_ride_rating_calc_data
     uint16_t station_flags;
 };
 
-extern rct_ride_rating_calc_data gRideRatingsCalcData;
+extern RideRatingCalculationData gRideRatingsCalcData;
 
-void ride_ratings_update_ride(ride_id_t rideIndex);
+void ride_ratings_update_ride(const Ride& ride);
 void ride_ratings_update_all();

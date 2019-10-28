@@ -552,8 +552,8 @@ STR_1167    :Tady nelze zvýšit hladinu vody...
 STR_1168    :Nastavení
 STR_1169    :(None)
 STR_1170    :{STRING}
-STR_1171    :{RED}Zavřeno - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Zavřeno
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Nástroj pro cesty a fronty
 STR_1174    :Banner v cestě
 STR_1175    :Toto nelze postavit na strmé cestě
@@ -1111,8 +1111,8 @@ STR_1726    :Pozemek není na prodej!
 STR_1727    :Stavební práva nejsou na prodej!
 STR_1728    :Tyto stavební práva nelze zakoupit...
 STR_1729    :Pozemek není ve vlastnictví parku!
-STR_1730    :{RED}Zavřeno - - 
-STR_1731    :{WHITE}{STRINGID} - - 
+STR_1730    :{RED}Zavřeno
+STR_1731    :{WHITE}{STRINGID}
 STR_1732    :Stavět
 STR_1733    :Mód
 STR_1734    :{WINDOW_COLOUR_2}Počet kol:
@@ -2242,7 +2242,7 @@ STR_2977    :Přejmenovat zaměstnance
 STR_2978    :Zadejte nové jméno tohoto zaměstnance:
 STR_2979    :Nelze přejmenovat zaměstnance...
 STR_2980    :Příliš mnoho bannerů ve hře
-STR_2981    :{RED}Zákaz vstupu - - 
+STR_2981    :{RED}Zákaz vstupu
 STR_2982    :Text banneru
 STR_2983    :Zadejte nový text banneru:
 STR_2984    :Nelze změnit text banneru...
@@ -2433,7 +2433,6 @@ STR_3190    :Doplňky cest
 STR_3191    :Skupiny kulis
 STR_3192    :Vstup do parku
 STR_3193    :Voda
-STR_3194    :Popis scénáře
 STR_3195    :Seznam výzkumů
 STR_3196    :{WINDOW_COLOUR_2}Skupina výzkumu: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Položky vyzkoumané před začátkem hry:
@@ -3236,7 +3235,7 @@ STR_5762    :Čínský jüan (CN¥)
 STR_5763    :Všechny soubory
 STR_5764    :Neplatný typ atrakce
 STR_5765    :Nelze upravovat atrakce neplatného typu
-STR_5766    :<available string id>
+STR_5766    :Maďarský Forint (Ft)
 STR_5767    :Příjem
 STR_5768    :Celkem zákazníků
 STR_5769    :Celkový zisk
@@ -3772,6 +3771,35 @@ STR_6300    :{SMALLFONT}{BLACK}Stáhnout všechny chybějící objekty dostupné
 STR_6301    :{SMALLFONT}{BLACK}Kopírovat název vybraného objektu do schránky.
 STR_6302    :{SMALLFONT}{BLACK}Kopírovat seznam objektů do schránky
 STR_6303    :Stahování objektu ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Otevřít výběr kulis
+STR_6305    :Multithreading
+STR_6306    :{SMALLFONT}{BLACK}Experimentální podpora více vláken pro vykreslování obrazu, může způsobit nestabilitu.
+STR_6307    :Barevné schéma: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :Znovu připojit
+STR_6310    :{WINDOW_COLOUR_2}Pozice: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Další: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(povrch)
+STR_6313    :(sklon {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Cíl: {BLACK}{INT32}, {INT32} tolerance {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Cíl hledání cesty: {BLACK}{INT32}, {INT32}, {INT32} směr {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Historie hledání cest:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} směr {INT32}
+STR_6318    :Detekována síťová desynchronizace.{NEWLINE}Log: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Uzavřený brzdný blok
+STR_6320    :{WINDOW_COLOUR_2}Nezničitelné
+STR_6321    :{WINDOW_COLOUR_2}Rozbitá část
+STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6323    :Probíhá simulace
+STR_6324    :Simulovat
+STR_6325    :{SMALLFONT}{BLACK}Simulovat atrakci
+STR_6326    :Nelze simulovat {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Průhledné pozadí pro velké screenshoty
+STR_6328    :{SMALLFONT}{BLACK}Velké snímky obrazovky budou mít průhledné pozadí namísto výchozí černé barvy.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :Stahování [{STRING}] od {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Přivolat kachny
+STR_6332    :Zmizet kachny
 
 ###############################################################################
 ## RCT2 Scenarios

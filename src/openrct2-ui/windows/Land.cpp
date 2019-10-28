@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -112,7 +112,7 @@ rct_window* window_land_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(context_get_width() - 98, 29, 98, 160, &window_land_events, WC_LAND, 0);
+    window = window_create(ScreenCoordsXY(context_get_width() - 98, 29), 98, 160, &window_land_events, WC_LAND, 0);
     window->widgets = window_land_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_FLOOR)
         | (1 << WIDX_WALL) | (1 << WIDX_MOUNTAINMODE) | (1 << WIDX_PAINTMODE) | (1 << WIDX_PREVIEW);
@@ -158,12 +158,12 @@ static void window_land_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_MOUNTAINMODE:
             gLandMountainMode ^= 1;
             gLandPaintMode = 0;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_PAINTMODE:
             gLandMountainMode = 0;
             gLandPaintMode ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_PREVIEW:
             window_land_inputsize(w);
@@ -193,14 +193,14 @@ static void window_land_mousedown(rct_window* w, rct_widgetindex widgetIndex, rc
             gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INCREMENT:
             // Increment land tool size
             gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -230,7 +230,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
                 gLandToolTerrainSurface = type;
                 _selectedFloorTexture = type;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_WALL:
             if (dropdownIndex == -1)
@@ -247,7 +247,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
                 gLandToolTerrainEdge = type;
                 _selectedWallTexture = type;
             }
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -267,7 +267,7 @@ static void window_land_textinput(rct_window* w, rct_widgetindex widgetIndex, ch
         size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
 
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -360,35 +360,39 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     x = w->x + (previewWidget->left + previewWidget->right) / 2;
     y = w->y + previewWidget->bottom + 5;
 
-    // Draw raise cost amount
-    if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
-        gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolRaiseCost);
-    y += 10;
-
-    // Draw lower cost amount
-    if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
-        gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolLowerCost);
-    y += 50;
-
-    // Draw paint price
-    numTiles = gLandToolSize * gLandToolSize;
-    price = 0;
-    if (gLandToolTerrainSurface != 255)
+    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        auto& objManager = GetContext()->GetObjectManager();
-        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-            objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, gLandToolTerrainSurface));
-        if (surfaceObj != nullptr)
+        // Draw raise cost amount
+        if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
+            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolRaiseCost);
+        y += 10;
+
+        // Draw lower cost amount
+        if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
+            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolLowerCost);
+        y += 50;
+
+        // Draw paint price
+        numTiles = gLandToolSize * gLandToolSize;
+        price = 0;
+        if (gLandToolTerrainSurface != 255)
         {
-            price += numTiles * surfaceObj->Price;
+            auto& objManager = GetContext()->GetObjectManager();
+            const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+                objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, gLandToolTerrainSurface));
+            if (surfaceObj != nullptr)
+            {
+                price += numTiles * surfaceObj->Price;
+            }
         }
-    }
-    if (gLandToolTerrainEdge != 255)
-        price += numTiles * 100;
 
-    if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
-    {
-        set_format_arg(0, money32, price);
-        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, gCommonFormatArgs);
+        if (gLandToolTerrainEdge != 255)
+            price += numTiles * 100;
+
+        if (price != 0)
+        {
+            set_format_arg(0, money32, price);
+            gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, gCommonFormatArgs);
+        }
     }
 }

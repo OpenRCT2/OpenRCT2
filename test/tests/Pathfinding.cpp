@@ -50,17 +50,16 @@ public:
     }
 
 protected:
-    static Ride* FindRideByName(const char* name, ride_id_t* outRideIndex)
+    static Ride* FindRideByName(const char* name)
     {
-        Ride* ride;
-        FOR_ALL_RIDES ((*outRideIndex), ride)
+        for (auto& ride : GetRideManager())
         {
-            char thisName[256];
-            format_string(thisName, sizeof(thisName), ride->name, &ride->name_arguments);
-            if (!_strnicmp(thisName, name, sizeof(thisName)))
-                return ride;
+            auto thisName = ride.GetName();
+            if (!_strnicmp(thisName.c_str(), name, sizeof(thisName)))
+            {
+                return &ride;
+            }
         }
-
         return nullptr;
     }
 
@@ -69,7 +68,7 @@ protected:
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
         // Add 16 so the peep spawns in the center of the tile.
-        Peep* peep = peep_generate(pos->x * 32 + 16, pos->y * 32 + 16, pos->z * 8);
+        Peep* peep = Peep::Generate({ pos->x * 32 + 16, pos->y * 32 + 16, pos->z * 8 });
 
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
@@ -84,8 +83,8 @@ protected:
         // Pick the direction the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.
         gPeepPathFindGoalPosition = goal;
-        const int32_t moveDir = peep_pathfind_choose_direction(*pos, peep);
-        if (moveDir < 0)
+        const Direction moveDir = peep_pathfind_choose_direction(*pos, peep);
+        if (moveDir == INVALID_DIRECTION)
         {
             // Couldn't determine a direction to move off in
             return false;
@@ -137,7 +136,7 @@ protected:
     static ::testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
         const uint32_t expectedSurfaceStyle = 11u;
-        const uint32_t style = map_get_surface_element_at(location.x, location.y)->AsSurface()->GetSurfaceStyle();
+        const uint32_t style = map_get_surface_element_at(location.x, location.y)->GetSurfaceStyle();
 
         if (style != expectedSurfaceStyle)
             return ::testing::AssertionFailure()
@@ -152,7 +151,7 @@ protected:
     {
         const uint32_t forbiddenSurfaceStyle = 8u;
 
-        const uint32_t style = map_get_surface_element_at(location.x, location.y)->AsSurface()->GetSurfaceStyle();
+        const uint32_t style = map_get_surface_element_at(location.x, location.y)->GetSurfaceStyle();
 
         if (style == forbiddenSurfaceStyle)
             return ::testing::AssertionFailure()
@@ -198,8 +197,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     ASSERT_PRED_FORMAT1(AssertIsStartPosition, scenario.start);
     TileCoordsXYZ pos = scenario.start;
 
-    ride_id_t rideIndex;
-    Ride* ride = FindRideByName(scenario.name, &rideIndex);
+    auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
     auto entrancePos = ride_get_entrance_location(ride, 0);
@@ -207,8 +205,8 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
         entrancePos.x - TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y - TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
 
-    const auto succeeded = FindPath(&pos, goal, scenario.steps, rideIndex) ? ::testing::AssertionSuccess()
-                                                                           : ::testing::AssertionFailure()
+    const auto succeeded = FindPath(&pos, goal, scenario.steps, ride->id) ? ::testing::AssertionSuccess()
+                                                                          : ::testing::AssertionFailure()
             << "Failed to find path from " << scenario.start << " to " << goal << " in " << scenario.steps << " steps; reached "
             << pos << " before giving up.";
 
@@ -237,8 +235,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     TileCoordsXYZ pos = scenario.start;
     ASSERT_PRED_FORMAT1(AssertIsStartPosition, scenario.start);
 
-    ride_id_t rideIndex;
-    Ride* ride = FindRideByName(scenario.name, &rideIndex);
+    auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
     auto entrancePos = ride_get_entrance_location(ride, 0);
@@ -246,7 +243,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
         entrancePos.x + TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y + TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
 
-    EXPECT_FALSE(FindPath(&pos, goal, 10000, rideIndex));
+    EXPECT_FALSE(FindPath(&pos, goal, 10000, ride->id));
 }
 
 INSTANTIATE_TEST_CASE_P(

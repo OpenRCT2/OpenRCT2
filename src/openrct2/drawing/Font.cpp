@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@
 #include "TTF.h"
 
 #include <iterator>
-#include <map>
+#include <unordered_map>
 
 static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = { 6, 10, 10 };
 
@@ -28,7 +28,7 @@ static uint8_t _additionalSpriteFontCharacterWidth[FONT_SIZE_COUNT][SPR_G2_GLYPH
 TTFFontSetDescriptor* gCurrentTTFFontSet;
 #endif // NO_TTF
 
-static const std::map<char32_t, int32_t> codepointOffsetMap = {
+static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::ae_uc, SPR_G2_AE_UPPER - SPR_CHAR_START },
     { UnicodeChar::o_stroke_uc, SPR_G2_O_STROKE_UPPER - SPR_CHAR_START },
     { UnicodeChar::y_acute_uc, SPR_G2_Y_ACUTE_UPPER - SPR_CHAR_START },
@@ -57,18 +57,30 @@ static const std::map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::l_stroke, CSChar::l_stroke - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::n_acute_uc, CSChar::n_acute_uc - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::n_acute, CSChar::n_acute - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::n_caron_uc, SPR_G2_N_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::n_caron, SPR_G2_N_CARON_LOWER - SPR_CHAR_START },
     { UnicodeChar::o_double_acute_uc, SPR_G2_O_DOUBLE_ACUTE_UPPER - SPR_CHAR_START },
     { UnicodeChar::o_double_acute, SPR_G2_O_DOUBLE_ACUTE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::r_caron_uc, SPR_G2_R_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::r_caron, SPR_G2_R_CARON_LOWER - SPR_CHAR_START },
     { UnicodeChar::s_acute_uc, CSChar::s_acute_uc - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::s_acute, CSChar::s_acute - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::s_cedilla_uc, SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START },
     { UnicodeChar::s_cedilla, SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::s_caron_uc, SPR_G2_S_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::s_caron, SPR_G2_S_CARON_LOWER - SPR_CHAR_START },
+    { UnicodeChar::t_caron_uc, SPR_G2_T_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::t_caron, SPR_G2_T_CARON_LOWER - SPR_CHAR_START },
+    { UnicodeChar::u_ring_uc, SPR_G2_U_RING_UPPER - SPR_CHAR_START },
+    { UnicodeChar::u_ring, SPR_G2_U_RING_LOWER - SPR_CHAR_START },
     { UnicodeChar::u_double_acute_uc, SPR_G2_U_DOUBLE_ACUTE_UPPER - SPR_CHAR_START },
     { UnicodeChar::u_double_acute, SPR_G2_U_DOUBLE_ACUTE_LOWER - SPR_CHAR_START },
     { UnicodeChar::z_acute_uc, CSChar::z_acute_uc - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::z_acute, CSChar::z_acute - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::z_dot_uc, CSChar::z_dot_uc - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::z_dot, CSChar::z_dot - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::z_caron_uc, SPR_G2_Z_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::z_caron, SPR_G2_Z_CARON_LOWER - SPR_CHAR_START },
     { UnicodeChar::f_with_hook_uc, 'F' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::s_comma_uc, SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START }, // No visual difference
     { UnicodeChar::s_comma, SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START },    // Ditto
@@ -148,6 +160,8 @@ static const std::map<char32_t, int32_t> codepointOffsetMap = {
     // Punctuation
     { UnicodeChar::non_breaking_space, ' ' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::interpunct, SPR_G2_INTERPUNCT - SPR_CHAR_START },
+    { UnicodeChar::multiplication_sign, CSChar::cross - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::en_dash, '-' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::single_quote_open, '`' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::single_quote_end, '\'' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::single_german_quote_open, ',' - CS_SPRITE_FONT_OFFSET },
@@ -185,12 +199,23 @@ static const std::map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::superscript_minus_one, CSChar::superscript_minus_one - CS_SPRITE_FONT_OFFSET },
 };
 
+static char32_t _smallestCodepointValue = 0;
+static char32_t _biggestCodepointValue = 0;
+
 /**
  *
  *  rct2: 0x006C19AC
  */
 void font_sprite_initialise_characters()
 {
+    // Compute min and max that helps avoiding lookups for no reason.
+    _smallestCodepointValue = std::numeric_limits<char32_t>::max();
+    for (const auto& entry : codepointOffsetMap)
+    {
+        _smallestCodepointValue = std::min(_smallestCodepointValue, entry.first);
+        _biggestCodepointValue = std::max(_biggestCodepointValue, entry.first);
+    }
+
     for (int32_t fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++)
     {
         int32_t glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
@@ -231,9 +256,14 @@ void font_sprite_initialise_characters()
 
 int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
 {
-    auto result = codepointOffsetMap.find(codepoint);
-    if (result != codepointOffsetMap.end())
-        return result->second;
+    // Only search the table when its in range of the map.
+    if (static_cast<char32_t>(codepoint) >= _smallestCodepointValue
+        && static_cast<char32_t>(codepoint) <= _biggestCodepointValue)
+    {
+        auto result = codepointOffsetMap.find(codepoint);
+        if (result != codepointOffsetMap.end())
+            return result->second;
+    }
 
     if (codepoint < 32 || codepoint >= 256)
         codepoint = '?';

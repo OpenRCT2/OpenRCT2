@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/actions/StaffFireAction.hpp>
 #include <openrct2/actions/StaffSetColourAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
@@ -206,13 +207,13 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_STAFF_LIST_HIRE_BUTTON:
         {
-            int32_t staffType = _windowStaffListSelectedTab;
+            STAFF_TYPE staffType = static_cast<STAFF_TYPE>(_windowStaffListSelectedTab);
+            ENTERTAINER_COSTUME costume = ENTERTAINER_COSTUME_COUNT;
             if (staffType == STAFF_TYPE_ENTERTAINER)
             {
-                uint8_t costume = window_staff_list_get_random_entertainer_costume();
-                staffType += costume;
+                costume = static_cast<ENTERTAINER_COSTUME>(window_staff_list_get_random_entertainer_costume());
             }
-            hire_new_staff_member(staffType);
+            staff_hire_new_member(staffType, costume);
             break;
         }
         case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
@@ -228,7 +229,7 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_STAFF_LIST_QUICK_FIRE:
             _quick_fire_mode ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -244,12 +245,12 @@ static void window_staff_list_resize(rct_window* w)
     if (w->width < w->min_width)
     {
         w->width = w->min_width;
-        window_invalidate(w);
+        w->Invalidate();
     }
     if (w->height < w->min_height)
     {
         w->height = w->min_height;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -272,7 +273,7 @@ static void window_staff_list_mousedown(rct_window* w, rct_widgetindex widgetInd
                 break;
 
             _windowStaffListSelectedTab = (uint8_t)newSelectedTab;
-            window_invalidate(w);
+            w->Invalidate();
             w->scrolls[0].v_top = 0;
             window_staff_list_cancel_tools(w);
             break;
@@ -430,7 +431,7 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
     if (_windowStaffListHighlightedIndex != -1)
     {
         _windowStaffListHighlightedIndex = -1;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *height = staffCount * SCROLLABLE_ROW_HEIGHT;
@@ -441,7 +442,7 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
     if (i < w->scrolls[0].v_top)
     {
         w->scrolls[0].v_top = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     *width = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15;
@@ -465,7 +466,10 @@ void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
         if (i == 0)
         {
             if (_quick_fire_mode)
-                game_do_command(peep->x, 1, peep->y, spriteIndex, GAME_COMMAND_FIRE_STAFF_MEMBER, 0, 0);
+            {
+                auto staffFireAction = StaffFireAction(spriteIndex);
+                GameActions::Execute(&staffFireAction);
+            }
             else
             {
                 auto intent = Intent(WC_PEEP);
@@ -491,7 +495,7 @@ void window_staff_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32
     if (i != _windowStaffListHighlightedIndex)
     {
         _windowStaffListHighlightedIndex = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -656,7 +660,6 @@ static constexpr const uint32_t staffCostumeSprites[] = {
 void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t spriteIndex, y, i, staffOrderIcon_x, staffOrders, staffOrderSprite;
-    uint32_t argument_1, argument_2;
     uint8_t selectedTab;
     Peep* peep;
 
@@ -690,13 +693,10 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
                     format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
-                set_format_arg(0, rct_string_id, peep->name_string_idx);
-                set_format_arg(2, uint32_t, peep->id);
+                peep->FormatNameTo(gCommonFormatArgs);
                 gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, nameColumnSize);
 
-                get_arguments_from_action(peep, &argument_1, &argument_2);
-                set_format_arg(0, uint32_t, argument_1);
-                set_format_arg(4, uint32_t, argument_2);
+                peep->FormatActionTo(gCommonFormatArgs);
                 gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, actionOffset, y, actionColumnSize);
 
                 // True if a patrol path is set for the worker

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/StringIds.h"
+#include "../../world/Fountain.h"
 #include "../../world/Sprite.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
@@ -30,7 +31,7 @@ const uint32_t vehicle_particle_base_sprites[] = {
  */
 void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDirection)
 {
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     switch (misc->steam_particle.type)
     {
@@ -49,8 +50,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
             }
 
             const rct_money_effect* moneyEffect = &misc->money_effect;
-            money32 value;
-            rct_string_id stringId = money_effect_get_string_id(moneyEffect, &value);
+            auto [stringId, value] = moneyEffect->GetStringId();
             paint_floating_money_effect(
                 session, value, stringId, moneyEffect->y, moneyEffect->z, (int8_t*)&money_wave[moneyEffect->wiggle % 22],
                 moneyEffect->offset_x, session->CurrentRotation);
@@ -103,12 +103,12 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
                 return;
             }
 
-            rct_jumping_fountain jumpingFountain = misc->jumping_fountain;
+            JumpingFountain jumpingFountain = misc->jumping_fountain;
 
             uint16_t height = jumpingFountain.z + 6;
             int32_t ebx = imageDirection / 8;
 
-            uint8_t al = (jumpingFountain.fountain_flags / 128) & 1;
+            uint8_t al = (jumpingFountain.FountainFlags / 128) & 1;
             uint8_t ah = (jumpingFountain.sprite_direction / 16) & 1;
 
             if (al == ah)
@@ -184,7 +184,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
         }
 
         case SPRITE_MISC_DUCK:
-            if (dpi->zoom_level == 0)
+            if (dpi->zoom_level <= 1)
             {
                 const rct_duck* duck = &misc->duck;
                 uint32_t imageId = duck_get_frame_image(&misc->duck, imageDirection);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -442,7 +442,8 @@ static void sub_6A4101(
 
         direction--;
         // If text shown
-        if (direction < 2 && tile_element->AsPath()->GetRideIndex() != RIDE_ID_NULL && imageFlags == 0)
+        auto ride = get_ride(tile_element->AsPath()->GetRideIndex());
+        if (direction < 2 && ride != nullptr && imageFlags == 0)
         {
             uint16_t scrollingMode = railingEntry->scrolling_mode;
             scrollingMode += direction;
@@ -450,22 +451,24 @@ static void sub_6A4101(
             set_format_arg(0, uint32_t, 0);
             set_format_arg(4, uint32_t, 0);
 
-            Ride* ride = get_ride(tile_element->AsPath()->GetRideIndex());
-            rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
-                set_format_arg(0, rct_string_id, ride->name);
-                set_format_arg(2, uint32_t, ride->name_arguments);
-                string_id = STR_RIDE_ENTRANCE_NAME;
+                set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
+                ride->FormatNameTo(gCommonFormatArgs + 2);
+            }
+            else
+            {
+                set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_CLOSED);
             }
             if (gConfigGeneral.upper_case_banners)
             {
                 format_string_to_upper(
-                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
             }
             else
             {
-                format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+                format_string(
+                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
             }
 
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -474,8 +477,8 @@ static void sub_6A4101(
             uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
             sub_98199C(
-                session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,
-                boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
+                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode, COLOUR_BLACK), 0, 0, 1, 1,
+                21, height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
         }
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
@@ -682,10 +685,12 @@ static void sub_6A3F61(
 
     // Probably drawing benches etc.
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if (dpi->zoom_level <= 1)
     {
+        bool paintScenery = true;
+
         if (!gTrackDesignSaveMode)
         {
             if (tile_element->AsPath()->HasAddition())
@@ -701,45 +706,50 @@ static void sub_6A3F61(
 
                 // Can be null if the object is not loaded.
                 if (sceneryEntry == nullptr)
-                    return;
-
-                if ((session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(tile_element->AsPath()->IsBroken())
+                {
+                    paintScenery = false;
+                }
+                else if (
+                    (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) && !(tile_element->AsPath()->IsBroken())
                     && !(sceneryEntry->path_bit.draw_type == PATH_BIT_DRAW_TYPE_BINS))
                 {
-                    return;
+                    paintScenery = false;
                 }
-
-                switch (sceneryEntry->path_bit.draw_type)
+                else
                 {
-                    case PATH_BIT_DRAW_TYPE_LIGHTS:
-                        path_bit_lights_paint(
-                            session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
-                        break;
-                    case PATH_BIT_DRAW_TYPE_BINS:
-                        path_bit_bins_paint(
-                            session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
-                        break;
-                    case PATH_BIT_DRAW_TYPE_BENCHES:
-                        path_bit_benches_paint(
-                            session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
-                        break;
-                    case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
-                        path_bit_jumping_fountains_paint(session, sceneryEntry, height, sceneryImageFlags, dpi);
-                        break;
-                }
+                    switch (sceneryEntry->path_bit.draw_type)
+                    {
+                        case PATH_BIT_DRAW_TYPE_LIGHTS:
+                            path_bit_lights_paint(
+                                session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
+                            break;
+                        case PATH_BIT_DRAW_TYPE_BINS:
+                            path_bit_bins_paint(
+                                session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
+                            break;
+                        case PATH_BIT_DRAW_TYPE_BENCHES:
+                            path_bit_benches_paint(
+                                session, sceneryEntry, tile_element, height, (uint8_t)connectedEdges, sceneryImageFlags);
+                            break;
+                        case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
+                            path_bit_jumping_fountains_paint(session, sceneryEntry, height, sceneryImageFlags, dpi);
+                            break;
+                    }
 
-                session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+                    session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
-                if (sceneryImageFlags != 0)
-                {
-                    session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                    if (sceneryImageFlags != 0)
+                    {
+                        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                    }
                 }
             }
         }
 
         // Redundant zoom-level check removed
 
-        sub_6A4101(session, tile_element, height, connectedEdges, word_F3F038, railingEntry, imageFlags);
+        if (paintScenery)
+            sub_6A4101(session, tile_element, height, connectedEdges, word_F3F038, railingEntry, imageFlags);
     }
 
     // This is about tunnel drawing
@@ -849,7 +859,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     int16_t x = session->MapPosition.x, y = session->MapPosition.y;
 
-    TileElement* surface = map_get_surface_element_at({ session->MapPosition.x, session->MapPosition.y });
+    auto surface = map_get_surface_element_at({ session->MapPosition.x, session->MapPosition.y });
 
     uint16_t bl = height / 8;
     if (surface == nullptr)
@@ -866,14 +876,14 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         {
             // Diagonal path
 
-            if (surface->AsSurface()->GetSlope() != PathSlopeToLandSlope[tile_element->AsPath()->GetSlopeDirection()])
+            if (surface->GetSlope() != PathSlopeToLandSlope[tile_element->AsPath()->GetSlopeDirection()])
             {
                 hasSupports = true;
             }
         }
         else
         {
-            if (surface->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
+            if (surface->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
             {
                 hasSupports = true;
             }
@@ -932,7 +942,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     if (footpathEntry != nullptr && railingEntry != nullptr)
     {
-        if (railingEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE)
+        if (railingEntry->support_type == RailingEntrySupportType::Pole)
         {
             path_paint_pole_support(
                 session, tile_element, height, footpathEntry, railingEntry, hasSupports, imageFlags, sceneryImageFlags);
@@ -1008,14 +1018,7 @@ void path_paint_box_support(
         imageId = byte_98D6E0[edi];
     }
 
-    if (pathElement->IsQueue())
-    {
-        imageId += footpathEntry->queue_image;
-    }
-    else
-    {
-        imageId += footpathEntry->image;
-    }
+    imageId += footpathEntry->image;
 
     if (!session->DidPassSurface)
     {
@@ -1164,14 +1167,7 @@ void path_paint_pole_support(
         imageId = byte_98D6E0[edi];
     }
 
-    if (pathElement->IsQueue())
-    {
-        imageId += footpathEntry->queue_image;
-    }
-    else
-    {
-        imageId += footpathEntry->image;
-    }
+    imageId += footpathEntry->image;
 
     // Below Surface
     if (!session->DidPassSurface)

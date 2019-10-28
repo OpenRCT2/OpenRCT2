@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
+#include "../world/Banner.h"
 #include "ObjectJsonHelpers.h"
 
 void StationObject::Load()
@@ -82,7 +83,7 @@ void StationObject::ReadJson(IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
     Height = ObjectJsonHelpers::GetInteger(properties, "height", 0);
-    ScrollingMode = ObjectJsonHelpers::GetInteger(properties, "scrollingMode", 0xFF);
+    ScrollingMode = ObjectJsonHelpers::GetInteger(properties, "scrollingMode", SCROLLING_MODE_NONE);
     Flags = ObjectJsonHelpers::GetFlags<uint32_t>(
         properties,
         { { "hasPrimaryColour", STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR },

@@ -28,11 +28,11 @@ private:
     CoordsXYZ _loc;
     uint8_t _slope;
     uint8_t _type;
-    uint8_t _direction = 0xFF;
+    Direction _direction = INVALID_DIRECTION;
 
 public:
     FootpathPlaceAction() = default;
-    FootpathPlaceAction(CoordsXYZ loc, uint8_t slope, uint8_t type, uint8_t direction = 0xFF)
+    FootpathPlaceAction(CoordsXYZ loc, uint8_t slope, uint8_t type, Direction direction = INVALID_DIRECTION)
         : _loc(loc)
         , _slope(slope)
         , _type(type)
@@ -63,13 +63,12 @@ public:
 
         gFootpathGroundFlags = 0;
 
-        if (map_is_edge({ _loc.x, _loc.y }))
+        if (map_is_edge(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-            && !map_is_location_owned(_loc.x, _loc.y, _loc.z))
+        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -79,17 +78,17 @@ public:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
         }
 
-        if (_loc.z / 8 < 2)
+        if (_loc.z / 8 < FootpathMinHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
         }
 
-        if (_loc.z / 8 > 248)
+        if (_loc.z / 8 > FootpathMaxHeight)
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
         }
 
-        if (_direction != 0xFF && _direction > 15)
+        if (_direction != INVALID_DIRECTION && !direction_valid(_direction))
         {
             log_error("Direction invalid. direction = %u", _direction);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
@@ -128,7 +127,7 @@ public:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            if (_direction != 0xFF && !gCheatsDisableClearanceChecks)
+            if (_direction != INVALID_DIRECTION && !gCheatsDisableClearanceChecks)
             {
                 // It is possible, let's remove walls between the old and new piece of path
                 auto zLow = _loc.z / 8;
@@ -252,12 +251,11 @@ private:
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        auto tileElement = map_get_surface_element_at({ _loc.x, _loc.y });
-        if (tileElement == nullptr)
+        auto surfaceElement = map_get_surface_element_at(_loc);
+        if (surfaceElement == nullptr)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
         }
-        auto surfaceElement = tileElement->AsSurface();
         int32_t supportHeight = zLow - surfaceElement->base_height;
         res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
@@ -314,12 +312,11 @@ private:
 
         gFootpathGroundFlags = gMapGroundFlags;
 
-        auto tileElement = map_get_surface_element_at({ _loc.x, _loc.y });
-        if (tileElement == nullptr)
+        auto surfaceElement = map_get_surface_element_at(_loc);
+        if (surfaceElement == nullptr)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
         }
-        auto surfaceElement = tileElement->AsSurface();
         int32_t supportHeight = zLow - surfaceElement->base_height;
         res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
@@ -334,7 +331,7 @@ private:
         }
         else
         {
-            tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, zLow, 0b1111);
+            auto tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, zLow }, 0b1111);
             assert(tileElement != nullptr);
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();
@@ -399,7 +396,7 @@ private:
             }
         }
 
-        if (gPeepSpawns.size() == 0)
+        if (gPeepSpawns.empty())
         {
             gPeepSpawns.emplace_back();
         }
@@ -443,6 +440,8 @@ private:
         tileElement = map_get_first_element_at(x, y);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z
                 && (tileElement->AsPath()->IsSloped() == isSloped)
                 && (tileElement->AsPath()->GetSlopeDirection() == (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)))

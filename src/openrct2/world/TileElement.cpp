@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,18 +28,18 @@ void TileElementBase::SetType(uint8_t newType)
     this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
 }
 
-uint8_t TileElementBase::GetDirection() const
+Direction TileElementBase::GetDirection() const
 {
     return this->type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-void TileElementBase::SetDirection(uint8_t direction)
+void TileElementBase::SetDirection(Direction direction)
 {
     this->type &= ~TILE_ELEMENT_DIRECTION_MASK;
     this->type |= (direction & TILE_ELEMENT_DIRECTION_MASK);
 }
 
-uint8_t TileElementBase::GetDirectionWithOffset(uint8_t offset) const
+Direction TileElementBase::GetDirectionWithOffset(uint8_t offset) const
 {
     return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }
@@ -49,6 +49,14 @@ bool TileElementBase::IsLastForTile() const
     return (this->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
+void TileElementBase::SetLastForTile(bool on)
+{
+    if (on)
+        flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+    else
+        flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+}
+
 bool TileElementBase::IsGhost() const
 {
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
@@ -56,7 +64,7 @@ bool TileElementBase::IsGhost() const
 
 void TileElementBase::SetGhost(bool isGhost)
 {
-    if (isGhost == true)
+    if (isGhost)
     {
         this->flags |= TILE_ELEMENT_FLAG_GHOST;
     }
@@ -123,17 +131,12 @@ void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerI
 
 void tile_element_remove_banner_entry(TileElement* tileElement)
 {
-    BannerIndex bannerIndex = tile_element_get_banner_index(tileElement);
-    if (bannerIndex == BANNER_INDEX_NULL)
-        return;
-
-    rct_banner* banner = &gBanners[bannerIndex];
-    if (banner->type != BANNER_NULL)
+    auto bannerIndex = tile_element_get_banner_index(tileElement);
+    auto banner = GetBanner(bannerIndex);
+    if (banner != nullptr)
     {
-        rct_windownumber windowNumber = bannerIndex;
-        window_close_by_number(WC_BANNER, windowNumber);
-        banner->type = BANNER_NULL;
-        user_string_free(banner->string_idx);
+        window_close_by_number(WC_BANNER, bannerIndex);
+        *banner = {};
     }
 }
 
@@ -159,6 +162,7 @@ void TileElement::ClearAs(uint8_t newType)
     base_height = 2;
     clearance_height = 2;
     std::fill_n(pad_04, sizeof(pad_04), 0x00);
+    std::fill_n(pad_08, sizeof(pad_08), 0x00);
 }
 
 void TileElementBase::Remove()
@@ -208,4 +212,15 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
             log_error("Tried to rotate QuarterTile invalid amount.");
             return QuarterTile{ 0 };
     }
+}
+
+uint8_t TileElementBase::GetOccupiedQuadrants() const
+{
+    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+}
+
+void TileElementBase::SetOccupiedQuadrants(uint8_t quadrants)
+{
+    flags &= ~TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    flags |= (quadrants & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK);
 }

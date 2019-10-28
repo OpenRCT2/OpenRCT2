@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,21 +19,18 @@
 #include "../world/Location.hpp"
 #include "../world/Park.h"
 #include "../world/Wall.h"
+#include "BannerRemoveAction.hpp"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActionResult)
 {
 private:
-    int32_t _x;
-    int32_t _y;
-    int32_t _z;
+    CoordsXYZ _loc;
 
 public:
     FootpathRemoveAction() = default;
-    FootpathRemoveAction(int32_t x, int32_t y, int32_t z)
-        : _x(x)
-        , _y(y)
-        , _z(z)
+    FootpathRemoveAction(CoordsXYZ location)
+        : _loc(location)
     {
     }
 
@@ -46,7 +43,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_x) << DS_TAG(_y) << DS_TAG(_z);
+        stream << DS_TAG(_loc);
     }
 
     GameActionResult::Ptr Query() const override
@@ -54,9 +51,9 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position = { _x + 16, _y + 16, _z * 8 };
+        res->Position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
-        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_x, _y, _z * 8))
+        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -77,21 +74,25 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->Cost = 0;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position = { _x + 16, _y + 16, _z * 8 };
+        res->Position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_interrupt_peeps(_x, _y, _z * 8);
-            footpath_remove_litter(_x, _y, _z * 8);
+            footpath_interrupt_peeps(_loc.x, _loc.y, _loc.z);
+            footpath_remove_litter(_loc.x, _loc.y, _loc.z);
         }
 
         TileElement* footpathElement = GetFootpathElement();
         if (footpathElement != nullptr)
         {
             footpath_queue_chain_reset();
-            remove_banners_at_element(_x, _y, footpathElement);
-            footpath_remove_edges_at(_x, _y, footpathElement);
-            map_invalidate_tile_full(_x, _y);
+            auto bannerRes = RemoveBannersAtElement(_loc.x, _loc.y, footpathElement);
+            if (bannerRes->Error == GA_ERROR::OK)
+            {
+                res->Cost += bannerRes->Cost;
+            }
+            footpath_remove_edges_at(_loc.x, _loc.y, footpathElement);
+            map_invalidate_tile_full(_loc.x, _loc.y);
             tile_element_remove(footpathElement);
             footpath_update_queue_chains();
         }
@@ -100,7 +101,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
         }
 
-        res->Cost = GetRefundPrice(footpathElement);
+        res->Cost += GetRefundPrice(footpathElement);
 
         return res;
     }
@@ -110,7 +111,7 @@ private:
     {
         bool getGhostPath = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-        TileElement* tileElement = map_get_footpath_element(_x / 32, _y / 32, _z);
+        TileElement* tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, _loc.z / 8);
         TileElement* footpathElement = nullptr;
         if (tileElement != nullptr)
         {
@@ -139,5 +140,35 @@ private:
     {
         money32 cost = -MONEY(10, 00);
         return cost;
+    }
+
+    /**
+     *
+     *  rct2: 0x006BA23E
+     */
+    GameActionResult::Ptr RemoveBannersAtElement(int32_t x, int32_t y, TileElement * tileElement) const
+    {
+        auto result = MakeResult();
+        while (!(tileElement++)->IsLastForTile())
+        {
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+                return result;
+            else if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
+                continue;
+
+            auto bannerRemoveAction = BannerRemoveAction(
+                { x, y, tileElement->base_height * 8, tileElement->AsBanner()->GetPosition() });
+            bool isGhost = tileElement->IsGhost();
+            auto bannerFlags = GetFlags() | (isGhost ? static_cast<uint32_t>(GAME_COMMAND_FLAG_GHOST) : 0);
+            bannerRemoveAction.SetFlags(bannerFlags);
+            auto res = GameActions::ExecuteNested(&bannerRemoveAction);
+            // Ghost removal is free
+            if (res->Error == GA_ERROR::OK && !isGhost)
+            {
+                result->Cost += res->Cost;
+            }
+            tileElement--;
+        }
+        return result;
     }
 };

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,6 +33,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Scenery.h>
 
 uint8_t gKeyboardShortcutChangeId;
 
@@ -78,7 +79,7 @@ static void toggle_view_flag(int32_t viewportFlag)
     if (window != nullptr)
     {
         window->viewport->flags ^= viewportFlag;
-        window_invalidate(window);
+        window->Invalidate();
     }
 }
 
@@ -114,7 +115,7 @@ static void shortcut_pause_game()
         rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
         if (window != nullptr)
         {
-            window_invalidate(window);
+            window->Invalidate();
             window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_PAUSE);
         }
     }
@@ -352,7 +353,7 @@ static void shortcut_adjust_land()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_LAND);
             }
         }
@@ -371,7 +372,7 @@ static void shortcut_adjust_water()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_WATER);
             }
         }
@@ -390,7 +391,7 @@ static void shortcut_build_scenery()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_SCENERY);
             }
         }
@@ -409,7 +410,7 @@ static void shortcut_build_paths()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_PATH);
             }
         }
@@ -445,7 +446,7 @@ static void shortcut_show_research_information()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         context_open_window_view(WV_RIDE_RESEARCH);
     }
@@ -456,7 +457,7 @@ static void shortcut_show_rides_list()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         context_open_window(WC_RIDE_LIST);
     }
@@ -467,7 +468,7 @@ static void shortcut_show_park_information()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         context_open_window(WC_PARK_INFORMATION);
     }
@@ -478,7 +479,7 @@ static void shortcut_show_guest_list()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         context_open_window(WC_GUEST_LIST);
     }
@@ -489,7 +490,7 @@ static void shortcut_show_staff_list()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         context_open_window(WC_STAFF_LIST);
     }
@@ -500,7 +501,7 @@ static void shortcut_show_recent_messages()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
         context_open_window(WC_RECENT_NEWS);
 }
 
@@ -564,7 +565,7 @@ static void shortcut_clear_scenery()
             rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
-                window_invalidate(window);
+                window->Invalidate();
                 window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_CLEAR_SCENERY);
             }
         }
@@ -753,7 +754,7 @@ static void shortcut_highlight_path_issues_toggle()
 
 static void shortcut_open_tile_inspector()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO || !gConfigGeneral.debugging_tools)
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO || !gConfigInterface.toolbar_show_cheats)
         return;
 
     context_open_window(WC_TILE_INSPECTOR);
@@ -765,6 +766,33 @@ static void shortcut_advance_to_next_tick()
         return;
 
     gDoSingleUpdate = true;
+}
+
+static void shortcut_open_scenery_picker()
+{
+    if ((gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+        || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR))
+        return;
+
+    rct_window* window_scenery = window_find_by_class(WC_SCENERY);
+    if (window_scenery == nullptr)
+    {
+        rct_window* window_toolbar = window_find_by_class(WC_TOP_TOOLBAR);
+        if (window_toolbar != nullptr)
+        {
+            window_toolbar->Invalidate();
+            window_event_mouse_up_call(window_toolbar, WC_TOP_TOOLBAR__WIDX_SCENERY);
+        }
+    }
+
+    window_scenery = window_find_by_class(WC_SCENERY);
+    if (window_scenery != nullptr && !widget_is_disabled(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
+        && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WWT_EMPTY
+        && !gWindowSceneryEyedropperEnabled)
+    {
+        window_event_mouse_up_call(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
+        return;
+    }
 }
 
 namespace
@@ -841,6 +869,7 @@ namespace
         shortcut_highlight_path_issues_toggle,
         shortcut_open_tile_inspector,
         shortcut_advance_to_next_tick,
+        shortcut_open_scenery_picker,
     };
 } // anonymous namespace
 

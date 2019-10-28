@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "RideObject.h"
 
 #include "../OpenRCT2.h"
+#include "../audio/audio.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
@@ -83,6 +84,19 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     for (uint8_t i = 0; i < coloursCount; i++)
     {
         _presetColours.list[i] = stream->ReadValue<vehicle_colour>();
+    }
+
+    if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
+    {
+        // This used to be hard-coded. JSON objects set this themselves.
+        _presetColours.count = 1;
+        _presetColours.list[0] = { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED };
+
+        if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL || _legacyType.ride_type[0] == RIDE_TYPE_DRINK_STALL)
+        {
+            // In RCT2, no food or drink stall could be recoloured.
+            _legacyType.flags |= RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB;
+        }
     }
 
     // Read peep loading positions
@@ -429,7 +443,7 @@ void RideObject::ReadLegacyVehicle(
     vehicle->no_seating_rows = stream->ReadValue<uint8_t>();
     vehicle->spinning_inertia = stream->ReadValue<uint8_t>();
     vehicle->spinning_friction = stream->ReadValue<uint8_t>();
-    vehicle->friction_sound_id = stream->ReadValue<uint8_t>();
+    vehicle->friction_sound_id = stream->ReadValue<SoundId>();
     vehicle->log_flume_reverser_vehicle_type = stream->ReadValue<uint8_t>();
     vehicle->sound_range = stream->ReadValue<uint8_t>();
     vehicle->double_sound_frequency = stream->ReadValue<uint8_t>();
@@ -550,6 +564,8 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
     _legacyType.shop_item = SHOP_ITEM_NONE;
     _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
 
+    _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
+
     if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
     {
         // Standard car info for a shop
@@ -561,7 +577,7 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
         car.sprite_height_positive = 1;
         car.flags = VEHICLE_ENTRY_FLAG_SPINNING;
         car.car_visual = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
-        car.friction_sound_id = 0xFF;
+        car.friction_sound_id = SoundId::Null;
         car.sound_range = 0xFF;
         car.draw_order = 6;
 
@@ -623,7 +639,6 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
         }
 
         auto availableTrackPieces = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "availableTrackPieces"));
-        _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
     }
 
     _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(
@@ -749,7 +764,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t* jCar)
     car.no_seating_rows = ObjectJsonHelpers::GetInteger(jCar, "numSeatRows");
     car.spinning_inertia = ObjectJsonHelpers::GetInteger(jCar, "spinningInertia");
     car.spinning_friction = ObjectJsonHelpers::GetInteger(jCar, "spinningFriction");
-    car.friction_sound_id = ObjectJsonHelpers::GetInteger(jCar, "frictionSoundId", 255);
+    car.friction_sound_id = static_cast<SoundId>(ObjectJsonHelpers::GetInteger(jCar, "frictionSoundId", 255));
     car.log_flume_reverser_vehicle_type = ObjectJsonHelpers::GetInteger(jCar, "logFlumeReverserVehicleType");
     car.sound_range = ObjectJsonHelpers::GetInteger(jCar, "soundRange", 255);
     car.double_sound_frequency = ObjectJsonHelpers::GetInteger(jCar, "doubleSoundFrequency");

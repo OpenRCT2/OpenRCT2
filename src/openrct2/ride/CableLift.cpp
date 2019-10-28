@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "CableLift.h"
 
+#include "../audio/audio.h"
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
 #include "../world/Sprite.h"
@@ -26,18 +27,16 @@ static void cable_lift_update_travelling(rct_vehicle* vehicle);
 static void cable_lift_update_arriving(rct_vehicle* vehicle);
 
 rct_vehicle* cable_lift_segment_create(
-    ride_id_t rideIndex, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance,
-    bool head)
+    Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
-    Ride* ride = get_ride(rideIndex);
-    rct_vehicle* current = &(create_sprite(1)->vehicle);
+    rct_vehicle* current = &(create_sprite(SPRITE_IDENTIFIER_VEHICLE)->vehicle);
     current->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
-    current->ride = rideIndex;
+    current->ride = ride.id;
     current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
     if (head)
     {
-        move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_TRAIN * 2);
-        ride->cable_lift = current->sprite_index;
+        move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_VEHICLE_HEAD);
+        ride.cable_lift = current->sprite_index;
     }
     current->type = head ? VEHICLE_TYPE_HEAD : VEHICLE_TYPE_TAIL;
     current->var_44 = var_44;
@@ -58,13 +57,13 @@ rct_vehicle* cable_lift_segment_create(
     current->spin_sprite = 0;
     current->spin_speed = 0;
     current->sound2_flags = 0;
-    current->sound1_id = RCT12_SOUND_ID_NULL;
-    current->sound2_id = RCT12_SOUND_ID_NULL;
+    current->sound1_id = SoundId::Null;
+    current->sound2_id = SoundId::Null;
     current->var_C4 = 0;
     current->animation_frame = 0;
     current->var_C8 = 0;
     current->var_CA = 0;
-    current->scream_sound_id = 0xFF;
+    current->scream_sound_id = SoundId::Null;
     current->vehicle_sprite_type = 0;
     current->bank_rotation = 0;
     for (auto& peep : current->peep)
@@ -78,14 +77,13 @@ rct_vehicle* cable_lift_segment_create(
 
     z = z * 8;
     current->track_z = z;
-    z += RideData5[ride->type].z_offset;
+    z += RideData5[ride.type].z_offset;
 
     sprite_move(16, 16, z, (rct_sprite*)current);
     current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
     current->track_progress = 164;
     current->update_flags = VEHICLE_UPDATE_FLAG_1;
-    current->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
-    current->sub_state = 0;
+    current->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
     return current;
@@ -113,6 +111,8 @@ void cable_lift_update(rct_vehicle* vehicle)
         case VEHICLE_STATUS_ARRIVING:
             cable_lift_update_arriving(vehicle);
             break;
+        default:
+            break;
     }
 }
 
@@ -136,7 +136,7 @@ static void cable_lift_update_moving_to_end_of_station(rct_vehicle* vehicle)
 
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
-    vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
+    vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS, vehicle->sub_state);
 }
 
 /**
@@ -170,8 +170,7 @@ static void cable_lift_update_waiting_to_depart(rct_vehicle* vehicle)
 
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
-    vehicle->status = VEHICLE_STATUS_DEPARTING;
-    vehicle->sub_state = 0;
+    vehicle->SetState(VEHICLE_STATUS_DEPARTING, 0);
 }
 
 /**
@@ -185,8 +184,8 @@ static void cable_lift_update_departing(rct_vehicle* vehicle)
         return;
 
     rct_vehicle* passengerVehicle = GET_VEHICLE(vehicle->cable_lift_target);
-    vehicle->status = VEHICLE_STATUS_TRAVELLING;
-    passengerVehicle->status = VEHICLE_STATUS_TRAVELLING_CABLE_LIFT;
+    vehicle->SetState(VEHICLE_STATUS_TRAVELLING, vehicle->sub_state);
+    passengerVehicle->SetState(VEHICLE_STATUS_TRAVELLING_CABLE_LIFT, passengerVehicle->sub_state);
 }
 
 /**
@@ -207,8 +206,7 @@ static void cable_lift_update_travelling(rct_vehicle* vehicle)
 
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
-    vehicle->status = VEHICLE_STATUS_ARRIVING;
-    vehicle->sub_state = 0;
+    vehicle->SetState(VEHICLE_STATUS_ARRIVING, 0);
 }
 
 /**
@@ -219,12 +217,15 @@ static void cable_lift_update_arriving(rct_vehicle* vehicle)
 {
     vehicle->sub_state++;
     if (vehicle->sub_state >= 64)
-        vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, vehicle->sub_state);
 }
 
 static bool sub_6DF01A_loop(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return false;
+
     for (; vehicle->remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
         uint8_t trackType = vehicle->track_type >> 2;
@@ -304,7 +305,10 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle)
 
 static bool sub_6DF21B_loop(rct_vehicle* vehicle)
 {
-    Ride* ride = get_ride(vehicle->ride);
+    auto ride = get_ride(vehicle->ride);
+    if (ride == nullptr)
+        return false;
+
     for (; vehicle->remaining_distance < 0; _vehicleUnkF64E10++)
     {
         uint16_t trackProgress = vehicle->track_progress - 1;
@@ -423,7 +427,7 @@ int32_t cable_lift_update_track_motion(rct_vehicle* cableLift)
             {
                 if (vehicle->remaining_distance < 0)
                 {
-                    if (sub_6DF21B_loop(vehicle) == true)
+                    if (sub_6DF21B_loop(vehicle))
                     {
                         break;
                     }
@@ -439,7 +443,7 @@ int32_t cable_lift_update_track_motion(rct_vehicle* cableLift)
                 }
                 else
                 {
-                    if (sub_6DF01A_loop(vehicle) == true)
+                    if (sub_6DF01A_loop(vehicle))
                     {
                         break;
                     }

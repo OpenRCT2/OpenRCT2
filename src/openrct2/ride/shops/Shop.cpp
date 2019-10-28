@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,15 +29,17 @@ static void shop_paint_setup(
     bool hasSupports = wooden_a_supports_paint_setup(
         session, direction & 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
 
-    Ride* ride = get_ride(rideIndex);
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-    rct_ride_entry_vehicle* firstVehicleEntry = &rideEntry->vehicles[0];
-
-    if (rideEntry == nullptr || firstVehicleEntry == nullptr)
-    {
-        log_error("Error drawing shop, rideEntry or firstVehicleEntry is NULL.");
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
         return;
-    }
+
+    auto rideEntry = ride->GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
+
+    auto firstVehicleEntry = &rideEntry->vehicles[0];
+    if (firstVehicleEntry == nullptr)
+        return;
 
     uint32_t imageId = session->TrackColours[SCHEME_TRACK];
     if (imageId & IMAGE_TYPE_REMAP_2_PLUS)

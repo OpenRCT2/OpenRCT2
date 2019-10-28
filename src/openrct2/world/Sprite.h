@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,11 +13,11 @@
 #include "../common.h"
 #include "../peep/Peep.h"
 #include "../ride/Vehicle.h"
+#include "Fountain.h"
 #include "SpriteBase.h"
 
 #define SPRITE_INDEX_NULL 0xFFFF
 #define MAX_SPRITES 10000
-#define NUM_SPRITE_LISTS 6
 
 enum SPRITE_IDENTIFIER
 {
@@ -30,17 +30,13 @@ enum SPRITE_IDENTIFIER
 
 enum SPRITE_LIST
 {
-    SPRITE_LIST_NULL,
-    SPRITE_LIST_TRAIN,
+    SPRITE_LIST_FREE,
+    SPRITE_LIST_VEHICLE_HEAD,
     SPRITE_LIST_PEEP,
     SPRITE_LIST_MISC,
     SPRITE_LIST_LITTER,
-    SPRITE_LIST_UNKNOWN,
-};
-
-struct rct_sprite_generic : rct_sprite_common
-{
-    uint16_t frame;
+    SPRITE_LIST_VEHICLE,
+    SPRITE_LIST_COUNT,
 };
 
 struct rct_litter : rct_sprite_common
@@ -76,15 +72,6 @@ struct rct_duck : rct_sprite_generic
     void MoveTo(int16_t x, int16_t y, int16_t z);
 };
 
-struct rct_jumping_fountain : rct_sprite_generic
-{
-    uint8_t num_ticks_alive;
-    uint8_t fountain_flags;
-    int16_t target_x;
-    int16_t target_y;
-    uint16_t iteration;
-};
-
 struct rct_money_effect : rct_sprite_common
 {
     uint16_t move_delay;
@@ -93,6 +80,11 @@ struct rct_money_effect : rct_sprite_common
     money32 value;
     int16_t offset_x;
     uint16_t wiggle;
+
+    static void CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical);
+    static void Create(money32 value);
+    void Update();
+    std::pair<rct_string_id, money32> GetStringId() const;
 };
 
 struct rct_crashed_vehicle_particle : rct_sprite_generic
@@ -131,7 +123,7 @@ union rct_sprite
     rct_vehicle vehicle;
     rct_balloon balloon;
     rct_duck duck;
-    rct_jumping_fountain jumping_fountain;
+    JumpingFountain jumping_fountain;
     rct_money_effect money_effect;
     rct_crashed_vehicle_particle crashed_vehicle_particle;
     rct_crash_splash crash_splash;
@@ -139,9 +131,11 @@ union rct_sprite
 
     bool IsBalloon();
     bool IsDuck();
+    bool IsMoneyEffect();
     bool IsPeep();
     rct_balloon* AsBalloon();
     rct_duck* AsDuck();
+    rct_money_effect* AsMoneyEffect();
     Peep* AsPeep();
 };
 assert_struct_size(rct_sprite, 0x100);
@@ -201,11 +195,11 @@ extern uint16_t gSpriteSpatialIndex[0x10001];
 
 extern const rct_string_id litterNames[12];
 
-rct_sprite* create_sprite(uint8_t bl);
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier);
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
-void move_sprite_to_list(rct_sprite* sprite, uint8_t cl);
+void move_sprite_to_list(rct_sprite* sprite, SPRITE_LIST newList);
 void sprite_misc_update_all();
 void sprite_move(int16_t x, int16_t y, int16_t z, rct_sprite* sprite);
 void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, rct_sprite* sprite);
@@ -229,25 +223,15 @@ void sprite_position_tween_reset();
 ///////////////////////////////////////////////////////////////
 void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped);
 void balloon_update(rct_balloon* balloon);
-void game_command_balloon_press(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 ///////////////////////////////////////////////////////////////
 // Duck
 ///////////////////////////////////////////////////////////////
-void create_duck(int32_t targetX, int32_t targetY);
+void create_duck(const CoordsXY& pos);
 void duck_update(rct_duck* duck);
 void duck_press(rct_duck* duck);
 void duck_remove_all();
 uint32_t duck_get_frame_image(const rct_duck* duck, int32_t direction);
-
-///////////////////////////////////////////////////////////////
-// Money effect
-///////////////////////////////////////////////////////////////
-void money_effect_create(money32 value);
-void money_effect_create_at(money32 value, int32_t x, int32_t y, int32_t z, bool vertical);
-void money_effect_update(rct_money_effect* moneyEffect);
-rct_string_id money_effect_get_string_id(const rct_money_effect* sprite, money32* outValue);
 
 ///////////////////////////////////////////////////////////////
 // Crash particles

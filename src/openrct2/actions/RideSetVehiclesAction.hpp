@@ -74,14 +74,8 @@ public:
         }
         auto errTitle = SetVehicleTypeErrorTitle[_type];
 
-        if (_rideIndex >= MAX_RIDES || _rideIndex == RIDE_ID_NULL)
-        {
-            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
-        }
-
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
@@ -92,7 +86,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::BROKEN, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
         }
 
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::NOT_CLOSED, errTitle, STR_MUST_BE_CLOSED_FIRST);
         }
@@ -137,8 +131,8 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto errTitle = SetVehicleTypeErrorTitle[_type];
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
@@ -204,14 +198,14 @@ public:
         }
 
         ride->num_circuits = 1;
-        ride_update_max_vehicles(ride);
+        ride->UpdateMaxVehicles();
 
         auto res = std::make_unique<GameActionResult>();
         if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
         {
             res->Position.x = ride->overall_view.x * 32 + 16;
             res->Position.y = ride->overall_view.y * 32 + 16;
-            res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+            res->Position.z = tile_element_height(res->Position);
         }
 
         auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -90,7 +90,7 @@ static rct_window_event_list window_install_track_events = {
 };
 // clang-format on
 
-static rct_track_td6* _trackDesign;
+static std::unique_ptr<TrackDesign> _trackDesign;
 static std::string _trackPath;
 static std::string _trackName;
 static std::vector<uint8_t> _trackDesignPreviewPixels;
@@ -134,7 +134,7 @@ rct_window* window_install_track_open(const utf8* path)
     int32_t x = screenWidth / 2 - 201;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
-    rct_window* w = window_create(x, y, WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
+    rct_window* w = window_create(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL)
         | (1 << WIDX_CANCEL);
@@ -147,7 +147,7 @@ rct_window* window_install_track_open(const utf8* path)
     _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
     window_install_track_update_preview();
-    window_invalidate(w);
+    w->Invalidate();
 
     return w;
 }
@@ -162,7 +162,6 @@ static void window_install_track_close(rct_window* w)
     _trackName.clear();
     _trackDesignPreviewPixels.clear();
     _trackDesignPreviewPixels.shrink_to_fit();
-    track_design_dispose(_trackDesign);
     _trackDesign = nullptr;
 }
 
@@ -181,12 +180,12 @@ static void window_install_track_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_ROTATE:
             _currentTrackPieceDirection++;
             _currentTrackPieceDirection %= 4;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_TOGGLE_SCENERY:
             gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
             window_install_track_update_preview();
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INSTALL:
             window_install_track_design(w);
@@ -238,13 +237,14 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     g1temp.height = 217;
     g1temp.flags = G1_FLAG_BMP;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
+    drawing_engine_invalidate_image(SPR_TEMP);
     gfx_draw_sprite(dpi, SPR_TEMP, x, y, 0);
 
     x = w->x + (widget->left + widget->right) / 2;
     y = w->y + widget->bottom - 12;
 
     // Warnings
-    rct_track_td6* td6 = _trackDesign;
+    const TrackDesign* td6 = _trackDesign.get();
     if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
     {
         if (!gTrackDesignSceneryToggle)
@@ -344,16 +344,12 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
 
-        // If .TD6
-        if (td6->version_and_colour_scheme / 4 >= 2)
+        if (td6->total_air_time != 0)
         {
-            if (td6->total_air_time != 0)
-            {
-                // Total air time
-                int32_t airTime = td6->total_air_time * 25;
-                gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
-                y += LIST_ROW_HEIGHT;
-            }
+            // Total air time
+            int32_t airTime = td6->total_air_time * 25;
+            gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
+            y += LIST_ROW_HEIGHT;
         }
     }
 
@@ -392,7 +388,8 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (td6->cost != 0)
     {
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, &td6->cost, COLOUR_BLACK, x, y);
+        set_format_arg(0, uint32_t, td6->cost);
+        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 }
 
@@ -414,7 +411,7 @@ static void window_install_track_text_input(rct_window* w, rct_widgetindex widge
 
 static void window_install_track_update_preview()
 {
-    track_design_draw_preview(_trackDesign, _trackDesignPreviewPixels.data());
+    track_design_draw_preview(_trackDesign.get(), _trackDesignPreviewPixels.data());
 }
 
 static void window_install_track_design(rct_window* w)

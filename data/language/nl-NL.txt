@@ -224,7 +224,7 @@ STR_0822    :Kan bestand met grafische gegevens niet openen
 STR_0823    :Ontbrekend of ontoegankelijk gegevensbestand
 STR_0824    :{BLACK}❌
 STR_0825    :Gekozen naam is al in gebruik
-STR_0826    :Teveel namen gedefinieerd
+STR_0826    :Te veel namen gedefinieerd
 STR_0827    :Onvoldoende geld - {CURRENCY2DP} benodigd
 STR_0828    :{SMALLFONT}{BLACK}Venster sluiten
 STR_0829    :{SMALLFONT}{BLACK}Venstertitel - Sleep dit om het venster te verplaatsen
@@ -365,7 +365,7 @@ STR_0983    :Onderzoek & Ontwikkeling
 STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
-STR_0987    :Teveel attracties
+STR_0987    :Te veel attracties
 STR_0988    :Kan geen nieuwe attractie aanmaken…
 STR_0989    :{STRINGID}
 STR_0990    :{SMALLFONT}{BLACK}Constructie
@@ -549,8 +549,8 @@ STR_1167    :Kan het waterniveau hier niet verhogen…
 STR_1168    :Opties
 STR_1169    :(Geen)
 STR_1170    :{STRING}
-STR_1171    :{RED}Gesloten - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Gesloten
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Voetpaden en wachtrijen aanleggen
 STR_1174    :Lichtkrant in de weg
 STR_1175    :Kan dit niet op hellend voetpad neerzetten
@@ -1076,7 +1076,7 @@ STR_1695    :{SMALLFONT}{BLACK}Inkomsten en kosten
 STR_1696    :{SMALLFONT}{BLACK}Klantinformatie
 STR_1697    :Dit kan niet op wachtrijen worden geplaatst
 STR_1698    :Dit kan alleen op wachtrijen worden geplaatst
-STR_1699    :Teveel personen in het spel
+STR_1699    :Te veel personen in het spel
 STR_1700    :Klusjesman aannemen…
 STR_1701    :Monteur aannemen…
 STR_1702    :Bewaker aannemen…
@@ -1084,7 +1084,7 @@ STR_1703    :Entertainer aannemen…
 STR_1704    :Kan geen nieuwe werknemer aannemen…
 STR_1705    :{SMALLFONT}{BLACK}Deze werknemer ontslaan
 STR_1706    :{SMALLFONT}{BLACK}Deze persoon naar een andere locatie verplaatsen
-STR_1707    :Teveel werknemers in dit park
+STR_1707    :Te veel werknemers in dit park
 STR_1708    :{SMALLFONT}{BLACK}Werkgebied van deze werknemer instellen
 STR_1709    :Werknemer ontslaan
 STR_1710    :Ja
@@ -1107,7 +1107,7 @@ STR_1726    :Dit land is niet te koop!
 STR_1727    :Voor dit land zijn geen bouwrechten te koop!
 STR_1728    :Kan hier geen bouwrechten kopen…
 STR_1729    :Land is geen eigendom van het park!
-STR_1730    :{RED}Gesloten - - 
+STR_1730    :{RED}Gesloten
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Bouwen
 STR_1733    :Modus
@@ -2234,8 +2234,8 @@ STR_2976    :{SMALLFONT}{BLACK}Met het geselecteerde kleurenschema een onderdeel
 STR_2977    :Naam werknemer
 STR_2978    :Voer een nieuwe naam in voor deze werknemer:
 STR_2979    :Kan de naam van deze werknemer niet veranderen…
-STR_2980    :Teveel lichtkranten in dit park
-STR_2981    :{RED}Geen toegang - - 
+STR_2980    :Te veel lichtkranten in dit park
+STR_2981    :{RED}Geen toegang
 STR_2982    :Lichtkranttekst
 STR_2983    :Voer een nieuwe tekst in voer deze lichtkrant:
 STR_2984    :Kan de tekst op deze lichtkrant niet veranderen…
@@ -2403,7 +2403,7 @@ STR_3164    :{BLACK}{COMMA16} geselecteerd (maximum: {COMMA16})
 STR_3167    :{WINDOW_COLOUR_2}Bevat {BLACK}{COMMA16} objecten
 STR_3169    :Data voor de volgende objecten niet gevonden: 
 STR_3170    :Niet genoeg ruimte voor graphics.
-STR_3171    :er zijn teveel objecten van dit type geselecteerd.
+STR_3171    :er zijn te veel objecten van dit type geselecteerd.
 STR_3172    :De volgende objecten moeten eerst geselecteerd worden:
 STR_3173    :dit object is momenteel in gebruik.
 STR_3174    :een ander object is afhankelijk van dit object.
@@ -2426,7 +2426,6 @@ STR_3190    :Extra's voor paden
 STR_3191    :Decorgroepen
 STR_3192    :Parkingang
 STR_3193    :Water
-STR_3194    :Scenariobeschrijving
 STR_3195    :Lijst van uitvindingen
 STR_3196    :{WINDOW_COLOUR_2}Onderzoeksgroep: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Items die aan het begin al zijn uitgevonden:
@@ -2459,7 +2458,7 @@ STR_3223    :{SMALLFONT}{BLACK}Instellen welk land gekocht kan worden door het p
 STR_3224    :{SMALLFONT}{BLACK}Instellen voor welk land bouwrechten te koop zijn
 STR_3225    :{SMALLFONT}{BLACK}Een willekeurig cluster van dit object neerzetten rondom de geselecteerde plek
 STR_3226    :{SMALLFONT}{BLACK}Parkingang bouwen
-STR_3227    :Teveel parkingangen!
+STR_3227    :Te veel parkingangen!
 STR_3228    :{SMALLFONT}{BLACK}Geef startposities voor bezoekers aan
 STR_3229    :Blokremmen kunnen niet direct na het station geplaatst worden
 STR_3230    :Blokremmen kunnen niet direct achter elkaar gebruikt worden
@@ -2575,7 +2574,7 @@ STR_3343    :Opgeslagen spel omzetten naar scenario
 STR_3344    :Baanontwerper
 STR_3345    :Baanontwerpbeheer
 STR_3346    :Kan baanontwerp niet opslaan
-STR_3347    :Attractie is te groot, bevat teveel elementen of het decor is te ver verspreid
+STR_3347    :Attractie is te groot, bevat te veel elementen of het decor is te ver verspreid
 STR_3348    :Hernoemen
 STR_3349    :Verwijderen
 STR_3350    :Naam baanontwerp
@@ -2600,7 +2599,7 @@ STR_3370    :{BLACK}= Informatiekiosk
 STR_3371    :{BLACK}= Eerste hulp
 STR_3372    :{BLACK}= Geldautomaat
 STR_3373    :{BLACK}= Toilet
-STR_3374    :Waarschuwing: teveel objecten geselecteerd!
+STR_3374    :Waarschuwing: te veel objecten geselecteerd!
 STR_3375    :Niet alle objecten in deze decorgroep kunnen worden geselecteerd
 STR_3376    :Installeren…
 STR_3377    :{SMALLFONT}{BLACK}Bestand met nieuw baanontwerp installeren
@@ -2765,7 +2764,7 @@ STR_5256    :Maak een nieuw thema aan om wijzigingen aan te brengen.
 STR_5257    :{SMALLFONT}{BLACK}Een nieuw thema aanmaken dat is gebaseerd op het huidige
 STR_5258    :{SMALLFONT}{BLACK}Het huidige thema verwijderen
 STR_5259    :{SMALLFONT}{BLACK}Het huidige thema hernoemen
-STR_5260    :Enorm screenshot
+STR_5260    :Reuzenscreenshot
 STR_5261    :Filter
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
@@ -3232,7 +3231,7 @@ STR_5762    :Chinese yuan (CN¥)
 STR_5763    :Alle bestanden
 STR_5764    :Ongeldig attractietype
 STR_5765    :Kan attracties met een ongeldig type niet bewerken.
-STR_5766    :<available string id>
+STR_5766    :Hongaarse forint (Ft)
 STR_5767    :Inkomsten
 STR_5768    :Totaal aant. bez.
 STR_5769    :Totale winst
@@ -3767,6 +3766,35 @@ STR_6300    :{SMALLFONT}{BLACK}Download alle ontbrekende objecten, mits ze onlin
 STR_6301    :{SMALLFONT}{BLACK}Kopieert de naam van het geselecteerde object naar het klembord.
 STR_6302    :{SMALLFONT}{BLACK}Kopieert de lijst van ontbrekende objecten naar het klembord.
 STR_6303    :Bezig met downloaden van object ({COMMA16} van {COMMA16}): [{STRING}]
+STR_6304    :Decorselector openen
+STR_6305    :Multithreading
+STR_6306    :{SMALLFONT}{BLACK}Experimentele optie om met meerdere threads te renderen. Dit kan de snelheid verhogen, maar ook instabiliteit veroorzaken.
+STR_6307    :Kleurenschema: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :Opnieuw verbinden
+STR_6310    :{WINDOW_COLOUR_2}Positie: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Volgende: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(oppervlak)
+STR_6313    :(helling {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Bestemming: {BLACK}{INT32}, {INT32} tolerantie {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Pathfind-doel: {BLACK}{INT32}, {INT32}, {INT32} richting {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Pathfind-geschiedenis:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} richting {INT32}
+STR_6318    :Netwerkdesynchronisatie gedetecteerd.{NEWLINE}Logbestand: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Blokrem is gesloten
+STR_6320    :{WINDOW_COLOUR_2}Mag niet worden verwijderd
+STR_6321    :{WINDOW_COLOUR_2}Straatmeubel is kapot
+STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
+STR_6323    :Simulatie
+STR_6324    :Simuleren
+STR_6325    :{SMALLFONT}{BLACK}Testrit simuleren
+STR_6326    :Kan {POP16}{POP16}{POP16}{STRINGID} niet in simulatiemodus zetten...
+STR_6327    :Reuzenscreenshots hebben transparante achtergrond
+STR_6328    :{SMALLFONT}{BLACK}Als deze optie is ingeschakeld, worden reuzenscreenshots met een transparante achtergrond genomen, in plaats van de zwarte standaardachtergrond.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :[{STRING}] wordt gedownload van {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Eenden aanmaken
+STR_6332    :Eenden verw.
 
 #############
 # Scenarios #

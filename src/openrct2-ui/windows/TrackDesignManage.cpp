@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -248,7 +248,7 @@ static void window_track_delete_prompt_open()
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
     rct_window* w = window_create(
-        std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2), (screenHeight - 44) / 2, 250, 74,
+        ScreenCoordsXY(std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2), (screenHeight - 44) / 2), 250, 74,
         &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_track_delete_prompt_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RENAME) | (1 << WIDX_DELETE);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
 // clang-format off
@@ -95,7 +96,8 @@ rct_window* window_clear_scenery_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(context_get_width() - 98, 29, 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+    window = window_create(
+        ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
@@ -140,15 +142,15 @@ static void window_clear_scenery_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_SMALL_SCENERY:
             gClearSmallScenery ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LARGE_SCENERY:
             gClearLargeScenery ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_FOOTPATH:
             gClearFootpath ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -162,14 +164,14 @@ static void window_clear_scenery_mousedown(rct_window* w, rct_widgetindex widget
             gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INCREMENT:
             // Increment land tool size, if it stays within the limit
             gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -188,7 +190,7 @@ static void window_clear_scenery_textinput(rct_window* w, rct_widgetindex widget
         size = std::max(MINIMUM_TOOL_SIZE, size);
         size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -244,10 +246,10 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw cost amount
-    x = (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2 + w->x;
-    y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->y + 5 + 27;
-    if (gClearSceneryCost != MONEY32_UNDEFINED && gClearSceneryCost != 0)
+    if (gClearSceneryCost != MONEY32_UNDEFINED && gClearSceneryCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
+        x = (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2 + w->x;
+        y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->y + 5 + 27;
         gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &gClearSceneryCost);
     }
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -86,7 +86,7 @@ static bool window_fits_on_screen(int32_t x, int32_t y, int32_t width, int32_t h
 }
 
 rct_window* window_create(
-    int32_t x, int32_t y, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    ScreenCoordsXY screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
     uint16_t flags)
 {
     // Check if there are any window slots left
@@ -105,31 +105,31 @@ rct_window* window_create(
     }
 
     // Find right position to insert new window
-    auto dstIndex = g_window_list.size();
+    auto itDestPos = g_window_list.end();
     if (flags & WF_STICK_TO_BACK)
     {
-        for (size_t i = 0; i < g_window_list.size(); i++)
+        for (auto it = g_window_list.begin(); it != g_window_list.end(); it++)
         {
-            if (!(g_window_list[i]->flags & WF_STICK_TO_BACK))
+            if (!((*it)->flags & WF_STICK_TO_BACK))
             {
-                dstIndex = i;
+                itDestPos = it;
             }
         }
     }
     else if (!(flags & WF_STICK_TO_FRONT))
     {
-        for (size_t i = g_window_list.size(); i > 0; i--)
+        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
         {
-            if (!(g_window_list[i - 1]->flags & WF_STICK_TO_FRONT))
+            if (!((*it)->flags & WF_STICK_TO_FRONT))
             {
-                dstIndex = i;
+                itDestPos = it.base();
                 break;
             }
         }
     }
 
-    g_window_list.insert(g_window_list.begin() + dstIndex, std::make_unique<rct_window>());
-    auto w = g_window_list[dstIndex].get();
+    auto itNew = g_window_list.insert(itDestPos, std::make_unique<rct_window>());
+    auto w = itNew->get();
 
     // Setup window
     w->classification = cls;
@@ -141,12 +141,12 @@ rct_window* window_create(
     if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
     {
         w->flags |= WF_WHITE_BORDER_MASK;
-        audio_play_sound(SOUND_WINDOW_OPEN, 0, x + (width / 2));
+        audio_play_sound(SoundId::WindowOpen, 0, screenCoords.x + (width / 2));
     }
 
     w->number = 0;
-    w->x = x;
-    w->y = y;
+    w->x = screenCoords.x;
+    w->y = screenCoords.y;
     w->width = width;
     w->height = height;
     w->viewport = nullptr;
@@ -170,7 +170,7 @@ rct_window* window_create(
     w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
 
     colour_scheme_update(w);
-    window_invalidate(w);
+    w->Invalidate();
     return w;
 }
 
@@ -314,7 +314,7 @@ foundSpace:
     if (x + width > screenWidth)
         x = screenWidth - width;
 
-    return window_create(x, y, width, height, event_handlers, cls, flags);
+    return window_create(ScreenCoordsXY(x, y), width, height, event_handlers, cls, flags);
 }
 
 rct_window* window_create_centred(
@@ -326,7 +326,7 @@ rct_window* window_create_centred(
 
     int32_t x = (screenWidth - width) / 2;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2);
-    return window_create(x, y, width, height, event_handlers, cls, flags);
+    return window_create(ScreenCoordsXY(x, y), width, height, event_handlers, cls, flags);
 }
 
 static int32_t window_get_widget_index(rct_window* w, rct_widget* widget)
@@ -545,7 +545,7 @@ void window_all_wheel_input()
     // Check window cursor is over
     if (!(input_test_flag(INPUT_FLAG_5)))
     {
-        rct_window* w = window_find_from_point(cursorState->x, cursorState->y);
+        rct_window* w = window_find_from_point(ScreenCoordsXY(cursorState->x, cursorState->y));
         if (w != nullptr)
         {
             // Check if main window
@@ -556,7 +556,7 @@ void window_all_wheel_input()
             }
 
             // Check scroll view, cursor is over
-            rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->x, cursorState->y);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(cursorState->x, cursorState->y));
             if (widgetIndex != -1)
             {
                 rct_widget* widget = &w->widgets[widgetIndex];
@@ -689,10 +689,9 @@ static void window_invalidate_pressed_image_buttons(rct_window* w)
  */
 void invalidate_all_windows_after_input()
 {
-    for (auto& w : g_window_list)
-    {
-        window_update_scroll_widgets(w.get());
-        window_invalidate_pressed_image_buttons(w.get());
-        window_event_resize_call(w.get());
-    }
+    window_visit_each([](rct_window* w) {
+        window_update_scroll_widgets(w);
+        window_invalidate_pressed_image_buttons(w);
+        window_event_resize_call(w);
+    });
 }

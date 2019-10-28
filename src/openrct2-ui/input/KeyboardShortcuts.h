@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include <memory>
 #include <openrct2/common.h>
+#include <openrct2/world/Location.hpp>
 
 #define SHIFT 0x100
 #define CTRL 0x200
@@ -95,6 +96,7 @@ enum
     SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE,
     SHORTCUT_TILE_INSPECTOR,
     SHORTCUT_ADVANCE_TO_NEXT_TICK,
+    SHORTCUT_SCENERY_PICKER,
 
     SHORTCUT_COUNT,
 
@@ -130,7 +132,7 @@ namespace OpenRCT2
 
             void Set(int32_t key);
             int32_t GetFromKey(int32_t key);
-            void GetKeyboardMapScroll(const uint8_t* keysState, int32_t* x, int32_t* y) const;
+            ScreenCoordsXY GetKeyboardMapScroll(const uint8_t* keysState) const;
         };
     } // namespace Input
 } // namespace OpenRCT2
@@ -150,4 +152,4 @@ void keyboard_shortcut_handle(int32_t key);
 void keyboard_shortcut_handle_command(int32_t shortcutIndex);
 void keyboard_shortcut_format_string(char* buffer, size_t size, uint16_t shortcutKey);
 
-void get_keyboard_map_scroll(const uint8_t* keysState, int32_t* x, int32_t* y);
+ScreenCoordsXY get_keyboard_map_scroll(const uint8_t* keysState);

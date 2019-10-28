@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,7 @@ extern TTFFontSetDescriptor TTFFontGulim;
 extern TTFFontSetDescriptor TTFFontNanum;
 extern TTFFontSetDescriptor TTFFontArial;
 extern TTFFontSetDescriptor TTFFontArialUnicode;
+extern TTFFontSetDescriptor TTFFontMicroHei;
 #    define FONT(x) x
 #else
 #    define FONT(x) FONT_OPENRCT2_SPRITE

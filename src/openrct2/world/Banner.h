@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,23 +18,24 @@ constexpr BannerIndex BANNER_INDEX_NULL = (BannerIndex)-1;
 
 constexpr uint8_t SCROLLING_MODE_NONE = 255;
 
-#pragma pack(push, 1)
-struct rct_banner
+struct Banner
 {
-    uint8_t type;
-    uint8_t flags;            // 0x01
-    rct_string_id string_idx; // 0x02
-    union
+    uint8_t type = BANNER_NULL;
+    uint8_t flags{};
+    std::string text;
+    uint8_t colour{};
+    ride_id_t ride_index{};
+    uint8_t text_colour{};
+    TileCoordsXY position;
+
+    bool IsNull() const
     {
-        uint8_t colour;     // 0x04
-        uint8_t ride_index; // 0x04
-    };
-    uint8_t text_colour; // 0x05
-    uint8_t x;           // 0x06
-    uint8_t y;           // 0x07
+        return type == BANNER_NULL;
+    }
+
+    std::string GetText() const;
+    size_t FormatTextTo(void* args) const;
 };
-assert_struct_size(rct_banner, 8);
-#pragma pack(pop)
 
 enum BANNER_FLAGS
 {
@@ -44,13 +45,11 @@ enum BANNER_FLAGS
     BANNER_FLAG_IS_WALL = (1 << 3)
 };
 
-extern rct_banner gBanners[MAX_BANNERS];
-
 void banner_init();
 BannerIndex create_new_banner(uint8_t flags);
 TileElement* banner_get_tile_element(BannerIndex bannerIndex);
+WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex);
 uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z);
 void banner_reset_broken_index();
 void fix_duplicated_banners();
-void game_command_callback_place_banner(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
+Banner* GetBanner(BannerIndex id);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,7 +37,7 @@ namespace String
     std::string StdFormat_VA(const utf8* format, va_list args);
     std::string StdFormat(const utf8* format, ...);
     std::string ToUtf8(const std::wstring_view& src);
-    std::wstring ToUtf16(const std::string_view& src);
+    std::wstring ToWideChar(const std::string_view& src);
 
     bool IsNullOrEmpty(const utf8* str);
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase = false);

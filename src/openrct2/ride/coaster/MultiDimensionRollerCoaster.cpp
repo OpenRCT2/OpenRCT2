@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -131,29 +131,32 @@ static void multi_dimension_rc_track_station(
     }
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 11);
 
-    Ride* ride = get_ride(rideIndex);
-    auto stationObj = ride_get_station_object(ride);
-    bool hasFence;
-    if (direction == 0 || direction == 2)
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
-    }
-    else
-    {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
-    }
+        auto stationObj = ride_get_station_object(ride);
+        bool hasFence;
+        if (direction == 0 || direction == 2)
+        {
+            hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
+            track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
+        }
+        else
+        {
+            hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
+            track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+        }
 
-    if (direction == 0 || direction == 2)
-    {
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
-    }
-    else
-    {
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+        if (direction == 0 || direction == 2)
+        {
+            hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
+            track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
+        }
+        else
+        {
+            hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
+            track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+        }
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
@@ -12935,7 +12938,7 @@ static void multi_dimension_rc_track_multidim_flat_to_90_deg_down_quarter_loop(
 }
 
 /** rct2: 0x00793388 */
-static void multi_dimension_rc_track_elem_255(
+static void multi_dimension_rc_track_multidim_inverted_90_deg_up_to_flat_quarter_loop(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
@@ -13329,8 +13332,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_multi_dimension_rc(int32_t trackTy
             return multi_dimension_rc_track_multidim_90_deg_up_to_inverted_flat_quarter_loop;
         case TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP:
             return multi_dimension_rc_track_multidim_flat_to_90_deg_down_quarter_loop;
-        case TRACK_ELEM_255:
-            return multi_dimension_rc_track_elem_255;
+        case TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP:
+            return multi_dimension_rc_track_multidim_inverted_90_deg_up_to_flat_quarter_loop;
     }
     return nullptr;
 }

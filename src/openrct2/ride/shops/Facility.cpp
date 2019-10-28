@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,21 +29,17 @@ static void facility_paint_setup(
     bool hasSupports = wooden_a_supports_paint_setup(
         session, direction & 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
 
-    Ride* ride = get_ride(rideIndex);
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
 
+    auto rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr)
-    {
-        log_error("Error drawing facility, rideEntry is NULL.");
         return;
-    }
 
-    rct_ride_entry_vehicle* firstVehicleEntry = &rideEntry->vehicles[0];
+    auto firstVehicleEntry = &rideEntry->vehicles[0];
     if (firstVehicleEntry == nullptr)
-    {
-        log_error("Error drawing facility, firstVehicleEntry is NULL.");
         return;
-    }
 
     uint32_t imageId = session->TrackColours[SCHEME_TRACK];
     imageId |= firstVehicleEntry->base_image_id;

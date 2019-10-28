@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,7 +64,7 @@ rct_window* window_main_open()
     window_main_widgets[0].right = context_get_width();
     window_main_widgets[0].bottom = context_get_height();
     rct_window* window = window_create(
-        0, 0, window_main_widgets[0].right, window_main_widgets[0].bottom, &window_main_events, WC_MAIN_WINDOW,
+        ScreenCoordsXY(0, 0), window_main_widgets[0].right, window_main_widgets[0].bottom, &window_main_events, WC_MAIN_WINDOW,
         WF_STICK_TO_BACK);
     window->widgets = window_main_widgets;
 

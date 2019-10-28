@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -138,12 +138,13 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message)
         y = std::min(y, maxY);
     }
 
-    w = window_create(x, y, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+    w = window_create(
+        ScreenCoordsXY(x, y), width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     w->widgets = window_error_widgets;
     w->error.var_480 = 0;
     if (!gDisableErrorWindowSound)
     {
-        audio_play_sound(SOUND_ERROR, 0, w->x + (w->width / 2));
+        audio_play_sound(SoundId::Error, 0, w->x + (w->width / 2));
     }
 
     return w;

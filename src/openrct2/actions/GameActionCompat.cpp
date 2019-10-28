@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@
 #pragma region PlaceParkEntranceAction
 money32 place_park_entrance(int16_t x, int16_t y, int16_t z, uint8_t direction)
 {
-    auto gameAction = PlaceParkEntranceAction(x, y, z, direction);
+    auto gameAction = PlaceParkEntranceAction({ x, y, z * 16, direction });
     auto result = GameActions::Execute(&gameAction);
     if (result->Error == GA_ERROR::OK)
     {
@@ -37,24 +37,13 @@ money32 place_park_entrance(int16_t x, int16_t y, int16_t z, uint8_t direction)
 
 /**
  *
- *  rct2: 0x006666E7
- */
-void game_command_place_park_entrance(
-    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    Guard::Assert(false, "GAME_COMMAND_PLACE_PARK_ENTRANCE DEPRECATED");
-}
-
-/**
- *
  *  rct2: 0x00666F4E
  */
 money32 park_entrance_place_ghost(int32_t x, int32_t y, int32_t z, int32_t direction)
 {
     park_entrance_remove_ghost();
 
-    auto gameAction = PlaceParkEntranceAction(x, y, z, direction);
+    auto gameAction = PlaceParkEntranceAction({ x, y, z * 16, (Direction)direction });
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);
@@ -74,15 +63,6 @@ money32 park_entrance_place_ghost(int32_t x, int32_t y, int32_t z, int32_t direc
 void park_set_entrance_fee(money32 fee)
 {
     auto gameAction = SetParkEntranceFeeAction((money16)fee);
-    GameActions::Execute(&gameAction);
-}
-
-void game_command_set_park_entrance_fee(
-    [[maybe_unused]] int* eax, [[maybe_unused]] int* ebx, [[maybe_unused]] int* ecx, [[maybe_unused]] int* edx,
-    [[maybe_unused]] int* esi, int* edi, [[maybe_unused]] int* ebp)
-{
-    money16 fee = (money16)(*edi & 0xFFFF);
-    auto gameAction = SetParkEntranceFeeAction(fee);
     GameActions::Execute(&gameAction);
 }
 #pragma endregion
@@ -135,17 +115,6 @@ money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_i
     return res->Cost;
 }
 
-/**
- *
- *  rct2: 0x006B3F0F
- */
-void game_command_create_ride(
-    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    Guard::Assert(false, "GAME_COMMAND_CREATE_RIDE DEPRECATED");
-}
-
 #pragma endregion
 
 #pragma region RideSetStatusAction
@@ -154,17 +123,6 @@ void ride_set_status(Ride* ride, int32_t status)
 {
     auto gameAction = RideSetStatusAction(ride->id, status);
     GameActions::Execute(&gameAction);
-}
-
-/**
- *
- *  rct2: 0x006B4EA6
- */
-void game_command_set_ride_status(
-    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    Guard::Assert(false, "GAME_COMMAND_SET_RIDE_STATUS DEPRECATED");
 }
 
 #pragma endregion
@@ -176,17 +134,6 @@ void ride_set_name(Ride* ride, const char* name, uint32_t flags)
     gameAction.SetFlags(flags);
     GameActions::Execute(&gameAction);
 }
-
-/**
- *
- *  rct2: 0x006B578B
- */
-void game_command_set_ride_name(
-    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    Guard::Assert(false, "GAME_COMMAND_SET_RIDE_NAME DEPRECATED");
-}
 #pragma endregion
 
 #pragma region RideModifyAction
@@ -197,17 +144,6 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags)
 
     GameActions::Execute(&gameAction);
 }
-
-/**
- *
- *  rct2: 0x006B49D9
- */
-void game_command_demolish_ride(
-    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    Guard::Assert(false, "GAME_COMMAND_DEMOLISH_RIDE DEPRECATED");
-}
 #pragma endregion
 
 #pragma region GuestSetName
@@ -217,18 +153,6 @@ void guest_set_name(uint16_t spriteIndex, const char* name)
     auto gameAction = GuestSetNameAction(spriteIndex, name);
     GameActions::Execute(&gameAction);
 }
-
-/**
- *
- *  rct2: 0x00698D6C
- */
-void game_command_set_guest_name(
-    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    Guard::Assert(false, "GAME_COMMAND_SET_GUEST_NAME DEPRECATED");
-}
-
 #pragma endregion
 
 #pragma region StaffSetName
@@ -238,13 +162,6 @@ void staff_set_name(uint16_t spriteIndex, const char* name)
     auto gameAction = StaffSetNameAction(spriteIndex, name);
     GameActions::Execute(&gameAction);
 }
-
-void game_command_set_staff_name(
-    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    Guard::Assert(false, "GAME_COMMAND_SET_STAFF_NAME DEPRECATED");
-}
 #pragma endregion
 
 #pragma region PlacePeepSpawn
@@ -252,14 +169,7 @@ bool place_peep_spawn(CoordsXYZD location)
 {
     auto gameAction = PlacePeepSpawnAction(location);
     auto result = GameActions::Execute(&gameAction);
-    if (result->Error == GA_ERROR::OK)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return result->Error == GA_ERROR::OK;
 }
 #pragma endregion
 
@@ -268,7 +178,7 @@ money32 maze_set_track(
     uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
     uint8_t mode)
 {
-    auto gameAction = MazeSetTrackAction(x, y, z, initialPlacement, direction, rideIndex, mode);
+    auto gameAction = MazeSetTrackAction({ x, y, z, direction }, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);
 
     GameActionResult::Ptr res;
@@ -289,16 +199,5 @@ money32 maze_set_track(
     }
 
     return res->Cost;
-}
-
-/**
- *
- *  rct2: 0x006CD8CE
- */
-void game_command_set_maze_track(
-    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    Guard::Assert(false, "GAME_COMMAND_SET_MAZE_TRACK DEPRECATED");
 }
 #pragma endregion

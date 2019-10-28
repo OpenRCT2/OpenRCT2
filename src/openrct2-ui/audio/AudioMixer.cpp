@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,7 @@ namespace OpenRCT2::Audio
         uint8_t _settingSoundVolume = 0xFF;
         uint8_t _settingMusicVolume = 0xFF;
 
-        IAudioSource* _css1Sources[SOUND_MAXID] = { nullptr };
+        IAudioSource* _css1Sources[RCT2SoundCount] = { nullptr };
         IAudioSource* _musicSources[PATH_ID_END] = { nullptr };
 
         std::vector<uint8_t> _channelBuffer;
@@ -185,9 +185,9 @@ namespace OpenRCT2::Audio
             _volume = volume;
         }
 
-        IAudioSource* GetSoundSource(int32_t id) override
+        IAudioSource* GetSoundSource(SoundId id) override
         {
-            return _css1Sources[id];
+            return _css1Sources[static_cast<uint32_t>(id)];
         }
 
         IAudioSource* GetMusicSource(int32_t id) override
@@ -223,7 +223,8 @@ namespace OpenRCT2::Audio
             {
                 auto channel = *it;
                 int32_t group = channel->GetGroup();
-                if (group != MIXER_GROUP_SOUND || gConfigSound.sound_enabled)
+                if ((group != MIXER_GROUP_SOUND || gConfigSound.sound_enabled) && gConfigSound.master_sound_enabled
+                    && gConfigSound.master_volume != 0)
                 {
                     MixChannel(channel, dst, length);
                 }

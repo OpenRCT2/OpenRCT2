@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,15 +11,33 @@
 
 #include "../common.h"
 #include "Map.h"
-#include "Sprite.h"
+#include "SpriteBase.h"
+
+struct JumpingFountain : rct_sprite_generic
+{
+    uint8_t NumTicksAlive;
+    uint8_t FountainFlags;
+    int16_t TargetX;
+    int16_t TargetY;
+    uint16_t Iteration;
+
+    void Update();
+    static void StartAnimation(int32_t newType, const CoordsXY newLoc, const TileElement* tileElement);
+
+private:
+    int32_t GetType() const;
+    void AdvanceAnimation();
+    void GoToEdge(CoordsXYZ newLoc, int32_t availableDirections) const;
+    void Bounce(CoordsXYZ newLoc, int32_t availableDirections);
+    void Split(CoordsXYZ newLoc, int32_t availableDirections) const;
+    void Random(CoordsXYZ newLoc, int32_t availableDirections) const;
+    void CreateNext(CoordsXYZ newLoc, int32_t direction) const;
+    static void Create(int32_t newType, CoordsXYZ newLoc, int32_t direction, int32_t newFlags, int32_t iteration);
+    static bool IsJumpingFountain(int32_t newType, CoordsXYZ newLoc);
+};
 
 enum
 {
     JUMPING_FOUNTAIN_TYPE_WATER,
     JUMPING_FOUNTAIN_TYPE_SNOW
 };
-
-void jumping_fountain_begin(int32_t type, int32_t x, int32_t y, const TileElement* tileElement);
-void jumping_fountain_create(
-    int32_t type, int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t iteration);
-void jumping_fountain_update(rct_jumping_fountain* jumpingFountain);

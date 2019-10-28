@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -263,7 +263,7 @@ std::vector<rct_large_scenery_text_glyph> LargeSceneryObject::ReadJsonGlyphs(con
     const json_t* jGlyph;
     json_array_foreach(jGlpyhs, index, jGlyph)
     {
-        rct_large_scenery_text_glyph glyph;
+        rct_large_scenery_text_glyph glyph = {};
         glyph.image_offset = json_integer_value(json_object_get(jGlyph, "image"));
         glyph.width = json_integer_value(json_object_get(jGlyph, "width"));
         glyph.height = json_integer_value(json_object_get(jGlyph, "height"));

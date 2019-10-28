@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -170,8 +170,7 @@ void lightfx_update_buffers(rct_drawpixelinfo* info)
 {
     _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info->width * info->height);
     _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info->width * info->height);
-
-    std::memcpy(&_pixelInfo, info, sizeof(rct_drawpixelinfo));
+    _pixelInfo = *info;
 }
 
 extern void viewport_paint_setup();
@@ -188,14 +187,14 @@ void lightfx_prepare_light_list()
             continue;
         }
 
-        LocationXYZ16 coord_3d = { /* .x = */ entry->x,
-                                   /* .y = */ entry->y,
-                                   /* .z = */ entry->z };
+        CoordsXYZ coord_3d = { /* .x = */ entry->x,
+                               /* .y = */ entry->y,
+                               /* .z = */ entry->z };
 
-        LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, _current_view_rotation_front);
+        auto screenCoords = translate_3d_to_2d_with_z(_current_view_rotation_front, coord_3d);
 
-        entry->x = coord_2d.x; // - (_current_view_x_front);
-        entry->y = coord_2d.y; // - (_current_view_y_front);
+        entry->x = screenCoords.x; // - (_current_view_x_front);
+        entry->y = screenCoords.y; // - (_current_view_y_front);
 
         int32_t posOnScreenX = entry->x - _current_view_x_front;
         int32_t posOnScreenY = entry->y - _current_view_y_front;
@@ -752,7 +751,7 @@ uint32_t lightfx_get_light_polution()
 
 void lightfx_add_lights_magic_vehicles()
 {
-    uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_TRAIN];
+    uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD];
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
         rct_vehicle* vehicle = &(get_sprite(spriteIndex)->vehicle);
@@ -786,7 +785,10 @@ void lightfx_add_lights_magic_vehicles()
                 -10, -10, -9, -8, -7, -6, -4, -2, 0, 2,  4,  6,  7,  8,  9,  10,
             };
 
-            Ride* ride = get_ride(vehicle->ride);
+            auto ride = get_ride(vehicle->ride);
+            if (ride == nullptr)
+                continue;
+
             switch (ride->type)
             {
                 case RIDE_TYPE_OBSERVATION_TOWER:

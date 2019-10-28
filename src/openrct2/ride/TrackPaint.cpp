@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -324,8 +324,11 @@ static void track_paint_util_draw_station_impl(
     paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
     const TileElement* tileElement, int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     LocationXY16 position = session->MapPosition;
-    Ride* ride = get_ride(rideIndex);
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
@@ -529,8 +532,11 @@ void track_paint_util_draw_station_inverted(
     paint_session* session, ride_id_t rideIndex, uint8_t direction, int32_t height, const TileElement* tileElement,
     uint8_t stationVariant)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     LocationXY16 position = session->MapPosition;
-    Ride* ride = get_ride(rideIndex);
     auto stationObj = ride_get_station_object(ride);
     const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
@@ -2157,14 +2163,14 @@ void track_paint_util_left_corkscrew_up_supports(paint_session* session, uint8_t
 void track_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement)
 {
     ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-    Ride* ride = get_ride(rideIndex);
-    if (ride->type == RIDE_TYPE_NULL)
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
     {
         log_error("Attempted to paint invalid ride: %d", rideIndex);
         return;
     }
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if ((!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex)
         && !(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))

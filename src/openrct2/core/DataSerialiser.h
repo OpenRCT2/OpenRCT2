@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,23 +17,23 @@ class DataSerialiser
 {
 private:
     MemoryStream _stream;
-    IStream* _activeStream = nullptr;
+    IStream& _activeStream;
     bool _isSaving = false;
     bool _isLogging = false;
 
 public:
     DataSerialiser(bool isSaving)
-        : _isSaving(isSaving)
+        : _activeStream(_stream)
+        , _isSaving(isSaving)
         , _isLogging(false)
     {
-        _activeStream = &_stream;
     }
 
     DataSerialiser(bool isSaving, IStream& stream, bool isLogging = false)
-        : _isSaving(isSaving)
+        : _activeStream(stream)
+        , _isSaving(isSaving)
         , _isLogging(isLogging)
     {
-        _activeStream = &stream;
     }
 
     bool IsSaving() const
@@ -46,9 +46,9 @@ public:
         return !_isSaving;
     }
 
-    MemoryStream& GetStream()
+    IStream& GetStream()
     {
-        return _stream;
+        return _activeStream;
     }
 
     template<typename T> DataSerialiser& operator<<(const T& data)
@@ -56,13 +56,13 @@ public:
         if (!_isLogging)
         {
             if (_isSaving)
-                DataSerializerTraits<T>::encode(_activeStream, data);
+                DataSerializerTraits<T>::encode(&_activeStream, data);
             else
-                DataSerializerTraits<T>::decode(_activeStream, const_cast<T&>(data));
+                DataSerializerTraits<T>::decode(&_activeStream, const_cast<T&>(data));
         }
         else
         {
-            DataSerializerTraits<T>::log(_activeStream, data);
+            DataSerializerTraits<T>::log(&_activeStream, data);
         }
 
         return *this;
@@ -73,13 +73,13 @@ public:
         if (!_isLogging)
         {
             if (_isSaving)
-                DataSerializerTraits<DataSerialiserTag<T>>::encode(_activeStream, data);
+                DataSerializerTraits<DataSerialiserTag<T>>::encode(&_activeStream, data);
             else
-                DataSerializerTraits<DataSerialiserTag<T>>::decode(_activeStream, data);
+                DataSerializerTraits<DataSerialiserTag<T>>::decode(&_activeStream, data);
         }
         else
         {
-            DataSerializerTraits<DataSerialiserTag<T>>::log(_activeStream, data);
+            DataSerializerTraits<DataSerialiserTag<T>>::log(&_activeStream, data);
         }
 
         return *this;

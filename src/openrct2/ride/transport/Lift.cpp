@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -73,15 +73,18 @@ static void paint_lift_base(
     }
 
     int32_t edges = edges_3x3[trackSequence];
-    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
-    track_paint_util_paint_fences(
-        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
-        session->CurrentRotation);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+    {
+        track_paint_util_paint_fences(
+            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
+            session->CurrentRotation);
+    }
 
     int32_t blockedSegments = 0;
     switch (trackSequence)

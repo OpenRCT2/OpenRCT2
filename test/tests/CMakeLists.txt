@@ -144,6 +144,13 @@ target_link_libraries(test_ini ${GTEST_LIBRARIES} test-common ${LDL} z)
 target_link_platform_libraries(test_ini)
 add_test(NAME ini COMMAND test_ini)
 
+# Platform
+add_executable(test_platform ${CMAKE_CURRENT_LIST_DIR}/Platform.cpp)
+SET_CHECK_CXX_FLAGS(test_platform)
+target_link_libraries(test_platform ${GTEST_LIBRARIES} test-common ${LDL} z libopenrct2)
+target_link_platform_libraries(test_platform)
+add_test(NAME platform COMMAND test_platform)
+
 # String test
 set(STRING_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/StringTest.cpp"
@@ -207,16 +214,14 @@ target_link_libraries(test_tile_elements ${GTEST_LIBRARIES} libopenrct2 ${LDL} z
 target_link_platform_libraries(test_tile_elements)
 add_test(NAME tile_elements COMMAND test_tile_elements)
 
-if (NOT DISABLE_NETWORK)
-    # Replay tests
-    set(REPLAY_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/ReplayTests.cpp"
-                                  "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
-    add_executable(test_replays ${REPLAY_TEST_SOURCES})
-    SET_CHECK_CXX_FLAGS(test_replays)
-    target_link_libraries(test_replays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
-    target_link_platform_libraries(test_replays)
-    add_test(NAME replay_tests COMMAND test_replays)
-endif ()
+# Replay tests
+set(REPLAY_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/ReplayTests.cpp"
+							  "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_replays ${REPLAY_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_replays)
+target_link_libraries(test_replays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_replays)
+add_test(NAME replay_tests COMMAND test_replays)
 
 # Pathfinding test
 set(PATHFINDING_TEST_SOURCES  "${CMAKE_CURRENT_LIST_DIR}/Pathfinding.cpp"

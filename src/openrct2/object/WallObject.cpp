@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "WallObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
@@ -38,6 +39,14 @@ void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     if (_legacyType.wall.price <= 0)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+    }
+
+    // Autofix this object (will be turned into an official object later).
+    auto identifier = GetIdentifier();
+    if (String::Equals(identifier, "XXWLBR03"))
+    {
+        _legacyType.wall.flags2 &= ~WALL_SCENERY_2_DOOR_SOUND_MASK;
+        _legacyType.wall.flags2 |= (1u << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
     }
 }
 
@@ -137,7 +146,7 @@ void WallObject::ReadJson(IReadObjectContext* context, const json_t* root)
     }
 
     // Door sound
-    auto jDoorSound = json_object_get(properties, "scrollingMode");
+    auto jDoorSound = json_object_get(properties, "doorSound");
     if (jDoorSound != nullptr)
     {
         auto doorSound = json_integer_value(jDoorSound);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,46 +53,21 @@ public:
             log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
-
-        // Ensure user string space.
-        rct_string_id string_id = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-        if (string_id != 0)
-        {
-            user_string_free(string_id);
-        }
-        else
-        {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_ERR_CANT_SET_BANNER_TEXT);
-        }
-
         return MakeResult();
     }
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_banner* banner = &gBanners[_bannerIndex];
+        auto banner = GetBanner(_bannerIndex);
 
-        int32_t x = banner->x << 5;
-        int32_t y = banner->y << 5;
+        int32_t x = banner->position.x << 5;
+        int32_t y = banner->position.y << 5;
 
-        if (_name.empty() == false)
+        if (!_name.empty())
         {
-            rct_string_id string_id = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-            if (string_id != 0)
-            {
-                rct_string_id prev_string_id = banner->string_idx;
-                banner->string_idx = string_id;
-                user_string_free(prev_string_id);
-
-                banner->flags &= ~(BANNER_FLAG_LINKED_TO_RIDE);
-
-                scrolling_text_invalidate();
-                gfx_invalidate_screen();
-            }
-            else
-            {
-                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_ERR_CANT_SET_BANNER_TEXT);
-            }
+            banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+            banner->ride_index = RIDE_ID_NULL;
+            banner->text = _name;
         }
         else
         {
@@ -100,20 +75,20 @@ public:
             ride_id_t rideIndex = banner_get_closest_ride_index(x, y, 16);
             if (rideIndex == RIDE_ID_NULL)
             {
-                return MakeResult();
+                banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+                banner->ride_index = RIDE_ID_NULL;
+                banner->text = {};
             }
-
-            banner->ride_index = rideIndex;
-            banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-
-            rct_string_id prev_string_id = banner->string_idx;
-            banner->string_idx = STR_DEFAULT_SIGN;
-            user_string_free(prev_string_id);
-
-            scrolling_text_invalidate();
-            gfx_invalidate_screen();
+            else
+            {
+                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+                banner->ride_index = rideIndex;
+                banner->text = {};
+            }
         }
 
+        scrolling_text_invalidate();
+        gfx_invalidate_screen();
         return MakeResult();
     }
 };

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,7 +59,7 @@ static uint32_t _lightningTimer;
 static uint32_t _thunderTimer;
 static void* _thunderSoundChannels[MAX_THUNDER_INSTANCES];
 static THUNDER_STATUS _thunderStatus[MAX_THUNDER_INSTANCES] = { THUNDER_STATUS::NONE, THUNDER_STATUS::NONE };
-static uint32_t _thunderSoundId;
+static SoundId _thunderSoundId;
 static int32_t _thunderVolume;
 static int32_t _thunderStereoEcho = 0;
 
@@ -69,7 +69,7 @@ static void climate_update_rain_sound();
 static void climate_update_thunder_sound();
 static void climate_update_lightning();
 static void climate_update_thunder();
-static void climate_play_thunder(int32_t instanceIndex, int32_t soundId, int32_t volume, int32_t pan);
+static void climate_play_thunder(int32_t instanceIndex, SoundId soundId, int32_t volume, int32_t pan);
 
 int32_t climate_celsius_to_fahrenheit(int32_t celsius)
 {
@@ -282,7 +282,7 @@ static void climate_update_rain_sound()
         // Start playing the rain sound
         if (gRainSoundChannel == nullptr)
         {
-            gRainSoundChannel = Mixer_Play_Effect(SOUND_RAIN_1, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
+            gRainSoundChannel = Mixer_Play_Effect(SoundId::Rain, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);
         }
         if (_rainVolume == 1)
         {
@@ -371,7 +371,7 @@ static void climate_update_thunder()
             if (_thunderStatus[0] == THUNDER_STATUS::NONE && _thunderStatus[1] == THUNDER_STATUS::NONE)
             {
                 // Play thunder on left side
-                _thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
+                _thunderSoundId = (randomNumber & 0x20000) ? SoundId::Thunder1 : SoundId::Thunder2;
                 _thunderVolume = (-((int32_t)((randomNumber >> 18) & 0xFF))) * 8;
                 climate_play_thunder(0, _thunderSoundId, _thunderVolume, -10000);
 
@@ -383,7 +383,7 @@ static void climate_update_thunder()
         {
             if (_thunderStatus[0] == THUNDER_STATUS::NONE)
             {
-                _thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
+                _thunderSoundId = (randomNumber & 0x20000) ? SoundId::Thunder1 : SoundId::Thunder2;
                 int32_t pan = (((randomNumber >> 18) & 0xFF) - 128) * 16;
                 climate_play_thunder(0, _thunderSoundId, 0, pan);
             }
@@ -391,7 +391,7 @@ static void climate_update_thunder()
     }
 }
 
-static void climate_play_thunder(int32_t instanceIndex, int32_t soundId, int32_t volume, int32_t pan)
+static void climate_play_thunder(int32_t instanceIndex, SoundId soundId, int32_t volume, int32_t pan)
 {
     _thunderSoundChannels[instanceIndex] = Mixer_Play_Effect(
         soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 0);

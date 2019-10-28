@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetLoanAction.hpp>
 #include <openrct2/actions/ParkSetResearchFundingAction.hpp>
 #include <openrct2/config/Config.h>
@@ -535,10 +536,10 @@ rct_window* window_finances_open()
     }
 
     w->page = WINDOW_FINANCES_PAGE_SUMMARY;
-    window_invalidate(w);
+    w->Invalidate();
     w->width = 530;
     w->height = 310;
-    window_invalidate(w);
+    w->Invalidate();
 
     w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
     w->enabled_widgets = WindowFinancesPageEnabledWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
@@ -611,14 +612,14 @@ static void window_finances_summary_mousedown(rct_window* w, rct_widgetindex wid
     }
 }
 
-static uint16_t summary_num_months_available()
+static uint16_t summary_max_available_month()
 {
-    return std::min<uint16_t>(gDateMonthsElapsed, EXPENDITURE_TABLE_MONTH_COUNT);
+    return std::min<uint16_t>(gDateMonthsElapsed, EXPENDITURE_TABLE_MONTH_COUNT - 1);
 }
 
 static void window_finances_summary_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    *width = EXPENDITURE_COLUMN_WIDTH * (summary_num_months_available() + 1);
+    *width = EXPENDITURE_COLUMN_WIDTH * (summary_max_available_month() + 1);
 }
 
 static void window_finances_summary_invertscroll(rct_window* w)
@@ -737,7 +738,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
 
     // Expenditure / Income values for each month
     int16_t currentMonthYear = gDateMonthsElapsed;
-    for (int32_t i = summary_num_months_available(); i >= 0; i--)
+    for (int32_t i = summary_max_available_month(); i >= 0; i--)
     {
         y = 0;
 
@@ -1182,8 +1183,6 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
             continue;
 
         noCampaignsActive = 0;
-        set_format_arg(0, rct_string_id, gParkName);
-        set_format_arg(2, uint32_t, gParkNameArgs);
 
         // Set special parameters
         switch (i)
@@ -1192,13 +1191,26 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
             case ADVERTISING_CAMPAIGN_RIDE:
             {
                 auto ride = get_ride(campaign->RideId);
-                set_format_arg(0, rct_string_id, ride->name);
-                set_format_arg(2, uint32_t, ride->name_arguments);
+                if (ride != nullptr)
+                {
+                    ride->FormatNameTo(gCommonFormatArgs);
+                }
+                else
+                {
+                    set_format_arg(0, rct_string_id, STR_NONE);
+                }
                 break;
             }
             case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                set_format_arg(0, rct_string_id, ShopItemStringIds[campaign->ShopItemType].plural);
+                set_format_arg(0, rct_string_id, ShopItems[campaign->ShopItemType].Naming.Plural);
                 break;
+            default:
+            {
+                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                auto parkName = park.Name.c_str();
+                set_format_arg(0, rct_string_id, STR_STRING);
+                set_format_arg(2, const char*, parkName);
+            }
         }
 
         // Advertisement
@@ -1415,7 +1427,7 @@ static void window_finances_set_page(rct_window* w, int32_t page)
     w->disabled_widgets = 0;
     w->pressed_widgets = 0;
 
-    window_invalidate(w);
+    w->Invalidate();
     if (w->page == WINDOW_FINANCES_PAGE_RESEARCH)
     {
         w->width = 320;
@@ -1435,7 +1447,7 @@ static void window_finances_set_page(rct_window* w, int32_t page)
     window_event_invalidate_call(w);
 
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     // Scroll summary all the way to the right, initially.
     if (w->page == WINDOW_FINANCES_PAGE_SUMMARY)

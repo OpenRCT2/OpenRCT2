@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,11 +9,14 @@
 
 #ifdef DISABLE_TWITCH
 
-#    include "twitch.h"
+#    include "Twitch.h"
 
-void twitch_update()
+namespace Twitch
 {
-}
+    void Update()
+    {
+    }
+} // namespace Twitch
 
 #else
 
@@ -24,6 +27,7 @@ void twitch_update()
 #    include "../Context.h"
 #    include "../Game.h"
 #    include "../OpenRCT2.h"
+#    include "../actions/GuestSetFlagsAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/Json.hpp"
 #    include "../core/String.hpp"
@@ -36,14 +40,14 @@ void twitch_update()
 #    include "../util/Util.h"
 #    include "../world/Sprite.h"
 #    include "Http.h"
-#    include "twitch.h"
+#    include "Twitch.h"
 
 #    include <jansson.h>
 #    include <memory>
 #    include <vector>
 
 using namespace OpenRCT2;
-using namespace OpenRCT2::Network;
+using namespace OpenRCT2::Networking;
 
 bool gTwitchEnable = false;
 
@@ -131,7 +135,7 @@ namespace Twitch
         return true;
     }
 
-    static void Update()
+    void Update()
     {
         if (!_twitchIdle)
             return;
@@ -269,10 +273,7 @@ namespace Twitch
         // });
     }
 
-    /**
-     * GET /channel/:channel/audience
-     */
-    static void GetFollowers()
+    static void Get(const std::string& requestFormat, int operation)
     {
         char url[256];
 
@@ -282,12 +283,12 @@ namespace Twitch
             context->WriteLine("API URL is empty! skipping request...");
             return;
         }
-        snprintf(url, sizeof(url), "%s/channel/%s/audience", gConfigTwitch.api_url, gConfigTwitch.channel);
+        snprintf(url, sizeof(url), requestFormat.c_str(), gConfigTwitch.api_url, gConfigTwitch.channel);
 
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        Http::DoAsync({ url }, [](Http::Response res) {
+        Http::DoAsync({ url }, [operation](Http::Response res) {
             std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
 
             if (res.status != Http::Status::OK)
@@ -297,8 +298,16 @@ namespace Twitch
             }
 
             _twitchJsonResponse = res;
-            _twitchState = TWITCH_STATE_GET_FOLLOWERS;
+            _twitchState = operation;
         });
+    }
+
+    /**
+     * GET /channel/:channel/audience
+     */
+    static void GetFollowers()
+    {
+        Get("%s/channel/%s/audience", TWITCH_STATE_GET_FOLLOWERS);
     }
 
     /**
@@ -306,31 +315,7 @@ namespace Twitch
      */
     static void GetMessages()
     {
-        char url[256];
-
-        if (gConfigTwitch.api_url == nullptr || strlen(gConfigTwitch.api_url) == 0)
-        {
-            auto context = GetContext();
-            context->WriteLine("API URL is empty! skipping request...");
-            return;
-        }
-        snprintf(url, sizeof(url), "%s/channel/%s/messages", gConfigTwitch.api_url, gConfigTwitch.channel);
-
-        _twitchState = TWITCH_STATE_WAITING;
-        _twitchIdle = false;
-
-        Http::DoAsync({ url }, [](Http::Response res) {
-            std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
-
-            if (res.status != Http::Status::OK)
-            {
-                _twitchState = TWITCH_STATE_JOINED;
-                return;
-            }
-
-            _twitchJsonResponse = res;
-            _twitchState = TWITCH_STATE_GET_MESSAGES;
-        });
+        Get("%s/channel/%s/messages", TWITCH_STATE_GET_MESSAGES);
     }
 
     static void ParseFollowers()
@@ -421,10 +406,12 @@ namespace Twitch
         Peep* peep;
         FOR_ALL_GUESTS (spriteIndex, peep)
         {
-            if (is_user_string_id(peep->name_string_idx))
+            if (peep->name != nullptr)
             {
-                utf8 buffer[256];
-                format_string(buffer, 256, peep->name_string_idx, nullptr);
+                uint8_t args[32]{};
+                char buffer[256]{};
+                peep->FormatNameTo(args);
+                format_string(buffer, sizeof(buffer), STR_STRINGID, args);
 
                 AudienceMember* member = nullptr;
                 for (AudienceMember& m : members)
@@ -442,30 +429,41 @@ namespace Twitch
                     if (member == nullptr)
                     {
                         // Member no longer peep name worthy
-                        peep->peep_flags &= ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
+                        uint32_t flags = peep->peep_flags & ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
+
+                        auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
+                        GameActions::Execute(&guestSetFlagsAction);
 
                         // TODO set peep name back to number / real name
                     }
                     else
                     {
+                        uint32_t flags = peep->peep_flags;
                         if (member->ShouldTrack)
                         {
-                            peep->peep_flags |= (PEEP_FLAGS_TRACKING);
+                            flags |= (PEEP_FLAGS_TRACKING);
                         }
                         else if (!member->ShouldTrack)
                         {
-                            peep->peep_flags &= ~(PEEP_FLAGS_TRACKING);
+                            flags &= ~(PEEP_FLAGS_TRACKING);
+                        }
+                        if (flags != peep->peep_flags)
+                        {
+                            auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
+                            GameActions::Execute(&guestSetFlagsAction);
                         }
                     }
                 }
                 else if (member != nullptr && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // Peep with same name already exists but not twitch
-                    peep->peep_flags |= PEEP_FLAGS_TWITCH;
+                    uint32_t flags = peep->peep_flags | PEEP_FLAGS_TWITCH;
                     if (member->ShouldTrack)
                     {
-                        peep->peep_flags |= PEEP_FLAGS_TRACKING;
+                        flags |= PEEP_FLAGS_TRACKING;
                     }
+                    auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
+                    GameActions::Execute(&guestSetFlagsAction);
                 }
             }
         }
@@ -491,18 +489,23 @@ namespace Twitch
                 }
 
                 AudienceMember* member = &members[memberIndex];
-                if (!is_user_string_id(peep->name_string_idx) && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
+                if (peep->name == nullptr && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // Rename peep and add flags
-                    rct_string_id newStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, member->Name);
-                    if (newStringId != 0)
+                    auto memLen = std::strlen(member->Name) + 1;
+                    peep->name = (char*)std::malloc(memLen);
+                    if (peep->name != nullptr)
                     {
-                        peep->name_string_idx = newStringId;
-                        peep->peep_flags |= PEEP_FLAGS_TWITCH;
+                        std::memcpy(peep->name, member->Name, memLen);
+
+                        uint32_t flags = peep->peep_flags | PEEP_FLAGS_TWITCH;
                         if (member->ShouldTrack)
                         {
-                            peep->peep_flags |= PEEP_FLAGS_TRACKING;
+                            flags |= PEEP_FLAGS_TRACKING;
                         }
+
+                        auto guestSetFlagsAction = GuestSetFlagsAction(peep->sprite_index, flags);
+                        GameActions::Execute(&guestSetFlagsAction);
                     }
                 }
                 else
@@ -564,10 +567,5 @@ namespace Twitch
         }
     }
 } // namespace Twitch
-
-void twitch_update()
-{
-    Twitch::Update();
-}
 
 #endif

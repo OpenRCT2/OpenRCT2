@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -73,13 +73,15 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
         // This sets the string parameters for the marketing types that have an argument.
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
-            Ride* ride = get_ride(campaign.RideId);
-            set_format_arg(0, rct_string_id, ride->name);
-            set_format_arg(2, uint32_t, ride->name_arguments);
+            auto ride = get_ride(campaign.RideId);
+            if (ride != nullptr)
+            {
+                ride->FormatNameTo(gCommonFormatArgs);
+            }
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            set_format_arg(0, rct_string_id, ShopItemStringIds[campaign.ShopItemType].plural);
+            set_format_arg(0, rct_string_id, ShopItems[campaign.ShopItemType].Naming.Plural);
         }
 
         news_item_add_to_queue(NEWS_ITEM_MONEY, MarketingCampaignNames[campaign.Type][2], 0);
@@ -162,10 +164,6 @@ void marketing_set_guest_campaign(Peep* peep, int32_t campaignType)
 
 bool marketing_is_campaign_type_applicable(int32_t campaignType)
 {
-    int32_t i;
-    Ride* ride;
-    rct_ride_entry* rideEntry;
-
     switch (campaignType)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
@@ -181,9 +179,9 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
             // fall-through
         case ADVERTISING_CAMPAIGN_RIDE:
             // Check if any rides exist
-            FOR_ALL_RIDES (i, ride)
+            for (auto& ride : GetRideManager())
             {
-                if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+                if (ride.IsRide())
                 {
                     return true;
                 }
@@ -192,17 +190,16 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
 
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
             // Check if any food or drink stalls exist
-            FOR_ALL_RIDES (i, ride)
+            for (auto& ride : GetRideManager())
             {
-                rideEntry = get_ride_entry(ride->subtype);
-                if (rideEntry == nullptr)
+                auto rideEntry = ride.GetRideEntry();
+                if (rideEntry != nullptr)
                 {
-                    continue;
-                }
-                if (shop_item_is_food_or_drink(rideEntry->shop_item)
-                    || shop_item_is_food_or_drink(rideEntry->shop_item_secondary))
-                {
-                    return true;
+                    if (shop_item_is_food_or_drink(rideEntry->shop_item)
+                        || shop_item_is_food_or_drink(rideEntry->shop_item_secondary))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

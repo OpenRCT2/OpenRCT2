@@ -60,14 +60,8 @@ public:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, errorTitle);
         }
 
-        if (_rideIndex >= MAX_RIDES || _rideIndex == RIDE_ID_NULL)
-        {
-            log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
-        }
-
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
@@ -79,7 +73,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
         }
 
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
         {
             return MakeResult(GA_ERROR::NOT_CLOSED, errorTitle, STR_MUST_BE_CLOSED_FIRST);
         }
@@ -88,9 +82,6 @@ public:
         {
             return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }
-
-        ride_clear_for_construction(ride);
-        ride_remove_peeps(ride);
 
         const auto location = _isExit ? ride_get_exit_location(ride, _stationNum)
                                       : ride_get_entrance_location(ride, _stationNum);
@@ -111,7 +102,7 @@ public:
         auto z = ride->stations[_stationNum].Height * 8;
         gCommandPosition.z = z;
 
-        if (!gCheatsSandboxMode && !map_is_location_owned(_loc.x, _loc.y, z))
+        if (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }
@@ -138,7 +129,7 @@ public:
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height(_loc.x, _loc.y);
+        res->Position.z = tile_element_height(_loc);
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         return res;
     }
@@ -149,15 +140,18 @@ public:
         // When in known station num mode rideIndex is known and z is unknown
         auto errorTitle = _isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                   : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
         }
 
-        ride_clear_for_construction(ride);
-        ride_remove_peeps(ride);
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            ride_clear_for_construction(ride);
+            ride_remove_peeps(ride);
+        }
 
         const auto location = _isExit ? ride_get_exit_location(ride, _stationNum)
                                       : ride_get_entrance_location(ride, _stationNum);
@@ -195,10 +189,10 @@ public:
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height(_loc.x, _loc.y);
+        res->Position.z = tile_element_height(_loc);
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 
-        TileElement* tileElement = tile_element_insert(_loc.x / 32, _loc.y / 32, z / 8, 0b1111);
+        TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, z / 8 }, 0b1111);
         assert(tileElement != nullptr);
         tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
         tileElement->SetDirection(_direction);
@@ -251,7 +245,7 @@ public:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, errorTitle);
         }
 
-        if (!gCheatsSandboxMode && !map_is_location_owned(loc.x, loc.y, loc.z))
+        if (!gCheatsSandboxMode && !map_is_location_owned(loc))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }
@@ -278,7 +272,7 @@ public:
         auto res = MakeResult();
         res->Position.x = loc.x + 16;
         res->Position.y = loc.y + 16;
-        res->Position.z = tile_element_height(loc.x, loc.y);
+        res->Position.z = tile_element_height(loc);
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         return res;
     }

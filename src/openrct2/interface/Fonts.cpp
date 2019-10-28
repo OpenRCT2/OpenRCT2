@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -82,6 +82,12 @@ TTFFontSetDescriptor TTFFontArialUnicode = { {
     { "arialuni.ttf", "Arial Unicode MS",  9, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
     { "arialuni.ttf", "Arial Unicode MS", 10, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
     { "arialuni.ttf", "Arial Unicode MS", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+} };
+
+TTFFontSetDescriptor TTFFontMicroHei = { {
+    { "wqy-microhei.ttc", "WenQuanYi Micro Hei", 10, -1, -1,  10, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "wqy-microhei.ttc", "WenQuanYi Micro Hei", 11,  1, -1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "wqy-microhei.ttc", "WenQuanYi Micro Hei", 11,  1, -2, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 // clang-format on
 #endif // NO_TTF

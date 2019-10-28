@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,6 +27,7 @@
 #define RCT1_MAX_STAFF 116
 #define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
 #define RCT1_MAX_ANIMATED_OBJECTS 1000
+#define RCT1_MAX_BANNERS 100
 
 struct ParkLoadResult;
 
@@ -428,8 +429,8 @@ struct rct1_peep : RCT12SpriteBase
     uint8_t pad_C4;
     union
     {
-        uint8_t staff_id;                   // 0xC5
-        ride_id_t guest_heading_to_ride_id; // 0xC5
+        uint8_t staff_id;                 // 0xC5
+        uint8_t guest_heading_to_ride_id; // 0xC5
     };
     union
     {
@@ -665,7 +666,7 @@ struct rct1_s4
     uint16_t unk_199C9A;
     rct1_research_item research_items_LL[180];
     uint8_t unk_19A020[5468];
-    rct_banner banners[100];
+    RCT12Banner banners[RCT1_MAX_BANNERS];
     char string_table[RCT12_MAX_USER_STRINGS][RCT12_USER_STRING_MAX_LENGTH];
     uint32_t game_time_counter;
     rct1_ride rides[RCT12_MAX_RIDES_IN_PARK];
@@ -674,14 +675,14 @@ struct rct1_s4
     uint16_t view_y;
     uint8_t view_zoom;
     uint8_t view_rotation;
-    rct_map_animation map_animations[RCT1_MAX_ANIMATED_OBJECTS];
+    RCT12MapAnimation map_animations[RCT1_MAX_ANIMATED_OBJECTS];
     uint32_t num_map_animations;
     uint8_t unk_1CADBC[12];
     uint16_t scrolling_text_step;
     uint32_t unk_1CADCA;
     uint16_t unk_1CADCE;
     uint8_t unk_1CADD0[116];
-    rct_ride_measurement ride_measurements[8];
+    RCT12RideMeasurement ride_measurements[8];
     uint32_t next_guest_index;
     uint16_t game_counter_5;
     uint8_t patrol_areas[(RCT1_MAX_STAFF + RCT12_STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];
@@ -711,7 +712,7 @@ struct rct1_s4
 assert_struct_size(rct1_s4, 0x1F850C);
 
 /**
- * Track design structure.
+ * Track design structure. Only for base RCT1
  * size: 0x2006
  */
 struct rct_track_td4
@@ -754,18 +755,25 @@ struct rct_track_td4
     uint8_t intensity;           // 0x34
     uint8_t nausea;              // 0x35
     money16 upkeep_cost;         // 0x36
+};
 
-    // Added Attractions / Loopy Landscapes only
+assert_struct_size(rct_track_td4, 0x38);
+
+/**
+ * Track design structure for Added Attractions / Loopy Landscapes
+ * size: 0x2006
+ */
+struct rct_track_td4_aa : public rct_track_td4
+{
     uint8_t track_spine_colour[RCT12_NUM_COLOUR_SCHEMES];   // 0x38
     uint8_t track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];    // 0x3C
     uint8_t track_support_colour[RCT12_NUM_COLOUR_SCHEMES]; // 0x40
     uint8_t flags2;                                         // 0x44
 
-    uint8_t var_45[0x7F]; // 0x45
-
-    void* elements; // 0xC4 (data starts here in file, 38 for original RCT1)
-    size_t elementsSize;
+    uint8_t pad_45[0x7F]; // 0x45
 };
+
+assert_struct_size(rct_track_td4_aa, 0xC4);
 #pragma pack(pop)
 
 enum

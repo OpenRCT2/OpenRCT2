@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -96,7 +96,7 @@ const char* format_get_token(uint32_t code)
     return nullptr;
 }
 
-bool utf8_should_use_sprite_for_codepoint(int32_t codepoint)
+bool utf8_should_use_sprite_for_codepoint(char32_t codepoint)
 {
     switch (codepoint)
     {

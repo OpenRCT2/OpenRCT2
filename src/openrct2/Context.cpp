@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
+#include "GameStateSnapshots.h"
 #include "Input.h"
 #include "Intro.h"
 #include "OpenRCT2.h"
@@ -23,6 +24,7 @@
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "Version.h"
+#include "actions/GameAction.h"
 #include "audio/AudioContext.h"
 #include "audio/audio.h"
 #include "config/Config.h"
@@ -44,8 +46,8 @@
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/Http.h"
+#include "network/Twitch.h"
 #include "network/network.h"
-#include "network/twitch.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
@@ -92,12 +94,13 @@ namespace OpenRCT2
         std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
         std::unique_ptr<IReplayManager> _replayManager;
+        std::unique_ptr<IGameStateSnapshots> _gameStateSnapshots;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
         StdInOutConsole _stdInOutConsole;
 #ifndef DISABLE_HTTP
-        Network::Http::Http _http;
+        Networking::Http::Http _http;
 #endif
 
         // Game states
@@ -133,6 +136,7 @@ namespace OpenRCT2
             , _audioContext(audioContext)
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
+            , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
@@ -145,13 +149,17 @@ namespace OpenRCT2
             // NOTE: We must shutdown all systems here before Instance is set back to null.
             //       If objects use GetContext() in their destructor things won't go well.
 
-            if (_objectManager)
+            GameActions::ClearQueue();
+            network_close();
+            window_close_all();
+
+            // Unload objects after closing all windows, this is to overcome windows like
+            // the object selection window which loads objects when closed.
+            if (_objectManager != nullptr)
             {
                 _objectManager->UnloadAll();
             }
 
-            network_close();
-            window_close_all();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
             gfx_unload_g1();
@@ -210,6 +218,11 @@ namespace OpenRCT2
             return _replayManager.get();
         }
 
+        IGameStateSnapshots* GetGameStateSnapshots() override
+        {
+            return _gameStateSnapshots.get();
+        }
+
         int32_t GetDrawingEngineType() override
         {
             return _drawingEngineType;
@@ -218,6 +231,11 @@ namespace OpenRCT2
         IDrawingEngine* GetDrawingEngine() override
         {
             return _drawingEngine.get();
+        }
+
+        virtual Paint::Painter* GetPainter() override
+        {
+            return _painter.get();
         }
 
         int32_t RunOpenRCT2(int argc, const char** argv) override
@@ -334,8 +352,12 @@ namespace OpenRCT2
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
             _replayManager = CreateReplayManager();
+            _gameStateSnapshots = CreateGameStateSnapshots();
 #ifdef __ENABLE_DISCORD__
-            _discordService = std::make_unique<DiscordService>();
+            if (!gOpenRCT2Headless)
+            {
+                _discordService = std::make_unique<DiscordService>();
+            }
 #endif
 
             try
@@ -410,8 +432,8 @@ namespace OpenRCT2
                 lightfx_init();
 #endif
             }
+
             gScenarioTicks = 0;
-            util_srand((uint32_t)time(nullptr));
             input_reset_place_obj_modifier();
             viewport_init_all();
 
@@ -425,7 +447,6 @@ namespace OpenRCT2
         void InitialiseDrawingEngine() final override
         {
             assert(_drawingEngine == nullptr);
-            assert(_painter == nullptr);
 
             _drawingEngineType = gConfigGeneral.drawing_engine;
 
@@ -452,7 +473,6 @@ namespace OpenRCT2
             }
             else
             {
-                _painter = std::make_unique<Painter>(_uiContext);
                 try
                 {
                     drawingEngine->Initialise();
@@ -461,7 +481,6 @@ namespace OpenRCT2
                 }
                 catch (const std::exception& ex)
                 {
-                    _painter = nullptr;
                     if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
                     {
                         _drawingEngineType = DRAWING_ENGINE_NONE;
@@ -486,11 +505,11 @@ namespace OpenRCT2
         void DisposeDrawingEngine() final override
         {
             _drawingEngine = nullptr;
-            _painter = nullptr;
         }
 
         bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail) final override
         {
+            log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
             try
             {
                 auto fs = FileStream(path, FILE_MODE_OPEN);
@@ -532,9 +551,12 @@ namespace OpenRCT2
                         gCurrentLoadedPath = path;
                         gFirstTimeSaving = true;
                         game_fix_save_vars();
+                        AutoCreateMapAnimations();
                         sprite_position_tween_reset();
                         gScreenAge = 0;
                         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+
+                        bool sendMap = false;
                         if (info.Type == FILE_TYPE::SAVED_GAME)
                         {
                             if (network_get_mode() == NETWORK_MODE_CLIENT)
@@ -544,7 +566,7 @@ namespace OpenRCT2
                             game_load_init();
                             if (network_get_mode() == NETWORK_MODE_SERVER)
                             {
-                                network_send_map();
+                                sendMap = true;
                             }
                         }
                         else
@@ -552,7 +574,7 @@ namespace OpenRCT2
                             scenario_begin();
                             if (network_get_mode() == NETWORK_MODE_SERVER)
                             {
-                                network_send_map();
+                                sendMap = true;
                             }
                             if (network_get_mode() == NETWORK_MODE_CLIENT)
                             {
@@ -562,6 +584,10 @@ namespace OpenRCT2
                         // This ensures that the newly loaded save reflects the user's
                         // 'show real names of guests' option, now that it's a global setting
                         peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                        if (sendMap)
+                        {
+                            network_send_map();
+                        }
                         return true;
                     }
                     catch (const ObjectLoadException& e)
@@ -695,7 +721,7 @@ namespace OpenRCT2
 #ifndef DISABLE_HTTP
                         // Download park and open it using its temporary filename
                         void* data;
-                        size_t dataSize = Network::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
+                        size_t dataSize = Networking::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
                         if (dataSize == 0)
                         {
                             title_load();
@@ -968,7 +994,7 @@ namespace OpenRCT2
             }
 #endif
 
-            twitch_update();
+            Twitch::Update();
             chat_update();
             _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Update();
@@ -991,6 +1017,7 @@ namespace OpenRCT2
                     DIRID::THEME,
                     DIRID::SEQUENCE,
                     DIRID::REPLAY,
+                    DIRID::LOG_DESYNCS,
                 });
         }
 

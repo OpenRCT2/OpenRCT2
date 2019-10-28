@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
 #include "../world/Park.h"
+#include "../world/Scenery.h"
 
 #include <algorithm>
 #include <iterator>
@@ -46,7 +47,36 @@ GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_stri
 
 namespace GameActions
 {
+    struct QueuedGameAction
+    {
+        uint32_t tick;
+        uint32_t uniqueId;
+        GameAction::Ptr action;
+
+        explicit QueuedGameAction(uint32_t t, std::unique_ptr<GameAction>&& ga, uint32_t id)
+            : tick(t)
+            , uniqueId(id)
+            , action(std::move(ga))
+        {
+        }
+
+        bool operator<(const QueuedGameAction& comp) const
+        {
+            // First sort by tick
+            if (tick < comp.tick)
+                return true;
+            if (tick > comp.tick)
+                return false;
+
+            // If the ticks are equal sort by commandIndex
+            return uniqueId < comp.uniqueId;
+        }
+    };
+
     static GameActionFactory _actions[GAME_COMMAND_COUNT];
+    static std::multiset<QueuedGameAction> _actionQueue;
+    static uint32_t _nextUniqueId = 0;
+    static bool _suspended = false;
 
     GameActionFactory Register(uint32_t id, GameActionFactory factory)
     {
@@ -64,6 +94,97 @@ namespace GameActions
             return _actions[id] != nullptr;
         }
         return false;
+    }
+
+    void SuspendQueue()
+    {
+        _suspended = true;
+    }
+
+    void ResumeQueue()
+    {
+        _suspended = false;
+    }
+
+    void Enqueue(const GameAction* ga, uint32_t tick)
+    {
+        auto action = Clone(ga);
+        Enqueue(std::move(action), tick);
+    }
+
+    void Enqueue(GameAction::Ptr&& ga, uint32_t tick)
+    {
+        if (ga->GetPlayer() == -1 && network_get_mode() != NETWORK_MODE_NONE)
+        {
+            // Server can directly invoke actions and will have no player id assigned
+            // as that normally happens when receiving them over network.
+            ga->SetPlayer(network_get_current_player_id());
+        }
+        _actionQueue.emplace(tick, std::move(ga), _nextUniqueId++);
+    }
+
+    void ProcessQueue()
+    {
+        if (_suspended)
+        {
+            // Do nothing if suspended, this is usually the case between connect and map loads.
+            return;
+        }
+
+        const uint32_t currentTick = gCurrentTicks;
+
+        while (_actionQueue.begin() != _actionQueue.end())
+        {
+            // run all the game commands at the current tick
+            const QueuedGameAction& queued = *_actionQueue.begin();
+
+            if (network_get_mode() == NETWORK_MODE_CLIENT)
+            {
+                if (queued.tick < currentTick)
+                {
+                    // This should never happen.
+                    Guard::Assert(
+                        false,
+                        "Discarding game action from tick behind current tick, ID: %08X, Action Tick: %08X, Current Tick: "
+                        "%08X\n",
+                        queued.uniqueId, queued.tick, currentTick);
+                }
+                else if (queued.tick > currentTick)
+                {
+                    return;
+                }
+            }
+
+            // Remove ghost scenery so it doesn't interfere with incoming network command
+            switch (queued.action->GetType())
+            {
+                case GAME_COMMAND_PLACE_WALL:
+                case GAME_COMMAND_PLACE_LARGE_SCENERY:
+                case GAME_COMMAND_PLACE_BANNER:
+                case GAME_COMMAND_PLACE_SCENERY:
+                    scenery_remove_ghost_tool_placement();
+                    break;
+            }
+
+            GameAction* action = queued.action.get();
+            action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_NETWORKED);
+
+            Guard::Assert(action != nullptr);
+
+            GameActionResult::Ptr result = Execute(action);
+            if (result->Error == GA_ERROR::OK && network_get_mode() == NETWORK_MODE_SERVER)
+            {
+                // Relay this action to all other clients.
+                network_send_game_action(action);
+            }
+
+            _actionQueue.erase(_actionQueue.begin());
+        }
+    }
+
+    void ClearQueue()
+    {
+        _actionQueue.clear();
     }
 
     void Initialize()
@@ -106,7 +227,7 @@ namespace GameActions
         action->Serialise(dsOut);
 
         // Serialise into new action.
-        MemoryStream& stream = dsOut.GetStream();
+        IStream& stream = dsOut.GetStream();
         stream.SetPosition(0);
 
         DataSerialiser dsIn(false, stream);
@@ -131,7 +252,7 @@ namespace GameActions
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
-        if (topLevel == true && !CheckActionInPausedMode(actionFlags))
+        if (topLevel && !CheckActionInPausedMode(actionFlags))
         {
             GameActionResult::Ptr result = std::make_unique<GameActionResult>();
 
@@ -154,7 +275,7 @@ namespace GameActions
 
         if (result->Error == GA_ERROR::OK)
         {
-            if (finance_check_affordability(result->Cost, action->GetFlags()) == false)
+            if (!finance_check_affordability(result->Cost, action->GetFlags()))
             {
                 result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
@@ -193,7 +314,9 @@ namespace GameActions
         MemoryStream& output = ctx.output;
 
         char temp[128] = {};
-        snprintf(temp, sizeof(temp), "[%s] GA: %s (%08X) (", GetRealm(), action->GetName(), action->GetType());
+        snprintf(
+            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), gCurrentTicks, action->GetName(),
+            action->GetType());
 
         output.Write(temp, strlen(temp));
 
@@ -274,7 +397,7 @@ namespace GameActions
                     if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         log_verbose("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
-                        network_enqueue_game_action(action);
+                        Enqueue(action, gCurrentTicks);
 
                         return result;
                     }
@@ -290,7 +413,7 @@ namespace GameActions
             LogActionFinish(logContext, action, result);
 
             // If not top level just give away the result.
-            if (topLevel == false)
+            if (!topLevel)
                 return result;
 
             gCommandPosition.x = result->Position.x;
@@ -301,7 +424,7 @@ namespace GameActions
             if (result->Error == GA_ERROR::OK && finance_check_money_required(flags) && result->Cost != 0)
             {
                 finance_payment(result->Cost, result->ExpenditureType);
-                money_effect_create(result->Cost);
+                rct_money_effect::Create(result->Cost);
             }
 
             if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && result->Error == GA_ERROR::OK)
@@ -326,7 +449,7 @@ namespace GameActions
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)
                 {
-                    bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_5) == 0;
+                    bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
                     bool recordAction = false;
                     if (replayManager)
@@ -357,7 +480,22 @@ namespace GameActions
             cb(action, result.get());
         }
 
-        if (result->Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5))
+        // Only show errors when its not a ghost and not a preview and also top level action.
+        bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && topLevel;
+
+        // In network mode the error should be only shown to the issuer of the action.
+        if (network_get_mode() != NETWORK_MODE_NONE)
+        {
+            // If the action was never networked and query fails locally the player id is not assigned.
+            // So compare only if the action went into the queue otherwise show errors by default.
+            const bool isActionFromNetwork = (action->GetFlags() & GAME_COMMAND_FLAG_NETWORKED) != 0;
+            if (isActionFromNetwork && action->GetPlayer() != network_get_current_player_id())
+            {
+                shouldShowError = false;
+            }
+        }
+
+        if (result->Error != GA_ERROR::OK && shouldShowError)
         {
             // Show the error box
             std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -128,13 +128,13 @@ static void window_map_tooltip_open()
     if (w == nullptr)
     {
         w = window_create(
-            x, y, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP,
+            ScreenCoordsXY(x, y), width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
         w->widgets = window_map_tooltip_widgets;
     }
     else
     {
-        window_invalidate(w);
+        w->Invalidate();
         w->x = x;
         w->y = y;
         w->width = width;
@@ -148,7 +148,7 @@ static void window_map_tooltip_open()
  */
 static void window_map_tooltip_update(rct_window* w)
 {
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**

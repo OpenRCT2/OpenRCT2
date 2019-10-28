@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -366,7 +366,7 @@ namespace ObjectJsonHelpers
             if (is_csg_loaded())
             {
                 auto range = ParseRange(s.substr(4));
-                if (range.size() > 0)
+                if (!range.empty())
                 {
                     for (auto i : range)
                     {
@@ -380,7 +380,7 @@ namespace ObjectJsonHelpers
         else if (String::StartsWith(s, "$G1"))
         {
             auto range = ParseRange(s.substr(3));
-            if (range.size() > 0)
+            if (!range.empty())
             {
                 for (auto i : range)
                 {

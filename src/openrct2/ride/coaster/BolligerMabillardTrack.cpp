@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -105,8 +105,9 @@ void bolliger_mabillard_track_station(
     track_paint_util_draw_station_metal_supports_2(
         session, direction, height, session->TrackColours[SCHEME_SUPPORTS], supportType);
 
-    Ride* ride = get_ride(rideIndex);
-    track_paint_util_draw_station_platform(session, ride, direction, height, 9, tileElement);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+        track_paint_util_draw_station_platform(session, ride, direction, height, 9, tileElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

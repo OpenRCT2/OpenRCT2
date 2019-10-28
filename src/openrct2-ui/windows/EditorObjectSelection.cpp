@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -98,9 +98,6 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_SCENERY_GROUPS,              SPR_TAB_SCENERY_STATUES,    false },
     { STR_OBJECT_SELECTION_PARK_ENTRANCE,               SPR_TAB_PARK,               false },
     { STR_OBJECT_SELECTION_WATER,                       SPR_TAB_WATER,              false },
-
-    // No longer supported:
-    // { STR_OBJECT_SELECTION_SCENARIO_DESCRIPTION,        SPR_TAB_STATS,              false },
 
     // Currently hidden until new save format arrives:
     // { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            false },
@@ -327,7 +324,7 @@ static void visible_list_refresh(rct_window* w)
         }
     }
 
-    if (_listItems.size() == 0)
+    if (_listItems.empty())
     {
         visible_list_dispose();
     }
@@ -355,7 +352,7 @@ static void visible_list_refresh(rct_window* w)
             }
         }
     }
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_editor_object_selection_init_widgets()
@@ -488,7 +485,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             w->selected_list_item = -1;
             w->object_entry = nullptr;
             w->scrolls[0].v_top = 0;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_FILTER_RIDE_TAB_TRANSPORT:
         case WIDX_FILTER_RIDE_TAB_GENTLE:
@@ -508,12 +505,12 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             w->object_entry = nullptr;
             w->scrolls[0].v_top = 0;
             w->frame_no = 0;
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_ADVANCED:
             w->list_information_type ^= 1;
-            window_invalidate(w);
+            w->Invalidate();
             break;
 
         case WIDX_INSTALL_TRACK:
@@ -522,7 +519,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             {
                 w->selected_list_item = -1;
             }
-            window_invalidate(w);
+            w->Invalidate();
 
             auto intent = Intent(WC_LOADSAVE);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
@@ -537,7 +534,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             filter_update_counts();
             w->scrolls->v_top = 0;
             visible_list_refresh(w);
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LIST_SORT_TYPE:
             if (_listSortType == RIDE_SORT_TYPE)
@@ -665,7 +662,7 @@ static void window_editor_object_selection_dropdown(rct_window* w, rct_widgetind
             w->scrolls->v_top = 0;
 
             visible_list_refresh(w);
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -698,10 +695,10 @@ static void window_editor_object_selection_scroll_mousedown(rct_window* w, int32
     if (object_selection_flags & OBJECT_SELECTION_FLAG_6)
         return;
 
-    window_invalidate(w);
+    w->Invalidate();
 
     const CursorState* state = context_get_cursor_state();
-    audio_play_sound(SOUND_CLICK_1, 0, state->x);
+    audio_play_sound(SoundId::Click1, 0, state->x);
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
@@ -735,7 +732,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window* w, int32
     {
         filter_update_counts();
         visible_list_refresh(w);
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     if (_maxObjectsWasHit)
@@ -778,7 +775,7 @@ static void window_editor_object_selection_scroll_mouseover(rct_window* w, int32
             _loadedObject = object_repository_load_object(listItem->entry);
         }
 
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -828,7 +825,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
         w->pressed_widgets &= ~(1 << WIDX_ADVANCED);
 
     // Set window title and buttons
-    set_format_arg(0, rct_string_id, ObjectSelectionPages[get_selected_object_type(w)].Caption);
+    set_format_arg(0, rct_string_id, ObjectSelectionPages[w->selected_tab].Caption);
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         w->widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
@@ -1216,7 +1213,7 @@ static void window_editor_object_set_page(rct_window* w, int32_t page)
     }
 
     visible_list_refresh(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_editor_object_selection_set_pressed_tab(rct_window* w)
@@ -1349,7 +1346,7 @@ static void window_editor_object_selection_textinput(rct_window* w, rct_widgetin
     w->scrolls->v_top = 0;
 
     visible_list_refresh(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static bool filter_selected(uint8_t objectFlag)
@@ -1463,10 +1460,7 @@ static bool filter_chunks(const ObjectRepositoryItem* item)
                     break;
                 }
             }
-            if (_filter_flags & (1 << (gRideCategories[rideType] + _numSourceGameItems)))
-                return true;
-
-            return false;
+            return (_filter_flags & (1 << (gRideCategories[rideType] + _numSourceGameItems))) != 0;
     }
     return true;
 }
@@ -1533,5 +1527,9 @@ static std::string object_get_description(const void* object)
 
 static int32_t get_selected_object_type(rct_window* w)
 {
-    return w->selected_tab;
+    auto tab = w->selected_tab;
+    if (tab >= OBJECT_TYPE_SCENARIO_TEXT)
+        return tab + 1;
+    else
+        return tab;
 }

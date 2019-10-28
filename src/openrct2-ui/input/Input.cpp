@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,6 +36,7 @@ static void input_handle_console(int32_t key)
             input = CONSOLE_INPUT_LINE_CLEAR;
             break;
         case SDL_SCANCODE_RETURN:
+        case SDL_SCANCODE_KP_ENTER:
             input = CONSOLE_INPUT_LINE_EXECUTE;
             break;
         case SDL_SCANCODE_UP:
@@ -67,6 +68,7 @@ static void input_handle_chat(int32_t key)
             input = CHAT_INPUT_CLOSE;
             break;
         case SDL_SCANCODE_RETURN:
+        case SDL_SCANCODE_KP_ENTER:
             input = CHAT_INPUT_SEND;
             break;
     }
@@ -79,7 +81,6 @@ static void input_handle_chat(int32_t key)
 static void game_handle_key_scroll()
 {
     rct_window* mainWindow;
-    int32_t scrollX, scrollY;
 
     mainWindow = window_get_main();
     if (mainWindow == nullptr)
@@ -97,16 +98,14 @@ static void game_handle_key_scroll()
     if (gChatOpen)
         return;
 
-    scrollX = 0;
-    scrollY = 0;
     const uint8_t* keysState = context_get_keys_state();
-    get_keyboard_map_scroll(keysState, &scrollX, &scrollY);
+    auto scrollCoords = get_keyboard_map_scroll(keysState);
 
-    if (scrollX != 0 || scrollY != 0)
+    if (scrollCoords.x != 0 || scrollCoords.y != 0)
     {
         window_unfollow_sprite(mainWindow);
     }
-    input_scroll_viewport(scrollX, scrollY);
+    input_scroll_viewport(scrollCoords);
 }
 
 static int32_t input_scancode_to_rct_keycode(int32_t sdl_key)

@@ -10,7 +10,7 @@ struct rct_sprite_common
     uint16_t next;
     uint16_t previous;
     // Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    uint8_t linked_list_type_offset;
+    uint8_t linked_list_index;
     // Height from centre of sprite to bottom
     uint8_t sprite_height_negative;
     uint16_t sprite_index;
@@ -22,9 +22,16 @@ struct rct_sprite_common
     uint8_t sprite_width;
     // Height from centre of sprite to top
     uint8_t sprite_height_positive;
+    // Screen Coordinates of sprite
     int16_t sprite_left;
     int16_t sprite_top;
     int16_t sprite_right;
     int16_t sprite_bottom;
+
     uint8_t sprite_direction;
+};
+
+struct rct_sprite_generic : rct_sprite_common
+{
+    uint16_t frame;
 };

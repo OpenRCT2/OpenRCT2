@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -85,7 +85,7 @@ rct_window* window_title_menu_open()
     rct_window* window;
 
     window = window_create(
-        0, context_get_height() - 154, 0, 100, &window_title_menu_events, WC_TITLE_MENU,
+        ScreenCoordsXY(0, context_get_height() - 154), 0, 100, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_title_menu_widgets;
     window->enabled_widgets

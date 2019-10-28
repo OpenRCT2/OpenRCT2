@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,6 +55,24 @@ assert_struct_size(LocationXYZ16, 6);
 
 constexpr int32_t COORDS_NULL = -1;
 
+struct ScreenCoordsXY
+{
+    int32_t x = 0;
+    int32_t y = 0;
+
+    ScreenCoordsXY() = default;
+    constexpr ScreenCoordsXY(int32_t _x, int32_t _y)
+        : x(_x)
+        , y(_y)
+    {
+    }
+
+    const ScreenCoordsXY operator-(const ScreenCoordsXY& rhs) const
+    {
+        return { x - rhs.x, y - rhs.y };
+    }
+};
+
 /**
  * Tile coordinates use 1 x/y increment per tile and 1 z increment per step.
  * Regular ('big', 'sprite') coordinates use 32 x/y increments per tile and 8 z increments per step.
@@ -69,6 +87,57 @@ struct CoordsXY
         : x(_x)
         , y(_y)
     {
+    }
+
+    CoordsXY& operator+=(const CoordsXY rhs)
+    {
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+    }
+
+    CoordsXY& operator-=(const CoordsXY rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+
+    const CoordsXY operator+(const CoordsXY& rhs) const
+    {
+        return { x + rhs.x, y + rhs.y };
+    }
+
+    const CoordsXY operator-(const CoordsXY& rhs) const
+    {
+        return { x - rhs.x, y - rhs.y };
+    }
+
+    CoordsXY Rotate(int32_t direction) const
+    {
+        CoordsXY rotatedCoords;
+        switch (direction & 3)
+        {
+            default:
+            case 0:
+                rotatedCoords.x = x;
+                rotatedCoords.y = y;
+                break;
+            case 1:
+                rotatedCoords.x = y;
+                rotatedCoords.y = -x;
+                break;
+            case 2:
+                rotatedCoords.x = -x;
+                rotatedCoords.y = -y;
+                break;
+            case 3:
+                rotatedCoords.x = -y;
+                rotatedCoords.y = x;
+                break;
+        }
+
+        return rotatedCoords;
     }
 };
 
@@ -91,19 +160,56 @@ struct TileCoordsXY
         y += rhs.y;
         return *this;
     }
+    TileCoordsXY& operator-=(const TileCoordsXY rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+
+    TileCoordsXY Rotate(int32_t direction)
+    {
+        TileCoordsXY rotatedCoords;
+        switch (direction & 3)
+        {
+            default:
+            case 0:
+                rotatedCoords.x = x;
+                rotatedCoords.y = y;
+                break;
+            case 1:
+                rotatedCoords.x = y;
+                rotatedCoords.y = -x;
+                break;
+            case 2:
+                rotatedCoords.x = -x;
+                rotatedCoords.y = -y;
+                break;
+            case 3:
+                rotatedCoords.x = -y;
+                rotatedCoords.y = x;
+                break;
+        }
+
+        return rotatedCoords;
+    }
+
     int32_t x = 0, y = 0;
 };
 
-struct CoordsXYZ
+struct CoordsXYZ : public CoordsXY
 {
-    int32_t x = 0;
-    int32_t y = 0;
     int32_t z = 0;
 
     CoordsXYZ() = default;
     constexpr CoordsXYZ(int32_t _x, int32_t _y, int32_t _z)
-        : x(_x)
-        , y(_y)
+        : CoordsXY(_x, _y)
+        , z(_z)
+    {
+    }
+
+    constexpr CoordsXYZ(CoordsXY c, int32_t _z)
+        : CoordsXY(c)
         , z(_z)
     {
     }
@@ -137,6 +243,12 @@ struct TileCoordsXYZ
         return *this;
     }
 
+    TileCoordsXYZ& operator-=(const TileCoordsXY rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
     bool operator==(const TileCoordsXYZ& other) const
     {
         return x == other.x && y == other.y && z == other.z;
@@ -160,6 +272,14 @@ struct TileCoordsXYZ
  */
 typedef uint8_t Direction;
 
+const Direction INVALID_DIRECTION = 0xFF;
+
+/**
+ * Array of all valid cardinal directions, to make it easy to write range-based for loops like:
+ *   for (Direction d : ALL_DIRECTIONS)
+ */
+constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
+
 /**
  * Given a direction, return the direction that points the other way,
  * on the same axis.
@@ -174,10 +294,34 @@ typedef uint8_t Direction;
     return dir < 4;
 }
 
-struct CoordsXYZD
+/**
+ * Given a direction, return the next cardinal direction, wrapping around if necessary.
+ * (TODO: Figure out if this is CW or CCW)
+ */
+[[maybe_unused]] static constexpr Direction direction_next(Direction dir)
 {
-    int32_t x, y, z;
-    Direction direction;
+    return (dir + 1) & 0x03;
+}
+
+/**
+ * Given a direction, return the previous cardinal direction, wrapping around if necessary.
+ * (TODO: Figure out if this is CW or CCW)
+ */
+[[maybe_unused]] static constexpr Direction direction_prev(Direction dir)
+{
+    return (dir - 1) & 0x03;
+}
+
+struct CoordsXYZD : public CoordsXYZ
+{
+    Direction direction = 0;
+
+    CoordsXYZD() = default;
+    constexpr CoordsXYZD(int32_t _x, int32_t _y, int32_t _z, Direction _d)
+        : CoordsXYZ(_x, _y, _z)
+        , direction(_d)
+    {
+    }
 
     bool isNull() const
     {

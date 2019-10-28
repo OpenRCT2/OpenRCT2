@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,8 +12,12 @@
 
 #include "../common.h"
 #include "../ride/RideTypes.h"
+#include "../world/Location.hpp"
 
+#include <functional>
 #include <limits>
+#include <list>
+#include <memory>
 
 struct rct_drawpixelinfo;
 struct rct_window;
@@ -487,9 +491,10 @@ enum
 #define WC_RIDE_CONSTRUCTION__WIDX_ROTATE 32
 #define WC_SCENERY__WIDX_SCENERY_TAB_1 4
 #define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 25
+#define WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON 30
 #define WC_PEEP__WIDX_PATROL 11
-#define WC_PEEP__WIDX_ACTION_LBL 12
-#define WC_PEEP__WIDX_PICKUP 13
+#define WC_PEEP__WIDX_ACTION_LBL 13
+#define WC_PEEP__WIDX_PICKUP 14
 #define WC_TRACK_DESIGN_LIST__WIDX_ROTATE 8
 #define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE 3
 #define WC_MAP__WIDX_ROTATE_90 20
@@ -579,7 +584,9 @@ extern colour_t gCurrentWindowColours[4];
 
 extern bool gDisableErrorWindowSound;
 
-size_t window_get_index(const rct_window* w);
+std::list<std::shared_ptr<rct_window>>::iterator window_get_iterator(const rct_window* w);
+void window_visit_each(std::function<void(rct_window*)> func);
+
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();
@@ -587,7 +594,7 @@ void window_update_all();
 void window_set_window_limit(int32_t value);
 
 rct_window* window_create(
-    int32_t x, int32_t y, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    ScreenCoordsXY screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
     uint16_t flags);
 rct_window* window_create_auto_pos(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
@@ -602,9 +609,8 @@ void window_close_all_except_class(rct_windowclass cls);
 void window_close_all_except_flags(uint16_t flags);
 rct_window* window_find_by_class(rct_windowclass cls);
 rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number);
-rct_window* window_find_from_point(int32_t x, int32_t y);
-rct_widgetindex window_find_widget_from_point(rct_window* w, int32_t x, int32_t y);
-void window_invalidate(rct_window* window);
+rct_window* window_find_from_point(ScreenCoordsXY screenCoords);
+rct_widgetindex window_find_widget_from_point(rct_window* w, ScreenCoordsXY screenCoords);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
 void window_invalidate_all();
@@ -625,8 +631,6 @@ void window_push_others_below(rct_window* w1);
 
 rct_window* window_get_main();
 
-void window_set_location(rct_window* w, int32_t x, int32_t y, int32_t z);
-void window_scroll_to_viewport(rct_window* w);
 void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z);
 void window_rotate_camera(rct_window* w, int32_t direction);
 void window_viewport_get_map_coords_by_cursor(
@@ -644,8 +648,8 @@ void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t to
 void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi);
 void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w);
 
-void window_set_position(rct_window* w, int32_t x, int32_t y);
-void window_move_position(rct_window* w, int32_t dx, int32_t dy);
+void window_set_position(rct_window* w, ScreenCoordsXY screenCoords);
+void window_move_position(rct_window* w, ScreenCoordsXY screenCoords);
 void window_resize(rct_window* w, int32_t dw, int32_t dh);
 void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 
@@ -663,20 +667,15 @@ void window_relocate_windows(int32_t width, int32_t height);
 void window_resize_gui(int32_t width, int32_t height);
 void window_resize_gui_scenario_editor(int32_t width, int32_t height);
 void window_ride_construct(rct_window* w);
-void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY);
-void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY);
-void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY);
+void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords);
+void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords);
+void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords);
 
 void window_bubble_list_item(rct_window* w, int32_t item_position);
 
 void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id);
 
 void window_staff_list_init_vars();
-
-void game_command_callback_pickup_guest(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
-void game_command_callback_pickup_staff(
-    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
 
 void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex);
@@ -687,22 +686,22 @@ void window_event_unknown_05_call(rct_window* w);
 void window_event_update_call(rct_window* w);
 void window_event_periodic_update_call(rct_window* w);
 void window_event_unknown_08_call(rct_window* w);
-void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex);
 void window_event_unknown_0E_call(rct_window* w);
 void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
-void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
-void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
-void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
+void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text);
 void window_event_viewport_rotate_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
 rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex);
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-void window_event_moved_call(rct_window* w, int32_t x, int32_t y);
+int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+void window_event_moved_call(rct_window* w, ScreenCoordsXY screenCoords);
 void window_event_invalidate_call(rct_window* w);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi);
 void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
@@ -710,7 +709,7 @@ void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32
 void invalidate_all_windows_after_input();
 void textinput_cancel();
 
-void window_move_and_snap(rct_window* w, int32_t newWindowX, int32_t newWindowY, int32_t snapProximity);
+void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
 int32_t window_can_resize(rct_window* w);
 
 void window_start_textbox(

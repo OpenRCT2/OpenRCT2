@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <atomic>
 #include <cassert>
 #include <condition_variable>
@@ -45,9 +46,10 @@ private:
     typedef std::unique_lock<std::mutex> unique_lock;
 
 public:
-    JobPool()
+    JobPool(size_t maxThreads = 255)
     {
-        for (size_t n = 0; n < std::thread::hardware_concurrency(); n++)
+        maxThreads = std::min<size_t>(maxThreads, std::thread::hardware_concurrency());
+        for (size_t n = 0; n < maxThreads; n++)
         {
             _threads.emplace_back(&JobPool::ProcessQueue, this);
         }
@@ -68,16 +70,11 @@ public:
         }
     }
 
-    void AddTask(std::function<void()> workFn, std::function<void()> completionFn)
+    void AddTask(std::function<void()> workFn, std::function<void()> completionFn = nullptr)
     {
         unique_lock lock(_mutex);
         _pending.emplace_back(workFn, completionFn);
         _condPending.notify_one();
-    }
-
-    void AddTask(std::function<void()> workFn)
-    {
-        return AddTask(workFn, nullptr);
     }
 
     void Join(std::function<void()> reportFn = nullptr)

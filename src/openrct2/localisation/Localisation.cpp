@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,14 +30,15 @@
 #include "Localisation.h"
 
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <ctype.h>
 #include <iterator>
 #include <limits.h>
 
-char gCommonStringFormatBuffer[512];
-uint8_t gCommonFormatArgs[80];
-uint8_t gMapTooltipFormatArgs[40];
+thread_local char gCommonStringFormatBuffer[512];
+thread_local uint8_t gCommonFormatArgs[80];
+thread_local uint8_t gMapTooltipFormatArgs[40];
 
 #ifdef DEBUG
 // Set to true before a string format call to see details of the formatting.
@@ -370,26 +371,6 @@ static void format_append_string(char** dest, size_t* size, const utf8* string)
     if ((*size) == 0)
         return;
     size_t length = strlen(string);
-    if (length < (*size))
-    {
-        std::memcpy((*dest), string, length);
-        (*dest) += length;
-        (*size) -= length;
-    }
-    else
-    {
-        std::memcpy((*dest), string, (*size) - 1);
-        (*dest) += (*size) - 1;
-        *(*dest)++ = '\0';
-        (*size) = 0;
-    }
-}
-
-static void format_append_string_n(char** dest, size_t* size, const utf8* string, size_t maxlen)
-{
-    if ((*size) == 0)
-        return;
-    size_t length = std::min(maxlen, strlen(string));
     if (length < (*size))
     {
         std::memcpy((*dest), string, length);
@@ -1256,16 +1237,14 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
     }
     else if (format <= USER_STRING_END)
     {
+        // User strings should no longer be used
+        assert(false);
+
         // Custom string
         format -= 0x8000;
 
         // Bits 10, 11 represent number of bytes to pop off arguments
         *args += (format & 0xC00) >> 9;
-        format &= ~0xC00;
-
-        format_append_string_n(dest, size, gUserStrings[format], USER_STRING_MAX_LENGTH);
-        if ((*size) > 0)
-            *(*dest) = '\0';
     }
     else if (format <= REAL_NAME_END)
     {
@@ -1279,8 +1258,6 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
         format_push_char(real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)]);
         format_push_char('.');
         *(*dest) = '\0';
-
-        *args += 4;
     }
     else
     {
@@ -1288,6 +1265,32 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
         log_error("Localisation CALLPROC reached. Please contact a dev");
         assert(false);
     }
+}
+
+std::string format_string(rct_string_id format, const void* args)
+{
+    std::string buffer(256, 0);
+    size_t len{};
+    for (;;)
+    {
+        format_string(buffer.data(), buffer.size(), format, args);
+        len = buffer.find('\0');
+        if (len == std::string::npos)
+        {
+            len = buffer.size();
+        }
+        if (len >= buffer.size() - 1)
+        {
+            // Null terminator to close to end of buffer, grow buffer and try again
+            buffer.resize(buffer.size() * 2);
+        }
+        else
+        {
+            buffer.resize(len);
+            break;
+        }
+    }
+    return buffer;
 }
 
 /**
@@ -1512,8 +1515,8 @@ money32 string_to_money(const char* string_to_monetise)
 
     auto number = std::stod(processedString, nullptr);
     number /= (currencyDesc->rate / 10.0);
-    auto whole = static_cast<uint16_t>(number);
-    auto fraction = static_cast<uint8_t>((number - whole) * 100);
+    auto whole = static_cast<int32_t>(number);
+    auto fraction = static_cast<uint8_t>(ceil((number - whole) * 100.0));
 
     money32 result = MONEY(whole, fraction);
     // Check if MONEY resulted in overflow

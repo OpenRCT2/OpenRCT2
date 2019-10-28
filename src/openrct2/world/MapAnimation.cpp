@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,53 +25,42 @@
 #include "SmallScenery.h"
 #include "Sprite.h"
 
-#include <cstring>
-
 using map_animation_invalidate_event_handler = bool (*)(int32_t x, int32_t y, int32_t baseZ);
 
-static bool map_animation_invalidate(rct_map_animation* obj);
+static std::vector<MapAnimation> _mapAnimations;
 
-uint16_t gNumMapAnimations;
-rct_map_animation gAnimatedObjects[MAX_ANIMATED_OBJECTS];
+constexpr size_t MAX_ANIMATED_OBJECTS = 2000;
 
-/**
- *
- *  rct2: 0x0068AF67
- *
- * @param type (dh)
- * @param x (ax)
- * @param y (cx)
- * @param z (dl)
- */
+static bool InvalidateMapAnimation(const MapAnimation& obj);
+
+static bool DoesAnimationExist(int32_t type, const CoordsXYZ& location)
+{
+    for (const auto& a : _mapAnimations)
+    {
+        if (a.type == type && a.location.x == location.x && a.location.y == location.y && a.location.z == location.z)
+        {
+            // Animation already exists
+            return true;
+        }
+    }
+    return false;
+}
+
 void map_animation_create(int32_t type, int32_t x, int32_t y, int32_t z)
 {
-    rct_map_animation* aobj = &gAnimatedObjects[0];
-    int32_t numAnimatedObjects = gNumMapAnimations;
-    if (numAnimatedObjects >= MAX_ANIMATED_OBJECTS)
+    auto location = CoordsXYZ{ x, y, z };
+    if (!DoesAnimationExist(type, location))
     {
-        log_error("Exceeded the maximum number of animations");
-        return;
+        if (_mapAnimations.size() < MAX_ANIMATED_OBJECTS)
+        {
+            // Create new animation
+            _mapAnimations.push_back({ (uint8_t)type, location });
+        }
+        else
+        {
+            log_error("Exceeded the maximum number of animations");
+        }
     }
-    for (int32_t i = 0; i < numAnimatedObjects; i++, aobj++)
-    {
-        if (aobj->x != x)
-            continue;
-        if (aobj->y != y)
-            continue;
-        if (aobj->baseZ != z)
-            continue;
-        if (aobj->type != type)
-            continue;
-        // Animation already exists
-        return;
-    }
-
-    // Create new animation
-    gNumMapAnimations++;
-    aobj->type = type;
-    aobj->x = x;
-    aobj->y = y;
-    aobj->baseZ = z;
 }
 
 /**
@@ -80,22 +69,17 @@ void map_animation_create(int32_t type, int32_t x, int32_t y, int32_t z)
  */
 void map_animation_invalidate_all()
 {
-    rct_map_animation* aobj = &gAnimatedObjects[0];
-    int32_t numAnimatedObjects = gNumMapAnimations;
-    while (numAnimatedObjects > 0)
+    auto it = _mapAnimations.begin();
+    while (it != _mapAnimations.end())
     {
-        if (map_animation_invalidate(aobj))
+        if (InvalidateMapAnimation(*it))
         {
-            // Remove animated object
-            gNumMapAnimations--;
-            numAnimatedObjects--;
-            if (numAnimatedObjects > 0)
-                memmove(aobj, aobj + 1, numAnimatedObjects * sizeof(rct_map_animation));
+            // Map animation has finished, remove it
+            it = _mapAnimations.erase(it);
         }
         else
         {
-            numAnimatedObjects--;
-            aobj++;
+            it++;
         }
     }
 }
@@ -107,6 +91,8 @@ void map_animation_invalidate_all()
 static bool map_animation_invalidate_ride_entrance(int32_t x, int32_t y, int32_t baseZ)
 {
     auto tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -141,13 +127,15 @@ static bool map_animation_invalidate_queue_banner(int32_t x, int32_t y, int32_t 
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (!(tileElement->flags & 1))
+        if (!(tileElement->AsPath()->IsQueue()))
             continue;
         if (!tileElement->AsPath()->HasQueueBanner())
             continue;
@@ -176,6 +164,8 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
     Peep* peep;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -211,7 +201,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
                 for (; spriteIdx != SPRITE_INDEX_NULL; spriteIdx = sprite->generic.next_in_quadrant)
                 {
                     sprite = get_sprite(spriteIdx);
-                    if (sprite->generic.linked_list_type_offset != SPRITE_LIST_PEEP * 2)
+                    if (sprite->generic.linked_list_index != SPRITE_LIST_PEEP)
                         continue;
 
                     peep = &sprite->peep;
@@ -247,6 +237,8 @@ static bool map_animation_invalidate_park_entrance(int32_t x, int32_t y, int32_t
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -275,6 +267,8 @@ static bool map_animation_invalidate_track_waterfall(int32_t x, int32_t y, int32
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -302,6 +296,8 @@ static bool map_animation_invalidate_track_rapids(int32_t x, int32_t y, int32_t 
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -329,10 +325,10 @@ static bool map_animation_invalidate_track_onridephoto(int32_t x, int32_t y, int
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
-        if (tileElement == nullptr)
-            break;
         if (tileElement->base_height != baseZ)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -369,6 +365,8 @@ static bool map_animation_invalidate_track_whirlpool(int32_t x, int32_t y, int32
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -396,6 +394,8 @@ static bool map_animation_invalidate_track_spinningtunnel(int32_t x, int32_t y, 
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -433,6 +433,8 @@ static bool map_animation_invalidate_banner(int32_t x, int32_t y, int32_t baseZ)
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -459,6 +461,8 @@ static bool map_animation_invalidate_large_scenery(int32_t x, int32_t y, int32_t
 
     bool wasInvalidated = false;
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -492,6 +496,8 @@ static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t bas
 
     bool removeAnimation = true;
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return removeAnimation;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -552,6 +558,8 @@ static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
 
     bool wasInvalidated = false;
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return true;
     do
     {
         if (tileElement->base_height != baseZ)
@@ -598,9 +606,117 @@ static constexpr const map_animation_invalidate_event_handler _animatedObjectEve
 /**
  * @returns true if the animation should be removed.
  */
-static bool map_animation_invalidate(rct_map_animation* obj)
+static bool InvalidateMapAnimation(const MapAnimation& a)
 {
-    assert(obj->type < MAP_ANIMATION_TYPE_COUNT);
+    if (a.type < std::size(_animatedObjectEventHandlers))
+    {
+        return _animatedObjectEventHandlers[a.type](a.location.x, a.location.y, a.location.z);
+    }
+    return true;
+}
 
-    return _animatedObjectEventHandlers[obj->type](obj->x, obj->y, obj->baseZ);
+const std::vector<MapAnimation>& GetMapAnimations()
+{
+    return _mapAnimations;
+}
+
+static void ClearMapAnimations()
+{
+    _mapAnimations.clear();
+}
+
+void AutoCreateMapAnimations()
+{
+    ClearMapAnimations();
+
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        auto el = it.element;
+        auto loc = CoordsXYZ{ it.x * 32, it.y * 32, el->base_height };
+        switch (el->GetType())
+        {
+            case TILE_ELEMENT_TYPE_BANNER:
+                map_animation_create(MAP_ANIMATION_TYPE_BANNER, loc.x, loc.y, loc.z);
+                break;
+            case TILE_ELEMENT_TYPE_WALL:
+            {
+                auto wallEl = el->AsWall();
+                auto entry = wallEl->GetEntry();
+                if (entry != nullptr
+                    && ((entry->wall.flags2 & WALL_SCENERY_2_ANIMATED) || entry->wall.scrolling_mode != SCROLLING_MODE_NONE))
+                {
+                    map_animation_create(MAP_ANIMATION_TYPE_WALL, loc.x, loc.y, loc.z);
+                }
+                break;
+            }
+            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            {
+                auto sceneryEl = el->AsSmallScenery();
+                auto entry = sceneryEl->GetEntry();
+                if (entry != nullptr && scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_ANIMATED))
+                {
+                    map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, loc.x, loc.y, loc.z);
+                }
+                break;
+            }
+            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            {
+                auto sceneryEl = el->AsLargeScenery();
+                auto entry = sceneryEl->GetEntry();
+                if (entry != nullptr && (entry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED))
+                {
+                    map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, loc.x, loc.y, loc.z);
+                }
+                break;
+            }
+            case TILE_ELEMENT_TYPE_PATH:
+            {
+                auto path = el->AsPath();
+                if (path->HasQueueBanner())
+                {
+                    map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, loc.x, loc.y, loc.z);
+                }
+                break;
+            }
+            case TILE_ELEMENT_TYPE_ENTRANCE:
+            {
+                auto entrance = el->AsEntrance();
+                switch (entrance->GetEntranceType())
+                {
+                    case ENTRANCE_TYPE_PARK_ENTRANCE:
+                        if (entrance->GetSequenceIndex() == 0)
+                        {
+                            map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, loc.x, loc.y, loc.z);
+                        }
+                        break;
+                    case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                        map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, loc.x, loc.y, loc.z);
+                        break;
+                }
+                break;
+            }
+            case TILE_ELEMENT_TYPE_TRACK:
+            {
+                auto track = el->AsTrack();
+                switch (track->GetTrackType())
+                {
+                    case TRACK_ELEM_WATERFALL:
+                        map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, loc.x, loc.y, loc.z);
+                        break;
+                    case TRACK_ELEM_RAPIDS:
+                        map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, loc.x, loc.y, loc.z);
+                        break;
+                    case TRACK_ELEM_WHIRLPOOL:
+                        map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, loc.x, loc.y, loc.z);
+                        break;
+                    case TRACK_ELEM_SPINNING_TUNNEL:
+                        map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc.x, loc.y, loc.z);
+                        break;
+                }
+                break;
+            }
+        }
+    }
 }

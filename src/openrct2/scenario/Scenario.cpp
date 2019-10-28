@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../core/Random.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -49,6 +50,7 @@
 #include "ScenarioSources.h"
 
 #include <algorithm>
+#include <bitset>
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
@@ -80,7 +82,6 @@ money32 gScenarioCompanyValueRecord;
 
 char gScenarioFileName[MAX_PATH];
 
-static int32_t scenario_create_ducks();
 static void scenario_objective_check();
 
 using namespace OpenRCT2;
@@ -114,7 +115,7 @@ void scenario_begin()
 
     {
         utf8 normalisedName[64];
-        scenario_normalise_name(normalisedName, sizeof(normalisedName), gS6Info.name);
+        ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gS6Info.name);
 
         rct_string_id localisedStringIds[3];
         if (language_get_localised_scenario_strings(normalisedName, localisedStringIds))
@@ -125,7 +126,7 @@ void scenario_begin()
             }
             if (localisedStringIds[1] != STR_NONE)
             {
-                park_set_name(language_get_string(localisedStringIds[1]));
+                park.Name = language_get_string(localisedStringIds[1]);
             }
             if (localisedStringIds[2] != STR_NONE)
             {
@@ -135,12 +136,9 @@ void scenario_begin()
     }
 
     // Set the last saved game path
-    char parkName[128];
-    format_string(parkName, 128, gParkName, &gParkNameArgs);
-
     char savePath[MAX_PATH];
     platform_get_user_directory(savePath, "save", sizeof(savePath));
-    safe_strcat_path(savePath, parkName, sizeof(savePath));
+    safe_strcat_path(savePath, park.Name.c_str(), sizeof(savePath));
     path_append_extension(savePath, ".sv6", sizeof(savePath));
     gScenarioSavePath = savePath;
 
@@ -238,7 +236,7 @@ static void scenario_entrance_fee_too_high_check()
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
     {
-        if (gParkEntrances.size() > 0)
+        if (!gParkEntrances.empty())
         {
             const auto& entrance = gParkEntrances[0];
             auto x = entrance.x + 16;
@@ -417,63 +415,74 @@ void scenario_update()
     }
     scenario_update_daynight_cycle();
 }
-
 /**
  *
  *  rct2: 0x006744A9
  */
-static int32_t scenario_create_ducks()
+bool scenario_create_ducks()
 {
-    int32_t i, j, r, c, x, y, waterZ, centreWaterZ, x2, y2;
+    // Check NxN area around centre tile defined by SquareSize
+    constexpr int32_t SquareSize = 7;
+    constexpr int32_t SquareCentre = SquareSize / 2;
+    constexpr int32_t SquareRadiusSize = SquareCentre * 32;
 
-    r = scenario_rand();
-    x = ((r >> 16) & 0xFFFF) & 0x7F;
-    y = (r & 0xFFFF) & 0x7F;
-    x = (x + 64) * 32;
-    y = (y + 64) * 32;
+    CoordsXY centrePos;
+    centrePos.x = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
+    centrePos.y = SquareRadiusSize + (scenario_rand_max(MAXIMUM_MAP_SIZE_TECHNICAL - SquareCentre) * 32);
 
-    if (!map_is_location_in_park({ x, y }))
-        return 0;
+    Guard::Assert(map_is_location_valid(centrePos));
 
-    centreWaterZ = (tile_element_height(x, y) >> 16) & 0xFFFF;
+    if (!map_is_location_in_park(centrePos))
+        return false;
+
+    int32_t centreWaterZ = (tile_element_water_height(centrePos));
     if (centreWaterZ == 0)
-        return 0;
+        return false;
 
-    // Check 7x7 area around centre tile
-    x2 = x - (32 * 3);
-    y2 = y - (32 * 3);
-    c = 0;
-    for (i = 0; i < 7; i++)
+    CoordsXY innerPos{ centrePos.x - (32 * SquareCentre), centrePos.y - (32 * SquareCentre) };
+    int32_t waterTiles = 0;
+    for (int32_t y = 0; y < SquareSize; y++)
     {
-        for (j = 0; j < 7; j++)
+        for (int32_t x = 0; x < SquareSize; x++)
         {
-            waterZ = (tile_element_height(x2, y2) >> 16) & 0xFFFF;
-            if (waterZ == centreWaterZ)
-                c++;
+            if (!map_is_location_valid(innerPos))
+                continue;
 
-            x2 += 32;
+            if (!map_is_location_in_park(innerPos))
+                continue;
+
+            int32_t waterZ = (tile_element_water_height(innerPos));
+            if (waterZ == centreWaterZ)
+                waterTiles++;
+
+            innerPos.x += 32;
         }
-        x2 -= 224;
-        y2 += 32;
+        innerPos.x -= SquareSize * 32;
+        innerPos.y += 32;
     }
 
     // Must be at least 25 water tiles of the same height in 7x7 area
-    if (c < 25)
-        return 0;
+    if (waterTiles < 25)
+        return false;
 
     // Set x, y to the centre of the tile
-    x += 16;
-    y += 16;
-    c = (scenario_rand() & 3) + 2;
-    for (i = 0; i < c; i++)
+    centrePos.x += 16;
+    centrePos.y += 16;
+
+    uint32_t duckCount = (scenario_rand() % 4) + 2;
+    for (uint32_t i = 0; i < duckCount; i++)
     {
-        r = scenario_rand();
-        x2 = (r >> 16) & 0x7F;
-        y2 = (r & 0xFFFF) & 0x7F;
-        create_duck(x + x2 - 64, y + y2 - 64);
+        uint32_t r = scenario_rand();
+        innerPos.x = (r >> 16) % SquareRadiusSize;
+        innerPos.y = (r & 0xFFFF) % SquareRadiusSize;
+
+        CoordsXY targetPos{ centrePos.x + innerPos.x - SquareRadiusSize, centrePos.y + innerPos.y - SquareRadiusSize };
+
+        Guard::Assert(map_is_location_valid(targetPos));
+        create_duck(targetPos);
     }
 
-    return 1;
+    return true;
 }
 
 const random_engine_t::state_type& scenario_rand_state()
@@ -493,77 +502,10 @@ void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result
  *
  * @return eax
  */
-#ifndef DEBUG_DESYNC
 random_engine_t::result_type scenario_rand()
-#else
-static FILE* fp = nullptr;
-static const char* realm = "LC";
-
-uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data)
-#endif
 {
-#ifdef DEBUG_DESYNC
-    if (fp == nullptr)
-    {
-        if (network_get_mode() == NETWORK_MODE_SERVER)
-        {
-            fp = fopen("server_rand.txt", "wt");
-            realm = "SV";
-        }
-        else if (network_get_mode() == NETWORK_MODE_CLIENT)
-        {
-            fp = fopen("client_rand.txt", "wt");
-            realm = "CL";
-        }
-        else
-        {
-            if (fp)
-                fclose(fp);
-            fp = nullptr;
-            realm = "LC";
-        }
-    }
-    if (fp)
-    {
-        fprintf(fp, "Tick: %d, Rand: %08X - REF: %s:%u %s (%p)\n", gCurrentTicks, gScenarioSrand1, file, line, function, data);
-    }
-    if (!gInUpdateCode && !gInMapInitCode)
-    {
-        log_warning("scenario_rand called from outside game update");
-        assert(false);
-    }
-#endif
-
     return gScenarioRand();
 }
-
-#ifdef DEBUG_DESYNC
-void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char* clientHash, const char* serverHash)
-{
-    if (fp == nullptr)
-    {
-        if (network_get_mode() == NETWORK_MODE_SERVER)
-        {
-            fp = fopen("server_rand.txt", "wt");
-            realm = "SV";
-        }
-        else if (network_get_mode() == NETWORK_MODE_CLIENT)
-        {
-            fp = fopen("client_rand.txt", "wt");
-            realm = "CL";
-        }
-    }
-    if (fp)
-    {
-        const bool sprites_mismatch = serverHash[0] != '\0' && strcmp(clientHash, serverHash);
-
-        fprintf(
-            fp, "[%s] !! DESYNC !! Tick: %d, Client Hash: %s, Server Hash: %s, Client Rand: %08X, Server Rand: %08X - %s\n",
-            realm, tick, clientHash, ((serverHash[0] != '\0') ? serverHash : "<NONE:0>"), srand0, server_srand0,
-            (sprites_mismatch ? "Sprite hash mismatch" : "scenario rand mismatch"));
-    }
-}
-#endif
 
 uint32_t scenario_rand_max(uint32_t max)
 {
@@ -586,24 +528,23 @@ uint32_t scenario_rand_max(uint32_t max)
 static bool scenario_prepare_rides_for_save()
 {
     int32_t isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
-    int32_t i;
-    Ride* ride;
     uint8_t rcs = 0;
 
-    FOR_ALL_RIDES (i, ride)
+    for (auto& ride : GetRideManager())
     {
-        const rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-
-        // If there are more than 5 roller coasters, only mark the first five.
-        if (isFiveCoasterObjective && rideEntry != nullptr
-            && (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+        const auto* rideEntry = ride.GetRideEntry();
+        if (rideEntry != nullptr)
         {
-            ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
-            rcs++;
-        }
-        else
-        {
-            ride->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            // If there are more than 5 roller coasters, only mark the first five.
+            if (isFiveCoasterObjective && (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
+            {
+                ride.lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+                rcs++;
+            }
+            else
+            {
+                ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+            }
         }
     }
 
@@ -624,7 +565,7 @@ static bool scenario_prepare_rides_for_save()
 
             if (isFiveCoasterObjective)
             {
-                ride = get_ride(it.element->AsTrack()->GetRideIndex());
+                auto ride = get_ride(it.element->AsTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
@@ -646,10 +587,12 @@ static bool scenario_prepare_rides_for_save()
  */
 bool scenario_prepare_for_save()
 {
-    gS6Info.entry.flags = 255;
+    auto& park = GetContext()->GetGameState()->GetPark();
+    auto parkName = park.Name.c_str();
 
+    gS6Info.entry.flags = 255;
     if (gS6Info.name[0] == 0)
-        format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
+        String::Set(gS6Info.name, sizeof(gS6Info.name), parkName);
 
     gS6Info.objective_type = gScenarioObjectiveType;
     gS6Info.objective_arg_1 = gScenarioObjectiveYear;
@@ -673,11 +616,28 @@ bool scenario_prepare_for_save()
 
 /**
  * Modifies the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
- *
- * TODO: This employs some black casting magic that should go away once we export to our own format instead of SV6.
  */
 void scenario_fix_ghosts(rct_s6_data* s6)
 {
+    // Build tile pointer cache (needed to get the first element at a certain location)
+    RCT12TileElement* tilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+    for (size_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    {
+        tilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
+    }
+
+    RCT12TileElement* tileElement = s6->tile_elements;
+    RCT12TileElement** tile = tilePointers;
+    for (size_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (size_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            *tile++ = tileElement;
+            while (!(tileElement++)->IsLastForTile())
+                ;
+        }
+    }
+
     // Remove all ghost elements
     RCT12TileElement* destinationElement = s6->tile_elements;
 
@@ -685,15 +645,16 @@ void scenario_fix_ghosts(rct_s6_data* s6)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            RCT12TileElement* originalElement = reinterpret_cast<RCT12TileElement*>(map_get_first_element_at(x, y));
+            // This is the equivalent of map_get_first_element_at(x, y), but on S6 data.
+            RCT12TileElement* originalElement = tilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
             do
             {
                 if (originalElement->IsGhost())
                 {
-                    BannerIndex bannerIndex = tile_element_get_banner_index(reinterpret_cast<TileElement*>(originalElement));
+                    BannerIndex bannerIndex = originalElement->GetBannerIndex();
                     if (bannerIndex != BANNER_INDEX_NULL)
                     {
-                        rct_banner* banner = &s6->banners[bannerIndex];
+                        auto banner = &s6->banners[bannerIndex];
                         if (banner->type != BANNER_NULL)
                         {
                             banner->type = BANNER_NULL;
@@ -714,14 +675,28 @@ void scenario_fix_ghosts(rct_s6_data* s6)
     }
 }
 
+static void ride_all_has_any_track_elements(std::array<bool, RCT12_MAX_RIDES_IN_PARK>& rideIndexArray)
+{
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            continue;
+        if (it.element->IsGhost())
+            continue;
+
+        rideIndexArray[it.element->AsTrack()->GetRideIndex()] = true;
+    }
+}
+
 void scenario_remove_trackless_rides(rct_s6_data* s6)
 {
-    bool rideHasTrack[MAX_RIDES];
+    std::array<bool, RCT12_MAX_RIDES_IN_PARK> rideHasTrack{};
     ride_all_has_any_track_elements(rideHasTrack);
     for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
     {
-        rct2_ride* ride = &s6->rides[i];
-
+        auto ride = &s6->rides[i];
         if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
         {
             continue;
@@ -783,30 +758,27 @@ static void scenario_objective_check_park_value_by()
  **/
 static void scenario_objective_check_10_rollercoasters()
 {
-    int32_t i, rcs = 0;
-    uint8_t type_already_counted[256] = {};
-    Ride* ride;
-
-    FOR_ALL_RIDES (i, ride)
+    auto rcs = 0;
+    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
+    for (const auto& ride : GetRideManager())
     {
-        uint8_t subtype_id = ride->subtype;
-        rct_ride_entry* rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == nullptr)
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
         {
-            continue;
-        }
-
-        if (rideEntry != nullptr && ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER)
-            && ride->status == RIDE_STATUS_OPEN && ride->excitement >= RIDE_RATING(6, 00)
-            && type_already_counted[subtype_id] == 0)
-        {
-            type_already_counted[subtype_id]++;
-            rcs++;
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                {
+                    type_already_counted[ride.subtype] = true;
+                    rcs++;
+                }
+            }
         }
     }
-
     if (rcs >= 10)
+    {
         scenario_success();
+    }
 }
 
 /**
@@ -880,59 +852,59 @@ static void scenario_objective_check_monthly_ride_income()
  */
 static void scenario_objective_check_10_rollercoasters_length()
 {
-    int32_t i, rcs = 0;
-    uint8_t type_already_counted[256] = {};
-    int16_t objective_length = gScenarioObjectiveNumGuests;
-    Ride* ride;
-
-    FOR_ALL_RIDES (i, ride)
+    const auto objective_length = gScenarioObjectiveNumGuests;
+    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
+    auto rcs = 0;
+    for (const auto& ride : GetRideManager())
     {
-        uint8_t subtype_id = ride->subtype;
-        rct_ride_entry* rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == nullptr)
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
         {
-            continue;
-        }
-        if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && ride->status == RIDE_STATUS_OPEN
-            && ride->excitement >= RIDE_RATING(7, 00) && type_already_counted[subtype_id] == 0)
-        {
-            if ((ride_get_total_length(ride) >> 16) > objective_length)
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
             {
-                type_already_counted[subtype_id]++;
-                rcs++;
+                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                {
+                    if ((ride_get_total_length(&ride) >> 16) > objective_length)
+                    {
+                        type_already_counted[ride.subtype] = true;
+                        rcs++;
+                    }
+                }
             }
         }
     }
-
     if (rcs >= 10)
+    {
         scenario_success();
+    }
 }
 
 static void scenario_objective_check_finish_5_rollercoasters()
 {
-    money32 objectiveRideExcitement = gScenarioObjectiveCurrency;
+    const auto objectiveRideExcitement = gScenarioObjectiveCurrency;
 
     // Originally, this did not check for null rides, neither did it check if
     // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
-    int32_t i;
-    Ride* ride;
-    int32_t rcs = 0;
-    FOR_ALL_RIDES (i, ride)
+    auto rcs = 0;
+    for (const auto& ride : GetRideManager())
     {
-        const rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-        if (rideEntry == nullptr)
+        if (ride.status != RIDE_STATUS_CLOSED && ride.excitement >= objectiveRideExcitement)
         {
-            continue;
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                if ((ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+                    && ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
+                {
+                    rcs++;
+                }
+            }
         }
-
-        if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objectiveRideExcitement
-            && (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && // Set on partially finished coasters
-            ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
-            rcs++;
     }
-
     if (rcs >= 5)
+    {
         scenario_success();
+    }
 }
 
 static void scenario_objective_check_replay_loan_and_park_value()

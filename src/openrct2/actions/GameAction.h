@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -71,7 +71,7 @@ public:
     GA_ERROR Error = GA_ERROR::OK;
     rct_string_id ErrorTitle = STR_NONE;
     rct_string_id ErrorMessage = STR_NONE;
-    std::array<uint8_t, 12> ErrorMessageArgs;
+    std::array<uint8_t, 32> ErrorMessageArgs;
     CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
     money32 Cost = 0;
     uint16_t ExpenditureType = 0;
@@ -93,8 +93,8 @@ public:
 private:
     uint32_t const _type;
 
-    NetworkPlayerId_t _playerId = { 0 }; // Callee
-    uint32_t _flags = 0;                 // GAME_COMMAND_FLAGS
+    NetworkPlayerId_t _playerId = { -1 }; // Callee
+    uint32_t _flags = 0;                  // GAME_COMMAND_FLAGS
     uint32_t _networkId = 0;
     Callback_t _callback;
 
@@ -126,7 +126,7 @@ public:
         // Make sure we execute some things only on the client.
         uint16_t flags = 0;
 
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_5) != 0)
+        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_NO_SPEND) != 0)
         {
             flags |= GA_FLAGS::CLIENT_ONLY;
         }
@@ -189,6 +189,15 @@ public:
     }
 
     /**
+     * Override this to specify the wait time in milliseconds the player is required to wait before
+     * being able to execute it again.
+     */
+    virtual uint32_t GetCooldownTime() const
+    {
+        return 0;
+    }
+
+    /**
      * Query the result of the game action without changing the game state.
      */
     virtual GameActionResult::Ptr Query() const abstract;
@@ -245,6 +254,20 @@ namespace GameActions
     void Initialize();
     void Register();
     bool IsValidId(uint32_t id);
+
+    // Halts the queue processing until ResumeQueue is called, any calls to ProcessQueue
+    // will have no effect during suspension. It has no effect of actions that will not
+    // cross the network.
+    void SuspendQueue();
+
+    // Resumes queue processing.
+    void ResumeQueue();
+
+    void Enqueue(const GameAction* ga, uint32_t tick);
+    void Enqueue(GameAction::Ptr&& ga, uint32_t tick);
+    void ProcessQueue();
+    void ClearQueue();
+
     GameAction::Ptr Create(uint32_t id);
     GameAction::Ptr Clone(const GameAction* action);
 

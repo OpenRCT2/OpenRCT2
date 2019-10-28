@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,12 +13,15 @@
 #include "../ride/RideTypes.h"
 
 #define AUDIO_DEVICE_NAME_SIZE 256
-#define AUDIO_MAX_RIDE_MUSIC 2
+#define AUDIO_MAX_RIDE_MUSIC 32
 #define AUDIO_MAX_VEHICLE_SOUNDS 14
 #define NUM_DEFAULT_MUSIC_TRACKS 46
 #define AUDIO_PLAY_AT_CENTRE 0x8000
 #define AUDIO_PLAY_AT_LOCATION 0x8001
 #define SOUND_ID_NULL 0xFFFF
+
+enum class SoundId : uint8_t;
+struct CoordsXYZ;
 
 struct audio_device
 {
@@ -56,11 +59,11 @@ struct rct_vehicle_sound
 {
     uint16_t id;
     int16_t volume;
-    uint16_t sound1_id;
+    SoundId sound1_id;
     int16_t sound1_volume;
     int16_t sound1_pan;
     uint16_t sound1_freq;
-    uint16_t sound2_id;
+    SoundId sound2_id;
     int16_t sound2_volume;
     int16_t sound2_pan;
     uint16_t sound2_freq;
@@ -78,73 +81,76 @@ struct rct_vehicle_sound_params
     uint16_t priority;
 };
 
-enum RCT2_SOUND
+enum class SoundId : uint8_t
 {
-    SOUND_LIFT_1,
-    SOUND_TRACK_FRICTION_1,
-    SOUND_LIFT_2,
-    SOUND_SCREAM_1,
-    SOUND_CLICK_1,
-    SOUND_CLICK_2,
-    SOUND_PLACE_ITEM,
-    SOUND_SCREAM_2,
-    SOUND_SCREAM_3,
-    SOUND_SCREAM_4,
-    SOUND_SCREAM_5,
-    SOUND_SCREAM_6,
-    SOUND_LIFT_3,
-    SOUND_PURCHASE,
-    SOUND_CRASH,
-    SOUND_LAYING_OUT_WATER,
-    SOUND_WATER_1,
-    SOUND_WATER_2,
-    SOUND_TRAIN_WHISTLE,
-    SOUND_TRAIN_CHUGGING,
-    SOUND_WATER_SPLASH,
-    SOUND_HAMMERING,
-    SOUND_RIDE_LAUNCH_1,
-    SOUND_RIDE_LAUNCH_2,
-    SOUND_COUGH_1,
-    SOUND_COUGH_2,
-    SOUND_COUGH_3,
-    SOUND_COUGH_4,
-    SOUND_RAIN_1,
-    SOUND_THUNDER_1,
-    SOUND_THUNDER_2,
-    SOUND_RAIN_2,
-    SOUND_RAIN_3,
-    SOUND_BALLOON_POP,
-    SOUND_MECHANIC_FIX,
-    SOUND_SCREAM_7,
-    SOUND_TOILET_FLUSH,
-    SOUND_CLICK_3,
-    SOUND_QUACK,
-    SOUND_NEWS_ITEM,
-    SOUND_WINDOW_OPEN,
-    SOUND_LAUGH_1,
-    SOUND_LAUGH_2,
-    SOUND_LAUGH_3,
-    SOUND_APPLAUSE,
-    SOUND_HAUNTED_HOUSE_SCARE,
-    SOUND_HAUNTED_HOUSE_SCREAM_1,
-    SOUND_HAUNTED_HOUSE_SCREAM_2,
-    SOUND_48,
-    SOUND_49,
-    SOUND_ERROR,
-    SOUND_51,
-    SOUND_LIFT_4,
-    SOUND_LIFT_5,
-    SOUND_TRACK_FRICTION_2,
-    SOUND_LIFT_6,
-    SOUND_LIFT_7,
-    SOUND_TRACK_FRICTION_3,
-    SOUND_SCREAM_8,
-    SOUND_TRAM,
-    SOUND_DOOR_OPEN,
-    SOUND_DOOR_CLOSE,
-    SOUND_62,
-    SOUND_MAXID
+    LiftClassic,
+    TrackFrictionClassicWood,
+    FrictionClassic,
+    Scream1,
+    Click1,
+    Click2,
+    PlaceItem,
+    Scream2,
+    Scream3,
+    Scream4,
+    Scream5,
+    Scream6,
+    LiftFrictionWheels,
+    Purchase,
+    Crash,
+    LayingOutWater,
+    Water1,
+    Water2,
+    TrainWhistle,
+    TrainDeparting,
+    WaterSplash,
+    GoKartEngine,
+    RideLaunch1,
+    RideLaunch2,
+    Cough1,
+    Cough2,
+    Cough3,
+    Cough4,
+    Rain,
+    Thunder1,
+    Thunder2,
+    TrackFrictionTrain,
+    TrackFrictionWater,
+    BalloonPop,
+    MechanicFix,
+    Scream7,
+    ToiletFlush,
+    Click3,
+    Quack,
+    NewsItem,
+    WindowOpen,
+    Laugh1,
+    Laugh2,
+    Laugh3,
+    Applause,
+    HauntedHouseScare,
+    HauntedHouseScream1,
+    HauntedHouseScream2,
+    BlockBrakeClose,
+    BlockBrakeRelease,
+    Error,
+    BrakeRelease,
+    LiftArrow,
+    LiftWood,
+    TrackFrictionWood,
+    LiftWildMouse,
+    LiftBM,
+    TrackFrictionBM,
+    Scream8,
+    Tram,
+    DoorOpen,
+    DoorClose,
+    Portcullis,
+    NoScream = 254,
+    Null = 255
 };
+
+constexpr uint8_t RCT2SoundCount = static_cast<uint32_t>(SoundId::Portcullis) + 1;
 
 extern audio_device* gAudioDevices;
 extern int32_t gAudioDeviceCount;
@@ -158,7 +164,7 @@ extern void* gRainSoundChannel;
 
 extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_info gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
-extern rct_ride_music_params gRideMusicParamsList[6];
+extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_params* gRideMusicParamsListEnd;
 
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
@@ -195,18 +201,16 @@ void audio_pause_sounds();
  * @param volume The volume at which the sound effect should be played.
  * @param pan The pan at which the sound effect should be played. If set to anything other than AUDIO_PLAY_AT_CENTRE, plays the
  * sound at a position relative to the centre of the viewport.
- * @return 0 if the sound was not out of range; otherwise, soundId.
  */
-int32_t audio_play_sound(int32_t soundId, int32_t volume, int32_t pan);
+void audio_play_sound(SoundId soundId, int32_t volume, int32_t pan);
 /**
  * Plays the specified sound at a virtual location.
  * @param soundId The sound effect to play.
  * @param x The x coordinate of the location.
  * @param y The y coordinate of the location.
  * @param z The z coordinate of the location.
- * @return 0 if the sound was not out of range; otherwise, soundId.
  */
-int32_t audio_play_sound_at_location(int32_t soundId, int16_t x, int16_t y, int16_t z);
+void audio_play_sound_at_location(SoundId soundId, const CoordsXYZ& loc);
 /**
  * Populates the gAudioDevices array with the available audio devices.
  */

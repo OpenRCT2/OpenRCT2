@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -238,7 +238,7 @@ struct rct_s6_data
     uint8_t last_entrance_style;
     uint8_t rct1_water_colour;
     uint8_t pad_01358842[2];
-    rct_research_item research_items[MAX_RESEARCH_ITEMS];
+    RCT12ResearchItem research_items[MAX_RESEARCH_ITEMS];
     uint16_t map_base_z;
     char scenario_name[64];
     char scenario_description[256];
@@ -251,7 +251,7 @@ struct rct_s6_data
     uint8_t park_entrance_direction[RCT12_MAX_PARK_ENTRANCES];
     char scenario_filename[256];
     uint8_t saved_expansion_pack_names[3256];
-    rct_banner banners[RCT2_MAX_BANNERS_IN_PARK];
+    RCT12Banner banners[RCT2_MAX_BANNERS_IN_PARK];
     char custom_strings[RCT12_MAX_USER_STRINGS][RCT12_USER_STRING_MAX_LENGTH];
     uint32_t game_ticks_1;
     rct2_ride rides[RCT12_MAX_RIDES_IN_PARK];
@@ -260,12 +260,12 @@ struct rct_s6_data
     uint16_t saved_view_y;
     uint8_t saved_view_zoom;
     uint8_t saved_view_rotation;
-    rct_map_animation map_animations[RCT2_MAX_ANIMATED_OBJECTS];
+    RCT12MapAnimation map_animations[RCT2_MAX_ANIMATED_OBJECTS];
     uint16_t num_map_animations;
     uint8_t pad_0138B582[2];
-    rct_ride_rating_calc_data ride_ratings_calc_data;
+    RCT2RideRatingCalculationData ride_ratings_calc_data;
     uint8_t pad_0138B5D0[60];
-    rct_ride_measurement ride_measurements[8];
+    RCT12RideMeasurement ride_measurements[8];
     uint32_t next_guest_index;
     uint16_t grass_and_scenery_tilepos;
     uint32_t patrol_areas[(RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];
@@ -395,6 +395,7 @@ extern char gScenarioFileName[260];
 void load_from_sc6(const char* path);
 void scenario_begin();
 void scenario_update();
+bool scenario_create_ducks();
 
 const random_engine_t::state_type& scenario_rand_state();
 void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1);

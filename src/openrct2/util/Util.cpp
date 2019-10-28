@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@
 #include <cctype>
 #include <cmath>
 #include <ctime>
+#include <random>
 
 int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres)
 {
@@ -223,10 +224,10 @@ bool sse41_available()
 bool avx2_available()
 {
 #ifdef OPENRCT2_X86
-// For GCC and similar use the builtin function, as cpuid changed its semantics in
-// https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
-// which causes it to ignore subleafs, but the new function is unavailable on Ubuntu's
-// prehistoric toolchains
+    // For GCC and similar use the builtin function, as cpuid changed its semantics in
+    // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
+    // which causes it to ignore subleafs, but the new function is unavailable on
+    // Ubuntu 18.04's toolchains.
 #    if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
     return __builtin_cpu_supports("avx2");
 #    else
@@ -234,7 +235,15 @@ bool avx2_available()
     uint32_t regs[4] = { 0 };
     if (cpuid_x86(regs, 7))
     {
-        return (regs[1] & (1 << 5));
+        bool avxCPUSupport = (regs[1] & (1 << 5)) != 0;
+        if (avxCPUSupport)
+        {
+            // Need to check if OS also supports the register of xmm/ymm
+            // This check has to be conditional, otherwise INVALID_INSTRUCTION exception.
+            uint64_t xcrFeatureMask = _xgetbv(_XCR_XFEATURE_ENABLED_MASK);
+            avxCPUSupport = (xcrFeatureMask & 0x6) || false;
+        }
+        return avxCPUSupport;
     }
 #    endif
 #endif
@@ -294,11 +303,6 @@ void bitcount_init()
 int32_t bitcount(uint32_t source)
 {
     return bitcount_fn(source);
-}
-
-bool strequals(const char* a, const char* b, int32_t length, bool caseInsensitive)
-{
-    return caseInsensitive ? _strnicmp(a, b, length) == 0 : strncmp(a, b, length) == 0;
 }
 
 /* case insensitive compare */
@@ -474,15 +478,6 @@ char* safe_strcat_path(char* destination, const char* source, size_t size)
     return safe_strcat(destination, source, size);
 }
 
-char* safe_strtrimleft(char* destination, const char* source, size_t size)
-{
-    while (*source == ' ')
-    {
-        source++;
-    }
-    return safe_strcpy(destination, source, size);
-}
-
 #if defined(_WIN32)
 char* strcasestr(const char* haystack, const char* needle)
 {
@@ -532,15 +527,10 @@ bool str_is_null_or_empty(const char* str)
     return str == nullptr || str[0] == 0;
 }
 
-void util_srand(int32_t source)
-{
-    srand(source);
-}
-
-// Caveat: rand() might only return values up to 0x7FFF, which is the minimum specified in the C standard.
 uint32_t util_rand()
 {
-    return rand();
+    thread_local std::mt19937 _prng(std::random_device{}());
+    return _prng();
 }
 
 #define CHUNK (128 * 1024)

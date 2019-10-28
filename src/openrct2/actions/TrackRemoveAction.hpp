@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -126,7 +126,7 @@ public:
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto trackType = tileElement->AsTrack()->GetTrackType();
 
-        Ride* ride = get_ride(rideIndex);
+        auto ride = get_ride(rideIndex);
         if (ride == nullptr)
         {
             log_warning("Ride not found. ride index = %d.", rideIndex);
@@ -216,7 +216,7 @@ public:
                 }
             }
 
-            TileElement* surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto* surfaceElement = map_get_surface_element_at(mapLoc);
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
@@ -322,7 +322,7 @@ public:
         auto trackType = tileElement->AsTrack()->GetTrackType();
         bool isLiftHill = tileElement->AsTrack()->HasChain();
 
-        Ride* ride = get_ride(rideIndex);
+        auto ride = get_ride(rideIndex);
         if (ride == nullptr)
         {
             log_warning("Ride not found. ride index = %d.", rideIndex);
@@ -411,7 +411,7 @@ public:
                 }
             }
 
-            TileElement* surfaceElement = map_get_surface_element_at({ mapLoc.x, mapLoc.y });
+            auto* surfaceElement = map_get_surface_element_at(mapLoc);
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
@@ -437,7 +437,7 @@ public:
 
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER))
             {
-                surfaceElement->AsSurface()->SetHasTrackThatNeedsWater(false);
+                surfaceElement->SetHasTrackThatNeedsWater(false);
             }
 
             invalidate_test_results(ride);
@@ -450,7 +450,7 @@ public:
             sub_6CB945(ride);
             if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
-                ride_update_max_vehicles(ride);
+                ride->UpdateMaxVehicles();
             }
         }
 

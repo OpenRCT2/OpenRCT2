@@ -47,20 +47,14 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_rideIndex >= MAX_RIDES || _rideIndex == RIDE_ID_NULL)
-        {
-            log_warning("Invalid game command for ride %d", int32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
-        }
-
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        if (ride->status != RIDE_STATUS_CLOSED)
+        if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_MUST_BE_CLOSED_FIRST);
         }
@@ -116,16 +110,19 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Ride* ride = get_ride(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        ride_clear_for_construction(ride);
-        ride_remove_peeps(ride);
-        invalidate_test_results(ride);
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            ride_clear_for_construction(ride);
+            ride_remove_peeps(ride);
+            invalidate_test_results(ride);
+        }
 
         bool found = false;
         TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
@@ -171,7 +168,7 @@ public:
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+        res->Position.z = tile_element_height(res->Position);
 
         footpath_queue_chain_reset();
         maze_entrance_hedge_replacement(_loc.x, _loc.y, tileElement);

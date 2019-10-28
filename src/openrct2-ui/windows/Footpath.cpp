@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -216,7 +216,7 @@ rct_window* window_footpath_open()
         return window;
     }
 
-    window = window_create(0, 29, 106, 381, &window_footpath_events, WC_FOOTPATH, 0);
+    window = window_create(ScreenCoordsXY(0, 29), 106, 381, &window_footpath_events, WC_FOOTPATH, 0);
     window->widgets = window_footpath_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_FOOTPATH_TYPE) | (1 << WIDX_QUEUELINE_TYPE)
         | (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW) | (1 << WIDX_DIRECTION_SE)
@@ -398,7 +398,7 @@ static void window_footpath_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     gFootpathSelectedId = pathId;
     footpath_provisional_update();
     _window_footpath_cost = MONEY32_UNDEFINED;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -611,16 +611,9 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
         int32_t image = ConstructionPreviewImages[slope][direction];
 
-        int32_t selectedPath = gFootpathSelectedId;
+        int32_t selectedPath = gFootpathSelectedId + (MAX_PATH_OBJECTS * gFootpathSelectedType);
         PathSurfaceEntry* pathType = get_path_surface_entry(selectedPath);
-        if (gFootpathSelectedType == SELECTED_PATH_TYPE_NORMAL)
-        {
-            image += pathType->image;
-        }
-        else
-        {
-            image += pathType->queue_image;
-        }
+        image += pathType->image;
 
         // Draw construction image
         int32_t x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
@@ -902,7 +895,7 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
             // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
             if (result->Cost != 0)
             {
-                audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
             }
         }
         else
@@ -990,7 +983,7 @@ static void window_footpath_construct()
     footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {
-            audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
 
             if (gFootpathConstructSlope == 0)
             {
@@ -1101,6 +1094,8 @@ static TileElement* footpath_get_tile_element_to_remove()
     tileElement = map_get_first_element_at(x, y);
     do
     {
+        if (tileElement == nullptr)
+            break;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
             if (tileElement->base_height == z)
@@ -1172,9 +1167,9 @@ static void window_footpath_set_enabled_and_pressed_widgets()
         gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
         int32_t direction = gFootpathConstructDirection;
-        gMapSelectionTiles[0].x = gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x;
-        gMapSelectionTiles[0].y = gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y;
-        gMapSelectionTiles[1].x = -1;
+        gMapSelectionTiles.clear();
+        gMapSelectionTiles.push_back({ gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
+                                       gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
         map_invalidate_map_selection_tiles();
     }
 
@@ -1225,7 +1220,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 
     w->pressed_widgets = pressedWidgets;
     w->disabled_widgets = disabledWidgets;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**

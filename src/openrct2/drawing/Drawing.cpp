@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,15 +15,16 @@
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
 #include "../platform/platform.h"
+#include "../sprites.h"
 #include "../util/Util.h"
 #include "../world/Water.h"
 
 // HACK These were originally passed back through registers
-int32_t gLastDrawStringX;
-int32_t gLastDrawStringY;
+thread_local int32_t gLastDrawStringX;
+thread_local int32_t gLastDrawStringY;
 
-int16_t gCurrentFontSpriteBase;
-uint16_t gCurrentFontFlags;
+thread_local int16_t gCurrentFontSpriteBase;
+thread_local uint16_t gCurrentFontFlags;
 
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;
@@ -465,6 +466,32 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
 };
 // clang-format on
 
+ImageCatalogue ImageId::GetCatalogue() const
+{
+    auto index = GetIndex();
+    if (index == SPR_TEMP)
+    {
+        return ImageCatalogue::TEMPORARY;
+    }
+    else if (index < SPR_RCTC_G1_END)
+    {
+        return ImageCatalogue::G1;
+    }
+    else if (index < SPR_G2_END)
+    {
+        return ImageCatalogue::G2;
+    }
+    else if (index < SPR_CSG_END)
+    {
+        return ImageCatalogue::CSG;
+    }
+    else if (index < SPR_IMAGE_LIST_END)
+    {
+        return ImageCatalogue::OBJECT;
+    }
+    return ImageCatalogue::UNKNOWN;
+}
+
 void (*mask_fn)(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
@@ -591,12 +618,7 @@ bool clip_drawpixelinfo(rct_drawpixelinfo* dst, rct_drawpixelinfo* src, int32_t 
     int32_t right = x + width;
     int32_t bottom = y + height;
 
-    dst->bits = src->bits;
-    dst->x = src->x;
-    dst->y = src->y;
-    dst->width = src->width;
-    dst->height = src->height;
-    dst->pitch = src->pitch;
+    *dst = *src;
     dst->zoom_level = 0;
 
     if (x > dst->x)

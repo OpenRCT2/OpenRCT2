@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,8 +43,10 @@ rct_window* window_news_open();
 rct_window* window_news_options_open();
 rct_window* window_options_open();
 rct_window* window_save_prompt_open();
+#ifndef DISABLE_NETWORK
 rct_window* window_server_list_open();
 rct_window* window_server_start_open();
+#endif
 rct_window* window_shortcut_change_open(int32_t selected_key);
 rct_window* window_shortcut_keys_open();
 rct_window* window_staff_list_open();
@@ -88,8 +90,8 @@ void window_title_command_editor_open(struct TitleSequence* sequence, int32_t co
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
 rct_window* window_error_open(rct_string_id title, rct_string_id message);
-
-rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback);
+struct TrackDesign;
+rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);
 rct_window* window_track_manage_open(struct track_design_file_ref* tdFileRef);
 
@@ -162,7 +164,7 @@ void window_tile_inspector_clear_clipboard();
 
 rct_window* window_editor_object_selection_open();
 
-void window_tooltip_reset(int32_t x, int32_t y);
-void window_tooltip_show(rct_string_id id, int32_t x, int32_t y);
-void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+void window_tooltip_reset(ScreenCoordsXY screenCoords);
+void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords);
+void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 void window_tooltip_close();

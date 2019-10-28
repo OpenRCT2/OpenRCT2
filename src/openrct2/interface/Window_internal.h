@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,10 +11,10 @@
 
 #include "Window.h"
 
+#include <list>
 #include <memory>
-#include <vector>
 
-struct rct_research_item;
+struct ResearchItem;
 struct rct_object_entry;
 
 /**
@@ -79,7 +79,7 @@ struct rct_window
     { // 0x494
         uint32_t highlighted_item;
         uint16_t ride_colour;
-        rct_research_item* research_item;
+        ResearchItem* research_item;
         rct_object_entry* object_entry;
         const scenario_index_entry* highlighted_scenario;
         struct
@@ -101,7 +101,11 @@ struct rct_window
     uint8_t colours[6];                    // 0x4BA
     uint8_t visibility;                    // VISIBILITY_CACHE
     uint16_t viewport_smart_follow_sprite; // Smart following of sprites. Handles setting viewport target sprite etc
+
+    void SetLocation(int32_t x, int32_t y, int32_t z);
+    void ScrollToViewport();
+    void Invalidate();
 };
 
 // rct2: 0x01420078
-extern std::vector<std::unique_ptr<rct_window>> g_window_list;
+extern std::list<std::shared_ptr<rct_window>> g_window_list;

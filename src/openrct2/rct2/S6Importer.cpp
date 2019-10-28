@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -38,6 +39,7 @@
 #include "../ride/RideRatings.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
+#include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../util/SawyerCoding.h"
@@ -46,6 +48,7 @@
 #include "../world/Entrance.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
+#include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
@@ -114,7 +117,7 @@ public:
         auto chunkReader = SawyerChunkReader(stream);
         chunkReader.ReadChunk(&_s6.header, sizeof(_s6.header));
 
-        log_verbose("saved game classic_flag = 0x%02x\n", _s6.header.classic_flag);
+        log_verbose("saved game classic_flag = 0x%02x", _s6.header.classic_flag);
         if (isScenario)
         {
             if (_s6.header.type != S6_TYPE_SCENARIO)
@@ -214,9 +217,6 @@ public:
         ImportTileElements();
         ImportSprites();
 
-        gParkName = _s6.park_name;
-        // pad_013573D6
-        gParkNameArgs = _s6.park_name_args;
         gInitialCash = _s6.initial_cash;
         gBankLoan = _s6.current_loan;
         gParkFlags = _s6.park_flags;
@@ -322,7 +322,6 @@ public:
         _gameVersion = _s6.game_version_number;
         gScenarioCompanyValueRecord = _s6.completed_company_value_record;
         // _s6.loan_hash;
-        gRideCount = _s6.ride_count;
         // pad_013587CA
         gHistoricalProfit = _s6.historical_profit;
         // pad_013587D4
@@ -334,7 +333,8 @@ public:
         gMapSizeMinus2 = _s6.map_size_minus_2;
         gMapSize = _s6.map_size;
         gMapSizeMaxXY = _s6.map_max_xy;
-        gSamePriceThroughoutParkA = _s6.same_price_throughout;
+        gSamePriceThroughoutPark = _s6.same_price_throughout
+            | (static_cast<uint64_t>(_s6.same_price_throughout_extended) << 32);
         _suggestedGuestMaximum = _s6.suggested_max_guests;
         gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
         gLastEntranceStyle = _s6.last_entrance_style;
@@ -346,7 +346,6 @@ public:
         gScenarioDetails = std::string_view(_s6.scenario_description, sizeof(_s6.scenario_description));
         gBankLoanInterestRate = _s6.current_interest_rate;
         // pad_0135934B
-        gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
         // Preserve compatibility with vanilla RCT2's save format.
         gParkEntrances.clear();
         for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
@@ -372,10 +371,6 @@ public:
             String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
         }
         std::memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
-        std::memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
-        // Clear all of the strings, since we will probably have a higher limit on user strings in the future than RCT2.
-        user_string_clear_all();
-        std::memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
         gCurrentTicks = _s6.game_ticks_1;
         gCurrentRealTimeTicks = 0;
 
@@ -387,22 +382,15 @@ public:
         gSavedViewZoom = _s6.saved_view_zoom;
         gSavedViewRotation = _s6.saved_view_rotation;
 
-        for (size_t i = 0; i < RCT2_MAX_ANIMATED_OBJECTS; i++)
-        {
-            gAnimatedObjects[i] = _s6.map_animations[i];
-        }
-        gNumMapAnimations = _s6.num_map_animations;
-        // pad_0138B582
-
-        gRideRatingsCalcData = _s6.ride_ratings_calc_data;
-        std::memcpy(gRideMeasurements, _s6.ride_measurements, sizeof(_s6.ride_measurements));
+        ImportRideRatingsCalcData();
+        ImportRideMeasurements();
         gNextGuestNumber = _s6.next_guest_index;
         gGrassSceneryTileLoopPosition = _s6.grass_and_scenery_tilepos;
         std::memcpy(gStaffPatrolAreas, _s6.patrol_areas, sizeof(_s6.patrol_areas));
         std::memcpy(gStaffModes, _s6.staff_modes, sizeof(_s6.staff_modes));
         // unk_13CA73E
         // pad_13CA73F
-        gUnk13CA740 = _s6.byte_13CA740;
+        // unk_13CA740
         gClimate = _s6.climate;
         // pad_13CA741;
         // byte_13CA742
@@ -458,6 +446,9 @@ public:
         map_count_remaining_land_rights();
         determine_ride_entrance_and_exit_locations();
 
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        park.Name = GetUserString(_s6.park_name);
+
         // We try to fix the cycles on import, hence the 'true' parameter
         check_for_sprite_list_cycles(true);
         check_for_spatial_index_cycles(true);
@@ -491,7 +482,7 @@ public:
             auto src = &_s6.rides[index];
             if (src->type != RIDE_TYPE_NULL)
             {
-                auto dst = get_ride(index);
+                auto dst = GetOrAllocateRide(index);
                 ImportRide(dst, src, index);
             }
         }
@@ -515,8 +506,16 @@ public:
 
         // pad_046;
         dst->status = src->status;
-        dst->name = src->name;
-        dst->name_arguments = src->name_arguments;
+
+        dst->default_name_number = src->name_arguments_number;
+        if (is_user_string_id(src->name))
+        {
+            dst->custom_name = GetUserString(src->name);
+        }
+        else
+        {
+            dst->default_name_number = src->name_arguments_number;
+        }
 
         dst->overall_view = src->overall_view;
 
@@ -537,7 +536,7 @@ public:
             if (src->exits[i].xy == RCT_XY8_UNDEFINED)
                 ride_clear_exit_location(dst, i);
             else
-                ride_set_exit_location(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
+                ride_set_exit_location(dst, i, { src->exits[i].x, src->exits[i].y, src->station_heights[i], 0 });
 
             dst->stations[i].LastPeepInQueue = src->last_peep_in_queue[i];
 
@@ -585,8 +584,6 @@ public:
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
         dst->boat_hire_return_position = src->boat_hire_return_position;
 
-        dst->measurement_index = src->measurement_index;
-
         dst->special_track_elements = src->special_track_elements;
         // pad_0D6[2];
 
@@ -607,8 +604,11 @@ public:
         dst->turn_count_default = src->turn_count_default;
         dst->turn_count_banked = src->turn_count_banked;
         dst->turn_count_sloped = src->turn_count_sloped;
-        // Includes holes and (for some strange reason?!) sheltered_eights
-        dst->inversions = src->inversions;
+        if (dst->type == RIDE_TYPE_MINI_GOLF)
+            dst->holes = src->inversions & 0x1F;
+        else
+            dst->inversions = src->inversions & 0x1F;
+        dst->sheltered_eighths = src->inversions >> 5;
         dst->drops = src->drops;
         dst->start_drop_height = src->start_drop_height;
         dst->highest_drop_height = src->highest_drop_height;
@@ -706,6 +706,20 @@ public:
             dst->track_colour[i].additional = src->track_colour_additional[i];
             dst->track_colour[i].supports = src->track_colour_supports[i];
         }
+        // This stall was not colourable in RCT2.
+        if (dst->type == RIDE_TYPE_FOOD_STALL)
+        {
+            auto entry = object_entry_get_entry(OBJECT_TYPE_RIDE, dst->subtype);
+            if (entry != nullptr)
+            {
+                char name[DAT_NAME_LENGTH + 1];
+                object_entry_get_name_fixed(name, sizeof(name), entry);
+                if (strncmp(name, "ICECR1  ", DAT_NAME_LENGTH) == 0)
+                {
+                    dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
+                }
+            }
+        }
 
         dst->music = src->music;
         dst->entrance_style = src->entrance_style;
@@ -730,6 +744,64 @@ public:
         dst->cable_lift = src->cable_lift;
 
         // pad_208[0x58];
+    }
+
+    void ImportRideRatingsCalcData()
+    {
+        const auto& src = _s6.ride_ratings_calc_data;
+        auto& dst = gRideRatingsCalcData;
+        dst = {};
+        dst.proximity_x = src.proximity_x;
+        dst.proximity_y = src.proximity_y;
+        dst.proximity_z = src.proximity_z;
+        dst.proximity_start_x = src.proximity_start_x;
+        dst.proximity_start_y = src.proximity_start_y;
+        dst.proximity_start_z = src.proximity_start_z;
+        dst.current_ride = src.current_ride;
+        dst.state = src.state;
+        dst.proximity_track_type = src.proximity_track_type;
+        dst.proximity_base_height = src.proximity_base_height;
+        dst.proximity_total = src.proximity_total;
+        for (size_t i = 0; i < std::size(src.proximity_scores); i++)
+        {
+            dst.proximity_scores[i] = src.proximity_scores[i];
+        }
+        dst.num_brakes = src.num_brakes;
+        dst.num_reversers = src.num_reversers;
+        dst.station_flags = src.station_flags;
+    }
+
+    void ImportRideMeasurements()
+    {
+        for (const auto& src : _s6.ride_measurements)
+        {
+            if (src.ride_index != RCT12_RIDE_ID_NULL)
+            {
+                auto ride = get_ride(src.ride_index);
+                if (ride != nullptr)
+                {
+                    ride->measurement = std::make_unique<RideMeasurement>();
+                    ImportRideMeasurement(*ride->measurement, src);
+                }
+            }
+        }
+    }
+
+    void ImportRideMeasurement(RideMeasurement& dst, const RCT12RideMeasurement& src)
+    {
+        dst.flags = src.flags;
+        dst.last_use_tick = src.last_use_tick;
+        dst.num_items = src.num_items;
+        dst.current_item = src.current_item;
+        dst.vehicle_index = src.vehicle_index;
+        dst.current_station = src.current_station;
+        for (size_t i = 0; i < std::size(src.velocity); i++)
+        {
+            dst.velocity[i] = src.velocity[i];
+            dst.altitude[i] = src.altitude[i];
+            dst.vertical[i] = src.vertical[i];
+            dst.lateral[i] = src.lateral[i];
+        }
     }
 
     void ImportResearchedRideTypes()
@@ -779,7 +851,50 @@ public:
 
     void ImportResearchList()
     {
-        std::memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
+        bool invented = true;
+        for (size_t i = 0; i < sizeof(_s6.research_items); i++)
+        {
+            if (_s6.research_items[i].IsInventedEndMarker())
+            {
+                invented = false;
+                continue;
+            }
+            else if (_s6.research_items[i].IsUninventedEndMarker() || _s6.research_items[i].IsRandomEndMarker())
+            {
+                break;
+            }
+
+            RCT12ResearchItem* ri = &_s6.research_items[i];
+            if (invented)
+                gResearchItemsInvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+            else
+                gResearchItemsUninvented.push_back(ResearchItem{ ri->rawValue, ri->category });
+        }
+    }
+
+    void ImportBanner(Banner* dst, const RCT12Banner* src)
+    {
+        *dst = {};
+        dst->type = src->type;
+        dst->flags = src->flags;
+
+        if (!(src->flags & BANNER_FLAG_LINKED_TO_RIDE) && is_user_string_id(src->string_idx))
+        {
+            dst->text = GetUserString(src->string_idx);
+        }
+
+        if (src->flags & BANNER_FLAG_LINKED_TO_RIDE)
+        {
+            dst->ride_index = src->ride_index;
+        }
+        else
+        {
+            dst->colour = src->colour;
+        }
+
+        dst->text_colour = src->text_colour;
+        dst->position.x = src->x;
+        dst->position.y = src->y;
     }
 
     void Initialise()
@@ -814,6 +929,12 @@ public:
         else if (String::Equals(_s6.scenario_filename, "Amity Airfield.SC6"))
         {
             _s6.peep_spawns[0].y = 1296;
+        }
+        // #9926: Africa - Oasis has peeps spawning on the edge underground near the entrance
+        else if (String::Equals(_s6.scenario_filename, "Africa - Oasis.SC6"))
+        {
+            _s6.peep_spawns[0].y = 2128;
+            _s6.peep_spawns[0].z = 7;
         }
 
         gPeepSpawns.clear();
@@ -930,16 +1051,32 @@ public:
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(src2->GetRideIndex());
                 dst2->SetColourScheme(src2->GetColourScheme());
-                dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(src2->HasCableLift());
                 dst2->SetInverted(src2->IsInverted());
-                dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
-                dst2->SetSeatRotation(src2->GetSeatRotation());
-                dst2->SetMazeEntry(src2->GetMazeEntry());
-                dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+
+                auto trackType = dst2->GetTrackType();
+                if (track_element_has_speed_setting(trackType))
+                {
+                    dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                }
+                else if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
+                {
+                    dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                }
+
                 // Skipping IsHighlighted()
+                auto rideType = _s6.rides[src2->GetRideIndex()].type;
+                if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER)
+                {
+                    dst2->SetSeatRotation(src2->GetSeatRotation());
+                }
+                else if (rideType == RIDE_TYPE_MAZE)
+                {
+                    dst2->SetMazeEntry(src2->GetMazeEntry());
+                }
 
                 break;
             }
@@ -986,6 +1123,22 @@ public:
                 dst2->SetAcrossTrack(src2->IsAcrossTrack());
                 dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
 
+                // Import banner information
+                auto entry = dst2->GetEntry();
+                if (entry != nullptr && entry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+                {
+                    auto bannerIndex = dst2->GetBannerIndex();
+                    if (bannerIndex < std::size(_s6.banners))
+                    {
+                        auto srcBanner = &_s6.banners[bannerIndex];
+                        auto dstBanner = GetBanner(bannerIndex);
+                        ImportBanner(dstBanner, srcBanner);
+                    }
+                    else
+                    {
+                        dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                    }
+                }
                 break;
             }
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
@@ -999,6 +1152,22 @@ public:
                 dst2->SetSecondaryColour(src2->GetSecondaryColour());
                 dst2->SetBannerIndex(src2->GetBannerIndex());
 
+                // Import banner information
+                auto entry = dst2->GetEntry();
+                if (entry != nullptr && entry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+                {
+                    auto bannerIndex = dst2->GetBannerIndex();
+                    if (bannerIndex < std::size(_s6.banners))
+                    {
+                        auto srcBanner = &_s6.banners[bannerIndex];
+                        auto dstBanner = GetBanner(bannerIndex);
+                        ImportBanner(dstBanner, srcBanner);
+                    }
+                    else
+                    {
+                        dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                    }
+                }
                 break;
             }
             case TILE_ELEMENT_TYPE_BANNER:
@@ -1010,6 +1179,17 @@ public:
                 dst2->SetPosition(src2->GetPosition());
                 dst2->SetAllowedEdges(src2->GetAllowedEdges());
 
+                auto bannerIndex = src2->GetIndex();
+                if (bannerIndex < std::size(_s6.banners))
+                {
+                    auto srcBanner = &_s6.banners[bannerIndex];
+                    auto dstBanner = GetBanner(bannerIndex);
+                    ImportBanner(dstBanner, srcBanner);
+                }
+                else
+                {
+                    dst2->SetIndex(BANNER_INDEX_NULL);
+                }
                 break;
             }
             default:
@@ -1025,7 +1205,11 @@ public:
             {
                 MarketingCampaign campaign{};
                 campaign.Type = (uint8_t)i;
-                campaign.WeeksLeft = _s6.campaign_weeks_left[i] & ~CAMPAIGN_ACTIVE_FLAG;
+                campaign.WeeksLeft = _s6.campaign_weeks_left[i] & ~(CAMPAIGN_ACTIVE_FLAG | CAMPAIGN_FIRST_WEEK_FLAG);
+                if ((_s6.campaign_weeks_left[i] & CAMPAIGN_FIRST_WEEK_FLAG) != 0)
+                {
+                    campaign.Flags |= MarketingCampaignFlags::FIRST_WEEK;
+                }
                 if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                 {
                     campaign.RideId = _s6.campaign_ride_index[i];
@@ -1048,13 +1232,13 @@ public:
             ImportSprite(dst, src);
         }
 
-        for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
+        for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
         {
             gSpriteListHead[i] = _s6.sprite_lists_head[i];
             gSpriteListCount[i] = _s6.sprite_lists_count[i];
         }
         // This list contains the number of free slots. Increase it according to our own sprite limit.
-        gSpriteListCount[SPRITE_LIST_NULL] += (MAX_SPRITES - RCT2_MAX_SPRITES);
+        gSpriteListCount[SPRITE_LIST_FREE] += (MAX_SPRITES - RCT2_MAX_SPRITES);
     }
 
     void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
@@ -1111,7 +1295,14 @@ public:
         dst->current_station = src->current_station;
         dst->current_time = src->current_time;
         dst->crash_z = src->crash_z;
-        dst->status = src->status;
+
+        VEHICLE_STATUS statusSrc = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
+        if (src->status <= static_cast<uint8_t>(VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES))
+        {
+            statusSrc = static_cast<VEHICLE_STATUS>(src->status);
+        }
+
+        dst->status = statusSrc;
         dst->sub_state = src->sub_state;
         for (size_t i = 0; i < std::size(src->peep); i++)
         {
@@ -1125,9 +1316,9 @@ public:
         dst->crash_x = src->crash_x;
         dst->sound2_flags = src->sound2_flags;
         dst->spin_sprite = src->spin_sprite;
-        dst->sound1_id = src->sound1_id;
+        dst->sound1_id = static_cast<SoundId>(src->sound1_id);
         dst->sound1_volume = src->sound1_volume;
-        dst->sound2_id = src->sound2_id;
+        dst->sound2_id = static_cast<SoundId>(src->sound2_id);
         dst->sound2_volume = src->sound2_volume;
         dst->sound_vector_factor = src->sound_vector_factor;
         dst->time_waiting = src->time_waiting;
@@ -1137,7 +1328,7 @@ public:
         dst->animation_frame = src->animation_frame;
         dst->var_C8 = src->var_C8;
         dst->var_CA = src->var_CA;
-        dst->scream_sound_id = src->scream_sound_id;
+        dst->scream_sound_id = static_cast<SoundId>(src->scream_sound_id);
         dst->var_CD = src->var_CD;
         dst->var_CE = src->var_CE;
         dst->var_CF = src->var_CF;
@@ -1155,7 +1346,10 @@ public:
     void ImportSpritePeep(Peep* dst, const RCT2SpritePeep* src)
     {
         ImportSpriteCommonProperties((rct_sprite_common*)dst, src);
-        dst->name_string_idx = src->name_string_idx;
+        if (is_user_string_id(src->name_string_idx))
+        {
+            dst->SetName(GetUserString(src->name_string_idx));
+        }
         dst->next_x = src->next_x;
         dst->next_y = src->next_y;
         dst->next_z = src->next_z;
@@ -1273,16 +1467,16 @@ public:
         {
             case SPRITE_MISC_STEAM_PARTICLE:
             {
-                auto src = (const rct_steam_particle*)csrc;
-                auto dst = (RCT12SpriteSteamParticle*)cdst;
+                auto src = (const RCT12SpriteSteamParticle*)csrc;
+                auto dst = (rct_steam_particle*)cdst;
                 dst->time_to_move = src->time_to_move;
                 dst->frame = src->frame;
                 break;
             }
             case SPRITE_MISC_MONEY_EFFECT:
             {
-                auto src = (const rct_money_effect*)csrc;
-                auto dst = (RCT12SpriteMoneyEffect*)cdst;
+                auto src = (const RCT12SpriteMoneyEffect*)csrc;
+                auto dst = (rct_money_effect*)cdst;
                 dst->move_delay = src->move_delay;
                 dst->num_movements = src->num_movements;
                 dst->vertical = src->vertical;
@@ -1293,8 +1487,8 @@ public:
             }
             case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
             {
-                auto src = (const rct_crashed_vehicle_particle*)csrc;
-                auto dst = (RCT12SpriteCrashedVehicleParticle*)cdst;
+                auto src = (const RCT12SpriteCrashedVehicleParticle*)csrc;
+                auto dst = (rct_crashed_vehicle_particle*)cdst;
                 dst->frame = src->frame;
                 dst->time_to_live = src->time_to_live;
                 dst->frame = src->frame;
@@ -1321,14 +1515,14 @@ public:
             case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
             case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
             {
-                auto src = (const RCT12SpriteJumpingFountain*)csrc;
-                auto dst = (rct_jumping_fountain*)cdst;
-                dst->num_ticks_alive = src->num_ticks_alive;
+                auto* src = (const RCT12SpriteJumpingFountain*)csrc;
+                auto* dst = (JumpingFountain*)cdst;
+                dst->NumTicksAlive = src->num_ticks_alive;
                 dst->frame = src->frame;
-                dst->fountain_flags = src->fountain_flags;
-                dst->target_x = src->target_x;
-                dst->target_y = src->target_y;
-                dst->iteration = src->iteration;
+                dst->FountainFlags = src->fountain_flags;
+                dst->TargetX = src->target_x;
+                dst->TargetY = src->target_y;
+                dst->Iteration = src->iteration;
                 break;
             }
             case SPRITE_MISC_BALLOON:
@@ -1370,7 +1564,7 @@ public:
         dst->next_in_quadrant = src->next_in_quadrant;
         dst->next = src->next;
         dst->previous = src->previous;
-        dst->linked_list_type_offset = src->linked_list_type_offset;
+        dst->linked_list_index = src->linked_list_type_offset >> 1;
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
         dst->flags = src->flags;
@@ -1385,11 +1579,28 @@ public:
         dst->sprite_bottom = src->sprite_bottom;
         dst->sprite_direction = src->sprite_direction;
     }
+
+    std::string GetUserString(rct_string_id stringId)
+    {
+        const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
+        std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
+        auto withoutFormatCodes = RCT12::RemoveFormatCodes(originalStringView);
+        return rct2_to_utf8(withoutFormatCodes, RCT2_LANGUAGE_ID_ENGLISH_UK);
+    }
 };
 
 std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectRepository)
 {
     return std::make_unique<S6Importer>(objectRepository);
+}
+
+static void show_error(uint8_t errorType, rct_string_id errorStringId)
+{
+    if (errorType == ERROR_TYPE_GENERIC)
+    {
+        context_show_error(errorStringId, 0xFFFF);
+    }
+    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId);
 }
 
 void load_from_sv6(const char* path)
@@ -1403,24 +1614,23 @@ void load_from_sv6(const char* path)
         objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
+        AutoCreateMapAnimations();
         sprite_position_tween_reset();
         gScreenAge = 0;
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
     }
     catch (const ObjectLoadException&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
-    catch (const IOException&)
+    catch (const IOException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s", loadError.what());
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const std::exception&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
 }
 
@@ -1440,23 +1650,23 @@ void load_from_sc6(const char* path)
         objManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
+        AutoCreateMapAnimations();
         sprite_position_tween_reset();
         return;
     }
-    catch (const ObjectLoadException&)
+    catch (const ObjectLoadException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s", loadError.what());
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
-    catch (const IOException&)
+    catch (const IOException& loadError)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_GAME_SAVE_FAILED;
+        log_error("Error loading: %s", loadError.what());
+        show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
     }
     catch (const std::exception&)
     {
-        gErrorType = ERROR_TYPE_FILE_LOAD;
-        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
     }
     gScreenAge = 0;
     gLastAutoSaveUpdate = AUTOSAVE_PAUSE;

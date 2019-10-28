@@ -10,8 +10,8 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ### Build Status
 |             | Windows | Linux / Mac | Download |
 |-------------|---------|-------------|----------|
-| **master**  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/master?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=master)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/master-v0.2.2-green.svg)](https://openrct2.org/downloads/master/latest) |
-| **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.2.2+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+| **master**  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/master?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=master)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/master-v0.2.3-green.svg)](https://openrct2.org/downloads/master/latest) |
+| **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.2.3+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -66,7 +66,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 
 Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
 * ArchLinux AUR: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) and [openrct2](https://aur.archlinux.org/packages/openrct2)
-* Ubuntu PPA: [`master` branch](https://launchpad.net/~openrct2/+archive/ubuntu/master) and [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly)
+* Ubuntu PPA: [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (nightly builds)
 * openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
 * NixOS (`nixos-unstable` channel): [openrct2](https://github.com/NixOS/nixpkgs/blob/master/pkgs/games/openrct2/default.nix)
@@ -123,10 +123,12 @@ The program can also be built as a command line program using CMake. This type o
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
 2. Open a new Developer Command Prompt for VS 2017, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
-3. Run `msbuild openrct2.proj /t:build /p:platform=x64`.
+3. To build the 64-bit version, use `msbuild openrct2.proj /t:build /p:platform=x64`.
+
+   To build the 32-bit version, use `msbuild openrct2.proj /t:build /p:platform=Win32`.
 4. Run the game, `bin\openrct2`
 
-Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`.
+Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`. Make sure to select the correct target platform for which you ran the build in point #3 (`Win32` for the 32-bit version, `x64` for the 64-bit version), otherwise the build will fail in Visual Studio.
 
 Other examples:
 ```
@@ -162,10 +164,13 @@ The standard CMake build procedure is to install the [required libraries](https:
 ```
 mkdir build
 cd build
-cmake ../ # set your standard cmake options, e.g. build type here
+cmake ../ # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
 make # you can parallelise your build job with e.g. -j8 or consider using ninja
 DESTDIR=. make install # the install target creates all the necessary files in places we expect them
 ```
+
+You can also use Ninja in place of Make, if you prefer, see Wiki for details.
+
 Detailed instructions can be found on our [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
 ---

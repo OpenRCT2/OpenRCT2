@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -62,14 +62,6 @@ public:
 
     ~HardwareDisplayDrawingEngine() override
     {
-        if (_screenTexture != nullptr)
-        {
-            SDL_DestroyTexture(_screenTexture);
-        }
-        if (_scaledScreenTexture != nullptr)
-        {
-            SDL_DestroyTexture(_scaledScreenTexture);
-        }
         SDL_FreeFormat(_screenTextureFormat);
         SDL_DestroyRenderer(_sdlRenderer);
     }
@@ -85,6 +77,8 @@ public:
         {
             _useVsync = vsync;
             SDL_DestroyRenderer(_sdlRenderer);
+            _screenTexture = nullptr;
+            _scaledScreenTexture = nullptr;
             Initialise();
             Resize(_uiContext->GetWidth(), _uiContext->GetHeight());
         }

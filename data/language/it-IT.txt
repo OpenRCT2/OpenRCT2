@@ -477,7 +477,7 @@ STR_1091    :Modalità spettacolo circense
 STR_1092    :Lancio in discesa
 STR_1093    :Modalità casa distorta
 STR_1094    :Modalità caduta libera
-STR_1095    :Mod. circuito continuo sezi. a blocchi
+STR_1095    :Mod. circuito continuo sez. a blocchi
 STR_1096    :Lancio a motore (without passing station)
 STR_1097    :Mod. lancio a motore sez. a blocchi
 STR_1098    :In viaggio verso la fine della {POP16}{STRINGID}
@@ -553,8 +553,8 @@ STR_1167    :Impossibile alzare il livello dell'acqua in questo punto...
 STR_1168    :Opzioni
 STR_1169    :(Nessuno)
 STR_1170    :{STRING}
-STR_1171    :{RED}Chiuso - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Chiuso
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Costruisci sentieri e corsie d'attesa
 STR_1174    :Un'insegna è d'intralcio
 STR_1175    :Impossibile costruirlo su un sentiero in pendenza
@@ -1110,8 +1110,8 @@ STR_1726    :Il terreno non è in vendita!
 STR_1727    :I diritti di costruzione non sono in vendita!
 STR_1728    :Impossibile comprare i diritti di costruzione qui...
 STR_1729    :Questo terreno non è di proprietà del parco!
-STR_1730    :{RED}Chiuso - - 
-STR_1731    :{WHITE}{STRINGID} - - 
+STR_1730    :{RED}Chiuso
+STR_1731    :{WHITE}{STRINGID}
 STR_1732    :Costruisci
 STR_1733    :Modalità
 STR_1734    :{WINDOW_COLOUR_2}Numero di giri:
@@ -2018,12 +2018,12 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :Tutte le ricerche sono completate
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
+STR_2681    :{MEDIUMFONT}{BLACK}Incrementa il tuo denaro di {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Arriva un largo numero di visitatori
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Basso:
 STR_2687    :Alto:
-STR_2688    :Base Frequency:
+STR_2688    :Frequenza Base:
 STR_2689    :Ottavi:
 STR_2690    :Generazione Mappa
 STR_2691    :Base height:
@@ -2239,7 +2239,7 @@ STR_2977    :Nome del dipendente
 STR_2978    :Digita il nome di questo dipendente:
 STR_2979    :Impossibile battezzare il dipendente...
 STR_2980    :Troppe insegne nella partita
-STR_2981    :{RED}Vietato l'ingresso - - 
+STR_2981    :{RED}Vietato l'ingresso
 STR_2982    :Testo dell'insegna
 STR_2983    :Digita il testo di questa insegna:
 STR_2984    :Impossibile fissare il testo dell'insegna...
@@ -2418,7 +2418,6 @@ STR_3190    :Percorsi (extra)
 STR_3191    :Gruppi di scenari
 STR_3192    :Entrata del parco
 STR_3193    :Acqua
-STR_3194    :Descrizione dello scenario
 STR_3195    :Lista delle invenzioni
 STR_3196    :{WINDOW_COLOUR_2}Gruppo di ricerca: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Oggetti già inventati all'avvio della partita
@@ -2553,7 +2552,7 @@ STR_3328    :Impossibile passare alla fase successiva dell'editor...
 STR_3329    :L'entrata del parco non è stata ancora costruita
 STR_3330    :Il parco deve possedere del terreno
 STR_3331    :Il percorso dall'entrata del parco al bordo della mappa non è completo o è troppo complesso. Dev'essere di larghezza singola con il minor numero possibile di collegamenti e curve
-STR_3332    :L'entrata del parco è oriantata nel senso sbagliato o non ha un percorso che conduce al bordo della mappa
+STR_3332    :L'entrata del parco è orientata nel senso sbagliato o non ha un percorso che conduce al bordo della mappa
 STR_3333    :Esporta oggetti di plug-in insieme alle partite salvate
 STR_3334    :{SMALLFONT}{BLACK}Scegli se salvare gli eventuali dati necessari degli oggetti di plug-in (dati non forniti con il prodotto principale) all'interno dei file di scenario o delle partite salvate, permettendone così l'accesso anche a chi non possiede questi dati addizionali
 STR_3335    :Editor di percorsi - Selezione tipo percorso e veicoli
@@ -2754,11 +2753,11 @@ STR_5251    :Pulsante Opzioni Titolo
 STR_5252    :Selezione Titolo Scenario
 STR_5253    :Informazioni Parco
 STR_5254    :Crea
-STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
-STR_5256    :Create a new theme to make changes to
-STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
-STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
-STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
+STR_5255    :{SMALLFONT}{BLACK} Crea una nuova sequenza di titoli da zero
+STR_5256    :Crea un nuovo tema da modificare
+STR_5257    :{SMALLFONT}{BLACK}Crea un nuovo tema basato sul tema corrente
+STR_5258    :{SMALLFONT}{BLACK}Elimina il tema corrente
+STR_5259    :{SMALLFONT}{BLACK}Rinomina il tema corrente
 STR_5260    :Schermata gigante
 STR_5261    :Filtro
 STR_5262    :Wacky Worlds
@@ -2771,8 +2770,8 @@ STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Controlli e interfaccia
 STR_5270    :{SMALLFONT}{BLACK}Varie
 STR_5271    :{SMALLFONT}{BLACK}Twitch
-STR_5272    :{SMALLFONT}{BLACK}Sceneri piccoli
-STR_5273    :{SMALLFONT}{BLACK}Sceneri grandi
+STR_5272    :{SMALLFONT}{BLACK}Scenari piccoli
+STR_5273    :{SMALLFONT}{BLACK}Scenari grandi
 STR_5274    :{SMALLFONT}{BLACK}Percorso
 STR_5275    :Cerca per oggetti
 STR_5276    :Inserisci il nome di un oggetto da cercare
@@ -3010,7 +3009,7 @@ STR_5511    :(UNKNOWN)
 STR_5512    :Salva partita con nome...
 STR_5513    :Salvataggio veloce
 STR_5514    :Disattiva vandalismi
-STR_5515    :{SMALLFONT}{BLACK}Impedisce ai visitatori di vandalizzare il parco quando sono arrabbiati
+STR_5515    :{SMALLFONT}{BLACK}Impedisce ai visitatori del parco di compiere atti vandalici quando sono arrabbiati
 STR_5516    :{SMALLFONT}{BLACK}Nero
 STR_5517    :{SMALLFONT}{BLACK}Grigio
 STR_5518    :{SMALLFONT}{BLACK}Bianco
@@ -3226,7 +3225,7 @@ STR_5762    :Yuan cinesi (CN¥)
 STR_5763    :Tutti i file
 STR_5764    :Tipo di attrazione non valida
 STR_5765    :Non è possibile modificare attrazioni non valide
-STR_5766    :<available string id>
+STR_5766    :Fiorino Ungherese (Ft)
 STR_5767    :Fatturato
 STR_5768    :Clienti totali
 STR_5769    :Profitto totale
@@ -3307,7 +3306,7 @@ STR_5844    :{SMALLFONT}{BLACK}Connettiti al server multigiocatore{NEWLINE}anche
 STR_5845    :{SMALLFONT}{BLACK}Aggiungi un pulsante{NEWLINE}per debuggare nella barra.{NEWLINE}Abilita le shortcut nellatastiera per la console sviluppatori
 STR_5846    :{SMALLFONT}{BLACK}Imposta i salvataggi automatici di OpenRCT2 spesso
 STR_5847    :{SMALLFONT}{BLACK}Seleziona la sequenza del parco utilizzata nei titoli.{NEWLINE}La sequenza del titolo in RCT1/2 richiede l'importazione degli scenari per funzionare
-STR_5848    :{SMALLFONT}{BLACK}Crea e gestici sequenze di titoli personalizzate
+STR_5848    :{SMALLFONT}{BLACK}Crea e gestisci sequenze di titoli personalizzate
 STR_5849    :{SMALLFONT}{BLACK}Colloca sulla mappa{NEWLINE}i nuovi membri del personale automaticamente
 STR_5851    :{SMALLFONT}{BLACK}Imposta l'intervallo predefinito di inspezione{NEWLINE}nelle nuove attrazioni
 STR_5852    :{SMALLFONT}{BLACK}Imposta il nome del canale TwitchTV che sarà utilizzato per l'integrazione di Twitch
@@ -3587,8 +3586,8 @@ STR_6125    :Tipo oggetto
 STR_6126    :Tipo sconosciuto
 STR_6127    :File: {STRING}
 STR_6128    :Non è stato possibile caricare il file perché alcuni riferimenti ad oggetti presenti sono corrotti o mancanti. Una lista di tali oggetti è riportata qui di seguito.
-STR_6129    :Copia oggetto selezionato
-STR_6130    :Copia l'intera lista di oggetti
+STR_6129    :Copia
+STR_6130    :Copia tutti
 STR_6131    :Origine oggetto
 STR_6132    :Ignora stato di ricerca
 STR_6133    :{SMALLFONT}{BLACK}Permette di accedere ad attrazioni e scenari non ancora inventati
@@ -3736,6 +3735,59 @@ STR_6274    :Impossibile impostare schema colore...
 STR_6275    :{WINDOW_COLOUR_2}Stile stazione:
 STR_6276    :{RED}{STRINGID} ha ospiti bloccati, probabilmente a causa di un errato tipo di attrazione o modalità operativa.
 STR_6277    :{WINDOW_COLOUR_2}Indice stazione: {BLACK}{COMMA16}
+STR_6278    :Numero autosalvataggi
+STR_6279    :{SMALLFONT}{BLACK}Numero di autosalvataggi da mantenere
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Mostra un tasto separato nella barra degli strumenti per la finestra di chat
+STR_6282    :Chat
+STR_6283    :La chat non è disponibile al momento. Si è connessi a un server?
+STR_6284    :Rete
+STR_6285    :Informazioni di rete
+STR_6286    :Ricevi
+STR_6287    :Invia
+STR_6288    :Totale ricevuto
+STR_6289    :Totale inviato
+STR_6290    :Protocollo di base
+STR_6291    :Comandi
+STR_6292    :Mappa
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/sec
+STR_6299    :Scarica tutti
+STR_6300    :{SMALLFONT}{BLACK}Scarica tutti gli oggetti mancanti se sono disponibili online.
+STR_6301    :{SMALLFONT}{BLACK}Copia il nome dell'oggetto selezionato negli appunti.
+STR_6302    :{SMALLFONT}{BLACK}Copia l'intera lista degli oggetti mancanti negli appunti.
+STR_6303    :Scaricamento oggetto ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Apri selezione scenario
+STR_6305    :Multithreading
+STR_6306    :{SMALLFONT}{BLACK}Opzione sperimentale per utilizzare più thread per il rendering, potrebbe causare instabilità.
+STR_6307    :Schema colore: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :Riconnessione
+STR_6310    :{WINDOW_COLOUR_2}Posizione: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Successivo: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(surface)
+STR_6313    :(slope {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerance {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Obiettivo Pathfind: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Storico Pathfind:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6318    :Network desync rilevato.{NEWLINE}File log: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Blocco freno chiuso
+STR_6320    :{WINDOW_COLOUR_2}Indistruttibile
+STR_6321    :{WINDOW_COLOUR_2}L'aggiunta è rotta
+STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6323    :Simulazione
+STR_6324    :Simula
+STR_6325    :{SMALLFONT}{BLACK}Simula attrazione
+STR_6326    :Non è stato possibile simulare {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Sfondo trasparente per schermata gigante
+STR_6328    :{SMALLFONT}{BLACK}Con questa opzione attivata, le schermate giganti avranno uno sfondo trasparente invece di quello nero
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :Scaricamento [{STRING}] da {STRING} ({COMMA16} / {COMMA16})
 
 #############
 # Scenarios #
@@ -4053,7 +4105,7 @@ STR_DTLS    :Un castello con un paio di montagne russe deve diventare un parco t
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :Un parco che ha molti dei suoi sentieri e montange russe sotterranee
+STR_DTLS    :Un parco che ha molti dei suoi sentieri e montagne russe sotterranee
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier

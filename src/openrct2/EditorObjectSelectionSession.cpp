@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -125,7 +125,6 @@ void setup_in_use_selection_flags()
     do
     {
         uint16_t type;
-        rct_banner* banner;
 
         switch (iter.element->GetType())
         {
@@ -173,18 +172,23 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(OBJECT_TYPE_LARGE_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
-                banner = &gBanners[iter.element->AsBanner()->GetIndex()];
-                type = banner->type;
-                assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
-                Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
+            {
+                auto banner = iter.element->AsBanner()->GetBanner();
+                if (banner != nullptr)
+                {
+                    type = banner->type;
+                    assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
+                    Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
+                }
                 break;
+            }
         }
     } while (tile_element_iterator_next(&iter));
 
     for (uint8_t ride_index = 0; ride_index < 0xFF; ride_index++)
     {
-        Ride* ride = get_ride(ride_index);
-        if (ride->type != RIDE_TYPE_NULL)
+        auto ride = get_ride(ride_index);
+        if (ride != nullptr)
         {
             uint8_t type = ride->subtype;
             Editor::SetSelectedObject(OBJECT_TYPE_RIDE, type, OBJECT_SELECTION_FLAG_SELECTED);
@@ -288,7 +292,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
 
         for (auto rideType : rideEntry->ride_type)
         {
-            rct_research_item tmp = {};
+            ResearchItem tmp = {};
             tmp.type = RESEARCH_ENTRY_TYPE_RIDE;
             tmp.entryIndex = entry_index;
             tmp.baseRideType = rideType;
@@ -297,7 +301,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
     }
     else if (entry_type == OBJECT_TYPE_SCENERY_GROUP)
     {
-        rct_research_item tmp = {};
+        ResearchItem tmp = {};
         tmp.type = RESEARCH_ENTRY_TYPE_SCENERY;
         tmp.entryIndex = entry_index;
         research_remove(&tmp);
@@ -526,20 +530,23 @@ int32_t editor_remove_unused_objects()
     int32_t numUnselectedObjects = 0;
     for (int32_t i = 0; i < numObjects; i++)
     {
-        if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_IN_USE)
-            && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
+        if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
         {
-            const ObjectRepositoryItem* item = &items[i];
-            uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
-
-            if (objectType >= OBJECT_TYPE_SCENERY_GROUP)
+            if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_IN_USE)
+                && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
             {
-                continue;
-            }
+                const ObjectRepositoryItem* item = &items[i];
+                uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
 
-            _numSelectedObjectsForType[objectType]--;
-            _objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_SELECTED;
-            numUnselectedObjects++;
+                if (objectType >= OBJECT_TYPE_SCENERY_GROUP)
+                {
+                    continue;
+                }
+
+                _numSelectedObjectsForType[objectType]--;
+                _objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_SELECTED;
+                numUnselectedObjects++;
+            }
         }
     }
     unload_unselected_objects();

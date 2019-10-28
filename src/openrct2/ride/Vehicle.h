@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,8 @@
 #include <array>
 #include <cstddef>
 #include <vector>
+
+enum class SoundId : uint8_t;
 
 struct rct_vehicle_colour
 {
@@ -79,7 +81,7 @@ struct rct_ride_entry_vehicle
     uint8_t no_seating_rows;                 // 0x54 , 0x6E
     uint8_t spinning_inertia;                // 0x55 , 0x6F
     uint8_t spinning_friction;               // 0x56 , 0x70
-    uint8_t friction_sound_id;               // 0x57 , 0x71
+    SoundId friction_sound_id;               // 0x57 , 0x71
     uint8_t log_flume_reverser_vehicle_type; // 0x58 , 0x72
     uint8_t sound_range;                     // 0x59 , 0x73
     uint8_t
@@ -109,6 +111,41 @@ enum VEHICLE_TYPE : uint8_t
 {
     VEHICLE_TYPE_HEAD = 0,
     VEHICLE_TYPE_TAIL = 1,
+};
+
+enum VEHICLE_STATUS
+{
+    VEHICLE_STATUS_MOVING_TO_END_OF_STATION,
+    VEHICLE_STATUS_WAITING_FOR_PASSENGERS,
+    VEHICLE_STATUS_WAITING_TO_DEPART,
+    VEHICLE_STATUS_DEPARTING,
+    VEHICLE_STATUS_TRAVELLING,
+    VEHICLE_STATUS_ARRIVING,
+    VEHICLE_STATUS_UNLOADING_PASSENGERS,
+    VEHICLE_STATUS_TRAVELLING_BOAT,
+    VEHICLE_STATUS_CRASHING,
+    VEHICLE_STATUS_CRASHED,
+    VEHICLE_STATUS_TRAVELLING_DODGEMS,
+    VEHICLE_STATUS_SWINGING,
+    VEHICLE_STATUS_ROTATING,
+    VEHICLE_STATUS_FERRIS_WHEEL_ROTATING,
+    VEHICLE_STATUS_SIMULATOR_OPERATING,
+    VEHICLE_STATUS_SHOWING_FILM,
+    VEHICLE_STATUS_SPACE_RINGS_OPERATING,
+    VEHICLE_STATUS_TOP_SPIN_OPERATING,
+    VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING,
+    VEHICLE_STATUS_DOING_CIRCUS_SHOW,
+    VEHICLE_STATUS_CROOKED_HOUSE_OPERATING,
+    VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT,
+    VEHICLE_STATUS_TRAVELLING_CABLE_LIFT,
+    VEHICLE_STATUS_STOPPING,
+    VEHICLE_STATUS_WAITING_FOR_PASSENGERS_17,
+    VEHICLE_STATUS_WAITING_TO_START,
+    VEHICLE_STATUS_STARTING,
+    VEHICLE_STATUS_OPERATING_1A,
+    VEHICLE_STATUS_STOPPING_1B,
+    VEHICLE_STATUS_UNLOADING_PASSENGERS_1C,
+    VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
 struct rct_vehicle : rct_sprite_common
@@ -167,7 +204,7 @@ struct rct_vehicle : rct_sprite_common
         int16_t var_4E;
         int16_t crash_z; // 0x4E
     };
-    uint8_t status;                  // 0x50
+    VEHICLE_STATUS status;           // 0x50
     uint8_t sub_state;               // 0x51
     uint16_t peep[32];               // 0x52
     uint8_t peep_tshirt_colours[32]; // 0x92
@@ -182,9 +219,9 @@ struct rct_vehicle : rct_sprite_common
     };
     uint16_t sound2_flags; // 0xB8
     uint8_t spin_sprite;   // 0xBA lowest 3 bits not used for sprite selection (divide by 8 to use)
-    uint8_t sound1_id;     // 0xBB
+    SoundId sound1_id;     // 0xBB
     uint8_t sound1_volume; // 0xBC
-    uint8_t sound2_id;     // 0xBD
+    SoundId sound2_id;     // 0xBD
     uint8_t sound2_volume; // 0xBE
     int8_t sound_vector_factor;
     union
@@ -205,7 +242,7 @@ struct rct_vehicle : rct_sprite_common
     uint8_t pad_C6[0x2];
     uint16_t var_C8;
     uint16_t var_CA;
-    uint8_t scream_sound_id; // 0xCC
+    SoundId scream_sound_id; // 0xCC
     uint8_t var_CD;
     union
     {
@@ -234,6 +271,9 @@ struct rct_vehicle : rct_sprite_common
     rct_vehicle* GetHead();
     const rct_vehicle* GetHead() const;
     const rct_vehicle* GetCar(size_t carIndex) const;
+    void Invalidate();
+    void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
+    bool IsGhost() const;
 };
 
 struct train_ref
@@ -311,41 +351,6 @@ enum
     VEHICLE_ENTRY_ANIMATION_HELICARS,
     VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES,
     VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER
-};
-
-enum
-{
-    VEHICLE_STATUS_MOVING_TO_END_OF_STATION,
-    VEHICLE_STATUS_WAITING_FOR_PASSENGERS,
-    VEHICLE_STATUS_WAITING_TO_DEPART,
-    VEHICLE_STATUS_DEPARTING,
-    VEHICLE_STATUS_TRAVELLING,
-    VEHICLE_STATUS_ARRIVING,
-    VEHICLE_STATUS_UNLOADING_PASSENGERS,
-    VEHICLE_STATUS_TRAVELLING_BOAT,
-    VEHICLE_STATUS_CRASHING,
-    VEHICLE_STATUS_CRASHED,
-    VEHICLE_STATUS_TRAVELLING_DODGEMS,
-    VEHICLE_STATUS_SWINGING,
-    VEHICLE_STATUS_ROTATING,
-    VEHICLE_STATUS_FERRIS_WHEEL_ROTATING,
-    VEHICLE_STATUS_SIMULATOR_OPERATING,
-    VEHICLE_STATUS_SHOWING_FILM,
-    VEHICLE_STATUS_SPACE_RINGS_OPERATING,
-    VEHICLE_STATUS_TOP_SPIN_OPERATING,
-    VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING,
-    VEHICLE_STATUS_DOING_CIRCUS_SHOW,
-    VEHICLE_STATUS_CROOKED_HOUSE_OPERATING,
-    VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT,
-    VEHICLE_STATUS_TRAVELLING_CABLE_LIFT,
-    VEHICLE_STATUS_STOPPING,
-    VEHICLE_STATUS_WAITING_FOR_PASSENGERS_17,
-    VEHICLE_STATUS_WAITING_TO_START,
-    VEHICLE_STATUS_STARTING,
-    VEHICLE_STATUS_OPERATING_1A,
-    VEHICLE_STATUS_STOPPING_1B,
-    VEHICLE_STATUS_UNLOADING_PASSENGERS_1C,
-    VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
 enum : uint32_t
@@ -455,10 +460,16 @@ enum
 #define VEHICLE_SEAT_PAIR_FLAG 0x80
 #define VEHICLE_SEAT_NUM_MASK 0x7F
 
+struct GForces
+{
+    int32_t VerticalG{};
+    int32_t LateralG{};
+};
+
 rct_vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-void vehicle_get_g_forces(const rct_vehicle* vehicle, int32_t* verticalG, int32_t* lateralG);
+GForces vehicle_get_g_forces(const rct_vehicle* vehicle);
 void vehicle_set_map_toolbar(const rct_vehicle* vehicle);
 int32_t vehicle_is_used_in_pairs(const rct_vehicle* vehicle);
 int32_t vehicle_update_track_motion(rct_vehicle* vehicle, int32_t* outStation);

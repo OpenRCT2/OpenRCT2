@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceAction.hpp"
 #include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/LandSetRightsAction.hpp"
 #include "../core/Guard.hpp"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -112,11 +113,11 @@ static bool entrance_has_direction(TileElement* tileElement, int32_t direction)
 
 TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
 {
-    TileElement* tileElement;
-
-    tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
+        if (tileElement == nullptr)
+            break;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z)
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
@@ -124,198 +125,9 @@ TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
     return nullptr;
 }
 
-/** rct2: 0x0098D7EC */
-static constexpr const QuarterTile SlopedFootpathQuarterTiles[] = {
-    { 0b1111, 0b1100 }, { 0b1111, 0b1001 }, { 0b1111, 0b0011 }, { 0b1111, 0b0110 }
-};
-
-/**
- *
- *  rct2: 0x006BA23E
- */
-void remove_banners_at_element(int32_t x, int32_t y, TileElement* tileElement)
-{
-    while (!(tileElement++)->IsLastForTile())
-    {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-            return;
-        else if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
-            continue;
-
-        game_do_command(
-            x, 1, y, tileElement->base_height | tileElement->AsBanner()->GetPosition() << 8, GAME_COMMAND_REMOVE_BANNER, 0, 0);
-        tileElement--;
-    }
-}
-
-static money32 footpath_place_from_track(
-    int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t edges, int32_t flags)
-{
-    TileElement* tileElement;
-    EntranceElement* entranceElement;
-    bool entrancePath = false, entranceIsSamePath = false;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z * 8;
-
-    if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        return MONEY32_UNDEFINED;
-    }
-
-    if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST))
-        footpath_interrupt_peeps(x, y, z * 8);
-
-    gFootpathPrice = 0;
-    gFootpathGroundFlags = 0;
-
-    if (!map_is_location_owned(x, y, z * 8) && !gCheatsSandboxMode)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
-        return MONEY32_UNDEFINED;
-
-    if (z < 2)
-    {
-        gGameCommandErrorText = STR_TOO_LOW;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (z > 248)
-    {
-        gGameCommandErrorText = STR_TOO_HIGH;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (!(flags & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
-        {
-            footpath_remove_litter(x, y, z * 8);
-        }
-    }
-
-    gFootpathPrice += 120;
-    QuarterTile quarterTile = { 0b1111, 0 };
-    int32_t zHigh = z + 4;
-    if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP)
-    {
-        quarterTile = SlopedFootpathQuarterTiles[slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP];
-        zHigh += 2;
-    }
-
-    entranceElement = map_get_park_entrance_element_at(x, y, z, false);
-    // Make sure the entrance part is the middle
-    if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
-    {
-        entrancePath = true;
-        // Make the price the same as replacing a path
-        if (entranceElement->GetPathType() == (type & 0xF))
-            entranceIsSamePath = true;
-        else
-            gFootpathPrice -= MONEY(6, 00);
-    }
-
-    // Do not attempt to build a crossing with a queue or a sloped.
-    uint8_t crossingMode = (type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (slope != TILE_ELEMENT_SLOPE_FLAT)
-        ? CREATE_CROSSING_MODE_NONE
-        : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
-    if (!entrancePath
-        && !map_can_construct_with_clear_at(
-               x, y, z, zHigh, &map_place_non_scenery_clear_func, quarterTile, flags, &gFootpathPrice, crossingMode))
-        return MONEY32_UNDEFINED;
-
-    gFootpathGroundFlags = gMapGroundFlags;
-    if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER))
-    {
-        gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
-        return MONEY32_UNDEFINED;
-    }
-
-    tileElement = map_get_surface_element_at({ x, y });
-
-    int32_t supportHeight = z - tileElement->base_height;
-    gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            LocationXYZ16 coord;
-            coord.x = x + 16;
-            coord.y = y + 16;
-            coord.z = tile_element_height(coord.x, coord.y);
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-
-        if (entrancePath)
-        {
-            if (!(flags & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
-            {
-                // Set the path type but make sure it's not a queue as that will not show up
-                entranceElement->SetPathType(type & 0x7F);
-                map_invalidate_tile_full(x, y);
-            }
-        }
-        else
-        {
-            tileElement = tile_element_insert(x / 32, y / 32, z, 0x0F);
-            assert(tileElement != nullptr);
-            tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
-            PathElement* pathElement = tileElement->AsPath();
-            // This can NEVER happen, but GCC does not want to believe that...
-            if (pathElement == nullptr)
-            {
-                assert(false);
-                return MONEY32_UNDEFINED;
-            }
-            pathElement->clearance_height = z + 4 + ((slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) ? 2 : 0);
-            pathElement->SetPathEntryIndex(type & 0xF);
-            pathElement->SetSlopeDirection(slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
-            if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
-                pathElement->SetSloped(true);
-            if (type & (1 << 7))
-                pathElement->SetIsQueue(true);
-            pathElement->SetAddition(0);
-            pathElement->SetRideIndex(RIDE_ID_NULL);
-            pathElement->SetAdditionStatus(255);
-            pathElement->SetEdges(edges);
-            pathElement->SetCorners(0);
-            pathElement->SetIsBroken(false);
-            if (flags & (1 << 6))
-                pathElement->SetGhost(true);
-
-            map_invalidate_tile_full(x, y);
-        }
-    }
-
-    if (entranceIsSamePath)
-        gFootpathPrice = 0;
-
-    return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
-}
-
-/**
- *
- *  rct2: 0x006A68AE
- */
-void game_command_place_footpath_from_track(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    *ebx = footpath_place_from_track(
-        (*edx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 13) & 0x3) | ((*ebx >> 10) & 0x4),
-        (*ebx >> 8) & 0xF, *ebx & 0xFF);
-}
-
 money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags)
 {
-    auto action = FootpathRemoveAction(x, y, z);
+    auto action = FootpathRemoveAction({ x, y, z * 8 });
     action.SetFlags(flags);
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -399,7 +211,8 @@ void footpath_provisional_remove()
 
         footpath_remove(
             gFootpathProvisionalPosition.x, gFootpathProvisionalPosition.y, gFootpathProvisionalPosition.z,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                | GAME_COMMAND_FLAG_GHOST);
     }
 }
 
@@ -479,7 +292,7 @@ void footpath_get_coordinates_from_pos(
     {
         if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH)
         {
-            z = tile_element_height(position.x, position.y);
+            z = tile_element_height({ position.x, position.y });
         }
         position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
         position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
@@ -594,7 +407,7 @@ void footpath_remove_litter(int32_t x, int32_t y, int32_t z)
     {
         rct_litter* sprite = &get_sprite(spriteIndex)->litter;
         uint16_t nextSpriteIndex = sprite->next_in_quadrant;
-        if (sprite->linked_list_type_offset == SPRITE_LIST_LITTER * 2)
+        if (sprite->linked_list_index == SPRITE_LIST_LITTER)
         {
             int32_t distanceZ = abs(sprite->z - z);
             if (distanceZ <= 32)
@@ -618,7 +431,7 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
     {
         Peep* peep = &get_sprite(spriteIndex)->peep;
         uint16_t nextSpriteIndex = peep->next_in_quadrant;
-        if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2)
+        if (peep->linked_list_index == SPRITE_LIST_PEEP)
         {
             if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING)
             {
@@ -637,6 +450,10 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
 }
 
 /**
+ * Returns true if the edge of tile x, y specified by direction is occupied by a fence
+ * between heights z0 and z1.
+ *
+ * Note that there may still be a fence on the opposing tile.
  *
  *  rct2: 0x006E59DC
  */
@@ -673,6 +490,8 @@ static TileElement* footpath_connect_corners_get_neighbour(int32_t x, int32_t y,
     }
 
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -845,6 +664,8 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
     int32_t slope;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -875,16 +696,26 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
     return nullptr;
 }
 
-static bool sub_footpath_disconnect_queue_from_path(
-    int32_t x, int32_t y, TileElement* tileElement, int32_t action, int32_t direction)
+/**
+ * Attempt to connect a newly disconnected queue tile to the specified path tile
+ */
+static bool footpath_reconnect_queue_to_path(int32_t x, int32_t y, TileElement* tileElement, int32_t action, int32_t direction)
 {
     if (((tileElement->AsPath()->GetEdges() & (1 << direction)) == 0) ^ (action < 0))
-        return false;
-    if ((action < 0) && fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction))
         return false;
 
     int32_t x1 = x + CoordsDirectionDelta[direction].x;
     int32_t y1 = y + CoordsDirectionDelta[direction].y;
+
+    if (action < 0)
+    {
+        if (fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction))
+            return false;
+
+        if (fence_in_the_way(x1, y1, tileElement->base_height, tileElement->clearance_height, direction_reverse(direction)))
+            return false;
+    }
+
     int32_t z = tileElement->base_height;
     TileElement* otherTileElement = footpath_get_element(x1, y1, z - 2, z, direction);
     if (otherTileElement != nullptr && !otherTileElement->AsPath()->IsQueue())
@@ -924,15 +755,15 @@ static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, TileElemen
     if (action < 0)
     {
         uint8_t direction = tileElement->AsPath()->GetSlopeDirection();
-        if (sub_footpath_disconnect_queue_from_path(x, y, tileElement, action, direction))
+        if (footpath_reconnect_queue_to_path(x, y, tileElement, action, direction))
             return true;
     }
 
-    for (int32_t direction = 0; direction < 4; direction++)
+    for (Direction direction : ALL_DIRECTIONS)
     {
         if ((action < 0) && (direction == tileElement->AsPath()->GetSlopeDirection()))
             continue;
-        if (sub_footpath_disconnect_queue_from_path(x, y, tileElement, action, direction))
+        if (footpath_reconnect_queue_to_path(x, y, tileElement, action, direction))
             return true;
     }
 
@@ -959,6 +790,8 @@ static void loc_6A6D7E(
     else
     {
         TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+        if (tileElement == nullptr)
+            return;
         do
         {
             switch (tileElement->GetType())
@@ -988,8 +821,8 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_TRACK:
                     if (z == tileElement->base_height)
                     {
-                        Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                         {
                             continue;
                         }
@@ -1116,8 +949,8 @@ static void loc_6A6C85(
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             return;
         }
@@ -1167,7 +1000,7 @@ void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int3
     neighbour_list_init(&neighbourList);
 
     footpath_update_queue_entrance_banner(x, y, tileElement);
-    for (int32_t direction = 0; direction < 4; direction++)
+    for (Direction direction : ALL_DIRECTIONS)
     {
         loc_6A6C85(x, y, direction, tileElement, flags, true, &neighbourList);
     }
@@ -1363,8 +1196,8 @@ void footpath_update_queue_chains()
     for (uint8_t* queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++)
     {
         ride_id_t rideIndex = *queueChainPtr;
-        Ride* ride = get_ride(rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
             continue;
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
@@ -1385,7 +1218,7 @@ void footpath_update_queue_chains()
                     if (tileElement->AsEntrance()->GetRideIndex() != rideIndex)
                         continue;
 
-                    uint8_t direction = tileElement->GetDirectionWithOffset(2);
+                    Direction direction = direction_reverse(tileElement->GetDirection());
                     footpath_chain_ride_queue(rideIndex, i, location.x << 5, location.y << 5, tileElement, direction);
                 } while (!(tileElement++)->IsLastForTile());
             }
@@ -1399,7 +1232,7 @@ void footpath_update_queue_chains()
  */
 static void footpath_fix_ownership(int32_t x, int32_t y)
 {
-    const TileElement* surfaceElement = map_get_surface_element_at({ x, y });
+    const auto* surfaceElement = map_get_surface_element_at({ x, y });
     uint16_t ownership;
 
     // Unlikely to be NULL unless deliberate.
@@ -1413,7 +1246,7 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         // If the tile is safe to own construction rights of, do not erase contruction rights.
         else
         {
-            ownership = surfaceElement->AsSurface()->GetOwnership();
+            ownership = surfaceElement->GetOwnership();
             // You can't own the entrance path.
             if (ownership == OWNERSHIP_OWNED || ownership == OWNERSHIP_AVAILABLE)
             {
@@ -1426,7 +1259,9 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         ownership = OWNERSHIP_UNOWNED;
     }
 
-    map_buy_land_rights(x, y, x, y, BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, (ownership << 4) | GAME_COMMAND_FLAG_APPLY);
+    auto landSetRightsAction = LandSetRightsAction({ x, y }, LandSetRightSetting::SetOwnershipWithChecks, ownership);
+    landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+    GameActions::Execute(&landSetRightsAction);
 }
 
 static bool get_next_direction(int32_t edges, int32_t* direction)
@@ -1465,6 +1300,8 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
         return FOOTPATH_SEARCH_SUCCESS;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1596,15 +1433,15 @@ void PathElement::SetSloped(bool isSloped)
         entryIndex |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 }
 
-uint8_t PathElement::GetSlopeDirection() const
+Direction PathElement::GetSlopeDirection() const
 {
-    return entryIndex & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    return static_cast<Direction>(entryIndex & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
 }
 
-void PathElement::SetSlopeDirection(uint8_t newSlope)
+void PathElement::SetSlopeDirection(Direction newSlope)
 {
     entryIndex &= ~FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
-    entryIndex |= newSlope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    entryIndex |= static_cast<uint8_t>(newSlope) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
 }
 
 bool PathElement::IsQueue() const
@@ -1638,7 +1475,7 @@ bool PathElement::IsBroken() const
 
 void PathElement::SetIsBroken(bool isBroken)
 {
-    if (isBroken == true)
+    if (isBroken)
     {
         flags |= TILE_ELEMENT_FLAG_BROKEN;
     }
@@ -1655,7 +1492,7 @@ bool PathElement::IsBlockedByVehicle() const
 
 void PathElement::SetIsBlockedByVehicle(bool isBlocked)
 {
-    if (isBlocked == true)
+    if (isBlocked)
     {
         flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
     }
@@ -1738,7 +1575,10 @@ uint8_t PathElement::GetRailingEntryIndex() const
 
 PathSurfaceEntry* PathElement::GetPathEntry() const
 {
-    return get_path_surface_entry(GetPathEntryIndex());
+    if (!IsQueue())
+        return get_path_surface_entry(GetPathEntryIndex());
+    else
+        return get_path_surface_entry(GetPathEntryIndex() + MAX_PATH_OBJECTS);
 }
 
 PathRailingsEntry* PathElement::GetRailingEntry() const
@@ -1787,6 +1627,8 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
 static void footpath_clear_wide(int32_t x, int32_t y)
 {
     TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1804,6 +1646,8 @@ static void footpath_clear_wide(int32_t x, int32_t y)
 static TileElement* footpath_can_be_wide(int32_t x, int32_t y, uint8_t height)
 {
     TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
+        return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -1855,6 +1699,8 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
     // y -= 0x20;
 
     TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -2028,8 +1874,8 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
 
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
 {
-    auto pathElement = map_get_path_element_at(position.x, position.y, position.z);
-    return pathElement != nullptr && pathElement->AsPath()->IsBlockedByVehicle();
+    auto pathElement = map_get_path_element_at(position);
+    return pathElement != nullptr && pathElement->IsBlockedByVehicle();
 }
 
 /**
@@ -2059,7 +1905,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, TileElement* ti
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
                 footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
-                footpath_chain_ride_queue(255, 0, x, y, tileElement, tileElement->GetDirectionWithOffset(2));
+                footpath_chain_ride_queue(255, 0, x, y, tileElement, direction_reverse(tileElement->GetDirection()));
             }
             break;
     }
@@ -2093,6 +1939,8 @@ static void footpath_remove_edges_towards_here(
     y += CoordsDirectionDelta[direction].y;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -2122,6 +1970,8 @@ static void footpath_remove_edges_towards(int32_t x, int32_t y, int32_t z0, int3
     }
 
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    if (tileElement == nullptr)
+        return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -2159,6 +2009,8 @@ static void footpath_remove_edges_towards(int32_t x, int32_t y, int32_t z0, int3
 bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const TileElement* const elementToBeRemoved)
 {
     TileElement* tileElement = map_get_first_element_at(coords.x, coords.y);
+    if (tileElement == nullptr)
+        return false;
     do
     {
         // Don't check the element that gets removed
@@ -2187,7 +2039,10 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const Til
             case TILE_ELEMENT_TYPE_TRACK:
                 if (tileElement->base_height == coords.z)
                 {
-                    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+                    if (ride == nullptr)
+                        continue;
+
                     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                         break;
 
@@ -2245,6 +2100,8 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, TileElement* pathE
                 continue;
 
             TileElement* tileElement = map_get_first_element_at(x + xOffset, y + yOffset);
+            if (tileElement == nullptr)
+                continue;
             do
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -2272,9 +2129,9 @@ void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement)
 {
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-        Ride* ride = get_ride(rideIndex);
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
             return;
     }
 
@@ -2329,10 +2186,14 @@ PathSurfaceEntry* get_path_surface_entry(int32_t entryIndex)
 {
     PathSurfaceEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
+    // TODO: Change when moving to the new save format.
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex % MAX_PATH_OBJECTS);
     if (obj != nullptr)
     {
-        result = ((FootpathObject*)obj)->GetPathSurfaceEntry();
+        if (entryIndex < MAX_PATH_OBJECTS)
+            result = ((FootpathObject*)obj)->GetPathSurfaceEntry();
+        else
+            result = ((FootpathObject*)obj)->GetQueueEntry();
     }
     return result;
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,34 +70,29 @@ enum
     SHOP_ITEM_NONE = 255
 };
 
-struct rct_shop_item_stats
+struct ShopItemStrings
 {
-    uint16_t cost;
-    uint16_t base_value;
-    uint16_t hot_value;
-    uint16_t cold_value;
+    rct_string_id PriceLabel; // Balloon price:
+    rct_string_id Singular;   // Balloon
+    rct_string_id Plural;     // Balloons
+    rct_string_id Indefinite; // a Balloon
+    rct_string_id Display;    // "Diamond Heights" Balloon
 };
 
-struct rct_shop_item_string_types
+struct ShopItemDescriptor
 {
-    rct_string_id price_label; // Balloon price:
-    rct_string_id singular;    // Balloon
-    rct_string_id plural;      // Balloons
-    rct_string_id indefinite;  // a Balloon
-    rct_string_id display;     // "Diamond Heights" Balloon
+    uint16_t Cost;
+    uint16_t BaseValue;
+    uint16_t HotValue;
+    uint16_t ColdValue;
+    money8 DefaultPrice;
+    uint32_t Image;
+    ShopItemStrings Naming;
 };
 
-extern uint32_t gSamePriceThroughoutParkA;
-extern uint32_t gSamePriceThroughoutParkB;
+extern const ShopItemDescriptor ShopItems[SHOP_ITEM_COUNT];
+extern uint64_t gSamePriceThroughoutPark;
 
-extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
-extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
-extern const uint32_t ShopItemImage[SHOP_ITEM_COUNT];
-
-money32 get_shop_item_cost(int32_t shopItem);
-money16 get_shop_base_value(int32_t shopItem);
-money16 get_shop_hot_value(int32_t shopItem);
-money16 get_shop_cold_value(int32_t shopItem);
 money32 shop_item_get_common_price(Ride* forRide, int32_t shopItem);
 bool shop_item_is_photo(int32_t shopItem);
 bool shop_item_has_common_price(int32_t shopItem);

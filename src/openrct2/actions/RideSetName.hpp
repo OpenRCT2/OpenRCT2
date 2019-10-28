@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,8 +52,26 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Ride* ride = get_ride(_rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
+        {
+            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+        }
+
+        if (!_name.empty() && Ride::NameExists(_name, ride->id))
+        {
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERROR_EXISTING_NAME);
+        }
+
+        return std::make_unique<GameActionResult>();
+    }
+
+    GameActionResult::Ptr Execute() const override
+    {
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
@@ -61,36 +79,12 @@ public:
 
         if (_name.empty())
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_INVALID_RIDE_ATTRACTION_NAME);
+            ride->SetNameToDefault();
         }
-
-        rct_string_id newUserStringId = user_string_allocate(
-            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-        if (newUserStringId == 0)
+        else
         {
-            // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+            ride->custom_name = _name;
         }
-        user_string_free(newUserStringId);
-
-        return std::make_unique<GameActionResult>();
-    }
-
-    GameActionResult::Ptr Execute() const override
-    {
-        rct_string_id newUserStringId = user_string_allocate(
-            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-
-        Ride* ride = get_ride(_rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
-        {
-            log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
-        }
-
-        user_string_free(ride->name);
-        ride->name = newUserStringId;
 
         scrolling_text_invalidate();
         gfx_invalidate_screen();
@@ -103,7 +97,7 @@ public:
         auto res = std::make_unique<GameActionResult>();
         res->Position.x = ride->overall_view.x * 32 + 16;
         res->Position.y = ride->overall_view.y * 32 + 16;
-        res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+        res->Position.z = tile_element_height(res->Position);
 
         return res;
     }

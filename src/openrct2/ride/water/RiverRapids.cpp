@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -223,10 +223,15 @@ void vehicle_visual_river_rapids(
 
     const vehicle_boundbox* bb = &_riverRapidsBoundbox[j];
     image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    if (vehicle->IsGhost())
+    {
+        image_id &= 0x7FFFF;
+        image_id |= CONSTRUCTION_MARKER;
+    }
     sub_98197C(
         session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z);
 
-    if (session->DPI->zoom_level < 2 && vehicle->num_peeps > 0)
+    if (session->DPI.zoom_level < 2 && vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {
         // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip, but
         // that's how the original does it...)
@@ -316,10 +321,10 @@ static void paint_river_rapids_station(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    Ride* ride = get_ride(rideIndex);
-
     paint_river_rapids_track_flat(session, rideIndex, trackSequence, direction, height, tileElement);
-    track_paint_util_draw_station_platform(session, ride, direction, height, 12, tileElement);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+        track_paint_util_draw_station_platform(session, ride, direction, height, 12, tileElement);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 

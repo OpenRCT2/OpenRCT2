@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,14 +22,17 @@
 #    include "../OpenRCT2.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
+#    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
 #    include "../rct2/RCT2.h"
 #    include "../util/Util.h"
 #    include "platform.h"
 
+#    include <algorithm>
 #    include <iterator>
 #    include <lmcons.h>
+#    include <memory>
 #    include <psapi.h>
 #    include <shlobj.h>
 #    include <sys/stat.h>
@@ -82,18 +85,16 @@ void platform_get_time_local(rct2_time* out_time)
 
 bool platform_file_exists(const utf8* path)
 {
-    wchar_t* wPath = utf8_to_widechar(path);
-    DWORD result = GetFileAttributesW(wPath);
+    auto wPath = String::ToWideChar(path);
+    DWORD result = GetFileAttributesW(wPath.c_str());
     DWORD error = GetLastError();
-    free(wPath);
     return !(result == INVALID_FILE_ATTRIBUTES && (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND));
 }
 
 bool platform_directory_exists(const utf8* path)
 {
-    wchar_t* wPath = utf8_to_widechar(path);
-    DWORD dwAttrib = GetFileAttributesW(wPath);
-    free(wPath);
+    auto wPath = String::ToWideChar(path);
+    DWORD dwAttrib = GetFileAttributesW(wPath.c_str());
     return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
@@ -124,27 +125,20 @@ bool platform_ensure_directory_exists(const utf8* path)
     if (platform_directory_exists(path))
         return 1;
 
-    wchar_t* wPath = utf8_to_widechar(path);
-    BOOL success = CreateDirectoryW(wPath, nullptr);
-    free(wPath);
-    return success == TRUE;
+    auto wPath = String::ToWideChar(path);
+    auto success = CreateDirectoryW(wPath.c_str(), nullptr);
+    return success != FALSE;
 }
 
 bool platform_directory_delete(const utf8* path)
 {
-    wchar_t pszFrom[MAX_PATH];
-
-    wchar_t* wPath = utf8_to_widechar(path);
-    wcsncpy(pszFrom, wPath, MAX_PATH);
-
-    // Needs to be double-null terminated for some weird reason
-    pszFrom[wcslen(wPath) + 1] = 0;
-    free(wPath);
+    // Needs to be double-null terminated as pFrom is a null terminated array of strings
+    auto wPath = String::ToWideChar(path) + L"\0";
 
     SHFILEOPSTRUCTW fileop;
     fileop.hwnd = nullptr;                           // no status display
     fileop.wFunc = FO_DELETE;                        // delete operation
-    fileop.pFrom = pszFrom;                          // source file name as double null terminated string
+    fileop.pFrom = wPath.c_str();                    // source file name as double null terminated string
     fileop.pTo = nullptr;                            // no destination needed
     fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT; // do not prompt the user
 
@@ -167,7 +161,7 @@ bool platform_lock_single_instance()
         // Create new mutex
         status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (status == nullptr)
-            log_error("unable to create mutex\n");
+            log_error("unable to create mutex");
 
         return true;
     }
@@ -186,30 +180,25 @@ int32_t platform_get_drives()
 
 bool platform_file_copy(const utf8* srcPath, const utf8* dstPath, bool overwrite)
 {
-    wchar_t* wSrcPath = utf8_to_widechar(srcPath);
-    wchar_t* wDstPath = utf8_to_widechar(dstPath);
-    BOOL success = CopyFileW(wSrcPath, wDstPath, overwrite ? FALSE : TRUE);
-    free(wSrcPath);
-    free(wDstPath);
-    return success == TRUE;
+    auto wSrcPath = String::ToWideChar(srcPath);
+    auto wDstPath = String::ToWideChar(dstPath);
+    auto success = CopyFileW(wSrcPath.c_str(), wDstPath.c_str(), overwrite ? FALSE : TRUE);
+    return success != FALSE;
 }
 
 bool platform_file_move(const utf8* srcPath, const utf8* dstPath)
 {
-    wchar_t* wSrcPath = utf8_to_widechar(srcPath);
-    wchar_t* wDstPath = utf8_to_widechar(dstPath);
-    BOOL success = MoveFileW(wSrcPath, wDstPath);
-    free(wSrcPath);
-    free(wDstPath);
-    return success == TRUE;
+    auto wSrcPath = String::ToWideChar(srcPath);
+    auto wDstPath = String::ToWideChar(dstPath);
+    auto success = MoveFileW(wSrcPath.c_str(), wDstPath.c_str());
+    return success != FALSE;
 }
 
 bool platform_file_delete(const utf8* path)
 {
-    wchar_t* wPath = utf8_to_widechar(path);
-    BOOL success = DeleteFileW(wPath);
-    free(wPath);
-    return success == TRUE;
+    auto wPath = String::ToWideChar(path);
+    auto success = DeleteFileW(wPath.c_str());
+    return success != FALSE;
 }
 
 bool platform_get_steam_path(utf8* outPath, size_t outSize)
@@ -233,10 +222,9 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
     result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath, &size);
     if (result == ERROR_SUCCESS)
     {
-        utf8* utf8SteamPath = widechar_to_utf8(wSteamPath);
-        safe_strcpy(outPath, utf8SteamPath, outSize);
+        auto utf8SteamPath = String::ToUtf8(wSteamPath);
+        safe_strcpy(outPath, utf8SteamPath.c_str(), outSize);
         safe_strcat_path(outPath, "steamapps\\common", outSize);
-        free(utf8SteamPath);
     }
     free(wSteamPath);
     RegCloseKey(hKey);
@@ -251,6 +239,20 @@ std::string platform_get_rct1_steam_dir()
 std::string platform_get_rct2_steam_dir()
 {
     return "Rollercoaster Tycoon 2";
+}
+
+std::string platform_sanitise_filename(const std::string& path)
+{
+    static const std::array<std::string::value_type, 9> prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
+    auto sanitised = path;
+    std::replace_if(
+        sanitised.begin(), sanitised.end(),
+        [](const std::string::value_type& ch) -> bool {
+            return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
+        },
+        '_');
+    sanitised = String::Trim(sanitised);
+    return sanitised;
 }
 
 uint16_t platform_get_locale_language()
@@ -323,24 +325,22 @@ uint16_t platform_get_locale_language()
 
 time_t platform_file_get_modified_time(const utf8* path)
 {
-    WIN32_FILE_ATTRIBUTE_DATA data;
-
-    wchar_t* wPath = utf8_to_widechar(path);
-    BOOL result = GetFileAttributesExW(wPath, GetFileExInfoStandard, &data);
-    free(wPath);
-
-    if (!result)
-        return 0;
-
-    FILETIME localFileTime;
-    result = FileTimeToLocalFileTime(&data.ftLastWriteTime, &localFileTime);
-    if (!result)
-        return 0;
-
-    ULARGE_INTEGER ull;
-    ull.LowPart = localFileTime.dwLowDateTime;
-    ull.HighPart = localFileTime.dwHighDateTime;
-    return ull.QuadPart / 10000000ULL - 11644473600ULL;
+    WIN32_FILE_ATTRIBUTE_DATA data{};
+    auto wPath = String::ToWideChar(path);
+    auto result = GetFileAttributesExW(wPath.c_str(), GetFileExInfoStandard, &data);
+    if (result != FALSE)
+    {
+        FILETIME localFileTime{};
+        result = FileTimeToLocalFileTime(&data.ftLastWriteTime, &localFileTime);
+        if (result != FALSE)
+        {
+            ULARGE_INTEGER ull{};
+            ull.LowPart = localFileTime.dwLowDateTime;
+            ull.HighPart = localFileTime.dwHighDateTime;
+            return ull.QuadPart / 10000000ULL - 11644473600ULL;
+        }
+    }
+    return 0;
 }
 
 uint8_t platform_get_locale_currency()
@@ -396,7 +396,7 @@ uint8_t platform_get_locale_date_format()
 {
     // Retrieve short date format, eg "MM/dd/yyyy"
     wchar_t dateFormat[20];
-    if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, sizeof(dateFormat)) == 0)
+    if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, (int)std::size(dateFormat)) == 0)
     {
         return DATE_FORMAT_DAY_MONTH_YEAR;
     }
@@ -451,9 +451,8 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
     if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Fonts, 0, nullptr, &fontFolder)))
     {
         // Convert wchar to utf8, then copy the font folder path to the buffer.
-        utf8* outPathTemp = widechar_to_utf8(fontFolder);
-        safe_strcpy(buffer, outPathTemp, size);
-        free(outPathTemp);
+        auto outPathTemp = String::ToUtf8(fontFolder);
+        safe_strcpy(buffer, outPathTemp.c_str(), size);
 
         CoTaskMemFree(fontFolder);
 
@@ -474,24 +473,30 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 }
 #    endif // NO_TTF
 
-utf8* platform_get_absolute_path(const utf8* relativePath, const utf8* basePath)
+std::string platform_get_absolute_path(const utf8* relativePath, const utf8* basePath)
 {
-    utf8 path[MAX_PATH];
-    safe_strcpy(path, basePath, sizeof(path));
-    safe_strcat_path(path, relativePath, sizeof(path));
-
-    wchar_t* pathW = utf8_to_widechar(path);
-    wchar_t fullPathW[MAX_PATH];
-    DWORD fullPathLen = GetFullPathNameW(pathW, (DWORD)std::size(fullPathW), fullPathW, nullptr);
-
-    free(pathW);
-
-    if (fullPathLen == 0)
+    std::string result;
+    if (relativePath != nullptr)
     {
-        return nullptr;
-    }
+        std::string pathToResolve;
+        if (basePath == nullptr)
+        {
+            pathToResolve = std::string(relativePath);
+        }
+        else
+        {
+            pathToResolve = std::string(basePath) + std::string("\\") + relativePath;
+        }
 
-    return widechar_to_utf8(fullPathW);
+        auto pathToResolveW = String::ToWideChar(pathToResolve);
+        wchar_t fullPathW[MAX_PATH]{};
+        auto fullPathLen = GetFullPathNameW(pathToResolveW.c_str(), (DWORD)std::size(fullPathW), fullPathW, nullptr);
+        if (fullPathLen != 0)
+        {
+            result = String::ToUtf8(fullPathW);
+        }
+    }
+    return result;
 }
 
 datetime64 platform_get_datetime_now_utc()
@@ -507,18 +512,16 @@ datetime64 platform_get_datetime_now_utc()
     return utcNow;
 }
 
-utf8* platform_get_username()
+std::string platform_get_username()
 {
-    static wchar_t usernameW[UNLEN + 1];
+    std::string result;
+    wchar_t usernameW[UNLEN + 1]{};
     DWORD usernameLength = UNLEN + 1;
-    if (!GetUserNameW(usernameW, &usernameLength))
+    if (GetUserNameW(usernameW, &usernameLength))
     {
-        return nullptr;
+        result = String::ToUtf8(usernameW);
     }
-
-    static std::string username;
-    username = widechar_to_utf8(usernameW);
-    return username.data();
+    return result;
 }
 
 bool platform_process_is_elevated()
@@ -548,15 +551,11 @@ bool platform_process_is_elevated()
 #    define SOFTWARE_CLASSES L"Software\\Classes"
 #    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
 
-static void get_progIdName(wchar_t* dst, const utf8* extension)
+static std::wstring get_progIdName(const std::string_view& extension)
 {
-    utf8 progIdName[128];
-    safe_strcpy(progIdName, OPENRCT2_NAME, sizeof(progIdName));
-    safe_strcat(progIdName, extension, sizeof(progIdName));
-
-    wchar_t* progIdNameW = utf8_to_widechar(progIdName);
-    lstrcpyW(dst, progIdNameW);
-    free(progIdNameW);
+    auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
+    auto progIdNameW = String::ToWideChar(progIdName);
+    return progIdNameW;
 }
 
 static bool windows_setup_file_association(
@@ -567,16 +566,14 @@ static bool windows_setup_file_association(
 
     [[maybe_unused]] int32_t printResult;
 
-    GetModuleFileNameW(nullptr, exePathW, sizeof(exePathW));
-    GetModuleFileNameW(plaform_get_dll_module(), dllPathW, sizeof(dllPathW));
+    GetModuleFileNameW(nullptr, exePathW, (DWORD)std::size(exePathW));
+    GetModuleFileNameW(plaform_get_dll_module(), dllPathW, (DWORD)std::size(dllPathW));
 
-    wchar_t* extensionW = utf8_to_widechar(extension);
-    wchar_t* fileTypeTextW = utf8_to_widechar(fileTypeText);
-    wchar_t* commandTextW = utf8_to_widechar(commandText);
-    wchar_t* commandArgsW = utf8_to_widechar(commandArgs);
-
-    wchar_t progIdNameW[128];
-    get_progIdName(progIdNameW, extension);
+    auto extensionW = String::ToWideChar(extension);
+    auto fileTypeTextW = String::ToWideChar(fileTypeText);
+    auto commandTextW = String::ToWideChar(commandText);
+    auto commandArgsW = String::ToWideChar(commandArgs);
+    auto progIdNameW = get_progIdName(extension);
 
     bool result = false;
     HKEY hKey = nullptr;
@@ -589,18 +586,18 @@ static bool windows_setup_file_association(
     }
 
     // [hRootKey\.ext]
-    if (RegSetValueW(hRootKey, extensionW, REG_SZ, progIdNameW, 0) != ERROR_SUCCESS)
+    if (RegSetValueW(hRootKey, extensionW.c_str(), REG_SZ, progIdNameW.c_str(), 0) != ERROR_SUCCESS)
     {
         goto fail;
     }
 
-    if (RegCreateKeyW(hRootKey, progIdNameW, &hKey) != ERROR_SUCCESS)
+    if (RegCreateKeyW(hRootKey, progIdNameW.c_str(), &hKey) != ERROR_SUCCESS)
     {
         goto fail;
     }
 
     // [hRootKey\OpenRCT2.ext]
-    if (RegSetValueW(hKey, nullptr, REG_SZ, fileTypeTextW, 0) != ERROR_SUCCESS)
+    if (RegSetValueW(hKey, nullptr, REG_SZ, fileTypeTextW.c_str(), 0) != ERROR_SUCCESS)
     {
         goto fail;
     }
@@ -620,14 +617,14 @@ static bool windows_setup_file_association(
     }
 
     // [hRootKey\OpenRCT2.sv6\shell\open]
-    if (RegSetValueW(hKey, L"shell\\open", REG_SZ, commandTextW, 0) != ERROR_SUCCESS)
+    if (RegSetValueW(hKey, L"shell\\open", REG_SZ, commandTextW.c_str(), 0) != ERROR_SUCCESS)
     {
         goto fail;
     }
 
     // [hRootKey\OpenRCT2.sv6\shell\open\command]
     wchar_t szCommandW[MAX_PATH];
-    printResult = swprintf_s(szCommandW, MAX_PATH, L"\"%s\" %s", exePathW, commandArgsW);
+    printResult = swprintf_s(szCommandW, MAX_PATH, L"\"%s\" %s", exePathW, commandArgsW.c_str());
     assert(printResult >= 0);
     if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS)
     {
@@ -636,10 +633,6 @@ static bool windows_setup_file_association(
 
     result = true;
 fail:
-    free(extensionW);
-    free(fileTypeTextW);
-    free(commandTextW);
-    free(commandArgsW);
     RegCloseKey(hKey);
     RegCloseKey(hRootKey);
     return result;
@@ -655,9 +648,8 @@ static void windows_remove_file_association(const utf8* extension)
         RegDeleteTreeA(hRootKey, extension);
 
         // [hRootKey\OpenRCT2.ext]
-        wchar_t progIdName[128];
-        get_progIdName(progIdName, extension);
-        RegDeleteTreeW(hRootKey, progIdName);
+        auto progIdName = get_progIdName(extension);
+        RegDeleteTreeW(hRootKey, progIdName.c_str());
 
         RegCloseKey(hRootKey);
     }
@@ -720,7 +712,7 @@ bool platform_setup_uri_protocol()
                     GetModuleFileNameW(nullptr, exePath, MAX_PATH);
 
                     wchar_t buffer[512];
-                    swprintf_s(buffer, sizeof(buffer), L"\"%s\" handle-uri \"%%1\"", exePath);
+                    swprintf_s(buffer, std::size(buffer), L"\"%s\" handle-uri \"%%1\"", exePath);
                     if (RegSetValueW(hClassKey, L"shell\\open\\command", REG_SZ, buffer, 0) == ERROR_SUCCESS)
                     {
                         // Not compulsory, but gives the application a nicer name
@@ -728,11 +720,11 @@ bool platform_setup_uri_protocol()
                         HKEY hMuiCacheKey;
                         if (RegCreateKeyW(hRootKey, MUI_CACHE, &hMuiCacheKey) == ERROR_SUCCESS)
                         {
-                            swprintf_s(buffer, sizeof(buffer), L"%s.FriendlyAppName", exePath);
+                            swprintf_s(buffer, std::size(buffer), L"%s.FriendlyAppName", exePath);
                             // mingw-w64 used to define RegSetKeyValueW's signature incorrectly
                             // You need at least mingw-w64 5.0 including this commit:
                             //   https://sourceforge.net/p/mingw-w64/mingw-w64/ci/da9341980a4b70be3563ac09b5927539e7da21f7/
-                            RegSetKeyValueW(hMuiCacheKey, nullptr, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2") + 1);
+                            RegSetKeyValueW(hMuiCacheKey, nullptr, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2"));
                         }
 
                         log_verbose("URI protocol setup successful");

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -65,7 +65,8 @@ static rct_window_event_list window_title_options_events = {
 rct_window* window_title_options_open()
 {
     rct_window* window = window_create(
-        context_get_width() - 80, 0, 80, 15, &window_title_options_events, WC_TITLE_OPTIONS, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, &window_title_options_events, WC_TITLE_OPTIONS,
+        WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_options_widgets;
     window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
     window_init_scroll_widgets(window);

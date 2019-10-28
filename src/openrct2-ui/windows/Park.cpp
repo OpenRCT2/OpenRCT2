@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/ParkSetNameAction.hpp>
 #include <openrct2/config/Config.h>
@@ -112,7 +113,7 @@ static rct_widget window_park_guests_widgets[] = {
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS,
     { WWT_LABEL,            1,  21,     146,    50,     61,     STR_ADMISSION_PRICE,            STR_NONE },                         //
-      SPINNER_WIDGETS      (1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE), // Price (3 widgets)
+      SPINNER_WIDGETS      (1,  147,    222,    50,     61,     STR_NONE,                       STR_NONE), // Price (3 widgets)
     { WIDGETS_END },
 };
 
@@ -123,7 +124,7 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS,
-    { WWT_BUTTON,           1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
+    { WWT_BUTTON,           1,  7,      222,    207,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
     { WIDGETS_END },
 };
 
@@ -582,8 +583,11 @@ static void window_park_set_disabled_tabs(rct_window* w)
 
 static void window_park_prepare_window_title_text()
 {
-    set_format_arg(0, rct_string_id, gParkName);
-    set_format_arg(2, uint32_t, gParkNameArgs);
+    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+    auto parkName = park.Name.c_str();
+
+    set_format_arg(0, rct_string_id, STR_STRING);
+    set_format_arg(2, const char*, parkName);
 }
 
 #pragma region Entrance page
@@ -605,7 +609,7 @@ rct_window* window_park_entrance_open()
     }
 
     window->page = WINDOW_PARK_PAGE_ENTRANCE;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_entrance_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
     window->event_handlers = &window_park_entrance_events;
@@ -651,17 +655,20 @@ static void window_park_entrance_mouseup(rct_window* w, rct_widgetindex widgetIn
             context_open_window(WC_LAND_RIGHTS);
             break;
         case WIDX_LOCATE:
-            window_scroll_to_viewport(w);
+            w->ScrollToViewport();
             break;
         case WIDX_RENAME:
-            set_format_arg(16, uint32_t, gParkNameArgs);
-            window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, USER_STRING_MAX_LENGTH);
+        {
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            window_text_input_raw_open(
+                w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, park.Name.c_str(), USER_STRING_MAX_LENGTH);
             break;
+        }
         case WIDX_CLOSE_LIGHT:
-            park_set_open(0);
+            park_set_open(false);
             break;
         case WIDX_OPEN_LIGHT:
-            park_set_open(1);
+            park_set_open(true);
             break;
     }
 }
@@ -718,13 +725,11 @@ static void window_park_entrance_dropdown(rct_window* w, rct_widgetindex widgetI
 
         if (dropdownIndex != 0)
         {
-            gGameCommandErrorTitle = STR_CANT_CLOSE_PARK;
-            park_set_open(1);
+            park_set_open(true);
         }
         else
         {
-            gGameCommandErrorTitle = STR_CANT_OPEN_PARK;
-            park_set_open(0);
+            park_set_open(false);
         }
     }
 }
@@ -766,8 +771,13 @@ static void window_park_entrance_invalidate(rct_window* w)
     window_park_set_pressed_tab(w);
 
     // Set open / close park button state
-    set_format_arg(0, rct_string_id, gParkName);
-    set_format_arg(2, uint32_t, gParkNameArgs);
+    {
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        auto parkName = park.Name.c_str();
+
+        set_format_arg(0, rct_string_id, STR_STRING);
+        set_format_arg(2, const char*, parkName);
+    }
     window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
     window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
         + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
@@ -878,7 +888,7 @@ static void window_park_init_viewport(rct_window* w)
     if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
         return;
 
-    if (gParkEntrances.size() > 0)
+    if (!gParkEntrances.empty())
     {
         const auto& entrance = gParkEntrances[0];
         x = entrance.x + 16;
@@ -925,13 +935,13 @@ static void window_park_init_viewport(rct_window* w)
                 (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0, x, y,
                 z, w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, SPRITE_INDEX_NULL);
             w->flags |= (1 << 2);
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 
     if (w->viewport != nullptr)
         w->viewport->flags = viewportFlags;
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 #pragma endregion
@@ -961,7 +971,7 @@ rct_window* window_park_rating_open()
 
     window->viewport = nullptr;
     window->page = WINDOW_PARK_PAGE_RATING;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_rating_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_RATING];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_RATING];
@@ -1082,7 +1092,7 @@ rct_window* window_park_guests_open()
 
     window->viewport = nullptr;
     window->page = WINDOW_PARK_PAGE_GUESTS;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_guests_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_GUESTS];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_GUESTS];
@@ -1279,10 +1289,6 @@ static void window_park_price_invalidate(rct_window* w)
         window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_BUTTON;
     }
 
-    money16 parkEntranceFee = park_get_entrance_fee();
-    set_format_arg(6, uint32_t, parkEntranceFee);
-    window_park_price_widgets[WIDX_PRICE].text = parkEntranceFee == 0 ? STR_FREE : STR_ARG_6_CURRENCY2DP;
-
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
     window_park_anchor_border_widgets(w);
 }
@@ -1293,15 +1299,18 @@ static void window_park_price_invalidate(rct_window* w)
  */
 static void window_park_price_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y;
-
     window_draw_widgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
-    x = w->x + window_park_price_widgets[WIDX_PAGE_BACKGROUND].left + 4;
-    y = w->y + window_park_price_widgets[WIDX_PAGE_BACKGROUND].top + 30;
-
+    auto x = w->x + w->widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    auto y = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 30;
     gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions, COLOUR_BLACK, x, y);
+
+    money32 parkEntranceFee = park_get_entrance_fee();
+    auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
+    x = w->x + w->widgets[WIDX_PRICE].left + 1;
+    y = w->y + w->widgets[WIDX_PRICE].top + 1;
+    gfx_draw_string_left(dpi, stringId, &parkEntranceFee, w->colours[1], x, y);
 }
 
 #pragma endregion
@@ -1454,7 +1463,7 @@ rct_window* window_park_objective_open()
 
     window->viewport = nullptr;
     window->page = WINDOW_PARK_PAGE_OBJECTIVE;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_objective_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
@@ -1462,7 +1471,7 @@ rct_window* window_park_objective_open()
     window_init_scroll_widgets(window);
     window->x = context_get_width() / 2 - 115;
     window->y = context_get_height() / 2 - 87;
-    window_invalidate(window);
+    window->Invalidate();
 
     return window;
 }
@@ -1500,7 +1509,12 @@ static void window_park_objective_mouseup(rct_window* w, rct_widgetindex widgetI
  */
 static void window_park_objective_resize(rct_window* w)
 {
-    window_set_resize(w, 230, 226, 230, 226);
+#ifndef NO_TTF
+    if (gCurrentTTFFontSet != nullptr)
+        window_set_resize(w, 230, 270, 230, 270);
+    else
+#endif
+        window_set_resize(w, 230, 226, 230, 226);
 }
 
 /**
@@ -1522,7 +1536,7 @@ static void window_park_objective_textinput(rct_window* w, rct_widgetindex widge
     if (widgetIndex == WIDX_ENTER_NAME && text != nullptr && text[0] != 0)
     {
         scenario_success_submit_name(text);
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1535,9 +1549,13 @@ static void window_park_objective_invalidate(rct_window* w)
     window_park_set_pressed_tab(w);
     window_park_prepare_window_title_text();
 
-    //
+    // Show name input button on scenario completion.
     if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+    {
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_BUTTON;
+        window_park_objective_widgets[WIDX_ENTER_NAME].top = w->height - 19;
+        window_park_objective_widgets[WIDX_ENTER_NAME].bottom = w->height - 6;
+    }
     else
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
 
@@ -1620,7 +1638,7 @@ rct_window* window_park_awards_open()
 
     window->viewport = nullptr;
     window->page = WINDOW_PARK_PAGE_AWARDS;
-    window_invalidate(window);
+    window->Invalidate();
     window->widgets = window_park_awards_widgets;
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_AWARDS];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_AWARDS];
@@ -1748,7 +1766,7 @@ static void window_park_set_page(rct_window* w, int32_t page)
     w->event_handlers = window_park_page_events[page];
     w->widgets = window_park_page_widgets[page];
     window_park_set_disabled_tabs(w);
-    window_invalidate(w);
+    w->Invalidate();
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);

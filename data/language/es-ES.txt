@@ -552,8 +552,8 @@ STR_1167    :No se puede subir el nivel del agua...
 STR_1168    :Opciones
 STR_1169    :(Ninguno)
 STR_1170    :{STRING}
-STR_1171    :{RED}Cerrada - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Cerrada
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Construir senderos
 STR_1174    :Cartel de señal interfiere
 STR_1175    :No se puede construir esto sobre una pendiente
@@ -1109,7 +1109,7 @@ STR_1726    :¡Terreno no a la venta!
 STR_1727    :¡Derechos de construcción no a la venta!
 STR_1728    :No puedes comprar derechos de construcción aquí...
 STR_1729    :¡El terreno no es propiedad del parque!
-STR_1730    :{RED}Cerrado - - 
+STR_1730    :{RED}Cerrado
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Construir
 STR_1733    :Modo
@@ -2237,7 +2237,7 @@ STR_2977    :Nombrar personal
 STR_2978    :Escribe un nombre para este miembro
 STR_2979    :No se puede nombrar este miembro del personal...
 STR_2980    :Demasiadas banderas en juego
-STR_2981    :{RED}No pasar - - 
+STR_2981    :{RED}No pasar
 STR_2982    :Texto del letrero
 STR_2983    :Introduce nuevo texto para este letrero:
 STR_2984    :No se puede establecer texto para el letrero...
@@ -2416,7 +2416,6 @@ STR_3190    :Decoración Senderos
 STR_3191    :Escenarios
 STR_3192    :Entrada del parque
 STR_3193    :Agua
-STR_3194    :Descripción del escenario
 STR_3195    :Lista de inventos
 STR_3196    :{WINDOW_COLOUR_2}Grupo Investigación: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Elementos ya disponibles al comienzo de la partida:
@@ -3224,7 +3223,7 @@ STR_5762    :Yuan Chino (CN¥)
 STR_5763    :Todos los archivos
 STR_5764    :Tipo de Atracción inválido
 STR_5765    :No se puede editar una atracción de un tipo no válido
-STR_5766    :<available string id>
+STR_5766    :Forinto Húngaro (Ft) 
 STR_5767    :Ingresos
 STR_5768    :Clientes totales
 STR_5769    :Beneficio total
@@ -3761,6 +3760,31 @@ STR_6300    :{SMALLFONT}{BLACK}Descargar todos los objetos faltantes si están d
 STR_6301    :{SMALLFONT}{BLACK}Copia el nombre del objeto seleccionado al portapapeles.
 STR_6302    :{SMALLFONT}{BLACK}Copia la lista completa de objetos faltantes en el portapapeles.
 STR_6303    :Descargando objeto ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6305    :Multihilo
+STR_6306    :{SMALLFONT}{BLACK}Opción experimental para usar múltiples hilos en el renderizado, puede causar inestabilidad.
+STR_6307    :Esquema de color: {BLACK}{STRINGID}
+STR_6309    :Reconectar
+STR_6310    :{WINDOW_COLOUR_2}Posición: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Siguiente: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(superficie)
+STR_6313    :(pendiente {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Dest: {BLACK}{INT32}, {INT32} tolerancia {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Objetivo busqueda de ruta: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Historia busqueda de ruta:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6318    :Desincronización detectada en la red.{NEWLINE}Archivo de registro: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Bloque de freno cerrado
+STR_6320    :{WINDOW_COLOUR_2}Indestructible
+STR_6321    :{WINDOW_COLOUR_2}Adición rota
+STR_6322    :{WINDOW_COLOUR_2}Id de Sprite: {BLACK}{INT32}
+STR_6323    :Simulando
+STR_6324    :Simular
+STR_6325    :{SMALLFONT}{BLACK}Simular atracción
+STR_6326    :No se puede simular {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Fondo transparente en capturas enormes
+STR_6328    :{SMALLFONT}{BLACK}Si se activa esta opción, las capturas de pantallas enormes tendrán un fondo transparente en lugar del fondo negro por defecto.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :Descargando [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
 
 ##############
 # Escenarios #

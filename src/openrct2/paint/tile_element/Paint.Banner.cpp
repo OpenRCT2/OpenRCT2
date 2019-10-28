@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../ride/TrackDesign.h"
+#include "../../sprites.h"
 #include "../../world/Banner.h"
 #include "../../world/Scenery.h"
 #include "../Paint.h"
@@ -34,7 +35,7 @@ const LocationXY16 BannerBoundBoxes[][2] = {
 void banner_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
     uint16_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
 
@@ -43,14 +44,25 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     height -= 16;
 
-    rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[tile_element->AsBanner()->GetIndex()].type);
+    auto bannerElement = tile_element->AsBanner();
+    if (bannerElement == nullptr)
+    {
+        return;
+    }
 
+    auto banner = bannerElement->GetBanner();
+    if (banner == nullptr)
+    {
+        return;
+    }
+
+    auto banner_scenery = get_banner_entry(banner->type);
     if (banner_scenery == nullptr)
     {
         return;
     }
 
-    direction += tile_element->AsBanner()->GetPosition();
+    direction += bannerElement->GetPosition();
     direction &= 3;
 
     boundBoxOffsetX = BannerBoundBoxes[direction][0].x;
@@ -67,7 +79,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     }
     else
     {
-        image_id |= (gBanners[tile_element->AsBanner()->GetIndex()].colour << 19) | IMAGE_TYPE_REMAP;
+        image_id |= (banner->colour << 19) | IMAGE_TYPE_REMAP;
     }
 
     sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
@@ -92,30 +104,28 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     scrollingMode += direction;
 
-    set_format_arg(0, uint32_t, 0);
-    set_format_arg(4, uint32_t, 0);
+    // We need to get the text colour code into the beginning of the string, so use a temporary buffer
+    char colouredBannerText[32]{};
+    utf8_write_codepoint(colouredBannerText, FORMAT_COLOUR_CODE_START + banner->text_colour);
 
-    rct_string_id string_id = STR_NO_ENTRY;
-    if (!(gBanners[tile_element->AsBanner()->GetIndex()].flags & BANNER_FLAG_NO_ENTRY))
-    {
-        set_format_arg(0, rct_string_id, gBanners[tile_element->AsBanner()->GetIndex()].string_idx);
-        string_id = STR_BANNER_TEXT_FORMAT;
-    }
+    set_format_arg(0, rct_string_id, STR_STRING_STRINGID);
+    set_format_arg(2, const char*, &colouredBannerText);
+    banner->FormatTextTo(gCommonFormatArgs + 2 + sizeof(const char*));
+
     if (gConfigGeneral.upper_case_banners)
     {
-        format_string_to_upper(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+        format_string_to_upper(
+            gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
     }
     else
     {
-        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
+        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
     }
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
     uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer);
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
-
-    sub_98199C(
-        session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22,
-        boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    auto scrollIndex = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode, COLOUR_BLACK);
+    sub_98199C(session, scrollIndex, 0, 0, 1, 1, 0x15, height + 22, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 }

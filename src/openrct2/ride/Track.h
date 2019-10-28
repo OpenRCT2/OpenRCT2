@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,8 @@
 #include "../common.h"
 #include "../object/Object.h"
 #include "Ride.h"
+
+typedef uint16_t track_type_t;
 
 #pragma pack(push, 1)
 struct rct_trackdefinition
@@ -53,32 +55,27 @@ struct rct_track_coordinates
 enum
 {
     TRACK_ELEMENT_FLAG_TERMINAL_STATION = 1 << 3,
-    TRACK_ELEMENT_FLAG_INVERTED = 1 << 6,
+    TD6_TRACK_ELEMENT_FLAG_INVERTED = 1 << 6,
 };
 
 enum
 {
-    TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT = 1 << 7,
-};
-
-enum
-{
-    // Not anything to do with colour but uses
-    // that field in the map element
-
-    // Used for multi-dimension coaster
-    TRACK_ELEMENT_COLOUR_FLAG_INVERTED = (1 << 2),
-
+    TRACK_ELEMENT_FLAGS2_CHAIN_LIFT = 1 << 0,
+    TRACK_ELEMENT_FLAGS2_INVERTED = 1 << 1,
     // Used for giga coaster
-    TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
-
-    TRACK_ELEMENT_DOOR_A_MASK = 0b00011100,
-    TRACK_ELEMENT_DOOR_B_MASK = 0b11100000,
+    TRACK_ELEMENT_FLAGS2_CABLE_LIFT = 1 << 2,
+    TRACK_ELEMENT_FLAGS2_HIGHLIGHT = 1 << 3,
+    TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,
 };
 
-#define TRACK_ELEMENT_FLAG_MAGNITUDE_MASK 0x0F
-#define TRACK_ELEMENT_FLAG_COLOUR_MASK 0x30
-#define TRACK_ELEMENT_FLAG_STATION_NO_MASK 0x02
+enum
+{
+    TRACK_ELEMENT_COLOUR_SCHEME_MASK = 0b00000011,
+    // Not colour related, but shares the field.
+    TRACK_ELEMENT_COLOUR_DOOR_A_MASK = 0b00011100,
+    TRACK_ELEMENT_COLOUR_DOOR_B_MASK = 0b11100000,
+    TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK = 0b11110000,
+};
 
 #define MAX_STATION_PLATFORM_LENGTH 32
 
@@ -197,6 +194,7 @@ enum
     TRACK_ELEM_FLAG_DOWN = (1 << 5),
     TRACK_ELEM_FLAG_UP = (1 << 6),
     TRACK_ELEM_FLAG_NORMAL_TO_INVERSION = (1 << 7),
+    TRACK_ELEM_FLAG_IS_GOLF_HOLE = (1 << 7),
     TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT = (1 << 8),
     TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND = (1 << 9),
     TRACK_ELEM_FLAG_IS_STEEP_UP = (1 << 10), // Used to allow steep backwards lifts on roller coasters that do not allow steep
@@ -312,9 +310,9 @@ enum
     TRACK_ELEM_BRAKES,
     TRACK_ELEM_ROTATION_CONTROL_TOGGLE = 100,
     TRACK_ELEM_BOOSTER = 100,
-    TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP = 101,
     TRACK_ELEM_MAZE = 101,
-    TRACK_ELEM_255_ALIAS = 101, // Used by the multi-dimension coaster, as TD6 cannot handle index 255.
+    TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS = 101, // Used by the multi-dimension coaster, as TD6 cannot handle
+                                                                    // index 255.
     TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP,
     TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP,
     TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN,
@@ -468,7 +466,7 @@ enum
     TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN,
     TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP,
     TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP,
-    TRACK_ELEM_255,
+    TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP,
 };
 
 enum
@@ -521,8 +519,6 @@ struct track_circuit_iterator
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
-extern uint8_t gTrackGroundFlags;
-
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 
 const rct_preview_track* get_track_def_from_ride(Ride* ride, int32_t trackType);
@@ -548,16 +544,9 @@ int32_t track_get_actual_bank_3(rct_vehicle* vehicle, TileElement* tileElement);
 bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
 bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags);
 
-void game_command_remove_track(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-
-void game_command_set_maze_track(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 money32 maze_set_track(
     uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
     uint8_t mode);
 
-void game_command_set_brakes_speed(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 bool track_element_is_booster(uint8_t rideType, uint8_t trackType);
 bool track_element_has_speed_setting(uint8_t trackType);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,12 +22,12 @@
 DEFINE_GAME_ACTION(WallRemoveAction, GAME_COMMAND_REMOVE_WALL, GameActionResult)
 {
 private:
-    TileCoordsXYZD _location;
+    CoordsXYZD _loc;
 
 public:
     WallRemoveAction() = default;
-    WallRemoveAction(const TileCoordsXYZD& location)
-        : _location(location)
+    WallRemoveAction(const CoordsXYZD& loc)
+        : _loc(loc)
     {
     }
 
@@ -35,7 +35,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
+        stream << DS_TAG(_loc);
     }
 
     GameActionResult::Ptr Query() const override
@@ -44,20 +44,19 @@ public:
         res->Cost = 0;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-        if (!map_is_location_valid({ _location.x << 5, _location.y << 5 }))
+        if (!map_is_location_valid(_loc))
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-        if (!isGhost && !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-            && !map_is_location_owned(_location.x << 5, _location.y << 5, _location.z << 3))
+        if (!isGhost && !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(_loc))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        TileElement* wallElement = GetFirstWallElementAt(_location, isGhost);
+        TileElement* wallElement = GetFirstWallElementAt(_loc, isGhost);
         if (wallElement == nullptr)
         {
             return std::make_unique<GameActionResult>(
@@ -76,29 +75,28 @@ public:
 
         const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-        TileElement* wallElement = GetFirstWallElementAt(_location, isGhost);
+        TileElement* wallElement = GetFirstWallElementAt(_loc, isGhost);
         if (wallElement == nullptr)
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res->Position.x = (_location.x << 5) + 16;
-        res->Position.y = (_location.y << 5) + 16;
-        res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+        res->Position.x = _loc.x + 16;
+        res->Position.y = _loc.y + 16;
+        res->Position.z = tile_element_height(res->Position);
 
         tile_element_remove_banner_entry(wallElement);
-        map_invalidate_tile_zoom1(
-            _location.x << 5, _location.y << 5, wallElement->base_height * 8, (wallElement->base_height * 8) + 72);
+        map_invalidate_tile_zoom1(_loc.x, _loc.y, wallElement->base_height * 8, (wallElement->base_height * 8) + 72);
         tile_element_remove(wallElement);
 
         return res;
     }
 
 private:
-    TileElement* GetFirstWallElementAt(const TileCoordsXYZD& location, bool isGhost) const
+    TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const
     {
-        TileElement* tileElement = map_get_first_element_at(location.x, location.y);
+        TileElement* tileElement = map_get_first_element_at(location.x / 32, location.y / 32);
         if (!tileElement)
             return nullptr;
 
@@ -106,7 +104,7 @@ private:
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
                 continue;
-            if (tileElement->base_height != location.z)
+            if (tileElement->base_height != location.z / 8)
                 continue;
             if (tileElement->GetDirection() != location.direction)
                 continue;

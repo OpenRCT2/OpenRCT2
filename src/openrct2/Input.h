@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -95,7 +95,7 @@ extern INPUT_STATE _inputState;
 extern uint8_t _inputFlags;
 extern uint16_t _tooltipNotShownTicks;
 
-void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 
 void title_handle_keyboard_input();
 void game_handle_input();
@@ -103,7 +103,7 @@ void game_handle_keyboard_input();
 void game_handle_edge_scroll();
 int32_t get_next_key();
 
-void store_mouse_input(int32_t state, int32_t x, int32_t y);
+void store_mouse_input(int32_t state, ScreenCoordsXY screenCoords);
 
 void input_set_flag(INPUT_FLAGS flag, bool on);
 bool input_test_flag(INPUT_FLAGS flag);
@@ -118,6 +118,6 @@ void reset_tooltip_not_shown();
 
 void input_reset_place_obj_modifier();
 
-void input_scroll_viewport(int32_t scrollX, int32_t scrollY);
+void input_scroll_viewport(ScreenCoordsXY screenCoords);
 
 #endif

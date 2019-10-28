@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@ static constexpr const RideGroup ride_group_corkscrew_rc = {
 
 static constexpr const RideGroup ride_group_hypercoaster = {
     /*.RideType =*/RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
-    /*.MaximumHeight =*/45,
+    /*.MaximumHeight =*/55,
     /*.AvailableTrackPieces =*/(1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL)
         | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE)
         | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE)
@@ -132,9 +132,8 @@ static constexpr const RideGroup ride_group_spinning_wild_mouse = {
     /*.RideType =*/RIDE_TYPE_STEEL_WILD_MOUSE,
     /*.MaximumHeight =*/16,
     /*.AvailableTrackPieces =*/(1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL)
-        | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_CURVE_VERY_SMALL)
-        | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES)
-        | (1ULL << TRACK_ROTATION_CONTROL_TOGGLE),
+        | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL)
+        | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_ROTATION_CONTROL_TOGGLE),
     /*.Naming =*/{ STR_SPINNING_WILD_MOUSE_GROUP, STR_SPINNING_WILD_MOUSE_GROUP_DESC },
     /*.Flags =*/0,
 };

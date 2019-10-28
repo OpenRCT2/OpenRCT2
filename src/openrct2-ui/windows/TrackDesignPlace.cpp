@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -115,19 +115,19 @@ static int16_t _window_track_place_last_valid_y;
 static int16_t _window_track_place_last_valid_z;
 static money32 _window_track_place_last_cost;
 
-static rct_track_td6* _trackDesign;
+static std::unique_ptr<TrackDesign> _trackDesign;
 
 static void window_track_place_clear_provisional();
 static int32_t window_track_place_get_base_z(int32_t x, int32_t y);
 static void window_track_place_attempt_placement(
-    rct_track_td6* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex);
+    TrackDesign* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex);
 
 static void window_track_place_clear_mini_preview();
-static void window_track_place_draw_mini_preview(rct_track_td6* td6);
+static void window_track_place_draw_mini_preview(TrackDesign* td6);
 static void window_track_place_draw_mini_preview_track(
-    rct_track_td6* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max);
+    TrackDesign* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max);
 static void window_track_place_draw_mini_preview_maze(
-    rct_track_td6* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max);
+    TrackDesign* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max);
 static LocationXY16 draw_mini_preview_get_pixel_position(int16_t x, int16_t y);
 static bool draw_mini_preview_is_pixel_in_bounds(LocationXY16 pixel);
 static uint8_t* draw_mini_preview_get_pixel_ptr(LocationXY16 pixel);
@@ -148,8 +148,8 @@ static void window_track_place_clear_mini_preview()
  */
 rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
 {
-    rct_track_td6* td6 = track_design_open(tdFileRef->path);
-    if (td6 == nullptr)
+    _trackDesign = track_design_open(tdFileRef->path);
+    if (_trackDesign == nullptr)
     {
         return nullptr;
     }
@@ -158,7 +158,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
 
     _window_track_place_mini_preview.resize(TRACK_MINI_PREVIEW_SIZE);
 
-    rct_window* w = window_create(0, 29, 200, 124, &window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
+    rct_window* w = window_create(ScreenCoordsXY(0, 29), 200, 124, &window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
     w->widgets = window_track_place_widgets;
     w->enabled_widgets = 1 << WIDX_CLOSE | 1 << WIDX_ROTATE | 1 << WIDX_MIRROR | 1 << WIDX_SELECT_DIFFERENT_DESIGN;
     window_init_scroll_widgets(w);
@@ -171,9 +171,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
     _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 
     window_track_place_clear_mini_preview();
-    window_track_place_draw_mini_preview(td6);
-
-    _trackDesign = td6;
+    window_track_place_draw_mini_preview(_trackDesign.get());
 
     return w;
 }
@@ -192,7 +190,6 @@ static void window_track_place_close(rct_window* w)
     hide_gridlines();
     _window_track_place_mini_preview.clear();
     _window_track_place_mini_preview.shrink_to_fit();
-    track_design_dispose(_trackDesign);
     _trackDesign = nullptr;
 }
 
@@ -210,16 +207,16 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_ROTATE:
             window_track_place_clear_provisional();
             _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
-            window_invalidate(w);
+            w->Invalidate();
             _window_track_place_last_x = -1;
-            window_track_place_draw_mini_preview(_trackDesign);
+            window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_MIRROR:
-            track_design_mirror(_trackDesign);
+            track_design_mirror(_trackDesign.get());
             _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
-            window_invalidate(w);
+            w->Invalidate();
             _window_track_place_last_x = -1;
-            window_track_place_draw_mini_preview(_trackDesign);
+            window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_SELECT_DIFFERENT_DESIGN:
             window_close(w);
@@ -257,7 +254,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // Get the tool map position
-    sub_68A15E(x, y, &mapX, &mapY, nullptr, nullptr);
+    sub_68A15E(x, y, &mapX, &mapY);
     if (mapX == LOCATION_NULL)
     {
         window_track_place_clear_provisional();
@@ -267,7 +264,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     // Check if tool map position has changed since last update
     if (mapX == _window_track_place_last_x && mapY == _window_track_place_last_y)
     {
-        place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, true, get_ride(0), mapX, mapY, 0);
+        place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), mapX, mapY, 0);
         return;
     }
 
@@ -283,8 +280,8 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         for (int32_t i = 0; i < 7; i++)
         {
             ride_id_t rideIndex;
-            uint16_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
-            window_track_place_attempt_placement(_trackDesign, mapX, mapY, mapZ, flags, &cost, &rideIndex);
+            uint16_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+            window_track_place_attempt_placement(_trackDesign.get(), mapX, mapY, mapZ, flags, &cost, &rideIndex);
             if (cost != MONEY32_UNDEFINED)
             {
                 _window_track_place_ride_index = rideIndex;
@@ -306,7 +303,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(_trackDesign, PTD_OPERATION_DRAW_OUTLINES, true, get_ride(0), mapX, mapY, mapZ);
+    place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), mapX, mapY, mapZ);
 }
 
 /**
@@ -315,47 +312,49 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
  */
 static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    int32_t i;
-    int16_t mapX, mapY, mapZ;
-    money32 cost;
-    ride_id_t rideIndex;
-
     window_track_place_clear_provisional();
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    sub_68A15E(x, y, &mapX, &mapY, nullptr, nullptr);
+    int16_t mapX, mapY;
+    sub_68A15E(x, y, &mapX, &mapY);
     if (mapX == LOCATION_NULL)
         return;
 
     // Try increasing Z until a feasible placement is found
-    mapZ = window_track_place_get_base_z(mapX, mapY);
-    for (i = 0; i < 7; i++)
+    int16_t mapZ = window_track_place_get_base_z(mapX, mapY);
+    for (int32_t i = 0; i < 7; i++)
     {
         gDisableErrorWindowSound = true;
-        window_track_place_attempt_placement(_trackDesign, mapX, mapY, mapZ, 1, &cost, &rideIndex);
+        money32 cost = MONEY32_UNDEFINED;
+        ride_id_t rideIndex = RIDE_ID_NULL;
+        window_track_place_attempt_placement(_trackDesign.get(), mapX, mapY, mapZ, 1, &cost, &rideIndex);
         gDisableErrorWindowSound = false;
 
         if (cost != MONEY32_UNDEFINED)
         {
-            window_close_by_class(WC_ERROR);
-            audio_play_sound_at_location(SOUND_PLACE_ITEM, mapX, mapY, mapZ);
+            auto ride = get_ride(rideIndex);
+            if (ride != nullptr)
+            {
+                window_close_by_class(WC_ERROR);
+                audio_play_sound_at_location(SoundId::PlaceItem, { mapX, mapY, mapZ });
 
-            _currentRideIndex = rideIndex;
-            if (track_design_are_entrance_and_exit_placed())
-            {
-                auto intent = Intent(WC_RIDE);
-                intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
-                context_open_intent(&intent);
-                window_close(w);
-            }
-            else
-            {
-                ride_initialise_construction_window(get_ride(rideIndex));
-                w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-                window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                _currentRideIndex = rideIndex;
+                if (track_design_are_entrance_and_exit_placed())
+                {
+                    auto intent = Intent(WC_RIDE);
+                    intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+                    context_open_intent(&intent);
+                    window_close(w);
+                }
+                else
+                {
+                    ride_initialise_construction_window(ride);
+                    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+                    window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                }
             }
             return;
         }
@@ -368,7 +367,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     }
 
     // Unable to build track
-    audio_play_sound_at_location(SOUND_ERROR, mapX, mapY, mapZ);
+    audio_play_sound_at_location(SoundId::Error, { mapX, mapY, mapZ });
 }
 
 /**
@@ -386,12 +385,12 @@ static void window_track_place_toolabort(rct_window* w, rct_widgetindex widgetIn
  */
 static void window_track_place_unknown14(rct_window* w)
 {
-    window_track_place_draw_mini_preview(_trackDesign);
+    window_track_place_draw_mini_preview(_trackDesign.get());
 }
 
 static void window_track_place_invalidate(rct_window* w)
 {
-    window_track_place_draw_mini_preview(_trackDesign);
+    window_track_place_draw_mini_preview(_trackDesign.get());
 }
 
 /**
@@ -403,10 +402,13 @@ static void window_track_place_clear_provisional()
     if (_window_track_place_last_was_valid)
     {
         auto ride = get_ride(_window_track_place_ride_index);
-        place_virtual_track(
-            _trackDesign, PTD_OPERATION_CLEAR_OUTLINES, true, ride, _window_track_place_last_valid_x,
-            _window_track_place_last_valid_y, _window_track_place_last_valid_z);
-        _window_track_place_last_was_valid = false;
+        if (ride != nullptr)
+        {
+            place_virtual_track(
+                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _window_track_place_last_valid_x,
+                _window_track_place_last_valid_y, _window_track_place_last_valid_z);
+            _window_track_place_last_was_valid = false;
+        }
     }
 }
 
@@ -416,31 +418,30 @@ static void window_track_place_clear_provisional()
  */
 static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
 {
-    TileElement* tileElement;
     uint32_t z;
 
-    tileElement = map_get_surface_element_at(x >> 5, y >> 5);
-    z = tileElement->base_height * 8;
+    auto surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+    z = surfaceElement->base_height * 8;
 
     // Increase Z above slope
-    if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
     {
         z += 16;
 
         // Increase Z above double slope
-        if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             z += 16;
     }
 
     // Increase Z above water
-    if (tileElement->AsSurface()->GetWaterHeight() > 0)
-        z = std::max(z, tileElement->AsSurface()->GetWaterHeight() << 4);
+    if (surfaceElement->GetWaterHeight() > 0)
+        z = std::max(z, surfaceElement->GetWaterHeight() << 4);
 
-    return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, get_ride(0), x, y, z);
+    return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), x, y, z);
 }
 
 static void window_track_place_attempt_placement(
-    rct_track_td6* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex)
+    TrackDesign* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex)
 {
     int32_t eax, ebx, ecx, edx, esi, edi, ebp;
     money32 result;
@@ -451,7 +452,7 @@ static void window_track_place_attempt_placement(
     ecx = y;
     edi = z;
 
-    gActiveTrackDesign = _trackDesign;
+    gActiveTrackDesign = _trackDesign.get();
     result = game_do_command_p(GAME_COMMAND_PLACE_TRACK_DESIGN, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
     gActiveTrackDesign = nullptr;
 
@@ -467,7 +468,7 @@ static void window_track_place_attempt_placement(
  */
 static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    set_format_arg(0, char*, _trackDesign->name);
+    set_format_arg(0, char*, _trackDesign->name.c_str());
     window_draw_widgets(w, dpi);
 
     // Draw mini tile preview
@@ -493,7 +494,7 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006D1845
  */
-static void window_track_place_draw_mini_preview(rct_track_td6* td6)
+static void window_track_place_draw_mini_preview(TrackDesign* td6)
 {
     window_track_place_clear_mini_preview();
 
@@ -521,19 +522,18 @@ static void window_track_place_draw_mini_preview(rct_track_td6* td6)
 }
 
 static void window_track_place_draw_mini_preview_track(
-    rct_track_td6* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max)
+    TrackDesign* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
-    rct_td6_track_element* trackElement = td6->track_elements;
 
     const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
                                                                                                           : FlatRideTrackBlocks;
-    while (trackElement->type != 255)
+    for (const auto& trackElement : td6->track_elements)
     {
-        int32_t trackType = trackElement->type;
-        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+        int32_t trackType = trackElement.type;
+        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS)
         {
-            trackType = 255;
+            trackType = TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP;
         }
 
         // Follow a single track piece shape
@@ -598,16 +598,14 @@ static void window_track_place_draw_mini_preview_track(
             origin.x += CoordsDirectionDelta[rotation].x;
             origin.y += CoordsDirectionDelta[rotation].y;
         }
-        trackElement++;
     }
 
     // Draw entrance and exit preview.
-    rct_td6_entrance_element* entrance = td6->entrance_elements;
-    for (; entrance->z != -1; entrance++)
+    for (const auto& entrance : td6->entrance_elements)
     {
         int16_t x = origin.x;
         int16_t y = origin.y;
-        map_offset_with_rotation(&x, &y, entrance->x, entrance->y, rotation);
+        map_offset_with_rotation(&x, &y, entrance.x, entrance.y, rotation);
 
         if (pass == 0)
         {
@@ -622,14 +620,7 @@ static void window_track_place_draw_mini_preview_track(
             if (draw_mini_preview_is_pixel_in_bounds(pixelPosition))
             {
                 uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
-
-                bool isExit = false;
-                if (entrance->direction & (1 << 7))
-                {
-                    isExit = true;
-                }
-
-                uint8_t colour = isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
                 for (int32_t i = 0; i < 4; i++)
                 {
                     pixel[338 + i] = colour; // x + 2, y + 2
@@ -643,14 +634,13 @@ static void window_track_place_draw_mini_preview_track(
 }
 
 static void window_track_place_draw_mini_preview_maze(
-    rct_track_td6* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max)
+    TrackDesign* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
-    rct_td6_maze_element* mazeElement = td6->maze_elements;
-    while (mazeElement->all != 0)
+    for (const auto& mazeElement : td6->maze_elements)
     {
-        int16_t x = mazeElement->x * 32;
-        int16_t y = mazeElement->y * 32;
+        int16_t x = mazeElement.x * 32;
+        int16_t y = mazeElement.y * 32;
         rotate_map_coordinates(&x, &y, rotation);
 
         x += origin.x;
@@ -673,9 +663,9 @@ static void window_track_place_draw_mini_preview_maze(
                 uint8_t colour = _PaletteIndexColourTrack;
 
                 // Draw entrance and exit with different colours.
-                if (mazeElement->type == MAZE_ELEMENT_TYPE_ENTRANCE)
+                if (mazeElement.type == MAZE_ELEMENT_TYPE_ENTRANCE)
                     colour = _PaletteIndexColourEntrance;
-                else if (mazeElement->type == MAZE_ELEMENT_TYPE_EXIT)
+                else if (mazeElement.type == MAZE_ELEMENT_TYPE_EXIT)
                     colour = _PaletteIndexColourExit;
 
                 for (int32_t i = 0; i < 4; i++)
@@ -687,7 +677,6 @@ static void window_track_place_draw_mini_preview_maze(
                 }
             }
         }
-        mazeElement++;
     }
 }
 

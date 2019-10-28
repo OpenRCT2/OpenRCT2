@@ -552,8 +552,8 @@ STR_1167    :No es pot pujar el nivell d'aigua...
 STR_1168    :Opcions
 STR_1169    :(Cap)
 STR_1170    :{STRING}
-STR_1171    :{RED}Tancada - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Tancada
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Construir camins i cues
 STR_1174    :Hi ha un cartell pel mig.
 STR_1175    :Això no es pot construir a sobre d'un pendent.
@@ -1109,7 +1109,7 @@ STR_1726    :El terreny no està en venda!
 STR_1727    :Els drets de construcció no estan a la venda!
 STR_1728    :No se'n poden comprar els drets de construcció...
 STR_1729    :El terreny no és propietat del parc!
-STR_1730    :{RED}Tancat - - 
+STR_1730    :{RED}Tancat
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Construeix
 STR_1733    :Mode
@@ -2078,7 +2078,7 @@ STR_2739    :Cap
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :El fitxer «css50.dat» no s'ha trobat.
-STR_2743    :Copieu «data/css17.dat» de la vostra instal·lació del RCT1 en «data/css50.dat» a la instal·lació del RCT2, o establiu correctament el camí del RCT1 a la pestanya d'altres opcions.
+STR_2743    :Copieu «data/css17.dat» de la vostra instal·lació del RCT1 en «data/css50.dat» a la instal·lació del RCT2, o establiu correctament el camí del RCT1 a la pestanya «Avançat» de les opcions de configuració.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2095,8 +2095,8 @@ STR_2756    :Neteja escombraries
 STR_2763    :???
 STR_2765    :Molts visitants
 STR_2766    :Objectiu
-STR_2767    :Manté el clima
-STR_2768    :Clima canviant
+STR_2767    :Mantén l'actual estat meteorològic
+STR_2768    :Estableix una meteorologia canviant
 STR_2769    :Obre el parc
 STR_2770    :Tanca el parc
 STR_2773    :Finestra
@@ -2240,7 +2240,7 @@ STR_2977    :Posa nom a l'empleat
 STR_2978    :Escriviu un nom per aquest empleat:
 STR_2979    :No es pot posar el nom a l'empleat...
 STR_2980    :Hi ha massa cartells a la partida.
-STR_2981    :{RED}No passeu - - 
+STR_2981    :{RED}No passeu
 STR_2982    :Text del cartell
 STR_2983    :Escriviu el nou text del cartell:
 STR_2984    :No es pot establir aquest text per al cartell...
@@ -2333,18 +2333,6 @@ STR_3074    :{RED}Avís: La valoració del parc continua per sota de 700!{NEWLIN
 STR_3075    :{RED}Avís: La valoració del parc continua per sota de 700!{NEWLINE}Només us queden 2 setmanes per millorar-la o clausuraran el parc.
 STR_3076    :{RED}Últim avís: La valoració del parc continua per sota de 700!{NEWLINE}En set dies, es clausurarà el parc si la valoració no millora suficientment.
 STR_3077    :{RED}Avís de tancament: El parc tanca definitivament les seves portes!
-STR_3078    :Estil senzill
-STR_3079    :De fusta
-STR_3080    :Carpa de circ
-STR_3081    :Castell gris
-STR_3082    :Castell marró
-STR_3083    :Estil selvàtic
-STR_3084    :Cabana de fusta
-STR_3085    :Estil clàssic/romà
-STR_3086    :Estil abstracte
-STR_3087    :Amb gel i neu
-STR_3088    :Estil pagoda
-STR_3089    :Estil espacial
 STR_3090    :{SMALLFONT}{BLACK}Trieu el tipus d'entrada, de sortida i d'estació.
 STR_3091    :No teniu permís per treure aquesta secció!
 STR_3092    :No teniu permís per moure o modificar l'estació d'aquesta atracció!
@@ -2431,7 +2419,6 @@ STR_3190    :Extres dels camins
 STR_3191    :Grups de decoracions
 STR_3192    :Entrada al parc
 STR_3193    :Aigua
-STR_3194    :Descripció de l'escenari
 STR_3195    :Llista de recerques
 STR_3196    :{WINDOW_COLOUR_2}Grup de recerca: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Elements ja recercats a l'inici de la partida:
@@ -2973,7 +2960,7 @@ STR_5461    :Estableix els paràmetres dels visitants
 STR_5462    :{CURRENCY}
 STR_5463    :Objectiu: Divertiu-vos!
 STR_5464    :General
-STR_5465    :Clima
+STR_5465    :Estat meteorològic
 STR_5466    :Empleats
 STR_5467    :ALT + 
 STR_5468    :Missatges recents
@@ -3126,7 +3113,7 @@ STR_5616    :{SMALLFONT}{BLACK}Últim element per bandera de casella.
 STR_5617    :{SMALLFONT}{BLACK}Mou l'element seleccionat amunt.
 STR_5618    :{SMALLFONT}{BLACK}Mou l'element seleccionat avall.
 STR_5619    :RollerCoaster Tycoon
-STR_5620    :Atraccions afegides
+STR_5620    :Added attractions
 STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
@@ -3198,7 +3185,7 @@ STR_5721    :Ennuvolat
 STR_5722    :Pluja
 STR_5723    :Pluja forta
 STR_5724    :Tempesta
-STR_5725    :{BLACK}Força el clima:
+STR_5725    :{BLACK}Força l'estat meteorològic:
 STR_5726    :{SMALLFONT}{BLACK}Escolliu el temps que farà al parc.
 STR_5727    :Qualitat d'escalat:
 STR_5728    :Requereix l'opció de renderitzat amb maquinari
@@ -3599,8 +3586,8 @@ STR_6125    :Tipus d'objecte
 STR_6126    :Tipus desconegut
 STR_6127    :Arxiu: {STRING}
 STR_6128    :L'arxiu no s'ha pogut carregar ja que està danyat o bé els objectes referenciats són desconeguts. Se'n dóna una llista a continuació.
-STR_6129    :Copia l'objecte seleccionat al porta-retalls
-STR_6130    :Copia la llista sencera al porta-retalls
+STR_6129    :Copia
+STR_6130    :Copia'ls tots
 STR_6131    :Origen de l'objecte
 STR_6132    :Ignora recerques pendents
 STR_6133    :{SMALLFONT}{BLACK}Permet l'accés a atraccions i decoracions que encara no s'han recercat.
@@ -3738,6 +3725,67 @@ STR_6264    :Empra sempre l'explorador d'arxius del sistema
 STR_6265    :{SMALLFONT}{BLACK}Quan està activat, s'emprarà l'explorador d'arxius del vostre sistema, en lloc del de l'OpenRCT2.
 STR_6266    :Obre la carpeta de contingut personalitzat
 STR_6267    :Obre l'inspecció de casella
+STR_6268    :Avança un tic
+STR_6269    :ID d'estat meteorològic no vàlid
+STR_6270    :Superfícies del terreny
+STR_6271    :Vores i separadors de caselles
+STR_6272    :Estacions
+STR_6273    :Música
+STR_6274    :No es poden establir els colors...
+STR_6275    :{WINDOW_COLOUR_2}Estil d'estació:
+STR_6276    :{RED}Hi ha visitants bloquejats en {STRINGID}, probablement a causa d'un tipus d'atracció no vàlid o un mode d'operació incorrecte.
+STR_6277    :{WINDOW_COLOUR_2}Índex d'estació: {BLACK}{COMMA16}
+STR_6278    :Nombre de desades automàtiques:
+STR_6279    :{SMALLFONT}{BLACK}Nombre de desades automàtiques que es mantindran.
+STR_6280    :{SMALLFONT}{BLACK}Xat
+STR_6281    :{SMALLFONT}{BLACK}Mostra un botó per la finestra del xat a la barra d'eines.
+STR_6282    :Xat
+STR_6283    :Ara mateix el xat no està disponible. Esteu connectats al servidor?
+STR_6284    :Xarxa
+STR_6285    :Informació de la xarxa
+STR_6286    :Rebut
+STR_6287    :Enviat
+STR_6288    :Total rebut
+STR_6289    :Total enviat
+STR_6290    :Protocol base
+STR_6291    :Ordres
+STR_6292    :Mapa
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/seg
+STR_6299    :Descarrega-ho tot
+STR_6300    :{SMALLFONT}{BLACK}Descarrega tots els elements que falten si estan disponibles en línia.
+STR_6301    :{SMALLFONT}{BLACK}Copia el nom de l'element seleccionat al porta-retalls.
+STR_6302    :{SMALLFONT}{BLACK}Copia la llista completa d'elements que falten al porta-retalls.
+STR_6303    :Descarregant element ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Obre el seleccionador de decoracions
+STR_6305    :Multifil
+STR_6306    :{SMALLFONT}{BLACK}Opció experimental per usar diferents fils per renderitzar. Pot causar problemes durant les partides.
+STR_6307    :Colors: {BLACK}{STRINGID}
+STR_6308    :«{STRINGID}{OUTLINE}{TOPAZ}»{NEWLINE}{STRINGID}
+STR_6309    :Reconnecta
+STR_6310    :{WINDOW_COLOUR_2}Posició: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Propera: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(superfície)
+STR_6313    :(pendent {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Destinació: {BLACK}{INT32}, {INT32} tolerància {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Objectiu de l'encaminador: {BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Historial de l'encaminador:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
+STR_6318    :S'ha detectat una dessincronització amb la xarxa.{NEWLINE}Fitxer de registre: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Frens de bloc tancats
+STR_6320    :{WINDOW_COLOUR_2}Indestructible
+STR_6321    :{WINDOW_COLOUR_2}L'adició està trencada
+STR_6322    :{WINDOW_COLOUR_2}ID de l'sprite: {BLACK}{INT32}
+STR_6323    :S'està simulant
+STR_6324    :Simula
+STR_6325    :{SMALLFONT}{BLACK}Simula l'atracció
+STR_6326    :No es pot simular {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Fons transparent per captures de pantalla gegants
+STR_6328    :{SMALLFONT}{BLACK}Si s'activa, les captures de pantalla gegants tindran un fons transparent en lloc del color negre per defecte.
 
 #############
 # Scenarios #

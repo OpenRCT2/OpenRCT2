@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -58,7 +58,7 @@ static void paint_twist_structure(
     uint32_t imageId = (baseImageId + structureFrameNum) | imageColourFlags;
     sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if (dpi->zoom_level < 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
@@ -81,10 +81,13 @@ static void paint_twist(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     trackSequence = track_map_3x3[direction][trackSequence];
 
     const uint8_t edges = edges_3x3[trackSequence];
-    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     uint32_t imageId;

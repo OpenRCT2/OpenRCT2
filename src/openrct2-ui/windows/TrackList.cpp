@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -105,7 +105,7 @@ static std::vector<track_design_file_ref> _trackDesigns;
 static utf8 _filterString[USER_STRING_MAX_LENGTH];
 static std::vector<uint16_t> _filteredTrackIds;
 static uint16_t _loadedTrackDesignIndex;
-static rct_track_td6* _loadedTrackDesign;
+static std::unique_ptr<TrackDesign> _loadedTrackDesign;
 static std::vector<uint8_t> _trackDesignPreviewPixels;
 
 static void track_list_load_designs(ride_list_item item);
@@ -137,7 +137,7 @@ rct_window* window_track_list_open(ride_list_item item)
         y = TOP_TOOLBAR_HEIGHT + 2;
     }
 
-    rct_window* w = window_create(x, y, 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
+    rct_window* w = window_create(ScreenCoordsXY(x, y), 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
 
     window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
     w->widgets = window_track_list_widgets;
@@ -208,7 +208,6 @@ static void window_track_list_filter_list()
 static void window_track_list_close(rct_window* w)
 {
     // Dispose track design and preview
-    track_design_dispose(_loadedTrackDesign);
     _loadedTrackDesign = nullptr;
     _trackDesignPreviewPixels.clear();
     _trackDesignPreviewPixels.shrink_to_fit();
@@ -247,7 +246,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
         return;
     }
 
-    audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
+    audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         if (listIndex == 0)
@@ -259,8 +258,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
         listIndex--;
     }
 
-    rct_track_td6* td6 = _loadedTrackDesign;
-    if (td6 != nullptr && (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE))
+    if (_loadedTrackDesign && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE))
     {
         gTrackDesignSceneryToggle = true;
     }
@@ -318,12 +316,12 @@ static void window_track_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_ROTATE:
             _currentTrackPieceDirection++;
             _currentTrackPieceDirection %= 4;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_TOGGLE_SCENERY:
             gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
             _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_BACK:
             window_close(w);
@@ -349,7 +347,7 @@ static void window_track_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
 
             String::Set(_filterString, sizeof(_filterString), "");
             window_track_list_filter_list();
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -398,7 +396,7 @@ static void window_track_list_scrollmouseover(rct_window* w, int32_t scrollIndex
         if (i != -1 && w->selected_list_item != i)
         {
             w->selected_list_item = i;
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -417,7 +415,7 @@ static void window_track_list_textinput(rct_window* w, rct_widgetindex widgetInd
 
     w->scrolls->v_top = 0;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_track_list_update(rct_window* w)
@@ -432,7 +430,7 @@ static void window_track_list_update(rct_window* w)
     {
         track_list_load_designs(_window_track_list_item);
         w->selected_list_item = 0;
-        window_invalidate(w);
+        w->Invalidate();
         w->track_list.reload_track_designs = false;
     }
 }
@@ -499,7 +497,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t listItemIndex = w->selected_list_item;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        if (_trackDesigns.size() == 0 || listItemIndex == -1)
+        if (_trackDesigns.empty() || listItemIndex == -1)
             return;
     }
     else
@@ -534,8 +532,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
     }
 
-    rct_track_td6* td6 = _loadedTrackDesign;
-    if (td6 == nullptr)
+    if (!_loadedTrackDesign)
     {
         return;
     }
@@ -544,32 +541,27 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     x = w->x + (widget->left + widget->right) / 2;
     y = w->y + (widget->top + widget->bottom) / 2;
 
-    if (drawing_engine_get_type() != DRAWING_ENGINE_OPENGL)
-    {
-        rct_g1_element g1temp = {};
-        g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
-        g1temp.width = 370;
-        g1temp.height = 217;
-        g1temp.flags = G1_FLAG_BMP;
-        gfx_set_g1_element(SPR_TEMP, &g1temp);
-        gfx_draw_sprite(dpi, SPR_TEMP, trackPreviewX, trackPreviewY, 0);
-    }
-    else
-    {
-        gfx_draw_string_centred_clipped(dpi, STR_NOT_SUPPPORTED_IN_OPENGL, nullptr, COLOUR_BLACK, x, y, 368);
-    }
+    rct_g1_element g1temp = {};
+    g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
+    g1temp.width = 370;
+    g1temp.height = 217;
+    g1temp.flags = G1_FLAG_BMP;
+    gfx_set_g1_element(SPR_TEMP, &g1temp);
+    drawing_engine_invalidate_image(SPR_TEMP);
+    gfx_draw_sprite(dpi, SPR_TEMP, trackPreviewX, trackPreviewY, 0);
 
     y = w->y + widget->bottom - 12;
 
     // Warnings
-    if ((td6->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+    if ((_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE)
+        && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         // Vehicle design not available
         gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, nullptr, COLOUR_BLACK, x, y, 368);
         y -= SCROLLABLE_ROW_HEIGHT;
     }
 
-    if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
+    if (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
     {
         if (!gTrackDesignSceneryToggle)
         {
@@ -589,96 +581,92 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y = w->y + widget->bottom + 2;
 
     // Stats
-    fixed32_2dp rating = td6->excitement * 10;
+    fixed32_2dp rating = _loadedTrackDesign->excitement * 10;
     gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, &rating, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    rating = td6->intensity * 10;
+    rating = _loadedTrackDesign->intensity * 10;
     gfx_draw_string_left(dpi, STR_TRACK_LIST_INTENSITY_RATING, &rating, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    rating = td6->nausea * 10;
+    rating = _loadedTrackDesign->nausea * 10;
     gfx_draw_string_left(dpi, STR_TRACK_LIST_NAUSEA_RATING, &rating, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT + 4;
 
     // Information for tracked rides.
-    if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_TRACK))
     {
-        if (td6->type != RIDE_TYPE_MAZE)
+        if (_loadedTrackDesign->type != RIDE_TYPE_MAZE)
         {
-            if (td6->type == RIDE_TYPE_MINI_GOLF)
+            if (_loadedTrackDesign->type == RIDE_TYPE_MINI_GOLF)
             {
                 // Holes
-                uint16_t holes = td6->holes & 0x1F;
+                uint16_t holes = _loadedTrackDesign->holes & 0x1F;
                 gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
                 y += LIST_ROW_HEIGHT;
             }
             else
             {
                 // Maximum speed
-                uint16_t speed = ((td6->max_speed << 16) * 9) >> 18;
+                uint16_t speed = ((_loadedTrackDesign->max_speed << 16) * 9) >> 18;
                 gfx_draw_string_left(dpi, STR_MAX_SPEED, &speed, COLOUR_BLACK, x, y);
                 y += LIST_ROW_HEIGHT;
 
                 // Average speed
-                speed = ((td6->average_speed << 16) * 9) >> 18;
+                speed = ((_loadedTrackDesign->average_speed << 16) * 9) >> 18;
                 gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &speed, COLOUR_BLACK, x, y);
                 y += LIST_ROW_HEIGHT;
             }
 
             // Ride length
             set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
-            set_format_arg(2, uint16_t, td6->ride_length);
+            set_format_arg(2, uint16_t, _loadedTrackDesign->ride_length);
             gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
             y += LIST_ROW_HEIGHT;
         }
 
-        if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
             // Maximum positive vertical Gs
-            int32_t gForces = td6->max_positive_vertical_g * 32;
+            int32_t gForces = _loadedTrackDesign->max_positive_vertical_g * 32;
             gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
 
             // Maximum negative vertical Gs
-            gForces = td6->max_negative_vertical_g * 32;
+            gForces = _loadedTrackDesign->max_negative_vertical_g * 32;
             gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
 
             // Maximum lateral Gs
-            gForces = td6->max_lateral_g * 32;
+            gForces = _loadedTrackDesign->max_lateral_g * 32;
             gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
 
-            // If .TD6
-            if (td6->version_and_colour_scheme / 4 >= 2)
+            if (_loadedTrackDesign->total_air_time != 0)
             {
-                if (td6->total_air_time != 0)
-                {
-                    // Total air time
-                    int32_t airTime = td6->total_air_time * 25;
-                    gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
-                    y += LIST_ROW_HEIGHT;
-                }
+                // Total air time
+                int32_t airTime = _loadedTrackDesign->total_air_time * 25;
+                gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
+                y += LIST_ROW_HEIGHT;
             }
         }
 
-        if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_DROPS))
+        if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_DROPS))
         {
             // Drops
-            uint16_t drops = td6->drops & 0x3F;
+            uint16_t drops = _loadedTrackDesign->drops & 0x3F;
             gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
 
             // Drop height is multiplied by 0.75
-            uint16_t highestDropHeight = (td6->highest_drop_height * 3) / 4;
+            uint16_t highestDropHeight = (_loadedTrackDesign->highest_drop_height * 3) / 4;
             gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, COLOUR_BLACK, x, y);
             y += LIST_ROW_HEIGHT;
         }
 
-        if (td6->type != RIDE_TYPE_MINI_GOLF)
+        if (_loadedTrackDesign->type != RIDE_TYPE_MINI_GOLF)
         {
-            uint16_t inversions = td6->inversions & 0x1F;
+            uint16_t inversions = _loadedTrackDesign->inversions & 0x1F;
             if (inversions != 0)
             {
                 // Inversions
@@ -689,18 +677,19 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y += 4;
     }
 
-    if (td6->space_required_x != 0xFF)
+    if (_loadedTrackDesign->space_required_x != 0xFF)
     {
         // Space required
-        set_format_arg(0, uint16_t, td6->space_required_x);
-        set_format_arg(2, uint16_t, td6->space_required_y);
+        set_format_arg(0, uint16_t, _loadedTrackDesign->space_required_x);
+        set_format_arg(2, uint16_t, _loadedTrackDesign->space_required_y);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
 
-    if (td6->cost != 0)
+    if (_loadedTrackDesign->cost != 0)
     {
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, &td6->cost, COLOUR_BLACK, x, y);
+        set_format_arg(0, uint32_t, _loadedTrackDesign->cost);
+        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
 }
 
@@ -718,7 +707,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
     size_t listIndex = 0;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        if (_trackDesigns.size() == 0)
+        if (_trackDesigns.empty())
         {
             // No track designs
             gfx_draw_string_left(dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, nullptr, COLOUR_BLACK, x, y - 1);
@@ -776,26 +765,29 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
 static void track_list_load_designs(ride_list_item item)
 {
     auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-    if (!RideGroupManager::RideTypeHasRideGroups(item.type))
+    if (RideGroupManager::RideTypeHasRideGroups(item.type))
     {
-        char entry[9];
-        const char* entryPtr = nullptr;
+        auto rideEntry = get_ride_entry(item.entry_index);
+        if (rideEntry != nullptr)
+        {
+            auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
+            if (rideGroup != nullptr)
+            {
+                _trackDesigns = repo->GetItemsForRideGroup(item.type, rideGroup);
+            }
+        }
+    }
+    else
+    {
+        std::string entryName;
         if (item.type < 0x80)
         {
             if (RideGroupManager::RideTypeIsIndependent(item.type))
             {
-                get_ride_entry_name(entry, item.entry_index);
-                entryPtr = entry;
+                entryName = get_ride_entry_name(item.entry_index);
             }
         }
-
-        _trackDesigns = repo->GetItemsForObjectEntry(item.type, String::ToStd(entryPtr));
-    }
-    else
-    {
-        auto rideEntry = get_ride_entry(item.entry_index);
-        auto rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
-        _trackDesigns = repo->GetItemsForRideGroup(item.type, rideGroup);
+        _trackDesigns = repo->GetItemsForObjectEntry(item.type, entryName);
     }
 
     window_track_list_filter_list();
@@ -803,17 +795,10 @@ static void track_list_load_designs(ride_list_item item)
 
 static bool track_list_load_design_for_preview(utf8* path)
 {
-    // Dispose currently loaded track
-    track_design_dispose(_loadedTrackDesign);
-    _loadedTrackDesign = nullptr;
-
     _loadedTrackDesign = track_design_open(path);
     if (_loadedTrackDesign != nullptr)
     {
-        if (drawing_engine_get_type() != DRAWING_ENGINE_OPENGL)
-        {
-            track_design_draw_preview(_loadedTrackDesign, _trackDesignPreviewPixels.data());
-        }
+        track_design_draw_preview(_loadedTrackDesign.get(), _trackDesignPreviewPixels.data());
         return true;
     }
     return false;

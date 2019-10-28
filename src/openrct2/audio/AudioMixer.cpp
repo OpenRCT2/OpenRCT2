@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,12 +37,12 @@ void Mixer_Init(const char* device)
     audioContext->SetOutputDevice(std::string(device));
 }
 
-void* Mixer_Play_Effect(size_t id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone)
+void* Mixer_Play_Effect(SoundId id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone)
 {
     IAudioChannel* channel = nullptr;
     if (gConfigSound.sound_enabled)
     {
-        if (id >= SOUND_MAXID)
+        if (static_cast<uint32_t>(id) >= RCT2SoundCount)
         {
             log_error("Tried to play an invalid sound id. %i", id);
         }
@@ -52,7 +52,7 @@ void* Mixer_Play_Effect(size_t id, int32_t loop, int32_t volume, float pan, doub
             if (mixer != nullptr)
             {
                 mixer->Lock();
-                IAudioSource* source = mixer->GetSoundSource((int32_t)id);
+                IAudioSource* source = mixer->GetSoundSource(id);
                 channel = mixer->Play(source, loop, deleteondone != 0, false);
                 if (channel != nullptr)
                 {

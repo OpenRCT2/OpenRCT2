@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -81,30 +81,12 @@ void rct_balloon::Pop()
 {
     popped = 1;
     frame = 0;
-    audio_play_sound_at_location(SOUND_BALLOON_POP, x, y, z);
-}
-
-static money32 game_command_balloon_press(uint16_t spriteIndex, uint8_t flags)
-{
-    rct_sprite* sprite = try_get_sprite(spriteIndex);
-    if (sprite == nullptr || !sprite->IsBalloon())
-    {
-        log_error("Tried getting invalid sprite for balloon: %u", spriteIndex);
-        return MONEY32_UNDEFINED;
-    }
-    else
-    {
-        if (flags & GAME_COMMAND_FLAG_APPLY)
-        {
-            sprite->AsBalloon()->Press();
-        }
-        return 0;
-    }
+    audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
 }
 
 void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped)
 {
-    rct_sprite* sprite = create_sprite(2);
+    rct_sprite* sprite = create_sprite(SPRITE_IDENTIFIER_MISC);
     if (sprite != nullptr)
     {
         sprite->balloon.sprite_width = 13;
@@ -123,11 +105,4 @@ void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopp
 void balloon_update(rct_balloon* balloon)
 {
     balloon->Update();
-}
-
-void game_command_balloon_press(
-    int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx, [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
-{
-    *ebx = game_command_balloon_press(*eax & 0xFFFF, *ebx & 0xFF);
 }

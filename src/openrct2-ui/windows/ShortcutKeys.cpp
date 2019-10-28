@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -150,6 +150,7 @@ const rct_string_id ShortcutStringIds[SHORTCUT_COUNT] = {
     STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE,
     STR_SHORTCUT_OPEN_TILE_INSPECTOR,
     STR_ADVANCE_TO_NEXT_TICK,
+    STR_SHORTCUT_OPEN_SCENERY_PICKER,
 };
 // clang-format on
 
@@ -192,7 +193,7 @@ static void window_shortcut_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_RESET:
             keyboard_shortcuts_reset();
             keyboard_shortcuts_save();
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -258,7 +259,7 @@ static void window_shortcut_scrollmouseover(rct_window* w, int32_t scrollIndex, 
 
     w->selected_list_item = selected_item;
 
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**

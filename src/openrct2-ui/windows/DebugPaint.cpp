@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,8 +91,8 @@ rct_window* window_debug_paint_open()
         return window;
 
     window = window_create(
-        16, context_get_height() - 16 - 33 - WINDOW_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, &window_debug_paint_events,
-        WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
+        ScreenCoordsXY(16, context_get_height() - 16 - 33 - WINDOW_HEIGHT), WINDOW_WIDTH, WINDOW_HEIGHT,
+        &window_debug_paint_events, WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     window->widgets = window_debug_paint_widgets;
     window->enabled_widgets = (1 << WIDX_TOGGLE_SHOW_WIDE_PATHS) | (1 << WIDX_TOGGLE_SHOW_BLOCKED_TILES)
@@ -145,7 +145,7 @@ static void window_debug_paint_invalidate(rct_window* w)
     if (ResizeLanguage != currentLanguage)
     {
         ResizeLanguage = currentLanguage;
-        window_invalidate(w);
+        w->Invalidate();
 
         // Find the width of the longest string
         int16_t newWidth = 0;
@@ -171,7 +171,7 @@ static void window_debug_paint_invalidate(rct_window* w)
         w->widgets[WIDX_TOGGLE_SHOW_BOUND_BOXES].right = newWidth - 8;
         w->widgets[WIDX_TOGGLE_SHOW_DIRTY_VISUALS].right = newWidth - 8;
 
-        window_invalidate(w);
+        w->Invalidate();
     }
 
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);

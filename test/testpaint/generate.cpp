@@ -446,7 +446,7 @@ private:
         {
             TileElement tileElement = {};
             tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
-            tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
+            tileElement.SetLastForTile(true);
             tileElement.AsTrack()->SetTrackType(trackType);
             tileElement.base_height = 3;
             if (_invertedTrack)
@@ -482,7 +482,7 @@ private:
             }
 
             // Get chain lift calls
-            tileElement.type |= 0x80;
+            tileElement.AsTrack()->SetHasChain(true);
             PaintIntercept::ClearCalls();
             CallOriginal(trackType, direction, trackSequence, height, &tileElement);
             numCalls = PaintIntercept::GetCalls(callBuffer);
@@ -606,7 +606,7 @@ private:
             WriteLine(tabs, "switch (direction) {");
             for (int direction = 0; direction < 4; direction++)
             {
-                if (calls[direction].size() == 0)
+                if (calls[direction].empty())
                     continue;
 
                 WriteLine(tabs, "case %d:", direction);
@@ -720,7 +720,7 @@ private:
             function_call lastCall = calls[0].back();
             for (int i = 0; i < 4; i++)
             {
-                if (calls[i].size() == 0 || !CompareFunctionCall(calls[i].back(), lastCall))
+                if (calls[i].empty() || !CompareFunctionCall(calls[i].back(), lastCall))
                 {
                     goto finished;
                 }

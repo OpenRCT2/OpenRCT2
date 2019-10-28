@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,7 +60,7 @@ static rct_window_event_list window_title_logo_events = {
 rct_window* window_title_logo_open()
 {
     rct_window* window = window_create(
-        0, 0, 232, 136, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        ScreenCoordsXY(0, 0), 232, 136, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;
     window_init_scroll_widgets(window);
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);

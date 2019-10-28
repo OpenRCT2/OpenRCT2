@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,18 +25,32 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/actions/BannerPlaceAction.hpp>
+#include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
+#include <openrct2/actions/LandLowerAction.hpp>
+#include <openrct2/actions/LandRaiseAction.hpp>
+#include <openrct2/actions/LandSmoothAction.hpp>
+#include <openrct2/actions/LargeSceneryPlaceAction.hpp>
+#include <openrct2/actions/LargeScenerySetColourAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
+#include <openrct2/actions/SetCheatAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.hpp>
+#include <openrct2/actions/SmallScenerySetColourAction.hpp>
+#include <openrct2/actions/SurfaceSetStyleAction.hpp>
+#include <openrct2/actions/WallPlaceAction.hpp>
+#include <openrct2/actions/WallSetColourAction.hpp>
+#include <openrct2/actions/WaterLowerAction.hpp>
+#include <openrct2/actions/WaterRaiseAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
+#include <openrct2/network/Twitch.h>
 #include <openrct2/network/network.h>
-#include <openrct2/network/twitch.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/scenario/Scenario.h>
@@ -132,11 +146,7 @@ enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
 
 enum TOP_TOOLBAR_DEBUG_DDIDX {
     DDIDX_CONSOLE = 0,
-    DDIDX_TILE_INSPECTOR = 1,
-    DDIDX_OBJECT_SELECTION = 2,
-    DDIDX_INVENTIONS_LIST = 3,
-    DDIDX_SCENARIO_OPTIONS = 4,
-    DDIDX_DEBUG_PAINT = 5,
+    DDIDX_DEBUG_PAINT = 1,
 
     TOP_TOOLBAR_DEBUG_COUNT
 };
@@ -144,13 +154,23 @@ enum TOP_TOOLBAR_DEBUG_DDIDX {
 enum TOP_TOOLBAR_NETWORK_DDIDX {
     DDIDX_MULTIPLAYER = 0,
     DDIDX_NETWORK = 1,
+    DDIDX_MULTIPLAYER_RECONNECT = 2,
+
+    TOP_TOOLBAR_NETWORK_COUNT
 };
 
 enum {
     DDIDX_CHEATS,
-    DDIDX_ENABLE_SANDBOX_MODE = 2,
-    DDIDX_DISABLE_CLEARANCE_CHECKS,
-    DDIDX_DISABLE_SUPPORT_LIMITS
+    DDIDX_TILE_INSPECTOR = 1,
+    DDIDX_OBJECT_SELECTION = 2,
+    DDIDX_INVENTIONS_LIST = 3,
+    DDIDX_SCENARIO_OPTIONS = 4,
+    // 5 is a separator
+    DDIDX_ENABLE_SANDBOX_MODE = 6,
+    DDIDX_DISABLE_CLEARANCE_CHECKS = 7,
+    DDIDX_DISABLE_SUPPORT_LIMITS = 8,
+
+    TOP_TOOLBAR_CHEATS_COUNT
 };
 
 enum {
@@ -233,7 +253,7 @@ static rct_widget window_top_toolbar_widgets[] = {
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_FINANCES_RESEARCH_TIP },        // Research
     { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_RECENT_MESSAGES_TIP },     // News
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
+    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MULTIPLAYER,    STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
     { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_TOOLBAR_CHAT_TIP },             // Chat
 
     { WWT_EMPTY,    0,  0,      10-1,   0,                      0,                      0xFFFFFFFF,                                 STR_NONE },                         // Artificial widget separator
@@ -289,6 +309,8 @@ static void top_toolbar_init_fastforward_menu(rct_window* window, rct_widget* wi
 static void top_toolbar_fastforward_menu_dropdown(int16_t dropdownIndex);
 static void top_toolbar_init_rotate_menu(rct_window* window, rct_widget* widget);
 static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex);
+static void top_toolbar_init_cheats_menu(rct_window* window, rct_widget* widget);
+static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex);
 static void top_toolbar_init_debug_menu(rct_window* window, rct_widget* widget);
 static void top_toolbar_debug_menu_dropdown(int16_t dropdownIndex);
 static void top_toolbar_init_network_menu(rct_window* window, rct_widget* widget);
@@ -319,7 +341,7 @@ static colour_t _tertiaryColour;
 rct_window* window_top_toolbar_open()
 {
     rct_window* window = window_create(
-        0, 0, context_get_width(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WC_TOP_TOOLBAR,
+        ScreenCoordsXY(0, 0), context_get_width(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WC_TOP_TOOLBAR,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_top_toolbar_widgets;
 
@@ -492,30 +514,7 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
 #endif
             break;
         case WIDX_CHEATS:
-            gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
-            gDropdownItemsFormat[1] = STR_EMPTY;
-            gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
-            gDropdownItemsFormat[3] = STR_TOGGLE_OPTION;
-            gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
-            gDropdownItemsArgs[0] = STR_CHEAT_TITLE;
-            gDropdownItemsArgs[2] = STR_ENABLE_SANDBOX_MODE;
-            gDropdownItemsArgs[3] = STR_DISABLE_CLEARANCE_CHECKS;
-            gDropdownItemsArgs[4] = STR_DISABLE_SUPPORT_LIMITS;
-            window_dropdown_show_text(
-                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, 5);
-            if (gCheatsSandboxMode)
-            {
-                dropdown_set_checked(DDIDX_ENABLE_SANDBOX_MODE, true);
-            }
-            if (gCheatsDisableClearanceChecks)
-            {
-                dropdown_set_checked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
-            }
-            if (gCheatsDisableSupportLimits)
-            {
-                dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
-            }
-            gDropdownDefaultIndex = DDIDX_CHEATS;
+            top_toolbar_init_cheats_menu(w, widget);
             break;
         case WIDX_VIEW_MENU:
             top_toolbar_init_view_menu(w, widget);
@@ -644,26 +643,7 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
             }
             break;
         case WIDX_CHEATS:
-            switch (dropdownIndex)
-            {
-                case DDIDX_CHEATS:
-                    context_open_window(WC_CHEATS);
-                    break;
-                case DDIDX_ENABLE_SANDBOX_MODE:
-                    game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
-                    break;
-                case DDIDX_DISABLE_CLEARANCE_CHECKS:
-                    game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks,
-                        GAME_COMMAND_CHEAT, 0, 0);
-                    break;
-                case DDIDX_DISABLE_SUPPORT_LIMITS:
-                    game_do_command(
-                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits,
-                        GAME_COMMAND_CHEAT, 0, 0);
-                    break;
-            }
+            top_toolbar_cheats_menu_dropdown(dropdownIndex);
             break;
         case WIDX_VIEW_MENU:
             top_toolbar_view_menu_dropdown(dropdownIndex);
@@ -744,7 +724,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_CHAT].type = WWT_EMPTY;
     }
 
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
         window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
@@ -753,7 +733,6 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 
@@ -874,6 +853,20 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MUTE;
     else
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
+
+    // Set map button to the right image.
+    if (window_top_toolbar_widgets[WIDX_MAP].type != WWT_EMPTY)
+    {
+        static constexpr uint32_t imageIdByRotation[] = {
+            SPR_G2_MAP_NORTH,
+            SPR_G2_MAP_WEST,
+            SPR_G2_MAP_SOUTH,
+            SPR_G2_MAP_EAST,
+        };
+
+        uint32_t mapImageId = imageIdByRotation[get_current_rotation()];
+        window_top_toolbar_widgets[WIDX_MAP].image = IMAGE_TYPE_REMAP | mapImageId;
+    }
 
     // Zoomed out/in disable. Not sure where this code is in the original.
     if (window_get_main()->viewport->zoom == 0)
@@ -1005,8 +998,15 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y = w->y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0;
         if (widget_is_pressed(w, WIDX_NETWORK))
             y++;
-        imgId = SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION;
-        gfx_draw_sprite(dpi, imgId, x, y, 0);
+
+        // Draw (de)sync icon.
+        imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
+        gfx_draw_sprite(dpi, imgId, x + 3, y + 11, 0);
+
+        // Draw number of players.
+        int32_t player_count = network_get_num_players();
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+        gfx_draw_string_right(dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, x + 23, y + 1);
     }
 }
 
@@ -1041,11 +1041,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 return;
 
             uint8_t quadrant = tile_element->AsSmallScenery()->GetSceneryQuadrant();
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, GAME_COMMAND_FLAG_APPLY | quadrant << 8, grid_y,
-                tile_element->base_height | (tile_element->AsSmallScenery()->GetEntryIndex() << 8),
-                GAME_COMMAND_SET_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+            auto repaintScenery = SmallScenerySetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8 }, quadrant, tile_element->AsSmallScenery()->GetEntryIndex(),
+                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
@@ -1056,11 +1056,11 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             if (!(scenery_entry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
                 return;
 
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, 1 | (gWindowSceneryPrimaryColour << 8), grid_y,
-                tile_element->GetDirection() | (tile_element->base_height << 8), GAME_COMMAND_SET_WALL_COLOUR, 0,
-                gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
+            auto repaintScenery = WallSetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() }, gWindowSceneryPrimaryColour,
+                gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
@@ -1071,23 +1071,27 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             if (!(scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 return;
 
-            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-            game_do_command(
-                grid_x, 1 | (tile_element->GetDirection() << 8), grid_y,
-                tile_element->base_height | (tile_element->AsLargeScenery()->GetSequenceIndex() << 8),
-                GAME_COMMAND_SET_LARGE_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+            auto repaintScenery = LargeScenerySetColourAction(
+                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() },
+                tile_element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+
+            GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            rct_banner* banner = &gBanners[tile_element->AsBanner()->GetIndex()];
-            rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
-            if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+            auto banner = tile_element->AsBanner()->GetBanner();
+            if (banner != nullptr)
             {
-                gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-                game_do_command(
-                    grid_x, 1, grid_y, tile_element->base_height | ((tile_element->AsBanner()->GetPosition() & 0x3) << 8),
-                    GAME_COMMAND_SET_BANNER_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+                auto scenery_entry = get_banner_entry(banner->type);
+                if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+                {
+                    auto repaintScenery = BannerSetColourAction(
+                        { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
+                        gWindowSceneryPrimaryColour);
+
+                    GameActions::Execute(&repaintScenery);
+                }
             }
             break;
         }
@@ -1163,15 +1167,17 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            int32_t bannerIndex = tileElement->AsBanner()->GetIndex();
-            rct_banner* banner = &gBanners[bannerIndex];
-            rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
-            if (sceneryEntry != nullptr)
+            auto banner = tileElement->AsBanner()->GetBanner();
+            if (banner != nullptr)
             {
-                int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_BANNERS, banner->type);
-                if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
+                auto sceneryEntry = get_banner_entry(banner->type);
+                if (sceneryEntry != nullptr)
                 {
-                    gWindowSceneryEyedropperEnabled = false;
+                    int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_BANNERS, banner->type);
+                    if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
+                    {
+                        gWindowSceneryEyedropperEnabled = false;
+                    }
                 }
             }
             break;
@@ -1349,15 +1355,15 @@ static void sub_6E1F34(
                     // If SHIFT pressed
                     if (gSceneryShiftPressed)
                     {
-                        TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                        auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                        if (tile_element == nullptr)
+                        if (surfaceElement == nullptr)
                         {
                             *grid_x = LOCATION_NULL;
                             return;
                         }
 
-                        int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                        int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                         z += gSceneryShiftPressZOffset;
 
                         z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1423,25 +1429,21 @@ static void sub_6E1F34(
                     return;
                 }
 
+                // If CTRL and SHIFT not pressed
                 gSceneryPlaceZ = 0;
-                uint16_t water_height = tile_element->AsSurface()->GetWaterHeight();
-                if (water_height != 0)
-                {
-                    gSceneryPlaceZ = water_height * 16;
-                }
 
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (tile_element == nullptr)
+                    if (surfaceElement == nullptr)
                     {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1530,15 +1532,15 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (tile_element == nullptr)
+                    if (surfaceElement == nullptr)
                     {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1579,7 +1581,7 @@ static void sub_6E1F34(
             // If CTRL not pressed
             if (!gSceneryCtrlPressed)
             {
-                sub_68A15E(x, y, grid_x, grid_y, nullptr, nullptr);
+                sub_68A15E(x, y, grid_x, grid_y);
 
                 if (*grid_x == LOCATION_NULL)
                     return;
@@ -1589,15 +1591,15 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (tile_element == nullptr)
+                    if (surfaceElement == nullptr)
                     {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1787,7 +1789,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 }
 
                 // Actually place
-                if (success == GA_ERROR::OK || ((q + 1 == quantity) && (forceError == true)))
+                if (success == GA_ERROR::OK || ((q + 1 == quantity) && forceError))
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, type, primaryColour,
@@ -1796,8 +1798,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                         if (result->Error == GA_ERROR::OK)
                         {
-                            audio_play_sound_at_location(
-                                SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
                         }
                     });
                     auto res = GameActions::Execute(&smallSceneryPlaceAction);
@@ -1826,7 +1827,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 {
                     return;
                 }
-                audio_play_sound_at_location(SOUND_PLACE_ITEM, result->Position.x, result->Position.y, result->Position.z);
+                audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
             });
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             break;
@@ -1841,32 +1842,42 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
 
             for (; zAttemptRange != 0; zAttemptRange--)
             {
-                int32_t flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+                auto primaryColour = (parameter_2 >> 8) & 0xFF;
+                auto edges = parameter_2 & 0xFF;
+                auto type = (parameter_1 >> 8) & 0xFF;
+                auto wallPlaceAction = WallPlaceAction(
+                    type, { gridX, gridY, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
 
-                gDisableErrorWindowSound = true;
-                gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-                int32_t cost = game_do_command(
-                    gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ,
-                    _secondaryColour | (_tertiaryColour << 8));
-                gDisableErrorWindowSound = false;
-
-                if (cost != MONEY32_UNDEFINED)
-                {
-                    window_close_by_class(WC_ERROR);
-                    audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-                    return;
-                }
-
-                if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES
-                    || gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                auto res = GameActions::Query(&wallPlaceAction);
+                if (res->Error == GA_ERROR::OK)
                 {
                     break;
                 }
 
-                gSceneryPlaceZ += 8;
+                if (res->ErrorMessage == STR_NOT_ENOUGH_CASH_REQUIRES || res->ErrorMessage == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                {
+                    break;
+                }
+
+                if (zAttemptRange != 1)
+                {
+                    gSceneryPlaceZ += 8;
+                }
             }
 
-            audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+            auto primaryColour = (parameter_2 >> 8) & 0xFF;
+            auto edges = parameter_2 & 0xFF;
+            auto type = (parameter_1 >> 8) & 0xFF;
+            auto wallPlaceAction = WallPlaceAction(
+                type, { gridX, gridY, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+
+            wallPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error == GA_ERROR::OK)
+                {
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                }
+            });
+            auto res = GameActions::Execute(&wallPlaceAction);
             break;
         }
         case SCENERY_TYPE_LARGE:
@@ -1879,52 +1890,81 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
 
             for (; zAttemptRange != 0; zAttemptRange--)
             {
-                int32_t flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
+                auto primaryColour = parameter_2 & 0xFF;
+                auto secondaryColour = (parameter_2 >> 8) & 0xFF;
+                auto largeSceneryType = parameter_3 & 0xFF;
+                uint8_t direction = (parameter_1 & 0xFF00) >> 8;
+                CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, direction };
 
-                gDisableErrorWindowSound = true;
-                gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-                int32_t cost = game_do_command(
-                    gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, gSceneryPlaceZ);
-                gDisableErrorWindowSound = false;
+                auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, largeSceneryType, primaryColour, secondaryColour);
 
-                if (cost != MONEY32_UNDEFINED)
-                {
-                    window_close_by_class(WC_ERROR);
-                    audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-                    return;
-                }
-
-                if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES
-                    || gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                auto res = GameActions::Query(&sceneryPlaceAction);
+                if (res->Error == GA_ERROR::OK)
                 {
                     break;
                 }
 
-                gSceneryPlaceZ += 8;
-            }
+                if (res->ErrorMessage == STR_NOT_ENOUGH_CASH_REQUIRES || res->ErrorMessage == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                {
+                    break;
+                }
 
-            audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+                if (zAttemptRange != 1)
+                {
+                    gSceneryPlaceZ += 8;
+                }
+            }
+            auto primaryColour = parameter_2 & 0xFF;
+            auto secondaryColour = (parameter_2 >> 8) & 0xFF;
+            auto largeSceneryType = parameter_3 & 0xFF;
+            uint8_t direction = (parameter_1 & 0xFF00) >> 8;
+            CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, direction };
+
+            auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, largeSceneryType, primaryColour, secondaryColour);
+            sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error == GA_ERROR::OK)
+                {
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                }
+                else
+                {
+                    audio_play_sound_at_location(SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
+                }
+            });
+            auto res = GameActions::Execute(&sceneryPlaceAction);
             break;
         }
         case SCENERY_TYPE_BANNER:
         {
-            int32_t flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
-
-            gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-            game_command_callback = game_command_callback_place_banner;
-            game_do_command(
-                gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, gWindowSceneryPrimaryColour);
+            uint8_t direction = (parameter_2 >> 8) & 0xFF;
+            int32_t z = (parameter_2 & 0xFF) * 16;
+            CoordsXYZD loc{ gridX, gridY, z, direction };
+            auto primaryColour = gWindowSceneryPrimaryColour;
+            auto bannerType = (parameter_1 & 0xFF00) >> 8;
+            auto bannerIndex = create_new_banner(0);
+            if (bannerIndex == BANNER_INDEX_NULL)
+            {
+                context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                break;
+            }
+            auto bannerPlaceAction = BannerPlaceAction(loc, bannerType, bannerIndex, primaryColour);
+            bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+                if (result->Error == GA_ERROR::OK)
+                {
+                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                    context_open_detail_window(WD_BANNER, bannerIndex);
+                }
+            });
+            GameActions::Execute(&bannerPlaceAction);
             break;
         }
     }
 }
 
-/**
- *
- *  rct2: 0x0068E213
- */
-static void top_toolbar_tool_update_scenery_clear(int16_t x, int16_t y)
+static uint8_t top_toolbar_tool_update_land_paint(int16_t x, int16_t y)
 {
+    uint8_t state_changed = 0;
+
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
@@ -1938,10 +1978,8 @@ static void top_toolbar_tool_update_scenery_clear(int16_t x, int16_t y)
             gClearSceneryCost = MONEY32_UNDEFINED;
             window_invalidate_by_class(WC_CLEAR_SCENERY);
         }
-        return;
+        return state_changed;
     }
-
-    uint8_t state_changed = 0;
 
     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
     {
@@ -1992,7 +2030,16 @@ static void top_toolbar_tool_update_scenery_clear(int16_t x, int16_t y)
     }
 
     map_invalidate_selection_rect();
-    if (!state_changed)
+    return state_changed;
+}
+
+/**
+ *
+ *  rct2: 0x0068E213
+ */
+static void top_toolbar_tool_update_scenery_clear(int16_t x, int16_t y)
+{
+    if (!top_toolbar_tool_update_land_paint(x, y))
         return;
 
     auto action = GetClearAction();
@@ -2003,79 +2050,6 @@ static void top_toolbar_tool_update_scenery_clear(int16_t x, int16_t y)
         gClearSceneryCost = cost;
         window_invalidate_by_class(WC_CLEAR_SCENERY);
     }
-}
-
-static void top_toolbar_tool_update_land_paint(int16_t x, int16_t y)
-{
-    map_invalidate_selection_rect();
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-
-    LocationXY16 mapTile = {};
-    screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
-
-    if (mapTile.x == LOCATION_NULL)
-    {
-        if (gClearSceneryCost != MONEY32_UNDEFINED)
-        {
-            gClearSceneryCost = MONEY32_UNDEFINED;
-            window_invalidate_by_class(WC_CLEAR_SCENERY);
-        }
-        return;
-    }
-
-    uint8_t state_changed = 0;
-
-    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
-    {
-        gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-        state_changed++;
-    }
-
-    if (gMapSelectType != MAP_SELECT_TYPE_FULL)
-    {
-        gMapSelectType = MAP_SELECT_TYPE_FULL;
-        state_changed++;
-    }
-
-    int16_t tool_size = std::max<uint16_t>(1, gLandToolSize);
-    int16_t tool_length = (tool_size - 1) * 32;
-
-    // Move to tool bottom left
-    mapTile.x -= (tool_size - 1) * 16;
-    mapTile.y -= (tool_size - 1) * 16;
-    mapTile.x &= 0xFFE0;
-    mapTile.y &= 0xFFE0;
-
-    if (gMapSelectPositionA.x != mapTile.x)
-    {
-        gMapSelectPositionA.x = mapTile.x;
-        state_changed++;
-    }
-
-    if (gMapSelectPositionA.y != mapTile.y)
-    {
-        gMapSelectPositionA.y = mapTile.y;
-        state_changed++;
-    }
-
-    mapTile.x += tool_length;
-    mapTile.y += tool_length;
-
-    if (gMapSelectPositionB.x != mapTile.x)
-    {
-        gMapSelectPositionB.x = mapTile.x;
-        state_changed++;
-    }
-
-    if (gMapSelectPositionB.y != mapTile.y)
-    {
-        gMapSelectPositionB.y = mapTile.y;
-        state_changed++;
-    }
-
-    map_invalidate_selection_rect();
-    if (!state_changed)
-        return;
 }
 
 /**
@@ -2331,16 +2305,21 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
             return;
 
-        money32 lower_cost = lower_water(
-            gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+        auto waterLowerAction = WaterLowerAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+        auto waterRaiseAction = WaterRaiseAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
-        money32 raise_cost = raise_water(
-            gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+        auto res = GameActions::Query(&waterLowerAction);
+        money32 lowerCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
 
-        if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost)
+        res = GameActions::Query(&waterRaiseAction);
+        money32 raiseCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+
+        if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
         {
-            gWaterToolRaiseCost = raise_cost;
-            gWaterToolLowerCost = lower_cost;
+            gWaterToolRaiseCost = raiseCost;
+            gWaterToolLowerCost = lowerCost;
             window_invalidate_by_class(WC_WATER);
         }
         return;
@@ -2422,16 +2401,21 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
     if (!state_changed)
         return;
 
-    money32 lower_cost = lower_water(
-        gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+    auto waterLowerAction = WaterLowerAction(
+        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+    auto waterRaiseAction = WaterRaiseAction(
+        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
-    money32 raise_cost = raise_water(
-        gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+    auto res = GameActions::Query(&waterLowerAction);
+    money32 lowerCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
 
-    if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost)
+    res = GameActions::Query(&waterRaiseAction);
+    money32 raiseCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+
+    if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
     {
-        gWaterToolRaiseCost = raise_cost;
-        gWaterToolLowerCost = lower_cost;
+        gWaterToolRaiseCost = raiseCost;
+        gWaterToolLowerCost = lowerCost;
         window_invalidate_by_class(WC_WATER);
     }
 }
@@ -2466,8 +2450,6 @@ static money32 try_place_ghost_scenery(
                 { map_tile.x, map_tile.y, gSceneryPlaceZ, rotation }, quadrant, type, primaryColour, secondaryColour);
             smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
             auto res = GameActions::Execute(&smallSceneryPlaceAction);
-
-            cost = res->Cost;
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
 
@@ -2476,10 +2458,10 @@ static money32 try_place_ghost_scenery(
             gSceneryPlaceRotation = (uint16_t)(parameter_3 & 0xFF);
             gSceneryPlaceObject = selected_tab;
 
-            tileElement = gSceneryTileElement;
+            tileElement = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->tileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
             gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-            if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (dynamic_cast<SmallSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
                 viewport_set_visibility(4);
@@ -2491,6 +2473,7 @@ static money32 try_place_ghost_scenery(
             }
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
+            cost = res->Cost;
             break;
         }
         case 1:
@@ -2518,45 +2501,64 @@ static money32 try_place_ghost_scenery(
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             if (res->Error != GA_ERROR::OK)
                 return MONEY32_UNDEFINED;
+
+            cost = res->Cost;
             break;
         }
         case 2:
+        {
             // Walls
             // 6e26b0
-            cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ,
-                _secondaryColour | (_tertiaryColour << 8));
+            auto primaryColour = (parameter_2 >> 8) & 0xFF;
+            auto edges = parameter_2 & 0xFF;
+            auto type = (parameter_1 >> 8) & 0xFF;
+            auto wallPlaceAction = WallPlaceAction(
+                type, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+            wallPlaceAction.SetFlags(
+                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
+                if (result->Error != GA_ERROR::OK)
+                    return;
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
+                gSceneryGhostPosition.x = map_tile.x;
+                gSceneryGhostPosition.y = map_tile.y;
+                gSceneryGhostWallRotation = edges;
+                gSceneryGhostPosition.z = result->tileElement->base_height;
 
-            gSceneryGhostPosition.x = map_tile.x;
-            gSceneryGhostPosition.y = map_tile.y;
-            gSceneryGhostWallRotation = (parameter_2 & 0xFF);
+                gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
+            });
 
-            tileElement = gSceneryTileElement;
-            gSceneryGhostPosition.z = tileElement->base_height;
-
-            gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
+            auto res = GameActions::Execute(&wallPlaceAction);
+            if (res->Error != GA_ERROR::OK)
+                return MONEY32_UNDEFINED;
+            cost = res->Cost;
             break;
+        }
         case 3:
+        {
             // Large Scenery
             // 6e25a7
-            cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3,
-                gSceneryPlaceZ);
+            auto primaryColour = parameter_2 & 0xFF;
+            auto secondaryColour = (parameter_2 >> 8) & 0xFF;
+            auto sceneryType = parameter_3 & 0xFF;
+            uint8_t direction = (parameter_1 & 0xFF00) >> 8;
+            CoordsXYZD loc = { map_tile.x, map_tile.y, gSceneryPlaceZ, direction };
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
+            auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, sceneryType, primaryColour, secondaryColour);
+            sceneryPlaceAction.SetFlags(
+                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            auto res = GameActions::Execute(&sceneryPlaceAction);
+            if (res->Error != GA_ERROR::OK)
+                return MONEY32_UNDEFINED;
 
             gSceneryGhostPosition.x = map_tile.x;
             gSceneryGhostPosition.y = map_tile.y;
-            gSceneryPlaceRotation = ((parameter_1 >> 8) & 0xFF);
+            gSceneryPlaceRotation = loc.direction;
 
-            tileElement = gSceneryTileElement;
+            tileElement = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->tileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
 
-            if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (dynamic_cast<LargeSceneryPlaceActionResult*>(res.get())->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on
                 viewport_set_visibility(4);
@@ -2568,22 +2570,39 @@ static money32 try_place_ghost_scenery(
             }
 
             gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
+            cost = res->Cost;
             break;
+        }
         case 4:
+        {
             // Banners
             // 6e2612
-            cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_BANNER, parameter_3, 0);
+            uint8_t direction = (parameter_2 >> 8) & 0xFF;
+            int32_t z = (parameter_2 & 0xFF) * 16;
+            CoordsXYZD loc{ map_tile.x, map_tile.y, z, direction };
+            auto primaryColour = gWindowSceneryPrimaryColour;
+            auto bannerType = (parameter_1 & 0xFF00) >> 8;
+            auto bannerIndex = create_new_banner(0);
+            if (bannerIndex == BANNER_INDEX_NULL)
+            {
+                // Silently fail as this is just for the ghost
+                break;
+            }
+            auto bannerPlaceAction = BannerPlaceAction(loc, bannerType, bannerIndex, primaryColour);
+            bannerPlaceAction.SetFlags(
+                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            auto res = GameActions::Execute(&bannerPlaceAction);
+            if (res->Error != GA_ERROR::OK)
+                return MONEY32_UNDEFINED;
 
-            if (cost == MONEY32_UNDEFINED)
-                return cost;
-
-            gSceneryGhostPosition.x = map_tile.x;
-            gSceneryGhostPosition.y = map_tile.y;
-            gSceneryGhostPosition.z = (parameter_2 & 0xFF) * 2 + 2;
-            gSceneryPlaceRotation = ((parameter_2 >> 8) & 0xFF);
+            gSceneryGhostPosition.x = loc.x;
+            gSceneryGhostPosition.y = loc.y;
+            gSceneryGhostPosition.z = loc.z / 8 + 2;
+            gSceneryPlaceRotation = direction;
             gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
+            cost = res->Cost;
             break;
+        }
     }
 
     return cost;
@@ -2762,7 +2781,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
         case SCENERY_TYPE_LARGE:
         {
             scenery = get_large_scenery_entry(selected_scenery);
-            LocationXY16* selectedTile = gMapSelectionTiles;
+            gMapSelectionTiles.clear();
 
             for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (int16_t)(uint16_t)0xFFFF;
                  tile++)
@@ -2774,11 +2793,8 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
                 tileLocation.x += mapTile.x;
                 tileLocation.y += mapTile.y;
 
-                selectedTile->x = tileLocation.x;
-                selectedTile->y = tileLocation.y;
-                selectedTile++;
+                gMapSelectionTiles.push_back({ tileLocation.x, tileLocation.y });
             }
-            selectedTile->x = -1;
 
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             map_invalidate_map_selection_tiles();
@@ -2887,10 +2903,12 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
         case WIDX_LAND:
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
-                gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-                game_do_command(
-                    gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
-                    GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
+                auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                    gLandToolTerrainSurface, gLandToolTerrainEdge);
+
+                GameActions::Execute(&surfaceSetStyleAction);
+
                 gCurrentToolId = TOOL_UP_DOWN_ARROW;
             }
             break;
@@ -2917,17 +2935,25 @@ static money32 selection_raise_land(uint8_t flags)
     centreX += 16;
     centreY += 16;
 
-    uint32_t xBounds = (gMapSelectPositionA.x & 0xFFFF) | (gMapSelectPositionB.x << 16);
-    uint32_t yBounds = (gMapSelectPositionA.y & 0xFFFF) | (gMapSelectPositionB.y << 16);
-
-    gGameCommandErrorTitle = STR_CANT_RAISE_LAND_HERE;
     if (gLandMountainMode)
     {
-        return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, gMapSelectType, yBounds);
+        auto landSmoothAction = LandSmoothAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType,
+            false);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
+                                                     : GameActions::Query(&landSmoothAction);
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
     else
     {
-        return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_RAISE_LAND, gMapSelectType, yBounds);
+        auto landRaiseAction = LandRaiseAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
+                                                     : GameActions::Query(&landRaiseAction);
+
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
 }
 
@@ -2942,18 +2968,25 @@ static money32 selection_lower_land(uint8_t flags)
     centreX += 16;
     centreY += 16;
 
-    uint32_t xBounds = (gMapSelectPositionA.x & 0xFFFF) | (gMapSelectPositionB.x << 16);
-    uint32_t yBounds = (gMapSelectPositionA.y & 0xFFFF) | (gMapSelectPositionB.y << 16);
-
-    gGameCommandErrorTitle = STR_CANT_LOWER_LAND_HERE;
     if (gLandMountainMode)
     {
-        return game_do_command(
-            centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 0x8000 + gMapSelectType, yBounds);
+        auto landSmoothAction = LandSmoothAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType,
+            true);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
+                                                     : GameActions::Query(&landSmoothAction);
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
     else
     {
-        return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_LOWER_LAND, gMapSelectType, yBounds);
+        auto landLowerAction = LandLowerAction(
+            { centreX, centreY },
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
+        auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
+                                                     : GameActions::Query(&landLowerAction);
+
+        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
     }
 }
 
@@ -2963,10 +2996,10 @@ static money32 selection_lower_land(uint8_t flags)
  */
 static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
 {
-    rct_window* window = window_find_from_point(x, y);
+    rct_window* window = window_find_from_point(ScreenCoordsXY(x, y));
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+    rct_widgetindex widget_index = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];
@@ -3006,10 +3039,10 @@ static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
  */
 static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
 {
-    rct_window* window = window_find_from_point(x, y);
+    rct_window* window = window_find_from_point(ScreenCoordsXY(x, y));
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+    rct_widgetindex widget_index = window_find_widget_from_point(window, ScreenCoordsXY(x, y));
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];
@@ -3028,11 +3061,10 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
     {
         gInputDragLastY += dx;
 
-        gGameCommandErrorTitle = STR_CANT_RAISE_WATER_LEVEL_HERE;
+        auto waterRaiseAction = WaterRaiseAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+        GameActions::Execute(&waterRaiseAction);
 
-        game_do_command(
-            gMapSelectPositionA.x, 1, gMapSelectPositionA.y, dx, GAME_COMMAND_RAISE_WATER, gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
         gWaterToolRaiseCost = MONEY32_UNDEFINED;
         gWaterToolLowerCost = MONEY32_UNDEFINED;
 
@@ -3045,11 +3077,9 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
     {
         gInputDragLastY += dx;
 
-        gGameCommandErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
-
-        game_do_command(
-            gMapSelectPositionA.x, 1, gMapSelectPositionA.y, dx, GAME_COMMAND_LOWER_WATER, gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
+        auto waterLowerAction = WaterLowerAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
+        GameActions::Execute(&waterLowerAction);
         gWaterToolRaiseCost = MONEY32_UNDEFINED;
         gWaterToolLowerCost = MONEY32_UNDEFINED;
 
@@ -3079,10 +3109,12 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             {
                 if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                 {
-                    gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-                    game_do_command(
-                        gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
-                        GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
+                    auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                        { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                        gLandToolTerrainSurface, gLandToolTerrainEdge);
+
+                    GameActions::Execute(&surfaceSetStyleAction);
+
                     // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
                     // cursor
                     gCurrentToolId = TOOL_CROSSHAIR;
@@ -3204,7 +3236,7 @@ static void top_toolbar_fastforward_menu_dropdown(int16_t dropdownIndex)
             gGameSpeed = dropdownIndex + 1;
             if (gGameSpeed >= 5)
                 gGameSpeed = 8;
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
@@ -3228,34 +3260,47 @@ static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex)
         if (dropdownIndex == 0)
         {
             window_rotate_camera(w, 1);
-            window_invalidate(w);
+            w->Invalidate();
         }
         else if (dropdownIndex == 1)
         {
             window_rotate_camera(w, -1);
-            window_invalidate(w);
+            w->Invalidate();
         }
     }
 }
 
-static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
+static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[DDIDX_CONSOLE] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_CONSOLE] = STR_DEBUG_DROPDOWN_CONSOLE;
+    gDropdownItemsFormat[DDIDX_CHEATS] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_CHEATS] = STR_CHEAT_TITLE;
+
     gDropdownItemsFormat[DDIDX_TILE_INSPECTOR] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_TILE_INSPECTOR] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+
     gDropdownItemsFormat[DDIDX_OBJECT_SELECTION] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_OBJECT_SELECTION] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
+
     gDropdownItemsFormat[DDIDX_INVENTIONS_LIST] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_INVENTIONS_LIST] = STR_DEBUG_DROPDOWN_INVENTIONS_LIST;
+
     gDropdownItemsFormat[DDIDX_SCENARIO_OPTIONS] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_SCENARIO_OPTIONS] = STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS;
-    gDropdownItemsFormat[DDIDX_DEBUG_PAINT] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
+
+    gDropdownItemsFormat[5] = STR_EMPTY;
+
+    gDropdownItemsFormat[DDIDX_ENABLE_SANDBOX_MODE] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_ENABLE_SANDBOX_MODE] = STR_ENABLE_SANDBOX_MODE;
+
+    gDropdownItemsFormat[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_DISABLE_CLEARANCE_CHECKS;
+
+    gDropdownItemsFormat[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_DISABLE_SUPPORT_LIMITS;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
-        DROPDOWN_FLAG_STAY_OPEN, TOP_TOOLBAR_DEBUG_COUNT);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        TOP_TOOLBAR_CHEATS_COUNT);
 
     // Disable items that are not yet available in multiplayer
     if (network_get_mode() != NETWORK_MODE_NONE)
@@ -3264,18 +3309,91 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
         dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
     }
 
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        dropdown_set_disabled(DDIDX_CHEATS, true);
+        dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
+        dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
+        dropdown_set_disabled(DDIDX_SCENARIO_OPTIONS, true);
+        dropdown_set_disabled(DDIDX_ENABLE_SANDBOX_MODE, true);
+    }
+
+    if (gCheatsSandboxMode)
+    {
+        dropdown_set_checked(DDIDX_ENABLE_SANDBOX_MODE, true);
+    }
+    if (gCheatsDisableClearanceChecks)
+    {
+        dropdown_set_checked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
+    }
+    if (gCheatsDisableSupportLimits)
+    {
+        dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
+    }
+
+    if (!dropdown_is_disabled(DDIDX_CHEATS))
+        gDropdownDefaultIndex = DDIDX_CHEATS;
+    else
+        gDropdownDefaultIndex = DDIDX_TILE_INSPECTOR;
+}
+
+static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)
+{
+    switch (dropdownIndex)
+    {
+        case DDIDX_CHEATS:
+            context_open_window(WC_CHEATS);
+            break;
+        case DDIDX_TILE_INSPECTOR:
+            context_open_window(WC_TILE_INSPECTOR);
+            break;
+        case DDIDX_OBJECT_SELECTION:
+            window_close_all();
+            context_open_window(WC_EDITOR_OBJECT_SELECTION);
+            break;
+        case DDIDX_INVENTIONS_LIST:
+            context_open_window(WC_EDITOR_INVENTION_LIST);
+            break;
+        case DDIDX_SCENARIO_OPTIONS:
+            context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+            break;
+        case DDIDX_ENABLE_SANDBOX_MODE:
+            CheatsSet(CheatType::SandboxMode, !gCheatsSandboxMode);
+            break;
+        case DDIDX_DISABLE_CLEARANCE_CHECKS:
+            CheatsSet(CheatType::DisableClearanceChecks, !gCheatsDisableClearanceChecks);
+            break;
+        case DDIDX_DISABLE_SUPPORT_LIMITS:
+            CheatsSet(CheatType::DisableSupportLimits, !gCheatsDisableSupportLimits);
+            break;
+    }
+}
+
+static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
+{
+    gDropdownItemsFormat[DDIDX_CONSOLE] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_CONSOLE] = STR_DEBUG_DROPDOWN_CONSOLE;
+    gDropdownItemsFormat[DDIDX_DEBUG_PAINT] = STR_TOGGLE_OPTION;
+    gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
+
+    window_dropdown_show_text(
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
+        DROPDOWN_FLAG_STAY_OPEN, TOP_TOOLBAR_DEBUG_COUNT);
+
     dropdown_set_checked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != nullptr);
 }
 
 static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_MULTIPLAYER;
-
     gDropdownItemsFormat[DDIDX_MULTIPLAYER] = STR_MULTIPLAYER;
     gDropdownItemsFormat[DDIDX_NETWORK] = STR_NETWORK;
+    gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, 2);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0,
+        TOP_TOOLBAR_NETWORK_COUNT);
+
+    dropdown_set_disabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
 
     gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
@@ -3293,19 +3411,6 @@ static void top_toolbar_debug_menu_dropdown(int16_t dropdownIndex)
                 console.Open();
                 break;
             }
-            case DDIDX_TILE_INSPECTOR:
-                context_open_window(WC_TILE_INSPECTOR);
-                break;
-            case DDIDX_OBJECT_SELECTION:
-                window_close_all();
-                context_open_window(WC_EDITOR_OBJECT_SELECTION);
-                break;
-            case DDIDX_INVENTIONS_LIST:
-                context_open_window(WC_EDITOR_INVENTION_LIST);
-                break;
-            case DDIDX_SCENARIO_OPTIONS:
-                context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
-                break;
             case DDIDX_DEBUG_PAINT:
                 if (window_find_by_class(WC_DEBUG_PAINT) == nullptr)
                 {
@@ -3332,6 +3437,9 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
                 break;
             case DDIDX_NETWORK:
                 context_open_window(WC_NETWORK);
+                break;
+            case DDIDX_MULTIPLAYER_RECONNECT:
+                network_reconnect();
                 break;
         }
     }
@@ -3471,7 +3579,7 @@ static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex)
             default:
                 return;
         }
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

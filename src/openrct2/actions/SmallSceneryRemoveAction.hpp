@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,19 +26,15 @@
 DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameActionResult)
 {
 private:
-    int16_t _x;
-    int16_t _y;
-    uint8_t _baseHeight;
+    CoordsXYZ _loc;
     uint8_t _quadrant;
     uint8_t _sceneryType;
 
 public:
     SmallSceneryRemoveAction() = default;
 
-    SmallSceneryRemoveAction(int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType)
-        : _x(x)
-        , _y(y)
-        , _baseHeight(baseHeight)
+    SmallSceneryRemoveAction(CoordsXYZ location, uint8_t quadrant, uint8_t sceneryType)
+        : _loc(location)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)
     {
@@ -53,14 +49,14 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_x) << DS_TAG(_y) << DS_TAG(_baseHeight) << DS_TAG(_quadrant) << DS_TAG(_sceneryType);
+        stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType);
     }
 
     GameActionResult::Ptr Query() const override
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
 
-        if (!map_is_location_valid({ _x, _y }))
+        if (!map_is_location_valid(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -73,16 +69,14 @@ public:
 
         res->Cost = entry->small_scenery.removal_price * 10;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position.x = _x;
-        res->Position.y = _y;
-        res->Position.z = _baseHeight * 8;
+        res->Position = _loc;
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode)
         {
             // Check if allowed to remove item
             if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
-                if (entry->small_scenery.height > 64)
+                if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_IS_TREE))
                 {
                     res->Error = GA_ERROR::NO_CLEARANCE;
                     res->ErrorTitle = STR_CANT_REMOVE_THIS;
@@ -92,7 +86,7 @@ public:
             }
 
             // Check if the land is owned
-            if (!map_is_location_owned(_x, _y, _baseHeight * 8))
+            if (!map_is_location_owned(_loc))
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
                 res->ErrorTitle = STR_CANT_REMOVE_THIS;
@@ -122,9 +116,7 @@ public:
 
         res->Cost = entry->small_scenery.removal_price * 10;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-        res->Position.x = _x;
-        res->Position.y = _y;
-        res->Position.z = _baseHeight * 8;
+        res->Position = _loc;
 
         TileElement* tileElement = FindSceneryElement();
         if (tileElement == nullptr)
@@ -132,9 +124,9 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        res->Position.z = tile_element_height(res->Position.x, res->Position.y);
+        res->Position.z = tile_element_height(res->Position);
 
-        map_invalidate_tile_full(_x, _y);
+        map_invalidate_tile_full(_loc.x, _loc.y);
         tile_element_remove(tileElement);
 
         return res;
@@ -143,7 +135,7 @@ public:
 private:
     TileElement* FindSceneryElement() const
     {
-        TileElement* tileElement = map_get_first_element_at(_x / 32, _y / 32);
+        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
         if (!tileElement)
             return nullptr;
 
@@ -153,7 +145,7 @@ private:
                 continue;
             if ((tileElement->AsSmallScenery()->GetSceneryQuadrant()) != _quadrant)
                 continue;
-            if (tileElement->base_height != _baseHeight)
+            if (tileElement->base_height != _loc.z / 8)
                 continue;
             if (tileElement->AsSmallScenery()->GetEntryIndex() != _sceneryType)
                 continue;

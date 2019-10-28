@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,7 +30,48 @@
 #include <iterator>
 #include <limits>
 
-rct_banner gBanners[MAX_BANNERS];
+static Banner _banners[MAX_BANNERS];
+
+std::string Banner::GetText() const
+{
+    uint8_t args[32]{};
+    FormatTextTo(args);
+    return format_string(STR_STRINGID, args);
+}
+
+size_t Banner::FormatTextTo(void* argsV) const
+{
+    auto args = (uint8_t*)argsV;
+    if (flags & BANNER_FLAG_NO_ENTRY)
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_NO_ENTRY);
+        return sizeof(rct_string_id);
+    }
+    else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
+    {
+        auto ride = get_ride(ride_index);
+        if (ride != nullptr)
+        {
+            return ride->FormatNameTo(args);
+        }
+        else
+        {
+            set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
+            return sizeof(rct_string_id);
+        }
+    }
+    else if (text.empty())
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
+        return sizeof(rct_string_id);
+    }
+    else
+    {
+        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
+        set_format_arg_on(args, 2, const char*, text.c_str());
+        return sizeof(rct_string_id) + sizeof(const char*);
+    }
+}
 
 /**
  *
@@ -40,14 +81,16 @@ static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     ride_id_t resultRideIndex = RIDE_ID_NULL;
+    if (tileElement == nullptr)
+        return resultRideIndex;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-        Ride* ride = get_ride(rideIndex);
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
         if ((tileElement->clearance_height * 8) + 32 <= z)
@@ -59,292 +102,11 @@ static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
     return resultRideIndex;
 }
 
-static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t flags)
-{
-    int32_t z = baseHeight * 8;
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z;
-
-    if (!(flags & GAME_COMMAND_FLAG_GHOST) && game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!map_can_build_at(x, y, z - 16))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    // Slight modification to the code so that it now checks height as well
-    // This was causing a bug with banners on two paths stacked.
-    BannerElement* tileElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
-    if (tileElement == nullptr)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    rct_banner* banner = &gBanners[tileElement->GetIndex()];
-    rct_scenery_entry* bannerEntry = get_banner_entry(banner->type);
-    money32 refund = 0;
-    if (bannerEntry != nullptr)
-    {
-        refund = -((bannerEntry->banner.price * 3) / 4);
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            LocationXYZ16 coord;
-            coord.x = x + 16;
-            coord.y = y + 16;
-            coord.z = tile_element_height(coord.x, coord.y);
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-
-        tile_element_remove_banner_entry((TileElement*)tileElement);
-        map_invalidate_tile_zoom1(x, y, z, z + 32);
-        tileElement->Remove();
-    }
-
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
-    {
-        refund = 0;
-    }
-    return refund;
-}
-
-static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t colour, uint8_t flags)
-{
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    int32_t z = (baseHeight * 8);
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z;
-
-    if (!map_can_build_at(x, y, z - 16))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
-
-        bool found = false;
-        do
-        {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
-                continue;
-
-            if (tileElement->AsBanner()->GetPosition() != direction)
-                continue;
-
-            found = true;
-            break;
-        } while (!(tileElement++)->IsLastForTile());
-
-        if (!found)
-        {
-            return MONEY32_UNDEFINED;
-        }
-
-        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, tileElement->AsBanner()->GetIndex());
-        context_broadcast_intent(&intent);
-
-        gBanners[tileElement->AsBanner()->GetIndex()].colour = colour;
-        map_invalidate_tile_zoom1(x, y, z, z + 32);
-    }
-
-    return 0;
-}
-
-static money32 BannerPlace(
-    int16_t x, int16_t y, uint8_t pathBaseHeight, uint8_t direction, uint8_t colour, uint8_t type, BannerIndex* bannerIndex,
-    uint8_t flags)
-{
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = pathBaseHeight * 16;
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    if (game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!map_check_free_elements_and_reorganise(1))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!map_is_location_valid({ x, y }))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
-
-    bool pathFound = false;
-    do
-    {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-            continue;
-
-        if (tileElement->base_height != pathBaseHeight * 2 && tileElement->base_height != (pathBaseHeight - 1) * 2)
-            continue;
-
-        if (!(tileElement->AsPath()->GetEdges() & (1 << direction)))
-            continue;
-
-        pathFound = true;
-        break;
-    } while (!(tileElement++)->IsLastForTile());
-
-    if (!pathFound)
-    {
-        gGameCommandErrorText = STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!map_can_build_at(x, y, pathBaseHeight * 16))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    uint8_t baseHeight = (pathBaseHeight + 1) * 2;
-    BannerElement* bannerElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
-    if (bannerElement != nullptr)
-    {
-        gGameCommandErrorText = STR_BANNER_SIGN_IN_THE_WAY;
-        return MONEY32_UNDEFINED;
-    }
-
-    *bannerIndex = create_new_banner(flags);
-    if (*bannerIndex == BANNER_INDEX_NULL)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            LocationXYZ16 coord;
-            coord.x = x + 16;
-            coord.y = y + 16;
-            coord.z = tile_element_height(coord.x, coord.y);
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-
-        TileElement* newTileElement = tile_element_insert(x / 32, y / 32, baseHeight, 0);
-        assert(newTileElement != nullptr);
-        gBanners[*bannerIndex].type = type;
-        gBanners[*bannerIndex].colour = colour;
-        gBanners[*bannerIndex].x = x / 32;
-        gBanners[*bannerIndex].y = y / 32;
-        newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
-        newTileElement->clearance_height = newTileElement->base_height + 2;
-        newTileElement->AsBanner()->SetPosition(direction);
-        newTileElement->AsBanner()->ResetAllowedEdges();
-        newTileElement->AsBanner()->SetIndex(*bannerIndex);
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            newTileElement->SetGhost(true);
-        }
-        map_invalidate_tile_full(x, y);
-        map_animation_create(MAP_ANIMATION_TYPE_BANNER, x, y, newTileElement->base_height);
-    }
-
-    rct_scenery_entry* bannerEntry = get_banner_entry(type);
-    if (bannerEntry == nullptr)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
-    {
-        return 0;
-    }
-    return bannerEntry->banner.price;
-}
-
-static money32 BannerSetStyle(BannerIndex bannerIndex, uint8_t colour, uint8_t textColour, uint8_t bannerFlags, uint8_t flags)
-{
-    if (bannerIndex >= MAX_BANNERS)
-    {
-        gGameCommandErrorText = STR_INVALID_SELECTION_OF_OBJECTS;
-        return MONEY32_UNDEFINED;
-    }
-
-    rct_banner* banner = &gBanners[bannerIndex];
-
-    TileElement* tileElement = banner_get_tile_element(bannerIndex);
-
-    if (tileElement == nullptr)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
-    {
-        return 0;
-    }
-
-    banner->colour = colour;
-    banner->text_colour = textColour;
-    banner->flags = bannerFlags;
-
-    uint8_t allowedEdges = 0xF;
-    if (banner->flags & BANNER_FLAG_NO_ENTRY)
-    {
-        allowedEdges &= ~(1 << tileElement->AsBanner()->GetPosition());
-    }
-    tileElement->AsBanner()->SetAllowedEdges(allowedEdges);
-
-    int32_t colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
-
-    utf8 buffer[256];
-    format_string(buffer, 256, banner->string_idx, nullptr);
-    int32_t firstCodepoint = utf8_get_next(buffer, nullptr);
-    if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END)
-    {
-        utf8_write_codepoint(buffer, colourCodepoint);
-    }
-    else
-    {
-        utf8_insert_codepoint(buffer, colourCodepoint);
-    }
-
-    rct_string_id stringId = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-    if (stringId != 0)
-    {
-        rct_string_id prevStringId = banner->string_idx;
-        banner->string_idx = stringId;
-        user_string_free(prevStringId);
-
-        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, bannerIndex);
-        context_broadcast_intent(&intent);
-    }
-    else
-    {
-        gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
-        return MONEY32_UNDEFINED;
-    }
-
-    return 0;
-}
-
 static BannerIndex BannerGetNewIndex()
 {
     for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
-        if (gBanners[bannerIndex].type == BANNER_NULL)
+        if (_banners[bannerIndex].IsNull())
         {
             return bannerIndex;
         }
@@ -358,9 +120,9 @@ static BannerIndex BannerGetNewIndex()
  */
 void banner_init()
 {
-    for (auto& banner : gBanners)
+    for (auto& banner : _banners)
     {
-        banner.type = BANNER_NULL;
+        banner = {};
     }
 }
 
@@ -384,11 +146,11 @@ BannerIndex create_new_banner(uint8_t flags)
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_banner* banner = &gBanners[bannerIndex];
+        auto banner = &_banners[bannerIndex];
 
         banner->flags = 0;
         banner->type = 0;
-        banner->string_idx = STR_DEFAULT_SIGN;
+        banner->text = {};
         banner->colour = 2;
         banner->text_colour = 2;
     }
@@ -397,15 +159,49 @@ BannerIndex create_new_banner(uint8_t flags)
 
 TileElement* banner_get_tile_element(BannerIndex bannerIndex)
 {
-    rct_banner* banner = &gBanners[bannerIndex];
-    TileElement* tileElement = map_get_first_element_at(banner->x, banner->y);
+    auto banner = GetBanner(bannerIndex);
+    if (banner != nullptr)
+    {
+        auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
+        if (tileElement != nullptr)
+        {
+            do
+            {
+                if (tile_element_get_banner_index(tileElement) == bannerIndex)
+                {
+                    return tileElement;
+                }
+            } while (!(tileElement++)->IsLastForTile());
+        }
+    }
+    return nullptr;
+}
+
+WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
+{
+    auto banner = GetBanner(bannerIndex);
+    if (banner == nullptr)
+        return nullptr;
+
+    auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
+    if (tileElement == nullptr)
+        return nullptr;
+
     do
     {
-        if (tile_element_get_banner_index(tileElement) == bannerIndex)
-        {
-            return tileElement;
-        }
+        auto wallElement = tileElement->AsWall();
+
+        if (wallElement == nullptr)
+            continue;
+
+        rct_scenery_entry* scenery_entry = wallElement->GetEntry();
+        if (scenery_entry->wall.scrolling_mode == SCROLLING_MODE_NONE)
+            continue;
+        if (wallElement->GetBannerIndex() != bannerIndex)
+            continue;
+        return wallElement;
     } while (!(tileElement++)->IsLastForTile());
+
     return nullptr;
 }
 
@@ -415,13 +211,11 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
  */
 uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
 {
-    Ride* ride;
-
     static constexpr const LocationXY16 NeighbourCheckOrder[] = { { 32, 0 },    { -32, 0 },   { 0, 32 },
                                                                   { 0, -32 },   { -32, +32 }, { +32, -32 },
                                                                   { +32, +32 }, { -32, +32 }, { 0, 0 } };
 
-    for (size_t i = 0; i < (int32_t)std::size(NeighbourCheckOrder); i++)
+    for (size_t i = 0; i < std::size(NeighbourCheckOrder); i++)
     {
         ride_id_t rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
         if (rideIndex != RIDE_ID_NULL)
@@ -430,15 +224,14 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
         }
     }
 
-    uint8_t index;
-    ride_id_t rideIndex = RIDE_ID_NULL;
-    int32_t resultDistance = std::numeric_limits<int32_t>::max();
-    FOR_ALL_RIDES (index, ride)
+    auto rideIndex = RIDE_ID_NULL;
+    auto resultDistance = std::numeric_limits<int32_t>::max();
+    for (auto& ride : GetRideManager())
     {
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
-        LocationXY8 location = ride->overall_view;
+        LocationXY8 location = ride.overall_view;
         if (location.xy == RCT_XY8_UNDEFINED)
             continue;
 
@@ -448,10 +241,9 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
         if (distance < resultDistance)
         {
             resultDistance = distance;
-            rideIndex = index;
+            rideIndex = ride.id;
         }
     }
-
     return rideIndex;
 }
 
@@ -459,115 +251,77 @@ void banner_reset_broken_index()
 {
     for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
-        TileElement* tileElement = banner_get_tile_element(bannerIndex);
+        auto tileElement = banner_get_tile_element(bannerIndex);
         if (tileElement == nullptr)
-            gBanners[bannerIndex].type = BANNER_NULL;
+        {
+            _banners[bannerIndex].type = BANNER_NULL;
+        }
     }
 }
 
 void fix_duplicated_banners()
 {
     // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
-    bool activeBanners[std::size(gBanners)]{};
-    TileElement* tileElement;
+    bool activeBanners[std::size(_banners)]{};
     for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            tileElement = map_get_first_element_at(x, y);
-            do
+            auto tileElement = map_get_first_element_at(x, y);
+            if (tileElement != nullptr)
             {
-                // TODO: Handle walls and large-scenery that use banner indices too. Large scenery can be tricky, as they occupy
-                // multiple tiles that should both refer to the same banner index.
-                if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
+                do
                 {
-                    uint8_t bannerIndex = tileElement->AsBanner()->GetIndex();
-                    if (activeBanners[bannerIndex])
+                    // TODO: Handle walls and large-scenery that use banner indices too. Large scenery can be tricky, as they
+                    // occupy multiple tiles that should both refer to the same banner index.
+                    if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                     {
-                        log_info(
-                            "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", bannerIndex, x, y,
-                            tileElement->base_height);
-
-                        // Banner index is already in use by another banner, so duplicate it
-                        BannerIndex newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
-                        if (newBannerIndex == BANNER_INDEX_NULL)
+                        uint8_t bannerIndex = tileElement->AsBanner()->GetIndex();
+                        if (activeBanners[bannerIndex])
                         {
-                            log_error("Failed to create new banner.");
-                            continue;
-                        }
-                        Guard::Assert(activeBanners[newBannerIndex] == false);
+                            log_info(
+                                "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", bannerIndex, x, y,
+                                tileElement->base_height);
 
-                        // Copy over the original banner, but update the location
-                        rct_banner& newBanner = gBanners[newBannerIndex];
-                        newBanner = gBanners[bannerIndex];
-                        newBanner.x = x;
-                        newBanner.y = y;
-
-                        // Duplicate user string too
-                        rct_string_id stringIdx = newBanner.string_idx;
-                        if (is_user_string_id(stringIdx))
-                        {
-                            utf8 buffer[USER_STRING_MAX_LENGTH];
-                            format_string(buffer, USER_STRING_MAX_LENGTH, stringIdx, nullptr);
-                            rct_string_id newStringIdx = user_string_allocate(USER_STRING_DUPLICATION_PERMITTED, buffer);
-                            if (newStringIdx == 0)
+                            // Banner index is already in use by another banner, so duplicate it
+                            BannerIndex newBannerIndex = create_new_banner(GAME_COMMAND_FLAG_APPLY);
+                            if (newBannerIndex == BANNER_INDEX_NULL)
                             {
-                                log_error("Failed to allocate user string for banner");
+                                log_error("Failed to create new banner.");
                                 continue;
                             }
-                            newBanner.string_idx = newStringIdx;
+                            Guard::Assert(!activeBanners[newBannerIndex]);
+
+                            // Copy over the original banner, but update the location
+                            auto& newBanner = *GetBanner(newBannerIndex);
+                            newBanner = *GetBanner(bannerIndex);
+                            newBanner.position = { x, y };
+
+                            tileElement->AsBanner()->SetIndex(newBannerIndex);
                         }
 
-                        tileElement->AsBanner()->SetIndex(newBannerIndex);
+                        // Mark banner index as in-use
+                        activeBanners[bannerIndex] = true;
                     }
-
-                    // Mark banner index as in-use
-                    activeBanners[bannerIndex] = true;
-                }
-            } while (!(tileElement++)->IsLastForTile());
+                } while (!(tileElement++)->IsLastForTile());
+            }
         }
     }
 }
 
-/**
- *
- *  rct2: 0x006BA058
- */
-void game_command_remove_banner(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+Banner* BannerElement::GetBanner() const
 {
-    *ebx = BannerRemove(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebx & 0xFF);
+    return ::GetBanner(GetIndex());
 }
 
-/**
- *
- *  rct2: 0x006BA16A
- */
-void game_command_set_banner_colour(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    int32_t* ebp)
+rct_scenery_entry* BannerElement::GetEntry() const
 {
-    *ebx = BannerSetColour(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebp & 0xFF, *ebx & 0xFF);
-}
-
-/**
- *
- *  rct2: 0x006B9E6D
- */
-void game_command_place_banner(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
-{
-    *ebx = BannerPlace(
-        *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebp & 0xFF, (*ebx >> 8) & 0xFF, (BannerIndex*)edi,
-        *ebx & 0xFF);
-}
-
-void game_command_set_banner_style(
-    [[maybe_unused]] int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
-    int32_t* ebp)
-{
-    *ebx = BannerSetStyle(*ecx & 0xFF, *edx & 0xFF, *edi & 0xFF, *ebp & 0xFF, *ebx & 0xFF);
+    auto banner = GetBanner();
+    if (banner != nullptr)
+    {
+        return get_banner_entry(banner->type);
+    }
+    return nullptr;
 }
 
 BannerIndex BannerElement::GetIndex() const
@@ -604,4 +358,13 @@ void BannerElement::SetAllowedEdges(uint8_t newEdges)
 void BannerElement::ResetAllowedEdges()
 {
     flags |= 0b00001111;
+}
+
+Banner* GetBanner(BannerIndex id)
+{
+    if (id < std::size(_banners))
+    {
+        return &_banners[id];
+    }
+    return nullptr;
 }

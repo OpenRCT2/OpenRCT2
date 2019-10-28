@@ -47,13 +47,12 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (!map_is_location_valid({ _loc.x, _loc.y }))
+        if (!map_is_location_valid(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
-        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-            && !map_is_location_owned(_loc.x, _loc.y, _loc.z / 8))
+        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
         {
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
@@ -69,17 +68,22 @@ public:
         }
 
         auto tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, _loc.z / 8);
-        auto pathElement = tileElement->AsPath();
+        if (tileElement == nullptr)
+        {
+            log_warning("Could not find path element.");
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
+        }
 
+        auto pathElement = tileElement->AsPath();
         if (pathElement == nullptr)
         {
-            log_error("Could not find path element.");
+            log_warning("Could not find path element.");
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
         }
 
         if (!pathElement->AdditionIsGhost() && (GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            log_error("Tried to remove non ghost during ghost removal.");
+            log_warning("Tried to remove non ghost during ghost removal.");
             return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_REMOVE_THIS);
         }
         auto res = MakeResult();

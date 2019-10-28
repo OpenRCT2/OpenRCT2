@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,13 +10,14 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
+#include "../sprites.h"
 #include "Drawing.h"
 
 #include <algorithm>
 #include <list>
 
-constexpr uint32_t BASE_IMAGE_ID = 29294;
-constexpr uint32_t MAX_IMAGES = 262144;
+constexpr uint32_t BASE_IMAGE_ID = SPR_IMAGE_LIST_BEGIN;
+constexpr uint32_t MAX_IMAGES = SPR_IMAGE_LIST_END - BASE_IMAGE_ID;
 constexpr uint32_t INVALID_IMAGE_ID = UINT32_MAX;
 
 struct ImageList
@@ -239,4 +240,14 @@ void gfx_object_check_all_images_freed()
         Console::Error::WriteLine("%u images were not freed", _allocatedImageCount);
 #endif
     }
+}
+
+size_t ImageListGetUsedCount()
+{
+    return _allocatedImageCount;
+}
+
+size_t ImageListGetMaximum()
+{
+    return MAX_IMAGES;
 }

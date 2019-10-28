@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -157,8 +157,9 @@ std::string KeyboardShortcuts::GetShortcutString(int32_t shortcut) const
     return std::string(buffer);
 }
 
-void KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState, int32_t* x, int32_t* y) const
+ScreenCoordsXY KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState) const
 {
+    ScreenCoordsXY screenCoords;
     for (int32_t shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++)
     {
         uint16_t shortcutKey = _keys[shortcutId];
@@ -169,46 +170,37 @@ void KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState, int32_t* 
         if (!keysState[scancode])
             continue;
 
-        if (shortcutKey & SHIFT)
-        {
-            if (!keysState[SDL_SCANCODE_LSHIFT] && !keysState[SDL_SCANCODE_RSHIFT])
-                continue;
-        }
-        if (shortcutKey & CTRL)
-        {
-            if (!keysState[SDL_SCANCODE_LCTRL] && !keysState[SDL_SCANCODE_RCTRL])
-                continue;
-        }
-        if (shortcutKey & ALT)
-        {
-            if (!keysState[SDL_SCANCODE_LALT] && !keysState[SDL_SCANCODE_RALT])
-                continue;
-        }
+        // Check if SHIFT is either set in the shortcut key and currently pressed,
+        // or not set in the shortcut key and not currently pressed (in other words: check if they match).
+        if ((bool)(shortcutKey & SHIFT) != (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]))
+            continue;
+        if ((bool)(shortcutKey & CTRL) != (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]))
+            continue;
+        if ((bool)(shortcutKey & ALT) != (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]))
+            continue;
 #ifdef __MACOSX__
-        if (shortcutKey & CMD)
-        {
-            if (!keysState[SDL_SCANCODE_LGUI] && !keysState[SDL_SCANCODE_RGUI])
-                continue;
-        }
+        if ((bool)(shortcutKey & CMD) != (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]))
+            continue;
 #endif
         switch (shortcutId)
         {
             case SHORTCUT_SCROLL_MAP_UP:
-                *y = -1;
+                screenCoords.y = -1;
                 break;
             case SHORTCUT_SCROLL_MAP_LEFT:
-                *x = -1;
+                screenCoords.x = -1;
                 break;
             case SHORTCUT_SCROLL_MAP_DOWN:
-                *y = 1;
+                screenCoords.y = 1;
                 break;
             case SHORTCUT_SCROLL_MAP_RIGHT:
-                *x = 1;
+                screenCoords.x = 1;
                 break;
             default:
                 break;
         }
     }
+    return screenCoords;
 }
 
 void keyboard_shortcuts_reset()
@@ -242,9 +234,9 @@ void keyboard_shortcuts_format_string(char* buffer, size_t bufferSize, int32_t s
     String::Set(buffer, bufferSize, str.c_str());
 }
 
-void get_keyboard_map_scroll(const uint8_t* keysState, int32_t* x, int32_t* y)
+ScreenCoordsXY get_keyboard_map_scroll(const uint8_t* keysState)
 {
-    _instance->GetKeyboardMapScroll(keysState, x, y);
+    return _instance->GetKeyboardMapScroll(keysState);
 }
 
 // Default keyboard shortcuts
@@ -317,4 +309,6 @@ const uint16_t KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] = {
     SHORTCUT_UNDEFINED,                       // SHORTCUT_VIEW_CLIPPING
     SDL_SCANCODE_I,                           // SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE
     SHORTCUT_UNDEFINED,                       // SHORTCUT_TILE_INSPECTOR
+    SHORTCUT_UNDEFINED,                       // SHORTCUT_ADVANCE_TO_NEXT_TICK
+    SHORTCUT_UNDEFINED,                       // SHORTCUT_SCENERY_PICKER
 };

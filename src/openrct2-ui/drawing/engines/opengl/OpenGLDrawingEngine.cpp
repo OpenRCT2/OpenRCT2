@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -56,7 +56,6 @@ class OpenGLDrawingContext final : public IDrawingContext
 private:
     OpenGLDrawingEngine* _engine = nullptr;
     rct_drawpixelinfo* _dpi = nullptr;
-
     ApplyTransparencyShader* _applyTransparencyShader = nullptr;
     DrawLineShader* _drawLineShader = nullptr;
     DrawRectShader* _drawRectShader = nullptr;
@@ -115,6 +114,62 @@ public:
     void HandleTransparency();
 
     void SetDPI(rct_drawpixelinfo* dpi);
+    rct_drawpixelinfo* GetDPI() const
+    {
+        return _dpi;
+    }
+};
+
+class OpenGLRainDrawer final : public IRainDrawer
+{
+    OpenGLDrawingContext* _drawingContext;
+
+public:
+    explicit OpenGLRainDrawer(OpenGLDrawingContext* drawingContext)
+        : _drawingContext(drawingContext)
+    {
+    }
+
+    virtual void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart)
+    {
+        const uint8_t* pattern = RainPattern;
+
+        uint8_t patternXSpace = *pattern++;
+        uint8_t patternYSpace = *pattern++;
+
+        uint8_t patternStartXOffset = xStart % patternXSpace;
+        uint8_t patternStartYOffset = yStart % patternYSpace;
+
+        const auto* dpi = _drawingContext->GetDPI();
+
+        uint32_t pixelOffset = (dpi->pitch + dpi->width) * y + x;
+        uint8_t patternYPos = patternStartYOffset % patternYSpace;
+
+        for (; height != 0; height--)
+        {
+            uint8_t patternX = pattern[patternYPos * 2];
+            if (patternX != 0xFF)
+            {
+                uint32_t finalPixelOffset = width + pixelOffset;
+
+                uint32_t xPixelOffset = pixelOffset;
+                xPixelOffset += ((uint8_t)(patternX - patternStartXOffset)) % patternXSpace;
+
+                uint8_t patternPixel = pattern[patternYPos * 2 + 1];
+                for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
+                {
+                    int32_t pixelX = xPixelOffset % dpi->width;
+                    int32_t pixelY = (xPixelOffset / dpi->width) % dpi->height;
+
+                    _drawingContext->DrawLine(patternPixel, pixelX, pixelY, pixelX + 1, pixelY + 1);
+                }
+            }
+
+            pixelOffset += dpi->pitch + dpi->width;
+            patternYPos++;
+            patternYPos %= patternYSpace;
+        }
+    }
 };
 
 class OpenGLDrawingEngine : public IDrawingEngine
@@ -138,6 +193,7 @@ private:
     OpenGLFramebuffer* _screenFramebuffer = nullptr;
     OpenGLFramebuffer* _scaleFramebuffer = nullptr;
     OpenGLFramebuffer* _smoothScaleFramebuffer = nullptr;
+    OpenGLRainDrawer _rainDrawer;
 
 public:
     SDL_Color Palette[256];
@@ -145,9 +201,11 @@ public:
 
     explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
+        , _drawingContext(new OpenGLDrawingContext(this))
+        , _rainDrawer(_drawingContext)
     {
         _window = (SDL_Window*)_uiContext->GetWindow();
-        _drawingContext = new OpenGLDrawingContext(this);
+        _bitsDPI.DrawingEngine = this;
 #    ifdef __ENABLE_LIGHTFX__
         lightfx_set_available(false);
 #    endif
@@ -283,7 +341,8 @@ public:
 
     void PaintRain() override
     {
-        // Not implemented
+        _drawingContext->SetDPI(&_bitsDPI);
+        DrawRain(&_bitsDPI, &_rainDrawer);
     }
 
     std::string Screenshot() override
@@ -510,7 +569,7 @@ void OpenGLDrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, 
     if (colour & 0x1000000)
     {
         // cross-pattern
-        command.flags = DrawRectCommand::FLAG_CROSS_HATCH;
+        command.flags |= DrawRectCommand::FLAG_CROSS_HATCH;
     }
     else if (colour & 0x2000000)
     {
@@ -881,7 +940,7 @@ void OpenGLDrawingContext::FlushCommandBuffers()
 
 void OpenGLDrawingContext::FlushLines()
 {
-    if (_commandBuffers.lines.size() == 0)
+    if (_commandBuffers.lines.empty())
         return;
 
     _drawLineShader->Use();
@@ -892,7 +951,7 @@ void OpenGLDrawingContext::FlushLines()
 
 void OpenGLDrawingContext::FlushRectangles()
 {
-    if (_commandBuffers.rects.size() == 0)
+    if (_commandBuffers.rects.empty())
         return;
 
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());

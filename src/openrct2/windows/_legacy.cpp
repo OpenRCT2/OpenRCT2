@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,77 +29,6 @@
 
 bool gDisableErrorWindowSound = false;
 
-void game_command_callback_pickup_guest(
-    int32_t eax, int32_t ebx, int32_t ecx, [[maybe_unused]] int32_t edx, [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    switch (ecx)
-    {
-        case 0:
-        {
-            int32_t peepnum = eax;
-            rct_window* w = window_find_by_number(WC_PEEP, peepnum);
-            if (w)
-            {
-                tool_set(w, WC_PEEP__WIDX_PICKUP, TOOL_PICKER);
-            }
-        }
-        break;
-        case 2:
-            if (ebx == 0)
-            {
-                tool_cancel();
-                gPickupPeepImage = UINT32_MAX;
-            }
-            break;
-    }
-}
-
-void game_command_callback_hire_new_staff_member(
-    [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi, int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    int32_t sprite_index = edi;
-    if (sprite_index == SPRITE_INDEX_NULL)
-    {
-        rct_window* window = window_find_by_class(WC_STAFF_LIST);
-        window_invalidate(window);
-    }
-    else
-    {
-        Peep* peep = &get_sprite(sprite_index)->peep;
-        auto intent = Intent(WC_PEEP);
-        intent.putExtra(INTENT_EXTRA_PEEP, peep);
-        context_open_intent(&intent);
-    }
-}
-
-void game_command_callback_pickup_staff(
-    int32_t eax, int32_t ebx, int32_t ecx, [[maybe_unused]] int32_t edx, [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    switch (ecx)
-    {
-        case 0:
-        {
-            int32_t peepnum = eax;
-            rct_window* w = window_find_by_number(WC_PEEP, peepnum);
-            if (w)
-            {
-                tool_set(w, WC_STAFF__WIDX_PICKUP, TOOL_PICKER);
-            }
-        }
-        break;
-        case 2:
-            if (ebx == 0)
-            {
-                tool_cancel();
-                gPickupPeepImage = UINT32_MAX;
-            }
-            break;
-    }
-}
-
 uint64_t _enabledRidePieces;
 uint8_t _rideConstructionState2;
 
@@ -116,14 +45,15 @@ money32 place_provisional_track_piece(
     ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y,
     int32_t z)
 {
-    Ride* ride;
-    money32 result;
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return MONEY32_UNDEFINED;
 
+    money32 result;
     ride_construction_remove_ghosts();
-    ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST; // 105
         result = maze_set_track(x, y, z, flags, true, 0, rideIndex, GC_SET_MAZE_TRACK_BUILD);
         if (result == MONEY32_UNDEFINED)
@@ -134,7 +64,7 @@ money32 place_provisional_track_piece(
         _unkF440C5.z = z;
         _unkF440C5.direction = trackDirection;
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-        viewport_set_visibility((gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
+        viewport_set_visibility(3);
         if (_currentTrackSlopeEnd != 0)
             viewport_set_visibility(2);
 
@@ -153,7 +83,7 @@ money32 place_provisional_track_piece(
     {
         auto trackPlaceAction = TrackPlaceAction(
             rideIndex, trackType, { x, y, z, static_cast<uint8_t>(trackDirection) }, 0, 0, 0, liftHillAndAlternativeState);
-        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+        trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         // This command must not be sent over the network
         auto res = GameActions::Execute(&trackPlaceAction);
         result = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
@@ -179,7 +109,8 @@ money32 place_provisional_track_piece(
         _unkF440C5.z = z;
         _unkF440C5.direction = trackDirection;
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-        viewport_set_visibility((gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
+        viewport_set_visibility(
+            (dynamic_cast<TrackPlaceActionResult*>(res.get())->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
         if (_currentTrackSlopeEnd != 0)
             viewport_set_visibility(2);
 
@@ -340,7 +271,9 @@ bool window_ride_construction_update_state(
         liftHillAndAlternativeState |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
     }
 
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return true;
 
     if (_enabledRidePieces & (1ULL << TRACK_SLOPE_STEEP_LONG))
     {
@@ -404,28 +337,11 @@ bool window_ride_construction_update_state(
             trackDirection |= 0x04;
         }
 
-        switch (trackDirection & 0x03)
-        {
-            case 0:
-                x -= trackCoordinates->x;
-                y -= trackCoordinates->y;
-                break;
-
-            case 1:
-                x -= trackCoordinates->y;
-                y += trackCoordinates->x;
-                break;
-
-            case 2:
-                x += trackCoordinates->x;
-                y += trackCoordinates->y;
-                break;
-
-            case 3:
-                x += trackCoordinates->y;
-                y -= trackCoordinates->x;
-                break;
-        }
+        CoordsXY offsets = { trackCoordinates->x, trackCoordinates->y };
+        CoordsXY coords = { x, y };
+        coords += offsets.Rotate(direction_reverse(trackDirection));
+        x = (uint16_t)coords.x;
+        y = (uint16_t)coords.y;
     }
     else
     {
@@ -489,9 +405,8 @@ bool window_ride_construction_update_state(
 
 void window_ride_construction_do_entrance_exit_check()
 {
-    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    Ride* ride = get_ride(_currentRideIndex);
-
+    auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    auto ride = get_ride(_currentRideIndex);
     if (w == nullptr || ride == nullptr)
     {
         return;
@@ -516,7 +431,7 @@ void window_ride_construction_do_entrance_exit_check()
 
 void window_ride_construction_do_station_check()
 {
-    Ride* ride = get_ride(_currentRideIndex);
+    auto ride = get_ride(_currentRideIndex);
     if (ride != nullptr)
     {
         _stationConstructed = ride->num_stations != 0;
@@ -609,19 +524,6 @@ void window_ride_construction_update_active_elements()
 {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS);
     context_broadcast_intent(&intent);
-}
-
-void game_command_callback_place_banner(
-    [[maybe_unused]] int32_t eax, int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi, int32_t edi, [[maybe_unused]] int32_t ebp)
-{
-    if (ebx != MONEY32_UNDEFINED)
-    {
-        int32_t bannerId = edi;
-
-        audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-        context_open_detail_window(WD_BANNER, bannerId);
-    }
 }
 
 /**

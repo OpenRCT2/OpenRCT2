@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,6 +39,13 @@ public:
      * @param length The size of the source buffer.
      */
     void WriteChunk(const void* src, size_t length, SAWYER_ENCODING encoding);
+
+    /**
+     * Writes a track chunk to the stream containing the given buffer.
+     * @param src The source buffer.
+     * @param length The size of the source buffer.
+     */
+    void WriteChunkTrack(const void* src, size_t length);
 
     /**
      * Writes a chunk to the stream containing the given type.

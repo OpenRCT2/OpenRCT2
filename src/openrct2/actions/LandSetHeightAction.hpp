@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
@@ -80,7 +81,7 @@ public:
             if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 // Check for obstructing large trees
-                TileElement* tileElement = CheckTallTreeObstructions();
+                TileElement* tileElement = CheckTreeObstructions();
                 if (tileElement != nullptr)
                 {
                     map_obstruction_set_error_text(tileElement);
@@ -100,8 +101,8 @@ public:
             }
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at(_coords);
-        TileElement* tileElement = CheckFloatingStructures(surfaceElement, _height);
+        auto* surfaceElement = map_get_surface_element_at(_coords);
+        TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
         if (tileElement != nullptr)
         {
             map_obstruction_set_error_text(tileElement);
@@ -127,7 +128,7 @@ public:
                     GA_ERROR::DISALLOWED, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
             }
 
-            tileElement = CheckUnremovableObstructions(surfaceElement, zCorner);
+            tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);
             if (tileElement != nullptr)
             {
                 map_obstruction_set_error_text(tileElement);
@@ -143,7 +144,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         money32 cost = MONEY(0, 0);
-        auto surfaceHeight = tile_element_height(_coords.x, _coords.y) & 0xFFFF;
+        auto surfaceHeight = tile_element_height(_coords);
         footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
 
         if (!gCheatsDisableClearanceChecks)
@@ -153,9 +154,9 @@ public:
             SmallSceneryRemoval();
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at(_coords);
+        auto* surfaceElement = map_get_surface_element_at(_coords);
         cost += GetSurfaceHeightChangeCost(surfaceElement);
-        SetSurfaceHeight(surfaceElement);
+        SetSurfaceHeight(reinterpret_cast<TileElement*>(surfaceElement));
 
         auto res = std::make_unique<GameActionResult>();
         res->Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
@@ -195,11 +196,13 @@ private:
         return STR_NONE;
     }
 
-    TileElement* CheckTallTreeObstructions() const
+    TileElement* CheckTreeObstructions() const
     {
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (_height > tileElement->clearance_height)
@@ -207,7 +210,7 @@ private:
             if (_height + 4 < tileElement->base_height)
                 continue;
             rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-            if (sceneryEntry->small_scenery.height > 64)
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE))
             {
                 return tileElement;
             }
@@ -221,6 +224,8 @@ private:
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (_height > tileElement->clearance_height)
@@ -238,6 +243,8 @@ private:
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (_height > tileElement->clearance_height)
@@ -253,19 +260,21 @@ private:
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
             {
                 ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-                Ride* ride = get_ride(rideIndex);
+                auto ride = get_ride(rideIndex);
                 if (ride != nullptr)
                 {
-                    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+                    rct_ride_entry* rideEntry = ride->GetRideEntry();
                     if (rideEntry != nullptr)
                     {
                         int32_t maxHeight = rideEntry->max_height;
                         if (maxHeight == 0)
                         {
-                            maxHeight = RideData5[get_ride(rideIndex)->type].max_height;
+                            maxHeight = RideData5[ride->type].max_height;
                         }
                         int32_t zDelta = tileElement->clearance_height - _height;
                         if (zDelta >= 0 && zDelta / 2 > maxHeight)
@@ -308,6 +317,8 @@ private:
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             int32_t elementType = tileElement->GetType();
 
             // Wall's and Small Scenery are removed and therefore do not need checked
@@ -335,10 +346,10 @@ private:
         return nullptr;
     }
 
-    money32 GetSurfaceHeightChangeCost(TileElement * surfaceElement) const
+    money32 GetSurfaceHeightChangeCost(SurfaceElement * surfaceElement) const
     {
         money32 cost{ 0 };
-        for (int32_t i = 0; i < 4; i += 1)
+        for (Direction i : ALL_DIRECTIONS)
         {
             int32_t cornerHeight = tile_element_get_corner_height(surfaceElement, i);
             cornerHeight -= map_get_corner_height(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);

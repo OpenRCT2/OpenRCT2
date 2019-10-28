@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -176,15 +176,16 @@ static void FASTCALL DrawRLESprite1(
  * Transfers readied images onto buffers
  * This function copies the sprite data onto the screen
  *  rct2: 0x0067AA18
+ * @param imageId Only flags are used.
  */
 void FASTCALL gfx_rle_sprite_to_buffer(
     const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
-    const rct_drawpixelinfo* RESTRICT dpi, int32_t image_type, int32_t source_y_start, int32_t height, int32_t source_x_start,
+    const rct_drawpixelinfo* RESTRICT dpi, ImageId imageId, int32_t source_y_start, int32_t height, int32_t source_x_start,
     int32_t width)
 {
-    if (image_type & IMAGE_TYPE_REMAP)
+    if (imageId.HasPrimary())
     {
-        if (image_type & IMAGE_TYPE_TRANSPARENT)
+        if (imageId.IsBlended())
         {
             DrawRLESpriteHelper1(IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT);
         }
@@ -193,7 +194,7 @@ void FASTCALL gfx_rle_sprite_to_buffer(
             DrawRLESpriteHelper1(IMAGE_TYPE_REMAP);
         }
     }
-    else if (image_type & IMAGE_TYPE_TRANSPARENT)
+    else if (imageId.IsBlended())
     {
         DrawRLESpriteHelper1(IMAGE_TYPE_TRANSPARENT);
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -227,11 +227,11 @@ public:
 
     void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
     {
-        std::string pattern = path + "\\*";
-        wchar_t* wPattern = utf8_to_widechar(pattern.c_str());
+        auto pattern = path + "\\*";
+        auto wPattern = String::ToWideChar(pattern.c_str());
 
         WIN32_FIND_DATAW findData;
-        HANDLE hFile = FindFirstFileW(wPattern, &findData);
+        HANDLE hFile = FindFirstFileW(wPattern.c_str(), &findData);
         if (hFile != INVALID_HANDLE_VALUE)
         {
             do
@@ -244,8 +244,6 @@ public:
             } while (FindNextFileW(hFile, &findData));
             FindClose(hFile);
         }
-
-        Memory::Free(wPattern);
     }
 
 private:
@@ -253,10 +251,7 @@ private:
     {
         DirectoryChild result;
 
-        utf8* name = widechar_to_utf8(child->cFileName);
-        result.Name = std::string(name);
-        Memory::Free(name);
-
+        result.Name = String::ToUtf8(child->cFileName);
         if (child->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         {
             result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;

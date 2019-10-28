@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/world/Park.h>
 
 // clang-format off
 enum WINDOW_WATER_WIDGET_IDX {
@@ -89,7 +90,7 @@ rct_window* window_water_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(context_get_width() - 76, 29, 76, 77, &window_water_events, WC_WATER, 0);
+    window = window_create(ScreenCoordsXY(context_get_width() - 76, 29), 76, 77, &window_water_events, WC_WATER, 0);
     window->widgets = window_water_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
@@ -140,14 +141,14 @@ static void window_water_mousedown(rct_window* w, rct_widgetindex widgetIndex, r
             gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_INCREMENT:
             // Increment land tool size
             gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
             // Invalidate the window
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -167,7 +168,7 @@ static void window_water_textinput(rct_window* w, rct_widgetindex widgetIndex, c
         size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
 
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -220,14 +221,17 @@ static void window_water_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
     }
 
-    // Draw raise cost amount
-    x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;
-    y = window_water_widgets[WIDX_PREVIEW].bottom + w->y + 5;
-    if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
-        gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolRaiseCost);
-    y += 10;
+    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    {
+        // Draw raise cost amount
+        x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;
+        y = window_water_widgets[WIDX_PREVIEW].bottom + w->y + 5;
+        if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
+            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolRaiseCost);
+        y += 10;
 
-    // Draw lower cost amount
-    if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
-        gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolLowerCost);
+        // Draw lower cost amount
+        if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
+            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolLowerCost);
+    }
 }

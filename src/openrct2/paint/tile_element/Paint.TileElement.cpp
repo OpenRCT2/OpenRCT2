@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,7 +57,7 @@ void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y)
 
         sub_68B3FB(session, x, y);
     }
-    else
+    else if (!(session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
         blank_tiles_paint(session, x, y);
     }
@@ -78,7 +78,7 @@ void sub_68B2B7(paint_session* session, int32_t x, int32_t y)
 
         sub_68B3FB(session, x, y);
     }
-    else
+    else if (!(session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
         blank_tiles_paint(session, x, y);
     }
@@ -114,7 +114,7 @@ static void blank_tiles_paint(paint_session* session, int32_t x, int32_t y)
     dx -= 16;
     int32_t bx = dx + 32;
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (bx <= dpi->y)
         return;
     dx -= 20;
@@ -125,7 +125,7 @@ static void blank_tiles_paint(paint_session* session, int32_t x, int32_t y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-    sub_98196C(session, 3123, 0, 0, 32, 32, -1, 16);
+    sub_98196C(session, SPR_BLANK_TILE, 0, 0, 32, 32, -1, 16);
 }
 
 bool gShowSupportSegmentHeights = false;
@@ -136,7 +136,7 @@ bool gShowSupportSegmentHeights = false;
  */
 static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 {
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
@@ -155,6 +155,8 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     session->MapPosition.y = y;
 
     TileElement* tile_element = map_get_first_element_at(x >> 5, y >> 5);
+    if (tile_element == nullptr)
+        return;
     uint8_t rotation = session->CurrentRotation;
 
     bool partOfVirtualFloor = false;
@@ -248,7 +250,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->base_height > gClipHeight))
             continue;
 
-        int32_t direction = tile_element->GetDirectionWithOffset(rotation);
+        Direction direction = tile_element->GetDirectionWithOffset(rotation);
         int32_t height = tile_element->base_height * 8;
 
         // If we are on a new height level, look through elements on the

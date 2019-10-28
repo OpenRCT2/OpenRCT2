@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -226,10 +226,17 @@ static void window_scenarioselect_init_tabs(rct_window* w)
         }
     }
 
-    int32_t firstPage = bitscanforward(showPages);
-    if (firstPage != -1)
+    if (showPages & (1 << gConfigInterface.scenarioselect_last_tab))
     {
-        w->selected_tab = firstPage;
+        w->selected_tab = gConfigInterface.scenarioselect_last_tab;
+    }
+    else
+    {
+        int32_t firstPage = bitscanforward(showPages);
+        if (firstPage != -1)
+        {
+            w->selected_tab = firstPage;
+        }
     }
 
     int32_t x = 3;
@@ -269,12 +276,14 @@ static void window_scenarioselect_mousedown(rct_window* w, rct_widgetindex widge
     {
         w->selected_tab = widgetIndex - 4;
         w->highlighted_scenario = nullptr;
+        gConfigInterface.scenarioselect_last_tab = w->selected_tab;
+        config_save_default();
         initialise_list_items(w);
-        window_invalidate(w);
+        w->Invalidate();
         window_event_resize_call(w);
         window_event_invalidate_call(w);
         window_init_scroll_widgets(w);
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -331,7 +340,7 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
                 y -= scenarioItemHeight;
                 if (y < 0 && !listItem.scenario.is_locked)
                 {
-                    audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
+                    audio_play_sound(SoundId::Click1, 0, w->x + (w->width / 2));
                     gFirstTimeSaving = true;
                     _callback(listItem.scenario.scenario->path);
                     if (_titleEditor)
@@ -390,11 +399,11 @@ static void window_scenarioselect_scrollmouseover(rct_window* w, int32_t scrollI
     if (w->highlighted_scenario != selected)
     {
         w->highlighted_scenario = selected;
-        window_invalidate(w);
+        w->Invalidate();
     }
     else if (_showLockedInformation != originalShowLockedInformation)
     {
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 

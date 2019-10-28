@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -106,13 +106,15 @@ void TextComposition::HandleMessage(const SDL_Event* e)
 
             uint16_t modifier = e->key.keysym.mod;
             SDL_Keycode key = e->key.keysym.sym;
+            SDL_Scancode scancode = e->key.keysym.scancode;
             if (key == SDLK_KP_ENTER)
             {
                 // Map Keypad enter to regular enter.
                 key = SDLK_RETURN;
+                scancode = SDL_SCANCODE_RETURN;
             }
 
-            GetContext()->GetUiContext()->SetKeysPressed(key, e->key.keysym.scancode);
+            GetContext()->GetUiContext()->SetKeysPressed(key, scancode);
 
             // Text input
             if (_session.Buffer == nullptr)

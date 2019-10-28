@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,10 +12,13 @@
 #include "../interface/Window.h"
 #include "Window.h"
 
+#include <algorithm>
 #include <iterator>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetNameAction.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Colour.h>
@@ -332,12 +335,12 @@ static void window_editor_objective_options_set_page(rct_window* w, int32_t page
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[page];
     w->event_handlers = window_editor_objective_options_page_events[page];
     w->widgets = window_editor_objective_options_widgets[page];
-    window_invalidate(w);
+    w->Invalidate();
     window_editor_objective_options_update_disabled_widgets(w);
     window_event_resize_call(w);
     window_event_invalidate_call(w);
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 /**
@@ -347,7 +350,7 @@ static void window_editor_objective_options_set_page(rct_window* w, int32_t page
 static void window_editor_objective_options_set_objective(rct_window* w, int32_t objective)
 {
     gScenarioObjectiveType = objective;
-    window_invalidate(w);
+    w->Invalidate();
 
     // Set default objective arguments
     switch (objective)
@@ -402,9 +405,11 @@ static void window_editor_objective_options_main_mouseup(rct_window* w, rct_widg
             window_editor_objective_options_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_PARK_NAME:
-            set_format_arg(16, uint32_t, gParkNameArgs);
-            window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
+        {
+            auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+            window_text_input_raw_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, park.Name.c_str(), 32);
             break;
+        }
         case WIDX_SCENARIO_NAME:
             window_text_input_raw_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gS6Info.name, 64);
             break;
@@ -526,7 +531,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
             else
             {
                 gScenarioObjectiveCurrency += MONEY(1000, 0);
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
@@ -537,7 +542,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
             else
             {
                 gScenarioObjectiveCurrency += MONEY(100, 0);
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
@@ -548,7 +553,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
             else
             {
                 gScenarioObjectiveNumGuests += 100;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
@@ -559,7 +564,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
             else
             {
                 gScenarioObjectiveCurrency += FIXED_2DP(0, 10);
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         default:
@@ -570,7 +575,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
             else
             {
                 gScenarioObjectiveNumGuests += 50;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
     }
@@ -590,7 +595,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
             else
             {
                 gScenarioObjectiveCurrency -= MONEY(1000, 0);
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
@@ -601,7 +606,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
             else
             {
                 gScenarioObjectiveCurrency -= MONEY(100, 0);
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
@@ -612,7 +617,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
             else
             {
                 gScenarioObjectiveNumGuests -= 100;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
@@ -623,7 +628,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
             else
             {
                 gScenarioObjectiveCurrency -= FIXED_2DP(0, 10);
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         default:
@@ -634,7 +639,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
             else
             {
                 gScenarioObjectiveNumGuests -= 50;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
     }
@@ -649,7 +654,7 @@ static void window_editor_objective_options_arg_2_increase(rct_window* w)
     else
     {
         gScenarioObjectiveYear++;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -662,7 +667,7 @@ static void window_editor_objective_options_arg_2_decrease(rct_window* w)
     else
     {
         gScenarioObjectiveYear--;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -718,7 +723,7 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
             if (gS6Info.category != (uint8_t)dropdownIndex)
             {
                 gS6Info.category = (uint8_t)dropdownIndex;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
     }
@@ -771,16 +776,19 @@ static void window_editor_objective_options_main_textinput(rct_window* w, rct_wi
             GameActions::Execute(&action);
 
             if (gS6Info.name[0] == '\0')
-                format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
+            {
+                auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+                String::Set(gS6Info.name, sizeof(gS6Info.name), park.Name.c_str());
+            }
             break;
         }
         case WIDX_SCENARIO_NAME:
             safe_strcpy(gS6Info.name, text, std::size(gS6Info.name));
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_DETAILS:
             safe_strcpy(gS6Info.details, text, std::size(gS6Info.details));
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -943,9 +951,14 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     y = w->y + w->widgets[WIDX_PARK_NAME].top;
     width = w->widgets[WIDX_PARK_NAME].left - 16;
 
-    set_format_arg(0, rct_string_id, gParkName);
-    set_format_arg(2, uint32_t, gParkNameArgs);
-    gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
+    {
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        auto parkName = park.Name.c_str();
+
+        set_format_arg(0, rct_string_id, STR_STRING);
+        set_format_arg(2, const char*, parkName);
+        gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
+    }
 
     // Scenario name
     x = w->x + 8;
@@ -1017,20 +1030,17 @@ static void window_editor_objective_options_rides_resize(rct_window* w)
  */
 static void window_editor_objective_options_rides_update(rct_window* w)
 {
-    int32_t i, numItems;
-    Ride* ride;
-
     w->frame_no++;
     window_event_invalidate_call(w);
     window_event_resize_call(w);
     widget_invalidate(w, WIDX_TAB_2);
 
-    numItems = 0;
-    FOR_ALL_RIDES (i, ride)
+    auto numItems = 0;
+    for (auto& ride : GetRideManager())
     {
-        if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+        if (ride.IsRide())
         {
-            w->list_item_positions[numItems] = i;
+            w->list_item_positions[numItems] = ride.id;
             numItems++;
         }
     }
@@ -1038,7 +1048,7 @@ static void window_editor_objective_options_rides_update(rct_window* w)
     if (w->no_list_items != numItems)
     {
         w->no_list_items = numItems;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1058,16 +1068,16 @@ static void window_editor_objective_options_rides_scrollgetheight(
  */
 static void window_editor_objective_options_rides_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    Ride* ride;
-    int32_t i;
-
-    i = y / 12;
+    auto i = y / 12;
     if (i < 0 || i >= w->no_list_items)
         return;
 
-    ride = get_ride(w->list_item_positions[i]);
-    ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
-    window_invalidate(w);
+    auto ride = get_ride(w->list_item_positions[i]);
+    if (ride != nullptr)
+    {
+        ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+    }
+    w->Invalidate();
 }
 
 /**
@@ -1085,7 +1095,7 @@ static void window_editor_objective_options_rides_scrollmouseover(rct_window* w,
     if (w->selected_list_item != i)
     {
         w->selected_list_item = i;
-        window_invalidate(w);
+        w->Invalidate();
     }
 }
 
@@ -1132,9 +1142,6 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
  */
 static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    rct_string_id stringId;
-    Ride* ride;
-
     int32_t colour = ColourMapA[w->colours[1]].mid_light;
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, colour);
 
@@ -1149,27 +1156,29 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], INSET_RECT_F_E0);
 
         // Highlighted
+        auto stringId = STR_BLACK_STRING;
         if (i == w->selected_list_item)
         {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
             gfx_filter_rect(dpi, 0, y, w->width, y + 11, PALETTE_DARKEN_1);
         }
-        else
-        {
-            stringId = STR_BLACK_STRING;
-        }
 
         // Checkbox mark
-        ride = get_ride(w->list_item_positions[i]);
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+        auto ride = get_ride(w->list_item_positions[i]);
+        if (ride != nullptr)
         {
-            gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
-                                                                              : FONT_SPRITE_BASE_MEDIUM_DARK;
-            gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
-        }
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+            {
+                gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
+                                                                                  : FONT_SPRITE_BASE_MEDIUM_DARK;
+                gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
+            }
 
-        // Ride name
-        gfx_draw_string_left(dpi, stringId, &ride->name, COLOUR_BLACK, 15, y);
+            // Ride name
+            uint32_t args[32]{};
+            ride->FormatNameTo(args);
+            gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, 15, y);
+        }
     }
 }
 
@@ -1179,20 +1188,9 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
  */
 static void window_editor_objective_options_update_disabled_widgets(rct_window* w)
 {
-    Ride* ride;
-    int32_t i, numRides;
-
     // Check if there are any rides (not shops or facilities)
-    numRides = 0;
-    FOR_ALL_RIDES (i, ride)
-    {
-        if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
-        {
-            numRides++;
-        }
-    }
-
-    if (numRides != 0)
+    const auto& rideManager = GetRideManager();
+    if (std::any_of(rideManager.begin(), rideManager.end(), [](const Ride& ride) { return ride.IsRide(); }))
     {
         w->disabled_widgets &= ~(1 << WIDX_TAB_2);
     }

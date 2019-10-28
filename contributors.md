@@ -77,6 +77,7 @@ The following people are not part of the development team, but have been contrib
 * Albert Morgese (Fusxfaranto) - Shop auto-rotation, unicode uppercasing.
 * Olivier Wervers (oli414) - Remove unused objects command, various bugfixes
 * Christian Schubert (Osmodium) - Ensuring custom user content folders, incl. open folder.
+* (Xkeeper0) - Improved banner tooltips; multiplayer status in toolbar.
 
 ## Bug fixes
 * (halfbro)
@@ -104,6 +105,7 @@ The following people are not part of the development team, but have been contrib
 * (telk5093)
 * Ethan Smith (ethanhs) - Refactor MAX_PATH
 * Robert Lewicki (rlewicki)
+* Liam Parker (elInfidel)
 * Tyler Ruckinger (TyPR124)
 * Justin Gottula (jgottula)
 * Seongsik Park (pss9205)
@@ -116,6 +118,24 @@ The following people are not part of the development team, but have been contrib
 * Øystein Dale (oystedal)
 * Christian Schubert (Osmodium)
 * James Lord (RCTMASTA)
+* Brian Massino (Nazey)
+* Lauren Watson (lwatson2016)
+* Jason Myre (jmyre1999)
+* Nicole Wright (nicolewright)
+* Josh Tucker (joshtucker132)
+* Hussein Okasha (Hokasha2016)
+* Brandon Dupree (Bdupree5)
+* Zetao Ye (ZbrettonYe)
+* Jordan Arevalos (Jarevalos2017)
+* Florian Will (w-flo)
+* Trevor Harkness (tharkne)
+* Steve Xu (stevexu-umich)
+* (aw20368)
+* Jim Armstrong (41northstudios)
+* Kenny Castro-Monroy (kennycastro007)
+* Joseph Atkins-Turkish (Spacerat)
+* Tulio Paschoalin Leao (tupaschoal)
+* Denis Khabenkov (kodmord)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -125,6 +145,7 @@ The following people are not part of the development team, but have been contrib
 * Ted John (IntelOrca) - Windows
 * Michał Janiszewski (janisozaur) - Linux, Travis CI
 * Lewis Fox (LRFLEW) - macOS
+* Andrew Rimpici (Andy608) - macOS
 
 ## Documentation
 * (honzi)
@@ -151,12 +172,12 @@ The following people are not part of the development team, but have been contrib
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
-* Italian - Luca Andrea Rossi (LucaRed)
+* Italian - Luca Andrea Rossi (LucaRed), Precious Ugo Abara (48cfu)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
 * Korean - (telk5093), (NeverDruid); small fixes: (kexplo)
 * Norwegian - Hugo Wallenburg (Goddesen)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
-* Portuguese (BR) - (kaudy), (renansimoes)
+* Portuguese (BR) - (kaudy), (renansimoes), Tulio Paschoalin Leao (tupaschoal)
 * Russian - (Soosisya)
 * Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)

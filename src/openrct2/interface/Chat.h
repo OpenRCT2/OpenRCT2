@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 #define _CHAT_H_
 
 #include "../common.h"
+#include "../world/Location.hpp"
 
 #define CHAT_HISTORY_SIZE 10
 #define CHAT_INPUT_SIZE 1024
@@ -41,6 +42,6 @@ void chat_history_add(const char* src);
 void chat_input(CHAT_INPUT input);
 
 int32_t chat_string_wrapped_get_height(void* args, int32_t width);
-int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width);
+int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, ScreenCoordsXY screenCoords, int32_t width);
 
 #endif

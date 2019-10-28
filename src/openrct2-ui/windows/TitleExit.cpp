@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -69,7 +69,7 @@ rct_window* window_title_exit_open()
     rct_window* window;
 
     window = window_create(
-        context_get_width() - 40, context_get_height() - 64, 40, 64, &window_title_exit_events, WC_TITLE_EXIT,
+        ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64, &window_title_exit_events, WC_TITLE_EXIT,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_exit_widgets;
     window->enabled_widgets |= (1ULL << WIDX_EXIT);

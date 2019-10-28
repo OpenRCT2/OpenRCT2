@@ -28,34 +28,26 @@ class RideRatings : public testing::Test
 protected:
     void CalculateRatingsForAllRides()
     {
-        for (int rideId = 0; rideId < MAX_RIDES; rideId++)
+        for (const auto& ride : GetRideManager())
         {
-            Ride* ride = get_ride(rideId);
-            if (ride->type != RIDE_TYPE_NULL)
-            {
-                ride_ratings_update_ride(rideId);
-            }
+            ride_ratings_update_ride(ride);
         }
     }
 
     void DumpRatings()
     {
-        for (int rideId = 0; rideId < MAX_RIDES; rideId++)
+        for (const auto& ride : GetRideManager())
         {
-            Ride* ride = get_ride(rideId);
-            if (ride->type != RIDE_TYPE_NULL)
-            {
-                std::string line = FormatRatings(ride);
-                printf("%s\n", line.c_str());
-            }
+            std::string line = FormatRatings(ride);
+            printf("%s\n", line.c_str());
         }
     }
 
-    std::string FormatRatings(Ride* ride)
+    std::string FormatRatings(const Ride& ride)
     {
-        rating_tuple ratings = ride->ratings;
+        rating_tuple ratings = ride.ratings;
         std::string line = String::StdFormat(
-            "%s: (%d, %d, %d)", ride_type_get_enum_name(ride->type), (int)ratings.excitement, (int)ratings.intensity,
+            "%s: (%d, %d, %d)", ride_type_get_enum_name(ride.type), (int)ratings.excitement, (int)ratings.intensity,
             (int)ratings.nausea);
         return line;
     }
@@ -76,7 +68,7 @@ TEST_F(RideRatings, all)
     load_from_sv6(path.c_str());
 
     // Check ride count to check load was successful
-    ASSERT_EQ(gRideCount, 134);
+    ASSERT_EQ(ride_get_count(), 134);
 
     CalculateRatingsForAllRides();
 
@@ -86,16 +78,12 @@ TEST_F(RideRatings, all)
 
     // Check ride ratings
     int expI = 0;
-    for (int rideId = 0; rideId < MAX_RIDES; rideId++)
+    for (const auto& ride : GetRideManager())
     {
-        Ride* ride = get_ride(rideId);
-        if (ride->type != RIDE_TYPE_NULL)
-        {
-            std::string actual = FormatRatings(ride);
-            std::string expected = expectedRatings[expI];
-            ASSERT_STREQ(actual.c_str(), expected.c_str());
+        auto actual = FormatRatings(ride);
+        auto expected = expectedRatings[expI];
+        ASSERT_STREQ(actual.c_str(), expected.c_str());
 
-            expI++;
-        }
+        expI++;
     }
 }

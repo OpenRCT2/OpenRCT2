@@ -57,9 +57,9 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        rct_banner* banner = &gBanners[_bannerIndex];
+        auto banner = GetBanner(_bannerIndex);
 
-        CoordsXY coords{ banner->x * 32, banner->y * 32 };
+        CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
 
         if (_isLarge)
         {
@@ -77,23 +77,9 @@ public:
         }
         else
         {
-            TileElement* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
-            bool wallFound = false;
-            do
-            {
-                if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
-                    continue;
+            WallElement* wallElement = banner_get_scrolling_wall_tile_element(static_cast<BannerIndex>(_bannerIndex));
 
-                rct_scenery_entry* scenery_entry = tileElement->AsWall()->GetEntry();
-                if (scenery_entry->wall.scrolling_mode == SCROLLING_MODE_NONE)
-                    continue;
-                if (tileElement->AsWall()->GetBannerIndex() != (BannerIndex)_bannerIndex)
-                    continue;
-                wallFound = true;
-                break;
-            } while (!(tileElement++)->IsLastForTile());
-
-            if (!wallFound == false)
+            if (!wallElement)
             {
                 log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -105,9 +91,9 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_banner* banner = &gBanners[_bannerIndex];
+        auto banner = GetBanner(_bannerIndex);
 
-        CoordsXY coords{ banner->x * 32, banner->y * 32 };
+        CoordsXY coords{ banner->position.x * 32, banner->position.y * 32 };
 
         if (_isLarge)
         {
@@ -121,10 +107,11 @@ public:
         }
         else
         {
-            TileElement* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
-            tileElement->AsWall()->SetPrimaryColour(_mainColour);
-            tileElement->AsWall()->SetSecondaryColour(_textColour);
-            map_invalidate_tile(coords.x, coords.y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+            WallElement* wallElement = banner_get_scrolling_wall_tile_element(static_cast<BannerIndex>(_bannerIndex));
+
+            wallElement->SetPrimaryColour(_mainColour);
+            wallElement->SetSecondaryColour(_textColour);
+            map_invalidate_tile(coords.x, coords.y, wallElement->base_height * 8, wallElement->clearance_height * 8);
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);

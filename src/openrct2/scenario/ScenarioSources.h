@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,10 +26,6 @@ namespace ScenarioSources
     bool TryGetById(uint8_t id, source_desc* outDesc);
     void NormaliseName(utf8* buffer, size_t bufferSize, const utf8* name);
 } // namespace ScenarioSources
-
-bool scenario_get_source_desc(const utf8* name, source_desc* outDesc);
-bool scenario_get_source_desc_by_id(uint8_t id, source_desc* outDesc);
-void scenario_normalise_name(utf8* buffer, size_t bufferSize, utf8* name);
 
 // RCT1 scenario index map
 enum

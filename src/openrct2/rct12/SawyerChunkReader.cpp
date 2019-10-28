@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -68,6 +68,9 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
     try
     {
         auto header = _stream->ReadValue<sawyercoding_chunk_header>();
+        if (header.length >= MAX_UNCOMPRESSED_CHUNK_SIZE)
+            throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
+
         switch (header.encoding)
         {
             case CHUNK_ENCODING_NONE:
@@ -93,6 +96,43 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
             default:
                 throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
         }
+    }
+    catch (const std::exception&)
+    {
+        // Rewind stream back to original position
+        _stream->SetPosition(originalPosition);
+        throw;
+    }
+}
+
+std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
+{
+    uint64_t originalPosition = _stream->GetPosition();
+    try
+    {
+        // Remove 4 as we don't want to touch the checksum at the end of the file
+        int64_t compressedDataLength64 = _stream->GetLength() - _stream->GetPosition() - 4;
+        if (compressedDataLength64 < 0 || compressedDataLength64 > std::numeric_limits<uint32_t>::max())
+        {
+            throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+        }
+        uint32_t compressedDataLength = compressedDataLength64;
+        auto compressedData = std::make_unique<uint8_t[]>(compressedDataLength);
+
+        if (_stream->TryRead(compressedData.get(), compressedDataLength) != compressedDataLength)
+        {
+            throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
+        }
+
+        auto buffer = (uint8_t*)AllocateLargeTempBuffer();
+        sawyercoding_chunk_header header{ CHUNK_ENCODING_RLE, compressedDataLength };
+        size_t uncompressedLength = DecodeChunk(buffer, MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
+        if (uncompressedLength == 0)
+        {
+            throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+        }
+        buffer = (uint8_t*)FinaliseLargeTempBuffer(buffer, uncompressedLength);
+        return std::make_shared<SawyerChunk>(SAWYER_ENCODING::RLE, buffer, uncompressedLength);
     }
     catch (const std::exception&)
     {

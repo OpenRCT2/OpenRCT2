@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 
 #include "OpenRCT2.h"
 #include "core/Imaging.h"
+#include "core/String.hpp"
 #include "drawing/Drawing.h"
 #include "drawing/ImageImporter.h"
 #include "localisation/Language.h"
@@ -68,11 +69,9 @@ static uint8_t* spriteFileData;
 
 static FILE* fopen_utf8(const char* path, const char* mode)
 {
-    wchar_t* pathW = utf8_to_widechar(path);
-    wchar_t* modeW = utf8_to_widechar(mode);
-    FILE* file = _wfopen(pathW, modeW);
-    free(pathW);
-    free(modeW);
+    auto pathW = String::ToWideChar(path);
+    auto modeW = String::ToWideChar(mode);
+    auto file = _wfopen(pathW.c_str(), modeW.c_str());
     return file;
 }
 
@@ -239,14 +238,14 @@ static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
     if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION)
     {
         gfx_rle_sprite_to_buffer(
-            spriteHeader->offset, pixels, (uint8_t*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0,
+            spriteHeader->offset, pixels, (uint8_t*)spriteFilePalette, &dpi, ImageId(), 0, spriteHeader->height, 0,
             spriteHeader->width);
     }
     else
     {
         gfx_bmp_sprite_to_buffer(
             (uint8_t*)spriteFilePalette, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height,
-            spriteHeader->width, IMAGE_TYPE_DEFAULT);
+            spriteHeader->width, ImageId());
     }
 
     auto const pixels8 = dpi.bits;
@@ -640,20 +639,19 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             }
 
             // Resolve absolute sprite path
-            char* imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
+            auto imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
 
             rct_g1_element spriteElement;
             uint8_t* buffer;
             int bufferLength;
 
             if (!sprite_file_import(
-                    imagePath, x_offset == nullptr ? 0 : json_integer_value(x_offset),
+                    imagePath.c_str(), x_offset == nullptr ? 0 : json_integer_value(x_offset),
                     y_offset == nullptr ? 0 : json_integer_value(y_offset), keep_palette, forceBmp, &spriteElement, &buffer,
                     &bufferLength, gSpriteMode))
             {
-                fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
+                fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath.c_str());
                 json_decref(sprite_list);
-                free(imagePath);
                 return -1;
             }
 
@@ -661,7 +659,6 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             {
                 fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
                 json_decref(sprite_list);
-                free(imagePath);
                 return -1;
             }
 
@@ -683,16 +680,14 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
             if (!sprite_file_save(spriteFilePath))
             {
-                fprintf(stderr, "Could not save sprite file: %s\nCanceling\n", imagePath);
+                fprintf(stderr, "Could not save sprite file: %s\nCanceling\n", imagePath.c_str());
                 json_decref(sprite_list);
-                free(imagePath);
                 return -1;
             }
 
             if (!silent)
-                fprintf(stdout, "Added: %s\n", imagePath);
+                fprintf(stdout, "Added: %s\n", imagePath.c_str());
 
-            free(imagePath);
             sprite_file_close();
         }
 

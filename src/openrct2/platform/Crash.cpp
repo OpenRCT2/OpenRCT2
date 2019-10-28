@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "Crash.h"
 
 #ifdef USE_BREAKPAD
+#    include <iterator>
 #    include <map>
 #    include <memory>
 #    include <stdio.h>
@@ -57,7 +58,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
         wprintf(L"files[%s] = %s\n", file.first.c_str(), file.second.c_str());
     }
     std::wstring url(L"https://openrct2.sp.backtrace.io:6098/"
-                     L"post?format=minidump&token=27bfc474b8739e7c1df37180727e717a0a95d3bf3f2a8eaaf17ad321fb179c6f");
+                     L"post?format=minidump&token=ac62db34d5bf1b2f14da40572a829af476c8f465ca7a4193dad6f172ca89eb7a");
     std::map<std::wstring, std::wstring> parameters;
     parameters[L"product_name"] = L"openrct2";
     // In case of releases this can be empty
@@ -67,7 +68,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
     }
     else
     {
-        parameters[L"commit"] = String::ToUtf16(gVersionInfoFull);
+        parameters[L"commit"] = String::ToWideChar(gVersionInfoFull);
     }
     int timeout = 10000;
     bool success = google_breakpad::HTTPUpload::SendRequest(url, parameters, files, &timeout, &response, &error);
@@ -99,18 +100,18 @@ static bool OnCrash(
     wchar_t saveFilePath[MAX_PATH];
     wchar_t configFilePath[MAX_PATH];
     wchar_t saveFilePathGZIP[MAX_PATH];
-    swprintf_s(dumpFilePath, sizeof(dumpFilePath), L"%s\\%s.dmp", dumpPath, miniDumpId);
-    swprintf_s(saveFilePath, sizeof(saveFilePath), L"%s\\%s.sv6", dumpPath, miniDumpId);
-    swprintf_s(configFilePath, sizeof(configFilePath), L"%s\\%s.ini", dumpPath, miniDumpId);
-    swprintf_s(saveFilePathGZIP, sizeof(saveFilePathGZIP), L"%s\\%s.sv6.gz", dumpPath, miniDumpId);
+    swprintf_s(dumpFilePath, std::size(dumpFilePath), L"%s\\%s.dmp", dumpPath, miniDumpId);
+    swprintf_s(saveFilePath, std::size(saveFilePath), L"%s\\%s.sv6", dumpPath, miniDumpId);
+    swprintf_s(configFilePath, std::size(configFilePath), L"%s\\%s.ini", dumpPath, miniDumpId);
+    swprintf_s(saveFilePathGZIP, std::size(saveFilePathGZIP), L"%s\\%s.sv6.gz", dumpPath, miniDumpId);
 
     wchar_t dumpFilePathNew[MAX_PATH];
     swprintf_s(
-        dumpFilePathNew, sizeof(dumpFilePathNew), L"%s\\%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short,
+        dumpFilePathNew, std::size(dumpFilePathNew), L"%s\\%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short,
         _wszArchitecture);
 
     wchar_t dumpFilePathGZIP[MAX_PATH];
-    swprintf_s(dumpFilePathGZIP, sizeof(dumpFilePathGZIP), L"%s.gz", dumpFilePathNew);
+    swprintf_s(dumpFilePathGZIP, std::size(dumpFilePathGZIP), L"%s.gz", dumpFilePathNew);
 
     // Compress the dump
     {
@@ -149,18 +150,17 @@ static bool OnCrash(
     wprintf(L"Commit: %s\n", _wszCommitSha1Short);
 
     bool savedGameDumped = false;
-    utf8* saveFilePathUTF8 = widechar_to_utf8(saveFilePath);
+    auto saveFilePathUTF8 = String::ToUtf8(saveFilePath);
     try
     {
         auto exporter = std::make_unique<S6Exporter>();
         exporter->Export();
-        exporter->SaveGame(saveFilePathUTF8);
+        exporter->SaveGame(saveFilePathUTF8.c_str());
         savedGameDumped = true;
     }
     catch (const std::exception&)
     {
     }
-    free(saveFilePathUTF8);
 
     // Compress the save
     if (savedGameDumped)
@@ -180,19 +180,16 @@ static bool OnCrash(
         fclose(dest);
     }
 
-    utf8* configFilePathUTF8 = widechar_to_utf8(configFilePath);
-    if (config_save(configFilePathUTF8))
+    auto configFilePathUTF8 = String::ToUtf8(configFilePath);
+    if (config_save(configFilePathUTF8.c_str()))
     {
         uploadFiles[L"attachment_config.ini"] = configFilePath;
     }
-    free(configFilePathUTF8);
 
     std::string screenshotPath = screenshot_dump();
     if (!screenshotPath.empty())
     {
-        wchar_t* screenshotPathWchar = utf8_to_widechar(screenshotPath.c_str());
-        auto screenshotPathW = std::wstring(screenshotPathWchar);
-        free(screenshotPathWchar);
+        auto screenshotPathW = String::ToWideChar(screenshotPath.c_str());
         uploadFiles[L"attachment_screenshot.png"] = screenshotPathW;
     }
 
@@ -269,11 +266,7 @@ static std::wstring GetDumpDirectory()
 {
     char userDirectory[MAX_PATH];
     platform_get_user_directory(userDirectory, nullptr, sizeof(userDirectory));
-
-    wchar_t* userDirectoryW = utf8_to_widechar(userDirectory);
-    auto result = std::wstring(userDirectoryW);
-    free(userDirectoryW);
-
+    auto result = String::ToWideChar(userDirectory);
     return result;
 }
 

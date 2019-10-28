@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,20 +25,14 @@
 DEFINE_GAME_ACTION(PlaceParkEntranceAction, GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult)
 {
 private:
-    int16_t _x;
-    int16_t _y;
-    int16_t _z;
-    uint8_t _direction;
+    CoordsXYZD _loc;
 
 public:
     PlaceParkEntranceAction()
     {
     }
-    PlaceParkEntranceAction(int16_t x, int16_t y, int16_t z, int16_t direction)
-        : _x(x)
-        , _y(y)
-        , _z(z)
-        , _direction(direction)
+    PlaceParkEntranceAction(CoordsXYZD location)
+        : _loc(location)
     {
     }
 
@@ -51,7 +45,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_x) << DS_TAG(_y) << DS_TAG(_z) << DS_TAG(_direction);
+        stream << DS_TAG(_loc);
     }
 
     GameActionResult::Ptr Query() const override
@@ -64,14 +58,14 @@ public:
 
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-        res->Position = CoordsXYZ{ _x, _y, _z * 16 };
+        res->Position = { _loc.x, _loc.y, _loc.z };
 
         if (!map_check_free_elements_and_reorganise(3))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
         }
 
-        if (_x <= 32 || _y <= 32 || _x >= (gMapSizeUnits - 32) || _y >= (gMapSizeUnits - 32))
+        if (_loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32) || _loc.y >= (gMapSizeUnits - 32))
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
@@ -83,20 +77,20 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
-        int8_t zLow = _z * 2;
+        int8_t zLow = _loc.z / 8;
         int8_t zHigh = zLow + 12;
-        LocationXY16 entranceLoc = { _x, _y };
+        LocationXY16 entranceLoc = { (int16_t)_loc.x, (int16_t)_loc.y };
         for (uint8_t index = 0; index < 3; index++)
         {
             if (index == 1)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_direction - 1) & 0x3].x;
-                entranceLoc.y += CoordsDirectionDelta[(_direction - 1) & 0x3].y;
+                entranceLoc.x += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].x;
+                entranceLoc.y += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].y;
             }
             else if (index == 2)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_direction + 1) & 0x3].x * 2;
-                entranceLoc.y += CoordsDirectionDelta[(_direction + 1) & 0x3].y * 2;
+                entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
+                entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
             if (!map_can_construct_at(entranceLoc.x, entranceLoc.y, zLow, zHigh, { 0b1111, 0 }))
@@ -121,40 +115,38 @@ public:
     {
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
-        res->Position = CoordsXYZ{ _x, _y, _z * 16 };
+        res->Position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
 
         uint32_t flags = GetFlags();
 
         CoordsXYZD parkEntrance;
-        parkEntrance.x = _x;
-        parkEntrance.y = _y;
-        parkEntrance.z = _z * 16;
-        parkEntrance.direction = _direction;
+        parkEntrance = _loc;
+
         gParkEntrances.push_back(parkEntrance);
 
-        int8_t zLow = _z * 2;
+        int8_t zLow = _loc.z / 8;
         int8_t zHigh = zLow + 12;
-        CoordsXY entranceLoc = { _x, _y };
+        CoordsXY entranceLoc = { _loc.x, _loc.y };
         for (uint8_t index = 0; index < 3; index++)
         {
             if (index == 1)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_direction - 1) & 0x3].x;
-                entranceLoc.y += CoordsDirectionDelta[(_direction - 1) & 0x3].y;
+                entranceLoc.x += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].x;
+                entranceLoc.y += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].y;
             }
             else if (index == 2)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_direction + 1) & 0x3].x * 2;
-                entranceLoc.y += CoordsDirectionDelta[(_direction + 1) & 0x3].y * 2;
+                entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
+                entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                SurfaceElement* surfaceElement = map_get_surface_element_at(entranceLoc)->AsSurface();
+                SurfaceElement* surfaceElement = map_get_surface_element_at(entranceLoc);
                 surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
             }
 
-            TileElement* newElement = tile_element_insert(entranceLoc.x / 32, entranceLoc.y / 32, zLow, 0xF);
+            TileElement* newElement = tile_element_insert({ entranceLoc.x / 32, entranceLoc.y / 32, zLow }, 0b1111);
             Guard::Assert(newElement != nullptr);
             newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             auto entranceElement = newElement->AsEntrance();
@@ -170,7 +162,7 @@ public:
                 newElement->SetGhost(true);
             }
 
-            entranceElement->SetDirection(_direction);
+            entranceElement->SetDirection(_loc.direction);
             entranceElement->SetSequenceIndex(index);
             entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
             entranceElement->SetPathType(gFootpathSelectedId);

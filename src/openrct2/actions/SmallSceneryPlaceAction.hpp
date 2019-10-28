@@ -27,7 +27,31 @@
 #include "../world/TileElement.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, GameActionResult)
+class SmallSceneryPlaceActionResult final : public GameActionResult
+{
+public:
+    SmallSceneryPlaceActionResult()
+        : GameActionResult(GA_ERROR::OK, STR_CANT_POSITION_THIS_HERE)
+    {
+    }
+    SmallSceneryPlaceActionResult(GA_ERROR error)
+        : GameActionResult(error, STR_CANT_POSITION_THIS_HERE)
+    {
+    }
+    SmallSceneryPlaceActionResult(GA_ERROR error, rct_string_id message)
+        : GameActionResult(error, STR_CANT_POSITION_THIS_HERE, message)
+    {
+    }
+    SmallSceneryPlaceActionResult(GA_ERROR error, rct_string_id message, uint8_t* args)
+        : GameActionResult(error, STR_CANT_POSITION_THIS_HERE, message, args)
+    {
+    }
+
+    uint8_t GroundFlags{ 0 };
+    TileElement* tileElement = nullptr;
+};
+
+DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, SmallSceneryPlaceActionResult)
 {
 private:
     CoordsXYZD _loc;
@@ -47,6 +71,11 @@ public:
         , _primaryColour(primaryColour)
         , _secondaryColour(secondaryColour)
     {
+    }
+
+    uint32_t GetCooldownTime() const override
+    {
+        return 20;
     }
 
     uint16_t GetActionFlags() const override
@@ -70,36 +99,39 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t baseHeight = tile_element_height(_loc.x, _loc.y);
+        int32_t landHeight = tile_element_height(_loc);
+        int16_t waterHeight = tile_element_water_height(_loc);
+
+        int32_t surfaceHeight = landHeight;
         // If on water
-        if (baseHeight & 0xFFFF0000)
+        if (waterHeight > 0)
         {
-            baseHeight >>= 16;
+            surfaceHeight = waterHeight;
         }
-        auto res = MakeResult();
+        auto res = std::make_unique<SmallSceneryPlaceActionResult>();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = baseHeight;
+        res->Position.z = surfaceHeight;
         if (_loc.z != 0)
         {
-            baseHeight = _loc.z;
-            res->Position.z = baseHeight;
+            surfaceHeight = _loc.z;
+            res->Position.z = surfaceHeight;
         }
 
         if (!map_check_free_elements_and_reorganise(1))
         {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
+            return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
         }
 
         if (!byte_9D8150 && (_loc.x > gMapSizeMaxXY || _loc.y > gMapSizeMaxXY))
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
         rct_scenery_entry* sceneryEntry = get_small_scenery_entry(_sceneryType);
         if (sceneryEntry == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
         auto quadrant = _quadrant;
@@ -127,12 +159,15 @@ public:
             x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
             y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
         }
-        baseHeight = tile_element_height(x2, y2);
+        landHeight = tile_element_height({ x2, y2 });
+        waterHeight = tile_element_water_height({ x2, y2 });
+
+        surfaceHeight = landHeight;
         // If on water
-        if (baseHeight & 0xFFFF0000)
+        if (waterHeight > 0)
         {
             // base_height2 is now the water height
-            baseHeight >>= 16;
+            surfaceHeight = waterHeight;
             if (_loc.z == 0)
             {
                 isOnWater = true;
@@ -141,23 +176,23 @@ public:
         auto targetHeight = _loc.z;
         if (_loc.z == 0)
         {
-            targetHeight = baseHeight;
+            targetHeight = surfaceHeight;
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-            && !map_is_location_owned(_loc.x, _loc.y, targetHeight))
+            && !map_is_location_owned({ _loc.x, _loc.y, targetHeight }))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::NOT_OWNED, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        TileElement* surfaceElement = map_get_surface_element_at({ _loc.x, _loc.y });
+        auto* surfaceElement = map_get_surface_element_at(_loc);
 
-        if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->AsSurface()->GetWaterHeight() > 0)
+        if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
         {
-            int32_t water_height = (surfaceElement->AsSurface()->GetWaterHeight() * 16) - 1;
+            int32_t water_height = (surfaceElement->GetWaterHeight() * 16) - 1;
             if (water_height > targetHeight)
             {
-                return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+                return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CANT_BUILD_THIS_UNDERWATER);
             }
         }
 
@@ -165,23 +200,24 @@ public:
         {
             if (isOnWater)
             {
-                return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+                return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
             }
 
-            if (surfaceElement != nullptr && surfaceElement->AsSurface()->GetWaterHeight() > 0)
+            if (surfaceElement != nullptr && surfaceElement->GetWaterHeight() > 0)
             {
-                if (static_cast<int32_t>((surfaceElement->AsSurface()->GetWaterHeight() * 16)) > targetHeight)
+                if (static_cast<int32_t>((surfaceElement->GetWaterHeight() * 16)) > targetHeight)
                 {
-                    return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+                    return std::make_unique<SmallSceneryPlaceActionResult>(
+                        GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
                 }
             }
         }
 
         if (!gCheatsDisableClearanceChecks
             && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE)) && !supportsRequired
-            && !isOnWater && surfaceElement != nullptr && (surfaceElement->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
+            && !isOnWater && surfaceElement != nullptr && (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
+            return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LEVEL_LAND_REQUIRED);
         }
 
         if (!gCheatsDisableSupportLimits && !(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_STACKABLE))
@@ -191,15 +227,15 @@ public:
             {
                 if (surfaceElement != nullptr)
                 {
-                    if (surfaceElement->AsSurface()->GetWaterHeight() || (surfaceElement->base_height * 8) != targetHeight)
+                    if (surfaceElement->GetWaterHeight() || (surfaceElement->base_height * 8) != targetHeight)
                     {
-                        return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
+                        return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LEVEL_LAND_REQUIRED);
                     }
                 }
             }
             else
             {
-                return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+                return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
             }
         }
 
@@ -247,10 +283,11 @@ public:
                 _loc.x, _loc.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
                 CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, gGameCommandErrorText, gCommonFormatArgs);
+            return std::make_unique<SmallSceneryPlaceActionResult>(
+                GA_ERROR::DISALLOWED, gGameCommandErrorText, gCommonFormatArgs);
         }
 
-        gSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
@@ -265,26 +302,29 @@ public:
         {
             supportsRequired = true;
         }
-        int32_t baseHeight = tile_element_height(_loc.x, _loc.y);
+        int32_t landHeight = tile_element_height(_loc);
+        int16_t waterHeight = tile_element_water_height(_loc);
+
+        int32_t surfaceHeight = landHeight;
         // If on water
-        if (baseHeight & 0xFFFF0000)
+        if (waterHeight > 0)
         {
-            baseHeight >>= 16;
+            surfaceHeight = waterHeight;
         }
-        auto res = MakeResult();
+        auto res = std::make_unique<SmallSceneryPlaceActionResult>();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = baseHeight;
+        res->Position.z = surfaceHeight;
         if (_loc.z != 0)
         {
-            baseHeight = _loc.z;
-            res->Position.z = baseHeight;
+            surfaceHeight = _loc.z;
+            res->Position.z = surfaceHeight;
         }
 
         rct_scenery_entry* sceneryEntry = get_small_scenery_entry(_sceneryType);
         if (sceneryEntry == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
         auto quadrant = _quadrant;
@@ -312,17 +352,20 @@ public:
             x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
             y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
         }
-        baseHeight = tile_element_height(x2, y2);
+        landHeight = tile_element_height({ x2, y2 });
+        waterHeight = tile_element_water_height({ x2, y2 });
+
+        surfaceHeight = landHeight;
         // If on water
-        if (baseHeight & 0xFFFF0000)
+        if (waterHeight > 0)
         {
             // base_height2 is now the water height
-            baseHeight >>= 16;
+            surfaceHeight = waterHeight;
         }
         auto targetHeight = _loc.z;
         if (_loc.z == 0)
         {
-            targetHeight = baseHeight;
+            targetHeight = surfaceHeight;
         }
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
@@ -378,17 +421,18 @@ public:
                 _loc.x, _loc.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
                 &clearCost, CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, gGameCommandErrorText, gCommonFormatArgs);
+            return std::make_unique<SmallSceneryPlaceActionResult>(
+                GA_ERROR::DISALLOWED, gGameCommandErrorText, gCommonFormatArgs);
         }
 
-        gSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
+        res->GroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
         res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
 
-        TileElement* newElement = tile_element_insert(_loc.x / 32, _loc.y / 32, zLow, quarterTile.GetBaseQuarterOccupied());
+        TileElement* newElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, zLow }, quarterTile.GetBaseQuarterOccupied());
         assert(newElement != nullptr);
-        gSceneryTileElement = newElement;
+        res->tileElement = newElement;
         newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
         newElement->SetDirection(_loc.direction);
         SmallSceneryElement* sceneryElement = newElement->AsSmallScenery();
@@ -412,7 +456,7 @@ public:
         map_invalidate_tile_full(_loc.x, _loc.y);
         if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
         {
-            map_animation_create(2, _loc.x, _loc.y, sceneryElement->base_height);
+            map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, _loc.x, _loc.y, sceneryElement->base_height);
         }
 
         return res;

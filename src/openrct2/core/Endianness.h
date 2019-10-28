@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@ template<size_t size> struct ByteSwapT
 
 template<> struct ByteSwapT<1>
 {
+    typedef uint8_t UIntType;
     static uint8_t SwapBE(uint8_t value)
     {
         return value;
@@ -25,6 +26,7 @@ template<> struct ByteSwapT<1>
 
 template<> struct ByteSwapT<2>
 {
+    typedef uint16_t UIntType;
     static uint16_t SwapBE(uint16_t value)
     {
         return (uint16_t)((value << 8) | (value >> 8));
@@ -33,6 +35,7 @@ template<> struct ByteSwapT<2>
 
 template<> struct ByteSwapT<4>
 {
+    typedef uint32_t UIntType;
     static uint32_t SwapBE(uint32_t value)
     {
         return (uint32_t)(((value << 24) | ((value << 8) & 0x00FF0000) | ((value >> 8) & 0x0000FF00) | (value >> 24)));
@@ -41,6 +44,7 @@ template<> struct ByteSwapT<4>
 
 template<> struct ByteSwapT<8>
 {
+    typedef uint64_t UIntType;
     static uint64_t SwapBE(uint64_t value)
     {
         value = (value & 0x00000000FFFFFFFF) << 32 | (value & 0xFFFFFFFF00000000) >> 32;
@@ -52,5 +56,7 @@ template<> struct ByteSwapT<8>
 
 template<typename T> static T ByteSwapBE(const T& value)
 {
-    return ByteSwapT<sizeof(T)>::SwapBE(value);
+    typedef ByteSwapT<sizeof(T)> ByteSwap;
+    typename ByteSwap::UIntType result = ByteSwap::SwapBE(reinterpret_cast<const typename ByteSwap::UIntType&>(value));
+    return *reinterpret_cast<T*>(&result);
 }

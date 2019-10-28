@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -246,10 +246,10 @@ rct_window* window_research_open()
     }
 
     w->page = 0;
-    window_invalidate(w);
+    w->Invalidate();
     w->width = 300;
     w->height = 196;
-    window_invalidate(w);
+    w->Invalidate();
 
     w->widgets = window_research_page_widgets[0];
     w->enabled_widgets = window_research_page_enabled_widgets[0];
@@ -598,7 +598,7 @@ static void window_research_set_page(rct_window* w, int32_t page)
     w->disabled_widgets = 0;
     w->pressed_widgets = 0;
 
-    window_invalidate(w);
+    w->Invalidate();
     if (w->page == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
     {
         w->width = 300;
@@ -613,7 +613,7 @@ static void window_research_set_page(rct_window* w, int32_t page)
     window_event_invalidate_call(w);
 
     window_init_scroll_widgets(w);
-    window_invalidate(w);
+    w->Invalidate();
 }
 
 static void window_research_set_pressed_tab(rct_window* w)

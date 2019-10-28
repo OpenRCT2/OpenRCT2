@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -157,7 +157,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
         safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
 
-        stringHeight = chat_history_draw_string(dpi, (void*)&lineCh, x, y, _chatWidth - 10) + 5;
+        stringHeight = chat_history_draw_string(dpi, (void*)&lineCh, ScreenCoordsXY(x, y), _chatWidth - 10) + 5;
         gfx_set_dirty_blocks(x, y - stringHeight, x + _chatWidth, y + 20);
 
         if ((y - stringHeight) < 50)
@@ -235,7 +235,7 @@ void chat_history_add(const char* src)
 
     free(buffer);
 
-    Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
+    Mixer_Play_Effect(SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
 
 void chat_input(CHAT_INPUT input)
@@ -275,7 +275,7 @@ static void chat_clear_input()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width)
+int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, ScreenCoordsXY screenCoords, int32_t width)
 {
     int32_t fontSpriteBase, lineHeight, lineY, numLines;
 
@@ -291,20 +291,20 @@ int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, 
 
     gCurrentFontFlags = 0;
 
-    int32_t expectedY = y - (numLines * lineHeight);
+    int32_t expectedY = screenCoords.y - (numLines * lineHeight);
     if (expectedY < 50)
     {
         return (numLines * lineHeight); // Skip drawing, return total height.
     }
 
-    lineY = y;
+    lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x, lineY - (numLines * lineHeight));
+        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, screenCoords.x, lineY - (numLines * lineHeight));
         buffer = get_string_end(buffer) + 1;
         lineY += lineHeight;
     }
-    return lineY - y;
+    return lineY - screenCoords.y;
 }
 
 // Wrap string without drawing, useful to get the height of a wrapped string.

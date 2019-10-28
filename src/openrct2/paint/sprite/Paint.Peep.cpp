@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -48,7 +48,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
                     break;
                 default:
                     return;
-            };
+            }
 
             lightfx_add_3d_light(
                 peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
@@ -56,7 +56,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
     }
 #endif
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level > 2)
     {
         return;

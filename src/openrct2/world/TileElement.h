@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,8 +14,10 @@
 #include "Footpath.h"
 #include "Location.hpp"
 
+struct Banner;
 struct rct_scenery_entry;
 struct rct_footpath_entry;
+typedef uint16_t track_type_t;
 
 #pragma pack(push, 1)
 
@@ -60,28 +62,32 @@ struct CorruptElement;
 struct TileElementBase
 {
     uint8_t type;             // 0
-    uint8_t flags;            // 1
+    uint8_t flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
 
     uint8_t GetType() const;
     void SetType(uint8_t newType);
-    uint8_t GetDirection() const;
-    void SetDirection(uint8_t direction);
-    uint8_t GetDirectionWithOffset(uint8_t offset) const;
+    Direction GetDirection() const;
+    void SetDirection(Direction direction);
+    Direction GetDirectionWithOffset(uint8_t offset) const;
     bool IsLastForTile() const;
+    void SetLastForTile(bool on);
     bool IsGhost() const;
     void SetGhost(bool isGhost);
     void Remove();
+    uint8_t GetOccupiedQuadrants() const;
+    void SetOccupiedQuadrants(uint8_t quadrants);
 };
 
 /**
  * Map element structure
- * size: 0x08
+ * size: 0x10
  */
 struct TileElement : public TileElementBase
 {
     uint8_t pad_04[4];
+    uint8_t pad_08[8];
 
     template<typename TType, TileElementType TClass> TType* as() const
     {
@@ -121,22 +127,25 @@ public:
     {
         return as<BannerElement, TileElementType::Banner>();
     }
-    CorruptElement* AsCorrupt() const
-    {
-        return as<CorruptElement, TileElementType::Corrupt>();
-    }
 
     void ClearAs(uint8_t newType);
 };
-assert_struct_size(TileElement, 8);
+assert_struct_size(TileElement, 16);
 
 struct SurfaceElement : TileElementBase
 {
 private:
-    uint8_t slope;        // 4 0xE0 Edge Style, 0x1F Slope
-    uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
-    uint8_t grass_length; // 6
-    uint8_t ownership;    // 7
+    uint8_t Slope;
+    uint8_t WaterHeight;
+    uint8_t GrassLength;
+    uint8_t Ownership;
+    uint8_t SurfaceStyle;
+    uint8_t EdgeStyle;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[6];
+#pragma clang diagnostic pop
+
 public:
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newSlope);
@@ -164,7 +173,7 @@ public:
     bool HasTrackThatNeedsWater() const;
     void SetHasTrackThatNeedsWater(bool on);
 };
-assert_struct_size(SurfaceElement, 8);
+assert_struct_size(SurfaceElement, 16);
 
 struct PathElement : TileElementBase
 {
@@ -177,6 +186,10 @@ private:
         uint8_t additionStatus; // 7
         ride_id_t rideIndex;
     };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
 
 public:
     uint8_t GetPathEntryIndex() const;
@@ -193,8 +206,8 @@ public:
     bool IsSloped() const;
     void SetSloped(bool isSloped);
 
-    uint8_t GetSlopeDirection() const;
-    void SetSlopeDirection(uint8_t newSlope);
+    Direction GetSlopeDirection() const;
+    void SetSlopeDirection(Direction newSlope);
 
     ride_id_t GetRideIndex() const;
     void SetRideIndex(ride_id_t newRideIndex);
@@ -235,47 +248,53 @@ public:
     uint8_t GetAdditionStatus() const;
     void SetAdditionStatus(uint8_t newStatus);
 
-    uint8_t GetRCT1PathType() const;
-
     bool ShouldDrawPathOverSupports();
     void SetShouldDrawPathOverSupports(bool on);
 };
-assert_struct_size(PathElement, 8);
+assert_struct_size(PathElement, 16);
 
 struct TrackElement : TileElementBase
 {
-    uint8_t trackType; // 4
+private:
+    track_type_t TrackType;
     union
     {
         struct
         {
-            // The lower 4 bits are the track sequence.
-            // The upper 4 bits are either station bits or on-ride photo bits.
-            //
-            // Station bits:
-            // - Bit 8 marks green light
-            // - Bit 5-7 are station index.
-            //
-            // On-ride photo bits:
-            // - Bits 7 and 8 are never set
-            // - Bits 5 and 6 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
-            // - If any of the bits 5-8 are set, the game counts it as a photo being taken.
-            uint8_t sequence; // 5.
-            uint8_t colour;   // 6
+            uint8_t Sequence;
+            uint8_t ColourScheme;
+            union
+            {
+                // - Bits 3 and 4 are never set
+                // - Bits 1 and 2 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
+                // - If any of the bits 1-4 are set, the game counts it as a photo being taken.
+                uint8_t OnridePhotoBits;
+                // Contains the brake/booster speed, divided by 2.
+                uint8_t BrakeBoosterSpeed;
+            };
+            uint8_t StationIndex;
         };
-        uint16_t mazeEntry; // 5
+        struct
+        {
+            uint16_t MazeEntry; // 5
+        };
     };
-    ride_id_t rideIndex; // 7
+    uint8_t Flags2;
+    ride_idnew_t RideIndex;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad[1];
+#pragma clang diagnostic pop
 
 public:
-    uint8_t GetTrackType() const;
-    void SetTrackType(uint8_t newEntryIndex);
+    track_type_t GetTrackType() const;
+    void SetTrackType(track_type_t newEntryIndex);
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    ride_id_t GetRideIndex() const;
-    void SetRideIndex(ride_id_t newRideIndex);
+    uint32_t GetRideIndex() const;
+    void SetRideIndex(uint32_t newRideIndex);
 
     uint8_t GetColourScheme() const;
     void SetColourScheme(uint8_t newColourScheme);
@@ -301,8 +320,8 @@ public:
     uint8_t GetBrakeBoosterSpeed() const;
     void SetBrakeBoosterSpeed(uint8_t speed);
 
-    uint8_t HasGreenLight() const;
-    void SetHasGreenLight(uint8_t greenLight);
+    bool HasGreenLight() const;
+    void SetHasGreenLight(bool on);
 
     uint8_t GetSeatRotation() const;
     void SetSeatRotation(uint8_t newSeatRotation);
@@ -316,16 +335,19 @@ public:
     void SetPhotoTimeout();
     void SetPhotoTimeout(uint8_t newValue);
     void DecrementPhotoTimeout();
+    uint8_t GetPhotoTimeout() const;
 
     bool IsHighlighted() const;
     void SetHighlight(bool on);
 
-    // Used in RCT1, will be reintroduced at some point.
+    // Used by ghost train, RCT1 feature, will be reintroduced at some point.
     // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
     uint8_t GetDoorAState() const;
     uint8_t GetDoorBState() const;
+    void SetDoorAState(uint8_t newState);
+    void SetDoorBState(uint8_t newState);
 };
-assert_struct_size(TrackElement, 8);
+assert_struct_size(TrackElement, 16);
 
 struct SmallSceneryElement : TileElementBase
 {
@@ -334,6 +356,11 @@ private:
     uint8_t age;        // 5
     uint8_t colour_1;   // 6
     uint8_t colour_2;   // 7
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
+
 public:
     uint8_t GetEntryIndex() const;
     void SetEntryIndex(uint8_t newIndex);
@@ -350,33 +377,37 @@ public:
     bool NeedsSupports() const;
     void SetNeedsSupports();
 };
-assert_struct_size(SmallSceneryElement, 8);
+assert_struct_size(SmallSceneryElement, 16);
 
 struct LargeSceneryElement : TileElementBase
 {
 private:
-    uint16_t entryIndex; // 4
-    uint8_t colour[2];   // 6
+    uint32_t EntryIndex;
+    uint32_t BannerIndex;
+    uint8_t SequenceIndex;
+    uint8_t Colour[3];
+
 public:
     uint32_t GetEntryIndex() const;
     void SetEntryIndex(uint32_t newIndex);
     rct_scenery_entry* GetEntry() const;
 
-    uint16_t GetSequenceIndex() const;
-    void SetSequenceIndex(uint16_t newIndex);
+    uint8_t GetSequenceIndex() const;
+    void SetSequenceIndex(uint8_t newIndex);
 
     colour_t GetPrimaryColour() const;
     void SetPrimaryColour(colour_t colour);
     colour_t GetSecondaryColour() const;
     void SetSecondaryColour(colour_t colour);
 
-    BannerIndex GetBannerIndex() const;
-    void SetBannerIndex(BannerIndex newIndex);
+    Banner* GetBanner() const;
+    ::BannerIndex GetBannerIndex() const;
+    void SetBannerIndex(::BannerIndex newIndex);
 
     bool IsAccounted() const;
     void SetIsAccounted(bool isAccounted);
 };
-assert_struct_size(LargeSceneryElement, 8);
+assert_struct_size(LargeSceneryElement, 16);
 
 struct WallElement : TileElementBase
 {
@@ -389,6 +420,10 @@ private:
     };
     uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
 
 public:
     uint8_t GetEntryIndex() const;
@@ -408,6 +443,7 @@ public:
     uint8_t GetAnimationFrame() const;
     void SetAnimationFrame(uint8_t frameNum);
 
+    Banner* GetBanner() const;
     BannerIndex GetBannerIndex() const;
     void SetBannerIndex(BannerIndex newIndex);
 
@@ -420,7 +456,7 @@ public:
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
 };
-assert_struct_size(WallElement, 8);
+assert_struct_size(WallElement, 16);
 
 struct EntranceElement : TileElementBase
 {
@@ -429,6 +465,10 @@ private:
     uint8_t index;        // 5. 0bUSSS????, S = station index.
     uint8_t pathType;     // 6
     ride_id_t rideIndex;  // 7
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t pad_08[8];
+#pragma clang diagnostic pop
 
 public:
     uint8_t GetEntranceType() const;
@@ -446,7 +486,7 @@ public:
     uint8_t GetPathType() const;
     void SetPathType(uint8_t newPathType);
 };
-assert_struct_size(EntranceElement, 8);
+assert_struct_size(EntranceElement, 16);
 
 struct BannerElement : TileElementBase
 {
@@ -457,8 +497,12 @@ private:
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t flags;  // 6
     uint8_t unused; // 7
+    uint8_t pad_08[8];
 #pragma clang diagnostic pop
 public:
+    Banner* GetBanner() const;
+    rct_scenery_entry* GetEntry() const;
+
     BannerIndex GetIndex() const;
     void SetIndex(BannerIndex newIndex);
 
@@ -469,13 +513,14 @@ public:
     void SetAllowedEdges(uint8_t newEdges);
     void ResetAllowedEdges();
 };
-assert_struct_size(BannerElement, 8);
+assert_struct_size(BannerElement, 16);
 
 struct CorruptElement : TileElementBase
 {
     uint8_t pad[4];
+    uint8_t pad_08[8];
 };
-assert_struct_size(CorruptElement, 8);
+assert_struct_size(CorruptElement, 16);
 #pragma pack(pop)
 
 class QuarterTile
@@ -518,7 +563,6 @@ enum
 
 enum
 {
-    TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6),
     SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),
 };
 
@@ -563,6 +607,7 @@ enum
 #define TILE_ELEMENT_QUADRANT_MASK 0b11000000
 #define TILE_ELEMENT_TYPE_MASK 0b00111100
 #define TILE_ELEMENT_DIRECTION_MASK 0b00000011
+#define TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK 0b00001111
 
 #define TILE_ELEMENT_COLOUR_MASK 0b00011111
 

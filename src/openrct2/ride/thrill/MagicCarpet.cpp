@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -122,7 +122,7 @@ static void paint_magic_carpet_vehicle(
     paint_session* session, Ride* ride, uint8_t direction, uint32_t swingImageId, LocationXYZ16 offset, LocationXYZ16 bbOffset,
     LocationXYZ16 bbSize)
 {
-    rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
+    rct_ride_entry* rideEntry = ride->GetRideEntry();
     uint32_t vehicleImageId = rideEntry->vehicles[0].base_image_id + direction;
 
     // Vehicle
@@ -155,7 +155,7 @@ static void paint_magic_carpet_vehicle(
         bbOffset.x, bbOffset.y, bbOffset.z);
 
     // Riders
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
         rct_vehicle* vehicle = get_first_vehicle(ride);
@@ -244,21 +244,24 @@ static void paint_magic_carpet(
             break;
     }
 
-    Ride* ride = get_ride(rideIndex);
-    switch (relativeTrackSequence)
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
     {
-        case 3:
-            paint_magic_carpet_structure(session, ride, direction, -48, height);
-            break;
-        case 0:
-            paint_magic_carpet_structure(session, ride, direction, -16, height);
-            break;
-        case 2:
-            paint_magic_carpet_structure(session, ride, direction, 16, height);
-            break;
-        case 1:
-            paint_magic_carpet_structure(session, ride, direction, 48, height);
-            break;
+        switch (relativeTrackSequence)
+        {
+            case 3:
+                paint_magic_carpet_structure(session, ride, direction, -48, height);
+                break;
+            case 0:
+                paint_magic_carpet_structure(session, ride, direction, -16, height);
+                break;
+            case 2:
+                paint_magic_carpet_structure(session, ride, direction, 16, height);
+                break;
+            case 1:
+                paint_magic_carpet_structure(session, ride, direction, 48, height);
+                break;
+        }
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

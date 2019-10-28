@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../config/Config.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
@@ -53,49 +54,19 @@ public:
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
         }
-
-        // TODO create a version of user_string_allocate that only tests so we do not have to free it straight afterwards
-        auto stringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, _name.c_str());
-        if (stringId == 0)
-        {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
-        }
-        user_string_free(stringId);
-
         return MakeResult();
     }
 
     GameActionResult::Ptr Execute() const override
     {
         // Do a no-op if new name is the same as the current name is the same
-        std::string oldName = GetCurrentParkName();
-        if (_name == oldName)
+        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+        if (_name != park.Name)
         {
-            return MakeResult();
+            park.Name = _name;
+            scrolling_text_invalidate();
+            gfx_invalidate_screen();
         }
-
-        // Allocate new string for park name
-        auto newNameId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, _name.c_str());
-        if (newNameId == 0)
-        {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
-        }
-
-        // Replace park name with new string id
-        user_string_free(gParkName);
-        gParkName = newNameId;
-
-        scrolling_text_invalidate();
-        gfx_invalidate_screen();
-
         return MakeResult();
-    }
-
-private:
-    std::string GetCurrentParkName() const
-    {
-        char buffer[128];
-        format_string(buffer, sizeof(buffer), gParkName, &gParkNameArgs);
-        return buffer;
     }
 };

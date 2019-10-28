@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,11 +91,12 @@ rct_duck* rct_sprite::AsDuck()
 
 void rct_duck::Invalidate()
 {
-    invalidate_sprite_0((rct_sprite*)this);
+    invalidate_sprite_1((rct_sprite*)this);
 }
 
 void rct_duck::Remove()
 {
+    Invalidate();
     sprite_remove((rct_sprite*)this);
 }
 
@@ -122,8 +123,8 @@ void rct_duck::UpdateFlyToWater()
     int32_t newY = y + DuckMoveOffset[direction].y;
     int32_t manhattanDistanceN = abs(target_x - newX) + abs(target_y - newY);
 
-    TileElement* tileElement = map_get_surface_element_at({ target_x, target_y });
-    int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
+    auto surfaceElement = map_get_surface_element_at({ target_x, target_y });
+    int32_t waterHeight = surfaceElement != nullptr ? surfaceElement->GetWaterHeight() : 0;
     if (waterHeight == 0)
     {
         state = DUCK_STATE::FLY_AWAY;
@@ -201,9 +202,8 @@ void rct_duck::UpdateSwim()
         else
         {
             Invalidate();
-            int32_t landZ = tile_element_height(x, y);
-            int32_t waterZ = (landZ >> 16) & 0xFFFF;
-            landZ &= 0xFFFF;
+            int16_t landZ = tile_element_height({ x, y });
+            int16_t waterZ = tile_element_water_height({ x, y });
 
             if (z < landZ || waterZ == 0)
             {
@@ -223,9 +223,8 @@ void rct_duck::UpdateSwim()
                 int32_t direction = sprite_direction >> 3;
                 int32_t newX = x + DuckMoveOffset[direction].x;
                 int32_t newY = y + DuckMoveOffset[direction].y;
-                landZ = tile_element_height(newX, newY);
-                waterZ = (landZ >> 16) & 0xFFFF;
-                landZ &= 0xFFFF;
+                landZ = tile_element_height({ newX, newY });
+                waterZ = tile_element_water_height({ newX, newY });
 
                 if (z >= landZ && z == waterZ)
                 {
@@ -307,42 +306,45 @@ uint32_t rct_duck::GetFrameImage(int32_t direction) const
     return imageId;
 }
 
-void create_duck(int32_t targetX, int32_t targetY)
+void create_duck(const CoordsXY& pos)
 {
-    rct_sprite* sprite = create_sprite(2);
-    if (sprite != nullptr)
+    rct_sprite* sprite = create_sprite(SPRITE_IDENTIFIER_MISC);
+    if (sprite == nullptr)
+        return;
+
+    CoordsXY targetPos = pos;
+
+    int32_t offsetXY = scenario_rand() & 0x1E;
+    targetPos.x += offsetXY;
+    targetPos.y += offsetXY;
+
+    sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
+    sprite->duck.type = SPRITE_MISC_DUCK;
+    sprite->duck.sprite_width = 9;
+    sprite->duck.sprite_height_negative = 12;
+    sprite->duck.sprite_height_positive = 9;
+    sprite->duck.target_x = targetPos.x;
+    sprite->duck.target_y = targetPos.y;
+    uint8_t direction = scenario_rand() & 3;
+    switch (direction)
     {
-        sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->duck.type = SPRITE_MISC_DUCK;
-        sprite->duck.sprite_width = 9;
-        sprite->duck.sprite_height_negative = 12;
-        sprite->duck.sprite_height_positive = 9;
-        int32_t offsetXY = scenario_rand() & 0x1E;
-        targetX += offsetXY;
-        targetY += offsetXY;
-        sprite->duck.target_x = targetX;
-        sprite->duck.target_y = targetY;
-        uint8_t direction = scenario_rand() & 3;
-        switch (direction)
-        {
-            case 0:
-                targetX = 8191 - (scenario_rand() & 0x3F);
-                break;
-            case 1:
-                targetY = scenario_rand() & 0x3F;
-                break;
-            case 2:
-                targetX = scenario_rand() & 0x3F;
-                break;
-            case 3:
-                targetY = 8191 - (scenario_rand() & 0x3F);
-                break;
-        }
-        sprite->duck.sprite_direction = direction << 3;
-        sprite_move(targetX, targetY, 496, sprite);
-        sprite->duck.state = DUCK_STATE::FLY_TO_WATER;
-        sprite->duck.frame = 0;
+        case 0:
+            targetPos.x = 8191 - (scenario_rand() & 0x3F);
+            break;
+        case 1:
+            targetPos.y = scenario_rand() & 0x3F;
+            break;
+        case 2:
+            targetPos.x = scenario_rand() & 0x3F;
+            break;
+        case 3:
+            targetPos.y = 8191 - (scenario_rand() & 0x3F);
+            break;
     }
+    sprite->duck.sprite_direction = direction << 3;
+    sprite_move(targetPos.x, targetPos.y, 496, sprite);
+    sprite->duck.state = DUCK_STATE::FLY_TO_WATER;
+    sprite->duck.frame = 0;
 }
 
 void duck_update(rct_duck* duck)
@@ -369,7 +371,7 @@ void duck_update(rct_duck* duck)
 
 void duck_press(rct_duck* duck)
 {
-    audio_play_sound_at_location(SOUND_QUACK, duck->x, duck->y, duck->z);
+    audio_play_sound_at_location(SoundId::Quack, { duck->x, duck->y, duck->z });
 }
 
 void duck_remove_all()
@@ -382,6 +384,7 @@ void duck_remove_all()
         nextSpriteIndex = sprite->next;
         if (sprite->type == SPRITE_MISC_DUCK)
         {
+            invalidate_sprite_1((rct_sprite*)sprite);
             sprite_remove((rct_sprite*)sprite);
         }
     }

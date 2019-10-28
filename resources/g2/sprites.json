@@ -21,7 +21,7 @@
         "path": "icons/map_gen_land.png"
     },
     {
-        "path": "7.png"
+        "path": "placeholder.png"
     },
     {
         "path": "icons/zoom_in.png"
@@ -87,16 +87,16 @@
         "path": "icons/rct1_open_on_pressed.png"
     },
     {
-        "path": "icons/29.png"
+        "path": "icons/title_restart.png"
     },
     {
-        "path": "icons/30.png"
+        "path": "icons/title_stop.png"
     },
     {
-        "path": "icons/31.png"
+        "path": "icons/title_play.png"
     },
     {
-        "path": "icons/32.png"
+        "path": "icons/title_skip.png"
     },
     {
         "path": "icons/cheats.png"
@@ -174,7 +174,7 @@
         "path": "track/junior/steep_to_flat_lift_3_2.png"
     },
     {
-        "path": "icons/58.png"
+        "path": "icons/news_messages.png"
     },
     {
         "path": "icons/server_password.png"
@@ -393,6 +393,59 @@
         "path": "icons/chat.png",
         "x_offset": 2,
         "y_offset": 1
+    },
+    {
+        "path": "icons/map_north.png"
+    },
+    {
+        "path": "icons/map_north_pressed.png"
+    },
+    {
+        "path": "icons/map_west.png"
+    },
+    {
+        "path": "icons/map_west_pressed.png"
+    },
+    {
+        "path": "icons/map_south.png"
+    },
+    {
+        "path": "icons/map_south_pressed.png"
+    },
+    {
+        "path": "icons/map_east.png"
+    },
+    {
+        "path": "icons/map_east_pressed.png"
+    },
+    {
+        "path": "icons/multiplayer_toolbar.png"
+    },
+    {
+        "path": "icons/multiplayer_toolbar_pressed.png"
+    },
+    {
+        "path": "icons/multiplayer_sync.png"
+    },
+    {
+        "path": "icons/multiplayer_desync.png"
+    },
+    {
+        "path": "icons/simulate.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "icons/rct1_simulate_off.png"
+    },
+    {
+        "path": "icons/rct1_simulate_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_simulate_on.png"
+    },
+    {
+        "path": "icons/rct1_simulate_on_pressed.png"
     },
     {
         "path": "font/latin/ae-uc-small.png",
@@ -792,6 +845,78 @@
     },
     {
         "path": "font/latin/e-caron-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/n-caron-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/n-caron-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/r-caron-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/r-caron-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/t-caron-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/t-caron-small.png",
+        "y_offset": 1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-ring-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-ring-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/z-caron-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/z-caron-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
@@ -1201,6 +1326,78 @@
     },
     {
         "path": "font/latin/e-caron-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/n-caron-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/n-caron-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/r-caron-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/r-caron-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/t-caron-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/t-caron-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-ring-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-ring-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/z-caron-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/z-caron-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
@@ -1619,6 +1816,78 @@
     {
         "path": "font/latin/e-caron-tiny.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/n-caron-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/n-caron-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/r-caron-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/r-caron-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/s-caron-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/t-caron-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/t-caron-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-ring-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-ring-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/z-caron-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/z-caron-tiny.png",
+        "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,8 +54,11 @@ void vehicle_visual_observation_tower(
         baseImage_id = (vehicle->animation_frame * 2) + vehicleEntry->base_image_id + 8;
     }
 
-    image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24)
-        | IMAGE_TYPE_REMAP_2_PLUS;
+    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_3(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    if (vehicle->IsGhost())
+    {
+        image_id = (image_id & 0x7FFFF) | CONSTRUCTION_MARKER;
+    }
     paint_struct* ps = sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1);
     if (ps != nullptr)
     {
@@ -81,7 +84,6 @@ static void paint_observation_tower_base(
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
-    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
@@ -89,9 +91,13 @@ static void paint_observation_tower_base(
     uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
-    track_paint_util_paint_fences(
-        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
-        session->CurrentRotation);
+    auto ride = get_ride(rideIndex);
+    if (ride != nullptr)
+    {
+        track_paint_util_paint_fences(
+            session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
+            session->CurrentRotation);
+    }
 
     if (trackSequence == 0)
     {

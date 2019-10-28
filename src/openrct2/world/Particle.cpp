@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,7 @@
  */
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int32_t y, int32_t z)
 {
-    rct_crashed_vehicle_particle* sprite = (rct_crashed_vehicle_particle*)create_sprite(2);
+    rct_crashed_vehicle_particle* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->crashed_vehicle_particle;
     if (sprite != nullptr)
     {
         sprite->colour[0] = colours.body_colour;
@@ -80,14 +80,13 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
     particle->velocity_z = vz & 0xFFFF;
 
     // Check collision with land / water
-    uint32_t waterLand = tile_element_height(x, y);
-    int16_t landZ = (waterLand & 0xFFFF);
-    int16_t waterZ = (waterLand >> 16);
+    int16_t landZ = tile_element_height({ x, y });
+    int16_t waterZ = tile_element_water_height({ x, y });
 
     if (waterZ != 0 && particle->z >= waterZ && z <= waterZ)
     {
         // Splash
-        audio_play_sound_at_location(SOUND_WATER_2, particle->x, particle->y, waterZ);
+        audio_play_sound_at_location(SoundId::Water2, { particle->x, particle->y, waterZ });
         crash_splash_create(particle->x, particle->y, waterZ);
         sprite_remove((rct_sprite*)particle);
         return;
@@ -115,7 +114,7 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
  */
 void crash_splash_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_sprite_generic* sprite = (rct_sprite_generic*)create_sprite(2);
+    rct_sprite_generic* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;

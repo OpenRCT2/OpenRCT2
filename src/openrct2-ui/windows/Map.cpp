@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/LandSetRightsAction.hpp>
+#include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
@@ -290,7 +292,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_SET_LAND_RIGHTS:
-            window_invalidate(w);
+            w->Invalidate();
             if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
                 break;
             _activeTool = 2;
@@ -306,7 +308,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 2)
                 _activeTool &= 0xF2;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LAND_SALE_CHECKBOX:
             _activeTool ^= 8;
@@ -314,7 +316,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 8)
                 _activeTool &= 0xF8;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX:
             _activeTool ^= 1;
@@ -322,7 +324,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 1)
                 _activeTool &= 0xF1;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX:
             _activeTool ^= 4;
@@ -330,10 +332,10 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (_activeTool & 4)
                 _activeTool &= 0xF4;
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
-            window_invalidate(w);
+            w->Invalidate();
             if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
                 break;
 
@@ -408,13 +410,13 @@ static void window_map_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct
             // Decrement land rights tool size
             _landRightsToolSize = std::max(MINIMUM_TOOL_SIZE, _landRightsToolSize - 1);
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
         case WIDX_LAND_TOOL_LARGER:
             // Increment land rights tool size
             _landRightsToolSize = std::min(MAXIMUM_TOOL_SIZE, _landRightsToolSize + 1);
 
-            window_invalidate(w);
+            w->Invalidate();
             break;
     }
 }
@@ -435,7 +437,7 @@ static void window_map_update(rct_window* w)
     for (int32_t i = 0; i < 16; i++)
         map_window_set_pixels(w);
 
-    window_invalidate(w);
+    w->Invalidate();
 
     // Update tab animations
     w->list_information_type++;
@@ -504,10 +506,10 @@ static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int3
         case WIDX_SET_LAND_RIGHTS:
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
-                gGameCommandErrorTitle = 0;
-                game_do_command(
-                    gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y, _activeTool,
-                    GAME_COMMAND_SET_LAND_OWNERSHIP, gMapSelectPositionB.x, gMapSelectPositionB.y);
+                auto landSetRightsAction = LandSetRightsAction(
+                    { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+                    LandSetRightSetting::SetOwnershipWithChecks, _activeTool << 4);
+                GameActions::Execute(&landSetRightsAction);
             }
             break;
     }
@@ -522,20 +524,20 @@ static void window_map_toolabort(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_SET_LAND_RIGHTS:
-            window_invalidate(w);
+            w->Invalidate();
             hide_gridlines();
             hide_land_rights();
             hide_construction_rights();
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
             park_entrance_remove_ghost();
-            window_invalidate(w);
+            w->Invalidate();
             hide_gridlines();
             hide_land_rights();
             hide_construction_rights();
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
-            window_invalidate(w);
+            w->Invalidate();
             hide_gridlines();
             hide_land_rights();
             hide_construction_rights();
@@ -564,7 +566,7 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
     CoordsXY c = map_window_screen_to_map(x, y);
     int32_t mapX = std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
     int32_t mapY = std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
-    int32_t mapZ = tile_element_height(x, y);
+    int32_t mapZ = tile_element_height({ x, y });
 
     rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
@@ -590,11 +592,10 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
         gMapSelectPositionB.y = mapY + size;
         map_invalidate_selection_rect();
 
-        gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-        game_do_command(
-            gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y,
-            gLandToolTerrainSurface | (gLandToolTerrainEdge << 8), GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
+        auto surfaceSetStyleAction = SurfaceSetStyleAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+            gLandToolTerrainSurface, gLandToolTerrainEdge);
+        GameActions::Execute(&surfaceSetStyleAction);
     }
     else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
     {
@@ -614,10 +615,10 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
         gMapSelectPositionB.y = mapY + size;
         map_invalidate_selection_rect();
 
-        gGameCommandErrorTitle = 0;
-        game_do_command(
-            gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y, _activeTool, GAME_COMMAND_SET_LAND_OWNERSHIP,
-            gMapSelectPositionB.x, gMapSelectPositionB.y);
+        auto landSetRightsAction = LandSetRightsAction(
+            { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
+            LandSetRightSetting::SetOwnershipWithChecks, _activeTool << 4);
+        GameActions::Execute(&landSetRightsAction);
     }
 }
 
@@ -637,7 +638,7 @@ static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, cha
             {
                 size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
                 _landRightsToolSize = size;
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
         case WIDX_MAP_SIZE_SPINNER:
@@ -659,7 +660,7 @@ static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, cha
                     map_window_increase_map_size();
                     currentSize++;
                 }
-                window_invalidate(w);
+                w->Invalidate();
             }
             break;
     }
@@ -877,6 +878,7 @@ static void window_map_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     g1temp.x_offset = -8;
     g1temp.y_offset = -8;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
+    drawing_engine_invalidate_image(SPR_TEMP);
     gfx_draw_sprite(dpi, SPR_TEMP, 0, 0, 0);
 
     if (w->selected_tab == PAGE_PEEPS)
@@ -1095,7 +1097,7 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
     rct_vehicle *train, *vehicle;
     uint16_t train_index, vehicle_index;
 
-    for (train_index = gSpriteListHead[SPRITE_LIST_TRAIN]; train_index != SPRITE_INDEX_NULL; train_index = train->next)
+    for (train_index = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; train_index != SPRITE_INDEX_NULL; train_index = train->next)
     {
         train = GET_VEHICLE(train_index);
         for (vehicle_index = train_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train)
@@ -1190,21 +1192,19 @@ static void window_map_set_land_rights_tool_update(int32_t x, int32_t y)
 static void place_park_entrance_get_map_position(
     int32_t x, int32_t y, int16_t* mapX, int16_t* mapY, int16_t* mapZ, int32_t* direction)
 {
-    TileElement* tileElement;
-
-    sub_68A15E(x, y, mapX, mapY, direction, &tileElement);
+    sub_68A15E(x, y, mapX, mapY);
     if (*mapX == LOCATION_NULL)
         return;
 
-    tileElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
-    *mapZ = tileElement->AsSurface()->GetWaterHeight();
+    auto surfaceElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
+    *mapZ = surfaceElement->GetWaterHeight();
     if (*mapZ == 0)
     {
-        *mapZ = tileElement->base_height / 2;
-        if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+        *mapZ = surfaceElement->base_height / 2;
+        if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
         {
             (*mapZ)++;
-            if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 (*mapZ)++;
             }
@@ -1235,14 +1235,12 @@ static void window_map_place_park_entrance_tool_update(int32_t x, int32_t y)
     }
 
     sideDirection = (direction + 1) & 3;
-    gMapSelectionTiles[0].x = mapX;
-    gMapSelectionTiles[0].y = mapY;
-    gMapSelectionTiles[1].x = mapX + CoordsDirectionDelta[sideDirection].x;
-    gMapSelectionTiles[1].y = mapY + CoordsDirectionDelta[sideDirection].y;
-    gMapSelectionTiles[2].x = mapX - CoordsDirectionDelta[sideDirection].x;
-    gMapSelectionTiles[2].y = mapY - CoordsDirectionDelta[sideDirection].y;
-    gMapSelectionTiles[3].x = -1;
-    gMapSelectionTiles[3].y = -1;
+    gMapSelectionTiles.clear();
+    gMapSelectionTiles.push_back({ mapX, mapY });
+    gMapSelectionTiles.push_back(
+        { mapX + CoordsDirectionDelta[sideDirection].x, mapY + CoordsDirectionDelta[sideDirection].y });
+    gMapSelectionTiles.push_back(
+        { mapX - CoordsDirectionDelta[sideDirection].x, mapY - CoordsDirectionDelta[sideDirection].y });
 
     gMapSelectArrowPosition.x = mapX;
     gMapSelectArrowPosition.y = mapY;
@@ -1316,7 +1314,7 @@ static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y)
         money32 price = place_park_entrance(mapX, mapY, mapZ, direction);
         if (price != MONEY32_UNDEFINED)
         {
-            audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+            audio_play_sound_at_location(SoundId::PlaceItem, { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z });
         }
     }
 }
@@ -1340,7 +1338,7 @@ static void window_map_set_peep_spawn_tool_down(int32_t x, int32_t y)
     bool result = place_peep_spawn({ mapX, mapY, mapZ, (uint8_t)direction });
     if (result)
     {
-        audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+        audio_play_sound_at_location(SoundId::PlaceItem, { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z });
     }
 }
 
@@ -1541,17 +1539,24 @@ static constexpr const uint8_t RideColourKey[] = {
 
 static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
 {
-    TileElement* tileElement = map_get_surface_element_at(c);
-    uint16_t colour = TerrainColour[tileElement->AsSurface()->GetSurfaceStyle()];
-    if (tileElement->AsSurface()->GetWaterHeight() > 0)
+    auto* surfaceElement = map_get_surface_element_at(c);
+    uint16_t colour = TerrainColour[surfaceElement->GetSurfaceStyle()];
+    if (surfaceElement->GetWaterHeight() > 0)
         colour = WaterColour;
 
-    if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
+    if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
         colour = MAP_COLOUR_UNOWNED(colour);
 
     const int32_t maxSupportedTileElementType = (int32_t)std::size(ElementTypeAddColour);
+    auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     while (!(tileElement++)->IsLastForTile())
     {
+        if (tileElement->IsGhost())
+        {
+            colour = MAP_COLOUR(PALETTE_INDEX_21);
+            break;
+        }
+
         int32_t tileElementType = tileElement->GetType() >> 2;
         if (tileElementType >= maxSupportedTileElementType)
         {
@@ -1571,9 +1576,15 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
     uint16_t colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
 
     // as an improvement we could use first_element to show underground stuff?
-    TileElement* tileElement = map_get_surface_element_at(c);
+    TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
     do
     {
+        if (tileElement->IsGhost())
+        {
+            colourA = MAP_COLOUR(PALETTE_INDEX_21);
+            break;
+        }
+
         switch (tileElement->GetType())
         {
             case TILE_ELEMENT_TYPE_SURFACE:
@@ -1590,11 +1601,13 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
                 ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-                colourA = RideKeyColours[RideColourKey[ride->type]];
+                if (ride != nullptr)
+                    colourA = RideKeyColours[RideColourKey[ride->type]];
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                colourA = RideKeyColours[RideColourKey[ride->type]];
+                if (ride != nullptr)
+                    colourA = RideKeyColours[RideColourKey[ride->type]];
                 break;
         }
     } while (!(tileElement++)->IsLastForTile());

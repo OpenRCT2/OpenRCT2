@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -208,8 +208,8 @@ void window_dropdown_show_text_custom_width(
 
     // Create the window
     w = window_create(
-        x, y + extray, window_dropdown_widgets[WIDX_BACKGROUND].right + 1, window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
-        &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
+        ScreenCoordsXY(x, y + extray), window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
+        window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
     w->widgets = window_dropdown_widgets;
     if (colour & COLOUR_FLAG_TRANSLUCENT)
         w->flags |= WF_TRANSPARENT;
@@ -288,8 +288,8 @@ void window_dropdown_show_image(
 
     // Create the window
     w = window_create(
-        x, y + extray, window_dropdown_widgets[WIDX_BACKGROUND].right + 1, window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
-        &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
+        ScreenCoordsXY(x, y + extray), window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
+        window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
     w->widgets = window_dropdown_widgets;
     if (colour & COLOUR_FLAG_TRANSLUCENT)
         w->flags |= WF_TRANSPARENT;

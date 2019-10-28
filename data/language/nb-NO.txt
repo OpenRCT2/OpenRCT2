@@ -552,8 +552,8 @@ STR_1167    :Kan ikke heve vannivå her...
 STR_1168    :Valg
 STR_1169    :(Ingenting)
 STR_1170    :{STRING}
-STR_1171    :{RED}Stengt - - 
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1171    :{RED}Stengt
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Bygg gangstier og køer
 STR_1174    :Skilt i veien
 STR_1175    :Kan ikke bygges på hellende gangsti
@@ -1109,7 +1109,7 @@ STR_1726    :Land not for sale!
 STR_1727    :Construction rights not for sale!
 STR_1728    :Can't buy construction rights here...
 STR_1729    :Land not owned by park!
-STR_1730    :{RED}Closed - - 
+STR_1730    :{RED}Closed
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Build
 STR_1733    :Mode
@@ -2240,7 +2240,7 @@ STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:
 STR_2979    :Can't name staff member...
 STR_2980    :Too many banners in game
-STR_2981    :{RED}No entry - - 
+STR_2981    :{RED}No entry
 STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner...
@@ -2419,7 +2419,6 @@ STR_3190    :Path Extras
 STR_3191    :Scenery Groups
 STR_3192    :Park Entrance
 STR_3193    :Water
-STR_3194    :Scenario Description
 STR_3195    :Invention List
 STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
@@ -3589,8 +3588,8 @@ STR_6125    :Objekttype
 STR_6126    :Ukjent type
 STR_6127    :Fil: {STRING}
 STR_6128    :Filen kunne ikke bli lastet, siden noen av objektene den refererer til mangler eller er korrupte. En liste av disse objektene følger.
-STR_6129    :Kopier valgt element til utklippstavlen
-STR_6130    :Kopier hele listen til utklippstavlen
+STR_6129    :Kopier
+STR_6130    :Kopier alt
 STR_6131    :Objektkilde
 STR_6132    :Ignorer forskningsstatus
 STR_6133    :{SMALLFONT}{BLACK}Gir tilgang til attraksjoner og pynt som ikke har blitt funnet opp enda
@@ -3740,6 +3739,58 @@ STR_6276    :{RED}Gjester sitter fast i {STRINGID}, mulig grunnet ugyldig attrak
 STR_6277    :{WINDOW_COLOUR_2}Stasjonsindeks: {BLACK}{COMMA16}
 STR_6278    :Antall autolagringer
 STR_6279    :{SMALLFONT}{BLACK}Antall automatiske lagringer som blir beholdt
+STR_6280    :{SMALLFONT}{BLACK}Chat
+STR_6281    :{SMALLFONT}{BLACK}Vis en separat knapp for chattevinduet i verktøyjinjen
+STR_6282    :Chat
+STR_6283    :Chat not available at this time. Are you connected to a server?
+STR_6283    :Chatten er for øyeblikket ikke tilgjengelig. Er du koblet til en server?
+STR_6284    :Nettverk
+STR_6285    :Nettverksinformasjon
+STR_6286    :Motta
+STR_6287    :Sende
+STR_6288    :Totalt mottatt
+STR_6289    :Totalt sendt
+STR_6290    :Base protocol
+STR_6291    :Kommandoer
+STR_6292    :Kart
+STR_6293    :B
+STR_6294    :KiB
+STR_6295    :MiB
+STR_6296    :GiB
+STR_6297    :TiB
+STR_6298    :{STRING}/s
+STR_6299    :Last ned alt
+STR_6300    :{SMALLFONT}{BLACK}Last ned manglende objekter hvis de er tilgjengelige på nettet.
+STR_6301    :{SMALLFONT}{BLACK}Kopier navnet til det valgte objektet til utklippstavlen.
+STR_6302    :{SMALLFONT}{BLACK}Kopier hele listen manglende objekter til utklippstavlen.
+STR_6303    :Laster ned objekt ({COMMA16} / {COMMA16}): [{STRING}]
+STR_6304    :Åpne pyntvelger
+STR_6305    :Multithreading
+STR_6306    :{SMALLFONT}{BLACK}Eksperimentelt valg for å bruke flere tråder til rendering. Kan gjøre spillet ustabilt.
+STR_6307    :Fargeskjema: {BLACK}{STRINGID}
+STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6309    :Koble til på nytt
+STR_6310    :{WINDOW_COLOUR_2}Posisjon: {BLACK}{INT32} {INT32} {INT32}
+STR_6311    :{WINDOW_COLOUR_2}Neste: {BLACK}{INT32} {INT32} {INT32}
+STR_6312    :(flate)
+STR_6313    :(bakke {INT32})
+STR_6314    :{WINDOW_COLOUR_2}Destinasjon: {BLACK}{INT32}, {INT32} slingring {INT32}
+STR_6315    :{WINDOW_COLOUR_2}Stifinner: {BLACK}{INT32}, {INT32}, {INT32} retning {INT32}
+STR_6316    :{WINDOW_COLOUR_2}Stifinnerhistorie:
+STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} retning {INT32}
+STR_6318    :Mistet synkronisering med server.{NEWLINE}Loggfil: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Blokkbremser stengt
+STR_6320    :{WINDOW_COLOUR_2}Kan ikke ødelegges
+STR_6321    :{WINDOW_COLOUR_2}Gangstitillegg er ødelagt
+STR_6322    :{WINDOW_COLOUR_2}Sprite-ID: {BLACK}{INT32}
+STR_6323    :Simulerer
+STR_6324    :Simuler
+STR_6325    :{SMALLFONT}{BLACK}Simuler attraksjon
+STR_6326    :Kan ikke simulere {POP16}{POP16}{POP16}{STRINGID}...
+STR_6327    :Gjennomsiktig bakgrunn for gigantiske skjermbilder
+STR_6328    :{SMALLFONT}{BLACK}Gigantiske skjermbilder blir lagret med gjennomsiktig bakgrunn istedenfor vanlig svart.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :Laster ned [{STRING}] fra {STRING} ({COMMA16} / {COMMA16})
 
 #############
 # Scenarios #

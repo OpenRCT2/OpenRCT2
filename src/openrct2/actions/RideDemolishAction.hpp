@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,6 +45,11 @@ public:
     {
     }
 
+    uint32_t GetCooldownTime() const override
+    {
+        return 1000;
+    }
+
     void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
@@ -54,14 +59,15 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Ride* ride = get_ride(_rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE && _modifyType == RIDE_MODIFY_DEMOLISH)
+        if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+            && _modifyType == RIDE_MODIFY_DEMOLISH)
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::NO_CLEARANCE, STR_CANT_DEMOLISH_RIDE,
@@ -72,7 +78,7 @@ public:
 
         if (_modifyType == RIDE_MODIFY_RENEW)
         {
-            if (ride->status != RIDE_STATUS_CLOSED)
+            if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
             {
                 return std::make_unique<GameActionResult>(
                     GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
@@ -99,8 +105,8 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Ride* ride = get_ride(_rideIndex);
-        if (ride->type == RIDE_TYPE_NULL)
+        auto ride = get_ride(_rideIndex);
+        if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
@@ -124,18 +130,19 @@ private:
 
         ride_clear_for_construction(ride);
         ride_remove_peeps(ride);
-        ride_stop_peeps_queuing(ride);
+        ride->StopGuestsQueuing();
 
         sub_6CB945(ride);
         ride_clear_leftover_entrances(ride);
         news_item_disable_news(NEWS_ITEM_RIDE, _rideIndex);
 
-        for (auto& banner : gBanners)
+        for (BannerIndex i = 0; i < MAX_BANNERS; i++)
         {
-            if (banner.type != BANNER_NULL && banner.flags & BANNER_FLAG_LINKED_TO_RIDE && banner.ride_index == _rideIndex)
+            auto banner = GetBanner(i);
+            if (banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_LINKED_TO_RIDE && banner->ride_index == _rideIndex)
             {
-                banner.flags &= 0xFB;
-                banner.string_idx = STR_DEFAULT_SIGN;
+                banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+                banner->text = {};
             }
         }
 
@@ -223,10 +230,6 @@ private:
             }
         }
 
-        user_string_free(ride->name);
-        ride->type = RIDE_TYPE_NULL;
-        gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
-
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->Cost = refundPrice;
@@ -235,10 +238,13 @@ private:
         {
             int32_t x = (ride->overall_view.x * 32) + 16;
             int32_t y = (ride->overall_view.y * 32) + 16;
-            int32_t z = tile_element_height(x, y);
+            int32_t z = tile_element_height({ x, y });
 
             res->Position = { x, y, z };
         }
+
+        ride->Delete();
+        gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
         // Close windows related to the demolished ride
         if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
@@ -262,7 +268,7 @@ private:
 
     money32 MazeRemoveTrack(uint16_t x, uint16_t y, uint16_t z, uint8_t direction) const
     {
-        auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
+        auto setMazeTrack = MazeSetTrackAction(CoordsXYZD{ x, y, z, direction }, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
         auto execRes = GameActions::ExecuteNested(&setMazeTrack);
@@ -289,7 +295,7 @@ private:
             if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if (it.element->AsTrack()->GetRideIndex() != _rideIndex)
+            if (it.element->AsTrack()->GetRideIndex() != (ride_idnew_t)_rideIndex)
                 continue;
 
             int32_t x = it.x * 32, y = it.y * 32;
@@ -298,11 +304,11 @@ private:
             uint8_t rotation = it.element->GetDirection();
             uint8_t type = it.element->AsTrack()->GetTrackType();
 
-            if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+            if (type != TRACK_ELEM_MAZE)
             {
                 auto trackRemoveAction = TrackRemoveAction(
                     type, it.element->AsTrack()->GetSequenceIndex(), { x, y, z, rotation });
-                trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_5);
+                trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
 
                 auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
 
@@ -326,7 +332,7 @@ private:
                 { 16, 0 },
             };
 
-            for (uint8_t dir = 0; dir < 4; dir++)
+            for (Direction dir : ALL_DIRECTIONS)
             {
                 const LocationXY16& off = DirOffsets[dir];
                 money32 removePrice = MazeRemoveTrack(x + off.x, y + off.y, z, dir);
@@ -349,7 +355,7 @@ private:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->Cost = GetRefurbishPrice(ride);
 
-        ride_renew(ride);
+        ride->Renew();
 
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
         ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
@@ -360,7 +366,7 @@ private:
         {
             int32_t x = (ride->overall_view.x * 32) + 16;
             int32_t y = (ride->overall_view.y * 32) + 16;
-            int32_t z = tile_element_height(x, y);
+            int32_t z = tile_element_height({ x, y });
 
             res->Position = { x, y, z };
         }

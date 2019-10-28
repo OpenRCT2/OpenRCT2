@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -256,7 +256,6 @@ extern colour_t gWindowScenerySecondaryColour;
 extern colour_t gWindowSceneryTertiaryColour;
 extern bool gWindowSceneryEyedropperEnabled;
 
-extern TileElement* gSceneryTileElement;
 extern uint8_t gSceneryQuadrant;
 
 extern money32 gSceneryPlaceCost;
@@ -278,8 +277,6 @@ extern int16_t gSceneryShiftPressZOffset;
 
 extern int16_t gSceneryCtrlPressed;
 extern int16_t gSceneryCtrlPressZ;
-
-extern uint8_t gSceneryGroundFlags;
 
 extern const LocationXY8 ScenerySubTileOffsets[];
 
