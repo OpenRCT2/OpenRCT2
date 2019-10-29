@@ -705,56 +705,60 @@ static constexpr const SoundId DoorCloseSoundIds[] =
 static const struct
 {
     int8_t x, y, z;
-} SteamParticleOffsets[] =
+} SteamParticleOffsets[][16] =
 {
-    { -11,   0, 22 },
-    { -10,   4, 22 },
-    {  -8,   8, 22 },
-    {  -4,  10, 22 },
-    {   0,  11, 22 },
-    {   4,  10, 22 },
-    {   8,   8, 22 },
-    {  10,   4, 22 },
-    {  11,   0, 22 },
-    {  10,  -4, 22 },
-    {   8,  -8, 22 },
-    {   4, -10, 22 },
-    {   0, -11, 22 },
-    {  -4, -10, 22 },
-    {  -8,  -8, 22 },
-    { -10,  -4, 22 },
-    {  -9,   0, 27 },
-    {  -8,   4, 27 },
-    {  -6,   6, 27 },
-    {  -4,   8, 27 },
-    {   0,   9, 27 },
-    {   4,   8, 27 },
-    {   6,   6, 27 },
-    {   8,   4, 27 },
-    {   9,   0, 27 },
-    {   8,  -4, 27 },
-    {   6,  -6, 27 },
-    {   4,  -8, 27 },
-    {   0,  -9, 27 },
-    {  -4,  -8, 27 },
-    {  -6,  -6, 27 },
-    {  -8,  -4, 27 },
-    { -13,   0, 18 },
-    { -12,   4, 17 },
-    {  -9,   9, 17 },
-    {  -4,   8, 17 },
-    {   0,  13, 18 },
-    {   4,   8, 17 },
-    {   6,   6, 17 },
-    {   8,   4, 17 },
-    {  13,   0, 18 },
-    {   8,  -4, 17 },
-    {   6,  -6, 17 },
-    {   4,  -8, 17 },
-    {   0, -13, 18 },
-    {  -4,  -8, 17 },
-    {  -6,  -6, 17 },
-    {  -8,  -4, 17 }
+    {
+        { -11,   0, 22 },
+        { -10,   4, 22 },
+        {  -8,   8, 22 },
+        {  -4,  10, 22 },
+        {   0,  11, 22 },
+        {   4,  10, 22 },
+        {   8,   8, 22 },
+        {  10,   4, 22 },
+        {  11,   0, 22 },
+        {  10,  -4, 22 },
+        {   8,  -8, 22 },
+        {   4, -10, 22 },
+        {   0, -11, 22 },
+        {  -4, -10, 22 },
+        {  -8,  -8, 22 },
+        { -10,  -4, 22 }
+    }, {
+        {  -9,   0, 27 },
+        {  -8,   4, 27 },
+        {  -6,   6, 27 },
+        {  -4,   8, 27 },
+        {   0,   9, 27 },
+        {   4,   8, 27 },
+        {   6,   6, 27 },
+        {   8,   4, 27 },
+        {   9,   0, 27 },
+        {   8,  -4, 27 },
+        {   6,  -6, 27 },
+        {   4,  -8, 27 },
+        {   0,  -9, 27 },
+        {  -4,  -8, 27 },
+        {  -6,  -6, 27 },
+        {  -8,  -4, 27 }
+    }, {
+        { -13,   0, 18 },
+        { -12,   4, 17 },
+        {  -9,   9, 17 },
+        {  -4,   8, 17 },
+        {   0,  13, 18 },
+        {   4,   8, 17 },
+        {   6,   6, 17 },
+        {   8,   4, 17 },
+        {  13,   0, 18 },
+        {   8,  -4, 17 },
+        {   6,  -6, 17 },
+        {   4,  -8, 17 },
+        {   0, -13, 18 },
+        {  -4,  -8, 17 },
+        {  -6,  -6, 17 },
+        {  -8,  -4, 17 }
+    }
 };
 
 // clang-format on
@@ -7251,18 +7255,22 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                             || (vehicle->status != VEHICLE_STATUS_MOVING_TO_END_OF_STATION
                                 && vehicle->status != VEHICLE_STATUS_ARRIVING))
                         {
-                            int32_t index = vehicle->sprite_direction >> 1;
-                            if (vehicle->vehicle_sprite_type == 2)
-                            {
-                                index += 16;
-                            }
-                            if (vehicle->vehicle_sprite_type == 6)
-                            {
-                                index += 32;
-                            }
-                            steam_particle_create(
-                                vehicle->x + SteamParticleOffsets[index].x, vehicle->y + SteamParticleOffsets[index].y,
-                                vehicle->z + SteamParticleOffsets[index].z);
+                            int32_t typeIndex = [&] {
+                                switch (vehicle->vehicle_sprite_type)
+                                {
+                                    case 2:
+                                        // uphill
+                                        return 1;
+                                    case 6:
+                                        // downhill
+                                        return 2;
+                                    default:
+                                        return 0;
+                                }
+                            }();
+                            int32_t directionIndex = vehicle->sprite_direction >> 1;
+                            auto offset = SteamParticleOffsets[typeIndex][directionIndex];
+                            steam_particle_create(vehicle->x + offset.x, vehicle->y + offset.y, vehicle->z + offset.z);
                         }
                     }
                 }
