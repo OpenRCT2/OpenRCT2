@@ -120,7 +120,7 @@ void game_handle_input()
     {
         game_handle_input_mouse(screenCoords, state);
     }
-    else if (screenCoords.x != MONEY32_UNDEFINED)
+    else
     {
         int32_t screenWidth = context_get_width();
         int32_t screenHeight = context_get_height();
