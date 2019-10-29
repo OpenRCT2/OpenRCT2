@@ -19,7 +19,7 @@ sudo: required
 dist: trusty
 env:
     global:
-        - OPENRCT2_VERSION="0.2.3"
+        - OPENRCT2_VERSION="0.2.4"
         # CURL timeouts in [seconds] (https://ec.haxx.se/usingcurl-timeouts.html)
         - CURL_MAX_TIME=300
         - CURL_CONNECT_TIMEOUT=5
