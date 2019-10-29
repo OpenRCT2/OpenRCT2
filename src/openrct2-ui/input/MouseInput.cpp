@@ -612,16 +612,17 @@ static void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, Scree
     gTooltipCursorX = screenCoords.x;
     gTooltipCursorY = screenCoords.y;
 
-    int32_t eax, ebx, scroll_area, scroll_id;
+    int32_t scroll_area, scroll_id;
+    ScreenCoordsXY scrollCoords;
     scroll_id = 0; // safety
-    widget_scroll_get_part(w, widget, screenCoords.x, screenCoords.y, &eax, &ebx, &scroll_area, &scroll_id);
+    widget_scroll_get_part(w, widget, screenCoords, scrollCoords, &scroll_area, &scroll_id);
 
     _currentScrollArea = scroll_area;
     _currentScrollIndex = scroll_id;
     window_event_unknown_15_call(w, scroll_id, scroll_area);
     if (scroll_area == SCROLL_PART_VIEW)
     {
-        window_event_scroll_mousedown_call(w, scroll_id, ScreenCoordsXY(eax, ebx));
+        window_event_scroll_mousedown_call(w, scroll_id, scrollCoords);
         return;
     }
 
@@ -675,7 +676,6 @@ static void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, Sc
 {
     rct_widget* widget;
     int32_t scroll_part, scroll_id;
-    int32_t x2, y2;
 
     assert(w != nullptr);
 
@@ -687,7 +687,8 @@ static void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, Sc
         return;
     }
 
-    widget_scroll_get_part(w, widget, screenCoords.x, screenCoords.y, &x2, &y2, &scroll_part, &scroll_id);
+    ScreenCoordsXY newScreenCoords;
+    widget_scroll_get_part(w, widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
 
     if (_currentScrollArea == SCROLL_PART_HSCROLLBAR_THUMB)
     {
@@ -705,9 +706,6 @@ static void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, Sc
         return;
     }
 
-    screenCoords.x = x2;
-    screenCoords.y = y2;
-
     if (scroll_part != _currentScrollArea)
     {
         invalidate_scroll();
@@ -717,7 +715,7 @@ static void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, Sc
     switch (scroll_part)
     {
         case SCROLL_PART_VIEW:
-            window_event_scroll_mousedrag_call(w, scroll_id, screenCoords);
+            window_event_scroll_mousedrag_call(w, scroll_id, newScreenCoords);
             break;
         case SCROLL_PART_HSCROLLBAR_LEFT:
             input_scroll_part_update_hleft(w, widgetIndex, scroll_id);
@@ -928,14 +926,15 @@ static void input_widget_over(ScreenCoordsXY screenCoords, rct_window* w, rct_wi
 
     if (w != nullptr && widgetIndex != -1 && widget->type == WWT_SCROLL)
     {
-        int32_t eax, ebx, scroll_part, edx;
-        widget_scroll_get_part(w, widget, screenCoords.x, screenCoords.y, &eax, &ebx, &scroll_part, &edx);
+        int32_t scroll_part, scrollId;
+        ScreenCoordsXY newScreenCoords;
+        widget_scroll_get_part(w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
 
         if (scroll_part != SCROLL_PART_VIEW)
             window_tooltip_close();
         else
         {
-            window_event_scroll_mouseover_call(w, edx, ScreenCoordsXY(eax, ebx));
+            window_event_scroll_mouseover_call(w, scrollId, newScreenCoords);
             input_update_tooltip(w, widgetIndex, screenCoords);
         }
     }
@@ -1154,10 +1153,9 @@ void process_mouse_over(ScreenCoordsXY screenCoords)
                 case WWT_SCROLL:
                 {
                     int32_t output_scroll_area, scroll_id;
-                    int32_t scroll_x, scroll_y;
+                    ScreenCoordsXY scrollCoords;
                     widget_scroll_get_part(
-                        window, &window->widgets[widgetId], screenCoords.x, screenCoords.y, &scroll_x, &scroll_y,
-                        &output_scroll_area, &scroll_id);
+                        window, &window->widgets[widgetId], screenCoords, scrollCoords, &output_scroll_area, &scroll_id);
                     cursorId = scroll_id;
                     if (output_scroll_area != SCROLL_PART_VIEW)
                     {
@@ -1165,7 +1163,7 @@ void process_mouse_over(ScreenCoordsXY screenCoords)
                         break;
                     }
                     // Same as default but with scroll_x/y
-                    cursorId = window_event_cursor_call(window, widgetId, ScreenCoordsXY(scroll_x, scroll_y));
+                    cursorId = window_event_cursor_call(window, widgetId, scrollCoords);
                     if (cursorId == -1)
                         cursorId = CURSOR_ARROW;
                     break;
