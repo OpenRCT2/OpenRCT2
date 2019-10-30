@@ -263,13 +263,12 @@ enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_DOWNLOAD_ALL
 };
 
-#define WW 450
-#define WH 400
-#define WW_LESS_PADDING (WW - 5)
-#define NAME_COL_LEFT 4
-#define SOURCE_COL_LEFT ((WW_LESS_PADDING / 4) + 1)
-#define TYPE_COL_LEFT (5 * WW_LESS_PADDING / 8 + 1)
-#define LIST_ITEM_HEIGHT 10
+constexpr int32_t WW = 450;
+constexpr int32_t WH = 400;
+constexpr int32_t WW_LESS_PADDING = WW - 5;
+constexpr int32_t NAME_COL_LEFT = 4;
+constexpr int32_t SOURCE_COL_LEFT = (WW_LESS_PADDING / 4) + 1;
+constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
 static rct_widget window_object_load_error_widgets[] = {
     { WWT_FRAME,             0, 0,               WW - 1,                0,          WH - 1,     STR_NONE,                       STR_NONE },                // Background

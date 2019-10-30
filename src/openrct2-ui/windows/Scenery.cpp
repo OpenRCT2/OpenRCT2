@@ -26,11 +26,11 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 
-#define WINDOW_SCENERY_WIDTH 634
-#define WINDOW_SCENERY_HEIGHT 180
-#define SCENERY_BUTTON_WIDTH 66
-#define SCENERY_BUTTON_HEIGHT 80
-#define SCENERY_WINDOW_TABS (MAX_SCENERY_GROUP_OBJECTS + 1) // The + 1 is for the 'Miscellaneous' tab
+constexpr int32_t WINDOW_SCENERY_WIDTH = 634;
+constexpr int32_t WINDOW_SCENERY_HEIGHT = 180;
+constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
+constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
+constexpr int32_t SCENERY_WINDOW_TABS = MAX_SCENERY_GROUP_OBJECTS + 1; // The + 1 is for the 'Miscellaneous' tab
 
 // clang-format off
 enum {

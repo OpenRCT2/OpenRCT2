@@ -175,18 +175,18 @@ enum WINDOW_CHEATS_WIDGET_IDX
 
 #pragma region MEASUREMENTS
 
-#define WW              249
-#define WH              300
-#define TAB_HEIGHT      43
-#define XSPA            5                                               // X spacing
-#define YSPA            5                                               // Y spacing
-#define XOS             6 + XSPA                                        // X offset from left
-#define YOS             TAB_HEIGHT + YSPA                               // Y offset from top (includes tabs height)
-#define BTNW            110                                             // button width
-#define BTNH            16                                              // button height
-#define OPTW            220                                             // Option (checkbox) width (two columns)
-#define OPTH            10                                              // Option (checkbox) height (two columns)
-#define GROUP_SPACE     6
+constexpr int32_t WW = 249;
+constexpr int32_t WH = 300;
+constexpr int32_t TAB_HEIGHT = 43;
+constexpr int32_t XSPA = 5;                                              // X spacing
+constexpr int32_t YSPA = 5;                                              // Y spacing
+constexpr int32_t XOS = 6 + XSPA;                                        // X offset from left
+constexpr int32_t YOS = TAB_HEIGHT + YSPA;                               // Y offset from top (includes tabs height)
+constexpr int32_t BTNW = 110;                                            // button width
+constexpr int32_t BTNH = 16;                                             // button height
+constexpr int32_t OPTW = 220;                                            // Option (checkbox) width (two columns)
+constexpr int32_t OPTH = 10;                                             // Option (checkbox) height (two columns)
+constexpr int32_t GROUP_SPACE = 6;
 
 #define YPL(ROW)        ((int16_t)(YOS + ((BTNH + YSPA) * ROW)))
 #define HPL(ROW)        ((int16_t)(YPL(ROW) + BTNH))
@@ -200,7 +200,7 @@ enum WINDOW_CHEATS_WIDGET_IDX
 #define MAX_BTN_LEFT    ((int16_t)(XPL(1.5)))
 #define MAX_BTN_RIGHT   ((int16_t)(WPL(1)))
 
-#define TXTO 3  // Text horizontal offset from button left (for button text)
+constexpr int32_t TXTO = 3;  // Text horizontal offset from button left (for button text)
 #pragma endregion
 
 #define MAIN_CHEATS_WIDGETS \

@@ -110,8 +110,8 @@ enum {
 
 #pragma region Widgets
 
-#define WW 250
-#define WH 273
+constexpr int32_t WW = 250;
+constexpr int32_t WH = 273;
 
 #define SHARED_WIDGETS \
     { WWT_FRAME,    0,  0,          WW - 1, 0,  WH - 1, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_BACKGROUND */ \
@@ -490,11 +490,11 @@ static constexpr const int32_t TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
 };
 // clang-format on
 
-#define BASESIZE_MIN 0
-#define BASESIZE_MAX 60
-#define WATERLEVEL_MIN 0
-#define WATERLEVEL_MAX 54
-#define MAX_SMOOTH_ITERATIONS 20
+constexpr int32_t BASESIZE_MIN = 0;
+constexpr int32_t BASESIZE_MAX = 60;
+constexpr int32_t WATERLEVEL_MIN = 0;
+constexpr int32_t WATERLEVEL_MAX = 54;
+constexpr int32_t MAX_SMOOTH_ITERATIONS = 20;
 
 static void window_mapgen_set_page(rct_window* w, int32_t page);
 static void window_mapgen_set_pressed_tab(rct_window* w);

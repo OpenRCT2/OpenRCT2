@@ -197,8 +197,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_NEWS_CHECKBOX
 };
 
-#define WW          310
-#define WH          332
+constexpr int32_t WW = 310;
+constexpr int32_t WH = 332;
 
 #ifndef DISABLE_TWITCH
     #define TWITCH_TAB_SPRITE   IMAGE_TYPE_REMAP | SPR_TAB

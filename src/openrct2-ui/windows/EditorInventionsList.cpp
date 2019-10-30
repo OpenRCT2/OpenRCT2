@@ -26,8 +26,8 @@
 
 #pragma region Widgets
 
-#define WW 600
-#define WH 400
+constexpr int32_t WW = 600;
+constexpr int32_t WH = 400;
 
 // clang-format off
 enum {

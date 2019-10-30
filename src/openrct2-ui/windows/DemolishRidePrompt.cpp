@@ -16,8 +16,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-#define WW 200
-#define WH 100
+constexpr int32_t WW = 200;
+constexpr int32_t WH = 100;
 
 static money32 _demolishRideCost;
 

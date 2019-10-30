@@ -102,10 +102,10 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_STAFF_LIST_MAP,
 };
 
-#define WW 320
-#define WH 270
-#define MAX_WW 500
-#define MAX_WH 450
+constexpr int32_t WW = 320;
+constexpr int32_t WH = 270;
+constexpr int32_t MAX_WW = 500;
+constexpr int32_t MAX_WH = 450;
 
 static rct_widget window_staff_list_widgets[] = {
     { WWT_FRAME,            0,  0,          319,        0,      269,    0xFFFFFFFF,         STR_NONE },                         // panel / background

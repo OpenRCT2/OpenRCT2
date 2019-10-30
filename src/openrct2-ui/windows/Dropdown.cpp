@@ -18,9 +18,9 @@
 #include <openrct2/sprites.h>
 
 // The maximum number of rows to list before items overflow into new columns
-#define DROPDOWN_TEXT_MAX_ROWS 32
+constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
 
-#define DROPDOWN_ITEM_HEIGHT 12
+constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
 
 int32_t gAppropriateImageDropdownItemsPerRow[] = {
     1, 1, 1, 1, 2, 2, 3, 3, 4, 3, 5, 4, 4, 5, 5, 5, 4, 5, 6, 5, 5, 7, 4, 5, 6, 5, 6, 6, 6, 6, 6, 8, 8, 0,

@@ -25,8 +25,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-#define WW 250
-#define WH 90
+constexpr int32_t WW = 250;
+constexpr int32_t WH = 90;
 
 // clang-format off
 enum WINDOW_TEXT_INPUT_WIDGET_IDX {

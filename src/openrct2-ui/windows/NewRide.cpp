@@ -33,9 +33,9 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-#define AVAILABILITY_STRING_SIZE 256
-#define WH 382
-#define WW 601
+constexpr size_t AVAILABILITY_STRING_SIZE = 256;
+constexpr int32_t WH = 382;
+constexpr int32_t WW = 601;
 
 static uint8_t _windowNewRideCurrentTab;
 static ride_list_item _windowNewRideHighlightedItem[6];
