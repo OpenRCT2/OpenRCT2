@@ -86,7 +86,7 @@ static void submarine_ride_paint_track_station(
     if (ride == nullptr)
         return;
 
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     int32_t heightLower = height - 16;
     uint32_t imageId;
@@ -118,7 +118,7 @@ static void submarine_ride_paint_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     int32_t heightLower = height - 16;
     uint32_t imageId;
 

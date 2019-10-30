@@ -288,7 +288,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             }
         }
 
-        LocationXY16 dword_9DE574 = session->MapPosition;
+        CoordsXY mapPosition = session->MapPosition;
         session->CurrentlyDrawnItem = tile_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (tile_element->GetType())
@@ -328,7 +328,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
                 // all elements after it.
                 return;
         }
-        session->MapPosition = dword_9DE574;
+        session->MapPosition = mapPosition;
     } while (!(tile_element++)->IsLastForTile());
 
 #ifndef __TESTPAINT__

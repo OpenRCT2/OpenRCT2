@@ -73,7 +73,7 @@ static void paint_lift_base(
     }
 
     int32_t edges = edges_3x3[trackSequence];
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);

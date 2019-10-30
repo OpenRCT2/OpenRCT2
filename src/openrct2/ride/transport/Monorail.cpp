@@ -254,57 +254,57 @@ static constexpr const uint32_t ghost_train_track_pieces_right_eight_to_diag[4][
     },
 };
 
-static constexpr const LocationXY16 ghost_train_track_pieces_right_eight_to_diag_bounds[4][4] = {
+static constexpr const CoordsXY ghost_train_track_pieces_right_eight_to_diag_bounds[4][4] = {
     {
-        { 32, 20 },
-        { 32, 16 },
-        { 16, 16 },
-        { 16, 16 },
+        CoordsXY(32, 20),
+        CoordsXY(32, 16),
+        CoordsXY(16, 16),
+        CoordsXY(16, 16),
     },
     {
-        { 20, 32 },
-        { 16, 32 },
-        { 16, 16 },
-        { 16, 16 },
+        CoordsXY(20, 32),
+        CoordsXY(16, 32),
+        CoordsXY(16, 16),
+        CoordsXY(16, 16),
     },
     {
-        { 32, 20 },
-        { 34, 16 },
-        { 28, 28 },
-        { 16, 18 },
+        CoordsXY(32, 20),
+        CoordsXY(34, 16),
+        CoordsXY(28, 28),
+        CoordsXY(16, 18),
     },
     {
-        { 20, 32 },
-        { 16, 32 },
-        { 16, 16 },
-        { 16, 16 },
+        CoordsXY(20, 32),
+        CoordsXY(16, 32),
+        CoordsXY(16, 16),
+        CoordsXY(16, 16),
     },
 };
 
-static constexpr const LocationXY16 ghost_train_track_pieces_right_eight_to_diag_offset[4][4] = {
+static constexpr const CoordsXY ghost_train_track_pieces_right_eight_to_diag_offset[4][4] = {
     {
-        { 0, 6 },
-        { 0, 16 },
-        { 0, 0 },
-        { 16, 0 },
+        CoordsXY(0, 6),
+        CoordsXY(0, 16),
+        CoordsXY(0, 0),
+        CoordsXY(16, 0),
     },
     {
-        { 6, 0 },
-        { 16, 0 },
-        { 0, 16 },
-        { 0, 0 },
+        CoordsXY(6, 0),
+        CoordsXY(16, 0),
+        CoordsXY(0, 16),
+        CoordsXY(0, 0),
     },
     {
-        { 0, 6 },
-        { 0, 0 },
-        { 4, 4 },
-        { 0, 16 },
+        CoordsXY(0, 6),
+        CoordsXY(0, 0),
+        CoordsXY(4, 4),
+        CoordsXY(0, 16),
     },
     {
-        { 6, 0 },
-        { 0, 0 },
-        { 16, 0 },
-        { 16, 16 },
+        CoordsXY(6, 0),
+        CoordsXY(0, 0),
+        CoordsXY(16, 0),
+        CoordsXY(16, 16),
     },
 };
 
@@ -335,57 +335,57 @@ static constexpr const uint32_t ghost_train_track_pieces_left_eight_to_diag[4][4
     },
 };
 
-static constexpr const LocationXY16 ghost_train_track_pieces_left_eight_to_diag_bounds[4][4] = {
+static constexpr const CoordsXY ghost_train_track_pieces_left_eight_to_diag_bounds[4][4] = {
     {
-        { 32, 20 },
-        { 32, 16 },
-        { 16, 16 },
-        { 16, 16 },
+        CoordsXY(32, 20),
+        CoordsXY(32, 16),
+        CoordsXY(16, 16),
+        CoordsXY(16, 16),
     },
     {
-        { 20, 32 },
-        { 16, 34 },
-        { 16, 16 },
-        { 18, 16 },
+        CoordsXY(20, 32),
+        CoordsXY(16, 34),
+        CoordsXY(16, 16),
+        CoordsXY(18, 16),
     },
     {
-        { 32, 20 },
-        { 32, 16 },
-        { 16, 16 },
-        { 16, 16 },
+        CoordsXY(32, 20),
+        CoordsXY(32, 16),
+        CoordsXY(16, 16),
+        CoordsXY(16, 16),
     },
     {
-        { 20, 32 },
-        { 16, 32 },
-        { 16, 16 },
-        { 16, 16 },
+        CoordsXY(20, 32),
+        CoordsXY(16, 32),
+        CoordsXY(16, 16),
+        CoordsXY(16, 16),
     },
 };
 
-static constexpr const LocationXY16 ghost_train_track_pieces_left_eight_to_diag_offset[4][4] = {
+static constexpr const CoordsXY ghost_train_track_pieces_left_eight_to_diag_offset[4][4] = {
     {
-        { 0, 6 },
-        { 0, 0 },
-        { 0, 16 },
-        { 16, 16 },
+        CoordsXY(0, 6),
+        CoordsXY(0, 0),
+        CoordsXY(0, 16),
+        CoordsXY(16, 16),
     },
     {
-        { 6, 0 },
-        { 0, 0 },
-        { 16, 16 },
-        { 16, 0 },
+        CoordsXY(6, 0),
+        CoordsXY(0, 0),
+        CoordsXY(16, 16),
+        CoordsXY(16, 0),
     },
     {
-        { 0, 6 },
-        { 0, 16 },
-        { 16, 0 },
-        { 0, 0 },
+        CoordsXY(0, 6),
+        CoordsXY(0, 16),
+        CoordsXY(16, 0),
+        CoordsXY(0, 0),
     },
     {
-        { 6, 0 },
-        { 16, 0 },
-        { 0, 0 },
-        { 0, 16 },
+        CoordsXY(6, 0),
+        CoordsXY(16, 0),
+        CoordsXY(0, 0),
+        CoordsXY(0, 16),
     },
 };
 
@@ -422,7 +422,7 @@ static void paint_monorail_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     uint32_t imageId = monorail_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -513,7 +513,7 @@ static void paint_monorail_track_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     uint32_t imageId = monorail_track_pieces_25_deg_up[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -557,7 +557,7 @@ static void paint_monorail_track_flat_to_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     uint32_t imageId = monorail_track_pieces_flat_to_25_deg_up[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -601,7 +601,7 @@ static void paint_monorail_track_25_deg_up_to_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     uint32_t imageId = monorail_track_pieces_25_deg_up_to_flat[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -747,23 +747,23 @@ static void paint_monorail_track_s_bend_left(
         trackSequence = 3 - trackSequence;
     }
 
-    const LocationXY16 offsetList[] = {
-        { 0, 6 },
-        { 0, 0 },
-        { 0, 6 },
-        { 0, 6 },
+    const CoordsXY offsetList[] = {
+        CoordsXY(0, 6),
+        CoordsXY(0, 0),
+        CoordsXY(0, 6),
+        CoordsXY(0, 6),
     };
 
-    const LocationXY16 boundsList[] = {
-        { 32, 20 },
-        { 32, 26 },
-        { 32, 26 },
-        { 32, 20 },
+    const CoordsXY boundsList[] = {
+        CoordsXY(32, 20),
+        CoordsXY(32, 26),
+        CoordsXY(32, 26),
+        CoordsXY(32, 20),
     };
 
     uint32_t imageId = monorail_track_pieces_s_bend_left[direction & 1][trackSequence] | session->TrackColours[SCHEME_TRACK];
-    LocationXY16 offset = offsetList[trackSequence];
-    LocationXY16 bounds = boundsList[trackSequence];
+    CoordsXY offset = offsetList[trackSequence];
+    CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
         sub_98196C(session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 3, height);
@@ -851,23 +851,23 @@ static void paint_monorail_track_s_bend_right(
         trackSequence = 3 - trackSequence;
     }
 
-    const LocationXY16 offsetList[] = {
-        { 0, 6 },
-        { 0, 6 },
-        { 0, 0 },
-        { 0, 6 },
+    const CoordsXY offsetList[] = {
+        CoordsXY(0, 6),
+        CoordsXY(0, 6),
+        CoordsXY(0, 0),
+        CoordsXY(0, 6),
     };
 
-    const LocationXY16 boundsList[] = {
-        { 32, 20 },
-        { 32, 26 },
-        { 32, 26 },
-        { 32, 20 },
+    const CoordsXY boundsList[] = {
+        CoordsXY(32, 20),
+        CoordsXY(32, 26),
+        CoordsXY(32, 26),
+        CoordsXY(32, 20),
     };
 
     uint32_t imageId = monorail_track_pieces_s_bend_right[direction & 1][trackSequence] | session->TrackColours[SCHEME_TRACK];
-    LocationXY16 offset = offsetList[trackSequence];
-    LocationXY16 bounds = boundsList[trackSequence];
+    CoordsXY offset = offsetList[trackSequence];
+    CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
         sub_98196C(session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 3, height);
@@ -1003,8 +1003,8 @@ static void paint_monorail_track_left_eighth_to_diag(
     if (index >= 0)
     {
         uint32_t imageId = ghost_train_track_pieces_left_eight_to_diag[direction][index] | session->TrackColours[SCHEME_TRACK];
-        const LocationXY16 offset = ghost_train_track_pieces_left_eight_to_diag_offset[direction][index];
-        const LocationXY16 bounds = ghost_train_track_pieces_left_eight_to_diag_bounds[direction][index];
+        const CoordsXY offset = ghost_train_track_pieces_left_eight_to_diag_offset[direction][index];
+        const CoordsXY bounds = ghost_train_track_pieces_left_eight_to_diag_bounds[direction][index];
         sub_98197C(session, imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
     }
 
@@ -1071,8 +1071,8 @@ static void paint_monorail_track_right_eighth_to_diag(
     if (index >= 0)
     {
         uint32_t imageId = ghost_train_track_pieces_right_eight_to_diag[direction][index] | session->TrackColours[SCHEME_TRACK];
-        const LocationXY16 offset = ghost_train_track_pieces_right_eight_to_diag_offset[direction][index];
-        const LocationXY16 bounds = ghost_train_track_pieces_right_eight_to_diag_bounds[direction][index];
+        const CoordsXY offset = ghost_train_track_pieces_right_eight_to_diag_offset[direction][index];
+        const CoordsXY bounds = ghost_train_track_pieces_right_eight_to_diag_bounds[direction][index];
         sub_98197C(session, imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height);
     }
 

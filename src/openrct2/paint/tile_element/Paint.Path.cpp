@@ -426,8 +426,7 @@ static void sub_6A4101(
         direction += session->CurrentRotation;
         direction &= 3;
 
-        LocationXYZ16 boundBoxOffsets = { BannerBoundBoxes[direction][0].x, BannerBoundBoxes[direction][0].y,
-                                          static_cast<int16_t>(height + 2) };
+        CoordsXYZ boundBoxOffsets = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
 
         uint32_t imageId = (direction << 1) + base_image_id + 28;
 

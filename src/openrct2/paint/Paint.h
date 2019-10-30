@@ -149,7 +149,7 @@ struct paint_session
     const void* CurrentlyDrawnItem;
     paint_entry* EndOfPaintStructArray;
     paint_entry* NextFreePaintStruct;
-    LocationXY16 SpritePosition;
+    CoordsXY SpritePosition;
     paint_struct* LastRootPS;
     attached_paint_struct* UnkF1AD2C;
     uint8_t InteractionType;
@@ -159,7 +159,7 @@ struct paint_session
     paint_string_struct* PSStringHead;
     paint_string_struct* LastPSString;
     paint_struct* WoodenSupportsPrependTo;
-    LocationXY16 MapPosition;
+    CoordsXY MapPosition;
     tunnel_entry LeftTunnels[TUNNEL_MAX_COUNT];
     uint8_t LeftTunnelCount;
     tunnel_entry RightTunnels[TUNNEL_MAX_COUNT];
