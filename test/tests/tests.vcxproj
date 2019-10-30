@@ -65,10 +65,10 @@
     <ClCompile Include="IniWriterTest.cpp" />
     <ClCompile Include="Localisation.cpp" />
     <ClCompile Include="MultiLaunch.cpp" />
-    <ClCompile Include="NetworkLoadSave.cpp" />
     <ClCompile Include="ReplayTests.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="RideRatings.cpp" />
+    <ClCompile Include="S6ImportExportTests.cpp" />
     <ClCompile Include="sawyercoding_test.cpp" />
     <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
     <ClCompile Include="TestData.cpp" />
