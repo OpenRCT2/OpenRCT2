@@ -33,6 +33,7 @@
 #include "LargeSceneryRemoveAction.hpp"
 #include "LargeScenerySetColourAction.hpp"
 #include "LoadOrQuitAction.hpp"
+#include "MazePlaceTrackAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "NetworkModifyGroupAction.hpp"
 #include "ParkEntranceRemoveAction.hpp"
@@ -103,6 +104,7 @@ namespace GameActions
         Register<FootpathSceneryPlaceAction>();
         Register<FootpathSceneryRemoveAction>();
         Register<GuestSetNameAction>();
+        Register<MazePlaceTrackAction>();
         Register<MazeSetTrackAction>();
         Register<NetworkModifyGroupAction>();
         Register<ParkMarketingAction>();

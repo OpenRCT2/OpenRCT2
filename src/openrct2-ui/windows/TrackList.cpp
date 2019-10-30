@@ -97,7 +97,7 @@ static rct_window_event_list window_track_list_events = {
 };
 // clang-format on
 
-#define TRACK_DESIGN_INDEX_UNLOADED UINT16_MAX
+constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
 
 ride_list_item _window_track_list_item;
 
@@ -137,7 +137,7 @@ rct_window* window_track_list_open(ride_list_item item)
         y = TOP_TOOLBAR_HEIGHT + 2;
     }
 
-    rct_window* w = window_create(x, y, 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
+    rct_window* w = window_create(ScreenCoordsXY(x, y), 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
 
     window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
     w->widgets = window_track_list_widgets;

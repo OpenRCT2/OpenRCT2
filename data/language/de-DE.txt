@@ -1150,7 +1150,7 @@ STR_1770    :{SMALLFONT}{BLACK}Anzahl kompletter Schwünge
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Nur ein Fahrtfoto-Bereich pro Bahn erlaubt
 STR_1774    :Nur ein Kabellifthügel pro Bahn erlaubt
-STR_1777    :{WINDOW_COLOUR_2}Attraktionsmusik
+STR_1777    :Attraktionsmusik
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandakostüm
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerkostüm
@@ -1873,7 +1873,7 @@ STR_2533    :Rücktaste
 STR_2534    :Tab
 STR_2535    :???
 STR_2536    :???
-STR_2537    :Entf
+STR_2537    :Clear
 STR_2538    :Eingabetaste
 STR_2539    :???
 STR_2540    :???
@@ -1897,17 +1897,17 @@ STR_2557    :Leertaste
 STR_2558    :Bild auf
 STR_2559    :Bild ab
 STR_2560    :Ende
-STR_2561    :Pos 1
+STR_2561    :Pos1
 STR_2562    :Links
-STR_2563    :Oben
+STR_2563    :Rauf
 STR_2564    :Rechts
-STR_2565    :Unten
-STR_2566    :Auswählen
+STR_2565    :Runter
+STR_2566    :Select
 STR_2567    :Drucken
 STR_2568    :Ausführen
 STR_2569    :Schnappschuss
 STR_2570    :Einfügen
-STR_2571    :Löschen
+STR_2571    :Entfernen
 STR_2572    :Hilfe
 STR_2573    :0
 STR_2574    :1
@@ -1957,22 +1957,22 @@ STR_2617    :???
 STR_2618    :Menü
 STR_2619    :???
 STR_2620    :???
-STR_2621    :Zehnertastatur 0
-STR_2622    :Zehnertastatur 1
-STR_2623    :Zehnertastatur 2
-STR_2624    :Zehnertastatur 3
-STR_2625    :Zehnertastatur 4
-STR_2626    :Zehnertastatur 5
-STR_2627    :Zehnertastatur 6
-STR_2628    :Zehnertastatur 7
-STR_2629    :Zehnertastatur 8
-STR_2630    :Zehnertastatur 9
-STR_2631    :Zehnertastatur *
-STR_2632    :Zehnertastatur +
+STR_2621    :Ziffernblock 0
+STR_2622    :Ziffernblock 1
+STR_2623    :Ziffernblock 2
+STR_2624    :Ziffernblock 3
+STR_2625    :Ziffernblock 4
+STR_2626    :Ziffernblock 5
+STR_2627    :Ziffernblock 6
+STR_2628    :Ziffernblock 7
+STR_2629    :Ziffernblock 8
+STR_2630    :Ziffernblock 9
+STR_2631    :Ziffernblock *
+STR_2632    :Ziffernblock +
 STR_2633    :???
-STR_2634    :Zehnertastatur -
-STR_2635    :Zehnertastatur .
-STR_2636    :Zehnertastatur /
+STR_2634    :Ziffernblock -
+STR_2635    :Ziffernblock .
+STR_2636    :Ziffernblock /
 STR_2637    :F1
 STR_2638    :F2
 STR_2639    :F3
@@ -2005,7 +2005,7 @@ STR_2665    :???
 STR_2666    :???
 STR_2667    :???
 STR_2668    :???
-STR_2669    :Num
+STR_2669    :Numlock
 STR_2670    :Rollen
 STR_2671    :???
 STR_2672    :???
@@ -2019,7 +2019,7 @@ STR_2679    :???
 STR_2680    :Alle Forschungen beendet
 STR_2681    :{MEDIUMFONT}{BLACK}Erhöht Ihren Kontostand um {CURRENCY}
 STR_2684    :{SMALLFONT}{BLACK}Eine große Gruppe von Besuchern tritt ein
-STR_2685    :„Simplex Noise“ Param.
+STR_2685    :Simplexrauschparameter
 STR_2686    :Niedrig:
 STR_2687    :Hoch:
 STR_2688    :Basisfrequenz:
@@ -2105,11 +2105,11 @@ STR_2776    :Sprache:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Ansichtsfenster {COMMA16}
-STR_2780    :Extra Ansichtsfenster
+STR_2780    :Zusatz-Ansichtsfenster
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
-STR_2782    :UMSCHALT +
-STR_2783    :STRG +
+STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2782    :UMSCHALT + 
+STR_2783    :STRG + 
 STR_2784    :Tastaturkürzel ändern
 STR_2785    :{WINDOW_COLOUR_2}Drücken Sie die neue Taste für:{NEWLINE}„{STRINGID}“
 STR_2786    :{SMALLFONT}{BLACK}Klicken Sie auf die Kürzelbeschreibung, um eine neue Taste auszuwählen
@@ -2332,18 +2332,6 @@ STR_3074    :{RED}WARNUNG: Ihre Parkbewertung liegt immer noch unter dem Wert 70
 STR_3075    :{RED}WARNUNG: Ihre Parkbewertung liegt immer noch unter dem Wert 700!{NEWLINE}Sie haben noch 2 Wochen Zeit, um die Parkbewertung zu erhöhen, oder Ihr Park wird geschlossen
 STR_3076    :{RED}LETZTE WARNUNG: Ihre Parkbewertung liegt immer noch unter dem Wert 700!{NEWLINE}In 7 Tagen wird Ihr Park geschlossen, es sei denn, Sie können die Bewertung erhöhen
 STR_3077    :{RED}SCHLIESSUNGSNACHRICHT: Ihr Park wurde geschlossen!
-STR_3078    :Normaler Eingang
-STR_3079    :Holzeingang
-STR_3080    :Zelteingang
-STR_3081    :Burgeingang (grau)
-STR_3082    :Burgeingang (braun)
-STR_3083    :Dschungeleingang
-STR_3084    :Blockhütteneingang
-STR_3085    :Klassischer/Römischer Eingang
-STR_3086    :Abstrakter Eingang
-STR_3087    :Schnee-/Eis-Eingang
-STR_3088    :Pagodeneingang
-STR_3089    :Weltraumeingang
 STR_3090    :{SMALLFONT}{BLACK}Wählen Sie Stil für den Eingang,{NEWLINE}Ausgang und die Station aus
 STR_3091    :Sie dürfen diesen Abschnitt nicht entfernen!
 STR_3092    :Sie dürfen die Station für diese Bahn nicht verschieben oder verändern!
@@ -3230,7 +3218,7 @@ STR_5762    :Chinesischer Yuan (CN¥)
 STR_5763    :Alle Dateien
 STR_5764    :Ungültiger Bahntyp
 STR_5765    :Kann Bahnen eines ungültigen Typs nicht bearbeiten
-STR_5766    :<available string id>
+STR_5766    :Ungarischer Forint (Ft)
 STR_5767    :Einkünfte
 STR_5768    :Besucher gesamt
 STR_5769    :Gesamtgewinn
@@ -3321,8 +3309,8 @@ STR_5855    :{SMALLFONT}{BLACK}Fenstermodus, Vollbild oder{NEWLINE}randlose Anze
 STR_5856    :{SMALLFONT}{BLACK}Die im Vollbildmodus verwendete{NEWLINE}Auflösung einstellen
 STR_5857    :{SMALLFONT}{BLACK}Spieloptionen
 STR_5858    :{SMALLFONT}{BLACK}GPU anstelle der CPU für die Anzeige verwenden. Verbessert die Kompatibilität mit Aufnahmeprogrammen. Möglicherweise wird die Leistung geringfügig beeinträchtigt
-STR_5859    :{SMALLFONT}{BLACK}Aktiviert Tweening für ein sichtbar flüssigeres Spielverhalten. Wenn deaktiviert läuft das Spiel mit 40 FPS
-STR_5860    :Umschalten zwischen original und dekompilierten Streckenbau
+STR_5859    :{SMALLFONT}{BLACK}Aktiviert Tweening für ein sichtbar flüssigeres Spielverhalten. Wenn deaktiviert, läuft das Spiel mit 40 FPS
+STR_5860    :Originale/dekompilierte Streckenansicht
 STR_5861    :Schlüsselüberprüfung fehlgeschlagen.
 STR_5862    :Blockiere unbekannte Spieler
 STR_5863    :{SMALLFONT}{BLACK}Erlaube nur Spieler, mit bekanntem{NEWLINE}Schlüssel, sich zu verbinden
@@ -3716,12 +3704,14 @@ STR_6252    :Twitch-API-URL
 STR_6253    :{SMALLFONT}{BLACK}Geben Sie die URL der Twitch-Integrations-API an. Benötigt, um die Twitch-Integration zu aktivieren.
 STR_6254    :URL der Twitch-Integrations-API:
 STR_6255    :URL ist nicht gültig
-STR_6256    :Rendering effects
+STR_6256    :Rendereffekte
 STR_6257    :Gläsern (durchsichtig)
 STR_6258    :Klar (transparent)
 STR_6259    :Deaktiviert
 STR_6260    :Blockierte Kacheln anzeigen
 STR_6261    :Breite Wege anzeigen
+STR_6262    :Hauptlautstärke
+STR_6263    :{SMALLFONT}{BLACK}Ton insgesamt ein-/ausschalten
 STR_6264    :Verwenden Sie immer den Systemdateibrowser
 STR_6265    :{SMALLFONT}{BLACK}Wenn Optionsfeld aktiviert wird, dann wird der Dateibrowser Ihres Systems verwendet im Gegensatz zu dem von OpenRCT2.
 STR_6266    :Benutzerdefinierten Inhaltsordner öffnen
@@ -3776,6 +3766,21 @@ STR_6314    :{WINDOW_COLOUR_2}Ziel: {BLACK}{INT32}, {INT32} Toleranz {INT32}
 STR_6315    :{WINDOW_COLOUR_2}Wegfindungsziel: {BLACK}{INT32}, {INT32}, {INT32} Richt. {INT32}
 STR_6316    :{WINDOW_COLOUR_2}Wegfindungshistorie:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} Richtung {INT32}
+STR_6318    :Netzwerkdesynchronisation erkannt.{NEWLINE}Logdatei: {STRING}
+STR_6319    :{WINDOW_COLOUR_2}Blockbremse geschlossen
+STR_6320    :{WINDOW_COLOUR_2}Unzerstörbar
+STR_6321    :{WINDOW_COLOUR_2}Zusatz ist kaputt
+STR_6322    :{WINDOW_COLOUR_2}Sprite-ID: {BLACK}{INT32}
+STR_6323    :Simulierend
+STR_6324    :Simulieren
+STR_6325    :{SMALLFONT}{BLACK}Fahrgeschäft/Attraktion simulieren
+STR_6326    :{POP16}{POP16}{POP16}{STRINGID} kann nicht simuliert werden ...
+STR_6327    :Transparenter Hintergrund für riesige Screenshots
+STR_6328    :{SMALLFONT}{BLACK}Mit dieser Option werden riesige Screenshots einen transparenten Hintergrund statt der standardmäßig verwendeten schwarzen Farbe verwenden.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :Lade [{STRING}] von {STRING} herunter ({COMMA16} / {COMMA16})
+STR_6331    :Enten erzeugen
+STR_6332    :Enten entfernen
 
 #############
 # Scenarios #

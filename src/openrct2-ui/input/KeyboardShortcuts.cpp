@@ -157,8 +157,9 @@ std::string KeyboardShortcuts::GetShortcutString(int32_t shortcut) const
     return std::string(buffer);
 }
 
-void KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState, int32_t* x, int32_t* y) const
+ScreenCoordsXY KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState) const
 {
+    ScreenCoordsXY screenCoords;
     for (int32_t shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++)
     {
         uint16_t shortcutKey = _keys[shortcutId];
@@ -184,21 +185,22 @@ void KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState, int32_t* 
         switch (shortcutId)
         {
             case SHORTCUT_SCROLL_MAP_UP:
-                *y = -1;
+                screenCoords.y = -1;
                 break;
             case SHORTCUT_SCROLL_MAP_LEFT:
-                *x = -1;
+                screenCoords.x = -1;
                 break;
             case SHORTCUT_SCROLL_MAP_DOWN:
-                *y = 1;
+                screenCoords.y = 1;
                 break;
             case SHORTCUT_SCROLL_MAP_RIGHT:
-                *x = 1;
+                screenCoords.x = 1;
                 break;
             default:
                 break;
         }
     }
+    return screenCoords;
 }
 
 void keyboard_shortcuts_reset()
@@ -232,9 +234,9 @@ void keyboard_shortcuts_format_string(char* buffer, size_t bufferSize, int32_t s
     String::Set(buffer, bufferSize, str.c_str());
 }
 
-void get_keyboard_map_scroll(const uint8_t* keysState, int32_t* x, int32_t* y)
+ScreenCoordsXY get_keyboard_map_scroll(const uint8_t* keysState)
 {
-    _instance->GetKeyboardMapScroll(keysState, x, y);
+    return _instance->GetKeyboardMapScroll(keysState);
 }
 
 // Default keyboard shortcuts

@@ -34,7 +34,7 @@
 #define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
 #define MAP_COLOUR_UNOWNED(colour) (PALETTE_INDEX_10 | ((colour)&0xFF00))
 
-#define MAP_WINDOW_MAP_SIZE (MAXIMUM_MAP_SIZE_TECHNICAL * 2)
+constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
 // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
@@ -123,9 +123,9 @@ static void window_map_resize(rct_window *w);
 static void window_map_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_map_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_map_update(rct_window *w);
-static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_map_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_map_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_map_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
@@ -462,18 +462,18 @@ static void window_map_update(rct_window* w)
  *
  *  rct2: 0x0068D093
  */
-static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     switch (widgetIndex)
     {
         case WIDX_SET_LAND_RIGHTS:
-            window_map_set_land_rights_tool_update(x, y);
+            window_map_set_land_rights_tool_update(screenCoords.x, screenCoords.y);
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
-            window_map_place_park_entrance_tool_update(x, y);
+            window_map_place_park_entrance_tool_update(screenCoords.x, screenCoords.y);
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
-            window_map_set_peep_spawn_tool_update(x, y);
+            window_map_set_peep_spawn_tool_update(screenCoords.x, screenCoords.y);
             break;
     }
 }
@@ -482,15 +482,15 @@ static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, in
  *
  *  rct2: 0x0068D074
  */
-static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     switch (widgetIndex)
     {
         case WIDX_BUILD_PARK_ENTRANCE:
-            window_map_place_park_entrance_tool_down(x, y);
+            window_map_place_park_entrance_tool_down(screenCoords.x, screenCoords.y);
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
-            window_map_set_peep_spawn_tool_down(x, y);
+            window_map_set_peep_spawn_tool_down(screenCoords.x, screenCoords.y);
             break;
     }
 }
@@ -499,7 +499,7 @@ static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, int3
  *
  *  rct2: 0x0068D088
  */
-static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     switch (widgetIndex)
     {

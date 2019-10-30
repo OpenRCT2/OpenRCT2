@@ -129,8 +129,8 @@ static constexpr const rct_string_id EditorStepNames[] = {
 rct_window* window_editor_bottom_toolbar_open()
 {
     rct_window* window = window_create(
-        0, context_get_height() - 32, context_get_width(), 32, &window_editor_bottom_toolbar_events, WC_BOTTOM_TOOLBAR,
-        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
+        ScreenCoordsXY(0, context_get_height() - 32), context_get_width(), 32, &window_editor_bottom_toolbar_events,
+        WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_editor_bottom_toolbar_widgets;
 
     window->enabled_widgets |= (1 << WIDX_PREVIOUS_STEP_BUTTON) | (1 << WIDX_NEXT_STEP_BUTTON) | (1 << WIDX_PREVIOUS_IMAGE)

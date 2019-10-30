@@ -28,13 +28,10 @@
 #include <iterator>
 #include <stdexcept>
 
-#define ACTION_COOLDOWN_TIME_PLACE_SCENERY 20
-#define ACTION_COOLDOWN_TIME_DEMOLISH_RIDE 1000
-
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "19"
+#define NETWORK_STREAM_VERSION "0"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;

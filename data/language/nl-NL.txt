@@ -3793,6 +3793,8 @@ STR_6327    :Reuzenscreenshots hebben transparante achtergrond
 STR_6328    :{SMALLFONT}{BLACK}Als deze optie is ingeschakeld, worden reuzenscreenshots met een transparante achtergrond genomen, in plaats van de zwarte standaardachtergrond.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :[{STRING}] wordt gedownload van {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Eenden aanmaken
+STR_6332    :Eenden verw.
 
 #############
 # Scenarios #

@@ -26,8 +26,8 @@ enum {
     WINDOW_NETWORK_PAGE_INFORMATION,
 };
 
-#define WW 450
-#define WH 210
+constexpr int32_t WW = 450;
+constexpr int32_t WH = 210;
 
 enum WINDOW_NETWORK_WIDGET_IDX {
     WIDX_BACKGROUND,

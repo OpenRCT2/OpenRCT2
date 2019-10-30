@@ -3724,7 +3724,7 @@ STR_6273    :Music
 STR_6274    :Can't set colour scheme...
 STR_6275    :{WINDOW_COLOUR_2}Station style:
 STR_6276    :{RED}{STRINGID} has guests getting stuck, possibly due to invalid ride type or operating mode.
-STR_6277    :{WINDOW_COLOUR_2}Station index: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Station index: {BLACK}{STRINGID}
 STR_6278    :Autosave amount
 STR_6279    :{SMALLFONT}{BLACK}Number of autosaves that should be kept
 STR_6280    :{SMALLFONT}{BLACK}Chat
@@ -3778,6 +3778,8 @@ STR_6327    :Transparent background for giant screenshots
 STR_6328    :{SMALLFONT}{BLACK}With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Downloading [{STRING}] from {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Create Ducks
+STR_6332    :Remove Ducks
 
 #############
 # Scenarios #

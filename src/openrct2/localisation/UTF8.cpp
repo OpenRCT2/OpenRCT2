@@ -101,7 +101,7 @@ bool utf8_is_codepoint_start(const utf8* text)
     return false;
 }
 
-int32_t utf8_get_codepoint_length(int32_t codepoint)
+int32_t utf8_get_codepoint_length(char32_t codepoint)
 {
     if (codepoint <= 0x7F)
     {
@@ -166,7 +166,7 @@ size_t get_string_size(const utf8* text)
  */
 int32_t get_string_length(const utf8* text)
 {
-    int32_t codepoint;
+    char32_t codepoint;
     const utf8* ch = text;
 
     int32_t count = 0;
@@ -184,14 +184,14 @@ int32_t get_string_length(const utf8* text)
     return count;
 }
 
-int32_t utf8_get_format_code_arg_length(int32_t codepoint)
+int32_t utf8_get_format_code_arg_length(char32_t codepoint)
 {
     switch (codepoint)
     {
         case FORMAT_MOVE_X:
         case FORMAT_ADJUST_PALETTE:
-        case 3:
-        case 4:
+        case FORMAT_3:
+        case FORMAT_4:
             return 1;
         case FORMAT_NEWLINE_X_Y:
             return 2;
@@ -209,7 +209,7 @@ void utf8_remove_formatting(utf8* string, bool allowColours)
 
     while (true)
     {
-        uint32_t code = utf8_get_next(readPtr, (const utf8**)&readPtr);
+        char32_t code = utf8_get_next(readPtr, (const utf8**)&readPtr);
 
         if (code == 0)
         {
@@ -223,7 +223,7 @@ void utf8_remove_formatting(utf8* string, bool allowColours)
     }
 }
 
-bool utf8_is_format_code(int32_t codepoint)
+bool utf8_is_format_code(char32_t codepoint)
 {
     if (codepoint < 32)
         return true;
@@ -236,7 +236,7 @@ bool utf8_is_format_code(int32_t codepoint)
     return false;
 }
 
-bool utf8_is_colour_code(int32_t codepoint)
+bool utf8_is_colour_code(char32_t codepoint)
 {
     return codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END;
 }

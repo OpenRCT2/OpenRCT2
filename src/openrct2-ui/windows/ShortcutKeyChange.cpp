@@ -15,8 +15,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 
-#define WW 250
-#define WH 60
+constexpr int32_t WW = 250;
+constexpr int32_t WH = 60;
 
 // clang-format off
 enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {

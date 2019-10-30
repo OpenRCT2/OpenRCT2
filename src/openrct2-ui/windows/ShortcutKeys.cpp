@@ -15,11 +15,11 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 
-#define WW 420
-#define WH 280
+constexpr int32_t WW = 420;
+constexpr int32_t WH = 280;
 
-#define WW_SC_MAX 1200
-#define WH_SC_MAX 800
+constexpr int32_t WW_SC_MAX = 1200;
+constexpr int32_t WH_SC_MAX = 800;
 
 // clang-format off
 enum WINDOW_SHORTCUT_WIDGET_IDX {

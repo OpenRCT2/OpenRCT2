@@ -533,8 +533,8 @@ uint32_t util_rand()
     return _prng();
 }
 
-#define CHUNK (128 * 1024)
-#define MAX_ZLIB_REALLOC (4 * 1024 * 1024)
+constexpr size_t CHUNK = 128 * 1024;
+constexpr int32_t MAX_ZLIB_REALLOC = 4 * 1024 * 1024;
 
 /**
  * @brief Inflates zlib-compressed data

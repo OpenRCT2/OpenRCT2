@@ -273,10 +273,7 @@ namespace Twitch
         // });
     }
 
-    /**
-     * GET /channel/:channel/audience
-     */
-    static void GetFollowers()
+    static void Get(const std::string& requestFormat, int operation)
     {
         char url[256];
 
@@ -286,12 +283,12 @@ namespace Twitch
             context->WriteLine("API URL is empty! skipping request...");
             return;
         }
-        snprintf(url, sizeof(url), "%s/channel/%s/audience", gConfigTwitch.api_url, gConfigTwitch.channel);
+        snprintf(url, sizeof(url), requestFormat.c_str(), gConfigTwitch.api_url, gConfigTwitch.channel);
 
         _twitchState = TWITCH_STATE_WAITING;
         _twitchIdle = false;
 
-        Http::DoAsync({ url }, [](Http::Response res) {
+        Http::DoAsync({ url }, [operation](Http::Response res) {
             std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
 
             if (res.status != Http::Status::OK)
@@ -301,8 +298,16 @@ namespace Twitch
             }
 
             _twitchJsonResponse = res;
-            _twitchState = TWITCH_STATE_GET_FOLLOWERS;
+            _twitchState = operation;
         });
+    }
+
+    /**
+     * GET /channel/:channel/audience
+     */
+    static void GetFollowers()
+    {
+        Get("%s/channel/%s/audience", TWITCH_STATE_GET_FOLLOWERS);
     }
 
     /**
@@ -310,31 +315,7 @@ namespace Twitch
      */
     static void GetMessages()
     {
-        char url[256];
-
-        if (gConfigTwitch.api_url == nullptr || strlen(gConfigTwitch.api_url) == 0)
-        {
-            auto context = GetContext();
-            context->WriteLine("API URL is empty! skipping request...");
-            return;
-        }
-        snprintf(url, sizeof(url), "%s/channel/%s/messages", gConfigTwitch.api_url, gConfigTwitch.channel);
-
-        _twitchState = TWITCH_STATE_WAITING;
-        _twitchIdle = false;
-
-        Http::DoAsync({ url }, [](Http::Response res) {
-            std::shared_ptr<void> _(nullptr, [&](...) { _twitchIdle = true; });
-
-            if (res.status != Http::Status::OK)
-            {
-                _twitchState = TWITCH_STATE_JOINED;
-                return;
-            }
-
-            _twitchJsonResponse = res;
-            _twitchState = TWITCH_STATE_GET_MESSAGES;
-        });
+        Get("%s/channel/%s/messages", TWITCH_STATE_GET_MESSAGES);
     }
 
     static void ParseFollowers()

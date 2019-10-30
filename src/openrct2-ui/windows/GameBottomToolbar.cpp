@@ -134,8 +134,8 @@ rct_window* window_game_bottom_toolbar_open()
     uint32_t toolbar_height = line_height * 2 + 12;
 
     rct_window* window = window_create(
-        0, screenHeight - toolbar_height, screenWidth, toolbar_height, &window_game_bottom_toolbar_events, WC_BOTTOM_TOOLBAR,
-        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
+        ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
+        WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
     window->enabled_widgets |= (1 << WIDX_LEFT_OUTSET) | (1 << WIDX_MONEY) | (1 << WIDX_GUESTS) | (1 << WIDX_PARK_RATING)
         | (1 << WIDX_MIDDLE_OUTSET) | (1 << WIDX_MIDDLE_INSET) | (1 << WIDX_NEWS_SUBJECT) | (1 << WIDX_NEWS_LOCATE)

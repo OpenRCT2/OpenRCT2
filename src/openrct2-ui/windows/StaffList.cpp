@@ -45,7 +45,7 @@ static void window_staff_list_resize(rct_window *w);
 static void window_staff_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_staff_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_staff_list_update(rct_window *w);
-static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_staff_list_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_staff_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
@@ -102,10 +102,10 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_STAFF_LIST_MAP,
 };
 
-#define WW 320
-#define WH 270
-#define MAX_WW 500
-#define MAX_WH 450
+constexpr int32_t WW = 320;
+constexpr int32_t WH = 270;
+constexpr int32_t MAX_WW = 500;
+constexpr int32_t MAX_WH = 450;
 
 static rct_widget window_staff_list_widgets[] = {
     { WWT_FRAME,            0,  0,          319,        0,      269,    0xFFFFFFFF,         STR_NONE },                         // panel / background
@@ -334,7 +334,7 @@ void window_staff_list_update(rct_window* w)
  *
  *  rct2: 0x006BD990
  */
-static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex == WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
     {
@@ -342,11 +342,13 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
 
         int32_t direction;
         TileElement* tileElement;
-        footpath_get_coordinates_from_pos(x, y, &x, &y, &direction, &tileElement);
-        if (x == LOCATION_NULL)
+        CoordsXY footpathCoords;
+        footpath_get_coordinates_from_pos(
+            screenCoords.x, screenCoords.y, &footpathCoords.x, &footpathCoords.y, &direction, &tileElement);
+        if (footpathCoords.x == LOCATION_NULL)
             return;
 
-        bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, x, y);
+        bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, footpathCoords.x, footpathCoords.y);
 
         uint16_t spriteIndex;
         Peep *peep, *closestPeep = nullptr;
@@ -362,7 +364,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
                 {
                     continue;
                 }
-                if (!staff_is_location_in_patrol(peep, x, y))
+                if (!staff_is_location_in_patrol(peep, footpathCoords.x, footpathCoords.y))
                 {
                     continue;
                 }
@@ -373,7 +375,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
                 continue;
             }
 
-            int32_t distance = abs(x - peep->x) + abs(y - peep->y);
+            int32_t distance = abs(footpathCoords.x - peep->x) + abs(footpathCoords.y - peep->y);
             if (distance < closestPeepDistance)
             {
                 closestPeepDistance = distance;

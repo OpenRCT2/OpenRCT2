@@ -23,7 +23,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window* window)
     _id = BACKBUFFER_ID;
     _texture = 0;
     _depth = 0;
-    SDL_GetWindowSize(window, &_width, &_height);
+    SDL_GL_GetDrawableSize(window, &_width, &_height);
 }
 
 OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, bool integer)

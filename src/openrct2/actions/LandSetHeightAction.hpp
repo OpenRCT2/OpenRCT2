@@ -201,6 +201,8 @@ private:
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (_height > tileElement->clearance_height)
@@ -222,6 +224,8 @@ private:
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (_height > tileElement->clearance_height)
@@ -239,6 +243,8 @@ private:
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (_height > tileElement->clearance_height)
@@ -254,6 +260,8 @@ private:
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
             {
                 ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
@@ -309,6 +317,8 @@ private:
         TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
         do
         {
+            if (tileElement == nullptr)
+                break;
             int32_t elementType = tileElement->GetType();
 
             // Wall's and Small Scenery are removed and therefore do not need checked

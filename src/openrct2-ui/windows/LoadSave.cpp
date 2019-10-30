@@ -38,8 +38,8 @@
 
 #pragma region Widgets
 
-#define WW 340
-#define WH 400
+constexpr int32_t WW = 340;
+constexpr int32_t WH = 400;
 
 // clang-format off
 enum
@@ -1115,8 +1115,8 @@ static void window_loadsave_select(rct_window* w, const char* path)
 
 #pragma region Overwrite prompt
 
-#define OVERWRITE_WW 200
-#define OVERWRITE_WH 100
+constexpr int32_t OVERWRITE_WW = 200;
+constexpr int32_t OVERWRITE_WH = 100;
 
 enum
 {

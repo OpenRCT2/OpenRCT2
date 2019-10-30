@@ -151,8 +151,8 @@ static void window_guest_overview_invalidate(rct_window *w);
 static void window_guest_overview_viewport_rotate(rct_window *w);
 static void window_guest_overview_update(rct_window* w);
 static void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_guest_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 
 static void window_guest_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
@@ -1221,7 +1221,7 @@ void window_guest_overview_text_input(rct_window* w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x696A5F
  */
-void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex != WIDX_PICKUP)
         return;
@@ -1231,7 +1231,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     int32_t map_x, map_y;
-    footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, nullptr, nullptr);
+    footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y + 16, &map_x, &map_y, nullptr, nullptr);
     if (map_x != LOCATION_NULL)
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1246,14 +1246,15 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gPickupPeepImage = UINT32_MAX;
 
     int32_t interactionType;
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, nullptr, nullptr, &interactionType, nullptr, nullptr);
+    get_map_coordinates_from_pos(
+        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_NONE, nullptr, nullptr, &interactionType, nullptr, nullptr);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 
-    x--;
-    y += 16;
-    gPickupPeepX = x;
-    gPickupPeepY = y;
+    screenCoords.x--;
+    screenCoords.y += 16;
+    gPickupPeepX = screenCoords.x;
+    gPickupPeepY = screenCoords.y;
     w->picked_peep_frame++;
     if (w->picked_peep_frame >= 48)
     {
@@ -1274,14 +1275,14 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x696A54
  */
-void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex != WIDX_PICKUP)
         return;
 
     int32_t dest_x, dest_y;
     TileElement* tileElement;
-    footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &tileElement);
+    footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y + 16, &dest_x, &dest_y, nullptr, &tileElement);
 
     if (dest_x == LOCATION_NULL)
         return;

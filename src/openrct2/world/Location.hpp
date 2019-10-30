@@ -66,6 +66,11 @@ struct ScreenCoordsXY
         , y(_y)
     {
     }
+
+    const ScreenCoordsXY operator-(const ScreenCoordsXY& rhs) const
+    {
+        return { x - rhs.x, y - rhs.y };
+    }
 };
 
 /**
@@ -100,12 +105,12 @@ struct CoordsXY
 
     const CoordsXY operator+(const CoordsXY& rhs) const
     {
-        return { rhs.x + x, rhs.y + y };
+        return { x + rhs.x, y + rhs.y };
     }
 
     const CoordsXY operator-(const CoordsXY& rhs) const
     {
-        return { rhs.x - x, rhs.y - y };
+        return { x - rhs.x, y - rhs.y };
     }
 
     CoordsXY Rotate(int32_t direction) const

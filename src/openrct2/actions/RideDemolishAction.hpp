@@ -304,7 +304,7 @@ private:
             uint8_t rotation = it.element->GetDirection();
             uint8_t type = it.element->AsTrack()->GetTrackType();
 
-            if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+            if (type != TRACK_ELEM_MAZE)
             {
                 auto trackRemoveAction = TrackRemoveAction(
                     type, it.element->AsTrack()->GetSequenceIndex(), { x, y, z, rotation });

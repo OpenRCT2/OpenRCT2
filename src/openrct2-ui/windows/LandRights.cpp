@@ -52,9 +52,9 @@ static void window_land_rights_invalidate(rct_window *w);
 static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_land_rights_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_land_rights_inputsize(rct_window *w);
-static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_land_rights_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static bool land_rights_tool_is_active();
 
@@ -91,8 +91,8 @@ static rct_window_event_list window_land_rights_events = {
 };
 // clang-format on
 
-#define LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS 0
-#define LAND_RIGHTS_MODE_BUY_LAND 1
+constexpr uint8_t LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS = 0;
+constexpr uint8_t LAND_RIGHTS_MODE_BUY_LAND = 1;
 
 static uint8_t _landRightsMode;
 static money32 _landRightsCost;
@@ -106,7 +106,7 @@ rct_window* window_land_rights_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(context_get_width() - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
+    window = window_create(ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
     window->widgets = window_land_rights_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_BUY_LAND_RIGHTS) | (1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
@@ -395,20 +395,20 @@ static void window_land_rights_toolabort(rct_window* w, rct_widgetindex widgetIn
  *
  *  rct2: 0x006681D1
  */
-static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
-    window_land_rights_tool_update_land_rights(x, y);
+    window_land_rights_tool_update_land_rights(screenCoords.x, screenCoords.y);
 }
 
 /**
  *
  *  rct2: 0x006681E6
  */
-static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
     {
-        if (x != LOCATION_NULL)
+        if (screenCoords.x != LOCATION_NULL)
         {
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -418,7 +418,7 @@ static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetInd
     }
     else
     {
-        if (x != LOCATION_NULL)
+        if (screenCoords.x != LOCATION_NULL)
         {
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -432,11 +432,11 @@ static void window_land_rights_tooldown(rct_window* w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006681FB
  */
-static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
     {
-        if (x != LOCATION_NULL)
+        if (screenCoords.x != LOCATION_NULL)
         {
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -446,7 +446,7 @@ static void window_land_rights_tooldrag(rct_window* w, rct_widgetindex widgetInd
     }
     else
     {
-        if (x != LOCATION_NULL)
+        if (screenCoords.x != LOCATION_NULL)
         {
             auto landBuyRightsAction = LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },

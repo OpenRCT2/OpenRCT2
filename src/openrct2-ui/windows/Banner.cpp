@@ -22,8 +22,8 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 
-#define WW 113
-#define WH 96
+constexpr int32_t WW = 113;
+constexpr int32_t WH = 96;
 
 // clang-format off
 enum WINDOW_BANNER_WIDGET_IDX {
@@ -137,6 +137,8 @@ rct_window* window_banner_open(rct_windownumber number)
     int32_t view_y = banner->position.y << 5;
 
     TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    if (tile_element == nullptr)
+        return nullptr;
     while (1)
     {
         if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->AsBanner()->GetIndex() == w->number))
@@ -176,6 +178,8 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
     int32_t y = banner->position.y << 5;
 
     TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
+    if (tile_element == nullptr)
+        return;
 
     while (1)
     {

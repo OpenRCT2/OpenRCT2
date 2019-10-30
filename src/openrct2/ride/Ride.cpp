@@ -6265,7 +6265,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(
                         continue;
                     if (tileElement->AsTrack()->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                         continue;
-                    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+                    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_MAZE)
                     {
                         gRideEntranceExitPlaceDirection = direction_reverse(direction);
                         *outDirection = direction_reverse(direction);
@@ -6864,6 +6864,14 @@ void Ride::UpdateMaxVehicles()
     }
 }
 
+void Ride::UpdateNumberOfCircuits()
+{
+    if (!CanHaveMultipleCircuits())
+    {
+        num_circuits = 1;
+    }
+}
+
 void Ride::SetRideEntry(int32_t rideEntry)
 {
     auto colour = ride_get_unused_preset_vehicle_colour(rideEntry);
@@ -7069,7 +7077,7 @@ void sub_6CB945(Ride* ride)
                 }
 
                 uint8_t stationId = 0;
-                if (trackType != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+                if (trackType != TRACK_ELEM_MAZE)
                 {
                     stationId = trackElement->AsTrack()->GetStationIndex();
                 }
@@ -7391,6 +7399,11 @@ bool ride_has_adjacent_station(Ride* ride)
 bool ride_has_station_shelter(Ride* ride)
 {
     auto stationObj = ride_get_station_object(ride);
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        // The server might run in headless mode so no images will be loaded, only check for stations.
+        return stationObj != nullptr;
+    }
     return stationObj != nullptr && stationObj->BaseImageId != 0;
 }
 

@@ -17,6 +17,7 @@
 #include "../actions/FootpathRemoveAction.hpp"
 #include "../actions/LargeSceneryPlaceAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
+#include "../actions/MazePlaceTrackAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
@@ -204,9 +205,9 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         TrackDesignTrackElement track{};
         track.type = trackElement.element->AsTrack()->GetTrackType();
         // TODO move to RCT2 limit
-        if (track.type == TRACK_ELEM_255)
+        if (track.type == TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
         {
-            track.type = TRACK_ELEM_255_ALIAS;
+            track.type = TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS;
         }
 
         uint8_t trackFlags;
@@ -220,7 +221,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         }
 
         if (trackElement.element->AsTrack()->HasChain())
-            trackFlags |= (1 << 7);
+            trackFlags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         trackFlags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
         if (RideData4[ride.type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE
             && trackElement.element->AsTrack()->IsInverted())
@@ -280,20 +281,17 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             int16_t y = location.y * 32;
 
             TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+            if (tileElement == nullptr)
+                continue;
+
             do
             {
-                if (tileElement == nullptr)
-                    break;
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                     continue;
                 if (tileElement->base_height == z)
                     break;
             } while (!(tileElement++)->IsLastForTile());
 
-            if (tileElement == nullptr)
-            {
-                continue;
-            }
             // Add something that stops this from walking off the end
 
             Direction entranceDirection = tileElement->GetDirection();
@@ -402,7 +400,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     do
     {
         if (tileElement == nullptr)
-            break;
+            return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -1356,9 +1354,11 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
 
                     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-                    cost = game_do_command(
-                        mapCoord.x, flags | (maze_entry & 0xFF) << 8, mapCoord.y, ride->id | (maze_entry & 0xFF00),
-                        GAME_COMMAND_PLACE_MAZE_DESIGN, z, 0);
+                    auto mazePlace = MazePlaceTrackAction({ mapCoord, z }, ride->id, maze_entry);
+                    mazePlace.SetFlags(flags);
+                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
+                                                               : GameActions::QueryNested(&mazePlace);
+                    cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     break;
             }
 
@@ -1458,9 +1458,9 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
     for (const auto& track : td6->track_elements)
     {
         uint8_t trackType = track.type;
-        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS)
         {
-            trackType = 0xFF;
+            trackType = TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP;
         }
 
         track_design_update_max_min_coordinates(x, y, z);
@@ -2071,135 +2071,6 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     return cost;
 }
 
-static money32 place_maze_design(uint8_t flags, Ride* ride, uint16_t mazeEntry, int16_t x, int16_t y, int16_t z)
-{
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-    gCommandPosition.x = x + 8;
-    gCommandPosition.y = y + 8;
-    gCommandPosition.z = z;
-    if (!map_check_free_elements_and_reorganise(1))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if ((z & 15) != 0)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
-    {
-        if (game_is_paused() && !gCheatsBuildInPauseMode)
-        {
-            gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (!(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            footpath_remove_litter(x, y, z);
-            wall_remove_at(floor2(x, 32), floor2(y, 32), z, z + 32);
-        }
-    }
-
-    if (!gCheatsSandboxMode)
-    {
-        if (!map_is_location_owned({ x, y, z }))
-        {
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    // Check support height
-    if (!gCheatsDisableSupportLimits)
-    {
-        auto surfaceElement = map_get_surface_element_at({ x, y });
-        uint8_t supportZ = (z + 32) >> 3;
-        if (supportZ > surfaceElement->base_height)
-        {
-            uint8_t supportHeight = (supportZ - surfaceElement->base_height) / 2;
-            uint8_t maxSupportHeight = RideData5[RIDE_TYPE_MAZE].max_height;
-            if (supportHeight > maxSupportHeight)
-            {
-                gGameCommandErrorText = STR_TOO_HIGH_FOR_SUPPORTS;
-                return MONEY32_UNDEFINED;
-            }
-        }
-    }
-
-    money32 cost = 0;
-    // Clearance checks
-    if (!gCheatsDisableClearanceChecks)
-    {
-        int32_t fx = floor2(x, 32);
-        int32_t fy = floor2(y, 32);
-        int32_t fz0 = z >> 3;
-        int32_t fz1 = fz0 + 4;
-
-        if (!map_can_construct_with_clear_at(
-                fx, fy, fz0, fz1, &map_place_non_scenery_clear_func, { 0b1111, 0 }, flags, &cost, CREATE_CROSSING_MODE_NONE))
-        {
-            return MONEY32_UNDEFINED;
-        }
-
-        uint8_t elctgaw = gMapGroundFlags;
-        if (elctgaw & ELEMENT_IS_UNDERWATER)
-        {
-            gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
-            return MONEY32_UNDEFINED;
-        }
-        if (elctgaw & ELEMENT_IS_UNDERGROUND)
-        {
-            gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    // Calculate price
-    money32 price = 0;
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-    {
-        price = RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE];
-        price = (price >> 17) * 10;
-    }
-
-    cost += price;
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        // Place track element
-        int32_t fx = floor2(x, 32);
-        int32_t fy = floor2(y, 32);
-        int32_t fz = z >> 3;
-        TileElement* tileElement = tile_element_insert({ fx >> 5, fy >> 5, fz }, 0b1111);
-        tileElement->clearance_height = fz + 4;
-        tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
-        tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
-        tileElement->AsTrack()->SetRideIndex(ride->id);
-        tileElement->AsTrack()->SetMazeEntry(mazeEntry);
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            tileElement->SetGhost(true);
-        }
-
-        map_invalidate_element(fx, fy, tileElement);
-
-        ride->maze_tiles++;
-        ride->stations[0].Height = tileElement->base_height;
-        ride->stations[0].Start.xy = 0;
-        if (ride->maze_tiles == 1)
-        {
-            ride->overall_view.x = fx / 32;
-            ride->overall_view.y = fy / 32;
-        }
-    }
-
-    return cost;
-}
-
 /**
  *
  *  rct2: 0x006D13FE
@@ -2215,19 +2086,6 @@ void game_command_place_track_design(
     ride_id_t rideIndex;
     *ebx = place_track_design(x, y, z, flags, &rideIndex);
     *edi = rideIndex;
-}
-
-/**
- *
- *  rct2: 0x006CDEE4
- */
-void game_command_place_maze_design(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    auto ride = get_ride(*edx & 0xFF);
-    *ebx = place_maze_design(
-        *ebx & 0xFF, ride, ((*ebx >> 8) & 0xFF) | (((*edx >> 8) & 0xFF) << 8), *eax & 0xFFFF, *ecx & 0xFFFF, *edi & 0xFFFF);
 }
 
 #pragma region Track Design Preview

@@ -26,8 +26,8 @@
 
 #pragma region Widgets
 
-#define WW 600
-#define WH 400
+constexpr int32_t WW = 600;
+constexpr int32_t WH = 400;
 
 // clang-format off
 enum {
@@ -266,18 +266,19 @@ static ResearchItem* get_research_item_at(int32_t x, int32_t y, int32_t* outScro
     rct_window* w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
     if (w != nullptr && w->x <= x && w->y < y && w->x + w->width > x && w->y + w->height > y)
     {
-        rct_widgetindex widgetIndex = window_find_widget_from_point(w, x, y);
+        rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(x, y));
         rct_widget* widget = &w->widgets[widgetIndex];
         if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
         {
             gPressedWidget.widget_index = widgetIndex;
-            int32_t outX, outY, outScrollArea;
-            widget_scroll_get_part(w, widget, x, y, &outX, &outY, &outScrollArea, outScrollId);
+            int32_t outScrollArea;
+            ScreenCoordsXY outScrollCoords;
+            widget_scroll_get_part(w, widget, ScreenCoordsXY(x, y), outScrollCoords, &outScrollArea, outScrollId);
             if (outScrollArea == SCROLL_PART_VIEW)
             {
                 *outScrollId = *outScrollId == 0 ? 0 : 1;
 
-                int32_t scrollY = y - (w->y + widget->top) + w->scrolls[*outScrollId].v_top + 5;
+                int32_t scrollY = outScrollCoords.y + 6;
                 return window_editor_inventions_list_get_item_from_scroll_y_include_seps(*outScrollId, scrollY);
             }
         }
@@ -751,11 +752,12 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
     w = window_create(
-        gTooltipCursorX - (stringWidth / 2), gTooltipCursorY - 7, stringWidth, 14, &window_editor_inventions_list_drag_events,
-        WC_EDITOR_INVENTION_LIST_DRAG, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
+        ScreenCoordsXY(gTooltipCursorX - (stringWidth / 2), gTooltipCursorY - 7), stringWidth, 14,
+        &window_editor_inventions_list_drag_events, WC_EDITOR_INVENTION_LIST_DRAG,
+        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     w->widgets = window_editor_inventions_list_drag_widgets;
     w->colours[1] = COLOUR_WHITE;
-    input_window_position_begin(w, 0, gTooltipCursorX, gTooltipCursorY);
+    input_window_position_begin(w, 0, ScreenCoordsXY(gTooltipCursorX, gTooltipCursorY));
 }
 
 /**

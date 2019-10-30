@@ -32,8 +32,8 @@ enum WINDOW_DEBUG_PAINT_WIDGET_IDX
     WIDX_TOGGLE_SHOW_DIRTY_VISUALS,
 };
 
-#define WINDOW_WIDTH    (200)
-#define WINDOW_HEIGHT   (8 + 15 + 15 + 15 + 15 + 11 + 8)
+constexpr int32_t WINDOW_WIDTH = 200;
+constexpr int32_t WINDOW_HEIGHT = 8 + 15 + 15 + 15 + 15 + 11 + 8;
 
 static rct_widget window_debug_paint_widgets[] = {
     { WWT_FRAME,    0,  0,  WINDOW_WIDTH - 1,   0,              WINDOW_HEIGHT - 1,  STR_NONE,                               STR_NONE },
@@ -91,8 +91,8 @@ rct_window* window_debug_paint_open()
         return window;
 
     window = window_create(
-        16, context_get_height() - 16 - 33 - WINDOW_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, &window_debug_paint_events,
-        WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
+        ScreenCoordsXY(16, context_get_height() - 16 - 33 - WINDOW_HEIGHT), WINDOW_WIDTH, WINDOW_HEIGHT,
+        &window_debug_paint_events, WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     window->widgets = window_debug_paint_widgets;
     window->enabled_widgets = (1 << WIDX_TOGGLE_SHOW_WIDE_PATHS) | (1 << WIDX_TOGGLE_SHOW_BLOCKED_TILES)

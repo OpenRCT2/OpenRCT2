@@ -34,11 +34,11 @@ enum {
     WIDX_CANCEL
 };
 
-#define WW 380
-#define WH 448
-#define WW_LESS_PADDING (WW - 4)
-#define PREVIEW_BUTTONS_LEFT (WW - 25)
-#define ACTION_BUTTONS_LEFT (WW - 100)
+constexpr int32_t WW = 380;
+constexpr int32_t WH = 448;
+constexpr int32_t WW_LESS_PADDING = WW - 4;
+constexpr int32_t PREVIEW_BUTTONS_LEFT = WW - 25;
+constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 
 static rct_widget window_install_track_widgets[] = {
     { WWT_FRAME,            0,  0,                      WW - 1,             0,      WH-1,   STR_NONE,                               STR_NONE                },
@@ -134,7 +134,7 @@ rct_window* window_install_track_open(const utf8* path)
     int32_t x = screenWidth / 2 - 201;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
-    rct_window* w = window_create(x, y, WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
+    rct_window* w = window_create(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL)
         | (1 << WIDX_CANCEL);

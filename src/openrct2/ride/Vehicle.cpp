@@ -86,12 +86,14 @@ static SoundId vehicle_update_scream_sound(rct_vehicle* vehicle);
 static void vehicle_kill_all_passengers(rct_vehicle* vehicle);
 static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle);
 
-#define VEHICLE_INVALID_ID (-1)
+constexpr int32_t VEHICLE_INVALID_ID = -1;
 
-#define VEHICLE_MAX_SPIN_SPEED 1536
-#define VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING 700
-#define VEHICLE_MAX_SPIN_SPEED_WATER_RIDE 512
-#define VEHICLE_STOPPING_SPIN_SPEED 600
+constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
+constexpr int16_t VEHICLE_MIN_SPIN_SPEED = -VEHICLE_MAX_SPIN_SPEED;
+constexpr int16_t VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING = 700;
+constexpr int16_t VEHICLE_MAX_SPIN_SPEED_WATER_RIDE = 512;
+constexpr int16_t VEHICLE_MIN_SPIN_SPEED_WATER_RIDE = -VEHICLE_MAX_SPIN_SPEED_WATER_RIDE;
+constexpr int16_t VEHICLE_STOPPING_SPIN_SPEED = 600;
 
 rct_vehicle* gCurrentVehicle;
 
@@ -705,56 +707,60 @@ static constexpr const SoundId DoorCloseSoundIds[] =
 static const struct
 {
     int8_t x, y, z;
-} SteamParticleOffsets[] =
+} SteamParticleOffsets[][16] =
 {
-    { -11,   0, 22 },
-    { -10,   4, 22 },
-    {  -8,   8, 22 },
-    {  -4,  10, 22 },
-    {   0,  11, 22 },
-    {   4,  10, 22 },
-    {   8,   8, 22 },
-    {  10,   4, 22 },
-    {  11,   0, 22 },
-    {  10,  -4, 22 },
-    {   8,  -8, 22 },
-    {   4, -10, 22 },
-    {   0, -11, 22 },
-    {  -4, -10, 22 },
-    {  -8,  -8, 22 },
-    { -10,  -4, 22 },
-    {  -9,   0, 27 },
-    {  -8,   4, 27 },
-    {  -6,   6, 27 },
-    {  -4,   8, 27 },
-    {   0,   9, 27 },
-    {   4,   8, 27 },
-    {   6,   6, 27 },
-    {   8,   4, 27 },
-    {   9,   0, 27 },
-    {   8,  -4, 27 },
-    {   6,  -6, 27 },
-    {   4,  -8, 27 },
-    {   0,  -9, 27 },
-    {  -4,  -8, 27 },
-    {  -6,  -6, 27 },
-    {  -8,  -4, 27 },
-    { -13,   0, 18 },
-    { -12,   4, 17 },
-    {  -9,   9, 17 },
-    {  -4,   8, 17 },
-    {   0,  13, 18 },
-    {   4,   8, 17 },
-    {   6,   6, 17 },
-    {   8,   4, 17 },
-    {  13,   0, 18 },
-    {   8,  -4, 17 },
-    {   6,  -6, 17 },
-    {   4,  -8, 17 },
-    {   0, -13, 18 },
-    {  -4,  -8, 17 },
-    {  -6,  -6, 17 },
-    {  -8,  -4, 17 }
+    {
+        { -11,   0, 22 },
+        { -10,   4, 22 },
+        {  -8,   8, 22 },
+        {  -4,  10, 22 },
+        {   0,  11, 22 },
+        {   4,  10, 22 },
+        {   8,   8, 22 },
+        {  10,   4, 22 },
+        {  11,   0, 22 },
+        {  10,  -4, 22 },
+        {   8,  -8, 22 },
+        {   4, -10, 22 },
+        {   0, -11, 22 },
+        {  -4, -10, 22 },
+        {  -8,  -8, 22 },
+        { -10,  -4, 22 }
+    }, {
+        {  -9,   0, 27 },
+        {  -8,   4, 27 },
+        {  -6,   6, 27 },
+        {  -4,   8, 27 },
+        {   0,   9, 27 },
+        {   4,   8, 27 },
+        {   6,   6, 27 },
+        {   8,   4, 27 },
+        {   9,   0, 27 },
+        {   8,  -4, 27 },
+        {   6,  -6, 27 },
+        {   4,  -8, 27 },
+        {   0,  -9, 27 },
+        {  -4,  -8, 27 },
+        {  -6,  -6, 27 },
+        {  -8,  -4, 27 }
+    }, {
+        { -13,   0, 18 },
+        { -12,   4, 17 },
+        {  -9,   9, 17 },
+        {  -4,   8, 17 },
+        {   0,  13, 18 },
+        {   4,   8, 17 },
+        {   6,   6, 17 },
+        {   8,   4, 17 },
+        {  13,   0, 18 },
+        {   8,  -4, 17 },
+        {   6,  -6, 17 },
+        {   4,  -8, 17 },
+        {   0, -13, 18 },
+        {  -4,  -8, 17 },
+        {  -6,  -6, 17 },
+        {  -8,  -4, 17 }
+    }
 };
 
 // clang-format on
@@ -2672,7 +2678,7 @@ struct rct_synchronised_vehicle
 assert_struct_size(rct_synchronised_vehicle, 4);
 #pragma pack(pop)
 
-#define SYNCHRONISED_VEHICLE_COUNT 16
+constexpr int32_t SYNCHRONISED_VEHICLE_COUNT = 16;
 
 // Synchronised vehicle info
 static rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = {};
@@ -5684,7 +5690,7 @@ GForces vehicle_get_g_forces(const rct_vehicle* vehicle)
         case TRACK_ELEM_60_DEG_DOWN_COVERED:
         case TRACK_ELEM_BRAKES:
         case TRACK_ELEM_ROTATION_CONTROL_TOGGLE:
-        case TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP:
+        case TRACK_ELEM_MAZE:
         case TRACK_ELEM_25_DEG_UP_LEFT_BANKED:
         case TRACK_ELEM_25_DEG_UP_RIGHT_BANKED:
         case TRACK_ELEM_WATERFALL:
@@ -6116,7 +6122,7 @@ GForces vehicle_get_g_forces(const rct_vehicle* vehicle)
             break;
         case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
         case TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP:
-        case 255:
+        case TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP:
             vertFactor = (((uint16_t)(-(vehicle->track_progress - 137))) / 4) + 55;
             // 6D7614
             break;
@@ -7182,8 +7188,7 @@ static void vehicle_update_spinning_car(rct_vehicle* vehicle)
             break;
     }
 
-    spinSpeed = std::clamp(
-        vehicle->spin_speed, static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED), static_cast<int16_t>(VEHICLE_MAX_SPIN_SPEED));
+    spinSpeed = std::clamp(vehicle->spin_speed, VEHICLE_MIN_SPIN_SPEED, VEHICLE_MAX_SPIN_SPEED);
     vehicle->spin_speed = spinSpeed;
     vehicle->spin_sprite += spinSpeed >> 8;
     // Note this actually increases the spin speed if going right!
@@ -7251,18 +7256,22 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                             || (vehicle->status != VEHICLE_STATUS_MOVING_TO_END_OF_STATION
                                 && vehicle->status != VEHICLE_STATUS_ARRIVING))
                         {
-                            int32_t index = vehicle->sprite_direction >> 1;
-                            if (vehicle->vehicle_sprite_type == 2)
-                            {
-                                index += 16;
-                            }
-                            if (vehicle->vehicle_sprite_type == 6)
-                            {
-                                index += 32;
-                            }
-                            steam_particle_create(
-                                vehicle->x + SteamParticleOffsets[index].x, vehicle->y + SteamParticleOffsets[index].y,
-                                vehicle->z + SteamParticleOffsets[index].z);
+                            int32_t typeIndex = [&] {
+                                switch (vehicle->vehicle_sprite_type)
+                                {
+                                    case 2:
+                                        // uphill
+                                        return 1;
+                                    case 6:
+                                        // downhill
+                                        return 2;
+                                    default:
+                                        return 0;
+                                }
+                            }();
+                            int32_t directionIndex = vehicle->sprite_direction >> 1;
+                            auto offset = SteamParticleOffsets[typeIndex][directionIndex];
+                            steam_particle_create(vehicle->x + offset.x, vehicle->y + offset.y, vehicle->z + offset.z);
                         }
                     }
                 }
@@ -9388,8 +9397,7 @@ loc_6DCEFF:
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
     {
         vehicle->spin_speed = std::clamp(
-            vehicle->spin_speed, static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE),
-            static_cast<int16_t>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
+            vehicle->spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
     }
 
     if (vehicle->vehicle_sprite_type != 0)
@@ -9508,8 +9516,7 @@ static void vehicle_update_track_motion_powered_ride_acceleration(
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
             vehicle->spin_speed = std::clamp(
-                vehicle->spin_speed, static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE),
-                static_cast<int16_t>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
+                vehicle->spin_speed, VEHICLE_MIN_SPIN_SPEED_WATER_RIDE, VEHICLE_MAX_SPIN_SPEED_WATER_RIDE);
         }
 
         if (vehicle->vehicle_sprite_type != 0)

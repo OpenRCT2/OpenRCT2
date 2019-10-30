@@ -3786,6 +3786,8 @@ STR_6327    :초대형 스크린 샷의 배경을 투명하게 처리
 STR_6328    :{SMALLFONT}{BLACK}이 설정을 켜면, 초대형 스크린 샷을 찍을 경우 배경색이 기본 검은색 대신 투명으로 처리됩니다.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :{POP16}{POP16}{POP16}{POP16}{STRING}에서 [{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{STRING}] 다운로드 중 ({COMMA16} / {COMMA16})
+STR_6331    :오리 생성하기
+STR_6332    :오리 제거하기
 
 
 #############

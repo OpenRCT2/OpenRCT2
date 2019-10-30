@@ -31,8 +31,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
 
-#define WW 190
-#define WH 180
+constexpr int32_t WW = 190;
+constexpr int32_t WH = 180;
 
 // clang-format off
 enum WINDOW_STAFF_PAGE {
@@ -140,10 +140,10 @@ static void window_staff_overview_update(rct_window* w);
 static void window_staff_overview_invalidate(rct_window *w);
 static void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_staff_overview_viewport_rotate(rct_window *w);
@@ -1137,7 +1137,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006BDFD8
  */
-void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex != WIDX_PICKUP)
         return;
@@ -1147,7 +1147,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     int32_t map_x, map_y;
-    footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, nullptr, nullptr);
+    footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y + 16, &map_x, &map_y, nullptr, nullptr);
     if (map_x != LOCATION_NULL)
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1162,14 +1162,15 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gPickupPeepImage = UINT32_MAX;
 
     int32_t interactionType;
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, nullptr, nullptr, &interactionType, nullptr, nullptr);
+    get_map_coordinates_from_pos(
+        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_NONE, nullptr, nullptr, &interactionType, nullptr, nullptr);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 
-    x--;
-    y += 16;
-    gPickupPeepX = x;
-    gPickupPeepY = y;
+    screenCoords.x--;
+    screenCoords.y += 16;
+    gPickupPeepX = screenCoords.x;
+    gPickupPeepY = screenCoords.y;
     w->picked_peep_frame++;
     if (w->picked_peep_frame >= 48)
     {
@@ -1190,13 +1191,13 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006BDFC3
  */
-void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex == WIDX_PICKUP)
     {
         int32_t dest_x, dest_y;
         TileElement* tileElement;
-        footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &tileElement);
+        footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y + 16, &dest_x, &dest_y, nullptr, &tileElement);
 
         if (dest_x == LOCATION_NULL)
             return;
@@ -1215,7 +1216,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     else if (widgetIndex == WIDX_PATROL)
     {
         int32_t dest_x, dest_y;
-        footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, nullptr, nullptr);
+        footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y, &dest_x, &dest_y, nullptr, nullptr);
 
         if (dest_x == LOCATION_NULL)
             return;
@@ -1241,7 +1242,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     }
 }
 
-void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex != WIDX_PATROL)
         return;
@@ -1256,7 +1257,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
         return; // Do nothing if we do not have a paintvalue(this should never happen)
 
     int32_t dest_x, dest_y;
-    footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, nullptr, nullptr);
+    footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y, &dest_x, &dest_y, nullptr, nullptr);
 
     if (dest_x == LOCATION_NULL)
         return;
@@ -1279,7 +1280,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     GameActions::Execute(&staffSetPatrolAreaAction);
 }
 
-void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex != WIDX_PATROL)
         return;
