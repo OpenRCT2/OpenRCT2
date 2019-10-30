@@ -82,8 +82,6 @@ static constexpr const char* SnowTrees[] = {
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
 static constexpr const uint8_t BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE };
 
-#define BLOB_HEIGHT 255
-
 static void mapgen_place_trees();
 static void mapgen_set_water_level(int32_t waterLevel);
 static void mapgen_smooth_height(int32_t iterations);
