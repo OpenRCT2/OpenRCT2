@@ -489,16 +489,8 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     };
     uint8_t animation_frame; // 0xC5
     uint8_t pad_C6[0x2];
-    union
-    {
-        uint32_t additional_animation_var;
-        struct
-        {
-            uint16_t var_C8; // Was used as a truncated add. anim. var
-            uint16_t var_CA; // Never really used individually
-        };
-    };
-    uint8_t scream_sound_id; // 0xCC
+    uint32_t additional_animation_var; // 0xC8 This is actually two uint16's that are usually used as a uint32.
+    uint8_t scream_sound_id;           // 0xCC
     uint8_t var_CD;
     union
     {
