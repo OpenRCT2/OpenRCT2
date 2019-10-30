@@ -1612,10 +1612,9 @@ void input_scroll_viewport(ScreenCoordsXY scrollScreenCoords)
         int32_t x = mainWindow->saved_view_x + viewport->view_width / 2 + dx;
         int32_t y = mainWindow->saved_view_y + viewport->view_height / 2;
         int32_t y_dy = mainWindow->saved_view_y + viewport->view_height / 2 + dy;
-        LocationXY16 mapCoord, mapCoord_dy;
 
-        mapCoord = viewport_coord_to_map_coord(x, y, 0);
-        mapCoord_dy = viewport_coord_to_map_coord(x, y_dy, 0);
+        auto mapCoord = viewport_coord_to_map_coord(x, y, 0);
+        auto mapCoord_dy = viewport_coord_to_map_coord(x, y_dy, 0);
 
         // Check if we're crossing the boundary
         // Clamp to the map minimum value
