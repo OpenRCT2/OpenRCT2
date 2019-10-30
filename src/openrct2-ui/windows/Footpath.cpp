@@ -102,10 +102,10 @@ static void window_footpath_mouseup(rct_window * w, rct_widgetindex widgetIndex)
 static void window_footpath_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
 static void window_footpath_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_footpath_update(rct_window * w);
-static void window_footpath_toolupdate(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_footpath_tooldown(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_footpath_tooldrag(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_footpath_toolup(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_footpath_toolupdate(rct_window * w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_footpath_tooldown(rct_window * w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_footpath_tooldrag(rct_window * w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_footpath_toolup(rct_window * w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_footpath_invalidate(rct_window * w);
 static void window_footpath_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
@@ -405,15 +405,15 @@ static void window_footpath_dropdown(rct_window* w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x006A8032
  */
-static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
-        window_footpath_set_provisional_path_at_point(x, y);
+        window_footpath_set_provisional_path_at_point(screenCoords.x, screenCoords.y);
     }
     else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
     {
-        window_footpath_set_selection_start_bridge_at_point(x, y);
+        window_footpath_set_selection_start_bridge_at_point(screenCoords.x, screenCoords.y);
     }
 }
 
@@ -421,15 +421,15 @@ static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006A8047
  */
-static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
-        window_footpath_place_path_at_point(x, y);
+        window_footpath_place_path_at_point(screenCoords.x, screenCoords.y);
     }
     else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
     {
-        window_footpath_start_bridge_at_point(x, y);
+        window_footpath_start_bridge_at_point(screenCoords.x, screenCoords.y);
     }
 }
 
@@ -437,11 +437,11 @@ static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x006A8067
  */
-static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
-        window_footpath_place_path_at_point(x, y);
+        window_footpath_place_path_at_point(screenCoords.x, screenCoords.y);
     }
 }
 
@@ -449,7 +449,7 @@ static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x006A8066
  */
-static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {

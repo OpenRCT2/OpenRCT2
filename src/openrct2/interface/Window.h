@@ -180,10 +180,10 @@ struct rct_window_event_list
     void (*update)(struct rct_window*);
     void (*periodic_update)(struct rct_window*);
     void (*unknown_08)(struct rct_window*);
-    void (*tool_update)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
-    void (*tool_down)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
-    void (*tool_drag)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
-    void (*tool_up)(struct rct_window*, rct_widgetindex, int32_t, int32_t);
+    void (*tool_update)(struct rct_window*, rct_widgetindex, ScreenCoordsXY);
+    void (*tool_down)(struct rct_window*, rct_widgetindex, ScreenCoordsXY);
+    void (*tool_drag)(struct rct_window*, rct_widgetindex, ScreenCoordsXY);
+    void (*tool_up)(struct rct_window*, rct_widgetindex, ScreenCoordsXY);
     void (*tool_abort)(struct rct_window*, rct_widgetindex);
     void (*unknown_0E)(struct rct_window*);
     void (*get_scroll_size)(struct rct_window*, int32_t, int32_t*, int32_t*);

@@ -456,10 +456,10 @@ static void window_tile_inspector_resize(rct_window* w);
 static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_tile_inspector_update(rct_window* w);
 static void window_tile_inspector_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x, int32_t y);
-static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_tile_inspector_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
 static void window_tile_inspector_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_tile_inspector_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y);
@@ -1216,18 +1216,19 @@ static void window_tile_inspector_dropdown(rct_window* w, rct_widgetindex widget
     }
 }
 
-static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     map_invalidate_selection_rect();
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
 
-    int16_t mapX = x;
-    int16_t mapY = y;
+    int16_t mapX = screenCoords.x;
+    int16_t mapY = screenCoords.y;
     TileElement* clickedElement = nullptr;
     if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
     {
-        get_map_coordinates_from_pos(x, y, ViewportInteractionFlags, &mapX, &mapY, nullptr, &clickedElement, nullptr);
+        get_map_coordinates_from_pos(
+            screenCoords.x, screenCoords.y, ViewportInteractionFlags, &mapX, &mapY, nullptr, &clickedElement, nullptr);
     }
 
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
@@ -1304,14 +1305,14 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x,
     window_tile_inspector_load_tile(w, clickedElement);
 }
 
-static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_tile_inspector_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
-    window_tile_inspector_update_selected_tile(w, x, y);
+    window_tile_inspector_update_selected_tile(w, screenCoords.x, screenCoords.y);
 }
 
-static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_tile_inspector_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
-    window_tile_inspector_update_selected_tile(w, x, y);
+    window_tile_inspector_update_selected_tile(w, screenCoords.x, screenCoords.y);
 }
 
 static void window_tile_inspector_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)

@@ -65,8 +65,8 @@ static rct_widget window_track_place_widgets[] = {
 static void window_track_place_close(rct_window *w);
 static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_update(rct_window *w);
-static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_track_place_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_place_unknown14(rct_window *w);
 static void window_track_place_invalidate(rct_window *w);
@@ -244,7 +244,7 @@ static void window_track_place_update(rct_window* w)
  *
  *  rct2: 0x006CFF2D
  */
-static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     int16_t mapX, mapY, mapZ;
 
@@ -254,7 +254,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // Get the tool map position
-    sub_68A15E(x, y, &mapX, &mapY);
+    sub_68A15E(screenCoords.x, screenCoords.y, &mapX, &mapY);
     if (mapX == LOCATION_NULL)
     {
         window_track_place_clear_provisional();
@@ -310,7 +310,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
  *
  *  rct2: 0x006CFF34
  */
-static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     window_track_place_clear_provisional();
     map_invalidate_map_selection_tiles();
@@ -319,7 +319,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     int16_t mapX, mapY;
-    sub_68A15E(x, y, &mapX, &mapY);
+    sub_68A15E(screenCoords.x, screenCoords.y, &mapX, &mapY);
     if (mapX == LOCATION_NULL)
         return;
 

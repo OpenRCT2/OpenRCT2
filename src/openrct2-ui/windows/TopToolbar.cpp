@@ -263,10 +263,10 @@ static rct_widget window_top_toolbar_widgets[] = {
 static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoordsy);
 static void window_top_toolbar_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_top_toolbar_invalidate(rct_window *w);
 static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -2862,24 +2862,24 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
  *
  *  rct2: 0x0066CB25
  */
-static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     switch (widgetIndex)
     {
         case WIDX_CLEAR_SCENERY:
-            top_toolbar_tool_update_scenery_clear(x, y);
+            top_toolbar_tool_update_scenery_clear(screenCoords.x, screenCoords.y);
             break;
         case WIDX_LAND:
             if (gLandPaintMode)
-                top_toolbar_tool_update_land_paint(x, y);
+                top_toolbar_tool_update_land_paint(screenCoords.x, screenCoords.y);
             else
-                top_toolbar_tool_update_land(x, y);
+                top_toolbar_tool_update_land(screenCoords.x, screenCoords.y);
             break;
         case WIDX_WATER:
-            top_toolbar_tool_update_water(x, y);
+            top_toolbar_tool_update_water(screenCoords.x, screenCoords.y);
             break;
         case WIDX_SCENERY:
-            top_toolbar_tool_update_scenery(x, y);
+            top_toolbar_tool_update_scenery(screenCoords.x, screenCoords.y);
             break;
     }
 }
@@ -2888,7 +2888,7 @@ static void window_top_toolbar_tool_update(rct_window* w, rct_widgetindex widget
  *
  *  rct2: 0x0066CB73
  */
-static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     switch (widgetIndex)
     {
@@ -2919,7 +2919,7 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
             }
             break;
         case WIDX_SCENERY:
-            window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
+            window_top_toolbar_scenery_tool_down(screenCoords.x, screenCoords.y, w, widgetIndex);
             break;
     }
 }
@@ -3091,7 +3091,7 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
  *
  *  rct2: 0x0066CB4E
  */
-static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     switch (widgetIndex)
     {
@@ -3122,17 +3122,17 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             }
             else
             {
-                window_top_toolbar_land_tool_drag(x, y);
+                window_top_toolbar_land_tool_drag(screenCoords.x, screenCoords.y);
             }
             break;
         case WIDX_WATER:
-            window_top_toolbar_water_tool_drag(x, y);
+            window_top_toolbar_water_tool_drag(screenCoords.x, screenCoords.y);
             break;
         case WIDX_SCENERY:
             if (gWindowSceneryPaintEnabled & 1)
-                window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
+                window_top_toolbar_scenery_tool_down(screenCoords.x, screenCoords.y, w, widgetIndex);
             if (gWindowSceneryEyedropperEnabled)
-                window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
+                window_top_toolbar_scenery_tool_down(screenCoords.x, screenCoords.y, w, widgetIndex);
             break;
     }
 }
@@ -3141,7 +3141,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
  *
  *  rct2: 0x0066CC5B
  */
-static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     switch (widgetIndex)
     {

@@ -80,10 +80,10 @@ static void window_view_clipping_close_button(rct_window* w);
 static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_view_clipping_mousedown(rct_window*w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_view_clipping_update(rct_window* w);
-static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
-static void window_view_clipping_tool_up(rct_window* w, rct_widgetindex, int32_t, int32_t);
+static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
+static void window_view_clipping_tool_up(rct_window* w, rct_widgetindex, ScreenCoordsXY);
 static void window_view_clipping_invalidate(rct_window* w);
 static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_view_clipping_scrollgetsize(rct_window* w, int scrollIndex, int* width, int* height);
@@ -310,15 +310,15 @@ static void window_view_clipping_update(rct_window* w)
     widget_invalidate(w, WIDX_CLIP_HEIGHT_SLIDER);
 }
 
-static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (_dragging)
     {
         return;
     }
 
-    int16_t mapX = x;
-    int16_t mapY = y;
+    int16_t mapX = screenCoords.x;
+    int16_t mapY = screenCoords.y;
     int32_t direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
     if (mapX != LOCATION_NULL)
@@ -332,10 +332,10 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
     }
 }
 
-static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
-    int16_t mapX = x;
-    int16_t mapY = y;
+    int16_t mapX = screenCoords.x;
+    int16_t mapY = screenCoords.y;
     int32_t direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
     if (mapX != LOCATION_NULL)
@@ -345,15 +345,15 @@ static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widget
     }
 }
 
-static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     if (!_dragging)
     {
         return;
     }
 
-    int16_t mapX = x;
-    int16_t mapY = y;
+    int16_t mapX = screenCoords.x;
+    int16_t mapY = screenCoords.y;
     int32_t direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
     if (mapX != LOCATION_NULL)
@@ -369,7 +369,7 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
     }
 }
 
-static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, int32_t, int32_t)
+static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, ScreenCoordsXY)
 {
     gClipSelectionA = { uint8_t(gMapSelectPositionA.x / 32), uint8_t(gMapSelectPositionA.y / 32) };
     gClipSelectionB = { uint8_t(gMapSelectPositionB.x / 32), uint8_t(gMapSelectPositionB.y / 32) };
