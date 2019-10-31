@@ -1,8 +1,17 @@
 name: CI
-on: [push]
+on: [push, pull_request]
 jobs:
+  check-code-formatting:
+    name: Check code formatting
+    runs-on: ubuntu-latest
+    container:
+      image: openrct2/openrct2:format
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run clang-format
+        run: scripts/run-clang-format.py -r src test --exclude src/openrct2/thirdparty
   build-appimage:
-    name: Build AppImage
+    name: Linux (x64, AppImage)
     runs-on: ubuntu-latest
     container:
       image: openrct2/openrct2:ubuntu_amd64
