@@ -2215,7 +2215,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
     vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
 }
 
-static int ride_get_train_index_from_vehicle(Ride* ride, uint16_t spriteIndex)
+static int32_t ride_get_train_index_from_vehicle(Ride* ride, uint16_t spriteIndex)
 {
     uint32_t trainIndex = 0;
     while (ride->vehicles[trainIndex] != spriteIndex)
@@ -2260,7 +2260,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
             return;
         }
 
-        int trainIndex = ride_get_train_index_from_vehicle(ride, vehicle->sprite_index);
+        int32_t trainIndex = ride_get_train_index_from_vehicle(ride, vehicle->sprite_index);
         if (trainIndex == VEHICLE_INVALID_ID)
         {
             return;
@@ -3520,7 +3520,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = vehicle->GetHead();
-        int trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+        int32_t trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
         if (trainIndex == VEHICLE_INVALID_ID)
         {
             return;
@@ -5252,7 +5252,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = vehicle->GetHead();
-        int trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+        int32_t trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
         if (trainIndex == VEHICLE_INVALID_ID)
         {
             return;
@@ -5313,7 +5313,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = vehicle->GetHead();
-        int trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+        int32_t trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
         if (trainIndex == VEHICLE_INVALID_ID)
         {
             return;
