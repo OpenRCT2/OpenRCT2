@@ -871,32 +871,32 @@ static constexpr const uint32_t junior_rc_track_pieces_left_quarter_turn_5_tiles
 
 // clang-format off
 static constexpr const CoordsXY junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets[4][5] = { {
-                                                                                   CoordsXY(0, 6),
-                                                                                   CoordsXY(0, 0),
-                                                                                   CoordsXY(0, 16),
-                                                                                   CoordsXY(16, 0),
-                                                                                   CoordsXY(6, 0),
+                                                                                   { 0, 6 },
+                                                                                   { 0, 0 },
+                                                                                   { 0, 16 },
+                                                                                   { 16, 0 },
+                                                                                   { 6, 0 },
                                                                                },
                                                                                {
-                                                                                   CoordsXY(6, 0),
-                                                                                   CoordsXY(0, 0),
-                                                                                   CoordsXY(16, 16),
-                                                                                   CoordsXY(0, 0),
-                                                                                   CoordsXY(0, 6),
+                                                                                   { 6, 0 },
+                                                                                   { 0, 0 },
+                                                                                   { 16, 16 },
+                                                                                   { 0, 0 },
+                                                                                   { 0, 6 },
                                                                                },
                                                                                {
-                                                                                   CoordsXY(0, 6),
-                                                                                   CoordsXY(0, 16),
-                                                                                   CoordsXY(16, 0),
-                                                                                   CoordsXY(0, 0),
-                                                                                   CoordsXY(6, 0),
+                                                                                   { 0, 6 },
+                                                                                   { 0, 16 },
+                                                                                   { 16, 0 },
+                                                                                   { 0, 0 },
+                                                                                   { 6, 0 },
                                                                                },
                                                                                {
-                                                                                   CoordsXY(6, 0),
-                                                                                   CoordsXY(16, 0),
-                                                                                   CoordsXY(0, 0),
-                                                                                   CoordsXY(0, 16),
-                                                                                   CoordsXY(0, 6),
+                                                                                   { 6, 0 },
+                                                                                   { 16, 0 },
+                                                                                   { 0, 0 },
+                                                                                   { 0, 16 },
+                                                                                   { 0, 6 },
                                                                                } };
 
 static constexpr const uint32_t junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[2][4][5] = {
@@ -1998,63 +1998,63 @@ static void junior_rc_right_bank_to_flat_paint_setup(
 
 static constexpr const CoordsXY junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] = {
     {
-        CoordsXY(32, 20),
-        CoordsXY(32, 16),
-        CoordsXY(16, 16),
-        CoordsXY(16, 32),
-        CoordsXY(20, 32),
+        { 32, 20 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 32 },
+        { 20, 32 },
     },
     {
-        CoordsXY(20, 32),
-        CoordsXY(16, 32),
-        CoordsXY(16, 16),
-        CoordsXY(32, 16),
-        CoordsXY(32, 20),
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 32, 16 },
+        { 32, 20 },
     },
     {
-        CoordsXY(32, 1),
-        CoordsXY(32, 16),
-        CoordsXY(16, 16),
-        CoordsXY(16, 32),
-        CoordsXY(1, 32),
+        { 32, 1 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 32 },
+        { 1, 32 },
     },
     {
-        CoordsXY(20, 32),
-        CoordsXY(16, 32),
-        CoordsXY(16, 16),
-        CoordsXY(32, 16),
-        CoordsXY(32, 20),
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 32, 16 },
+        { 32, 20 },
     },
 };
 
 static constexpr const CoordsXYZ junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets[4][5] = {
     {
-        CoordsXYZ(0, 6, 0),
-        CoordsXYZ(0, 16, 0),
-        CoordsXYZ(0, 0, 0),
-        CoordsXYZ(16, 0, 0),
-        CoordsXYZ(6, 0, 0),
+        { 0, 6, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 6, 0, 0 },
     },
     {
-        CoordsXYZ(6, 0, 0),
-        CoordsXYZ(16, 0, 0),
-        CoordsXYZ(0, 16, 0),
-        CoordsXYZ(0, 0, 0),
-        CoordsXYZ(0, 6, 0),
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
+        { 0, 6, 0 },
     },
     {
-        CoordsXYZ(0, 27, 0),
-        CoordsXYZ(0, 0, 27),
-        CoordsXYZ(16, 16, 27),
-        CoordsXYZ(0, 0, 27),
-        CoordsXYZ(27, 0, 0),
+        { 0, 27, 0 },
+        { 0, 0, 27 },
+        { 16, 16, 27 },
+        { 0, 0, 27 },
+        { 27, 0, 0 },
     },
     {
-        CoordsXYZ(6, 0, 0),
-        CoordsXYZ(0, 0, 0),
-        CoordsXYZ(16, 0, 0),
-        CoordsXYZ(0, 16, 0),
-        CoordsXYZ(0, 6, 0),
+        { 6, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 6, 0 },
     },
 };
 
@@ -2449,17 +2449,17 @@ static void junior_rc_25_deg_down_to_right_bank_paint_setup(
 }
 
 static constexpr const CoordsXYZ junior_rc_left_bank_bound_lengths[4] = {
-    CoordsXYZ(32, 1, 26),
-    CoordsXYZ(1, 32, 26),
-    CoordsXYZ(32, 20, 1),
-    CoordsXYZ(20, 32, 1),
+    { 32, 1, 26 },
+    { 1, 32, 26 },
+    { 32, 20, 1 },
+    { 20, 32, 1 },
 };
 
 static constexpr const CoordsXY junior_rc_left_bank_bound_offsets[4] = {
-    CoordsXY(0, 27),
-    CoordsXY(27, 0),
-    CoordsXY(0, 6),
-    CoordsXY(6, 0),
+    { 0, 27 },
+    { 27, 0 },
+    { 0, 6 },
+    { 6, 0 },
 };
 
 /**
@@ -2721,17 +2721,17 @@ static void junior_rc_s_bend_left_paint_setup(
     }
 
     const CoordsXY offsetList[] = {
-        CoordsXY(0, 6),
-        CoordsXY(0, 0),
-        CoordsXY(0, 6),
-        CoordsXY(0, 6),
+        { 0, 6 },
+        { 0, 0 },
+        { 0, 6 },
+        { 0, 6 },
     };
 
     const CoordsXY boundsList[] = {
-        CoordsXY(32, 20),
-        CoordsXY(32, 26),
-        CoordsXY(32, 26),
-        CoordsXY(32, 20),
+        { 32, 20 },
+        { 32, 26 },
+        { 32, 26 },
+        { 32, 20 },
     };
 
     uint32_t imageId = junior_rc_track_pieces_s_bend_left[(direction & 1)][trackSequence] | session->TrackColours[SCHEME_TRACK];
@@ -2825,17 +2825,17 @@ static void junior_rc_s_bend_right_paint_setup(
     }
 
     const CoordsXY offsetList[] = {
-        CoordsXY(0, 6),
-        CoordsXY(0, 6),
-        CoordsXY(0, 0),
-        CoordsXY(0, 6),
+        { 0, 6 },
+        { 0, 6 },
+        { 0, 0 },
+        { 0, 6 },
     };
 
     const CoordsXY boundsList[] = {
-        CoordsXY(32, 20),
-        CoordsXY(32, 26),
-        CoordsXY(32, 26),
-        CoordsXY(32, 20),
+        { 32, 20 },
+        { 32, 26 },
+        { 32, 26 },
+        { 32, 20 },
     };
 
     uint32_t imageId = junior_rc_track_pieces_s_bend_right[direction & 1][trackSequence] | session->TrackColours[SCHEME_TRACK];
@@ -2969,47 +2969,47 @@ static void junior_rc_left_quarter_turn_3_tiles_paint_setup(
 
 static constexpr const CoordsXY junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = {
     {
-        CoordsXY(32, 20),
-        CoordsXY(16, 16),
-        CoordsXY(20, 32),
+        { 32, 20 },
+        { 16, 16 },
+        { 20, 32 },
     },
     {
-        CoordsXY(20, 32),
-        CoordsXY(16, 16),
-        CoordsXY(32, 20),
+        { 20, 32 },
+        { 16, 16 },
+        { 32, 20 },
     },
     {
-        CoordsXY(32, 1),
-        CoordsXY(16, 16),
-        CoordsXY(1, 32),
+        { 32, 1 },
+        { 16, 16 },
+        { 1, 32 },
     },
     {
-        CoordsXY(20, 32),
-        CoordsXY(16, 16),
-        CoordsXY(32, 20),
+        { 20, 32 },
+        { 16, 16 },
+        { 32, 20 },
     },
 };
 
 static constexpr const CoordsXYZ junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = {
     {
-        CoordsXYZ(0, 6, 0),
-        CoordsXYZ(16, 16, 0),
-        CoordsXYZ(6, 0, 0),
+        { 0, 6, 0 },
+        { 16, 16, 0 },
+        { 6, 0, 0 },
     },
     {
-        CoordsXYZ(6, 0, 0),
-        CoordsXYZ(16, 0, 0),
-        CoordsXYZ(0, 6, 0),
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 6, 0 },
     },
     {
-        CoordsXYZ(0, 27, 0),
-        CoordsXYZ(0, 0, 27),
-        CoordsXYZ(27, 0, 0),
+        { 0, 27, 0 },
+        { 0, 0, 27 },
+        { 27, 0, 0 },
     },
     {
-        CoordsXYZ(6, 0, 0),
-        CoordsXYZ(0, 16, 0),
-        CoordsXYZ(0, 6, 0),
+        { 6, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 6, 0 },
     },
 };
 
@@ -3875,55 +3875,55 @@ static void junior_rc_right_eighth_to_orthogonal_paint_setup(
 
 static constexpr const CoordsXY junior_rc_left_eighth_to_diag_bank_bound_lengths[4][4] = {
     {
-        CoordsXY(32, 1),
-        CoordsXY(32, 16),
-        CoordsXY(16, 16),
-        CoordsXY(16, 16),
+        { 32, 1 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 16 },
     },
     {
-        CoordsXY(1, 32),
-        CoordsXY(16, 34),
-        CoordsXY(16, 16),
-        CoordsXY(18, 16),
+        { 1, 32 },
+        { 16, 34 },
+        { 16, 16 },
+        { 18, 16 },
     },
     {
-        CoordsXY(32, 20),
-        CoordsXY(32, 16),
-        CoordsXY(16, 16),
-        CoordsXY(16, 16),
+        { 32, 20 },
+        { 32, 16 },
+        { 16, 16 },
+        { 16, 16 },
     },
     {
-        CoordsXY(20, 32),
-        CoordsXY(16, 32),
-        CoordsXY(16, 16),
-        CoordsXY(16, 16),
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 16, 16 },
     },
 };
 
 static constexpr const CoordsXYZ junior_rc_left_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
-        CoordsXYZ(0, 27, 0),
-        CoordsXYZ(0, 0, 0),
-        CoordsXYZ(0, 16, 0),
-        CoordsXYZ(16, 16, 0),
+        { 0, 27, 0 },
+        { 0, 0, 0 },
+        { 0, 16, 0 },
+        { 16, 16, 0 },
     },
     {
-        CoordsXYZ(27, 0, 0),
-        CoordsXYZ(0, 0, 27),
-        CoordsXYZ(16, 16, 27),
-        CoordsXYZ(16, 0, 27),
+        { 27, 0, 0 },
+        { 0, 0, 27 },
+        { 16, 16, 27 },
+        { 16, 0, 27 },
     },
     {
-        CoordsXYZ(0, 6, 0),
-        CoordsXYZ(0, 16, 0),
-        CoordsXYZ(16, 0, 0),
-        CoordsXYZ(0, 0, 0),
+        { 0, 6, 0 },
+        { 0, 16, 0 },
+        { 16, 0, 0 },
+        { 0, 0, 0 },
     },
     {
-        CoordsXYZ(6, 0, 0),
-        CoordsXYZ(16, 0, 0),
-        CoordsXYZ(0, 0, 0),
-        CoordsXYZ(0, 16, 0),
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 0, 0 },
+        { 0, 16, 0 },
     },
 };
 
@@ -4022,55 +4022,55 @@ static void junior_rc_left_eighth_to_diag_bank_paint_setup(
 
 static constexpr const CoordsXY junior_rc_right_eighth_to_diag_bank_bound_lengths[4][4] = {
     {
-        CoordsXY(32, 20),
-        CoordsXY(16, 16),
-        CoordsXY(16, 16),
-        CoordsXY(16, 16),
+        { 32, 20 },
+        { 16, 16 },
+        { 16, 16 },
+        { 16, 16 },
     },
     {
-        CoordsXY(20, 32),
-        CoordsXY(16, 32),
-        CoordsXY(16, 16),
-        CoordsXY(16, 16),
+        { 20, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 16, 16 },
     },
     {
-        CoordsXY(32, 1),
-        CoordsXY(34, 16),
-        CoordsXY(28, 28),
-        CoordsXY(16, 18),
+        { 32, 1 },
+        { 34, 16 },
+        { 28, 28 },
+        { 16, 18 },
     },
     {
-        CoordsXY(1, 32),
-        CoordsXY(16, 32),
-        CoordsXY(16, 16),
-        CoordsXY(16, 16),
+        { 1, 32 },
+        { 16, 32 },
+        { 16, 16 },
+        { 16, 16 },
     },
 };
 
 static constexpr const CoordsXYZ junior_rc_right_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
-        CoordsXYZ(0, 6, 0),
-        CoordsXYZ(0, 0, 0),
-        CoordsXYZ(0, 0, 0),
-        CoordsXYZ(16, 0, 0),
+        { 0, 6, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
     },
     {
-        CoordsXYZ(6, 0, 0),
-        CoordsXYZ(16, 0, 0),
-        CoordsXYZ(0, 16, 0),
-        CoordsXYZ(0, 0, 0),
+        { 6, 0, 0 },
+        { 16, 0, 0 },
+        { 0, 16, 0 },
+        { 0, 0, 0 },
     },
     {
-        CoordsXYZ(0, 27, 0),
-        CoordsXYZ(0, 0, 27),
-        CoordsXYZ(4, 4, 27),
-        CoordsXYZ(0, 16, 27),
+        { 0, 27, 0 },
+        { 0, 0, 27 },
+        { 4, 4, 27 },
+        { 0, 16, 27 },
     },
     {
-        CoordsXYZ(27, 0, 0),
-        CoordsXYZ(0, 0, 0),
-        CoordsXYZ(16, 0, 0),
-        CoordsXYZ(16, 16, 0),
+        { 27, 0, 0 },
+        { 0, 0, 0 },
+        { 16, 0, 0 },
+        { 16, 16, 0 },
     },
 };
 
@@ -4869,17 +4869,17 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(
 }
 
 static constexpr const CoordsXYZ junior_rc_diag_left_bank_bound_offsets[4] = {
-    CoordsXYZ(-16, -16, 27),
-    CoordsXYZ(-16, -16, 0),
-    CoordsXYZ(-16, -16, 0),
-    CoordsXYZ(-16, -16, 0),
+    { -16, -16, 27 },
+    { -16, -16, 0 },
+    { -16, -16, 0 },
+    { -16, -16, 0 },
 };
 
 static constexpr const CoordsXYZ junior_rc_diag_right_bank_bound_offsets[4] = {
-    CoordsXYZ(-16, -16, 0),
-    CoordsXYZ(-16, -16, 0),
-    CoordsXYZ(-16, -16, 27),
-    CoordsXYZ(-16, -16, 0),
+    { -16, -16, 0 },
+    { -16, -16, 0 },
+    { -16, -16, 27 },
+    { -16, -16, 0 },
 };
 
 /** rct2: 0x008AB1A0 */
@@ -4929,26 +4929,26 @@ static void junior_rc_diag_right_bank_paint_setup(
 }
 
 static constexpr const CoordsXY junior_rc_60_deg_up_bound_offsets[4] = {
-    CoordsXY(0, 6),
-    CoordsXY(10, 29),
-    CoordsXY(29, 10),
-    CoordsXY(6, 0),
+    { 0, 6 },
+    { 10, 29 },
+    { 29, 10 },
+    { 6, 0 },
 };
 
 static constexpr const CoordsXY junior_rc_60_deg_up_tile_offsets[4] = {
-    CoordsXY(0, 6),
-    CoordsXY(6, 0),
-    CoordsXY(0, 6),
-    CoordsXY(6, 0),
+    { 0, 6 },
+    { 6, 0 },
+    { 0, 6 },
+    { 6, 0 },
 };
 
 static constexpr const int8_t junior_rc_60_deg_up_bound_thickness[4] = { 1, 75, 75, 1 };
 
 static constexpr const CoordsXY junior_rc_60_deg_up_bound_lengths[4] = {
-    CoordsXY(32, 20),
-    CoordsXY(10, 1),
-    CoordsXY(1, 10),
-    CoordsXY(20, 32),
+    { 32, 20 },
+    { 10, 1 },
+    { 1, 10 },
+    { 20, 32 },
 };
 
 void junior_rc_paint_track_60_deg_up(
@@ -5014,19 +5014,19 @@ static void junior_rc_60_deg_down_paint_setup(
 }
 
 static constexpr const CoordsXY junior_rc_25_deg_up_to_60_deg_up_bound_lengths[4][2] = {
-    { CoordsXY(32, 20), CoordsXY(0, 0) },
-    { CoordsXY(10, 32), CoordsXY(2, 32) },
-    { CoordsXY(32, 10), CoordsXY(32, 2) },
-    { CoordsXY(20, 32), CoordsXY(0, 0) },
+    { { 32, 20 }, { 0, 0 } },
+    { { 10, 32 }, { 2, 32 } },
+    { { 32, 10 }, { 32, 2 } },
+    { { 20, 32 }, { 0, 0 } },
 };
 
 static constexpr const int8_t junior_rc_25_deg_up_to_60_deg_up_bound_thickness[4] = { 1, 43, 43, 1 };
 
 static constexpr const CoordsXY junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4][2] = {
-    { CoordsXY(0, 6), CoordsXY(0, 0) },
-    { CoordsXY(10, 0), CoordsXY(4, 0) },
-    { CoordsXY(0, 10), CoordsXY(0, 4) },
-    { CoordsXY(6, 0), CoordsXY(0, 0) },
+    { { 0, 6 }, { 0, 0 } },
+    { { 10, 0 }, { 4, 0 } },
+    { { 0, 10 }, { 0, 4 } },
+    { { 6, 0 }, { 0, 0 } },
 };
 
 void junior_rc_paint_track_25_deg_up_to_60_deg_up(
@@ -5393,33 +5393,33 @@ static void junior_rc_diag_60_deg_down_to_25_deg_down_paint_setup(
 }
 
 static constexpr const CoordsXY junior_rc_flat_to_60_deg_up_bound_lengths[4][2] = {
-    { CoordsXY(32, 24), CoordsXY(0, 0) },
-    { CoordsXY(10, 1), CoordsXY(2, 32) },
-    { CoordsXY(1, 10), CoordsXY(32, 2) },
-    { CoordsXY(24, 32), CoordsXY(0, 0) },
+    { { 32, 24 }, { 0, 0 } },
+    { { 10, 1 }, { 2, 32 } },
+    { { 1, 10 }, { 32, 2 } },
+    { { 24, 32 }, { 0, 0 } },
 };
 
 static constexpr const int8_t junior_rc_flat_to_60_deg_up_bound_thickness[4] = { 1, 43, 43, 1 };
 
 static constexpr const CoordsXY junior_rc_flat_to_60_deg_up_bound_offsets[4][2] = {
-    { CoordsXY(0, 4), CoordsXY(0, 0) },
-    { CoordsXY(10, 0), CoordsXY(4, 0) },
-    { CoordsXY(0, 10), CoordsXY(0, 4) },
-    { CoordsXY(4, 0), CoordsXY(0, 0) },
+    { { 0, 4 }, { 0, 0 } },
+    { { 10, 0 }, { 4, 0 } },
+    { { 0, 10 }, { 0, 4 } },
+    { { 4, 0 }, { 0, 0 } },
 };
 
 static constexpr const CoordsXY junior_rc_flat_to_60_deg_up_tile_offsets[4][2] = {
-    { CoordsXY(12, -10), CoordsXY(0, 0) },
-    { CoordsXY(22, 9), CoordsXY(12, -11) },
-    { CoordsXY(30, 7), CoordsXY(5, 0) },
-    { CoordsXY(12, -12), CoordsXY(0, 0) },
+    { { 12, -10 }, { 0, 0 } },
+    { { 22, 9 }, { 12, -11 } },
+    { { 30, 7 }, { 5, 0 } },
+    { { 12, -12 }, { 0, 0 } },
 };
 
 static constexpr const CoordsXY junior_rc_60_deg_up_to_flat_tile_offsets[4][2] = {
-    { CoordsXY(13, -9), CoordsXY(0, 0) },
-    { CoordsXY(32, 9), CoordsXY(-7, -11) },
-    { CoordsXY(22, 18), CoordsXY(2, -19) },
-    { CoordsXY(13, -9), CoordsXY(0, 0) },
+    { { 13, -9 }, { 0, 0 } },
+    { { 32, 9 }, { -7, -11 } },
+    { { 22, 18 }, { 2, -19 } },
+    { { 13, -9 }, { 0, 0 } },
 };
 
 static void junior_rc_flat_to_60_deg_up_paint_setup(

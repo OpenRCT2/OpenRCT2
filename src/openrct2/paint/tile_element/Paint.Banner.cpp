@@ -22,10 +22,10 @@
 // BannerBoundBoxes[rotation][0] is for the pole in the back
 // BannerBoundBoxes[rotation][1] is for the pole and the banner in the front
 const CoordsXY BannerBoundBoxes[][2] = {
-    { CoordsXY(1, 2), CoordsXY(1, 29) },
-    { CoordsXY(2, 32), CoordsXY(29, 32) },
-    { CoordsXY(32, 2), CoordsXY(32, 29) },
-    { CoordsXY(2, 1), CoordsXY(29, 1) },
+    { { 1, 2 }, { 1, 29 } },
+    { { 2, 32 }, { 29, 32 } },
+    { { 32, 2 }, { 32, 29 } },
+    { { 2, 1 }, { 29, 1 } },
 };
 
 /**

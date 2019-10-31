@@ -276,55 +276,55 @@ static constexpr const uint32_t miniature_railway_track_pieces_right_eight_to_di
 
 static constexpr const CoordsXYZ miniature_railway_track_pieces_right_eight_to_diag_bounds[4][4] = {
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(32, 16, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(32, 32, 0),
+        { 32, 32, 2 },
+        { 32, 16, 2 },
+        { 16, 16, 2 },
+        { 32, 32, 0 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 32, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 2),
+        { 32, 32, 2 },
+        { 16, 32, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(34, 16, 2),
-        CoordsXYZ(28, 28, 2),
-        CoordsXYZ(32, 34, 0),
+        { 32, 32, 2 },
+        { 34, 16, 2 },
+        { 28, 28, 2 },
+        { 32, 34, 0 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 32, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(30, 30, 0),
+        { 32, 32, 2 },
+        { 16, 32, 2 },
+        { 16, 16, 2 },
+        { 30, 30, 0 },
     },
 };
 
 static constexpr const CoordsXY miniature_railway_track_pieces_right_eight_to_diag_offset[4][4] = {
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 16 },
+        { 0, 0 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
-        CoordsXY(0, 16),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 16 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(4, 4),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 0 },
+        { 4, 4 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 0 },
     },
 };
 
@@ -357,163 +357,163 @@ static constexpr const uint32_t miniature_railway_track_pieces_left_eight_to_dia
 
 static constexpr const CoordsXYZ miniature_railway_track_pieces_left_eight_to_diag_bounds[4][4] = {
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(32, 16, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(30, 30, 0),
+        { 32, 32, 2 },
+        { 32, 16, 2 },
+        { 16, 16, 2 },
+        { 30, 30, 0 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 34, 2),
-        CoordsXYZ(14, 14, 2),
-        CoordsXYZ(34, 32, 0),
+        { 32, 32, 2 },
+        { 16, 34, 2 },
+        { 14, 14, 2 },
+        { 34, 32, 0 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(32, 16, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 2),
+        { 32, 32, 2 },
+        { 32, 16, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 32, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(32, 32, 0),
+        { 32, 32, 2 },
+        { 16, 32, 2 },
+        { 16, 16, 2 },
+        { 32, 32, 0 },
     },
 };
 
 static constexpr const CoordsXY miniature_railway_track_pieces_left_eight_to_diag_offset[4][4] = {
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 0 },
+        { 0, 16 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(16, 16),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 0 },
+        { 16, 16 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
-        CoordsXY(16, 0),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 16 },
+        { 16, 0 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 0 },
+        { 0, 0 },
     },
 };
 
 static constexpr const CoordsXYZ miniature_railway_track_pieces_right_eight_to_orthog_bounds[4][4] = {
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(32, 16, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(14, 14, 2),
+        { 32, 32, 2 },
+        { 32, 16, 2 },
+        { 16, 16, 2 },
+        { 14, 14, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 34, 2),
-        CoordsXYZ(14, 14, 2),
-        CoordsXYZ(18, 16, 2),
+        { 32, 32, 2 },
+        { 16, 34, 2 },
+        { 14, 14, 2 },
+        { 18, 16, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(32, 16, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 2),
+        { 32, 32, 2 },
+        { 32, 16, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 32, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 2),
+        { 32, 32, 2 },
+        { 16, 32, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 2 },
     },
 };
 
 static constexpr const CoordsXY miniature_railway_track_pieces_right_eight_to_orthog_offset[4][4] = {
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
-        CoordsXY(16, 16),
+        { 0, 0 },
+        { 0, 0 },
+        { 0, 16 },
+        { 16, 16 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(16, 16),
-        CoordsXY(16, 0),
+        { 0, 0 },
+        { 0, 0 },
+        { 16, 16 },
+        { 16, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
-        CoordsXY(16, 0),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 16 },
+        { 16, 0 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 0 },
+        { 0, 16 },
     },
 };
 
 static constexpr const CoordsXYZ miniature_railway_track_pieces_left_eight_to_orthog_bounds[4][4] = {
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(32, 16, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 2),
+        { 32, 32, 2 },
+        { 32, 16, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 32, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 2),
+        { 32, 32, 2 },
+        { 16, 32, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(34, 16, 2),
-        CoordsXYZ(28, 28, 2),
-        CoordsXYZ(16, 18, 2),
+        { 32, 32, 2 },
+        { 34, 16, 2 },
+        { 28, 28, 2 },
+        { 16, 18, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 32, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(14, 14, 2),
+        { 32, 32, 2 },
+        { 16, 32, 2 },
+        { 16, 16, 2 },
+        { 14, 14, 2 },
     },
 };
 
 static constexpr const CoordsXY miniature_railway_track_pieces_left_eight_to_orthog_offset[4][4] = {
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
+        { 0, 0 },
+        { 0, 16 },
+        { 0, 0 },
+        { 16, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
-        CoordsXY(0, 16),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 16 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(4, 4),
-        CoordsXY(0, 16),
+        { 0, 0 },
+        { 0, 0 },
+        { 4, 4 },
+        { 0, 16 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
-        CoordsXY(16, 16),
+        { 0, 0 },
+        { 0, 0 },
+        { 16, 0 },
+        { 16, 16 },
     },
 };
 
@@ -812,90 +812,90 @@ static void paint_miniature_railway_track_25_deg_down_to_flat(
 
 // clang-format off
 static constexpr const CoordsXY miniature_railway_right_quarter_turn_5_tiles_offsets[4][5] = { {
-                                                                                  CoordsXY(0, 2),
-                                                                                  CoordsXY(0, 16),
-                                                                                  CoordsXY(0, 0),
-                                                                                  CoordsXY(16, 0),
-                                                                                  CoordsXY(2, 0),
+                                                                                  { 0, 2 },
+                                                                                  { 0, 16 },
+                                                                                  { 0, 0 },
+                                                                                  { 16, 0 },
+                                                                                  { 2, 0 },
                                                                               },
                                                                               {
-                                                                                  CoordsXY(2, 0),
-                                                                                  CoordsXY(16, 0),
-                                                                                  CoordsXY(0, 16),
-                                                                                  CoordsXY(0, 0),
-                                                                                  CoordsXY(0, 2),
+                                                                                  { 2, 0 },
+                                                                                  { 16, 0 },
+                                                                                  { 0, 16 },
+                                                                                  { 0, 0 },
+                                                                                  { 0, 2 },
                                                                               },
                                                                               {
-                                                                                  CoordsXY(0, 2),
-                                                                                  CoordsXY(0, 0),
-                                                                                  CoordsXY(16, 16),
-                                                                                  CoordsXY(0, 0),
-                                                                                  CoordsXY(2, 0),
+                                                                                  { 0, 2 },
+                                                                                  { 0, 0 },
+                                                                                  { 16, 16 },
+                                                                                  { 0, 0 },
+                                                                                  { 2, 0 },
                                                                               },
                                                                               {
-                                                                                  CoordsXY(2, 0),
-                                                                                  CoordsXY(0, 0),
-                                                                                  CoordsXY(16, 0),
-                                                                                  CoordsXY(0, 16),
-                                                                                  CoordsXY(0, 2),
+                                                                                  { 2, 0 },
+                                                                                  { 0, 0 },
+                                                                                  { 16, 0 },
+                                                                                  { 0, 16 },
+                                                                                  { 0, 2 },
                                                                               } };
 
 static constexpr const CoordsXYZ miniature_railway_right_quarter_turn_5_tiles_bound_offsets[4][5] = { {
-                                                                                         CoordsXYZ(0, 2, 0),
-                                                                                         CoordsXYZ(0, 16, 0),
-                                                                                         CoordsXYZ(0, 0, 0),
-                                                                                         CoordsXYZ(16, 0, 0),
-                                                                                         CoordsXYZ(2, 0, 0),
+                                                                                         { 0, 2, 0 },
+                                                                                         { 0, 16, 0 },
+                                                                                         { 0, 0, 0 },
+                                                                                         { 16, 0, 0 },
+                                                                                         { 2, 0, 0 },
                                                                                      },
                                                                                      {
-                                                                                         CoordsXYZ(2, 0, 0),
-                                                                                         CoordsXYZ(16, 0, 0),
-                                                                                         CoordsXYZ(0, 16, 0),
-                                                                                         CoordsXYZ(0, 0, 0),
-                                                                                         CoordsXYZ(0, 2, 0),
+                                                                                         { 2, 0, 0 },
+                                                                                         { 16, 0, 0 },
+                                                                                         { 0, 16, 0 },
+                                                                                         { 0, 0, 0 },
+                                                                                         { 0, 2, 0 },
                                                                                      },
                                                                                      {
-                                                                                         CoordsXYZ(0, 2, 0),
-                                                                                         CoordsXYZ(0, 0, 0),
-                                                                                         CoordsXYZ(16, 16, 0),
-                                                                                         CoordsXYZ(0, 0, 0),
-                                                                                         CoordsXYZ(2, 0, 0),
+                                                                                         { 0, 2, 0 },
+                                                                                         { 0, 0, 0 },
+                                                                                         { 16, 16, 0 },
+                                                                                         { 0, 0, 0 },
+                                                                                         { 2, 0, 0 },
                                                                                      },
                                                                                      {
-                                                                                         CoordsXYZ(2, 0, 0),
-                                                                                         CoordsXYZ(0, 0, 0),
-                                                                                         CoordsXYZ(16, 0, 0),
-                                                                                         CoordsXYZ(0, 16, 0),
-                                                                                         CoordsXYZ(0, 2, 0),
+                                                                                         { 2, 0, 0 },
+                                                                                         { 0, 0, 0 },
+                                                                                         { 16, 0, 0 },
+                                                                                         { 0, 16, 0 },
+                                                                                         { 0, 2, 0 },
                                                                                      } };
 
 static constexpr const CoordsXY miniature_railway_right_quarter_turn_5_tiles_bound_lengths[4][5] = { {
-                                                                                        CoordsXY(32, 32),
-                                                                                        CoordsXY(32, 16),
-                                                                                        CoordsXY(16, 16),
-                                                                                        CoordsXY(16, 32),
-                                                                                        CoordsXY(32, 32),
+                                                                                        { 32, 32 },
+                                                                                        { 32, 16 },
+                                                                                        { 16, 16 },
+                                                                                        { 16, 32 },
+                                                                                        { 32, 32 },
                                                                                     },
                                                                                     {
-                                                                                        CoordsXY(32, 32),
-                                                                                        CoordsXY(16, 34),
-                                                                                        CoordsXY(16, 16),
-                                                                                        CoordsXY(32, 16),
-                                                                                        CoordsXY(32, 27),
+                                                                                        { 32, 32 },
+                                                                                        { 16, 34 },
+                                                                                        { 16, 16 },
+                                                                                        { 32, 16 },
+                                                                                        { 32, 27 },
                                                                                     },
                                                                                     {
-                                                                                        CoordsXY(32, 27),
-                                                                                        CoordsXY(32, 16),
-                                                                                        CoordsXY(16, 16),
-                                                                                        CoordsXY(16, 32),
-                                                                                        CoordsXY(27, 32),
+                                                                                        { 32, 27 },
+                                                                                        { 32, 16 },
+                                                                                        { 16, 16 },
+                                                                                        { 16, 32 },
+                                                                                        { 27, 32 },
                                                                                     },
                                                                                     {
-                                                                                        CoordsXY(27, 32),
-                                                                                        CoordsXY(16, 32),
-                                                                                        CoordsXY(16, 16),
-                                                                                        CoordsXY(32, 16),
-                                                                                        CoordsXY(32, 32),
+                                                                                        { 27, 32 },
+                                                                                        { 16, 32 },
+                                                                                        { 16, 16 },
+                                                                                        { 32, 16 },
+                                                                                        { 32, 32 },
                                                                                     } };
 // clang-format on
 
@@ -1045,17 +1045,17 @@ static void paint_miniature_railway_track_s_bend_left(
         nullptr);
 
     static constexpr const CoordsXY offsetList[] = {
-        CoordsXY(0, 2),
-        CoordsXY(0, 0),
-        CoordsXY(0, 6),
-        CoordsXY(0, 2),
+        { 0, 2 },
+        { 0, 0 },
+        { 0, 6 },
+        { 0, 2 },
     };
 
     static constexpr const CoordsXY boundsList[] = {
-        CoordsXY(32, 27),
-        CoordsXY(32, 26),
-        CoordsXY(32, 26),
-        CoordsXY(32, 27),
+        { 32, 27 },
+        { 32, 26 },
+        { 32, 26 },
+        { 32, 27 },
     };
 
     uint32_t imageId = miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence]
@@ -1146,17 +1146,17 @@ static void paint_miniature_railway_track_s_bend_right(
         nullptr);
 
     static constexpr const CoordsXY offsetList[] = {
-        CoordsXY(0, 2),
-        CoordsXY(0, 6),
-        CoordsXY(0, 0),
-        CoordsXY(0, 2),
+        { 0, 2 },
+        { 0, 6 },
+        { 0, 0 },
+        { 0, 2 },
     };
 
     static constexpr const CoordsXY boundsList[] = {
-        CoordsXY(32, 27),
-        CoordsXY(32, 26),
-        CoordsXY(32, 26),
-        CoordsXY(32, 27),
+        { 32, 27 },
+        { 32, 26 },
+        { 32, 26 },
+        { 32, 27 },
     };
 
     uint32_t imageId = miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]
@@ -1242,25 +1242,25 @@ static constexpr const uint32_t miniature_railway_right_quarter_turn_3_tile_trac
 };
 
 static constexpr const CoordsXYZ miniature_railway_right_quarter_turn_3_tile_bound_offsets[4][3] = { {
-                                                                                                         CoordsXYZ(0, 6, 0),
-                                                                                                         CoordsXYZ(16, 16, 0),
-                                                                                                         CoordsXYZ(6, 0, 0),
-                                                                                                     },
-                                                                                                     {
-                                                                                                         CoordsXYZ(6, 0, 0),
-                                                                                                         CoordsXYZ(16, 0, 0),
-                                                                                                         CoordsXYZ(0, 6, 0),
-                                                                                                     },
-                                                                                                     {
-                                                                                                         CoordsXYZ(0, 6, 0),
-                                                                                                         CoordsXYZ(0, 0, 0),
-                                                                                                         CoordsXYZ(6, 0, 0),
-                                                                                                     },
-                                                                                                     {
-                                                                                                         CoordsXYZ(6, 0, 0),
-                                                                                                         CoordsXYZ(0, 16, 0),
-                                                                                                         CoordsXYZ(0, 6, 0),
-                                                                                                     } };
+                                                                                                             { 0, 6, 0 },
+                                                                                                             { 16, 16, 0 },
+                                                                                                             { 6, 0, 0 },
+                                                                                                         },
+                                                                                                         {
+                                                                                                             { 6, 0, 0 },
+                                                                                                             { 16, 0, 0 },
+                                                                                                             { 0, 6, 0 },
+                                                                                                         },
+                                                                                                         {
+                                                                                                             { 0, 6, 0 },
+                                                                                                             { 0, 0, 0 },
+                                                                                                             { 6, 0, 0 },
+                                                                                                         },
+                                                                                                         {
+                                                                                                             { 6, 0, 0 },
+                                                                                                             { 0, 16, 0 },
+                                                                                                             { 0, 6, 0 },
+                                                                                                         } };
 
 /** rct2: 0x008AD1B0 */
 static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
@@ -1352,63 +1352,63 @@ static constexpr const uint32_t miniature_railway_floor_track_pieces_left_eight_
 
 static constexpr const CoordsXYZ miniature_railway_track_floor_pieces_left_eight_to_diag_bounds[4][5] = {
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(32, 16, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 0),
-        CoordsXYZ(30, 30, 0),
+        { 32, 32, 2 },
+        { 32, 16, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 0 },
+        { 30, 30, 0 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 34, 2),
-        CoordsXYZ(14, 14, 2),
-        CoordsXYZ(16, 16, 0),
-        CoordsXYZ(34, 32, 0),
+        { 32, 32, 2 },
+        { 16, 34, 2 },
+        { 14, 14, 2 },
+        { 16, 16, 0 },
+        { 34, 32, 0 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(32, 16, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 0),
-        CoordsXYZ(16, 16, 2),
+        { 32, 32, 2 },
+        { 32, 16, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 0 },
+        { 16, 16, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 32, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 0),
-        CoordsXYZ(32, 32, 0),
+        { 32, 32, 2 },
+        { 16, 32, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 0 },
+        { 32, 32, 0 },
     },
 };
 
 static constexpr const CoordsXY miniature_railway_track_floor_pieces_left_eight_to_diag_offset[4][5] = {
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
-        CoordsXY(16, 0),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 0 },
+        { 0, 16 },
+        { 16, 0 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(16, 16),
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 0 },
+        { 16, 16 },
+        { 0, 0 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
-        CoordsXY(16, 0),
-        CoordsXY(0, 16),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 16 },
+        { 16, 0 },
+        { 0, 16 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
-        CoordsXY(0, 0),
-        CoordsXY(16, 16),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 0 },
+        { 16, 16 },
+        { 0, 0 },
     },
 };
 
@@ -1488,63 +1488,63 @@ static constexpr const uint32_t miniature_railway_floor_track_pieces_right_eight
 
 static constexpr const CoordsXYZ miniature_railway_track_floor_pieces_right_eight_to_diag_bounds[4][5] = {
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(32, 16, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 0),
-        CoordsXYZ(32, 32, 0),
+        { 32, 32, 2 },
+        { 32, 16, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 0 },
+        { 32, 32, 0 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 32, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 0),
-        CoordsXYZ(16, 16, 2),
+        { 32, 32, 2 },
+        { 16, 32, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 0 },
+        { 16, 16, 2 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(34, 16, 2),
-        CoordsXYZ(28, 28, 2),
-        CoordsXYZ(16, 16, 0),
-        CoordsXYZ(32, 34, 0),
+        { 32, 32, 2 },
+        { 34, 16, 2 },
+        { 28, 28, 2 },
+        { 16, 16, 0 },
+        { 32, 34, 0 },
     },
     {
-        CoordsXYZ(32, 32, 2),
-        CoordsXYZ(16, 32, 2),
-        CoordsXYZ(16, 16, 2),
-        CoordsXYZ(16, 16, 0),
-        CoordsXYZ(30, 30, 0),
+        { 32, 32, 2 },
+        { 16, 32, 2 },
+        { 16, 16, 2 },
+        { 16, 16, 0 },
+        { 30, 30, 0 },
     },
 };
 
 static constexpr const CoordsXY miniature_railway_track_floor_pieces_right_eight_to_diag_offset[4][5] = {
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 16),
-        CoordsXY(0, 0),
-        CoordsXY(16, 16),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 16 },
+        { 0, 0 },
+        { 16, 16 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
-        CoordsXY(0, 16),
-        CoordsXY(16, 0),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 16 },
+        { 16, 0 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(4, 4),
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 0 },
+        { 4, 4 },
+        { 0, 0 },
+        { 0, 0 },
     },
     {
-        CoordsXY(0, 0),
-        CoordsXY(0, 0),
-        CoordsXY(16, 0),
-        CoordsXY(0, 16),
-        CoordsXY(0, 0),
+        { 0, 0 },
+        { 0, 0 },
+        { 16, 0 },
+        { 0, 16 },
+        { 0, 0 },
     },
 };
 
@@ -1684,8 +1684,8 @@ static void miniature_railway_track_diag_flat(
     int16_t supportType = monorail_diag_support_types[direction][trackSequence];
 
     uint32_t floorImage = 0;
-    CoordsXY floorBoundSize = {};
-    CoordsXY floorBoundOffset = {};
+    CoordsXY floorBoundSize;
+    CoordsXY floorBoundOffset;
 
     if (supportType != -1)
     {
@@ -1769,8 +1769,8 @@ static void miniature_railway_track_diag_25_deg_up(
     bool hasSupports = false;
 
     uint32_t floorImage = 0;
-    CoordsXY floorBoundSize = {};
-    CoordsXY floorBoundOffset = {};
+    CoordsXY floorBoundSize;
+    CoordsXY floorBoundOffset;
 
     if (supportType != -1)
     {

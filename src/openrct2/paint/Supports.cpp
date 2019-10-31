@@ -17,15 +17,15 @@
 /** rct2: 0x0097AF20, 0x0097AF21 */
 // clang-format off
 static constexpr const CoordsXY SupportBoundBoxes[] = {
-    CoordsXY(4,  4),
-    CoordsXY(28, 4),
-    CoordsXY(4,  28),
-    CoordsXY(28, 28),
-    CoordsXY(16, 16),
-    CoordsXY(16, 4),
-    CoordsXY(4,  16),
-    CoordsXY(28, 16),
-    CoordsXY(16, 28)
+    {4,  4},
+    {28, 4},
+    {4,  28},
+    {28, 28},
+    {16, 16},
+    {16, 4},
+    {4,  16},
+    {28, 16},
+    {16, 28}
 };
 
 /** rct2: 0x0097AF32 */
@@ -73,26 +73,26 @@ static constexpr const uint8_t _97AF32[] = {
 
 /** rct2: 0x0097B052, 0x0097B053 */
 static constexpr const CoordsXY loc_97B052[] = {
-    CoordsXY(-15, -1),
-    CoordsXY(0,   -2),
-    CoordsXY(-2,  -1),
-    CoordsXY(-1,  -15),
-    CoordsXY(-26, -1),
-    CoordsXY(0,   -2),
-    CoordsXY(-2,  -1),
-    CoordsXY(-1,  -26)
+    {-15, -1},
+    {0,   -2},
+    {-2,  -1},
+    {-1,  -15},
+    {-26, -1},
+    {0,   -2},
+    {-2,  -1},
+    {-1,  -26}
 };
 
 /** rct2: 0x0097B062, 0x0097B063 */
 static constexpr const CoordsXY _97B062[] = {
-    CoordsXY(18,  3),
-    CoordsXY(3, 18),
-    CoordsXY(18,  3),
-    CoordsXY(3, 18),
-    CoordsXY(32,  3),
-    CoordsXY(3, 32),
-    CoordsXY(32,  3),
-    CoordsXY(3, 32)
+    { 18,  3 },
+    {  3, 18 },
+    { 18,  3 },
+    {  3, 18 },
+    { 32,  3 },
+    {  3, 32 },
+    { 32,  3 },
+    {  3, 32 }
 };
 
 /** rct2: 0x0097B072 */
