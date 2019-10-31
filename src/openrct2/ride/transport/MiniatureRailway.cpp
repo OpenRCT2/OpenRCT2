@@ -1242,25 +1242,25 @@ static constexpr const uint32_t miniature_railway_right_quarter_turn_3_tile_trac
 };
 
 static constexpr const CoordsXYZ miniature_railway_right_quarter_turn_3_tile_bound_offsets[4][3] = { {
-                                                                                                             { 0, 6, 0 },
-                                                                                                             { 16, 16, 0 },
-                                                                                                             { 6, 0, 0 },
-                                                                                                         },
-                                                                                                         {
-                                                                                                             { 6, 0, 0 },
-                                                                                                             { 16, 0, 0 },
-                                                                                                             { 0, 6, 0 },
-                                                                                                         },
-                                                                                                         {
-                                                                                                             { 0, 6, 0 },
-                                                                                                             { 0, 0, 0 },
-                                                                                                             { 6, 0, 0 },
-                                                                                                         },
-                                                                                                         {
-                                                                                                             { 6, 0, 0 },
-                                                                                                             { 0, 16, 0 },
-                                                                                                             { 0, 6, 0 },
-                                                                                                         } };
+                                                                                                         { 0, 6, 0 },
+                                                                                                         { 16, 16, 0 },
+                                                                                                         { 6, 0, 0 },
+                                                                                                     },
+                                                                                                     {
+                                                                                                         { 6, 0, 0 },
+                                                                                                         { 16, 0, 0 },
+                                                                                                         { 0, 6, 0 },
+                                                                                                     },
+                                                                                                     {
+                                                                                                         { 0, 6, 0 },
+                                                                                                         { 0, 0, 0 },
+                                                                                                         { 6, 0, 0 },
+                                                                                                     },
+                                                                                                     {
+                                                                                                         { 6, 0, 0 },
+                                                                                                         { 0, 16, 0 },
+                                                                                                         { 0, 6, 0 },
+                                                                                                     } };
 
 /** rct2: 0x008AD1B0 */
 static void paint_miniature_railway_track_right_quarter_turn_3_tiles(
