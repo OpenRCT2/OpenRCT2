@@ -1005,7 +1005,7 @@ CoordsXY screen_pos_to_map_pos(int16_t x, int16_t y, int32_t* direction)
     if (mapX == LOCATION_NULL)
         return {};
 
-    CoordsXY mapCoords = {mapX, mapY};
+    CoordsXY mapCoords = { mapX, mapY };
 
     int32_t my_direction;
     int32_t dist_from_centre_x = abs(mapCoords.x % 32);
