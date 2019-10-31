@@ -775,27 +775,27 @@ bool track_paint_util_draw_station_covers_2(
 
     int32_t imageOffset = 0;
     CoordsXYZ bounds, boundsOffset;
-    CoordsXYZ offset = CoordsXYZ(0, 0, static_cast<int16_t>(height));
+    CoordsXYZ offset = CoordsXYZ(0, 0, height);
     switch (edge)
     {
         case EDGE_NE:
             bounds = CoordsXYZ(1, 30, heights[stationVariant][0]);
-            boundsOffset = CoordsXYZ(0, 1, static_cast<int16_t>(height + 1));
+            boundsOffset = CoordsXYZ(0, 1, height + 1);
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_SE_NW_BACK_1 : SPR_STATION_COVER_OFFSET_SE_NW_BACK_0;
             break;
         case EDGE_SE:
             bounds = CoordsXYZ(32, 32, 0);
-            boundsOffset = CoordsXYZ(0, 0, static_cast<int16_t>(height + 1 + heights[stationVariant][0]));
+            boundsOffset = CoordsXYZ(0, 0, height + 1 + heights[stationVariant][0]);
             imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
             break;
         case EDGE_SW:
             bounds = CoordsXYZ(32, 32, 0);
-            boundsOffset = CoordsXYZ(0, 0, static_cast<int16_t>(height + 1 + heights[stationVariant][0]));
+            boundsOffset = CoordsXYZ(0, 0, height + 1 + heights[stationVariant][0]);
             imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
             break;
         case EDGE_NW:
             bounds = CoordsXYZ(30, 1, heights[stationVariant][0]);
-            boundsOffset = CoordsXYZ(1, 0, static_cast<int16_t>(height + 1));
+            boundsOffset = CoordsXYZ(1, 0, height + 1);
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_NE_SW_BACK_1 : SPR_STATION_COVER_OFFSET_NE_SW_BACK_0;
             break;
     }

@@ -142,7 +142,7 @@ static void top_spin_paint_vehicle(
     }
     image_id += seatImageId;
 
-    CoordsXYZ seatCoords(al, cl, static_cast<int16_t>(height));
+    CoordsXYZ seatCoords(al, cl, height);
 
     if (armRotation >= static_cast<int8_t>(std::size(TopSpinSeatHeightOffset)))
     {
