@@ -145,9 +145,10 @@ namespace GameActions
                     // This should never happen.
                     Guard::Assert(
                         false,
-                        "Discarding game action from tick behind current tick, ID: %08X, Action Tick: %08X, Current Tick: "
+                        "Discarding game action %s (%u) from tick behind current tick, ID: %08X, Action Tick: %08X, Current "
+                        "Tick: "
                         "%08X\n",
-                        queued.uniqueId, queued.tick, currentTick);
+                        queued.action->GetName(), queued.action->GetType(), queued.uniqueId, queued.tick, currentTick);
                 }
                 else if (queued.tick > currentTick)
                 {
