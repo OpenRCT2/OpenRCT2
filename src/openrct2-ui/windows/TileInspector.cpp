@@ -1297,8 +1297,8 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x,
         {
             return;
         }
-    mapX = mapCoords.x;
-    mapY = mapCoords.y;
+        mapX = mapCoords.x;
+        mapY = mapCoords.y;
     }
 
     windowTileInspectorTileSelected = true;
