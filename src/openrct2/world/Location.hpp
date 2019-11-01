@@ -144,7 +144,7 @@ struct CoordsXY
 struct TileCoordsXY
 {
     TileCoordsXY() = default;
-    TileCoordsXY(int32_t x_, int32_t y_)
+    constexpr TileCoordsXY(int32_t x_, int32_t y_)
         : x(x_)
         , y(y_)
     {

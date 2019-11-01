@@ -29,7 +29,7 @@
 
 // clang-format off
 /* rct2: 0x007667AC */
-static TileCoordsXY EntranceOffsetEdgeNE[] = {
+static constexpr TileCoordsXY EntranceOffsetEdgeNE[] = {
     { -1, 0 },
     { 0,  -1 },
     { 1,  0 },
@@ -37,7 +37,7 @@ static TileCoordsXY EntranceOffsetEdgeNE[] = {
 };
 
 /* rct2: 0x007667AE */
-static TileCoordsXY EntranceOffsetEdgeNW[] = {
+static constexpr TileCoordsXY EntranceOffsetEdgeNW[] = {
     { 0, -1 },
     { 1, 0 },
     { 0, 1 },
@@ -951,7 +951,7 @@ void track_paint_util_draw_station_metal_supports_2(
     }
 }
 
-const CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
+constexpr CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
     {
         { { 32, 20 }, { 0, 0 } },
         { { 16, 16 }, { 0, 0 } },
@@ -974,7 +974,7 @@ const CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
     },
 };
 
-const CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
+constexpr CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
     {
         { { 0, 6, 0 }, { 0, 0, 0 } },
         { { 16, 16, 0 }, { 0, 0, 0 } },
@@ -1034,7 +1034,7 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
     }
 }
 
-const CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
+constexpr CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
     {
         { { 0, 6, 0 }, { 0, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
@@ -1065,7 +1065,7 @@ const CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
     },
 };
 
-const CoordsXY defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
+constexpr CoordsXY defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
     {
         { { 32, 20 }, { 0, 0 } },
         { { 32, 16 }, { 0, 0 } },
@@ -1132,7 +1132,7 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
     }
 }
 
-const CoordsXY defaultLeftEighthToDiagBoundLengths[4][4] = {
+constexpr CoordsXY defaultLeftEighthToDiagBoundLengths[4][4] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -1159,7 +1159,7 @@ const CoordsXY defaultLeftEighthToDiagBoundLengths[4][4] = {
     },
 };
 
-const CoordsXYZ defaultLeftEighthToDiagBoundOffsets[4][4] = {
+constexpr CoordsXYZ defaultLeftEighthToDiagBoundOffsets[4][4] = {
     {
         { 0, 6, 0 },
         { 0, 0, 0 },
@@ -1186,7 +1186,7 @@ const CoordsXYZ defaultLeftEighthToDiagBoundOffsets[4][4] = {
     },
 };
 
-const CoordsXY defaultRightEighthToDiagBoundLengths[4][4] = {
+constexpr CoordsXY defaultRightEighthToDiagBoundLengths[4][4] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -1213,7 +1213,7 @@ const CoordsXY defaultRightEighthToDiagBoundLengths[4][4] = {
     },
 };
 
-const CoordsXYZ defaultRightEighthToDiagBoundOffsets[4][4] = {
+constexpr CoordsXYZ defaultRightEighthToDiagBoundOffsets[4][4] = {
     {
         { 0, 6, 0 },
         { 0, 16, 0 },
@@ -1291,14 +1291,14 @@ void track_paint_util_eighth_to_diag_tiles_paint(
         height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z);
 }
 
-const CoordsXY defaultDiagTileOffsets[4] = {
+constexpr CoordsXY defaultDiagTileOffsets[4] = {
     { -16, -16 },
     { -16, -16 },
     { -16, -16 },
     { -16, -16 },
 };
 
-const CoordsXY defaultDiagBoundLengths[4] = {
+constexpr CoordsXY defaultDiagBoundLengths[4] = {
     { 32, 32 },
     { 32, 32 },
     { 32, 32 },
@@ -1336,7 +1336,7 @@ const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
     6, 4, 5, 3, 1, 2, 0,
 };
 
-const CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5] = {
+constexpr CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5] = {
     {
         { 0, 6 },
         { 0, 16 },
@@ -1367,7 +1367,7 @@ const CoordsXY defaultRightQuarterTurn5TilesOffsets[4][5] = {
     },
 };
 
-const CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
+constexpr CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
     {
         { 0, 6, 0 },
         { 0, 16, 0 },
@@ -1398,7 +1398,7 @@ const CoordsXYZ defaultRightQuarterTurn5TilesBoundOffsets[4][5] = {
     },
 };
 
-const CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
+constexpr CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -1533,7 +1533,7 @@ const uint8_t mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
     0,
 };
 
-const CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3] = {
+constexpr CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3] = {
     {
         { 0, 6 },
         { 16, 16 },
@@ -1556,7 +1556,7 @@ const CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3] = {
     },
 };
 
-const CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3] = {
+constexpr CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3] = {
     {
         { 0, 6, 0 },
         { 16, 16, 0 },
@@ -1579,7 +1579,7 @@ const CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3] = {
     },
 };
 
-const CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
+constexpr CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
     {
         { 32, 20 },
         { 16, 16 },

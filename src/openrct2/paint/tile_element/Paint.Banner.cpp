@@ -21,7 +21,7 @@
 /** rct2: 0x0098D884 */
 // BannerBoundBoxes[rotation][0] is for the pole in the back
 // BannerBoundBoxes[rotation][1] is for the pole and the banner in the front
-const CoordsXY BannerBoundBoxes[][2] = {
+constexpr CoordsXY BannerBoundBoxes[][2] = {
     { { 1, 2 }, { 1, 29 } },
     { { 2, 32 }, { 29, 32 } },
     { { 32, 2 }, { 32, 29 } },
