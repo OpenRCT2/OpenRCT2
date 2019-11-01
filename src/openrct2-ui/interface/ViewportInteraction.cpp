@@ -684,18 +684,18 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
     }
 
     LocationXY16 initialVPPos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
-    LocationXY16 mapPos = { (int16_t)(initialPos.x + 16), (int16_t)(initialPos.y + 16) };
+    CoordsXY mapPos = initialPos + CoordsXY{ 16, 16 };
 
     for (int32_t i = 0; i < 5; i++)
     {
         int16_t z = waterHeight;
         if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER)
         {
-            z = tile_element_height({ mapPos.x, mapPos.y });
+            z = tile_element_height(mapPos);
         }
         mapPos = viewport_coord_to_map_coord(initialVPPos.x, initialVPPos.y, z);
-        mapPos.x = std::clamp<int16_t>(mapPos.x, initialPos.x, initialPos.x + 31);
-        mapPos.y = std::clamp<int16_t>(mapPos.y, initialPos.y, initialPos.y + 31);
+        mapPos.x = std::clamp(mapPos.x, initialPos.x, initialPos.x + 31);
+        mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
     }
 
     *x = mapPos.x & ~0x1F;
