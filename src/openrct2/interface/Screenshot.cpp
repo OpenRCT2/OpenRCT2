@@ -435,7 +435,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     }
 
     gIntroState = INTRO_STATE_NONE;
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
+    context->SetActiveScreen(context->GetGameScreen());
 
     rct_drawpixelinfo dpi;
     try
@@ -600,7 +600,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         }
 
         gIntroState = INTRO_STATE_NONE;
-        gScreenFlags = SCREEN_FLAGS_PLAYING;
+        context->SetActiveScreen(context->GetGameScreen());
 
         rct_viewport viewport{};
         if (giantScreenshot)

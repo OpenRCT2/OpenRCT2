@@ -21,7 +21,7 @@
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
 #include "../paint/Paint.h"
-#include "../title/TitleScreen.h"
+#include "../screens/title/TitleScreen.h"
 #include "../ui/UiContext.h"
 
 using namespace OpenRCT2;

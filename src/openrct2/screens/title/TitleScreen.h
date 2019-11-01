@@ -9,20 +9,18 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../drawing/Drawing.h"
+#include "../../common.h"
+#include "../../drawing/Drawing.h"
+#include "../ScreenState.h"
 
 interface ITitleSequencePlayer;
 
 namespace OpenRCT2
 {
-    class GameState;
-
-    class TitleScreen final
+    class TitleScreen final : public ScreenState
     {
     public:
-        TitleScreen(GameState& gameState);
-        ~TitleScreen();
+        using ScreenState::ScreenState;
 
         ITitleSequencePlayer* GetSequencePlayer();
         size_t GetCurrentSequence();
@@ -32,14 +30,14 @@ namespace OpenRCT2
         bool ShouldHideVersionInfo();
         void SetHideVersionInfo(bool value);
 
-        void Load();
-        void Update();
+        void Load() override;
+        void Update() override;
+        void Stop() override;
+
         void CreateWindows();
         void ChangePresetSequence(size_t preset);
 
     private:
-        GameState& _gameState;
-
         ITitleSequencePlayer* _sequencePlayer = nullptr;
         size_t _loadedTitleSequenceId = SIZE_MAX;
         size_t _currentSequence = SIZE_MAX;
@@ -54,7 +52,6 @@ namespace OpenRCT2
 // When testing title sequences within a normal game
 extern bool gPreviewingTitleSequenceInGame;
 
-void title_load();
 void title_create_windows();
 void* title_get_sequence_player();
 void title_sequence_change_preset(size_t preset);

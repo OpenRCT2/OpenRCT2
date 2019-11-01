@@ -29,10 +29,10 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
-#include <openrct2/title/TitleScreen.h>
-#include <openrct2/title/TitleSequence.h>
-#include <openrct2/title/TitleSequenceManager.h>
-#include <openrct2/title/TitleSequencePlayer.h>
+#include <openrct2/screens/title/TitleScreen.h>
+#include <openrct2/screens/title/TitleSequence.h>
+#include <openrct2/screens/title/TitleSequenceManager.h>
+#include <openrct2/screens/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>

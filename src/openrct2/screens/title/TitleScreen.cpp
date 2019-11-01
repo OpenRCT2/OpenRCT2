@@ -9,24 +9,24 @@
 
 #include "TitleScreen.h"
 
-#include "../Context.h"
-#include "../Game.h"
-#include "../GameState.h"
-#include "../Input.h"
-#include "../OpenRCT2.h"
-#include "../Version.h"
-#include "../audio/audio.h"
-#include "../config/Config.h"
-#include "../core/Console.hpp"
-#include "../drawing/Drawing.h"
-#include "../interface/Screenshot.h"
-#include "../interface/Viewport.h"
-#include "../interface/Window.h"
-#include "../localisation/Localisation.h"
-#include "../network/network.h"
-#include "../scenario/Scenario.h"
-#include "../scenario/ScenarioRepository.h"
-#include "../ui/UiContext.h"
+#include "../../Context.h"
+#include "../../Game.h"
+#include "../../GameState.h"
+#include "../../Input.h"
+#include "../../OpenRCT2.h"
+#include "../../Version.h"
+#include "../../audio/audio.h"
+#include "../../config/Config.h"
+#include "../../core/Console.hpp"
+#include "../../drawing/Drawing.h"
+#include "../../interface/Screenshot.h"
+#include "../../interface/Viewport.h"
+#include "../../interface/Window.h"
+#include "../../localisation/Localisation.h"
+#include "../../network/network.h"
+#include "../../scenario/Scenario.h"
+#include "../../scenario/ScenarioRepository.h"
+#include "../../ui/UiContext.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
@@ -35,18 +35,6 @@ using namespace OpenRCT2;
 
 // TODO Remove when no longer required.
 bool gPreviewingTitleSequenceInGame;
-static TitleScreen* _singleton = nullptr;
-
-TitleScreen::TitleScreen(GameState& gameState)
-    : _gameState(gameState)
-{
-    _singleton = this;
-}
-
-TitleScreen::~TitleScreen()
-{
-    _singleton = nullptr;
-}
 
 ITitleSequencePlayer* TitleScreen::GetSequencePlayer()
 {
@@ -124,7 +112,6 @@ void TitleScreen::Load()
     gCurrentLoadedPath = "";
 
     network_close();
-    audio_stop_all_music_and_sounds();
     GetContext()->GetGameState()->InitAll(150);
     viewport_init_all();
     context_open_window(WC_MAIN_WINDOW);
@@ -186,6 +173,11 @@ void TitleScreen::Update()
     context_handle_input();
 
     gInUpdateCode = false;
+}
+
+void TitleScreen::Stop()
+{
+    audio_stop_all_music_and_sounds();
 }
 
 void TitleScreen::ChangePresetSequence(size_t preset)
@@ -277,55 +269,55 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
     return true;
 }
 
-void title_load()
-{
-    if (_singleton != nullptr)
-    {
-        _singleton->Load();
-    }
-}
-
 void title_create_windows()
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    if (titleScreen != nullptr)
     {
-        _singleton->CreateWindows();
+        titleScreen->CreateWindows();
     }
 }
 
 void* title_get_sequence_player()
 {
-    void* result = nullptr;
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    if (titleScreen != nullptr)
     {
-        result = _singleton->GetSequencePlayer();
+        return titleScreen->GetSequencePlayer();
     }
-    return result;
+    return nullptr;
 }
 
 void title_sequence_change_preset(size_t preset)
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    if (titleScreen != nullptr)
     {
-        _singleton->ChangePresetSequence(preset);
+        titleScreen->ChangePresetSequence(preset);
     }
 }
 
 bool title_should_hide_version_info()
 {
-    bool result = false;
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    if (titleScreen != nullptr)
     {
-        result = _singleton->ShouldHideVersionInfo();
+        return titleScreen->ShouldHideVersionInfo();
     }
-    return result;
+    return false;
 }
 
 void title_set_hide_version_info(bool value)
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    if (titleScreen != nullptr)
     {
-        _singleton->SetHideVersionInfo(value);
+        titleScreen->SetHideVersionInfo(value);
     }
 }
 
@@ -336,36 +328,43 @@ size_t title_get_config_sequence()
 
 size_t title_get_current_sequence()
 {
-    size_t result = 0;
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    if (titleScreen != nullptr)
     {
-        result = _singleton->GetCurrentSequence();
+        return titleScreen->GetCurrentSequence();
     }
-    return result;
+    return 0;
 }
 
 bool title_preview_sequence(size_t value)
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    if (titleScreen != nullptr)
     {
-        return _singleton->PreviewSequence(value);
+        return titleScreen->PreviewSequence(value);
     }
     return false;
 }
 
 void title_stop_previewing_sequence()
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    if (titleScreen != nullptr)
     {
-        _singleton->StopPreviewingSequence();
+        titleScreen->StopPreviewingSequence();
     }
 }
 
 bool title_is_previewing_sequence()
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    if (titleScreen != nullptr)
     {
-        return _singleton->IsPreviewingSequence();
+        return titleScreen->IsPreviewingSequence();
     }
     return false;
 }

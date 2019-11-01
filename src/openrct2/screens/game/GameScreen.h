@@ -1,0 +1,27 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2019 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#pragma once
+
+#include "../../common.h"
+#include "../../drawing/Drawing.h"
+#include "../ScreenState.h"
+
+namespace OpenRCT2
+{
+    class GameScreen final : public ScreenState
+    {
+    public:
+        using ScreenState::ScreenState;
+
+        void Load() override;
+        void Update() override;
+        void Stop() override;
+    };
+} // namespace OpenRCT2

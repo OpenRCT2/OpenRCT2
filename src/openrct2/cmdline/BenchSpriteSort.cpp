@@ -82,7 +82,7 @@ static std::vector<paint_session> extract_paint_session(const std::string parkFi
         }
 
         gIntroState = INTRO_STATE_NONE;
-        gScreenFlags = SCREEN_FLAGS_PLAYING;
+        context->SetActiveScreen(context->GetGameScreen());
 
         int32_t mapSize = gMapSize;
         int32_t resolutionWidth = (mapSize * 32 * 2);

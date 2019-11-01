@@ -56,8 +56,9 @@
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
-#include "title/TitleScreen.h"
-#include "title/TitleSequenceManager.h"
+#include "screens/game/GameScreen.h"
+#include "screens/title/TitleScreen.h"
+#include "screens/title/TitleSequenceManager.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/Util.h"
@@ -103,8 +104,12 @@ namespace OpenRCT2
         Networking::Http::Http _http;
 #endif
 
-        // Game states
+        // Screens.
         std::unique_ptr<TitleScreen> _titleScreen;
+        std::unique_ptr<GameScreen> _gameScreen;
+        IScreenState* _activeScreen = nullptr;
+
+        // Game states
         std::unique_ptr<GameState> _gameState;
 
         int32_t _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
@@ -245,6 +250,48 @@ namespace OpenRCT2
                 Launch();
             }
             return gExitCode;
+        }
+
+        IScreenState* GetLoadingScreen() override
+        {
+            // TODO: Implement me.
+            return nullptr;
+        }
+
+        IScreenState* GetIntroScreen() override
+        {
+            // TODO: Implement me.
+            return nullptr;
+        }
+
+        IScreenState* GetTitleScreen() override
+        {
+            return _titleScreen.get();
+        }
+
+        IScreenState* GetGameScreen() override
+        {
+            return _gameScreen.get();
+        }
+
+        IScreenState* GetEditorScreen() override
+        {
+            // TODO: Implement me.
+            return nullptr;
+        }
+
+        virtual IScreenState* GetActiveScreen() override
+        {
+            return _activeScreen;
+        }
+
+        void SetActiveScreen(IScreenState* screen) override
+        {
+            if (_activeScreen != nullptr)
+                _activeScreen->Stop();
+            _activeScreen = screen;
+            if (_activeScreen)
+                _activeScreen->Load();
         }
 
         void WriteLine(const std::string& s) override
@@ -441,6 +488,8 @@ namespace OpenRCT2
             _gameState->InitAll(150);
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
+            _gameScreen = std::make_unique<GameScreen>(*_gameState);
+
             return true;
         }
 
@@ -596,7 +645,7 @@ namespace OpenRCT2
                         // to ensure that the title sequence loads before the window
                         if (loadTitleScreenFirstOnFail)
                         {
-                            title_load();
+                            SetActiveScreen(GetTitleScreen());
                         }
                         // The path needs to be duplicated as it's a const here
                         // which the window function doesn't like
@@ -614,7 +663,7 @@ namespace OpenRCT2
                         // to ensure that the title sequence loads before the window
                         if (loadTitleScreenFirstOnFail)
                         {
-                            title_load();
+                            SetActiveScreen(GetTitleScreen());
                         }
 
                         auto windowManager = _uiContext->GetWindowManager();
@@ -625,7 +674,7 @@ namespace OpenRCT2
                     {
                         // If loading the SV6 or SV4 failed for a reason other than invalid objects
                         // the current park state will be corrupted so just go back to the title screen.
-                        title_load();
+                        SetActiveScreen(GetTitleScreen());
                         Console::Error::WriteLine(e.what());
                     }
                 }
@@ -707,10 +756,10 @@ namespace OpenRCT2
             {
                 case STARTUP_ACTION_INTRO:
                     gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
-                    title_load();
+                    SetActiveScreen(GetTitleScreen());
                     break;
                 case STARTUP_ACTION_TITLE:
-                    title_load();
+                    SetActiveScreen(GetTitleScreen());
                     break;
                 case STARTUP_ACTION_OPEN:
                 {
@@ -724,7 +773,7 @@ namespace OpenRCT2
                         size_t dataSize = Networking::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
                         if (dataSize == 0)
                         {
-                            title_load();
+                            SetActiveScreen(GetTitleScreen());
                             break;
                         }
 
@@ -732,7 +781,7 @@ namespace OpenRCT2
                         if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            title_load();
+                            SetActiveScreen(GetTitleScreen());
                             break;
                         }
 #endif
@@ -750,12 +799,12 @@ namespace OpenRCT2
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                             Console::Error::WriteLine("%s", ex.what());
-                            title_load();
+                            SetActiveScreen(GetTitleScreen());
                             break;
                         }
                     }
 
-                    gScreenFlags = SCREEN_FLAGS_PLAYING;
+                    SetActiveScreen(GetGameScreen());
 
 #ifndef DISABLE_NETWORK
                     if (gNetworkStart == NETWORK_MODE_SERVER)
@@ -790,7 +839,7 @@ namespace OpenRCT2
                     }
                     else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        title_load();
+                        SetActiveScreen(GetTitleScreen());
                     }
                     break;
             }
@@ -974,18 +1023,8 @@ namespace OpenRCT2
 
             date_update_real_time_of_day();
 
-            if (gIntroState != INTRO_STATE_NONE)
-            {
-                intro_update();
-            }
-            else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
-            {
-                _titleScreen->Update();
-            }
-            else
-            {
-                _gameState->Update();
-            }
+            if (_activeScreen)
+                _activeScreen->Update();
 
 #ifdef __ENABLE_DISCORD__
             if (_discordService != nullptr)

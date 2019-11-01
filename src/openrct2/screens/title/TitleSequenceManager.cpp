@@ -9,14 +9,14 @@
 
 #include "TitleSequenceManager.h"
 
-#include "../OpenRCT2.h"
-#include "../core/Collections.hpp"
-#include "../core/FileScanner.h"
-#include "../core/Memory.hpp"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../localisation/Localisation.h"
-#include "../platform/platform.h"
+#include "../../OpenRCT2.h"
+#include "../../core/Collections.hpp"
+#include "../../core/FileScanner.h"
+#include "../../core/Memory.hpp"
+#include "../../core/Path.hpp"
+#include "../../core/String.hpp"
+#include "../../localisation/Localisation.h"
+#include "../../platform/platform.h"
 #include "TitleSequence.h"
 
 #include <algorithm>
