@@ -1625,24 +1625,40 @@ void get_map_coordinates_from_pos_window(
     rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport)
 {
+    ScreenCoordsXY screenCoords(screenX, screenY);
+    CoordsXY mapCoords;
+
+    get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
+
+    if (x != nullptr)
+        *x = mapCoords.x;
+    if (y != nullptr)
+        *y = mapCoords.y;
+}
+
+void get_map_coordinates_from_pos_window(
+    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
+    TileElement** tileElement, rct_viewport** viewport)
+{
     _interactionFlags = flags & 0xFFFF;
     _interactionSpriteType = 0;
     if (window != nullptr && window->viewport != nullptr)
     {
         rct_viewport* myviewport = window->viewport;
-        screenX -= (int32_t)myviewport->x;
-        screenY -= (int32_t)myviewport->y;
-        if (screenX >= 0 && screenX < (int32_t)myviewport->width && screenY >= 0 && screenY < (int32_t)myviewport->height)
+        screenCoords.x -= (int32_t)myviewport->x;
+        screenCoords.y -= (int32_t)myviewport->y;
+        if (screenCoords.x >= 0 && screenCoords.x < (int32_t)myviewport->width && screenCoords.y >= 0
+            && screenCoords.y < (int32_t)myviewport->height)
         {
-            screenX <<= myviewport->zoom;
-            screenY <<= myviewport->zoom;
-            screenX += (int32_t)myviewport->view_x;
-            screenY += (int32_t)myviewport->view_y;
+            screenCoords.x <<= myviewport->zoom;
+            screenCoords.y <<= myviewport->zoom;
+            screenCoords.x += (int32_t)myviewport->view_x;
+            screenCoords.y += (int32_t)myviewport->view_y;
             _viewportDpi1.zoom_level = myviewport->zoom;
-            screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-            screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-            _viewportDpi1.x = screenX;
-            _viewportDpi1.y = screenY;
+            screenCoords.x &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+            screenCoords.y &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+            _viewportDpi1.x = screenCoords.x;
+            _viewportDpi1.y = screenCoords.y;
             rct_drawpixelinfo* dpi = &_viewportDpi2;
             dpi->y = _viewportDpi1.y;
             dpi->height = 1;
@@ -1661,10 +1677,10 @@ void get_map_coordinates_from_pos_window(
     }
     if (interactionType != nullptr)
         *interactionType = _interactionSpriteType;
-    if (x != nullptr)
-        *x = _interactionMapX;
-    if (y != nullptr)
-        *y = _interactionMapY;
+
+    mapCoords.x = _interactionMapX;
+    mapCoords.y = _interactionMapY;
+
     if (tileElement != nullptr)
         *tileElement = _interaction_element;
 }
