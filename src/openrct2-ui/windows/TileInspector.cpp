@@ -1296,7 +1296,7 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x,
             && mapCoords.y == windowTileInspectorToolMap.y)
         {
             return;
-         }
+        }
     mapX = mapCoords.x;
     mapY = mapCoords.y;
     }
