@@ -59,7 +59,7 @@ static void paint_mini_helicopters_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     uint32_t imageId;
 
     if (direction & 1)
@@ -92,7 +92,7 @@ static void paint_mini_helicopters_track_flat_to_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     uint32_t imageId;
 
     switch (direction)
@@ -134,7 +134,7 @@ static void paint_mini_helicopters_track_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     uint32_t imageId;
 
     switch (direction)
@@ -176,7 +176,7 @@ static void paint_mini_helicopters_track_25_deg_up_to_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     uint32_t imageId;
 
     switch (direction)

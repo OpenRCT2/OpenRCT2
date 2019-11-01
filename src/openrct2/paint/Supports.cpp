@@ -16,7 +16,7 @@
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
 // clang-format off
-static constexpr const LocationXY8 loc_97AF20[] = {
+static constexpr const CoordsXY SupportBoundBoxes[] = {
     {4,  4},
     {28, 4},
     {4,  28},
@@ -72,7 +72,7 @@ static constexpr const uint8_t _97AF32[] = {
 };
 
 /** rct2: 0x0097B052, 0x0097B053 */
-static constexpr const LocationXY16 loc_97B052[] = {
+static constexpr const CoordsXY loc_97B052[] = {
     {-15, -1},
     {0,   -2},
     {-2,  -1},
@@ -84,7 +84,7 @@ static constexpr const LocationXY16 loc_97B052[] = {
 };
 
 /** rct2: 0x0097B062, 0x0097B063 */
-static constexpr const LocationXY8 _97B062[] = {
+static constexpr const CoordsXY _97B062[] = {
     { 18,  3 },
     {  3, 18 },
     { 18,  3 },
@@ -750,8 +750,8 @@ bool metal_a_supports_paint_setup(
 
         uint8_t ebp = esi[segment * 8 + 1];
 
-        int8_t xOffset = loc_97AF20[segment].x;
-        int8_t yOffset = loc_97AF20[segment].y;
+        int8_t xOffset = SupportBoundBoxes[segment].x;
+        int8_t yOffset = SupportBoundBoxes[segment].y;
         xOffset += loc_97B052[ebp].x;
         yOffset += loc_97B052[ebp].y;
 
@@ -772,8 +772,8 @@ bool metal_a_supports_paint_setup(
     }
     else
     {
-        int8_t xOffset = loc_97AF20[segment].x;
-        int8_t yOffset = loc_97AF20[segment].y;
+        int8_t xOffset = SupportBoundBoxes[segment].x;
+        int8_t yOffset = SupportBoundBoxes[segment].y;
 
         uint32_t image_id = _97B15C[supportType].base_id;
         image_id += metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
@@ -796,8 +796,8 @@ bool metal_a_supports_paint_setup(
 
     if (heightDiff > 0)
     {
-        int8_t xOffset = loc_97AF20[segment].x;
-        int8_t yOffset = loc_97AF20[segment].y;
+        int8_t xOffset = SupportBoundBoxes[segment].x;
+        int8_t yOffset = SupportBoundBoxes[segment].y;
 
         uint32_t image_id = _97B15C[supportType].beam_id;
         image_id += heightDiff - 1;
@@ -824,8 +824,8 @@ bool metal_a_supports_paint_setup(
         if (z <= 0)
             break;
 
-        int8_t xOffset = loc_97AF20[segment].x;
-        int8_t yOffset = loc_97AF20[segment].y;
+        int8_t xOffset = SupportBoundBoxes[segment].x;
+        int8_t yOffset = SupportBoundBoxes[segment].y;
 
         uint32_t image_id = _97B15C[supportType].beam_id;
         image_id += z - 1;
@@ -853,9 +853,7 @@ bool metal_a_supports_paint_setup(
         height--;
     }
 
-    int16_t boundBoxOffsetX = loc_97AF20[segment].x;
-    int16_t boundBoxOffsetY = loc_97AF20[segment].y;
-    int16_t boundBoxOffsetZ = height;
+    CoordsXYZ boundBoxOffset = CoordsXYZ(SupportBoundBoxes[segment], height);
     si = height + special;
 
     while (1)
@@ -870,14 +868,14 @@ bool metal_a_supports_paint_setup(
         if (z <= 0)
             break;
 
-        int8_t xOffset = loc_97AF20[segment].x;
-        int8_t yOffset = loc_97AF20[segment].y;
+        int8_t xOffset = SupportBoundBoxes[segment].x;
+        int8_t yOffset = SupportBoundBoxes[segment].y;
 
         uint32_t image_id = _97B190[supportType].beam_id;
         image_id += z - 1;
         image_id |= imageColourFlags;
 
-        sub_98197C(session, image_id, xOffset, yOffset, 0, 0, 0, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+        sub_98197C(session, image_id, xOffset, yOffset, 0, 0, 0, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
 
         height += z;
     }
@@ -961,7 +959,7 @@ bool metal_b_supports_paint_setup(
 
         sub_98196C(
             session, _metalSupportTypeToCrossbeamImages[supportType][ebp] | imageColourFlags,
-            loc_97AF20[originalSegment].x + loc_97B052[ebp].x, loc_97AF20[originalSegment].y + loc_97B052[ebp].y,
+            SupportBoundBoxes[originalSegment].x + loc_97B052[ebp].x, SupportBoundBoxes[originalSegment].y + loc_97B052[ebp].y,
             _97B062[ebp].x, _97B062[ebp].y, 1, baseHeight);
     }
 
@@ -978,7 +976,7 @@ bool metal_b_supports_paint_setup(
         uint32_t imageId = _97B15C[supportType].base_id + imageOffset;
 
         sub_98196C(
-            session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, 5,
+            session, imageId | imageColourFlags, SupportBoundBoxes[segment].x, SupportBoundBoxes[segment].y, 0, 0, 5,
             supportSegments[segment].height);
 
         baseHeight = supportSegments[segment].height + 6;
@@ -994,8 +992,8 @@ bool metal_b_supports_paint_setup(
     if (heightDiff > 0)
     {
         sub_98196C(
-            session, (_97B15C[supportType].beam_id + (heightDiff - 1)) | imageColourFlags, loc_97AF20[segment].x,
-            loc_97AF20[segment].y, 0, 0, heightDiff - 1, baseHeight);
+            session, (_97B15C[supportType].beam_id + (heightDiff - 1)) | imageColourFlags, SupportBoundBoxes[segment].x,
+            SupportBoundBoxes[segment].y, 0, 0, heightDiff - 1, baseHeight);
     }
 
     baseHeight += heightDiff;
@@ -1030,8 +1028,8 @@ bool metal_b_supports_paint_setup(
         }
 
         sub_98196C(
-            session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, beamLength - 1,
-            baseHeight);
+            session, imageId | imageColourFlags, SupportBoundBoxes[segment].x, SupportBoundBoxes[segment].y, 0, 0,
+            beamLength - 1, baseHeight);
 
         baseHeight += beamLength;
         i++;
@@ -1060,8 +1058,8 @@ bool metal_b_supports_paint_setup(
 
             uint32_t imageId = _97B15C[supportType].beam_id + (beamLength - 1);
             sub_98197C(
-                session, imageId | imageColourFlags, loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y, 0, 0, 0,
-                baseHeight, loc_97AF20[originalSegment].x, loc_97AF20[originalSegment].y, height);
+                session, imageId | imageColourFlags, SupportBoundBoxes[originalSegment].x, SupportBoundBoxes[originalSegment].y,
+                0, 0, 0, baseHeight, SupportBoundBoxes[originalSegment].x, SupportBoundBoxes[originalSegment].y, height);
             baseHeight += beamLength;
         }
     }
@@ -1262,8 +1260,8 @@ bool path_b_supports_paint_setup(
         baseHeight = supportSegments[segment].height;
 
         sub_98196C(
-            session, (railingEntry->bridge_image + 37 + imageOffset) | imageColourFlags, loc_97AF20[segment].x,
-            loc_97AF20[segment].y, 0, 0, 5, baseHeight);
+            session, (railingEntry->bridge_image + 37 + imageOffset) | imageColourFlags, SupportBoundBoxes[segment].x,
+            SupportBoundBoxes[segment].y, 0, 0, 5, baseHeight);
         baseHeight += 6;
     }
 
@@ -1281,8 +1279,8 @@ bool path_b_supports_paint_setup(
     if (heightDiff > 0)
     {
         sub_98196C(
-            session, (railingEntry->bridge_image + 20 + (heightDiff - 1)) | imageColourFlags, loc_97AF20[segment].x,
-            loc_97AF20[segment].y, 0, 0, heightDiff - 1, baseHeight);
+            session, (railingEntry->bridge_image + 20 + (heightDiff - 1)) | imageColourFlags, SupportBoundBoxes[segment].x,
+            SupportBoundBoxes[segment].y, 0, 0, heightDiff - 1, baseHeight);
     }
 
     baseHeight += heightDiff;
@@ -1314,8 +1312,8 @@ bool path_b_supports_paint_setup(
             }
 
             sub_98196C(
-                session, (railingEntry->bridge_image + 20 + (z - 1)) | imageColourFlags, loc_97AF20[segment].x,
-                loc_97AF20[segment].y, 0, 0, (z - 1), baseHeight);
+                session, (railingEntry->bridge_image + 20 + (z - 1)) | imageColourFlags, SupportBoundBoxes[segment].x,
+                SupportBoundBoxes[segment].y, 0, 0, (z - 1), baseHeight);
 
             baseHeight += z;
         }
@@ -1332,7 +1330,8 @@ bool path_b_supports_paint_setup(
         }
 
         sub_98196C(
-            session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, (z - 1), baseHeight);
+            session, imageId | imageColourFlags, SupportBoundBoxes[segment].x, SupportBoundBoxes[segment].y, 0, 0, (z - 1),
+            baseHeight);
 
         baseHeight += z;
     }
@@ -1361,8 +1360,8 @@ bool path_b_supports_paint_setup(
 
             uint32_t imageId = railingEntry->bridge_image + 20 + (z - 1);
             sub_98197C(
-                session, imageId | imageColourFlags, loc_97AF20[segment].x, loc_97AF20[segment].y, 0, 0, 0, baseHeight,
-                loc_97AF20[segment].x, loc_97AF20[segment].y, baseHeight);
+                session, imageId | imageColourFlags, SupportBoundBoxes[segment].x, SupportBoundBoxes[segment].y, 0, 0, 0,
+                baseHeight, SupportBoundBoxes[segment].x, SupportBoundBoxes[segment].y, baseHeight);
 
             baseHeight += z;
         }

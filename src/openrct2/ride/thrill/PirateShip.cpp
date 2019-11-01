@@ -175,7 +175,7 @@ static void paint_pirate_ship(
         return;
 
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     uint32_t imageId;
     bool hasFence;

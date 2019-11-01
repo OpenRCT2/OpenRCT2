@@ -917,7 +917,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     const uint8_t rotation = session->CurrentRotation;
     const uint32_t terrain_type = tileElement->AsSurface()->GetSurfaceStyle();
     const uint8_t surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
-    const LocationXY16& base = session->SpritePosition;
+    const CoordsXY& base = session->SpritePosition;
     const corner_height& cornerHeights = corner_heights[surfaceShape];
 
     tile_descriptor selfDescriptor = {
@@ -1064,7 +1064,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
         && session->ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
-        const LocationXY16& pos = session->MapPosition;
+        const CoordsXY& pos = session->MapPosition;
         for (auto& spawn : gPeepSpawns)
         {
             if ((spawn.x & 0xFFE0) == pos.x && (spawn.y & 0xFFE0) == pos.y)
@@ -1088,7 +1088,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         }
         else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_AVAILABLE)
         {
-            const LocationXY16& pos = session->MapPosition;
+            const CoordsXY& pos = session->MapPosition;
             const int32_t height2 = (tile_element_height({ pos.x + 16, pos.y + 16 })) + 3;
             paint_struct* backup = session->LastRootPS;
             sub_98196C(session, SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2);
@@ -1105,7 +1105,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         }
         else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
         {
-            const LocationXY16& pos = session->MapPosition;
+            const CoordsXY& pos = session->MapPosition;
             const int32_t height2 = tile_element_height({ pos.x + 16, pos.y + 16 });
             paint_struct* backup = session->LastRootPS;
             sub_98196C(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3);
@@ -1120,7 +1120,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
     {
         // loc_660FB8:
-        const LocationXY16& pos = session->MapPosition;
+        const CoordsXY& pos = session->MapPosition;
         if (pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
             && pos.y <= gMapSelectPositionB.y)
         {
@@ -1193,7 +1193,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
-        const LocationXY16& pos = session->MapPosition;
+        const CoordsXY& pos = session->MapPosition;
 
         for (const auto& tile : gMapSelectionTiles)
         {

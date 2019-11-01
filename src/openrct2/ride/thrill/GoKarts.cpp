@@ -351,7 +351,7 @@ static void paint_go_karts_station(
     if (ride == nullptr)
         return;
 
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
 
     bool hasFence;

@@ -14,7 +14,7 @@
 
 #    include "../common.h"
 
-struct LocationXY16;
+struct CoordsXY;
 struct rct_drawpixelinfo;
 struct rct_palette;
 
@@ -60,7 +60,7 @@ const rct_palette* lightfx_get_palette();
 void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x, int16_t y, uint16_t z, uint8_t lightType);
 
 void lightfx_add_3d_light_magic_from_drawing_tile(
-    LocationXY16 mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType);
+    CoordsXY mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType);
 
 void lightfx_add_lights_magic_vehicles();
 

@@ -39,7 +39,7 @@ static void paint_flying_saucers(
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
     int32_t edges = edges_4x4[relativeTrackSequence];
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 

@@ -115,7 +115,7 @@ static void multi_dimension_rc_track_station(
         { 15811, 15813, SPR_STATION_INVERTED_BAR_A_NW_SE },
     };
 
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
     {
