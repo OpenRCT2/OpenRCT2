@@ -366,6 +366,10 @@ enum
 
 #define AUTOSAVE_PAUSE 0
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
+constexpr Probability16 GetProbability16(double value)
+{
+    return static_cast<Probability16>((value / 100) * 65535);
+}
 
 namespace Probability
 {
@@ -377,7 +381,7 @@ namespace Probability
     constexpr Probability16 _01_0_Percent = 0x028F;  // 655
     constexpr Probability16 _01_4_Percent = 0x03A8;  // 936
     constexpr Probability16 _02_0_Percent = 0x051E;  // 1310
-    constexpr Probability16 _02_2_Percent = 0x05B0;  // 1455
+    constexpr Probability16 _02_2_Percent = 0x05B0;  // 1456
     constexpr Probability16 _02_5_Percent = 0x0666;  // 1638
     constexpr Probability16 _03_3_Percent = 0x0888;  // 2184
     constexpr Probability16 _03_5_Percent = 0x0900;  // 2304
@@ -400,6 +404,37 @@ namespace Probability
     constexpr Probability16 _50_0_Percent = 0x8000;  // 32768
     constexpr Probability16 _62_5_Percent = 0xA000;  // 40960
 };
+
+static_assert(Probability::_00_14_Percent == GetProbability16(0.142));
+static_assert(Probability::_00_18_Percent == GetProbability16(0.182));
+static_assert(Probability::_00_2_Percent  == GetProbability16(0.2));
+static_assert(Probability::_00_33_Percent == GetProbability16(0.333));
+static_assert(Probability::_00_5_Percent  == GetProbability16(0.5));
+static_assert(Probability::_01_0_Percent  == GetProbability16(1.0));
+static_assert(Probability::_01_4_Percent  == GetProbability16(1.4283));
+static_assert(Probability::_02_0_Percent  == GetProbability16(2.0));
+static_assert(Probability::_02_2_Percent  == GetProbability16(2.221714));
+static_assert(Probability::_02_5_Percent  == GetProbability16(2.5));
+static_assert(Probability::_03_3_Percent  == GetProbability16(3.333));
+static_assert(Probability::_03_5_Percent  == GetProbability16(3.516));
+static_assert(Probability::_03_7_Percent  == GetProbability16(3.7034));
+static_assert(Probability::_04_0_Percent  == GetProbability16(4.0));
+static_assert(Probability::_04_1_Percent  == GetProbability16(4.166));
+static_assert(Probability::_04_3_Percent  == GetProbability16(4.3473));
+static_assert(Probability::_05_0_Percent  == GetProbability16(5.0));
+static_assert(Probability::_06_2_Percent  == GetProbability16(6.2501));
+static_assert(Probability::_06_6_Percent  == GetProbability16(6.667));
+static_assert(Probability::_08_3_Percent  == GetProbability16(8.333));
+static_assert(Probability::_10_0_Percent  == GetProbability16(10.0));
+static_assert(Probability::_11_1_Percent  == GetProbability16(11.1101));
+static_assert(Probability::_12_5_Percent  == GetProbability16(12.5002));
+static_assert(Probability::_14_2_Percent  == GetProbability16(14.2855));
+static_assert(Probability::_20_0_Percent  == GetProbability16(20.0));
+static_assert(Probability::_16_6_Percent  == GetProbability16(16.666));
+static_assert(Probability::_25_0_Percent  == GetProbability16(25.0004));
+static_assert(Probability::_33_3_Percent  == GetProbability16(100/3.0));
+static_assert(Probability::_50_0_Percent  == GetProbability16(50.001));
+static_assert(Probability::_62_5_Percent  == GetProbability16(62.501));
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
