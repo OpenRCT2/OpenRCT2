@@ -790,7 +790,7 @@ static void track_design_add_selection_tile(int16_t x, int16_t y)
             return;
         }
     }
-    gMapSelectionTiles.push_back(CoordsXY{ x, y });
+    gMapSelectionTiles.push_back(CoordsXY(x, y));
 }
 
 static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_t z)

@@ -67,7 +67,7 @@ static void paint_boat_hire_station(
     if (ride == nullptr)
         return;
 
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
 
     if (direction & 1)

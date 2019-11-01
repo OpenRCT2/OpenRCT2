@@ -490,7 +490,7 @@ static void paint_car_ride_track_60_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     uint32_t imageId = car_ride_track_pieces_60_deg_up[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -541,7 +541,7 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     uint32_t imageId = car_ride_track_pieces_25_deg_up_to_60_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
 
@@ -599,7 +599,7 @@ static void paint_car_ride_track_60_deg_up_to_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
 
     uint32_t imageId = car_ride_track_pieces_60_deg_up_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
 

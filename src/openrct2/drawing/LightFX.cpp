@@ -714,7 +714,7 @@ void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x
 }
 
 void lightfx_add_3d_light_magic_from_drawing_tile(
-    LocationXY16 mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType)
+    CoordsXY mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType)
 {
     int16_t x = mapPosition.x + offsetX;
     int16_t y = mapPosition.y + offsetY;

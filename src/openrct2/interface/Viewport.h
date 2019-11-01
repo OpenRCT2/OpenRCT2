@@ -140,7 +140,7 @@ void viewport_paint(
 void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t* z);
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport* viewport, uint16_t x, uint16_t y);
-LocationXY16 viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z);
+CoordsXY viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z);
 CoordsXY screen_pos_to_map_pos(int16_t x, int16_t y, int32_t* direction);
 
 void show_gridlines();
@@ -156,6 +156,9 @@ void get_map_coordinates_from_pos(
     TileElement** tileElement, rct_viewport** viewport);
 void get_map_coordinates_from_pos_window(
     rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
+    TileElement** tileElement, rct_viewport** viewport);
+void get_map_coordinates_from_pos_window(
+    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport);
 
 int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info* info);

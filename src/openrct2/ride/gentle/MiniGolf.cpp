@@ -677,7 +677,7 @@ static void paint_mini_golf_station(
     if (ride == nullptr)
         return;
 
-    LocationXY16 position = session->MapPosition;
+    CoordsXY position = session->MapPosition;
     auto stationObj = ride_get_station_object(ride);
     uint32_t imageId;
     bool hasFence;
@@ -827,7 +827,7 @@ static void paint_mini_golf_hole_ab(
     paint_session* session, uint8_t trackSequence, uint8_t direction, int32_t height, const uint32_t sprites[4][2][2])
 {
     uint32_t imageId;
-    LocationXY16 boundBox, boundBoxOffset;
+    CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
         session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -895,7 +895,7 @@ static void paint_mini_golf_hole_c(
     const TileElement* tileElement)
 {
     uint32_t imageId;
-    LocationXY16 boundBox, boundBoxOffset;
+    CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
         session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -962,7 +962,7 @@ static void paint_mini_golf_hole_d(
     const TileElement* tileElement)
 {
     uint32_t imageId;
-    LocationXY16 boundBox, boundBoxOffset;
+    CoordsXY boundBox, boundBoxOffset;
 
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
@@ -1052,7 +1052,7 @@ static void paint_mini_golf_hole_e(
     const TileElement* tileElement)
 {
     uint32_t imageId;
-    LocationXY16 boundBox, boundBoxOffset;
+    CoordsXY boundBox, boundBoxOffset;
 
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
