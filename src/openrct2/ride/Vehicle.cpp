@@ -86,8 +86,6 @@ static SoundId vehicle_update_scream_sound(rct_vehicle* vehicle);
 static void vehicle_kill_all_passengers(rct_vehicle* vehicle);
 static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle);
 
-constexpr int32_t VEHICLE_INVALID_ID = -1;
-
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED = 1536;
 constexpr int16_t VEHICLE_MIN_SPIN_SPEED = -VEHICLE_MAX_SPIN_SPEED;
 constexpr int16_t VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING = 700;
@@ -2215,7 +2213,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
     vehicle->SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
 }
 
-static int32_t ride_get_train_index_from_vehicle(Ride* ride, uint16_t spriteIndex)
+static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, uint16_t spriteIndex)
 {
     uint32_t trainIndex = 0;
     while (ride->vehicles[trainIndex] != spriteIndex)
@@ -2223,17 +2221,17 @@ static int32_t ride_get_train_index_from_vehicle(Ride* ride, uint16_t spriteInde
         trainIndex++;
         if (trainIndex >= ride->num_vehicles)
         {
-            // This should really return VEHICLE_INVALID_ID, but doing so
+            // This should really return nullopt, but doing so
             // would break some hacked parks that hide track by setting tracked rides'
             // track type to, e.g., Crooked House
             break;
         }
         else if (trainIndex >= std::size(ride->vehicles))
         {
-            return VEHICLE_INVALID_ID;
+            return {};
         }
     }
-    return trainIndex;
+    return { trainIndex };
 }
 
 /**
@@ -2260,8 +2258,8 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
             return;
         }
 
-        int32_t trainIndex = ride_get_train_index_from_vehicle(ride, vehicle->sprite_index);
-        if (trainIndex == VEHICLE_INVALID_ID)
+        auto trainIndex = ride_get_train_index_from_vehicle(ride, vehicle->sprite_index);
+        if (!trainIndex)
         {
             return;
         }
@@ -2269,7 +2267,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
         if (ride->stations[vehicle->current_station].TrainAtStation != RideStation::NO_TRAIN)
             return;
 
-        ride->stations[vehicle->current_station].TrainAtStation = trainIndex;
+        ride->stations[vehicle->current_station].TrainAtStation = *trainIndex;
         vehicle->sub_state = 1;
         vehicle->time_waiting = 0;
 
@@ -3520,13 +3518,13 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = vehicle->GetHead();
-        int32_t trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
-        if (trainIndex == VEHICLE_INVALID_ID)
+        auto trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+        if (!trainIndex)
         {
             return;
         }
 
-        ride->Crash(trainIndex);
+        ride->Crash(*trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
@@ -5252,13 +5250,13 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = vehicle->GetHead();
-        int32_t trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
-        if (trainIndex == VEHICLE_INVALID_ID)
+        auto trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+        if (!trainIndex)
         {
             return;
         }
 
-        ride->Crash(trainIndex);
+        ride->Crash(*trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
@@ -5313,13 +5311,13 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
         auto frontVehicle = vehicle->GetHead();
-        int32_t trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
-        if (trainIndex == VEHICLE_INVALID_ID)
+        auto trainIndex = ride_get_train_index_from_vehicle(ride, frontVehicle->sprite_index);
+        if (!trainIndex)
         {
             return;
         }
 
-        ride->Crash(trainIndex);
+        ride->Crash(*trainIndex);
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
