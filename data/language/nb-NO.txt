@@ -3736,7 +3736,7 @@ STR_6273    :Musikk
 STR_6274    :Kan ikke sette fargevalg...
 STR_6275    :{WINDOW_COLOUR_2}Stasjon-stil:
 STR_6276    :{RED}Gjester sitter fast i {STRINGID}, mulig grunnet ugyldig attraksjonstype eller operasjonsmodus.
-STR_6277    :{WINDOW_COLOUR_2}Stasjonsindeks: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Stasjonsindeks: {BLACK}{STRINGID}
 STR_6278    :Antall autolagringer
 STR_6279    :{SMALLFONT}{BLACK}Antall automatiske lagringer som blir beholdt
 STR_6280    :{SMALLFONT}{BLACK}Chat

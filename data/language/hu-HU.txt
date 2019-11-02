@@ -3591,7 +3591,7 @@ STR_6273    :Zene
 STR_6274    :Nem állítható be színséma...
 STR_6275    :{WINDOW_COLOUR_2}Állomás stílusa:
 STR_6276    :A vendégek beragadnak itt: {RED}{STRINGID}. Lehet, hogy érvénytelen játéktípus vagy működési mód okozza.
-STR_6277    :{WINDOW_COLOUR_2}Állomás index: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Állomás index: {BLACK}{STRINGID}
 STR_6278    :Automentések száma
 STR_6279    :{SMALLFONT}{BLACK}A megőrzendő automentések száma
 STR_6280    :{SMALLFONT}{BLACK}Chat

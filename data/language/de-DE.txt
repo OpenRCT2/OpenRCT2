@@ -3725,7 +3725,7 @@ STR_6273    :Musik
 STR_6274    :Farbschema kann nicht gesetzt werden...
 STR_6275    :{WINDOW_COLOUR_2}Stil der Station:
 STR_6276    :{RED}{STRINGID} hat steckengebliebene Gäste, möglicherweise aufgrund eines ungültigen Streckentyps oder Betriebsmodus.
-STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Autosaveanzahl:
 STR_6279    :{SMALLFONT}{BLACK}Anzahl der Autosaves, die{NEWLINE}behalten werden sollen
 STR_6280    :{SMALLFONT}{BLACK}Chat

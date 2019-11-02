@@ -3741,7 +3741,7 @@ STR_6273    :音乐
 STR_6274    :无法设置配色主题...
 STR_6275    :{WINDOW_COLOUR_2}车站类型:
 STR_6276    :{RED}{STRINGID} 有游客被困住了，这可能是因为无效的设施类型或者运行模式
-STR_6277    :{WINDOW_COLOUR_2}车站编号: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}车站编号: {BLACK}{STRINGID}
 STR_6278    :自动保存数量
 STR_6279    :{SMALLFONT}{BLACK}应该保留的自动保存数量
 STR_6284    :网络

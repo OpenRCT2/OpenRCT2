@@ -3738,7 +3738,7 @@ STR_6273    :Musique
 STR_6274    :Impossible de définir le schéma de couleurs...
 STR_6275    :{WINDOW_COLOUR_2}Style de quai :
 STR_6276    :{RED}{STRINGID} a des visiteurs coincés, probablement à cause du type d'attraction invalide ou mode opératoire.
-STR_6277    :{WINDOW_COLOUR_2}Index du quai : {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Index du quai : {BLACK}{STRINGID}
 STR_6278    :Nombre de sauvegardes automatiques
 STR_6279    :{SMALLFONT}{BLACK}Nombre de sauvegardes automatiques à conserver
 STR_6280    :{SMALLFONT}{BLACK}Chat

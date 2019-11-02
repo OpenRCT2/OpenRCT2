@@ -3734,7 +3734,7 @@ STR_6273    :Música
 STR_6274    :No es poden establir els colors...
 STR_6275    :{WINDOW_COLOUR_2}Estil d'estació:
 STR_6276    :{RED}Hi ha visitants bloquejats en {STRINGID}, probablement a causa d'un tipus d'atracció no vàlid o un mode d'operació incorrecte.
-STR_6277    :{WINDOW_COLOUR_2}Índex d'estació: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Índex d'estació: {BLACK}{STRINGID}
 STR_6278    :Nombre de desades automàtiques:
 STR_6279    :{SMALLFONT}{BLACK}Nombre de desades automàtiques que es mantindran.
 STR_6280    :{SMALLFONT}{BLACK}Xat

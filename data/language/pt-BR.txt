@@ -3724,7 +3724,7 @@ STR_6273    :Música
 STR_6274    :Impossível definir esquema de cor...
 STR_6275    :{WINDOW_COLOUR_2}Estilo da estação:
 STR_6276    :{RED}{STRINGID} está deixando visitantes presos, possivelmente por um tipo de brinquedo ou modo de operação inválido.
-STR_6277    :{WINDOW_COLOUR_2}Índice de estação: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Índice de estação: {BLACK}{STRINGID}
 STR_6278    :Quantidade de Autosave
 STR_6279    :{SMALLFONT}{BLACK}Número de autosaves que devem ser guardados
 STR_6280    :{SMALLFONT}{BLACK}Bate-papo

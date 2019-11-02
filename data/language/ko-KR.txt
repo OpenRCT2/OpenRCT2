@@ -3732,7 +3732,7 @@ STR_6273    :음악
 STR_6274    :색상을 지정할 수 없습니다...
 STR_6275    :{WINDOW_COLOUR_2}정거장 스타일:
 STR_6276    :{RED}{STRINGID}의 손님이 올바르지 않은 놀이기구 종류나 운행 모드로 인해 끼었습니다.
-STR_6277    :{WINDOW_COLOUR_2}정거장 번호: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}정거장 번호: {BLACK}{STRINGID}
 STR_6278    :자동 저장 개수
 STR_6279    :{SMALLFONT}{BLACK}보관되는 자동 저장 파일의 개수입니다.
 STR_6280    :{SMALLFONT}{BLACK}채팅

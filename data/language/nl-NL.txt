@@ -3739,7 +3739,7 @@ STR_6273    :Muziek
 STR_6274    :Kan kleurenschema niet instellen...
 STR_6275    :{WINDOW_COLOUR_2}Stationsstijl:
 STR_6276    :{RED}Bezoekers komen vast te zitten in {STRINGID}, mogelijk door een ongeldig attractietype of ongeldige bedrijfsmodus.
-STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{COMMA16}
+STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Aantal autosaves
 STR_6279    :{SMALLFONT}{BLACK}Het aantal autosaves dat moet worden bewaard.
 STR_6280    :{SMALLFONT}{BLACK}Chat
