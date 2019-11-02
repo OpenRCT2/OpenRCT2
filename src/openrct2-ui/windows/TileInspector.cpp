@@ -1234,7 +1234,9 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
     if (clickedElement == nullptr)
     {
-        screen_pos_to_map_pos(&mapX, &mapY, nullptr);
+        CoordsXY mapCoords = screen_pos_to_map_pos(mapX, mapY, nullptr);
+        mapX = mapCoords.x;
+        mapY = mapCoords.y;
     }
 
     if (mapX != LOCATION_NULL)
@@ -1282,18 +1284,21 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x,
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
     if (clickedElement == nullptr)
     {
-        screen_pos_to_map_pos(&mapX, &mapY, nullptr);
+        CoordsXY mapCoords = screen_pos_to_map_pos(mapX, mapY, nullptr);
 
-        if (mapX == LOCATION_NULL)
+        if (mapCoords.x == LOCATION_NULL)
         {
             return;
         }
 
         // Tile is already selected
-        if (windowTileInspectorTileSelected && mapX == windowTileInspectorToolMap.x && mapY == windowTileInspectorToolMap.y)
+        if (windowTileInspectorTileSelected && mapCoords.x == windowTileInspectorToolMap.x
+            && mapCoords.y == windowTileInspectorToolMap.y)
         {
             return;
         }
+        mapX = mapCoords.x;
+        mapY = mapCoords.y;
     }
 
     windowTileInspectorTileSelected = true;

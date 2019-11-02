@@ -995,23 +995,27 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(int16_t* x, int16_t* y, int32_t* direction)
+CoordsXY screen_pos_to_map_pos(int16_t x, int16_t y, int32_t* direction)
 {
-    screen_get_map_xy(*x, *y, x, y, nullptr);
-    if (*x == LOCATION_NULL)
-        return;
+    int16_t mapX = 0;
+    int16_t mapY = 0;
+    screen_get_map_xy(x, y, &mapX, &mapY, nullptr);
+    if (mapX == LOCATION_NULL)
+        return {};
+
+    CoordsXY mapCoords = { mapX, mapY };
 
     int32_t my_direction;
-    int32_t dist_from_centre_x = abs(*x % 32);
-    int32_t dist_from_centre_y = abs(*y % 32);
+    int32_t dist_from_centre_x = abs(mapCoords.x % 32);
+    int32_t dist_from_centre_y = abs(mapCoords.y % 32);
     if (dist_from_centre_x > 8 && dist_from_centre_x < 24 && dist_from_centre_y > 8 && dist_from_centre_y < 24)
     {
         my_direction = 4;
     }
     else
     {
-        int16_t mod_x = *x & 0x1F;
-        int16_t mod_y = *y & 0x1F;
+        int16_t mod_x = mapCoords.x & 0x1F;
+        int16_t mod_y = mapCoords.y & 0x1F;
         if (mod_x <= 16)
         {
             if (mod_y < 16)
@@ -1036,10 +1040,11 @@ void screen_pos_to_map_pos(int16_t* x, int16_t* y, int32_t* direction)
         }
     }
 
-    *x = *x & ~0x1F;
-    *y = *y & ~0x1F;
+    mapCoords.x = mapCoords.x & ~0x1F;
+    mapCoords.y = mapCoords.y & ~0x1F;
     if (direction != nullptr)
         *direction = my_direction;
+    return mapCoords;
 }
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport* viewport, uint16_t x, uint16_t y)
