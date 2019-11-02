@@ -53,7 +53,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameActionBase::GetActionFlags() | GA_FLAGS::CLIENT_ONLY;
+        return GameActionBase::GetActionFlags();
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -61,6 +61,7 @@ public:
         GameAction::Serialise(stream);
 
         stream << DS_TAG(_loc);
+        _td.Serialise(stream);
     }
 
     GameActionResult::Ptr Query() const override;

@@ -77,6 +77,8 @@ struct TrackDesignMazeElement
     };
 };
 
+class DataSerialiser;
+
 struct TrackDesign
 {
     uint8_t type;
@@ -130,6 +132,7 @@ struct TrackDesign
 public:
     rct_string_id CreateTrackDesign(const Ride& ride);
     rct_string_id CreateTrackDesignScenery();
+    void Serialise(DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;

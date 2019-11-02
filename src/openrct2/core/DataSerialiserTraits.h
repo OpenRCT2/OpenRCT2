@@ -15,6 +15,7 @@
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
 #include "../ride/Ride.h"
+#include "../ride/TrackDesign.h"
 #include "../world/Location.hpp"
 #include "../world/TileElement.h"
 #include "DataSerialiserTag.h"
@@ -353,6 +354,47 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty,
     }
 };
 
+template<typename _Ty> struct DataSerializerTraits<std::vector<_Ty>>
+{
+    static void encode(IStream* stream, const std::vector<_Ty>& val)
+    {
+        uint16_t len = (uint16_t)val.size();
+        uint16_t swapped = ByteSwapBE(len);
+        stream->Write(&swapped);
+
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.encode(stream, sub);
+        }
+    }
+    static void decode(IStream* stream, std::vector<_Ty>& val)
+    {
+        uint16_t len;
+        stream->Read(&len);
+        len = ByteSwapBE(len);
+
+        DataSerializerTraits<_Ty> s;
+        for (auto i = 0; i < len; ++i)
+        {
+            _Ty sub;
+            s.decode(stream, sub);
+            val.push_back(sub);
+        }
+    }
+    static void log(IStream* stream, const std::vector<_Ty>& val)
+    {
+        stream->Write("{", 1);
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.log(stream, sub);
+            stream->Write("; ", 2);
+        }
+        stream->Write("}", 1);
+    }
+};
+
 template<> struct DataSerializerTraits<MapRange>
 {
     static void encode(IStream* stream, const MapRange& v)
@@ -514,5 +556,47 @@ template<> struct DataSerializerTraits<NetworkCheatType_t>
     {
         const char* cheatName = CheatsGetName(static_cast<CheatType>(val.id));
         stream->Write(cheatName, strlen(cheatName));
+    }
+};
+
+template<> struct DataSerializerTraits<rct_object_entry>
+{
+    static void encode(IStream* stream, const rct_object_entry& val)
+    {
+        uint32_t temp = ByteSwapBE(val.flags);
+        stream->Write(&temp);
+        stream->WriteArray(val.nameWOC, 12);
+    }
+    static void decode(IStream* stream, rct_object_entry& val)
+    {
+        uint32_t temp;
+        stream->Read(&temp);
+        val.flags = ByteSwapBE(temp);
+        const char* str = stream->ReadArray<char>(12);
+        memcpy(val.nameWOC, str, 12);
+    }
+    static void log(IStream* stream, const rct_object_entry& val)
+    {
+        stream->WriteArray(val.name, 8);
+    }
+};
+
+template<> struct DataSerializerTraits<TrackDesignTrackElement>
+{
+    static void encode(IStream* stream, const TrackDesignTrackElement& val)
+    {
+        stream->Write(&val.flags);
+        stream->Write(&val.type);
+    }
+    static void decode(IStream* stream, TrackDesignTrackElement& val)
+    {
+        stream->Read(&val.flags);
+        stream->Read(&val.type);
+    }
+    static void log(IStream* stream, const TrackDesignTrackElement& val)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "TrackDesignElement(type = %d, flags = %d)", val.type, val.flags);
+        stream->Write(msg, strlen(msg));
     }
 };

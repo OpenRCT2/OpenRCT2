@@ -100,7 +100,7 @@ money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_i
     auto gameAction = RideCreateAction(type, subType, colour1, colour2);
     gameAction.SetFlags(flags);
 
-    auto r = GameActions::Execute(&gameAction);
+    auto r = GameActions::ExecuteNested(&gameAction);
     const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
 
     // Callee's of this function expect MONEY32_UNDEFINED in case of failure.

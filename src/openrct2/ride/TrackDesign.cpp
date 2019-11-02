@@ -20,6 +20,7 @@
 #include "../actions/MazePlaceTrackAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
+#include "../actions/RideSetName.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
 #include "../actions/SmallSceneryPlaceAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
@@ -30,6 +31,7 @@
 #include "../audio/audio.h"
 #include "../core/File.h"
 #include "../core/String.hpp"
+#include "../core/DataSerialiser.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
@@ -556,6 +558,57 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
     }
 
     return STR_NONE;
+}
+
+void TrackDesign::Serialise(DataSerialiser& stream)
+{
+    stream << DS_TAG(type);
+    stream << DS_TAG(vehicle_type);
+    stream << DS_TAG(cost);
+    stream << DS_TAG(flags);
+    stream << DS_TAG(ride_mode);
+    stream << DS_TAG(track_flags);
+    stream << DS_TAG(colour_scheme);
+    //stream << DS_TAG(vehicle_colours); todo
+    stream << DS_TAG(entrance_style);
+    stream << DS_TAG(total_air_time);
+    stream << DS_TAG(depart_flags);
+    stream << DS_TAG(number_of_trains);
+    stream << DS_TAG(number_of_cars_per_train);
+    stream << DS_TAG(min_waiting_time);
+    stream << DS_TAG(max_waiting_time);
+    stream << DS_TAG(operation_setting);
+    stream << DS_TAG(max_speed);
+    stream << DS_TAG(average_speed);
+    stream << DS_TAG(ride_length);
+    stream << DS_TAG(max_positive_vertical_g);
+    stream << DS_TAG(max_negative_vertical_g);
+    stream << DS_TAG(max_lateral_g);
+    stream << DS_TAG(inversions);
+    stream << DS_TAG(holes);
+    stream << DS_TAG(drops);
+    stream << DS_TAG(highest_drop_height);
+    stream << DS_TAG(excitement);
+    stream << DS_TAG(intensity);
+    stream << DS_TAG(nausea);
+    stream << DS_TAG(upkeep_cost);
+    stream << DS_TAG(track_spine_colour);
+    stream << DS_TAG(track_rail_colour);
+    stream << DS_TAG(track_support_colour);
+    stream << DS_TAG(flags2);
+    stream << DS_TAG(vehicle_object);
+    stream << DS_TAG(space_required_x);
+    stream << DS_TAG(space_required_y);
+    stream << DS_TAG(vehicle_additional_colour);
+    stream << DS_TAG(lift_hill_speed);
+    stream << DS_TAG(num_circuits);
+
+    //stream << DS_TAG(maze_elements);
+    stream << DS_TAG(track_elements);
+    //stream << DS_TAG(entrance_elements);
+    //stream << DS_TAG(scenery_elements);
+
+    stream << DS_TAG(name);
 }
 
 std::unique_ptr<TrackDesign> track_design_open(const utf8* path)

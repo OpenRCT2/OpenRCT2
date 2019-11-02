@@ -14,6 +14,8 @@
 #include "../object/ObjectRepository.h"
 #include "../ride/RideGroupManager.h"
 #include "../ride/TrackDesign.h"
+#include "RideSetName.hpp"
+#include "RideDemolishAction.hpp"
 #include "RideSetSetting.hpp"
 #include "RideSetVehiclesAction.hpp"
 
@@ -107,7 +109,10 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     }
 
     rct_string_id error_reason = gGameCommandErrorText;
-    ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GetFlags());
+    auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+    gameAction.SetFlags(GetFlags());
+
+    GameActions::ExecuteNested(&gameAction);
     if (cost == MONEY32_UNDEFINED)
     {
         return MakeResult(GA_ERROR::DISALLOWED, error_reason);
@@ -217,7 +222,10 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
     if (cost == MONEY32_UNDEFINED)
     {
         rct_string_id error_reason = gGameCommandErrorText;
-        ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GetFlags());
+        auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
+        gameAction.SetFlags(GetFlags());
+
+        GameActions::ExecuteNested(&gameAction);
         return MakeResult(GA_ERROR::DISALLOWED, error_reason);
     }
 
@@ -268,7 +276,9 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[i];
     }
 
-    ride_set_name(ride, _td.name.c_str(), GAME_COMMAND_FLAG_APPLY);
+    auto gameAction = RideSetNameAction(ride->id, _td.name);
+    gameAction.SetFlags(GetFlags());
+    GameActions::ExecuteNested(&gameAction);
     res->Cost = cost;
     res->rideIndex = ride->id;
     return res;
