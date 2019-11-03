@@ -603,10 +603,10 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(lift_hill_speed);
     stream << DS_TAG(num_circuits);
 
-    //stream << DS_TAG(maze_elements);
+    stream << DS_TAG(maze_elements);
     stream << DS_TAG(track_elements);
-    //stream << DS_TAG(entrance_elements);
-    //stream << DS_TAG(scenery_elements);
+    stream << DS_TAG(entrance_elements);
+    stream << DS_TAG(scenery_elements);
 
     stream << DS_TAG(name);
 }
