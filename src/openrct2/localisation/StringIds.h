@@ -1927,163 +1927,78 @@ enum
     STR_SHORTCUT_SHOW_RECENT_MESSAGES = 2522,
     STR_SHORTCUT_SHOW_MAP = 2523,
     STR_SHORTCUT_SCREENSHOT = 2524,
-    STR_SHORTCUT_KEY_UNKNOWN = 2525,
 
-    // STR_2525    :???
-    // STR_2526    :???
-    // STR_2527    :???
-    // STR_2528    :???
-    // STR_2529    :???
-    // STR_2530    :???
-    // STR_2531    :???
-    // STR_2532    :???
-    // STR_2533    :Backspace
-    // STR_2534    :Tab
-    // STR_2535    :???
-    // STR_2536    :???
-    // STR_2537    :Clear
-    // STR_2538    :Return
-    // STR_2539    :???
-    // STR_2540    :???
-    // STR_2541    :???
-    // STR_2542    :???
-    // STR_2543    :Alt/Menu
-    // STR_2544    :Pause
-    // STR_2545    :Caps
-    // STR_2546    :???
-    // STR_2547    :???
-    // STR_2548    :???
-    // STR_2549    :???
-    // STR_2550    :???
-    // STR_2551    :???
-    // STR_2552    :Escape
-    // STR_2553    :???
-    // STR_2554    :???
-    // STR_2555    :???
-    // STR_2556    :???
-    // STR_2557    :Spacebar
-    // STR_2558    :PgUp
-    // STR_2559    :PgDn
-    // STR_2560    :End
-    // STR_2561    :Home
-    // STR_2562    :Left
-    // STR_2563    :Up
-    // STR_2564    :Right
-    // STR_2565    :Down
-    // STR_2566    :Select
-    // STR_2567    :Print
-    // STR_2568    :Execute
-    // STR_2569    :Snapshot
-    // STR_2570    :Insert
-    // STR_2571    :Delete
-    // STR_2572    :Help
-    // STR_2573    :0
-    // STR_2574    :1
-    // STR_2575    :2
-    // STR_2576    :3
-    // STR_2577    :4
-    // STR_2578    :5
-    // STR_2579    :6
-    // STR_2580    :7
-    // STR_2581    :8
-    // STR_2582    :9
-    // STR_2583    :???
-    // STR_2584    :???
-    // STR_2585    :???
-    // STR_2586    :???
-    // STR_2587    :???
-    // STR_2588    :???
-    // STR_2589    :???
-    // STR_2590    :A
-    // STR_2591    :B
-    // STR_2592    :C
-    // STR_2593    :D
-    // STR_2594    :E
-    // STR_2595    :F
-    // STR_2596    :G
-    // STR_2597    :H
-    // STR_2598    :I
-    // STR_2599    :J
-    // STR_2600    :K
-    // STR_2601    :L
-    // STR_2602    :M
-    // STR_2603    :N
-    // STR_2604    :O
-    // STR_2605    :P
-    // STR_2606    :Q
-    // STR_2607    :R
-    // STR_2608    :S
-    // STR_2609    :T
-    // STR_2610    :U
-    // STR_2611    :V
-    // STR_2612    :W
-    // STR_2613    :X
-    // STR_2614    :Y
-    // STR_2615    :Z
-    // STR_2616    :???
-    // STR_2617    :???
-    // STR_2618    :Menu
-    // STR_2619    :???
-    // STR_2620    :???
-    // STR_2621    :NumPad 0
-    // STR_2622    :NumPad 1
-    // STR_2623    :NumPad 2
-    // STR_2624    :NumPad 3
-    // STR_2625    :NumPad 4
-    // STR_2626    :NumPad 5
-    // STR_2627    :NumPad 6
-    // STR_2628    :NumPad 7
-    // STR_2629    :NumPad 8
-    // STR_2630    :NumPad 9
-    // STR_2631    :NumPad *
-    // STR_2632    :NumPad +
-    // STR_2633    :???
-    // STR_2634    :NumPad -
-    // STR_2635    :NumPad .
-    // STR_2636    :NumPad /
-    // STR_2637    :F1
-    // STR_2638    :F2
-    // STR_2639    :F3
-    // STR_2640    :F4
-    // STR_2641    :F5
-    // STR_2642    :F6
-    // STR_2643    :F7
-    // STR_2644    :F8
-    // STR_2645    :F9
-    // STR_2646    :F10
-    // STR_2647    :F11
-    // STR_2648    :F12
-    // STR_2649    :F13
-    // STR_2650    :F14
-    // STR_2651    :F15
-    // STR_2652    :F16
-    // STR_2653    :F17
-    // STR_2654    :F18
-    // STR_2655    :F19
-    // STR_2656    :F20
-    // STR_2657    :F21
-    // STR_2658    :F22
-    // STR_2659    :F23
-    // STR_2660    :F24
-    // STR_2661    :???
-    // STR_2662    :???
-    // STR_2663    :???
-    // STR_2664    :???
-    // STR_2665    :???
-    // STR_2666    :???
-    // STR_2667    :???
-    // STR_2668    :???
-    // STR_2669    :NumLock
-    // STR_2670    :Scroll
-    // STR_2671    :???
-    // STR_2672    :???
-    // STR_2673    :???
-    // STR_2674    :???
-    // STR_2675    :???
-    // STR_2676    :???
-    // STR_2677    :???
-    // STR_2678    :???
-    // STR_2679    :???
+    // 2525--2532 unused
+
+    STR_SHORTCUT_BACKSPACE = 2533,
+    STR_SHORTCUT_TAB = 2534,
+
+    // 2535--2536 unused
+
+    STR_SHORTCUT_CLEAR = 2537,
+    STR_SHORTCUT_RETURN = 2538,
+
+    // 2539--2542 unused
+
+    STR_SHORTCUT_ALT = 2543,
+    STR_SHORTCUT_PAUSE = 2544,
+    STR_SHORTCUT_CAPS = 2545,
+
+    // 2546--2551 unused
+
+    STR_SHORTCUT_ESCAPE = 2552,
+
+    // 2553--2556 unused
+
+    STR_SHORTCUT_SPACEBAR = 2557,
+    STR_SHORTCUT_PGUP = 2558,
+    STR_SHORTCUT_PGDN = 2559,
+    STR_SHORTCUT_END = 2560,
+    STR_SHORTCUT_HOME = 2561,
+    STR_SHORTCUT_LEFT = 2562,
+    STR_SHORTCUT_UP = 2563,
+    STR_SHORTCUT_RIGHT = 2564,
+    STR_SHORTCUT_DOWN = 2565,
+    STR_SHORTCUT_SELECT = 2566,
+    STR_SHORTCUT_PRINT = 2567,
+    STR_SHORTCUT_EXECUTE = 2568,
+    STR_SHORTCUT_SNAPSHOT = 2569,
+    STR_SHORTCUT_INSERT = 2570,
+    STR_SHORTCUT_DELETE = 2571,
+    STR_SHORTCUT_HELP = 2572,
+
+    // 2573--2617 unused
+
+    STR_SHORTCUT_MENU = 2618,
+
+    // 2619--2620 unused
+
+    STR_SHORTCUT_NUMPAD_0 = 2621,
+    STR_SHORTCUT_NUMPAD_1 = 2622,
+    STR_SHORTCUT_NUMPAD_2 = 2623,
+    STR_SHORTCUT_NUMPAD_3 = 2624,
+    STR_SHORTCUT_NUMPAD_4 = 2625,
+    STR_SHORTCUT_NUMPAD_5 = 2626,
+    STR_SHORTCUT_NUMPAD_6 = 2627,
+    STR_SHORTCUT_NUMPAD_7 = 2628,
+    STR_SHORTCUT_NUMPAD_8 = 2629,
+    STR_SHORTCUT_NUMPAD_9 = 2630,
+    STR_SHORTCUT_NUMPAD_MULTIPLY = 2631,
+    STR_SHORTCUT_NUMPAD_PLUS = 2632,
+
+    // 2633 unused
+
+    STR_SHORTCUT_NUMPAD_MINUS = 2634,
+    STR_SHORTCUT_NUMPAD_PERIOD = 2635,
+    STR_SHORTCUT_NUMPAD_DIVIDE = 2636,
+
+    // 2637--2668 unused
+
+    STR_SHORTCUT_NUMLOCK = 2669,
+    STR_SHORTCUT_SCROLL = 2670,
+
+    // 2671--2679 unused
+
     STR_RESEARCH_COMPLETED_AL = 2680,
     STR_CHEAT_5K_MONEY_TIP = 2681,
     // STR_2682    :<removed string - do not use>
@@ -2101,9 +2016,9 @@ enum
     STR_MAPGEN_ACTION_GENERATE = 2694,
     STR_MAPGEN_OPTION_RANDOM_TERRAIN = 2695,
     STR_MAPGEN_OPTION_PLACE_TREES = 2696,
-    // STR_2697    :???
-    // STR_2698    :???
-    // STR_2699    :???
+
+    // 2697--2699 unused
+
     STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL = 2700,
     STR_SAVE_EVERY_MINUTE = 2701,
     STR_SAVE_EVERY_5MINUTES = 2702,
@@ -2115,13 +2030,9 @@ enum
     STR_FILEBROWSER_OVERWRITE_PROMPT = 2708,
     STR_FILEBROWSER_OVERWRITE_TITLE = 2709,
     STR_FILEBROWSER_FILE_NAME_PROMPT = 2710,
-    // STR_2711    :;
-    // STR_2712    :=
-    // STR_2713    :,
-    // STR_2714    :-
-    // STR_2715    :.
-    // STR_2716    :/
-    // STR_2717    :'
+
+    // 2711--2717 unused
+
     STR_FILEBROWSER_ACTION_UP = 2718,
     STR_FILEBROWSER_ACTION_NEW_FILE = 2719,
     STR_DURATION_SEC = 2720,
@@ -2148,11 +2059,9 @@ enum
     STR_ROLLERCOASTER_TYCOON_2_DROPDOWN = 2741,
     STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND = 2742,
     STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT = 2743,
-    // STR_2744    :[
-    // STR_2745    :\
-    // STR_2746    :]
-    // STR_2747    :{ENDQUOTES}
-    // STR_2748    :Bar
+
+    // 2744--2748 unused
+
     STR_MY_NEW_SCENARIO = 2749,
     STR_MOVE_ALL_TOP = 2750,
     STR_MOVE_ALL_BOTTOM = 2751,
@@ -2161,14 +2070,9 @@ enum
     STR_CHEAT_WATER_PLANTS = 2754,
     STR_CHEAT_FIX_VANDALISM = 2755,
     STR_CHEAT_REMOVE_LITTER = 2756,
-    // STR_CHEAT_FORCE_SUN = 2757,      // <removed string - do not use>
-    // STR_CHEAT_FORCE_THUNDER = 2758,  // <removed string - do not use>
-    // STR_CHEAT_ZERO_CLEARANCE = 2759, // <removed string - do not use>
-    // STR_CHEAT_5K_MONEY = 2760, // <removed string - do not use>
-    // STR_2761    :<removed string - do not use>
-    // STR_2762    :<removed string - do not use>
-    // STR_2763    :???
-    // STR_2764    :<removed string - do not use>
+
+    // 2757--2764 unused
+
     STR_CHEAT_LARGE_TRAM_GUESTS = 2765,
     STR_CHEAT_WIN_SCENARIO = 2766,
     STR_CHEAT_FREEZE_WEATHER = 2767,
@@ -2703,6 +2607,8 @@ enum
     STR_PAGE_5 = STR_PAGE_1 + 4,
     STR_SET_PATROL_AREA = 3445,
     STR_CLEAR_PATROL_AREA = 3446,
+
+    // 3447--5119 reserved for user strings.
 
     STR_OPENRCT2_BEGIN_STRING_ID = 5120,
 
