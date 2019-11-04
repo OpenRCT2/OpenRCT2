@@ -57,6 +57,7 @@
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
+#include "scenes/loading/LoadingScene.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequenceManager.h"
 #include "ui/UiContext.h"
@@ -104,10 +105,11 @@ namespace OpenRCT2
         Networking::Http::Http _http;
 #endif
 
-        // Screens.
-        std::unique_ptr<TitleScene> _titleScreen;
-        std::unique_ptr<GameScene> _gameScreen;
-        IScene* _activeScreen = nullptr;
+        // Scenes.
+        std::unique_ptr<LoadingScene> _loadingScene;
+        std::unique_ptr<TitleScene> _titleScene;
+        std::unique_ptr<GameScene> _gameScene;
+        IScene* _activeScene = nullptr;
 
         // Game states
         std::unique_ptr<GameState> _gameState;
@@ -148,8 +150,9 @@ namespace OpenRCT2
             , _scenarioRepository(CreateScenarioRepository(env))
             , _replayManager(CreateReplayManager())
             , _gameState(std::make_unique<GameState>())
-            , _titleScreen(std::make_unique<TitleScene>(*this))
-            , _gameScreen(std::make_unique<GameScene>(*this))
+            , _loadingScene(std::make_unique<LoadingScene>(*this))
+            , _titleScene(std::make_unique<TitleScene>(*this))
+            , _gameScene(std::make_unique<GameScene>(*this))
             , _gameStateSnapshots(CreateGameStateSnapshots())
         {
             // Can't have more than one context currently.
@@ -264,7 +267,7 @@ namespace OpenRCT2
         IScene* GetLoadingScene() override
         {
             // TODO: Implement me.
-            return nullptr;
+            return _loadingScene.get();
         }
 
         IScene* GetIntroScene() override
@@ -275,12 +278,12 @@ namespace OpenRCT2
 
         IScene* GetTitleScene() override
         {
-            return _titleScreen.get();
+            return _titleScene.get();
         }
 
         IScene* GetGameScene() override
         {
-            return _gameScreen.get();
+            return _gameScene.get();
         }
 
         IScene* GetEditorScene() override
@@ -291,16 +294,16 @@ namespace OpenRCT2
 
         virtual IScene* GetActiveScene() override
         {
-            return _activeScreen;
+            return _activeScene;
         }
 
         void SetActiveScene(IScene* screen) override
         {
-            if (_activeScreen != nullptr)
-                _activeScreen->Stop();
-            _activeScreen = screen;
-            if (_activeScreen)
-                _activeScreen->Load();
+            if (_activeScene != nullptr)
+                _activeScene->Stop();
+            _activeScene = screen;
+            if (_activeScene)
+                _activeScene->Load();
         }
 
         void WriteLine(const std::string& s) override
@@ -1022,8 +1025,8 @@ namespace OpenRCT2
 
             date_update_real_time_of_day();
 
-            if (_activeScreen)
-                _activeScreen->Update();
+            if (_activeScene)
+                _activeScene->Update();
 
 #ifdef __ENABLE_DISCORD__
             if (_discordService != nullptr)

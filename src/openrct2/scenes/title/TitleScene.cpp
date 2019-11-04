@@ -112,7 +112,7 @@ void TitleScene::Load()
     gCurrentLoadedPath = "";
 
     network_close();
-    GetContext()->GetGameState()->InitAll(150);
+    GetGameState()->InitAll(150);
     viewport_init_all();
     context_open_window(WC_MAIN_WINDOW);
     CreateWindows();
@@ -215,7 +215,7 @@ void TitleScene::TitleInitialise()
 {
     if (_sequencePlayer == nullptr)
     {
-        _sequencePlayer = GetContext()->GetUiContext()->GetTitleSequencePlayer();
+        _sequencePlayer = GetContext().GetUiContext()->GetTitleSequencePlayer();
     }
     size_t seqId = title_get_config_sequence();
     if (seqId == SIZE_MAX)
@@ -262,7 +262,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
         {
-            GetContext()->GetGameState()->InitAll(150);
+            GetGameState()->InitAll(150);
         }
         return false;
     }
