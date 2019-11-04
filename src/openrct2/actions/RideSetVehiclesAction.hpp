@@ -223,8 +223,9 @@ private:
         int32_t rideTypeIterator, rideTypeIteratorMax;
 
         if (gCheatsShowVehiclesFromOtherTrackTypes
-            && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
-                 || ride->type == RIDE_TYPE_MINI_GOLF))
+            && !(
+                ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
+                || ride->type == RIDE_TYPE_MINI_GOLF))
         {
             selectionShouldBeExpanded = true;
             rideTypeIterator = 0;
