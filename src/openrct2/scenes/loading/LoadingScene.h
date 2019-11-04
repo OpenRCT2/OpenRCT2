@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../common.h"
+#include "../../core/JobPool.hpp"
 #include "../../drawing/Drawing.h"
 #include "../Scene.h"
 
@@ -18,10 +19,17 @@ namespace OpenRCT2
     class LoadingScene final : public Scene
     {
     public:
-        using Scene::Scene;
+        LoadingScene(IContext& context);
 
         void Load() override;
         void Update() override;
         void Stop() override;
+        void AddJob(const std::function<void()>& fn)
+        {
+            _jobs.AddTask(fn);
+        }
+
+    private:
+        JobPool _jobs;
     };
 } // namespace OpenRCT2
