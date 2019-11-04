@@ -2608,7 +2608,7 @@ enum
     STR_SET_PATROL_AREA = 3445,
     STR_CLEAR_PATROL_AREA = 3446,
 
-    // 3447--5119 unused
+    // 3447--5119 reserved for user strings.
 
     STR_OPENRCT2_BEGIN_STRING_ID = 5120,
 
