@@ -15,20 +15,20 @@ namespace OpenRCT2
 {
     class GameState;
 
-    interface IScreenState
+    interface IScene
     {
     public:
-        virtual ~IScreenState() = default;
+        virtual ~IScene() = default;
 
         virtual void Load() = 0;
         virtual void Update() = 0;
         virtual void Stop() = 0;
     };
 
-    class ScreenState : public IScreenState
+    class Scene : public IScene
     {
     public:
-        ScreenState(GameState& state)
+        Scene(GameState& state)
             : _gameState(state)
         {
         }

@@ -44,7 +44,7 @@
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
-#include "screens/title/TitleScreen.h"
+#include "scenes/title/TitleScene.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/SawyerCoding.h"
@@ -688,7 +688,7 @@ void game_load_init()
     IGameStateSnapshots* snapshots = ctx->GetGameStateSnapshots();
     snapshots->Reset();
 
-    ctx->SetActiveScreen(ctx->GetGameScreen());
+    ctx->SetActiveScene(ctx->GetGameScene());
 
     if (!gLoadKeepWindowsOpen)
     {
@@ -984,7 +984,7 @@ void game_load_or_quit_no_save_prompt()
             gFirstTimeSaving = true;
 
             auto* ctx = OpenRCT2::GetContext();
-            ctx->SetActiveScreen(ctx->GetTitleScreen());
+            ctx->SetActiveScene(ctx->GetTitleScene());
 
             break;
         }

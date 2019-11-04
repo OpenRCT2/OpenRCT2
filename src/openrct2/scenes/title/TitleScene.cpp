@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "TitleScreen.h"
+#include "TitleScene.h"
 
 #include "../../Context.h"
 #include "../../Game.h"
@@ -36,17 +36,17 @@ using namespace OpenRCT2;
 // TODO Remove when no longer required.
 bool gPreviewingTitleSequenceInGame;
 
-ITitleSequencePlayer* TitleScreen::GetSequencePlayer()
+ITitleSequencePlayer* TitleScene::GetSequencePlayer()
 {
     return _sequencePlayer;
 }
 
-size_t TitleScreen::GetCurrentSequence()
+size_t TitleScene::GetCurrentSequence()
 {
     return _currentSequence;
 }
 
-bool TitleScreen::PreviewSequence(size_t value)
+bool TitleScene::PreviewSequence(size_t value)
 {
     _currentSequence = value;
     _previewingSequence = TryLoadSequence(true);
@@ -68,7 +68,7 @@ bool TitleScreen::PreviewSequence(size_t value)
     return _previewingSequence;
 }
 
-void TitleScreen::StopPreviewingSequence()
+void TitleScene::StopPreviewingSequence()
 {
     if (_previewingSequence)
     {
@@ -83,22 +83,22 @@ void TitleScreen::StopPreviewingSequence()
     }
 }
 
-bool TitleScreen::IsPreviewingSequence()
+bool TitleScene::IsPreviewingSequence()
 {
     return _previewingSequence;
 }
 
-bool TitleScreen::ShouldHideVersionInfo()
+bool TitleScene::ShouldHideVersionInfo()
 {
     return _hideVersionInfo;
 }
 
-void TitleScreen::SetHideVersionInfo(bool value)
+void TitleScene::SetHideVersionInfo(bool value)
 {
     _hideVersionInfo = value;
 }
 
-void TitleScreen::Load()
+void TitleScene::Load()
 {
     log_verbose("TitleScreen::Load()");
 
@@ -138,7 +138,7 @@ void TitleScreen::Load()
     log_verbose("TitleScreen::Load() finished");
 }
 
-void TitleScreen::Update()
+void TitleScene::Update()
 {
     gInUpdateCode = true;
 
@@ -175,12 +175,12 @@ void TitleScreen::Update()
     gInUpdateCode = false;
 }
 
-void TitleScreen::Stop()
+void TitleScene::Stop()
 {
     audio_stop_all_music_and_sounds();
 }
 
-void TitleScreen::ChangePresetSequence(size_t preset)
+void TitleScene::ChangePresetSequence(size_t preset)
 {
     size_t count = TitleSequenceManager::GetCount();
     if (preset >= count)
@@ -201,7 +201,7 @@ void TitleScreen::ChangePresetSequence(size_t preset)
  * Creates the windows shown on the title screen; New game, load game,
  * tutorial, toolbox and exit.
  */
-void TitleScreen::CreateWindows()
+void TitleScene::CreateWindows()
 {
     context_open_window(WC_TITLE_MENU);
     context_open_window(WC_TITLE_EXIT);
@@ -211,7 +211,7 @@ void TitleScreen::CreateWindows()
     _hideVersionInfo = false;
 }
 
-void TitleScreen::TitleInitialise()
+void TitleScene::TitleInitialise()
 {
     if (_sequencePlayer == nullptr)
     {
@@ -229,7 +229,7 @@ void TitleScreen::TitleInitialise()
     ChangePresetSequence((int32_t)seqId);
 }
 
-bool TitleScreen::TryLoadSequence(bool loadPreview)
+bool TitleScene::TryLoadSequence(bool loadPreview)
 {
     if (_loadedTitleSequenceId != _currentSequence || loadPreview)
     {
@@ -272,7 +272,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
 void title_create_windows()
 {
     auto* ctx = OpenRCT2::GetContext();
-    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
     if (titleScreen != nullptr)
     {
         titleScreen->CreateWindows();
@@ -282,7 +282,7 @@ void title_create_windows()
 void* title_get_sequence_player()
 {
     auto* ctx = OpenRCT2::GetContext();
-    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
     if (titleScreen != nullptr)
     {
         return titleScreen->GetSequencePlayer();
@@ -293,7 +293,7 @@ void* title_get_sequence_player()
 void title_sequence_change_preset(size_t preset)
 {
     auto* ctx = OpenRCT2::GetContext();
-    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
     if (titleScreen != nullptr)
     {
         titleScreen->ChangePresetSequence(preset);
@@ -303,7 +303,7 @@ void title_sequence_change_preset(size_t preset)
 bool title_should_hide_version_info()
 {
     auto* ctx = OpenRCT2::GetContext();
-    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
     if (titleScreen != nullptr)
     {
         return titleScreen->ShouldHideVersionInfo();
@@ -314,7 +314,7 @@ bool title_should_hide_version_info()
 void title_set_hide_version_info(bool value)
 {
     auto* ctx = OpenRCT2::GetContext();
-    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
     if (titleScreen != nullptr)
     {
         titleScreen->SetHideVersionInfo(value);
@@ -329,7 +329,7 @@ size_t title_get_config_sequence()
 size_t title_get_current_sequence()
 {
     auto* ctx = OpenRCT2::GetContext();
-    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
     if (titleScreen != nullptr)
     {
         return titleScreen->GetCurrentSequence();
@@ -340,7 +340,7 @@ size_t title_get_current_sequence()
 bool title_preview_sequence(size_t value)
 {
     auto* ctx = OpenRCT2::GetContext();
-    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
     if (titleScreen != nullptr)
     {
         return titleScreen->PreviewSequence(value);
@@ -351,7 +351,7 @@ bool title_preview_sequence(size_t value)
 void title_stop_previewing_sequence()
 {
     auto* ctx = OpenRCT2::GetContext();
-    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
     if (titleScreen != nullptr)
     {
         titleScreen->StopPreviewingSequence();
@@ -361,7 +361,7 @@ void title_stop_previewing_sequence()
 bool title_is_previewing_sequence()
 {
     auto* ctx = OpenRCT2::GetContext();
-    auto* titleScreen = static_cast<TitleScreen*>(ctx->GetTitleScreen());
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
     if (titleScreen != nullptr)
     {
         return titleScreen->IsPreviewingSequence();

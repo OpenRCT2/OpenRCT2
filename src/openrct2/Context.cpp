@@ -56,9 +56,9 @@
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
-#include "screens/game/GameScreen.h"
-#include "screens/title/TitleScreen.h"
-#include "screens/title/TitleSequenceManager.h"
+#include "scenes/game/GameScene.h"
+#include "scenes/title/TitleScene.h"
+#include "scenes/title/TitleSequenceManager.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/Util.h"
@@ -105,9 +105,9 @@ namespace OpenRCT2
 #endif
 
         // Screens.
-        std::unique_ptr<TitleScreen> _titleScreen;
-        std::unique_ptr<GameScreen> _gameScreen;
-        IScreenState* _activeScreen = nullptr;
+        std::unique_ptr<TitleScene> _titleScreen;
+        std::unique_ptr<GameScene> _gameScreen;
+        IScene* _activeScreen = nullptr;
 
         // Game states
         std::unique_ptr<GameState> _gameState;
@@ -252,40 +252,40 @@ namespace OpenRCT2
             return gExitCode;
         }
 
-        IScreenState* GetLoadingScreen() override
+        IScene* GetLoadingScene() override
         {
             // TODO: Implement me.
             return nullptr;
         }
 
-        IScreenState* GetIntroScreen() override
+        IScene* GetIntroScene() override
         {
             // TODO: Implement me.
             return nullptr;
         }
 
-        IScreenState* GetTitleScreen() override
+        IScene* GetTitleScene() override
         {
             return _titleScreen.get();
         }
 
-        IScreenState* GetGameScreen() override
+        IScene* GetGameScene() override
         {
             return _gameScreen.get();
         }
 
-        IScreenState* GetEditorScreen() override
+        IScene* GetEditorScene() override
         {
             // TODO: Implement me.
             return nullptr;
         }
 
-        virtual IScreenState* GetActiveScreen() override
+        virtual IScene* GetActiveScene() override
         {
             return _activeScreen;
         }
 
-        void SetActiveScreen(IScreenState* screen) override
+        void SetActiveScene(IScene* screen) override
         {
             if (_activeScreen != nullptr)
                 _activeScreen->Stop();
@@ -487,8 +487,8 @@ namespace OpenRCT2
             _gameState = std::make_unique<GameState>();
             _gameState->InitAll(150);
 
-            _titleScreen = std::make_unique<TitleScreen>(*_gameState);
-            _gameScreen = std::make_unique<GameScreen>(*_gameState);
+            _titleScreen = std::make_unique<TitleScene>(*_gameState);
+            _gameScreen = std::make_unique<GameScene>(*_gameState);
 
             return true;
         }
@@ -645,7 +645,7 @@ namespace OpenRCT2
                         // to ensure that the title sequence loads before the window
                         if (loadTitleScreenFirstOnFail)
                         {
-                            SetActiveScreen(GetTitleScreen());
+                            SetActiveScene(GetTitleScene());
                         }
                         // The path needs to be duplicated as it's a const here
                         // which the window function doesn't like
@@ -663,7 +663,7 @@ namespace OpenRCT2
                         // to ensure that the title sequence loads before the window
                         if (loadTitleScreenFirstOnFail)
                         {
-                            SetActiveScreen(GetTitleScreen());
+                            SetActiveScene(GetTitleScene());
                         }
 
                         auto windowManager = _uiContext->GetWindowManager();
@@ -674,7 +674,7 @@ namespace OpenRCT2
                     {
                         // If loading the SV6 or SV4 failed for a reason other than invalid objects
                         // the current park state will be corrupted so just go back to the title screen.
-                        SetActiveScreen(GetTitleScreen());
+                        SetActiveScene(GetTitleScene());
                         Console::Error::WriteLine(e.what());
                     }
                 }
@@ -756,10 +756,10 @@ namespace OpenRCT2
             {
                 case STARTUP_ACTION_INTRO:
                     gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
-                    SetActiveScreen(GetTitleScreen());
+                    SetActiveScene(GetTitleScene());
                     break;
                 case STARTUP_ACTION_TITLE:
-                    SetActiveScreen(GetTitleScreen());
+                    SetActiveScene(GetTitleScene());
                     break;
                 case STARTUP_ACTION_OPEN:
                 {
@@ -773,7 +773,7 @@ namespace OpenRCT2
                         size_t dataSize = Networking::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
                         if (dataSize == 0)
                         {
-                            SetActiveScreen(GetTitleScreen());
+                            SetActiveScene(GetTitleScene());
                             break;
                         }
 
@@ -781,7 +781,7 @@ namespace OpenRCT2
                         if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            SetActiveScreen(GetTitleScreen());
+                            SetActiveScene(GetTitleScene());
                             break;
                         }
 #endif
@@ -799,12 +799,12 @@ namespace OpenRCT2
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                             Console::Error::WriteLine("%s", ex.what());
-                            SetActiveScreen(GetTitleScreen());
+                            SetActiveScene(GetTitleScene());
                             break;
                         }
                     }
 
-                    SetActiveScreen(GetGameScreen());
+                    SetActiveScene(GetGameScene());
 
 #ifndef DISABLE_NETWORK
                     if (gNetworkStart == NETWORK_MODE_SERVER)
@@ -839,7 +839,7 @@ namespace OpenRCT2
                     }
                     else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        SetActiveScreen(GetTitleScreen());
+                        SetActiveScene(GetTitleScene());
                     }
                     break;
             }

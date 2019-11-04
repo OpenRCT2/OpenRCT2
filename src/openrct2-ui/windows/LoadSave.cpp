@@ -29,7 +29,7 @@
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/screens/title/TitleScreen.h>
+#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -1062,7 +1062,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
                 window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
 
                 auto* ctx = OpenRCT2::GetContext();
-                ctx->SetActiveScreen(ctx->GetTitleScreen());
+                ctx->SetActiveScene(ctx->GetTitleScene());
             }
             else
             {

@@ -7,30 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "GameScreen.h"
+#include "GameScene.h"
 
 #include "../../Context.h"
 #include "../../Game.h"
 #include "../../GameState.h"
-#include "../../Input.h"
 #include "../../OpenRCT2.h"
-#include "../../Version.h"
 #include "../../audio/audio.h"
-#include "../../config/Config.h"
-#include "../../core/Console.hpp"
-#include "../../drawing/Drawing.h"
-#include "../../interface/Screenshot.h"
-#include "../../interface/Viewport.h"
-#include "../../interface/Window.h"
-#include "../../localisation/Localisation.h"
-#include "../../network/network.h"
-#include "../../scenario/Scenario.h"
-#include "../../scenario/ScenarioRepository.h"
-#include "../../ui/UiContext.h"
 
 using namespace OpenRCT2;
 
-void GameScreen::Load()
+void GameScene::Load()
 {
     log_verbose("GameScreen::Load()");
 
@@ -39,12 +26,12 @@ void GameScreen::Load()
     log_verbose("GameScreen::Load() finished");
 }
 
-void GameScreen::Update()
+void GameScene::Update()
 {
     _gameState.Update();
 }
 
-void GameScreen::Stop()
+void GameScene::Stop()
 {
     audio_stop_all_music_and_sounds();
 }

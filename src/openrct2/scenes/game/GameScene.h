@@ -11,14 +11,14 @@
 
 #include "../../common.h"
 #include "../../drawing/Drawing.h"
-#include "../ScreenState.h"
+#include "../Scene.h"
 
 namespace OpenRCT2
 {
-    class GameScreen final : public ScreenState
+    class GameScene final : public Scene
     {
     public:
-        using ScreenState::ScreenState;
+        using Scene::Scene;
 
         void Load() override;
         void Update() override;

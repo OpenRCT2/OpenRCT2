@@ -11,16 +11,16 @@
 
 #include "../../common.h"
 #include "../../drawing/Drawing.h"
-#include "../ScreenState.h"
+#include "../Scene.h"
 
 interface ITitleSequencePlayer;
 
 namespace OpenRCT2
 {
-    class TitleScreen final : public ScreenState
+    class TitleScene final : public Scene
     {
     public:
-        using ScreenState::ScreenState;
+        using Scene::Scene;
 
         ITitleSequencePlayer* GetSequencePlayer();
         size_t GetCurrentSequence();

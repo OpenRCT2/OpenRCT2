@@ -22,7 +22,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
-#include <openrct2/screens/title/TitleSequence.h>
+#include <openrct2/scenes/title/TitleSequence.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Sprite.h>
