@@ -18,10 +18,12 @@
 
 namespace OpenRCT2::Audio
 {
-    class AudioChannelImpl : public ISDLAudioChannel
+    template<typename AudioSource_ = ISDLAudioSource> class AudioChannelImpl : public ISDLAudioChannel
     {
+        static_assert(std::is_base_of_v<IAudioSource, AudioSource_>);
+
     private:
-        ISDLAudioSource* _source = nullptr;
+        AudioSource_* _source = nullptr;
         SpeexResamplerState* _resampler = nullptr;
 
         int32_t _group = MIXER_GROUP_SOUND;
@@ -63,9 +65,12 @@ namespace OpenRCT2::Audio
             }
         }
 
-        [[nodiscard]] IAudioSource* GetSource() const override { return _source; }
+        [[nodiscard]] IAudioSource* GetSource() const override
+        {
+            return _source;
+        }
 
-            [[nodiscard]] SpeexResamplerState* GetResampler() const override
+        [[nodiscard]] SpeexResamplerState* GetResampler() const override
         {
             return _resampler;
         }
@@ -75,21 +80,30 @@ namespace OpenRCT2::Audio
             _resampler = value;
         }
 
-        [[nodiscard]] int32_t GetGroup() const override { return _group; }
+        [[nodiscard]] int32_t GetGroup() const override
+        {
+            return _group;
+        }
 
         void SetGroup(int32_t group) override
         {
             _group = group;
         }
 
-        [[nodiscard]] double GetRate() const override { return _rate; }
+        [[nodiscard]] double GetRate() const override
+        {
+            return _rate;
+        }
 
         void SetRate(double rate) override
         {
             _rate = std::max(0.001, rate);
         }
 
-        [[nodiscard]] uint64_t GetOffset() const override { return _offset; }
+        [[nodiscard]] uint64_t GetOffset() const override
+        {
+            return _offset;
+        }
 
         bool SetOffset(uint64_t offset) override
         {
@@ -103,30 +117,42 @@ namespace OpenRCT2::Audio
             return false;
         }
 
-        [[nodiscard]] int32_t GetLoop() const override { return _loop; }
+        [[nodiscard]] int32_t GetLoop() const override
+        {
+            return _loop;
+        }
 
         void SetLoop(int32_t value) override
         {
             _loop = value;
         }
 
-        [[nodiscard]] int32_t GetVolume() const override { return _volume; }
+        [[nodiscard]] int32_t GetVolume() const override
+        {
+            return _volume;
+        }
 
-            [[nodiscard]] float GetVolumeL() const override
+        [[nodiscard]] float GetVolumeL() const override
         {
             return _volume_l;
         }
 
-        [[nodiscard]] float GetVolumeR() const override { return _volume_r; }
+        [[nodiscard]] float GetVolumeR() const override
+        {
+            return _volume_r;
+        }
 
-            [[nodiscard]] float GetOldVolumeL() const override
+        [[nodiscard]] float GetOldVolumeL() const override
         {
             return _oldvolume_l;
         }
 
-        [[nodiscard]] float GetOldVolumeR() const override { return _oldvolume_r; }
+        [[nodiscard]] float GetOldVolumeR() const override
+        {
+            return _oldvolume_r;
+        }
 
-            [[nodiscard]] int32_t GetOldVolume() const override
+        [[nodiscard]] int32_t GetOldVolume() const override
         {
             return _oldvolume;
         }
@@ -136,7 +162,10 @@ namespace OpenRCT2::Audio
             _volume = std::clamp(volume, 0, MIXER_VOLUME_MAX);
         }
 
-        [[nodiscard]] float GetPan() const override { return _pan; }
+        [[nodiscard]] float GetPan() const override
+        {
+            return _pan;
+        }
 
         void SetPan(float pan) override
         {
@@ -155,21 +184,30 @@ namespace OpenRCT2::Audio
             }
         }
 
-        [[nodiscard]] bool IsStopping() const override { return _stopping; }
+        [[nodiscard]] bool IsStopping() const override
+        {
+            return _stopping;
+        }
 
         void SetStopping(bool value) override
         {
             _stopping = value;
         }
 
-        [[nodiscard]] bool IsDone() const override { return _done; }
+        [[nodiscard]] bool IsDone() const override
+        {
+            return _done;
+        }
 
         void SetDone(bool value) override
         {
             _done = value;
         }
 
-        [[nodiscard]] bool DeleteOnDone() const override { return _deleteondone; }
+        [[nodiscard]] bool DeleteOnDone() const override
+        {
+            return _deleteondone;
+        }
 
         void SetDeleteOnDone(bool value) override
         {
@@ -181,11 +219,14 @@ namespace OpenRCT2::Audio
             _deletesourceondone = value;
         }
 
-        [[nodiscard]] bool IsPlaying() const override { return !_done; }
+        [[nodiscard]] bool IsPlaying() const override
+        {
+            return !_done;
+        }
 
         void Play(IAudioSource* source, int32_t loop) override
         {
-            _source = dynamic_cast<ISDLAudioSource*>(source);
+            _source = static_cast<AudioSource_*>(source);
             _loop = loop;
             _offset = 0;
             _done = false;
@@ -198,7 +239,8 @@ namespace OpenRCT2::Audio
             _oldvolume_r = _volume_r;
         }
 
-        [[nodiscard]] AudioFormat GetFormat() const override {
+        [[nodiscard]] AudioFormat GetFormat() const override
+        {
             AudioFormat result = {};
             // The second check is there because NullAudioSource does not implement GetFormat. Avoid calling it.
             if (_source != nullptr && _source->GetLength() > 0)
