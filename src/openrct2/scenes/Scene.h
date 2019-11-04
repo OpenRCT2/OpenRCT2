@@ -14,6 +14,7 @@
 namespace OpenRCT2
 {
     class GameState;
+    interface IContext;
 
     interface IScene
     {
@@ -28,13 +29,12 @@ namespace OpenRCT2
     class Scene : public IScene
     {
     public:
-        Scene(GameState& state)
-            : _gameState(state)
-        {
-        }
+        Scene(IContext& context);
+
+        GameState* GetGameState();
 
     protected:
-        GameState& _gameState;
+        IContext& _context;
     };
 
 } // namespace OpenRCT2

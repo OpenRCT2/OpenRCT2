@@ -28,7 +28,7 @@ void GameScene::Load()
 
 void GameScene::Update()
 {
-    _gameState.Update();
+    GetGameState()->Update();
 }
 
 void GameScene::Stop()

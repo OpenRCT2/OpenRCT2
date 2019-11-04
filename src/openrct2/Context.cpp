@@ -142,6 +142,15 @@ namespace OpenRCT2
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
             , _painter(std::make_unique<Painter>(uiContext))
+            , _objectRepository(CreateObjectRepository(env))
+            , _objectManager(CreateObjectManager(*_objectRepository))
+            , _trackDesignRepository(CreateTrackDesignRepository(env))
+            , _scenarioRepository(CreateScenarioRepository(env))
+            , _replayManager(CreateReplayManager())
+            , _gameState(std::make_unique<GameState>())
+            , _titleScreen(std::make_unique<TitleScene>(*this))
+            , _gameScreen(std::make_unique<GameScene>(*this))
+            , _gameStateSnapshots(CreateGameStateSnapshots())
         {
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
@@ -394,12 +403,6 @@ namespace OpenRCT2
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
 
-            _objectRepository = CreateObjectRepository(_env);
-            _objectManager = CreateObjectManager(*_objectRepository);
-            _trackDesignRepository = CreateTrackDesignRepository(_env);
-            _scenarioRepository = CreateScenarioRepository(_env);
-            _replayManager = CreateReplayManager();
-            _gameStateSnapshots = CreateGameStateSnapshots();
 #ifdef __ENABLE_DISCORD__
             if (!gOpenRCT2Headless)
             {
@@ -484,11 +487,7 @@ namespace OpenRCT2
             input_reset_place_obj_modifier();
             viewport_init_all();
 
-            _gameState = std::make_unique<GameState>();
             _gameState->InitAll(150);
-
-            _titleScreen = std::make_unique<TitleScene>(*_gameState);
-            _gameScreen = std::make_unique<GameScene>(*_gameState);
 
             return true;
         }

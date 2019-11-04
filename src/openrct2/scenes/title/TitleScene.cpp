@@ -157,7 +157,7 @@ void TitleScene::Update()
         }
         for (int32_t i = 0; i < numUpdates; i++)
         {
-            _gameState.UpdateLogic();
+            GetGameState()->UpdateLogic();
         }
         update_palette_effects();
         // update_rain_animation();
