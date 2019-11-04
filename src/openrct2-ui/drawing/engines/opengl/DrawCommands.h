@@ -27,7 +27,7 @@ public:
         : _numInstances(0)
     {
     }
-    bool empty() const
+    [[nodiscard]] bool empty() const
     {
         return _numInstances == 0;
     }
@@ -51,7 +51,7 @@ public:
         }
         return _instances[_numInstances++] = value;
     }
-    size_t size() const
+    [[nodiscard]] size_t size() const
     {
         return _numInstances;
     }
@@ -114,9 +114,9 @@ struct DrawRectCommand
 
     enum
     {
-        FLAG_NO_TEXTURE = (1 << 2),
-        FLAG_MASK = (1 << 3),
-        FLAG_CROSS_HATCH = (1 << 4),
+        FLAG_NO_TEXTURE = (1U << 2U),
+        FLAG_MASK = (1U << 3U),
+        FLAG_CROSS_HATCH = (1U << 4U),
     };
 };
 

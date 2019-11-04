@@ -869,8 +869,9 @@ static void window_ride_construction_resize(rct_window* w)
         case TRACK_SLOPE_DOWN_60:
             disabledWidgets |= (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
             if (!is_track_enabled(TRACK_SLOPE_LONG)
-                && !(is_track_enabled(TRACK_SLOPE_STEEP_LONG)
-                     && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
+                && !(
+                    is_track_enabled(TRACK_SLOPE_STEEP_LONG)
+                    && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
             {
                 disabledWidgets |= (1ULL << WIDX_LEVEL);
             }
@@ -881,8 +882,9 @@ static void window_ride_construction_resize(rct_window* w)
         case TRACK_SLOPE_UP_60:
             disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN);
             if (!is_track_enabled(TRACK_SLOPE_LONG)
-                && !(is_track_enabled(TRACK_SLOPE_STEEP_LONG)
-                     && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
+                && !(
+                    is_track_enabled(TRACK_SLOPE_STEEP_LONG)
+                    && !track_piece_direction_is_diagonal(_currentTrackPieceDirection)))
             {
                 disabledWidgets |= (1ULL << WIDX_LEVEL);
             }
