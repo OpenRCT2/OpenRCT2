@@ -32,6 +32,7 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     res->Position.y = _loc.y + 16;
     res->Position.z = _loc.z;
     res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+    _currentTrackPieceDirection = _loc.direction;
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
     {

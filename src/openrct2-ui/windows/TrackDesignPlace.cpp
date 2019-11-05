@@ -241,6 +241,30 @@ static void window_track_place_update(rct_window* w)
             window_close(w);
 }
 
+static GameActionResult::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t flags)
+{
+    for (int32_t i = 0; i < 7; i++)
+    {
+        auto tdAction = TrackDesignAction(CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
+        tdAction.SetFlags(flags);
+        auto res = GameActions::Query(&tdAction);
+
+        // If successful dont keep trying.
+        // If failure due to no money then increasing height only makes problem worse
+        if (res->Error == GA_ERROR::OK || res->Error == GA_ERROR::INSUFFICIENT_FUNDS)
+        {
+            return res;
+        }
+        // Return the last attempts error up the chain
+        if (i == 6)
+        {
+            return res;
+        }
+        loc.z += 8;
+    }
+    return nullptr;
+}
+
 /**
  *
  *  rct2: 0x006CFF2D
@@ -274,31 +298,33 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
 
     // Get base Z position
     mapZ = window_track_place_get_base_z(mapCoords.x, mapCoords.y);
+    CoordsXYZ trackLoc = { mapCoords, mapZ };
+
     if (game_is_not_paused() || gCheatsBuildInPauseMode)
     {
         window_track_place_clear_provisional();
+        auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
 
-        // Try increasing Z until a feasible placement is found
-        for (int32_t i = 0; i < 7; i++)
+        if (res->Error == GA_ERROR::OK)
         {
+            // Valid location found. Place the ghost at the location.
             ride_id_t rideIndex;
-            uint16_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
-            window_track_place_attempt_placement(_trackDesign.get(), mapCoords.x, mapCoords.y, mapZ, flags, &cost, &rideIndex);
+            window_track_place_attempt_placement(
+                _trackDesign.get(), trackLoc.x, trackLoc.y, trackLoc.z,
+                GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST, &cost, &rideIndex);
             if (cost != MONEY32_UNDEFINED)
             {
                 _window_track_place_ride_index = rideIndex;
-                _window_track_place_last_valid_x = mapCoords.x;
-                _window_track_place_last_valid_y = mapCoords.y;
-                _window_track_place_last_valid_z = mapZ;
+                _window_track_place_last_valid_x = trackLoc.x;
+                _window_track_place_last_valid_y = trackLoc.y;
+                _window_track_place_last_valid_z = trackLoc.z;
                 _window_track_place_last_was_valid = true;
-                break;
             }
-            mapZ += 8;
         }
     }
 
-    _window_track_place_last_x = mapCoords.x;
-    _window_track_place_last_y = mapCoords.y;
+    _window_track_place_last_x = trackLoc.x;
+    _window_track_place_last_y = trackLoc.y;
     if (cost != _window_track_place_last_cost)
     {
         _window_track_place_last_cost = cost;
@@ -306,7 +332,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     }
 
     place_virtual_track(
-        _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), mapCoords.x, mapCoords.y, mapZ);
+        _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), trackLoc.x, trackLoc.y, trackLoc.z);
 }
 
 /**
@@ -327,49 +353,50 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
 
     // Try increasing Z until a feasible placement is found
     int16_t mapZ = window_track_place_get_base_z(mapCoords.x, mapCoords.y);
-    for (int32_t i = 0; i < 7; i++)
+    CoordsXYZ trackLoc = { mapCoords, mapZ };
+
+    auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
+    if (res->Error == GA_ERROR::OK)
     {
-        gDisableErrorWindowSound = true;
-        money32 cost = MONEY32_UNDEFINED;
-        ride_id_t rideIndex = RIDE_ID_NULL;
-        window_track_place_attempt_placement(_trackDesign.get(), mapCoords.x, mapCoords.y, mapZ, 1, &cost, &rideIndex);
-        gDisableErrorWindowSound = false;
-
-        if (cost != MONEY32_UNDEFINED)
-        {
-            auto ride = get_ride(rideIndex);
-            if (ride != nullptr)
+        auto tdAction = TrackDesignAction({ trackLoc.x, trackLoc.y, trackLoc.z, _currentTrackPieceDirection }, *_trackDesign);
+        tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* res) {
+            if (res->Error == GA_ERROR::OK)
             {
-                window_close_by_class(WC_ERROR);
-                audio_play_sound_at_location(SoundId::PlaceItem, { mapCoords.x, mapCoords.y, mapZ });
+                auto ride = get_ride(res->rideIndex);
+                if (ride != nullptr)
+                {
+                    window_close_by_class(WC_ERROR);
+                    audio_play_sound_at_location(SoundId::PlaceItem, { trackLoc.x, trackLoc.y, trackLoc.z });
 
-                _currentRideIndex = rideIndex;
-                if (track_design_are_entrance_and_exit_placed())
-                {
-                    auto intent = Intent(WC_RIDE);
-                    intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
-                    context_open_intent(&intent);
-                    window_close(w);
-                }
-                else
-                {
-                    ride_initialise_construction_window(ride);
-                    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-                    window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                    _currentRideIndex = res->rideIndex;
+                    if (track_design_are_entrance_and_exit_placed())
+                    {
+                        auto intent = Intent(WC_RIDE);
+                        intent.putExtra(INTENT_EXTRA_RIDE_ID, res->rideIndex);
+                        context_open_intent(&intent);
+                        auto w = window_find_by_class(WC_TRACK_DESIGN_PLACE);
+                        window_close(w);
+                    }
+                    else
+                    {
+                        ride_initialise_construction_window(ride);
+                        auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+                        window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                    }
                 }
             }
-            return;
-        }
-
-        // Check if player did not have enough funds
-        if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES)
-            break;
-
-        mapZ += 8;
+            else
+            {
+                audio_play_sound_at_location(SoundId::Error, res->Position);
+            }
+        });
+        GameActions::Execute(&tdAction);
+        return;
     }
 
     // Unable to build track
-    audio_play_sound_at_location(SoundId::Error, { mapCoords.x, mapCoords.y, mapZ });
+    audio_play_sound_at_location(SoundId::Error, trackLoc);
+    context_show_error(res->ErrorTitle, res->ErrorMessage);
 }
 
 /**
@@ -447,7 +474,7 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
 static void window_track_place_attempt_placement(
     TrackDesign* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex)
 {
-    auto tdAction = TrackDesignAction({ x, y, z }, *_trackDesign);
+    auto tdAction = TrackDesignAction({ x, y, z, _currentTrackPieceDirection }, *_trackDesign);
     tdAction.SetFlags(bl);
     auto res = (bl & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&tdAction) : GameActions::Query(&tdAction);
 

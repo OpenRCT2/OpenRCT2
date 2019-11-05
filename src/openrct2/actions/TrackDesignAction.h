@@ -38,14 +38,14 @@ public:
 DEFINE_GAME_ACTION(TrackDesignAction, GAME_COMMAND_PLACE_TRACK_DESIGN, TrackDesignActionResult)
 {
 private:
-    CoordsXYZ _loc;
+    CoordsXYZD _loc;
     TrackDesign _td;
 
 public:
     TrackDesignAction()
     {
     }
-    TrackDesignAction(CoordsXYZ location, const TrackDesign &td)
+    TrackDesignAction(CoordsXYZD location, const TrackDesign &td)
         : _loc(location)
         , _td(td)
     {

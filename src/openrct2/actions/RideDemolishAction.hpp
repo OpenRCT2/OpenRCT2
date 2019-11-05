@@ -218,6 +218,11 @@ private:
 
             for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
             {
+                // Don't touch items after the first NONE thought as they are not valid
+                // fixes issues with clearing out bad thought data in multiplayer
+                if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+                    break;
+
                 if (peep->thoughts[i].type != PEEP_THOUGHT_TYPE_NONE && peep->thoughts[i].item == _rideIndex)
                 {
                     // Clear top thought, push others up
