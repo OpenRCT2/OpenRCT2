@@ -127,7 +127,11 @@ void InGameConsole::HistoryAdd(const utf8* src)
 
 void InGameConsole::ScrollToEnd()
 {
-    _consoleScrollPos = std::max<int32_t>(0, (int32_t)_consoleLines.size() - GetNumVisibleLines());
+    const int32_t maxLines = GetNumVisibleLines();
+    if (maxLines == 0)
+        _consoleScrollPos = 0;
+    else
+        _consoleScrollPos = std::max<int32_t>(0, (int32_t)_consoleLines.size() - maxLines);
 }
 
 void InGameConsole::RefreshCaret()
@@ -349,6 +353,8 @@ int32_t InGameConsole::GetNumVisibleLines() const
 {
     const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
     const int32_t consoleHeight = _consoleBottom - _consoleTop;
+    if (consoleHeight == 0)
+        return 0;
     const int32_t drawableHeight = consoleHeight - 2 * lineHeight - 4; // input line, separator - padding
     return drawableHeight / lineHeight;
 }
