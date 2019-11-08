@@ -706,6 +706,7 @@ namespace String
     std::string ToUpper(const std::string_view& src)
     {
 #ifdef _WIN32
+#    if _WIN32_WINNT >= 0x0600
         auto srcW = ToWideChar(src);
 
         // Measure how long the destination needs to be
@@ -731,6 +732,10 @@ namespace String
         {
             return String::ToUtf8(dstW);
         }
+#    else
+        log_warning("String::ToUpper not supported");
+        return std::string(src);
+#    endif
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
         str.toUpper();

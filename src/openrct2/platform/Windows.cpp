@@ -394,6 +394,7 @@ uint8_t platform_get_locale_temperature_format()
 
 uint8_t platform_get_locale_date_format()
 {
+#    if _WIN32_WINNT >= 0x0600
     // Retrieve short date format, eg "MM/dd/yyyy"
     wchar_t dateFormat[20];
     if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, (int)std::size(dateFormat)) == 0)
@@ -437,6 +438,7 @@ uint8_t platform_get_locale_date_format()
             return DATE_FORMAT_YEAR_MONTH_DAY;
         }
     }
+#    endif
 
     // Default fallback
     return DATE_FORMAT_DAY_MONTH_YEAR;
@@ -640,6 +642,7 @@ fail:
 
 static void windows_remove_file_association(const utf8* extension)
 {
+#    if _WIN32_WINNT >= 0x0600
     // [HKEY_CURRENT_USER\Software\Classes]
     HKEY hRootKey;
     if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
@@ -653,6 +656,7 @@ static void windows_remove_file_association(const utf8* extension)
 
         RegCloseKey(hRootKey);
     }
+#    endif
 }
 
 void platform_setup_file_associations()
@@ -693,6 +697,7 @@ void platform_remove_file_associations()
 
 bool platform_setup_uri_protocol()
 {
+#    if _WIN32_WINNT >= 0x0600
     log_verbose("Setting up URI protocol...");
 
     // [HKEY_CURRENT_USER\Software\Classes]
@@ -734,6 +739,7 @@ bool platform_setup_uri_protocol()
             }
         }
     }
+#    endif
 
     log_verbose("URI protocol setup failed");
     return false;
