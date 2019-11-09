@@ -615,6 +615,7 @@ namespace Config
         log_verbose("config_find_rct1_path(...)");
 
         static constexpr const utf8* searchLocations[] = {
+            R"(/usr/share/openrct2/rct1_data)",
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
             R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
             R"(C:\GOG Games\RollerCoaster Tycoon Deluxe)",
@@ -659,6 +660,7 @@ namespace Config
         log_verbose("config_find_rct2_path(...)");
 
         static constexpr const utf8* searchLocations[] = {
+            R"(/usr/share/openrct2/rct2_data)",
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
             R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)",
             R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
