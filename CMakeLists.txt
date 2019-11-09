@@ -42,6 +42,8 @@ CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." 
 option(STATIC "Create a static build.")
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 
+option(DISABLE_DISCORD_RPC "Disable Discord-RPC support." OFF)
+option(DISABLE_GOOGLE_BENCHMARK "Disable Google Benchmarks support." OFF)
 option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
@@ -125,17 +127,19 @@ if (CXX_WARN_SUGGEST_FINAL_METHODS)
    add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
 endif ()
 
-if(EXISTS "${ROOT_DIR}/discord-rpc")
-    # Don't build discord's examples, some of which are in C and do not honour
-    # the flags we set for C++. Also we don't use the provided examples.
-    set(BUILD_EXAMPLES OFF CACHE BOOL "Build example apps")
-    add_subdirectory("${ROOT_DIR}/discord-rpc")
-    add_definitions(-D__ENABLE_DISCORD__)
-    include_directories("${ROOT_DIR}/discord-rpc/include")
-    set(HAVE_DISCORD_RPC TRUE)
-    message("Building with discord-rpc support")
-else()
-	message("No discord-rpc detected, to enable clone discord-rpc to root directory: ${ROOT_DIR}")
+if (NOT DISABLE_DISCORD_RPC)
+    if(EXISTS "${ROOT_DIR}/discord-rpc")
+        # Don't build discord's examples, some of which are in C and do not honour
+        # the flags we set for C++. Also we don't use the provided examples.
+        set(BUILD_EXAMPLES OFF CACHE BOOL "Build example apps")
+        add_subdirectory("${ROOT_DIR}/discord-rpc")
+        add_definitions(-D__ENABLE_DISCORD__)
+        include_directories("${ROOT_DIR}/discord-rpc/include")
+        set(HAVE_DISCORD_RPC TRUE)
+        message("Building with discord-rpc support")
+    else()
+        message("No discord-rpc detected, to enable clone discord-rpc to root directory: ${ROOT_DIR}")
+    endif()
 endif()
 
 # Copied from https://github.com/opencv/opencv/blob/dcdd6af5a856826fe62c95322145731e702e54c5/cmake/OpenCVDetectCXXCompiler.cmake#L63-L70
