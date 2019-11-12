@@ -1773,7 +1773,8 @@ CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport)
     int32_t interactionType;
     rct_viewport* myViewport = nullptr;
     get_map_coordinates_from_pos(
-        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, nullptr, &myViewport);
+        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, nullptr,
+        &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         return { LOCATION_NULL, 0 };
