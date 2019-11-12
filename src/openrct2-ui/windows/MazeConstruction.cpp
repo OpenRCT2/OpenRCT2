@@ -366,7 +366,7 @@ static void window_maze_construction_entrance_tooldown(ScreenCoordsXY screenCoor
     CoordsXY entranceOrExitCoords;
     ride_get_entrance_or_exit_position_from_screen_position(
         screenCoords.x, screenCoords.y, &entranceOrExitCoords.x, &entranceOrExitCoords.y, &direction);
-    if (entranceOrExitCoords.x == 0x8000)
+    if (entranceOrExitCoords.x == LOCATION_NULL)
         return;
 
     if (gRideEntranceExitPlaceDirection == 0xFF)
