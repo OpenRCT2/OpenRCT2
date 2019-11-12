@@ -295,8 +295,7 @@ static void window_land_rights_tool_update_land_rights(int16_t x, int16_t y)
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    LocationXY16 mapTile = {};
-    screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
+    CoordsXY mapTile = screen_get_map_xy({ x, y }, nullptr);
 
     if (mapTile.x == LOCATION_NULL)
     {

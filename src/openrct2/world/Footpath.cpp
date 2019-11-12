@@ -286,7 +286,7 @@ void footpath_get_coordinates_from_pos(
         }
     }
 
-    LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenCoords.x, screenCoords.y);
+    LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenCoords);
 
     for (int32_t i = 0; i < 5; i++)
     {

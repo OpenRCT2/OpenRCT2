@@ -94,9 +94,10 @@ void rct_money_effect::Create(money32 value)
             return;
 
         rct_viewport* mainViewport = window_get_viewport(mainWindow);
-        screen_get_map_xy(
-            mainViewport->x + (mainViewport->width / 2), mainViewport->y + (mainViewport->height / 2), &mapPosition.x,
-            &mapPosition.y, nullptr);
+        CoordsXY mapPositionXY = screen_get_map_xy(
+            { mainViewport->x + (mainViewport->width / 2), mainViewport->y + (mainViewport->height / 2) }, nullptr);
+        mapPosition.x = mapPositionXY.x;
+        mapPosition.y = mapPositionXY.y;
         if (mapPosition.x == LOCATION_NULL)
             return;
 

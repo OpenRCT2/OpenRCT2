@@ -139,9 +139,9 @@ void viewport_paint(
 
 void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t* z);
 
-LocationXY16 screen_coord_to_viewport_coord(rct_viewport* viewport, uint16_t x, uint16_t y);
+LocationXY16 screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords);
 CoordsXY viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z);
-CoordsXY screen_pos_to_map_pos(int16_t x, int16_t y, int32_t* direction);
+CoordsXY screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction);
 
 void show_gridlines();
 void hide_gridlines();
@@ -173,12 +173,12 @@ void sub_68B2B7(paint_session* session, int32_t x, int32_t y);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
-void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, rct_viewport** viewport);
+CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport);
 void screen_get_map_xy_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY);
-void screen_get_map_xy_quadrant(int16_t screenX, int16_t screenY, int16_t* mapX, int16_t* mapY, uint8_t* quadrant);
+CoordsXY screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadrant);
 void screen_get_map_xy_quadrant_with_z(
     int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY, uint8_t* quadrant);
-void screen_get_map_xy_side(int16_t screenX, int16_t screenY, int16_t* mapX, int16_t* mapY, uint8_t* side);
+CoordsXY screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side);
 void screen_get_map_xy_side_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY, uint8_t* side);
 
 uint8_t get_current_rotation();
