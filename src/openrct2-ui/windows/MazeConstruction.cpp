@@ -353,7 +353,7 @@ static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex w
  *
  *  rct2: 0x006C825F
  */
-static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct_window* w)
+static void window_maze_construction_entrance_tooldown(ScreenCoordsXY screenCoords, rct_window* w)
 {
     ride_construction_invalidate_current_track();
 
@@ -363,7 +363,8 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     int32_t direction = 0;
-    ride_get_entrance_or_exit_position_from_screen_position(x, y, &x, &y, &direction);
+    ride_get_entrance_or_exit_position_from_screen_position(
+        screenCoords.x, screenCoords.y, &screenCoords.x, &screenCoords.y, &direction);
 
     if (gRideEntranceExitPlaceDirection == 0xFF)
         return;
@@ -371,7 +372,7 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
     ride_id_t rideIndex = gRideEntranceExitPlaceRideIndex;
 
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-        { x, y }, direction_reverse(direction), rideIndex, gRideEntranceExitPlaceStationIndex,
+        { screenCoords.x, screenCoords.y }, direction_reverse(direction), rideIndex, gRideEntranceExitPlaceStationIndex,
         gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
     rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
@@ -410,7 +411,7 @@ static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex wid
             break;
         case WIDX_MAZE_ENTRANCE:
         case WIDX_MAZE_EXIT:
-            window_maze_construction_entrance_tooldown(screenCoords.x, screenCoords.y, w);
+            window_maze_construction_entrance_tooldown(screenCoords, w);
             break;
     }
 }
