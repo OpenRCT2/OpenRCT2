@@ -1147,7 +1147,8 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     int32_t map_x, map_y;
-    footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y + 16, &map_x, &map_y, nullptr, nullptr);
+    screenCoords.y += 16;
+    footpath_get_coordinates_from_pos(screenCoords, &map_x, &map_y, nullptr, nullptr);
     if (map_x != LOCATION_NULL)
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1197,7 +1198,8 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     {
         int32_t dest_x, dest_y;
         TileElement* tileElement;
-        footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y + 16, &dest_x, &dest_y, nullptr, &tileElement);
+        screenCoords.y += 16;
+        footpath_get_coordinates_from_pos(screenCoords, &dest_x, &dest_y, nullptr, &tileElement);
 
         if (dest_x == LOCATION_NULL)
             return;
@@ -1216,7 +1218,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     else if (widgetIndex == WIDX_PATROL)
     {
         int32_t dest_x, dest_y;
-        footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y, &dest_x, &dest_y, nullptr, nullptr);
+        footpath_get_coordinates_from_pos(screenCoords, &dest_x, &dest_y, nullptr, nullptr);
 
         if (dest_x == LOCATION_NULL)
             return;
@@ -1257,7 +1259,7 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
         return; // Do nothing if we do not have a paintvalue(this should never happen)
 
     int32_t dest_x, dest_y;
-    footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y, &dest_x, &dest_y, nullptr, nullptr);
+    footpath_get_coordinates_from_pos(screenCoords, &dest_x, &dest_y, nullptr, nullptr);
 
     if (dest_x == LOCATION_NULL)
         return;

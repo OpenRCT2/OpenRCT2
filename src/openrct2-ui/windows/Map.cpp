@@ -1271,7 +1271,7 @@ static void window_map_set_peep_spawn_tool_update(int32_t x, int32_t y)
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    footpath_bridge_get_info_from_pos(x, y, &mapX, &mapY, &direction, &tileElement);
+    footpath_bridge_get_info_from_pos({ x, y }, &mapX, &mapY, &direction, &tileElement);
     if ((mapX & 0xFFFF) == 0x8000)
         return;
 
@@ -1329,7 +1329,7 @@ static void window_map_set_peep_spawn_tool_down(int32_t x, int32_t y)
     int32_t mapX, mapY, mapZ, direction;
 
     // Verify footpath exists at location, and retrieve coordinates
-    footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &tileElement);
+    footpath_get_coordinates_from_pos({ x, y }, &mapX, &mapY, &direction, &tileElement);
     if (mapX == LOCATION_NULL)
         return;
 

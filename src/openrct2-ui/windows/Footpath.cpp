@@ -176,10 +176,10 @@ static constexpr const uint8_t ConstructionPreviewImages[][4] = {
 static void window_footpath_mousedown_direction(int32_t direction);
 static void window_footpath_mousedown_slope(int32_t slope);
 static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget* widget, bool showQueues);
-static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y);
-static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX, int32_t screenY);
-static void window_footpath_place_path_at_point(int32_t x, int32_t y);
-static void window_footpath_start_bridge_at_point(int32_t screenX, int32_t screenY);
+static void window_footpath_set_provisional_path_at_point(ScreenCoordsXY screenCoords);
+static void window_footpath_set_selection_start_bridge_at_point(ScreenCoordsXY screenCoords);
+static void window_footpath_place_path_at_point(ScreenCoordsXY screenCoords);
+static void window_footpath_start_bridge_at_point(ScreenCoordsXY screenCoords);
 static void window_footpath_construct();
 static void window_footpath_remove();
 static void window_footpath_set_enabled_and_pressed_widgets();
@@ -409,11 +409,11 @@ static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetInde
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
-        window_footpath_set_provisional_path_at_point(screenCoords.x, screenCoords.y);
+        window_footpath_set_provisional_path_at_point(screenCoords);
     }
     else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
     {
-        window_footpath_set_selection_start_bridge_at_point(screenCoords.x, screenCoords.y);
+        window_footpath_set_selection_start_bridge_at_point(screenCoords);
     }
 }
 
@@ -425,11 +425,11 @@ static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex,
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
-        window_footpath_place_path_at_point(screenCoords.x, screenCoords.y);
+        window_footpath_place_path_at_point(screenCoords);
     }
     else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
     {
-        window_footpath_start_bridge_at_point(screenCoords.x, screenCoords.y);
+        window_footpath_start_bridge_at_point(screenCoords);
     }
 }
 
@@ -441,7 +441,7 @@ static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex,
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
-        window_footpath_place_path_at_point(screenCoords.x, screenCoords.y);
+        window_footpath_place_path_at_point(screenCoords);
     }
 }
 
@@ -708,7 +708,7 @@ static void window_footpath_mousedown_slope(int32_t slope)
  *
  *  rct2: 0x006A81FB
  */
-static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
+static void window_footpath_set_provisional_path_at_point(ScreenCoordsXY screenCoords)
 {
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -717,10 +717,11 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     TileElement* tileElement{};
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
-        x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
+        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x,
+        &mapCoord.y,
         &interactionType, &tileElement, nullptr);
-    x = mapCoord.x;
-    y = mapCoord.y;
+    screenCoords.x = mapCoord.x;
+    screenCoords.y = mapCoord.y;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE || tileElement == nullptr)
     {
@@ -730,8 +731,8 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     else
     {
         // Check for change
-        if ((gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) && gFootpathProvisionalPosition.x == x
-            && gFootpathProvisionalPosition.y == y && gFootpathProvisionalPosition.z == tileElement->base_height)
+        if ((gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) && gFootpathProvisionalPosition.x == screenCoords.x
+            && gFootpathProvisionalPosition.y == screenCoords.y && gFootpathProvisionalPosition.z == tileElement->base_height)
         {
             return;
         }
@@ -739,10 +740,10 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
         // Set map selection
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        gMapSelectPositionA.x = x;
-        gMapSelectPositionA.y = y;
-        gMapSelectPositionB.x = x;
-        gMapSelectPositionB.y = y;
+        gMapSelectPositionA.x = screenCoords.x;
+        gMapSelectPositionA.y = screenCoords.y;
+        gMapSelectPositionB.x = screenCoords.x;
+        gMapSelectPositionB.y = screenCoords.y;
 
         footpath_provisional_update();
 
@@ -781,7 +782,7 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
         }
         int32_t pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
-        _window_footpath_cost = footpath_provisional_set(pathType, x, y, z, slope);
+        _window_footpath_cost = footpath_provisional_set(pathType, screenCoords.x, screenCoords.y, z, slope);
         window_invalidate_by_class(WC_FOOTPATH);
     }
 }
@@ -790,7 +791,7 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
  *
  *  rct2: 0x006A8388
  */
-static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX, int32_t screenY)
+static void window_footpath_set_selection_start_bridge_at_point(ScreenCoordsXY screenCoords)
 {
     int32_t x, y, direction;
     TileElement* tileElement;
@@ -799,7 +800,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX,
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &tileElement);
+    footpath_bridge_get_info_from_pos(screenCoords, &x, &y, &direction, &tileElement);
     if (x == LOCATION_NULL)
     {
         return;
@@ -839,7 +840,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX,
  *
  *  rct2: 0x006A82C5
  */
-static void window_footpath_place_path_at_point(int32_t x, int32_t y)
+static void window_footpath_place_path_at_point(ScreenCoordsXY screenCoords)
 {
     int32_t interactionType, currentType, selectedType, z;
     TileElement* tileElement;
@@ -853,10 +854,10 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
-        x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
+        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
         &interactionType, &tileElement, nullptr);
-    x = mapCoord.x;
-    y = mapCoord.y;
+    screenCoords.x = mapCoord.x;
+    screenCoords.y = mapCoord.y;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
@@ -888,7 +889,7 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    auto footpathPlaceAction = FootpathPlaceAction({ x, y, z * 8 }, currentType, selectedType);
+    auto footpathPlaceAction = FootpathPlaceAction({ screenCoords.x, screenCoords.y, z * 8 }, currentType, selectedType);
     footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {
@@ -910,12 +911,12 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
  *
  *  rct2: 0x006A840F
  */
-static void window_footpath_start_bridge_at_point(int32_t screenX, int32_t screenY)
+static void window_footpath_start_bridge_at_point(ScreenCoordsXY screenCoords)
 {
     int32_t x, y, z, direction;
     TileElement* tileElement;
 
-    footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &tileElement);
+    footpath_bridge_get_info_from_pos(screenCoords, &x, &y, &direction, &tileElement);
     if (x == LOCATION_NULL)
     {
         return;

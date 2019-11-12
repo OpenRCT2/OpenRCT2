@@ -181,9 +181,9 @@ money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, 
 void footpath_provisional_remove();
 void footpath_provisional_update();
 void footpath_get_coordinates_from_pos(
-    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
+    ScreenCoordsXY screenCoords, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
 void footpath_bridge_get_info_from_pos(
-    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
+    ScreenCoordsXY screenCoords, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
 void footpath_remove_litter(int32_t x, int32_t y, int32_t z);
 void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int32_t flags);
 void footpath_update_queue_chains();
