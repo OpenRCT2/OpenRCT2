@@ -718,8 +718,7 @@ static void window_footpath_set_provisional_path_at_point(ScreenCoordsXY screenC
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
         screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x,
-        &mapCoord.y,
-        &interactionType, &tileElement, nullptr);
+        &mapCoord.y, &interactionType, &tileElement, nullptr);
     screenCoords.x = mapCoord.x;
     screenCoords.y = mapCoord.y;
 
@@ -854,8 +853,8 @@ static void window_footpath_place_path_at_point(ScreenCoordsXY screenCoords)
 
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
-        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
-        &interactionType, &tileElement, nullptr);
+        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x,
+        &mapCoord.y, &interactionType, &tileElement, nullptr);
     screenCoords.x = mapCoord.x;
     screenCoords.y = mapCoord.y;
 
