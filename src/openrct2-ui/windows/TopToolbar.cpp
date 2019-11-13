@@ -2091,8 +2091,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     {
         int32_t selectionType;
         // Get selection type and map coordinates from mouse x,y position
-        CoordsXY mapCoords = screen_pos_to_map_pos({ x, y }, &selectionType);
-        mapTile = { static_cast<int16_t>(mapCoords.x), static_cast<int16_t>(mapCoords.y) };
+        screen_pos_to_map_pos({ x, y }, &selectionType);
         mapTile = screen_get_map_xy_side({ x, y }, &side);
 
         if (mapTile.x == LOCATION_NULL)
