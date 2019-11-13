@@ -55,8 +55,6 @@ uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;
 
-static rct_drawpixelinfo _viewportDpi1;
-static rct_drawpixelinfo _viewportDpi2;
 struct InteractionInfo
 {
     InteractionInfo() = default;
@@ -1671,19 +1669,16 @@ void get_map_coordinates_from_pos_window(
             screenCoords.y <<= myviewport->zoom;
             screenCoords.x += (int32_t)myviewport->view_x;
             screenCoords.y += (int32_t)myviewport->view_y;
-            _viewportDpi1.zoom_level = myviewport->zoom;
             screenCoords.x &= (0xFFFF << myviewport->zoom) & 0xFFFF;
             screenCoords.y &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-            _viewportDpi1.x = screenCoords.x;
-            _viewportDpi1.y = screenCoords.y;
-            rct_drawpixelinfo* dpi = &_viewportDpi2;
-            dpi->y = _viewportDpi1.y;
-            dpi->height = 1;
-            dpi->zoom_level = _viewportDpi1.zoom_level;
-            dpi->x = _viewportDpi1.x;
-            dpi->width = 1;
+            rct_drawpixelinfo dpi;
+            dpi.x = screenCoords.x;
+            dpi.y = screenCoords.y;
+            dpi.height = 1;
+            dpi.zoom_level = myviewport->zoom;
+            dpi.width = 1;
 
-            paint_session* session = paint_session_alloc(dpi, myviewport->flags);
+            paint_session* session = paint_session_alloc(&dpi, myviewport->flags);
             paint_session_generate(session);
             paint_session_arrange(session);
             info = set_interaction_info_from_paint_session(session, flags & 0xFFFF);
