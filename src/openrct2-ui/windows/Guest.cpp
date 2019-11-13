@@ -1231,7 +1231,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     int32_t map_x, map_y;
-    footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y + 16, &map_x, &map_y, nullptr, nullptr);
+    footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, &map_x, &map_y, nullptr, nullptr);
     if (map_x != LOCATION_NULL)
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1282,7 +1282,7 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
 
     int32_t dest_x, dest_y;
     TileElement* tileElement;
-    footpath_get_coordinates_from_pos(screenCoords.x, screenCoords.y + 16, &dest_x, &dest_y, nullptr, &tileElement);
+    footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, &dest_x, &dest_y, nullptr, &tileElement);
 
     if (dest_x == LOCATION_NULL)
         return;
