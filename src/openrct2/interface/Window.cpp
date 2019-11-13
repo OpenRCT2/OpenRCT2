@@ -922,21 +922,20 @@ void window_rotate_camera(rct_window* w, int32_t direction)
     // x is LOCATION_NULL if middle of viewport is obstructed by another window?
     if (coords.x == LOCATION_NULL || other != viewport)
     {
-        coords.x = (viewport->view_width >> 1) + viewport->view_x;
-        coords.y = (viewport->view_height >> 1) + viewport->view_y;
+        x = (viewport->view_width >> 1) + viewport->view_x;
+        y = (viewport->view_height >> 1) + viewport->view_y;
 
         viewport_adjust_for_map_height(&x, &y, &z);
-        coords = { x, y };
     }
     else
     {
-        z = tile_element_height({ coords.x, coords.y });
+        z = tile_element_height(coords);
     }
 
     gCurrentRotation = (get_current_rotation() + direction) & 3;
 
     int32_t new_x, new_y;
-    centre_2d_coordinates(coords.x, coords.y, z, &new_x, &new_y, viewport);
+    centre_2d_coordinates(x, y, z, &new_x, &new_y, viewport);
 
     w->saved_view_x = new_x;
     w->saved_view_y = new_y;
