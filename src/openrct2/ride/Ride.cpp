@@ -6350,12 +6350,13 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
             entranceMaxY = mapY;
         }
 
-        entranceExitCoords.direction = loc_6CD18E(
+        auto direction = loc_6CD18E(
             entranceExitCoords.x, entranceExitCoords.y, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32,
             entranceMaxY + 32);
         if (entranceExitCoords.direction != -1 && entranceExitCoords.direction != stationDirection
             && entranceExitCoords.direction != direction_reverse(stationDirection))
         {
+            entranceExitCoords.direction = direction;
             gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
             return entranceExitCoords;
         }
