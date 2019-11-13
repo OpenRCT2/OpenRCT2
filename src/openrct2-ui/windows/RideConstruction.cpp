@@ -3688,7 +3688,6 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
  */
 void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
 {
-    int32_t x, y, direction;
     uint8_t stationNum;
 
     map_invalidate_selection_rect();
@@ -3696,7 +3695,7 @@ void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    ride_get_entrance_or_exit_position_from_screen_position(screenCoords.x, screenCoords.y, &x, &y, &direction);
+    CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
     if (gRideEntranceExitPlaceDirection == 255)
     {
         ride_construction_invalidate_current_track();
@@ -3705,26 +3704,30 @@ void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectType = MAP_SELECT_TYPE_FULL;
-    gMapSelectPositionA.x = x;
-    gMapSelectPositionA.y = y;
-    gMapSelectPositionB.x = x;
-    gMapSelectPositionB.y = y;
-    gMapSelectArrowDirection = direction_reverse(direction);
-    gMapSelectArrowPosition.x = x;
-    gMapSelectArrowPosition.y = y;
-    gMapSelectArrowPosition.z = _unkF44188.z * 8;
+    gMapSelectPositionA.x = entranceOrExitCoords.x;
+    gMapSelectPositionA.y = entranceOrExitCoords.y;
+    gMapSelectPositionB.x = entranceOrExitCoords.x;
+    gMapSelectPositionB.y = entranceOrExitCoords.y;
+    gMapSelectArrowDirection = direction_reverse(entranceOrExitCoords.direction);
+    gMapSelectArrowPosition.x = entranceOrExitCoords.x;
+    gMapSelectArrowPosition.y = entranceOrExitCoords.y;
+    gMapSelectArrowPosition.z = entranceOrExitCoords.z * 8;
     map_invalidate_selection_rect();
 
-    direction = direction_reverse(gRideEntranceExitPlaceDirection);
+    entranceOrExitCoords.direction = direction_reverse(gRideEntranceExitPlaceDirection);
     stationNum = gRideEntranceExitPlaceStationIndex;
-    if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) || x != gRideEntranceExitGhostPosition.x
-        || y != gRideEntranceExitGhostPosition.y || direction != gRideEntranceExitGhostPosition.direction
+    if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
+        || entranceOrExitCoords.x != gRideEntranceExitGhostPosition.x
+        || entranceOrExitCoords.y != gRideEntranceExitGhostPosition.y
+        || entranceOrExitCoords.direction != gRideEntranceExitGhostPosition.direction
         || stationNum != gRideEntranceExitGhostStationIndex)
     {
         auto ride = get_ride(_currentRideIndex);
         if (ride != nullptr)
         {
-            _currentTrackPrice = ride_entrance_exit_place_ghost(ride, x, y, direction, gRideEntranceExitPlaceType, stationNum);
+            _currentTrackPrice = ride_entrance_exit_place_ghost(
+                ride, entranceOrExitCoords.x, entranceOrExitCoords.y, entranceOrExitCoords.direction,
+                gRideEntranceExitPlaceType, stationNum);
         }
         window_ride_construction_update_active_elements();
     }
@@ -3936,13 +3939,12 @@ static void ride_construction_tooldown_entrance_exit(ScreenCoordsXY screenCoords
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    int32_t mapX, mapY, direction;
-    ride_get_entrance_or_exit_position_from_screen_position(screenCoords.x, screenCoords.y, &mapX, &mapY, &direction);
+    CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
     if (gRideEntranceExitPlaceDirection == 255)
         return;
 
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-        { _unkF44188.x, _unkF44188.y }, direction_reverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
+        entranceOrExitCoords, direction_reverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
         gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
     rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
