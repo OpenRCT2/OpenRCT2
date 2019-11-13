@@ -3717,10 +3717,7 @@ void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
     entranceOrExitCoords.direction = direction_reverse(gRideEntranceExitPlaceDirection);
     stationNum = gRideEntranceExitPlaceStationIndex;
     if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
-        || entranceOrExitCoords.x != gRideEntranceExitGhostPosition.x
-        || entranceOrExitCoords.y != gRideEntranceExitGhostPosition.y
-        || entranceOrExitCoords.direction != gRideEntranceExitGhostPosition.direction
-        || stationNum != gRideEntranceExitGhostStationIndex)
+        || entranceOrExitCoords != gRideEntranceExitGhostPosition || stationNum != gRideEntranceExitGhostStationIndex)
     {
         auto ride = get_ride(_currentRideIndex);
         if (ride != nullptr)

@@ -6175,7 +6175,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
 {
     int16_t mapX, mapY;
     int16_t entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
-    int32_t interactionType, stationHeight, stationDirection;
+    int32_t interactionType, stationDirection;
+    uint8_t stationHeight;
     TileElement* tileElement;
     rct_viewport* viewport;
     Ride* ride;
@@ -6207,7 +6208,10 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
 
     ride = get_ride(gRideEntranceExitPlaceRideIndex);
     if (ride == nullptr)
+    {
+        entranceExitCoords.x = LOCATION_NULL;
         return entranceExitCoords;
+    }
 
     stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].Height;
 
@@ -6221,16 +6225,20 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     word_F4418C = mapX;
     word_F4418E = mapY;
 
-    entranceExitCoords = { floor2(mapX, 32), floor2(mapY, 32), entranceExitCoords.z, INVALID_DIRECTION };
+    entranceExitCoords = { floor2(mapX, 32), floor2(mapY, 32), entranceExitCoords.z, stationHeight };
 
     if (ride->type == RIDE_TYPE_NULL)
+    {
+        entranceExitCoords.x = LOCATION_NULL;
         return entranceExitCoords;
+    }
 
     LocationXY8 stationStart = ride->stations[gRideEntranceExitPlaceStationIndex].Start;
     if (stationStart.xy == RCT_XY8_UNDEFINED)
+    {
+        entranceExitCoords.x = LOCATION_NULL;
         return entranceExitCoords;
-
-    entranceExitCoords.z = stationHeight;
+    }
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
@@ -6353,8 +6361,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
         auto direction = loc_6CD18E(
             entranceExitCoords.x, entranceExitCoords.y, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32,
             entranceMaxY + 32);
-        if (direction != -1 && direction != stationDirection
-            && direction != direction_reverse(stationDirection))
+        if (direction != -1 && direction != stationDirection && direction != direction_reverse(stationDirection))
         {
             entranceExitCoords.direction = direction;
             gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
