@@ -17,6 +17,7 @@
 #include "../OpenRCT2.h"
 #include "../actions/RideEntranceExitRemoveAction.hpp"
 #include "../actions/RideSetSetting.hpp"
+#include "../actions/RideSetStatus.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
 #include "../actions/TrackRemoveAction.hpp"
 #include "../audio/AudioMixer.h"
@@ -2102,7 +2103,8 @@ void Ride::Update()
     // If ride is simulating but crashed, reset the vehicles
     if (status == RIDE_STATUS_SIMULATING && (lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
-        ride_set_status(this, RIDE_STATUS_SIMULATING);
+        auto gameAction = RideSetStatusAction(id, RIDE_STATUS_SIMULATING);
+        GameActions::ExecuteNested(&gameAction);
     }
 }
 
