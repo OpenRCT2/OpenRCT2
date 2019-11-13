@@ -59,8 +59,15 @@ static rct_drawpixelinfo _viewportDpi1;
 static rct_drawpixelinfo _viewportDpi2;
 struct InteractionInfo
 {
-    CoordsXY loc;
-    TileElement* element;
+    InteractionInfo() = default;
+    InteractionInfo(const paint_struct* ps)
+        : Loc(ps->map_x, ps->map_y)
+        , Element(ps->tileElement)
+        , SpriteType(ps->sprite_type)
+    {
+    }
+    CoordsXY Loc;
+    TileElement* Element = nullptr;
     uint8_t SpriteType;
 };
 
@@ -1257,16 +1264,14 @@ void viewport_set_visibility(uint8_t mode)
 }
 
 /**
- * Stores some info about the element pointed at, if requested for this particular type through the interaction mask.
- * Originally checked 0x0141F569 at start
- *  rct2: 0x00688697
+ * Checks if a paint_struct sprite type is in the filter mask.
  */
-static std::optional<InteractionInfo> GetInteractionInfoFromPS(paint_struct* ps, uint16_t flags)
+static bool PSSpriteTypeIsInFilter(paint_struct* ps, uint16_t filter)
 {
     if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_NONE
         || ps->sprite_type == 11 // 11 as a type seems to not exist, maybe part of the typo mentioned later on.
         || ps->sprite_type > VIEWPORT_INTERACTION_ITEM_BANNER)
-        return {};
+        return false;
 
     uint16_t mask;
     if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_BANNER)
@@ -1275,17 +1280,12 @@ static std::optional<InteractionInfo> GetInteractionInfoFromPS(paint_struct* ps,
     else
         mask = 1 << (ps->sprite_type - 1);
 
-    if (flags & mask)
+    if (filter & mask)
     {
-        return {};
+        return false;
     }
 
-    InteractionInfo info = {
-        { ps->map_x, ps->map_y },
-        ps->tileElement,
-        ps->sprite_type,
-    };
-    return { info };
+    return true;
 }
 
 /**
@@ -1579,7 +1579,7 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, i
  *
  *  rct2: 0x0068862C
  */
-static InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t flags)
+static InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter)
 {
     paint_struct* ps = &session->PaintHead;
     rct_drawpixelinfo* dpi = &session->DPI;
@@ -1594,9 +1594,9 @@ static InteractionInfo set_interaction_info_from_paint_session(paint_session* se
             ps = next_ps;
             if (is_sprite_interacted_with(dpi, ps->image_id, ps->x, ps->y))
             {
-                if (auto newInfo = GetInteractionInfoFromPS(ps, flags); newInfo)
+                if (PSSpriteTypeIsInFilter(ps, filter))
                 {
-                    info = *newInfo;
+                    info = { ps };
                 }
             }
             next_ps = ps->children;
@@ -1607,9 +1607,9 @@ static InteractionInfo set_interaction_info_from_paint_session(paint_session* se
             if (is_sprite_interacted_with(
                     dpi, attached_ps->image_id, (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF))
             {
-                if (auto newInfo = GetInteractionInfoFromPS(ps, flags); newInfo)
+                if (PSSpriteTypeIsInFilter(ps, filter))
                 {
-                    info = *newInfo;
+                    info = { ps };
                 }
             }
         }
@@ -1695,10 +1695,10 @@ void get_map_coordinates_from_pos_window(
     if (interactionType != nullptr)
         *interactionType = info.SpriteType;
 
-    mapCoords = info.loc;
+    mapCoords = info.Loc;
 
     if (tileElement != nullptr)
-        *tileElement = info.element;
+        *tileElement = info.Element;
 }
 
 /**
