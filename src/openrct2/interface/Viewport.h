@@ -154,9 +154,9 @@ void viewport_set_visibility(uint8_t mode);
 void get_map_coordinates_from_pos(
     int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport);
-void get_map_coordinates_from_pos_window(
-    rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
-    TileElement** tileElement, rct_viewport** viewport);
+void get_map_coordinates_from_pos(
+    ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
+    rct_viewport** viewport);
 void get_map_coordinates_from_pos_window(
     rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport);

@@ -1626,21 +1626,20 @@ static InteractionInfo set_interaction_info_from_paint_session(paint_session* se
  * viewport: edi
  */
 void get_map_coordinates_from_pos(
+    ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
+    rct_viewport** viewport)
+{
+    rct_window* window = window_find_from_point(screenCoords);
+    get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
+}
+
+void get_map_coordinates_from_pos(
     int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport)
 {
-    rct_window* window = window_find_from_point(ScreenCoordsXY(screenX, screenY));
-    get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, tileElement, viewport);
-}
-
-void get_map_coordinates_from_pos_window(
-    rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
-    TileElement** tileElement, rct_viewport** viewport)
-{
-    ScreenCoordsXY screenCoords(screenX, screenY);
+    ScreenCoordsXY screenCoords{ screenX, screenY };
     CoordsXY mapCoords;
-
-    get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
+    get_map_coordinates_from_pos(screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
 
     if (x != nullptr)
         *x = mapCoords.x;
