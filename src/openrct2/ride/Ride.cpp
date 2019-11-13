@@ -6353,8 +6353,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
         auto direction = loc_6CD18E(
             entranceExitCoords.x, entranceExitCoords.y, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32,
             entranceMaxY + 32);
-        if (direction != -1 && entranceExitCoords.direction != stationDirection
-            && entranceExitCoords.direction != direction_reverse(stationDirection))
+        if (direction != -1 && direction != stationDirection
+            && direction != direction_reverse(stationDirection))
         {
             entranceExitCoords.direction = direction;
             gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
