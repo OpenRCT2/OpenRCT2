@@ -1817,7 +1817,7 @@ CoordsXY screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z)
 
     auto vpCoords = screen_coord_to_viewport_coord(viewport, screenCoords);
     auto mapPosition = viewport_coord_to_map_coord(vpCoords.x, vpCoords.y, z);
-    if (mapPosition.x < 0 || mapPosition.x >= (256 * 32) || mapPosition.y < 0 || mapPosition.y > (256 * 32))
+    if (!map_is_location_valid(mapPosition))
     {
         return ret;
     }
