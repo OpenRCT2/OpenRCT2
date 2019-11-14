@@ -566,7 +566,7 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, Scree
     CoordsXY c = map_window_screen_to_map(screenCoords);
     int32_t mapX = std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
     int32_t mapY = std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
-    int32_t mapZ = tile_element_height({ screenCoords.x, screenCoords.y });
+    int32_t mapZ = tile_element_height({ mapX, mapY });
 
     rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
