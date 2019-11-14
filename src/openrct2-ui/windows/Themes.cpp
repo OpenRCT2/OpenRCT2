@@ -41,8 +41,8 @@ static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
 static void window_themes_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_themes_update(rct_window *w);
 static void window_themes_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_themes_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_themes_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_themes_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_themes_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_themes_invalidate(rct_window *w);
 static void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -635,19 +635,20 @@ void window_themes_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* wi
     *height = scrollHeight;
 }
 
-void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
-    if (y / _row_height < get_colour_scheme_tab_count())
+    if (screenCoords.y / _row_height < get_colour_scheme_tab_count())
     {
-        int32_t y2 = y % _row_height;
-        _colour_index_1 = y / _row_height;
-        _colour_index_2 = ((x - _button_offset_x) / 12);
+        int32_t y2 = screenCoords.y % _row_height;
+        _colour_index_1 = screenCoords.y / _row_height;
+        _colour_index_2 = ((screenCoords.x - _button_offset_x) / 12);
 
         rct_windowclass wc = get_window_class_tab_index(_colour_index_1);
         int32_t numColours = theme_desc_get_num_colours(wc);
         if (_colour_index_2 < numColours)
         {
-            if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 && y2 >= _button_offset_y && y2 < _button_offset_y + 11)
+            if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12 * 6 && y2 >= _button_offset_y
+                && y2 < _button_offset_y + 11)
             {
                 if (theme_get_flags() & UITHEME_FLAG_PREDEFINED)
                 {
@@ -673,7 +674,7 @@ void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x
                 }
             }
             else if (
-                x >= _button_offset_x && x < _button_offset_x + 12 * 6 - 1 && y2 >= _check_offset_y
+                screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + 12 * 6 - 1 && y2 >= _check_offset_y
                 && y2 < _check_offset_y + 11)
             {
                 if (theme_get_flags() & UITHEME_FLAG_PREDEFINED)
@@ -700,7 +701,7 @@ void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x
     }
 }
 
-void window_themes_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_themes_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     // if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
     //  return;

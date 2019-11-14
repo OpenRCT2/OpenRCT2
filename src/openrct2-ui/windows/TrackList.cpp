@@ -58,8 +58,8 @@ static void window_track_list_close(rct_window *w);
 static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_track_list_update(rct_window *w);
 static void window_track_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_track_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_track_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_track_list_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_track_list_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_track_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_track_list_invalidate(rct_window *w);
 static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -285,7 +285,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
     }
 }
 
-static int32_t window_track_list_get_list_item_index_from_position(int32_t x, int32_t y)
+static int32_t window_track_list_get_list_item_index_from_position(ScreenCoordsXY screenCoords)
 {
     size_t maxItems = _filteredTrackIds.size();
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
@@ -294,7 +294,7 @@ static int32_t window_track_list_get_list_item_index_from_position(int32_t x, in
         maxItems++;
     }
 
-    int32_t index = y / SCROLLABLE_ROW_HEIGHT;
+    int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     if (index < 0 || (uint32_t)index >= maxItems)
     {
         index = -1;
@@ -372,11 +372,11 @@ static void window_track_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
  *
  *  rct2: 0x006CFB39
  */
-static void window_track_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_track_list_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     if (!w->track_list.track_list_being_updated)
     {
-        int32_t i = window_track_list_get_list_item_index_from_position(x, y);
+        int32_t i = window_track_list_get_list_item_index_from_position(screenCoords);
         if (i != -1)
         {
             window_track_list_select(w, i);
@@ -388,11 +388,11 @@ static void window_track_list_scrollmousedown(rct_window* w, int32_t scrollIndex
  *
  *  rct2: 0x006CFAD7
  */
-static void window_track_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_track_list_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     if (!w->track_list.track_list_being_updated)
     {
-        int32_t i = window_track_list_get_list_item_index_from_position(x, y);
+        int32_t i = window_track_list_get_list_item_index_from_position(screenCoords);
         if (i != -1 && w->selected_list_item != i)
         {
             w->selected_list_item = i;

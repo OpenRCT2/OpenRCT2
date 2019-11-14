@@ -97,8 +97,8 @@ static void window_guest_list_mousedown(rct_window *w, rct_widgetindex widgetInd
 static void window_guest_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_guest_list_update(rct_window *w);
 static void window_guest_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_guest_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_guest_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_guest_list_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_guest_list_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_guest_list_invalidate(rct_window *w);
 static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -553,7 +553,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
  *
  *  rct2: 0x00699D7D
  */
-static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     int32_t i, spriteIndex;
     Peep* peep;
@@ -561,7 +561,7 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
     switch (_window_guest_list_selected_tab)
     {
         case PAGE_INDIVIDUAL:
-            i = y / SCROLLABLE_ROW_HEIGHT;
+            i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
             i += _window_guest_list_selected_page * GUESTS_PER_PAGE;
             FOR_ALL_GUESTS (spriteIndex, peep)
             {
@@ -587,7 +587,7 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
             }
             break;
         case PAGE_SUMMARISED:
-            i = y / SUMMARISED_GUEST_ROW_HEIGHT;
+            i = screenCoords.y / SUMMARISED_GUEST_ROW_HEIGHT;
             if (i < _window_guest_list_num_groups)
             {
                 _window_guest_list_filter_arguments = _window_guest_list_groups_arguments[i];
@@ -605,11 +605,12 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
  *
  *  rct2: 0x00699D3B
  */
-static void window_guest_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_guest_list_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     int32_t i;
 
-    i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? SCROLLABLE_ROW_HEIGHT : SUMMARISED_GUEST_ROW_HEIGHT);
+    i = screenCoords.y
+        / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? SCROLLABLE_ROW_HEIGHT : SUMMARISED_GUEST_ROW_HEIGHT);
     i += _window_guest_list_selected_page * GUESTS_PER_PAGE;
     if (i != _window_guest_list_highlighted_index)
     {

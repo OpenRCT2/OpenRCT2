@@ -76,8 +76,8 @@ static void window_server_list_resize(rct_window *w);
 static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_server_list_update(rct_window *w);
 static void window_server_list_scroll_getsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_server_list_scroll_mousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_server_list_scroll_mouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_server_list_scroll_mousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_server_list_scroll_mouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_server_list_invalidate(rct_window *w);
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -265,7 +265,7 @@ static void window_server_list_scroll_getsize(rct_window* w, int32_t scrollIndex
     *height = w->no_list_items * ITEM_HEIGHT;
 }
 
-static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     int32_t serverIndex = w->selected_list_item;
     if (serverIndex >= 0 && serverIndex < (int32_t)_serverList.GetCount())
@@ -273,8 +273,8 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
         const auto& server = _serverList.GetServer(serverIndex);
 
         auto listWidget = &w->widgets[WIDX_LIST];
-        int32_t ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
-        int32_t ddy = w->y + listWidget->top + y + 2 - w->scrolls[0].v_top;
+        int32_t ddx = w->x + listWidget->left + screenCoords.x + 2 - w->scrolls[0].h_left;
+        int32_t ddy = w->y + listWidget->top + screenCoords.y + 2 - w->scrolls[0].v_top;
 
         gDropdownItemsFormat[0] = STR_JOIN_GAME;
         if (server.favourite)
@@ -289,10 +289,10 @@ static void window_server_list_scroll_mousedown(rct_window* w, int32_t scrollInd
     }
 }
 
-static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     // Item
-    int32_t index = y / ITEM_HEIGHT;
+    int32_t index = screenCoords.y / ITEM_HEIGHT;
     if (index < 0 || index >= w->no_list_items)
     {
         index = -1;
@@ -308,7 +308,7 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
             int32_t bx, by;
 
             server_list_get_item_button(i, 0, sy, width, &bx, &by);
-            if (x >= bx && y >= by && x < bx + 24 && y < by + 24)
+            if (screenCoords.x >= bx && screenCoords.y >= by && screenCoords.x < bx + 24 && screenCoords.y < by + 24)
             {
                 hoverButtonIndex = i;
                 break;
@@ -318,7 +318,7 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
 
     int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
     int32_t right = width - 3 - 14 - 10;
-    if (x < right)
+    if (screenCoords.x < right)
     {
         w->widgets[WIDX_LIST].tooltip = STR_NONE;
         window_tooltip_close();

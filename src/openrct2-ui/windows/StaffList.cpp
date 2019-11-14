@@ -48,8 +48,8 @@ static void window_staff_list_update(rct_window *w);
 static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_staff_list_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_staff_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_staff_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_staff_list_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_staff_list_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_staff_list_invalidate(rct_window *w);
 static void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -453,12 +453,12 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
  *
  *  rct2: 0x006BDC9A
  */
-void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     int32_t i, spriteIndex;
     Peep* peep;
 
-    i = y / SCROLLABLE_ROW_HEIGHT;
+    i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     FOR_ALL_STAFF (spriteIndex, peep)
     {
         if (peep->staff_type != _windowStaffListSelectedTab)
@@ -488,11 +488,11 @@ void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
  *
  *  rct2: 0x006BDC6B
  */
-void window_staff_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_staff_list_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     int32_t i;
 
-    i = y / SCROLLABLE_ROW_HEIGHT;
+    i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     if (i != _windowStaffListHighlightedIndex)
     {
         _windowStaffListHighlightedIndex = i;

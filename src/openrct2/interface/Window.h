@@ -187,9 +187,9 @@ struct rct_window_event_list
     void (*tool_abort)(struct rct_window*, rct_widgetindex);
     void (*unknown_0E)(struct rct_window*);
     void (*get_scroll_size)(struct rct_window*, int32_t, int32_t*, int32_t*);
-    void (*scroll_mousedown)(struct rct_window*, int32_t, int32_t, int32_t);
-    void (*scroll_mousedrag)(struct rct_window*, int32_t, int32_t, int32_t);
-    void (*scroll_mouseover)(struct rct_window*, int32_t, int32_t, int32_t);
+    void (*scroll_mousedown)(struct rct_window*, int32_t, ScreenCoordsXY);
+    void (*scroll_mousedrag)(struct rct_window*, int32_t, ScreenCoordsXY);
+    void (*scroll_mouseover)(struct rct_window*, int32_t, ScreenCoordsXY);
     void (*text_input)(struct rct_window*, rct_widgetindex, char*);
     void (*viewport_rotate)(struct rct_window*);
     void (*unknown_15)(struct rct_window*, int32_t, int32_t);

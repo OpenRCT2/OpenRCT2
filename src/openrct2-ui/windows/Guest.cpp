@@ -162,8 +162,8 @@ static void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_guest_rides_update(rct_window *w);
 static void window_guest_rides_scroll_get_size(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_guest_rides_scroll_mouse_down(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_guest_rides_scroll_mouse_over(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_guest_rides_scroll_mouse_down(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_guest_rides_scroll_mouse_over(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_guest_rides_invalidate(rct_window *w);
 static void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -1631,11 +1631,11 @@ void window_guest_rides_scroll_get_size(rct_window* w, int32_t scrollIndex, int3
  *
  *  rct2: 0x006978CC
  */
-void window_guest_rides_scroll_mouse_down(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_guest_rides_scroll_mouse_down(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     int32_t index;
 
-    index = y / 10;
+    index = screenCoords.y / 10;
     if (index >= w->no_list_items)
         return;
 
@@ -1648,11 +1648,11 @@ void window_guest_rides_scroll_mouse_down(rct_window* w, int32_t scrollIndex, in
  *
  *  rct2: 0x0069789C
  */
-void window_guest_rides_scroll_mouse_over(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+void window_guest_rides_scroll_mouse_over(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     int32_t index;
 
-    index = y / 10;
+    index = screenCoords.y / 10;
     if (index >= w->no_list_items)
         return;
 
