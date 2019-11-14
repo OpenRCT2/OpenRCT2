@@ -1203,10 +1203,10 @@ static CoordsXYZD place_park_entrance_get_map_position(ScreenCoordsXY screenCoor
         parkEntranceMapPosition.z = surfaceElement->base_height * 8;
         if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
         {
-            parkEntranceMapPosition.z++;
+            parkEntranceMapPosition.z += 16;
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
-                parkEntranceMapPosition.z++;
+                parkEntranceMapPosition.z += 16;
             }
         }
     }
@@ -1228,7 +1228,7 @@ static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoor
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
-    if (parkEntrancePosition.x == -1)
+    if (parkEntrancePosition.x == LOCATION_NULL)
     {
         park_entrance_remove_ghost();
         return;
