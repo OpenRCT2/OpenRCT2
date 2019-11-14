@@ -1120,8 +1120,6 @@ extern CoordsXYZ _previousTrackPiece;
 extern uint8_t _currentBrakeSpeed2;
 extern uint8_t _currentSeatRotationAngle;
 
-extern LocationXYZ16 _unkF44188;
-
 extern CoordsXYZD _unkF440C5;
 
 extern uint8_t gRideEntranceExitPlaceType;
@@ -1227,8 +1225,7 @@ void window_ride_construction_update_active_elements();
 void ride_construction_remove_ghosts();
 money32 ride_entrance_exit_place_ghost(
     Ride* ride, int32_t x, int32_t y, int32_t direction, int32_t placeType, int32_t stationNum);
-void ride_get_entrance_or_exit_position_from_screen_position(
-    int32_t x, int32_t y, int32_t* outX, int32_t* outY, int32_t* outDirection);
+CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsXY screenCoords);
 
 bool ride_select_backwards_from_front();
 bool ride_select_forwards_from_back();

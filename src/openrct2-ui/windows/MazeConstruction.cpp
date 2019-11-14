@@ -362,10 +362,7 @@ static void window_maze_construction_entrance_tooldown(ScreenCoordsXY screenCoor
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    int32_t direction = 0;
-    CoordsXY entranceOrExitCoords;
-    ride_get_entrance_or_exit_position_from_screen_position(
-        screenCoords.x, screenCoords.y, &entranceOrExitCoords.x, &entranceOrExitCoords.y, &direction);
+    CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
     if (entranceOrExitCoords.x == LOCATION_NULL)
         return;
 
@@ -375,7 +372,7 @@ static void window_maze_construction_entrance_tooldown(ScreenCoordsXY screenCoor
     ride_id_t rideIndex = gRideEntranceExitPlaceRideIndex;
 
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-        entranceOrExitCoords, direction_reverse(direction), rideIndex, gRideEntranceExitPlaceStationIndex,
+        entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex, gRideEntranceExitPlaceStationIndex,
         gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
     rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {

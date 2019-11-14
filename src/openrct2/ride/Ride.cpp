@@ -111,8 +111,6 @@ CoordsXYZ _previousTrackPiece;
 uint8_t _currentBrakeSpeed2;
 uint8_t _currentSeatRotationAngle;
 
-LocationXYZ16 _unkF44188;
-
 CoordsXYZD _unkF440C5;
 
 uint8_t gRideEntranceExitPlaceType;
@@ -6173,18 +6171,20 @@ static int32_t loc_6CD18E(
  *
  *  rct2: 0x006CCF70
  */
-void ride_get_entrance_or_exit_position_from_screen_position(
-    int32_t screenX, int32_t screenY, int32_t* outX, int32_t* outY, int32_t* outDirection)
+CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsXY screenCoords)
 {
     int16_t mapX, mapY;
     int16_t entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
-    int32_t interactionType, direction, stationHeight, stationDirection;
+    int32_t interactionType, stationDirection;
+    uint8_t stationHeight;
     TileElement* tileElement;
     rct_viewport* viewport;
     Ride* ride;
+    CoordsXYZD entranceExitCoords{};
 
     gRideEntranceExitPlaceDirection = 255;
-    get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, &mapX, &mapY, &interactionType, &tileElement, &viewport);
+    get_map_coordinates_from_pos(
+        screenCoords.x, screenCoords.y, 0xFFFB, &mapX, &mapY, &interactionType, &tileElement, &viewport);
     if (interactionType != 0)
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
@@ -6208,32 +6208,37 @@ void ride_get_entrance_or_exit_position_from_screen_position(
 
     ride = get_ride(gRideEntranceExitPlaceRideIndex);
     if (ride == nullptr)
-        return;
+    {
+        entranceExitCoords.x = LOCATION_NULL;
+        return entranceExitCoords;
+    }
 
     stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].Height;
 
-    screen_get_map_xy_with_z(screenX, screenY, stationHeight * 8, &mapX, &mapY);
+    screen_get_map_xy_with_z(screenCoords.x, screenCoords.y, stationHeight * 8, &mapX, &mapY);
     if (mapX == LOCATION_NULL)
     {
-        *outX = 0x8000;
-        return;
+        entranceExitCoords.x = LOCATION_NULL;
+        return entranceExitCoords;
     }
 
     word_F4418C = mapX;
     word_F4418E = mapY;
-    _unkF44188.x = floor2(mapX, 32);
-    _unkF44188.y = floor2(mapY, 32);
-    *outX = _unkF44188.x;
-    *outY = _unkF44188.y;
+
+    entranceExitCoords = { floor2(mapX, 32), floor2(mapY, 32), stationHeight, INVALID_DIRECTION };
 
     if (ride->type == RIDE_TYPE_NULL)
-        return;
+    {
+        entranceExitCoords.x = LOCATION_NULL;
+        return entranceExitCoords;
+    }
 
     LocationXY8 stationStart = ride->stations[gRideEntranceExitPlaceStationIndex].Start;
     if (stationStart.xy == RCT_XY8_UNDEFINED)
-        return;
-
-    _unkF44188.z = stationHeight;
+    {
+        entranceExitCoords.x = LOCATION_NULL;
+        return entranceExitCoords;
+    }
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
@@ -6241,17 +6246,17 @@ void ride_get_entrance_or_exit_position_from_screen_position(
         mapY = (word_F4418E & 0x1F) - 16;
         if (std::abs(mapX) < std::abs(mapY))
         {
-            direction = mapY < 0 ? 3 : 1;
+            entranceExitCoords.direction = mapY < 0 ? 3 : 1;
         }
         else
         {
-            direction = mapX < 0 ? 0 : 2;
+            entranceExitCoords.direction = mapX < 0 ? 0 : 2;
         }
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {
-            mapX = _unkF44188.x + CoordsDirectionDelta[direction].x;
-            mapY = _unkF44188.y + CoordsDirectionDelta[direction].y;
+            mapX = entranceExitCoords.x + CoordsDirectionDelta[entranceExitCoords.direction].x;
+            mapY = entranceExitCoords.y + CoordsDirectionDelta[entranceExitCoords.direction].y;
             if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32))
             {
                 tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
@@ -6267,25 +6272,26 @@ void ride_get_entrance_or_exit_position_from_screen_position(
                         continue;
                     if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_MAZE)
                     {
-                        gRideEntranceExitPlaceDirection = direction_reverse(direction);
-                        *outDirection = direction_reverse(direction);
-                        return;
+                        entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
+                        gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
+                        return entranceExitCoords;
                     }
                     if (tileElement->AsTrack()->GetStationIndex() != gRideEntranceExitPlaceStationIndex)
                         continue;
 
-                    int32_t eax = (direction + 2 - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
+                    int32_t eax = (entranceExitCoords.direction + 2 - tileElement->GetDirection())
+                        & TILE_ELEMENT_DIRECTION_MASK;
                     if (FlatRideTrackSequenceProperties[tileElement->AsTrack()->GetTrackType()]
                                                        [tileElement->AsTrack()->GetSequenceIndex()]
                         & (1 << eax))
                     {
-                        gRideEntranceExitPlaceDirection = direction_reverse(direction);
-                        *outDirection = direction_reverse(direction);
-                        return;
+                        entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
+                        gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
+                        return entranceExitCoords;
                     }
                 } while (!(tileElement++)->IsLastForTile());
             }
-            direction = (direction + 1) & 3;
+            entranceExitCoords.direction = (entranceExitCoords.direction + 1) & 3;
         }
         gRideEntranceExitPlaceDirection = 0xFF;
     }
@@ -6299,18 +6305,18 @@ void ride_get_entrance_or_exit_position_from_screen_position(
         tileElement = ride_get_station_start_track_element(ride, gRideEntranceExitPlaceStationIndex);
         if (tileElement == nullptr)
         {
-            *outX = 0x8000;
-            return;
+            entranceExitCoords.x = LOCATION_NULL;
+            return entranceExitCoords;
         }
-        direction = tileElement->GetDirection();
-        stationDirection = direction;
+        entranceExitCoords.direction = tileElement->GetDirection();
+        stationDirection = entranceExitCoords.direction;
 
         while (true)
         {
             entranceMaxX = mapX;
             entranceMaxY = mapY;
-            mapX -= CoordsDirectionDelta[direction].x;
-            mapY -= CoordsDirectionDelta[direction].y;
+            mapX -= CoordsDirectionDelta[entranceExitCoords.direction].x;
+            mapY -= CoordsDirectionDelta[entranceExitCoords.direction].y;
             tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
             if (tileElement == nullptr)
                 break;
@@ -6352,14 +6358,17 @@ void ride_get_entrance_or_exit_position_from_screen_position(
             entranceMaxY = mapY;
         }
 
-        direction = loc_6CD18E(*outX, *outY, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32, entranceMaxY + 32);
+        auto direction = loc_6CD18E(
+            entranceExitCoords.x, entranceExitCoords.y, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32,
+            entranceMaxY + 32);
         if (direction != -1 && direction != stationDirection && direction != direction_reverse(stationDirection))
         {
-            gRideEntranceExitPlaceDirection = direction;
-            *outDirection = direction;
-            return;
+            entranceExitCoords.direction = direction;
+            gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
+            return entranceExitCoords;
         }
     }
+    return entranceExitCoords;
 }
 
 bool ride_select_backwards_from_front()

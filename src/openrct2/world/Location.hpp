@@ -323,6 +323,16 @@ struct CoordsXYZD : public CoordsXYZ
     {
     }
 
+    bool operator==(const CoordsXYZD& other) const
+    {
+        return x == other.x && y == other.y && z == other.z && direction == other.direction;
+    }
+
+    bool operator!=(const CoordsXYZD& other) const
+    {
+        return !(*this == other);
+    }
+
     bool isNull() const
     {
         return x == COORDS_NULL;
