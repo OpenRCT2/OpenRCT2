@@ -1742,9 +1742,9 @@ void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int3
     }
 }
 
-static rct_viewport* viewport_find_from_point(int32_t screenX, int32_t screenY)
+static rct_viewport* viewport_find_from_point(ScreenCoordsXY screenCoords)
 {
-    rct_window* w = window_find_from_point(ScreenCoordsXY(screenX, screenY));
+    rct_window* w = window_find_from_point(screenCoords);
     if (w == nullptr)
         return nullptr;
 
@@ -1752,9 +1752,9 @@ static rct_viewport* viewport_find_from_point(int32_t screenX, int32_t screenY)
     if (viewport == nullptr)
         return nullptr;
 
-    if (screenX < viewport->x || screenY < viewport->y)
+    if (screenCoords.x < viewport->x || screenCoords.y < viewport->y)
         return nullptr;
-    if (screenX >= viewport->x + viewport->width || screenY >= viewport->y + viewport->height)
+    if (screenCoords.x >= viewport->x + viewport->width || screenCoords.y >= viewport->y + viewport->height)
         return nullptr;
 
     return viewport;
@@ -1809,7 +1809,7 @@ CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport)
 CoordsXY screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z)
 {
     CoordsXY ret{ LOCATION_NULL, 0 };
-    rct_viewport* viewport = viewport_find_from_point(screenCoords.x, screenCoords.y);
+    rct_viewport* viewport = viewport_find_from_point(screenCoords);
     if (viewport == nullptr)
     {
         return ret;
