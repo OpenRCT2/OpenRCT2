@@ -1345,7 +1345,9 @@ static void sub_6E1F34(
                 // If CTRL not pressed
                 if (!gSceneryCtrlPressed)
                 {
-                    screen_get_map_xy_quadrant(x, y, grid_x, grid_y, &cl);
+                    CoordsXY gridCoords = screen_get_map_xy_quadrant({ x, y }, &cl);
+                    *grid_x = gridCoords.x;
+                    *grid_y = gridCoords.y;
 
                     if (*grid_x == LOCATION_NULL)
                         return;
@@ -1522,7 +1524,9 @@ static void sub_6E1F34(
             // If CTRL not pressed
             if (!gSceneryCtrlPressed)
             {
-                screen_get_map_xy_side(x, y, grid_x, grid_y, &cl);
+                CoordsXY gridCoords = screen_get_map_xy_side({ x, y }, &cl);
+                *grid_x = gridCoords.x;
+                *grid_y = gridCoords.y;
 
                 if (*grid_x == LOCATION_NULL)
                     return;
@@ -1968,8 +1972,7 @@ static uint8_t top_toolbar_tool_update_land_paint(int16_t x, int16_t y)
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    LocationXY16 mapTile = {};
-    screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
+    CoordsXY mapTile = screen_get_map_xy({ x, y }, nullptr);
 
     if (mapTile.x == LOCATION_NULL)
     {
@@ -2080,7 +2083,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     }
 
     int16_t tool_size = gLandToolSize;
-    LocationXY16 mapTile;
+    CoordsXY mapTile;
     uint8_t side;
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -2088,9 +2091,8 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     {
         int32_t selectionType;
         // Get selection type and map coordinates from mouse x,y position
-        CoordsXY mapCoords = screen_pos_to_map_pos(x, y, &selectionType);
-        mapTile = { static_cast<int16_t>(mapCoords.x), static_cast<int16_t>(mapCoords.y) };
-        screen_get_map_xy_side(x, y, &mapTile.x, &mapTile.y, &side);
+        screen_pos_to_map_pos({ x, y }, &selectionType);
+        mapTile = screen_get_map_xy_side({ x, y }, &side);
 
         if (mapTile.x == LOCATION_NULL)
         {
@@ -2167,7 +2169,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     }
 
     // Get map coordinates and the side of the tile that is being hovered over
-    screen_get_map_xy_side(x, y, &mapTile.x, &mapTile.y, &side);
+    mapTile = screen_get_map_xy_side({ x, y }, &side);
 
     if (mapTile.x == LOCATION_NULL)
     {

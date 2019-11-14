@@ -318,7 +318,7 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
     }
 
     int32_t direction;
-    CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords.x, screenCoords.y, &direction);
+    CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
     if (mapCoords.x != LOCATION_NULL)
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -333,7 +333,7 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
 static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     int32_t direction;
-    CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords.x, screenCoords.y, &direction);
+    CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
     if (mapCoords.x != LOCATION_NULL)
     {
         _dragging = true;
@@ -349,7 +349,7 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
     }
 
     int32_t direction;
-    CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords.x, screenCoords.y, &direction);
+    CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
     if (mapCoords.x != LOCATION_NULL)
     {
         map_invalidate_selection_rect();

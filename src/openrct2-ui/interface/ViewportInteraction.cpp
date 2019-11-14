@@ -683,7 +683,7 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
         waterHeight = tileElement->AsSurface()->GetWaterHeight() << 4;
     }
 
-    LocationXY16 initialVPPos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
+    LocationXY16 initialVPPos = screen_coord_to_viewport_coord(viewport, { screenX, screenY });
     CoordsXY mapPos = initialPos + CoordsXY{ 16, 16 };
 
     for (int32_t i = 0; i < 5; i++)

@@ -1158,13 +1158,12 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo* dpi)
  */
 static void window_map_set_land_rights_tool_update(int32_t x, int32_t y)
 {
-    int16_t mapX, mapY;
     rct_viewport* viewport;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-    screen_get_map_xy(x, y, &mapX, &mapY, &viewport);
-    if (mapX == LOCATION_NULL)
+    CoordsXY mapCoords = screen_get_map_xy({ x, y }, &viewport);
+    if (mapCoords.x == LOCATION_NULL)
         return;
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1176,12 +1175,12 @@ static void window_map_set_land_rights_tool_update(int32_t x, int32_t y)
 
     int32_t size = (landRightsToolSize * 32) - 32;
     int32_t radius = (landRightsToolSize * 16) - 16;
-    mapX = (mapX - radius) & 0xFFE0;
-    mapY = (mapY - radius) & 0xFFE0;
-    gMapSelectPositionA.x = mapX;
-    gMapSelectPositionA.y = mapY;
-    gMapSelectPositionB.x = mapX + size;
-    gMapSelectPositionB.y = mapY + size;
+    mapCoords.x = (mapCoords.x - radius) & 0xFFE0;
+    mapCoords.y = (mapCoords.y - radius) & 0xFFE0;
+    gMapSelectPositionA.x = mapCoords.x;
+    gMapSelectPositionA.y = mapCoords.y;
+    gMapSelectPositionB.x = mapCoords.x + size;
+    gMapSelectPositionB.y = mapCoords.y + size;
     map_invalidate_selection_rect();
 }
 
