@@ -1456,8 +1456,9 @@ static void sub_6E1F34(
             else
             {
                 int16_t z = gSceneryCtrlPressZ;
-                screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
-
+                auto coords = screen_get_map_xy_with_z({ x, y }, z);
+                *grid_x = coords.x;
+                *grid_y = coords.y;
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
@@ -1616,7 +1617,9 @@ static void sub_6E1F34(
             else
             {
                 int16_t z = gSceneryCtrlPressZ;
-                screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
+                auto coords = screen_get_map_xy_with_z({ x, y }, z);
+                *grid_x = coords.x;
+                *grid_y = coords.y;
 
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)

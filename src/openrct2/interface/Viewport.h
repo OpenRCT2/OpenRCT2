@@ -174,7 +174,7 @@ void sub_68B2B7(paint_session* session, CoordsXY mapCoords);
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport);
-void screen_get_map_xy_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY);
+CoordsXY screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z);
 CoordsXY screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadrant);
 void screen_get_map_xy_quadrant_with_z(
     int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY, uint8_t* quadrant);
