@@ -6225,7 +6225,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     word_F4418C = mapX;
     word_F4418E = mapY;
 
-    entranceExitCoords = { floor2(mapX, 32), floor2(mapY, 32), entranceExitCoords.z, stationHeight };
+    entranceExitCoords = { floor2(mapX, 32), floor2(mapY, 32), stationHeight, INVALID_DIRECTION };
 
     if (ride->type == RIDE_TYPE_NULL)
     {
