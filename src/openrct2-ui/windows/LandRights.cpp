@@ -290,12 +290,12 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-static void window_land_rights_tool_update_land_rights(int16_t x, int16_t y)
+static void window_land_rights_tool_update_land_rights(ScreenCoordsXY screenCoords)
 {
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    CoordsXY mapTile = screen_get_map_xy({ x, y }, nullptr);
+    CoordsXY mapTile = screen_get_map_xy(screenCoords, nullptr);
 
     if (mapTile.x == LOCATION_NULL)
     {
@@ -396,7 +396,7 @@ static void window_land_rights_toolabort(rct_window* w, rct_widgetindex widgetIn
  */
 static void window_land_rights_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
-    window_land_rights_tool_update_land_rights(screenCoords.x, screenCoords.y);
+    window_land_rights_tool_update_land_rights(screenCoords);
 }
 
 /**
