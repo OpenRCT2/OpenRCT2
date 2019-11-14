@@ -84,8 +84,8 @@ static void window_loadsave_close(rct_window *w);
 static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_loadsave_resize(rct_window *w);
 static void window_loadsave_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_loadsave_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_loadsave_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_loadsave_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_loadsave_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_loadsave_compute_max_date_width();
 static void window_loadsave_invalidate(rct_window *w);
@@ -527,11 +527,11 @@ static void window_loadsave_scrollgetsize(rct_window* w, int32_t scrollIndex, in
     *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
 }
 
-static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     int32_t selectedItem;
 
-    selectedItem = y / SCROLLABLE_ROW_HEIGHT;
+    selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     if (selectedItem >= w->no_list_items)
         return;
 
@@ -563,11 +563,11 @@ static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     }
 }
 
-static void window_loadsave_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_loadsave_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     int32_t selectedItem;
 
-    selectedItem = y / SCROLLABLE_ROW_HEIGHT;
+    selectedItem = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     if (selectedItem >= w->no_list_items)
         return;
 

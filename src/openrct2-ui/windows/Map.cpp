@@ -128,7 +128,7 @@ static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, Scre
 static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 static void window_map_toolabort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_map_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_map_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_map_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_map_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_map_invalidate(rct_window *w);
 static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -196,7 +196,7 @@ static void map_window_increase_map_size();
 static void map_window_decrease_map_size();
 static void map_window_set_pixels(rct_window* w);
 
-static CoordsXY map_window_screen_to_map(int32_t screenX, int32_t screenY);
+static CoordsXY map_window_screen_to_map(ScreenCoordsXY screenCoords);
 
 /**
  *
@@ -561,12 +561,12 @@ static void window_map_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
  *
  *  rct2: 0x0068D726
  */
-static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
-    CoordsXY c = map_window_screen_to_map(x, y);
+    CoordsXY c = map_window_screen_to_map(screenCoords);
     int32_t mapX = std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
     int32_t mapY = std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
-    int32_t mapZ = tile_element_height({ x, y });
+    int32_t mapZ = tile_element_height({ screenCoords.x, screenCoords.y });
 
     rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
@@ -1681,12 +1681,12 @@ static void map_window_set_pixels(rct_window* w)
         _currentLine = 0;
 }
 
-static CoordsXY map_window_screen_to_map(int32_t screenX, int32_t screenY)
+static CoordsXY map_window_screen_to_map(ScreenCoordsXY screenCoords)
 {
-    screenX = ((screenX + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
-    screenY = ((screenY + 8)) / 2;
-    int32_t x = (screenY - screenX) * 32;
-    int32_t y = (screenX + screenY) * 32;
+    screenCoords.x = ((screenCoords.x + 8) - MAXIMUM_MAP_SIZE_TECHNICAL) / 2;
+    screenCoords.y = ((screenCoords.y + 8)) / 2;
+    int32_t x = (screenCoords.y - screenCoords.x) * 32;
+    int32_t y = (screenCoords.x + screenCoords.y) * 32;
 
     switch (get_current_rotation())
     {

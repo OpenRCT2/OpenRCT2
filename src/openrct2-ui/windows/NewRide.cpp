@@ -207,8 +207,8 @@ static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_new_ride_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_new_ride_update(rct_window *w);
 static void window_new_ride_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_new_ride_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_new_ride_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_new_ride_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_new_ride_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_new_ride_invalidate(rct_window *w);
 static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -264,7 +264,7 @@ static constexpr const int32_t window_new_ride_tab_animation_divisor[] = { 4, 8,
 
 static void window_new_ride_set_page(rct_window* w, int32_t page);
 static void window_new_ride_refresh_widget_sizing(rct_window* w);
-static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window* w, int32_t x, int32_t y);
+static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window* w, ScreenCoordsXY screenCoords);
 static void window_new_ride_paint_ride_information(
     rct_window* w, rct_drawpixelinfo* dpi, ride_list_item item, int32_t x, int32_t y, int32_t width);
 static void window_new_ride_select(rct_window* w);
@@ -763,11 +763,11 @@ static void window_new_ride_scrollgetsize(rct_window* w, int32_t scrollIndex, in
  *
  *  rct2: 0x006B6C89
  */
-static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     ride_list_item item;
 
-    item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
+    item = window_new_ride_scroll_get_ride_list_item_at(w, screenCoords);
     if (item.type == RIDE_TYPE_NULL && item.entry_index == RIDE_ENTRY_INDEX_NULL)
         return;
 
@@ -783,14 +783,14 @@ static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, 
  *
  *  rct2: 0x006B6C51
  */
-static void window_new_ride_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_new_ride_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     ride_list_item item;
 
     if (w->new_ride.selected_ride_id != -1)
         return;
 
-    item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
+    item = window_new_ride_scroll_get_ride_list_item_at(w, screenCoords);
 
     if (w->new_ride.highlighted_ride_id == item.ride_type_and_entry)
         return;
@@ -903,17 +903,17 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
  *
  *  rct2: 0x006B6D3C
  */
-static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window* w, int32_t x, int32_t y)
+static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window* w, ScreenCoordsXY screenCoords)
 {
     ride_list_item result;
     result.type = RIDE_TYPE_NULL;
     result.entry_index = RIDE_ENTRY_INDEX_NULL;
 
-    if (--x < 0 || --y < 0)
+    if (--screenCoords.x < 0 || --screenCoords.y < 0)
         return result;
 
-    int32_t column = x / 116;
-    int32_t row = y / 116;
+    int32_t column = screenCoords.x / 116;
+    int32_t row = screenCoords.y / 116;
     if (column >= 5)
         return result;
 

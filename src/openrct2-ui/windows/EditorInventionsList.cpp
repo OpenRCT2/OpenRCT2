@@ -73,8 +73,8 @@ static void window_editor_inventions_list_mouseup(rct_window *w, rct_widgetindex
 static void window_editor_inventions_list_resize(rct_window *w);
 static void window_editor_inventions_list_update(rct_window *w);
 static void window_editor_inventions_list_scrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_editor_inventions_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_editor_inventions_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_editor_inventions_list_scrollmousedown(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
+static void window_editor_inventions_list_scrollmouseover(rct_window *w, int32_t scrollIndex, ScreenCoordsXY screenCoords);
 static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t *cursorId);
 static void window_editor_inventions_list_invalidate(rct_window *w);
 static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -421,11 +421,11 @@ static void window_editor_inventions_list_scrollgetheight(rct_window* w, int32_t
  *
  *  rct2: 0x006852D4
  */
-static void window_editor_inventions_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_editor_inventions_list_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     ResearchItem* researchItem;
 
-    researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
+    researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, screenCoords.y);
     if (researchItem == nullptr)
         return;
 
@@ -441,11 +441,11 @@ static void window_editor_inventions_list_scrollmousedown(rct_window* w, int32_t
  *
  *  rct2: 0x00685275
  */
-static void window_editor_inventions_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_editor_inventions_list_scrollmouseover(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     ResearchItem* researchItem;
 
-    researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
+    researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, screenCoords.y);
     if (researchItem != w->research_item)
     {
         w->research_item = researchItem;
