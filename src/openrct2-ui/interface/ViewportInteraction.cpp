@@ -658,7 +658,7 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
  *
  *  rct2: 0x0068A15E
  */
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
+CoordsXY sub_68A15E(ScreenCoordsXY screenCoords)
 {
     int16_t mapX, mapY;
     CoordsXY initialPos{};
@@ -666,15 +666,15 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
     TileElement* tileElement;
     rct_viewport* viewport;
     get_map_coordinates_from_pos(
-        screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &mapX, &mapY, &interactionType,
-        &tileElement, &viewport);
+        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &mapX, &mapY,
+        &interactionType, &tileElement, &viewport);
     initialPos.x = mapX;
     initialPos.y = mapY;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
-        *x = LOCATION_NULL;
-        return;
+        initialPos.x = LOCATION_NULL;
+        return initialPos;
     }
 
     int16_t waterHeight = 0;
@@ -683,7 +683,7 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
         waterHeight = tileElement->AsSurface()->GetWaterHeight() << 4;
     }
 
-    LocationXY16 initialVPPos = screen_coord_to_viewport_coord(viewport, { screenX, screenY });
+    LocationXY16 initialVPPos = screen_coord_to_viewport_coord(viewport, screenCoords);
     CoordsXY mapPos = initialPos + CoordsXY{ 16, 16 };
 
     for (int32_t i = 0; i < 5; i++)
@@ -698,6 +698,5 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y)
         mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
     }
 
-    *x = mapPos.x & ~0x1F;
-    *y = mapPos.y & ~0x1F;
+    return { mapPos.x & ~0x1F, mapPos.y & ~0x1F };
 }

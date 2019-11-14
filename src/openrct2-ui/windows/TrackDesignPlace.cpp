@@ -246,7 +246,7 @@ static void window_track_place_update(rct_window* w)
  */
 static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
-    int16_t mapX, mapY, mapZ;
+    int16_t mapZ;
 
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -254,24 +254,25 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // Get the tool map position
-    sub_68A15E(screenCoords.x, screenCoords.y, &mapX, &mapY);
-    if (mapX == LOCATION_NULL)
+    CoordsXY mapCoords = sub_68A15E(screenCoords);
+    if (mapCoords.x == LOCATION_NULL)
     {
         window_track_place_clear_provisional();
         return;
     }
 
     // Check if tool map position has changed since last update
-    if (mapX == _window_track_place_last_x && mapY == _window_track_place_last_y)
+    if (mapCoords.x == _window_track_place_last_x && mapCoords.y == _window_track_place_last_y)
     {
-        place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), mapX, mapY, 0);
+        place_virtual_track(
+            _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), mapCoords.x, mapCoords.y, 0);
         return;
     }
 
     money32 cost = MONEY32_UNDEFINED;
 
     // Get base Z position
-    mapZ = window_track_place_get_base_z(mapX, mapY);
+    mapZ = window_track_place_get_base_z(mapCoords.x, mapCoords.y);
     if (game_is_not_paused() || gCheatsBuildInPauseMode)
     {
         window_track_place_clear_provisional();
@@ -281,12 +282,12 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         {
             ride_id_t rideIndex;
             uint16_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
-            window_track_place_attempt_placement(_trackDesign.get(), mapX, mapY, mapZ, flags, &cost, &rideIndex);
+            window_track_place_attempt_placement(_trackDesign.get(), mapCoords.x, mapCoords.y, mapZ, flags, &cost, &rideIndex);
             if (cost != MONEY32_UNDEFINED)
             {
                 _window_track_place_ride_index = rideIndex;
-                _window_track_place_last_valid_x = mapX;
-                _window_track_place_last_valid_y = mapY;
+                _window_track_place_last_valid_x = mapCoords.x;
+                _window_track_place_last_valid_y = mapCoords.y;
                 _window_track_place_last_valid_z = mapZ;
                 _window_track_place_last_was_valid = true;
                 break;
@@ -295,15 +296,16 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         }
     }
 
-    _window_track_place_last_x = mapX;
-    _window_track_place_last_y = mapY;
+    _window_track_place_last_x = mapCoords.x;
+    _window_track_place_last_y = mapCoords.y;
     if (cost != _window_track_place_last_cost)
     {
         _window_track_place_last_cost = cost;
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), mapX, mapY, mapZ);
+    place_virtual_track(
+        _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), mapCoords.x, mapCoords.y, mapZ);
 }
 
 /**
@@ -318,19 +320,18 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    int16_t mapX, mapY;
-    sub_68A15E(screenCoords.x, screenCoords.y, &mapX, &mapY);
-    if (mapX == LOCATION_NULL)
+    const CoordsXY mapCoords = sub_68A15E(screenCoords);
+    if (mapCoords.x == LOCATION_NULL)
         return;
 
     // Try increasing Z until a feasible placement is found
-    int16_t mapZ = window_track_place_get_base_z(mapX, mapY);
+    int16_t mapZ = window_track_place_get_base_z(mapCoords.x, mapCoords.y);
     for (int32_t i = 0; i < 7; i++)
     {
         gDisableErrorWindowSound = true;
         money32 cost = MONEY32_UNDEFINED;
         ride_id_t rideIndex = RIDE_ID_NULL;
-        window_track_place_attempt_placement(_trackDesign.get(), mapX, mapY, mapZ, 1, &cost, &rideIndex);
+        window_track_place_attempt_placement(_trackDesign.get(), mapCoords.x, mapCoords.y, mapZ, 1, &cost, &rideIndex);
         gDisableErrorWindowSound = false;
 
         if (cost != MONEY32_UNDEFINED)
@@ -339,7 +340,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
             if (ride != nullptr)
             {
                 window_close_by_class(WC_ERROR);
-                audio_play_sound_at_location(SoundId::PlaceItem, { mapX, mapY, mapZ });
+                audio_play_sound_at_location(SoundId::PlaceItem, { mapCoords.x, mapCoords.y, mapZ });
 
                 _currentRideIndex = rideIndex;
                 if (track_design_are_entrance_and_exit_placed())
@@ -367,7 +368,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     }
 
     // Unable to build track
-    audio_play_sound_at_location(SoundId::Error, { mapX, mapY, mapZ });
+    audio_play_sound_at_location(SoundId::Error, { mapCoords.x, mapCoords.y, mapZ });
 }
 
 /**

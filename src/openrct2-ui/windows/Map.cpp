@@ -187,11 +187,11 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo* dpi);
 static void window_map_inputsize_land(rct_window* w);
 static void window_map_inputsize_map(rct_window* w);
 
-static void window_map_set_land_rights_tool_update(int32_t x, int32_t y);
-static void window_map_place_park_entrance_tool_update(int32_t x, int32_t y);
-static void window_map_set_peep_spawn_tool_update(int32_t x, int32_t y);
-static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y);
-static void window_map_set_peep_spawn_tool_down(int32_t x, int32_t y);
+static void window_map_set_land_rights_tool_update(ScreenCoordsXY screenCoords);
+static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoords);
+static void window_map_set_peep_spawn_tool_update(ScreenCoordsXY screenCoords);
+static void window_map_place_park_entrance_tool_down(ScreenCoordsXY screenCoords);
+static void window_map_set_peep_spawn_tool_down(ScreenCoordsXY screenCoords);
 static void map_window_increase_map_size();
 static void map_window_decrease_map_size();
 static void map_window_set_pixels(rct_window* w);
@@ -467,13 +467,13 @@ static void window_map_toolupdate(rct_window* w, rct_widgetindex widgetIndex, Sc
     switch (widgetIndex)
     {
         case WIDX_SET_LAND_RIGHTS:
-            window_map_set_land_rights_tool_update(screenCoords.x, screenCoords.y);
+            window_map_set_land_rights_tool_update(screenCoords);
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
-            window_map_place_park_entrance_tool_update(screenCoords.x, screenCoords.y);
+            window_map_place_park_entrance_tool_update(screenCoords);
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
-            window_map_set_peep_spawn_tool_update(screenCoords.x, screenCoords.y);
+            window_map_set_peep_spawn_tool_update(screenCoords);
             break;
     }
 }
@@ -487,10 +487,10 @@ static void window_map_tooldown(rct_window* w, rct_widgetindex widgetIndex, Scre
     switch (widgetIndex)
     {
         case WIDX_BUILD_PARK_ENTRANCE:
-            window_map_place_park_entrance_tool_down(screenCoords.x, screenCoords.y);
+            window_map_place_park_entrance_tool_down(screenCoords);
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
-            window_map_set_peep_spawn_tool_down(screenCoords.x, screenCoords.y);
+            window_map_set_peep_spawn_tool_down(screenCoords);
             break;
     }
 }
@@ -1156,13 +1156,13 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x0068D24E
  */
-static void window_map_set_land_rights_tool_update(int32_t x, int32_t y)
+static void window_map_set_land_rights_tool_update(ScreenCoordsXY screenCoords)
 {
     rct_viewport* viewport;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-    CoordsXY mapCoords = screen_get_map_xy({ x, y }, &viewport);
+    CoordsXY mapCoords = screen_get_map_xy(screenCoords, &viewport);
     if (mapCoords.x == LOCATION_NULL)
         return;
 
@@ -1188,81 +1188,84 @@ static void window_map_set_land_rights_tool_update(int32_t x, int32_t y)
  *
  *  rct2: 0x00666EEF
  */
-static void place_park_entrance_get_map_position(
-    int32_t x, int32_t y, int16_t* mapX, int16_t* mapY, int16_t* mapZ, int32_t* direction)
+static CoordsXYZD place_park_entrance_get_map_position(ScreenCoordsXY screenCoords)
 {
-    sub_68A15E(x, y, mapX, mapY);
-    if (*mapX == LOCATION_NULL)
-        return;
+    CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, INVALID_DIRECTION };
+    const CoordsXY mapCoords = sub_68A15E(screenCoords);
+    parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, INVALID_DIRECTION };
+    if (parkEntranceMapPosition.x == LOCATION_NULL)
+        return parkEntranceMapPosition;
 
-    auto surfaceElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
-    *mapZ = surfaceElement->GetWaterHeight();
-    if (*mapZ == 0)
+    auto surfaceElement = map_get_surface_element_at(mapCoords);
+    parkEntranceMapPosition.z = surfaceElement->GetWaterHeight() * 8;
+    if (parkEntranceMapPosition.z == 0)
     {
-        *mapZ = surfaceElement->base_height / 2;
+        parkEntranceMapPosition.z = surfaceElement->base_height * 8;
         if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
         {
-            (*mapZ)++;
+            parkEntranceMapPosition.z++;
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
-                (*mapZ)++;
+                parkEntranceMapPosition.z++;
             }
         }
     }
-    *direction = (gWindowSceneryRotation - get_current_rotation()) & 3;
+    parkEntranceMapPosition.direction = (gWindowSceneryRotation - get_current_rotation()) & 3;
+    return parkEntranceMapPosition;
 }
 
 /**
  *
  *  rct2: 0x00666FD0
  */
-static void window_map_place_park_entrance_tool_update(int32_t x, int32_t y)
+static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoords)
 {
-    int16_t mapX, mapY, mapZ = 0;
-    int32_t direction = 0, sideDirection;
+    int32_t sideDirection;
 
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-    place_park_entrance_get_map_position(x, y, &mapX, &mapY, &mapZ, &direction);
-    if (mapX == (int16_t)-1)
+    CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
+    if (parkEntrancePosition.x == -1)
     {
         park_entrance_remove_ghost();
         return;
     }
 
-    sideDirection = (direction + 1) & 3;
+    sideDirection = (parkEntrancePosition.direction + 1) & 3;
     gMapSelectionTiles.clear();
-    gMapSelectionTiles.push_back({ mapX, mapY });
-    gMapSelectionTiles.push_back(
-        { mapX + CoordsDirectionDelta[sideDirection].x, mapY + CoordsDirectionDelta[sideDirection].y });
-    gMapSelectionTiles.push_back(
-        { mapX - CoordsDirectionDelta[sideDirection].x, mapY - CoordsDirectionDelta[sideDirection].y });
+    gMapSelectionTiles.push_back({ parkEntrancePosition.x, parkEntrancePosition.y });
+    gMapSelectionTiles.push_back({ parkEntrancePosition.x + CoordsDirectionDelta[sideDirection].x,
+                                   parkEntrancePosition.y + CoordsDirectionDelta[sideDirection].y });
+    gMapSelectionTiles.push_back({ parkEntrancePosition.x - CoordsDirectionDelta[sideDirection].x,
+                                   parkEntrancePosition.y - CoordsDirectionDelta[sideDirection].y });
 
-    gMapSelectArrowPosition.x = mapX;
-    gMapSelectArrowPosition.y = mapY;
-    gMapSelectArrowPosition.z = mapZ * 16;
-    gMapSelectArrowDirection = direction;
+    gMapSelectArrowPosition.x = parkEntrancePosition.x;
+    gMapSelectArrowPosition.y = parkEntrancePosition.y;
+    gMapSelectArrowPosition.z = parkEntrancePosition.z;
+    gMapSelectArrowDirection = parkEntrancePosition.direction;
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT | MAP_SELECT_FLAG_ENABLE_ARROW;
     map_invalidate_map_selection_tiles();
-    if (gParkEntranceGhostExists && mapX == gParkEntranceGhostPosition.x && mapY == gParkEntranceGhostPosition.y
-        && direction == gParkEntranceGhostDirection)
+    if (gParkEntranceGhostExists && parkEntrancePosition.x == gParkEntranceGhostPosition.x
+        && parkEntrancePosition.y == gParkEntranceGhostPosition.y
+        && parkEntrancePosition.direction == gParkEntranceGhostDirection)
     {
         return;
     }
 
     park_entrance_remove_ghost();
-    park_entrance_place_ghost(mapX, mapY, mapZ, direction);
+    park_entrance_place_ghost(
+        parkEntrancePosition.x, parkEntrancePosition.y, parkEntrancePosition.z / 16, parkEntrancePosition.direction);
 }
 
 /**
  *
  *  rct2: 0x0068D4E9
  */
-static void window_map_set_peep_spawn_tool_update(int32_t x, int32_t y)
+static void window_map_set_peep_spawn_tool_update(ScreenCoordsXY screenCoords)
 {
     int32_t mapX, mapY, mapZ, direction;
     TileElement* tileElement;
@@ -1270,7 +1273,7 @@ static void window_map_set_peep_spawn_tool_update(int32_t x, int32_t y)
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    footpath_bridge_get_info_from_pos({ x, y }, &mapX, &mapY, &direction, &tileElement);
+    footpath_bridge_get_info_from_pos(screenCoords, &mapX, &mapY, &direction, &tileElement);
     if ((mapX & 0xFFFF) == 0x8000)
         return;
 
@@ -1301,16 +1304,15 @@ static void window_map_set_peep_spawn_tool_update(int32_t x, int32_t y)
  *
  *  rct2: 0x006670A4
  */
-static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y)
+static void window_map_place_park_entrance_tool_down(ScreenCoordsXY screenCoords)
 {
     park_entrance_remove_ghost();
 
-    int16_t mapX, mapY, mapZ;
-    int32_t direction;
-    place_park_entrance_get_map_position(x, y, &mapX, &mapY, &mapZ, &direction);
-    if (mapX != LOCATION_NULL)
+    CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
+    if (parkEntrancePosition.x != LOCATION_NULL)
     {
-        money32 price = place_park_entrance(mapX, mapY, mapZ, direction);
+        money32 price = place_park_entrance(
+            parkEntrancePosition.x, parkEntrancePosition.y, parkEntrancePosition.z / 16, parkEntrancePosition.direction);
         if (price != MONEY32_UNDEFINED)
         {
             audio_play_sound_at_location(SoundId::PlaceItem, { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z });
@@ -1322,13 +1324,13 @@ static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y)
  *
  *  rct2: 0x0068D573
  */
-static void window_map_set_peep_spawn_tool_down(int32_t x, int32_t y)
+static void window_map_set_peep_spawn_tool_down(ScreenCoordsXY screenCoords)
 {
     TileElement* tileElement;
     int32_t mapX, mapY, mapZ, direction;
 
     // Verify footpath exists at location, and retrieve coordinates
-    footpath_get_coordinates_from_pos({ x, y }, &mapX, &mapY, &direction, &tileElement);
+    footpath_get_coordinates_from_pos(screenCoords, &mapX, &mapY, &direction, &tileElement);
     if (mapX == LOCATION_NULL)
         return;
 
