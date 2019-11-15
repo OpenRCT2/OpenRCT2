@@ -2430,6 +2430,7 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
     ride->breakdown_reason_pending = breakdownReason;
     ride->breakdown_sound_modifier = 0;
     ride->not_fixed_timeout = 0;
+    ride->inspection_station = 0; // ensure set to something.
 
     switch (breakdownReason)
     {
