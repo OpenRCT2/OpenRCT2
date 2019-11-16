@@ -13,6 +13,7 @@
 #include "../Editor.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../actions/RideSetStatus.hpp"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -3528,7 +3529,9 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
-            ride_set_status(ride, RIDE_STATUS_CLOSED);
+            // We require this to execute right away during the simulation, always ignore network and queue.
+            auto gameAction = RideSetStatusAction(ride->id, RIDE_STATUS_CLOSED);
+            GameActions::ExecuteNested(&gameAction);
         }
     }
 
@@ -5260,7 +5263,9 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
-            ride_set_status(ride, RIDE_STATUS_CLOSED);
+            // We require this to execute right away during the simulation, always ignore network and queue.
+            auto gameAction = RideSetStatusAction(ride->id, RIDE_STATUS_CLOSED);
+            GameActions::ExecuteNested(&gameAction);
         }
     }
     ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
@@ -5321,7 +5326,9 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
-            ride_set_status(ride, RIDE_STATUS_CLOSED);
+            // We require this to execute right away during the simulation, always ignore network and queue.
+            auto gameAction = RideSetStatusAction(ride->id, RIDE_STATUS_CLOSED);
+            GameActions::ExecuteNested(&gameAction);
         }
     }
     ride->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
