@@ -3529,6 +3529,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle)
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
+            // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = RideSetStatusAction(ride->id, RIDE_STATUS_CLOSED);
             GameActions::ExecuteNested(&gameAction);
         }
@@ -5262,6 +5263,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle)
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
+            // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = RideSetStatusAction(ride->id, RIDE_STATUS_CLOSED);
             GameActions::ExecuteNested(&gameAction);
         }
@@ -5324,6 +5326,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle)
 
         if (ride->status != RIDE_STATUS_CLOSED)
         {
+            // We require this to execute right away during the simulation, always ignore network and queue.
             auto gameAction = RideSetStatusAction(ride->id, RIDE_STATUS_CLOSED);
             GameActions::ExecuteNested(&gameAction);
         }
