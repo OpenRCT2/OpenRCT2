@@ -245,6 +245,12 @@ void GameState::UpdateLogic()
     }
     else if (network_get_mode() == NETWORK_MODE_CLIENT)
     {
+        // Don't run past the server, this condition can happen during map changes.
+        if (network_get_server_tick() == gCurrentTicks)
+        {
+            return;
+        }
+
         // Check desync.
         bool desynced = network_check_desynchronisation();
         if (desynced)
