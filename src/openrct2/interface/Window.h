@@ -194,8 +194,8 @@ struct rct_window_event_list
     void (*viewport_rotate)(struct rct_window*);
     void (*unknown_15)(struct rct_window*, int32_t, int32_t);
     void (*tooltip)(struct rct_window*, rct_widgetindex, rct_string_id*);
-    void (*cursor)(struct rct_window*, rct_widgetindex, int32_t, int32_t, int32_t*);
-    void (*moved)(struct rct_window*, int32_t, int32_t);
+    void (*cursor)(struct rct_window*, rct_widgetindex, ScreenCoordsXY, int32_t*);
+    void (*moved)(struct rct_window*, ScreenCoordsXY);
     void (*invalidate)(struct rct_window*);
     void (*paint)(struct rct_window*, rct_drawpixelinfo*);
     void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int32_t);
