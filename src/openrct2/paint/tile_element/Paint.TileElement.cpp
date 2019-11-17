@@ -67,20 +67,20 @@ void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y)
  *
  *  rct2: 0x0068B2B7
  */
-void sub_68B2B7(paint_session* session, int32_t x, int32_t y)
+void sub_68B2B7(paint_session* session, CoordsXY mapCoords)
 {
-    if (x < gMapSizeUnits && y < gMapSizeUnits && x >= 32 && y >= 32)
+    if (mapCoords.x < gMapSizeUnits && mapCoords.y < gMapSizeUnits && mapCoords.x >= 32 && mapCoords.y >= 32)
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(session, -1, 0);
         session->WaterHeight = 0xFFFF;
         session->Unk141E9DB = G141E9DB_FLAG_2;
 
-        sub_68B3FB(session, x, y);
+        sub_68B3FB(session, mapCoords.x, mapCoords.y);
     }
     else if (!(session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
-        blank_tiles_paint(session, x, y);
+        blank_tiles_paint(session, mapCoords.x, mapCoords.y);
     }
 }
 
