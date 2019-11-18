@@ -1526,14 +1526,14 @@ int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, Scr
 {
     int32_t cursorId = CURSOR_ARROW;
     if (w->event_handlers->cursor != nullptr)
-        w->event_handlers->cursor(w, widgetIndex, screenCoords.x, screenCoords.y, &cursorId);
+        w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
     return cursorId;
 }
 
 void window_event_moved_call(rct_window* w, ScreenCoordsXY screenCoords)
 {
     if (w->event_handlers->moved != nullptr)
-        w->event_handlers->moved(w, screenCoords.x, screenCoords.y);
+        w->event_handlers->moved(w, screenCoords);
 }
 
 void window_event_invalidate_call(rct_window* w)
