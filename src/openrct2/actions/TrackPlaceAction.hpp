@@ -309,6 +309,8 @@ public:
             if ((rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER) && !byte_9D8150)
             {
                 auto surfaceElement = map_get_surface_element_at(mapLoc);
+                if (surfaceElement == nullptr)
+                    return std::make_unique<TrackPlaceActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
                 uint8_t waterHeight = surfaceElement->GetWaterHeight() * 2;
                 if (waterHeight == 0)
@@ -351,6 +353,9 @@ public:
 
             // 6c5648 12 push
             auto surfaceElement = map_get_surface_element_at(mapLoc);
+            if (surfaceElement == nullptr)
+                return std::make_unique<TrackPlaceActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+
             if (!gCheatsDisableSupportLimits)
             {
                 int32_t ride_height = clearanceZ - surfaceElement->base_height;
@@ -506,6 +511,8 @@ public:
 
             // 6c5648 12 push
             auto surfaceElement = map_get_surface_element_at(mapLoc);
+            if (surfaceElement == nullptr)
+                return std::make_unique<TrackPlaceActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
             int32_t supportHeight = baseZ - surfaceElement->base_height;
             if (supportHeight < 0)
@@ -673,8 +680,11 @@ public:
             if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
             {
                 auto* waterSurfaceElement = map_get_surface_element_at(mapLoc);
-                waterSurfaceElement->SetHasTrackThatNeedsWater(true);
-                tileElement = reinterpret_cast<TileElement*>(waterSurfaceElement);
+                if (waterSurfaceElement != nullptr)
+                {
+                    waterSurfaceElement->SetHasTrackThatNeedsWater(true);
+                    tileElement = reinterpret_cast<TileElement*>(waterSurfaceElement);
+                }
             }
 
             if (!gCheatsDisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))

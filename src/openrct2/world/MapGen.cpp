@@ -117,10 +117,13 @@ void mapgen_generate_blank(mapgen_settings* settings)
         for (x = 1; x < settings->mapSize - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(x, y);
-            surfaceElement->SetSurfaceStyle(settings->floor);
-            surfaceElement->SetEdgeStyle(settings->wall);
-            surfaceElement->base_height = settings->height;
-            surfaceElement->clearance_height = settings->height;
+            if (surfaceElement != nullptr)
+            {
+                surfaceElement->SetSurfaceStyle(settings->floor);
+                surfaceElement->SetEdgeStyle(settings->wall);
+                surfaceElement->base_height = settings->height;
+                surfaceElement->clearance_height = settings->height;
+            }
         }
     }
 
@@ -165,10 +168,13 @@ void mapgen_generate(mapgen_settings* settings)
         for (x = 1; x < mapSize - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(x, y);
-            surfaceElement->SetSurfaceStyle(floorTexture);
-            surfaceElement->SetEdgeStyle(wallTexture);
-            surfaceElement->base_height = settings->height;
-            surfaceElement->clearance_height = settings->height;
+            if (surfaceElement != nullptr)
+            {
+                surfaceElement->SetSurfaceStyle(floorTexture);
+                surfaceElement->SetEdgeStyle(wallTexture);
+                surfaceElement->base_height = settings->height;
+                surfaceElement->clearance_height = settings->height;
+            }
         }
     }
 
@@ -212,7 +218,7 @@ void mapgen_generate(mapgen_settings* settings)
         {
             auto surfaceElement = map_get_surface_element_at(x, y);
 
-            if (surfaceElement->base_height < waterLevel + 6)
+            if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel + 6)
                 surfaceElement->SetSurfaceStyle(beachTexture);
         }
     }
@@ -308,6 +314,8 @@ static void mapgen_place_trees()
         for (int32_t x = 1; x < gMapSize - 1; x++)
         {
             auto* surfaceElement = map_get_surface_element_at(x, y);
+            if (surfaceElement == nullptr)
+                continue;
 
             // Exclude water tiles
             if (surfaceElement->GetWaterHeight() > 0)
@@ -342,6 +350,8 @@ static void mapgen_place_trees()
 
         int32_t type = -1;
         auto* surfaceElement = map_get_surface_element_at(pos.x, pos.y);
+        if (surfaceElement != nullptr)
+            continue;
         switch (surfaceElement->GetSurfaceStyle())
         {
             case TERRAIN_GRASS:
@@ -390,7 +400,7 @@ static void mapgen_set_water_level(int32_t waterLevel)
         for (x = 1; x < mapSize - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(x, y);
-            if (surfaceElement->base_height < waterLevel)
+            if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel)
                 surfaceElement->SetWaterHeight(waterLevel / 2);
         }
     }
@@ -452,6 +462,8 @@ static void mapgen_set_height()
             uint8_t baseHeight = (q00 + q01 + q10 + q11) / 4;
 
             auto surfaceElement = map_get_surface_element_at(x, y);
+            if (surfaceElement == nullptr)
+                continue;
             surfaceElement->base_height = std::max(2, baseHeight * 2);
             surfaceElement->clearance_height = surfaceElement->base_height;
 
@@ -811,6 +823,8 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
             auto* const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
+            if (surfaceElement == nullptr)
+                continue;
 
             // Read value from bitmap, and convert its range
             uint8_t value = dest[x + y * _heightMapData.width];

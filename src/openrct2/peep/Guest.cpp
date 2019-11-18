@@ -5415,13 +5415,16 @@ void Guest::UpdateWalking()
     {
         auto surfaceElement = map_get_surface_element_at({ next_x, next_y });
 
-        int32_t water_height = surfaceElement->GetWaterHeight();
-        if (water_height)
+        if (surfaceElement != nullptr)
         {
-            water_height *= 16;
-            MoveTo(x, y, water_height);
-            SetState(PEEP_STATE_FALLING);
-            return;
+            int32_t water_height = surfaceElement->GetWaterHeight();
+            if (water_height)
+            {
+                water_height *= 16;
+                MoveTo(x, y, water_height);
+                SetState(PEEP_STATE_FALLING);
+                return;
+            }
         }
     }
 

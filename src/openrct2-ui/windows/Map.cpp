@@ -1197,6 +1197,12 @@ static CoordsXYZD place_park_entrance_get_map_position(ScreenCoordsXY screenCoor
         return parkEntranceMapPosition;
 
     auto surfaceElement = map_get_surface_element_at(mapCoords);
+    if (surfaceElement == nullptr)
+    {
+        parkEntranceMapPosition.x = LOCATION_NULL;
+        return parkEntranceMapPosition;
+    }
+
     parkEntranceMapPosition.z = surfaceElement->GetWaterHeight() * 8;
     if (parkEntranceMapPosition.z == 0)
     {
@@ -1541,6 +1547,8 @@ static constexpr const uint8_t RideColourKey[] = {
 static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
 {
     auto* surfaceElement = map_get_surface_element_at(c);
+    if (surfaceElement == nullptr)
+        return 0;
     uint16_t colour = TerrainColour[surfaceElement->GetSurfaceStyle()];
     if (surfaceElement->GetWaterHeight() > 0)
         colour = WaterColour;
@@ -1580,6 +1588,9 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
     TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
     do
     {
+        if (tileElement == nullptr)
+            break;
+
         if (tileElement->IsGhost())
         {
             colourA = MAP_COLOUR(PALETTE_INDEX_21);

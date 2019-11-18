@@ -368,27 +368,43 @@ private:
                 // Smooth the 4 corners
                 { // top-left
                     auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
-                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
-                    res->Cost += SmoothLandRowByCorner(
-                        isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, -32, 0, 2);
+                    if (surfaceElement != nullptr)
+                    {
+                        int32_t z = std::clamp(
+                            (uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, -32, 0, 2);
+                    }
                 }
                 { // bottom-left
                     auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetBottom() });
-                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
-                    res->Cost += SmoothLandRowByCorner(
-                        isExecuting, { validRange.GetLeft(), validRange.GetBottom() }, z, -32, 32, 1, 3);
+                    if (surfaceElement != nullptr)
+                    {
+                        int32_t z = std::clamp(
+                            (uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetLeft(), validRange.GetBottom() }, z, -32, 32, 1, 3);
+                    }
                 }
                 { // bottom-right
                     auto surfaceElement = map_get_surface_element_at({ validRange.GetRight(), validRange.GetBottom() });
-                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
-                    res->Cost += SmoothLandRowByCorner(
-                        isExecuting, { validRange.GetRight(), validRange.GetBottom() }, z, 32, 32, 2, 0);
+                    if (surfaceElement != nullptr)
+                    {
+                        int32_t z = std::clamp(
+                            (uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetRight(), validRange.GetBottom() }, z, 32, 32, 2, 0);
+                    }
                 }
                 { // top-right
                     auto surfaceElement = map_get_surface_element_at({ validRange.GetRight(), validRange.GetTop() });
-                    int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
-                    res->Cost += SmoothLandRowByCorner(
-                        isExecuting, { validRange.GetRight(), validRange.GetTop() }, z, 32, -32, 3, 1);
+                    if (surfaceElement != nullptr)
+                    {
+                        int32_t z = std::clamp(
+                            (uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
+                        res->Cost += SmoothLandRowByCorner(
+                            isExecuting, { validRange.GetRight(), validRange.GetTop() }, z, 32, -32, 3, 1);
+                    }
                 }
 
                 // Smooth the edges
@@ -396,27 +412,39 @@ private:
                 for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
                 {
                     auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), y });
-                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
-                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
-                    res->Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetLeft(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
+                    if (surfaceElement != nullptr)
+                    {
+                        z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
+                        z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
+                        res->Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetLeft(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
+                    }
 
                     surfaceElement = map_get_surface_element_at({ validRange.GetRight(), y });
-                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
-                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
-                    res->Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetRight(), y }, z1, z2, 32, 0, 2, 3, 1, 0);
+                    if (surfaceElement != nullptr)
+                    {
+                        z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
+                        z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
+                        res->Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetRight(), y }, z1, z2, 32, 0, 2, 3, 1, 0);
+                    }
                 }
 
                 for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
                 {
                     auto surfaceElement = map_get_surface_element_at({ x, validRange.GetTop() });
-                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
-                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
-                    res->Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetTop() }, z1, z2, 0, -32, 0, 3, 1, 2);
+                    if (surfaceElement != nullptr)
+                    {
+                        z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
+                        z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
+                        res->Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetTop() }, z1, z2, 0, -32, 0, 3, 1, 2);
+                    }
 
                     surfaceElement = map_get_surface_element_at({ x, validRange.GetBottom() });
-                    z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
-                    z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
-                    res->Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetBottom() }, z1, z2, 0, 32, 1, 2, 0, 3);
+                    if (surfaceElement != nullptr)
+                    {
+                        z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
+                        z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
+                        res->Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetBottom() }, z1, z2, 0, 32, 1, 2, 0, 3);
+                    }
                 }
                 break;
             }
@@ -426,6 +454,8 @@ private:
             case MAP_SELECT_TYPE_CORNER_3:
             {
                 auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
+                if (surfaceElement == nullptr)
+                    break;
                 uint8_t newBaseZ = surfaceElement->base_height;
                 uint8_t newSlope = surfaceElement->GetSlope();
 
@@ -523,6 +553,8 @@ private:
                 // TODO: Handle smoothing by edge
                 // Get the two corners to raise
                 auto surfaceElement = map_get_surface_element_at({ validRange.GetLeft(), validRange.GetTop() });
+                if (surfaceElement == nullptr)
+                    break;
                 uint8_t newBaseZ = surfaceElement->base_height;
                 uint8_t oldSlope = surfaceElement->GetSlope();
                 uint8_t newSlope = oldSlope;

@@ -2186,6 +2186,8 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
         if (_trackPlaceShiftState)
         {
             auto surfaceElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+            if (surfaceElement == nullptr)
+                return false;
             mapZ = floor2(surfaceElement->base_height * 8, 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = std::max<int16_t>(mapZ, 16);
