@@ -648,24 +648,26 @@ static void window_player_update_viewport(rct_window* w, bool scroll)
         LocationXYZ16 coord = network_get_player_last_action_coord(playerIndex);
         if (coord.x != 0 || coord.y != 0 || coord.z != 0)
         {
-            int32_t viewX, viewY;
-            centre_2d_coordinates(coord.x, coord.y, coord.z, &viewX, &viewY, viewport);
-
+            auto centreLoc = centre_2d_coordinates({ coord.x, coord.y, coord.z }, viewport);
+            if (!centreLoc)
+            {
+                return;
+            }
             // Don't scroll if the view was originally undefined
             if (w->var_492 == -1)
             {
                 scroll = false;
             }
 
-            if (!scroll || w->saved_view_x != viewX || w->saved_view_y != viewY)
+            if (!scroll || w->saved_view_x != centreLoc->x || w->saved_view_y != centreLoc->y)
             {
                 w->flags |= WF_SCROLLING_TO_LOCATION;
-                w->saved_view_x = viewX;
-                w->saved_view_y = viewY;
+                w->saved_view_x = centreLoc->x;
+                w->saved_view_y = centreLoc->y;
                 if (!scroll)
                 {
-                    w->viewport->view_x = viewX;
-                    w->viewport->view_y = viewY;
+                    w->viewport->view_x = centreLoc->x;
+                    w->viewport->view_y = centreLoc->y;
                 }
                 widget_invalidate(w, WIDX_VIEWPORT);
             }
