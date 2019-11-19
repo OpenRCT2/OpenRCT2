@@ -11,7 +11,7 @@
 
 // Despite the name, this file contains support for more OSs besides Linux, provided the necessary ifdefs remain small.
 // Otherwise, they should be spun off into their own files.
-#if (defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)) && !defined(__ANDROID__)
+#if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__)
 
 #    ifdef __FreeBSD__
 #        include <sys/sysctl.h>
