@@ -3564,9 +3564,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
         return;
     }
 
-    _previousTrackPiece.x = mapCoords->x;
-    _previousTrackPiece.y = mapCoords->y;
-    _previousTrackPiece.z = z;
+    _previousTrackPiece = _currentTrackBegin;
     if (ride->type == RIDE_TYPE_MAZE)
     {
         for (;;)
