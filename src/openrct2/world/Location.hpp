@@ -213,6 +213,11 @@ struct CoordsXYZ : public CoordsXY
         , z(_z)
     {
     }
+
+    bool operator==(const CoordsXYZ& other) const
+    {
+        return x == other.x && y == other.y && z == other.z;
+    }
 };
 
 struct TileCoordsXYZ

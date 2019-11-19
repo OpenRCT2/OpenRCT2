@@ -169,7 +169,7 @@ int32_t viewport_interaction_right_over(int32_t x, int32_t y);
 int32_t viewport_interaction_right_click(int32_t x, int32_t y);
 
 CoordsXY sub_68A15E(ScreenCoordsXY screenCoords);
-void sub_68B2B7(paint_session* session, int32_t x, int32_t y);
+void sub_68B2B7(paint_session* session, CoordsXY mapCoords);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
