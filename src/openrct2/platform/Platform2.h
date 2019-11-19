@@ -46,4 +46,6 @@ namespace Platform
 #endif
 
     bool IsColourTerminalSupported();
+    bool HandleSpecialCommandLineArgument(const char* argument);
+    uintptr_t StrDecompToPrecomp(utf8* input);
 } // namespace Platform

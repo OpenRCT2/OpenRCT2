@@ -32,6 +32,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
+#include <openrct2/platform/Platform2.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -2114,11 +2115,7 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
                 w->x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->y + w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
 
-#ifdef __APPLE__
-            set_format_arg(0, uintptr_t, (uintptr_t)macos_str_decomp_to_precomp(gConfigGeneral.rct1_path));
-#else
-            set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
-#endif
+            set_format_arg(0, uintptr_t, Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
 
             rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
 

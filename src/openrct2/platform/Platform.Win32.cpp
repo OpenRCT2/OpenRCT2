@@ -315,6 +315,16 @@ namespace Platform
         } while (size >= wExePathCapacity);
         return String::ToUtf8(wExePath.get());
     }
+
+    uintptr_t StrDecompToPrecomp(utf8* input)
+    {
+        return reinterpret_cast<uintptr_t>(input);
+    }
+
+    bool HandleSpecialCommandLineArgument(const char* argument)
+    {
+        return false;
+    }
 } // namespace Platform
 
 #endif
