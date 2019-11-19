@@ -6176,7 +6176,6 @@ static int32_t loc_6CD18E(
  */
 CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsXY screenCoords)
 {
-    int16_t mapX, mapY;
     int16_t entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
     int32_t interactionType, stationDirection;
     uint8_t stationHeight;
@@ -6187,7 +6186,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
 
     gRideEntranceExitPlaceDirection = 255;
     get_map_coordinates_from_pos(
-        screenCoords.x, screenCoords.y, 0xFFFB, &mapX, &mapY, &interactionType, &tileElement, &viewport);
+        screenCoords.x, screenCoords.y, 0xFFFB, nullptr, nullptr, &interactionType, &tileElement, &viewport);
     if (interactionType != 0)
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
@@ -6218,17 +6217,17 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
 
     stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].Height;
 
-    screen_get_map_xy_with_z(screenCoords.x, screenCoords.y, stationHeight * 8, &mapX, &mapY);
-    if (mapX == LOCATION_NULL)
+    auto coords = screen_get_map_xy_with_z(screenCoords, stationHeight * 8);
+    if (coords.x == LOCATION_NULL)
     {
         entranceExitCoords.x = LOCATION_NULL;
         return entranceExitCoords;
     }
 
-    word_F4418C = mapX;
-    word_F4418E = mapY;
+    word_F4418C = coords.x;
+    word_F4418E = coords.y;
 
-    entranceExitCoords = { floor2(mapX, 32), floor2(mapY, 32), stationHeight, INVALID_DIRECTION };
+    entranceExitCoords = { floor2(coords.x, 32), floor2(coords.y, 32), stationHeight, INVALID_DIRECTION };
 
     if (ride->type == RIDE_TYPE_NULL)
     {
@@ -6245,8 +6244,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
-        mapX = (word_F4418C & 0x1F) - 16;
-        mapY = (word_F4418E & 0x1F) - 16;
+        auto mapX = (word_F4418C & 0x1F) - 16;
+        auto mapY = (word_F4418E & 0x1F) - 16;
         if (std::abs(mapX) < std::abs(mapY))
         {
             entranceExitCoords.direction = mapY < 0 ? 3 : 1;
@@ -6300,8 +6299,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     }
     else
     {
-        mapX = stationStart.x * 32;
-        mapY = stationStart.y * 32;
+        auto mapX = stationStart.x * 32;
+        auto mapY = stationStart.y * 32;
         entranceMinX = mapX;
         entranceMinY = mapY;
 

@@ -2111,15 +2111,14 @@ static void window_ride_construction_update(rct_window* w)
 static std::optional<CoordsXY> ride_get_place_position_from_screen_position(ScreenCoordsXY screenCoords)
 {
     CoordsXY mapCoords;
-    int16_t mapZ;
-    int32_t interactionType;
-    rct_viewport* viewport = nullptr;
 
     if (!_trackPlaceCtrlState)
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)
         {
             TileElement* tileElement;
+            rct_viewport* viewport = nullptr;
+            int32_t interactionType;
             get_map_coordinates_from_pos(screenCoords, 0xFCCA, mapCoords, &interactionType, &tileElement, &viewport);
             if (interactionType != 0)
             {
@@ -2184,7 +2183,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             auto surfaceElement = map_get_surface_element_at(mapCoords.x >> 5, mapCoords.y >> 5);
             if (surfaceElement == nullptr)
                 return std::nullopt;
-            mapZ = floor2(surfaceElement->base_height * 8, 16);
+            auto mapZ = floor2(surfaceElement->base_height * 8, 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = std::max<int16_t>(mapZ, 16);
             _trackPlaceZ = mapZ;
@@ -2192,10 +2191,9 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     }
     else
     {
-        int16_t mapX, mapY;
-        mapZ = _trackPlaceCtrlZ;
-        screen_get_map_xy_with_z(screenCoords.x, screenCoords.y, mapZ, &mapX, &mapY);
-        mapCoords = { mapX, mapY };
+        auto mapZ = _trackPlaceCtrlZ;
+        mapCoords = screen_get_map_xy_with_z(screenCoords, mapZ);
+
         if (_trackPlaceShiftState != 0)
         {
             mapZ += _trackPlaceShiftZ;
