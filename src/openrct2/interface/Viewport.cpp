@@ -1843,16 +1843,14 @@ CoordsXY screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadra
  *
  *  rct2: 0x0068964B
  */
-void screen_get_map_xy_quadrant_with_z(
-    int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY, uint8_t* quadrant)
+std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* quadrant)
 {
-    auto coords = screen_get_map_xy_with_z({ screenX, screenY }, z);
-    if (coords.x == LOCATION_NULL)
-        return;
+    auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
+    if (mapCoords.x == LOCATION_NULL)
+        return std::nullopt;
 
-    *quadrant = map_get_tile_quadrant(coords.x, coords.y);
-    *mapX = floor2(coords.x, 32);
-    *mapY = floor2(coords.y, 32);
+    *quadrant = map_get_tile_quadrant(mapCoords.x, mapCoords.y);
+    return CoordsXY(floor2(mapCoords.x, 32), floor2(mapCoords.y, 32));
 }
 
 /**
@@ -1873,15 +1871,14 @@ CoordsXY screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side)
  *
  *  rct2: 0x006896DC
  */
-void screen_get_map_xy_side_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY, uint8_t* side)
+std::optional<CoordsXY> screen_get_map_xy_side_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* side)
 {
-    auto coords = screen_get_map_xy_with_z({ screenX, screenY }, z);
-    if (coords.x == LOCATION_NULL)
-        return;
+    auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
+    if (mapCoords.x == LOCATION_NULL)
+        return std::nullopt;
 
-    *side = map_get_tile_side(coords.x, coords.y);
-    *mapX = floor2(coords.x, 32);
-    *mapY = floor2(coords.y, 32);
+    *side = map_get_tile_side(mapCoords.x, mapCoords.y);
+    return CoordsXY(floor2(mapCoords.x, 32), floor2(mapCoords.y, 32));
 }
 
 /**

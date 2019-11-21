@@ -10,6 +10,7 @@
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
 
+#include "../core/Optional.hpp"
 #include "../world/Location.hpp"
 #include "Window.h"
 
@@ -176,10 +177,9 @@ void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int3
 CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport);
 CoordsXY screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z);
 CoordsXY screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadrant);
-void screen_get_map_xy_quadrant_with_z(
-    int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY, uint8_t* quadrant);
+std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* quadrant);
 CoordsXY screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side);
-void screen_get_map_xy_side_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t* mapX, int16_t* mapY, uint8_t* side);
+std::optional<CoordsXY> screen_get_map_xy_side_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* side);
 
 uint8_t get_current_rotation();
 int16_t get_height_marker_offset();
