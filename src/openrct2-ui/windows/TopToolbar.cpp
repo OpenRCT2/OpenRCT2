@@ -1379,6 +1379,7 @@ static void sub_6E1F34(
 
                     auto mapCoords = screen_get_map_xy_quadrant_with_z({ x, y }, z, &cl);
                     if (!mapCoords)
+                        *grid_x = LOCATION_NULL;
                         return;
                     *grid_x = mapCoords->x;
                     *grid_y = mapCoords->y;
@@ -1561,6 +1562,7 @@ static void sub_6E1F34(
                 int16_t z = gSceneryCtrlPressZ;
                 auto mapCoords = screen_get_map_xy_side_with_z({ x, y }, z, &cl);
                 if (!mapCoords)
+                    *grid_x = LOCATION_NULL;
                     return;
                 *grid_x = mapCoords->x;
                 *grid_y = mapCoords->y;
