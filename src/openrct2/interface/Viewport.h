@@ -162,12 +162,12 @@ void get_map_coordinates_from_pos_window(
     rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport);
 
-int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info* info);
-int32_t viewport_interaction_left_over(int32_t x, int32_t y);
-int32_t viewport_interaction_left_click(int32_t x, int32_t y);
-int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_interaction_info* info);
-int32_t viewport_interaction_right_over(int32_t x, int32_t y);
-int32_t viewport_interaction_right_click(int32_t x, int32_t y);
+int32_t viewport_interaction_get_item_left(ScreenCoordsXY screenCoords, viewport_interaction_info* info);
+int32_t viewport_interaction_left_over(ScreenCoordsXY screenCoords);
+int32_t viewport_interaction_left_click(ScreenCoordsXY screenCoords);
+int32_t viewport_interaction_get_item_right(ScreenCoordsXY screenCoords, viewport_interaction_info* info);
+int32_t viewport_interaction_right_over(ScreenCoordsXY screenCoords);
+int32_t viewport_interaction_right_click(ScreenCoordsXY screenCoords);
 
 CoordsXY sub_68A15E(ScreenCoordsXY screenCoords);
 void sub_68B2B7(paint_session* session, CoordsXY mapCoords);

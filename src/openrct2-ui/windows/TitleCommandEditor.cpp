@@ -612,7 +612,7 @@ static void window_title_command_editor_update(rct_window* w)
 static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     viewport_interaction_info info;
-    viewport_interaction_get_item_left(screenCoords.x, screenCoords.y, &info);
+    viewport_interaction_get_item_left(screenCoords, &info);
 
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
