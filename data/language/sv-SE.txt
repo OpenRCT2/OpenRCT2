@@ -3524,7 +3524,7 @@ STR_6198    :{BLACK}Dag:
 STR_6199    :Välj datum
 STR_6200    :Återställ datum
 STR_6201    :{MONTH}
-STR_6202    :Stil på virutiella golv:
+STR_6202    :Stil på virtuella golv:
 STR_6203    :{SMALLFONT}{BLACK}När aktiverad, kommer ett rutnät att ritas i samma höjd som elementen är på när du håller in Ctrl eller Shift vilket förenklar vertikala placeringar.
 STR_6204    :Tegel
 STR_6205    :Järn
