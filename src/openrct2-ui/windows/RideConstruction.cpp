@@ -2429,13 +2429,13 @@ static void sub_6CBCE2(
     {
         auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
         CoordsXY offsets = { trackBlock->x, trackBlock->y };
-        originCoords += offsets.Rotate(trackDirection);
+        CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
         int32_t baseZ = (originZ + trackBlock->z) >> 3;
         int32_t clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
 
-        int32_t tileX = originCoords.x >> 5;
-        int32_t tileY = originCoords.y >> 5;
+        int32_t tileX = coords.x >> 5;
+        int32_t tileY = coords.y >> 5;
 
         // Replace map elements with temporary ones containing track
         _backupTileElementArrays[0] = map_get_first_element_at(tileX + 0, tileY + 0);
@@ -2466,7 +2466,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
         // Draw this map tile
-        sub_68B2B7(session, originCoords);
+        sub_68B2B7(session, coords);
 
         // Restore map elements
         map_set_tile_elements(tileX + 0, tileY + 0, _backupTileElementArrays[0]);
@@ -3359,9 +3359,9 @@ static void window_ride_construction_select_map_tiles(
     while (trackBlock->index != 255)
     {
         CoordsXY offsets = { trackBlock->x, trackBlock->y };
-        tileCoords += offsets.Rotate(trackDirection);
+        CoordsXY currentTileCoords = tileCoords + offsets.Rotate(trackDirection);
 
-        gMapSelectionTiles.push_back(tileCoords);
+        gMapSelectionTiles.push_back(currentTileCoords);
         trackBlock++;
     }
 }
