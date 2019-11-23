@@ -118,7 +118,9 @@ namespace CommandLine
     extern const CommandLineCommand SpriteCommands[];
     extern const CommandLineCommand BenchGfxCommands[];
     extern const CommandLineCommand BenchSpriteSortCommands[];
+    extern const CommandLineCommand BenchmarkCommands[];
     extern const CommandLineCommand SimulateCommands[];
+    extern const CommandLineCommand BenchLogicCommands[];
 
     extern const CommandLineExample RootExamples[];
 
