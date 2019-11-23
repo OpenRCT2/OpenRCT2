@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include <algorithm>
 #include "IStream.hpp"
 
 namespace MEMORY_ACCESS
