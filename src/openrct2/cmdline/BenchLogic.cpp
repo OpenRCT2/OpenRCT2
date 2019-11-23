@@ -52,7 +52,8 @@ static void BM_gamelogic(benchmark::State& state, IContext* context)
         static_cast<double>(microseconds) };
     auto start = std::chrono::high_resolution_clock::now();
 
-    context->GetGameState()->UpdateLogic();
+    for (auto _ : state)
+        context->GetGameState()->UpdateLogic();
 
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed_seconds = std::chrono::duration_cast<std::chrono::duration<double>>(end - start);
