@@ -138,7 +138,7 @@ void viewport_paint(
     const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
     std::vector<paint_session>* sessions = nullptr);
 
-void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t* z);
+CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY startCoords);
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords);
 CoordsXY viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z);

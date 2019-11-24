@@ -912,11 +912,10 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 
     int16_t x = (viewport->width >> 1) + viewport->x;
     int16_t y = (viewport->height >> 1) + viewport->y;
-    int16_t z;
 
     // has something to do with checking if middle of the viewport is obstructed
     rct_viewport* other;
-    CoordsXY coords = screen_get_map_xy({ x, y }, &other);
+    CoordsXYZ coords{ screen_get_map_xy({ x, y }, &other), 0 };
 
     // other != viewport probably triggers on viewports in ride or guest window?
     // x is LOCATION_NULL if middle of viewport is obstructed by another window?
@@ -925,17 +924,16 @@ void window_rotate_camera(rct_window* w, int32_t direction)
         int16_t view_x = (viewport->view_width >> 1) + viewport->view_x;
         int16_t view_y = (viewport->view_height >> 1) + viewport->view_y;
 
-        viewport_adjust_for_map_height(&view_x, &view_y, &z);
-        coords = { view_x, view_y };
+        coords = viewport_adjust_for_map_height({ view_x, view_y });
     }
     else
     {
-        z = tile_element_height(coords);
+        coords.z = tile_element_height(coords);
     }
 
     gCurrentRotation = (get_current_rotation() + direction) & 3;
 
-    auto centreLoc = centre_2d_coordinates({ coords, z }, viewport);
+    auto centreLoc = centre_2d_coordinates(coords, viewport);
 
     if (centreLoc)
     {
