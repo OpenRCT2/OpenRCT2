@@ -12,6 +12,8 @@
 #include "../common.h"
 #include "IStream.hpp"
 
+#include <algorithm>
+
 namespace MEMORY_ACCESS
 {
     constexpr uint8_t READ = 1 << 0;
