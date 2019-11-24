@@ -45,13 +45,13 @@ static void viewport_interaction_remove_footpath_item(TileElement* tileElement, 
 static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y);
 static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y);
 static void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y);
-static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance);
+static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance);
 
 /**
  *
  *  rct2: 0x006ED9D0
  */
-int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info* info)
+int32_t viewport_interaction_get_item_left(ScreenCoordsXY screenCoords, viewport_interaction_info* info)
 {
     TileElement* tileElement;
     rct_sprite* sprite;
@@ -65,10 +65,10 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    LocationXY16 mapCoord = {};
+    CoordsXY mapCoord = {};
     get_map_coordinates_from_pos(
-        x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x,
-        &mapCoord.y, &info->type, &info->tileElement, nullptr);
+        screenCoords, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK,
+        mapCoord, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -111,7 +111,7 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
     // If nothing is under cursor, find a close by peep
     if (info->type == VIEWPORT_INTERACTION_ITEM_NONE)
     {
-        info->peep = viewport_interaction_get_closest_peep(x, y, 32);
+        info->peep = viewport_interaction_get_closest_peep(screenCoords, 32);
         if (info->peep == nullptr)
             return VIEWPORT_INTERACTION_ITEM_NONE;
 
@@ -124,11 +124,11 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
     return info->type;
 }
 
-int32_t viewport_interaction_left_over(int32_t x, int32_t y)
+int32_t viewport_interaction_left_over(ScreenCoordsXY screenCoords)
 {
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_left(x, y, &info))
+    switch (viewport_interaction_get_item_left(screenCoords, &info))
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
         case VIEWPORT_INTERACTION_ITEM_RIDE:
@@ -139,11 +139,11 @@ int32_t viewport_interaction_left_over(int32_t x, int32_t y)
     }
 }
 
-int32_t viewport_interaction_left_click(int32_t x, int32_t y)
+int32_t viewport_interaction_left_click(ScreenCoordsXY screenCoords)
 {
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_left(x, y, &info))
+    switch (viewport_interaction_get_item_left(screenCoords, &info))
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
             switch (info.sprite->generic.sprite_identifier)
@@ -200,7 +200,7 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
  *
  *  rct2: 0x006EDE88
  */
-int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_interaction_info* info)
+int32_t viewport_interaction_get_item_right(ScreenCoordsXY screenCoords, viewport_interaction_info* info)
 {
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
@@ -215,9 +215,9 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    LocationXY16 mapCoord = {};
+    CoordsXY mapCoord = {};
     get_map_coordinates_from_pos(
-        x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type,
+        screenCoords, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), mapCoord, &info->type,
         &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
@@ -435,23 +435,23 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 }
 
-int32_t viewport_interaction_right_over(int32_t x, int32_t y)
+int32_t viewport_interaction_right_over(ScreenCoordsXY screenCoords)
 {
     viewport_interaction_info info;
 
-    return viewport_interaction_get_item_right(x, y, &info) != 0;
+    return viewport_interaction_get_item_right(screenCoords, &info) != 0;
 }
 
 /**
  *
  *  rct2: 0x006E8A62
  */
-int32_t viewport_interaction_right_click(int32_t x, int32_t y)
+int32_t viewport_interaction_right_click(ScreenCoordsXY screenCoords)
 {
     CoordsXYE tileElement;
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_right(x, y, &info))
+    switch (viewport_interaction_get_item_right(screenCoords, &info))
     {
         case VIEWPORT_INTERACTION_ITEM_NONE:
             return 0;
@@ -613,7 +613,7 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     }
 }
 
-static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance)
+static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
     int32_t distance, closestDistance;
     uint16_t spriteIndex;
@@ -621,7 +621,7 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
     rct_viewport* viewport;
     Peep *peep, *closestPeep;
 
-    w = window_find_from_point(ScreenCoordsXY(x, y));
+    w = window_find_from_point(screenCoords);
     if (w == nullptr)
         return nullptr;
 
@@ -629,8 +629,8 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
     if (viewport == nullptr || viewport->zoom >= 2)
         return nullptr;
 
-    x = ((x - viewport->x) << viewport->zoom) + viewport->view_x;
-    y = ((y - viewport->y) << viewport->zoom) + viewport->view_y;
+    screenCoords.x = ((screenCoords.x - viewport->x) << viewport->zoom) + viewport->view_x;
+    screenCoords.y = ((screenCoords.y - viewport->y) << viewport->zoom) + viewport->view_y;
 
     closestPeep = nullptr;
     closestDistance = 0xFFFF;
@@ -639,8 +639,8 @@ static Peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t
         if (peep->sprite_left == LOCATION_NULL)
             continue;
 
-        distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - x)
-            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - y);
+        distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - screenCoords.x)
+            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - screenCoords.y);
         if (distance > maxDistance)
             continue;
 

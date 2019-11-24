@@ -352,7 +352,7 @@ static void game_handle_input_mouse(ScreenCoordsXY screenCoords, int32_t state)
                 if (_ticksSinceDragStart < 500)
                 {
                     // If the user pressed the right mouse button for less than 500 ticks, interpret as right click
-                    viewport_interaction_right_click(screenCoords.x, screenCoords.y);
+                    viewport_interaction_right_click(screenCoords);
                 }
             }
             break;
@@ -405,7 +405,7 @@ static void game_handle_input_mouse(ScreenCoordsXY screenCoords, int32_t state)
                         }
                         else if (!(_inputFlags & INPUT_FLAG_4))
                         {
-                            viewport_interaction_left_click(screenCoords.x, screenCoords.y);
+                            viewport_interaction_left_click(screenCoords);
                         }
                     }
                     break;
@@ -1108,7 +1108,7 @@ void process_mouse_over(ScreenCoordsXY screenCoords)
                 case WWT_VIEWPORT:
                     if (!(_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
                     {
-                        if (viewport_interaction_left_over(screenCoords.x, screenCoords.y))
+                        if (viewport_interaction_left_over(screenCoords))
                         {
                             set_cursor(CURSOR_HAND_POINT);
                             return;
@@ -1177,7 +1177,7 @@ void process_mouse_over(ScreenCoordsXY screenCoords)
         }
     }
 
-    viewport_interaction_right_over(screenCoords.x, screenCoords.y);
+    viewport_interaction_right_over(screenCoords);
     set_cursor(cursorId);
 }
 
