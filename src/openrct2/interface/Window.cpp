@@ -935,13 +935,15 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 
     gCurrentRotation = (get_current_rotation() + direction) & 3;
 
-    int32_t new_x, new_y;
-    centre_2d_coordinates(coords.x, coords.y, z, &new_x, &new_y, viewport);
+    auto centreLoc = centre_2d_coordinates({ coords, z }, viewport);
 
-    w->saved_view_x = new_x;
-    w->saved_view_y = new_y;
-    viewport->view_x = new_x;
-    viewport->view_y = new_y;
+    if (centreLoc)
+    {
+        w->saved_view_x = centreLoc->x;
+        w->saved_view_y = centreLoc->y;
+        viewport->view_x = centreLoc->x;
+        viewport->view_y = centreLoc->y;
+    }
 
     w->Invalidate();
 
@@ -960,25 +962,35 @@ void window_viewport_get_map_coords_by_cursor(
     get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, nullptr, nullptr, nullptr);
 
     // Get viewport coordinates centring around the tile.
-    int32_t base_height = tile_element_height({ *map_x, *map_y });
-    int32_t dest_x, dest_y;
-    centre_2d_coordinates(*map_x, *map_y, base_height, &dest_x, &dest_y, w->viewport);
+    int32_t z = tile_element_height({ *map_x, *map_y });
+
+    auto centreLoc = centre_2d_coordinates({ *map_x, *map_y, z }, w->viewport);
+    if (!centreLoc)
+    {
+        log_error("Invalid location.");
+        return;
+    }
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
     int32_t rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
             rebased_y = ((w->height >> 1) - mouse_y) * (1 << w->viewport->zoom);
 
     // Compute cursor offset relative to tile.
-    *offset_x = (w->saved_view_x - (dest_x + rebased_x)) * (1 << w->viewport->zoom);
-    *offset_y = (w->saved_view_y - (dest_y + rebased_y)) * (1 << w->viewport->zoom);
+    *offset_x = (w->saved_view_x - (centreLoc->x + rebased_x)) * (1 << w->viewport->zoom);
+    *offset_y = (w->saved_view_y - (centreLoc->y + rebased_y)) * (1 << w->viewport->zoom);
 }
 
 void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y)
 {
     // Get viewport coordinates centring around the tile.
-    int32_t dest_x, dest_y;
-    int32_t base_height = tile_element_height({ map_x, map_y });
-    centre_2d_coordinates(map_x, map_y, base_height, &dest_x, &dest_y, w->viewport);
+    int32_t z = tile_element_height({ map_x, map_y });
+    auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w->viewport);
+
+    if (!centreLoc)
+    {
+        log_error("Invalid location.");
+        return;
+    }
 
     // Get mouse position to offset against.
     int32_t mouse_x, mouse_y;
@@ -989,8 +1001,8 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int
             rebased_y = ((w->height >> 1) - mouse_y) * (1 << w->viewport->zoom);
 
     // Apply offset to the viewport.
-    w->saved_view_x = dest_x + rebased_x + (offset_x / (1 << w->viewport->zoom));
-    w->saved_view_y = dest_y + rebased_y + (offset_y / (1 << w->viewport->zoom));
+    w->saved_view_x = centreLoc->x + rebased_x + (offset_x / (1 << w->viewport->zoom));
+    w->saved_view_y = centreLoc->y + rebased_y + (offset_y / (1 << w->viewport->zoom));
 }
 
 void window_zoom_set(rct_window* w, int32_t zoomLevel, bool atCursor)

@@ -121,7 +121,7 @@ extern paint_entry* gNextFreePaintStruct;
 extern uint8_t gCurrentRotation;
 
 void viewport_init_all();
-void centre_2d_coordinates(int32_t x, int32_t y, int32_t z, int32_t* out_x, int32_t* out_y, rct_viewport* viewport);
+std::optional<ScreenCoordsXY> centre_2d_coordinates(CoordsXYZ loc, rct_viewport* viewport);
 void viewport_create(
     rct_window* w, int32_t x, int32_t y, int32_t width, int32_t height, int32_t zoom, int32_t centre_x, int32_t centre_y,
     int32_t centre_z, char flags, uint16_t sprite);
