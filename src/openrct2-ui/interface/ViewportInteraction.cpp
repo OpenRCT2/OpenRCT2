@@ -660,16 +660,15 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
  */
 CoordsXY sub_68A15E(ScreenCoordsXY screenCoords)
 {
-    int16_t mapX, mapY;
+    CoordsXY mapCoords;
     CoordsXY initialPos{};
     int32_t interactionType;
     TileElement* tileElement;
     rct_viewport* viewport;
     get_map_coordinates_from_pos(
-        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &mapX, &mapY,
-        &interactionType, &tileElement, &viewport);
-    initialPos.x = mapX;
-    initialPos.y = mapY;
+        screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapCoords, &interactionType,
+        &tileElement, &viewport);
+    initialPos = mapCoords;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {

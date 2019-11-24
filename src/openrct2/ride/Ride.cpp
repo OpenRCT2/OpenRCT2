@@ -6185,8 +6185,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     CoordsXYZD entranceExitCoords{};
 
     gRideEntranceExitPlaceDirection = 255;
-    get_map_coordinates_from_pos(
-        screenCoords.x, screenCoords.y, 0xFFFB, nullptr, nullptr, &interactionType, &tileElement, &viewport);
+    CoordsXY unusedCoords;
+    get_map_coordinates_from_pos(screenCoords, 0xFFFB, unusedCoords, &interactionType, &tileElement, &viewport);
     if (interactionType != 0)
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)

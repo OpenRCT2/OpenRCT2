@@ -1222,27 +1222,23 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
 
-    int16_t mapX = 0;
-    int16_t mapY = 0;
+    CoordsXY mapCoords;
     TileElement* clickedElement = nullptr;
     if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
     {
-        get_map_coordinates_from_pos(
-            screenCoords.x, screenCoords.y, ViewportInteractionFlags, &mapX, &mapY, nullptr, &clickedElement, nullptr);
+        get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags, mapCoords, nullptr, &clickedElement, nullptr);
     }
 
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
     if (clickedElement == nullptr)
     {
-        CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords, nullptr);
-        mapX = mapCoords.x;
-        mapY = mapCoords.y;
+        mapCoords = screen_pos_to_map_pos(screenCoords, nullptr);
     }
 
-    if (mapX != LOCATION_NULL)
+    if (mapCoords.x != LOCATION_NULL)
     {
-        gMapSelectPositionA.x = gMapSelectPositionB.x = mapX;
-        gMapSelectPositionA.y = gMapSelectPositionB.y = mapY;
+        gMapSelectPositionA.x = gMapSelectPositionB.x = mapCoords.x;
+        gMapSelectPositionA.y = gMapSelectPositionB.y = mapCoords.y;
     }
     else if (windowTileInspectorTileSelected)
     {
@@ -1273,19 +1269,17 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, ScreenCoor
     windowTileInspectorToolMouseY = screenCoords.y;
     windowTileInspectorToolCtrlDown = ctrlIsHeldDown;
 
-    int16_t mapX = 0;
-    int16_t mapY = 0;
+    CoordsXY mapCoords{};
     TileElement* clickedElement = nullptr;
     if (ctrlIsHeldDown)
     {
-        get_map_coordinates_from_pos(
-            screenCoords.x, screenCoords.y, ViewportInteractionFlags, &mapX, &mapY, nullptr, &clickedElement, nullptr);
+        get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags, mapCoords, nullptr, &clickedElement, nullptr);
     }
 
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
     if (clickedElement == nullptr)
     {
-        CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords, nullptr);
+        mapCoords = screen_pos_to_map_pos(screenCoords, nullptr);
 
         if (mapCoords.x == LOCATION_NULL)
         {
@@ -1298,15 +1292,12 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, ScreenCoor
         {
             return;
         }
-        mapX = mapCoords.x;
-        mapY = mapCoords.y;
     }
 
     windowTileInspectorTileSelected = true;
-    windowTileInspectorToolMap.x = mapX;
-    windowTileInspectorToolMap.y = mapY;
-    windowTileInspectorTileX = mapX >> 5;
-    windowTileInspectorTileY = mapY >> 5;
+    windowTileInspectorToolMap = mapCoords;
+    windowTileInspectorTileX = mapCoords.x >> 5;
+    windowTileInspectorTileY = mapCoords.y >> 5;
 
     window_tile_inspector_load_tile(w, clickedElement);
 }

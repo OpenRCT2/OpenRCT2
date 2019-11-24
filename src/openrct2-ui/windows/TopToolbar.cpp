@@ -1017,7 +1017,6 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widgetIndex)
 {
     // ax, cx, bl
-    int16_t grid_x, grid_y;
     int32_t type;
     // edx
     TileElement* tile_element;
@@ -1027,7 +1026,8 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
     // not used
     rct_viewport* viewport;
-    get_map_coordinates_from_pos(x, y, flags, &grid_x, &grid_y, &type, &tile_element, &viewport);
+    CoordsXY gridCoords;
+    get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &type, &tile_element, &viewport);
 
     switch (type)
     {
@@ -1042,8 +1042,8 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
             uint8_t quadrant = tile_element->AsSmallScenery()->GetSceneryQuadrant();
             auto repaintScenery = SmallScenerySetColourAction(
-                { grid_x, grid_y, tile_element->base_height * 8 }, quadrant, tile_element->AsSmallScenery()->GetEntryIndex(),
-                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                { gridCoords.x, gridCoords.y, tile_element->base_height * 8 }, quadrant,
+                tile_element->AsSmallScenery()->GetEntryIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
 
             GameActions::Execute(&repaintScenery);
             break;
@@ -1057,8 +1057,8 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 return;
 
             auto repaintScenery = WallSetColourAction(
-                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() }, gWindowSceneryPrimaryColour,
-                gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                { gridCoords.x, gridCoords.y, tile_element->base_height * 8, tile_element->GetDirection() },
+                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
             GameActions::Execute(&repaintScenery);
             break;
@@ -1072,7 +1072,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 return;
 
             auto repaintScenery = LargeScenerySetColourAction(
-                { grid_x, grid_y, tile_element->base_height * 8, tile_element->GetDirection() },
+                { gridCoords.x, gridCoords.y, tile_element->base_height * 8, tile_element->GetDirection() },
                 tile_element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
 
             GameActions::Execute(&repaintScenery);
@@ -1087,7 +1087,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                 {
                     auto repaintScenery = BannerSetColourAction(
-                        { grid_x, grid_y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
+                        { gridCoords.x, gridCoords.y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
                         gWindowSceneryPrimaryColour);
 
                     GameActions::Execute(&repaintScenery);
@@ -1105,11 +1105,11 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
     auto flags = VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_WALL & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY
         & VIEWPORT_INTERACTION_MASK_BANNER & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
 
-    int16_t gridX, gridY;
     int32_t type;
     TileElement* tileElement;
     rct_viewport* viewport;
-    get_map_coordinates_from_pos(x, y, flags, &gridX, &gridY, &type, &tileElement, &viewport);
+    CoordsXY unusedCoords;
+    get_map_coordinates_from_pos({ x, y }, flags, unusedCoords, &type, &tileElement, &viewport);
 
     switch (type)
     {
@@ -1278,7 +1278,8 @@ static void sub_6E1F34(
                     & VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_WALL
                     & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
                 int32_t interaction_type;
-                get_map_coordinates_from_pos(x, y, flags, nullptr, nullptr, &interaction_type, &tile_element, nullptr);
+                CoordsXY unusedCoords;
+                get_map_coordinates_from_pos({ x, y }, flags, unusedCoords, &interaction_type, &tile_element, nullptr);
 
                 if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE)
                 {
@@ -1428,8 +1429,11 @@ static void sub_6E1F34(
                 auto flags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER;
                 int32_t interaction_type = 0;
                 TileElement* tile_element;
+                CoordsXY gridCoords;
 
-                get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
+                get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &interaction_type, &tile_element, nullptr);
+                *grid_x = gridCoords.x;
+                *grid_y = gridCoords.y;
 
                 if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
                 {
@@ -1503,8 +1507,11 @@ static void sub_6E1F34(
             auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
             int32_t interaction_type = 0;
             TileElement* tile_element;
+            CoordsXY gridCoords;
 
-            get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
+            get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &interaction_type, &tile_element, nullptr);
+            *grid_x = gridCoords.x;
+            *grid_y = gridCoords.y;
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
             {
@@ -1666,8 +1673,11 @@ static void sub_6E1F34(
             auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
             int32_t interaction_type = 0;
             TileElement* tile_element;
+            CoordsXY gridCoords;
 
-            get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
+            get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &interaction_type, &tile_element, nullptr);
+            *grid_x = gridCoords.x;
+            *grid_y = gridCoords.y;
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
             {
@@ -2347,11 +2357,11 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    LocationXY16 mapTile = {};
+    CoordsXY mapTile = {};
     int32_t interaction_type = 0;
     get_map_coordinates_from_pos(
-        x, y, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &mapTile.x, &mapTile.y, &interaction_type,
-        nullptr, nullptr);
+        { x, y }, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapTile, &interaction_type, nullptr,
+        nullptr);
 
     if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
     {

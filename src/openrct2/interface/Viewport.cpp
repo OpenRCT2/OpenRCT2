@@ -1632,20 +1632,6 @@ void get_map_coordinates_from_pos(
     get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
 }
 
-void get_map_coordinates_from_pos(
-    int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
-    TileElement** tileElement, rct_viewport** viewport)
-{
-    ScreenCoordsXY screenCoords{ screenX, screenY };
-    CoordsXY mapCoords;
-    get_map_coordinates_from_pos(screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
-
-    if (x != nullptr)
-        *x = mapCoords.x;
-    if (y != nullptr)
-        *y = mapCoords.y;
-}
-
 void get_map_coordinates_from_pos_window(
     rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport)
@@ -1773,32 +1759,31 @@ static rct_viewport* viewport_find_from_point(ScreenCoordsXY screenCoords)
  */
 CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport)
 {
-    int16_t my_x, my_y;
     int32_t interactionType;
     rct_viewport* myViewport = nullptr;
+    CoordsXY map_pos;
     get_map_coordinates_from_pos(
-        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, nullptr,
-        &myViewport);
+        screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN, map_pos, &interactionType, nullptr, &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         return { LOCATION_NULL, 0 };
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenCoords);
-    CoordsXY map_pos = { my_x + 16, my_y + 16 };
+    CoordsXY modifiedPos = { map_pos.x + 16, map_pos.y + 16 };
 
     for (int32_t i = 0; i < 5; i++)
     {
         int32_t z = tile_element_height(map_pos);
-        map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        map_pos.x = std::clamp<int16_t>(map_pos.x, my_x, my_x + 31);
-        map_pos.y = std::clamp<int16_t>(map_pos.y, my_y, my_y + 31);
+        modifiedPos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+        modifiedPos.x = std::clamp<int32_t>(modifiedPos.x, map_pos.x, map_pos.x + 31);
+        modifiedPos.y = std::clamp<int32_t>(modifiedPos.y, map_pos.y, map_pos.y + 31);
     }
 
     if (viewport != nullptr)
         *viewport = myViewport;
 
-    return map_pos;
+    return modifiedPos;
 }
 
 /**

@@ -252,17 +252,16 @@ void footpath_get_coordinates_from_pos(
     int32_t z = 0, interactionType;
     TileElement* myTileElement;
     rct_viewport* viewport;
-    LocationXY16 position16 = {};
+    CoordsXY position = {};
 
     get_map_coordinates_from_pos(
-        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_FOOTPATH, &position16.x, &position16.y, &interactionType,
-        &myTileElement, &viewport);
+        screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH, position, &interactionType, &myTileElement, &viewport);
     if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH
         || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
     {
         get_map_coordinates_from_pos(
-            screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
-            &position16.x, &position16.y, &interactionType, &myTileElement, &viewport);
+            screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, position, &interactionType,
+            &myTileElement, &viewport);
         if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         {
             if (x != nullptr)
@@ -271,7 +270,6 @@ void footpath_get_coordinates_from_pos(
         }
     }
 
-    CoordsXY position = { position16.x, position16.y };
     auto minPosition = position;
     auto maxPosition = position + CoordsXY{ 31, 31 };
 
@@ -352,10 +350,9 @@ void footpath_bridge_get_info_from_pos(
     int32_t interactionType;
     rct_viewport* viewport;
 
-    LocationXY16 map_pos = {};
+    CoordsXY map_pos = {};
     get_map_coordinates_from_pos(
-        screenCoords.x, screenCoords.y, VIEWPORT_INTERACTION_MASK_RIDE, &map_pos.x, &map_pos.y, &interactionType, tileElement,
-        &viewport);
+        screenCoords, VIEWPORT_INTERACTION_MASK_RIDE, map_pos, &interactionType, tileElement, &viewport);
     *x = map_pos.x;
     *y = map_pos.y;
 
@@ -376,9 +373,8 @@ void footpath_bridge_get_info_from_pos(
     }
 
     get_map_coordinates_from_pos(
-        screenCoords.x, screenCoords.y,
-        VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &map_pos.x,
-        &map_pos.y, &interactionType, tileElement, &viewport);
+        screenCoords, VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
+        map_pos, &interactionType, tileElement, &viewport);
     *x = map_pos.x;
     *y = map_pos.y;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
