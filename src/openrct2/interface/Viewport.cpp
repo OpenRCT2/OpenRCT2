@@ -215,17 +215,15 @@ void viewport_create(
  * edx is assumed to be (and always is) the current rotation, so it is not
  * needed as parameter.
  */
-void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t* z)
+CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY startCoords)
 {
-    int16_t start_x = *x;
-    int16_t start_y = *y;
     int16_t height = 0;
 
     uint32_t rotation = get_current_rotation();
     CoordsXY pos{};
     for (int32_t i = 0; i < 6; i++)
     {
-        pos = viewport_coord_to_map_coord(start_x, start_y, height);
+        pos = viewport_coord_to_map_coord(startCoords.x, startCoords.y, height);
         height = tile_element_height(pos);
 
         // HACK: This is to prevent the x and y values being set to values outside
@@ -239,9 +237,7 @@ void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t* z)
         }
     }
 
-    *x = pos.x;
-    *y = pos.y;
-    *z = height;
+    return { pos, height };
 }
 
 /*
