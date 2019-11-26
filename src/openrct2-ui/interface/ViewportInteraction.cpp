@@ -560,12 +560,10 @@ void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsX
     switch (tileElement->AsEntrance()->GetSequenceIndex())
     {
         case 1:
-            mapCoords.x += CoordsDirectionDelta[rotation].x;
-            mapCoords.y += CoordsDirectionDelta[rotation].y;
+            mapCoords += CoordsDirectionDelta[rotation];
             break;
         case 2:
-            mapCoords.x -= CoordsDirectionDelta[rotation].x;
-            mapCoords.y -= CoordsDirectionDelta[rotation].y;
+            mapCoords -= CoordsDirectionDelta[rotation];
             break;
     }
     auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ mapCoords.x, mapCoords.y, tileElement->base_height * 8 });
