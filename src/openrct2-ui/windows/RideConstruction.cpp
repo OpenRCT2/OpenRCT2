@@ -2192,7 +2192,15 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     else
     {
         auto mapZ = _trackPlaceCtrlZ;
-        mapCoords = screen_get_map_xy_with_z(screenCoords, mapZ);
+        auto mapXYCoords = screen_get_map_xy_with_z(screenCoords, mapZ);
+        if (mapXYCoords)
+        {
+            mapCoords = *mapXYCoords;
+        }
+        else
+        {
+            return std::nullopt;
+        }
 
         if (_trackPlaceShiftState != 0)
         {

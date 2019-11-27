@@ -295,9 +295,9 @@ static void window_land_rights_tool_update_land_rights(ScreenCoordsXY screenCoor
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    CoordsXY mapTile = screen_get_map_xy(screenCoords, nullptr);
+    auto mapTile = screen_get_map_xy(screenCoords, nullptr);
 
-    if (mapTile.x == LOCATION_NULL)
+    if (!mapTile)
     {
         if (_landRightsCost != MONEY32_UNDEFINED)
         {
@@ -328,35 +328,35 @@ static void window_land_rights_tool_update_land_rights(ScreenCoordsXY screenCoor
     int16_t tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left
-    mapTile.x -= (tool_size - 1) * 16;
-    mapTile.y -= (tool_size - 1) * 16;
-    mapTile.x &= 0xFFE0;
-    mapTile.y &= 0xFFE0;
+    mapTile->x -= (tool_size - 1) * 16;
+    mapTile->y -= (tool_size - 1) * 16;
+    mapTile->x &= 0xFFE0;
+    mapTile->y &= 0xFFE0;
 
-    if (gMapSelectPositionA.x != mapTile.x)
+    if (gMapSelectPositionA.x != mapTile->x)
     {
-        gMapSelectPositionA.x = mapTile.x;
+        gMapSelectPositionA.x = mapTile->x;
         state_changed++;
     }
 
-    if (gMapSelectPositionA.y != mapTile.y)
+    if (gMapSelectPositionA.y != mapTile->y)
     {
-        gMapSelectPositionA.y = mapTile.y;
+        gMapSelectPositionA.y = mapTile->y;
         state_changed++;
     }
 
-    mapTile.x += tool_length;
-    mapTile.y += tool_length;
+    mapTile->x += tool_length;
+    mapTile->y += tool_length;
 
-    if (gMapSelectPositionB.x != mapTile.x)
+    if (gMapSelectPositionB.x != mapTile->x)
     {
-        gMapSelectPositionB.x = mapTile.x;
+        gMapSelectPositionB.x = mapTile->x;
         state_changed++;
     }
 
-    if (gMapSelectPositionB.y != mapTile.y)
+    if (gMapSelectPositionB.y != mapTile->y)
     {
-        gMapSelectPositionB.y = mapTile.y;
+        gMapSelectPositionB.y = mapTile->y;
         state_changed++;
     }
 

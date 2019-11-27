@@ -1345,12 +1345,14 @@ static void sub_6E1F34(
                 // If CTRL not pressed
                 if (!gSceneryCtrlPressed)
                 {
-                    CoordsXY gridCoords = screen_get_map_xy_quadrant({ x, y }, &cl);
-                    *grid_x = gridCoords.x;
-                    *grid_y = gridCoords.y;
-
-                    if (*grid_x == LOCATION_NULL)
+                    auto gridCoords = screen_get_map_xy_quadrant({ x, y }, &cl);
+                    if (!gridCoords)
+                    {
+                        *grid_x = LOCATION_NULL;
                         return;
+                    }
+                    *grid_x = gridCoords->x;
+                    *grid_y = gridCoords->y;
 
                     gSceneryPlaceZ = 0;
 
@@ -1463,8 +1465,15 @@ static void sub_6E1F34(
             {
                 int16_t z = gSceneryCtrlPressZ;
                 auto coords = screen_get_map_xy_with_z({ x, y }, z);
-                *grid_x = coords.x;
-                *grid_y = coords.y;
+                if (coords)
+                {
+                    *grid_x = coords->x;
+                    *grid_y = coords->y;
+                }
+                else
+                {
+                    *grid_x = LOCATION_NULL;
+                }
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
@@ -1531,12 +1540,14 @@ static void sub_6E1F34(
             // If CTRL not pressed
             if (!gSceneryCtrlPressed)
             {
-                CoordsXY gridCoords = screen_get_map_xy_side({ x, y }, &cl);
-                *grid_x = gridCoords.x;
-                *grid_y = gridCoords.y;
-
-                if (*grid_x == LOCATION_NULL)
+                auto gridCoords = screen_get_map_xy_side({ x, y }, &cl);
+                if (!gridCoords)
+                {
+                    *grid_x = LOCATION_NULL;
                     return;
+                }
+                *grid_x = gridCoords->x;
+                *grid_y = gridCoords->y;
 
                 gSceneryPlaceZ = 0;
 
@@ -1631,8 +1642,15 @@ static void sub_6E1F34(
             {
                 int16_t z = gSceneryCtrlPressZ;
                 auto coords = screen_get_map_xy_with_z({ x, y }, z);
-                *grid_x = coords.x;
-                *grid_y = coords.y;
+                if (coords)
+                {
+                    *grid_x = coords->x;
+                    *grid_y = coords->y;
+                }
+                else
+                {
+                    *grid_x = LOCATION_NULL;
+                }
 
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
@@ -1990,9 +2008,9 @@ static uint8_t top_toolbar_tool_update_land_paint(int16_t x, int16_t y)
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    CoordsXY mapTile = screen_get_map_xy({ x, y }, nullptr);
+    auto mapTile = screen_get_map_xy({ x, y }, nullptr);
 
-    if (mapTile.x == LOCATION_NULL)
+    if (!mapTile)
     {
         if (gClearSceneryCost != MONEY32_UNDEFINED)
         {
@@ -2018,35 +2036,35 @@ static uint8_t top_toolbar_tool_update_land_paint(int16_t x, int16_t y)
     int16_t tool_length = (tool_size - 1) * 32;
 
     // Move to tool bottom left
-    mapTile.x -= (tool_size - 1) * 16;
-    mapTile.y -= (tool_size - 1) * 16;
-    mapTile.x &= 0xFFE0;
-    mapTile.y &= 0xFFE0;
+    mapTile->x -= (tool_size - 1) * 16;
+    mapTile->y -= (tool_size - 1) * 16;
+    mapTile->x &= 0xFFE0;
+    mapTile->y &= 0xFFE0;
 
-    if (gMapSelectPositionA.x != mapTile.x)
+    if (gMapSelectPositionA.x != mapTile->x)
     {
-        gMapSelectPositionA.x = mapTile.x;
+        gMapSelectPositionA.x = mapTile->x;
         state_changed++;
     }
 
-    if (gMapSelectPositionA.y != mapTile.y)
+    if (gMapSelectPositionA.y != mapTile->y)
     {
-        gMapSelectPositionA.y = mapTile.y;
+        gMapSelectPositionA.y = mapTile->y;
         state_changed++;
     }
 
-    mapTile.x += tool_length;
-    mapTile.y += tool_length;
+    mapTile->x += tool_length;
+    mapTile->y += tool_length;
 
-    if (gMapSelectPositionB.x != mapTile.x)
+    if (gMapSelectPositionB.x != mapTile->x)
     {
-        gMapSelectPositionB.x = mapTile.x;
+        gMapSelectPositionB.x = mapTile->x;
         state_changed++;
     }
 
-    if (gMapSelectPositionB.y != mapTile.y)
+    if (gMapSelectPositionB.y != mapTile->y)
     {
-        gMapSelectPositionB.y = mapTile.y;
+        gMapSelectPositionB.y = mapTile->y;
         state_changed++;
     }
 
@@ -2101,7 +2119,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     }
 
     int16_t tool_size = gLandToolSize;
-    CoordsXY mapTile;
+    std::optional<CoordsXY> mapTile;
     uint8_t side;
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -2112,7 +2130,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
         screen_pos_to_map_pos({ x, y }, &selectionType);
         mapTile = screen_get_map_xy_side({ x, y }, &side);
 
-        if (mapTile.x == LOCATION_NULL)
+        if (!mapTile)
         {
             money32 lower_cost = MONEY32_UNDEFINED;
             money32 raise_cost = MONEY32_UNDEFINED;
@@ -2146,27 +2164,27 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
             state_changed++;
         }
 
-        if (gMapSelectPositionA.x != mapTile.x)
+        if (gMapSelectPositionA.x != mapTile->x)
         {
-            gMapSelectPositionA.x = mapTile.x;
+            gMapSelectPositionA.x = mapTile->x;
             state_changed++;
         }
 
-        if (gMapSelectPositionA.y != mapTile.y)
+        if (gMapSelectPositionA.y != mapTile->y)
         {
-            gMapSelectPositionA.y = mapTile.y;
+            gMapSelectPositionA.y = mapTile->y;
             state_changed++;
         }
 
-        if (gMapSelectPositionB.x != mapTile.x)
+        if (gMapSelectPositionB.x != mapTile->x)
         {
-            gMapSelectPositionB.x = mapTile.x;
+            gMapSelectPositionB.x = mapTile->x;
             state_changed++;
         }
 
-        if (gMapSelectPositionB.y != mapTile.y)
+        if (gMapSelectPositionB.y != mapTile->y)
         {
-            gMapSelectPositionB.y = mapTile.y;
+            gMapSelectPositionB.y = mapTile->y;
             state_changed++;
         }
 
@@ -2189,7 +2207,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     // Get map coordinates and the side of the tile that is being hovered over
     mapTile = screen_get_map_xy_side({ x, y }, &side);
 
-    if (mapTile.x == LOCATION_NULL)
+    if (!mapTile)
     {
         money32 lower_cost = MONEY32_UNDEFINED;
         money32 raise_cost = MONEY32_UNDEFINED;
@@ -2234,33 +2252,33 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
         case MAP_SELECT_TYPE_EDGE_0:
         case MAP_SELECT_TYPE_EDGE_2:
             // Line
-            mapTile.y -= (tool_size - 1) * 16;
-            mapTile.y &= 0xFFE0;
+            mapTile->y -= (tool_size - 1) * 16;
+            mapTile->y &= 0xFFE0;
             break;
         case MAP_SELECT_TYPE_EDGE_1:
         case MAP_SELECT_TYPE_EDGE_3:
             // Line
-            mapTile.x -= (tool_size - 1) * 16;
-            mapTile.x &= 0xFFE0;
+            mapTile->x -= (tool_size - 1) * 16;
+            mapTile->x &= 0xFFE0;
             break;
         default:
             // Move to tool bottom left
-            mapTile.x -= (tool_size - 1) * 16;
-            mapTile.y -= (tool_size - 1) * 16;
-            mapTile.x &= 0xFFE0;
-            mapTile.y &= 0xFFE0;
+            mapTile->x -= (tool_size - 1) * 16;
+            mapTile->y -= (tool_size - 1) * 16;
+            mapTile->x &= 0xFFE0;
+            mapTile->y &= 0xFFE0;
             break;
     }
 
-    if (gMapSelectPositionA.x != mapTile.x)
+    if (gMapSelectPositionA.x != mapTile->x)
     {
-        gMapSelectPositionA.x = mapTile.x;
+        gMapSelectPositionA.x = mapTile->x;
         state_changed++;
     }
 
-    if (gMapSelectPositionA.y != mapTile.y)
+    if (gMapSelectPositionA.y != mapTile->y)
     {
-        gMapSelectPositionA.y = mapTile.y;
+        gMapSelectPositionA.y = mapTile->y;
         state_changed++;
     }
 
@@ -2270,30 +2288,30 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
         case MAP_SELECT_TYPE_EDGE_0:
         case MAP_SELECT_TYPE_EDGE_2:
             // Line
-            mapTile.y += tool_length;
+            mapTile->y += tool_length;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             break;
         case MAP_SELECT_TYPE_EDGE_1:
         case MAP_SELECT_TYPE_EDGE_3:
             // Line
-            mapTile.x += tool_length;
+            mapTile->x += tool_length;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             break;
         default:
-            mapTile.x += tool_length;
-            mapTile.y += tool_length;
+            mapTile->x += tool_length;
+            mapTile->y += tool_length;
             break;
     }
 
-    if (gMapSelectPositionB.x != mapTile.x)
+    if (gMapSelectPositionB.x != mapTile->x)
     {
-        gMapSelectPositionB.x = mapTile.x;
+        gMapSelectPositionB.x = mapTile->x;
         state_changed++;
     }
 
-    if (gMapSelectPositionB.y != mapTile.y)
+    if (gMapSelectPositionB.y != mapTile->y)
     {
-        gMapSelectPositionB.y = mapTile.y;
+        gMapSelectPositionB.y = mapTile->y;
         state_changed++;
     }
 

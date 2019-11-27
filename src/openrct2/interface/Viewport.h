@@ -174,11 +174,11 @@ void sub_68B2B7(paint_session* session, CoordsXY mapCoords);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
-CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport);
-CoordsXY screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z);
-CoordsXY screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadrant);
+std::optional<CoordsXY> screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport);
+std::optional<CoordsXY> screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z);
+std::optional<CoordsXY> screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadrant);
 std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* quadrant);
-CoordsXY screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side);
+std::optional<CoordsXY> screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side);
 std::optional<CoordsXY> screen_get_map_xy_side_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* side);
 
 uint8_t get_current_rotation();
