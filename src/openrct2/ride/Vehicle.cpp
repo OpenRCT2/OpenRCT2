@@ -1537,8 +1537,10 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         return;
     }
 
-    uint8_t stationId = ride->current_test_station;
-    if (!ride_get_entrance_location(ride, stationId).isNull())
+    if (ride->current_test_station == 0xFF)
+        return;
+
+    if (!ride_get_entrance_location(ride, ride->current_test_station).isNull())
     {
         uint8_t test_segment = ride->current_test_segment;
 
