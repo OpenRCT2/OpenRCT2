@@ -649,11 +649,11 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
             {
                 int32_t interactionType;
                 TileElement* tileElement;
-                LocationXY16 mapCoord = {};
+                CoordsXY mapCoord = {};
                 rct_viewport* viewport = window_get_viewport(w);
                 get_map_coordinates_from_pos(
-                    viewport->view_width / 2, viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x,
-                    &mapCoord.y, &interactionType, &tileElement, nullptr);
+                    { viewport->view_width / 2, viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord,
+                    &interactionType, &tileElement, nullptr);
                 mapCoord.x -= 16;
                 mapCoord.x /= 32;
                 mapCoord.y -= 16;
@@ -1689,7 +1689,7 @@ static constexpr const console_command console_command_table[] = {
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
     { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
     { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random peep, 1 = Remove random peep ]"},
-    
+
 };
 // clang-format on
 

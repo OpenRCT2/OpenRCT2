@@ -124,7 +124,6 @@ static void window_viewport_anchor_border_widgets(rct_window* w)
 static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     rct_window* mainWindow;
-    int16_t x, y;
 
     switch (widgetIndex)
     {
@@ -149,10 +148,11 @@ static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             mainWindow = window_get_main();
             if (mainWindow != nullptr)
             {
+                CoordsXY mapCoords;
                 get_map_coordinates_from_pos(
-                    w->x + (w->width / 2), w->y + (w->height / 2), VIEWPORT_INTERACTION_MASK_NONE, &x, &y, nullptr, nullptr,
-                    nullptr);
-                window_scroll_to_location(mainWindow, x, y, tile_element_height({ x, y }));
+                    { w->x + (w->width / 2), w->y + (w->height / 2) }, VIEWPORT_INTERACTION_MASK_NONE, mapCoords, nullptr,
+                    nullptr, nullptr);
+                window_scroll_to_location(mainWindow, mapCoords.x, mapCoords.y, tile_element_height(mapCoords));
             }
             break;
     }
