@@ -962,6 +962,8 @@ void window_viewport_get_map_coords_by_cursor(
     // Compute map coordinate by mouse position.
     CoordsXY mapCoords;
     get_map_coordinates_from_pos({ mouse_x, mouse_y }, VIEWPORT_INTERACTION_MASK_NONE, mapCoords, nullptr, nullptr, nullptr);
+    *map_x = mapCoords.x;
+    *map_y = mapCoords.y;
 
     // Get viewport coordinates centring around the tile.
     int32_t z = tile_element_height(mapCoords);
@@ -980,8 +982,6 @@ void window_viewport_get_map_coords_by_cursor(
     // Compute cursor offset relative to tile.
     *offset_x = (w->saved_view_x - (centreLoc->x + rebased_x)) * (1 << w->viewport->zoom);
     *offset_y = (w->saved_view_y - (centreLoc->y + rebased_y)) * (1 << w->viewport->zoom);
-    *map_x = centreLoc->x;
-    *map_y = centreLoc->y;
 }
 
 void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y)
