@@ -2212,7 +2212,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     if (mapCoords.x == LOCATION_NULL)
         return std::nullopt;
 
-    return CoordsXY{ floor2(mapCoords.x, 32), floor2(mapCoords.y, 32) };
+    return mapCoords.ToTileStart();
 }
 
 /**

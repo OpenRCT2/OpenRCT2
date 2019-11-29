@@ -139,6 +139,16 @@ struct CoordsXY
 
         return rotatedCoords;
     }
+
+    CoordsXY ToTileCentre() const
+    {
+        return ToTileStart() + CoordsXY{ 16, 16 };
+    }
+
+    CoordsXY ToTileStart() const
+    {
+        return { x & ~0x1F, y & ~0x1F };
+    }
 };
 
 struct TileCoordsXY
@@ -324,6 +334,12 @@ struct CoordsXYZD : public CoordsXYZ
     CoordsXYZD() = default;
     constexpr CoordsXYZD(int32_t _x, int32_t _y, int32_t _z, Direction _d)
         : CoordsXYZ(_x, _y, _z)
+        , direction(_d)
+    {
+    }
+
+    constexpr CoordsXYZD(CoordsXY _c, int32_t _z, Direction _d)
+        : CoordsXYZ(_c, _z)
         , direction(_d)
     {
     }

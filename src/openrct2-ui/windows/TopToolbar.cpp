@@ -2048,8 +2048,7 @@ static uint8_t top_toolbar_tool_update_land_paint(int16_t x, int16_t y)
     // Move to tool bottom left
     mapTile->x -= (tool_size - 1) * 16;
     mapTile->y -= (tool_size - 1) * 16;
-    mapTile->x &= 0xFFE0;
-    mapTile->y &= 0xFFE0;
+    mapTile = mapTile->ToTileStart();
 
     if (gMapSelectPositionA.x != mapTile->x)
     {
@@ -2263,20 +2262,19 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
         case MAP_SELECT_TYPE_EDGE_2:
             // Line
             mapTile->y -= (tool_size - 1) * 16;
-            mapTile->y &= 0xFFE0;
+            mapTile->y = mapTile->ToTileStart().y;
             break;
         case MAP_SELECT_TYPE_EDGE_1:
         case MAP_SELECT_TYPE_EDGE_3:
             // Line
             mapTile->x -= (tool_size - 1) * 16;
-            mapTile->x &= 0xFFE0;
+            mapTile->x = mapTile->ToTileStart().x;
             break;
         default:
             // Move to tool bottom left
             mapTile->x -= (tool_size - 1) * 16;
             mapTile->y -= (tool_size - 1) * 16;
-            mapTile->x &= 0xFFE0;
-            mapTile->y &= 0xFFE0;
+            mapTile = mapTile->ToTileStart();
             break;
     }
 

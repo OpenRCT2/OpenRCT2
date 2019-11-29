@@ -695,5 +695,5 @@ CoordsXY sub_68A15E(ScreenCoordsXY screenCoords)
         mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
     }
 
-    return { mapPos.x & ~0x1F, mapPos.y & ~0x1F };
+    return mapPos.ToTileStart();
 }

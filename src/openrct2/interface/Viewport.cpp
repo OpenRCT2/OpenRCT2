@@ -1037,11 +1037,9 @@ CoordsXY screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction)
         }
     }
 
-    mapCoords->x = mapCoords->x & ~0x1F;
-    mapCoords->y = mapCoords->y & ~0x1F;
     if (direction != nullptr)
         *direction = my_direction;
-    return *mapCoords;
+    return mapCoords->ToTileStart();
 }
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords)
@@ -1815,7 +1813,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, 
         return std::nullopt;
 
     *quadrant = map_get_tile_quadrant(mapCoords->x, mapCoords->y);
-    return CoordsXY(floor2(mapCoords->x, 32), floor2(mapCoords->y, 32));
+    return mapCoords->ToTileStart();
 }
 
 /**
@@ -1829,7 +1827,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(ScreenCoordsXY screenC
         return std::nullopt;
 
     *quadrant = map_get_tile_quadrant(mapCoords->x, mapCoords->y);
-    return CoordsXY(floor2(mapCoords->x, 32), floor2(mapCoords->y, 32));
+    return mapCoords->ToTileStart();
 }
 
 /**
@@ -1843,7 +1841,7 @@ std::optional<CoordsXY> screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint
         return std::nullopt;
 
     *side = map_get_tile_side(mapCoords->x, mapCoords->y);
-    return CoordsXY(floor2(mapCoords->x, 32), floor2(mapCoords->y, 32));
+    return mapCoords->ToTileStart();
 }
 
 /**
@@ -1857,7 +1855,7 @@ std::optional<CoordsXY> screen_get_map_xy_side_with_z(ScreenCoordsXY screenCoord
         return std::nullopt;
 
     *side = map_get_tile_side(mapCoords->x, mapCoords->y);
-    return CoordsXY(floor2(mapCoords->x, 32), floor2(mapCoords->y, 32));
+    return mapCoords->ToTileStart();
 }
 
 /**

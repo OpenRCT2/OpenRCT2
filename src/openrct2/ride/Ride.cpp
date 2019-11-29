@@ -6227,7 +6227,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     word_F4418C = coords->x;
     word_F4418E = coords->y;
 
-    entranceExitCoords = { floor2(coords->x, 32), floor2(coords->y, 32), stationHeight, INVALID_DIRECTION };
+    entranceExitCoords = { coords->ToTileStart(), stationHeight, INVALID_DIRECTION };
 
     if (ride->type == RIDE_TYPE_NULL)
     {
