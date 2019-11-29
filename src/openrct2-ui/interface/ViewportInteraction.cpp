@@ -39,12 +39,12 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 
-static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_footpath(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y);
+static void viewport_interaction_remove_scenery(TileElement* tileElement, CoordsXY mapCoords);
+static void viewport_interaction_remove_footpath(TileElement* tileElement, CoordsXY mapCoords);
+static void viewport_interaction_remove_footpath_item(TileElement* tileElement, CoordsXY mapCoords);
+static void viewport_interaction_remove_park_wall(TileElement* tileElement, CoordsXY mapCoords);
+static void viewport_interaction_remove_large_scenery(TileElement* tileElement, CoordsXY mapCoords);
+static void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsXY mapCoords);
 static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance);
 
 /**
@@ -473,22 +473,22 @@ int32_t viewport_interaction_right_click(ScreenCoordsXY screenCoords)
             ride_modify(&tileElement);
             break;
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
-            viewport_interaction_remove_scenery(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_scenery(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            viewport_interaction_remove_footpath(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_footpath(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-            viewport_interaction_remove_footpath_item(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_footpath_item(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_PARK:
-            viewport_interaction_remove_park_entrance(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_park_entrance(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            viewport_interaction_remove_park_wall(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_park_wall(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            viewport_interaction_remove_large_scenery(info.tileElement, info.x, info.y);
+            viewport_interaction_remove_large_scenery(info.tileElement, { info.x, info.y });
             break;
         case VIEWPORT_INTERACTION_ITEM_BANNER:
             context_open_detail_window(WD_BANNER, info.tileElement->AsBanner()->GetIndex());
@@ -502,10 +502,10 @@ int32_t viewport_interaction_right_click(ScreenCoordsXY screenCoords)
  *
  *  rct2: 0x006E08D2
  */
-static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_scenery(TileElement* tileElement, CoordsXY mapCoords)
 {
     auto removeSceneryAction = SmallSceneryRemoveAction(
-        { x, y, tileElement->base_height * 8 }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+        { mapCoords.x, mapCoords.y, tileElement->base_height * 8 }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
         tileElement->AsSmallScenery()->GetEntryIndex());
 
     GameActions::Execute(&removeSceneryAction);
@@ -515,7 +515,7 @@ static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_
  *
  *  rct2: 0x006A614A
  */
-static void viewport_interaction_remove_footpath(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_footpath(TileElement* tileElement, CoordsXY mapCoords)
 {
     int32_t z;
     rct_window* w;
@@ -527,14 +527,14 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, int32
     if (w != nullptr)
         footpath_provisional_update();
 
-    tileElement2 = map_get_first_element_at(x / 32, y / 32);
+    tileElement2 = map_get_first_element_at(mapCoords.x / 32, mapCoords.y / 32);
     if (tileElement2 == nullptr)
         return;
     do
     {
         if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z)
         {
-            footpath_remove(x, y, z, GAME_COMMAND_FLAG_APPLY);
+            footpath_remove(mapCoords.x, mapCoords.y, z, GAME_COMMAND_FLAG_APPLY);
             break;
         }
     } while (!(tileElement2++)->IsLastForTile());
@@ -544,9 +544,9 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, int32
  *
  *  rct2: 0x006A61AB
  */
-static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_footpath_item(TileElement* tileElement, CoordsXY mapCoords)
 {
-    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ x, y, tileElement->base_height * 8 });
+    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ mapCoords.x, mapCoords.y, tileElement->base_height * 8 });
     GameActions::Execute(&footpathSceneryRemoveAction);
 }
 
@@ -554,21 +554,19 @@ static void viewport_interaction_remove_footpath_item(TileElement* tileElement, 
  *
  *  rct2: 0x00666C0E
  */
-void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y)
+void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsXY mapCoords)
 {
     int32_t rotation = tileElement->GetDirectionWithOffset(1);
     switch (tileElement->AsEntrance()->GetSequenceIndex())
     {
         case 1:
-            x += CoordsDirectionDelta[rotation].x;
-            y += CoordsDirectionDelta[rotation].y;
+            mapCoords += CoordsDirectionDelta[rotation];
             break;
         case 2:
-            x -= CoordsDirectionDelta[rotation].x;
-            y -= CoordsDirectionDelta[rotation].y;
+            mapCoords -= CoordsDirectionDelta[rotation];
             break;
     }
-    auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ x, y, tileElement->base_height * 8 });
+    auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ mapCoords.x, mapCoords.y, tileElement->base_height * 8 });
     GameActions::Execute(&parkEntranceRemoveAction);
 }
 
@@ -576,7 +574,7 @@ void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t
  *
  *  rct2: 0x006E57A9
  */
-static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_park_wall(TileElement* tileElement, CoordsXY mapCoords)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
     if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
@@ -585,7 +583,7 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, int3
     }
     else
     {
-        CoordsXYZD wallLocation = { x, y, tileElement->base_height * 8, tileElement->GetDirection() };
+        CoordsXYZD wallLocation = { mapCoords.x, mapCoords.y, tileElement->base_height * 8, tileElement->GetDirection() };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         GameActions::Execute(&wallRemoveAction);
     }
@@ -595,7 +593,7 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, int3
  *
  *  rct2: 0x006B88DC
  */
-static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_large_scenery(TileElement* tileElement, CoordsXY mapCoords)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
 
@@ -607,7 +605,7 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     else
     {
         auto removeSceneryAction = LargeSceneryRemoveAction(
-            { x, y, tileElement->base_height * 8, tileElement->GetDirection() },
+            { mapCoords.x, mapCoords.y, tileElement->base_height * 8, tileElement->GetDirection() },
             tileElement->AsLargeScenery()->GetSequenceIndex());
         GameActions::Execute(&removeSceneryAction);
     }
