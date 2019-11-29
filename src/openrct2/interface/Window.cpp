@@ -915,11 +915,12 @@ void window_rotate_camera(rct_window* w, int32_t direction)
 
     // has something to do with checking if middle of the viewport is obstructed
     rct_viewport* other;
-    CoordsXYZ coords{ screen_get_map_xy({ x, y }, &other), 0 };
+    auto mapXYCoords = screen_get_map_xy({ x, y }, &other);
+    CoordsXYZ coords{};
 
     // other != viewport probably triggers on viewports in ride or guest window?
-    // x is LOCATION_NULL if middle of viewport is obstructed by another window?
-    if (coords.x == LOCATION_NULL || other != viewport)
+    // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
+    if (!mapXYCoords || other != viewport)
     {
         int16_t view_x = (viewport->view_width >> 1) + viewport->view_x;
         int16_t view_y = (viewport->view_height >> 1) + viewport->view_y;
@@ -928,6 +929,8 @@ void window_rotate_camera(rct_window* w, int32_t direction)
     }
     else
     {
+        coords.x = mapXYCoords->x;
+        coords.y = mapXYCoords->y;
         coords.z = tile_element_height(coords);
     }
 

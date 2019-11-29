@@ -998,21 +998,21 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
  */
 CoordsXY screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction)
 {
-    CoordsXY mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (mapCoords.x == LOCATION_NULL)
+    auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
+    if (!mapCoords)
         return {};
 
     int32_t my_direction;
-    int32_t dist_from_centre_x = abs(mapCoords.x % 32);
-    int32_t dist_from_centre_y = abs(mapCoords.y % 32);
+    int32_t dist_from_centre_x = abs(mapCoords->x % 32);
+    int32_t dist_from_centre_y = abs(mapCoords->y % 32);
     if (dist_from_centre_x > 8 && dist_from_centre_x < 24 && dist_from_centre_y > 8 && dist_from_centre_y < 24)
     {
         my_direction = 4;
     }
     else
     {
-        int16_t mod_x = mapCoords.x & 0x1F;
-        int16_t mod_y = mapCoords.y & 0x1F;
+        int16_t mod_x = mapCoords->x & 0x1F;
+        int16_t mod_y = mapCoords->y & 0x1F;
         if (mod_x <= 16)
         {
             if (mod_y < 16)
@@ -1037,11 +1037,11 @@ CoordsXY screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction)
         }
     }
 
-    mapCoords.x = mapCoords.x & ~0x1F;
-    mapCoords.y = mapCoords.y & ~0x1F;
+    mapCoords->x = mapCoords->x & ~0x1F;
+    mapCoords->y = mapCoords->y & ~0x1F;
     if (direction != nullptr)
         *direction = my_direction;
-    return mapCoords;
+    return *mapCoords;
 }
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords)
@@ -1753,7 +1753,7 @@ static rct_viewport* viewport_find_from_point(ScreenCoordsXY screenCoords)
  *      tile_element: edx ?
  *      viewport: edi
  */
-CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport)
+std::optional<CoordsXY> screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport)
 {
     int32_t interactionType;
     rct_viewport* myViewport = nullptr;
@@ -1762,7 +1762,7 @@ CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport)
         screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN, map_pos, &interactionType, nullptr, &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
-        return { LOCATION_NULL, 0 };
+        return std::nullopt;
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenCoords);
@@ -1786,20 +1786,19 @@ CoordsXY screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewport** viewport)
  *
  *  rct2: 0x006894D4
  */
-CoordsXY screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z)
+std::optional<CoordsXY> screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z)
 {
-    CoordsXY ret{ LOCATION_NULL, 0 };
     rct_viewport* viewport = viewport_find_from_point(screenCoords);
     if (viewport == nullptr)
     {
-        return ret;
+        return std::nullopt;
     }
 
     auto vpCoords = screen_coord_to_viewport_coord(viewport, screenCoords);
     auto mapPosition = viewport_coord_to_map_coord(vpCoords.x, vpCoords.y, z);
     if (!map_is_location_valid(mapPosition))
     {
-        return ret;
+        return std::nullopt;
     }
 
     return mapPosition;
@@ -1809,14 +1808,14 @@ CoordsXY screen_get_map_xy_with_z(ScreenCoordsXY screenCoords, int16_t z)
  *
  *  rct2: 0x00689604
  */
-CoordsXY screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadrant)
+std::optional<CoordsXY> screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadrant)
 {
-    CoordsXY mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (mapCoords.x == LOCATION_NULL)
-        return mapCoords;
+    auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
+    if (!mapCoords)
+        return std::nullopt;
 
-    *quadrant = map_get_tile_quadrant(mapCoords.x, mapCoords.y);
-    return { floor2(mapCoords.x, 32), floor2(mapCoords.y, 32) };
+    *quadrant = map_get_tile_quadrant(mapCoords->x, mapCoords->y);
+    return CoordsXY(floor2(mapCoords->x, 32), floor2(mapCoords->y, 32));
 }
 
 /**
@@ -1826,25 +1825,25 @@ CoordsXY screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, uint8_t* quadra
 std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
-    if (mapCoords.x == LOCATION_NULL)
+    if (!mapCoords)
         return std::nullopt;
 
-    *quadrant = map_get_tile_quadrant(mapCoords.x, mapCoords.y);
-    return CoordsXY(floor2(mapCoords.x, 32), floor2(mapCoords.y, 32));
+    *quadrant = map_get_tile_quadrant(mapCoords->x, mapCoords->y);
+    return CoordsXY(floor2(mapCoords->x, 32), floor2(mapCoords->y, 32));
 }
 
 /**
  *
  *  rct2: 0x00689692
  */
-CoordsXY screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side)
+std::optional<CoordsXY> screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side)
 {
-    CoordsXY mapCoords = screen_get_map_xy(screenCoords, nullptr);
-    if (mapCoords.x == LOCATION_NULL)
-        return mapCoords;
+    auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
+    if (!mapCoords)
+        return std::nullopt;
 
-    *side = map_get_tile_side(mapCoords.x, mapCoords.y);
-    return { floor2(mapCoords.x, 32), floor2(mapCoords.y, 32) };
+    *side = map_get_tile_side(mapCoords->x, mapCoords->y);
+    return CoordsXY(floor2(mapCoords->x, 32), floor2(mapCoords->y, 32));
 }
 
 /**
@@ -1854,11 +1853,11 @@ CoordsXY screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint8_t* side)
 std::optional<CoordsXY> screen_get_map_xy_side_with_z(ScreenCoordsXY screenCoords, int16_t z, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
-    if (mapCoords.x == LOCATION_NULL)
+    if (!mapCoords)
         return std::nullopt;
 
-    *side = map_get_tile_side(mapCoords.x, mapCoords.y);
-    return CoordsXY(floor2(mapCoords.x, 32), floor2(mapCoords.y, 32));
+    *side = map_get_tile_side(mapCoords->x, mapCoords->y);
+    return CoordsXY(floor2(mapCoords->x, 32), floor2(mapCoords->y, 32));
 }
 
 /**

@@ -6218,16 +6218,16 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].Height;
 
     auto coords = screen_get_map_xy_with_z(screenCoords, stationHeight * 8);
-    if (coords.x == LOCATION_NULL)
+    if (!coords)
     {
         entranceExitCoords.x = LOCATION_NULL;
         return entranceExitCoords;
     }
 
-    word_F4418C = coords.x;
-    word_F4418E = coords.y;
+    word_F4418C = coords->x;
+    word_F4418E = coords->y;
 
-    entranceExitCoords = { floor2(coords.x, 32), floor2(coords.y, 32), stationHeight, INVALID_DIRECTION };
+    entranceExitCoords = { floor2(coords->x, 32), floor2(coords->y, 32), stationHeight, INVALID_DIRECTION };
 
     if (ride->type == RIDE_TYPE_NULL)
     {

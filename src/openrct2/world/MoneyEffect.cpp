@@ -94,12 +94,12 @@ void rct_money_effect::Create(money32 value)
             return;
 
         rct_viewport* mainViewport = window_get_viewport(mainWindow);
-        CoordsXY mapPositionXY = screen_get_map_xy(
+        auto mapPositionXY = screen_get_map_xy(
             { mainViewport->x + (mainViewport->width / 2), mainViewport->y + (mainViewport->height / 2) }, nullptr);
-        if (mapPositionXY.x == LOCATION_NULL)
+        if (!mapPositionXY)
             return;
 
-        mapPosition = { mapPositionXY, tile_element_height(mapPositionXY) };
+        mapPosition = { *mapPositionXY, tile_element_height(*mapPositionXY) };
     }
     mapPosition.z += 10;
     CreateAt(-value, mapPosition.x, mapPosition.y, mapPosition.z, false);
