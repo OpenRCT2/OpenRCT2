@@ -147,7 +147,7 @@ struct CoordsXY
 
     CoordsXY ToTileStart() const
     {
-        return { x & ~0x1F, y & ~0x1F };
+        return { floor2(x, 32), floor2(y, 32) };
     }
 };
 

@@ -3078,8 +3078,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     }
 
     auto newLoc = *loc;
-    CoordsXY centeredNewLoc = newLoc.ToTileStart();
-    if (centeredNewLoc.x == next_x && centeredNewLoc.y == next_y)
+    CoordsXY truncatedNewLoc = newLoc.ToTileStart();
+    if (truncatedNewLoc.x == next_x && truncatedNewLoc.y == next_y)
     {
         int16_t height = GetZOnSlope(newLoc.x, newLoc.y);
         MoveTo(newLoc.x, newLoc.y, height);
@@ -3176,8 +3176,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
             }
 
             // The peep is on a surface and not on a path
-            next_x = centeredNewLoc.x;
-            next_y = centeredNewLoc.y;
+            next_x = truncatedNewLoc.x;
+            next_y = truncatedNewLoc.y;
             next_z = surfaceElement->base_height;
             SetNextFlags(0, false, true);
 
