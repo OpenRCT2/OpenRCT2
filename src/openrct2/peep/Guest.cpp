@@ -4981,13 +4981,11 @@ void Guest::UpdateRideMazePathfinding()
             targetLoc.y = destination_y;
             if (chosenEdge & 1)
             {
-                targetLoc.x &= 0xFFE0;
-                targetLoc.x += 16;
+                targetLoc.x = targetLoc.ToTileCentre().x;
             }
             else
             {
-                targetLoc.y &= 0xFFE0;
-                targetLoc.y += 16;
+                targetLoc.y = targetLoc.ToTileCentre().y;
             }
             destination_x = targetLoc.x;
             destination_y = targetLoc.y;

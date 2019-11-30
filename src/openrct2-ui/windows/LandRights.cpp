@@ -330,8 +330,7 @@ static void window_land_rights_tool_update_land_rights(ScreenCoordsXY screenCoor
     // Move to tool bottom left
     mapTile->x -= (tool_size - 1) * 16;
     mapTile->y -= (tool_size - 1) * 16;
-    mapTile->x &= 0xFFE0;
-    mapTile->y &= 0xFFE0;
+    mapTile = mapTile->ToTileStart();
 
     if (gMapSelectPositionA.x != mapTile->x)
     {

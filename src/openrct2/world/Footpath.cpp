@@ -323,10 +323,12 @@ void footpath_get_coordinates_from_pos(
         }
     }
 
+    position = position.ToTileStart();
+
     if (x != nullptr)
-        *x = position.x & ~0x1F;
+        *x = position.x;
     if (y != nullptr)
-        *y = position.y & ~0x1F;
+        *y = position.y;
     if (direction != nullptr)
         *direction = myDirection;
     if (tileElement != nullptr)
