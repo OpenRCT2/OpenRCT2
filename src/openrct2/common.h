@@ -50,11 +50,24 @@ const constexpr auto ror32 = ror<uint32_t>;
 const constexpr auto rol64 = rol<uint64_t>;
 const constexpr auto ror64 = ror<uint64_t>;
 
+constexpr bool is_power_of_2(int v)
+{
+    return v && ((v & (v - 1)) == 0);
+}
+
 // Rounds an integer down to the given power of 2. y must be a power of 2.
-#define floor2(x, y) ((x) & (~((y)-1)))
+constexpr int floor2(const int x, const int y)
+{
+    assert(is_power_of_2(y));
+    return ((x) & (~((y)-1)));
+}
 
 // Rounds an integer up to the given power of 2. y must be a power of 2.
-#define ceil2(x, y) (((x) + (y)-1) & (~((y)-1)))
+constexpr int ceil2(const int x, const int y)
+{
+    assert(is_power_of_2(y));
+    return (((x) + (y)-1) & (~((y)-1)));
+}
 
 // Gets the name of a symbol as a C string
 #define nameof(symbol) #symbol
