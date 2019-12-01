@@ -50,9 +50,8 @@ RUN yaourt -S --noconfirm mingw-w64-curl
 RUN yaourt -S --noconfirm mingw-w64-expat
 RUN yaourt -S --noconfirm mingw-w64-libdbus
 RUN yaourt -S --noconfirm mingw-w64-sdl2
-RUN yaourt -S --noconfirm mingw-w64-sdl2_ttf
 RUN yaourt -S --noconfirm wget unzip
-RUN yaourt -S --noconfirm lib32-jansson lib32-curl lib32-sdl2 lib32-sdl2_ttf
+RUN yaourt -S --noconfirm lib32-jansson lib32-curl lib32-sdl2
 RUN yaourt -S --noconfirm lib32-speex
 #RUN git clone https://github.com/OpenRCT2/OpenRCT2
 #WORKDIR /tmp/OpenRCT2
