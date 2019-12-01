@@ -98,6 +98,15 @@ struct viewport_interaction_info
     };
 };
 
+struct InteractionInfo
+{
+    InteractionInfo() = default;
+    InteractionInfo(const paint_struct* ps);
+    CoordsXY Loc;
+    TileElement* Element = nullptr;
+    uint8_t SpriteType;
+};
+
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
 #define MAX_ZOOM_LEVEL 3
 

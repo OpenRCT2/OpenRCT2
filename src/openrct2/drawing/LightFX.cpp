@@ -22,10 +22,15 @@
 #    include "../world/Map.h"
 #    include "../world/Sprite.h"
 #    include "Drawing.h"
+#include "../paint/Paint.h"
+#include "../interface/Window_internal.h"
 
 #    include <algorithm>
 #    include <cmath>
 #    include <cstring>
+
+struct InteractionInfo;
+InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
 
 static uint8_t _bakedLightTexture_lantern_0[32 * 32];
 static uint8_t _bakedLightTexture_lantern_1[64 * 64];
@@ -237,7 +242,6 @@ void lightfx_prepare_light_list()
                 break;
         }
 
-#    ifdef LIGHTFX_UNKNOWN_PART_1
         int32_t tileOffsetX = 0;
         int32_t tileOffsetY = 0;
         switch (_current_view_rotation_front)
@@ -270,9 +274,8 @@ void lightfx_prepare_light_list()
             -3, -2, -3, 2, 3, -2, 3, 2,
         };
         // clang-format on
-#    endif // LIGHTFX_UNKNOWN_PART_1
 
-        if (false)
+        if (true)
         {
             int32_t totalSamplePoints = 5;
             int32_t startSamplePoint = 1;
@@ -286,44 +289,37 @@ void lightfx_prepare_light_list()
 
             for (int32_t pat = startSamplePoint; pat < totalSamplePoints; pat++)
             {
-                LocationXY16 mapCoord = {};
+                CoordsXY mapCoord{};
 
                 TileElement* tileElement = nullptr;
 
                 int32_t interactionType = 0;
 
-                rct_window* w = window_get_main();
+                auto* w = window_get_main();
                 if (w != nullptr)
                 {
                     //  get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y +
                     //  offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y,
                     //  &interactionType, &tileElement, NULL);
 
-#    ifdef LIGHTFX_UNKNOWN_PART_1
-                    _unk9AC154 = ~VIEWPORT_INTERACTION_MASK_SPRITE & 0xFFFF;
-                    _viewportDpi1.zoom = _current_view_zoom_front;
-                    _viewportDpi1.x = entry->x + offsetPattern[0 + pat * 2] / mapFrontDiv;
-                    _viewportDpi1.y = entry->y + offsetPattern[1 + pat * 2] / mapFrontDiv;
-                    rct_drawpixelinfo* dpi = &_viewportDpi2;
-                    dpi->x = _viewportDpi1.x;
-                    dpi->y = _viewportDpi1.y;
-                    dpi->zoom_level = _viewportDpi1.zoom;
-                    dpi->height = 1;
-                    dpi->width = 1;
-                    gPaintSession.EndOfPaintStructArray = 0xF1A4CC;
-                    gPaintSession.DPI = dpi;
-                    painter_setup();
-                    viewport_paint_setup();
-                    paint_session_arrange(gPaintSession);
-                    sub_68862C();
+                    rct_drawpixelinfo dpi;
+                    dpi.x = entry->viewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv;
+                    dpi.y = entry->viewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv;
+                    dpi.height = 1;
+                    dpi.zoom_level = _current_view_zoom_front;
+                    dpi.width = 1;
+
+                    paint_session* session = paint_session_alloc(&dpi, w->viewport->flags);
+                    paint_session_generate(session);
+                    paint_session_arrange(session);
+                    auto info = set_interaction_info_from_paint_session(session, VIEWPORT_INTERACTION_MASK_NONE);
+                    paint_session_free(session);
 
                     //  log_warning("[%i, %i]", dpi->x, dpi->y);
 
-                    mapCoord.x = _interactionMapX + tileOffsetX;
-                    mapCoord.y = _interactionMapY + tileOffsetY;
-                    interactionType = _interactionSpriteType;
-                    tileElement = RCT2_GLOBAL(0x9AC150, TileElement*);
-#    endif // LIGHTFX_UNKNOWN_PART_1
+                    mapCoord = info.Loc;
+                    interactionType = info.SpriteType;
+                    tileElement = info.Element;
 
                     // RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;
                     // RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
