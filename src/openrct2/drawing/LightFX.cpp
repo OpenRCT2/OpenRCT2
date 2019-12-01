@@ -293,10 +293,7 @@ void lightfx_prepare_light_list()
                 auto* w = window_get_main();
                 if (w != nullptr)
                 {
-                    //  get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y +
-                    //  offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y,
-                    //  &interactionType, &tileElement, NULL);
-
+                    // based on get_map_coordinates_from_pos_window
                     rct_drawpixelinfo dpi;
                     dpi.x = entry->viewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv;
                     dpi.y = entry->viewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv;
@@ -313,6 +310,8 @@ void lightfx_prepare_light_list()
                     //  log_warning("[%i, %i]", dpi->x, dpi->y);
 
                     mapCoord = info.Loc;
+                    mapCoord.x += tileOffsetX;
+                    mapCoord.y += tileOffsetY;
                     interactionType = info.SpriteType;
                     tileElement = info.Element;
                 }
