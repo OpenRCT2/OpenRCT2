@@ -47,6 +47,7 @@ static uint32_t _lightPolution_front = 0;
 struct lightlist_entry
 {
     int16_t x, y, z;
+    ScreenCoordsXY viewCoords;
     uint8_t lightType;
     uint8_t lightIntensity;
     uint32_t lightID;
@@ -191,13 +192,8 @@ void lightfx_prepare_light_list()
                                /* .y = */ entry->y,
                                /* .z = */ entry->z };
 
-        auto screenCoords = translate_3d_to_2d_with_z(_current_view_rotation_front, coord_3d);
-
-        entry->x = screenCoords.x; // - (_current_view_x_front);
-        entry->y = screenCoords.y; // - (_current_view_y_front);
-
-        int32_t posOnScreenX = entry->x - _current_view_x_front;
-        int32_t posOnScreenY = entry->y - _current_view_y_front;
+        int32_t posOnScreenX = entry->viewCoords.x - _current_view_x_front;
+        int32_t posOnScreenY = entry->viewCoords.y - _current_view_y_front;
 
         posOnScreenX >>= _current_view_zoom_front;
         posOnScreenY >>= _current_view_zoom_front;
@@ -276,7 +272,7 @@ void lightfx_prepare_light_list()
         // clang-format on
 #    endif // LIGHTFX_UNKNOWN_PART_1
 
-        if (true)
+        if (false)
         {
             int32_t totalSamplePoints = 5;
             int32_t startSamplePoint = 1;
@@ -435,8 +431,8 @@ void lightfx_prepare_light_list()
 
             entry->lightIntensity = std::min<uint32_t>(
                 0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
-            entry->lightIntensity = std::max<uint32_t>(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
         }
+        entry->lightIntensity = std::max<uint32_t>(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
 
         if (_current_view_zoom_front > 0)
         {
@@ -516,8 +512,8 @@ void lightfx_render_lights_to_frontbuffer()
 
         lightlist_entry* entry = &_LightListFront[light];
 
-        int32_t inRectCentreX = entry->x;
-        int32_t inRectCentreY = entry->y;
+        int32_t inRectCentreX = entry->viewCoords.x;
+        int32_t inRectCentreY = entry->viewCoords.y;
 
         if (entry->z != 0x7FFF)
         {
@@ -690,6 +686,7 @@ void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x
         entry->x = x;
         entry->y = y;
         entry->z = z;
+        entry->viewCoords = translate_3d_to_2d_with_z(get_current_rotation(), { x, y, z });
         entry->lightType = lightType;
         entry->lightIntensity = 0xFF;
         entry->lightID = lightID;
@@ -704,6 +701,7 @@ void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x
     entry->x = x;
     entry->y = y;
     entry->z = z;
+    entry->viewCoords = translate_3d_to_2d_with_z(get_current_rotation(), { x, y, z });
     entry->lightType = lightType;
     entry->lightIntensity = 0xFF;
     entry->lightID = lightID;
