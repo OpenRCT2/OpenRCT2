@@ -1042,9 +1042,9 @@ CoordsXY screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction)
     return mapCoords->ToTileStart();
 }
 
-LocationXY16 screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords)
+ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords)
 {
-    LocationXY16 ret;
+    ScreenCoordsXY ret;
     ret.x = ((screenCoords.x - viewport->x) << viewport->zoom) + viewport->view_x;
     ret.y = ((screenCoords.y - viewport->y) << viewport->zoom) + viewport->view_y;
     return ret;
@@ -1763,7 +1763,7 @@ std::optional<CoordsXY> screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewp
         return std::nullopt;
     }
 
-    LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenCoords);
+    auto start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenCoords);
     CoordsXY modifiedPos = { map_pos.x + 16, map_pos.y + 16 };
 
     for (int32_t i = 0; i < 5; i++)
