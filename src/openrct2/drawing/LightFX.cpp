@@ -210,9 +210,6 @@ void lightfx_prepare_light_list()
             continue;
         }
 
-        //  entry->x >>= _current_view_zoom_front;
-        //  entry->y >>= _current_view_zoom_front;
-
         uint32_t lightIntensityOccluded = 0x0;
 
         int32_t dirVecX = 707;
@@ -320,36 +317,6 @@ void lightfx_prepare_light_list()
                     mapCoord = info.Loc;
                     interactionType = info.SpriteType;
                     tileElement = info.Element;
-
-                    // RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;
-                    // RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
-                    // RCT2_GLOBAL(0x9AC138 + 4, int16_t) = screenX;
-                    // RCT2_GLOBAL(0x9AC138 + 6, int16_t) = screenY;
-                    // if (screenX >= 0 && screenX < (int32_t)myviewport->width && screenY >= 0 && screenY <
-                    // (int32_t)myviewport->height)
-                    //{
-                    //  screenX <<= myviewport->zoom;
-                    //  screenY <<= myviewport->zoom;
-                    //  screenX += (int32_t)myviewport->view_x;
-                    //  screenY += (int32_t)myviewport->view_y;
-                    //  RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = myviewport->zoom;
-                    //  screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-                    //  screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-                    //  RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = screenX;
-                    //  RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = screenY;
-                    //  rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
-                    //  dpi->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t);
-                    //  dpi->height = 1;
-                    //  dpi->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t);
-                    //  dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t);
-                    //  dpi->width = 1;
-                    //  RCT2_GLOBAL(0xEE7880, uint32_t) = 0xF1A4CC;
-                    //  RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
-                    //  painter_setup();
-                    //  viewport_paint_setup();
-                    //  paint_session_arrange(gPaintSession);
-                    //  sub_68862C();
-                    //}
                 }
 
                 int32_t minDist = 0;
