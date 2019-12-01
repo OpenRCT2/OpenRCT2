@@ -16,21 +16,18 @@
 #    include "../config/Config.h"
 #    include "../interface/Viewport.h"
 #    include "../interface/Window.h"
+#    include "../interface/Window_internal.h"
+#    include "../paint/Paint.h"
 #    include "../ride/Ride.h"
 #    include "../util/Util.h"
 #    include "../world/Climate.h"
 #    include "../world/Map.h"
 #    include "../world/Sprite.h"
 #    include "Drawing.h"
-#include "../paint/Paint.h"
-#include "../interface/Window_internal.h"
 
 #    include <algorithm>
 #    include <cmath>
 #    include <cstring>
-
-struct InteractionInfo;
-InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
 
 static uint8_t _bakedLightTexture_lantern_0[32 * 32];
 static uint8_t _bakedLightTexture_lantern_1[64 * 64];
@@ -272,6 +269,7 @@ void lightfx_prepare_light_list()
         };
         // clang-format on
 
+        // Light occlusion code
         if (true)
         {
             int32_t totalSamplePoints = 5;
