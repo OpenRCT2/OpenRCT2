@@ -55,7 +55,6 @@ RUN pacman -S --noconfirm --noprogressbar \
         mingw-w64-openssl \
         mingw-w64-pkg-config \
         mingw-w64-sdl2 \
-        mingw-w64-sdl2_ttf \
         mingw-w64-tools \
         mingw-w64-winpthreads \
         mingw-w64-zlib \
