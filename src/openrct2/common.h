@@ -59,14 +59,14 @@ constexpr bool is_power_of_2(int v)
 constexpr int floor2(const int x, const int y)
 {
     assert(is_power_of_2(y));
-    return ((x) & (~((y)-1)));
+    return x & ~(y - 1);
 }
 
 // Rounds an integer up to the given power of 2. y must be a power of 2.
 constexpr int ceil2(const int x, const int y)
 {
     assert(is_power_of_2(y));
-    return (((x) + (y)-1) & (~((y)-1)));
+    return (x + y - 1) & ~(y - 1);
 }
 
 // Gets the name of a symbol as a C string
