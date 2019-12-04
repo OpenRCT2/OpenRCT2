@@ -54,21 +54,12 @@ paint_entry* gNextFreePaintStruct;
 uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;
-
-struct InteractionInfo
+InteractionInfo::InteractionInfo(const paint_struct* ps)
+    : Loc(ps->map_x, ps->map_y)
+    , Element(ps->tileElement)
+    , SpriteType(ps->sprite_type)
 {
-    InteractionInfo() = default;
-    InteractionInfo(const paint_struct* ps)
-        : Loc(ps->map_x, ps->map_y)
-        , Element(ps->tileElement)
-        , SpriteType(ps->sprite_type)
-    {
-    }
-    CoordsXY Loc;
-    TileElement* Element = nullptr;
-    uint8_t SpriteType;
-};
-
+}
 static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi);
 
 /**
@@ -1566,7 +1557,7 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, i
  *
  *  rct2: 0x0068862C
  */
-static InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter)
+InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter)
 {
     paint_struct* ps = &session->PaintHead;
     rct_drawpixelinfo* dpi = &session->DPI;

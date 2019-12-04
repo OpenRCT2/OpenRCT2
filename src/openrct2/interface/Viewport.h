@@ -98,6 +98,15 @@ struct viewport_interaction_info
     };
 };
 
+struct InteractionInfo
+{
+    InteractionInfo() = default;
+    InteractionInfo(const paint_struct* ps);
+    CoordsXY Loc;
+    TileElement* Element = nullptr;
+    uint8_t SpriteType;
+};
+
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
 #define MAX_ZOOM_LEVEL 3
 
@@ -159,6 +168,7 @@ void get_map_coordinates_from_pos_window(
     rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport);
 
+InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
 int32_t viewport_interaction_get_item_left(ScreenCoordsXY screenCoords, viewport_interaction_info* info);
 int32_t viewport_interaction_left_over(ScreenCoordsXY screenCoords);
 int32_t viewport_interaction_left_click(ScreenCoordsXY screenCoords);

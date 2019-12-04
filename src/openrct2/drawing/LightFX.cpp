@@ -16,6 +16,8 @@
 #    include "../config/Config.h"
 #    include "../interface/Viewport.h"
 #    include "../interface/Window.h"
+#    include "../interface/Window_internal.h"
+#    include "../paint/Paint.h"
 #    include "../ride/Ride.h"
 #    include "../util/Util.h"
 #    include "../world/Climate.h"
@@ -47,6 +49,7 @@ static uint32_t _lightPolution_front = 0;
 struct lightlist_entry
 {
     int16_t x, y, z;
+    ScreenCoordsXY viewCoords;
     uint8_t lightType;
     uint8_t lightIntensity;
     uint32_t lightID;
@@ -191,13 +194,8 @@ void lightfx_prepare_light_list()
                                /* .y = */ entry->y,
                                /* .z = */ entry->z };
 
-        auto screenCoords = translate_3d_to_2d_with_z(_current_view_rotation_front, coord_3d);
-
-        entry->x = screenCoords.x; // - (_current_view_x_front);
-        entry->y = screenCoords.y; // - (_current_view_y_front);
-
-        int32_t posOnScreenX = entry->x - _current_view_x_front;
-        int32_t posOnScreenY = entry->y - _current_view_y_front;
+        int32_t posOnScreenX = entry->viewCoords.x - _current_view_x_front;
+        int32_t posOnScreenY = entry->viewCoords.y - _current_view_y_front;
 
         posOnScreenX >>= _current_view_zoom_front;
         posOnScreenY >>= _current_view_zoom_front;
@@ -208,9 +206,6 @@ void lightfx_prepare_light_list()
             entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
             continue;
         }
-
-        //  entry->x >>= _current_view_zoom_front;
-        //  entry->y >>= _current_view_zoom_front;
 
         uint32_t lightIntensityOccluded = 0x0;
 
@@ -241,7 +236,6 @@ void lightfx_prepare_light_list()
                 break;
         }
 
-#    ifdef LIGHTFX_UNKNOWN_PART_1
         int32_t tileOffsetX = 0;
         int32_t tileOffsetY = 0;
         switch (_current_view_rotation_front)
@@ -274,8 +268,8 @@ void lightfx_prepare_light_list()
             -3, -2, -3, 2, 3, -2, 3, 2,
         };
         // clang-format on
-#    endif // LIGHTFX_UNKNOWN_PART_1
 
+        // Light occlusion code
         if (true)
         {
             int32_t totalSamplePoints = 5;
@@ -290,74 +284,36 @@ void lightfx_prepare_light_list()
 
             for (int32_t pat = startSamplePoint; pat < totalSamplePoints; pat++)
             {
-                LocationXY16 mapCoord = {};
+                CoordsXY mapCoord{};
 
                 TileElement* tileElement = nullptr;
 
                 int32_t interactionType = 0;
 
-                rct_window* w = window_get_main();
+                auto* w = window_get_main();
                 if (w != nullptr)
                 {
-                    //  get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y +
-                    //  offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y,
-                    //  &interactionType, &tileElement, NULL);
+                    // based on get_map_coordinates_from_pos_window
+                    rct_drawpixelinfo dpi;
+                    dpi.x = entry->viewCoords.x + offsetPattern[0 + pat * 2] / mapFrontDiv;
+                    dpi.y = entry->viewCoords.y + offsetPattern[1 + pat * 2] / mapFrontDiv;
+                    dpi.height = 1;
+                    dpi.zoom_level = _current_view_zoom_front;
+                    dpi.width = 1;
 
-#    ifdef LIGHTFX_UNKNOWN_PART_1
-                    _unk9AC154 = ~VIEWPORT_INTERACTION_MASK_SPRITE & 0xFFFF;
-                    _viewportDpi1.zoom = _current_view_zoom_front;
-                    _viewportDpi1.x = entry->x + offsetPattern[0 + pat * 2] / mapFrontDiv;
-                    _viewportDpi1.y = entry->y + offsetPattern[1 + pat * 2] / mapFrontDiv;
-                    rct_drawpixelinfo* dpi = &_viewportDpi2;
-                    dpi->x = _viewportDpi1.x;
-                    dpi->y = _viewportDpi1.y;
-                    dpi->zoom_level = _viewportDpi1.zoom;
-                    dpi->height = 1;
-                    dpi->width = 1;
-                    gPaintSession.EndOfPaintStructArray = 0xF1A4CC;
-                    gPaintSession.DPI = dpi;
-                    painter_setup();
-                    viewport_paint_setup();
-                    paint_session_arrange(gPaintSession);
-                    sub_68862C();
+                    paint_session* session = paint_session_alloc(&dpi, w->viewport->flags);
+                    paint_session_generate(session);
+                    paint_session_arrange(session);
+                    auto info = set_interaction_info_from_paint_session(session, VIEWPORT_INTERACTION_MASK_NONE);
+                    paint_session_free(session);
 
                     //  log_warning("[%i, %i]", dpi->x, dpi->y);
 
-                    mapCoord.x = _interactionMapX + tileOffsetX;
-                    mapCoord.y = _interactionMapY + tileOffsetY;
-                    interactionType = _interactionSpriteType;
-                    tileElement = RCT2_GLOBAL(0x9AC150, TileElement*);
-#    endif // LIGHTFX_UNKNOWN_PART_1
-
-                    // RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;
-                    // RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
-                    // RCT2_GLOBAL(0x9AC138 + 4, int16_t) = screenX;
-                    // RCT2_GLOBAL(0x9AC138 + 6, int16_t) = screenY;
-                    // if (screenX >= 0 && screenX < (int32_t)myviewport->width && screenY >= 0 && screenY <
-                    // (int32_t)myviewport->height)
-                    //{
-                    //  screenX <<= myviewport->zoom;
-                    //  screenY <<= myviewport->zoom;
-                    //  screenX += (int32_t)myviewport->view_x;
-                    //  screenY += (int32_t)myviewport->view_y;
-                    //  RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = myviewport->zoom;
-                    //  screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-                    //  screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-                    //  RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = screenX;
-                    //  RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = screenY;
-                    //  rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
-                    //  dpi->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t);
-                    //  dpi->height = 1;
-                    //  dpi->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t);
-                    //  dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t);
-                    //  dpi->width = 1;
-                    //  RCT2_GLOBAL(0xEE7880, uint32_t) = 0xF1A4CC;
-                    //  RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
-                    //  painter_setup();
-                    //  viewport_paint_setup();
-                    //  paint_session_arrange(gPaintSession);
-                    //  sub_68862C();
-                    //}
+                    mapCoord = info.Loc;
+                    mapCoord.x += tileOffsetX;
+                    mapCoord.y += tileOffsetY;
+                    interactionType = info.SpriteType;
+                    tileElement = info.Element;
                 }
 
                 int32_t minDist = 0;
@@ -435,8 +391,8 @@ void lightfx_prepare_light_list()
 
             entry->lightIntensity = std::min<uint32_t>(
                 0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
-            entry->lightIntensity = std::max<uint32_t>(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
         }
+        entry->lightIntensity = std::max<uint32_t>(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
 
         if (_current_view_zoom_front > 0)
         {
@@ -516,8 +472,8 @@ void lightfx_render_lights_to_frontbuffer()
 
         lightlist_entry* entry = &_LightListFront[light];
 
-        int32_t inRectCentreX = entry->x;
-        int32_t inRectCentreY = entry->y;
+        int32_t inRectCentreX = entry->viewCoords.x;
+        int32_t inRectCentreY = entry->viewCoords.y;
 
         if (entry->z != 0x7FFF)
         {
@@ -690,6 +646,7 @@ void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x
         entry->x = x;
         entry->y = y;
         entry->z = z;
+        entry->viewCoords = translate_3d_to_2d_with_z(get_current_rotation(), { x, y, z });
         entry->lightType = lightType;
         entry->lightIntensity = 0xFF;
         entry->lightID = lightID;
@@ -704,6 +661,7 @@ void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x
     entry->x = x;
     entry->y = y;
     entry->z = z;
+    entry->viewCoords = translate_3d_to_2d_with_z(get_current_rotation(), { x, y, z });
     entry->lightType = lightType;
     entry->lightIntensity = 0xFF;
     entry->lightID = lightID;
