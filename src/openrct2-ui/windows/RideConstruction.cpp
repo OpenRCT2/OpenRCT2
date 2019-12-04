@@ -2367,32 +2367,28 @@ static void window_ride_construction_draw_track_piece(
     while ((trackBlock + 1)->index != 0xFF)
         trackBlock++;
 
-    int16_t x = trackBlock->x;
-    int16_t z = trackBlock->z;
-    int16_t y = trackBlock->y;
+    CoordsXYZ mapCoords{ trackBlock->x, trackBlock->z, trackBlock->y };
     if (trackBlock->var_09 & 2)
     {
-        x = 0;
-        y = 0;
+        mapCoords.x = 0;
+        mapCoords.y = 0;
     }
 
-    rotate_map_coordinates(&x, &y, trackDirection & 3);
+    auto rotatedMapCoords = mapCoords.Rotate(trackDirection);
     // this is actually case 0, but the other cases all jump to it
-    x = 4112 + (x / 2);
-    y = 4112 + (y / 2);
-    z = 1024 + z;
+    mapCoords.x = 4112 + (rotatedMapCoords.x / 2);
+    mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
+    mapCoords.z = 1024 + mapCoords.z;
 
     int16_t previewZOffset = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)
         ? FlatRideTrackDefinitions[trackType].preview_z_offset
         : TrackDefinitions[trackType].preview_z_offset;
-    z -= previewZOffset;
+    mapCoords.z -= previewZOffset;
 
-    const LocationXY16 rotatedCoords = ride_get_rotated_coords(x, y, z);
-    x = rotatedCoords.x;
-    y = rotatedCoords.y;
+    const ScreenCoordsXY rotatedScreenCoords = ride_get_rotated_coords(mapCoords);
 
-    dpi->x += x - width / 2;
-    dpi->y += y - height / 2 - 16;
+    dpi->x += rotatedScreenCoords.x - width / 2;
+    dpi->y += rotatedScreenCoords.y - height / 2 - 16;
     uint32_t d = unknown << 16;
     d |= rideIndex;
     d |= trackType << 8;

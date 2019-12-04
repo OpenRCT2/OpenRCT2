@@ -1169,8 +1169,7 @@ int32_t sub_6C683D(
     int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params, TileElement** output_element,
     uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
-int32_t ride_music_params_update(
-    int16_t x, int16_t y, int16_t z, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);
+int32_t ride_music_params_update(CoordsXYZ rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);
 void ride_music_update_final();
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
 TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex);
@@ -1279,7 +1278,7 @@ StationObject* ride_get_station_object(const Ride* ride);
 
 void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 
-LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z);
+ScreenCoordsXY ride_get_rotated_coords(CoordsXYZ coords);
 
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
