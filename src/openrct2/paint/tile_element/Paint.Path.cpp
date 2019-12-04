@@ -472,8 +472,8 @@ static void sub_6A4101(
 
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
-            uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer);
-            uint16_t scroll = (gCurrentTicks / 2) % string_width;
+            uint16_t stringWidth = gfx_get_string_width(gCommonStringFormatBuffer);
+            uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
             sub_98199C(
                 session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode, COLOUR_BLACK), 0, 0, 1, 1,
