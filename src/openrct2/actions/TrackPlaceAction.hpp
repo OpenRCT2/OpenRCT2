@@ -166,8 +166,7 @@ public:
         for (; trackBlock->index != 0xFF; trackBlock++)
         {
             CoordsXYZ tileCoords{ _origin.x, _origin.y, _origin.z };
-            LocationXY16 track{ trackBlock->x, trackBlock->y };
-            rotate_map_coordinates(&track.x, &track.y, _origin.direction);
+            auto track = rotate_map_coordinates({ trackBlock->x, trackBlock->y }, _origin.direction);
             tileCoords.x += track.x;
             tileCoords.y += track.y;
 
@@ -205,8 +204,7 @@ public:
         for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
         {
             CoordsXYZ mapLoc{ _origin.x, _origin.y, _origin.z };
-            LocationXY16 track{ trackBlock->x, trackBlock->y };
-            rotate_map_coordinates(&track.x, &track.y, _origin.direction);
+            auto track = rotate_map_coordinates({ trackBlock->x, trackBlock->y }, _origin.direction);
             mapLoc.x += track.x;
             mapLoc.y += track.y;
             mapLoc.z += trackBlock->z;
@@ -445,8 +443,7 @@ public:
         for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
         {
             CoordsXYZ mapLoc{ _origin.x, _origin.y, _origin.z };
-            LocationXY16 track{ trackBlock->x, trackBlock->y };
-            rotate_map_coordinates(&track.x, &track.y, _origin.direction);
+            auto track = rotate_map_coordinates({ trackBlock->x, trackBlock->y }, _origin.direction);
             mapLoc.x += track.x;
             mapLoc.y += track.y;
             mapLoc.z += trackBlock->z;

@@ -305,9 +305,9 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             y -= gTrackPreviewOrigin.y;
 
             // Rotate entrance coordinates backwards to the correct direction
-            rotate_map_coordinates(&x, &y, (0 - _saveDirection) & 3);
-            entrance.x = x;
-            entrance.y = y;
+            auto rotatedEntraceCoords = rotate_map_coordinates({ x, y }, (0 - _saveDirection) & 3);
+            entrance.x = rotatedEntraceCoords.x;
+            entrance.y = rotatedEntraceCoords.y;
 
             z *= 8;
             z -= gTrackPreviewOrigin.z;
@@ -537,9 +537,9 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
 
         int16_t x = ((uint8_t)scenery.x) * 32 - gTrackPreviewOrigin.x;
         int16_t y = ((uint8_t)scenery.y) * 32 - gTrackPreviewOrigin.y;
-        rotate_map_coordinates(&x, &y, (0 - _saveDirection) & 3);
-        x /= 32;
-        y /= 32;
+        auto rotatedCoords = rotate_map_coordinates({ x, y }, (0 - _saveDirection) & 3);
+        x = rotatedCoords.x / 32;
+        y = rotatedCoords.y / 32;
 
         if (x > 127 || y > 127 || x < -126 || y < -126)
         {
@@ -1238,10 +1238,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
     for (const auto& maze_element : td6->maze_elements)
     {
         uint8_t rotation = _currentTrackPieceDirection & 3;
-        int16_t tmpX = maze_element.x * 32;
-        int16_t tmpY = maze_element.y * 32;
-        rotate_map_coordinates(&tmpX, &tmpY, rotation);
-        CoordsXY mapCoord = { tmpX, tmpY };
+        auto mapCoord = rotate_map_coordinates({ maze_element.x * 32, maze_element.y * 32 }, rotation);
         mapCoord.x += x;
         mapCoord.y += y;
 
@@ -1615,9 +1612,9 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
         rotation = _currentTrackPieceDirection & 3;
         x = entrance.x;
         y = entrance.y;
-        rotate_map_coordinates(&x, &y, rotation);
-        x += gTrackPreviewOrigin.x;
-        y += gTrackPreviewOrigin.y;
+        auto rotatedEntranceCoords = rotate_map_coordinates({ x, y }, rotation);
+        x = gTrackPreviewOrigin.x + rotatedEntranceCoords.x;
+        y = gTrackPreviewOrigin.y + rotatedEntranceCoords.y;
 
         track_design_update_max_min_coordinates(x, y, z);
 

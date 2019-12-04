@@ -182,7 +182,7 @@ bool map_can_construct_with_clear_at(
     int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
     money32* price, uint8_t crossingMode);
 int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, QuarterTile bl);
-void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation);
+CoordsXY rotate_map_coordinates(CoordsXY origCoords, int32_t rotation);
 
 struct tile_element_iterator
 {

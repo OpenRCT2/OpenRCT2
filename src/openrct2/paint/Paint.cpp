@@ -114,29 +114,36 @@ static paint_struct* sub_9819_c(
         return nullptr;
 
     // This probably rotates the variables so they're relative to rotation 0.
+    CoordsXY rotatedBoundBoxOffset;
+    CoordsXY rotatedBoundBoxSize;
     switch (session->CurrentRotation)
     {
         case 0:
             boundBoxSize.x--;
             boundBoxSize.y--;
-            rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 0);
-            rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 0);
+            rotatedBoundBoxOffset = rotate_map_coordinates({ boundBoxOffset.x, boundBoxOffset.y }, 0);
+            rotatedBoundBoxSize = rotate_map_coordinates({ boundBoxSize.x, boundBoxSize.y }, 0);
+
             break;
         case 1:
             boundBoxSize.x--;
-            rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 3);
-            rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 3);
+            rotatedBoundBoxOffset = rotate_map_coordinates({ boundBoxOffset.x, boundBoxOffset.y }, 3);
+            rotatedBoundBoxSize = rotate_map_coordinates({ boundBoxSize.x, boundBoxSize.y }, 3);
             break;
         case 2:
-            rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 2);
-            rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 2);
+            rotatedBoundBoxSize = rotate_map_coordinates({ boundBoxSize.x, boundBoxSize.y }, 2);
+            rotatedBoundBoxOffset = rotate_map_coordinates({ boundBoxOffset.x, boundBoxOffset.y }, 2);
             break;
         case 3:
             boundBoxSize.y--;
-            rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 1);
-            rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 1);
+            rotatedBoundBoxSize = rotate_map_coordinates({ boundBoxSize.x, boundBoxSize.y }, 1);
+            rotatedBoundBoxOffset = rotate_map_coordinates({ boundBoxOffset.x, boundBoxOffset.y }, 1);
             break;
     }
+    boundBoxOffset.x = static_cast<int16_t>(rotatedBoundBoxOffset.x);
+    boundBoxOffset.y = static_cast<int16_t>(rotatedBoundBoxOffset.y);
+    boundBoxSize.x = static_cast<int16_t>(rotatedBoundBoxSize.x);
+    boundBoxSize.y = static_cast<int16_t>(rotatedBoundBoxSize.y);
 
     ps->bounds.x_end = boundBoxSize.x + boundBoxOffset.x + session->SpritePosition.x;
     ps->bounds.z = boundBoxOffset.z;
@@ -757,6 +764,7 @@ paint_struct* sub_98196C(
         bound_box_length_z,
     };
 
+    CoordsXY rotatedBoundBox;
     switch (session->CurrentRotation)
     {
         case 0:
@@ -764,28 +772,30 @@ paint_struct* sub_98196C(
 
             boundBox.x--;
             boundBox.y--;
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_WEST);
+            rotatedBoundBox = rotate_map_coordinates({ boundBox.x, boundBox.y }, TILE_ELEMENT_DIRECTION_WEST);
             break;
 
         case 1:
             coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_SOUTH), coord_3d.z };
 
             boundBox.x--;
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_SOUTH);
+            rotatedBoundBox = rotate_map_coordinates({ boundBox.x, boundBox.y }, TILE_ELEMENT_DIRECTION_SOUTH);
             break;
 
         case 2:
             coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_EAST), coord_3d.z };
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_EAST);
+            rotatedBoundBox = rotate_map_coordinates({ boundBox.x, boundBox.y }, TILE_ELEMENT_DIRECTION_EAST);
             break;
 
         case 3:
             coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_NORTH), coord_3d.z };
 
             boundBox.y--;
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_NORTH);
+            rotatedBoundBox = rotate_map_coordinates({ boundBox.x, boundBox.y }, TILE_ELEMENT_DIRECTION_NORTH);
             break;
     }
+    boundBox.x = static_cast<int16_t>(rotatedBoundBox.x);
+    boundBox.y = static_cast<int16_t>(rotatedBoundBox.y);
 
     coord_3d.x += session->SpritePosition.x;
     coord_3d.y += session->SpritePosition.y;
@@ -891,9 +901,7 @@ paint_struct* sub_98197C(
 
     session->LastRootPS = ps;
 
-    LocationXY16 attach = { (int16_t)ps->bounds.x, (int16_t)ps->bounds.y };
-
-    rotate_map_coordinates(&attach.x, &attach.y, session->CurrentRotation);
+    auto attach = rotate_map_coordinates({ ps->bounds.x, ps->bounds.y }, session->CurrentRotation);
     switch (session->CurrentRotation)
     {
         case 0:

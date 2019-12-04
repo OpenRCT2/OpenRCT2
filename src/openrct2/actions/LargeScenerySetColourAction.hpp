@@ -108,19 +108,18 @@ private:
         // Work out the base tile coordinates (Tile with index 0)
         auto baseX = sceneryEntry->large_scenery.tiles[_tileIndex].x_offset;
         auto baseY = sceneryEntry->large_scenery.tiles[_tileIndex].y_offset;
-        rotate_map_coordinates(&baseX, &baseY, _loc.direction);
+        auto rotatedBaseCoords = rotate_map_coordinates({ baseX, baseY }, _loc.direction);
 
-        CoordsXYZ baseTile = { _loc.x - baseX, _loc.y - baseY,
+        CoordsXYZ baseTile = { _loc.x - rotatedBaseCoords.x, _loc.y - rotatedBaseCoords.y,
                                _loc.z - sceneryEntry->large_scenery.tiles[_tileIndex].z_offset };
 
         auto i = 0;
         for (auto tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; ++tile, ++i)
         {
             // Work out the current tile coordinates
-            auto tileX = tile->x_offset;
-            auto tileY = tile->y_offset;
-            rotate_map_coordinates(&tileX, &tileY, _loc.direction);
-            CoordsXYZ currentTile = { tileX + baseTile.x, tileY + baseTile.y, tile->z_offset + baseTile.z };
+            auto rotatedTileCoords = rotate_map_coordinates({ tile->x_offset, tile->y_offset }, _loc.direction);
+            CoordsXYZ currentTile = { rotatedTileCoords.x + baseTile.x, rotatedTileCoords.y + baseTile.y,
+                                      tile->z_offset + baseTile.z };
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {

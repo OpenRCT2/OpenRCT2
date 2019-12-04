@@ -2834,10 +2834,10 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             {
                 LocationXY16 tileLocation = { tile->x_offset, tile->y_offset };
 
-                rotate_map_coordinates(&tileLocation.x, &tileLocation.y, (parameter1 >> 8) & 0xFF);
+                auto rotatedTileCoords = rotate_map_coordinates({ tileLocation.x, tileLocation.y }, (parameter1 >> 8) & 0xFF);
 
-                tileLocation.x += mapTile.x;
-                tileLocation.y += mapTile.y;
+                tileLocation.x = rotatedTileCoords.x + mapTile.x;
+                tileLocation.y = rotatedTileCoords.y + mapTile.y;
 
                 gMapSelectionTiles.push_back({ tileLocation.x, tileLocation.y });
             }

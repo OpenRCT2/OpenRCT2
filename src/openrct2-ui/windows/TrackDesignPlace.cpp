@@ -644,10 +644,10 @@ static void window_track_place_draw_mini_preview_maze(
     {
         int16_t x = mazeElement.x * 32;
         int16_t y = mazeElement.y * 32;
-        rotate_map_coordinates(&x, &y, rotation);
+        auto rotatedCoords = rotate_map_coordinates({ x, y }, rotation);
 
-        x += origin.x;
-        y += origin.y;
+        x = rotatedCoords.x + origin.x;
+        y = rotatedCoords.y + origin.y;
 
         if (pass == 0)
         {

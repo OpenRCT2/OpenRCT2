@@ -2376,10 +2376,10 @@ static void window_ride_construction_draw_track_piece(
         y = 0;
     }
 
-    rotate_map_coordinates(&x, &y, trackDirection & 3);
+    auto rotatedMapCoords = rotate_map_coordinates({ x, y }, trackDirection & 3);
     // this is actually case 0, but the other cases all jump to it
-    x = 4112 + (x / 2);
-    y = 4112 + (y / 2);
+    x = 4112 + (rotatedMapCoords.x / 2);
+    y = 4112 + (rotatedMapCoords.y / 2);
     z = 1024 + z;
 
     int16_t previewZOffset = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)

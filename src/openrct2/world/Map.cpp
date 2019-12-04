@@ -112,29 +112,20 @@ bool gMapLandRightsUpdateSuccess;
 static void clear_elements_at(const CoordsXY& loc);
 static ScreenCoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos);
 
-void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation)
+CoordsXY rotate_map_coordinates(CoordsXY origCoords, int32_t rotation)
 {
-    int32_t temp;
-
     switch (rotation)
     {
         case TILE_ELEMENT_DIRECTION_WEST:
-            break;
+            return origCoords;
         case TILE_ELEMENT_DIRECTION_NORTH:
-            temp = *x;
-            *x = *y;
-            *y = -temp;
-            break;
+            return { origCoords.y, -origCoords.x };
         case TILE_ELEMENT_DIRECTION_EAST:
-            *x = -*x;
-            *y = -*y;
-            break;
+            return { -origCoords.x, -origCoords.y };
         case TILE_ELEMENT_DIRECTION_SOUTH:
-            temp = *y;
-            *y = *x;
-            *x = -temp;
-            break;
+            return { -origCoords.y, origCoords.x };
     }
+    return {};
 }
 
 void tile_element_iterator_begin(tile_element_iterator* it)
@@ -1893,7 +1884,6 @@ bool map_large_scenery_get_origin(
 {
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile* tile;
-    int16_t offsetX, offsetY;
 
     auto tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
     if (tileElement == nullptr)
@@ -1902,12 +1892,10 @@ bool map_large_scenery_get_origin(
     sceneryEntry = tileElement->GetEntry();
     tile = &sceneryEntry->large_scenery.tiles[sequence];
 
-    offsetX = tile->x_offset;
-    offsetY = tile->y_offset;
-    rotate_map_coordinates(&offsetX, &offsetY, direction);
+    auto rotatedOffsetCoords = rotate_map_coordinates({ tile->x_offset, tile->y_offset }, direction);
 
-    *outX = x - offsetX;
-    *outY = y - offsetY;
+    *outX = x - rotatedOffsetCoords.x;
+    *outY = y - rotatedOffsetCoords.y;
     *outZ = (z * 8) - tile->z_offset;
     if (outElement != nullptr)
         *outElement = tileElement;
@@ -1924,7 +1912,6 @@ bool sign_set_colour(
     LargeSceneryElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile *sceneryTiles, *tile;
-    int16_t offsetX, offsetY;
     int32_t x0, y0, z0;
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, &tileElement))
@@ -1939,12 +1926,10 @@ bool sign_set_colour(
     sequence = 0;
     for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
     {
-        offsetX = tile->x_offset;
-        offsetY = tile->y_offset;
-        rotate_map_coordinates(&offsetX, &offsetY, direction);
+        auto rotatedOffsetCoords = rotate_map_coordinates({ tile->x_offset, tile->y_offset }, direction);
 
-        x = x0 + offsetX;
-        y = y0 + offsetY;
+        x = x0 + rotatedOffsetCoords.x;
+        y = y0 + rotatedOffsetCoords.y;
         z = (z0 + tile->z_offset) / 8;
         tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
         if (tileElement != nullptr)
