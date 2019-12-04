@@ -6977,8 +6977,9 @@ void sub_6CB945(Ride* ride)
             const rct_preview_track* trackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
             while ((++trackBlock)->index != 0xFF)
             {
-                LocationXYZ16 blockLocation = location;
-                map_offset_with_rotation(&blockLocation.x, &blockLocation.y, trackBlock->x, trackBlock->y, direction);
+                auto blockLocationXY = map_offset_with_rotation(
+                    { location.x, location.y }, { trackBlock->x, trackBlock->y }, direction);
+                CoordsXYZ blockLocation{ blockLocationXY.x, blockLocationXY.y, location.z };
 
                 bool trackFound = false;
                 tileElement = map_get_first_element_at(blockLocation.x >> 5, blockLocation.y >> 5);

@@ -125,9 +125,9 @@ static void window_track_place_attempt_placement(
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(TrackDesign* td6);
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max);
+    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max);
 static void window_track_place_draw_mini_preview_maze(
-    TrackDesign* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max);
+    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max);
 static LocationXY16 draw_mini_preview_get_pixel_position(int16_t x, int16_t y);
 static bool draw_mini_preview_is_pixel_in_bounds(LocationXY16 pixel);
 static uint8_t* draw_mini_preview_get_pixel_ptr(LocationXY16 pixel);
@@ -502,11 +502,11 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
     window_track_place_clear_mini_preview();
 
     // First pass is used to determine the width and height of the image so it can centre it
-    LocationXY16 min = { 0, 0 };
-    LocationXY16 max = { 0, 0 };
+    CoordsXY min = { 0, 0 };
+    CoordsXY max = { 0, 0 };
     for (int32_t pass = 0; pass < 2; pass++)
     {
-        LocationXY16 origin = { 0, 0 };
+        CoordsXY origin = { 0, 0 };
         if (pass == 1)
         {
             origin.x -= ((max.x + min.x) >> 6) * 32;
@@ -515,17 +515,17 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
 
         if (td6->type == RIDE_TYPE_MAZE)
         {
-            window_track_place_draw_mini_preview_maze(td6, pass, origin, &min, &max);
+            window_track_place_draw_mini_preview_maze(td6, pass, origin, min, max);
         }
         else
         {
-            window_track_place_draw_mini_preview_track(td6, pass, origin, &min, &max);
+            window_track_place_draw_mini_preview_track(td6, pass, origin, min, max);
         }
     }
 }
 
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max)
+    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 
@@ -543,20 +543,20 @@ static void window_track_place_draw_mini_preview_track(
         const rct_preview_track* trackBlock = trackBlockArray[trackType];
         while (trackBlock->index != 255)
         {
-            int16_t x = origin.x;
-            int16_t y = origin.y;
-            map_offset_with_rotation(&x, &y, trackBlock->x, trackBlock->y, rotation);
+            auto rotatedAndOffsetTrackBlock = map_offset_with_rotation(
+                { origin.x, origin.y }, { trackBlock->x, trackBlock->y }, rotation);
 
             if (pass == 0)
             {
-                min->x = std::min(min->x, x);
-                max->x = std::max(max->x, x);
-                min->y = std::min(min->y, y);
-                max->y = std::max(max->y, y);
+                min.x = std::min(min.x, rotatedAndOffsetTrackBlock.x);
+                max.x = std::max(max.x, rotatedAndOffsetTrackBlock.x);
+                min.y = std::min(min.y, rotatedAndOffsetTrackBlock.y);
+                max.y = std::max(max.y, rotatedAndOffsetTrackBlock.y);
             }
             else
             {
-                LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
+                LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(
+                    rotatedAndOffsetTrackBlock.x, rotatedAndOffsetTrackBlock.y);
                 if (draw_mini_preview_is_pixel_in_bounds(pixelPosition))
                 {
                     uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
@@ -589,7 +589,8 @@ static void window_track_place_draw_mini_preview_track(
         const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
 
         trackType *= 10;
-        map_offset_with_rotation(&origin.x, &origin.y, track_coordinate->x, track_coordinate->y, rotation);
+        auto rotatedAndOfffsetTrack = map_offset_with_rotation(
+            { origin.x, origin.y }, { track_coordinate->x, track_coordinate->y }, rotation);
         rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
         rotation &= 3;
         if (track_coordinate->rotation_end & 4)
@@ -598,28 +599,27 @@ static void window_track_place_draw_mini_preview_track(
         }
         if (!(rotation & 4))
         {
-            origin.x += CoordsDirectionDelta[rotation].x;
-            origin.y += CoordsDirectionDelta[rotation].y;
+            origin.x = rotatedAndOfffsetTrack.x + CoordsDirectionDelta[rotation].x;
+            origin.y = rotatedAndOfffsetTrack.x + CoordsDirectionDelta[rotation].y;
         }
     }
 
     // Draw entrance and exit preview.
     for (const auto& entrance : td6->entrance_elements)
     {
-        int16_t x = origin.x;
-        int16_t y = origin.y;
-        map_offset_with_rotation(&x, &y, entrance.x, entrance.y, rotation);
+        auto rotatedAndOffsetEntrance = map_offset_with_rotation({ origin.x, origin.y }, { entrance.x, entrance.y }, rotation);
 
         if (pass == 0)
         {
-            min->x = std::min(min->x, x);
-            max->x = std::max(max->x, x);
-            min->y = std::min(min->y, y);
-            max->y = std::max(max->y, y);
+            min.x = std::min(min.x, rotatedAndOffsetEntrance.x);
+            max.x = std::max(max.x, rotatedAndOffsetEntrance.x);
+            min.y = std::min(min.y, rotatedAndOffsetEntrance.y);
+            max.y = std::max(max.y, rotatedAndOffsetEntrance.y);
         }
         else
         {
-            LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
+            LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(
+                rotatedAndOffsetEntrance.x, rotatedAndOffsetEntrance.y);
             if (draw_mini_preview_is_pixel_in_bounds(pixelPosition))
             {
                 uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
@@ -637,28 +637,26 @@ static void window_track_place_draw_mini_preview_track(
 }
 
 static void window_track_place_draw_mini_preview_maze(
-    TrackDesign* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max)
+    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY& min, CoordsXY& max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     for (const auto& mazeElement : td6->maze_elements)
     {
-        int16_t x = mazeElement.x * 32;
-        int16_t y = mazeElement.y * 32;
-        rotate_map_coordinates(&x, &y, rotation);
+        CoordsXY mazeCoords{ mazeElement.x * 32, mazeElement.y * 32 };
+        auto rotatedMazeCoords = mazeCoords.Rotate(rotation);
 
-        x += origin.x;
-        y += origin.y;
+        rotatedMazeCoords += origin;
 
         if (pass == 0)
         {
-            min->x = std::min(min->x, x);
-            max->x = std::max(max->x, x);
-            min->y = std::min(min->y, y);
-            max->y = std::max(max->y, y);
+            min.x = std::min(min.x, rotatedMazeCoords.x);
+            max.x = std::max(max.x, rotatedMazeCoords.x);
+            min.y = std::min(min.y, rotatedMazeCoords.y);
+            max.y = std::max(max.y, rotatedMazeCoords.y);
         }
         else
         {
-            LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
+            LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(rotatedMazeCoords.x, rotatedMazeCoords.y);
             if (draw_mini_preview_is_pixel_in_bounds(pixelPosition))
             {
                 uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);

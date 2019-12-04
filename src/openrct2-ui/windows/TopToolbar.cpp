@@ -2832,14 +2832,13 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (int16_t)(uint16_t)0xFFFF;
                  tile++)
             {
-                LocationXY16 tileLocation = { tile->x_offset, tile->y_offset };
+                CoordsXY tileLocation = { tile->x_offset, tile->y_offset };
+                auto rotatedTileCoords = tileLocation.Rotate((parameter1 >> 8) & 0xFF);
 
-                rotate_map_coordinates(&tileLocation.x, &tileLocation.y, (parameter1 >> 8) & 0xFF);
+                rotatedTileCoords.x += mapTile.x;
+                rotatedTileCoords.y += mapTile.y;
 
-                tileLocation.x += mapTile.x;
-                tileLocation.y += mapTile.y;
-
-                gMapSelectionTiles.push_back({ tileLocation.x, tileLocation.y });
+                gMapSelectionTiles.push_back(rotatedTileCoords);
             }
 
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
