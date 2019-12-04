@@ -25,6 +25,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <stdexcept>
 
 using namespace Numerics;
 
@@ -58,14 +59,16 @@ constexpr bool is_power_of_2(int v)
 // Rounds an integer down to the given power of 2. y must be a power of 2.
 constexpr int floor2(const int x, const int y)
 {
-    assert(is_power_of_2(y));
+    if (!is_power_of_2(y))
+        throw std::logic_error("floor2 should only operate on power of 2");
     return x & ~(y - 1);
 }
 
 // Rounds an integer up to the given power of 2. y must be a power of 2.
 constexpr int ceil2(const int x, const int y)
 {
-    assert(is_power_of_2(y));
+    if (!is_power_of_2(y))
+        throw std::logic_error("ceil2 should only operate on power of 2");
     return (x + y - 1) & ~(y - 1);
 }
 
