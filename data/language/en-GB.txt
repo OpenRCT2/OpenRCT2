@@ -25,7 +25,7 @@ STR_0020    :Chairlift
 STR_0021    :Corkscrew Roller Coaster
 STR_0022    :Maze
 STR_0023    :Spiral Slide
-STR_0024    :Go Karts
+STR_0024    :Go-Karts
 STR_0025    :Log Flume
 STR_0026    :River Rapids
 STR_0027    :Dodgems
@@ -116,10 +116,10 @@ STR_0530    :Cars hang from a steel cable which runs continuously from one end o
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :Maze is constructed from 6-foot tall hedges or walls, and guests wander around the maze leaving only when they find the exit
 STR_0533    :Wooden building with an internal staircase and an external spiral slide for use with slide mats
-STR_0534    :Self-drive petrol-engined go karts
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
+STR_0534    :Guests race each other in go-karts on an asphalt track
+STR_0535    :Boats travel along a water channel, splashing down steep slopes to soak the riders
 STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
-STR_0537    :Self-drive electric dodgem cars
+STR_0537    :Guests bump into each other in self-drive electric dodgems
 STR_0538    :Large swinging pirate ship
 STR_0539    :Ship is attached to an arm with a counterweight at the opposite end, and swings through a complete 360 degrees
 STR_0540    :A stall where guests can purchase food
@@ -158,7 +158,7 @@ STR_0578    :Cars run along track enclosed by circular hoops, traversing steep d
 STR_0579    :A gentle game of miniature golf
 STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
 STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
-STR_0582    :Self-drive hovercraft vehicles
+STR_0582    :Guests ride in hovercraft vehicles that they freely control
 STR_0583    :Building containing warped rooms and angled corridors to disorientate people walking through it
 STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
 STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
