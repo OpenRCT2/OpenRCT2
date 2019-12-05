@@ -117,6 +117,11 @@ The program can also be built as a command line program using CMake. This type o
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
 - cmake
 
+For example on a Debian-based system:
+```
+sudo apt install make cmake libzip-dev libpng-dev libssl-dev libcurl4-openssl-dev libfontconfig1-dev libjansson-dev libicu-dev libsdl2-dev libspeexdsp-dev libfreetype6-dev
+```
+
 ---
 
 ## 3.2 Compiling and running
