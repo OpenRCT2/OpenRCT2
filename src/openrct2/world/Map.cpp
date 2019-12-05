@@ -1893,7 +1893,6 @@ bool map_large_scenery_get_origin(
 {
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile* tile;
-    int16_t offsetX, offsetY;
 
     auto tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
     if (tileElement == nullptr)
@@ -1902,12 +1901,11 @@ bool map_large_scenery_get_origin(
     sceneryEntry = tileElement->GetEntry();
     tile = &sceneryEntry->large_scenery.tiles[sequence];
 
-    offsetX = tile->x_offset;
-    offsetY = tile->y_offset;
-    rotate_map_coordinates(&offsetX, &offsetY, direction);
+    CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+    auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
-    *outX = x - offsetX;
-    *outY = y - offsetY;
+    *outX = x - rotatedOffsetPos.x;
+    *outY = y - rotatedOffsetPos.y;
     *outZ = (z * 8) - tile->z_offset;
     if (outElement != nullptr)
         *outElement = tileElement;
@@ -1924,7 +1922,6 @@ bool sign_set_colour(
     LargeSceneryElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile *sceneryTiles, *tile;
-    int16_t offsetX, offsetY;
     int32_t x0, y0, z0;
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, &tileElement))
@@ -1939,12 +1936,11 @@ bool sign_set_colour(
     sequence = 0;
     for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
     {
-        offsetX = tile->x_offset;
-        offsetY = tile->y_offset;
-        rotate_map_coordinates(&offsetX, &offsetY, direction);
+        CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+        auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
-        x = x0 + offsetX;
-        y = y0 + offsetY;
+        x = x0 + rotatedOffsetPos.x;
+        y = y0 + rotatedOffsetPos.y;
         z = (z0 + tile->z_offset) / 8;
         tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
         if (tileElement != nullptr)
