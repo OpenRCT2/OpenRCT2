@@ -277,10 +277,9 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
                 continue;
             }
 
-            int16_t x = location.x * 32;
-            int16_t y = location.y * 32;
+            CoordsXY mapLocation{ location.x * 32, location.y * 32 };
 
-            TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+            TileElement* tileElement = map_get_first_element_at(location.x, location.y);
             if (tileElement == nullptr)
                 continue;
 
@@ -301,13 +300,13 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             TrackDesignEntranceElement entrance{};
             entrance.direction = entranceDirection;
 
-            x -= gTrackPreviewOrigin.x;
-            y -= gTrackPreviewOrigin.y;
+            mapLocation.x -= gTrackPreviewOrigin.x;
+            mapLocation.y -= gTrackPreviewOrigin.y;
 
             // Rotate entrance coordinates backwards to the correct direction
-            rotate_map_coordinates(&x, &y, (0 - _saveDirection) & 3);
-            entrance.x = x;
-            entrance.y = y;
+            auto rotatedMapLocation = mapLocation.Rotate(0 - _saveDirection);
+            entrance.x = rotatedMapLocation.x;
+            entrance.y = rotatedMapLocation.y;
 
             z *= 8;
             z -= gTrackPreviewOrigin.z;
@@ -535,19 +534,17 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
             }
         }
 
-        int16_t x = ((uint8_t)scenery.x) * 32 - gTrackPreviewOrigin.x;
-        int16_t y = ((uint8_t)scenery.y) * 32 - gTrackPreviewOrigin.y;
-        rotate_map_coordinates(&x, &y, (0 - _saveDirection) & 3);
-        x /= 32;
-        y /= 32;
+        CoordsXY sceneryMapPos{ scenery.x * 32 - gTrackPreviewOrigin.x, scenery.y * 32 - gTrackPreviewOrigin.y };
+        CoordsXY rotatedSceneryMapPos = sceneryMapPos.Rotate(0 - _saveDirection);
+        TileCoordsXY sceneryTilePos{ rotatedSceneryMapPos };
 
-        if (x > 127 || y > 127 || x < -126 || y < -126)
+        if (sceneryTilePos.x > 127 || sceneryTilePos.y > 127 || sceneryTilePos.x < -126 || sceneryTilePos.y < -126)
         {
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         }
 
-        scenery.x = (int8_t)x;
-        scenery.y = (int8_t)y;
+        scenery.x = static_cast<int8_t>(sceneryTilePos.x);
+        scenery.y = static_cast<int8_t>(sceneryTilePos.y);
 
         int32_t z = scenery.z * 8 - gTrackPreviewOrigin.z;
         z /= 8;
@@ -1238,10 +1235,8 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
     for (const auto& maze_element : td6->maze_elements)
     {
         uint8_t rotation = _currentTrackPieceDirection & 3;
-        int16_t tmpX = maze_element.x * 32;
-        int16_t tmpY = maze_element.y * 32;
-        rotate_map_coordinates(&tmpX, &tmpY, rotation);
-        CoordsXY mapCoord = { tmpX, tmpY };
+        CoordsXY mazeMapPos{ maze_element.x * 32, maze_element.y * 32 };
+        auto mapCoord = mazeMapPos.Rotate(rotation);
         mapCoord.x += x;
         mapCoord.y += y;
 
@@ -1613,11 +1608,10 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
     for (const auto& entrance : td6->entrance_elements)
     {
         rotation = _currentTrackPieceDirection & 3;
-        x = entrance.x;
-        y = entrance.y;
-        rotate_map_coordinates(&x, &y, rotation);
-        x += gTrackPreviewOrigin.x;
-        y += gTrackPreviewOrigin.y;
+        CoordsXY entranceMapPos{ entrance.x, entrance.y };
+        auto rotatedEntranceMapPos = entranceMapPos.Rotate(rotation);
+        x = rotatedEntranceMapPos.x + gTrackPreviewOrigin.x;
+        y = rotatedEntranceMapPos.y + gTrackPreviewOrigin.y;
 
         track_design_update_max_min_coordinates(x, y, z);
 
