@@ -138,10 +138,10 @@ public:
         auto startLoc = _origin;
         startLoc.direction = tileElement->GetDirection();
 
-        LocationXY16 trackLoc = { trackBlock->x, trackBlock->y };
-        rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-        startLoc.x -= trackLoc.x;
-        startLoc.y -= trackLoc.y;
+        CoordsXY trackLoc{ trackBlock->x, trackBlock->y };
+        auto rotatedTrack = trackLoc.Rotate(startLoc.direction);
+        startLoc.x -= rotatedTrack.x;
+        startLoc.y -= rotatedTrack.y;
         startLoc.z -= trackBlock->z;
         res->Position.x = startLoc.x;
         res->Position.y = startLoc.y;
@@ -154,9 +154,9 @@ public:
         {
             CoordsXYZ mapLoc{ startLoc.x, startLoc.y, startLoc.z };
             trackLoc = { trackBlock->x, trackBlock->y };
-            rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-            mapLoc.x += trackLoc.x;
-            mapLoc.y += trackLoc.y;
+            rotatedTrack = trackLoc.Rotate(startLoc.direction);
+            mapLoc.x += rotatedTrack.x;
+            mapLoc.y += rotatedTrack.y;
             mapLoc.z += trackBlock->z;
 
             map_invalidate_tile_full(mapLoc.x, mapLoc.y);
@@ -334,10 +334,10 @@ public:
         auto startLoc = _origin;
         startLoc.direction = tileElement->GetDirection();
 
-        LocationXY16 trackLoc = { trackBlock->x, trackBlock->y };
-        rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-        startLoc.x -= trackLoc.x;
-        startLoc.y -= trackLoc.y;
+        CoordsXY trackLoc = { trackBlock->x, trackBlock->y };
+        auto rotatedTrackLoc = trackLoc.Rotate(startLoc.direction);
+        startLoc.x -= rotatedTrackLoc.x;
+        startLoc.y -= rotatedTrackLoc.y;
         startLoc.z -= trackBlock->z;
         res->Position.x = startLoc.x;
         res->Position.y = startLoc.y;
@@ -349,9 +349,9 @@ public:
         {
             CoordsXYZ mapLoc{ startLoc.x, startLoc.y, startLoc.z };
             trackLoc = { trackBlock->x, trackBlock->y };
-            rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-            mapLoc.x += trackLoc.x;
-            mapLoc.y += trackLoc.y;
+            rotatedTrackLoc = trackLoc.Rotate(startLoc.direction);
+            mapLoc.x += rotatedTrackLoc.x;
+            mapLoc.y += rotatedTrackLoc.y;
             mapLoc.z += trackBlock->z;
 
             map_invalidate_tile_full(mapLoc.x, mapLoc.y);

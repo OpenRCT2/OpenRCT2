@@ -153,10 +153,8 @@ public:
         uint8_t tileNum = 0;
         for (rct_large_scenery_tile* tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; tile++, tileNum++)
         {
-            auto tempX = tile->x_offset;
-            auto tempY = tile->y_offset;
-            rotate_map_coordinates(&tempX, &tempY, _loc.direction);
-            CoordsXY curTile = { tempX, tempY };
+            CoordsXY tempTileCoords{ tile->x_offset, tile->y_offset };
+            CoordsXY curTile = tempTileCoords.Rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
@@ -285,10 +283,8 @@ public:
         uint8_t tileNum = 0;
         for (rct_large_scenery_tile* tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; tile++, tileNum++)
         {
-            auto tempX = tile->x_offset;
-            auto tempY = tile->y_offset;
-            rotate_map_coordinates(&tempX, &tempY, _loc.direction);
-            CoordsXY curTile = { tempX, tempY };
+            CoordsXY tempTileCoords{ tile->x_offset, tile->y_offset };
+            CoordsXY curTile = tempTileCoords.Rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
@@ -356,10 +352,8 @@ private:
         int16_t maxHeight = -1;
         for (rct_large_scenery_tile* tile = tiles; tile->x_offset != -1; tile++)
         {
-            auto tempX = tile->x_offset;
-            auto tempY = tile->y_offset;
-            rotate_map_coordinates(&tempX, &tempY, _loc.direction);
-            CoordsXY curTile = { tempX, tempY };
+            CoordsXY tempTileCoords{ tile->x_offset, tile->y_offset };
+            CoordsXY curTile = tempTileCoords.Rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
