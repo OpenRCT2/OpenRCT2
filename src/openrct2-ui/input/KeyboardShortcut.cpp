@@ -795,6 +795,25 @@ static void shortcut_open_scenery_picker()
     }
 }
 
+static void shortcut_scale_up()
+{
+    gConfigGeneral.window_scale += 0.25f;
+    config_save_default();
+    gfx_invalidate_screen();
+    context_trigger_resize();
+    context_update_cursor_scale();
+}
+
+static void shortcut_scale_down()
+{
+    gConfigGeneral.window_scale -= 0.25f;
+    gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
+    config_save_default();
+    gfx_invalidate_screen();
+    context_trigger_resize();
+    context_update_cursor_scale();
+}
+
 namespace
 {
     const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
@@ -870,6 +889,8 @@ namespace
         shortcut_open_tile_inspector,
         shortcut_advance_to_next_tick,
         shortcut_open_scenery_picker,
+        shortcut_scale_up,
+        shortcut_scale_down,
     };
 } // anonymous namespace
 

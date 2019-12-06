@@ -3876,7 +3876,8 @@ enum
 
     STR_CREATE_DUCKS = 6331,
     STR_REMOVE_DUCKS = 6332,
-
+    STR_SHORTCUT_SCALE_UP = 6333,
+    STR_SHORTCUT_SCALE_DOWN = 6334,
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
