@@ -2899,7 +2899,8 @@ static void ride_music_update(Ride* ride)
         return;
     }
 
-    CoordsXYZ rideCoords{ ride->stations[0].Start.x * 32, ride->stations[0].Start.y * 32, ride->stations[0].Height * 8 };
+    TileCoordsXYZ rideTileCoords{ ride->stations[0].Start.x, ride->stations[0].Start.y, ride->stations[0].Height };
+    CoordsXYZ rideCoords{rideTileCoords.ToCoordsXYZ()};
     rideCoords = { rideCoords.ToTileCentre(), rideCoords.z };
 
     int32_t sampleRate = 22050;
