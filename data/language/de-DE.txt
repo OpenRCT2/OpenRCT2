@@ -116,10 +116,10 @@ STR_0530    :Die Wagen hängen an einem Stahlseil, das durchgängig von einem St
 STR_0531    :Eine kompakte Stahlachterbahn, bei der der Zug durch Schrauben und Schleifen fährt
 STR_0532    :
 STR_0533    :
-STR_0534    :Selbstbetriebene Benzin-Go-Karts
-STR_0535    :Baumstammförmige Boote fahren in einem Wasserkanal und rutschen steile Gefälle herunter, damit die Fahrgäste unten nass werden
+STR_0534    :Die Gäste fahren auf einer Asphaltstrecke Rennen gegeneinander
+STR_0535    :Boote fahren in einem Wasserkanal und rutschen steile Gefälle herunter, damit die Fahrgäste unten nass werden
 STR_0536    :Runde Boote gleiten durch einen breiten Wasserkanal, zischen durch Wasserfälle und schäumende Stromschnellen
-STR_0537    :
+STR_0537    :Die Gäste kollidieren miteinander in selbstgesteuerten Autoskootern
 STR_0538    :
 STR_0539    :
 STR_0540    :
@@ -158,7 +158,7 @@ STR_0578    :Die Wagen fahren auf einer Strecke mit kreisförmigen Reifen, steil
 STR_0579    :
 STR_0580    :Eine gigantische Stahlachterbahn mit gemäßigten Gefällen und Anstiegen von über 90 Meter
 STR_0581    :Ein Ring mit Sitzen, der zur Spitze eines hohen Turms gezogen wird, während er sich leicht dreht, und dann im freien Fall heruntersaust, wobei er unten sanft von Magnetbremsen angehalten wird
-STR_0582    :
+STR_0582    :Die Gäste fahren in Luftkissenfahrzeugen, die sie frei steuern
 STR_0583    :
 STR_0584    :Spezielle Fahrräder fahren auf einer einschienigen Stahlstrecke und werden von den Passagieren angetrieben, indem sie in die Pedale treten
 STR_0585    :Die Fahrgäste hängen in Sitzpaaren unter der Strecke und fahren Schleifen und Wendungen durch enge Kurven
