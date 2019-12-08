@@ -70,7 +70,7 @@ rct_vehicle* cable_lift_segment_create(
     {
         peep = SPRITE_INDEX_NULL;
     }
-    current->var_CD = 0;
+    current->TrackSubposition = VEHICLE_TRACK_SUBPOSITION_0;
     current->sprite_direction = direction << 3;
     current->track_x = x;
     current->track_y = y;
@@ -236,8 +236,8 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle)
 
         uint16_t trackProgress = vehicle->track_progress + 1;
 
-        const rct_vehicle_info* moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
-        uint16_t trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
+        const rct_vehicle_info* moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, 0);
+        uint16_t trackTotalProgress = vehicle_get_move_info_size(vehicle->TrackSubposition, vehicle->track_type);
         if (trackProgress >= trackTotalProgress)
         {
             _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
@@ -270,7 +270,7 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle)
         }
 
         vehicle->track_progress = trackProgress;
-        moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, trackProgress);
+        moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, trackProgress);
         CoordsXYZ unk = { moveInfo->x, moveInfo->y, moveInfo->z };
 
         unk.x += vehicle->track_x;
@@ -348,13 +348,13 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle)
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }
 
-            moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
-            uint16_t trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
+            moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, 0);
+            uint16_t trackTotalProgress = vehicle_get_move_info_size(vehicle->TrackSubposition, vehicle->track_type);
             trackProgress = trackTotalProgress - 1;
         }
         vehicle->track_progress = trackProgress;
 
-        moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, trackProgress);
+        moveInfo = vehicle_get_move_info(vehicle->TrackSubposition, vehicle->track_type, trackProgress);
         CoordsXYZ unk = { moveInfo->x, moveInfo->y, moveInfo->z };
 
         unk.x += vehicle->track_x;

@@ -309,7 +309,7 @@ struct rct1_vehicle : RCT12SpriteBase
     uint16_t var_C8;
     uint16_t var_CA;
     uint8_t scream_sound_id; // 0xCC
-    uint8_t var_CD;
+    uint8_t TrackSubposition;
     union
     {
         uint8_t var_CE;

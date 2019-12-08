@@ -29699,23 +29699,23 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoList_8BAD28[] = {
 
 // rct2: 0x008B8F30
 constexpr const rct_vehicle_info_list * const * gTrackVehicleInfo[17] = {
-    TrackVehicleInfoList_8B8F98,
-    TrackVehicleInfoList_8BBAB8,
-    TrackVehicleInfoList_8BC588,
-    TrackVehicleInfoList_8BCBD8,
-    TrackVehicleInfoList_8BD228,
-    TrackVehicleInfoList_8BD878,
-    TrackVehicleInfoList_8BDBB8,
-    TrackVehicleInfoList_8BDEF8,
-    TrackVehicleInfoList_8BE238,
-    TrackVehicleInfoList_9334D0,
-    TrackVehicleInfoList_9341B0,
-    TrackVehicleInfoList_934E90,
-    TrackVehicleInfoList_935B70,
-    TrackVehicleInfoList_936850,
-    TrackVehicleInfoList_937530,
-    TrackVehicleInfoList_8B9F98,
-    TrackVehicleInfoList_8BAD28,
+    TrackVehicleInfoList_8B8F98,// VEHICLE_TRACK_SUBPOSITION_0
+    TrackVehicleInfoList_8BBAB8,// VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_1
+    TrackVehicleInfoList_8BC588,// VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_2
+    TrackVehicleInfoList_8BCBD8,// VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_3
+    TrackVehicleInfoList_8BD228,// VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_4
+    TrackVehicleInfoList_8BD878,// VEHICLE_TRACK_SUBPOSITION_GO_KART_5
+    TrackVehicleInfoList_8BDBB8,// VEHICLE_TRACK_SUBPOSITION_GO_KART_6
+    TrackVehicleInfoList_8BDEF8,// VEHICLE_TRACK_SUBPOSITION_GO_KART_7
+    TrackVehicleInfoList_8BE238,// VEHICLE_TRACK_SUBPOSITION_GO_KART_8
+    TrackVehicleInfoList_9334D0,// VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9 VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_A_9
+    TrackVehicleInfoList_9341B0,// VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10
+    TrackVehicleInfoList_934E90,// VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_B_11
+    TrackVehicleInfoList_935B70,// VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12
+    TrackVehicleInfoList_936850,// VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_13
+    TrackVehicleInfoList_937530,// VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_14
+    TrackVehicleInfoList_8B9F98,// VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_15
+    TrackVehicleInfoList_8BAD28,// VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_16
 };
 
 /** rct2: 0x00993D1C */
