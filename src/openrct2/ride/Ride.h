@@ -1278,8 +1278,6 @@ StationObject* ride_get_station_object(const Ride* ride);
 
 void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 
-ScreenCoordsXY ride_get_rotated_coords(CoordsXYZ coords);
-
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
 

@@ -2899,8 +2899,8 @@ static void ride_music_update(Ride* ride)
         return;
     }
 
-    TileCoordsXYZ rideTileCoords{ ride->stations[0].Start.x, ride->stations[0].Start.y, ride->stations[0].Height };
-    CoordsXYZ rideCoords{rideTileCoords.ToCoordsXYZ()};
+    TileCoordsXYZ stationTileCoords{ ride->stations[0].Start.x, ride->stations[0].Start.y, ride->stations[0].Height };
+    CoordsXYZ rideCoords{ stationTileCoords.ToCoordsXYZ() };
     rideCoords = { rideCoords.ToTileCentre(), rideCoords.z };
 
     int32_t sampleRate = 22050;
@@ -3567,7 +3567,7 @@ int32_t ride_music_params_update(CoordsXYZ rideCoords, Ride* ride, uint16_t samp
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
     {
-        const ScreenCoordsXY rotatedCoords = ride_get_rotated_coords(rideCoords);
+        const ScreenCoordsXY rotatedCoords = translate_3d_to_2d_with_z(get_current_rotation(), rideCoords);
         rct_viewport* viewport = g_music_tracking_viewport;
         int16_t view_width = viewport->view_width;
         int16_t view_width2 = view_width * 2;
@@ -7655,12 +7655,6 @@ StationObject* ride_get_station_object(const Ride* ride)
 {
     auto& objManager = GetContext()->GetObjectManager();
     return static_cast<StationObject*>(objManager.GetLoadedObject(OBJECT_TYPE_STATION, ride->entrance_style));
-}
-
-ScreenCoordsXY ride_get_rotated_coords(CoordsXYZ coords3d)
-{
-    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
-    return screenCoords;
 }
 
 // Normally, a station has at most one entrance and one exit, which are at the same height

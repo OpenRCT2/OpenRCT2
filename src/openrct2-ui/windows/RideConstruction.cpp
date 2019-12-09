@@ -2385,7 +2385,7 @@ static void window_ride_construction_draw_track_piece(
         : TrackDefinitions[trackType].preview_z_offset;
     mapCoords.z -= previewZOffset;
 
-    const ScreenCoordsXY rotatedScreenCoords = ride_get_rotated_coords(mapCoords);
+    const ScreenCoordsXY rotatedScreenCoords = translate_3d_to_2d_with_z(get_current_rotation(), mapCoords);
 
     dpi->x += rotatedScreenCoords.x - width / 2;
     dpi->y += rotatedScreenCoords.y - height / 2 - 16;
