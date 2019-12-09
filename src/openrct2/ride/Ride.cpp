@@ -6915,11 +6915,8 @@ void sub_6CB945(Ride* ride)
             if (ride->stations[stationId].Start.xy == RCT_XY8_UNDEFINED)
                 continue;
 
-            LocationXYZ16 location = {
-                (int16_t)(ride->stations[stationId].Start.x * 32),
-                (int16_t)(ride->stations[stationId].Start.y * 32),
-                (ride->stations[stationId].Height),
-            };
+            CoordsXYZ location = { ride->stations[stationId].Start.x * 32, ride->stations[stationId].Start.y * 32,
+                                   ride->stations[stationId].Height * 8 };
             uint8_t direction = 0xFF;
 
             bool specialTrack = false;
@@ -6977,9 +6974,7 @@ void sub_6CB945(Ride* ride)
             const rct_preview_track* trackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
             while ((++trackBlock)->index != 0xFF)
             {
-                auto blockLocationXY = map_offset_with_rotation(
-                    { location.x, location.y }, { trackBlock->x, trackBlock->y }, direction);
-                CoordsXYZ blockLocation{ blockLocationXY.x, blockLocationXY.y, location.z };
+                CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };
 
                 bool trackFound = false;
                 tileElement = map_get_first_element_at(blockLocation.x >> 5, blockLocation.y >> 5);

@@ -543,8 +543,7 @@ static void window_track_place_draw_mini_preview_track(
         const rct_preview_track* trackBlock = trackBlockArray[trackType];
         while (trackBlock->index != 255)
         {
-            auto rotatedAndOffsetTrackBlock = map_offset_with_rotation(
-                { origin.x, origin.y }, { trackBlock->x, trackBlock->y }, rotation);
+            auto rotatedAndOffsetTrackBlock = origin + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
 
             if (pass == 0)
             {
@@ -589,8 +588,7 @@ static void window_track_place_draw_mini_preview_track(
         const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
 
         trackType *= 10;
-        auto rotatedAndOfffsetTrack = map_offset_with_rotation(
-            { origin.x, origin.y }, { track_coordinate->x, track_coordinate->y }, rotation);
+        auto rotatedAndOfffsetTrack = origin + CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(rotation);
         rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
         rotation &= 3;
         if (track_coordinate->rotation_end & 4)
@@ -599,15 +597,14 @@ static void window_track_place_draw_mini_preview_track(
         }
         if (!(rotation & 4))
         {
-            origin.x = rotatedAndOfffsetTrack.x + CoordsDirectionDelta[rotation].x;
-            origin.y = rotatedAndOfffsetTrack.x + CoordsDirectionDelta[rotation].y;
+            origin = rotatedAndOfffsetTrack + CoordsDirectionDelta[rotation];
         }
     }
 
     // Draw entrance and exit preview.
     for (const auto& entrance : td6->entrance_elements)
     {
-        auto rotatedAndOffsetEntrance = map_offset_with_rotation({ origin.x, origin.y }, { entrance.x, entrance.y }, rotation);
+        auto rotatedAndOffsetEntrance = origin + CoordsXY{ entrance.x, entrance.y }.Rotate(rotation);
 
         if (pass == 0)
         {
@@ -642,10 +639,7 @@ static void window_track_place_draw_mini_preview_maze(
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     for (const auto& mazeElement : td6->maze_elements)
     {
-        CoordsXY mazeCoords{ mazeElement.x * 32, mazeElement.y * 32 };
-        auto rotatedMazeCoords = mazeCoords.Rotate(rotation);
-
-        rotatedMazeCoords += origin;
+        auto rotatedMazeCoords = origin + CoordsXY{ mazeElement.x * 32, mazeElement.y * 32 }.Rotate(rotation);
 
         if (pass == 0)
         {

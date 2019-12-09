@@ -224,6 +224,11 @@ struct CoordsXYZ : public CoordsXY
     {
     }
 
+    const CoordsXYZ operator+(const CoordsXYZ& rhs) const
+    {
+        return { x + rhs.x, y + rhs.y, z + rhs.z };
+    }
+
     bool operator==(const CoordsXYZ& other) const
     {
         return x == other.x && y == other.y && z == other.z;
