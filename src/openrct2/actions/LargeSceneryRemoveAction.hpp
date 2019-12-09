@@ -72,27 +72,22 @@ public:
 
         rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
 
-        CoordsXYZ firstTile = { scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
-                                scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
+        auto rotatedOffsets = CoordsXY{ scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
+                                        scenery_entry->large_scenery.tiles[_tileIndex].y_offset }
+                                  .Rotate(_loc.direction);
+
+        CoordsXYZ firstTile = { _loc.x - rotatedOffsets.x, _loc.y - rotatedOffsets.y,
                                 _loc.z - scenery_entry->large_scenery.tiles[_tileIndex].z_offset };
-
-        auto rotatedFirstTile = firstTile.Rotate(_loc.direction);
-
-        firstTile.x = _loc.x - rotatedFirstTile.x;
-        firstTile.y = _loc.y - rotatedFirstTile.y;
 
         bool calculate_cost = true;
         for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
         {
-            CoordsXYZ currentTile = { scenery_entry->large_scenery.tiles[i].x_offset,
-                                      scenery_entry->large_scenery.tiles[i].y_offset,
-                                      scenery_entry->large_scenery.tiles[i].z_offset };
+            auto currentTileRotatedOffset = CoordsXY{ scenery_entry->large_scenery.tiles[i].x_offset,
+                                                      scenery_entry->large_scenery.tiles[i].y_offset }
+                                                .Rotate(_loc.direction);
 
-            auto rotatedCurrentTile = currentTile.Rotate(_loc.direction);
-
-            currentTile.x = rotatedCurrentTile.x + firstTile.x;
-            currentTile.y = rotatedCurrentTile.y + firstTile.y;
-            currentTile.z += firstTile.z;
+            CoordsXYZ currentTile = { currentTileRotatedOffset.x + firstTile.x, currentTileRotatedOffset.y + firstTile.y,
+                                      scenery_entry->large_scenery.tiles[i].z_offset + firstTile.z };
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {

@@ -106,11 +106,11 @@ private:
             return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_REPAINT_THIS);
         }
         // Work out the base tile coordinates (Tile with index 0)
-        CoordsXY baseCoords{ sceneryEntry->large_scenery.tiles[_tileIndex].x_offset,
-                             sceneryEntry->large_scenery.tiles[_tileIndex].y_offset };
-        auto rotatedBaseCoords = baseCoords.Rotate(_loc.direction);
+        auto rotatedBaseCoordsOffset = CoordsXY{ sceneryEntry->large_scenery.tiles[_tileIndex].x_offset,
+                                                 sceneryEntry->large_scenery.tiles[_tileIndex].y_offset }
+                                           .Rotate(_loc.direction);
 
-        CoordsXYZ baseTile = { _loc.x - rotatedBaseCoords.x, _loc.y - rotatedBaseCoords.y,
+        CoordsXYZ baseTile = { _loc.x - rotatedBaseCoordsOffset.x, _loc.y - rotatedBaseCoordsOffset.y,
                                _loc.z - sceneryEntry->large_scenery.tiles[_tileIndex].z_offset };
 
         auto i = 0;
