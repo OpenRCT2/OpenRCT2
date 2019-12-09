@@ -890,9 +890,7 @@ paint_struct* sub_98197C(
 
     session->LastRootPS = ps;
 
-    CoordsXY attach = { ps->bounds.x, ps->bounds.y };
-
-    attach = attach.Rotate(session->CurrentRotation);
+    auto attach = CoordsXY{ ps->bounds.x, ps->bounds.y }.Rotate(session->CurrentRotation);
     switch (session->CurrentRotation)
     {
         case 0:
