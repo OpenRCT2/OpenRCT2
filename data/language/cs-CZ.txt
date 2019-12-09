@@ -116,8 +116,8 @@ STR_0530    :Kabiny visí na ocelovém laně, které nepřetržitě jede z jedno
 STR_0531    :Malá ocelová horská dráha, na které vlak projíždí smyčky a vývrtky
 STR_0532    :Bludiště z šest stop vysokých zdí nebo živého plotu. Návštěvníci bloudí dokud nenajdou východ
 STR_0533    :Dřevěná budova s krytým schodištěm a venkovní skluzavkou s koberečky
-STR_0534    :Návštěvníci sami řídí benzínové motokáry
-STR_0535    :Lodě ve tvaru klády se plaví po vodní kanále a sjíždí strmé úseky. Žádný návštěvník nezůstane suchý
+STR_0534    :Návštěvníci závodí na benzínových motokárách po asfaltovém okruhu
+STR_0535    :Lodě ve tvaru klády se plaví po vodním kanále a sjíždí strmé úseky. Nikdo nezůstane suchý!
 STR_0536    :Loď pluje po širokých meandrech, přes stříkající vodopády a po vzrušujících pěnících peřejích
 STR_0537    :Autodrom
 STR_0538    :Velká houpající se pirátská kocábka

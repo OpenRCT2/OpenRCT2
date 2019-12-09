@@ -3934,7 +3934,7 @@ STR_DTLS    :Una colección de icebergs dan un gélido entorno a este ambicioso 
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :Un volcán en estado latente es el entorno para este proyecto de montaña rusa en construcción
+STR_DTLS    :Un volcán en estado latente es el entorno para este proyecto de montaña rusa en construcción.
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
@@ -4074,7 +4074,7 @@ STR_DTLS    :En un planeta lejano, esta zona de terreno debe convertirse en un p
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Intenta crear el parque rentable más pequeño del mundo
+STR_DTLS    :Intenta crear el parque rentable más pequeño del mundo.
 
 ## Real Parks from RCT1
 # None of them had details

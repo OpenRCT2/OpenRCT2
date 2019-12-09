@@ -12,7 +12,7 @@ STR_0007    :Miniaturbahn
 STR_0008    :Einschienenbahn
 STR_0009    :Minihängebahn
 STR_0010    :Bootsverleih
-STR_0011    :Wilde Maus-Holzbahn
+STR_0011    :Wilde-Maus-Holzbahn
 STR_0012    :Hindernislauf
 STR_0013    :Wagenbahn
 STR_0014    :Hochgeschossener Freefall
@@ -47,7 +47,7 @@ STR_0042    :Top Spin
 STR_0043    :Weltraumringe
 STR_0044    :Umgekehrte Freefall-Bahn
 STR_0045    :Lift
-STR_0046    :Vertikaler Fall Achterbahn
+STR_0046    :Vertikaler-Fall-Achterbahn
 STR_0047    :Geldautomat
 STR_0048    :Twist
 STR_0049    :Spukhaus
@@ -68,7 +68,7 @@ STR_0063    :Minihubschrauber
 STR_0064    :Liegeachterbahn
 STR_0065    :Einschienenhängebahn
 STR_0066    :Unbekannte Bahn (40)
-STR_0067    :Umgekehrte Achterbahn
+STR_0067    :Umkehrachterbahn
 STR_0068    :Heartline-Achterbahn
 STR_0069    :Minigolf
 STR_0070    :Giga-Bahn
@@ -93,7 +93,7 @@ STR_0088    :Umgekehrte Impuls-Bahn
 STR_0089    :Miniachterbahn
 STR_0090    :Minenbahn
 STR_0091    :Unbekannte Bahn (59)
-STR_0092    :LIM Achterbahn
+STR_0092    :LIM-Achterbahn
 STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
 STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
@@ -147,7 +147,7 @@ STR_0564    :Diese Holzachterbahn ist schnell, rauh, laut und gibt einem das Gef
 STR_0565    :Eine einfache Holzachterbahn mit nur leichten Gefällen und Kurven, bei der die Wagen nur mit Hilfe von seitlichen Führungsrollen und der Schwerkraft auf der Strecke gehalten werden
 STR_0566    :Voneinander unabhängige Achterbahnwagen rasen auf einer engen Zickzack-Strecke mit scharfen Kurven und kurzen, starken Gefällen
 STR_0567    :Die Passagiere befinden sich in Sitzen, die an beiden Seiten der Bahn hängen, auf der sie über Kopf steile Gefälle hinunterrasen und verschiedene Inversionsfiguren erleben
-STR_0569    :Die Passagiere, die in speziellen Vorrichtungen unter der Schiene fahren, haben das Gefühl zu fliegen, während sie durch die Lüfte sausen
+STR_0569    :Die Passagiere, die in speziellen Vorrichtungen unter der Schiene fahren, haben das Gefühl, zu fliegen, während sie durch die Lüfte sausen
 STR_0571    :Runde Wagen drehen sich auf der Zickzack-Holzstrecke
 STR_0572    :Große Boote bewegen sich in einem breiten Wasserkanal, fahren von einem Fließband befördert Anstiege hoch und sausen steile Gefälle hinunter, damit die Fahrgäste mit einem gigantischen Platscher durchnässt werden
 STR_0573    :Helikopterförmige Wagen fahren auf einer Stahlstrecke und werden von den Pedaltritten der Fahrer angetrieben
@@ -156,7 +156,7 @@ STR_0575    :Angetriebene Züge, die von einem einzelnen Gleis hängen, beförde
 STR_0577    :Wagen mit Drehgestell fahren auf einer Holzstrecke und rotieren dabei auf speziellen Umkehrabschnitten
 STR_0578    :Die Wagen fahren auf einer Strecke mit kreisförmigen Reifen, steilen Gefällen und Heartline-Twists
 STR_0579    :
-STR_0580    :Eine gigantische Stahlachterbahn mit gemäßigten Gefällen und Anstiegen von über 90 Meter
+STR_0580    :Eine gigantische Stahlachterbahn mit gemäßigten Gefällen und Anstiegen von über 90 Metern
 STR_0581    :Ein Ring mit Sitzen, der zur Spitze eines hohen Turms gezogen wird, während er sich leicht dreht, und dann im freien Fall heruntersaust, wobei er unten sanft von Magnetbremsen angehalten wird
 STR_0582    :Die Gäste fahren in Luftkissenfahrzeugen, die sie frei steuern
 STR_0583    :
@@ -236,8 +236,8 @@ STR_0831    :{SMALLFONT}{BLACK}Ansicht wegzoomen
 STR_0832    :{SMALLFONT}{BLACK}Ansicht um 90° im Uhrzeigersinn drehen
 STR_0833    :{SMALLFONT}{BLACK}Spiel pausieren
 STR_0834    :{SMALLFONT}{BLACK}Speicher- und Spieloptionen
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Über „OpenRCT2“
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, alle Rechte vorbehalten
 STR_0851    :{WINDOW_COLOUR_2}Entworfen und programmiert von Chris Sawyer
@@ -1062,12 +1062,12 @@ STR_1679    :Spirale n. oben (links)
 STR_1680    :Spirale n. oben (rechts)
 STR_1681    :Spirale n. unten (links)
 STR_1682    :Spirale n. unten (rechts)
-STR_1683    :Grundflächengröße 2 x 2
-STR_1684    :Grundflächengröße 4 x 4
-STR_1685    :Grundflächengröße 2 x 4
-STR_1686    :Grundflächengröße 5 x 1
+STR_1683    :Grundflächengröße 2 × 2
+STR_1684    :Grundflächengröße 4 × 4
+STR_1685    :Grundflächengröße 2 × 4
+STR_1686    :Grundflächengröße 5 × 1
 STR_1687    :Wasser-Splash
-STR_1688    :Grundflächengröße 4 x 1
+STR_1688    :Grundflächengröße 4 × 1
 STR_1689    :Blockbremsen
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Kosten: {BLACK}{CURRENCY}
@@ -1440,11 +1440,11 @@ STR_2068    :ein Brathähnchen
 STR_2069    :eine Limonade
 STR_2070    :eine leere Schachtel
 STR_2071    :eine leere Flasche
-STR_2072    :„{STRINGID}“ Ballon
-STR_2073    :„{STRINGID}“ Plüschtier
+STR_2072    :„{STRINGID}“-Ballon
+STR_2073    :„{STRINGID}“-Plüschtier
 STR_2074    :Karte von {STRINGID}
 STR_2075    :Fahrtfoto von {STRINGID}
-STR_2076    :„{STRINGID}“ Regenschirm
+STR_2076    :„{STRINGID}“-Regenschirm
 STR_2077    :Getränk
 STR_2078    :Burger
 STR_2079    :Pommes
@@ -1458,9 +1458,9 @@ STR_2086    :Gutschein für {STRINGID}
 STR_2087    :Popcorn
 STR_2088    :Hot Dog
 STR_2089    :Meeresfrüchte
-STR_2090    :„{STRINGID}“ Hut
+STR_2090    :„{STRINGID}“-Hut
 STR_2091    :Karamellapfel
-STR_2092    :„{STRINGID}“ T-Shirt
+STR_2092    :„{STRINGID}“-T-Shirt
 STR_2093    :Donut
 STR_2094    :Kaffee
 STR_2095    :Leere Tasse
@@ -2237,7 +2237,7 @@ STR_3120    :{SMALLFONT}{BLACK}Nächsten verfügbaren Mechaniker{NEWLINE}oder Me
 STR_3121    :Es befindet sich kein Mechaniker in der Nähe, oder alle Mechaniker sind gerade beschäftigt
 STR_3122    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA16} Besucher
 STR_3123    :{WINDOW_COLOUR_2}Lieblingsbahn von: {BLACK}{COMMA16} Besuchern
-STR_3124    :Defekt {STRINGID}
+STR_3124    :{STRINGID} (kaputt)
 STR_3125    :{WINDOW_COLOUR_2}Nervenkitzelfaktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensitätsfaktor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Übelkeitsfaktor: {BLACK}+{COMMA16}%
@@ -2511,7 +2511,7 @@ STR_5141    :Deaktiviere alle Störungen
 STR_5142    :Normale Geschwindigkeit
 STR_5143    :Erhöhte Geschwindigkeit
 STR_5144    :Hohe Geschwindigkeit
-STR_5145    :Sehr Hohe Geschwindigkeit
+STR_5145    :Sehr hohe Geschwindigkeit
 STR_5146    :Extreme Geschwindigkeit
 STR_5147    :Cheats
 STR_5148    :{SMALLFONT}{BLACK}Spielgeschwindigkeit ändern
@@ -2581,7 +2581,7 @@ STR_5212    :Szenariooptionen
 STR_5213    :Zieloptionen
 STR_5214    :Kartengenerierung
 STR_5215    :Streckenentwurf-Manager
-STR_5216    :Streckenentwurf-Manager Liste
+STR_5216    :Streckenentwurf-Manager-Liste
 STR_5217    :Cheats
 STR_5218    :Themen
 STR_5219    :Optionen
@@ -2614,10 +2614,10 @@ STR_5245    :Obere Symbolleiste
 STR_5246    :Untere Symbolleiste
 STR_5247    :Untere Symbolleiste Achterb.-Designer
 STR_5248    :Untere Symbolleiste Szenario-Editor
-STR_5249    :Hauptmenü Schaltflächen
-STR_5250    :Hauptmenü Beenden-Schaltfläche
-STR_5251    :Hauptmenü Optionen-Schaltfläche
-STR_5252    :Hauptmenü Szenarioauswahl
+STR_5249    :Hauptmenü-Schaltflächen
+STR_5250    :Hauptmenü-Beenden-Schaltfläche
+STR_5251    :Hauptmenü-Optionen-Schaltfläche
+STR_5252    :Hauptmenü-Szenarioauswahl
 STR_5253    :Parkinformationen
 STR_5254    :Erstellen
 STR_5255    :{SMALLFONT}{BLACK}Eine neue Titelsequenz von{NEWLINE}Grund auf neu erstellen
@@ -4105,9 +4105,9 @@ STR_PARK    :Bergabenteuer
 STR_DTLS    :Verwandeln Sie einen kleinen Bergskiort in einen Schnee-Themenpark
 
 <Amity Airfield>
-STR_SCNR    :Amity Flugplatz
-STR_PARK    :Amity Flugplatz
-STR_DTLS    :Bauen Sie einen Vergnügungspark mit dem Thema `Fliegen' auf diesem verlassenen Flughafen
+STR_SCNR    :Amity-Flugplatz
+STR_PARK    :Amity-Flugplatz
+STR_DTLS    :Bauen Sie einen Vergnügungspark mit dem Thema „Fliegen“ auf diesem verlassenen Flughafen
 
 <Botany Breakers>
 STR_SCNR    :Kahlschlag
@@ -4117,32 +4117,32 @@ STR_DTLS    :Ihre Aufgabe besteht darin, einen gewinnträchtigen Park auf dieser
 <Build your own Six Flags Belgium>
 STR_SCNR    :Bauen Sie Ihren eigenen Six Flags Belgien
 STR_PARK    :Six Flags Belgien
-STR_DTLS    :Bauen Sie Ihre eigene Version dieses europäischen Six Flags-Parks
+STR_DTLS    :Bauen Sie Ihre eigene Version dieses europäischen Six-Flags-Parks
 
 <Build your own Six Flags Great Adventure>
 STR_SCNR    :Bauen Sie Ihr eigenes Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Nutzen Sie Ihre Entwurfsfähigkeiten, um diesen Six Flags-Park nachzubauen
+STR_DTLS    :Nutzen Sie Ihre Entwurfsfähigkeiten, um diesen Six-Flags-Park nachzubauen
 
 <Build your own Six Flags Holland>
 STR_SCNR    :Bauen Sie Ihren eigenen Six Flags Holland
 STR_PARK    :Six Flags Holland
-STR_DTLS    :Bauen Sie diesen europäischen Six Flags-Park nach Ihren Wünschen
+STR_DTLS    :Bauen Sie diesen europäischen Six-Flags-Park nach Ihren Wünschen
 
 <Build your own Six Flags Magic Mountain>
 STR_SCNR    :Bauen Sie Ihren eigenen Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Bauen Sie Ihre eigene Version dieses riesigen Six Flags-Parks
+STR_DTLS    :Bauen Sie Ihre eigene Version dieses riesigen Six-Flags-Parks
 
 <Build your own Six Flags Park>
-STR_SCNR    :Bauen Sie Ihren eigenen Six Flags-Park
+STR_SCNR    :Bauen Sie Ihren eigenen Six-Flags-Park
 STR_PARK    :Six Flags
-STR_DTLS    :Setzen Sie Ihren eigenen Entwurf eines Six Flags-Park um. Bauen Sie entweder Bahnen aus anderen Six Flags-Parks oder entwerfen und bauen Sie Ihre eigenen Bahnen
+STR_DTLS    :Setzen Sie Ihren eigenen Entwurf eines Six-Flags-Park um. Bauen Sie entweder Bahnen aus anderen Six-Flags-Parks oder entwerfen und bauen Sie Ihre eigenen Bahnen
 
 <Build your own Six Flags over Texas>
 STR_SCNR    :Bauen Sie Ihren eigenen Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Sie fangen von vorne an, diesen Six Flags-Park zu bauen
+STR_DTLS    :Sie fangen von vorne an, diesen Six-Flags-Park zu bauen
 
 <Bumbly Bazaar>
 STR_SCNR    :Kleinbasar
@@ -4207,27 +4207,27 @@ STR_DTLS    :Dieser Park wurde auf einem Hügel errichtet, und es darf nichts Ho
 <Six Flags Belgium>
 STR_SCNR    :Six Flags Belgien
 STR_PARK    :Six Flags Belgien
-STR_DTLS    :Versuchen Sie sich an der Verwaltung und Verbesserung dieses Six Flags-Parks
+STR_DTLS    :Versuchen Sie sich an der Verwaltung und Verbesserung dieses Six-Flags-Parks
 
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Bauen Sie die fehlenden Six Flags-Bahnen, oder erstellen Sie Ihre eigenen Entwürfe, um den Park zu verbessern! Aber vergessen Sie nicht Ihr endgültiges Ziel - mehr Besucher in den Park zu bekommen!
+STR_DTLS    :Bauen Sie die fehlenden Six-Flags-Bahnen, oder erstellen Sie Ihre eigenen Entwürfe, um den Park zu verbessern! Aber vergessen Sie nicht Ihr endgültiges Ziel - mehr Besucher in den Park zu bekommen!
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holland
 STR_PARK    :Six Flags Holland
-STR_DTLS    :Versuchen Sie sich an der Verwaltung und Verbesserung dieses Six Flags-Parks
+STR_DTLS    :Versuchen Sie sich an der Verwaltung und Verbesserung dieses Six-Flags-Parks
 
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Bauen Sie die fehlenden Six Flags-Bahnen, oder erstellen Sie Ihre eigenen Entwürfe, um den Park zu verbessern! Aber vergessen Sie nicht Ihr endgültiges Ziel - das Darlehen zurückzuzahlen und dabei den Verkehrswert hoch zu halten!
+STR_DTLS    :Bauen Sie die fehlenden Six-Flags-Bahnen, oder erstellen Sie Ihre eigenen Entwürfe, um den Park zu verbessern! Aber vergessen Sie nicht Ihr endgültiges Ziel - das Darlehen zurückzuzahlen und dabei den Verkehrswert hoch zu halten!
 
 <Six Flags over Texas>
 STR_SCNR    :Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Bauen Sie die fehlenden Six Flags-Bahnen, oder erstellen Sie Ihre eigenen Entwürfe, um den Park zu verbessern! Aber vergessen Sie nicht Ihr endgültiges Ziel - mehr Besucher in den Park zu bekommen!
+STR_DTLS    :Bauen Sie die fehlenden Six-Flags-Bahnen, oder erstellen Sie Ihre eigenen Entwürfe, um den Park zu verbessern! Aber vergessen Sie nicht Ihr endgültiges Ziel - mehr Besucher in den Park zu bekommen!
 
 ###############################################################################
 ## Wacky Worlds Scenarios
@@ -4341,9 +4341,9 @@ STR_PARK    :Zwillingsstadt
 STR_DTLS    :Beweisen Sie Ihre innovative, utopische Vision der Zukunft - errichten Sie einen futuristischen Freizeitpark mit topmodernen Attraktionen.
 
 <Mythological - Animatronic Film Set>
-STR_SCNR    :Mythologie - Animatronic Filmgelände
-STR_PARK    :Animatronic Possen
-STR_DTLS    :Ihre Aufgabe ist, einen bestehenden Freizeitpark zu verbessern, der auf einem alten Filmgelände gebaut wurde. Bauen Sie eine Gedenkstätte für die Pioniere der Stop Motion, die die Mystikwesen als Erste ins Kino brachten.
+STR_SCNR    :Mythologie - Animatronic-Filmgelände
+STR_PARK    :Animatronic-Possen
+STR_DTLS    :Ihre Aufgabe ist, einen bestehenden Freizeitpark zu verbessern, der auf einem alten Filmgelände gebaut wurde. Bauen Sie eine Gedenkstätte für die Pioniere der Stop-Motion, die die Mystikwesen als Erste ins Kino brachten.
 
 <Mythological - Cradle of Civilisation>
 STR_SCNR    :Mythologie - Wiege der Zivilisation
@@ -4356,7 +4356,7 @@ STR_PARK    :Kratergemetzel
 STR_DTLS    :Sie besitzen einen alten, verstaubten Meteoritenkrater. In Ihrem unternehmerischen Geist haben Sie beschlossen, einen Asteroiden-Freizeitpark zu bauen und Ihr scheinbar wertloses Land in eine Geldanlage umzuwandeln.
 
 <Prehistoric - Jurassic Safari>
-STR_SCNR    :Vorgeschichte - Jurassic Safari
+STR_SCNR    :Vorgeschichte - Jurassic-Safari
 STR_PARK    :Achtersaurus
 STR_DTLS    :Sie haben die Aufgabe, einen Jurassic-Freizeitpark zu bauen. Damit Ihre Besucher optimalen Zugang zu den exotischen Pflanzen und Tieren haben, müssen Sie Attraktionen errichten, die über und in die Täler führen.
 
