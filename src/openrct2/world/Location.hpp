@@ -273,6 +273,11 @@ struct TileCoordsXYZ
         return !(*this == other);
     }
 
+    CoordsXYZ ToCoordsXYZ()
+    {
+        return { x * 32, y * 32, z * 8 };
+    }
+
     int32_t x = 0, y = 0, z = 0;
 };
 

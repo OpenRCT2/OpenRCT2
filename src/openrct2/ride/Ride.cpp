@@ -2899,9 +2899,9 @@ static void ride_music_update(Ride* ride)
         return;
     }
 
-    int32_t x = ride->stations[0].Start.x * 32 + 16;
-    int32_t y = ride->stations[0].Start.y * 32 + 16;
-    int32_t z = ride->stations[0].Height * 8;
+    TileCoordsXYZ stationTileCoords{ ride->stations[0].Start.x, ride->stations[0].Start.y, ride->stations[0].Height };
+    CoordsXYZ rideCoords{ stationTileCoords.ToCoordsXYZ() };
+    rideCoords = { rideCoords.ToTileCentre(), rideCoords.z };
 
     int32_t sampleRate = 22050;
 
@@ -2914,7 +2914,7 @@ static void ride_music_update(Ride* ride)
         sampleRate += 22050;
     }
 
-    ride->music_position = ride_music_params_update(x, y, z, ride, sampleRate, ride->music_position, &ride->music_tune_id);
+    ride->music_position = ride_music_params_update(rideCoords, ride, sampleRate, ride->music_position, &ride->music_tune_id);
 }
 
 #pragma endregion
@@ -3563,12 +3563,11 @@ static int32_t ride_music_params_update_label_58(uint32_t position, uint8_t* tun
  * @param tuneId (bh)
  * @returns new position (ebp)
  */
-int32_t ride_music_params_update(
-    int16_t x, int16_t y, int16_t z, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId)
+int32_t ride_music_params_update(CoordsXYZ rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
     {
-        const LocationXY16 rotatedCoords = ride_get_rotated_coords(x, y, z);
+        const ScreenCoordsXY rotatedCoords = translate_3d_to_2d_with_z(get_current_rotation(), rideCoords);
         rct_viewport* viewport = g_music_tracking_viewport;
         int16_t view_width = viewport->view_width;
         int16_t view_width2 = view_width * 2;
@@ -7656,14 +7655,6 @@ StationObject* ride_get_station_object(const Ride* ride)
 {
     auto& objManager = GetContext()->GetObjectManager();
     return static_cast<StationObject*>(objManager.GetLoadedObject(OBJECT_TYPE_STATION, ride->entrance_style));
-}
-
-LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z)
-{
-    CoordsXYZ coords3d = { x, y, z };
-    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
-    LocationXY16 rotatedCoords = { (int16_t)screenCoords.x, (int16_t)screenCoords.y };
-    return rotatedCoords;
 }
 
 // Normally, a station has at most one entrance and one exit, which are at the same height
