@@ -244,11 +244,10 @@ static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElemen
     sequence = 0;
     for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
     {
-        int16_t offsetX = tile->x_offset;
-        int16_t offsetY = tile->y_offset;
-        rotate_map_coordinates(&offsetX, &offsetY, direction);
+        CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+        auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
-        CoordsXYZ tileLoc = { x0 + offsetX, y0 + offsetY, (z0 + tile->z_offset) };
+        CoordsXYZ tileLoc = { x0 + rotatedOffsetPos.x, y0 + rotatedOffsetPos.y, (z0 + tile->z_offset) };
         auto largeElement = map_get_large_scenery_segment(tileLoc.x, tileLoc.y, tileLoc.z / 8, direction, sequence);
         if (largeElement != nullptr)
         {
@@ -419,11 +418,10 @@ static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryEle
     sequence = 0;
     for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
     {
-        int16_t offsetX = tile->x_offset;
-        int16_t offsetY = tile->y_offset;
-        rotate_map_coordinates(&offsetX, &offsetY, direction);
+        CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+        auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
-        CoordsXYZ tileLoc = { x0 + offsetX, y0 + offsetY, z0 + tile->z_offset };
+        CoordsXYZ tileLoc = { x0 + rotatedOffsetPos.x, y0 + rotatedOffsetPos.y, z0 + tile->z_offset };
         auto largeElement = map_get_large_scenery_segment(tileLoc.x, tileLoc.y, tileLoc.z / 8, direction, sequence);
         if (largeElement != nullptr)
         {
