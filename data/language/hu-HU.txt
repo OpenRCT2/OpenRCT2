@@ -116,10 +116,10 @@ STR_0530    :A kocsik egy acélkábelről lógnak, ami folyamatosan a játék eg
 STR_0531    :Egy kompakt, acélpályás hullámvasút, amelyen a vonat dugóhúzókon és hurkokon halad át
 STR_0532    :Az útvesztő közel 2 méteres sövényekből vagy falakból áll és a vendégek addig bolyonganak benne, amíg rá nem lelnek a kijáratra
 STR_0533    :Egy  belső lépcsős faépület kívül spirál csúszdával, amelyről csúszómatracokkal lehet lecsúszni
-STR_0534    :Önvezető benzinmotoros gokartok
-STR_0535    :Farönkhöz hasonlító csónakok utaznak a vízcsatorna mentén, amelyek nagyokat csobbannak a meredek lejtőknél, eláztatva az utasokat
+STR_0534    :A vendégek gokartokban versenyeznek egymással egy aszfaltpályán
+STR_0535    :Csónakok haladnak egy vízcsatorna mentén, nagyokat csobbanva a meredek lejtőknél, hogy eláztassák az utasokat
 STR_0536    :Kerek csónakok kanyarognak egy széles vízcsatorna mentén, miközben csobogó vízesések és habzó zuhatagok biztosítják az izgalmat az utasok számára
-STR_0537    :Önvezető elektromos dodzsemautók
+STR_0537    :A vendégek egymásnak ütköznek az önvezető elektromos dodzsemekben
 STR_0538    :Nagy lengő kalózhajó
 STR_0539    :A hajó egy karhoz van rögzítve, amelynek másik végén ellensúly van és teljes 360 fokban körbefordul
 STR_0540    :Egy bódé, ahol a vendégek ételt vehetnek
@@ -146,12 +146,13 @@ STR_0563    :Kényelmes, egyszerű biztonsági rudas vonatokban ülve élvezheti
 STR_0564    :Ez a fa pályán futó hullámvasút gyors, durva, hangos és „kontrollvesztett” utazási élményt nyújt, bőséges „légi idővel”
 STR_0565    :Egy egyszerű, kizárólag enyhe lejtőkre és fordulókra képes fa hullámvasút, amelyen a kocsikat csak az oldalirányú súrlódásos kerekek és a gravitáció tartja a pályán
 STR_0566    :Különálló hullámvasút-kocsik száguldanak egy szoros, cikcakkos alaprajzú, éles kanyarokat és rövid meredek eséseket tartalmazó pályán
+STR_0567    :A pálya mindkét oldalán felfüggesztett ülésekben ülve az utasok bukfencezve forognak, miközben meredek eséseken és különböző fordítókon haladnak át
 STR_0569    :A pálya alatti speciális rögzítőhámokban utazva az utasok megtapasztalhatják a repülés élményét, ahogy szelik a levegőt
 STR_0573    :Motoros, helikopter formájú kocsik haladnak egy acélpályán, a pedálozó utasok irányításával
 STR_0578    :A kocsik egy abroncsokkal körbefogott, meredek esésekkel és palástorsókkal teli pálya mentén haladnak
 STR_0579    :Egy enyhe minigolf-játék
 STR_0580    :Egy hatalmas acél hullámvasút, amely sima esésekre és 90 méternél magasabb emelkedőkre is képes
-STR_0582    :Önvezető légpárnás járművek
+STR_0582    :A vendégek légpárnás járművekben utaznak, amelyeket szabadon irányítanak
 STR_0584    :Speciális, az utasok pedálozásával hajtott biciklik futnak egy acél egysínű pályán
 STR_0588    :Különálló kocsik futnak a cikcakkos, hajtűkanyarokkal és éles esésekkel teli pálya alatt
 STR_0589    :Egy nagy, repülőszőnyeg-témájú kocsi, amely ciklikusan fel-le mozog a 4 kar végén
@@ -2306,6 +2307,9 @@ STR_3220    :Eladó építési jogok
 STR_3226    :{SMALLFONT}{BLACK}Parkbejárat építése
 STR_3227    :Túl sok a parkbejárat!
 STR_3228    :{SMALLFONT}{BLACK}Kezdő pozíciók megadása az emberek számára
+STR_3229    :Blokkolófékek nem használhatóak közvetlenül az állomás után
+STR_3230    :Blokkolófékek nem használhatóak közvetlenül egymás után
+STR_3231    :Blokkolófékek nem használhatóak közvetlenül ennek felvonószakasznak a csúcsa után
 STR_3232    :Beállítások - pénzügyi
 STR_3233    :Beállítások - vendégek
 STR_3234    :Beállítások - park
@@ -2339,6 +2343,8 @@ STR_3265    :Nem csökkenthető jobban!
 STR_3266    :{SMALLFONT}{BLACK}Válaszd ki a park belépőjének és játékainak fizetési módját
 STR_3267    :Fák eltávolításának tiltása
 STR_3268    :{SMALLFONT}{BLACK}A magas fák eltávolításának tiltása
+STR_3277    :{WINDOW_COLOUR_2}Földvásárlás költsége:
+STR_3278    :{WINDOW_COLOUR_2}Építési jogok vásárlási költsége:
 STR_3279    :Ingyenes parkbelépő / Fizetős játékok
 STR_3280    :Fizetős parkbelépő / Ingyenes játékok
 STR_3281    :{WINDOW_COLOUR_2}Belépési díj:
@@ -2380,15 +2386,21 @@ STR_3316    :Írd be a pálya leírását:
 STR_3317    :Még nincsenek részletek
 STR_3318    :{SMALLFONT}{BLACK}Válaszd ki, hogy melyik csoportban jelenjen meg ez a pálya
 STR_3319    :{WINDOW_COLOUR_2}Pályacsoport:
+STR_3320    :A pályafájl nem menthető...
 STR_3321    :Új objektumok sikeresen telepítve
 STR_3322    :{WINDOW_COLOUR_2}Cél: {BLACK}{STRINGID}
 STR_3326    :{WINDOW_COLOUR_2}(nincs kép)
 STR_3327    :Nincsenek beállítva kezdő pozíciók az emberek számára
 STR_3328    :Nem lehet továbblépni a következő szerkesztési szakaszba...
 STR_3329    :Még nem épült parkbejárat
+STR_3330    :A parknak birtokolnia kell némi földet
+STR_3331    :A park bejáratától a térkép széléig vezető út nem teljes, vagy túl bonyolult - Az út egyszeres szélességű kell, hogy legyen, a lehető legkevesebb elágazással és kanyarral
 STR_3332    :A parkbejárat rossz irányba néz, vagy nem vezet tőle út a térkép széléig
 STR_3333    :Plug-in objektumok exportálása a mentett játékokkal
 STR_3334    :{SMALLFONT}{BLACK} Válaszd ki, hogy mentésre kerüljenek-e szükséges hozzáadott plug-in objektumok adatai (a játékhoz nem mellékelt kiegészítő adatok) a mentett játékok vagy pályák fájlaiban, hogy azok is betölthessék őket, akik nem rendelkeznek a hozzáadott objektumok adataival
+STR_3338    :{BLACK}Egyedi tervezés
+STR_3339    :{BLACK}{COMMA16} terv érhető el, vagy egyedi tervezés
+STR_3340    :{BLACK}{COMMA16} terv érhető el, vagy egyedi tervezés
 STR_3341    :{SMALLFONT}{BLACK}Játékeszközök
 STR_3342    :Pályaszerkesztő
 STR_3343    :Mentett játék pályává alakítása
@@ -2691,7 +2703,7 @@ STR_5368    :Ütközés törlése
 STR_5369    :Park paraméterei...
 STR_5370    :{SMALLFONT}{BLACK}Kattints erre a gombra, hogy módosítsd{NEWLINE}a park olyan paramétereit, mint{NEWLINE}a vendégek generálása és a pénz.
 STR_5371    :Objektum választás
-STR_5372    :Jobb egeres húzás invertálása
+STR_5372    :Jobb egérgombos húzás invertálása
 STR_5373    :Név {STRINGID}
 STR_5374    :Dátum {STRINGID}
 STR_5375    :▲
@@ -2937,6 +2949,8 @@ STR_5629    :Nehézségi szint
 STR_5630    :Progresszív feloldás bekapcsolása
 STR_5631    :Eredeti DLC parkok
 STR_5632    :Építsd meg a saját...
+STR_5633    :CMD +
+STR_5634    :OPTION +
 STR_5635    :{WINDOW_COLOUR_2}Elköltött pénz: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Futtatott parancsok: {BLACK}{COMMA16}
 STR_5637    :Ezt nem csinálhatod...
@@ -3130,9 +3144,9 @@ STR_5880    :Csak a kiválasztottak
 STR_5881    :Csak a nem kiválasztottak
 STR_5882    :Egyedi pénznem
 STR_5883    :Egyedi pénznem beállítása
-STR_5884    :{WINDOW_COLOUR_2}Átváltási árfolyam:
+STR_5884    :{WINDOW_COLOUR_2}Árfolyam:
 STR_5885    :{WINDOW_COLOUR_2}annyi, mint {COMMA32} GBP (£)
-STR_5886    :{WINDOW_COLOUR_2}Pénznem szimbóluma:
+STR_5886    :{WINDOW_COLOUR_2}Pénznem szimbólum:
 STR_5887    :Előtag
 STR_5888    :Utótag
 STR_5889    :Egyedi pénznem szimbólum
@@ -3147,6 +3161,7 @@ STR_5906    :Nagyítás a mutató helyzetére
 STR_5907    :{SMALLFONT}{BLACK}Ha be van kapcsolva, a nagyítás képernyő közepe helyett a mutatóra közelít
 STR_5910    :Alkalmazás
 STR_5911    :Átlátszó utak
+STR_5912    :Átlátszó utak be/ki
 STR_5913    :Csevegés
 STR_5914    :Ismeretlen játék
 STR_5915    :Játékos
@@ -3168,6 +3183,9 @@ STR_5930    :Nagy díszlet részletei
 STR_5931    :Hirdetőtábla részletei
 STR_5932    :Sérült elem részletei
 STR_5933    :Tulajdonságok
+STR_5934    :{WINDOW_COLOUR_2}Terep textúrája: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Terep széle: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Földtulajdon: {BLACK}{STRINGID}
 STR_5937    :Nincs tulajdonban és nem eladó
 STR_5938    :{WINDOW_COLOUR_2}Vízszint: {BLACK}{COMMA16}
 STR_5939    :Park kerítésének eltávolítása
@@ -3181,6 +3199,10 @@ STR_5946    :{WINDOW_COLOUR_2}Játék típusa: {BLACK}{STRINGID}
 STR_5947    :{WINDOW_COLOUR_2}Játék ID: {BLACK}{COMMA16}
 STR_5948    :{WINDOW_COLOUR_2}Játék neve: {BLACK}{STRINGID}
 STR_5949    :{WINDOW_COLOUR_2}Láncos felvonó
+STR_5950    :{WINDOW_COLOUR_2}Változtatások alkalmazása a teljes pályaelemre
+STR_5951    :{WINDOW_COLOUR_2}Pályaelem ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Sorszám: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}A jelenlegi mező térképelemeinek alapmagasság szerinti rendezése.
 STR_5954    :{WINDOW_COLOUR_2}Díszlet kora: {BLACK}{COMMA16}
 STR_5956    :Délnyugat
 STR_5957    :Északnyugat
@@ -3228,9 +3250,23 @@ STR_6009    :{SMALLFONT}{BLACK}A vágási magasság kiválasztása
 STR_6010    :{COMMA2DP32} m
 STR_6011    :{COMMA1DP16} láb
 STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}A vendégek csak a park belépőjegyéért és a szolgáltatásokért fizetnek.{NEWLINE}A játékok használata ingyenes.
+STR_6014    :{SMALLFONT}{BLACK}A vendégek csak a játékok belépőjegyéért és a szolgáltatásokért fizetnek.{NEWLINE}A parkba való belépésért nem fizetnek semmit.
 STR_6015    :Lejtős
 STR_6016    :Mező módosítása
 STR_6017    :Kérlek lassíts
+STR_6018    :Játék építése - Balkanyar
+STR_6019    :Játék építése - Jobbkanyar
+STR_6020    :Játék építése - Alapértelmezett pálya
+STR_6021    :Játék építése - Lejtő
+STR_6022    :Játék építése - Emelkedő
+STR_6023    :Játék építése - Láncos felvonó be/ki
+STR_6024    :Játék építése - Döntés balra
+STR_6025    :Játék építése - Döntés jobbra
+STR_6026    :Játék építése - Előző szakasz
+STR_6027    :Játék építése - Következő szakasz
+STR_6028    :Játék építése - Jelenlegi építése
+STR_6029    :Játék építése - Jelenlegi lerombolása
 STR_6030    :{SMALLFONT}{BLACK}Díszletválasztó. Kattints bármelyik díszletre a térképen, hogy újat építhess ugyanabból a darabból.
 STR_6031    :Szerver leírása:
 STR_6032    :Szerver üdvözlés:
@@ -3239,6 +3275,8 @@ STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Kérlek válaszd ki az RCT1 mappádat
 STR_6036    :{SMALLFONT}{BLACK}Törlés
 STR_6037    :Kérlek válassz egy érvényes RCT1 mappát
+STR_6038    :{SMALLFONT}{BLACK}Ha az RCT1 telepítve van, itt add meg a mappája helyét, hogy betölthesd a pályákat, zenét stb.
+STR_6039    :{SMALLFONT}{BLACK}Játék/épület gyors lerombolása
 STR_6040    :Pályabeállítások módosítása
 STR_6041    :{BLACK}Nem vettél fel gépészt!
 STR_6042    :Magasságtérkép betöltése
