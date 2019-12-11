@@ -437,7 +437,6 @@ public:
         trackBlock = get_track_def_from_ride(ride, _trackType);
         for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
         {
-
             auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
             auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
