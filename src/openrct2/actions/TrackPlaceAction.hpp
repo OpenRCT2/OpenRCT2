@@ -165,11 +165,8 @@ public:
         // First check if any of the track pieces are outside the park
         for (; trackBlock->index != 0xFF; trackBlock++)
         {
-            CoordsXYZ tileCoords{ _origin.x, _origin.y, _origin.z };
-            CoordsXY track{ trackBlock->x, trackBlock->y };
-            auto rotatedTrack = track.Rotate(_origin.direction);
-            tileCoords.x += rotatedTrack.x;
-            tileCoords.y += rotatedTrack.y;
+            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), 0 };
+            auto tileCoords = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
             if (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode)
             {
@@ -204,12 +201,8 @@ public:
 
         for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
         {
-            CoordsXYZ mapLoc{ _origin.x, _origin.y, _origin.z };
-            CoordsXY track{ trackBlock->x, trackBlock->y };
-            auto rotatedTrack = track.Rotate(_origin.direction);
-            mapLoc.x += rotatedTrack.x;
-            mapLoc.y += rotatedTrack.y;
-            mapLoc.z += trackBlock->z;
+            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
+            auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
             auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
             if (mapLoc.z < 16)
@@ -444,12 +437,9 @@ public:
         trackBlock = get_track_def_from_ride(ride, _trackType);
         for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
         {
-            CoordsXYZ mapLoc{ _origin.x, _origin.y, _origin.z };
-            CoordsXY track{ trackBlock->x, trackBlock->y };
-            auto rotatedTrack = track.Rotate(_origin.direction);
-            mapLoc.x += rotatedTrack.x;
-            mapLoc.y += rotatedTrack.y;
-            mapLoc.z += trackBlock->z;
+
+            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
+            auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
             auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 

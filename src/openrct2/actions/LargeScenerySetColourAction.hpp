@@ -106,21 +106,20 @@ private:
             return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_REPAINT_THIS);
         }
         // Work out the base tile coordinates (Tile with index 0)
-        auto rotatedBaseCoordsOffset = CoordsXY{ sceneryEntry->large_scenery.tiles[_tileIndex].x_offset,
-                                                 sceneryEntry->large_scenery.tiles[_tileIndex].y_offset }
-                                           .Rotate(_loc.direction);
+        auto rotatedBaseCoordsOffset = CoordsXYZ{ CoordsXY{ sceneryEntry->large_scenery.tiles[_tileIndex].x_offset,
+                                                            sceneryEntry->large_scenery.tiles[_tileIndex].y_offset }
+                                                      .Rotate(_loc.direction),
+                                                  sceneryEntry->large_scenery.tiles[_tileIndex].z_offset };
 
-        CoordsXYZ baseTile = { _loc.x - rotatedBaseCoordsOffset.x, _loc.y - rotatedBaseCoordsOffset.y,
-                               _loc.z - sceneryEntry->large_scenery.tiles[_tileIndex].z_offset };
+        auto baseTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedBaseCoordsOffset;
 
         auto i = 0;
         for (auto tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; ++tile, ++i)
         {
             // Work out the current tile coordinates
-            CoordsXY tileCoords{ tile->x_offset, tile->y_offset };
-            auto rotatedTileCoords = tileCoords.Rotate(_loc.direction);
-            CoordsXYZ currentTile = { rotatedTileCoords.x + baseTile.x, rotatedTileCoords.y + baseTile.y,
-                                      tile->z_offset + baseTile.z };
+            auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile->x_offset, tile->y_offset }.Rotate(_loc.direction),
+                                                tile->z_offset };
+            auto currentTile = CoordsXYZ{ baseTile.x, baseTile.y, baseTile.z } + rotatedTileCoords;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
