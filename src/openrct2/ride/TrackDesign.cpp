@@ -1467,8 +1467,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
             case PTD_OPERATION_DRAW_OUTLINES:
                 for (const rct_preview_track* trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
                 {
-                    LocationXY16 tile = { x, y };
-                    map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
+                    auto tile = CoordsXY{ x, y } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     track_design_update_max_min_coordinates(tile.x, tile.y, z);
                     track_design_add_selection_tile(tile.x, tile.y);
                 }
@@ -1547,10 +1546,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 int32_t tempZ = z - TrackCoordinates[trackType].z_begin;
                 for (const rct_preview_track* trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
                 {
-                    int16_t tmpX = x;
-                    int16_t tmpY = y;
-                    map_offset_with_rotation(&tmpX, &tmpY, trackBlock->x, trackBlock->y, rotation);
-                    CoordsXY tile = { tmpX, tmpY };
+                    auto tile = CoordsXY{ x, y } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     if (tile.x < 0 || tile.y < 0 || tile.x >= (256 * 32) || tile.y >= (256 * 32))
                     {
                         continue;
@@ -1588,7 +1584,9 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
         }
 
         const rct_track_coordinates* track_coordinates = &TrackCoordinates[trackType];
-        map_offset_with_rotation(&x, &y, track_coordinates->x, track_coordinates->y, rotation);
+        auto offsetAndRotatedTrack = CoordsXY{ x, y } + CoordsXY{ track_coordinates->x, track_coordinates->y }.Rotate(rotation);
+        x = offsetAndRotatedTrack.x;
+        y = offsetAndRotatedTrack.y;
         z -= track_coordinates->z_begin;
         z += track_coordinates->z_end;
 

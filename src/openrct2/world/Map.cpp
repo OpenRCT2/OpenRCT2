@@ -2349,16 +2349,6 @@ TileElement* map_get_track_element_at_with_direction_from_ride(
     return nullptr;
 };
 
-void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t offsetY, uint8_t rotation)
-{
-    TileCoordsXY offsets = { offsetX, offsetY };
-    TileCoordsXY newCoords = { *x, *y };
-    newCoords += offsets.Rotate(rotation);
-
-    *x = (int16_t)newCoords.x;
-    *y = (int16_t)newCoords.y;
-}
-
 WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
