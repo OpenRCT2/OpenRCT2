@@ -95,6 +95,9 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);
 rct_window* window_track_manage_open(struct track_design_file_ref* tdFileRef);
 
+void TrackPlaceClearProvisionalTemporarily();
+void TrackPlaceRestoreProvisional();
+
 rct_window* window_map_open();
 void window_map_reset();
 

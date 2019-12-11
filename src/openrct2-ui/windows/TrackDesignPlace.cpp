@@ -436,6 +436,38 @@ static void window_track_place_clear_provisional()
     }
 }
 
+void TrackPlaceClearProvisionalTemporarily()
+{
+    if (_window_track_place_last_was_valid)
+    {
+        auto ride = get_ride(_window_track_place_ride_index);
+        if (ride != nullptr)
+        {
+            place_virtual_track(
+                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _window_track_place_last_valid_x,
+                _window_track_place_last_valid_y, _window_track_place_last_valid_z);
+        }
+    }
+}
+
+void TrackPlaceRestoreProvisional()
+{
+    if (_window_track_place_last_was_valid)
+    {
+        money32 cost;
+        ride_id_t rideIndex;
+        window_track_place_attempt_placement(
+            _trackDesign.get(), _window_track_place_last_valid_x, _window_track_place_last_valid_y,
+            _window_track_place_last_valid_z, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST,
+            &cost, &rideIndex);
+        if (cost == MONEY32_UNDEFINED)
+        {
+            _window_track_place_last_was_valid = false;
+        }
+    }
+}
+
+
 /**
  *
  *  rct2: 0x006D17C6
