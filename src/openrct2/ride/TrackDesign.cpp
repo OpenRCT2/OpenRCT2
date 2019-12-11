@@ -18,6 +18,7 @@
 #include "../actions/LargeSceneryPlaceAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/MazePlaceTrackAction.hpp"
+#include "../actions/RideCreateAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetName.hpp"
 #include "../actions/RideSetSetting.hpp"
@@ -1830,6 +1831,27 @@ int32_t place_virtual_track(
     return _trackDesignPlaceCost;
 }
 
+
+money32 track_design_ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
+{
+    // Don't set colours as will be set correctly later.
+    auto gameAction = RideCreateAction(type, subType, 0, 0);
+    gameAction.SetFlags(flags);
+
+    auto r = GameActions::ExecuteNested(&gameAction);
+    const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
+
+    // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
+    if (res->Error != GA_ERROR::OK)
+    {
+        return MONEY32_UNDEFINED;
+    }
+
+    *outRideIndex = res->rideIndex;
+
+    return res->Cost;
+}
+
 /**
  *
  *  rct2: 0x006D2189
@@ -1848,9 +1870,8 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     }
 
     ride_id_t rideIndex;
-    uint8_t colour;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
-    if (ride_create_command(td6->type, entry_index, rideCreateFlags, &rideIndex, &colour) == MONEY32_UNDEFINED)
+    if (track_design_ride_create_command(td6->type, entry_index, rideCreateFlags, &rideIndex) == MONEY32_UNDEFINED)
     {
         return false;
     }

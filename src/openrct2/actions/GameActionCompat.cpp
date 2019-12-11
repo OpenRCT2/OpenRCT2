@@ -91,30 +91,6 @@ void ride_construct_new(ride_list_item listItem)
     GameActions::Execute(&gameAction);
 }
 
-money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex, uint8_t* outRideColour)
-{
-    int32_t rideEntryIndex = ride_get_entry_index(type, subType);
-    int32_t colour1 = ride_get_random_colour_preset_index(type);
-    int32_t colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
-
-    auto gameAction = RideCreateAction(type, subType, colour1, colour2);
-    gameAction.SetFlags(flags);
-
-    auto r = GameActions::ExecuteNested(&gameAction);
-    const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
-
-    // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
-    if (res->Error != GA_ERROR::OK)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    *outRideIndex = res->rideIndex;
-    *outRideColour = colour1;
-
-    return res->Cost;
-}
-
 #pragma endregion
 
 #pragma region RideSetStatusAction

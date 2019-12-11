@@ -42,9 +42,8 @@ private:
     TrackDesign _td;
 
 public:
-    TrackDesignAction()
-    {
-    }
+    TrackDesignAction() = default;
+
     TrackDesignAction(CoordsXYZD location, const TrackDesign& td)
         : _loc(location)
         , _td(td)

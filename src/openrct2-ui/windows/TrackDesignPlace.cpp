@@ -120,8 +120,6 @@ static std::unique_ptr<TrackDesign> _trackDesign;
 
 static void window_track_place_clear_provisional();
 static int32_t window_track_place_get_base_z(int32_t x, int32_t y);
-static void window_track_place_attempt_placement(
-    TrackDesign* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex);
 
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(TrackDesign* td6);
@@ -303,18 +301,20 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         if (res->Error == GA_ERROR::OK)
         {
             // Valid location found. Place the ghost at the location.
-            ride_id_t rideIndex;
-            window_track_place_attempt_placement(
-                _trackDesign.get(), trackLoc.x, trackLoc.y, trackLoc.z,
-                GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST, &cost, &rideIndex);
-            if (cost != MONEY32_UNDEFINED)
-            {
-                _window_track_place_ride_index = rideIndex;
-                _window_track_place_last_valid_x = trackLoc.x;
-                _window_track_place_last_valid_y = trackLoc.y;
-                _window_track_place_last_valid_z = trackLoc.z;
-                _window_track_place_last_was_valid = true;
-            }
+            auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
+            tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+            tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
+                if (result->Error == GA_ERROR::OK)
+                {
+                    _window_track_place_ride_index = result->rideIndex;
+                    _window_track_place_last_valid_x = trackLoc.x;
+                    _window_track_place_last_valid_y = trackLoc.y;
+                    _window_track_place_last_valid_z = trackLoc.z;
+                    _window_track_place_last_was_valid = true;
+                }
+            });
+            res = GameActions::Execute(&tdAction);
+            cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
         }
     }
 
@@ -353,7 +353,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
     if (res->Error == GA_ERROR::OK)
     {
-        auto tdAction = TrackDesignAction({ trackLoc.x, trackLoc.y, trackLoc.z, _currentTrackPieceDirection }, *_trackDesign);
+        auto tdAction = TrackDesignAction({trackLoc, _currentTrackPieceDirection }, *_trackDesign);
         tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
             if (result->Error == GA_ERROR::OK)
             {
@@ -361,7 +361,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
                 if (ride != nullptr)
                 {
                     window_close_by_class(WC_ERROR);
-                    audio_play_sound_at_location(SoundId::PlaceItem, { trackLoc.x, trackLoc.y, trackLoc.z });
+                    audio_play_sound_at_location(SoundId::PlaceItem, trackLoc);
 
                     _currentRideIndex = result->rideIndex;
                     if (track_design_are_entrance_and_exit_placed())
@@ -454,13 +454,13 @@ void TrackPlaceRestoreProvisional()
 {
     if (_window_track_place_last_was_valid)
     {
-        money32 cost;
-        ride_id_t rideIndex;
-        window_track_place_attempt_placement(
-            _trackDesign.get(), _window_track_place_last_valid_x, _window_track_place_last_valid_y,
-            _window_track_place_last_valid_z, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST,
-            &cost, &rideIndex);
-        if (cost == MONEY32_UNDEFINED)
+        auto tdAction = TrackDesignAction(
+            { _window_track_place_last_valid_x, _window_track_place_last_valid_y, _window_track_place_last_valid_z,
+              _currentTrackPieceDirection },
+            *_trackDesign);
+        tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+        auto res = GameActions::Execute(&tdAction);
+        if (res->Error != GA_ERROR::OK)
         {
             _window_track_place_last_was_valid = false;
         }
@@ -495,24 +495,6 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
         z = std::max(z, surfaceElement->GetWaterHeight() << 4);
 
     return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), x, y, z);
-}
-
-static void window_track_place_attempt_placement(
-    TrackDesign* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex)
-{
-    auto tdAction = TrackDesignAction({ x, y, z, _currentTrackPieceDirection }, *_trackDesign);
-    tdAction.SetFlags(bl);
-    auto res = (bl & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&tdAction) : GameActions::Query(&tdAction);
-
-    if (res->Error != GA_ERROR::OK)
-    {
-        *cost = MONEY32_UNDEFINED;
-    }
-    else
-    {
-        *cost = res->Cost;
-    }
-    *rideIndex = dynamic_cast<TrackDesignActionResult*>(res.get())->rideIndex;
 }
 
 /**

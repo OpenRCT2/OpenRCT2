@@ -444,6 +444,7 @@ public:
             case INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL:
                 TrackPlaceClearProvisionalTemporarily();
                 break;
+
             case INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL:
                 TrackPlaceRestoreProvisional();
                 break;

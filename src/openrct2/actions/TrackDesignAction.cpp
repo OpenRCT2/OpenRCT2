@@ -14,6 +14,7 @@
 #include "../object/ObjectRepository.h"
 #include "../ride/RideGroupManager.h"
 #include "../ride/TrackDesign.h"
+#include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
 #include "RideSetName.hpp"
 #include "RideSetSetting.hpp"
@@ -33,14 +34,6 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     res->Position.z = _loc.z;
     res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
     _currentTrackPieceDirection = _loc.direction;
-
-    if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
-    {
-        if (game_is_paused() && !gCheatsBuildInPauseMode)
-        {
-            return MakeResult(GA_ERROR::GAME_PAUSED, STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
-        }
-    }
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 
@@ -84,10 +77,13 @@ GameActionResult::Ptr TrackDesignAction::Query() const
         }
     }
 
-    ride_id_t rideIndex;
-    uint8_t rideColour;
-    money32 createRideResult = ride_create_command(_td.type, entryIndex, GetFlags(), &rideIndex, &rideColour);
-    if (createRideResult == MONEY32_UNDEFINED)
+    // Colours do not matter as will be overwritten
+    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
+    rideCreateAction.SetFlags(GetFlags());
+    auto r = GameActions::ExecuteNested(&rideCreateAction);
+    auto rideIndex = static_cast<RideCreateGameActionResult*>(r.get())->rideIndex;
+
+    if (r->Error != GA_ERROR::OK)
     {
         return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
@@ -130,14 +126,6 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
     res->Position.z = _loc.z;
     res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 
-    if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
-    {
-        if (game_is_paused() && !gCheatsBuildInPauseMode)
-        {
-            return MakeResult(GA_ERROR::GAME_PAUSED, STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED);
-        }
-    }
-
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 
     uint8_t entryType, entryIndex;
@@ -180,10 +168,13 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         }
     }
 
-    ride_id_t rideIndex;
-    uint8_t rideColour;
-    money32 createRideResult = ride_create_command(_td.type, entryIndex, GetFlags(), &rideIndex, &rideColour);
-    if (createRideResult == MONEY32_UNDEFINED)
+    // Colours do not matter as will be overwritten
+    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
+    rideCreateAction.SetFlags(GetFlags());
+    auto r = GameActions::ExecuteNested(&rideCreateAction);
+    auto rideIndex = static_cast<RideCreateGameActionResult*>(r.get())->rideIndex;
+
+    if (r->Error != GA_ERROR::OK)
     {
         return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
