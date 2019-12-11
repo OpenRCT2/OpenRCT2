@@ -243,11 +243,12 @@ static void window_track_place_update(rct_window* w)
 
 static GameActionResult::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t flags)
 {
-    for (int32_t i = 0; i < 7; i++)
+    GameActionResult::Ptr res;
+    for (int32_t i = 0; i < 7; i++, loc.z += 8)
     {
         auto tdAction = TrackDesignAction(CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
         tdAction.SetFlags(flags);
-        auto res = GameActions::Query(&tdAction);
+        res = GameActions::Query(&tdAction);
 
         // If successful dont keep trying.
         // If failure due to no money then increasing height only makes problem worse
@@ -255,14 +256,8 @@ static GameActionResult::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uin
         {
             return res;
         }
-        // Return the last attempts error up the chain
-        if (i == 6)
-        {
-            return res;
-        }
-        loc.z += 8;
     }
-    return nullptr;
+    return res;
 }
 
 /**
