@@ -2326,9 +2326,9 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
         return;
 
     ride_id_t rideIndex;
-    int32_t trackType, trackDirection, liftHillAndAlternativeState;
+    int32_t trackType, trackDirection, liftHillAndInvertedState;
     if (window_ride_construction_update_state(
-            &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr, nullptr, nullptr))
+            &trackType, &trackDirection, &rideIndex, &liftHillAndInvertedState, nullptr, nullptr, nullptr, nullptr))
         return;
 
     // Draw track piece
@@ -2339,7 +2339,7 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     if (clip_drawpixelinfo(&clipdpi, dpi, x, y, width, height))
     {
         window_ride_construction_draw_track_piece(
-            w, &clipdpi, rideIndex, trackType, trackDirection, liftHillAndAlternativeState, width, height);
+            w, &clipdpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, width, height);
     }
 
     // Draw cost
@@ -2356,8 +2356,8 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
 }
 
 static void window_ride_construction_draw_track_piece(
-    rct_window* w, rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
-    int32_t width, int32_t height)
+    rct_window* w, rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection,
+    int32_t liftHillAndInvertedState, int32_t width, int32_t height)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -2389,11 +2389,8 @@ static void window_ride_construction_draw_track_piece(
 
     dpi->x += rotatedScreenCoords.x - width / 2;
     dpi->y += rotatedScreenCoords.y - height / 2 - 16;
-    uint32_t d = unknown << 16;
-    d |= rideIndex;
-    d |= trackType << 8;
 
-    sub_6CBCE2(dpi, rideIndex, trackType, trackDirection, d, { 4096, 4096 }, 1024);
+    sub_6CBCE2(dpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
 }
 
 static TileElement _tempTrackTileElement;
@@ -2408,8 +2405,8 @@ static TileElement* _backupTileElementArrays[5];
  * dh: trackType
  */
 static void sub_6CBCE2(
-    rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx, CoordsXY originCoords,
-    int32_t originZ)
+    rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+    CoordsXY originCoords, int32_t originZ)
 {
     paint_session* session = paint_session_alloc(dpi, 0);
     trackDirection &= 3;
@@ -2456,7 +2453,7 @@ static void sub_6CBCE2(
         // Set the temporary track element
         _tempTrackTileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
         _tempTrackTileElement.SetDirection(trackDirection);
-        _tempTrackTileElement.AsTrack()->SetHasChain((edx & 0x10000) != 0);
+        _tempTrackTileElement.AsTrack()->SetHasChain((liftHillAndInvertedState & CONSTRUCTION_LIFT_HILL_SELECTED) != 0);
         _tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
         _tempTrackTileElement.SetLastForTile(true);
         _tempTrackTileElement.base_height = baseZ;
@@ -2464,7 +2461,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
         _tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
         _tempTrackTileElement.AsTrack()->SetHasCableLift(false);
-        _tempTrackTileElement.AsTrack()->SetInverted((edx & 0x20000) != 0);
+        _tempTrackTileElement.AsTrack()->SetInverted((liftHillAndInvertedState & CONSTRUCTION_INVERTED_TRACK_SELECTED) != 0);
         _tempTrackTileElement.AsTrack()->SetColourScheme(RIDE_COLOUR_SCHEME_MAIN);
         // Skipping seat rotation, should not be necessary for a temporary piece.
         _tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);

@@ -992,7 +992,8 @@ struct rct_ride_properties
 #define TURN_MASK_3_ELEMENTS 0x0700
 #define TURN_MASK_4_PLUS_ELEMENTS 0xF800
 
-#define CONSTRUCTION_LIFT_HILL_SELECTED 1
+constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
+constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
 
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
