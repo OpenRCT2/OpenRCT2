@@ -354,35 +354,35 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     if (res->Error == GA_ERROR::OK)
     {
         auto tdAction = TrackDesignAction({ trackLoc.x, trackLoc.y, trackLoc.z, _currentTrackPieceDirection }, *_trackDesign);
-        tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* res) {
-            if (res->Error == GA_ERROR::OK)
+        tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
+            if (result->Error == GA_ERROR::OK)
             {
-                auto ride = get_ride(res->rideIndex);
+                auto ride = get_ride(result->rideIndex);
                 if (ride != nullptr)
                 {
                     window_close_by_class(WC_ERROR);
                     audio_play_sound_at_location(SoundId::PlaceItem, { trackLoc.x, trackLoc.y, trackLoc.z });
 
-                    _currentRideIndex = res->rideIndex;
+                    _currentRideIndex = result->rideIndex;
                     if (track_design_are_entrance_and_exit_placed())
                     {
                         auto intent = Intent(WC_RIDE);
-                        intent.putExtra(INTENT_EXTRA_RIDE_ID, res->rideIndex);
+                        intent.putExtra(INTENT_EXTRA_RIDE_ID, result->rideIndex);
                         context_open_intent(&intent);
-                        auto w = window_find_by_class(WC_TRACK_DESIGN_PLACE);
-                        window_close(w);
+                        auto wnd = window_find_by_class(WC_TRACK_DESIGN_PLACE);
+                        window_close(wnd);
                     }
                     else
                     {
                         ride_initialise_construction_window(ride);
-                        auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-                        window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
+                        auto wnd = window_find_by_class(WC_RIDE_CONSTRUCTION);
+                        window_event_mouse_up_call(wnd, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
                     }
                 }
             }
             else
             {
-                audio_play_sound_at_location(SoundId::Error, res->Position);
+                audio_play_sound_at_location(SoundId::Error, result->Position);
             }
         });
         GameActions::Execute(&tdAction);

@@ -88,7 +88,7 @@ struct TrackDesign
     uint8_t ride_mode;
     uint8_t track_flags;
     uint8_t colour_scheme;
-    rct_vehicle_colour vehicle_colours[RCT2_MAX_CARS_PER_TRAIN];
+    std::array<rct_vehicle_colour, RCT2_MAX_CARS_PER_TRAIN> vehicle_colours;
     uint8_t entrance_style;
     uint8_t total_air_time;
     uint8_t depart_flags;

@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "GameAction.h"
 #include "../ride/TrackDesign.h"
+#include "GameAction.h"
 
 class TrackDesignActionResult final : public GameActionResult
 {
@@ -45,7 +45,7 @@ public:
     TrackDesignAction()
     {
     }
-    TrackDesignAction(CoordsXYZD location, const TrackDesign &td)
+    TrackDesignAction(CoordsXYZD location, const TrackDesign& td)
         : _loc(location)
         , _td(td)
     {

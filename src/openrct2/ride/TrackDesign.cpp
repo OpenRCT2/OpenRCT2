@@ -19,8 +19,8 @@
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/MazePlaceTrackAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
-#include "../actions/RideSetSetting.hpp"
 #include "../actions/RideSetName.hpp"
+#include "../actions/RideSetSetting.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
 #include "../actions/SmallSceneryPlaceAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
@@ -29,9 +29,9 @@
 #include "../actions/WallPlaceAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
+#include "../core/DataSerialiser.h"
 #include "../core/File.h"
 #include "../core/String.hpp"
-#include "../core/DataSerialiser.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
@@ -81,7 +81,6 @@ LocationXYZ16 gTrackPreviewOrigin;
 
 bool byte_9D8150;
 static uint8_t _trackDesignPlaceOperation;
-static bool _trackDesignDontPlaceScenery;
 static money32 _trackDesignPlaceCost;
 static int16_t _trackDesignPlaceZ;
 static int16_t _trackDesignPlaceSceneryZ;
@@ -569,7 +568,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(ride_mode);
     stream << DS_TAG(track_flags);
     stream << DS_TAG(colour_scheme);
-    //stream << DS_TAG(vehicle_colours); todo
+    stream << DS_TAG(vehicle_colours);
     stream << DS_TAG(entrance_style);
     stream << DS_TAG(total_air_time);
     stream << DS_TAG(depart_flags);

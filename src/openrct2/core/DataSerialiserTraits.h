@@ -643,7 +643,9 @@ template<> struct DataSerializerTraits<TrackDesignEntranceElement>
     static void log(IStream* stream, const TrackDesignEntranceElement& val)
     {
         char msg[128] = {};
-        snprintf(msg, sizeof(msg), "TrackDesignEntranceElement(x = %d, y = %d, z = %d, dir = %d, isExit = %d)", val.x, val.y, val.z, val.direction, val.isExit);
+        snprintf(
+            msg, sizeof(msg), "TrackDesignEntranceElement(x = %d, y = %d, z = %d, dir = %d, isExit = %d)", val.x, val.y, val.z,
+            val.direction, val.isExit);
         stream->Write(msg, strlen(msg));
     }
 };
@@ -676,9 +678,29 @@ template<> struct DataSerializerTraits<TrackDesignSceneryElement>
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "TrackDesignSceneryElement(x = %d, y = %d, z = %d, flags = %d, colour1 = %d, colour2 = %d)", val.x, val.y, val.z,
-            val.flags, val.primary_colour, val.secondary_colour);
+            msg, sizeof(msg), "TrackDesignSceneryElement(x = %d, y = %d, z = %d, flags = %d, colour1 = %d, colour2 = %d)",
+            val.x, val.y, val.z, val.flags, val.primary_colour, val.secondary_colour);
         stream->Write(msg, strlen(msg));
         stream->WriteArray(val.scenery_object.name, 8);
+    }
+};
+
+template<> struct DataSerializerTraits<rct_vehicle_colour>
+{
+    static void encode(IStream* stream, const rct_vehicle_colour& val)
+    {
+        stream->Write(&val.body_colour);
+        stream->Write(&val.trim_colour);
+    }
+    static void decode(IStream* stream, rct_vehicle_colour& val)
+    {
+        stream->Read(&val.body_colour);
+        stream->Read(&val.trim_colour);
+    }
+    static void log(IStream* stream, const rct_vehicle_colour& val)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "rct_vehicle_colour(body_colour = %d, trim_colour = %d)", val.body_colour, val.trim_colour);
+        stream->Write(msg, strlen(msg));
     }
 };

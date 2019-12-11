@@ -14,8 +14,8 @@
 #include "../object/ObjectRepository.h"
 #include "../ride/RideGroupManager.h"
 #include "../ride/TrackDesign.h"
-#include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
+#include "RideSetName.hpp"
 #include "RideSetSetting.hpp"
 #include "RideSetVehiclesAction.hpp"
 
