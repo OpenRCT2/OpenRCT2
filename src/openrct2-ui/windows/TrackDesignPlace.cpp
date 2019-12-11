@@ -467,7 +467,6 @@ void TrackPlaceRestoreProvisional()
     }
 }
 
-
 /**
  *
  *  rct2: 0x006D17C6
