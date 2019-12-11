@@ -6917,6 +6917,7 @@ void sub_6CB945(Ride* ride)
 
             CoordsXYZ location = { ride->stations[stationId].Start.x * 32, ride->stations[stationId].Start.y * 32,
                                    ride->stations[stationId].Height * 8 };
+            auto tileHeight = TileCoordsXYZ(location).z;
             uint8_t direction = 0xFF;
 
             bool specialTrack = false;
@@ -6936,7 +6937,7 @@ void sub_6CB945(Ride* ride)
                 bool trackFound = false;
                 do
                 {
-                    if (tileElement->base_height != location.z)
+                    if (tileElement->base_height != tileHeight)
                         continue;
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;
@@ -6975,6 +6976,7 @@ void sub_6CB945(Ride* ride)
             while ((++trackBlock)->index != 0xFF)
             {
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };
+                auto blockTileHeight = TileCoordsXYZ(blockLocation).z;
 
                 bool trackFound = false;
                 tileElement = map_get_first_element_at(blockLocation.x >> 5, blockLocation.y >> 5);
@@ -6982,7 +6984,7 @@ void sub_6CB945(Ride* ride)
                     break;
                 do
                 {
-                    if (blockLocation.z != tileElement->base_height)
+                    if (blockTileHeight != tileElement->base_height)
                         continue;
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;
