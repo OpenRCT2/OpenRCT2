@@ -739,10 +739,8 @@ static void window_footpath_set_provisional_path_at_point(ScreenCoordsXY screenC
         // Set map selection
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        gMapSelectPositionA.x = mapCoord.x;
-        gMapSelectPositionA.y = mapCoord.y;
-        gMapSelectPositionB.x = mapCoord.x;
-        gMapSelectPositionB.y = mapCoord.y;
+        gMapSelectPositionA = mapCoord;
+        gMapSelectPositionB = mapCoord;
 
         footpath_provisional_update();
 

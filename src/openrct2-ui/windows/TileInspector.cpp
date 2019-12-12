@@ -1237,13 +1237,11 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
 
     if (mapCoords.x != LOCATION_NULL)
     {
-        gMapSelectPositionA.x = gMapSelectPositionB.x = mapCoords.x;
-        gMapSelectPositionA.y = gMapSelectPositionB.y = mapCoords.y;
+        gMapSelectPositionA = gMapSelectPositionB = mapCoords;
     }
     else if (windowTileInspectorTileSelected)
     {
-        gMapSelectPositionA.x = gMapSelectPositionB.x = windowTileInspectorToolMap.x;
-        gMapSelectPositionA.y = gMapSelectPositionB.y = windowTileInspectorToolMap.y;
+        gMapSelectPositionA = gMapSelectPositionB = windowTileInspectorToolMap;
     }
     else
     {

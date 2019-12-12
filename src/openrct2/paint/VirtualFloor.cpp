@@ -94,8 +94,8 @@ void virtual_floor_disable()
 void virtual_floor_invalidate()
 {
     // First, let's figure out how big our selection is.
-    LocationXY16 min_position = { std::numeric_limits<int16_t>::max(), std::numeric_limits<int16_t>::max() };
-    LocationXY16 max_position = { std::numeric_limits<int16_t>::lowest(), std::numeric_limits<int16_t>::lowest() };
+    CoordsXY min_position = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max() };
+    CoordsXY max_position = { std::numeric_limits<int32_t>::lowest(), std::numeric_limits<int32_t>::lowest() };
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
     {
@@ -107,10 +107,10 @@ void virtual_floor_invalidate()
     {
         for (const auto& tile : gMapSelectionTiles)
         {
-            min_position.x = std::min<int16_t>(min_position.x, tile.x);
-            min_position.y = std::min<int16_t>(min_position.y, tile.y);
-            max_position.x = std::max<int16_t>(max_position.x, tile.x);
-            max_position.y = std::max<int16_t>(max_position.y, tile.y);
+            min_position.x = std::min(min_position.x, tile.x);
+            min_position.y = std::min(min_position.y, tile.y);
+            max_position.x = std::max(max_position.x, tile.x);
+            max_position.y = std::max(max_position.y, tile.y);
         }
     }
 
@@ -126,8 +126,8 @@ void virtual_floor_invalidate()
         && _virtualFloorLastMaxPos.x != std::numeric_limits<int16_t>::lowest()
         && _virtualFloorLastMaxPos.y != std::numeric_limits<int16_t>::lowest())
     {
-        LocationXY16 prevMins = { _virtualFloorLastMinPos.x, _virtualFloorLastMinPos.y };
-        LocationXY16 prevMaxs = { _virtualFloorLastMaxPos.x, _virtualFloorLastMaxPos.y };
+        CoordsXY prevMins = { _virtualFloorLastMinPos.x, _virtualFloorLastMinPos.y };
+        CoordsXY prevMaxs = { _virtualFloorLastMaxPos.x, _virtualFloorLastMaxPos.y };
 
         if (prevMins.x != min_position.x || prevMins.y != min_position.y || prevMaxs.x != max_position.x
             || prevMaxs.y != max_position.y || (_virtualFloorFlags & VIRTUAL_FLOOR_FORCE_INVALIDATION) != 0)

@@ -323,8 +323,7 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         map_invalidate_tile_full(gMapSelectPositionA.x, gMapSelectPositionA.y);
-        gMapSelectPositionA.x = gMapSelectPositionB.x = mapCoords.x;
-        gMapSelectPositionA.y = gMapSelectPositionB.y = mapCoords.y;
+        gMapSelectPositionA = gMapSelectPositionB = mapCoords;
         map_invalidate_tile_full(mapCoords.x, mapCoords.y);
         gMapSelectType = MAP_SELECT_TYPE_FULL;
     }

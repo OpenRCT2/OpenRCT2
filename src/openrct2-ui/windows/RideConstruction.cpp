@@ -3704,10 +3704,8 @@ void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectType = MAP_SELECT_TYPE_FULL;
-    gMapSelectPositionA.x = entranceOrExitCoords.x;
-    gMapSelectPositionA.y = entranceOrExitCoords.y;
-    gMapSelectPositionB.x = entranceOrExitCoords.x;
-    gMapSelectPositionB.y = entranceOrExitCoords.y;
+    gMapSelectPositionA = entranceOrExitCoords;
+    gMapSelectPositionB = entranceOrExitCoords;
     gMapSelectArrowDirection = direction_reverse(entranceOrExitCoords.direction);
     gMapSelectArrowPosition.x = entranceOrExitCoords.x;
     gMapSelectArrowPosition.y = entranceOrExitCoords.y;
