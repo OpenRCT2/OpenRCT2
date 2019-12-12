@@ -1831,8 +1831,7 @@ int32_t place_virtual_track(
     return _trackDesignPlaceCost;
 }
 
-
-money32 track_design_ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
+static money32 track_design_ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
     auto gameAction = RideCreateAction(type, subType, 0, 0);

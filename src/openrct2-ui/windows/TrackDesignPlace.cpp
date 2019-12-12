@@ -353,7 +353,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
     if (res->Error == GA_ERROR::OK)
     {
-        auto tdAction = TrackDesignAction({trackLoc, _currentTrackPieceDirection }, *_trackDesign);
+        auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
         tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
             if (result->Error == GA_ERROR::OK)
             {
