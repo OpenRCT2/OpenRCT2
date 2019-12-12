@@ -1257,16 +1257,13 @@ static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoor
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT | MAP_SELECT_FLAG_ENABLE_ARROW;
     map_invalidate_map_selection_tiles();
-    if (gParkEntranceGhostExists && parkEntrancePosition.x == gParkEntranceGhostPosition.x
-        && parkEntrancePosition.y == gParkEntranceGhostPosition.y
-        && parkEntrancePosition.direction == gParkEntranceGhostDirection)
+    if (gParkEntranceGhostExists && parkEntrancePosition == gParkEntranceGhostPosition)
     {
         return;
     }
 
     park_entrance_remove_ghost();
-    park_entrance_place_ghost(
-        parkEntrancePosition.x, parkEntrancePosition.y, parkEntrancePosition.z / 16, parkEntrancePosition.direction);
+    park_entrance_place_ghost(parkEntrancePosition);
 }
 
 /**

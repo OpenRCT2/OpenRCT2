@@ -29,8 +29,7 @@
 #include <algorithm>
 
 bool gParkEntranceGhostExists = false;
-LocationXYZ16 gParkEntranceGhostPosition = { 0, 0, 0 };
-uint8_t gParkEntranceGhostDirection = 0;
+CoordsXYZD gParkEntranceGhostPosition = { 0, 0, 0, 0 };
 std::vector<CoordsXYZD> gParkEntrances;
 
 CoordsXYZD gRideEntranceExitGhostPosition;
@@ -56,8 +55,7 @@ void park_entrance_remove_ghost()
     if (gParkEntranceGhostExists)
     {
         gParkEntranceGhostExists = false;
-        auto parkEntranceRemoveAction = ParkEntranceRemoveAction(
-            { gParkEntranceGhostPosition.x, gParkEntranceGhostPosition.y, gParkEntranceGhostPosition.z * 16 });
+        auto parkEntranceRemoveAction = ParkEntranceRemoveAction(gParkEntranceGhostPosition);
         parkEntranceRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         GameActions::Execute(&parkEntranceRemoveAction);
     }

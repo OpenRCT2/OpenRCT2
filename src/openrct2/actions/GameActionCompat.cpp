@@ -21,25 +21,21 @@
 #include "WallRemoveAction.hpp"
 
 #pragma region PlaceParkEntranceAction
-
 /**
  *
  *  rct2: 0x00666F4E
  */
-money32 park_entrance_place_ghost(int32_t x, int32_t y, int32_t z, int32_t direction)
+money32 park_entrance_place_ghost(CoordsXYZD entranceLoc)
 {
     park_entrance_remove_ghost();
 
-    auto gameAction = PlaceParkEntranceAction({ x, y, z * 16, (Direction)direction });
+    auto gameAction = PlaceParkEntranceAction(entranceLoc);
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);
     if (result->Error == GA_ERROR::OK)
     {
-        gParkEntranceGhostPosition.x = x;
-        gParkEntranceGhostPosition.y = y;
-        gParkEntranceGhostPosition.z = z;
-        gParkEntranceGhostDirection = direction;
+        gParkEntranceGhostPosition = entranceLoc;
         gParkEntranceGhostExists = true;
     }
     return result->Cost;
