@@ -1758,16 +1758,17 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         case SCENERY_TYPE_SMALL:
         {
             int32_t quantity = 1;
-            bool isCluster = gWindowSceneryClusterEnabled
+            bool isCluster = gWindowSceneryScatterEnabled
                 && (network_get_mode() != NETWORK_MODE_CLIENT
                     || network_can_perform_command(network_get_current_player_group_index(), -2));
             if (isCluster)
             {
-                quantity = 35;
+                quantity = gWindowSceneryScatterAmount;
             }
 
             bool forceError = true;
-            for (int32_t q = 0; q < quantity; q++)
+            uint16_t retry = 0;
+            for (int32_t q = 0; q < quantity + retry; q++)
             {
                 int32_t zCoordinate = gSceneryPlaceZ;
                 rct_scenery_entry* scenery = get_small_scenery_entry((parameter_1 >> 8) & 0xFF);
@@ -1783,8 +1784,16 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                         parameter_2 |= util_rand() & 3;
                     }
 
-                    cur_grid_x += ((util_rand() % 16) - 8) * 32;
-                    cur_grid_y += ((util_rand() % 16) - 8) * 32;
+                    if (gWindowSceneryScatterSize % 2 != 0)
+                    {
+                        cur_grid_x += ((util_rand() % (gWindowSceneryScatterSize)) - (gWindowSceneryScatterSize / 2)) << 5;
+                        cur_grid_y += ((util_rand() % (gWindowSceneryScatterSize)) - (gWindowSceneryScatterSize / 2)) << 5;
+                    }
+                    else
+                    {
+                        cur_grid_x += ((util_rand() % (gWindowSceneryScatterSize)) - (gWindowSceneryScatterSize / 2) + 1) << 5;
+                        cur_grid_y += ((util_rand() % (gWindowSceneryScatterSize)) - (gWindowSceneryScatterSize / 2) + 1) << 5;
+                    }
 
                     if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
                     {
@@ -1849,6 +1858,11 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     {
                         break;
                     }
+                }
+                else
+                {
+                    if (retry < gWindowSceneryScatterSize * gWindowSceneryScatterSize)
+                        retry++;
                 }
                 gSceneryPlaceZ = zCoordinate;
             }
@@ -2680,12 +2694,23 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
     {
         case SCENERY_TYPE_SMALL:
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-            if (gWindowSceneryClusterEnabled)
+            if (gWindowSceneryScatterEnabled)
             {
-                gMapSelectPositionA.x = mapTile.x - (8 << 5);
-                gMapSelectPositionA.y = mapTile.y - (8 << 5);
-                gMapSelectPositionB.x = mapTile.x + (7 << 5);
-                gMapSelectPositionB.y = mapTile.y + (7 << 5);
+                uint16_t cluster_size = (gWindowSceneryScatterSize - 1) << 5;
+                if (gWindowSceneryScatterSize % 2 != 0)
+                {
+                    gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
+                    gMapSelectPositionA.y = mapTile.y - cluster_size / 2;
+                    gMapSelectPositionB.x = mapTile.x + cluster_size / 2;
+                    gMapSelectPositionB.y = mapTile.y + cluster_size / 2;
+                }
+                else
+                {
+                    gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
+                    gMapSelectPositionA.y = mapTile.y - cluster_size / 2;
+                    gMapSelectPositionB.x = mapTile.x + (cluster_size / 2) + (1 << 5);
+                    gMapSelectPositionB.y = mapTile.y + (cluster_size / 2) + (1 << 5);
+                }
             }
             else
             {
@@ -2698,7 +2723,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             scenery = get_small_scenery_entry(selected_scenery);
 
             gMapSelectType = MAP_SELECT_TYPE_FULL;
-            if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryClusterEnabled)
+            if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
             {
                 gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + ((parameter2 & 0xFF) ^ 2);
             }

@@ -22,7 +22,10 @@ struct Vehicle;
 
 extern uint16_t gWindowSceneryTabSelections[];
 extern uint8_t gWindowSceneryActiveTabIndex;
-extern uint8_t gWindowSceneryClusterEnabled;
+extern rct_window* gWindowSceneryScatterWindow;
+extern uint16_t gWindowSceneryScatterSize;
+extern uint16_t gWindowSceneryScatterAmount;
+extern uint8_t gWindowSceneryScatterEnabled;
 extern uint8_t gWindowSceneryPaintEnabled;
 extern uint8_t gWindowSceneryRotation;
 extern colour_t gWindowSceneryPrimaryColour;
@@ -181,3 +184,5 @@ void window_tooltip_reset(ScreenCoordsXY screenCoords);
 void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords);
 void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords);
 void window_tooltip_close();
+
+rct_window* window_scenery_scatter_open();

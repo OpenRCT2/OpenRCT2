@@ -3896,6 +3896,10 @@ enum
 
     STR_OPTIONS_RANDOM_TITLE_SEQUENCE = 6349,
 
+    STR_SCENERY_SCATTER = 6350,
+    STR_SMALL_SIZE = 6351,
+    STR_SMALL_AMOUNT = 6352,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

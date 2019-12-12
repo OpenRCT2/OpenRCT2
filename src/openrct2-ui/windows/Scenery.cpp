@@ -58,7 +58,10 @@ enum {
 
 uint16_t gWindowSceneryTabSelections[SCENERY_WINDOW_TABS];
 uint8_t gWindowSceneryActiveTabIndex;
-uint8_t gWindowSceneryClusterEnabled;
+rct_window* gWindowSceneryScatterWindow;
+uint16_t gWindowSceneryScatterSize;
+uint16_t gWindowSceneryScatterAmount;
+uint8_t gWindowSceneryScatterEnabled;
 uint8_t gWindowSceneryPaintEnabled;
 uint8_t gWindowSceneryRotation;
 colour_t gWindowSceneryPrimaryColour;
@@ -486,7 +489,11 @@ rct_window* window_scenery_open()
     gSceneryPlaceRotation = 0;
     gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
     gWindowSceneryEyedropperEnabled = false;
-    gWindowSceneryClusterEnabled = 0; // build cluster tool state
+    gWindowSceneryScatterEnabled = 0; // build cluster tool state
+    gWindowSceneryScatterWindow = nullptr;
+
+    gWindowSceneryScatterSize = 2;
+    gWindowSceneryScatterAmount = 10;
 
     window->min_width = WINDOW_SCENERY_WIDTH;
     window->max_width = WINDOW_SCENERY_WIDTH;
@@ -505,6 +512,9 @@ void window_scenery_close(rct_window* w)
     scenery_remove_ghost_tool_placement();
     hide_gridlines();
     viewport_set_visibility(0);
+
+    if (gWindowSceneryScatterWindow != nullptr)
+        window_close(gWindowSceneryScatterWindow);
 
     if (scenery_tool_is_active())
         tool_cancel();
@@ -572,6 +582,7 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_SCENERY_CLOSE:
+            window_close(gWindowSceneryScatterWindow);
             window_close(w);
             break;
         case WIDX_SCENERY_ROTATE_OBJECTS_BUTTON:
@@ -582,13 +593,13 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_SCENERY_REPAINT_SCENERY_BUTTON:
             gWindowSceneryPaintEnabled ^= 1;
-            gWindowSceneryClusterEnabled = 0;
+            gWindowSceneryScatterEnabled = 0;
             gWindowSceneryEyedropperEnabled = false;
             w->Invalidate();
             break;
         case WIDX_SCENERY_EYEDROPPER_BUTTON:
             gWindowSceneryPaintEnabled = 0;
-            gWindowSceneryClusterEnabled = 0;
+            gWindowSceneryScatterEnabled = 0;
             gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
             scenery_remove_ghost_tool_placement();
             w->Invalidate();
@@ -596,15 +607,16 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
             gWindowSceneryPaintEnabled = 0;
             gWindowSceneryEyedropperEnabled = false;
-            if (gWindowSceneryClusterEnabled == 1)
+            if (gWindowSceneryScatterEnabled == 1)
             {
-                gWindowSceneryClusterEnabled = 0;
+                gWindowSceneryScatterEnabled = 0;
             }
             else if (
                 network_get_mode() != NETWORK_MODE_CLIENT
                 || network_can_perform_command(network_get_current_player_group_index(), -2))
             {
-                gWindowSceneryClusterEnabled ^= 1;
+                gWindowSceneryScatterEnabled = 1;
+                gWindowSceneryScatterWindow = window_scenery_scatter_open();
             }
             else
             {
@@ -978,7 +990,7 @@ void window_scenery_invalidate(rct_window* w)
         w->pressed_widgets |= (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
     if (gWindowSceneryEyedropperEnabled)
         w->pressed_widgets |= (1 << WIDX_SCENERY_EYEDROPPER_BUTTON);
-    if (gWindowSceneryClusterEnabled == 1)
+    if (gWindowSceneryScatterEnabled == 1)
         w->pressed_widgets |= (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
     window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_EMPTY;

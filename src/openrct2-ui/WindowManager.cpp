@@ -101,6 +101,8 @@ public:
                 return window_save_prompt_open();
             case WC_SCENERY:
                 return window_scenery_open();
+            case WC_SCENERY_SCATTER:
+                return window_scenery_scatter_open();
 #ifndef DISABLE_NETWORK
             case WC_SERVER_LIST:
                 return window_server_list_open();
