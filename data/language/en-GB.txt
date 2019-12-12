@@ -3682,6 +3682,8 @@ STR_6436    :Toggle invisibility
 STR_6437    :Invisible
 STR_6438    :I
 STR_6439    :Tile Inspector: Toggle invisibility
+STR_6440    :{WINDOW_COLOUR_2}Maze pathfinding:
+STR_6441    :{BLACK}{UINT16};{UINT16}.{UINT16}: o={UINT16}, v={UINT16}, c={UINT16}, p={UINT16}
 
 #############
 # Scenarios #

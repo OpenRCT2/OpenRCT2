@@ -25,6 +25,7 @@
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/gentle/Maze.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -3298,6 +3299,7 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
     ride->cur_num_customers++;
     peep->OnEnterRide(peep->CurrentRide);
     peep->RideSubState = PeepRideSubState::MazePathfinding;
+    peep->MazePathfindHistory.initialize();
 }
 
 static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
@@ -4542,22 +4544,6 @@ void Guest::UpdateRideLeaveSpiralSlide()
     SetDestination(targetLoc);
 }
 
-/** rct2: 0x00981FE4 */
-static constexpr const uint8_t _MazeGetNewDirectionFromEdge[][4] = {
-    { 15, 7, 15, 7 },
-    { 11, 3, 11, 3 },
-    { 7, 15, 7, 15 },
-    { 3, 11, 3, 11 },
-};
-
-/** rct2: 0x00981FF4 */
-static constexpr const uint8_t _MazeCurrentDirectionToOpenHedge[][4] = {
-    { 1, 2, 14, 0 },
-    { 4, 5, 6, 2 },
-    { 6, 8, 9, 10 },
-    { 14, 10, 12, 13 },
-};
-
 /**
  *
  *  rct2: 0x00692A83
@@ -4576,6 +4562,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (Var37 == 16)
     {
+        MazePathfindHistory.clear();
         peep_update_ride_prepare_for_exit(this);
         return;
     }
@@ -4584,6 +4571,7 @@ void Guest::UpdateRideMazePathfinding()
     {
         if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
         {
+            MazePathfindHistory.notifyPeeking();
             Action = PeepActionType::Jump;
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
@@ -4592,38 +4580,72 @@ void Guest::UpdateRideMazePathfinding()
     }
 
     auto targetLoc = GetDestination().ToTileStart();
+    uint16_t stationBaseZ = ride->stations[0].GetBaseZ();
+    uint8_t subTileIndex = Var37 / 4; // var_37 is 3, 7, 11 or 15
+    uint8_t openEdgesFlags = 0;
+    uint8_t openEdgesCount = 0;
 
-    int16_t stationBaseZ = ride->stations[0].GetBaseZ();
-
-    // Find the station track element
-    auto trackElement = map_get_track_element_at({ targetLoc, stationBaseZ });
-    if (trackElement == nullptr)
+    // Get info on open edges at the current position
     {
+        TrackElement* trackElement = map_get_track_element_at({ targetLoc, stationBaseZ });
+        assert(trackElement);
+
+        uint16_t mazeEntry = trackElement->GetMazeEntry();
+        auto nearEntranceTile = ride->stations[0].Entrance.ToCoordsXYZD();
+        Direction entranceDirection = nearEntranceTile.direction;
+
+        // Close edges giving to entrance
+        nearEntranceTile += CoordsDirectionDelta[entranceDirection];
+        entranceDirection = direction_reverse(entranceDirection);
+        if (nearEntranceTile.x == targetLoc.x && nearEntranceTile.y == targetLoc.y
+            && (subTileIndex == entranceDirection || subTileIndex == direction_next(entranceDirection)))
+        {
+            mazeEntry |= 1 << gMazeCurrentDirectionToHedge[subTileIndex][direction_reverse(nearEntranceTile.direction)];
+        }
+
+        for (int dir = 3; dir >= 0; --dir)
+        {
+            openEdgesFlags <<= 1;
+            if (!(mazeEntry & (1 << gMazeCurrentDirectionToHedge[subTileIndex][dir])))
+            {
+                openEdgesFlags |= 1;
+                ++openEdgesCount;
+            }
+        }
+    }
+
+    if (openEdgesFlags == 0)
         return;
-    }
 
-    uint16_t mazeEntry = trackElement->GetMazeEntry();
-    // Var37 is 3, 7, 11 or 15
+    Direction mazeReverseLastEdge = direction_reverse(MazeLastEdge);
+    openEdgesFlags &= ~(1 << mazeReverseLastEdge);
+    if (openEdgesCount > 2) // Intersection
+    {
+        const MazePathfindingEntry previousEntry = MazePathfindHistory.getLast();
+        auto [currentEntry, entryIndex, hasPeeked] = MazePathfindHistory.meetIntersection(
+            targetLoc, subTileIndex, mazeReverseLastEdge);
+
+        // Mark last edge as visited if previously in a dead-end or the previous node completly visited
+        if (currentEntry == previousEntry || previousEntry.isCompletlyVisited())
+            currentEntry.markVisited(mazeReverseLastEdge, openEdgesCount);
+
+        // TODO: Reimplement 'wrong way' probability using entry index
+        openEdgesFlags &= ~currentEntry.getVisited();
+
+        // TODO: Add probability that guest takes origin edge
+        if (bitcount(openEdgesFlags) > 1)
+            openEdgesFlags &= ~(0x1 << currentEntry.getOrigin());
+    }
+    if (openEdgesFlags == 0)
+        openEdgesFlags |= (1 << mazeReverseLastEdge);
+
     uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
-    uint8_t openCount = 0;
-    uint8_t mazeReverseLastEdge = direction_reverse(MazeLastEdge);
-    for (uint8_t i = 0; i < 4; ++i)
+    uint8_t openCount = bitcount(openEdgesFlags);
+    for (int i = 0, j = 0; i < 4 && j < openCount; ++i)
     {
-        if (!(mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][i])) && i != mazeReverseLastEdge)
-        {
-            hedges[openCount++] = i;
-        }
+        if (openEdgesFlags & (1 << i))
+            hedges[j++] = i;
     }
-
-    if (openCount == 0)
-    {
-        if ((mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][mazeReverseLastEdge])))
-        {
-            return;
-        }
-        hedges[openCount++] = mazeReverseLastEdge;
-    }
-
     uint8_t chosenEdge = hedges[scenario_rand() % openCount];
     assert(chosenEdge != 0xFF);
 
@@ -4662,12 +4684,13 @@ void Guest::UpdateRideMazePathfinding()
     switch (mazeType)
     {
         case maze_type::invalid:
+            // TODO Add a warning log message
             MazeLastEdge++;
             MazeLastEdge &= 3;
             return;
         case maze_type::hedge:
             SetDestination(targetLoc);
-            Var37 = _MazeGetNewDirectionFromEdge[Var37 / 4][chosenEdge];
+            Var37 = gMazeGetNewDirectionFromEdge[Var37 / 4][chosenEdge];
             MazeLastEdge = chosenEdge;
             break;
         case maze_type::entrance_or_exit:
@@ -4968,6 +4991,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
  */
 void Guest::UpdateWalking()
 {
+    // if (!CheckForPath() || sub_state == PEEP_RIDE_MAZE_PATHFINDING)
     if (!CheckForPath())
         return;
 

@@ -24,6 +24,7 @@
 #include <openrct2/peep/Staff.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
+#include <openrct2/ride/gentle/Maze.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -2066,29 +2067,54 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int32_t>(peep->DestinationTolerance);
         DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_DEST, ft);
     }
-    screenCoords.y += LIST_ROW_HEIGHT;
-    {
-        auto ft = Formatter();
-        ft.Add<int32_t>(peep->PathfindGoal.x);
-        ft.Add<int32_t>(peep->PathfindGoal.y);
-        ft.Add<int32_t>(peep->PathfindGoal.z);
-        ft.Add<int32_t>(peep->PathfindGoal.direction);
-        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_GOAL, ft);
-    }
-    screenCoords.y += LIST_ROW_HEIGHT;
-    DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY);
-    screenCoords.y += LIST_ROW_HEIGHT;
 
-    screenCoords.x += 10;
-    for (auto& point : peep->PathfindHistory)
+    screenCoords.y += LIST_ROW_HEIGHT;
+    if (peep->RideSubState == PeepRideSubState::MazePathfinding)
     {
-        auto ft = Formatter();
-        ft.Add<int32_t>(point.x);
-        ft.Add<int32_t>(point.y);
-        ft.Add<int32_t>(point.z);
-        ft.Add<int32_t>(point.direction);
-        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, ft);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_MAZE_PATHFINDING, NULL);
         screenCoords.y += LIST_ROW_HEIGHT;
+
+        screenCoords.x += 10;
+        for (const auto& maze_pathfind_item: peep->MazePathfindHistory.readHistory())
+        {
+            auto [coords, subTileIndex] = maze_pathfind_item.getCoords();
+            auto ft = Formatter();
+            ft.Add<uint16_t>(coords.x >> 5);
+            ft.Add<uint16_t>(coords.y >> 5);
+            ft.Add<uint16_t>(subTileIndex);
+            ft.Add<uint16_t>(maze_pathfind_item.getOrigin());
+            ft.Add<uint16_t>(maze_pathfind_item.getVisited());
+            ft.Add<uint16_t>(maze_pathfind_item.isCompletlyVisited());
+            ft.Add<uint16_t>(maze_pathfind_item.getPeekedState());
+            DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_MAZE_PATHFINDING_ITEM, ft);
+            screenCoords.y += LIST_ROW_HEIGHT;
+        }
+    }
+    else
+    {
+        {
+            auto ft = Formatter();
+            ft.Add<int32_t>(peep->PathfindGoal.x);
+            ft.Add<int32_t>(peep->PathfindGoal.y);
+            ft.Add<int32_t>(peep->PathfindGoal.z);
+            ft.Add<int32_t>(peep->PathfindGoal.direction);
+            DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_GOAL, ft);
+        }
+        screenCoords.y += LIST_ROW_HEIGHT;
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY);
+        screenCoords.y += LIST_ROW_HEIGHT;
+
+        screenCoords.x += 10;
+        for (auto& point : peep->PathfindHistory)
+        {
+            auto ft = Formatter();
+            ft.Add<int32_t>(point.x);
+            ft.Add<int32_t>(point.y);
+            ft.Add<int32_t>(point.z);
+            ft.Add<int32_t>(point.direction);
+            DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, ft);
+            screenCoords.y += LIST_ROW_HEIGHT;
+        }
     }
     screenCoords.x -= 10;
 }

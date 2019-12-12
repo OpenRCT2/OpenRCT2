@@ -7,14 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Maze.h"
+
+#include "../../Diagnostic.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../paint/tile_element/Paint.Surface.h"
 #include "../../sprites.h"
+#include "../../util/Util.h"
 #include "../../world/Map.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "MazePathfinding.h"
+
+#include <algorithm>
+#include <set>
 
 enum
 {
@@ -39,6 +47,22 @@ enum
     SPR_MAZE_OFFSET_COLUMN_BOTTOM_LEFT,
     SPR_MAZE_OFFSET_COLUMN_BOTTOM_RIGHT,
     SPR_MAZE_OFFSET_COLUMN_CORNER,
+};
+
+/** rct2: 0x00981FE4 */
+constexpr const uint8_t gMazeGetNewDirectionFromEdge[][4] = {
+    { 15, 7, 15, 7 },
+    { 11, 3, 11, 3 },
+    { 7, 15, 7, 15 },
+    { 3, 11, 3, 11 },
+};
+
+/** rct2: 0x00981FF4 */
+constexpr const uint8_t gMazeCurrentDirectionToHedge[][4] = {
+    { 1, 2, 14, 0 },
+    { 4, 5, 6, 2 },
+    { 6, 8, 9, 10 },
+    { 14, 10, 12, 13 },
 };
 
 /**
@@ -186,3 +210,148 @@ TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType)
 
     return maze_paint_setup;
 }
+
+#pragma region Maze Pathfinding
+
+void swap(MazePathfindingEntry& a, MazePathfindingEntry& b)
+{
+    std::swap(a.data, b.data);
+}
+
+void MazePathfindingEntry::reset()
+{
+    data = 0;
+}
+
+void MazePathfindingEntry::clear()
+{
+    data = 0xffffffff;
+}
+
+void MazePathfindingEntry::set(const CoordsXY& coords, uint8_t subTileIndex, Direction origin)
+{
+    assert(coords.x > 0 && coords.y > 0);
+    data = (coords.y & 0xffe0) << 16 | (coords.x & 0xffe0) | (origin & 0x3) << 2 | (subTileIndex & 0x3);
+}
+
+std::tuple<CoordsXY, uint8_t> MazePathfindingEntry::getCoords() const
+{
+    return std::tuple(CoordsXY(data & 0xffe0, data >> 16 & 0xffe0), (uint8_t)(data & 0x3));
+}
+
+Direction MazePathfindingEntry::getOrigin() const
+{
+    return data >> 2 & 0x3;
+}
+
+void MazePathfindingEntry::markVisited(Direction origin, uint8_t openEdgesCount)
+{
+    uint8_t visited;
+
+    data |= 0x1 << ((origin & 0x3) + 16);
+    visited = getVisited();
+
+    if (bitcount(visited) >= openEdgesCount - 1)
+        data |= 0x1 << 20;
+}
+
+uint8_t MazePathfindingEntry::getVisited() const
+{
+    return data >> 16 & 0xf;
+}
+
+bool MazePathfindingEntry::isCompletlyVisited() const
+{
+    return data >> 20 & 0x1;
+}
+
+void MazePathfindingEntry::notifyPeeking()
+{
+    data |= 0x1 << 4;
+}
+
+bool MazePathfindingEntry::hasPeeked()
+{
+    bool hasPeeked = (data & 0x1 << 4) != 0;
+    data &= ~(0x1 << 4);
+    return hasPeeked;
+}
+bool MazePathfindingEntry::getPeekedState() const
+{
+    return (data & 0x1 << 4) != 0;
+}
+
+bool MazePathfindingEntry::matchCoords(const CoordsXY& coords, uint8_t subTileIndex) const
+{
+    assert(coords.x > 0 && coords.y > 0);
+    return (int32_t)(data >> 16 & 0xffe0) == (coords.y & 0xffe0) && (int32_t)(data & 0xffe0) == (coords.x & 0xffe0)
+        && (data & 0x3) == subTileIndex;
+}
+
+bool MazePathfindingEntry::operator==(const MazePathfindingEntry& entry) const
+{
+    // FIXME: PeekedFlag prevents data == entry.data
+    return (data & ~0x10) == (entry.data & ~0x10);
+}
+
+void MazePathfindingHistory::initialize()
+{
+    for (auto& item : stack)
+        item.reset();
+}
+
+void MazePathfindingHistory::clear()
+{
+    for (auto& item : stack)
+        item.clear();
+}
+
+std::tuple<MazePathfindingEntry&, uint8_t, bool> MazePathfindingHistory::meetIntersection(
+    const CoordsXY& coords, uint8_t subTileIndex, Direction origin)
+{
+    uint8_t i;
+    bool hasPeeked = stack[0].hasPeeked();
+
+    for (i = 0; i < 5; ++i)
+    {
+        if (stack[i].matchCoords(coords, subTileIndex))
+            break;
+    }
+
+    for (int j = std::min<int>(4, i); j > 0; --j)
+        swap(stack[j - 1], stack[j]);
+
+    if (i == 5)
+        stack[0].set(coords, subTileIndex, origin);
+
+    return std::tuple(std::ref(stack[0]), i, hasPeeked);
+}
+
+std::optional<std::reference_wrapper<MazePathfindingEntry>> MazePathfindingHistory::updateIntersection(
+    const CoordsXY& coords, uint8_t subTileIndex)
+{
+    for (auto& item : stack)
+    {
+        if (item.matchCoords(coords, subTileIndex))
+            return std::make_optional(std::ref(item));
+    }
+
+    return {};
+}
+
+const MazePathfindingEntry& MazePathfindingHistory::getLast() const
+{
+    return stack[0];
+}
+
+void MazePathfindingHistory::notifyPeeking()
+{
+    stack[0].notifyPeeking();
+}
+
+const std::array<MazePathfindingEntry, 5>& MazePathfindingHistory::readHistory() const
+{
+    return stack;
+}
+
+#pragma endregion

@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../management/Finance.h"
 #include "../rct12/RCT12.h"
+#include "../ride/gentle/MazePathfinding.h"
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
@@ -663,8 +664,15 @@ struct Peep : SpriteBase
     };
     ride_id_t Photo1RideRef;
     uint32_t PeepFlags;
-    rct12_xyzd8 PathfindGoal;
-    rct12_xyzd8 PathfindHistory[4];
+    union
+    {
+        struct
+        {
+            rct12_xyzd8 PathfindGoal;
+            rct12_xyzd8 PathfindHistory[4];
+        };
+        MazePathfindingHistory MazePathfindHistory;
+    };
     uint8_t WalkingFrameNum;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t LitterCount;
