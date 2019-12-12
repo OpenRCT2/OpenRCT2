@@ -138,11 +138,10 @@ public:
         auto startLoc = _origin;
         startLoc.direction = tileElement->GetDirection();
 
-        LocationXY16 trackLoc = { trackBlock->x, trackBlock->y };
-        rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-        startLoc.x -= trackLoc.x;
-        startLoc.y -= trackLoc.y;
-        startLoc.z -= trackBlock->z;
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+        startLoc.x -= rotatedTrack.x;
+        startLoc.y -= rotatedTrack.y;
+        startLoc.z -= rotatedTrack.z;
         res->Position.x = startLoc.x;
         res->Position.y = startLoc.y;
         res->Position.z = startLoc.z;
@@ -152,12 +151,8 @@ public:
         trackBlock = get_track_def_from_ride(ride, trackType);
         for (; trackBlock->index != 255; trackBlock++)
         {
-            CoordsXYZ mapLoc{ startLoc.x, startLoc.y, startLoc.z };
-            trackLoc = { trackBlock->x, trackBlock->y };
-            rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-            mapLoc.x += trackLoc.x;
-            mapLoc.y += trackLoc.y;
-            mapLoc.z += trackBlock->z;
+            rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+            auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrack;
 
             map_invalidate_tile_full(mapLoc.x, mapLoc.y);
 
@@ -334,11 +329,10 @@ public:
         auto startLoc = _origin;
         startLoc.direction = tileElement->GetDirection();
 
-        LocationXY16 trackLoc = { trackBlock->x, trackBlock->y };
-        rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-        startLoc.x -= trackLoc.x;
-        startLoc.y -= trackLoc.y;
-        startLoc.z -= trackBlock->z;
+        auto rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+        startLoc.x -= rotatedTrackLoc.x;
+        startLoc.y -= rotatedTrackLoc.y;
+        startLoc.z -= rotatedTrackLoc.z;
         res->Position.x = startLoc.x;
         res->Position.y = startLoc.y;
         res->Position.z = startLoc.z;
@@ -347,12 +341,8 @@ public:
         trackBlock = get_track_def_from_ride(ride, trackType);
         for (; trackBlock->index != 255; trackBlock++)
         {
-            CoordsXYZ mapLoc{ startLoc.x, startLoc.y, startLoc.z };
-            trackLoc = { trackBlock->x, trackBlock->y };
-            rotate_map_coordinates(&trackLoc.x, &trackLoc.y, startLoc.direction);
-            mapLoc.x += trackLoc.x;
-            mapLoc.y += trackLoc.y;
-            mapLoc.z += trackBlock->z;
+            rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(startLoc.direction), trackBlock->z };
+            auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrackLoc;
 
             map_invalidate_tile_full(mapLoc.x, mapLoc.y);
 

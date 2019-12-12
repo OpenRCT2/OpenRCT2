@@ -72,27 +72,22 @@ public:
 
         rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
 
-        LocationXYZ16 firstTile = { scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
-                                    scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
-                                    static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset) };
+        auto rotatedOffsets = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
+                                                   scenery_entry->large_scenery.tiles[_tileIndex].y_offset }
+                                             .Rotate(_loc.direction),
+                                         scenery_entry->large_scenery.tiles[_tileIndex].z_offset };
 
-        rotate_map_coordinates(&firstTile.x, &firstTile.y, _loc.direction);
-
-        firstTile.x = _loc.x - firstTile.x;
-        firstTile.y = _loc.y - firstTile.y;
+        auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedOffsets;
 
         bool calculate_cost = true;
         for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
         {
-            LocationXYZ16 currentTile = { scenery_entry->large_scenery.tiles[i].x_offset,
-                                          scenery_entry->large_scenery.tiles[i].y_offset,
-                                          scenery_entry->large_scenery.tiles[i].z_offset };
+            auto currentTileRotatedOffset = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[i].x_offset,
+                                                                 scenery_entry->large_scenery.tiles[i].y_offset }
+                                                           .Rotate(_loc.direction),
+                                                       scenery_entry->large_scenery.tiles[i].z_offset };
 
-            rotate_map_coordinates(&currentTile.x, &currentTile.y, _loc.direction);
-
-            currentTile.x += firstTile.x;
-            currentTile.y += firstTile.y;
-            currentTile.z += firstTile.z;
+            auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
@@ -144,26 +139,21 @@ public:
 
         rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
 
-        LocationXYZ16 firstTile = { scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
-                                    scenery_entry->large_scenery.tiles[_tileIndex].y_offset,
-                                    static_cast<int16_t>((_loc.z) - scenery_entry->large_scenery.tiles[_tileIndex].z_offset) };
+        auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
+                                                     scenery_entry->large_scenery.tiles[_tileIndex].y_offset }
+                                               .Rotate(_loc.direction),
+                                           scenery_entry->large_scenery.tiles[_tileIndex].z_offset };
 
-        rotate_map_coordinates(&firstTile.x, &firstTile.y, _loc.direction);
-
-        firstTile.x = _loc.x - firstTile.x;
-        firstTile.y = _loc.y - firstTile.y;
+        auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedFirstTile;
 
         for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
         {
-            LocationXYZ16 currentTile = { scenery_entry->large_scenery.tiles[i].x_offset,
-                                          scenery_entry->large_scenery.tiles[i].y_offset,
-                                          scenery_entry->large_scenery.tiles[i].z_offset };
+            auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[i].x_offset,
+                                                           scenery_entry->large_scenery.tiles[i].y_offset }
+                                                     .Rotate(_loc.direction),
+                                                 scenery_entry->large_scenery.tiles[i].z_offset };
 
-            rotate_map_coordinates(&currentTile.x, &currentTile.y, _loc.direction);
-
-            currentTile.x += firstTile.x;
-            currentTile.y += firstTile.y;
-            currentTile.z += firstTile.z;
+            auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
