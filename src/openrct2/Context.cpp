@@ -1,3 +1,4 @@
+
 /*****************************************************************************
  * Copyright (c) 2014-2019 OpenRCT2 developers
  *
@@ -1149,23 +1150,22 @@ void context_show_cursor()
     GetContext()->GetUiContext()->SetCursorVisible(true);
 }
 
-void context_get_cursor_position(int32_t* x, int32_t* y)
+ScreenCoordsXY context_get_cursor_position()
 {
-    GetContext()->GetUiContext()->GetCursorPosition(x, y);
+    return GetContext()->GetUiContext()->GetCursorPosition();
 }
 
-void context_get_cursor_position_scaled(int32_t* x, int32_t* y)
+ScreenCoordsXY context_get_cursor_position_scaled()
 {
-    context_get_cursor_position(x, y);
-
+    auto cursorCoords = context_get_cursor_position();
     // Compensate for window scaling.
-    *x = (int32_t)std::ceil(*x / gConfigGeneral.window_scale);
-    *y = (int32_t)std::ceil(*y / gConfigGeneral.window_scale);
+    return { static_cast<int32_t>(std::ceil(cursorCoords.x / gConfigGeneral.window_scale)),
+             static_cast<int32_t>(std::ceil(cursorCoords.y / gConfigGeneral.window_scale)) };
 }
 
-void context_set_cursor_position(int32_t x, int32_t y)
+void context_set_cursor_position(ScreenCoordsXY cursorPosition)
 {
-    GetContext()->GetUiContext()->SetCursorPosition(x, y);
+    GetContext()->GetUiContext()->SetCursorPosition(cursorPosition);
 }
 
 const CursorState* context_get_cursor_state()
