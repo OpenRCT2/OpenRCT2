@@ -364,7 +364,7 @@ private:
         {
             for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
             {
-                auto surfaceElement = map_get_surface_element_at(x, y);
+                auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                     continue;
 
@@ -764,7 +764,7 @@ private:
             int32_t y = spawn.y;
             if (x != PEEP_SPAWN_UNDEFINED)
             {
-                auto* surfaceElement = map_get_surface_element_at({ x, y });
+                auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);

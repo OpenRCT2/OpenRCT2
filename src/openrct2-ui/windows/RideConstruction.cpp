@@ -2180,7 +2180,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
         _trackPlaceZ = 0;
         if (_trackPlaceShiftState)
         {
-            auto surfaceElement = map_get_surface_element_at(mapCoords.x >> 5, mapCoords.y >> 5);
+            auto surfaceElement = map_get_surface_element_at(mapCoords);
             if (surfaceElement == nullptr)
                 return std::nullopt;
             auto mapZ = floor2(surfaceElement->base_height * 8, 16);

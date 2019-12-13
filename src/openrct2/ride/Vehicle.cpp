@@ -979,7 +979,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 
     if (vehicle->x != LOCATION_NULL)
     {
-        auto surfaceElement = map_get_surface_element_at({ vehicle->x, vehicle->y });
+        auto surfaceElement = map_get_surface_element_at(CoordsXY{ vehicle->x, vehicle->y });
 
         // vehicle underground
         if (surfaceElement != nullptr && surfaceElement->base_height * 8 > vehicle->z)
@@ -1830,7 +1830,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         return;
     }
 
-    auto surfaceElement = map_get_surface_element_at({ x, y });
+    auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
     // If vehicle above ground.
     if (surfaceElement != nullptr && surfaceElement->base_height * 8 <= z)
     {
@@ -7206,7 +7206,7 @@ static void vehicle_update_spinning_car(rct_vehicle* vehicle)
  */
 static void steam_particle_create(int16_t x, int16_t y, int16_t z)
 {
-    auto surfaceElement = map_get_surface_element_at({ x, y });
+    auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
     if (surfaceElement != nullptr && z > surfaceElement->base_height * 8)
     {
         rct_steam_particle* steam = &create_sprite(SPRITE_IDENTIFIER_MISC)->steam_particle;
