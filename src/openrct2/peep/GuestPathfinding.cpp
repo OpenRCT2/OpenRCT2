@@ -149,7 +149,7 @@ static int32_t guest_surface_path_finding(Peep* peep)
 
         if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
         {
-            if (!map_surface_is_blocked({x, y}))
+            if (!map_surface_is_blocked({ x, y }))
             {
                 return peep_move_one_tile(randDirection, peep);
             }
