@@ -2056,7 +2056,7 @@ int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY)
  */
 bool map_surface_is_blocked(CoordsXY mapCoords)
 {
-    if (mapCoords.x >= 8192 || mapCoords.y >= 8192)
+    if (!map_is_location_valid(mapCoords))
         return true;
 
     auto surfaceElement = map_get_surface_element_at(mapCoords);
