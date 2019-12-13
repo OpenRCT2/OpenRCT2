@@ -165,7 +165,7 @@ bool map_can_build_at(const CoordsXYZ& loc);
 bool map_is_location_owned(const CoordsXYZ& loc);
 bool map_is_location_in_park(const CoordsXY& coords);
 bool map_is_location_owned_or_has_rights(const CoordsXY& loc);
-bool map_surface_is_blocked(int16_t x, int16_t y);
+bool map_surface_is_blocked(CoordsXY mapCoords);
 void tile_element_remove(TileElement* tileElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
