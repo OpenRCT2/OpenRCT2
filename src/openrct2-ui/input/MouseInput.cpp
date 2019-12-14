@@ -231,10 +231,10 @@ static void input_scroll_drag_continue(ScreenCoordsXY screenCoords, rct_window* 
     widget_scroll_update_thumbs(w, widgetIndex);
     window_invalidate_by_number(w->classification, w->number);
 
-    int32_t fixedCursorPositionX = (int32_t)std::ceil(gInputDragLastX * gConfigGeneral.window_scale);
-    int32_t fixedCursorPositionY = (int32_t)std::ceil(gInputDragLastY * gConfigGeneral.window_scale);
+    ScreenCoordsXY fixedCursorPosition = { static_cast<int32_t>(std::ceil(gInputDragLastX * gConfigGeneral.window_scale)),
+                                           static_cast<int32_t>(std::ceil(gInputDragLastY * gConfigGeneral.window_scale)) };
 
-    context_set_cursor_position(fixedCursorPositionX, fixedCursorPositionY);
+    context_set_cursor_position(fixedCursorPosition);
 }
 
 /**
@@ -518,7 +518,9 @@ static void input_viewport_drag_begin(rct_window* w)
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
     _ticksSinceDragStart = 0;
-    context_get_cursor_position(&gInputDragLastX, &gInputDragLastY);
+    auto cursorPosition = context_get_cursor_position();
+    gInputDragLastX = cursorPosition.x;
+    gInputDragLastY = cursorPosition.y;
     context_hide_cursor();
 
     window_unfollow_sprite(w);
@@ -527,15 +529,15 @@ static void input_viewport_drag_begin(rct_window* w)
 
 static void input_viewport_drag_continue()
 {
-    int32_t dx, dy, newDragX, newDragY;
+    int32_t dx, dy;
     rct_window* w;
     rct_viewport* viewport;
 
-    context_get_cursor_position(&newDragX, &newDragY);
+    auto newDragCoords = context_get_cursor_position();
     const CursorState* cursorState = context_get_cursor_state();
 
-    dx = newDragX - gInputDragLastX;
-    dy = newDragY - gInputDragLastY;
+    dx = newDragCoords.x - gInputDragLastX;
+    dy = newDragCoords.y - gInputDragLastY;
     w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
 
     // #3294: Window can be closed during a drag session, so just finish
@@ -580,12 +582,12 @@ static void input_viewport_drag_continue()
 
     if (cursorState->touch)
     {
-        gInputDragLastX = newDragX;
-        gInputDragLastY = newDragY;
+        gInputDragLastX = newDragCoords.x;
+        gInputDragLastY = newDragCoords.y;
     }
     else
     {
-        context_set_cursor_position(gInputDragLastX, gInputDragLastY);
+        context_set_cursor_position({ gInputDragLastX, gInputDragLastY });
     }
 }
 

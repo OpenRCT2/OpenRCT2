@@ -239,14 +239,16 @@ public:
         SDL_ShowCursor(value ? SDL_ENABLE : SDL_DISABLE);
     }
 
-    void GetCursorPosition(int32_t* x, int32_t* y) override
+    ScreenCoordsXY GetCursorPosition() override
     {
-        SDL_GetMouseState(x, y);
+        ScreenCoordsXY cursorPosition;
+        SDL_GetMouseState(&cursorPosition.x, &cursorPosition.y);
+        return cursorPosition;
     }
 
-    void SetCursorPosition(int32_t x, int32_t y) override
+    void SetCursorPosition(ScreenCoordsXY cursorPosition) override
     {
-        SDL_WarpMouseInWindow(nullptr, x, y);
+        SDL_WarpMouseInWindow(nullptr, cursorPosition.x, cursorPosition.y);
     }
 
     void SetCursorTrap(bool value) override

@@ -956,12 +956,11 @@ void window_viewport_get_map_coords_by_cursor(
     rct_window* w, int16_t* map_x, int16_t* map_y, int16_t* offset_x, int16_t* offset_y)
 {
     // Get mouse position to offset against.
-    int32_t mouse_x, mouse_y;
-    context_get_cursor_position_scaled(&mouse_x, &mouse_y);
+    auto mouseCoords = context_get_cursor_position_scaled();
 
     // Compute map coordinate by mouse position.
     CoordsXY mapCoords;
-    get_map_coordinates_from_pos({ mouse_x, mouse_y }, VIEWPORT_INTERACTION_MASK_NONE, mapCoords, nullptr, nullptr, nullptr);
+    get_map_coordinates_from_pos(mouseCoords, VIEWPORT_INTERACTION_MASK_NONE, mapCoords, nullptr, nullptr, nullptr);
     *map_x = mapCoords.x;
     *map_y = mapCoords.y;
 
@@ -976,8 +975,8 @@ void window_viewport_get_map_coords_by_cursor(
     }
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
-    int32_t rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
-            rebased_y = ((w->height >> 1) - mouse_y) * (1 << w->viewport->zoom);
+    int32_t rebased_x = ((w->width >> 1) - mouseCoords.x) * (1 << w->viewport->zoom),
+            rebased_y = ((w->height >> 1) - mouseCoords.y) * (1 << w->viewport->zoom);
 
     // Compute cursor offset relative to tile.
     *offset_x = (w->saved_view_x - (centreLoc->x + rebased_x)) * (1 << w->viewport->zoom);
@@ -997,12 +996,11 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int
     }
 
     // Get mouse position to offset against.
-    int32_t mouse_x, mouse_y;
-    context_get_cursor_position_scaled(&mouse_x, &mouse_y);
+    auto mouseCoords = context_get_cursor_position_scaled();
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
-    int32_t rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
-            rebased_y = ((w->height >> 1) - mouse_y) * (1 << w->viewport->zoom);
+    int32_t rebased_x = ((w->width >> 1) - mouseCoords.x) * (1 << w->viewport->zoom),
+            rebased_y = ((w->height >> 1) - mouseCoords.y) * (1 << w->viewport->zoom);
 
     // Apply offset to the viewport.
     w->saved_view_x = centreLoc->x + rebased_x + (offset_x / (1 << w->viewport->zoom));

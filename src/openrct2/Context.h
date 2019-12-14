@@ -10,6 +10,7 @@
 #pragma once
 
 #include "common.h"
+#include "world/Location.hpp"
 
 #include <memory>
 #include <string>
@@ -218,9 +219,9 @@ void context_setcurrentcursor(int32_t cursor);
 void context_update_cursor_scale();
 void context_hide_cursor();
 void context_show_cursor();
-void context_get_cursor_position(int32_t* x, int32_t* y);
-void context_get_cursor_position_scaled(int32_t* x, int32_t* y);
-void context_set_cursor_position(int32_t x, int32_t y);
+ScreenCoordsXY context_get_cursor_position();
+ScreenCoordsXY context_get_cursor_position_scaled();
+void context_set_cursor_position(ScreenCoordsXY cursorPosition);
 const CursorState* context_get_cursor_state();
 const uint8_t* context_get_keys_state();
 const uint8_t* context_get_keys_pressed();
