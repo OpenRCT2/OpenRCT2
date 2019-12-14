@@ -6258,7 +6258,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
         {
             mapX = entranceExitCoords.x + CoordsDirectionDelta[entranceExitCoords.direction].x;
             mapY = entranceExitCoords.y + CoordsDirectionDelta[entranceExitCoords.direction].y;
-            if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32))
+            if (map_is_location_valid({ mapX, mapY }))
             {
                 tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
                 if (tileElement == nullptr)

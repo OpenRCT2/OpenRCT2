@@ -30,6 +30,7 @@
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
 #include "../world/LargeScenery.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
@@ -401,7 +402,7 @@ bool Guest::GuestHasValidXY() const
 {
     if (x != LOCATION_NULL)
     {
-        if (x < (256 * 32) && y < (256 * 32))
+        if (map_is_location_valid({ x, y }))
         {
             return true;
         }

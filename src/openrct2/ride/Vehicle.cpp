@@ -2694,7 +2694,7 @@ static rct_synchronised_vehicle* _lastSynchronisedVehicle = nullptr;
 static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
 {
     // make sure we are in map bounds
-    if (x < 0 || y < 0 || (x >> 5) > (MAXIMUM_MAP_SIZE_TECHNICAL - 1) || (y >> 5) > (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
+    if (!map_is_location_valid({ x, y }))
     {
         return false;
     }

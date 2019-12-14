@@ -2420,10 +2420,10 @@ static void sub_6CBCE2(
     int16_t preserveMapSize = gMapSize;
     int16_t preserveMapSizeMaxXY = gMapSizeMaxXY;
 
-    gMapSizeUnits = 255 * 32;
-    gMapSizeMinus2 = (255 * 32) + 286;
-    gMapSize = 256;
-    gMapSizeMaxXY = (256 * 32) - 1;
+    gMapSizeUnits = (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32;
+    gMapSizeMinus2 = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32) + 286;
+    gMapSize = MAXIMUM_MAP_SIZE_TECHNICAL;
+    gMapSizeMaxXY = (MAXIMUM_MAP_SIZE_TECHNICAL * 32) - 1;
 
     auto trackBlock = get_track_def_from_ride(ride, trackType);
     while (trackBlock->index != 255)
@@ -3531,7 +3531,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
             int32_t highestZ = 0;
             for (const auto& selectedTile : gMapSelectionTiles)
             {
-                if (selectedTile.x < (256 * 32) && selectedTile.y < (256 * 32))
+                if (map_is_location_valid(selectedTile))
                 {
                     z = map_get_highest_z(selectedTile);
                     if (z > highestZ)
@@ -3757,7 +3757,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
     {
         for (const auto& selectedTile : gMapSelectionTiles)
         {
-            if (selectedTile.x >= (256 * 32) || selectedTile.y >= (256 * 32))
+            if (!map_is_location_valid(selectedTile))
                 continue;
 
             z = map_get_highest_z(selectedTile);

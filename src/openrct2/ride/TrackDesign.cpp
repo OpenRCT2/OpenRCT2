@@ -1368,19 +1368,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
 
         if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
         {
-            if (mapCoord.x < 0)
-            {
-                continue;
-            }
-            if (mapCoord.y < 0)
-            {
-                continue;
-            }
-            if (mapCoord.x >= 256 * 32)
-            {
-                continue;
-            }
-            if (mapCoord.y >= 256 * 32)
+            if (!map_is_location_valid(mapCoord))
             {
                 continue;
             }
@@ -1547,7 +1535,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 for (const rct_preview_track* trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ x, y } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
-                    if (tile.x < 0 || tile.y < 0 || tile.x >= (256 * 32) || tile.y >= (256 * 32))
+                    if (!map_is_location_valid(tile))
                     {
                         continue;
                     }

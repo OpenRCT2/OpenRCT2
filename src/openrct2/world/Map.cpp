@@ -158,7 +158,7 @@ void tile_element_iterator_restart_for_tile(tile_element_iterator* it)
 
 TileElement* map_get_first_element_at(int32_t x, int32_t y)
 {
-    if (x < 0 || y < 0 || x > (MAXIMUM_MAP_SIZE_TECHNICAL - 1) || y > (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
+    if (!map_is_location_valid({ x * 32, y * 32 }))
     {
         log_error("Trying to access element outside of range");
         return nullptr;
@@ -195,7 +195,7 @@ TileElement* map_get_nth_element_at(int32_t x, int32_t y, int32_t n)
 
 void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements)
 {
-    if (x < 0 || y < 0 || x > (MAXIMUM_MAP_SIZE_TECHNICAL - 1) || y > (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
+    if (!map_is_location_valid({ x * 32, y * 32 }))
     {
         log_error("Trying to access element outside of range");
         return;
@@ -410,7 +410,7 @@ void map_update_tile_pointers()
 int16_t tile_element_height(const CoordsXY& loc)
 {
     // Off the map
-    if ((unsigned)loc.x >= 8192 || (unsigned)loc.y >= 8192)
+    if (!map_is_location_valid(loc))
         return 16;
 
     // Get the surface element for the tile
@@ -556,7 +556,7 @@ int16_t tile_element_height(const CoordsXY& loc)
 int16_t tile_element_water_height(const CoordsXY& loc)
 {
     // Off the map
-    if ((unsigned)loc.x >= 8192 || (unsigned)loc.y >= 8192)
+    if (!map_is_location_valid(loc))
         return 0;
 
     // Get the surface element for the tile
@@ -634,11 +634,11 @@ void map_update_path_wide_flags()
 
         // Next x, y tile
         x += 32;
-        if (x >= 8192)
+        if (x >= MAXIMUM_MAP_SIZE_TECHNICAL * 32)
         {
             x = 0;
             y += 32;
-            if (y >= 8192)
+            if (y >= MAXIMUM_MAP_SIZE_TECHNICAL * 32)
             {
                 y = 0;
             }
