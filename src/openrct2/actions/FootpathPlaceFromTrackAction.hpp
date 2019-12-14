@@ -130,7 +130,7 @@ private:
             zHigh += 2;
         }
 
-        auto entranceElement = map_get_park_entrance_element_at(_loc.x, _loc.y, zLow, false);
+        auto entranceElement = map_get_park_entrance_element_at(_loc, false);
         // Make sure the entrance part is the middle
         if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {
@@ -198,7 +198,7 @@ private:
             zHigh += 2;
         }
 
-        auto entranceElement = map_get_park_entrance_element_at(_loc.x, _loc.y, zLow, false);
+        auto entranceElement = map_get_park_entrance_element_at(_loc, false);
         // Make sure the entrance part is the middle
         if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {

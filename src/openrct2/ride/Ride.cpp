@@ -7678,7 +7678,7 @@ void determine_ride_entrance_and_exit_locations()
             if (!entranceLoc.isNull())
             {
                 const EntranceElement* entranceElement = map_get_ride_entrance_element_at(
-                    entranceLoc.x * 32, entranceLoc.y * 32, entranceLoc.z, false);
+                    { entranceLoc.x, entranceLoc.y, entranceLoc.z }, false);
 
                 if (entranceElement == nullptr || entranceElement->GetRideIndex() != ride.id
                     || entranceElement->GetStationIndex() != stationIndex)
@@ -7694,7 +7694,7 @@ void determine_ride_entrance_and_exit_locations()
             if (!exitLoc.isNull())
             {
                 const EntranceElement* entranceElement = map_get_ride_exit_element_at(
-                    exitLoc.x * 32, exitLoc.y * 32, exitLoc.z, false);
+                    { exitLoc.x, exitLoc.y, exitLoc.z }, false);
 
                 if (entranceElement == nullptr || entranceElement->GetRideIndex() != ride.id
                     || entranceElement->GetStationIndex() != stationIndex)

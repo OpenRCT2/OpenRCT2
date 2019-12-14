@@ -215,7 +215,7 @@ void fix_park_entrance_locations(void)
         std::remove_if(
             gParkEntrances.begin(), gParkEntrances.end(),
             [](const auto& entrance) {
-                return map_get_park_entrance_element_at(entrance.x, entrance.y, entrance.z >> 3, false) == nullptr;
+                return map_get_park_entrance_element_at(entrance, false) == nullptr;
             }),
         gParkEntrances.end());
 }
