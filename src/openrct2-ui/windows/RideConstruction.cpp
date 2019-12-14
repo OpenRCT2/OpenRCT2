@@ -2420,9 +2420,9 @@ static void sub_6CBCE2(
     int16_t preserveMapSize = gMapSize;
     int16_t preserveMapSizeMaxXY = gMapSizeMaxXY;
 
-    gMapSizeUnits = 255 * 32;
-    gMapSizeMinus2 = (255 * 32) + 286;
-    gMapSize = 256;
+    gMapSizeUnits = (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32;
+    gMapSizeMinus2 = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32) + 286;
+    gMapSize = MAXIMUM_MAP_SIZE_TECHNICAL;
     gMapSizeMaxXY = (MAXIMUM_MAP_SIZE_TECHNICAL * 32) - 1;
 
     auto trackBlock = get_track_def_from_ride(ride, trackType);
