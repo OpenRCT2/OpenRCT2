@@ -2324,18 +2324,19 @@ TileElement* map_get_track_element_at_with_direction_from_ride(
     return nullptr;
 };
 
-WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction)
+WallElement* map_get_wall_element_at(CoordsXYZD wallCoords)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    auto tileWallCoords = TileCoordsXYZ(wallCoords);
+    TileElement* tileElement = map_get_first_element_at(tileWallCoords.x, tileWallCoords.y);
     if (tileElement == nullptr)
         return nullptr;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != tileWallCoords.z)
             continue;
-        if (tileElement->GetDirection() != direction)
+        if (tileElement->GetDirection() != wallCoords.direction)
             continue;
 
         return tileElement->AsWall();

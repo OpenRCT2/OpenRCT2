@@ -70,7 +70,7 @@ public:
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        auto wallElement = map_get_wall_element_at(_loc.x, _loc.y, _loc.z / 8, _loc.direction);
+        auto wallElement = map_get_wall_element_at(_loc);
         if (wallElement == nullptr)
         {
             log_error(
@@ -123,7 +123,7 @@ public:
         res->Position.z = _loc.z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-        auto wallElement = map_get_wall_element_at(_loc.x, _loc.y, _loc.z / 8, _loc.direction);
+        auto wallElement = map_get_wall_element_at(_loc);
         if (wallElement == nullptr)
         {
             log_error(

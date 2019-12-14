@@ -7432,12 +7432,11 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
         trackBlock++;
     }
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
-    int32_t x = floor2(vehicle->x, 32);
-    int32_t y = floor2(vehicle->y, 32);
-    int32_t z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_end) >> 3;
+    auto wallCoords = CoordsXYZ{ CoordsXY{ vehicle->x, vehicle->y }.ToTileStart(),
+                                 vehicle->track_z - trackBlock->z + trackCoordinates->z_end };
     int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
 
-    auto tileElement = map_get_wall_element_at(x, y, z, direction);
+    auto tileElement = map_get_wall_element_at(CoordsXYZD{ wallCoords, static_cast<Direction>(direction) });
     if (tileElement == nullptr)
     {
         return;
@@ -7447,7 +7446,7 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
     {
         tileElement->SetAnimationIsBackwards(false);
         tileElement->SetAnimationFrame(1);
-        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
+        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords.x, wallCoords.y, wallCoords.z >> 3);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
 
@@ -7512,13 +7511,12 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
     int32_t trackType = vehicle->track_type >> 2;
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
-    int32_t x = vehicle->track_x;
-    int32_t y = vehicle->track_y;
-    int32_t z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_begin) >> 3;
+    auto wallCoords = CoordsXYZ{ vehicle->track_x, vehicle->track_y,
+                                 vehicle->track_z - trackBlock->z + trackCoordinates->z_begin };
     int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
 
-    auto tileElement = map_get_wall_element_at(x, y, z, direction);
+    auto tileElement = map_get_wall_element_at(CoordsXYZD{ wallCoords, static_cast<Direction>(direction) });
     if (tileElement == nullptr)
     {
         return;
@@ -7528,7 +7526,7 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
     {
         tileElement->SetAnimationIsBackwards(true);
         tileElement->SetAnimationFrame(1);
-        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
+        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords.x, wallCoords.y, wallCoords.z >> 3);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
 
