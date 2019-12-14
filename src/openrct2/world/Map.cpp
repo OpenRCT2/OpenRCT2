@@ -2054,12 +2054,12 @@ int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY)
  *
  *  rct2: 0x00693BFF
  */
-bool map_surface_is_blocked(int16_t x, int16_t y)
+bool map_surface_is_blocked(CoordsXY mapCoords)
 {
-    if (x >= 8192 || y >= 8192)
+    if (!map_is_location_valid(mapCoords))
         return true;
 
-    auto surfaceElement = map_get_surface_element_at({ x, y });
+    auto surfaceElement = map_get_surface_element_at(mapCoords);
 
     if (surfaceElement == nullptr)
     {
