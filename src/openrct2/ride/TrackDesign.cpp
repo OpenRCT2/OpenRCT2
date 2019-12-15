@@ -562,53 +562,59 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
 
 void TrackDesign::Serialise(DataSerialiser& stream)
 {
-    stream << type;
-    stream << vehicle_type;
-    stream << cost;
-    stream << flags;
-    stream << ride_mode;
-    stream << track_flags;
-    stream << colour_scheme;
-    stream << vehicle_colours;
-    stream << entrance_style;
-    stream << total_air_time;
-    stream << depart_flags;
-    stream << number_of_trains;
-    stream << number_of_cars_per_train;
-    stream << min_waiting_time;
-    stream << max_waiting_time;
-    stream << operation_setting;
-    stream << max_speed;
-    stream << average_speed;
-    stream << ride_length;
-    stream << max_positive_vertical_g;
-    stream << max_negative_vertical_g;
-    stream << max_lateral_g;
-    stream << inversions;
-    stream << holes;
-    stream << drops;
-    stream << highest_drop_height;
-    stream << excitement;
-    stream << intensity;
-    stream << nausea;
-    stream << upkeep_cost;
-    stream << track_spine_colour;
-    stream << track_rail_colour;
-    stream << track_support_colour;
-    stream << flags2;
-    stream << vehicle_object;
-    stream << space_required_x;
-    stream << space_required_y;
-    stream << vehicle_additional_colour;
-    stream << lift_hill_speed;
-    stream << num_circuits;
+    if (stream.IsLogging())
+    {
+        stream << DS_TAG(name);
+        // There is too much information logged.
+        // See sub actions for this information if required.
+        return;
+    }
+    stream << DS_TAG(type);
+    stream << DS_TAG(vehicle_type);
+    stream << DS_TAG(cost);
+    stream << DS_TAG(flags);
+    stream << DS_TAG(ride_mode);
+    stream << DS_TAG(track_flags);
+    stream << DS_TAG(colour_scheme);
+    stream << DS_TAG(vehicle_colours);
+    stream << DS_TAG(entrance_style);
+    stream << DS_TAG(total_air_time);
+    stream << DS_TAG(depart_flags);
+    stream << DS_TAG(number_of_trains);
+    stream << DS_TAG(number_of_cars_per_train);
+    stream << DS_TAG(min_waiting_time);
+    stream << DS_TAG(max_waiting_time);
+    stream << DS_TAG(operation_setting);
+    stream << DS_TAG(max_speed);
+    stream << DS_TAG(average_speed);
+    stream << DS_TAG(ride_length);
+    stream << DS_TAG(max_positive_vertical_g);
+    stream << DS_TAG(max_negative_vertical_g);
+    stream << DS_TAG(max_lateral_g);
+    stream << DS_TAG(inversions);
+    stream << DS_TAG(holes);
+    stream << DS_TAG(drops);
+    stream << DS_TAG(highest_drop_height);
+    stream << DS_TAG(excitement);
+    stream << DS_TAG(intensity);
+    stream << DS_TAG(nausea);
+    stream << DS_TAG(upkeep_cost);
+    stream << DS_TAG(track_spine_colour);
+    stream << DS_TAG(track_rail_colour);
+    stream << DS_TAG(track_support_colour);
+    stream << DS_TAG(flags2);
+    stream << DS_TAG(vehicle_object);
+    stream << DS_TAG(space_required_x);
+    stream << DS_TAG(space_required_y);
+    stream << DS_TAG(vehicle_additional_colour);
+    stream << DS_TAG(lift_hill_speed);
+    stream << DS_TAG(num_circuits);
 
-    stream << maze_elements;
-    stream << track_elements;
-    stream << entrance_elements;
-    stream << scenery_elements;
+    stream << DS_TAG(maze_elements);
+    stream << DS_TAG(track_elements);
+    stream << DS_TAG(entrance_elements);
+    stream << DS_TAG(scenery_elements);
 
-    // DS_TAG on name as there is too much logging data otherwise
     stream << DS_TAG(name);
 }
 

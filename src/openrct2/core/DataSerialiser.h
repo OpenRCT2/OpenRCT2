@@ -46,6 +46,11 @@ public:
         return !_isSaving;
     }
 
+    bool IsLogging() const
+    {
+        return _isLogging;
+    }
+
     IStream& GetStream()
     {
         return _activeStream;
