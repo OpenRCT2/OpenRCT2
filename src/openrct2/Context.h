@@ -28,7 +28,7 @@ using rct_windowclass = uint8_t;
 
 struct CursorState
 {
-    int32_t x, y;
+    ScreenCoordsXY position;
     uint8_t left, middle, right, any;
     int32_t wheel;
     int32_t old;

@@ -533,7 +533,7 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
 void window_all_wheel_input()
 {
     // Get wheel value
-    CursorState* cursorState = (CursorState*)context_get_cursor_state();
+    auto cursorState = context_get_cursor_state();
     int32_t absolute_wheel = cursorState->wheel;
     int32_t relative_wheel = absolute_wheel - _previousAbsoluteWheel;
     int32_t pixel_scroll = relative_wheel * WINDOW_SCROLL_PIXELS;
@@ -545,7 +545,7 @@ void window_all_wheel_input()
     // Check window cursor is over
     if (!(input_test_flag(INPUT_FLAG_5)))
     {
-        rct_window* w = window_find_from_point(ScreenCoordsXY(cursorState->x, cursorState->y));
+        rct_window* w = window_find_from_point(cursorState->position);
         if (w != nullptr)
         {
             // Check if main window
@@ -556,7 +556,7 @@ void window_all_wheel_input()
             }
 
             // Check scroll view, cursor is over
-            rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(cursorState->x, cursorState->y));
+            rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->position);
             if (widgetIndex != -1)
             {
                 rct_widget* widget = &w->widgets[widgetIndex];

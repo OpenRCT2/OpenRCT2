@@ -126,10 +126,10 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message)
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
     const CursorState* state = context_get_cursor_state();
-    x = state->x - (width / 2);
+    x = state->position.x - (width / 2);
     x = std::clamp(x, 0, screenWidth);
 
-    y = state->y + 26;
+    y = state->position.y + 26;
     y = std::max(22, y);
     maxY = screenHeight - height;
     if (y > maxY)
