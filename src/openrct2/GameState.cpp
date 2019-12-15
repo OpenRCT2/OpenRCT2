@@ -218,7 +218,6 @@ void GameState::Update()
         pause_toggle();
     }
 
-    gGameCommandNestLevel = 0;
     gDoSingleUpdate = false;
     gInUpdateCode = false;
 }

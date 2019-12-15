@@ -359,6 +359,12 @@ struct CoordsXYZD : public CoordsXYZ
     {
     }
 
+    constexpr CoordsXYZD(CoordsXYZ _c, Direction _d)
+        : CoordsXYZ(_c)
+        , direction(_d)
+    {
+    }
+
     bool operator==(const CoordsXYZD& other) const
     {
         return x == other.x && y == other.y && z == other.z && direction == other.direction;

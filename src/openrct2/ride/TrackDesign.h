@@ -77,6 +77,8 @@ struct TrackDesignMazeElement
     };
 };
 
+class DataSerialiser;
+
 struct TrackDesign
 {
     uint8_t type;
@@ -86,7 +88,7 @@ struct TrackDesign
     uint8_t ride_mode;
     uint8_t track_flags;
     uint8_t colour_scheme;
-    rct_vehicle_colour vehicle_colours[RCT2_MAX_CARS_PER_TRAIN];
+    std::array<rct_vehicle_colour, RCT2_MAX_CARS_PER_TRAIN> vehicle_colours;
     uint8_t entrance_style;
     uint8_t total_air_time;
     uint8_t depart_flags;
@@ -130,6 +132,7 @@ struct TrackDesign
 public:
     rct_string_id CreateTrackDesign(const Ride& ride);
     rct_string_id CreateTrackDesignScenery();
+    void Serialise(DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;
@@ -195,6 +198,7 @@ extern LocationXYZ16 gTrackPreviewOrigin;
 
 extern bool byte_9D8150;
 
+extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;
 extern ride_id_t gTrackDesignSaveRideIndex;
 
@@ -204,9 +208,6 @@ void track_design_mirror(TrackDesign* td6);
 
 int32_t place_virtual_track(
     TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, int16_t x, int16_t y, int16_t z);
-
-void game_command_place_track_design(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview

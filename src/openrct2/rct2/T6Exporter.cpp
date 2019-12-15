@@ -53,7 +53,7 @@ bool T6Exporter::SaveTrack(IStream* stream)
     tempStream.WriteValue<uint32_t>(_trackDesign->flags);
     tempStream.WriteValue<uint8_t>(_trackDesign->ride_mode);
     tempStream.WriteValue<uint8_t>((_trackDesign->colour_scheme & 0x3) | (2 << 2));
-    tempStream.WriteArray(_trackDesign->vehicle_colours, RCT12_MAX_VEHICLE_COLOURS);
+    tempStream.WriteArray(_trackDesign->vehicle_colours.data(), RCT12_MAX_VEHICLE_COLOURS);
     tempStream.WriteValue<uint8_t>(0);
     tempStream.WriteValue<uint8_t>(_trackDesign->entrance_style);
     tempStream.WriteValue<uint8_t>(_trackDesign->total_air_time);

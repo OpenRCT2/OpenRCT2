@@ -77,6 +77,7 @@
 #include "StaffSetPatrolAreaAction.hpp"
 #include "SurfaceSetStyleAction.hpp"
 #include "TileModifyAction.hpp"
+#include "TrackDesignAction.h"
 #include "TrackPlaceAction.hpp"
 #include "TrackRemoveAction.hpp"
 #include "TrackSetBrakeSpeedAction.hpp"
@@ -157,6 +158,7 @@ namespace GameActions
         Register<LandSetRightsAction>();
         Register<LandSmoothAction>();
         Register<TileModifyAction>();
+        Register<TrackDesignAction>();
         Register<TrackPlaceAction>();
         Register<TrackRemoveAction>();
         Register<TrackSetBrakeSpeedAction>();

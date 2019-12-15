@@ -18,7 +18,9 @@
 #include "../actions/LargeSceneryPlaceAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/MazePlaceTrackAction.hpp"
+#include "../actions/RideCreateAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
+#include "../actions/RideSetName.hpp"
 #include "../actions/RideSetSetting.hpp"
 #include "../actions/RideSetVehiclesAction.hpp"
 #include "../actions/SmallSceneryPlaceAction.hpp"
@@ -28,6 +30,7 @@
 #include "../actions/WallPlaceAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
+#include "../core/DataSerialiser.h"
 #include "../core/File.h"
 #include "../core/String.hpp"
 #include "../drawing/X8DrawingEngine.h"
@@ -79,14 +82,13 @@ LocationXYZ16 gTrackPreviewOrigin;
 
 bool byte_9D8150;
 static uint8_t _trackDesignPlaceOperation;
-static bool _trackDesignDontPlaceScenery;
 static money32 _trackDesignPlaceCost;
 static int16_t _trackDesignPlaceZ;
 static int16_t _trackDesignPlaceSceneryZ;
 
 // Previously all flags in byte_F4414E
 static bool _trackDesignPlaceStateEntranceExitPlaced = false;
-static bool _trackDesignPlaceStateSceneryUnavailable = false;
+bool _trackDesignPlaceStateSceneryUnavailable = false;
 static bool _trackDesignPlaceStateHasScenery = false;
 static bool _trackDesignPlaceStatePlaceScenery = true;
 
@@ -556,6 +558,64 @@ rct_string_id TrackDesign::CreateTrackDesignScenery()
     }
 
     return STR_NONE;
+}
+
+void TrackDesign::Serialise(DataSerialiser& stream)
+{
+    if (stream.IsLogging())
+    {
+        stream << DS_TAG(name);
+        // There is too much information logged.
+        // See sub actions for this information if required.
+        return;
+    }
+    stream << DS_TAG(type);
+    stream << DS_TAG(vehicle_type);
+    stream << DS_TAG(cost);
+    stream << DS_TAG(flags);
+    stream << DS_TAG(ride_mode);
+    stream << DS_TAG(track_flags);
+    stream << DS_TAG(colour_scheme);
+    stream << DS_TAG(vehicle_colours);
+    stream << DS_TAG(entrance_style);
+    stream << DS_TAG(total_air_time);
+    stream << DS_TAG(depart_flags);
+    stream << DS_TAG(number_of_trains);
+    stream << DS_TAG(number_of_cars_per_train);
+    stream << DS_TAG(min_waiting_time);
+    stream << DS_TAG(max_waiting_time);
+    stream << DS_TAG(operation_setting);
+    stream << DS_TAG(max_speed);
+    stream << DS_TAG(average_speed);
+    stream << DS_TAG(ride_length);
+    stream << DS_TAG(max_positive_vertical_g);
+    stream << DS_TAG(max_negative_vertical_g);
+    stream << DS_TAG(max_lateral_g);
+    stream << DS_TAG(inversions);
+    stream << DS_TAG(holes);
+    stream << DS_TAG(drops);
+    stream << DS_TAG(highest_drop_height);
+    stream << DS_TAG(excitement);
+    stream << DS_TAG(intensity);
+    stream << DS_TAG(nausea);
+    stream << DS_TAG(upkeep_cost);
+    stream << DS_TAG(track_spine_colour);
+    stream << DS_TAG(track_rail_colour);
+    stream << DS_TAG(track_support_colour);
+    stream << DS_TAG(flags2);
+    stream << DS_TAG(vehicle_object);
+    stream << DS_TAG(space_required_x);
+    stream << DS_TAG(space_required_y);
+    stream << DS_TAG(vehicle_additional_colour);
+    stream << DS_TAG(lift_hill_speed);
+    stream << DS_TAG(num_circuits);
+
+    stream << DS_TAG(maze_elements);
+    stream << DS_TAG(track_elements);
+    stream << DS_TAG(entrance_elements);
+    stream << DS_TAG(scenery_elements);
+
+    stream << DS_TAG(name);
 }
 
 std::unique_ptr<TrackDesign> track_design_open(const utf8* path)
@@ -1778,6 +1838,26 @@ int32_t place_virtual_track(
     return _trackDesignPlaceCost;
 }
 
+static money32 track_design_ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
+{
+    // Don't set colours as will be set correctly later.
+    auto gameAction = RideCreateAction(type, subType, 0, 0);
+    gameAction.SetFlags(flags);
+
+    auto r = GameActions::ExecuteNested(&gameAction);
+    const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
+
+    // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
+    if (res->Error != GA_ERROR::OK)
+    {
+        return MONEY32_UNDEFINED;
+    }
+
+    *outRideIndex = res->rideIndex;
+
+    return res->Cost;
+}
+
 /**
  *
  *  rct2: 0x006D2189
@@ -1796,9 +1876,8 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     }
 
     ride_id_t rideIndex;
-    uint8_t colour;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
-    if (ride_create_command(td6->type, entry_index, rideCreateFlags, &rideIndex, &colour) == MONEY32_UNDEFINED)
+    if (track_design_ride_create_command(td6->type, entry_index, rideCreateFlags, &rideIndex) == MONEY32_UNDEFINED)
     {
         return false;
     }
@@ -1879,195 +1958,6 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         byte_9D8150 = false;
         return false;
     }
-}
-
-static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags, ride_id_t* outRideIndex)
-{
-    *outRideIndex = RIDE_ID_NULL;
-
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z;
-
-    if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
-    {
-        if (game_is_paused() && !gCheatsBuildInPauseMode)
-        {
-            gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    TrackDesign* td6 = gActiveTrackDesign;
-    if (td6 == nullptr)
-    {
-        return MONEY32_UNDEFINED;
-    }
-    rct_object_entry* rideEntryObject = &td6->vehicle_object;
-
-    uint8_t entryType, entryIndex;
-    if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
-    {
-        entryIndex = 0xFF;
-    }
-    // Force a fallback if the entry is not invented yet a td6 of it is selected, which can happen in select-by-track-type mode.
-    else if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
-    {
-        entryIndex = 0xFF;
-    }
-
-    // The rest of the cases are handled by the code in ride_create()
-    if (RideGroupManager::RideTypeHasRideGroups(td6->type) && entryIndex == 0xFF)
-    {
-        const ObjectRepositoryItem* ori = object_repository_find_object_by_name(rideEntryObject->name);
-        if (ori != nullptr)
-        {
-            uint8_t rideGroupIndex = ori->RideInfo.RideGroupIndex;
-            const RideGroup* td6RideGroup = RideGroupManager::RideGroupFind(td6->type, rideGroupIndex);
-
-            uint8_t* availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
-            for (uint8_t* rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
-            {
-                rct_ride_entry* ire = get_ride_entry(*rei);
-
-                if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
-                {
-                    continue;
-                }
-
-                const RideGroup* irg = RideGroupManager::GetRideGroup(td6->type, ire);
-                if (td6RideGroup->Equals(irg))
-                {
-                    entryIndex = *rei;
-                    break;
-                }
-            }
-        }
-    }
-
-    ride_id_t rideIndex;
-    uint8_t rideColour;
-    money32 createRideResult = ride_create_command(td6->type, entryIndex, flags, &rideIndex, &rideColour);
-    if (createRideResult == MONEY32_UNDEFINED)
-    {
-        gGameCommandErrorTitle = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        return MONEY32_UNDEFINED;
-    }
-
-    auto ride = get_ride(rideIndex);
-    if (ride == nullptr)
-    {
-        log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MONEY32_UNDEFINED;
-    }
-
-    money32 cost = 0;
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
-    {
-        _trackDesignDontPlaceScenery = false;
-        cost = place_virtual_track(td6, PTD_OPERATION_PLACE_QUERY, true, ride, x, y, z);
-        if (_trackDesignPlaceStateSceneryUnavailable)
-        {
-            _trackDesignDontPlaceScenery = true;
-            cost = place_virtual_track(td6, PTD_OPERATION_PLACE_QUERY, false, ride, x, y, z);
-        }
-    }
-    else
-    {
-        uint8_t operation;
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            operation = PTD_OPERATION_PLACE_GHOST;
-        }
-        else
-        {
-            operation = PTD_OPERATION_PLACE;
-        }
-
-        cost = place_virtual_track(td6, operation, !_trackDesignDontPlaceScenery, ride, x, y, z);
-    }
-
-    if (cost == MONEY32_UNDEFINED || !(flags & GAME_COMMAND_FLAG_APPLY))
-    {
-        rct_string_id error_reason = gGameCommandErrorText;
-        ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, flags);
-        gGameCommandErrorText = error_reason;
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        *outRideIndex = ride->id;
-        return cost;
-    }
-
-    if (entryIndex != 0xFF)
-    {
-        auto colour = ride_get_unused_preset_vehicle_colour(entryIndex);
-        auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
-        flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction)
-                                       : GameActions::QueryNested(&rideSetVehicleAction);
-    }
-
-    set_operating_setting_nested(ride->id, RideSetSetting::Mode, td6->ride_mode, flags);
-    auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, td6->number_of_trains);
-    flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction2)
-                                   : GameActions::QueryNested(&rideSetVehicleAction2);
-    auto rideSetVehicleAction3 = RideSetVehicleAction(
-        ride->id, RideSetVehicleType::NumCarsPerTrain, td6->number_of_cars_per_train);
-    flags& GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetVehicleAction3)
-                                   : GameActions::QueryNested(&rideSetVehicleAction3);
-    set_operating_setting_nested(ride->id, RideSetSetting::Departure, td6->depart_flags, flags);
-    set_operating_setting_nested(ride->id, RideSetSetting::MinWaitingTime, td6->min_waiting_time, flags);
-    set_operating_setting_nested(ride->id, RideSetSetting::MaxWaitingTime, td6->max_waiting_time, flags);
-    set_operating_setting_nested(ride->id, RideSetSetting::Operation, td6->operation_setting, flags);
-    set_operating_setting_nested(ride->id, RideSetSetting::LiftHillSpeed, td6->lift_hill_speed & 0x1F, flags);
-
-    uint8_t num_circuits = td6->num_circuits;
-    if (num_circuits == 0)
-    {
-        num_circuits = 1;
-    }
-    set_operating_setting_nested(ride->id, RideSetSetting::NumCircuits, num_circuits, flags);
-    ride->SetToDefaultInspectionInterval();
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
-    ride->colour_scheme_type = td6->colour_scheme;
-
-    ride->entrance_style = td6->entrance_style;
-
-    for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
-    {
-        ride->track_colour[i].main = td6->track_spine_colour[i];
-        ride->track_colour[i].additional = td6->track_rail_colour[i];
-        ride->track_colour[i].supports = td6->track_support_colour[i];
-    }
-
-    for (int32_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
-    {
-        ride->vehicle_colours[i].Body = td6->vehicle_colours[i].body_colour;
-        ride->vehicle_colours[i].Trim = td6->vehicle_colours[i].trim_colour;
-        ride->vehicle_colours[i].Ternary = td6->vehicle_additional_colour[i];
-    }
-
-    ride_set_name(ride, td6->name.c_str(), flags);
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-    *outRideIndex = ride->id;
-    return cost;
-}
-
-/**
- *
- *  rct2: 0x006D13FE
- */
-void game_command_place_track_design(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, [[maybe_unused]] int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    int16_t x = *eax & 0xFFFF;
-    int16_t y = *ecx & 0xFFFF;
-    int16_t z = *edi & 0xFFFF;
-    uint8_t flags = *ebx;
-    ride_id_t rideIndex;
-    *ebx = place_track_design(x, y, z, flags, &rideIndex);
-    *edi = rideIndex;
 }
 
 #pragma region Track Design Preview

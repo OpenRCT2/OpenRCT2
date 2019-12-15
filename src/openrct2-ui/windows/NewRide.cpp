@@ -981,12 +981,7 @@ static void window_new_ride_paint_ride_information(
         gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, x, y + 39, WW - 2);
     }
 
-    // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
-    if (network_get_mode() != NETWORK_MODE_NONE)
-    {
-        _lastTrackDesignCount = 0;
-    }
-    else if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index)
+    if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index)
     {
         _lastTrackDesignCountRideType = item;
         _lastTrackDesignCount = get_num_track_designs(item);
@@ -1047,17 +1042,7 @@ static void window_new_ride_select(rct_window* w)
     window_close(w);
     window_close_construction_windows();
 
-    bool allowTrackDesigns = true;
-#ifndef NETWORK_DISABLE
-    // TODO: FIX NETWORK TRACKS
-    // Until tracks work with the network this will disable them
-    if (network_get_mode() != NETWORK_MODE_NONE)
-    {
-        allowTrackDesigns = false;
-    }
-#endif
-
-    if (allowTrackDesigns && _lastTrackDesignCount > 0)
+    if (_lastTrackDesignCount > 0)
     {
         auto intent = Intent(WC_TRACK_DESIGN_LIST);
         intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.type);
