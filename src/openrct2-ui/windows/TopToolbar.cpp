@@ -3056,11 +3056,11 @@ static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
 
     int16_t tile_height = -16 / (1 << viewport->zoom);
 
-    int32_t y_diff = y - gInputDragLastY;
+    int32_t y_diff = y - gInputDragLast.y;
 
     if (y_diff <= tile_height)
     {
-        gInputDragLastY += tile_height;
+        gInputDragLast.y += tile_height;
 
         selection_raise_land(GAME_COMMAND_FLAG_APPLY);
 
@@ -3069,7 +3069,7 @@ static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
     }
     else if (y_diff >= -tile_height)
     {
-        gInputDragLastY -= tile_height;
+        gInputDragLast.y -= tile_height;
 
         selection_lower_land(GAME_COMMAND_FLAG_APPLY);
 
@@ -3100,11 +3100,11 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
     int16_t dx = -16;
     dx >>= viewport->zoom;
 
-    y -= gInputDragLastY;
+    y -= gInputDragLast.y;
 
     if (y <= dx)
     {
-        gInputDragLastY += dx;
+        gInputDragLast.y += dx;
 
         auto waterRaiseAction = WaterRaiseAction(
             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
@@ -3120,7 +3120,7 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
 
     if (y >= dx)
     {
-        gInputDragLastY += dx;
+        gInputDragLast.y += dx;
 
         auto waterLowerAction = WaterLowerAction(
             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });

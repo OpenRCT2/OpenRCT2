@@ -76,8 +76,7 @@ struct widget_ref
 
 extern uint8_t gInputPlaceObjectModifier;
 
-extern int32_t gInputDragLastX;
-extern int32_t gInputDragLastY;
+extern ScreenCoordsXY gInputDragLast;
 
 extern widget_ref gHoverWidget;
 extern widget_ref gPressedWidget;
