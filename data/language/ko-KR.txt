@@ -1863,22 +1863,22 @@ STR_2522    :최근 메시지를 보여줍니다
 STR_2523    :지도 보기
 STR_2524    :스크린 샷
 STR_2533    :백스페이스
-STR_2534    :탭
+STR_2534    :Tab
 STR_2537    :Clear
-STR_2538    :Return
+STR_2538    :Enter
 STR_2543    :Alt/Menu
 STR_2544    :Pause
 STR_2545    :Caps
-STR_2552    :Escape
-STR_2557    :스페이스바
+STR_2552    :ESC
+STR_2557    :스페이스
 STR_2558    :PgUp
 STR_2559    :PgDn
 STR_2560    :End
 STR_2561    :Home
-STR_2562    :Left
-STR_2563    :Up
-STR_2564    :Right
-STR_2565    :Down
+STR_2562    :좌
+STR_2563    :상
+STR_2564    :우
+STR_2565    :하
 STR_2566    :Select
 STR_2567    :Print
 STR_2568    :Execute
@@ -1982,8 +1982,8 @@ STR_2779    :외부화면 #{COMMA16}
 STR_2780    :추가 외부화면
 # End of new strings
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
-STR_2782    :SHIFT +
-STR_2783    :CTRL +
+STR_2782    :SHIFT + 
+STR_2783    :CTRL + 
 STR_2784    :키보드 단축키 변경
 STR_2785    :{WINDOW_COLOUR_2}새 단축키를 누르세요:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}새 단축키를 설정하려면 단축키 설명을 클릭하세요
@@ -2833,7 +2833,7 @@ STR_5463    :목표: 즐기세요!
 STR_5464    :일반
 STR_5465    :날씨
 STR_5466    :직원
-STR_5467    :ALT +
+STR_5467    :ALT + 
 STR_5468    :최근 메시지
 STR_5469    :맵을 위로 스크롤
 STR_5470    :맵을 왼쪽으로 스크롤
@@ -3660,6 +3660,8 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :{POP16}{POP16}{POP16}{POP16}{STRING}에서 [{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{STRING}] 다운로드 중 ({COMMA16} / {COMMA16})
 STR_6331    :오리 생성하기
 STR_6332    :오리 제거하기
+STR_6333    :창 크기 증가
+STR_6334    :창 크기 감소
 
 
 #############
