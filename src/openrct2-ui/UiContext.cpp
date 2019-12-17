@@ -384,12 +384,12 @@ public:
                     {
                         break;
                     }
-                    int32_t x = (int32_t)(e.button.x / gConfigGeneral.window_scale);
-                    int32_t y = (int32_t)(e.button.y / gConfigGeneral.window_scale);
+                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / gConfigGeneral.window_scale),
+                                                static_cast<int32_t>(e.button.y / gConfigGeneral.window_scale) };
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_PRESS, ScreenCoordsXY(x, y));
+                            store_mouse_input(MOUSE_STATE_LEFT_PRESS, mousePos);
                             _cursorState.left = CURSOR_PRESSED;
                             _cursorState.old = 1;
                             break;
@@ -397,7 +397,7 @@ public:
                             _cursorState.middle = CURSOR_PRESSED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_PRESS, ScreenCoordsXY(x, y));
+                            store_mouse_input(MOUSE_STATE_RIGHT_PRESS, mousePos);
                             _cursorState.right = CURSOR_PRESSED;
                             _cursorState.old = 2;
                             break;
@@ -411,12 +411,12 @@ public:
                     {
                         break;
                     }
-                    int32_t x = (int32_t)(e.button.x / gConfigGeneral.window_scale);
-                    int32_t y = (int32_t)(e.button.y / gConfigGeneral.window_scale);
+                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / gConfigGeneral.window_scale),
+                                                static_cast<int32_t>(e.button.y / gConfigGeneral.window_scale) };
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_RELEASE, ScreenCoordsXY(x, y));
+                            store_mouse_input(MOUSE_STATE_LEFT_RELEASE, mousePos);
                             _cursorState.left = CURSOR_RELEASED;
                             _cursorState.old = 3;
                             break;
@@ -424,7 +424,7 @@ public:
                             _cursorState.middle = CURSOR_RELEASED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, ScreenCoordsXY(x, y));
+                            store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, mousePos);
                             _cursorState.right = CURSOR_RELEASED;
                             _cursorState.old = 4;
                             break;
@@ -440,8 +440,8 @@ public:
                     break;
                 case SDL_FINGERDOWN:
                 {
-                    int32_t x = (int32_t)(e.tfinger.x * _width);
-                    int32_t y = (int32_t)(e.tfinger.y * _height);
+                    ScreenCoordsXY fingerPos = { static_cast<int32_t>(e.tfinger.x * _width),
+                                                 static_cast<int32_t>(e.tfinger.y * _height) };
 
                     _cursorState.touchIsDouble
                         = (!_cursorState.touchIsDouble
@@ -449,13 +449,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_PRESS, ScreenCoordsXY(x, y));
+                        store_mouse_input(MOUSE_STATE_RIGHT_PRESS, fingerPos);
                         _cursorState.right = CURSOR_PRESSED;
                         _cursorState.old = 2;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_PRESS, ScreenCoordsXY(x, y));
+                        store_mouse_input(MOUSE_STATE_LEFT_PRESS, fingerPos);
                         _cursorState.left = CURSOR_PRESSED;
                         _cursorState.old = 1;
                     }
@@ -465,18 +465,18 @@ public:
                 }
                 case SDL_FINGERUP:
                 {
-                    int32_t x = (int32_t)(e.tfinger.x * _width);
-                    int32_t y = (int32_t)(e.tfinger.y * _height);
+                    ScreenCoordsXY fingerPos = { static_cast<int32_t>(e.tfinger.x * _width),
+                                                 static_cast<int32_t>(e.tfinger.y * _height) };
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, ScreenCoordsXY(x, y));
+                        store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, fingerPos);
                         _cursorState.right = CURSOR_RELEASED;
                         _cursorState.old = 4;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_RELEASE, ScreenCoordsXY(x, y));
+                        store_mouse_input(MOUSE_STATE_LEFT_RELEASE, fingerPos);
                         _cursorState.left = CURSOR_RELEASED;
                         _cursorState.old = 3;
                     }
