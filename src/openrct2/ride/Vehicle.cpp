@@ -3102,19 +3102,16 @@ static bool vehicle_current_tower_element_is_top(rct_vehicle* vehicle)
 {
     TileElement* tileElement = map_get_track_element_at_of_type(
         vehicle->track_x, vehicle->track_y, vehicle->track_z / 8, vehicle->track_type >> 2);
-
-    if (tileElement->IsLastForTile())
+    if (tileElement != nullptr)
     {
-        return true;
-    }
-
-    while (!tileElement->IsLastForTile())
-    {
-        tileElement++;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
-            && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_TOWER_SECTION)
+        while (!tileElement->IsLastForTile())
         {
-            return false;
+            tileElement++;
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
+                && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_TOWER_SECTION)
+            {
+                return false;
+            }
         }
     }
     return true;
