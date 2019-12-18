@@ -76,9 +76,9 @@ struct map_backup
 
 TrackDesign* gActiveTrackDesign;
 bool gTrackDesignSceneryToggle;
-LocationXYZ16 gTrackPreviewMin;
-LocationXYZ16 gTrackPreviewMax;
-LocationXYZ16 gTrackPreviewOrigin;
+CoordsXYZ gTrackPreviewMin;
+CoordsXYZ gTrackPreviewMax;
+CoordsXYZ gTrackPreviewOrigin;
 
 bool byte_9D8150;
 static uint8_t _trackDesignPlaceOperation;
@@ -197,10 +197,8 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     // start.
     TileElement* initialMap = trackElement.element;
 
-    int16_t start_x = trackElement.x;
-    int16_t start_y = trackElement.y;
-    int16_t start_z = z + trackCoordinates->z_begin;
-    gTrackPreviewOrigin = { start_x, start_y, start_z };
+    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->z_begin };
+    gTrackPreviewOrigin = startPos;
 
     do
     {
@@ -302,8 +300,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             TrackDesignEntranceElement entrance{};
             entrance.direction = entranceDirection;
 
-            mapLocation.x -= gTrackPreviewOrigin.x;
-            mapLocation.y -= gTrackPreviewOrigin.y;
+            mapLocation -= gTrackPreviewOrigin;
 
             // Rotate entrance coordinates backwards to the correct direction
             auto rotatedMapLocation = mapLocation.Rotate(0 - _saveDirection);
@@ -333,7 +330,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), 4096, 4096, 0);
 
     // Resave global vars for scenery reasons.
-    gTrackPreviewOrigin = { start_x, start_y, start_z };
+    gTrackPreviewOrigin = startPos;
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -353,13 +350,12 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
 
-    gTrackPreviewOrigin = { static_cast<int16_t>(startLoc.x), static_cast<int16_t>(startLoc.y),
-                            (int16_t)(startLoc.element->base_height * 8) };
+    gTrackPreviewOrigin = { startLoc.x, startLoc.y, startLoc.element->base_height * 8 };
 
     // x is defined here as we can start the search
     // on tile start_x, start_y but then the next row
     // must restart on 0
-    for (int16_t y = startLoc.y, x = startLoc.y; y < 8192; y += 32)
+    for (int32_t y = startLoc.y, x = startLoc.y; y < 8192; y += 32)
     {
         for (; x < 8192; x += 32)
         {
@@ -449,9 +445,9 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     maze_elements.push_back(mazeExit);
 
     // Save global vars as they are still used by scenery????
-    int16_t startZ = gTrackPreviewOrigin.z;
+    int32_t startZ = gTrackPreviewOrigin.z;
     place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), 4096, 4096, 0);
-    gTrackPreviewOrigin = { static_cast<int16_t>(startLoc.x), static_cast<int16_t>(startLoc.y), startZ };
+    gTrackPreviewOrigin = { startLoc.x, startLoc.y, startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -852,12 +848,12 @@ static void track_design_add_selection_tile(int16_t x, int16_t y)
 
 static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_t z)
 {
-    gTrackPreviewMin.x = std::min(gTrackPreviewMin.x, x);
-    gTrackPreviewMax.x = std::max(gTrackPreviewMax.x, x);
-    gTrackPreviewMin.y = std::min(gTrackPreviewMin.y, y);
-    gTrackPreviewMax.y = std::max(gTrackPreviewMax.y, y);
-    gTrackPreviewMin.z = std::min(gTrackPreviewMin.z, z);
-    gTrackPreviewMax.z = std::max(gTrackPreviewMax.z, z);
+    gTrackPreviewMin.x = std::min(gTrackPreviewMin.x, static_cast<int32_t>(x));
+    gTrackPreviewMax.x = std::max(gTrackPreviewMax.x, static_cast<int32_t>(x));
+    gTrackPreviewMin.y = std::min(gTrackPreviewMin.y, static_cast<int32_t>(y));
+    gTrackPreviewMax.y = std::max(gTrackPreviewMax.y, static_cast<int32_t>(y));
+    gTrackPreviewMin.z = std::min(gTrackPreviewMin.z, static_cast<int32_t>(z));
+    gTrackPreviewMax.z = std::max(gTrackPreviewMax.z, static_cast<int32_t>(z));
 }
 
 static bool TrackDesignPlaceSceneryElementGetEntry(
@@ -1674,10 +1670,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 rotation = (rotation + entrance.direction) & 3;
                 if (_trackDesignPlaceOperation != PTD_OPERATION_PLACE_QUERY)
                 {
-                    LocationXY16 tile = {
-                        (int16_t)(x + CoordsDirectionDelta[rotation].x),
-                        (int16_t)(y + CoordsDirectionDelta[rotation].y),
-                    };
+                    auto tile = CoordsXY{ x, y } + CoordsDirectionDelta[rotation];
                     TileElement* tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
                     z = gTrackPreviewOrigin.z / 8;
                     z += entrance.z;
@@ -1993,10 +1986,8 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     td6->cost = cost;
     td6->track_flags = flags & 7;
 
-    CoordsXYZ centre;
-    centre.x = (gTrackPreviewMin.x + gTrackPreviewMax.x) / 2 + 16;
-    centre.y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
-    centre.z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
+    CoordsXYZ centre = { (gTrackPreviewMin.x + gTrackPreviewMax.x) / 2 + 16, (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16,
+                         (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2 };
 
     int32_t size_x = gTrackPreviewMax.x - gTrackPreviewMin.x;
     int32_t size_y = gTrackPreviewMax.y - gTrackPreviewMin.y;

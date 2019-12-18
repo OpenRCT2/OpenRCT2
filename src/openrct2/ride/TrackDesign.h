@@ -192,9 +192,6 @@ enum
 
 extern TrackDesign* gActiveTrackDesign;
 extern bool gTrackDesignSceneryToggle;
-extern LocationXYZ16 gTrackPreviewMin;
-extern LocationXYZ16 gTrackPreviewMax;
-extern LocationXYZ16 gTrackPreviewOrigin;
 
 extern bool byte_9D8150;
 
