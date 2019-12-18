@@ -143,7 +143,6 @@ TileElement* map_get_nth_element_at(int32_t x, int32_t y, int32_t n);
 void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements);
 int32_t map_height_from_slope(const CoordsXY& coords, int32_t slope, bool isSloped);
 BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t direction);
-SurfaceElement* map_get_surface_element_at(const TileCoordsXY& tileCoords);
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords);
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc);
 WallElement* map_get_wall_element_at(CoordsXYZD wallCoords);

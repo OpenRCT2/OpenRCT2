@@ -364,7 +364,7 @@ private:
         {
             for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
             {
-                auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y });
+                auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
                 if (surfaceElement == nullptr)
                     continue;
 

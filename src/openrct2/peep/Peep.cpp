@@ -765,7 +765,8 @@ bool Peep::Place(TileCoordsXYZ location, bool apply)
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
     if (!pathElement)
     {
-        tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(TileCoordsXY{ location.x, location.y }));
+        tileElement = reinterpret_cast<TileElement*>(
+            map_get_surface_element_at(TileCoordsXY{ location.x, location.y }.ToCoordsXY()));
     }
 
     if (!tileElement)
