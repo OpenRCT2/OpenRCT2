@@ -2971,9 +2971,10 @@ private:
                 ride->stations[0].Exit = exitCoords;
 
                 auto entranceElement = map_get_ride_exit_element_at(
-                    { entranceCoords.x, entranceCoords.y, entranceCoords.z }, false);
+                    { entranceCoords.x << 5, entranceCoords.y << 5, entranceCoords.z << 3 }, false);
                 entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
-                auto exitElement = map_get_ride_entrance_element_at({ exitCoords.x, exitCoords.y, exitCoords.z }, false);
+                auto exitElement = map_get_ride_entrance_element_at(
+                    { exitCoords.x << 5, exitCoords.y << 5, exitCoords.z << 3 }, false);
                 exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
                 // Trigger footpath update

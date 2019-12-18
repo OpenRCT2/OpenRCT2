@@ -1791,8 +1791,9 @@ EntranceElement* map_get_park_entrance_element_at(const CoordsXYZ& entranceCoord
     return nullptr;
 }
 
-EntranceElement* map_get_ride_entrance_element_at(const TileCoordsXYZ& entranceTileCoords, bool ghost)
+EntranceElement* map_get_ride_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost)
 {
+    auto entranceTileCoords = TileCoordsXYZ{ entranceCoords };
     TileElement* tileElement = map_get_first_element_at(entranceTileCoords.x, entranceTileCoords.y);
     if (tileElement != nullptr)
     {
@@ -1816,8 +1817,9 @@ EntranceElement* map_get_ride_entrance_element_at(const TileCoordsXYZ& entranceT
     return nullptr;
 }
 
-EntranceElement* map_get_ride_exit_element_at(const TileCoordsXYZ& exitTileCoords, bool ghost)
+EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool ghost)
 {
+    auto exitTileCoords = TileCoordsXYZ{ exitCoords };
     TileElement* tileElement = map_get_first_element_at(exitTileCoords.x, exitTileCoords.y);
     if (tileElement != nullptr)
     {
