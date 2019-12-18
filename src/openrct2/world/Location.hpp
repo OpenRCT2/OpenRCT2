@@ -177,7 +177,7 @@ struct TileCoordsXY
         return *this;
     }
 
-    TileCoordsXY Rotate(int32_t direction)
+    TileCoordsXY Rotate(int32_t direction) const
     {
         TileCoordsXY rotatedCoords;
         switch (direction & 3)
@@ -283,7 +283,7 @@ struct TileCoordsXYZ
         return !(*this == other);
     }
 
-    CoordsXYZ ToCoordsXYZ()
+    CoordsXYZ ToCoordsXYZ() const
     {
         return { x * 32, y * 32, z * 8 };
     }
