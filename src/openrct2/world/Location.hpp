@@ -238,6 +238,11 @@ struct CoordsXYZ : public CoordsXY
     {
         return x == other.x && y == other.y && z == other.z;
     }
+
+    CoordsXYZ ToTileStart() const
+    {
+        return { floor2(x, 32), floor2(y, 32), z };
+    }
 };
 
 struct TileCoordsXYZ

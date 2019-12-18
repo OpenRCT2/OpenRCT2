@@ -7432,8 +7432,8 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
         trackBlock++;
     }
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
-    auto wallCoords = CoordsXYZ{ CoordsXY{ vehicle->x, vehicle->y }.ToTileStart(),
-                                 vehicle->track_z - trackBlock->z + trackCoordinates->z_end };
+    auto wallCoords = CoordsXYZ{ vehicle->x, vehicle->y, vehicle->track_z - trackBlock->z + trackCoordinates->z_end }
+                          .ToTileStart();
     int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
 
     auto tileElement = map_get_wall_element_at(CoordsXYZD{ wallCoords, static_cast<Direction>(direction) });
