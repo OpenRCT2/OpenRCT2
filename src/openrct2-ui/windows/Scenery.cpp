@@ -751,7 +751,7 @@ static void window_scenery_update(rct_window* w)
     rct_window* other = window_find_from_point(state->position);
     if (other == w)
     {
-        ScreenCoordsXY window = state->position - ScreenCoordsXY{ w->x + 26, w->y };
+        ScreenCoordsXY window = state->position - ScreenCoordsXY{ w->x - 26, w->y };
 
         if (window.y < 44 || window.x <= w->width)
         {
