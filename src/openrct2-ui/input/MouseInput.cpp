@@ -144,8 +144,7 @@ static int32_t game_get_next_input(ScreenCoordsXY& screenCoords)
     if (input == nullptr)
     {
         const CursorState* cursorState = context_get_cursor_state();
-        screenCoords.x = cursorState->x;
-        screenCoords.y = cursorState->y;
+        screenCoords = cursorState->position;
         return 0;
     }
     else
@@ -1569,15 +1568,15 @@ void game_handle_edge_scroll()
 
     // Scroll left / right
     const CursorState* cursorState = context_get_cursor_state();
-    if (cursorState->x == 0)
+    if (cursorState->position.x == 0)
         scrollX = -1;
-    else if (cursorState->x >= context_get_width() - 1)
+    else if (cursorState->position.x >= context_get_width() - 1)
         scrollX = 1;
 
     // Scroll up / down
-    if (cursorState->y == 0)
+    if (cursorState->position.y == 0)
         scrollY = -1;
-    else if (cursorState->y >= context_get_height() - 1)
+    else if (cursorState->position.y >= context_get_height() - 1)
         scrollY = 1;
 
     input_scroll_viewport(ScreenCoordsXY(scrollX, scrollY));

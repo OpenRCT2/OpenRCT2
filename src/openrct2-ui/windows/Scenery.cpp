@@ -748,15 +748,14 @@ static void window_scenery_periodic_update(rct_window* w)
 static void window_scenery_update(rct_window* w)
 {
     const CursorState* state = context_get_cursor_state();
-    rct_window* other = window_find_from_point(ScreenCoordsXY(state->x, state->y));
+    rct_window* other = window_find_from_point(state->position);
     if (other == w)
     {
-        int32_t window_x = state->x - w->x + 26;
-        int32_t window_y = state->y - w->y;
+        ScreenCoordsXY window = state->position - ScreenCoordsXY{ w->x - 26, w->y };
 
-        if (window_y < 44 || window_x <= w->width)
+        if (window.y < 44 || window.x <= w->width)
         {
-            rct_widgetindex widgetIndex = window_find_widget_from_point(w, ScreenCoordsXY(state->x, state->y));
+            rct_widgetindex widgetIndex = window_find_widget_from_point(w, state->position);
             if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL)
             {
                 w->scenery.hover_counter++;

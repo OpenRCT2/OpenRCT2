@@ -59,8 +59,7 @@ static rct_window_event_list window_map_tooltip_events = {
 
 #define MAP_TOOLTIP_ARGS
 
-static int32_t _lastCursorX;
-static int32_t _lastCursorY;
+static ScreenCoordsXY _lastCursor;
 static int32_t _cursorHoldDuration;
 
 static void window_map_tooltip_open();
@@ -78,19 +77,16 @@ void window_map_tooltip_update_visibility()
         return;
     }
 
-    int32_t cursorX, cursorY;
-
     const CursorState* state = context_get_cursor_state();
-    cursorX = state->x;
-    cursorY = state->y;
+    auto cursor = state->position;
+    auto cursorChange = cursor - _lastCursor;
 
     // Check for cursor movement
     _cursorHoldDuration++;
-    if (abs(cursorX - _lastCursorX) > 5 || abs(cursorY - _lastCursorY) > 5 || (input_test_flag(INPUT_FLAG_5)))
+    if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (input_test_flag(INPUT_FLAG_5)))
         _cursorHoldDuration = 0;
 
-    _lastCursorX = cursorX;
-    _lastCursorY = cursorY;
+    _lastCursor = cursor;
 
     // Show or hide tooltip
     rct_string_id stringId;
@@ -116,27 +112,25 @@ void window_map_tooltip_update_visibility()
 static void window_map_tooltip_open()
 {
     rct_window* w;
-    int32_t x, y, width, height;
 
-    width = 200;
-    height = 44;
+    constexpr int32_t width = 200;
+    constexpr int32_t height = 44;
     const CursorState* state = context_get_cursor_state();
-    x = state->x - (width / 2);
-    y = state->y + 15;
+    ScreenCoordsXY pos = { state->position.x - (width / 2), state->position.y + 15 };
 
     w = window_find_by_class(WC_MAP_TOOLTIP);
     if (w == nullptr)
     {
         w = window_create(
-            ScreenCoordsXY(x, y), width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP,
+            pos, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
         w->widgets = window_map_tooltip_widgets;
     }
     else
     {
         w->Invalidate();
-        w->x = x;
-        w->y = y;
+        w->x = pos.x;
+        w->y = pos.y;
         w->width = width;
         w->height = height;
     }

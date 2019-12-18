@@ -3841,7 +3841,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
                     || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND || errorText == STR_TOO_HIGH_FOR_SUPPORTS
                     || zAttempts == 0 || z < 0)
                 {
-                    audio_play_sound(SoundId::Error, 0, state->x);
+                    audio_play_sound(SoundId::Error, 0, state->position.x);
                     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
                     if (w != nullptr)
                     {
@@ -3914,7 +3914,7 @@ void ride_construction_tooldown_construct(ScreenCoordsXY screenCoords)
                 _currentTrackAlternative = saveCurrentTrackAlternative;
                 _currentTrackLiftHill = saveCurrentTrackLiftHill;
 
-                audio_play_sound(SoundId::Error, 0, state->x);
+                audio_play_sound(SoundId::Error, 0, state->position.x);
                 break;
             }
             else if (zAttempts >= 0)

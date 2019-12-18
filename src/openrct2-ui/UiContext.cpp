@@ -367,8 +367,8 @@ public:
                     }
                     break;
                 case SDL_MOUSEMOTION:
-                    _cursorState.x = (int32_t)(e.motion.x / gConfigGeneral.window_scale);
-                    _cursorState.y = (int32_t)(e.motion.y / gConfigGeneral.window_scale);
+                    _cursorState.position = { static_cast<int32_t>(e.motion.x / gConfigGeneral.window_scale),
+                                              static_cast<int32_t>(e.motion.y / gConfigGeneral.window_scale) };
                     break;
                 case SDL_MOUSEWHEEL:
                     if (_inGameConsole.IsOpen())
@@ -435,8 +435,8 @@ public:
                 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
                 case SDL_FINGERMOTION:
-                    _cursorState.x = (int32_t)(e.tfinger.x * _width);
-                    _cursorState.y = (int32_t)(e.tfinger.y * _height);
+                    _cursorState.position = { static_cast<int32_t>(e.tfinger.x * _width),
+                                              static_cast<int32_t>(e.tfinger.y * _height) };
                     break;
                 case SDL_FINGERDOWN:
                 {
