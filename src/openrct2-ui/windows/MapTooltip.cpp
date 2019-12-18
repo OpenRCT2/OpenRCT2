@@ -79,10 +79,11 @@ void window_map_tooltip_update_visibility()
 
     const CursorState* state = context_get_cursor_state();
     auto cursor = state->position;
+    auto cursorChange = cursor - _lastCursor;
 
     // Check for cursor movement
     _cursorHoldDuration++;
-    if (abs(cursor.x - _lastCursor.x) > 5 || abs(cursor.y - _lastCursor.y) > 5 || (input_test_flag(INPUT_FLAG_5)))
+    if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (input_test_flag(INPUT_FLAG_5)))
         _cursorHoldDuration = 0;
 
     _lastCursor = cursor;

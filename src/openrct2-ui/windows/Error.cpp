@@ -75,7 +75,7 @@ static uint16_t _window_error_num_lines;
 rct_window* window_error_open(rct_string_id title, rct_string_id message)
 {
     utf8* dst;
-    int32_t numLines, fontHeight, x, y, width, height, maxY;
+    int32_t numLines, fontHeight, width, height, maxY;
     rct_window* w;
 
     window_close_by_class(WC_ERROR);
@@ -126,20 +126,17 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message)
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
     const CursorState* state = context_get_cursor_state();
-    x = state->position.x - (width / 2);
-    x = std::clamp(x, 0, screenWidth);
-
-    y = state->position.y + 26;
-    y = std::max(22, y);
+    ScreenCoordsXY windowPosition = state->position - ScreenCoordsXY(width / 2, -26);
+    windowPosition.x = std::clamp(windowPosition.x, 0, screenWidth);
+    windowPosition.y = std::max(22, windowPosition.y);
     maxY = screenHeight - height;
-    if (y > maxY)
+    if (windowPosition.y > maxY)
     {
-        y = y - height - 40;
-        y = std::min(y, maxY);
+        windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
     }
 
     w = window_create(
-        ScreenCoordsXY(x, y), width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+        windowPosition, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     w->widgets = window_error_widgets;
     w->error.var_480 = 0;
     if (!gDisableErrorWindowSound)
