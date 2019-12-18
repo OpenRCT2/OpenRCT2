@@ -146,7 +146,7 @@ BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_
 SurfaceElement* map_get_surface_element_at(int32_t x, int32_t y);
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords);
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc);
-WallElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
+WallElement* map_get_wall_element_at(CoordsXYZD wallCoords);
 SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
