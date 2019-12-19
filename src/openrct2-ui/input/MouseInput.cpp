@@ -483,13 +483,11 @@ static void input_window_resize_continue(rct_window* w, ScreenCoordsXY screenCoo
 {
     if (screenCoords.y < (int32_t)context_get_height() - 2)
     {
-        int32_t dx, dy, targetWidth, targetHeight;
-        dx = screenCoords.x - gInputDragLast.x;
-        dy = screenCoords.y - gInputDragLast.y;
-        targetWidth = _originalWindowWidth + dx;
-        targetHeight = _originalWindowHeight + dy;
+        auto differentialCoords = screenCoords - gInputDragLast;
+        int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w->width;
+        int32_t targetHeight = _originalWindowHeight + differentialCoords.y - w->height;
 
-        window_resize(w, targetWidth - w->width, targetHeight - w->height);
+        window_resize(w, targetWidth, targetHeight);
     }
 }
 
@@ -521,15 +519,13 @@ static void input_viewport_drag_begin(rct_window* w)
 
 static void input_viewport_drag_continue()
 {
-    int32_t dx, dy;
     rct_window* w;
     rct_viewport* viewport;
 
     auto newDragCoords = context_get_cursor_position();
     const CursorState* cursorState = context_get_cursor_state();
 
-    dx = newDragCoords.x - gInputDragLast.x;
-    dy = newDragCoords.y - gInputDragLast.y;
+    auto differentialCoords = newDragCoords - gInputDragLast;
     w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
 
     // #3294: Window can be closed during a drag session, so just finish
@@ -547,7 +543,7 @@ static void input_viewport_drag_continue()
         context_show_cursor();
         _inputState = INPUT_STATE_RESET;
     }
-    else if (dx != 0 || dy != 0)
+    else if (differentialCoords.x != 0 || differentialCoords.y != 0)
     {
         if (!(w->flags & WF_NO_SCROLLING))
         {
@@ -557,17 +553,17 @@ static void input_viewport_drag_continue()
             // As the user moved the mouse, don't interpret it as right click in any case.
             _ticksSinceDragStart = 1000;
 
-            dx *= 1 << (viewport->zoom + 1);
-            dy *= 1 << (viewport->zoom + 1);
+            differentialCoords.x *= 1 << (viewport->zoom + 1);
+            differentialCoords.y *= 1 << (viewport->zoom + 1);
             if (gConfigGeneral.invert_viewport_drag)
             {
-                w->saved_view_x -= dx;
-                w->saved_view_y -= dy;
+                w->saved_view_x -= differentialCoords.x;
+                w->saved_view_y -= differentialCoords.y;
             }
             else
             {
-                w->saved_view_x += dx;
-                w->saved_view_y += dy;
+                w->saved_view_x += differentialCoords.x;
+                w->saved_view_y += differentialCoords.y;
             }
         }
     }
