@@ -484,7 +484,7 @@ static void input_window_resize_continue(rct_window* w, ScreenCoordsXY screenCoo
 {
     if (screenCoords.y < (int32_t)context_get_height() - 2)
     {
-        auto differentialCoords = ScreenCoordsXY{ screenCoords.x - gInputDragLast.x, screenCoords.y - gInputDragLast.y };
+        auto differentialCoords = screenCoords - gInputDragLast;
         int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w->width;
         int32_t targetHeight = _originalWindowHeight + differentialCoords.y - w->height;
 
@@ -526,7 +526,7 @@ static void input_viewport_drag_continue()
     auto newDragCoords = context_get_cursor_position();
     const CursorState* cursorState = context_get_cursor_state();
 
-    auto differentialCoords = ScreenCoordsXY{ newDragCoords.x - gInputDragLast.x, newDragCoords.y - gInputDragLast.y };
+    auto differentialCoords = newDragCoords - gInputDragLast;
     w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
 
     // #3294: Window can be closed during a drag session, so just finish
