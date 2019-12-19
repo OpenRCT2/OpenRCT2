@@ -7677,8 +7677,7 @@ void determine_ride_entrance_and_exit_locations()
             // Skip if the station has no entrance
             if (!entranceLoc.isNull())
             {
-                const EntranceElement* entranceElement = map_get_ride_entrance_element_at(
-                    { entranceLoc.x << 5, entranceLoc.y << 5, entranceLoc.z << 3 }, false);
+                const EntranceElement* entranceElement = map_get_ride_entrance_element_at(entranceLoc.ToCoordsXYZD(), false);
 
                 if (entranceElement == nullptr || entranceElement->GetRideIndex() != ride.id
                     || entranceElement->GetStationIndex() != stationIndex)
@@ -7693,8 +7692,7 @@ void determine_ride_entrance_and_exit_locations()
 
             if (!exitLoc.isNull())
             {
-                const EntranceElement* entranceElement = map_get_ride_exit_element_at(
-                    { exitLoc.x << 5, exitLoc.y << 5, exitLoc.z << 3 }, false);
+                const EntranceElement* entranceElement = map_get_ride_exit_element_at(exitLoc.ToCoordsXYZD(), false);
 
                 if (entranceElement == nullptr || entranceElement->GetRideIndex() != ride.id
                     || entranceElement->GetStationIndex() != stationIndex)
