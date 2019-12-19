@@ -19,6 +19,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/LandSetRightsAction.hpp>
+#include <openrct2/actions/PlaceParkEntranceAction.hpp>
+#include <openrct2/actions/PlacePeepSpawnAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
@@ -1317,11 +1319,11 @@ static void window_map_place_park_entrance_tool_down(ScreenCoordsXY screenCoords
     CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
     if (parkEntrancePosition.x != LOCATION_NULL)
     {
-        money32 price = place_park_entrance(
-            parkEntrancePosition.x, parkEntrancePosition.y, parkEntrancePosition.z / 16, parkEntrancePosition.direction);
-        if (price != MONEY32_UNDEFINED)
+        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition);
+        auto result = GameActions::Execute(&gameAction);
+        if (result->Error == GA_ERROR::OK)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z });
+            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
         }
     }
 }
@@ -1342,10 +1344,11 @@ static void window_map_set_peep_spawn_tool_down(ScreenCoordsXY screenCoords)
 
     mapZ = tileElement->base_height * 8;
 
-    bool result = place_peep_spawn({ mapX, mapY, mapZ, (uint8_t)direction });
-    if (result)
+    auto gameAction = PlacePeepSpawnAction({ mapX, mapY, mapZ, static_cast<Direction>(direction) });
+    auto result = GameActions::Execute(&gameAction);
+    if (result->Error == GA_ERROR::OK)
     {
-        audio_play_sound_at_location(SoundId::PlaceItem, { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z });
+        audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
     }
 }
 

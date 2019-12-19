@@ -3278,12 +3278,12 @@ void network_set_player_last_action(uint32_t index, int32_t command)
     gNetwork.player_list[index]->LastActionTime = platform_get_ticks();
 }
 
-LocationXYZ16 network_get_player_last_action_coord(uint32_t index)
+CoordsXYZ network_get_player_last_action_coord(uint32_t index)
 {
     return gNetwork.player_list[index]->LastActionCoord;
 }
 
-void network_set_player_last_action_coord(uint32_t index, LocationXYZ16 coord)
+void network_set_player_last_action_coord(uint32_t index, CoordsXYZ coord)
 {
     if (index < gNetwork.player_list.size())
     {
@@ -3937,11 +3937,11 @@ int32_t network_get_player_last_action(uint32_t index, int32_t time)
 void network_set_player_last_action(uint32_t index, int32_t command)
 {
 }
-LocationXYZ16 network_get_player_last_action_coord(uint32_t index)
+CoordsXYZ network_get_player_last_action_coord(uint32_t index)
 {
     return { 0, 0, 0 };
 }
-void network_set_player_last_action_coord(uint32_t index, LocationXYZ16 coord)
+void network_set_player_last_action_coord(uint32_t index, CoordsXYZ coord)
 {
 }
 uint32_t network_get_player_commands_ran(uint32_t index)

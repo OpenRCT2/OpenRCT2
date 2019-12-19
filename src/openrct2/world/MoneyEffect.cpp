@@ -75,11 +75,9 @@ void rct_money_effect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, 
  *
  *  rct2: 0x0069C5D0
  */
-void rct_money_effect::Create(money32 value)
+void rct_money_effect::Create(money32 value, CoordsXYZ loc)
 {
-    CoordsXYZ mapPosition = { gCommandPosition.x, gCommandPosition.y, gCommandPosition.z };
-
-    if (mapPosition.x == LOCATION_NULL)
+    if (loc.x == LOCATION_NULL)
     {
         // If game actions return no valid location of the action we can not use the screen
         // coordinates as every client will have different ones.
@@ -99,10 +97,10 @@ void rct_money_effect::Create(money32 value)
         if (!mapPositionXY)
             return;
 
-        mapPosition = { *mapPositionXY, tile_element_height(*mapPositionXY) };
+        loc = { *mapPositionXY, tile_element_height(*mapPositionXY) };
     }
-    mapPosition.z += 10;
-    CreateAt(-value, mapPosition.x, mapPosition.y, mapPosition.z, false);
+    loc.z += 10;
+    CreateAt(-value, loc.x, loc.y, loc.z, false);
 }
 
 /**

@@ -266,14 +266,6 @@ namespace GameActions
 
         auto result = action->Query();
 
-        // Only top level actions affect the command position.
-        if (topLevel)
-        {
-            gCommandPosition.x = result->Position.x;
-            gCommandPosition.y = result->Position.y;
-            gCommandPosition.z = result->Position.z;
-        }
-
         if (result->Error == GA_ERROR::OK)
         {
             if (!finance_check_affordability(result->Cost, action->GetFlags()))
@@ -417,15 +409,11 @@ namespace GameActions
             if (!topLevel)
                 return result;
 
-            gCommandPosition.x = result->Position.x;
-            gCommandPosition.y = result->Position.y;
-            gCommandPosition.z = result->Position.z;
-
             // Update money balance
             if (result->Error == GA_ERROR::OK && finance_check_money_required(flags) && result->Cost != 0)
             {
                 finance_payment(result->Cost, result->ExpenditureType);
-                rct_money_effect::Create(result->Cost);
+                rct_money_effect::Create(result->Cost, result->Position);
             }
 
             if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && result->Error == GA_ERROR::OK)
@@ -445,7 +433,7 @@ namespace GameActions
 
                     if (result->Position.x != LOCATION_NULL)
                     {
-                        network_set_player_last_action_coord(playerId, gCommandPosition);
+                        network_set_player_last_action_coord(playerId, result->Position);
                     }
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)
