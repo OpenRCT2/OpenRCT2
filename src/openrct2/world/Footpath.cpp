@@ -1160,7 +1160,7 @@ void footpath_chain_ride_queue(
             lastPathElement->AsPath()->SetHasQueueBanner(true);
             lastPathElement->AsPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign direction
 
-            map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, lastPathX, lastPathY, lastPathElement->base_height);
+            map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, { lastPathX, lastPathY, lastPathElement->base_height * 8 });
         }
     }
 }

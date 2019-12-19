@@ -185,7 +185,7 @@ public:
 
             if (index == 0)
             {
-                map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, entranceLoc.x, entranceLoc.y, zLow);
+                map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, { entranceLoc, zLow * 8 });
             }
         }
 
