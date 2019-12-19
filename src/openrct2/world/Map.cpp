@@ -1779,9 +1779,10 @@ LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t
     return nullptr;
 }
 
-EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
+EntranceElement* map_get_park_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost)
 {
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    auto entranceTileCoords = TileCoordsXYZ(entranceCoords);
+    TileElement* tileElement = map_get_first_element_at(entranceTileCoords.x, entranceTileCoords.y);
     if (tileElement != nullptr)
     {
         do
@@ -1789,7 +1790,7 @@ EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
-            if (tileElement->base_height != z)
+            if (tileElement->base_height != entranceTileCoords.z)
                 continue;
 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -1804,9 +1805,10 @@ EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t 
     return nullptr;
 }
 
-EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
+EntranceElement* map_get_ride_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost)
 {
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    auto entranceTileCoords = TileCoordsXYZ{ entranceCoords };
+    TileElement* tileElement = map_get_first_element_at(entranceTileCoords.x, entranceTileCoords.y);
     if (tileElement != nullptr)
     {
         do
@@ -1814,7 +1816,7 @@ EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t 
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
-            if (tileElement->base_height != z)
+            if (tileElement->base_height != entranceTileCoords.z)
                 continue;
 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -1829,9 +1831,10 @@ EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t 
     return nullptr;
 }
 
-EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
+EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool ghost)
 {
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    auto exitTileCoords = TileCoordsXYZ{ exitCoords };
+    TileElement* tileElement = map_get_first_element_at(exitTileCoords.x, exitTileCoords.y);
     if (tileElement != nullptr)
     {
         do
@@ -1839,7 +1842,7 @@ EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, b
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
-            if (tileElement->base_height != z)
+            if (tileElement->base_height != exitTileCoords.z)
                 continue;
 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)

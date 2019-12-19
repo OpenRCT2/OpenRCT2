@@ -79,13 +79,12 @@ public:
 
         int8_t zLow = _loc.z / 8;
         int8_t zHigh = zLow + 12;
-        LocationXY16 entranceLoc = { (int16_t)_loc.x, (int16_t)_loc.y };
+        CoordsXYZ entranceLoc = _loc;
         for (uint8_t index = 0; index < 3; index++)
         {
             if (index == 1)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].x;
-                entranceLoc.y += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].y;
+                entranceLoc += CoordsDirectionDelta[(_loc.direction - 1) & 0x3];
             }
             else if (index == 2)
             {
@@ -100,7 +99,7 @@ public:
             }
 
             // Check that entrance element does not already exist at this location
-            EntranceElement* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
+            EntranceElement* entranceElement = map_get_park_entrance_element_at(entranceLoc, false);
             if (entranceElement != nullptr)
             {
                 return std::make_unique<GameActionResult>(

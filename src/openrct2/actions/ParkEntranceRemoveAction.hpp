@@ -95,7 +95,7 @@ public:
 private:
     void ParkEntranceRemoveSegment(CoordsXYZ loc) const
     {
-        auto entranceElement = map_get_park_entrance_element_at(loc.x, loc.y, loc.z / 8, true);
+        auto entranceElement = map_get_park_entrance_element_at(loc, true);
         if (entranceElement == nullptr)
         {
             return;

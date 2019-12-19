@@ -2970,10 +2970,9 @@ private:
                 ride->stations[0].Entrance = entranceCoords;
                 ride->stations[0].Exit = exitCoords;
 
-                auto entranceElement = map_get_ride_exit_element_at(
-                    entranceCoords.x * 32, entranceCoords.y * 32, entranceCoords.z, false);
+                auto entranceElement = map_get_ride_exit_element_at(entranceCoords.ToCoordsXYZD(), false);
                 entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
-                auto exitElement = map_get_ride_entrance_element_at(exitCoords.x * 32, exitCoords.y * 32, exitCoords.z, false);
+                auto exitElement = map_get_ride_entrance_element_at(exitCoords.ToCoordsXYZD(), false);
                 exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
                 // Trigger footpath update

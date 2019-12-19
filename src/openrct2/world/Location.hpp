@@ -395,6 +395,11 @@ struct TileCoordsXYZD
     {
         return x == COORDS_NULL;
     };
+
+    CoordsXYZD ToCoordsXYZD() const
+    {
+        return { x * 32, y * 32, z * 8, direction };
+    }
 };
 
 /**
