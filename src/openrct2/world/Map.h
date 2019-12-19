@@ -125,8 +125,6 @@ extern bool gClearFootpath;
 extern uint16_t gLandRemainingOwnershipSales;
 extern uint16_t gLandRemainingConstructionSales;
 
-extern LocationXYZ16 gCommandPosition;
-
 extern bool gMapLandRightsUpdateSuccess;
 
 constexpr auto SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT = 0x20;
@@ -249,7 +247,5 @@ uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t 
 
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8_t ownership);
-
-bool place_peep_spawn(CoordsXYZD location);
 
 #endif

@@ -43,7 +43,6 @@ extern uint8_t gRideEntranceExitGhostStationIndex;
 
 void park_entrance_remove_ghost();
 money32 park_entrance_place_ghost(int32_t x, int32_t y, int32_t z, int32_t direction);
-money32 place_park_entrance(int16_t x, int16_t y, int16_t z, uint8_t direction);
 
 void reset_park_entrance();
 void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElement);

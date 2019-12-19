@@ -105,8 +105,6 @@ bool gClearFootpath;
 uint16_t gLandRemainingOwnershipSales;
 uint16_t gLandRemainingConstructionSales;
 
-LocationXYZ16 gCommandPosition;
-
 bool gMapLandRightsUpdateSuccess;
 
 static void clear_elements_at(const CoordsXY& loc);

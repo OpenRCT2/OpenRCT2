@@ -100,8 +100,6 @@ public:
         }
 
         auto z = ride->stations[_stationNum].Height * 8;
-        gCommandPosition.z = z;
-
         if (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
@@ -129,7 +127,7 @@ public:
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height(_loc);
+        res->Position.z = z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         return res;
     }
@@ -169,8 +167,6 @@ public:
         }
 
         auto z = ride->stations[_stationNum].Height * 8;
-        gCommandPosition.z = z;
-
         if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             footpath_remove_litter(_loc.x, _loc.y, z);
@@ -189,7 +185,7 @@ public:
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
-        res->Position.z = tile_element_height(_loc);
+        res->Position.z = z;
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 
         TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, z / 8 }, 0b1111);
