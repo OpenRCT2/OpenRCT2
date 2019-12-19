@@ -20,13 +20,13 @@
 #endif
 
 #if defined(__linux__) && !defined(__ANDROID__)
-#define ftello ftello64
-#define fseeko fseeko64
+#    define ftello ftello64
+#    define fseeko fseeko64
 #endif
 
 #ifdef _MSC_VER
-#define ftello _ftelli64
-#define fseeko _fseeki64
+#    define ftello _ftelli64
+#    define fseeko _fseeki64
 #endif
 
 enum
