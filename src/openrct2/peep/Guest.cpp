@@ -5412,7 +5412,7 @@ void Guest::UpdateWalking()
 
     if (GetNextIsSurface())
     {
-        auto surfaceElement = map_get_surface_element_at({ next_x, next_y });
+        auto surfaceElement = map_get_surface_element_at(CoordsXY{ next_x, next_y });
 
         if (surfaceElement != nullptr)
         {
@@ -6435,7 +6435,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 {
     TileElement* tileElement;
 
-    auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
+    auto surfaceElement = map_get_surface_element_at(CoordsXY{ peep->next_x, peep->next_y });
 
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
@@ -6474,7 +6474,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at({ x, y });
+    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
 
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
     if (tileElement == nullptr)
@@ -6590,7 +6590,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at({ x, y });
+    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
 
     // TODO: extract loop A
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -6707,7 +6707,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
         return false;
     }
 
-    surfaceElement = map_get_surface_element_at({ x, y });
+    surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
 
     // TODO: extract loop A
     tileElement = reinterpret_cast<TileElement*>(surfaceElement);

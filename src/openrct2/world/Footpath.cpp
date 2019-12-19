@@ -1231,7 +1231,7 @@ void footpath_update_queue_chains()
  */
 static void footpath_fix_ownership(int32_t x, int32_t y)
 {
-    const auto* surfaceElement = map_get_surface_element_at({ x, y });
+    const auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
     uint16_t ownership;
 
     // Unlikely to be NULL unless deliberate.

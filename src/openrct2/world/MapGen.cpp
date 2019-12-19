@@ -116,7 +116,7 @@ void mapgen_generate_blank(mapgen_settings* settings)
     {
         for (x = 1; x < settings->mapSize - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(x, y);
+            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceStyle(settings->floor);
@@ -167,7 +167,7 @@ void mapgen_generate(mapgen_settings* settings)
     {
         for (x = 1; x < mapSize - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(x, y);
+            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceStyle(floorTexture);
@@ -216,7 +216,7 @@ void mapgen_generate(mapgen_settings* settings)
     {
         for (x = 1; x < mapSize - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(x, y);
+            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel + 6)
                 surfaceElement->SetSurfaceStyle(beachTexture);
@@ -304,16 +304,16 @@ static void mapgen_place_trees()
         }
     }
 
-    CoordsXY tmp, pos;
+    TileCoordsXY tmp, pos;
 
-    std::vector<CoordsXY> availablePositions;
+    std::vector<TileCoordsXY> availablePositions;
 
     // Create list of available tiles
     for (int32_t y = 1; y < gMapSize - 1; y++)
     {
         for (int32_t x = 1; x < gMapSize - 1; x++)
         {
-            auto* surfaceElement = map_get_surface_element_at(x, y);
+            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
 
@@ -349,7 +349,7 @@ static void mapgen_place_trees()
         pos = availablePositions[i];
 
         int32_t type = -1;
-        auto* surfaceElement = map_get_surface_element_at(pos.x, pos.y);
+        auto* surfaceElement = map_get_surface_element_at(pos.ToCoordsXY());
         if (surfaceElement != nullptr)
             continue;
         switch (surfaceElement->GetSurfaceStyle())
@@ -399,7 +399,7 @@ static void mapgen_set_water_level(int32_t waterLevel)
     {
         for (x = 1; x < mapSize - 1; x++)
         {
-            auto surfaceElement = map_get_surface_element_at(x, y);
+            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel)
                 surfaceElement->SetWaterHeight(waterLevel / 2);
         }
@@ -461,7 +461,7 @@ static void mapgen_set_height()
 
             uint8_t baseHeight = (q00 + q01 + q10 + q11) / 4;
 
-            auto surfaceElement = map_get_surface_element_at(x, y);
+            auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
             surfaceElement->base_height = std::max(2, baseHeight * 2);
@@ -822,7 +822,8 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         for (uint32_t x = 0; x < _heightMapData.width; x++)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
-            auto* const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
+            auto* const surfaceElement = map_get_surface_element_at(
+                TileCoordsXY{ static_cast<int32_t>(y + 1), static_cast<int32_t>(x + 1) }.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
 

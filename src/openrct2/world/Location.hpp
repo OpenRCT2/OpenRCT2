@@ -177,6 +177,11 @@ struct TileCoordsXY
         return *this;
     }
 
+    CoordsXY ToCoordsXY() const
+    {
+        return { x * 32, y * 32 };
+    }
+
     TileCoordsXY Rotate(int32_t direction) const
     {
         TileCoordsXY rotatedCoords;

@@ -30,7 +30,7 @@
 bool gPaintWidePathsAsGhost = false;
 
 // clang-format off
-const uint8_t PathSlopeToLandSlope[] = 
+const uint8_t PathSlopeToLandSlope[] =
 {
     TILE_ELEMENT_SLOPE_SW_SIDE_UP,
     TILE_ELEMENT_SLOPE_NW_SIDE_UP,
@@ -858,7 +858,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     int16_t x = session->MapPosition.x, y = session->MapPosition.y;
 
-    auto surface = map_get_surface_element_at({ session->MapPosition.x, session->MapPosition.y });
+    auto surface = map_get_surface_element_at(CoordsXY{ session->MapPosition.x, session->MapPosition.y });
 
     uint16_t bl = height / 8;
     if (surface == nullptr)

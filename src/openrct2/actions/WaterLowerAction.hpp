@@ -78,7 +78,7 @@ private:
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
             {
-                auto* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+                auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                     continue;
 
@@ -127,7 +127,7 @@ private:
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
             {
-                auto* surfaceElement = map_get_surface_element_at({ x, y });
+                auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                     continue;
 

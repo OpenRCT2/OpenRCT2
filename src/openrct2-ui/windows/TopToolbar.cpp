@@ -1360,7 +1360,7 @@ static void sub_6E1F34(
                     // If SHIFT pressed
                     if (gSceneryShiftPressed)
                     {
-                        auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                        auto* surfaceElement = map_get_surface_element_at(CoordsXY{ *grid_x, *grid_y });
 
                         if (surfaceElement == nullptr)
                         {
@@ -1449,7 +1449,7 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    auto surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto surfaceElement = map_get_surface_element_at(CoordsXY{ *grid_x, *grid_y });
 
                     if (surfaceElement == nullptr)
                     {
@@ -1561,7 +1561,7 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto* surfaceElement = map_get_surface_element_at(CoordsXY{ *grid_x, *grid_y });
 
                     if (surfaceElement == nullptr)
                     {
@@ -1629,7 +1629,7 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    auto* surfaceElement = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    auto* surfaceElement = map_get_surface_element_at(CoordsXY{ *grid_x, *grid_y });
 
                     if (surfaceElement == nullptr)
                     {

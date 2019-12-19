@@ -516,7 +516,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
 {
     if (!(peep->GetNextIsSurface()))
     {
-        auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
+        auto surfaceElement = map_get_surface_element_at(CoordsXY{ peep->next_x, peep->next_y });
         if (surfaceElement == nullptr)
             return INVALID_DIRECTION;
 
@@ -1208,7 +1208,7 @@ void Staff::UpdateMowing()
         if (var_37 != 7)
             continue;
 
-        auto surfaceElement = map_get_surface_element_at(next_x / 32, next_y / 32);
+        auto surfaceElement = map_get_surface_element_at(CoordsXY{ next_x, next_y });
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
@@ -1777,7 +1777,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
     if (!(peep->GetNextIsSurface()))
         return 0;
 
-    auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
+    auto surfaceElement = map_get_surface_element_at(CoordsXY{ peep->next_x, peep->next_y });
     if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
     {
         if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
@@ -1915,7 +1915,7 @@ void Staff::UpdatePatrolling()
 
     if (GetNextIsSurface())
     {
-        auto surfaceElement = map_get_surface_element_at({ next_x, next_y });
+        auto surfaceElement = map_get_surface_element_at(CoordsXY{ next_x, next_y });
 
         if (surfaceElement != nullptr)
         {

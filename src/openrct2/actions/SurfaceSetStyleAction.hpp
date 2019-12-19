@@ -124,7 +124,7 @@ public:
                         continue;
                 }
 
-                auto surfaceElement = map_get_surface_element_at({ x, y });
+                auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                 {
                     continue;
@@ -195,7 +195,7 @@ public:
                         continue;
                 }
 
-                auto surfaceElement = map_get_surface_element_at({ x, y });
+                auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                 {
                     continue;

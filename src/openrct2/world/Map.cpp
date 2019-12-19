@@ -203,9 +203,10 @@ void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements)
     gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
 }
 
-SurfaceElement* map_get_surface_element_at(int32_t x, int32_t y)
+SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
 {
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    auto tileCoords = TileCoordsXY{ coords };
+    TileElement* tileElement = map_get_first_element_at(tileCoords.x, tileCoords.y);
 
     if (tileElement == nullptr)
         return nullptr;
@@ -220,11 +221,6 @@ SurfaceElement* map_get_surface_element_at(int32_t x, int32_t y)
     }
 
     return tileElement->AsSurface();
-}
-
-SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
-{
-    return map_get_surface_element_at(coords.x / 32, coords.y / 32);
 }
 
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
@@ -327,7 +323,7 @@ void map_count_remaining_land_rights()
     {
         for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
         {
-            auto* surfaceElement = map_get_surface_element_at(x, y);
+            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             // Surface elements are sometimes hacked out to save some space for other map elements
             if (surfaceElement == nullptr)
             {
@@ -874,7 +870,7 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
     {
         for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += 32)
         {
-            auto* surfaceElement = map_get_surface_element_at({ xi, yi });
+            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr && min_height > surfaceElement->base_height)
             {
                 min_height = surfaceElement->base_height;
@@ -895,7 +891,7 @@ uint8_t map_get_highest_land_height(const MapRange& range)
     {
         for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += 32)
         {
-            auto* surfaceElement = map_get_surface_element_at({ xi, yi });
+            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
             {
                 uint8_t base_height = surfaceElement->base_height;
@@ -1474,7 +1470,7 @@ void map_update_tiles()
             interleaved_xy >>= 1;
         }
 
-        auto* surfaceElement = map_get_surface_element_at(x, y);
+        auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
         if (surfaceElement != nullptr)
         {
             surfaceElement->UpdateGrassLength({ x * 32, y * 32 });
@@ -1553,7 +1549,7 @@ void map_remove_out_of_range_elements()
             if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY)
             {
                 // Note this purposely does not use LandSetRightsAction as X Y coordinates are outside of normal range.
-                auto surfaceElement = map_get_surface_element_at({ x, y });
+                auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement != nullptr)
                 {
                     surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
@@ -1617,8 +1613,8 @@ void map_extend_boundary_surface()
     y = gMapSize - 2;
     for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
     {
-        existingTileElement = map_get_surface_element_at(x, y - 1);
-        newTileElement = map_get_surface_element_at(x, y);
+        existingTileElement = map_get_surface_element_at(TileCoordsXY{ x, y - 1 }.ToCoordsXY());
+        newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
         if (existingTileElement && newTileElement)
         {
@@ -1631,8 +1627,8 @@ void map_extend_boundary_surface()
     x = gMapSize - 2;
     for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        existingTileElement = map_get_surface_element_at(x - 1, y);
-        newTileElement = map_get_surface_element_at(x, y);
+        existingTileElement = map_get_surface_element_at(TileCoordsXY{ x - 1, y }.ToCoordsXY());
+        newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
         if (existingTileElement && newTileElement)
         {
@@ -2401,7 +2397,7 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
 {
     for (const TileCoordsXY* tile = tiles.begin(); tile != tiles.end(); ++tile)
     {
-        auto surfaceElement = map_get_surface_element_at((*tile).x, (*tile).y);
+        auto surfaceElement = map_get_surface_element_at(tile->ToCoordsXY());
         if (surfaceElement != nullptr)
         {
             surfaceElement->SetOwnership(ownership);
