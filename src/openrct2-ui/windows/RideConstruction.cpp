@@ -3711,7 +3711,7 @@ void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
     gMapSelectArrowDirection = direction_reverse(entranceOrExitCoords.direction);
     gMapSelectArrowPosition.x = entranceOrExitCoords.x;
     gMapSelectArrowPosition.y = entranceOrExitCoords.y;
-    gMapSelectArrowPosition.z = entranceOrExitCoords.z * 8;
+    gMapSelectArrowPosition.z = entranceOrExitCoords.z;
     map_invalidate_selection_rect();
 
     entranceOrExitCoords.direction = direction_reverse(gRideEntranceExitPlaceDirection);
