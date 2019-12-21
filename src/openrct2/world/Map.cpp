@@ -1852,9 +1852,10 @@ EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool 
     return nullptr;
 }
 
-SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant)
+SmallSceneryElement* map_get_small_scenery_element_at(CoordsXYZ sceneryCoords, int32_t type, uint8_t quadrant)
 {
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    auto sceneryTileCoords = TileCoordsXYZ{ sceneryCoords };
+    TileElement* tileElement = map_get_first_element_at(sceneryTileCoords.x, sceneryTileCoords.y);
     if (tileElement != nullptr)
     {
         do
@@ -1863,7 +1864,7 @@ SmallSceneryElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int3
                 continue;
             if (tileElement->AsSmallScenery()->GetSceneryQuadrant() != quadrant)
                 continue;
-            if (tileElement->base_height != z)
+            if (tileElement->base_height != sceneryTileCoords.z)
                 continue;
             if (tileElement->AsSmallScenery()->GetEntryIndex() != type)
                 continue;
