@@ -3257,7 +3257,7 @@ static void ride_entrance_exit_connected(Ride* ride)
 {
     for (int32_t i = 0; i < MAX_STATIONS; ++i)
     {
-        LocationXY8 station_start = ride->stations[i].Start;
+        auto station_start = ride->stations[i].Start;
         auto entrance = ride_get_entrance_location(ride, i);
         auto exit = ride_get_exit_location(ride, i);
 

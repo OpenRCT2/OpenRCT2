@@ -9282,16 +9282,14 @@ loc_6DCE62:
 
 loc_6DCE68:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
-    regs.al = vehicle->track_x >> 5;
-    regs.ah = vehicle->track_y >> 5;
-    regs.dl = vehicle->track_z >> 3;
+
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if ((uint16_t)regs.ax != ride->stations[i].Start.xy)
+        if (((vehicle->track_x >> 5) != ride->stations[i].Start.x) && ((vehicle->track_y >> 5) != ride->stations[i].Start.y))
         {
             continue;
         }
-        if ((uint16_t)regs.dl != ride->stations[i].Height)
+        if ((vehicle->track_z >> 3) != ride->stations[i].Height)
         {
             continue;
         }
