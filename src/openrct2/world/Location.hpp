@@ -15,10 +15,6 @@
 
 #define LOCATION_NULL ((int16_t)(uint16_t)0x8000)
 #define RCT_XY8_UNDEFINED 0xFFFF
-#define MakeXY16(x, y)                                                                                                         \
-    {                                                                                                                          \
-        (int16_t)(x), (int16_t)(y)                                                                                             \
-    }
 
 #pragma pack(push, 1)
 struct LocationXY8

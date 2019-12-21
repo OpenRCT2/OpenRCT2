@@ -1639,7 +1639,8 @@ static void map_window_set_pixels(rct_window* w)
     int32_t x = 0, y = 0, dx = 0, dy = 0;
 
     int32_t pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
-    LocationXY16 destinationPosition = MakeXY16(pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE);
+    LocationXY16 destinationPosition = { static_cast<int16_t>(pos % MAP_WINDOW_MAP_SIZE),
+                                         static_cast<int16_t>(pos / MAP_WINDOW_MAP_SIZE) };
     auto destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
     switch (get_current_rotation())
     {

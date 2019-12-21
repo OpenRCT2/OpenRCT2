@@ -783,7 +783,7 @@ static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_TERRAIN_LABEL, nullptr, textColour, w->x + 4, w->y + w->widgets[WIDX_FLOOR_TEXTURE].top + 1);
 
     // The practical map size is 2 lower than the technical map size
-    LocationXY16 mapSizeArgs = MakeXY16(_mapSize - 2, _mapSize - 2);
+    TileCoordsXY mapSizeArgs = { _mapSize - 2, _mapSize - 2 };
     gfx_draw_string_left(
         dpi, STR_RESOLUTION_X_BY_Y, &mapSizeArgs, w->colours[1], w->x + w->widgets[WIDX_MAP_SIZE].left + 1,
         w->y + w->widgets[WIDX_MAP_SIZE].top + 1);
@@ -1120,7 +1120,7 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->y + w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1);
 
     // The practical map size is 2 lower than the technical map size
-    LocationXY16 mapSizeArgs = MakeXY16(_mapSize - 2, _mapSize - 2);
+    TileCoordsXY mapSizeArgs = { _mapSize - 2, _mapSize - 2 };
     gfx_draw_string_left(
         dpi, STR_RESOLUTION_X_BY_Y, &mapSizeArgs, textColour, w->x + w->widgets[WIDX_SIMPLEX_MAP_SIZE].left + 1,
         w->y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
