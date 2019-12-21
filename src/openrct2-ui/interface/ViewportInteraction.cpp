@@ -534,7 +534,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, Coord
     {
         if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z)
         {
-            footpath_remove({ mapCoords, z }, GAME_COMMAND_FLAG_APPLY);
+            footpath_remove({ mapCoords, z * 8 }, GAME_COMMAND_FLAG_APPLY);
             break;
         }
     } while (!(tileElement2++)->IsLastForTile());

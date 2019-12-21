@@ -190,7 +190,7 @@ money32 footpath_provisional_set(int32_t type, CoordsXYZ footpathLoc, int32_t sl
         else
         {
             // Going up in the world!
-            virtual_floor_set_height(gFootpathProvisionalPosition.z + 2 * 8);
+            virtual_floor_set_height(gFootpathProvisionalPosition.z + (2 * 8));
         }
     }
 

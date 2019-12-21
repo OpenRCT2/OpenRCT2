@@ -1002,7 +1002,7 @@ static void window_footpath_construct()
             // already is lowered if we are building a downwards slope.
             if (gFootpathConstructSlope == 2)
             {
-                gFootpathConstructFromPosition.z += 2 * 8;
+                gFootpathConstructFromPosition.z += (2 * 8);
             }
         }
         window_footpath_set_enabled_and_pressed_widgets();
@@ -1228,7 +1228,7 @@ static void footpath_get_next_path_info(int32_t* type, CoordsXYZ& footpathLoc, i
         *slope = gFootpathConstructDirection | TILE_ELEMENT_SLOPE_S_CORNER_UP;
         if (gFootpathConstructSlope != 2)
         {
-            footpathLoc.z -= 2 * 8;
+            footpathLoc.z -= (2 * 8);
             *slope ^= TILE_ELEMENT_SLOPE_E_CORNER_UP;
         }
     }
