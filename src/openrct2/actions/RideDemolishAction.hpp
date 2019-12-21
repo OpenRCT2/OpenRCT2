@@ -239,7 +239,7 @@ private:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->Cost = refundPrice;
 
-        if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
+        if (!ride->overall_view.isNull())
         {
             int32_t x = (ride->overall_view.x * 32) + 16;
             int32_t y = (ride->overall_view.y * 32) + 16;
@@ -367,7 +367,7 @@ private:
 
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-        if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
+        if (!ride->overall_view.isNull())
         {
             int32_t x = (ride->overall_view.x * 32) + 16;
             int32_t y = (ride->overall_view.y * 32) + 16;

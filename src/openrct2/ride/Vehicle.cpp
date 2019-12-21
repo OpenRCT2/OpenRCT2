@@ -3074,7 +3074,7 @@ void vehicle_test_reset(rct_vehicle* vehicle)
     ride->previous_vertical_g = 0;
     ride->previous_lateral_g = 0;
     ride->testing_flags = 0;
-    ride->cur_test_track_location.xy = 0xFFFF;
+    ride->cur_test_track_location.setNull();
     ride->cur_test_track_z = 0xFF;
     ride->turn_count_default = 0;
     ride->turn_count_banked = 0;

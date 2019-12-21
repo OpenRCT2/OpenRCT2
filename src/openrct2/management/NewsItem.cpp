@@ -217,7 +217,7 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
     {
         case NEWS_ITEM_RIDE:
             ride = get_ride(subject);
-            if (ride == nullptr || ride->overall_view.xy == RCT_XY8_UNDEFINED)
+            if (ride == nullptr || ride->overall_view.isNull())
             {
                 *x = LOCATION_NULL;
                 break;

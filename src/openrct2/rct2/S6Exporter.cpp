@@ -534,13 +534,13 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
         TileCoordsXYZD entrance = ride_get_entrance_location(src, i);
         if (entrance.isNull())
-            dst->entrances[i].xy = RCT_XY8_UNDEFINED;
+            dst->entrances[i].setNull();
         else
             dst->entrances[i] = { (uint8_t)entrance.x, (uint8_t)entrance.y };
 
         TileCoordsXYZD exit = ride_get_exit_location(src, i);
         if (exit.isNull())
-            dst->exits[i].xy = RCT_XY8_UNDEFINED;
+            dst->exits[i].setNull();
         else
             dst->exits[i] = { (uint8_t)exit.x, (uint8_t)exit.y };
 
