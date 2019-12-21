@@ -799,7 +799,14 @@ private:
         dst->overall_view = src->overall_view;
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
-            dst->stations[i].Start = src->station_starts[i];
+            if (src->station_starts[i].isNull())
+            {
+                dst->stations[i].Start.setNull();
+            }
+            else
+            {
+                dst->stations[i].Start = { src->station_starts[i].x, src->station_starts[i].y };
+            }
             dst->stations[i].Height = src->station_height[i] / 2;
             dst->stations[i].Length = src->station_length[i];
             dst->stations[i].Depart = src->station_light[i];

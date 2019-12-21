@@ -2797,7 +2797,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
         return false;
 
     int32_t station = vehicle->current_station;
-    LocationXY8 location = ride->stations[station].Start;
+    auto location = ride->stations[station].Start;
     int32_t x = location.x * 32;
     int32_t y = location.y * 32;
     int32_t z = ride->stations[station].Height;
@@ -9283,16 +9283,15 @@ loc_6DCE62:
 
 loc_6DCE68:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
-    regs.al = vehicle->track_x >> 5;
-    regs.ah = vehicle->track_y >> 5;
-    regs.dl = vehicle->track_z >> 3;
+
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if ((uint16_t)regs.ax != ride->stations[i].Start.xy)
+        auto trackLoc = TileCoordsXY(CoordsXY{ vehicle->track_x, vehicle->track_y });
+        if (trackLoc != ride->stations[i].Start)
         {
             continue;
         }
-        if ((uint16_t)regs.dl != ride->stations[i].Height)
+        if ((vehicle->track_z >> 3) != ride->stations[i].Height)
         {
             continue;
         }

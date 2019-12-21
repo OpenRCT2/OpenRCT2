@@ -1911,7 +1911,7 @@ static void window_ride_init_viewport(rct_window* w)
             }
         } while (count >= 0);
 
-        LocationXY8 location = ride->stations[stationIndex].Start;
+        auto location = ride->stations[stationIndex].Start;
 
         focus.coordinate.x = location.x * 32;
         focus.coordinate.y = location.y * 32;

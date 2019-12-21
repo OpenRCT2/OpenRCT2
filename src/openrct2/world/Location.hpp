@@ -226,10 +226,25 @@ struct TileCoordsXY
         return rotatedCoords;
     }
 
+    bool operator==(const TileCoordsXY& other) const
+    {
+        return x == other.x && y == other.y;
+    }
+
+    bool operator!=(const TileCoordsXY& other) const
+    {
+        return !(*this == other);
+    }
+
     bool isNull() const
     {
         return x == COORDS_NULL;
     };
+
+    void setNull()
+    {
+        x = COORDS_NULL;
+    }
 };
 
 struct CoordsXYZ : public CoordsXY
