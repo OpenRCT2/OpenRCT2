@@ -5151,10 +5151,10 @@ static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
 
     do
     {
-        if (z / 8 < tileElement->base_height)
+        if (z < tileElement->GetBaseHeight())
             continue;
 
-        if (z / 8 >= tileElement->clearance_height)
+        if (z >= tileElement->GetClearanceHeight())
             continue;
 
         if (tileElement->GetOccupiedQuadrants() & quadrant)

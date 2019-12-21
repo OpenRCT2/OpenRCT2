@@ -416,7 +416,7 @@ int16_t tile_element_height(const CoordsXY& loc)
         return 16;
     }
 
-    uint16_t height = (surfaceElement->base_height << 3);
+    uint16_t height = surfaceElement->GetBaseHeight();
 
     uint32_t slope = surfaceElement->GetSlope();
     uint8_t extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height

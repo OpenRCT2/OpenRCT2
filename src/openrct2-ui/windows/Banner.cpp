@@ -149,7 +149,7 @@ rct_window* window_banner_open(rct_windownumber number)
         tile_element++;
     }
 
-    int32_t view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->GetBaseHeight();
     w->frame_no = view_z;
 
     view_x += 16;

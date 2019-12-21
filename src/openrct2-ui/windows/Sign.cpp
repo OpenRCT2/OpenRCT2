@@ -179,7 +179,7 @@ rct_window* window_sign_open(rct_windownumber number)
         tile_element++;
     }
 
-    int32_t view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->GetBaseHeight();
     w->frame_no = view_z;
 
     w->list_information_type = tile_element->AsLargeScenery()->GetPrimaryColour();
@@ -426,7 +426,7 @@ rct_window* window_sign_small_open(rct_windownumber number)
         tile_element++;
     }
 
-    int32_t view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->GetBaseHeight();
     w->frame_no = view_z;
 
     w->list_information_type = tile_element->AsWall()->GetPrimaryColour();

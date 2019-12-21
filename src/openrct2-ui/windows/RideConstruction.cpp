@@ -2432,8 +2432,8 @@ static void sub_6CBCE2(
         CoordsXY offsets = { trackBlock->x, trackBlock->y };
         CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
-        int32_t baseZ = (originZ + trackBlock->z) >> 3;
-        int32_t clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
+        int32_t baseZ = originZ + trackBlock->z;
+        int32_t clearanceZ = trackBlock->var_07 + RideData5[ride->type].clearance_height + baseZ + (4 * 8);
 
         auto centreTileCoords = TileCoordsXY{ coords };
         auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];
@@ -2459,8 +2459,8 @@ static void sub_6CBCE2(
         _tempTrackTileElement.AsTrack()->SetHasChain((liftHillAndInvertedState & CONSTRUCTION_LIFT_HILL_SELECTED) != 0);
         _tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
         _tempTrackTileElement.SetLastForTile(true);
-        _tempTrackTileElement.base_height = baseZ;
-        _tempTrackTileElement.clearance_height = clearanceZ;
+        _tempTrackTileElement.base_height = baseZ / 8;
+        _tempTrackTileElement.clearance_height = clearanceZ / 8;
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
         _tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
         _tempTrackTileElement.AsTrack()->SetHasCableLift(false);
