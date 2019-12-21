@@ -1256,7 +1256,7 @@ static void sub_6E1F34(
                 assert(i < MAXIMUM_MAP_SIZE_TECHNICAL);
                 tileZ += scenery_entry->large_scenery.tiles[i].z_clearance;
             }
-            maxPossibleHeight -= tileZ;
+            maxPossibleHeight = std::max(0, maxPossibleHeight - tileZ);
         }
         can_raise_item = true;
     }
