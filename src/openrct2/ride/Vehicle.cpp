@@ -2797,7 +2797,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
         return false;
 
     int32_t station = vehicle->current_station;
-    LocationXY8 location = ride->stations[station].Start;
+    auto location = ride->stations[station].Start;
     int32_t x = location.x * 32;
     int32_t y = location.y * 32;
     int32_t z = ride->stations[station].Height;

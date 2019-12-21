@@ -417,12 +417,12 @@ TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationInd
 
 void ride_clear_entrance_location(Ride* ride, const int32_t stationIndex)
 {
-    ride->stations[stationIndex].Entrance.x = COORDS_NULL;
+    ride->stations[stationIndex].Entrance.setNull();
 }
 
 void ride_clear_exit_location(Ride* ride, const int32_t stationIndex)
 {
-    ride->stations[stationIndex].Exit.x = COORDS_NULL;
+    ride->stations[stationIndex].Exit.setNull();
 }
 
 void ride_set_entrance_location(Ride* ride, const int32_t stationIndex, const TileCoordsXYZD location)

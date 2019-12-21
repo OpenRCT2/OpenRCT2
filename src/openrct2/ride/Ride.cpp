@@ -3289,14 +3289,12 @@ static void ride_entrance_exit_connected(Ride* ride)
 
 static void ride_shop_connected(Ride* ride)
 {
-    LocationXY8 coordinates = ride->stations[0].Start;
-    if (coordinates.isNull())
+    TileCoordsXY shopLoc = ride->stations[0].Start;
+    if (shopLoc.isNull())
         return;
 
-    TileCoordsXY loc = { coordinates.x, coordinates.y };
-
     TrackElement* trackElement = nullptr;
-    TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
+    TileElement* tileElement = map_get_first_element_at(shopLoc.x, shopLoc.y);
     do
     {
         if (tileElement == nullptr)
@@ -3346,8 +3344,8 @@ static void ride_shop_connected(Ride* ride)
         // Flip direction north<->south, east<->west
         uint8_t face_direction = direction_reverse(count);
 
-        int32_t y2 = loc.y - TileDirectionDelta[face_direction].y;
-        int32_t x2 = loc.x - TileDirectionDelta[face_direction].x;
+        int32_t y2 = shopLoc.y - TileDirectionDelta[face_direction].y;
+        int32_t x2 = shopLoc.x - TileDirectionDelta[face_direction].x;
 
         if (map_coord_is_connected({ x2, y2, tileElement->base_height }, face_direction))
             return;
@@ -4924,7 +4922,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
  */
 static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 {
-    LocationXY8 location;
+    TileCoordsXY location;
     int32_t stationIndex;
     for (stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
     {
@@ -6234,7 +6232,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
         return entranceExitCoords;
     }
 
-    LocationXY8 stationStart = ride->stations[gRideEntranceExitPlaceStationIndex].Start;
+    auto stationStart = ride->stations[gRideEntranceExitPlaceStationIndex].Start;
     if (stationStart.isNull())
     {
         entranceExitCoords.x = LOCATION_NULL;
@@ -6657,12 +6655,11 @@ static int32_t ride_get_track_length(Ride* ride)
 
     for (int32_t i = 0; i < MAX_STATIONS && !foundTrack; i++)
     {
-        LocationXY8 location = ride->stations[i].Start;
-        if (location.isNull())
+        if (ride->stations[i].Start.isNull())
             continue;
 
-        x = location.x * 32;
-        y = location.y * 32;
+        x = ride->stations[i].Start.x * 32;
+        y = ride->stations[i].Start.y * 32;
         z = ride->stations[i].Height;
 
         tileElement = map_get_first_element_at(x >> 5, y >> 5);

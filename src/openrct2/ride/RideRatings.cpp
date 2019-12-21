@@ -1433,7 +1433,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     }
     else
     {
-        LocationXY8 location = ride->stations[i].Start;
+        auto location = ride->stations[i].Start;
         x = location.x;
         y = location.y;
     }
