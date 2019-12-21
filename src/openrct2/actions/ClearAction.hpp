@@ -154,7 +154,7 @@ private:
                     case TILE_ELEMENT_TYPE_PATH:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_FOOTPATH)
                         {
-                            auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->base_height * 8 });
+                            auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseHeight() });
                             footpathRemoveAction.SetFlags(GetFlags());
 
                             auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
@@ -171,7 +171,7 @@ private:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
                             auto removeSceneryAction = SmallSceneryRemoveAction(
-                                { tilePos, tileElement->base_height * 8 }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+                                { tilePos, tileElement->GetBaseHeight() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
                                 tileElement->AsSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
@@ -188,7 +188,7 @@ private:
                     case TILE_ELEMENT_TYPE_WALL:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
-                            CoordsXYZD wallLocation = { tilePos, tileElement->base_height * 8, tileElement->GetDirection() };
+                            CoordsXYZD wallLocation = { tilePos, tileElement->GetBaseHeight(), tileElement->GetDirection() };
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 
@@ -206,7 +206,7 @@ private:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
                         {
                             auto removeSceneryAction = LargeSceneryRemoveAction(
-                                { tilePos, tileElement->base_height * 8, tileElement->GetDirection() },
+                                { tilePos, tileElement->GetBaseHeight(), tileElement->GetDirection() },
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
 

@@ -250,7 +250,7 @@ static void ride_ratings_update_state_2()
 
             x = nextTrackElement.x;
             y = nextTrackElement.y;
-            z = nextTrackElement.element->base_height * 8;
+            z = nextTrackElement.element->GetBaseHeight();
             tileElement = nextTrackElement.element;
             if (x == gRideRatingsCalcData.proximity_start_x && y == gRideRatingsCalcData.proximity_start_y
                 && z == gRideRatingsCalcData.proximity_start_z)
@@ -571,7 +571,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
         {
             case TILE_ELEMENT_TYPE_SURFACE:
                 gRideRatingsCalcData.proximity_base_height = tileElement->base_height;
-                if (tileElement->base_height * 8 == gRideRatingsCalcData.proximity_z)
+                if (tileElement->GetBaseHeight() == gRideRatingsCalcData.proximity_z)
                 {
                     proximity_score_increment(PROXIMITY_SURFACE_TOUCH);
                 }

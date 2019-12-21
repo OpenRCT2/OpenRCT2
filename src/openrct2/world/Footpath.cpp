@@ -275,7 +275,7 @@ void footpath_get_coordinates_from_pos(
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
     {
-        z = myTileElement->base_height * 8;
+        z = myTileElement->GetBaseHeight();
         if (myTileElement->AsPath()->IsSloped())
         {
             z += 8;
@@ -913,7 +913,7 @@ static void loc_6A6D7E(
         }
         if (!(flags & (GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)))
         {
-            footpath_interrupt_peeps(x, y, tileElement->base_height * 8);
+            footpath_interrupt_peeps(x, y, tileElement->GetBaseHeight());
         }
         map_invalidate_element(x, y, tileElement);
     }
@@ -1158,7 +1158,7 @@ void footpath_chain_ride_queue(
             lastPathElement->AsPath()->SetHasQueueBanner(true);
             lastPathElement->AsPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign direction
 
-            map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, { lastPathX, lastPathY, lastPathElement->base_height * 8 });
+            map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, { lastPathX, lastPathY, lastPathElement->GetBaseHeight() });
         }
     }
 }
@@ -1926,7 +1926,7 @@ static void footpath_remove_edges_towards_here(
     tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
     cd = ((cd + 1) & 3);
     tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
-    map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+    map_invalidate_tile(x, y, tileElement->GetBaseHeight(), tileElement->GetClearanceHeight());
 
     if (isQueue)
         footpath_disconnect_queue_from_path(x, y, tileElement, -1);
@@ -1950,7 +1950,7 @@ static void footpath_remove_edges_towards_here(
 
         cd = ((direction + 1) & 3);
         tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
-        map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+        map_invalidate_tile(x, y, tileElement->GetBaseHeight(), tileElement->GetClearanceHeight());
         break;
     } while (!(tileElement++)->IsLastForTile());
 }

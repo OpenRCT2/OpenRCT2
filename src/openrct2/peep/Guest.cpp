@@ -5048,7 +5048,7 @@ void Guest::UpdateRideLeaveExit()
 
         int16_t height = map_height_from_slope(
             targetLoc, tileElement->AsPath()->GetSlopeDirection(), tileElement->AsPath()->IsSloped());
-        height += tileElement->base_height * 8;
+        height += tileElement->GetBaseHeight();
 
         int16_t z_diff = z - height;
         if (z_diff > 0 || z_diff < -16)

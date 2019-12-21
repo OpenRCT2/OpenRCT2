@@ -982,7 +982,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
         auto surfaceElement = map_get_surface_element_at(CoordsXY{ vehicle->x, vehicle->y });
 
         // vehicle underground
-        if (surfaceElement != nullptr && surfaceElement->base_height * 8 > vehicle->z)
+        if (surfaceElement != nullptr && surfaceElement->GetBaseHeight() > vehicle->z)
         {
             soundParam->volume = 0x30;
         }
@@ -1832,7 +1832,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
 
     auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
     // If vehicle above ground.
-    if (surfaceElement != nullptr && surfaceElement->base_height * 8 <= z)
+    if (surfaceElement != nullptr && surfaceElement->GetBaseHeight() <= z)
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
@@ -1844,7 +1844,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         do
         {
             // If the tile_element is lower than the vehicle, continue (don't set flag)
-            if (tile_element->base_height * 8 <= z)
+            if (tile_element->GetBaseHeight() <= z)
                 continue;
 
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
@@ -7199,7 +7199,7 @@ static void vehicle_update_spinning_car(rct_vehicle* vehicle)
 static void steam_particle_create(int16_t x, int16_t y, int16_t z)
 {
     auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
-    if (surfaceElement != nullptr && z > surfaceElement->base_height * 8)
+    if (surfaceElement != nullptr && z > surfaceElement->GetBaseHeight())
     {
         rct_steam_particle* steam = &create_sprite(SPRITE_IDENTIFIER_MISC)->steam_particle;
         if (steam == nullptr)
@@ -7489,7 +7489,7 @@ static void vehicle_trigger_on_ride_photo(rct_vehicle* vehicle, TileElement* til
     tileElement->AsTrack()->SetPhotoTimeout();
 
     map_animation_create(
-        MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { vehicle->track_x, vehicle->track_y, tileElement->base_height * 8 });
+        MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { vehicle->track_x, vehicle->track_y, tileElement->GetBaseHeight() });
 }
 
 /**

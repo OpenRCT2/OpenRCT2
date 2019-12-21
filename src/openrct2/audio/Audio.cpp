@@ -207,7 +207,7 @@ static AudioParams audio_get_params_from_location(SoundId soundId, const CoordsX
     params.pan = 0;
 
     auto element = map_get_surface_element_at(location);
-    if (element && (element->base_height * 8) - 5 > location.z)
+    if (element && (element->GetBaseHeight()) - 5 > location.z)
     {
         volumeDown = 10;
     }

@@ -1672,13 +1672,13 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
                     seqLoc -= CoordsDirectionDelta[rotation];
                     break;
             }
-            auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->base_height * 8 });
+            auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseHeight() });
             GameActions::Execute(&parkEntranceRemoveAction);
             break;
         }
         case TILE_ELEMENT_TYPE_WALL:
         {
-            CoordsXYZD wallLocation = { loc.x, loc.y, element->base_height * 8, element->GetDirection() };
+            CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseHeight(), element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
         }
@@ -1686,7 +1686,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
             auto removeSceneryAction = LargeSceneryRemoveAction(
-                { loc.x, loc.y, element->base_height * 8, element->GetDirection() },
+                { loc.x, loc.y, element->GetBaseHeight(), element->GetDirection() },
                 element->AsLargeScenery()->GetSequenceIndex());
             GameActions::Execute(&removeSceneryAction);
         }
@@ -1694,7 +1694,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
         case TILE_ELEMENT_TYPE_BANNER:
         {
             auto bannerRemoveAction = BannerRemoveAction(
-                { loc.x, loc.y, element->base_height * 8, element->AsBanner()->GetPosition() });
+                { loc.x, loc.y, element->GetBaseHeight(), element->AsBanner()->GetPosition() });
             GameActions::Execute(&bannerRemoveAction);
             break;
         }
@@ -1737,7 +1737,7 @@ int32_t map_get_highest_z(const CoordsXY& loc)
     if (surfaceElement == nullptr)
         return -1;
 
-    z = surfaceElement->base_height * 8;
+    z = surfaceElement->GetBaseHeight();
 
     // Raise z so that is above highest point of land and water on tile
     if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
@@ -1934,7 +1934,7 @@ bool sign_set_colour(
             tileElement->SetPrimaryColour(mainColour);
             tileElement->SetSecondaryColour(textColour);
 
-            map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+            map_invalidate_tile(x, y, tileElement->GetBaseHeight(), tileElement->GetClearanceHeight());
         }
     }
 
@@ -2017,7 +2017,7 @@ void map_invalidate_tile_full(int32_t x, int32_t y)
 
 void map_invalidate_element(int32_t x, int32_t y, TileElement* tileElement)
 {
-    map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+    map_invalidate_tile(x, y, tileElement->GetBaseHeight(), tileElement->GetClearanceHeight());
 }
 
 void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs)

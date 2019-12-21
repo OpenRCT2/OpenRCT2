@@ -181,7 +181,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
 
     ride_get_start_of_track(&trackElement);
 
-    int32_t z = trackElement.element->base_height * 8;
+    int32_t z = trackElement.element->GetBaseHeight();
     uint8_t trackType = trackElement.element->AsTrack()->GetTrackType();
     uint8_t direction = trackElement.element->GetDirection();
     _saveDirection = direction;
@@ -237,7 +237,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             break;
         }
 
-        z = trackElement.element->base_height * 8;
+        z = trackElement.element->GetBaseHeight();
         direction = trackElement.element->GetDirection();
         trackType = trackElement.element->AsTrack()->GetTrackType();
 
@@ -350,7 +350,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
 
-    gTrackPreviewOrigin = { startLoc.x, startLoc.y, startLoc.element->base_height * 8 };
+    gTrackPreviewOrigin = { startLoc.x, startLoc.y, startLoc.element->GetBaseHeight() };
 
     // x is defined here as we can start the search
     // on tile start_x, start_y but then the next row
@@ -1432,7 +1432,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
             auto surfaceElement = map_get_surface_element_at(mapCoord);
             if (surfaceElement == nullptr)
                 continue;
-            int16_t map_height = surfaceElement->base_height * 8;
+            int16_t map_height = surfaceElement->GetBaseHeight();
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
                 map_height += 16;
@@ -1602,7 +1602,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         return false;
                     }
 
-                    int32_t height = surfaceElement->base_height * 8;
+                    int32_t height = surfaceElement->GetBaseHeight();
                     if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     {
                         height += 16;

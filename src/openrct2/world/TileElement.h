@@ -78,6 +78,8 @@ struct TileElementBase
     void Remove();
     uint8_t GetOccupiedQuadrants() const;
     void SetOccupiedQuadrants(uint8_t quadrants);
+    int32_t GetBaseHeight() const;
+    int32_t GetClearanceHeight() const;
 };
 
 /**

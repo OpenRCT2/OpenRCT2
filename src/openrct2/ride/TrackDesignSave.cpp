@@ -218,7 +218,7 @@ static void track_design_save_add_scenery(CoordsXY loc, SmallSceneryElement* sce
 
     track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(sceneryElement));
     track_design_save_push_tile_element_desc(
-        entry, { loc.x, loc.y, sceneryElement->base_height * 8 }, flags, primaryColour, secondaryColour);
+        entry, { loc.x, loc.y, sceneryElement->GetBaseHeight() }, flags, primaryColour, secondaryColour);
 }
 
 static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElement* tileElement)
@@ -278,7 +278,7 @@ static void track_design_save_add_wall(CoordsXY loc, WallElement* wallElement)
 
     track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(wallElement));
     track_design_save_push_tile_element_desc(
-        entry, { loc.x, loc.y, wallElement->base_height * 8 }, flags, primaryColour, secondaryColour);
+        entry, { loc.x, loc.y, wallElement->GetBaseHeight() }, flags, primaryColour, secondaryColour);
 }
 
 static void track_design_save_add_footpath(CoordsXY loc, PathElement* pathElement)
@@ -295,7 +295,7 @@ static void track_design_save_add_footpath(CoordsXY loc, PathElement* pathElemen
         flags |= 1 << 7;
 
     track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(pathElement));
-    track_design_save_push_tile_element_desc(entry, { loc.x, loc.y, pathElement->base_height * 8 }, flags, 0, 0);
+    track_design_save_push_tile_element_desc(entry, { loc.x, loc.y, pathElement->GetBaseHeight() }, flags, 0, 0);
 }
 
 /**
@@ -392,7 +392,7 @@ static void track_design_save_remove_scenery(CoordsXY loc, SmallSceneryElement* 
     flags |= sceneryElement->GetSceneryQuadrant() << 2;
 
     track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(sceneryElement));
-    track_design_save_pop_tile_element_desc(entry, { loc.x, loc.y, sceneryElement->base_height * 8 }, flags);
+    track_design_save_pop_tile_element_desc(entry, { loc.x, loc.y, sceneryElement->GetBaseHeight() }, flags);
 }
 
 static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryElement* tileElement)
@@ -445,7 +445,7 @@ static void track_design_save_remove_wall(CoordsXY loc, WallElement* wallElement
     flags |= wallElement->GetTertiaryColour() << 2;
 
     track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(wallElement));
-    track_design_save_pop_tile_element_desc(entry, { loc.x, loc.y, wallElement->base_height * 8 }, flags);
+    track_design_save_pop_tile_element_desc(entry, { loc.x, loc.y, wallElement->GetBaseHeight() }, flags);
 }
 
 static void track_design_save_remove_footpath(CoordsXY loc, PathElement* pathElement)
@@ -462,7 +462,7 @@ static void track_design_save_remove_footpath(CoordsXY loc, PathElement* pathEle
         flags |= (1 << 7);
 
     track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(pathElement));
-    track_design_save_pop_tile_element_desc(entry, { loc.x, loc.y, pathElement->base_height * 8 }, flags);
+    track_design_save_pop_tile_element_desc(entry, { loc.x, loc.y, pathElement->GetBaseHeight() }, flags);
 }
 
 /**

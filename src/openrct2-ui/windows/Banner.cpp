@@ -196,7 +196,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_BANNER_DEMOLISH:
         {
             auto bannerRemoveAction = BannerRemoveAction(
-                { x, y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() });
+                { x, y, tile_element->GetBaseHeight(), tile_element->AsBanner()->GetPosition() });
             GameActions::Execute(&bannerRemoveAction);
             break;
         }

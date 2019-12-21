@@ -93,7 +93,7 @@ static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
         if (ride == nullptr || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
-        if ((tileElement->clearance_height * 8) + 32 <= z)
+        if ((tileElement->GetClearanceHeight()) + 32 <= z)
             continue;
 
         resultRideIndex = rideIndex;

@@ -756,7 +756,7 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(
         uint8_t type = trackElement->AsTrack()->GetTrackType();
         int16_t originX = loc.x;
         int16_t originY = loc.y;
-        int16_t originZ = trackElement->base_height * 8;
+        int16_t originZ = trackElement->GetBaseHeight();
         uint8_t rotation = trackElement->GetDirection();
         auto rideIndex = trackElement->AsTrack()->GetRideIndex();
         auto ride = get_ride(rideIndex);
@@ -863,7 +863,7 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
         uint8_t type = trackElement->AsTrack()->GetTrackType();
         int16_t originX = loc.x;
         int16_t originY = loc.y;
-        int16_t originZ = trackElement->base_height * 8;
+        int16_t originZ = trackElement->GetBaseHeight();
         uint8_t rotation = trackElement->GetDirection();
         auto rideIndex = trackElement->AsTrack()->GetRideIndex();
         auto ride = get_ride(rideIndex);

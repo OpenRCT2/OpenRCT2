@@ -304,7 +304,7 @@ private:
                 continue;
 
             int32_t x = it.x * 32, y = it.y * 32;
-            int32_t z = it.element->base_height * 8;
+            int32_t z = it.element->GetBaseHeight();
 
             uint8_t rotation = it.element->GetDirection();
             uint8_t type = it.element->AsTrack()->GetTrackType();

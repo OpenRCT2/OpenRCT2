@@ -251,7 +251,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             continue;
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);
-        int32_t height = tile_element->base_height * 8;
+        int32_t height = tile_element->GetBaseHeight();
 
         // If we are on a new height level, look through elements on the
         //  same height and store any types might be relevant to others

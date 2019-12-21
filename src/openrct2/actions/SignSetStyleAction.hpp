@@ -111,7 +111,7 @@ public:
 
             wallElement->SetPrimaryColour(_mainColour);
             wallElement->SetSecondaryColour(_textColour);
-            map_invalidate_tile(coords.x, coords.y, wallElement->base_height * 8, wallElement->clearance_height * 8);
+            map_invalidate_tile(coords.x, coords.y, wallElement->GetBaseHeight(), wallElement->GetClearanceHeight());
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);

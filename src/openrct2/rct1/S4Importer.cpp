@@ -2862,7 +2862,7 @@ private:
             CoordsXYZD entrance;
             entrance.x = it.x * 32;
             entrance.y = it.y * 32;
-            entrance.z = element->base_height * 8;
+            entrance.z = element->GetBaseHeight();
             entrance.direction = element->GetDirection();
             gParkEntrances.push_back(entrance);
         }

@@ -597,17 +597,17 @@ public:
             switch (_trackType)
             {
                 case TRACK_ELEM_WATERFALL:
-                    map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, CoordsXYZ{ mapLoc, tileElement->base_height * 8 });
+                    map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, CoordsXYZ{ mapLoc, tileElement->GetBaseHeight() });
                     break;
                 case TRACK_ELEM_RAPIDS:
-                    map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, CoordsXYZ{ mapLoc, tileElement->base_height * 8 });
+                    map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, CoordsXYZ{ mapLoc, tileElement->GetBaseHeight() });
                     break;
                 case TRACK_ELEM_WHIRLPOOL:
-                    map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, CoordsXYZ{ mapLoc, tileElement->base_height * 8 });
+                    map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, CoordsXYZ{ mapLoc, tileElement->GetBaseHeight() });
                     break;
                 case TRACK_ELEM_SPINNING_TUNNEL:
                     map_animation_create(
-                        MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, tileElement->base_height * 8 });
+                        MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, tileElement->GetBaseHeight() });
                     break;
             }
             if (track_element_has_speed_setting(_trackType))

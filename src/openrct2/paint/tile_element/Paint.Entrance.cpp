@@ -347,7 +347,7 @@ void entrance_paint(paint_session* session, uint8_t direction, int32_t height, c
     {
         if (entrance_get_directions(tile_element) & 0xF)
         {
-            int32_t z = tile_element->base_height * 8 + 3;
+            int32_t z = tile_element->GetBaseHeight() + 3;
             uint32_t image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
             image_id -= gMapBaseZ;
 
