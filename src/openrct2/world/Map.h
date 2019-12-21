@@ -138,7 +138,7 @@ void map_strip_ghost_flag_from_elements();
 void map_update_tile_pointers();
 TileElement* map_get_first_element_at(int32_t x, int32_t y);
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n);
-void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements);
+void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements);
 int32_t map_height_from_slope(const CoordsXY& coords, int32_t slope, bool isSloped);
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t direction);
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords);

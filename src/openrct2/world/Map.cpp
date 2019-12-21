@@ -192,14 +192,14 @@ TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
     return nullptr;
 }
 
-void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements)
+void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
 {
-    if (!map_is_location_valid({ x * 32, y * 32 }))
+    if (!map_is_location_valid(tilePos.ToCoordsXY()))
     {
         log_error("Trying to access element outside of range");
         return;
     }
-    gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
+    gTileElementTilePointers[tilePos.x + tilePos.y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
 }
 
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
