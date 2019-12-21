@@ -90,7 +90,7 @@ private:
             }
         }
 
-        auto sceneryElement = map_get_small_scenery_element_at(_loc.x, _loc.y, _loc.z / 8, _sceneryType, _quadrant);
+        auto sceneryElement = map_get_small_scenery_element_at(_loc, _sceneryType, _quadrant);
 
         if (sceneryElement == nullptr)
         {
