@@ -164,9 +164,10 @@ TileElement* map_get_first_element_at(int32_t x, int32_t y)
     return gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
 }
 
-TileElement* map_get_nth_element_at(int32_t x, int32_t y, int32_t n)
+TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
 {
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    auto tileCoords = TileCoordsXY{ coords };
+    TileElement* tileElement = map_get_first_element_at(tileCoords.x, tileCoords.y);
     if (tileElement == nullptr)
     {
         return nullptr;
