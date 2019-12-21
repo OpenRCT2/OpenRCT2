@@ -4931,7 +4931,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         location = ride->stations[stationIndex].Start;
         if (!location.isNull())
             break;
-        if (stationIndex == 3)
+        if (stationIndex == (MAX_STATIONS - 1))
         {
             gGameCommandErrorText = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
             return false;
