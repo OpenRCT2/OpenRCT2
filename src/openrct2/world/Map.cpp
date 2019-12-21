@@ -245,9 +245,10 @@ PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
     return nullptr;
 }
 
-BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t position)
+BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t position)
 {
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    auto bannerTilePos = TileCoordsXYZ{ bannerPos };
+    TileElement* tileElement = map_get_first_element_at(bannerTilePos.x, bannerTilePos.y);
 
     if (tileElement == nullptr)
         return nullptr;
@@ -257,7 +258,7 @@ BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != bannerTilePos.z)
             continue;
         if (tileElement->AsBanner()->GetPosition() != position)
             continue;

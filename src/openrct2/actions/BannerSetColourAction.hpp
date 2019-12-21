@@ -79,7 +79,7 @@ private:
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        auto bannerElement = map_get_banner_element_at(_loc.x / 32, _loc.y / 32, _loc.z / 8, _loc.direction);
+        auto bannerElement = map_get_banner_element_at(_loc, _loc.direction);
 
         if (bannerElement == nullptr)
         {
