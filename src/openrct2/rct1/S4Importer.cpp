@@ -799,7 +799,7 @@ private:
         dst->overall_view = src->overall_view;
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
-            if (src->station_starts->isNull())
+            if (src->station_starts[i].isNull())
             {
                 dst->stations[i].Start.setNull();
             }
