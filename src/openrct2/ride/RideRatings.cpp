@@ -386,7 +386,7 @@ static void ride_ratings_begin_proximity_loop()
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.xy != RCT_XY8_UNDEFINED)
+        if (!ride->stations[i].Start.isNull())
         {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             if (ride_get_entrance_location(ride, i).isNull())

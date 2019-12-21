@@ -2334,7 +2334,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
         }
 
         LocationXY8 stationPosition = ride->stations[current_ride_station].Start;
-        if (stationPosition.xy == RCT_XY8_UNDEFINED)
+        if (stationPosition.isNull())
         {
             return true;
         }
@@ -2426,7 +2426,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
         }
 
         LocationXY8 stationPosition = ride->stations[current_ride_station].Start;
-        if (stationPosition.xy == RCT_XY8_UNDEFINED)
+        if (stationPosition.isNull())
         {
             return true;
         }

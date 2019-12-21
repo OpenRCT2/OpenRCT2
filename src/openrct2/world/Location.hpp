@@ -31,6 +31,16 @@ struct LocationXY8
         };
         uint16_t xy;
     };
+
+    bool isNull() const
+    {
+        return xy == RCT_XY8_UNDEFINED;
+    }
+
+    void setNull()
+    {
+        xy = RCT_XY8_UNDEFINED;
+    }
 };
 assert_struct_size(LocationXY8, 2);
 

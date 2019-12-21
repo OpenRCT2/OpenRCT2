@@ -137,12 +137,12 @@ public:
         ride->type = _rideType;
         ride->subtype = rideEntryIndex;
         ride->SetColourPreset(_colour1);
-        ride->overall_view.xy = RCT_XY8_UNDEFINED;
+        ride->overall_view.setNull();
         ride->SetNameToDefault();
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {
-            ride->stations[i].Start.xy = RCT_XY8_UNDEFINED;
+            ride->stations[i].Start.setNull();
             ride_clear_entrance_location(ride, i);
             ride_clear_exit_location(ride, i);
             ride->stations[i].TrainAtStation = RideStation::NO_TRAIN;

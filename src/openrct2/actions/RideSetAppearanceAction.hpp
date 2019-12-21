@@ -159,7 +159,7 @@ public:
         window_invalidate_by_number(WC_RIDE, _rideIndex);
 
         auto res = std::make_unique<GameActionResult>();
-        if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
+        if (!ride->overall_view.isNull())
         {
             res->Position.x = ride->overall_view.x * 32 + 16;
             res->Position.y = ride->overall_view.y * 32 + 16;

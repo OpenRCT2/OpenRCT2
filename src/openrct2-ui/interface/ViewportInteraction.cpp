@@ -315,7 +315,7 @@ int32_t viewport_interaction_get_item_right(ScreenCoordsXY screenCoords, viewpor
                 stationIndex = tileElement->AsTrack()->GetStationIndex();
 
             for (i = stationIndex; i >= 0; i--)
-                if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+                if (ride->stations[i].Start.isNull())
                     stationIndex--;
             stationIndex++;
             set_map_tooltip_format_arg(4 + nameArgLen + 2, uint16_t, stationIndex);

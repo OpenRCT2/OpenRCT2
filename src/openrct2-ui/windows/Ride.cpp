@@ -1639,7 +1639,7 @@ static rct_window* window_ride_open_station(Ride* ride, int32_t stationIndex)
     // View
     for (int32_t i = stationIndex; i >= 0; i--)
     {
-        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.isNull())
         {
             stationIndex--;
         }
@@ -1905,7 +1905,7 @@ static void window_ride_init_viewport(rct_window* w)
         do
         {
             stationIndex++;
-            if (ride->stations[stationIndex].Start.xy != RCT_XY8_UNDEFINED)
+            if (!ride->stations[stationIndex].Start.isNull())
             {
                 count--;
             }
@@ -1970,7 +1970,7 @@ static void window_ride_init_viewport(rct_window* w)
     w->viewport_focus_coordinates.height = w->height;
 
     // rct2: 0x006aec9c only used here so brought it into the function
-    if (!w->viewport && ride->overall_view.xy != RCT_XY8_UNDEFINED)
+    if (!w->viewport && !ride->overall_view.isNull())
     {
         rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
@@ -2823,7 +2823,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
     do
     {
         stationIndex++;
-        if (ride->stations[stationIndex].Start.xy != RCT_XY8_UNDEFINED)
+        if (!ride->stations[stationIndex].Start.isNull())
             count--;
     } while (count >= 0);
 

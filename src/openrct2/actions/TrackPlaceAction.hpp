@@ -554,7 +554,7 @@ public:
             }
 
             int32_t entranceDirections = 0;
-            if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
+            if (!ride->overall_view.isNull())
             {
                 if (!(GetFlags() & GAME_COMMAND_FLAG_NO_SPEND))
                 {
@@ -569,7 +569,7 @@ public:
                 }
             }
 
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.xy == RCT_XY8_UNDEFINED)
+            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN || ride->overall_view.isNull())
             {
                 ride->overall_view.x = mapLoc.x / 32;
                 ride->overall_view.y = mapLoc.y / 32;

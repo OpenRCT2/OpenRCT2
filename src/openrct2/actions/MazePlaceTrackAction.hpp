@@ -194,7 +194,8 @@ public:
 
         ride->maze_tiles++;
         ride->stations[0].Height = tileElement->base_height;
-        ride->stations[0].Start.xy = 0;
+        ride->stations[0].Start.x = 0;
+        ride->stations[0].Start.y = 0;
 
         if (ride->maze_tiles == 1)
         {

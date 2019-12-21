@@ -2229,7 +2229,7 @@ void Ride::UpdateSpiralSlide()
     // Invalidate something related to station start
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (stations[i].Start.xy == RCT_XY8_UNDEFINED)
+        if (stations[i].Start.isNull())
             continue;
 
         int32_t x = stations[i].Start.x;
@@ -3261,7 +3261,7 @@ static void ride_entrance_exit_connected(Ride* ride)
         auto entrance = ride_get_entrance_location(ride, i);
         auto exit = ride_get_exit_location(ride, i);
 
-        if (station_start.xy == RCT_XY8_UNDEFINED)
+        if (station_start.isNull())
             continue;
         if (!entrance.isNull() && !ride_entrance_exit_is_reachable(entrance))
         {
@@ -3290,7 +3290,7 @@ static void ride_entrance_exit_connected(Ride* ride)
 static void ride_shop_connected(Ride* ride)
 {
     LocationXY8 coordinates = ride->stations[0].Start;
-    if (coordinates.xy == RCT_XY8_UNDEFINED)
+    if (coordinates.isNull())
         return;
 
     TileCoordsXY loc = { coordinates.x, coordinates.y };
@@ -3399,7 +3399,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
     {
         auto stationIndex = tileElement->AsTrack()->GetStationIndex();
         for (int32_t i = stationIndex; i >= 0; i--)
-            if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+            if (ride->stations[i].Start.isNull())
                 stationIndex--;
 
         size_t argPos = 0;
@@ -3426,7 +3426,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
         // Get the station
         auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
         for (int32_t i = stationIndex; i >= 0; i--)
-            if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+            if (ride->stations[i].Start.isNull())
                 stationIndex--;
 
         if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -3469,7 +3469,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
             // Get the station
             stationIndex = tileElement->AsEntrance()->GetStationIndex();
             for (int32_t i = stationIndex; i >= 0; i--)
-                if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+                if (ride->stations[i].Start.isNull())
                     stationIndex--;
 
             size_t argPos = 0;
@@ -3824,7 +3824,7 @@ static int32_t ride_mode_check_valid_station_numbers(Ride* ride)
     uint8_t no_stations = 0;
     for (uint8_t station_index = 0; station_index < MAX_STATIONS; ++station_index)
     {
-        if (ride->stations[station_index].Start.xy != RCT_XY8_UNDEFINED)
+        if (!ride->stations[station_index].Start.isNull())
         {
             no_stations++;
         }
@@ -3900,7 +3900,7 @@ static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
     uint8_t exit = 0;
     for (i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.isNull())
             continue;
 
         if (!ride_get_entrance_location(ride, i).isNull())
@@ -4929,7 +4929,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
     for (stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
     {
         location = ride->stations[stationIndex].Start;
-        if (location.xy != RCT_XY8_UNDEFINED)
+        if (!location.isNull())
             break;
         if (stationIndex == 3)
         {
@@ -5118,7 +5118,7 @@ static void loc_6B51C0(const Ride* ride)
     int32_t i;
     for (i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.isNull())
             continue;
 
         if (ride_get_entrance_location(ride, i).isNull())
@@ -6235,7 +6235,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     }
 
     LocationXY8 stationStart = ride->stations[gRideEntranceExitPlaceStationIndex].Start;
-    if (stationStart.xy == RCT_XY8_UNDEFINED)
+    if (stationStart.isNull())
     {
         entranceExitCoords.x = LOCATION_NULL;
         return entranceExitCoords;
@@ -6436,7 +6436,7 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride* ride)
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.isNull())
         {
             continue;
         }
@@ -6631,7 +6631,7 @@ static opt::optional<int32_t> ride_get_smallest_station_length(Ride* ride)
     opt::optional<int32_t> result;
     for (const auto& station : ride->stations)
     {
-        if (station.Start.xy != RCT_XY8_UNDEFINED)
+        if (!station.Start.isNull())
         {
             if (!result.has_value() || station.Length < *result)
             {
@@ -6658,7 +6658,7 @@ static int32_t ride_get_track_length(Ride* ride)
     for (int32_t i = 0; i < MAX_STATIONS && !foundTrack; i++)
     {
         LocationXY8 location = ride->stations[i].Start;
-        if (location.xy == RCT_XY8_UNDEFINED)
+        if (location.isNull())
             continue;
 
         x = location.x * 32;
@@ -6911,7 +6911,7 @@ void sub_6CB945(Ride* ride)
     {
         for (uint8_t stationId = 0; stationId < MAX_STATIONS; ++stationId)
         {
-            if (ride->stations[stationId].Start.xy == RCT_XY8_UNDEFINED)
+            if (ride->stations[stationId].Start.isNull())
                 continue;
 
             CoordsXYZ location = { ride->stations[stationId].Start.x * 32, ride->stations[stationId].Start.y * 32,
@@ -7377,7 +7377,7 @@ bool ride_has_adjacent_station(Ride* ride)
      * adjacent station on either side. */
     for (int32_t stationNum = 0; stationNum < MAX_STATIONS; stationNum++)
     {
-        if (ride->stations[stationNum].Start.xy != RCT_XY8_UNDEFINED)
+        if (!ride->stations[stationNum].Start.isNull())
         {
             /* Get the map element for the station start. */
             uint16_t stationX = ride->stations[stationNum].Start.x * 32;

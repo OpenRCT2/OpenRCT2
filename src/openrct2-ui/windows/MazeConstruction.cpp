@@ -173,7 +173,7 @@ static void window_maze_construction_close(rct_window* w)
     auto ride = get_ride(_currentRideIndex);
     if (ride != nullptr)
     {
-        if (ride->overall_view.xy == RCT_XY8_UNDEFINED)
+        if (ride->overall_view.isNull())
         {
             int32_t savedPausedState = gGamePaused;
             gGamePaused = 0;

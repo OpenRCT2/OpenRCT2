@@ -120,7 +120,7 @@ public:
 
         res->ErrorTitle = _StatusErrorTitles[_status];
         ride->FormatNameTo(res->ErrorMessageArgs.data() + 6);
-        if (ride->overall_view.xy != RCT_XY8_UNDEFINED)
+        if (!ride->overall_view.isNull())
         {
             res->Position.x = ride->overall_view.x * 32 + 16;
             res->Position.y = ride->overall_view.y * 32 + 16;

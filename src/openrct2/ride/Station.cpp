@@ -27,7 +27,7 @@ static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool
  */
 void ride_update_station(Ride* ride, int32_t stationIndex)
 {
-    if (ride->stations[stationIndex].Start.xy == RCT_XY8_UNDEFINED)
+    if (ride->stations[stationIndex].Start.isNull())
         return;
 
     switch (ride->mode)
@@ -385,7 +385,7 @@ int8_t ride_get_first_valid_station_start(const Ride* ride)
 {
     for (int8_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.xy != RCT_XY8_UNDEFINED)
+        if (!ride->stations[i].Start.isNull())
         {
             return i;
         }
@@ -397,7 +397,7 @@ int8_t ride_get_first_empty_station_start(const Ride* ride)
 {
     for (int8_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.isNull())
         {
             return i;
         }

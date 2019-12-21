@@ -232,7 +232,7 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
             continue;
 
         LocationXY8 location = ride.overall_view;
-        if (location.xy == RCT_XY8_UNDEFINED)
+        if (location.isNull())
             continue;
 
         int32_t rideX = location.x * 32;
