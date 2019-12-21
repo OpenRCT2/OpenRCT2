@@ -2443,11 +2443,11 @@ static void sub_6CBCE2(
         _backupTileElementArrays[2] = map_get_first_element_at(tileCoords.x - 1, tileCoords.y + 0);
         _backupTileElementArrays[3] = map_get_first_element_at(tileCoords.x + 0, tileCoords.y + 1);
         _backupTileElementArrays[4] = map_get_first_element_at(tileCoords.x + 0, tileCoords.y - 1);
-        map_set_tile_elements({ tileCoords.x + 0, tileCoords.y + 0 }, &_tempTrackTileElement);
-        map_set_tile_elements({ tileCoords.x + 1, tileCoords.y + 0 }, &_tempSideTrackTileElement);
-        map_set_tile_elements({ tileCoords.x - 1, tileCoords.y + 0 }, &_tempSideTrackTileElement);
-        map_set_tile_elements({ tileCoords.x + 0, tileCoords.y + 1 }, &_tempSideTrackTileElement);
-        map_set_tile_elements({ tileCoords.x + 0, tileCoords.y - 1 }, &_tempSideTrackTileElement);
+        map_set_tile_element({ tileCoords.x + 0, tileCoords.y + 0 }, &_tempTrackTileElement);
+        map_set_tile_element({ tileCoords.x + 1, tileCoords.y + 0 }, &_tempSideTrackTileElement);
+        map_set_tile_element({ tileCoords.x - 1, tileCoords.y + 0 }, &_tempSideTrackTileElement);
+        map_set_tile_element({ tileCoords.x + 0, tileCoords.y + 1 }, &_tempSideTrackTileElement);
+        map_set_tile_element({ tileCoords.x + 0, tileCoords.y - 1 }, &_tempSideTrackTileElement);
 
         // Set the temporary track element
         _tempTrackTileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
@@ -2469,11 +2469,11 @@ static void sub_6CBCE2(
         sub_68B2B7(session, coords);
 
         // Restore map elements
-        map_set_tile_elements({ tileCoords.x + 0, tileCoords.y + 0 }, _backupTileElementArrays[0]);
-        map_set_tile_elements({ tileCoords.x + 1, tileCoords.y + 0 }, _backupTileElementArrays[1]);
-        map_set_tile_elements({ tileCoords.x - 1, tileCoords.y + 0 }, _backupTileElementArrays[2]);
-        map_set_tile_elements({ tileCoords.x + 0, tileCoords.y + 1 }, _backupTileElementArrays[3]);
-        map_set_tile_elements({ tileCoords.x + 0, tileCoords.y - 1 }, _backupTileElementArrays[4]);
+        map_set_tile_element({ tileCoords.x + 0, tileCoords.y + 0 }, _backupTileElementArrays[0]);
+        map_set_tile_element({ tileCoords.x + 1, tileCoords.y + 0 }, _backupTileElementArrays[1]);
+        map_set_tile_element({ tileCoords.x - 1, tileCoords.y + 0 }, _backupTileElementArrays[2]);
+        map_set_tile_element({ tileCoords.x + 0, tileCoords.y + 1 }, _backupTileElementArrays[3]);
+        map_set_tile_element({ tileCoords.x + 0, tileCoords.y - 1 }, _backupTileElementArrays[4]);
 
         trackBlock++;
     }

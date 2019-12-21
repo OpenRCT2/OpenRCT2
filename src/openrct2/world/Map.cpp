@@ -192,7 +192,7 @@ TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
     return nullptr;
 }
 
-void map_set_tile_elements(const TileCoordsXY& tilePos, TileElement* elements)
+void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
 {
     if (!map_is_location_valid(tilePos.ToCoordsXY()))
     {
