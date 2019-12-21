@@ -16,7 +16,7 @@
 #include "Map.h"
 #include "Sprite.h"
 
-static constexpr const LocationXY16 _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
+static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
 
 bool rct_sprite::IsMoneyEffect()
 {

@@ -1179,8 +1179,7 @@ static void window_map_set_land_rights_tool_update(ScreenCoordsXY screenCoords)
     int32_t radius = (landRightsToolSize * 16) - 16;
     mapCoords->x = (mapCoords->x - radius) & 0xFFE0;
     mapCoords->y = (mapCoords->y - radius) & 0xFFE0;
-    gMapSelectPositionA.x = mapCoords->x;
-    gMapSelectPositionA.y = mapCoords->y;
+    gMapSelectPositionA = *mapCoords;
     gMapSelectPositionB.x = mapCoords->x + size;
     gMapSelectPositionB.y = mapCoords->y + size;
     map_invalidate_selection_rect();
@@ -1257,16 +1256,13 @@ static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoor
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT | MAP_SELECT_FLAG_ENABLE_ARROW;
     map_invalidate_map_selection_tiles();
-    if (gParkEntranceGhostExists && parkEntrancePosition.x == gParkEntranceGhostPosition.x
-        && parkEntrancePosition.y == gParkEntranceGhostPosition.y
-        && parkEntrancePosition.direction == gParkEntranceGhostDirection)
+    if (gParkEntranceGhostExists && parkEntrancePosition == gParkEntranceGhostPosition)
     {
         return;
     }
 
     park_entrance_remove_ghost();
-    park_entrance_place_ghost(
-        parkEntrancePosition.x, parkEntrancePosition.y, parkEntrancePosition.z / 16, parkEntrancePosition.direction);
+    park_entrance_place_ghost(parkEntrancePosition);
 }
 
 /**

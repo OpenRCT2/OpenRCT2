@@ -155,13 +155,13 @@ enum
 };
 
 extern uint8_t gFootpathProvisionalFlags;
-extern LocationXYZ16 gFootpathProvisionalPosition;
+extern CoordsXYZ gFootpathProvisionalPosition;
 extern uint8_t gFootpathProvisionalType;
 extern uint8_t gFootpathProvisionalSlope;
 extern uint8_t gFootpathConstructionMode;
 extern uint16_t gFootpathSelectedId;
 extern uint8_t gFootpathSelectedType;
-extern LocationXYZ16 gFootpathConstructFromPosition;
+extern CoordsXYZ gFootpathConstructFromPosition;
 extern uint8_t gFootpathConstructDirection;
 extern uint8_t gFootpathConstructSlope;
 extern uint8_t gFootpathConstructValidDirections;
@@ -176,8 +176,8 @@ TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z);
 struct PathElement;
 PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope);
 void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z);
-money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags);
-money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope);
+money32 footpath_remove(CoordsXYZ footpathLoc, int32_t flags);
+money32 footpath_provisional_set(int32_t type, CoordsXYZ footpathLoc, int32_t slope);
 void footpath_provisional_remove();
 void footpath_provisional_update();
 void footpath_get_coordinates_from_pos(

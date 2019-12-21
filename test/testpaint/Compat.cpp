@@ -91,8 +91,8 @@ int object_entry_group_counts[] = {
 GeneralConfiguration gConfigGeneral;
 uint16_t gMapSelectFlags;
 uint16_t gMapSelectType;
-LocationXY16 gMapSelectPositionA;
-LocationXY16 gMapSelectPositionB;
+CoordsXY gMapSelectPositionA;
+CoordsXY gMapSelectPositionB;
 LocationXYZ16 gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 

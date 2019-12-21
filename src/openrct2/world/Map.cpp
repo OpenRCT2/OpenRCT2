@@ -71,8 +71,8 @@ const TileCoordsXY TileDirectionDelta[] = { { -1, 0 },  { 0, +1 },  { +1, 0 },  
 
 uint16_t gMapSelectFlags;
 uint16_t gMapSelectType;
-LocationXY16 gMapSelectPositionA;
-LocationXY16 gMapSelectPositionB;
+CoordsXY gMapSelectPositionA;
+CoordsXY gMapSelectPositionB;
 LocationXYZ16 gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
@@ -1508,9 +1508,7 @@ void map_restore_provisional_elements()
     if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
     {
         gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
-        footpath_provisional_set(
-            gFootpathProvisionalType, gFootpathProvisionalPosition.x, gFootpathProvisionalPosition.y,
-            gFootpathProvisionalPosition.z, gFootpathProvisionalSlope);
+        footpath_provisional_set(gFootpathProvisionalType, gFootpathProvisionalPosition, gFootpathProvisionalSlope);
     }
     if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
     {
@@ -2023,7 +2021,7 @@ void map_invalidate_element(int32_t x, int32_t y, TileElement* tileElement)
     map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
 }
 
-void map_invalidate_region(const LocationXY16& mins, const LocationXY16& maxs)
+void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs)
 {
     int32_t x0, y0, x1, y1, left, right, top, bottom;
 

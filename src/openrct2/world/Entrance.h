@@ -29,8 +29,7 @@ assert_struct_size(rct_entrance_type, 8);
 struct TileElement;
 
 extern bool gParkEntranceGhostExists;
-extern LocationXYZ16 gParkEntranceGhostPosition;
-extern uint8_t gParkEntranceGhostDirection;
+extern CoordsXYZD gParkEntranceGhostPosition;
 
 #define MAX_PARK_ENTRANCES 4
 
@@ -42,7 +41,7 @@ extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern uint8_t gRideEntranceExitGhostStationIndex;
 
 void park_entrance_remove_ghost();
-money32 park_entrance_place_ghost(int32_t x, int32_t y, int32_t z, int32_t direction);
+money32 park_entrance_place_ghost(CoordsXYZD entranceLoc);
 
 void reset_park_entrance();
 void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElement);
