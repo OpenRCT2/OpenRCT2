@@ -89,13 +89,13 @@ void map_animation_invalidate_all()
  */
 static bool map_animation_invalidate_ride_entrance(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     auto tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
     if (tileElement == nullptr)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
@@ -124,7 +124,7 @@ static bool map_animation_invalidate_ride_entrance(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_queue_banner(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
@@ -132,7 +132,7 @@ static bool map_animation_invalidate_queue_banner(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
@@ -158,7 +158,7 @@ static bool map_animation_invalidate_queue_banner(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_sprite* sprite;
@@ -169,7 +169,7 @@ static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
@@ -235,7 +235,7 @@ static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_park_entrance(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
@@ -243,7 +243,7 @@ static bool map_animation_invalidate_park_entrance(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
@@ -265,7 +265,7 @@ static bool map_animation_invalidate_park_entrance(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_track_waterfall(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
@@ -273,7 +273,7 @@ static bool map_animation_invalidate_track_waterfall(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
@@ -294,7 +294,7 @@ static bool map_animation_invalidate_track_waterfall(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_track_rapids(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
@@ -302,7 +302,7 @@ static bool map_animation_invalidate_track_rapids(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
@@ -323,7 +323,7 @@ static bool map_animation_invalidate_track_rapids(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_track_onridephoto(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
@@ -331,7 +331,7 @@ static bool map_animation_invalidate_track_onridephoto(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
@@ -364,7 +364,7 @@ static bool map_animation_invalidate_track_onridephoto(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_track_whirlpool(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
@@ -372,7 +372,7 @@ static bool map_animation_invalidate_track_whirlpool(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
@@ -393,7 +393,7 @@ static bool map_animation_invalidate_track_whirlpool(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_track_spinningtunnel(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
@@ -401,7 +401,7 @@ static bool map_animation_invalidate_track_spinningtunnel(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
@@ -431,7 +431,7 @@ static bool map_animation_invalidate_remove([[maybe_unused]] CoordsXYZ loc)
  */
 static bool map_animation_invalidate_banner(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
     tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
@@ -439,7 +439,7 @@ static bool map_animation_invalidate_banner(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
             continue;
@@ -456,7 +456,7 @@ static bool map_animation_invalidate_banner(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_large_scenery(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
 
@@ -466,7 +466,7 @@ static bool map_animation_invalidate_large_scenery(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
@@ -488,7 +488,7 @@ static bool map_animation_invalidate_large_scenery(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_wall_door(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
 
@@ -501,7 +501,7 @@ static bool map_animation_invalidate_wall_door(CoordsXYZ loc)
         return removeAnimation;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
@@ -553,7 +553,7 @@ static bool map_animation_invalidate_wall_door(CoordsXYZ loc)
  */
 static bool map_animation_invalidate_wall(CoordsXYZ loc)
 {
-    TileCoordsXY tileLoc{ loc };
+    TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
 
@@ -563,7 +563,7 @@ static bool map_animation_invalidate_wall(CoordsXYZ loc)
         return true;
     do
     {
-        if (tileElement->base_height != loc.z / 8)
+        if (tileElement->base_height != tileLoc.z)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
