@@ -428,7 +428,8 @@ private:
                 case RCT1_RESEARCH_TYPE_THEME:
                     AddEntriesForSceneryTheme(researchItem->item);
                     break;
-                case RCT1_RESEARCH_TYPE_RIDE: {
+                case RCT1_RESEARCH_TYPE_RIDE:
+                {
                     uint8_t rideType = researchItem->item;
 
                     // Add all vehicles for this ride type
@@ -503,7 +504,8 @@ private:
         {
             switch (tileElement->GetType())
             {
-                case TILE_ELEMENT_TYPE_PATH: {
+                case TILE_ELEMENT_TYPE_PATH:
+                {
                     uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                     uint8_t pathAdditionsType = tileElement->AsPath()->GetAddition();
 
@@ -517,7 +519,8 @@ private:
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                     AddEntryForLargeScenery(tileElement->AsLargeScenery()->GetEntryIndex());
                     break;
-                case TILE_ELEMENT_TYPE_WALL: {
+                case TILE_ELEMENT_TYPE_WALL:
+                {
                     for (int32_t edge = 0; edge < 4; edge++)
                     {
                         int32_t type = tileElement->AsWall()->GetRCT1WallType(edge);
@@ -2026,7 +2029,8 @@ private:
 
         switch (tileElementType)
         {
-            case TILE_ELEMENT_TYPE_SURFACE: {
+            case TILE_ELEMENT_TYPE_SURFACE:
+            {
                 auto dst2 = dst->AsSurface();
                 auto src2 = src->AsSurface();
 
@@ -2041,7 +2045,8 @@ private:
 
                 break;
             }
-            case TILE_ELEMENT_TYPE_PATH: {
+            case TILE_ELEMENT_TYPE_PATH:
+            {
                 auto dst2 = dst->AsPath();
                 auto src2 = src->AsPath();
 
@@ -2111,7 +2116,8 @@ private:
                 }
                 break;
             }
-            case TILE_ELEMENT_TYPE_TRACK: {
+            case TILE_ELEMENT_TYPE_TRACK:
+            {
                 auto dst2 = dst->AsTrack();
                 auto src2 = src->AsTrack();
 
@@ -2145,7 +2151,8 @@ private:
 
                 break;
             }
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY: {
+            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            {
                 auto dst2 = dst->AsSmallScenery();
                 auto src2 = src->AsSmallScenery();
 
@@ -2175,7 +2182,8 @@ private:
 
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE: {
+            case TILE_ELEMENT_TYPE_ENTRANCE:
+            {
                 auto dst2 = dst->AsEntrance();
                 auto src2 = src->AsEntrance();
 
@@ -2197,7 +2205,8 @@ private:
 
                 break;
             }
-            case TILE_ELEMENT_TYPE_WALL: {
+            case TILE_ELEMENT_TYPE_WALL:
+            {
                 auto dst2 = dst->AsWall();
                 auto src2 = src->AsWall();
 
@@ -2208,7 +2217,8 @@ private:
 
                 break;
             }
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY: {
+            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            {
                 auto dst2 = dst->AsLargeScenery();
                 auto src2 = src->AsLargeScenery();
 
@@ -2220,7 +2230,8 @@ private:
 
                 break;
             }
-            case TILE_ELEMENT_TYPE_BANNER: {
+            case TILE_ELEMENT_TYPE_BANNER:
+            {
                 auto dst2 = dst->AsBanner();
                 auto src2 = src->AsBanner();
 
@@ -2285,7 +2296,8 @@ private:
 
             switch (researchItem->type)
             {
-                case RCT1_RESEARCH_TYPE_THEME: {
+                case RCT1_RESEARCH_TYPE_THEME:
+                {
                     uint8_t rct1SceneryTheme = researchItem->item;
                     uint8_t sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
                     if (sceneryGroupEntryIndex != 254 && sceneryGroupEntryIndex != 255)
@@ -2294,7 +2306,8 @@ private:
                     }
                     break;
                 }
-                case RCT1_RESEARCH_TYPE_RIDE: {
+                case RCT1_RESEARCH_TYPE_RIDE:
+                {
                     uint8_t rct1RideType = researchItem->item;
                     _researchRideTypeUsed[rct1RideType] = true;
 
