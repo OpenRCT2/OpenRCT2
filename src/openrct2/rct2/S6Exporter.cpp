@@ -532,7 +532,8 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
         }
         else
         {
-            dst->station_starts[i] = { static_cast<uint8_t>(src->stations[i].Start.x), static_cast<uint8_t>(src->stations[i].Start.y) };
+            dst->station_starts[i] = { static_cast<uint8_t>(src->stations[i].Start.x),
+                                       static_cast<uint8_t>(src->stations[i].Start.y) };
         }
         dst->station_heights[i] = src->stations[i].Height;
         dst->station_length[i] = src->stations[i].Length;
