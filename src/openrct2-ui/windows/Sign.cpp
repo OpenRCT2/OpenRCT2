@@ -159,7 +159,7 @@ rct_window* window_sign_open(rct_windownumber number)
     int32_t view_x = banner->position.x << 5;
     int32_t view_y = banner->position.y << 5;
 
-    TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    TileElement* tile_element = map_get_first_element_at({ view_x, view_y });
     if (tile_element == nullptr)
         return nullptr;
 
@@ -217,7 +217,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             auto banner = GetBanner(w->number);
             int32_t x = banner->position.x << 5;
             int32_t y = banner->position.y << 5;
-            auto tile_element = map_get_first_element_at(x / 32, y / 32);
+            auto tile_element = map_get_first_element_at({ x, y });
             if (tile_element == nullptr)
                 return;
             while (1)
@@ -408,7 +408,7 @@ rct_window* window_sign_small_open(rct_windownumber number)
     int32_t view_x = banner->position.x << 5;
     int32_t view_y = banner->position.y << 5;
 
-    TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    TileElement* tile_element = map_get_first_element_at({ view_x, view_y });
     if (tile_element == nullptr)
         return nullptr;
 
@@ -465,7 +465,7 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
             auto banner = GetBanner(w->number);
             int32_t x = banner->position.x << 5;
             int32_t y = banner->position.y << 5;
-            auto tile_element = map_get_first_element_at(x / 32, y / 32);
+            auto tile_element = map_get_first_element_at({ x, y });
             if (tile_element == nullptr)
                 return;
             while (true)

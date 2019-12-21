@@ -135,7 +135,7 @@ public:
 private:
     TileElement* FindSceneryElement() const
     {
-        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_loc);
         if (!tileElement)
             return nullptr;
 

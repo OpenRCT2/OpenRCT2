@@ -339,7 +339,7 @@ TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationInd
     int32_t z = ride->stations[stationIndex].Height;
 
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -355,7 +355,7 @@ TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationInd
 TileElement* ride_get_station_exit_element(int32_t x, int32_t y, int32_t z)
 {
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
     if (tileElement == nullptr)
         return nullptr;
     do

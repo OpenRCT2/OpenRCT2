@@ -279,7 +279,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
 
             CoordsXY mapLocation{ location.x * 32, location.y * 32 };
 
-            TileElement* tileElement = map_get_first_element_at(location.x, location.y);
+            TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
             if (tileElement == nullptr)
                 continue;
 
@@ -359,7 +359,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     {
         for (; x < 8192; x += 32)
         {
-            auto tileElement = map_get_first_element_at(x / 32, y / 32);
+            auto tileElement = map_get_first_element_at({ x, y });
             do
             {
                 if (tileElement == nullptr)
@@ -392,8 +392,8 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
 
-    CoordsXY entranceLoc = { location.x * 32, location.y * 32 };
-    auto tileElement = map_get_first_element_at(location.x, location.y);
+    CoordsXY entranceLoc = location.ToCoordsXY();
+    auto tileElement = map_get_first_element_at(entranceLoc);
     do
     {
         if (tileElement == nullptr)
@@ -421,8 +421,8 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     }
 
-    CoordsXY exitLoc = { location.x * 32, location.y * 32 };
-    tileElement = map_get_first_element_at(location.x, location.y);
+    CoordsXY exitLoc = location.ToCoordsXY();
+    tileElement = map_get_first_element_at(exitLoc);
     if (tileElement == nullptr)
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     do
@@ -465,7 +465,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
     {
         for (tile.x = 0; tile.x < 8192; tile.x += 32)
         {
-            tile.element = map_get_first_element_at(tile.x / 32, tile.y / 32);
+            tile.element = map_get_first_element_at({ tile.x, tile.y });
             do
             {
                 if (tile.element == nullptr)
@@ -1671,7 +1671,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 if (_trackDesignPlaceOperation != PTD_OPERATION_PLACE_QUERY)
                 {
                     auto tile = CoordsXY{ x, y } + CoordsDirectionDelta[rotation];
-                    TileElement* tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
+                    TileElement* tile_element = map_get_first_element_at(tile);
                     z = gTrackPreviewOrigin.z / 8;
                     z += entrance.z;
                     if (tile_element == nullptr)

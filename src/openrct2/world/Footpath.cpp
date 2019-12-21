@@ -113,7 +113,7 @@ static bool entrance_has_direction(TileElement* tileElement, int32_t direction)
 
 TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
 {
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
     do
     {
         if (tileElement == nullptr)
@@ -458,7 +458,7 @@ bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t dire
 {
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return false;
     do
@@ -486,7 +486,7 @@ static TileElement* footpath_connect_corners_get_neighbour(int32_t x, int32_t y,
         return nullptr;
     }
 
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -660,7 +660,7 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
     TileElement* tileElement;
     int32_t slope;
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -786,7 +786,7 @@ static void loc_6A6D7E(
     }
     else
     {
-        TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+        TileElement* tileElement = map_get_first_element_at({ x, y });
         if (tileElement == nullptr)
             return;
         do
@@ -1076,7 +1076,7 @@ void footpath_chain_ride_queue(
 
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
-        tileElement = map_get_first_element_at(x >> 5, y >> 5);
+        tileElement = map_get_first_element_at({ x, y });
         if (tileElement != nullptr)
         {
             do
@@ -1203,7 +1203,7 @@ void footpath_update_queue_chains()
             if (location.isNull())
                 continue;
 
-            TileElement* tileElement = map_get_first_element_at(location.x, location.y);
+            TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
             if (tileElement != nullptr)
             {
                 do
@@ -1296,7 +1296,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
     if (x >= gMapSizeUnits || y >= gMapSizeUnits)
         return FOOTPATH_SEARCH_SUCCESS;
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
     do
@@ -1623,7 +1623,7 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
  */
 static void footpath_clear_wide(int32_t x, int32_t y)
 {
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return;
     do
@@ -1642,7 +1642,7 @@ static void footpath_clear_wide(int32_t x, int32_t y)
  */
 static TileElement* footpath_can_be_wide(int32_t x, int32_t y, uint8_t height)
 {
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -1695,7 +1695,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
     // footpath_clear_wide(x, y);
     // y -= 0x20;
 
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return;
     do
@@ -1935,7 +1935,7 @@ static void footpath_remove_edges_towards_here(
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return;
     do
@@ -1966,7 +1966,7 @@ static void footpath_remove_edges_towards(int32_t x, int32_t y, int32_t z0, int3
         return;
     }
 
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return;
     do
@@ -2005,7 +2005,7 @@ static void footpath_remove_edges_towards(int32_t x, int32_t y, int32_t z0, int3
 // entrances and exits, shops, paths).
 bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const TileElement* const elementToBeRemoved)
 {
-    TileElement* tileElement = map_get_first_element_at(coords.x, coords.y);
+    TileElement* tileElement = map_get_first_element_at(coords.ToCoordsXY());
     if (tileElement == nullptr)
         return false;
     do
@@ -2096,7 +2096,7 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, TileElement* pathE
             if (xOffset == 0 && yOffset == 0)
                 continue;
 
-            TileElement* tileElement = map_get_first_element_at(x + xOffset, y + yOffset);
+            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x + xOffset, y + yOffset }.ToCoordsXY());
             if (tileElement == nullptr)
                 continue;
             do

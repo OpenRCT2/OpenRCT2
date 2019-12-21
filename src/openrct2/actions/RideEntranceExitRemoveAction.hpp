@@ -65,7 +65,7 @@ public:
         }
 
         bool found = false;
-        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_loc);
 
         do
         {
@@ -125,7 +125,7 @@ public:
         }
 
         bool found = false;
-        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_loc);
 
         do
         {

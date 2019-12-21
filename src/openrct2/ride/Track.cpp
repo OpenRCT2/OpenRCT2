@@ -598,7 +598,7 @@ const rct_preview_track* get_track_def_from_ride_index(ride_id_t rideIndex, int3
 
 static TileElement* find_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do

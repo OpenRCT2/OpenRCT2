@@ -2438,11 +2438,11 @@ static void sub_6CBCE2(
         auto tileCoords = TileCoordsXY{ coords };
 
         // Replace map elements with temporary ones containing track
-        _backupTileElementArrays[0] = map_get_first_element_at(tileCoords.x + 0, tileCoords.y + 0);
-        _backupTileElementArrays[1] = map_get_first_element_at(tileCoords.x + 1, tileCoords.y + 0);
-        _backupTileElementArrays[2] = map_get_first_element_at(tileCoords.x - 1, tileCoords.y + 0);
-        _backupTileElementArrays[3] = map_get_first_element_at(tileCoords.x + 0, tileCoords.y + 1);
-        _backupTileElementArrays[4] = map_get_first_element_at(tileCoords.x + 0, tileCoords.y - 1);
+        _backupTileElementArrays[0] = map_get_first_element_at(TileCoordsXY{ tileCoords.x + 0, tileCoords.y + 0 }.ToCoordsXY());
+        _backupTileElementArrays[1] = map_get_first_element_at(TileCoordsXY{ tileCoords.x + 1, tileCoords.y + 0 }.ToCoordsXY());
+        _backupTileElementArrays[2] = map_get_first_element_at(TileCoordsXY{ tileCoords.x - 1, tileCoords.y + 0 }.ToCoordsXY());
+        _backupTileElementArrays[3] = map_get_first_element_at(TileCoordsXY{ tileCoords.x + 0, tileCoords.y + 1 }.ToCoordsXY());
+        _backupTileElementArrays[4] = map_get_first_element_at(TileCoordsXY{ tileCoords.x + 0, tileCoords.y - 1 }.ToCoordsXY());
         map_set_tile_element({ tileCoords.x + 0, tileCoords.y + 0 }, &_tempTrackTileElement);
         map_set_tile_element({ tileCoords.x + 1, tileCoords.y + 0 }, &_tempSideTrackTileElement);
         map_set_tile_element({ tileCoords.x - 1, tileCoords.y + 0 }, &_tempSideTrackTileElement);

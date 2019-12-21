@@ -206,7 +206,7 @@ static void ride_ratings_update_state_2()
     int32_t z = gRideRatingsCalcData.proximity_z / 8;
     int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
     if (tileElement == nullptr)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -317,7 +317,7 @@ static void ride_ratings_update_state_5()
     int32_t z = gRideRatingsCalcData.proximity_z / 8;
     int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
     if (tileElement == nullptr)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
@@ -428,7 +428,7 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
     if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
         return;
 
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return;
     do
@@ -482,7 +482,7 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
 
 static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTileElement, int32_t x, int32_t y)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return;
     do
@@ -558,7 +558,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
     gRideRatingsCalcData.proximity_total++;
     int32_t x = gRideRatingsCalcData.proximity_x;
     int32_t y = gRideRatingsCalcData.proximity_y;
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return;
     do
@@ -1453,7 +1453,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         for (int32_t xx = std::max(x - 5, 0); xx <= std::min(x + 5, 255); xx++)
         {
             // Count scenery items on this tile
-            TileElement* tileElement = map_get_first_element_at(xx, yy);
+            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ xx, yy }.ToCoordsXY());
             if (tileElement == nullptr)
                 continue;
             do

@@ -90,7 +90,7 @@ void map_animation_invalidate_all()
 static bool map_animation_invalidate_ride_entrance(CoordsXYZ loc)
 {
     TileCoordsXYZ tileLoc{ loc };
-    auto tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    auto tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -127,7 +127,7 @@ static bool map_animation_invalidate_queue_banner(CoordsXYZ loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -164,7 +164,7 @@ static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
     rct_sprite* sprite;
     Peep* peep;
 
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -238,7 +238,7 @@ static bool map_animation_invalidate_park_entrance(CoordsXYZ loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -268,7 +268,7 @@ static bool map_animation_invalidate_track_waterfall(CoordsXYZ loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -297,7 +297,7 @@ static bool map_animation_invalidate_track_rapids(CoordsXYZ loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -326,7 +326,7 @@ static bool map_animation_invalidate_track_onridephoto(CoordsXYZ loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -367,7 +367,7 @@ static bool map_animation_invalidate_track_whirlpool(CoordsXYZ loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -396,7 +396,7 @@ static bool map_animation_invalidate_track_spinningtunnel(CoordsXYZ loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -434,7 +434,7 @@ static bool map_animation_invalidate_banner(CoordsXYZ loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -461,7 +461,7 @@ static bool map_animation_invalidate_large_scenery(CoordsXYZ loc)
     rct_scenery_entry* sceneryEntry;
 
     bool wasInvalidated = false;
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do
@@ -496,7 +496,7 @@ static bool map_animation_invalidate_wall_door(CoordsXYZ loc)
         return false;
 
     bool removeAnimation = true;
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return removeAnimation;
     do
@@ -558,7 +558,7 @@ static bool map_animation_invalidate_wall(CoordsXYZ loc)
     rct_scenery_entry* sceneryEntry;
 
     bool wasInvalidated = false;
-    tileElement = map_get_first_element_at(tileLoc.x, tileLoc.y);
+    tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return true;
     do

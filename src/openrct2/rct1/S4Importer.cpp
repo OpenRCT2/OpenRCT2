@@ -2746,7 +2746,7 @@ private:
         {
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                TileElement* tileElement = map_get_first_element_at(x, y);
+                TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
                 if (tileElement == nullptr)
                     continue;
                 do
@@ -3002,7 +3002,7 @@ private:
         {
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                TileElement* tileElement = map_get_first_element_at(x, y);
+                TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
                 if (tileElement == nullptr)
                     continue;
                 do

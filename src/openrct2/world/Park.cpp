@@ -116,7 +116,7 @@ void update_park_fences(const CoordsXY coords)
     {
         bool fenceRequired = true;
 
-        TileElement* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
+        TileElement* tileElement = map_get_first_element_at(coords);
         if (tileElement == nullptr)
             return;
         // If an entrance element do not place flags around surface

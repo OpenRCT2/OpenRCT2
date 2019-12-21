@@ -337,7 +337,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
             windowTileInspectorElementCount++;
 
             // Select new element if there was none selected already
-            int16_t newIndex = (int16_t)(pastedElement - map_get_first_element_at(loc.x / 32, loc.y / 32));
+            int16_t newIndex = (int16_t)(pastedElement - map_get_first_element_at(loc));
             if (windowTileInspectorSelectedIndex == -1)
                 windowTileInspectorSelectedIndex = newIndex;
             else if (windowTileInspectorSelectedIndex >= newIndex)
@@ -354,7 +354,7 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(CoordsXY loc, bool isExecu
 {
     if (isExecuting)
     {
-        const TileElement* const firstElement = map_get_first_element_at(loc.x / 32, loc.y / 32);
+        const TileElement* const firstElement = map_get_first_element_at(loc);
         if (firstElement == nullptr)
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
@@ -788,7 +788,7 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(
             map_invalidate_tile_full(elem.x, elem.y);
 
             bool found = false;
-            TileElement* tileElement = map_get_first_element_at(elem.x >> 5, elem.y >> 5);
+            TileElement* tileElement = map_get_first_element_at({ elem.x, elem.y });
             do
             {
                 if (tileElement == nullptr)
@@ -895,7 +895,7 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
             map_invalidate_tile_full(elem.x, elem.y);
 
             bool found = false;
-            TileElement* tileElement = map_get_first_element_at(elem.x >> 5, elem.y >> 5);
+            TileElement* tileElement = map_get_first_element_at({ elem.x, elem.y });
             do
             {
                 if (tileElement == nullptr)

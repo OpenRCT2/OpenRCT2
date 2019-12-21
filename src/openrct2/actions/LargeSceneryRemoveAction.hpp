@@ -163,7 +163,7 @@ public:
                 }
             }
 
-            TileElement* sceneryElement = map_get_first_element_at(currentTile.x / 32, currentTile.y / 32);
+            TileElement* sceneryElement = map_get_first_element_at(currentTile);
             bool element_found = false;
             if (sceneryElement != nullptr)
             {
@@ -207,7 +207,7 @@ public:
 private:
     TileElement* FindLargeSceneryElement() const
     {
-        TileElement* tileElement = map_get_first_element_at(_loc.x / 32, _loc.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_loc);
         if (tileElement == nullptr)
             return nullptr;
 

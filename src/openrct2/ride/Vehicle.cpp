@@ -1836,7 +1836,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
-        auto tile_element = map_get_first_element_at(x / 32, y / 32);
+        auto tile_element = map_get_first_element_at({ x, y });
         if (tile_element == nullptr)
             return;
 
@@ -4642,7 +4642,7 @@ static void vehicle_update_boat_location(rct_vehicle* vehicle)
  */
 static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
 {
-    TileElement* tileElement = map_get_first_element_at(location.x, location.y);
+    TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
     if (tileElement == nullptr)
         return false;
     do
@@ -5136,7 +5136,7 @@ static void vehicle_update_doing_circus_show(rct_vehicle* vehicle)
  */
 static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
 {
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
     {
         return nullptr;

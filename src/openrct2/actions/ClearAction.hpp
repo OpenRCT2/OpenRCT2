@@ -143,7 +143,7 @@ private:
         do
         {
             tileEdited = false;
-            tileElement = map_get_first_element_at(x, y);
+            tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (tileElement == nullptr)
                 return totalCost;
             do
@@ -240,7 +240,7 @@ private:
         {
             for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
             {
-                auto tileElement = map_get_first_element_at(x, y);
+                auto tileElement = map_get_first_element_at(TileCoordsXY{x, y}.ToCoordsXY());
                 do
                 {
                     if (tileElement == nullptr)

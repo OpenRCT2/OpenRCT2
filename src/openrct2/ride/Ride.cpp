@@ -502,7 +502,7 @@ bool track_block_get_next_from_zero(
         y += CoordsDirectionDelta[direction_start].y;
     }
 
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
     {
         output->element = nullptr;
@@ -629,7 +629,7 @@ bool track_block_get_previous_from_zero(
         y += CoordsDirectionDelta[direction].y;
     }
 
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
     {
         outTrackBeginEnd->end_x = x;
@@ -1166,7 +1166,7 @@ void ride_clear_blocked_tiles(Ride* ride)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto element = map_get_first_element_at(x, y);
+            auto element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (element != nullptr)
             {
                 do
@@ -3294,7 +3294,7 @@ static void ride_shop_connected(Ride* ride)
         return;
 
     TrackElement* trackElement = nullptr;
-    TileElement* tileElement = map_get_first_element_at(shopLoc.x, shopLoc.y);
+    TileElement* tileElement = map_get_first_element_at(shopLoc.ToCoordsXY());
     do
     {
         if (tileElement == nullptr)
@@ -3953,7 +3953,7 @@ static void sub_6B5952(Ride* ride)
 
         // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
         // the ride or not.
-        TileElement* tileElement = map_get_first_element_at(location.x, location.y);
+        TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
         if (tileElement != nullptr)
         {
             do
@@ -4291,7 +4291,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
         int32_t y = (*position).y << 5;
         int32_t z = (*position).z;
 
-        TileElement* tileElement = map_get_first_element_at((*position).x, (*position).y);
+        TileElement* tileElement = map_get_first_element_at(position->ToCoordsXY());
         do
         {
             if (tileElement == nullptr)
@@ -4941,7 +4941,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
     int32_t z = ride->stations[stationIndex].Height;
 
     bool success = false;
-    TileElement* tileElement = map_get_first_element_at(location.x, location.y);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return success;
     do
@@ -5181,7 +5181,7 @@ static TileElement* loc_6B4F6B(ride_id_t rideIndex, int32_t x, int32_t y)
     if (ride == nullptr)
         return nullptr;
 
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -6258,7 +6258,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
             mapY = entranceExitCoords.y + CoordsDirectionDelta[entranceExitCoords.direction].y;
             if (map_is_location_valid({ mapX, mapY }))
             {
-                tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
+                tileElement = map_get_first_element_at({ mapX, mapY });
                 if (tileElement == nullptr)
                     continue;
                 do
@@ -6316,7 +6316,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
             entranceMaxY = mapY;
             mapX -= CoordsDirectionDelta[entranceExitCoords.direction].x;
             mapY -= CoordsDirectionDelta[entranceExitCoords.direction].y;
-            tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
+            tileElement = map_get_first_element_at({ mapX, mapY });
             if (tileElement == nullptr)
                 break;
             bool goToNextTile = false;
@@ -6663,7 +6663,7 @@ static int32_t ride_get_track_length(Ride* ride)
         trackStart = stationTileLoc.ToCoordsXY();
         auto z = ride->stations[i].Height;
 
-        tileElement = map_get_first_element_at(stationTileLoc.x, stationTileLoc.y);
+        tileElement = map_get_first_element_at(stationTileLoc.ToCoordsXY());
         if (tileElement == nullptr)
             continue;
         do
@@ -6927,7 +6927,7 @@ void sub_6CB945(Ride* ride)
                     location.x -= CoordsDirectionDelta[direction].x;
                     location.y -= CoordsDirectionDelta[direction].y;
                 }
-                tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
+                tileElement = map_get_first_element_at(location);
                 if (tileElement == nullptr)
                     break;
 
@@ -6976,7 +6976,7 @@ void sub_6CB945(Ride* ride)
                 auto blockTileHeight = TileCoordsXYZ(blockLocation).z;
 
                 bool trackFound = false;
-                tileElement = map_get_first_element_at(blockLocation.x >> 5, blockLocation.y >> 5);
+                tileElement = map_get_first_element_at(blockLocation);
                 if (tileElement == nullptr)
                     break;
                 do
@@ -7043,7 +7043,7 @@ void sub_6CB945(Ride* ride)
 
         CoordsXY location = { locationCoords.x * 32, locationCoords.y * 32 };
 
-        TileElement* tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
+        TileElement* tileElement = map_get_first_element_at(location);
         if (tileElement == nullptr)
             continue;
         do
@@ -7060,7 +7060,7 @@ void sub_6CB945(Ride* ride)
             nextLocation.y += CoordsDirectionDelta[tileElement->GetDirection()].y;
 
             bool shouldRemove = true;
-            TileElement* trackElement = map_get_first_element_at(nextLocation.x >> 5, nextLocation.y >> 5);
+            TileElement* trackElement = map_get_first_element_at(nextLocation);
             if (trackElement == nullptr)
                 continue;
             do
@@ -7308,7 +7308,7 @@ money16 ride_get_price(const Ride* ride)
 TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tolerance)
 {
     bool foundTileElement = false;
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement != nullptr)
     {
         do
@@ -7716,7 +7716,7 @@ void determine_ride_entrance_and_exit_locations()
             {
                 for (uint8_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
                 {
-                    TileElement* tileElement = map_get_first_element_at(x, y);
+                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
                     if (tileElement != nullptr)
                     {

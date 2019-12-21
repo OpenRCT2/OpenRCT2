@@ -710,7 +710,7 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
     if (!map_is_location_owned({ x, y, z }))
         return false;
 
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return false;
     do
