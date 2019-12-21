@@ -456,7 +456,7 @@ public:
         map_invalidate_tile_full(_loc.x, _loc.y);
         if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
         {
-            map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, _loc.x, _loc.y, sceneryElement->base_height);
+            map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, CoordsXYZ{ _loc, sceneryElement->base_height * 8 });
         }
 
         return res;

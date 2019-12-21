@@ -214,7 +214,7 @@ public:
             ride->stations[_stationNum].LastPeepInQueue = SPRITE_INDEX_NULL;
             ride->stations[_stationNum].QueueLength = 0;
 
-            map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, _loc.x, _loc.y, z / 8);
+            map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, { _loc, z });
         }
 
         footpath_queue_chain_reset();

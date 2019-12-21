@@ -7443,7 +7443,7 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
     {
         tileElement->SetAnimationIsBackwards(false);
         tileElement->SetAnimationFrame(1);
-        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords.x, wallCoords.y, wallCoords.z >> 3);
+        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
 
@@ -7496,7 +7496,8 @@ static void vehicle_trigger_on_ride_photo(rct_vehicle* vehicle, TileElement* til
 {
     tileElement->AsTrack()->SetPhotoTimeout();
 
-    map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, vehicle->track_x, vehicle->track_y, tileElement->base_height);
+    map_animation_create(
+        MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { vehicle->track_x, vehicle->track_y, tileElement->base_height * 8 });
 }
 
 /**
@@ -7523,7 +7524,7 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
     {
         tileElement->SetAnimationIsBackwards(true);
         tileElement->SetAnimationFrame(1);
-        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords.x, wallCoords.y, wallCoords.z >> 3);
+        map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, wallCoords);
         vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
 

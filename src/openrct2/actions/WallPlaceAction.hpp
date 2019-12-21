@@ -397,7 +397,7 @@ public:
         TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, targetHeight / 8 }, 0b0000);
         assert(tileElement != nullptr);
 
-        map_animation_create(MAP_ANIMATION_TYPE_WALL, _loc.x, _loc.y, targetHeight / 8);
+        map_animation_create(MAP_ANIMATION_TYPE_WALL, CoordsXYZ{ _loc, targetHeight });
 
         tileElement->SetType(TILE_ELEMENT_TYPE_WALL);
         WallElement* wallElement = tileElement->AsWall();
