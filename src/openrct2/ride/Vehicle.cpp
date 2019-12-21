@@ -9285,7 +9285,8 @@ loc_6DCE68:
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (((vehicle->track_x >> 5) != ride->stations[i].Start.x) && ((vehicle->track_y >> 5) != ride->stations[i].Start.y))
+        auto trackLoc = TileCoordsXY(CoordsXY{ vehicle->track_x, vehicle->track_y });
+        if (trackLoc != ride->stations[i].Start)
         {
             continue;
         }

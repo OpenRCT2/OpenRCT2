@@ -6650,19 +6650,20 @@ static int32_t ride_get_track_length(Ride* ride)
     TileElement* tileElement = nullptr;
     track_circuit_iterator it, slowIt;
     ride_id_t rideIndex;
-    int32_t x = 0, y = 0, z, trackType, result;
+    int32_t trackType, result;
+    CoordsXY trackStart;
     bool foundTrack = false;
 
     for (int32_t i = 0; i < MAX_STATIONS && !foundTrack; i++)
     {
-        if (ride->stations[i].Start.isNull())
+        const auto& stationTileLoc = ride->stations[i].Start;
+        if (stationTileLoc.isNull())
             continue;
 
-        x = ride->stations[i].Start.x * 32;
-        y = ride->stations[i].Start.y * 32;
-        z = ride->stations[i].Height;
+        trackStart = stationTileLoc.ToCoordsXY();
+        auto z = ride->stations[i].Height;
 
-        tileElement = map_get_first_element_at(x >> 5, y >> 5);
+        tileElement = map_get_first_element_at(stationTileLoc.x, stationTileLoc.y);
         if (tileElement == nullptr)
             continue;
         do
@@ -6693,7 +6694,7 @@ static int32_t ride_get_track_length(Ride* ride)
 
         bool moveSlowIt = true;
         result = 0;
-        track_circuit_iterator_begin(&it, { x, y, tileElement });
+        track_circuit_iterator_begin(&it, { trackStart.x, trackStart.y, tileElement });
         slowIt = it;
         while (track_circuit_iterator_next(&it))
         {
