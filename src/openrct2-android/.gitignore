@@ -40,3 +40,7 @@ captures/
 
 # NDK
 .externalNativeBuild/
+app/.cxx/
+
+# Assets - copied from /bin/data
+app/src/main/assets/openrct2/
