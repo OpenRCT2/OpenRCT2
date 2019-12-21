@@ -149,27 +149,38 @@ struct CoordsXY
     {
         return { floor2(x, 32), floor2(y, 32) };
     }
+
+    bool isNull() const
+    {
+        return x == COORDS_NULL;
+    };
 };
 
 struct TileCoordsXY
 {
+    int32_t x = 0;
+    int32_t y = 0;
+
     TileCoordsXY() = default;
     constexpr TileCoordsXY(int32_t x_, int32_t y_)
         : x(x_)
         , y(y_)
     {
     }
+
     explicit TileCoordsXY(CoordsXY c)
         : x(c.x / 32)
         , y(c.y / 32)
     {
     }
+
     TileCoordsXY& operator+=(const TileCoordsXY rhs)
     {
         x += rhs.x;
         y += rhs.y;
         return *this;
     }
+
     TileCoordsXY& operator-=(const TileCoordsXY rhs)
     {
         x -= rhs.x;
@@ -209,7 +220,10 @@ struct TileCoordsXY
         return rotatedCoords;
     }
 
-    int32_t x = 0, y = 0;
+    bool isNull() const
+    {
+        return x == COORDS_NULL;
+    };
 };
 
 struct CoordsXYZ : public CoordsXY
@@ -250,27 +264,29 @@ struct CoordsXYZ : public CoordsXY
     }
 };
 
-struct TileCoordsXYZ
+struct TileCoordsXYZ : public TileCoordsXY
 {
+    int32_t z = 0;
+
     TileCoordsXYZ() = default;
-    TileCoordsXYZ(int32_t x_, int32_t y_, int32_t z_)
-        : x(x_)
-        , y(y_)
+    constexpr TileCoordsXYZ(int32_t x_, int32_t y_, int32_t z_)
+        : TileCoordsXY(x_, y_)
         , z(z_)
     {
     }
-    explicit TileCoordsXYZ(CoordsXY c, int32_t z_)
-        : x(c.x / 32)
-        , y(c.y / 32)
+
+    TileCoordsXYZ(CoordsXY c, int32_t z_)
+        : TileCoordsXY(c)
         , z(z_)
     {
     }
+
     explicit TileCoordsXYZ(CoordsXYZ c)
-        : x(c.x / 32)
-        , y(c.y / 32)
+        : TileCoordsXY(c)
         , z(c.z / 8)
     {
     }
+
     TileCoordsXYZ& operator+=(const TileCoordsXY rhs)
     {
         x += rhs.x;
@@ -284,10 +300,12 @@ struct TileCoordsXYZ
         y -= rhs.y;
         return *this;
     }
+
     bool operator==(const TileCoordsXYZ& other) const
     {
         return x == other.x && y == other.y && z == other.z;
     }
+
     bool operator!=(const TileCoordsXYZ& other) const
     {
         return !(*this == other);
@@ -297,8 +315,6 @@ struct TileCoordsXYZ
     {
         return { x * 32, y * 32, z * 8 };
     }
-
-    int32_t x = 0, y = 0, z = 0;
 };
 
 /**
@@ -384,22 +400,30 @@ struct CoordsXYZD : public CoordsXYZ
     {
         return !(*this == other);
     }
-
-    bool isNull() const
-    {
-        return x == COORDS_NULL;
-    };
 };
 
-struct TileCoordsXYZD
+struct TileCoordsXYZD : public TileCoordsXYZ
 {
-    int32_t x, y, z;
     Direction direction;
 
-    bool isNull() const
+    TileCoordsXYZD() = default;
+    constexpr TileCoordsXYZD(int32_t x_, int32_t y_, int32_t z_, Direction d_)
+        : TileCoordsXYZ(x_, y_, z_)
+        , direction(d_)
     {
-        return x == COORDS_NULL;
-    };
+    }
+
+    TileCoordsXYZD(CoordsXY c_, int32_t z_, Direction d_)
+        : TileCoordsXYZ(c_, z_)
+        , direction(d_)
+    {
+    }
+
+    TileCoordsXYZD(CoordsXYZ c_, Direction d_)
+        : TileCoordsXYZ(c_)
+        , direction(d_)
+    {
+    }
 
     CoordsXYZD ToCoordsXYZD() const
     {
