@@ -1356,7 +1356,7 @@ void Network::BeginServerLog()
     else
     {
         logMessage[0] = '\0';
-        assert(0 && "Uninitialized mode");
+        Guard::Assert(false, "Unknown network mode!");
     }
     AppendServerLog(logMessage);
 }
@@ -1384,7 +1384,7 @@ void Network::CloseServerLog()
     else
     {
         logMessage[0] = '\0';
-        assert(0 && "Uninitialized mode");
+        Guard::Assert(false, "Unknown network mode!");
     }
     AppendServerLog(logMessage);
     _server_log_fs.close();

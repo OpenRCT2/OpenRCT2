@@ -55,9 +55,9 @@ private:
     int32_t _wallType{ -1 };
     CoordsXYZ _loc;
     Direction _edge{ INVALID_DIRECTION };
-    int32_t _primaryColour{ 0 };
-    int32_t _secondaryColour{ 0 };
-    int32_t _tertiaryColour{ 0 };
+    int32_t _primaryColour{ COLOUR_BLACK };
+    int32_t _secondaryColour{ COLOUR_BLACK };
+    int32_t _tertiaryColour{ COLOUR_BLACK };
     BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:

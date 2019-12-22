@@ -608,7 +608,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             }
 
             json_t* path = json_object_get(sprite_description, "path");
-            if (!path || !json_is_string(path))
+            if (!json_is_string(path))
             {
                 fprintf(stderr, "Error: no path provided for sprite %lu\n", (unsigned long)i);
                 json_decref(sprite_list);
