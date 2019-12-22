@@ -180,6 +180,11 @@ struct TileCoordsXY
     {
     }
 
+    const TileCoordsXY operator+(const TileCoordsXY& rhs) const
+    {
+        return { x + rhs.x, y + rhs.y };
+    }
+
     TileCoordsXY& operator+=(const TileCoordsXY rhs)
     {
         x += rhs.x;
