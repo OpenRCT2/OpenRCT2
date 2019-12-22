@@ -260,6 +260,15 @@ rct_sprite_checksum sprite_checksum()
                 copy.generic.sprite_left = copy.generic.sprite_right = copy.generic.sprite_top = copy.generic.sprite_bottom = 0;
                 copy.generic.sprite_width = copy.generic.sprite_height_negative = copy.generic.sprite_height_positive = 0;
 
+                // Next in quadrant might be a misc sprite, set first non-misc sprite in quadrant.
+                while (auto* nextSprite = get_sprite(copy.generic.next_in_quadrant))
+                {
+                    if (nextSprite->generic.sprite_identifier == SPRITE_IDENTIFIER_MISC)
+                        copy.generic.next_in_quadrant = nextSprite->generic.next_in_quadrant;
+                    else
+                        break;
+                }
+
                 if (copy.generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
                 {
                     // Name is pointer and will not be the same across clients
