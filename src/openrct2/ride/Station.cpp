@@ -373,7 +373,7 @@ int8_t ride_get_first_valid_station_exit(Ride* ride)
 {
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Exit.x != COORDS_NULL)
+        if (!ride->stations[i].Exit.isNull())
         {
             return i;
         }
