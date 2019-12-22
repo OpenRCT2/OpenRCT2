@@ -318,13 +318,13 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
     }
 
     int32_t direction;
-    CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
-    if (mapCoords.x != LOCATION_NULL)
+    auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+    if (mapCoords)
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         map_invalidate_tile_full(gMapSelectPositionA.x, gMapSelectPositionA.y);
-        gMapSelectPositionA = gMapSelectPositionB = mapCoords;
-        map_invalidate_tile_full(mapCoords.x, mapCoords.y);
+        gMapSelectPositionA = gMapSelectPositionB = *mapCoords;
+        map_invalidate_tile_full(mapCoords->x, mapCoords->y);
         gMapSelectType = MAP_SELECT_TYPE_FULL;
     }
 }
@@ -332,11 +332,11 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
 static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, ScreenCoordsXY screenCoords)
 {
     int32_t direction;
-    CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
-    if (mapCoords.x != LOCATION_NULL)
+    auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+    if (mapCoords)
     {
         _dragging = true;
-        _selectionStart = { static_cast<int16_t>(mapCoords.x), static_cast<int16_t>(mapCoords.y) };
+        _selectionStart = { static_cast<int16_t>(mapCoords->x), static_cast<int16_t>(mapCoords->y) };
     }
 }
 
@@ -348,15 +348,15 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
     }
 
     int32_t direction;
-    CoordsXY mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
-    if (mapCoords.x != LOCATION_NULL)
+    auto mapCoords = screen_pos_to_map_pos(screenCoords, &direction);
+    if (mapCoords)
     {
         map_invalidate_selection_rect();
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-        gMapSelectPositionA.x = std::min(_selectionStart.x, static_cast<int16_t>(mapCoords.x));
-        gMapSelectPositionB.x = std::max(_selectionStart.x, static_cast<int16_t>(mapCoords.x));
-        gMapSelectPositionA.y = std::min(_selectionStart.y, static_cast<int16_t>(mapCoords.y));
-        gMapSelectPositionB.y = std::max(_selectionStart.y, static_cast<int16_t>(mapCoords.y));
+        gMapSelectPositionA.x = std::min(_selectionStart.x, static_cast<int16_t>(mapCoords->x));
+        gMapSelectPositionB.x = std::max(_selectionStart.x, static_cast<int16_t>(mapCoords->x));
+        gMapSelectPositionA.y = std::min(_selectionStart.y, static_cast<int16_t>(mapCoords->y));
+        gMapSelectPositionB.y = std::max(_selectionStart.y, static_cast<int16_t>(mapCoords->y));
         gMapSelectType = MAP_SELECT_TYPE_FULL;
         map_invalidate_selection_rect();
     }

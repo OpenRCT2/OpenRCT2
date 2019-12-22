@@ -987,11 +987,11 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x0068958D
  */
-CoordsXY screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction)
+std::optional<CoordsXY> screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction)
 {
     auto mapCoords = screen_get_map_xy(screenCoords, nullptr);
     if (!mapCoords)
-        return {};
+        return std::nullopt;
 
     int32_t my_direction;
     int32_t dist_from_centre_x = abs(mapCoords->x % 32);
@@ -1030,7 +1030,7 @@ CoordsXY screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction)
 
     if (direction != nullptr)
         *direction = my_direction;
-    return mapCoords->ToTileStart();
+    return { mapCoords->ToTileStart() };
 }
 
 ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords)

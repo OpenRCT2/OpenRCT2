@@ -151,7 +151,7 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY startCoords);
 
 ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, ScreenCoordsXY screenCoords);
 CoordsXY viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z);
-CoordsXY screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction);
+std::optional<CoordsXY> screen_pos_to_map_pos(ScreenCoordsXY screenCoords, int32_t* direction);
 
 void show_gridlines();
 void hide_gridlines();

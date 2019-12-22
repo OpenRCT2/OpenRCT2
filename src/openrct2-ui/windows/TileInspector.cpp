@@ -1224,6 +1224,7 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
 
     CoordsXY mapCoords;
     TileElement* clickedElement = nullptr;
+    bool mouseOnViewport = false;
     if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
     {
         get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags, mapCoords, nullptr, &clickedElement, nullptr);
@@ -1232,10 +1233,15 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
     if (clickedElement == nullptr)
     {
-        mapCoords = screen_pos_to_map_pos(screenCoords, nullptr);
+        auto mouseCoords = screen_pos_to_map_pos(screenCoords, nullptr);
+        if (mouseCoords)
+        {
+            mouseOnViewport = true;
+            mapCoords = *mouseCoords;
+        }
     }
 
-    if (mapCoords.x != LOCATION_NULL)
+    if (mouseOnViewport)
     {
         gMapSelectPositionA = gMapSelectPositionB = mapCoords;
     }
@@ -1277,13 +1283,14 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, ScreenCoor
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
     if (clickedElement == nullptr)
     {
-        mapCoords = screen_pos_to_map_pos(screenCoords, nullptr);
+        auto mouseCoords = screen_pos_to_map_pos(screenCoords, nullptr);
 
-        if (mapCoords.x == LOCATION_NULL)
+        if (!mouseCoords)
         {
             return;
         }
 
+        mapCoords = *mouseCoords;
         // Tile is already selected
         if (windowTileInspectorTileSelected && mapCoords.x == windowTileInspectorToolMap.x
             && mapCoords.y == windowTileInspectorToolMap.y)
