@@ -56,6 +56,9 @@
 #ifdef __FreeBSD__
 #    define OPENRCT2_PLATFORM "FreeBSD"
 #endif
+#ifdef __NetBSD__
+#    define OPENRCT2_PLATFORM "NetBSD"
+#endif
 #ifdef __ANDROID__
 #    define OPENRCT2_PLATFORM "Android"
 #endif

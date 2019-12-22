@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if (defined(__linux__) || defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__)
+#if (defined(__unix__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__) && !defined(__APPLE__)
 
 #    include "UiContext.h"
 
@@ -393,4 +393,4 @@ namespace OpenRCT2::Ui
     }
 } // namespace OpenRCT2::Ui
 
-#endif // __linux__ || __OpenBSD__
+#endif // (defined(__unix__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__) && !defined(__APPLE__)

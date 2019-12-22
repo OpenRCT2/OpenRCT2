@@ -7,16 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || (defined(__linux__) && !defined(__ANDROID__))
+#if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__)
 
 #    include <limits.h>
 #    include <pwd.h>
 #    include <vector>
-#    if defined(__FreeBSD__)
+#    if defined(__FreeBSD__) || defined(__NetBSD__)
 #        include <stddef.h>
 #        include <sys/param.h>
 #        include <sys/sysctl.h>
-#    endif // __FreeBSD__
+#    endif // __FreeBSD__ || __NetBSD__
 #    if defined(__linux__)
 // for PATH_MAX
 #        include <linux/limits.h>
@@ -129,8 +129,12 @@ namespace Platform
         {
             log_fatal("failed to read /proc/self/exe");
         }
-#    elif defined(__FreeBSD__)
+#    elif defined(__FreeBSD__) || defined(__NetBSD__)
+#        if defined(__FreeBSD__)
         const int32_t mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
+#        else
+        const int32_t mib[] = { CTL_KERN, KERN_PROC_ARGS, -1, KERN_PROC_PATHNAME };
+#        endif
         auto exeLen = sizeof(exePath);
         if (sysctl(mib, 4, exePath, &exeLen, nullptr, 0) == -1)
         {
