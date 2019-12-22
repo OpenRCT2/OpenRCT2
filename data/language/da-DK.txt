@@ -3675,6 +3675,8 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Henter [{STRING}] fra {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Anbring ænder
 STR_6332    :Fjern ænder
+STR_6333    :Forøg skalerings faktor
+STR_6334    :Reducer skalerings faktor
 
 #############
 # Scenarios #
