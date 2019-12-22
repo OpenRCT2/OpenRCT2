@@ -2367,7 +2367,7 @@ static void window_ride_construction_draw_track_piece(
     while ((trackBlock + 1)->index != 0xFF)
         trackBlock++;
 
-    CoordsXYZ mapCoords{ trackBlock->x, trackBlock->z, trackBlock->y };
+    CoordsXYZ mapCoords{ trackBlock->x, trackBlock->y, trackBlock->z };
     if (trackBlock->var_09 & 2)
     {
         mapCoords.x = 0;
