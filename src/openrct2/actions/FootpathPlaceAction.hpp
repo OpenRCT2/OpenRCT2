@@ -239,8 +239,8 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost,
-                   crossingMode))
+                _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost,
+                crossingMode))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
@@ -304,8 +304,8 @@ private:
             : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
         if (!entrancePath
             && !map_can_construct_with_clear_at(
-                   _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile,
-                   GAME_COMMAND_FLAG_APPLY | GetFlags(), &res->Cost, crossingMode))
+                _loc.x, _loc.y, zLow, zHigh, &map_place_non_scenery_clear_func, quarterTile,
+                GAME_COMMAND_FLAG_APPLY | GetFlags(), &res->Cost, crossingMode))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
