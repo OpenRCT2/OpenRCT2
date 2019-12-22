@@ -2436,10 +2436,10 @@ static void sub_6CBCE2(
         int32_t clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
 
         auto centreTileCoords = TileCoordsXY{ coords };
-        auto eastTileCoords = centreTileCoords + TileDirectionDelta[2];
-        auto westTileCoords = centreTileCoords + TileDirectionDelta[0];
-        auto northTileCoords = centreTileCoords + TileDirectionDelta[1];
-        auto southTileCoords = centreTileCoords + TileDirectionDelta[3];
+        auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];
+        auto westTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_WEST];
+        auto northTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_NORTH];
+        auto southTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_SOUTH];
 
         // Replace map elements with temporary ones containing track
         _backupTileElementArrays[0] = map_get_first_element_at(centreTileCoords.ToCoordsXY());
