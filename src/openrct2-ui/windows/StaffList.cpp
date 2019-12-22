@@ -614,7 +614,7 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        set_format_arg(0, money32, wage_table[selectedTab]);
+        set_format_arg(0, money32, gStaffWageTable[selectedTab]);
         gfx_draw_string_left(dpi, STR_COST_PER_MONTH, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 155, w->y + 0x20);
     }
 
