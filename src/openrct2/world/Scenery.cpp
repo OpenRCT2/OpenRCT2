@@ -154,7 +154,7 @@ void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             case TILE_ELEMENT_TYPE_ENTRANCE:
             case TILE_ELEMENT_TYPE_PATH:
-                map_invalidate_tile_zoom1(x, y, tileElementAbove->GetBaseHeight(), tileElementAbove->GetClearanceHeight());
+                map_invalidate_tile_zoom1(x, y, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ());
                 tileElement->AsSmallScenery()->IncreaseAge(x, y);
                 return;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
@@ -170,7 +170,7 @@ void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
 
     // Reset age / water plant
     tileElement->AsSmallScenery()->SetAge(0);
-    map_invalidate_tile_zoom1(x, y, tileElement->GetBaseHeight(), tileElement->GetClearanceHeight());
+    map_invalidate_tile_zoom1(x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
 }
 
 /**

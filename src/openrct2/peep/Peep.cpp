@@ -773,7 +773,7 @@ bool Peep::Place(TileCoordsXYZ location, bool apply)
 
     // Set the coordinate of destination to be exactly
     // in the middle of a tile.
-    CoordsXYZ destination = { location.x * 32 + 16, location.y * 32 + 16, tileElement->GetBaseHeight() + 16 };
+    CoordsXYZ destination = { location.x * 32 + 16, location.y * 32 + 16, tileElement->GetBaseZ() + 16 };
 
     if (!map_is_location_owned(destination))
     {
@@ -912,7 +912,7 @@ void Peep::UpdateFalling()
             {
                 int32_t height = map_height_from_slope(
                                      { x, y }, tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
-                    + tile_element->GetBaseHeight();
+                    + tile_element->GetBaseZ();
 
                 if (height < z - 1 || height > z + 4)
                     continue;
@@ -2795,7 +2795,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
         vandalism_present = true;
     }
 
-    int16_t z = tile_element->GetBaseHeight();
+    int16_t z = tile_element->GetBaseZ();
     if (map_is_location_owned({ x, y, z }))
     {
         if (peep->outside_of_park == 1)

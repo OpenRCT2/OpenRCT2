@@ -5048,7 +5048,7 @@ void Guest::UpdateRideLeaveExit()
 
         int16_t height = map_height_from_slope(
             targetLoc, tileElement->AsPath()->GetSlopeDirection(), tileElement->AsPath()->IsSloped());
-        height += tileElement->GetBaseHeight();
+        height += tileElement->GetBaseZ();
 
         int16_t z_diff = z - height;
         if (z_diff > 0 || z_diff < -16)
@@ -6003,7 +6003,7 @@ void Guest::UpdateUsingBin()
             additionStatus |= space_left_in_bin << selected_bin;
             tileElement->AsPath()->SetAdditionStatus(additionStatus);
 
-            map_invalidate_tile_zoom0(next_x, next_y, tileElement->GetBaseHeight(), tileElement->GetClearanceHeight());
+            map_invalidate_tile_zoom0(next_x, next_y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
             StateReset();
             break;
         }
@@ -6320,7 +6320,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
 
     tileElement->AsPath()->SetIsBroken(true);
 
-    map_invalidate_tile_zoom1(peep->next_x, peep->next_y, (tileElement->GetBaseHeight()) + 32, tileElement->GetBaseHeight());
+    map_invalidate_tile_zoom1(peep->next_x, peep->next_y, (tileElement->GetBaseZ()) + 32, tileElement->GetBaseZ());
 
     peep->angriness = 16;
 }

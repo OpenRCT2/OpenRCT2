@@ -1495,8 +1495,8 @@ static void window_ride_update_overall_view(Ride* ride)
 
         int32_t x = it.x * 32;
         int32_t y = it.y * 32;
-        int32_t z1 = it.element->GetBaseHeight();
-        int32_t z2 = it.element->GetClearanceHeight();
+        int32_t z1 = it.element->GetBaseZ();
+        int32_t z2 = it.element->GetClearanceZ();
 
         minx = std::min(minx, x);
         miny = std::min(miny, y);
@@ -4411,7 +4411,7 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
     if (tileElement->AsTrack()->GetColourScheme() == newColourScheme)
         return;
 
-    z = tileElement->GetBaseHeight();
+    z = tileElement->GetBaseZ();
     direction = tileElement->GetDirection();
     auto gameAction = RideSetColourSchemeAction(
         CoordsXYZD{ x, y, z, static_cast<Direction>(direction) }, tileElement->AsTrack()->GetTrackType(), newColourScheme);

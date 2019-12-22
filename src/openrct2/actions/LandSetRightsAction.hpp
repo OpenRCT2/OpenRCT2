@@ -152,7 +152,7 @@ private:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    uint16_t baseHeight = surfaceElement->GetBaseHeight();
+                    uint16_t baseHeight = surfaceElement->GetBaseZ();
                     map_invalidate_tile(loc.x, loc.y, baseHeight, baseHeight + 16);
                 }
                 return res;
@@ -160,7 +160,7 @@ private:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
-                    uint16_t baseHeight = surfaceElement->GetBaseHeight();
+                    uint16_t baseHeight = surfaceElement->GetBaseZ();
                     map_invalidate_tile(loc.x, loc.y, baseHeight, baseHeight + 16);
                 }
                 return res;
@@ -168,7 +168,7 @@ private:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
-                    uint16_t baseHeight = surfaceElement->GetBaseHeight();
+                    uint16_t baseHeight = surfaceElement->GetBaseZ();
                     map_invalidate_tile(loc.x, loc.y, baseHeight, baseHeight + 16);
                 }
                 return res;

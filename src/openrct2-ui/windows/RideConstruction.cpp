@@ -1943,7 +1943,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 
         const rct_preview_track* trackBlock = get_track_def_from_ride_index(
             _currentRideIndex, tileElement->AsTrack()->GetTrackType());
-        z = (tileElement->GetBaseHeight()) - trackBlock->z;
+        z = (tileElement->GetBaseZ()) - trackBlock->z;
         gGotoStartPlacementMode = true;
     }
 
@@ -2122,7 +2122,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             get_map_coordinates_from_pos(screenCoords, 0xFCCA, mapCoords, &interactionType, &tileElement, &viewport);
             if (interactionType != 0)
             {
-                _trackPlaceCtrlZ = tileElement->GetBaseHeight();
+                _trackPlaceCtrlZ = tileElement->GetBaseZ();
                 _trackPlaceCtrlState = true;
             }
         }
@@ -2183,7 +2183,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             auto surfaceElement = map_get_surface_element_at(mapCoords);
             if (surfaceElement == nullptr)
                 return std::nullopt;
-            auto mapZ = floor2(surfaceElement->GetBaseHeight(), 16);
+            auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = std::max<int16_t>(mapZ, 16);
             _trackPlaceZ = mapZ;

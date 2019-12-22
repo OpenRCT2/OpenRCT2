@@ -1207,7 +1207,7 @@ static CoordsXYZD place_park_entrance_get_map_position(ScreenCoordsXY screenCoor
     parkEntranceMapPosition.z = surfaceElement->GetWaterHeight() * 8;
     if (parkEntranceMapPosition.z == 0)
     {
-        parkEntranceMapPosition.z = surfaceElement->GetBaseHeight();
+        parkEntranceMapPosition.z = surfaceElement->GetBaseZ();
         if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
         {
             parkEntranceMapPosition.z += 16;
@@ -1281,7 +1281,7 @@ static void window_map_set_peep_spawn_tool_update(ScreenCoordsXY screenCoords)
     if ((mapX & 0xFFFF) == 0x8000)
         return;
 
-    mapZ = tileElement->GetBaseHeight();
+    mapZ = tileElement->GetBaseZ();
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
     {
         if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
@@ -1338,7 +1338,7 @@ static void window_map_set_peep_spawn_tool_down(ScreenCoordsXY screenCoords)
     if (mapX == LOCATION_NULL)
         return;
 
-    mapZ = tileElement->GetBaseHeight();
+    mapZ = tileElement->GetBaseZ();
 
     auto gameAction = PlacePeepSpawnAction({ mapX, mapY, mapZ, static_cast<Direction>(direction) });
     auto result = GameActions::Execute(&gameAction);

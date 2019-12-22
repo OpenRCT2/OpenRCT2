@@ -148,7 +148,7 @@ public:
                 log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
             }
-            targetHeight = surfaceElement->GetBaseHeight();
+            targetHeight = surfaceElement->GetBaseZ();
 
             uint8_t slope = surfaceElement->GetSlope();
             edgeSlope = EdgeSlopes[slope][_edge & 3];
@@ -322,7 +322,7 @@ public:
                 log_error("Surface element not found at %d, %d.", _loc.x, _loc.y);
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
             }
-            targetHeight = surfaceElement->GetBaseHeight();
+            targetHeight = surfaceElement->GetBaseZ();
 
             uint8_t slope = surfaceElement->GetSlope();
             edgeSlope = EdgeSlopes[slope][_edge & 3];
@@ -431,7 +431,7 @@ public:
         }
 
         res->tileElement = tileElement;
-        map_invalidate_tile_zoom1(_loc.x, _loc.y, wallElement->GetBaseHeight(), wallElement->GetBaseHeight() + 72);
+        map_invalidate_tile_zoom1(_loc.x, _loc.y, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72);
 
         res->Cost = wallEntry->wall.price;
         return res;

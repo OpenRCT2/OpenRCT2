@@ -1046,7 +1046,7 @@ static void footpath_remove_tile_element(TileElement* tileElement)
         }
     }
 
-    gFootpathConstructFromPosition.z = tileElement->GetBaseHeight();
+    gFootpathConstructFromPosition.z = tileElement->GetBaseZ();
     // Remove path
     footpath_remove(gFootpathConstructFromPosition, GAME_COMMAND_FLAG_APPLY);
 

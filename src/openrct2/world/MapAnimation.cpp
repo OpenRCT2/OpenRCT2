@@ -185,7 +185,7 @@ static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
                 SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
                     | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
         {
-            map_invalidate_tile_zoom1(loc.x, loc.y, loc.z, tileElement->GetClearanceHeight());
+            map_invalidate_tile_zoom1(loc.x, loc.y, loc.z, tileElement->GetClearanceZ());
             return false;
         }
 
@@ -221,7 +221,7 @@ static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
                     break;
                 }
             }
-            map_invalidate_tile_zoom1(loc.x, loc.y, loc.z, tileElement->GetClearanceHeight());
+            map_invalidate_tile_zoom1(loc.x, loc.y, loc.z, tileElement->GetClearanceZ());
             return false;
         }
 
@@ -338,7 +338,7 @@ static bool map_animation_invalidate_track_onridephoto(CoordsXYZ loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_ON_RIDE_PHOTO)
         {
-            map_invalidate_tile_zoom1(loc.x, loc.y, loc.z, tileElement->GetClearanceHeight());
+            map_invalidate_tile_zoom1(loc.x, loc.y, loc.z, tileElement->GetClearanceZ());
             if (game_is_paused())
             {
                 return false;
@@ -634,7 +634,7 @@ void AutoCreateMapAnimations()
     while (tile_element_iterator_next(&it))
     {
         auto el = it.element;
-        auto loc = CoordsXYZ{ it.x * 32, it.y * 32, el->GetBaseHeight() };
+        auto loc = CoordsXYZ{ it.x * 32, it.y * 32, el->GetBaseZ() };
         switch (el->GetType())
         {
             case TILE_ELEMENT_TYPE_BANNER:

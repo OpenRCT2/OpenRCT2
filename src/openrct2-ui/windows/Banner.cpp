@@ -149,7 +149,7 @@ rct_window* window_banner_open(rct_windownumber number)
         tile_element++;
     }
 
-    int32_t view_z = tile_element->GetBaseHeight();
+    int32_t view_z = tile_element->GetBaseZ();
     w->frame_no = view_z;
 
     view_x += 16;
@@ -196,7 +196,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_BANNER_DEMOLISH:
         {
             auto bannerRemoveAction = BannerRemoveAction(
-                { x, y, tile_element->GetBaseHeight(), tile_element->AsBanner()->GetPosition() });
+                { x, y, tile_element->GetBaseZ(), tile_element->AsBanner()->GetPosition() });
             GameActions::Execute(&bannerRemoveAction);
             break;
         }

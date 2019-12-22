@@ -70,7 +70,7 @@ const uint8_t _fountainPatternFlags[] = {
 void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY newLoc, const TileElement* tileElement)
 {
     int32_t randomIndex;
-    auto newZ = tileElement->GetBaseHeight();
+    auto newZ = tileElement->GetBaseZ();
 
     // Change pattern approximately every 51 seconds
     uint32_t pattern = (gCurrentTicks >> 11) & 7;

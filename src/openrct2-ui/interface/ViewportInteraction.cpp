@@ -505,7 +505,7 @@ int32_t viewport_interaction_right_click(ScreenCoordsXY screenCoords)
 static void viewport_interaction_remove_scenery(TileElement* tileElement, CoordsXY mapCoords)
 {
     auto removeSceneryAction = SmallSceneryRemoveAction(
-        { mapCoords.x, mapCoords.y, tileElement->GetBaseHeight() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+        { mapCoords.x, mapCoords.y, tileElement->GetBaseZ() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
         tileElement->AsSmallScenery()->GetEntryIndex());
 
     GameActions::Execute(&removeSceneryAction);
@@ -520,7 +520,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, Coord
     rct_window* w;
     TileElement* tileElement2;
 
-    auto z = tileElement->GetBaseHeight();
+    auto z = tileElement->GetBaseZ();
 
     w = window_find_by_class(WC_FOOTPATH);
     if (w != nullptr)
@@ -531,7 +531,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, Coord
         return;
     do
     {
-        if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->GetBaseHeight() == z)
+        if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->GetBaseZ() == z)
         {
             footpath_remove({ mapCoords, z }, GAME_COMMAND_FLAG_APPLY);
             break;
@@ -545,7 +545,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, Coord
  */
 static void viewport_interaction_remove_footpath_item(TileElement* tileElement, CoordsXY mapCoords)
 {
-    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseHeight() });
+    auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseZ() });
     GameActions::Execute(&footpathSceneryRemoveAction);
 }
 
@@ -565,7 +565,7 @@ void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsX
             mapCoords -= CoordsDirectionDelta[rotation];
             break;
     }
-    auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseHeight() });
+    auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseZ() });
     GameActions::Execute(&parkEntranceRemoveAction);
 }
 
@@ -582,7 +582,7 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, Coor
     }
     else
     {
-        CoordsXYZD wallLocation = { mapCoords.x, mapCoords.y, tileElement->GetBaseHeight(), tileElement->GetDirection() };
+        CoordsXYZD wallLocation = { mapCoords.x, mapCoords.y, tileElement->GetBaseZ(), tileElement->GetDirection() };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
         GameActions::Execute(&wallRemoveAction);
     }
@@ -604,7 +604,7 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     else
     {
         auto removeSceneryAction = LargeSceneryRemoveAction(
-            { mapCoords.x, mapCoords.y, tileElement->GetBaseHeight(), tileElement->GetDirection() },
+            { mapCoords.x, mapCoords.y, tileElement->GetBaseZ(), tileElement->GetDirection() },
             tileElement->AsLargeScenery()->GetSequenceIndex());
         GameActions::Execute(&removeSceneryAction);
     }

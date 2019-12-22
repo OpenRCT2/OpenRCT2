@@ -912,7 +912,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         if (staff_is_patrol_area_set(200 + staffType, x, y))
         {
             uint32_t imageId = 2618;
-            int32_t height2 = tile_element->GetBaseHeight();
+            int32_t height2 = tile_element->GetBaseZ();
             if (tile_element->AsPath()->IsSloped())
             {
                 imageId = 2619 + ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 3);
@@ -925,7 +925,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS)
     {
-        uint16_t height2 = 3 + tile_element->GetBaseHeight();
+        uint16_t height2 = 3 + tile_element->GetBaseZ();
         if (tile_element->AsPath()->IsSloped())
         {
             height2 += 8;

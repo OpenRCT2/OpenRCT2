@@ -157,7 +157,7 @@ private:
                 continue;
 
             auto bannerRemoveAction = BannerRemoveAction(
-                { x, y, tileElement->GetBaseHeight(), tileElement->AsBanner()->GetPosition() });
+                { x, y, tileElement->GetBaseZ(), tileElement->AsBanner()->GetPosition() });
             bool isGhost = tileElement->IsGhost();
             auto bannerFlags = GetFlags() | (isGhost ? static_cast<uint32_t>(GAME_COMMAND_FLAG_GHOST) : 0);
             bannerRemoveAction.SetFlags(bannerFlags);

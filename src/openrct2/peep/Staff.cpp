@@ -1212,7 +1212,7 @@ void Staff::UpdateMowing()
         if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
-            map_invalidate_tile_zoom0(next_x, next_y, surfaceElement->GetBaseHeight(), surfaceElement->GetBaseHeight() + 16);
+            map_invalidate_tile_zoom0(next_x, next_y, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16);
         }
         staff_lawns_mown++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -1274,7 +1274,7 @@ void Staff::UpdateWatering()
                 continue;
 
             tile_element->AsSmallScenery()->SetAge(0);
-            map_invalidate_tile_zoom0(actionX, actionY, tile_element->GetBaseHeight(), tile_element->GetClearanceHeight());
+            map_invalidate_tile_zoom0(actionX, actionY, tile_element->GetBaseZ(), tile_element->GetClearanceZ());
             staff_gardens_watered++;
             window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
@@ -1358,7 +1358,7 @@ void Staff::UpdateEmptyingBin()
         uint8_t additionStatus = tile_element->AsPath()->GetAdditionStatus() | ((3 << var_37) << var_37);
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
-        map_invalidate_tile_zoom0(next_x, next_y, tile_element->GetBaseHeight(), tile_element->GetClearanceHeight());
+        map_invalidate_tile_zoom0(next_x, next_y, tile_element->GetBaseZ(), tile_element->GetClearanceZ());
 
         staff_bins_emptied++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;

@@ -227,7 +227,7 @@ public:
             {
                 if (surfaceElement != nullptr)
                 {
-                    if (surfaceElement->GetWaterHeight() || (surfaceElement->GetBaseHeight()) != targetHeight)
+                    if (surfaceElement->GetWaterHeight() || (surfaceElement->GetBaseZ()) != targetHeight)
                     {
                         return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LEVEL_LAND_REQUIRED);
                     }
@@ -456,7 +456,7 @@ public:
         map_invalidate_tile_full(_loc.x, _loc.y);
         if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
         {
-            map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, CoordsXYZ{ _loc, sceneryElement->GetBaseHeight() });
+            map_animation_create(MAP_ANIMATION_TYPE_SMALL_SCENERY, CoordsXYZ{ _loc, sceneryElement->GetBaseZ() });
         }
 
         return res;
