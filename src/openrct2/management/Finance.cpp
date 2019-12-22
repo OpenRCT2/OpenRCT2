@@ -24,18 +24,6 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 
-/**
- * Monthly staff wages
- *
- * rct2: 0x00992A00
- */
-const money32 wage_table[STAFF_TYPE_COUNT] = {
-    MONEY(50, 00), // Handyman
-    MONEY(80, 00), // Mechanic
-    MONEY(60, 00), // Security guard
-    MONEY(55, 00), // Entertainer
-};
-
 // Monthly research funding costs
 const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
     MONEY(0, 00),   // No funding
@@ -62,8 +50,6 @@ money32 gCashHistory[FINANCE_GRAPH_SIZE];
 money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
 money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_TYPE_COUNT];
-
-uint8_t gCommandExpenditureType;
 
 /**
  * Checks the condition if the game is required to use money.
@@ -130,7 +116,7 @@ void finance_pay_wages()
 
     FOR_ALL_STAFF (spriteIndex, peep)
     {
-        finance_payment(wage_table[peep->staff_type] / 4, RCT_EXPENDITURE_TYPE_WAGES);
+        finance_payment(gStaffWageTable[peep->staff_type] / 4, RCT_EXPENDITURE_TYPE_WAGES);
     }
 }
 
@@ -268,7 +254,7 @@ void finance_update_daily_profit()
 
         FOR_ALL_STAFF (sprite_index, peep)
         {
-            current_profit -= wage_table[peep->staff_type];
+            current_profit -= gStaffWageTable[peep->staff_type];
         }
 
         // Research costs

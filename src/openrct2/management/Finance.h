@@ -10,14 +10,11 @@
 #pragma once
 
 #include "../common.h"
-#include "../peep/Staff.h"
 #include "Research.h"
 
-using rct_expenditure_type = int32_t;
-
-enum
+enum rct_expenditure_type : int32_t
 {
-    RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION,
+    RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION = 0,
     RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS,
     RCT_EXPENDITURE_TYPE_LAND_PURCHASE,
     RCT_EXPENDITURE_TYPE_LANDSCAPING,
@@ -37,7 +34,6 @@ enum
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define FINANCE_GRAPH_SIZE 128
 
-extern const money32 wage_table[STAFF_TYPE_COUNT];
 extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
 
 extern money32 gInitialCash;
@@ -60,8 +56,6 @@ extern money32 gCashHistory[FINANCE_GRAPH_SIZE];
 extern money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 extern money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
 extern money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_TYPE_COUNT];
-
-extern uint8_t gCommandExpenditureType;
 
 bool finance_check_money_required(uint32_t flags);
 bool finance_check_affordability(money32 cost, uint32_t flags);
