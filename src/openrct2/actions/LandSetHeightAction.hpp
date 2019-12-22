@@ -140,7 +140,7 @@ public:
         }
         auto res = std::make_unique<GameActionResult>();
         res->Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         return res;
     }
 
@@ -167,7 +167,7 @@ public:
         auto res = std::make_unique<GameActionResult>();
         res->Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
         res->Cost = cost;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         return res;
     }
 

@@ -236,7 +236,7 @@ private:
         }
 
         auto res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
         res->Cost = refundPrice;
 
         if (!ride->overall_view.isNull())
@@ -357,7 +357,7 @@ private:
     GameActionResult::Ptr RefurbishRide(Ride * ride) const
     {
         auto res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
         res->Cost = GetRefurbishPrice(ride);
 
         ride->Renew();

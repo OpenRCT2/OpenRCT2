@@ -1708,25 +1708,25 @@ loc_69B221:
         no_of_souvenirs++;
 
     money16* expend_type = &paid_on_souvenirs;
-    rct_expenditure_type expenditure = RCT_EXPENDITURE_TYPE_SHOP_STOCK;
+    ExpenditureType expenditure = ExpenditureType::ShopStock;
 
     if (shop_item_is_food(shopItem))
     {
         expend_type = &paid_on_food;
-        expenditure = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
+        expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (shop_item_is_drink(shopItem))
     {
         expend_type = &paid_on_drink;
-        expenditure = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
+        expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         finance_payment(ShopItems[shopItem].Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
-    expenditure = static_cast<rct_expenditure_type>(static_cast<int32_t>(expenditure) - 1);
+    expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
         item_standard_flags &= ~PEEP_ITEM_VOUCHER;
@@ -2330,7 +2330,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 }
 
 // Used when no logging to an expend type required
-void Guest::SpendMoney(money32 amount, rct_expenditure_type expenditure)
+void Guest::SpendMoney(money32 amount, ExpenditureType expenditure)
 {
     money16 unused;
     SpendMoney(unused, amount, expenditure);
@@ -2341,7 +2341,7 @@ void Guest::SpendMoney(money32 amount, rct_expenditure_type expenditure)
  *  rct2: 0x0069926C
  * Expend type was previously an offset saved in 0x00F1AEC0
  */
-void Guest::SpendMoney(money16& peep_expend_type, money32 amount, rct_expenditure_type expenditure)
+void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureType expenditure)
 {
     assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
@@ -3873,7 +3873,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         {
             ride->total_profit += ridePrice;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-            SpendMoney(paid_on_rides, ridePrice, RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS);
+            SpendMoney(paid_on_rides, ridePrice, ExpenditureType::ParkRideTickets);
         }
     }
 

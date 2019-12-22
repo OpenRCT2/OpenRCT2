@@ -42,7 +42,7 @@ public:
     GameActionResult::Ptr Query() const override
     {
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
@@ -86,7 +86,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;

@@ -412,7 +412,7 @@ namespace GameActions
             // Update money balance
             if (result->Error == GA_ERROR::OK && finance_check_money_required(flags) && result->Cost != 0)
             {
-                finance_payment(result->Cost, result->ExpenditureType);
+                finance_payment(result->Cost, result->Expenditure);
                 rct_money_effect::Create(result->Cost, result->Position);
             }
 

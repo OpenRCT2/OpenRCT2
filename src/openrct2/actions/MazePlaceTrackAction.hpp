@@ -43,7 +43,7 @@ public:
         res->Position.x = _loc.x + 8;
         res->Position.y = _loc.y + 8;
         res->Position.z = _loc.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         if (!map_check_free_elements_and_reorganise(1))
         {
@@ -133,7 +133,7 @@ public:
         res->Position.x = _loc.x + 8;
         res->Position.y = _loc.y + 8;
         res->Position.z = _loc.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
         auto ride = get_ride(_rideIndex);

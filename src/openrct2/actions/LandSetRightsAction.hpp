@@ -100,7 +100,7 @@ private:
         centre.z = tile_element_height(centre);
 
         res->Position = centre;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
 
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
         {

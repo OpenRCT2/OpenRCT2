@@ -763,8 +763,8 @@ public:
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
-    void SpendMoney(money16& peep_expend_type, money32 amount, rct_expenditure_type type);
-    void SpendMoney(money32 amount, rct_expenditure_type type);
+    void SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureType type);
+    void SpendMoney(money32 amount, ExpenditureType type);
     void SetHasRidden(const Ride* ride);
     bool HasRidden(const Ride* ride) const;
     void SetHasRiddenRideType(int32_t rideType);

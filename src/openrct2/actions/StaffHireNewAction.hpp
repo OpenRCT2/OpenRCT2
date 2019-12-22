@@ -95,7 +95,7 @@ private:
     {
         auto res = std::make_unique<StaffHireNewActionResult>();
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
+        res->Expenditure = ExpenditureType::Wages;
 
         if (_staffType >= STAFF_TYPE_COUNT)
         {

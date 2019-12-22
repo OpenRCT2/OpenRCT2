@@ -63,7 +63,7 @@ public:
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_in_park(_loc) && !gCheatsSandboxMode)
         {
@@ -121,7 +121,7 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         auto wallElement = map_get_wall_element_at(_loc);
         if (wallElement == nullptr)

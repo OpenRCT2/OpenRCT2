@@ -60,7 +60,7 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Cost = 0;
 
         TileElement* tileElement = FindLargeSceneryElement();
@@ -125,7 +125,7 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Cost = 0;
 
         TileElement* tileElement = FindLargeSceneryElement();

@@ -50,7 +50,7 @@ public:
     {
         auto res = MakeResult();
         res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         auto normRange = _range.Normalise();
         auto x0 = std::max(normRange.GetLeft(), 32);
@@ -165,7 +165,7 @@ public:
     {
         auto res = MakeResult();
         res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         auto normRange = _range.Normalise();
         auto x0 = std::max(normRange.GetLeft(), 32);

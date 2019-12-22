@@ -51,7 +51,7 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
         if (!map_check_free_elements_and_reorganise(1))
@@ -113,7 +113,7 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = _loc.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
         if (!map_check_free_elements_and_reorganise(1))

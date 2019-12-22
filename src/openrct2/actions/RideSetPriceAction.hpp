@@ -77,7 +77,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
+        res->Expenditure = ExpenditureType::ParkRideTickets;
 
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)

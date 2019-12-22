@@ -103,7 +103,7 @@ public:
         res->ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
         res->Position = _loc;
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x += 16;
         res->Position.y += 16;
 
@@ -303,7 +303,7 @@ public:
         res->ErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
         res->Position = _loc;
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x += 16;
         res->Position.y += 16;
 

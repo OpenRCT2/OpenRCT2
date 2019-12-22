@@ -495,7 +495,7 @@ static constexpr const int32_t EXPENDITURE_COLUMN_WIDTH = 80;
 
 static int32_t _lastPaintedMonth;
 
-static constexpr const rct_string_id window_finances_summary_row_labels[RCT_EXPENDITURE_TYPE_COUNT] = {
+static constexpr const rct_string_id window_finances_summary_row_labels[static_cast<int32_t>(ExpenditureType::Count)] = {
     STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
     STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
     STR_FINANCES_SUMMARY_LAND_PURCHASE,
@@ -678,7 +678,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += 14;
 
     // Expenditure / Income row labels
-    for (int32_t i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
+    for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
     {
         // Darken every even row
         if (i % 2 == 0)
@@ -726,7 +726,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
     int32_t row_width = std::max<uint16_t>(w->scrolls[0].h_right, self.right - self.left);
 
     // Expenditure / Income row labels
-    for (int32_t i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
+    for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
     {
         // Darken every even row
         if (i % 2 == 0)
@@ -756,7 +756,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
 
         // Month expenditures
         money32 profit = 0;
-        for (int32_t j = 0; j < RCT_EXPENDITURE_TYPE_COUNT; j++)
+        for (int32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
         {
             money32 expenditure = gExpenditureTable[i][j];
             if (expenditure != 0)

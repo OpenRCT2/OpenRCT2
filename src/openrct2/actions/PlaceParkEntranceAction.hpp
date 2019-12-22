@@ -57,7 +57,7 @@ public:
         }
 
         auto res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = { _loc.x, _loc.y, _loc.z };
 
         if (!map_check_free_elements_and_reorganise(3))
@@ -113,7 +113,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
 
         uint32_t flags = GetFlags();

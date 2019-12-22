@@ -128,7 +128,7 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
         return res;
     }
 
@@ -186,7 +186,7 @@ public:
         res->Position.x = _loc.x + 16;
         res->Position.y = _loc.y + 16;
         res->Position.z = z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
 
         TileElement* tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, z / 8 }, 0b1111);
         assert(tileElement != nullptr);
@@ -269,7 +269,7 @@ public:
         res->Position.x = loc.x + 16;
         res->Position.y = loc.y + 16;
         res->Position.z = tile_element_height(loc);
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
         return res;
     }
 };

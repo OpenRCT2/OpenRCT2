@@ -2623,7 +2623,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             }
 
             gTotalIncomeFromAdmissions += entranceFee;
-            guest->SpendMoney(peep->paid_to_enter, entranceFee, RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS);
+            guest->SpendMoney(peep->paid_to_enter, entranceFee, ExpenditureType::ParkEntranceTickets);
             peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
@@ -2963,7 +2963,7 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
             // TODO: Refactor? SpendMoney previously accepted nullptr to not track money, passing a temporary variable as a
             // workaround
             money16 money = 0;
-            guest->SpendMoney(money, cost, RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS);
+            guest->SpendMoney(money, cost, ExpenditureType::ParkRideTickets);
         }
         peep->destination_x = (x & 0xFFE0) + 16;
         peep->destination_y = (y & 0xFFE0) + 16;

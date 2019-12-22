@@ -48,7 +48,7 @@ public:
         }
 
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = _loc;
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 
@@ -64,7 +64,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto res = MakeResult();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = _loc;
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 

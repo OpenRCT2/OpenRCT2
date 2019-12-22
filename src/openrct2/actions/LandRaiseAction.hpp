@@ -85,7 +85,7 @@ private:
         MapRange validRange = MapRange{ aX, aY, bX, bY };
 
         res->Position = { _coords.x, _coords.y, tile_element_height(_coords) };
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         if (isExecuting)
         {
