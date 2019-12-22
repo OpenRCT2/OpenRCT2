@@ -1051,10 +1051,11 @@ static void footpath_remove_tile_element(TileElement* tileElement)
     footpath_remove(gFootpathConstructFromPosition, GAME_COMMAND_FLAG_APPLY);
 
     // Move selection
+    edge = direction_reverse(edge);
     gFootpathConstructFromPosition.x -= CoordsDirectionDelta[edge].x;
     gFootpathConstructFromPosition.y -= CoordsDirectionDelta[edge].y;
     gFootpathConstructFromPosition.z = z * 8;
-    gFootpathConstructDirection = direction_reverse(edge);
+    gFootpathConstructDirection = edge;
     gFootpathConstructValidDirections = 255;
 }
 
