@@ -59,7 +59,7 @@ struct LocationXYZ16
 assert_struct_size(LocationXYZ16, 6);
 #pragma pack(pop)
 
-constexpr int32_t COORDS_NULL = -1;
+constexpr int32_t COORDS_NULL = 0xFFFF8000;
 
 struct ScreenCoordsXY
 {

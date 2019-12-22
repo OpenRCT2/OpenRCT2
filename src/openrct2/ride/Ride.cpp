@@ -4282,7 +4282,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
             *position++ = exit;
         }
     }
-    (*position++).x = COORDS_NULL;
+    (*position++).setNull();
 
     // Enumerate entrance and exit positions
     for (position = positions; !(*position).isNull(); position++)
