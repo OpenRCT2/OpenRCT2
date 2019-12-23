@@ -753,7 +753,7 @@ private:
                     surfaceElement->SetOwnership(destOwnership);
                     update_park_fences_around_tile(coords);
                     uint16_t baseHeight = surfaceElement->GetBaseZ();
-                    map_invalidate_tile(coords.x, coords.y, baseHeight, baseHeight + 16);
+                    map_invalidate_tile(coords, baseHeight, baseHeight + 16);
                 }
             }
         }
@@ -771,7 +771,7 @@ private:
                     surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
                     update_park_fences_around_tile({ x, y });
                     uint16_t baseHeight = surfaceElement->GetBaseZ();
-                    map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+                    map_invalidate_tile({ x, y }, baseHeight, baseHeight + 16);
                 }
             }
         }

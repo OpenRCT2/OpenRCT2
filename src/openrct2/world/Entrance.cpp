@@ -157,7 +157,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElem
         // Add the bottom outer wall
         tileElement->AsTrack()->MazeEntryAdd(1 << ((mazeSection + 12) & 0x0F));
 
-        map_invalidate_tile(x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+        map_invalidate_tile({ x, y }, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
         return;
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -201,7 +201,7 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
         // Remove the bottom hedge section
         tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
 
-        map_invalidate_tile(x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+        map_invalidate_tile({ x, y }, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
         return;
     } while (!(tileElement++)->IsLastForTile());
 }

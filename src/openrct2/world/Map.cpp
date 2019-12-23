@@ -1930,7 +1930,7 @@ bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequen
             tileElement->SetPrimaryColour(mainColour);
             tileElement->SetSecondaryColour(textColour);
 
-            map_invalidate_tile(tmpSignPos.x, tmpSignPos.y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+            map_invalidate_tile(tmpSignPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
         }
     }
 
@@ -1979,9 +1979,9 @@ static void map_invalidate_tile_under_zoom(int32_t x, int32_t y, int32_t z0, int
  *
  *  rct2: 0x006EC847
  */
-void map_invalidate_tile(int32_t x, int32_t y, int32_t z0, int32_t z1)
+void map_invalidate_tile(const CoordsXY& tilePos, int32_t z0, int32_t z1)
 {
-    map_invalidate_tile_under_zoom(x, y, z0, z1, -1);
+    map_invalidate_tile_under_zoom(tilePos.x, tilePos.y, z0, z1, -1);
 }
 
 /**
@@ -2008,12 +2008,12 @@ void map_invalidate_tile_zoom0(const CoordsXY& tilePos, int32_t z0, int32_t z1)
  */
 void map_invalidate_tile_full(const CoordsXY& tilePos)
 {
-    map_invalidate_tile(tilePos.x, tilePos.y, 0, 2080);
+    map_invalidate_tile(tilePos, 0, 2080);
 }
 
 void map_invalidate_element(const CoordsXY& elementPos, TileElement* tileElement)
 {
-    map_invalidate_tile(elementPos.x, elementPos.y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+    map_invalidate_tile(elementPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
 }
 
 void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs)
