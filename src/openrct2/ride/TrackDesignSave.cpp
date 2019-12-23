@@ -234,7 +234,8 @@ static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElemen
     direction = tileElement->GetDirection();
     sequence = tileElement->GetSequenceIndex();
 
-    auto sceneryOrigin = map_large_scenery_get_origin({ loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+    auto sceneryOrigin = map_large_scenery_get_origin(
+        { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
     if (!sceneryOrigin)
     {
         return;
@@ -409,7 +410,8 @@ static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryEle
     direction = tileElement->GetDirection();
     sequence = tileElement->GetSequenceIndex();
 
-    auto sceneryOrigin = map_large_scenery_get_origin({ loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+    auto sceneryOrigin = map_large_scenery_get_origin(
+        { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
     if (!sceneryOrigin)
     {
         return;
