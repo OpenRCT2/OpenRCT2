@@ -248,7 +248,7 @@ static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElemen
         auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
         CoordsXYZ tileLoc = { x0 + rotatedOffsetPos.x, y0 + rotatedOffsetPos.y, (z0 + tile->z_offset) };
-        auto largeElement = map_get_large_scenery_segment(tileLoc.x, tileLoc.y, tileLoc.z / 8, direction, sequence);
+        auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
         if (largeElement != nullptr)
         {
             if (sequence == 0)
@@ -422,7 +422,7 @@ static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryEle
         auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
         CoordsXYZ tileLoc = { x0 + rotatedOffsetPos.x, y0 + rotatedOffsetPos.y, z0 + tile->z_offset };
-        auto largeElement = map_get_large_scenery_segment(tileLoc.x, tileLoc.y, tileLoc.z / 8, direction, sequence);
+        auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
         if (largeElement != nullptr)
         {
             if (sequence == 0)

@@ -222,7 +222,7 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
 
 void map_clear_all_elements();
 
-LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence);
+LargeSceneryElement* map_get_large_scenery_segment(const CoordsXYZD& sceneryPos, int32_t sequence);
 bool map_large_scenery_get_origin(
     int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
     LargeSceneryElement** outElement);

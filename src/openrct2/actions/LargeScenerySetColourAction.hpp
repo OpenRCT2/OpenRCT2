@@ -83,7 +83,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
         }
 
-        auto largeElement = map_get_large_scenery_segment(_loc.x, _loc.y, _loc.z / 8, _loc.direction, _tileIndex);
+        auto largeElement = map_get_large_scenery_segment(_loc, _tileIndex);
 
         if (largeElement == nullptr)
         {
@@ -129,7 +129,7 @@ private:
                 }
             }
 
-            auto tileElement = map_get_large_scenery_segment(currentTile.x, currentTile.y, _loc.z / 8, _loc.direction, i);
+            auto tileElement = map_get_large_scenery_segment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);
 
             if (tileElement == nullptr)
             {

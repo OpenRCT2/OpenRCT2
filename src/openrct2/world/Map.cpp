@@ -1749,22 +1749,23 @@ int32_t map_get_highest_z(const CoordsXY& loc)
     return z;
 }
 
-LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence)
+LargeSceneryElement* map_get_large_scenery_segment(const CoordsXYZD& sceneryPos, int32_t sequence)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(sceneryPos);
     if (tileElement == nullptr)
     {
         return nullptr;
     }
+    auto sceneryTilePos = TileCoordsXYZ{ sceneryPos };
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != sceneryTilePos.z)
             continue;
         if (tileElement->AsLargeScenery()->GetSequenceIndex() != sequence)
             continue;
-        if ((tileElement->GetDirection()) != direction)
+        if ((tileElement->GetDirection()) != sceneryPos.direction)
             continue;
 
         return tileElement->AsLargeScenery();
@@ -1880,7 +1881,7 @@ bool map_large_scenery_get_origin(
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile* tile;
 
-    auto tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+    auto tileElement = map_get_large_scenery_segment({ x, y, z << 3, static_cast<Direction>(direction) }, sequence);
     if (tileElement == nullptr)
         return false;
 
@@ -1927,8 +1928,8 @@ bool sign_set_colour(
 
         x = x0 + rotatedOffsetPos.x;
         y = y0 + rotatedOffsetPos.y;
-        z = (z0 + tile->z_offset) / 8;
-        tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+        z = z0 + tile->z_offset;
+        tileElement = map_get_large_scenery_segment({ x, y, z, static_cast<Direction>(direction) }, sequence);
         if (tileElement != nullptr)
         {
             tileElement->SetPrimaryColour(mainColour);
