@@ -2435,7 +2435,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
         CoordsXYE input;
         input.x = stationPosition.x * 32;
         input.y = stationPosition.y * 32;
-        input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, current_ride);
+        input.element = map_get_track_element_at_from_ride({ input.x, input.y, stationZ << 3 }, current_ride);
         if (input.element == nullptr)
         {
             return true;
