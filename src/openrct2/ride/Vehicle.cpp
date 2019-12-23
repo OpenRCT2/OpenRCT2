@@ -3099,7 +3099,7 @@ void vehicle_test_reset(rct_vehicle* vehicle)
 static bool vehicle_current_tower_element_is_top(rct_vehicle* vehicle)
 {
     TileElement* tileElement = map_get_track_element_at_of_type(
-        vehicle->track_x, vehicle->track_y, vehicle->track_z / 8, vehicle->track_type >> 2);
+        { vehicle->track_x, vehicle->track_y, vehicle->track_z }, vehicle->track_type >> 2);
     if (tileElement != nullptr)
     {
         while (!tileElement->IsLastForTile())
@@ -6630,7 +6630,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
     int32_t trackType = vehicle->track_type >> 2;
 
     TileElement* trackElement = map_get_track_element_at_of_type(
-        vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType);
+        { vehicle->track_x, vehicle->track_y, vehicle->track_z }, trackType);
 
     if (trackElement == nullptr)
     {
