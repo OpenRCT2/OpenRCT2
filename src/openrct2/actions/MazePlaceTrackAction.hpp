@@ -190,7 +190,7 @@ public:
             tileElement->SetGhost(true);
         }
 
-        map_invalidate_tile_full(flooredX, flooredY);
+        map_invalidate_tile_full({ flooredX, flooredY });
 
         ride->maze_tiles++;
         ride->stations[0].SetBaseZ(tileElement->GetBaseZ());

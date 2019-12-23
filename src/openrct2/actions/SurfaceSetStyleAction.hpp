@@ -216,7 +216,7 @@ public:
 
                             surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
-                            map_invalidate_tile_full(x, y);
+                            map_invalidate_tile_full({ x, y });
                             footpath_remove_litter(x, y, tile_element_height({ x, y }));
                         }
                     }
@@ -231,14 +231,14 @@ public:
                         edgeCost += 100;
 
                         surfaceElement->SetEdgeStyle(_edgeStyle);
-                        map_invalidate_tile_full(x, y);
+                        map_invalidate_tile_full({ x, y });
                     }
                 }
 
                 if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
                 {
                     surfaceElement->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                    map_invalidate_tile_full(x, y);
+                    map_invalidate_tile_full({ x, y });
                 }
             }
         }

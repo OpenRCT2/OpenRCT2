@@ -326,7 +326,7 @@ private:
             {
                 // Set the path type but make sure it's not a queue as that will not show up
                 entranceElement->SetPathType(_type & 0x7F);
-                map_invalidate_tile_full(_loc.x, _loc.y);
+                map_invalidate_tile_full(_loc);
             }
         }
         else
@@ -429,7 +429,7 @@ private:
             footpath_connect_edges(_loc.x, _loc.y, (TileElement*)pathElement, GetFlags());
 
         footpath_update_queue_chains();
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
     }
 
     PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope) const

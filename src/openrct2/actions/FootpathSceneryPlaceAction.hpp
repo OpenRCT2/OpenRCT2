@@ -195,7 +195,7 @@ public:
                 pathElement->SetAdditionStatus(255);
             }
         }
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
         return res;
     }
 };

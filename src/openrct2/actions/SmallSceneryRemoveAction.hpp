@@ -126,7 +126,7 @@ public:
 
         res->Position.z = tile_element_height(res->Position);
 
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
         tile_element_remove(tileElement);
 
         return res;

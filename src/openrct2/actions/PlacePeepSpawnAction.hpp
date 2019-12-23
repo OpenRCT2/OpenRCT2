@@ -105,7 +105,7 @@ public:
             auto oldX = oldestSpawn->x;
             auto oldY = oldestSpawn->y;
             gPeepSpawns.erase(oldestSpawn);
-            map_invalidate_tile_full(oldX, oldY);
+            map_invalidate_tile_full({ oldX, oldY });
         }
 
         // Shift the spawn point to the middle of the tile
@@ -122,7 +122,7 @@ public:
         gPeepSpawns.push_back(spawn);
 
         // Invalidate tile
-        map_invalidate_tile_full(_location.x, _location.y);
+        map_invalidate_tile_full(_location);
 
         return res;
     }

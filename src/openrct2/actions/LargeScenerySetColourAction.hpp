@@ -143,7 +143,7 @@ private:
                 tileElement->SetPrimaryColour(_primaryColour);
                 tileElement->SetSecondaryColour(_secondaryColour);
 
-                map_invalidate_tile_full(currentTile.x, currentTile.y);
+                map_invalidate_tile_full(currentTile);
             }
         }
         return res;

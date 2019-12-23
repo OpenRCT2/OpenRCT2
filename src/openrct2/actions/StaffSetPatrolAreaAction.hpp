@@ -93,7 +93,7 @@ public:
         {
             for (int32_t x = 0; x < 4 * 32; x += 32)
             {
-                map_invalidate_tile_full((_loc.x & 0x1F80) + x, (_loc.y & 0x1F80) + y);
+                map_invalidate_tile_full({ (_loc.x & 0x1F80) + x, (_loc.y & 0x1F80) + y });
             }
         }
         staff_update_greyed_patrol_areas();

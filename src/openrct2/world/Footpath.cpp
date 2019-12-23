@@ -225,7 +225,7 @@ void footpath_provisional_update()
         gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-        map_invalidate_tile_full(gFootpathConstructFromPosition.x, gFootpathConstructFromPosition.y);
+        map_invalidate_tile_full(gFootpathConstructFromPosition);
     }
     footpath_provisional_remove();
 }
@@ -731,7 +731,7 @@ static bool footpath_reconnect_queue_to_path(int32_t x, int32_t y, TileElement* 
             otherTileElement->AsPath()->SetEdges(otherTileElement->AsPath()->GetEdges() | (1 << ((direction + 2) & 3)));
         }
         if (action != 0)
-            map_invalidate_tile_full(x1, y1);
+            map_invalidate_tile_full({ x1, y1 });
         return true;
     }
     return false;

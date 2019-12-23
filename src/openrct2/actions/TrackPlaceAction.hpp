@@ -678,7 +678,7 @@ public:
             {
                 footpath_connect_edges(mapLoc.x, mapLoc.y, tileElement, GetFlags());
             }
-            map_invalidate_tile_full(mapLoc.x, mapLoc.y);
+            map_invalidate_tile_full(mapLoc);
         }
 
         money32 price = RideTrackCosts[ride->type].track_price;

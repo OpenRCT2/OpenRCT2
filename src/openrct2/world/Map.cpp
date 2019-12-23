@@ -983,7 +983,7 @@ void map_invalidate_map_selection_tiles()
         return;
 
     for (const auto& position : gMapSelectionTiles)
-        map_invalidate_tile_full(position.x, position.y);
+        map_invalidate_tile_full(position);
 }
 
 static void map_get_bounding_box(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom)
@@ -2006,9 +2006,9 @@ void map_invalidate_tile_zoom0(int32_t x, int32_t y, int32_t z0, int32_t z1)
  *
  *  rct2: 0x006EC6D7
  */
-void map_invalidate_tile_full(int32_t x, int32_t y)
+void map_invalidate_tile_full(const CoordsXY& tilePos)
 {
-    map_invalidate_tile(x, y, 0, 2080);
+    map_invalidate_tile(tilePos.x, tilePos.y, 0, 2080);
 }
 
 void map_invalidate_element(const CoordsXY& elementPos, TileElement* tileElement)

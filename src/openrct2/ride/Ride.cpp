@@ -1240,7 +1240,7 @@ int32_t sub_6C683D(
         cur += offsets.Rotate(mapDirection);
         int32_t cur_z = start_z + trackBlock[i].z;
 
-        map_invalidate_tile_full(cur.x, cur.y);
+        map_invalidate_tile_full(cur);
 
         trackElement = map_get_track_element_at_of_type_seq(
             { cur.x, cur.y, cur_z, (Direction)direction }, type, trackBlock[i].index);
@@ -1382,7 +1382,7 @@ void ride_construction_invalidate_current_track()
         case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
             {
-                map_invalidate_tile_full(_currentTrackBegin.x & 0xFFE0, _currentTrackBegin.y & 0xFFE0);
+                map_invalidate_tile_full({ _currentTrackBegin.x & 0xFFE0, _currentTrackBegin.y & 0xFFE0 });
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             }
             break;
@@ -1391,7 +1391,7 @@ void ride_construction_invalidate_current_track()
             {
                 _currentTrackSelectionFlags &= ~TRACK_SELECTION_FLAG_ARROW;
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-                map_invalidate_tile_full(_currentTrackBegin.x, _currentTrackBegin.y);
+                map_invalidate_tile_full(_currentTrackBegin);
             }
             ride_construction_remove_ghosts();
             break;
@@ -7101,7 +7101,7 @@ void sub_6CB945(Ride* ride)
                 maze_entrance_hedge_replacement(location.x, location.y, tileElement);
                 footpath_remove_edges_at(location.x, location.y, tileElement);
                 footpath_update_queue_chains();
-                map_invalidate_tile_full(location.x, location.y);
+                map_invalidate_tile_full(location);
                 tile_element_remove(tileElement);
                 tileElement--;
             }

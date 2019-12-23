@@ -2622,7 +2622,7 @@ void sub_6C94D8()
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-            map_invalidate_tile_full(x, y);
+            map_invalidate_tile_full({ x, y });
             break;
         case RIDE_CONSTRUCTION_STATE_SELECTED:
             _rideConstructionArrowPulseTime--;
@@ -2672,7 +2672,7 @@ void sub_6C94D8()
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
-            map_invalidate_tile_full(x, y);
+            map_invalidate_tile_full({ x, y });
             break;
     }
 }

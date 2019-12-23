@@ -109,7 +109,7 @@ public:
         }
 
         pathElement->SetAddition(0);
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
 
         auto res = MakeResult();
         res->Position = _loc;
