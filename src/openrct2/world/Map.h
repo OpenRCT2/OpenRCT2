@@ -243,7 +243,7 @@ TileElement* map_get_track_element_at_with_direction_from_ride(
 bool map_is_location_at_edge(const CoordsXY& loc);
 void map_obstruction_set_error_text(TileElement* tileElement);
 
-uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t base_z);
+uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos);
 
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8_t ownership);

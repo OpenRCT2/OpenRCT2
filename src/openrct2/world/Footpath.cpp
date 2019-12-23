@@ -1236,7 +1236,7 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
     if (surfaceElement != nullptr)
     {
         // If the tile is not safe to own construction rights of, erase them.
-        if (check_max_allowable_land_rights_for_tile(x >> 5, y >> 5, surfaceElement->base_height) == OWNERSHIP_UNOWNED)
+        if (check_max_allowable_land_rights_for_tile({ x, y, surfaceElement->base_height << 3 }) == OWNERSHIP_UNOWNED)
         {
             ownership = OWNERSHIP_UNOWNED;
         }
