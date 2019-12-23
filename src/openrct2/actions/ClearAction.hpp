@@ -104,7 +104,7 @@ private:
             {
                 if (MapCanClearAt(x, y))
                 {
-                    auto cost = ClearSceneryFromTile(x / 32, y / 32, executing);
+                    auto cost = ClearSceneryFromTile({ x, y }, executing);
                     if (cost != MONEY32_UNDEFINED)
                     {
                         noValidTiles = false;
@@ -134,7 +134,7 @@ private:
         return result;
     }
 
-    money32 ClearSceneryFromTile(int32_t x, int32_t y, bool executing) const
+    money32 ClearSceneryFromTile(CoordsXY tilePos, bool executing) const
     {
         // Pass down all flags.
         TileElement* tileElement = nullptr;
@@ -143,7 +143,7 @@ private:
         do
         {
             tileEdited = false;
-            tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            tileElement = map_get_first_element_at(tilePos);
             if (tileElement == nullptr)
                 return totalCost;
             do
@@ -154,7 +154,7 @@ private:
                     case TILE_ELEMENT_TYPE_PATH:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_FOOTPATH)
                         {
-                            auto footpathRemoveAction = FootpathRemoveAction({ x * 32, y * 32, tileElement->base_height * 8 });
+                            auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->base_height * 8 });
                             footpathRemoveAction.SetFlags(GetFlags());
 
                             auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
@@ -171,8 +171,7 @@ private:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
                             auto removeSceneryAction = SmallSceneryRemoveAction(
-                                { x * 32, y * 32, tileElement->base_height * 8 },
-                                tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+                                { tilePos, tileElement->base_height * 8 }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
                                 tileElement->AsSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
@@ -189,8 +188,7 @@ private:
                     case TILE_ELEMENT_TYPE_WALL:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
-                            CoordsXYZD wallLocation = { x * 32, y * 32, tileElement->base_height * 8,
-                                                        tileElement->GetDirection() };
+                            CoordsXYZD wallLocation = { tilePos, tileElement->base_height * 8, tileElement->GetDirection() };
                             auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 
@@ -208,7 +206,7 @@ private:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
                         {
                             auto removeSceneryAction = LargeSceneryRemoveAction(
-                                { x * 32, y * 32, tileElement->base_height * 8, tileElement->GetDirection() },
+                                { tilePos, tileElement->base_height * 8, tileElement->GetDirection() },
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
 
