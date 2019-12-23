@@ -2240,7 +2240,7 @@ void Ride::UpdateSpiralSlide()
         x += ride_spiral_slide_main_tile_offset[rotation][current_rotation].x;
         y += ride_spiral_slide_main_tile_offset[rotation][current_rotation].y;
 
-        map_invalidate_tile_zoom0(x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+        map_invalidate_tile_zoom0({ x, y }, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
     }
 }
 

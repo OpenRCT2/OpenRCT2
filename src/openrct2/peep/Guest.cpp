@@ -5997,7 +5997,7 @@ void Guest::UpdateUsingBin()
             additionStatus |= space_left_in_bin << selected_bin;
             tileElement->AsPath()->SetAdditionStatus(additionStatus);
 
-            map_invalidate_tile_zoom0(next_x, next_y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+            map_invalidate_tile_zoom0({ next_x, next_y }, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
             StateReset();
             break;
         }
