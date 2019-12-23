@@ -223,9 +223,8 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
 void map_clear_all_elements();
 
 LargeSceneryElement* map_get_large_scenery_segment(const CoordsXYZD& sceneryPos, int32_t sequence);
-bool map_large_scenery_get_origin(
-    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
-    LargeSceneryElement** outElement);
+std::optional<CoordsXYZ> map_large_scenery_get_origin(
+    const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement);
 
 ScreenCoordsXY translate_3d_to_2d_with_z(int32_t rotation, const CoordsXYZ& pos);
 
