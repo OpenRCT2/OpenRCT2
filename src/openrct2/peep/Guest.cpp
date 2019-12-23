@@ -4884,7 +4884,7 @@ void Guest::UpdateRideMazePathfinding()
     int16_t stationHeight = ride->stations[0].Height;
 
     // Find the station track element
-    auto trackElement = map_get_track_element_at(targetLoc.x, targetLoc.y, stationHeight);
+    auto trackElement = map_get_track_element_at({ targetLoc, stationHeight << 3 });
     if (trackElement == nullptr)
     {
         return;

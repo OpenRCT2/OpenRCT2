@@ -2130,16 +2130,17 @@ void map_clear_all_elements()
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
+TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
         return nullptr;
+    auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != trackTilePos.z)
             continue;
 
         return tileElement->AsTrack();

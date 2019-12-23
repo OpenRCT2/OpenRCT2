@@ -2339,11 +2339,10 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
             return true;
         }
 
-        uint8_t stationZ = ride->stations[current_ride_station].Height;
-        uint16_t stationX = stationPosition.x * 32;
-        uint16_t stationY = stationPosition.y * 32;
+        auto stationTilePos = TileCoordsXYZ{ stationPosition, ride->stations[current_ride_station].Height };
+        auto stationPos = stationTilePos.ToCoordsXYZ();
 
-        auto tileElement = map_get_track_element_at(stationX, stationY, stationZ);
+        auto tileElement = map_get_track_element_at(stationPos);
         if (tileElement == nullptr)
         {
             log_error("Couldn't find tile_element");
@@ -2353,20 +2352,20 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
         int32_t trackDirection = tileElement->GetDirection();
         CoordsXY offset = _StationFixingOffsets[trackDirection];
 
-        stationX += 16 + offset.x;
+        stationPos.x += 16 + offset.x;
         if (offset.x == 0)
         {
-            stationX = destination_x;
+            stationPos.x = destination_x;
         }
 
-        stationY += 16 + offset.y;
+        stationPos.y += 16 + offset.y;
         if (offset.y == 0)
         {
-            stationY = destination_y;
+            stationPos.y = destination_y;
         }
 
-        destination_x = stationX;
-        destination_y = stationY;
+        destination_x = stationPos.x;
+        destination_y = stationPos.y;
         destination_tolerance = 2;
     }
 

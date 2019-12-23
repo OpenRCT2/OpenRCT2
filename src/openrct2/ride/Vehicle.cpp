@@ -2801,7 +2801,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
     int32_t y = location.y * 32;
     int32_t z = ride->stations[station].Height;
 
-    auto tileElement = map_get_track_element_at(x, y, z);
+    auto tileElement = map_get_track_element_at({ x, y, z << 3 });
     if (tileElement == nullptr)
     {
         return false;
@@ -3978,7 +3978,7 @@ loc_6D8E36:
         return;
     }
 
-    auto trackElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
+    auto trackElement = map_get_track_element_at({ vehicle->track_x, vehicle->track_y, vehicle->track_z });
 
     if (trackElement == nullptr)
     {
@@ -4248,7 +4248,7 @@ static void loc_6DA9F9(rct_vehicle* vehicle, int32_t x, int32_t y, int32_t bx, i
         vehicle->track_x = bx;
         vehicle->track_y = dx;
 
-        auto trackElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
+        auto trackElement = map_get_track_element_at({ vehicle->track_x, vehicle->track_y, vehicle->track_z });
 
         auto ride = get_ride(vehicle->ride);
         if (ride != nullptr)
@@ -6748,7 +6748,7 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
     x = trackBeginEnd.begin_x;
     y = trackBeginEnd.begin_y;
     z = trackBeginEnd.begin_z;
-    auto trackElement = map_get_track_element_at(x, y, z >> 3);
+    auto trackElement = map_get_track_element_at({ x, y, z });
     if (trackElement == nullptr)
     {
         return;
