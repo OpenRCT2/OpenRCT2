@@ -745,7 +745,7 @@ private:
                     continue;
 
                 int32_t base_z = surfaceElement->base_height;
-                int32_t destOwnership = check_max_allowable_land_rights_for_tile(coords.x >> 5, coords.y >> 5, base_z);
+                int32_t destOwnership = check_max_allowable_land_rights_for_tile({ coords, base_z << 3 });
 
                 // only own tiles that were not set to 0
                 if (destOwnership != OWNERSHIP_UNOWNED)

@@ -2355,9 +2355,9 @@ WallElement* map_get_wall_element_at(CoordsXYZD wallCoords)
     return nullptr;
 }
 
-uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t base_z)
+uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos)
 {
-    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(tileMapPos);
     uint16_t destOwnership = OWNERSHIP_OWNED;
 
     // Sometimes done deliberately.
@@ -2366,6 +2366,7 @@ uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t 
         return OWNERSHIP_OWNED;
     }
 
+    auto tilePos = TileCoordsXYZ{ tileMapPos };
     do
     {
         int32_t type = tileElement->GetType();
@@ -2375,7 +2376,7 @@ uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t 
         {
             destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
             // Do not own construction rights if too high/below surface
-            if (tileElement->base_height - 3 > base_z || tileElement->base_height < base_z)
+            if (tileElement->base_height - 3 > tilePos.z || tileElement->base_height < tilePos.z)
             {
                 destOwnership = OWNERSHIP_UNOWNED;
                 break;
