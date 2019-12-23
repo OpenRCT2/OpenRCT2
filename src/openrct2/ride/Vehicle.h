@@ -495,7 +495,7 @@ extern uint8_t _vehicleVAngleEndF64E36;
 extern uint8_t _vehicleBankEndF64E37;
 extern uint8_t _vehicleF64E2C;
 extern rct_vehicle* _vehicleFrontVehicle;
-extern LocationXYZ16 unk_F64E20;
+extern CoordsXYZ unk_F64E20;
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)

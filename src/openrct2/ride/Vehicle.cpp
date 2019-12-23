@@ -106,7 +106,7 @@ uint8_t _vehicleVAngleEndF64E36;
 uint8_t _vehicleBankEndF64E37;
 uint8_t _vehicleF64E2C;
 rct_vehicle* _vehicleFrontVehicle;
-LocationXYZ16 unk_F64E20;
+CoordsXYZ unk_F64E20;
 
 // clang-format off
 static constexpr const SoundId byte_9A3A14[] = { SoundId::Scream8, SoundId::Scream1 };
@@ -514,7 +514,7 @@ static constexpr const unk_9a36c4 Unk9A36C4[] =
 };
 
 /** rct2: 0x009A37C4 */
-static constexpr const LocationXY16 Unk9A37C4[] =
+static constexpr const TileCoordsXY Unk9A37C4[] =
 {
     { 0,  0},
     { 0, +1},
@@ -682,7 +682,7 @@ static constexpr const int32_t Unk9A39C4[] =
     1946281152,
 };
 
-static constexpr const LocationXY16 AvoidCollisionMoveOffset[] =
+static constexpr const CoordsXY AvoidCollisionMoveOffset[] =
 {
     { -1,  0 },
     {  0,  1 },
@@ -3127,12 +3127,11 @@ static void vehicle_update_travelling_boat_hire_setup(rct_vehicle* vehicle)
     vehicle->track_x = vehicle->x & 0xFFE0;
     vehicle->track_y = vehicle->y & 0xFFE0;
 
-    LocationXY8 location = {
-        static_cast<uint8_t>((vehicle->track_x + CoordsDirectionDelta[vehicle->sprite_direction >> 3].x) / 32),
-        static_cast<uint8_t>((vehicle->track_y + CoordsDirectionDelta[vehicle->sprite_direction >> 3].y) / 32)
+    TileCoordsXY location{
+        CoordsXY{ vehicle->track_x, vehicle->track_y } + CoordsDirectionDelta[vehicle->sprite_direction >> 3],
     };
 
-    vehicle->boat_location = location;
+    vehicle->boat_location = { static_cast<uint8_t>(location.x), static_cast<uint8_t>(location.y) };
     vehicle->var_35 = 0;
     vehicle->SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
     vehicle->remaining_distance += 27924;
@@ -4568,18 +4567,15 @@ static void vehicle_update_boat_location(rct_vehicle* vehicle)
     if (ride == nullptr)
         return;
 
-    LocationXY8 returnPosition = ride->boat_hire_return_position;
+    TileCoordsXY returnPosition = { ride->boat_hire_return_position.x, ride->boat_hire_return_position.y };
     uint8_t returnDirection = ride->boat_hire_return_direction & 3;
 
-    LocationXY8 location = {
-        static_cast<uint8_t>((vehicle->x + CoordsDirectionDelta[returnDirection].x) / 32),
-        static_cast<uint8_t>((vehicle->y + CoordsDirectionDelta[returnDirection].y) / 32),
-    };
+    TileCoordsXY location{ CoordsXY{ vehicle->x, vehicle->y } + CoordsDirectionDelta[returnDirection] };
 
-    if (location.xy == returnPosition.xy)
+    if (location == returnPosition)
     {
         vehicle->sub_state = 1;
-        vehicle->boat_location = location;
+        vehicle->boat_location = { static_cast<uint8_t>(location.x), static_cast<uint8_t>(location.y) };
         return;
     }
 
@@ -4591,10 +4587,7 @@ static void vehicle_update_boat_location(rct_vehicle* vehicle)
     {
         if (scenario_rand() & 1)
         {
-            LocationXY16 destLocation = {
-                static_cast<int16_t>(returnPosition.x * 32 - CoordsDirectionDelta[returnDirection].x + 16),
-                static_cast<int16_t>(returnPosition.y * 32 - CoordsDirectionDelta[returnDirection].y + 16),
-            };
+            CoordsXY destLocation = (returnPosition.ToCoordsXY() - CoordsDirectionDelta[returnDirection]).ToTileCentre();
 
             destLocation.x -= vehicle->x;
             destLocation.y -= vehicle->y;
@@ -5430,7 +5423,7 @@ static void vehicle_update_crash(rct_vehicle* vehicle)
 
         invalidate_sprite_2((rct_sprite*)curVehicle);
 
-        LocationXYZ16 curPosition = { curVehicle->x, curVehicle->y, curVehicle->z };
+        CoordsXYZ curPosition = { curVehicle->x, curVehicle->y, curVehicle->z };
 
         curPosition.x += (int8_t)(curVehicle->crash_x >> 8);
         curPosition.y += (int8_t)(curVehicle->crash_y >> 8);
@@ -6300,7 +6293,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
         uint8_t oldCollisionDirection = vehicle->dodgems_collision_direction & 0x1E;
         vehicle->dodgems_collision_direction = 0;
 
-        LocationXYZ16 location = { vehicle->x, vehicle->y, vehicle->z };
+        CoordsXYZ location = { vehicle->x, vehicle->y, vehicle->z };
 
         location.x += Unk9A36C4[oldCollisionDirection].x;
         location.y += Unk9A36C4[oldCollisionDirection].y;
@@ -6332,7 +6325,7 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle)
             uint8_t direction = vehicle->sprite_direction;
             direction |= vehicle->var_35 & 1;
 
-            LocationXYZ16 location = unk_F64E20;
+            CoordsXY location = unk_F64E20;
             location.x += Unk9A36C4[direction].x;
             location.y += Unk9A36C4[direction].y;
 
@@ -6434,13 +6427,12 @@ bool vehicle_update_dodgems_collision(rct_vehicle* vehicle, int16_t x, int16_t y
         return true;
     }
 
-    LocationXY8 location = { static_cast<uint8_t>(x / 32), static_cast<uint8_t>(y / 32) };
+    TileCoordsXY location{ CoordsXY{ x, y } };
 
     ride_id_t rideIndex = vehicle->ride;
     for (auto xy_offset : Unk9A37C4)
     {
-        location.x += xy_offset.x;
-        location.y += xy_offset.y;
+        location += xy_offset;
 
         uint16_t spriteIdx = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
         while (spriteIdx != SPRITE_INDEX_NULL)
@@ -7667,15 +7659,14 @@ static bool vehicle_update_motion_collision_detection(
         return direction < 0xF;
     }
 
-    LocationXY8 location = { static_cast<uint8_t>(x / 32), static_cast<uint8_t>(y / 32) };
+    TileCoordsXY location{ CoordsXY{ x, y } };
 
     bool mayCollide = false;
     uint16_t collideId = SPRITE_INDEX_NULL;
     rct_vehicle* collideVehicle = nullptr;
     for (auto xy_offset : Unk9A37C4)
     {
-        location.x += xy_offset.x;
-        location.y += xy_offset.y;
+        location += xy_offset;
 
         collideId = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
         for (; collideId != SPRITE_INDEX_NULL; collideId = collideVehicle->next_in_quadrant)
@@ -8077,14 +8068,16 @@ loc_6DB41D:
 
     if (vehicle->var_CD != 0 && vehicle->var_CD < 5)
     {
-        LocationXY8 curLocation = { static_cast<uint8_t>(regs.ax >> 5), static_cast<uint8_t>(regs.cx >> 5) };
+        TileCoordsXYZ curLocation{ CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z } };
 
-        regs.dx >>= 3;
-        if (curLocation.xy == ride->chairlift_bullwheel_location[1].xy && regs.dl == ride->chairlift_bullwheel_z[1])
+        if (curLocation.x == ride->chairlift_bullwheel_location[1].x && curLocation.y == ride->chairlift_bullwheel_location[1].y
+            && curLocation.z == ride->chairlift_bullwheel_z[1])
         {
             vehicle->var_CD = 3;
         }
-        else if (curLocation.xy == ride->chairlift_bullwheel_location[0].xy && regs.dl == ride->chairlift_bullwheel_z[0])
+        else if (
+            curLocation.x == ride->chairlift_bullwheel_location[0].x && curLocation.y == ride->chairlift_bullwheel_location[0].y
+            && curLocation.z == ride->chairlift_bullwheel_z[0])
         {
             vehicle->var_CD = 4;
         }
@@ -8471,14 +8464,16 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
 
     if (vehicle->var_CD != 0 && vehicle->var_CD < 5)
     {
-        if (ride->chairlift_bullwheel_location[1].x == (x >> 5) && ride->chairlift_bullwheel_location[1].y == (y >> 5)
-            && ride->chairlift_bullwheel_z[1] == (z >> 3))
+        TileCoordsXYZ curLocation{ CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z } };
+
+        if (ride->chairlift_bullwheel_location[1].x == curLocation.x && ride->chairlift_bullwheel_location[1].y == curLocation.y
+            && ride->chairlift_bullwheel_z[1] == curLocation.z)
         {
             vehicle->var_CD = 3;
         }
         else if (
-            ride->chairlift_bullwheel_location[0].x == (x >> 5) && ride->chairlift_bullwheel_location[0].y == (y >> 5)
-            && ride->chairlift_bullwheel_z[1] == (z >> 3))
+            ride->chairlift_bullwheel_location[0].x == curLocation.x && ride->chairlift_bullwheel_location[0].y == curLocation.y
+            && ride->chairlift_bullwheel_z[0] == curLocation.z)
         {
             vehicle->var_CD = 4;
         }
