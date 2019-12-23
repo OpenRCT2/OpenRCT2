@@ -204,7 +204,7 @@ private:
 
     TileElement* CheckTreeObstructions() const
     {
-        TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_coords);
         do
         {
             if (tileElement == nullptr)
@@ -227,7 +227,7 @@ private:
     money32 GetSmallSceneryRemovalCost() const
     {
         money32 cost{ 0 };
-        TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_coords);
         do
         {
             if (tileElement == nullptr)
@@ -246,7 +246,7 @@ private:
 
     void SmallSceneryRemoval() const
     {
-        TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_coords);
         do
         {
             if (tileElement == nullptr)
@@ -263,7 +263,7 @@ private:
 
     rct_string_id CheckRideSupports() const
     {
-        TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_coords);
         do
         {
             if (tileElement == nullptr)
@@ -320,7 +320,7 @@ private:
 
     TileElement* CheckUnremovableObstructions(TileElement * surfaceElement, uint8_t zCorner) const
     {
-        TileElement* tileElement = map_get_first_element_at(_coords.x / 32, _coords.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_coords);
         do
         {
             if (tileElement == nullptr)

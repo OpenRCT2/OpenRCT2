@@ -2435,19 +2435,23 @@ static void sub_6CBCE2(
         int32_t baseZ = (originZ + trackBlock->z) >> 3;
         int32_t clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
 
-        auto tileCoords = TileCoordsXY{ coords };
+        auto centreTileCoords = TileCoordsXY{ coords };
+        auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];
+        auto westTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_WEST];
+        auto northTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_NORTH];
+        auto southTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_SOUTH];
 
         // Replace map elements with temporary ones containing track
-        _backupTileElementArrays[0] = map_get_first_element_at(tileCoords.x + 0, tileCoords.y + 0);
-        _backupTileElementArrays[1] = map_get_first_element_at(tileCoords.x + 1, tileCoords.y + 0);
-        _backupTileElementArrays[2] = map_get_first_element_at(tileCoords.x - 1, tileCoords.y + 0);
-        _backupTileElementArrays[3] = map_get_first_element_at(tileCoords.x + 0, tileCoords.y + 1);
-        _backupTileElementArrays[4] = map_get_first_element_at(tileCoords.x + 0, tileCoords.y - 1);
-        map_set_tile_element({ tileCoords.x + 0, tileCoords.y + 0 }, &_tempTrackTileElement);
-        map_set_tile_element({ tileCoords.x + 1, tileCoords.y + 0 }, &_tempSideTrackTileElement);
-        map_set_tile_element({ tileCoords.x - 1, tileCoords.y + 0 }, &_tempSideTrackTileElement);
-        map_set_tile_element({ tileCoords.x + 0, tileCoords.y + 1 }, &_tempSideTrackTileElement);
-        map_set_tile_element({ tileCoords.x + 0, tileCoords.y - 1 }, &_tempSideTrackTileElement);
+        _backupTileElementArrays[0] = map_get_first_element_at(centreTileCoords.ToCoordsXY());
+        _backupTileElementArrays[1] = map_get_first_element_at(eastTileCoords.ToCoordsXY());
+        _backupTileElementArrays[2] = map_get_first_element_at(westTileCoords.ToCoordsXY());
+        _backupTileElementArrays[3] = map_get_first_element_at(northTileCoords.ToCoordsXY());
+        _backupTileElementArrays[4] = map_get_first_element_at(southTileCoords.ToCoordsXY());
+        map_set_tile_element(centreTileCoords, &_tempTrackTileElement);
+        map_set_tile_element(eastTileCoords, &_tempSideTrackTileElement);
+        map_set_tile_element(westTileCoords, &_tempSideTrackTileElement);
+        map_set_tile_element(northTileCoords, &_tempSideTrackTileElement);
+        map_set_tile_element(southTileCoords, &_tempSideTrackTileElement);
 
         // Set the temporary track element
         _tempTrackTileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
@@ -2469,11 +2473,11 @@ static void sub_6CBCE2(
         sub_68B2B7(session, coords);
 
         // Restore map elements
-        map_set_tile_element({ tileCoords.x + 0, tileCoords.y + 0 }, _backupTileElementArrays[0]);
-        map_set_tile_element({ tileCoords.x + 1, tileCoords.y + 0 }, _backupTileElementArrays[1]);
-        map_set_tile_element({ tileCoords.x - 1, tileCoords.y + 0 }, _backupTileElementArrays[2]);
-        map_set_tile_element({ tileCoords.x + 0, tileCoords.y + 1 }, _backupTileElementArrays[3]);
-        map_set_tile_element({ tileCoords.x + 0, tileCoords.y - 1 }, _backupTileElementArrays[4]);
+        map_set_tile_element(centreTileCoords, _backupTileElementArrays[0]);
+        map_set_tile_element(eastTileCoords, _backupTileElementArrays[1]);
+        map_set_tile_element(westTileCoords, _backupTileElementArrays[2]);
+        map_set_tile_element(northTileCoords, _backupTileElementArrays[3]);
+        map_set_tile_element(southTileCoords, _backupTileElementArrays[4]);
 
         trackBlock++;
     }

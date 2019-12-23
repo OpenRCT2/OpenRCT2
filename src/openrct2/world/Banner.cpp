@@ -79,7 +79,7 @@ size_t Banner::FormatTextTo(void* argsV) const
  */
 static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     ride_id_t resultRideIndex = RIDE_ID_NULL;
     if (tileElement == nullptr)
         return resultRideIndex;
@@ -162,7 +162,7 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
-        auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
+        auto tileElement = map_get_first_element_at(banner->position.ToCoordsXY());
         if (tileElement != nullptr)
         {
             do
@@ -183,7 +183,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
     if (banner == nullptr)
         return nullptr;
 
-    auto tileElement = map_get_first_element_at(banner->position.x, banner->position.y);
+    auto tileElement = map_get_first_element_at(banner->position.ToCoordsXY());
     if (tileElement == nullptr)
         return nullptr;
 
@@ -267,7 +267,7 @@ void fix_duplicated_banners()
     {
         for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            auto tileElement = map_get_first_element_at(x, y);
+            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (tileElement != nullptr)
             {
                 do

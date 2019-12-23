@@ -114,14 +114,14 @@ void tile_element_iterator_begin(tile_element_iterator* it)
 {
     it->x = 0;
     it->y = 0;
-    it->element = map_get_first_element_at(0, 0);
+    it->element = map_get_first_element_at({ 0, 0 });
 }
 
 int32_t tile_element_iterator_next(tile_element_iterator* it)
 {
     if (it->element == nullptr)
     {
-        it->element = map_get_first_element_at(it->x, it->y);
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
         return 1;
     }
 
@@ -134,7 +134,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     if (it->x < (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
     {
         it->x++;
-        it->element = map_get_first_element_at(it->x, it->y);
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
         return 1;
     }
 
@@ -142,7 +142,7 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
     {
         it->x = 0;
         it->y++;
-        it->element = map_get_first_element_at(it->x, it->y);
+        it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y }.ToCoordsXY());
         return 1;
     }
 
@@ -154,20 +154,20 @@ void tile_element_iterator_restart_for_tile(tile_element_iterator* it)
     it->element = nullptr;
 }
 
-TileElement* map_get_first_element_at(int32_t x, int32_t y)
+TileElement* map_get_first_element_at(const CoordsXY& elementPos)
 {
-    if (!map_is_location_valid({ x * 32, y * 32 }))
+    if (!map_is_location_valid(elementPos))
     {
         log_error("Trying to access element outside of range");
         return nullptr;
     }
-    return gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
+    auto tileElementPos = TileCoordsXY{ elementPos };
+    return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * MAXIMUM_MAP_SIZE_TECHNICAL];
 }
 
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
 {
-    auto tileCoords = TileCoordsXY{ coords };
-    TileElement* tileElement = map_get_first_element_at(tileCoords.x, tileCoords.y);
+    TileElement* tileElement = map_get_first_element_at(coords);
     if (tileElement == nullptr)
     {
         return nullptr;
@@ -204,8 +204,7 @@ void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
 
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
 {
-    auto tileCoords = TileCoordsXY{ coords };
-    TileElement* tileElement = map_get_first_element_at(tileCoords.x, tileCoords.y);
+    TileElement* tileElement = map_get_first_element_at(coords);
 
     if (tileElement == nullptr)
         return nullptr;
@@ -224,7 +223,7 @@ SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
 
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
 {
-    TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
+    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
 
     if (tileElement == nullptr)
         return nullptr;
@@ -248,7 +247,7 @@ PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t position)
 {
     auto bannerTilePos = TileCoordsXYZ{ bannerPos };
-    TileElement* tileElement = map_get_first_element_at(bannerTilePos.x, bannerTilePos.y);
+    TileElement* tileElement = map_get_first_element_at(bannerPos);
 
     if (tileElement == nullptr)
         return nullptr;
@@ -574,7 +573,7 @@ int16_t tile_element_water_height(const CoordsXY& loc)
  */
 bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
 {
-    TileElement* tileElement = map_get_first_element_at(loc.x, loc.y);
+    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
 
     if (tileElement == nullptr)
         return false;
@@ -1069,7 +1068,7 @@ void map_reorganise_elements()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            TileElement* startElement = map_get_first_element_at(x, y);
+            TileElement* startElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (startElement == nullptr)
                 continue;
             TileElement* endElement = startElement;
@@ -1285,7 +1284,7 @@ bool map_can_construct_with_clear_at(
         return true;
     }
 
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return false;
     do
@@ -1718,7 +1717,7 @@ static void clear_elements_at(const CoordsXY& loc)
             [x = loc.x, y = loc.y](const auto& spawn) { return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y; }),
         gPeepSpawns.end());
 
-    TileElement* tileElement = map_get_first_element_at(loc.x / 32, loc.y / 32);
+    TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
         return;
 
@@ -1752,7 +1751,7 @@ int32_t map_get_highest_z(const CoordsXY& loc)
 
 LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence)
 {
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
     {
         return nullptr;
@@ -1776,7 +1775,7 @@ LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t
 EntranceElement* map_get_park_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost)
 {
     auto entranceTileCoords = TileCoordsXYZ(entranceCoords);
-    TileElement* tileElement = map_get_first_element_at(entranceTileCoords.x, entranceTileCoords.y);
+    TileElement* tileElement = map_get_first_element_at(entranceCoords);
     if (tileElement != nullptr)
     {
         do
@@ -1802,7 +1801,7 @@ EntranceElement* map_get_park_entrance_element_at(const CoordsXYZ& entranceCoord
 EntranceElement* map_get_ride_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost)
 {
     auto entranceTileCoords = TileCoordsXYZ{ entranceCoords };
-    TileElement* tileElement = map_get_first_element_at(entranceTileCoords.x, entranceTileCoords.y);
+    TileElement* tileElement = map_get_first_element_at(entranceCoords);
     if (tileElement != nullptr)
     {
         do
@@ -1828,7 +1827,7 @@ EntranceElement* map_get_ride_entrance_element_at(const CoordsXYZ& entranceCoord
 EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool ghost)
 {
     auto exitTileCoords = TileCoordsXYZ{ exitCoords };
-    TileElement* tileElement = map_get_first_element_at(exitTileCoords.x, exitTileCoords.y);
+    TileElement* tileElement = map_get_first_element_at(exitCoords);
     if (tileElement != nullptr)
     {
         do
@@ -1854,7 +1853,7 @@ EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool 
 SmallSceneryElement* map_get_small_scenery_element_at(CoordsXYZ sceneryCoords, int32_t type, uint8_t quadrant)
 {
     auto sceneryTileCoords = TileCoordsXYZ{ sceneryCoords };
-    TileElement* tileElement = map_get_first_element_at(sceneryTileCoords.x, sceneryTileCoords.y);
+    TileElement* tileElement = map_get_first_element_at(sceneryCoords);
     if (tileElement != nullptr)
     {
         do
@@ -2134,7 +2133,7 @@ void map_clear_all_elements()
  */
 TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -2158,7 +2157,7 @@ TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
  */
 TileElement* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, int32_t trackType)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -2184,7 +2183,7 @@ TileElement* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, i
  */
 TileElement* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t sequence)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     do
     {
         if (tileElement == nullptr)
@@ -2206,7 +2205,7 @@ TileElement* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t 
 
 TrackElement* map_get_track_element_at_of_type(CoordsXYZD location, int32_t trackType)
 {
-    auto tileElement = map_get_first_element_at(location.x / 32, location.y / 32);
+    auto tileElement = map_get_first_element_at(location);
     if (tileElement != nullptr)
     {
         do
@@ -2229,7 +2228,7 @@ TrackElement* map_get_track_element_at_of_type(CoordsXYZD location, int32_t trac
 
 TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t trackType, int32_t sequence)
 {
-    auto tileElement = map_get_first_element_at(location.x / 32, location.y / 32);
+    auto tileElement = map_get_first_element_at(location);
     if (tileElement != nullptr)
     {
         do
@@ -2260,7 +2259,7 @@ TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t 
  */
 TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, int32_t z, int32_t trackType, ride_id_t rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -2288,7 +2287,7 @@ TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, in
  */
 TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, ride_id_t rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -2316,7 +2315,7 @@ TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z,
 TileElement* map_get_track_element_at_with_direction_from_ride(
     int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at({ x, y });
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -2339,7 +2338,7 @@ TileElement* map_get_track_element_at_with_direction_from_ride(
 WallElement* map_get_wall_element_at(CoordsXYZD wallCoords)
 {
     auto tileWallCoords = TileCoordsXYZ(wallCoords);
-    TileElement* tileElement = map_get_first_element_at(tileWallCoords.x, tileWallCoords.y);
+    TileElement* tileElement = map_get_first_element_at(wallCoords);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -2358,7 +2357,7 @@ WallElement* map_get_wall_element_at(CoordsXYZD wallCoords)
 
 uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t base_z)
 {
-    TileElement* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
     uint16_t destOwnership = OWNERSHIP_OWNED;
 
     // Sometimes done deliberately.

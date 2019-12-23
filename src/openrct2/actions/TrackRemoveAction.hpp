@@ -71,7 +71,7 @@ public:
 
         bool found = false;
         bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-        TileElement* tileElement = map_get_first_element_at(_origin.x / 32, _origin.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_origin);
 
         do
         {
@@ -157,7 +157,7 @@ public:
             map_invalidate_tile_full(mapLoc.x, mapLoc.y);
 
             found = false;
-            tileElement = map_get_first_element_at(mapLoc.x / 32, mapLoc.y / 32);
+            tileElement = map_get_first_element_at(mapLoc);
             do
             {
                 if (tileElement == nullptr)
@@ -267,7 +267,7 @@ public:
 
         bool found = false;
         bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-        TileElement* tileElement = map_get_first_element_at(_origin.x / 32, _origin.y / 32);
+        TileElement* tileElement = map_get_first_element_at(_origin);
 
         do
         {
@@ -347,7 +347,7 @@ public:
             map_invalidate_tile_full(mapLoc.x, mapLoc.y);
 
             found = false;
-            tileElement = map_get_first_element_at(mapLoc.x / 32, mapLoc.y / 32);
+            tileElement = map_get_first_element_at(mapLoc);
             do
             {
                 if (tileElement == nullptr)

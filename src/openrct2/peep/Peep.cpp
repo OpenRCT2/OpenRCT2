@@ -472,7 +472,7 @@ bool Peep::CheckForPath()
         return true;
     }
 
-    TileElement* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+    TileElement* tile_element = map_get_first_element_at({ next_x, next_y });
 
     uint8_t map_type = TILE_ELEMENT_TYPE_PATH;
     if (GetNextIsSurface())
@@ -899,7 +899,7 @@ void Peep::UpdateFalling()
     }
 
     // If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-    TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tile_element = map_get_first_element_at({ x, y });
     TileElement* saved_map = nullptr;
     int32_t saved_height = 0;
 
@@ -2540,7 +2540,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             int16_t next_y = (y & 0xFFE0) + CoordsDirectionDelta[entranceDirection].y;
 
             // Make sure there is a path right behind the entrance, otherwise turn around
-            TileElement* nextTileElement = map_get_first_element_at(next_x / 32, next_y / 32);
+            TileElement* nextTileElement = map_get_first_element_at({ next_x, next_y });
             do
             {
                 if (nextTileElement == nullptr)
@@ -3096,7 +3096,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         return;
     }
 
-    TileElement* tileElement = map_get_first_element_at(newLoc.x / 32, newLoc.y / 32);
+    TileElement* tileElement = map_get_first_element_at(newLoc);
     if (tileElement == nullptr)
         return;
     int16_t base_z = std::max(0, (z / 8) - 2);

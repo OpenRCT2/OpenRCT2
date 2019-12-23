@@ -96,7 +96,7 @@ public:
 private:
     TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const
     {
-        TileElement* tileElement = map_get_first_element_at(location.x / 32, location.y / 32);
+        TileElement* tileElement = map_get_first_element_at(location);
         if (!tileElement)
             return nullptr;
 

@@ -576,8 +576,7 @@ static TileElement* window_tile_inspector_get_selected_element(rct_window* w)
     openrct2_assert(
         windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
         "Selected list item out of range");
-    return map_get_first_element_at(windowTileInspectorToolMap.x / 32, windowTileInspectorToolMap.y / 32)
-        + windowTileInspectorSelectedIndex;
+    return map_get_first_element_at(windowTileInspectorToolMap) + windowTileInspectorSelectedIndex;
 }
 
 static void window_tile_inspector_select_element_from_list(rct_window* w, int32_t index)
@@ -599,7 +598,7 @@ static void window_tile_inspector_load_tile(rct_window* w, TileElement* elementT
     windowTileInspectorSelectedIndex = -1;
     w->scrolls[0].v_top = 0;
 
-    TileElement* element = map_get_first_element_at(windowTileInspectorToolMap.x / 32, windowTileInspectorToolMap.y / 32);
+    TileElement* element = map_get_first_element_at(windowTileInspectorToolMap);
     int16_t numItems = 0;
     do
     {
@@ -2168,8 +2167,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     if (!windowTileInspectorTileSelected)
         return;
 
-    const TileElement* tileElement = map_get_first_element_at(
-        windowTileInspectorToolMap.x / 32, windowTileInspectorToolMap.y / 32);
+    const TileElement* tileElement = map_get_first_element_at(windowTileInspectorToolMap);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     do

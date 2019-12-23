@@ -437,7 +437,7 @@ private:
         TileElement* tileElement;
         bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 
-        tileElement = map_get_first_element_at(x, y);
+        tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
         do
         {
             if (tileElement == nullptr)

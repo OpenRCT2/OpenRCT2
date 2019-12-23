@@ -236,7 +236,7 @@ bool JumpingFountain::IsJumpingFountain(const int32_t newType, const CoordsXYZ n
     const int32_t pathBitFlagMask = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
                                                                           : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
-    TileElement* tileElement = map_get_first_element_at(newLoc.x / 32, newLoc.y / 32);
+    TileElement* tileElement = map_get_first_element_at(newLoc);
     if (tileElement == nullptr)
         return false;
     do

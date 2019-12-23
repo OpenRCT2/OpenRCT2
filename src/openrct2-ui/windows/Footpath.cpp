@@ -1078,7 +1078,7 @@ static TileElement* footpath_get_tile_element_to_remove()
     z = (gFootpathConstructFromPosition.z >> 3) & 0xFF;
     zLow = z - 2;
 
-    tileElement = map_get_first_element_at(x, y);
+    tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
     do
     {
         if (tileElement == nullptr)

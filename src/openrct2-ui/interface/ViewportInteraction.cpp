@@ -527,7 +527,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, Coord
     if (w != nullptr)
         footpath_provisional_update();
 
-    tileElement2 = map_get_first_element_at(mapCoords.x / 32, mapCoords.y / 32);
+    tileElement2 = map_get_first_element_at(mapCoords);
     if (tileElement2 == nullptr)
         return;
     do

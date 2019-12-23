@@ -183,14 +183,15 @@ bool TrackElement::BlockBrakeClosed() const
     return (flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
 }
 
-TileElement* map_get_first_element_at(int x, int y)
+TileElement* map_get_first_element_at(const CoordsXY& elementPos)
 {
-    if (x < 0 || y < 0 || x > 255 || y > 255)
+    if (elementPos.x < 0 || elementPos.y < 0 || elementPos.x > 255 || elementPos.y > 255)
     {
         log_error("Trying to access element outside of range");
         return nullptr;
     }
-    return gTileElementTilePointers[x + y * 256];
+    auto tileElementPos = TileCoordsXY{ elementPos };
+    return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * 256];
 }
 
 bool ride_type_has_flag(int rideType, uint32_t flag)

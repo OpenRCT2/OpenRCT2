@@ -179,7 +179,7 @@ private:
                     return res;
                 }
 
-                TileElement* tileElement = map_get_first_element_at(loc.x / 32, loc.y / 32);
+                TileElement* tileElement = map_get_first_element_at(loc);
                 do
                 {
                     if (tileElement == nullptr)

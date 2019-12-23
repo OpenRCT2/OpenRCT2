@@ -267,7 +267,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
         }
 
         /* Search through all adjacent map elements */
-        TileElement* test_element = map_get_first_element_at(adjac_x / 32, adjac_y / 32);
+        TileElement* test_element = map_get_first_element_at({ adjac_x, adjac_y });
         if (test_element == nullptr)
             return false;
         bool pathfound = false;
@@ -475,7 +475,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
 
     int16_t nextZ = ((peep->z + 8) & 0xFFF0) / 8;
 
-    TileElement* tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
+    TileElement* tileElement = map_get_first_element_at(nextTile);
     if (tileElement == nullptr)
         return 0xFF;
     do
@@ -491,7 +491,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
     nextTile.x = (peep->x & 0xFFE0) + CoordsDirectionDelta[nextDirection].x;
     nextTile.y = (peep->y & 0xFFE0) + CoordsDirectionDelta[nextDirection].y;
 
-    tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
+    tileElement = map_get_first_element_at(nextTile);
     if (tileElement == nullptr)
         return 0xFF;
 
@@ -1256,7 +1256,7 @@ void Staff::UpdateWatering()
         int32_t actionX = next_x + CoordsDirectionDelta[var_37].x;
         int32_t actionY = next_y + CoordsDirectionDelta[var_37].y;
 
-        TileElement* tile_element = map_get_first_element_at(actionX / 32, actionY / 32);
+        TileElement* tile_element = map_get_first_element_at({ actionX, actionY });
         if (tile_element == nullptr)
             return;
 
@@ -1323,7 +1323,7 @@ void Staff::UpdateEmptyingBin()
         if (action_frame != 11)
             return;
 
-        TileElement* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+        TileElement* tile_element = map_get_first_element_at({ next_x, next_y });
         if (tile_element == nullptr)
             return;
 
@@ -1641,7 +1641,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
         int32_t x = peep->next_x + CoordsDirectionDelta[chosen_position].x;
         int32_t y = peep->next_y + CoordsDirectionDelta[chosen_position].y;
 
-        TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
+        TileElement* tile_element = map_get_first_element_at({ x, y });
 
         // This seems to happen in some SV4 files.
         if (tile_element == nullptr)
@@ -1709,7 +1709,7 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
     if (peep->GetNextIsSurface())
         return 0;
 
-    TileElement* tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    TileElement* tileElement = map_get_first_element_at({ peep->next_x, peep->next_y });
     if (tileElement == nullptr)
         return 0;
 
