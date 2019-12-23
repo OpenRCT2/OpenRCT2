@@ -727,7 +727,7 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        int32_t pathZ = tileElement->base_height * 8;
+        int32_t pathZ = tileElement->GetBaseZ();
         if (pathZ < z || pathZ >= z + 32)
             continue;
 

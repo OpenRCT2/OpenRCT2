@@ -539,12 +539,12 @@ bool track_block_get_next_from_zero(
         if (nextRotation != direction_start)
             continue;
 
-        int16_t nextZ = nextTrackCoordinate->z_begin - nextTrackBlock->z + tileElement->base_height * 8;
+        int16_t nextZ = nextTrackCoordinate->z_begin - nextTrackBlock->z + tileElement->GetBaseZ();
         if (nextZ != z_start)
             continue;
 
         if (z != nullptr)
-            *z = tileElement->base_height * 8;
+            *z = tileElement->GetBaseZ();
         if (direction != nullptr)
             *direction = nextRotation;
         output->x = x;
@@ -590,7 +590,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
 
     int32_t x = input->x;
     int32_t y = input->y;
-    int32_t OriginZ = inputElement->base_height * 8;
+    int32_t OriginZ = inputElement->GetBaseZ();
 
     uint8_t rotation = inputElement->GetDirection();
 
@@ -666,7 +666,7 @@ bool track_block_get_previous_from_zero(
         if (nextRotation != directionStart)
             continue;
 
-        int16_t nextZ = nextTrackCoordinate->z_end - nextTrackBlock->z + tileElement->base_height * 8;
+        int16_t nextZ = nextTrackCoordinate->z_end - nextTrackBlock->z + tileElement->GetBaseZ();
         if (nextZ != z)
             continue;
 
@@ -684,7 +684,7 @@ bool track_block_get_previous_from_zero(
         outTrackBeginEnd->begin_x = coords.x;
         outTrackBeginEnd->begin_y = coords.y;
 
-        outTrackBeginEnd->begin_z = tileElement->base_height * 8;
+        outTrackBeginEnd->begin_z = tileElement->GetBaseZ();
 
         auto nextTrackBlock2 = get_track_def_from_ride(ride, trackElement->GetTrackType());
         if (nextTrackBlock2 == nullptr)
@@ -733,7 +733,7 @@ bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, tr
     if (trackCoordinate == nullptr)
         return false;
 
-    int32_t z = trackElement->base_height * 8;
+    int32_t z = trackElement->GetBaseZ();
 
     uint8_t rotation = trackElement->GetDirection();
     CoordsXY coords = { x, y };
@@ -991,7 +991,7 @@ void ride_construct(Ride* ride)
 
         rct_window* w = window_get_main();
         if (w != nullptr && ride_modify(&trackElement))
-            window_scroll_to_location(w, trackElement.x, trackElement.y, trackElement.element->base_height * 8);
+            window_scroll_to_location(w, trackElement.x, trackElement.y, trackElement.element->GetBaseZ());
     }
     else
     {
@@ -1622,7 +1622,7 @@ void ride_select_next_section()
             if (!scenery_tool_is_active())
             {
                 // Set next element's height.
-                virtual_floor_set_height(tileElement->base_height << 3);
+                virtual_floor_set_height(tileElement->GetBaseZ());
             }
         }
         else
@@ -1696,7 +1696,7 @@ void ride_select_previous_section()
             if (!scenery_tool_is_active())
             {
                 // Set previous element's height.
-                virtual_floor_set_height(trackBeginEnd.begin_element->base_height << 3);
+                virtual_floor_set_height(trackBeginEnd.begin_element->GetBaseZ());
             }
             window_ride_construction_update_active_elements();
         }
@@ -1816,7 +1816,7 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
             _currentTrackBegin.x = tileElement.x;
             _currentTrackBegin.y = tileElement.y;
-            _currentTrackBegin.z = trackElement->base_height * 8;
+            _currentTrackBegin.z = trackElement->GetBaseZ();
             _currentTrackSelectionFlags = 0;
             _rideConstructionArrowPulseTime = 0;
 
@@ -1886,7 +1886,7 @@ bool ride_modify(CoordsXYE* input)
 
     int32_t x = tileElement.x;
     int32_t y = tileElement.y;
-    int32_t z = tileElement.element->base_height * 8;
+    int32_t z = tileElement.element->GetBaseZ();
     int32_t direction = tileElement.element->GetDirection();
     int32_t type = tileElement.element->AsTrack()->GetTrackType();
 
@@ -2245,7 +2245,7 @@ void Ride::UpdateSpiralSlide()
         x += ride_spiral_slide_main_tile_offset[rotation][current_rotation].x;
         y += ride_spiral_slide_main_tile_offset[rotation][current_rotation].y;
 
-        map_invalidate_tile_zoom0(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+        map_invalidate_tile_zoom0(x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
     }
 }
 
@@ -4471,7 +4471,7 @@ static rct_vehicle* vehicle_create_car(
         int32_t direction = tileElement->GetDirection();
         x += word_9A3AB4[direction].x;
         y += word_9A3AB4[direction].y;
-        z = tileElement->base_height * 8;
+        z = tileElement->GetBaseZ();
         vehicle->track_x = x;
         vehicle->track_y = y;
         vehicle->track_z = z;
@@ -4565,10 +4565,10 @@ static rct_vehicle* vehicle_create_car(
 
         x += word_9A2A60[direction].x;
         y += word_9A2A60[direction].y;
-        vehicle->track_z = tileElement->base_height * 8;
+        vehicle->track_z = tileElement->GetBaseZ();
 
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
-        z = tileElement->base_height * 8;
+        z = tileElement->GetBaseZ();
         z += RideData5[ride->type].z_offset;
 
         sprite_move(x, y, z, (rct_sprite*)vehicle);
@@ -5013,7 +5013,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         }
         if (isApplying)
         {
-            z = tileElement->base_height * 8;
+            z = tileElement->GetBaseZ();
             int32_t direction = tileElement->GetDirection();
             trackType = tileElement->AsTrack()->GetTrackType();
             x = it.current.x;
@@ -5166,7 +5166,7 @@ static void ride_scroll_to_track_error(CoordsXYE* trackElement)
     rct_window* w = window_get_main();
     if (w != nullptr)
     {
-        window_scroll_to_location(w, trackElement->x, trackElement->y, trackElement->element->base_height * 8);
+        window_scroll_to_location(w, trackElement->x, trackElement->y, trackElement->element->GetBaseZ());
         ride_modify(trackElement);
     }
 }
@@ -5550,7 +5550,7 @@ int32_t ride_get_refund_price(const Ride* ride)
     {
         auto trackRemoveAction = TrackRemoveAction(
             trackElement.element->AsTrack()->GetTrackType(), trackElement.element->AsTrack()->GetSequenceIndex(),
-            { trackElement.x, trackElement.y, trackElement.element->base_height * 8, direction });
+            { trackElement.x, trackElement.y, trackElement.element->GetBaseZ(), direction });
         trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
 
         auto res = GameActions::Query(&trackRemoveAction);

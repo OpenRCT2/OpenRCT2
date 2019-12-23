@@ -180,7 +180,7 @@ public:
             update_park_fences({ entranceLoc.x, entranceLoc.y - 32 });
             update_park_fences({ entranceLoc.x, entranceLoc.y + 32 });
 
-            map_invalidate_tile(entranceLoc.x, entranceLoc.y, newElement->base_height * 8, newElement->clearance_height * 8);
+            map_invalidate_tile(entranceLoc.x, entranceLoc.y, newElement->GetBaseZ(), newElement->GetClearanceZ());
 
             if (index == 0)
             {

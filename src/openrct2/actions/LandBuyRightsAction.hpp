@@ -169,7 +169,7 @@ private:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    uint16_t baseHeight = surfaceElement->base_height * 8;
+                    uint16_t baseHeight = surfaceElement->GetBaseZ();
                     map_invalidate_tile(loc.x, loc.y, baseHeight, baseHeight + 16);
                 }
                 res->Cost = gConstructionRightsPrice;

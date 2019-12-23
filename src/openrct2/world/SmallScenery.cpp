@@ -50,7 +50,7 @@ static int32_t map_place_clear_func(
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
         return 0;
 
-    map_invalidate_tile(x, y, (*tile_element)->base_height * 8, (*tile_element)->clearance_height * 8);
+    map_invalidate_tile(x, y, (*tile_element)->GetBaseZ(), (*tile_element)->GetClearanceZ());
 
     tile_element_remove(*tile_element);
 
@@ -128,7 +128,7 @@ void SmallSceneryElement::IncreaseAge(int32_t x, int32_t y)
 
             if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
             {
-                map_invalidate_tile_zoom1(x, y, base_height * 8, clearance_height * 8);
+                map_invalidate_tile_zoom1(x, y, GetBaseZ(), GetClearanceZ());
             }
         }
     }

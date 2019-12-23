@@ -1943,7 +1943,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 
         const rct_preview_track* trackBlock = get_track_def_from_ride_index(
             _currentRideIndex, tileElement->AsTrack()->GetTrackType());
-        z = (tileElement->base_height * 8) - trackBlock->z;
+        z = (tileElement->GetBaseZ()) - trackBlock->z;
         gGotoStartPlacementMode = true;
     }
 
@@ -2122,7 +2122,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             get_map_coordinates_from_pos(screenCoords, 0xFCCA, mapCoords, &interactionType, &tileElement, &viewport);
             if (interactionType != 0)
             {
-                _trackPlaceCtrlZ = tileElement->base_height * 8;
+                _trackPlaceCtrlZ = tileElement->GetBaseZ();
                 _trackPlaceCtrlState = true;
             }
         }
@@ -2183,7 +2183,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
             auto surfaceElement = map_get_surface_element_at(mapCoords);
             if (surfaceElement == nullptr)
                 return std::nullopt;
-            auto mapZ = floor2(surfaceElement->base_height * 8, 16);
+            auto mapZ = floor2(surfaceElement->GetBaseZ(), 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = std::max<int16_t>(mapZ, 16);
             _trackPlaceZ = mapZ;
@@ -2432,8 +2432,8 @@ static void sub_6CBCE2(
         CoordsXY offsets = { trackBlock->x, trackBlock->y };
         CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
-        int32_t baseZ = (originZ + trackBlock->z) >> 3;
-        int32_t clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
+        int32_t baseZ = originZ + trackBlock->z;
+        int32_t clearanceZ = trackBlock->var_07 + RideData5[ride->type].clearance_height + baseZ + (4 * 8);
 
         auto centreTileCoords = TileCoordsXY{ coords };
         auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];
@@ -2459,8 +2459,8 @@ static void sub_6CBCE2(
         _tempTrackTileElement.AsTrack()->SetHasChain((liftHillAndInvertedState & CONSTRUCTION_LIFT_HILL_SELECTED) != 0);
         _tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
         _tempTrackTileElement.SetLastForTile(true);
-        _tempTrackTileElement.base_height = baseZ;
-        _tempTrackTileElement.clearance_height = clearanceZ;
+        _tempTrackTileElement.base_height = baseZ / 8;
+        _tempTrackTileElement.clearance_height = clearanceZ / 8;
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
         _tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
         _tempTrackTileElement.AsTrack()->SetHasCableLift(false);

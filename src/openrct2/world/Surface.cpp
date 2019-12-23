@@ -92,7 +92,7 @@ void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, CoordsXY coords
         return;
     }
 
-    int32_t z = base_height * 8;
+    int32_t z = GetBaseZ();
     map_invalidate_tile(coords.x, coords.y, z, z + 16);
 }
 

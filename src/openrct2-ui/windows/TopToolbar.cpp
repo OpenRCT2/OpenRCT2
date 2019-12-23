@@ -1042,7 +1042,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
             uint8_t quadrant = tile_element->AsSmallScenery()->GetSceneryQuadrant();
             auto repaintScenery = SmallScenerySetColourAction(
-                { gridCoords.x, gridCoords.y, tile_element->base_height * 8 }, quadrant,
+                { gridCoords.x, gridCoords.y, tile_element->GetBaseZ() }, quadrant,
                 tile_element->AsSmallScenery()->GetEntryIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
 
             GameActions::Execute(&repaintScenery);
@@ -1057,7 +1057,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 return;
 
             auto repaintScenery = WallSetColourAction(
-                { gridCoords.x, gridCoords.y, tile_element->base_height * 8, tile_element->GetDirection() },
+                { gridCoords.x, gridCoords.y, tile_element->GetBaseZ(), tile_element->GetDirection() },
                 gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
             GameActions::Execute(&repaintScenery);
@@ -1072,7 +1072,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 return;
 
             auto repaintScenery = LargeScenerySetColourAction(
-                { gridCoords.x, gridCoords.y, tile_element->base_height * 8, tile_element->GetDirection() },
+                { gridCoords.x, gridCoords.y, tile_element->GetBaseZ(), tile_element->GetDirection() },
                 tile_element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
 
             GameActions::Execute(&repaintScenery);
@@ -1087,7 +1087,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                 if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                 {
                     auto repaintScenery = BannerSetColourAction(
-                        { gridCoords.x, gridCoords.y, tile_element->base_height * 8, tile_element->AsBanner()->GetPosition() },
+                        { gridCoords.x, gridCoords.y, tile_element->GetBaseZ(), tile_element->AsBanner()->GetPosition() },
                         gWindowSceneryPrimaryColour);
 
                     GameActions::Execute(&repaintScenery);
@@ -1284,7 +1284,7 @@ static void sub_6E1F34(
                 if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE)
                 {
                     gSceneryCtrlPressed = true;
-                    gSceneryCtrlPressZ = tile_element->base_height * 8;
+                    gSceneryCtrlPressZ = tile_element->GetBaseZ();
                 }
             }
         }
@@ -1368,7 +1368,7 @@ static void sub_6E1F34(
                             return;
                         }
 
-                        int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
+                        int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
                         z += gSceneryShiftPressZOffset;
 
                         z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1457,7 +1457,7 @@ static void sub_6E1F34(
                         return;
                     }
 
-                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1569,7 +1569,7 @@ static void sub_6E1F34(
                         return;
                     }
 
-                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
@@ -1637,7 +1637,7 @@ static void sub_6E1F34(
                         return;
                     }
 
-                    int16_t z = (surfaceElement->base_height * 8) & 0xFFF0;
+                    int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = std::clamp<int16_t>(z, 16, maxPossibleHeight);

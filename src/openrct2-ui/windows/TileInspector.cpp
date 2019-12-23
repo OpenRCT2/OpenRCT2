@@ -1976,7 +1976,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     // TODO: Make this work with Left/Right park entrance parts
                     int16_t parkEntranceIndex = park_entrance_get_index(
-                        windowTileInspectorToolMap.x, windowTileInspectorToolMap.y, tileElement->base_height * 8);
+                        windowTileInspectorToolMap.x, windowTileInspectorToolMap.y, tileElement->GetBaseZ());
                     gfx_draw_string_left(
                         dpi, STR_TILE_INSPECTOR_ENTRANCE_ENTRANCE_ID, &parkEntranceIndex, COLOUR_WHITE, x, y + 11);
                 }

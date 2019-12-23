@@ -364,7 +364,7 @@ private:
             if (surfaceElement == nullptr)
                 continue;
 
-            int32_t height = surfaceElement->base_height * 8;
+            int32_t height = surfaceElement->GetBaseZ();
             int32_t slope = surfaceElement->GetSlope();
 
             if (slope & 0xF)

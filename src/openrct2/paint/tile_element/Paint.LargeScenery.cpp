@@ -52,7 +52,7 @@ static void large_scenery_paint_supports(
 
     wooden_b_supports_paint_setup(session, (direction & 1), ax, supportHeight, supportImageColourFlags, nullptr);
 
-    int32_t clearanceHeight = ceil2(tileElement->clearance_height * 8 + 15, 16);
+    int32_t clearanceHeight = ceil2(tileElement->GetClearanceZ() + 15, 16);
 
     if (tile->flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
     {
