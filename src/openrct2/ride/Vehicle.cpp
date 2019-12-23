@@ -6754,7 +6754,7 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
         return;
     }
     trackElement->SetBlockBrakeClosed(false);
-    map_invalidate_element(x, y, reinterpret_cast<TileElement*>(trackElement));
+    map_invalidate_element({ x, y }, reinterpret_cast<TileElement*>(trackElement));
 
     int32_t trackType = trackElement->GetTrackType();
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
@@ -7950,7 +7950,8 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
                         SoundId::BlockBrakeRelease, { vehicle->track_x, vehicle->track_y, vehicle->track_z });
                 }
             }
-            map_invalidate_element(vehicle->track_x, vehicle->track_z, tileElement);
+            // This is very weird because it uses Z
+            map_invalidate_element({ vehicle->track_x, vehicle->track_z }, tileElement);
             vehicle_update_block_brakes_open_previous_section(vehicle, tileElement);
         }
     }

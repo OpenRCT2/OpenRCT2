@@ -2011,9 +2011,9 @@ void map_invalidate_tile_full(int32_t x, int32_t y)
     map_invalidate_tile(x, y, 0, 2080);
 }
 
-void map_invalidate_element(int32_t x, int32_t y, TileElement* tileElement)
+void map_invalidate_element(const CoordsXY& elementPos, TileElement* tileElement)
 {
-    map_invalidate_tile(x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+    map_invalidate_tile(elementPos.x, elementPos.y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
 }
 
 void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs)

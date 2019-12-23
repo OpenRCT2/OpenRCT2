@@ -211,7 +211,7 @@ void map_invalidate_tile(int32_t x, int32_t y, int32_t z0, int32_t z1);
 void map_invalidate_tile_zoom1(int32_t x, int32_t y, int32_t z0, int32_t z1);
 void map_invalidate_tile_zoom0(int32_t x, int32_t y, int32_t z0, int32_t z1);
 void map_invalidate_tile_full(int32_t x, int32_t y);
-void map_invalidate_element(int32_t x, int32_t y, TileElement* tileElement);
+void map_invalidate_element(const CoordsXY& elementPos, TileElement* tileElement);
 void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs);
 
 int32_t map_get_tile_side(const CoordsXY& mapPos);

@@ -773,7 +773,7 @@ bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t directio
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
 
-                map_invalidate_element(x, y, stationElement);
+                map_invalidate_element({ x, y }, stationElement);
 
                 if (x != stationX0 || y != stationY0)
                 {
@@ -939,7 +939,7 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direc
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
 
-                map_invalidate_element(x, y, stationElement);
+                map_invalidate_element({ x, y }, stationElement);
             }
         }
 

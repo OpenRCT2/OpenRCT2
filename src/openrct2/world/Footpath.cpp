@@ -558,21 +558,21 @@ static void footpath_connect_corners(int32_t initialX, int32_t initialY, TileEle
 
         direction = (direction + 1) & 3;
         tileElement[3]->AsPath()->SetCorners(tileElement[3]->AsPath()->GetCorners() | (1 << (direction)));
-        map_invalidate_element(x, y, tileElement[3]);
+        map_invalidate_element({ x, y }, tileElement[3]);
 
         direction = (direction - 1) & 3;
         tileElement[2]->AsPath()->SetCorners(tileElement[2]->AsPath()->GetCorners() | (1 << (direction)));
 
-        map_invalidate_element(x, y, tileElement[2]);
+        map_invalidate_element({ x, y }, tileElement[2]);
 
         direction = (direction - 1) & 3;
         tileElement[1]->AsPath()->SetCorners(tileElement[1]->AsPath()->GetCorners() | (1 << (direction)));
 
-        map_invalidate_element(x, y, tileElement[1]);
+        map_invalidate_element({ x, y }, tileElement[1]);
 
         direction = initialDirection;
         tileElement[0]->AsPath()->SetCorners(tileElement[0]->AsPath()->GetCorners() | (1 << (direction)));
-        map_invalidate_element(x, y, tileElement[0]);
+        map_invalidate_element({ x, y }, tileElement[0]);
     }
 }
 
@@ -915,7 +915,7 @@ static void loc_6A6D7E(
         {
             footpath_interrupt_peeps(x, y, tileElement->GetBaseZ());
         }
-        map_invalidate_element(x, y, tileElement);
+        map_invalidate_element({ x, y }, tileElement);
     }
 
 loc_6A6FD2:
@@ -924,7 +924,7 @@ loc_6A6FD2:
         if (!query)
         {
             initialTileElement->AsPath()->SetEdges(initialTileElement->AsPath()->GetEdges() | (1 << direction));
-            map_invalidate_element(initialX, initialY, initialTileElement);
+            map_invalidate_element({ initialX, initialY }, initialTileElement);
         }
     }
 }
@@ -1130,7 +1130,7 @@ void footpath_chain_ride_queue(
             tileElement->AsPath()->SetRideIndex(rideIndex);
             tileElement->AsPath()->SetStationIndex(entranceIndex);
 
-            map_invalidate_element(x, y, tileElement);
+            map_invalidate_element({ x, y }, tileElement);
 
             if (lastQueuePathElement == nullptr)
             {
