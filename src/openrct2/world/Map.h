@@ -236,8 +236,7 @@ TrackElement* map_get_track_element_at_of_type(CoordsXYZD location, int32_t trac
 TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t trackType, int32_t sequence);
 TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, int32_t trackType, ride_id_t rideIndex);
 TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_id_t rideIndex);
-TileElement* map_get_track_element_at_with_direction_from_ride(
-    int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex);
+TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex);
 
 bool map_is_location_at_edge(const CoordsXY& loc);
 void map_obstruction_set_error_text(TileElement* tileElement);
