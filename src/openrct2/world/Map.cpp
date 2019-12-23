@@ -1988,9 +1988,9 @@ void map_invalidate_tile(int32_t x, int32_t y, int32_t z0, int32_t z1)
  *
  *  rct2: 0x006ECB60
  */
-void map_invalidate_tile_zoom1(int32_t x, int32_t y, int32_t z0, int32_t z1)
+void map_invalidate_tile_zoom1(const CoordsXY& tilePos, int32_t z0, int32_t z1)
 {
-    map_invalidate_tile_under_zoom(x, y, z0, z1, 1);
+    map_invalidate_tile_under_zoom(tilePos.x, tilePos.y, z0, z1, 1);
 }
 
 /**

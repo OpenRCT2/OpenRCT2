@@ -2126,10 +2126,10 @@ void Ride::UpdateChairlift()
         return;
 
     auto bullwheelLoc = ChairliftBullwheelLocation[0].ToCoordsXYZ();
-    map_invalidate_tile_zoom1(bullwheelLoc.x, bullwheelLoc.y, bullwheelLoc.z, bullwheelLoc.z + (4 * 8));
+    map_invalidate_tile_zoom1(bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * 8));
 
     bullwheelLoc = ChairliftBullwheelLocation[1].ToCoordsXYZ();
-    map_invalidate_tile_zoom1(bullwheelLoc.x, bullwheelLoc.y, bullwheelLoc.z, bullwheelLoc.z + (4 * 8));
+    map_invalidate_tile_zoom1(bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * 8));
 }
 
 /**

@@ -6314,7 +6314,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
 
     tileElement->AsPath()->SetIsBroken(true);
 
-    map_invalidate_tile_zoom1(peep->next_x, peep->next_y, (tileElement->GetBaseZ()) + 32, tileElement->GetBaseZ());
+    map_invalidate_tile_zoom1({ peep->next_x, peep->next_y }, (tileElement->GetBaseZ()) + 32, tileElement->GetBaseZ());
 
     peep->angriness = 16;
 }

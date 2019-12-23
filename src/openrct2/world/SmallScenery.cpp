@@ -128,7 +128,7 @@ void SmallSceneryElement::IncreaseAge(int32_t x, int32_t y)
 
             if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
             {
-                map_invalidate_tile_zoom1(x, y, GetBaseZ(), GetClearanceZ());
+                map_invalidate_tile_zoom1({ x, y }, GetBaseZ(), GetClearanceZ());
             }
         }
     }
