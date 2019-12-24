@@ -2113,8 +2113,6 @@ void Ride::Update()
  */
 void Ride::UpdateChairlift()
 {
-    int32_t x, y, z;
-
     if (!(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         return;
     if ((lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
@@ -2126,15 +2124,11 @@ void Ride::UpdateChairlift()
     if (old_chairlift_bullwheel_rotation == speed / 8)
         return;
 
-    x = ChairliftBullwheelLocation[0].x * 32;
-    y = ChairliftBullwheelLocation[0].y * 32;
-    z = ChairliftBullwheelLocation[0].z * 8;
-    map_invalidate_tile_zoom1(x, y, z, z + (4 * 8));
+    auto bullwheelLoc = ChairliftBullwheelLocation[0].ToCoordsXYZ();
+    map_invalidate_tile_zoom1(bullwheelLoc.x, bullwheelLoc.y, bullwheelLoc.z, bullwheelLoc.z + (4 * 8));
 
-    x = ChairliftBullwheelLocation[1].x * 32;
-    y = ChairliftBullwheelLocation[1].y * 32;
-    z = ChairliftBullwheelLocation[1].z * 8;
-    map_invalidate_tile_zoom1(x, y, z, z + (4 * 8));
+    bullwheelLoc = ChairliftBullwheelLocation[1].ToCoordsXYZ();
+    map_invalidate_tile_zoom1(bullwheelLoc.x, bullwheelLoc.y, bullwheelLoc.z, bullwheelLoc.z + (4 * 8));
 }
 
 /**
@@ -4203,9 +4197,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     {
         return false;
     }
-    ride->ChairliftBullwheelLocation[0].x = trackBack.x >> 5;
-    ride->ChairliftBullwheelLocation[0].y = trackBack.y >> 5;
-    ride->ChairliftBullwheelLocation[0].z = trackBack.element->base_height;
+    ride->ChairliftBullwheelLocation[0] = TileCoordsXYZ{ CoordsXYZ{ trackBack.x, trackBack.y, trackBack.element->GetBaseZ() } };
 
     // Check front of the track
     track_get_front(input, &trackFront);
@@ -4214,9 +4206,8 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     {
         return false;
     }
-    ride->ChairliftBullwheelLocation[1].x = trackFront.x >> 5;
-    ride->ChairliftBullwheelLocation[1].y = trackFront.y >> 5;
-    ride->ChairliftBullwheelLocation[1].z = trackFront.element->base_height;
+    ride->ChairliftBullwheelLocation[1] = TileCoordsXYZ{ CoordsXYZ{ trackFront.x, trackFront.y,
+                                                                    trackFront.element->GetBaseZ() } };
     return true;
 }
 
