@@ -2046,10 +2046,10 @@ void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs)
     }
 }
 
-int32_t map_get_tile_side(int32_t mapX, int32_t mapY)
+int32_t map_get_tile_side(const CoordsXY& mapPos)
 {
-    int32_t subMapX = mapX & (32 - 1);
-    int32_t subMapY = mapY & (32 - 1);
+    int32_t subMapX = mapPos.x & (32 - 1);
+    int32_t subMapY = mapPos.y & (32 - 1);
     return (subMapX < subMapY) ? ((subMapX + subMapY) < 32 ? 0 : 1) : ((subMapX + subMapY) < 32 ? 3 : 2);
 }
 

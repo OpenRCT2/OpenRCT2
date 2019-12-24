@@ -1831,7 +1831,7 @@ std::optional<CoordsXY> screen_get_map_xy_side(ScreenCoordsXY screenCoords, uint
     if (!mapCoords)
         return std::nullopt;
 
-    *side = map_get_tile_side(mapCoords->x, mapCoords->y);
+    *side = map_get_tile_side(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
@@ -1845,7 +1845,7 @@ std::optional<CoordsXY> screen_get_map_xy_side_with_z(ScreenCoordsXY screenCoord
     if (!mapCoords)
         return std::nullopt;
 
-    *side = map_get_tile_side(mapCoords->x, mapCoords->y);
+    *side = map_get_tile_side(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
