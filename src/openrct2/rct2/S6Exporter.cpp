@@ -741,9 +741,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->total_air_time = src->total_air_time;
     dst->current_test_station = src->current_test_station;
     dst->num_circuits = src->num_circuits;
-    dst->cable_lift_x = src->cable_lift_x;
-    dst->cable_lift_y = src->cable_lift_y;
-    dst->cable_lift_z = src->cable_lift_z;
+    dst->cable_lift_x = static_cast<int16_t>(src->CableLiftLoc.x);
+    dst->cable_lift_y = static_cast<int16_t>(src->CableLiftLoc.y);
+    dst->cable_lift_z = static_cast<int16_t>(src->CableLiftLoc.z);
     // pad_1FD;
     dst->cable_lift = src->cable_lift;
 

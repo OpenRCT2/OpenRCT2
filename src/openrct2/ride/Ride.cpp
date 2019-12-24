@@ -5053,10 +5053,8 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
         return true;
     }
 
-    int32_t x = ride->cable_lift_x;
-    int32_t y = ride->cable_lift_y;
-    int32_t z = ride->cable_lift_z;
-    auto tileElement = map_get_track_element_at(x, y, z);
+    auto cableLiftLoc = ride->CableLiftLoc;
+    auto tileElement = map_get_track_element_at(cableLiftLoc.x, cableLiftLoc.y, cableLiftLoc.z / 8);
     int32_t direction = tileElement->GetDirection();
 
     rct_vehicle* head = nullptr;
@@ -5071,7 +5069,8 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
         int32_t remaining_distance = ebx;
         ebx -= edx;
 
-        rct_vehicle* current = cable_lift_segment_create(*ride, x, y, z, direction, var_44, remaining_distance, i == 0);
+        rct_vehicle* current = cable_lift_segment_create(
+            *ride, cableLiftLoc.x, cableLiftLoc.y, cableLiftLoc.z / 8, direction, var_44, remaining_distance, i == 0);
         current->next_vehicle_on_train = SPRITE_INDEX_NULL;
         if (i == 0)
         {

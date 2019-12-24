@@ -369,9 +369,7 @@ struct Ride
     uint16_t total_air_time;
     uint8_t current_test_station;
     uint8_t num_circuits;
-    int16_t cable_lift_x;
-    int16_t cable_lift_y;
-    uint8_t cable_lift_z;
+    CoordsXYZ CableLiftLoc;
     uint16_t cable_lift;
     // These fields are used to warn users about issues.
     // Such issue can be hacked rides with incompatible options set.

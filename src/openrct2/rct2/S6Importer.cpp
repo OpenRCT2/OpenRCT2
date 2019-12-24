@@ -760,9 +760,7 @@ public:
         dst->total_air_time = src->total_air_time;
         dst->current_test_station = src->current_test_station;
         dst->num_circuits = src->num_circuits;
-        dst->cable_lift_x = src->cable_lift_x;
-        dst->cable_lift_y = src->cable_lift_y;
-        dst->cable_lift_z = src->cable_lift_z;
+        dst->CableLiftLoc = { src->cable_lift_x, src->cable_lift_y, src->cable_lift_z };
         // pad_1FD;
         dst->cable_lift = src->cable_lift;
 
