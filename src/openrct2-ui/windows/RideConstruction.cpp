@@ -3622,7 +3622,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
         && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
     {
         TileElement* pathsByDir[4];
-        constexpr sLocationXY8 DirOffsets[4] = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
+        constexpr TileCoordsXY DirOffsets[4] = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
 
         bool keepOrientation = false;
         for (int8_t i = 0; i < 4; i++)
