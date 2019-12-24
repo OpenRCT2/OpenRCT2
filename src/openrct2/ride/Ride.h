@@ -223,7 +223,7 @@ struct Ride
     uint8_t status;
     std::string custom_name;
     uint16_t default_name_number;
-    LocationXY8 overall_view;
+    TileCoordsXY overall_view;
     uint16_t vehicles[MAX_VEHICLES_PER_RIDE]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
@@ -246,7 +246,7 @@ struct Ride
     };
 
     uint8_t boat_hire_return_direction;
-    LocationXY8 boat_hire_return_position;
+    TileCoordsXY boat_hire_return_position;
     // bits 0 through 4 are the number of helix sections
     // bit 5: spinning tunnel, water splash, or rapids
     // bit 6: log reverser, waterfall

@@ -596,7 +596,7 @@ public:
         dst->operation_option = src->operation_option;
 
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
-        dst->boat_hire_return_position = src->boat_hire_return_position;
+        dst->boat_hire_return_position = { src->boat_hire_return_position.x, src->boat_hire_return_position.y };
 
         dst->special_track_elements = src->special_track_elements;
         // pad_0D6[2];

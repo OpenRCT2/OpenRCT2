@@ -954,7 +954,7 @@ private:
             dst->inversions = src->num_inversions & 0x1F;
         dst->sheltered_eighths = src->num_inversions >> 5;
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
-        dst->boat_hire_return_position = src->boat_hire_return_position;
+        dst->boat_hire_return_position = { src->boat_hire_return_position.x, src->boat_hire_return_position.y };
         dst->chairlift_bullwheel_rotation = src->chairlift_bullwheel_rotation;
         for (int i = 0; i < 2; i++)
         {

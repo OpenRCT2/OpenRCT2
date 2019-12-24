@@ -4567,7 +4567,7 @@ static void vehicle_update_boat_location(rct_vehicle* vehicle)
     if (ride == nullptr)
         return;
 
-    TileCoordsXY returnPosition = { ride->boat_hire_return_position.x, ride->boat_hire_return_position.y };
+    TileCoordsXY returnPosition = ride->boat_hire_return_position;
     uint8_t returnDirection = ride->boat_hire_return_direction & 3;
 
     TileCoordsXY location{ CoordsXY{ vehicle->x, vehicle->y } + CoordsDirectionDelta[returnDirection] };

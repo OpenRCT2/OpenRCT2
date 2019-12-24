@@ -590,7 +590,8 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->operation_option = src->operation_option;
 
     dst->boat_hire_return_direction = src->boat_hire_return_direction;
-    dst->boat_hire_return_position = src->boat_hire_return_position;
+    dst->boat_hire_return_position = { static_cast<uint8_t>(src->boat_hire_return_position.x),
+                                       static_cast<uint8_t>(src->boat_hire_return_position.y) };
 
     dst->special_track_elements = src->special_track_elements;
     // pad_0D6[2];
