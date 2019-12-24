@@ -82,7 +82,8 @@ TEST_F(TileElementWantsFootpathConnection, SlopedPath)
 TEST_F(TileElementWantsFootpathConnection, Stall)
 {
     // Stalls usually have one path direction flag, but can have multiple (info kiosk for example)
-    const TrackElement* const stallElement = map_get_track_element_at({ 19 << 5, 15 << 5, 14 << 3 });
+    auto tileCoords = TileCoordsXYZ{ 19, 15, 14 };
+    const TrackElement* const stallElement = map_get_track_element_at(tileCoords.ToCoordsXYZ());
     ASSERT_NE(stallElement, nullptr);
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 15, 14, 0 }, nullptr));
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 15, 14, 1 }, nullptr));
