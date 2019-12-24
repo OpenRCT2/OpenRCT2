@@ -622,7 +622,7 @@ public:
         else
         {
             dst->CurTestTrackLocation = { src->cur_test_track_location.x, src->cur_test_track_location.y,
-                                             src->cur_test_track_z };
+                                          src->cur_test_track_z };
         }
 
         dst->turn_count_default = src->turn_count_default;

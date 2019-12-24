@@ -969,7 +969,7 @@ private:
         else
         {
             dst->CurTestTrackLocation = { src->cur_test_track_location.x, src->cur_test_track_location.y,
-                                             src->cur_test_track_z / 2 };
+                                          src->cur_test_track_z / 2 };
         }
         dst->testing_flags = src->testing_flags;
         dst->current_test_segment = src->current_test_segment;
