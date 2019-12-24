@@ -99,7 +99,7 @@ extern uint16_t gMapSelectFlags;
 extern uint16_t gMapSelectType;
 extern CoordsXY gMapSelectPositionA;
 extern CoordsXY gMapSelectPositionB;
-extern LocationXYZ16 gMapSelectArrowPosition;
+extern CoordsXYZ gMapSelectArrowPosition;
 extern uint8_t gMapSelectArrowDirection;
 
 extern uint8_t gMapGroundFlags;
