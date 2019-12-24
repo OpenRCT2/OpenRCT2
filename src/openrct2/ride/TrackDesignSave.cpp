@@ -224,18 +224,19 @@ static void track_design_save_add_scenery(CoordsXY loc, SmallSceneryElement* sce
 static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElement* tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
-    int32_t x0, y0, z0, z;
     int32_t direction, sequence;
 
     int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
-    z = tileElement->base_height;
+    int32_t z = tileElement->base_height;
     direction = tileElement->GetDirection();
     sequence = tileElement->GetSequenceIndex();
 
-    if (!map_large_scenery_get_origin(loc.x, loc.y, z, direction, sequence, &x0, &y0, &z0, nullptr))
+    auto sceneryOrigin = map_large_scenery_get_origin(
+        { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+    if (!sceneryOrigin)
     {
         return;
     }
@@ -247,8 +248,9 @@ static void track_design_save_add_large_scenery(CoordsXY loc, LargeSceneryElemen
         CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
         auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
-        CoordsXYZ tileLoc = { x0 + rotatedOffsetPos.x, y0 + rotatedOffsetPos.y, (z0 + tile->z_offset) };
-        auto largeElement = map_get_large_scenery_segment(tileLoc.x, tileLoc.y, tileLoc.z / 8, direction, sequence);
+        CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
+                              sceneryOrigin->z + tile->z_offset };
+        auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
         if (largeElement != nullptr)
         {
             if (sequence == 0)
@@ -398,18 +400,19 @@ static void track_design_save_remove_scenery(CoordsXY loc, SmallSceneryElement* 
 static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryElement* tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
-    int32_t x0, y0, z0, z;
     int32_t direction, sequence;
 
     int32_t entryType = tileElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
-    z = tileElement->base_height;
+    int32_t z = tileElement->base_height;
     direction = tileElement->GetDirection();
     sequence = tileElement->GetSequenceIndex();
 
-    if (!map_large_scenery_get_origin(loc.x, loc.y, z, direction, sequence, &x0, &y0, &z0, nullptr))
+    auto sceneryOrigin = map_large_scenery_get_origin(
+        { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+    if (!sceneryOrigin)
     {
         return;
     }
@@ -421,8 +424,9 @@ static void track_design_save_remove_large_scenery(CoordsXY loc, LargeSceneryEle
         CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
         auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
-        CoordsXYZ tileLoc = { x0 + rotatedOffsetPos.x, y0 + rotatedOffsetPos.y, z0 + tile->z_offset };
-        auto largeElement = map_get_large_scenery_segment(tileLoc.x, tileLoc.y, tileLoc.z / 8, direction, sequence);
+        CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
+                              sceneryOrigin->z + tile->z_offset };
+        auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
         if (largeElement != nullptr)
         {
             if (sequence == 0)

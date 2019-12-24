@@ -1748,22 +1748,23 @@ int32_t map_get_highest_z(const CoordsXY& loc)
     return z;
 }
 
-LargeSceneryElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence)
+LargeSceneryElement* map_get_large_scenery_segment(const CoordsXYZD& sceneryPos, int32_t sequence)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(sceneryPos);
     if (tileElement == nullptr)
     {
         return nullptr;
     }
+    auto sceneryTilePos = TileCoordsXYZ{ sceneryPos };
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != sceneryTilePos.z)
             continue;
         if (tileElement->AsLargeScenery()->GetSequenceIndex() != sequence)
             continue;
-        if ((tileElement->GetDirection()) != direction)
+        if ((tileElement->GetDirection()) != sceneryPos.direction)
             continue;
 
         return tileElement->AsLargeScenery();
@@ -1872,29 +1873,27 @@ SmallSceneryElement* map_get_small_scenery_element_at(CoordsXYZ sceneryCoords, i
     return nullptr;
 }
 
-bool map_large_scenery_get_origin(
-    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
-    LargeSceneryElement** outElement)
+std::optional<CoordsXYZ> map_large_scenery_get_origin(
+    const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement)
 {
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile* tile;
 
-    auto tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+    auto tileElement = map_get_large_scenery_segment(sceneryPos, sequence);
     if (tileElement == nullptr)
-        return false;
+        return std::nullopt;
 
     sceneryEntry = tileElement->GetEntry();
     tile = &sceneryEntry->large_scenery.tiles[sequence];
 
     CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
-    auto rotatedOffsetPos = offsetPos.Rotate(direction);
+    auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
 
-    *outX = x - rotatedOffsetPos.x;
-    *outY = y - rotatedOffsetPos.y;
-    *outZ = (z * 8) - tile->z_offset;
+    auto origin = CoordsXYZ{ sceneryPos.x - rotatedOffsetPos.x, sceneryPos.y - rotatedOffsetPos.y,
+                             sceneryPos.z - tile->z_offset };
     if (outElement != nullptr)
         *outElement = tileElement;
-    return true;
+    return origin;
 }
 
 /**
@@ -1907,9 +1906,10 @@ bool sign_set_colour(
     LargeSceneryElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile *sceneryTiles, *tile;
-    int32_t x0, y0, z0;
 
-    if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, &tileElement))
+    auto sceneryOrigin = map_large_scenery_get_origin(
+        { x, y, z << 3, static_cast<Direction>(direction) }, sequence, &tileElement);
+    if (!sceneryOrigin)
     {
         return false;
     }
@@ -1924,10 +1924,10 @@ bool sign_set_colour(
         CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
         auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
-        x = x0 + rotatedOffsetPos.x;
-        y = y0 + rotatedOffsetPos.y;
-        z = (z0 + tile->z_offset) / 8;
-        tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
+        x = sceneryOrigin->x + rotatedOffsetPos.x;
+        y = sceneryOrigin->y + rotatedOffsetPos.y;
+        z = sceneryOrigin->z + tile->z_offset;
+        tileElement = map_get_large_scenery_segment({ x, y, z, static_cast<Direction>(direction) }, sequence);
         if (tileElement != nullptr)
         {
             tileElement->SetPrimaryColour(mainColour);
