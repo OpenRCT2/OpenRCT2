@@ -807,7 +807,8 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direc
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
-        TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(x, y, z, direction, rideIndex);
+        TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(
+            { x, y, z << 3, static_cast<Direction>(direction) }, rideIndex);
         if (tileElement != nullptr)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)

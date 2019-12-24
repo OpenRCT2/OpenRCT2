@@ -301,6 +301,12 @@ struct TileCoordsXYZ : public TileCoordsXY
     {
     }
 
+    TileCoordsXYZ(TileCoordsXY c, int32_t z_)
+        : TileCoordsXY(c.x, c.y)
+        , z(z_)
+    {
+    }
+
     TileCoordsXYZ(CoordsXY c, int32_t z_)
         : TileCoordsXY(c)
         , z(z_)

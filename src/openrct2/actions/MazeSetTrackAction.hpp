@@ -125,8 +125,7 @@ public:
             }
         }
 
-        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(
-            _loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             if (_mode != GC_SET_MAZE_TRACK_BUILD)
@@ -207,7 +206,7 @@ public:
         uint8_t baseHeight = _loc.z / 8;
         uint8_t clearanceHeight = (_loc.z + 32) / 8;
 
-        auto tileElement = map_get_track_element_at_of_type_from_ride(_loc.x, _loc.y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
@@ -265,7 +264,7 @@ public:
                         uint16_t previousElementY = floor2(_loc.y, 32) - CoordsDirectionDelta[_loc.direction].y;
 
                         TileElement* previousTileElement = map_get_track_element_at_of_type_from_ride(
-                            previousElementX, previousElementY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+                            { previousElementX, previousElementY, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
                         if (previousTileElement != nullptr)
                         {
@@ -291,7 +290,7 @@ public:
                     uint16_t previousSegmentY = _loc.y - CoordsDirectionDelta[_loc.direction].y / 2;
 
                     tileElement = map_get_track_element_at_of_type_from_ride(
-                        previousSegmentX, previousSegmentY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+                        { previousSegmentX, previousSegmentY, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
                     map_invalidate_tile_full(floor2(previousSegmentX, 32), floor2(previousSegmentY, 32));
                     if (tileElement == nullptr)
@@ -320,7 +319,7 @@ public:
                         uint16_t nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
 
                         TileElement* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
-                            nextElementX, nextElementY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+                            { nextElementX, nextElementY, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
                         if (tmp_tileElement != nullptr)
                         {

@@ -2130,16 +2130,17 @@ void map_clear_all_elements()
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
+TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
         return nullptr;
+    auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != trackTilePos.z)
             continue;
 
         return tileElement->AsTrack();
@@ -2154,16 +2155,17 @@ TrackElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z)
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, int32_t trackType)
+TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, int32_t trackType)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
         return nullptr;
+    auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != trackTilePos.z)
             continue;
         if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
@@ -2180,16 +2182,17 @@ TileElement* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, i
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t sequence)
+TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, int32_t trackType, int32_t sequence)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(trackPos);
+    auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
         if (tileElement == nullptr)
             break;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != trackTilePos.z)
             continue;
         if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
@@ -2256,16 +2259,17 @@ TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t 
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, int32_t z, int32_t trackType, ride_id_t rideIndex)
+TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, int32_t trackType, ride_id_t rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
         return nullptr;
+    auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != trackTilePos.z)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
@@ -2284,16 +2288,17 @@ TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, in
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, ride_id_t rideIndex)
+TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_id_t rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
         return nullptr;
+    auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != trackTilePos.z)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
@@ -2311,21 +2316,21 @@ TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z,
  * @param z Base height.
  * @param direction The direction (0 - 3).
  */
-TileElement* map_get_track_element_at_with_direction_from_ride(
-    int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex)
+TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
         return nullptr;
+    auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->base_height != trackTilePos.z)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
-        if (tileElement->GetDirection() != direction)
+        if (tileElement->GetDirection() != trackPos.direction)
             continue;
 
         return tileElement;

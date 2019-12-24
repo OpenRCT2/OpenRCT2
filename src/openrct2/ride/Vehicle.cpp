@@ -2801,7 +2801,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
     int32_t y = location.y * 32;
     int32_t z = ride->stations[station].Height;
 
-    auto tileElement = map_get_track_element_at(x, y, z);
+    auto tileElement = map_get_track_element_at({ x, y, z << 3 });
     if (tileElement == nullptr)
     {
         return false;
@@ -3099,7 +3099,7 @@ void vehicle_test_reset(rct_vehicle* vehicle)
 static bool vehicle_current_tower_element_is_top(rct_vehicle* vehicle)
 {
     TileElement* tileElement = map_get_track_element_at_of_type(
-        vehicle->track_x, vehicle->track_y, vehicle->track_z / 8, vehicle->track_type >> 2);
+        { vehicle->track_x, vehicle->track_y, vehicle->track_z }, vehicle->track_type >> 2);
     if (tileElement != nullptr)
     {
         while (!tileElement->IsLastForTile())
@@ -3978,7 +3978,7 @@ loc_6D8E36:
         return;
     }
 
-    auto trackElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
+    auto trackElement = map_get_track_element_at({ vehicle->track_x, vehicle->track_y, vehicle->track_z });
 
     if (trackElement == nullptr)
     {
@@ -4248,7 +4248,7 @@ static void loc_6DA9F9(rct_vehicle* vehicle, int32_t x, int32_t y, int32_t bx, i
         vehicle->track_x = bx;
         vehicle->track_y = dx;
 
-        auto trackElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
+        auto trackElement = map_get_track_element_at({ vehicle->track_x, vehicle->track_y, vehicle->track_z });
 
         auto ride = get_ride(vehicle->ride);
         if (ride != nullptr)
@@ -6630,7 +6630,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
     int32_t trackType = vehicle->track_type >> 2;
 
     TileElement* trackElement = map_get_track_element_at_of_type(
-        vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType);
+        { vehicle->track_x, vehicle->track_y, vehicle->track_z }, trackType);
 
     if (trackElement == nullptr)
     {
@@ -6748,7 +6748,7 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
     x = trackBeginEnd.begin_x;
     y = trackBeginEnd.begin_y;
     z = trackBeginEnd.begin_z;
-    auto trackElement = map_get_track_element_at(x, y, z >> 3);
+    auto trackElement = map_get_track_element_at({ x, y, z });
     if (trackElement == nullptr)
     {
         return;
@@ -7846,7 +7846,7 @@ static void sub_6DBF3E(rct_vehicle* vehicle)
     if (map_is_location_valid({ vehicle->track_x, vehicle->track_y }))
     {
         tileElement = map_get_track_element_at_of_type_seq(
-            vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+            { vehicle->track_x, vehicle->track_y, vehicle->track_z }, trackType, 0);
     }
 
     if (tileElement == nullptr)
@@ -7925,7 +7925,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
     _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
     TileElement* tileElement = map_get_track_element_at_of_type_seq(
-        vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+        { vehicle->track_x, vehicle->track_y, vehicle->track_z }, trackType, 0);
 
     if (tileElement == nullptr)
     {
@@ -8360,7 +8360,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
     _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
     TileElement* tileElement = map_get_track_element_at_of_type_seq(
-        vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+        { vehicle->track_x, vehicle->track_y, vehicle->track_z }, trackType, 0);
 
     if (tileElement == nullptr)
         return false;
@@ -8820,7 +8820,7 @@ loc_6DC476:
         _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
         _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
         tileElement = map_get_track_element_at_of_type_seq(
-            vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+            { vehicle->track_x, vehicle->track_y, vehicle->track_z }, trackType, 0);
     }
     int16_t x, y, z;
     int32_t direction;
@@ -9075,7 +9075,7 @@ loc_6DCA9A:
         _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
 
         tileElement = map_get_track_element_at_of_type_seq(
-            vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+            { vehicle->track_x, vehicle->track_y, vehicle->track_z }, trackType, 0);
     }
     {
         track_begin_end trackBeginEnd;
@@ -9865,7 +9865,7 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
     xyElement.y = frontVehicle->track_y;
     z = frontVehicle->track_z;
     xyElement.element = map_get_track_element_at_of_type_seq(
-        frontVehicle->track_x, frontVehicle->track_y, frontVehicle->track_z >> 3, frontVehicle->track_type >> 2, 0);
+        { frontVehicle->track_x, frontVehicle->track_y, frontVehicle->track_z }, frontVehicle->track_type >> 2, 0);
 
     if (xyElement.element && vehicle->status != VEHICLE_STATUS_ARRIVING)
     {
@@ -9939,7 +9939,7 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
     xyElement.y = backVehicle->track_y;
     z = backVehicle->track_z;
     xyElement.element = map_get_track_element_at_of_type_seq(
-        backVehicle->track_x, backVehicle->track_y, backVehicle->track_z >> 3, backVehicle->track_type >> 2, 0);
+        { backVehicle->track_x, backVehicle->track_y, backVehicle->track_z }, backVehicle->track_type >> 2, 0);
 
     if (xyElement.element)
     {
