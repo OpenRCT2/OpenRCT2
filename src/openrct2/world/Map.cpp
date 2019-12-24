@@ -2053,10 +2053,10 @@ int32_t map_get_tile_side(const CoordsXY& mapPos)
     return (subMapX < subMapY) ? ((subMapX + subMapY) < 32 ? 0 : 1) : ((subMapX + subMapY) < 32 ? 3 : 2);
 }
 
-int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY)
+int32_t map_get_tile_quadrant(const CoordsXY& mapPos)
 {
-    int32_t subMapX = mapX & (32 - 1);
-    int32_t subMapY = mapY & (32 - 1);
+    int32_t subMapX = mapPos.x & (32 - 1);
+    int32_t subMapY = mapPos.y & (32 - 1);
     return (subMapX > 16) ? (subMapY < 16 ? 1 : 0) : (subMapY < 16 ? 2 : 3);
 }
 

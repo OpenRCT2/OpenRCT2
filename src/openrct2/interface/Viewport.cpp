@@ -1803,7 +1803,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant(ScreenCoordsXY screenCoords, 
     if (!mapCoords)
         return std::nullopt;
 
-    *quadrant = map_get_tile_quadrant(mapCoords->x, mapCoords->y);
+    *quadrant = map_get_tile_quadrant(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
@@ -1817,7 +1817,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(ScreenCoordsXY screenC
     if (!mapCoords)
         return std::nullopt;
 
-    *quadrant = map_get_tile_quadrant(mapCoords->x, mapCoords->y);
+    *quadrant = map_get_tile_quadrant(*mapCoords);
     return mapCoords->ToTileStart();
 }
 
