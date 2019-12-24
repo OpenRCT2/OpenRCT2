@@ -1210,14 +1210,14 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
  * edi : parameter_3
  */
 static void sub_6E1F34(
-    int16_t x, int16_t y, uint16_t selected_scenery, int16_t* grid_x, int16_t* grid_y, uint32_t* parameter_1,
-    uint32_t* parameter_2, uint32_t* parameter_3)
+    int16_t x, int16_t y, uint16_t selected_scenery, CoordsXY& gridPos, uint32_t* parameter_1, uint32_t* parameter_2,
+    uint32_t* parameter_3)
 {
     rct_window* w = window_find_by_class(WC_SCENERY);
 
     if (w == nullptr)
     {
-        *grid_x = LOCATION_NULL;
+        gridPos.x = LOCATION_NULL;
         return;
     }
 
@@ -1349,22 +1349,21 @@ static void sub_6E1F34(
                     auto gridCoords = screen_get_map_xy_quadrant({ x, y }, &cl);
                     if (!gridCoords)
                     {
-                        *grid_x = LOCATION_NULL;
+                        gridPos.x = LOCATION_NULL;
                         return;
                     }
-                    *grid_x = gridCoords->x;
-                    *grid_y = gridCoords->y;
+                    gridPos = *gridCoords;
 
                     gSceneryPlaceZ = 0;
 
                     // If SHIFT pressed
                     if (gSceneryShiftPressed)
                     {
-                        auto* surfaceElement = map_get_surface_element_at(CoordsXY{ *grid_x, *grid_y });
+                        auto* surfaceElement = map_get_surface_element_at(gridPos);
 
                         if (surfaceElement == nullptr)
                         {
-                            *grid_x = LOCATION_NULL;
+                            gridPos.x = LOCATION_NULL;
                             return;
                         }
 
@@ -1383,11 +1382,11 @@ static void sub_6E1F34(
                     auto mapCoords = screen_get_map_xy_quadrant_with_z({ x, y }, z, &cl);
                     if (!mapCoords)
                     {
-                        *grid_x = LOCATION_NULL;
+                        gridPos.x = LOCATION_NULL;
                         return;
                     }
-                    *grid_x = mapCoords->x;
-                    *grid_y = mapCoords->y;
+                    gridPos = *mapCoords;
+
                     // If SHIFT pressed
                     if (gSceneryShiftPressed)
                     {
@@ -1399,7 +1398,7 @@ static void sub_6E1F34(
                     gSceneryPlaceZ = z;
                 }
 
-                if (*grid_x == LOCATION_NULL)
+                if (gridPos.x == LOCATION_NULL)
                     return;
 
                 uint8_t rotation = gWindowSceneryRotation;
@@ -1434,12 +1433,11 @@ static void sub_6E1F34(
                 CoordsXY gridCoords;
 
                 get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &interaction_type, &tile_element, nullptr);
-                *grid_x = gridCoords.x;
-                *grid_y = gridCoords.y;
+                gridPos = gridCoords;
 
                 if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
                 {
-                    *grid_x = LOCATION_NULL;
+                    gridPos.x = LOCATION_NULL;
                     return;
                 }
 
@@ -1449,11 +1447,11 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    auto surfaceElement = map_get_surface_element_at(CoordsXY{ *grid_x, *grid_y });
+                    auto surfaceElement = map_get_surface_element_at(gridPos);
 
                     if (surfaceElement == nullptr)
                     {
-                        *grid_x = LOCATION_NULL;
+                        gridPos.x = LOCATION_NULL;
                         return;
                     }
 
@@ -1471,12 +1469,11 @@ static void sub_6E1F34(
                 auto coords = screen_get_map_xy_with_z({ x, y }, z);
                 if (coords)
                 {
-                    *grid_x = coords->x;
-                    *grid_y = coords->y;
+                    gridPos = *coords;
                 }
                 else
                 {
-                    *grid_x = LOCATION_NULL;
+                    gridPos.x = LOCATION_NULL;
                 }
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
@@ -1489,11 +1486,10 @@ static void sub_6E1F34(
                 gSceneryPlaceZ = z;
             }
 
-            if (*grid_x == LOCATION_NULL)
+            if (gridPos.x == LOCATION_NULL)
                 return;
 
-            *grid_x &= 0xFFE0;
-            *grid_y &= 0xFFE0;
+            gridPos = gridPos.ToTileStart();
             uint8_t rotation = gWindowSceneryRotation;
 
             if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
@@ -1519,12 +1515,11 @@ static void sub_6E1F34(
             CoordsXY gridCoords;
 
             get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &interaction_type, &tile_element, nullptr);
-            *grid_x = gridCoords.x;
-            *grid_y = gridCoords.y;
+            gridPos = gridCoords;
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
             {
-                *grid_x = LOCATION_NULL;
+                gridPos.x = LOCATION_NULL;
                 return;
             }
 
@@ -1550,22 +1545,21 @@ static void sub_6E1F34(
                 auto gridCoords = screen_get_map_xy_side({ x, y }, &cl);
                 if (!gridCoords)
                 {
-                    *grid_x = LOCATION_NULL;
+                    gridPos.x = LOCATION_NULL;
                     return;
                 }
-                *grid_x = gridCoords->x;
-                *grid_y = gridCoords->y;
+                gridPos = *gridCoords;
 
                 gSceneryPlaceZ = 0;
 
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    auto* surfaceElement = map_get_surface_element_at(CoordsXY{ *grid_x, *grid_y });
+                    auto* surfaceElement = map_get_surface_element_at(gridPos);
 
                     if (surfaceElement == nullptr)
                     {
-                        *grid_x = LOCATION_NULL;
+                        gridPos.x = LOCATION_NULL;
                         return;
                     }
 
@@ -1583,11 +1577,10 @@ static void sub_6E1F34(
                 auto mapCoords = screen_get_map_xy_side_with_z({ x, y }, z, &cl);
                 if (!mapCoords)
                 {
-                    *grid_x = LOCATION_NULL;
+                    gridPos.x = LOCATION_NULL;
                     return;
                 }
-                *grid_x = mapCoords->x;
-                *grid_y = mapCoords->y;
+                gridPos = *mapCoords;
 
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
@@ -1600,7 +1593,7 @@ static void sub_6E1F34(
                 gSceneryPlaceZ = z;
             }
 
-            if (*grid_x == LOCATION_NULL)
+            if (gridPos.x == LOCATION_NULL)
                 return;
 
             _secondaryColour = gWindowScenerySecondaryColour;
@@ -1618,10 +1611,9 @@ static void sub_6E1F34(
             if (!gSceneryCtrlPressed)
             {
                 const CoordsXY mapCoords = sub_68A15E({ x, y });
-                *grid_x = mapCoords.x;
-                *grid_y = mapCoords.y;
+                gridPos = mapCoords;
 
-                if (*grid_x == LOCATION_NULL)
+                if (gridPos.x == LOCATION_NULL)
                     return;
 
                 gSceneryPlaceZ = 0;
@@ -1629,11 +1621,11 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    auto* surfaceElement = map_get_surface_element_at(CoordsXY{ *grid_x, *grid_y });
+                    auto* surfaceElement = map_get_surface_element_at(gridPos);
 
                     if (surfaceElement == nullptr)
                     {
-                        *grid_x = LOCATION_NULL;
+                        gridPos.x = LOCATION_NULL;
                         return;
                     }
 
@@ -1651,12 +1643,11 @@ static void sub_6E1F34(
                 auto coords = screen_get_map_xy_with_z({ x, y }, z);
                 if (coords)
                 {
-                    *grid_x = coords->x;
-                    *grid_y = coords->y;
+                    gridPos = *coords;
                 }
                 else
                 {
-                    *grid_x = LOCATION_NULL;
+                    gridPos.x = LOCATION_NULL;
                 }
 
                 // If SHIFT pressed
@@ -1670,11 +1661,11 @@ static void sub_6E1F34(
                 gSceneryPlaceZ = z;
             }
 
-            if (*grid_x == LOCATION_NULL)
+            if (gridPos.x == LOCATION_NULL)
                 return;
 
-            *grid_x &= 0xFFE0;
-            *grid_y &= 0xFFE0;
+            gridPos.x &= 0xFFE0;
+            gridPos.y &= 0xFFE0;
 
             uint8_t rotation = gWindowSceneryRotation;
             rotation -= get_current_rotation();
@@ -1694,12 +1685,11 @@ static void sub_6E1F34(
             CoordsXY gridCoords;
 
             get_map_coordinates_from_pos({ x, y }, flags, gridCoords, &interaction_type, &tile_element, nullptr);
-            *grid_x = gridCoords.x;
-            *grid_y = gridCoords.y;
+            gridPos = gridCoords;
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
             {
-                *grid_x = LOCATION_NULL;
+                gridPos.x = LOCATION_NULL;
                 return;
             }
 
@@ -1757,12 +1747,12 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
     if (selectedTab == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
         return;
 
-    int16_t gridX, gridY;
+    CoordsXY gridPos;
     uint32_t parameter_1, parameter_2, parameter_3;
 
-    sub_6E1F34(x, y, selectedTab, &gridX, &gridY, &parameter_1, &parameter_2, &parameter_3);
+    sub_6E1F34(x, y, selectedTab, gridPos, &parameter_1, &parameter_2, &parameter_3);
 
-    if (gridX == LOCATION_NULL)
+    if (gridPos.x == LOCATION_NULL)
         return;
 
     switch (sceneryType)
@@ -1784,8 +1774,8 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 int32_t zCoordinate = gSceneryPlaceZ;
                 rct_scenery_entry* scenery = get_small_scenery_entry((parameter_1 >> 8) & 0xFF);
 
-                int16_t cur_grid_x = gridX;
-                int16_t cur_grid_y = gridY;
+                int16_t cur_grid_x = gridPos.x;
+                int16_t cur_grid_y = gridPos.y;
 
                 if (isCluster)
                 {
@@ -1870,7 +1860,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         {
             auto pathItemType = parameter_3 & 0xFF;
             int32_t z = (parameter_2 & 0xFF) * 8;
-            auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ gridX, gridY, z }, pathItemType);
+            auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ gridPos, z }, pathItemType);
 
             footpathSceneryPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error != GA_ERROR::OK)
@@ -1896,7 +1886,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 auto edges = parameter_2 & 0xFF;
                 auto type = (parameter_1 >> 8) & 0xFF;
                 auto wallPlaceAction = WallPlaceAction(
-                    type, { gridX, gridY, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+                    type, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
 
                 auto res = GameActions::Query(&wallPlaceAction);
                 if (res->Error == GA_ERROR::OK)
@@ -1919,7 +1909,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             auto edges = parameter_2 & 0xFF;
             auto type = (parameter_1 >> 8) & 0xFF;
             auto wallPlaceAction = WallPlaceAction(
-                type, { gridX, gridY, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+                type, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
 
             wallPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
@@ -1944,7 +1934,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 auto secondaryColour = (parameter_2 >> 8) & 0xFF;
                 auto largeSceneryType = parameter_3 & 0xFF;
                 uint8_t direction = (parameter_1 & 0xFF00) >> 8;
-                CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, direction };
+                CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
                 auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, largeSceneryType, primaryColour, secondaryColour);
 
@@ -1968,7 +1958,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             auto secondaryColour = (parameter_2 >> 8) & 0xFF;
             auto largeSceneryType = parameter_3 & 0xFF;
             uint8_t direction = (parameter_1 & 0xFF00) >> 8;
-            CoordsXYZD loc = { gridX, gridY, gSceneryPlaceZ, direction };
+            CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
             auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, largeSceneryType, primaryColour, secondaryColour);
             sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
@@ -1988,7 +1978,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         {
             uint8_t direction = (parameter_2 >> 8) & 0xFF;
             int32_t z = (parameter_2 & 0xFF) * 16;
-            CoordsXYZD loc{ gridX, gridY, z, direction };
+            CoordsXYZD loc{ gridPos, z, direction };
             auto primaryColour = gWindowSceneryPrimaryColour;
             auto bannerType = (parameter_1 & 0xFF00) >> 8;
             auto bannerIndex = create_new_banner(0);
@@ -2473,7 +2463,7 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
  * On success places ghost scenery and returns cost to place proper
  */
 static money32 try_place_ghost_scenery(
-    LocationXY16 map_tile, uint32_t parameter_1, uint32_t parameter_2, uint32_t parameter_3, uint16_t selected_tab)
+    CoordsXY map_tile, uint32_t parameter_1, uint32_t parameter_2, uint32_t parameter_3, uint16_t selected_tab)
 {
     scenery_remove_ghost_tool_placement();
 
@@ -2686,10 +2676,10 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
 
     uint8_t scenery_type = (selected_tab & 0xFF00) >> 8;
     uint8_t selected_scenery = selected_tab & 0xFF;
-    LocationXY16 mapTile = {};
+    CoordsXY mapTile = {};
     uint32_t parameter1, parameter2, parameter3;
 
-    sub_6E1F34(x, y, selected_tab, &mapTile.x, &mapTile.y, &parameter1, &parameter2, &parameter3);
+    sub_6E1F34(x, y, selected_tab, mapTile, &parameter1, &parameter2, &parameter3);
 
     if (mapTile.x == LOCATION_NULL)
     {
