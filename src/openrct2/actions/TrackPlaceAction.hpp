@@ -521,9 +521,7 @@ public:
                     if (trackBlock->index != 0)
                         break;
                     ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
-                    ride->cable_lift_x = mapLoc.x;
-                    ride->cable_lift_y = mapLoc.y;
-                    ride->cable_lift_z = baseZ;
+                    ride->CableLiftLoc = { mapLoc, baseZ * 8 };
                     break;
                 case TRACK_ELEM_BLOCK_BRAKES:
                     ride->num_block_brakes++;

@@ -223,7 +223,7 @@ struct Ride
     uint8_t status;
     std::string custom_name;
     uint16_t default_name_number;
-    LocationXY8 overall_view;
+    TileCoordsXY overall_view;
     uint16_t vehicles[MAX_VEHICLES_PER_RIDE]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
@@ -246,7 +246,7 @@ struct Ride
     };
 
     uint8_t boat_hire_return_direction;
-    LocationXY8 boat_hire_return_position;
+    TileCoordsXY boat_hire_return_position;
     // bits 0 through 4 are the number of helix sections
     // bit 5: spinning tunnel, water splash, or rapids
     // bit 6: log reverser, waterfall
@@ -264,9 +264,9 @@ struct Ride
     fixed16_2dp previous_vertical_g;
     fixed16_2dp previous_lateral_g;
     uint32_t testing_flags;
-    // x y map location of the current track piece during a test
+    // x y z map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
-    LocationXY8 cur_test_track_location;
+    TileCoordsXYZ CurTestTrackLocation;
     // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
     uint16_t turn_count_default; // X = current turn count
     uint16_t turn_count_banked;
@@ -279,8 +279,6 @@ struct Ride
     // Unused always 0? Should affect nausea
     uint16_t var_11C;
     uint8_t num_sheltered_sections; // (?abY YYYY)
-    // see cur_test_track_location
-    uint8_t cur_test_track_z;
     // Customer counter in the current 960 game tick (about 30 seconds) interval
     uint16_t cur_num_customers;
     // Counts ticks to update customer intervals, resets each 960 game ticks.
@@ -288,8 +286,7 @@ struct Ride
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[CUSTOMER_HISTORY_SIZE];
     money16 price;
-    LocationXY8 chairlift_bullwheel_location[2];
-    uint8_t chairlift_bullwheel_z[2];
+    TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {
         rating_tuple ratings;
@@ -372,9 +369,7 @@ struct Ride
     uint16_t total_air_time;
     uint8_t current_test_station;
     uint8_t num_circuits;
-    int16_t cable_lift_x;
-    int16_t cable_lift_y;
-    uint8_t cable_lift_z;
+    CoordsXYZ CableLiftLoc;
     uint16_t cable_lift;
     // These fields are used to warn users about issues.
     // Such issue can be hacked rides with incompatible options set.

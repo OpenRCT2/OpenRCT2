@@ -231,7 +231,7 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
         if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
-        LocationXY8 location = ride.overall_view;
+        auto location = ride.overall_view;
         if (location.isNull())
             continue;
 

@@ -517,7 +517,14 @@ public:
             dst->default_name_number = src->name_arguments_number;
         }
 
-        dst->overall_view = src->overall_view;
+        if (src->overall_view.isNull())
+        {
+            dst->overall_view.setNull();
+        }
+        else
+        {
+            dst->overall_view = { src->overall_view.x, src->overall_view.y };
+        }
 
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
@@ -589,7 +596,7 @@ public:
         dst->operation_option = src->operation_option;
 
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
-        dst->boat_hire_return_position = src->boat_hire_return_position;
+        dst->boat_hire_return_position = { src->boat_hire_return_position.x, src->boat_hire_return_position.y };
 
         dst->special_track_elements = src->special_track_elements;
         // pad_0D6[2];
@@ -607,7 +614,17 @@ public:
         dst->previous_lateral_g = src->previous_lateral_g;
         // pad_106[0x2];
         dst->testing_flags = src->testing_flags;
-        dst->cur_test_track_location = src->cur_test_track_location;
+
+        if (src->cur_test_track_location.isNull())
+        {
+            dst->CurTestTrackLocation.setNull();
+        }
+        else
+        {
+            dst->CurTestTrackLocation = { src->cur_test_track_location.x, src->cur_test_track_location.y,
+                                          src->cur_test_track_z };
+        }
+
         dst->turn_count_default = src->turn_count_default;
         dst->turn_count_banked = src->turn_count_banked;
         dst->turn_count_sloped = src->turn_count_sloped;
@@ -622,7 +639,6 @@ public:
         dst->sheltered_length = src->sheltered_length;
         dst->var_11C = src->var_11C;
         dst->num_sheltered_sections = src->num_sheltered_sections;
-        dst->cur_test_track_z = src->cur_test_track_z;
 
         dst->cur_num_customers = src->cur_num_customers;
         dst->num_customers_timeout = src->num_customers_timeout;
@@ -636,8 +652,8 @@ public:
 
         for (uint8_t i = 0; i < 2; i++)
         {
-            dst->chairlift_bullwheel_location[i] = src->chairlift_bullwheel_location[i];
-            dst->chairlift_bullwheel_z[i] = src->chairlift_bullwheel_z[i];
+            dst->ChairliftBullwheelLocation[i] = { src->chairlift_bullwheel_location[i].x,
+                                                   src->chairlift_bullwheel_location[i].y, src->chairlift_bullwheel_z[i] };
         }
 
         dst->ratings = src->ratings;
@@ -744,9 +760,7 @@ public:
         dst->total_air_time = src->total_air_time;
         dst->current_test_station = src->current_test_station;
         dst->num_circuits = src->num_circuits;
-        dst->cable_lift_x = src->cable_lift_x;
-        dst->cable_lift_y = src->cable_lift_y;
-        dst->cable_lift_z = src->cable_lift_z;
+        dst->CableLiftLoc = { src->cable_lift_x, src->cable_lift_y, src->cable_lift_z };
         // pad_1FD;
         dst->cable_lift = src->cable_lift;
 

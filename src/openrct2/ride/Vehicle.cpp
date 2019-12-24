@@ -1594,11 +1594,10 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
     }
 
     // If we have already evaluated this track piece skip to next section
-    uint16_t map_location = (vehicle->track_x / 32) | ((vehicle->track_y / 32) << 8);
-    if (vehicle->track_z / 8 != ride->cur_test_track_z || map_location != ride->cur_test_track_location.xy)
+    TileCoordsXYZ curTrackLoc{ CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z } };
+    if (curTrackLoc != ride->CurTestTrackLocation)
     {
-        ride->cur_test_track_z = vehicle->track_z / 8;
-        ride->cur_test_track_location.xy = map_location;
+        ride->CurTestTrackLocation = curTrackLoc;
 
         if (ride_get_entrance_location(ride, ride->current_test_station).isNull())
             return;
@@ -3074,8 +3073,7 @@ void vehicle_test_reset(rct_vehicle* vehicle)
     ride->previous_vertical_g = 0;
     ride->previous_lateral_g = 0;
     ride->testing_flags = 0;
-    ride->cur_test_track_location.setNull();
-    ride->cur_test_track_z = 0xFF;
+    ride->CurTestTrackLocation.setNull();
     ride->turn_count_default = 0;
     ride->turn_count_banked = 0;
     ride->turn_count_sloped = 0;
@@ -4567,7 +4565,7 @@ static void vehicle_update_boat_location(rct_vehicle* vehicle)
     if (ride == nullptr)
         return;
 
-    TileCoordsXY returnPosition = { ride->boat_hire_return_position.x, ride->boat_hire_return_position.y };
+    TileCoordsXY returnPosition = ride->boat_hire_return_position;
     uint8_t returnDirection = ride->boat_hire_return_direction & 3;
 
     TileCoordsXY location{ CoordsXY{ vehicle->x, vehicle->y } + CoordsDirectionDelta[returnDirection] };
@@ -8069,14 +8067,11 @@ loc_6DB41D:
     {
         TileCoordsXYZ curLocation{ CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z } };
 
-        if (curLocation.x == ride->chairlift_bullwheel_location[1].x && curLocation.y == ride->chairlift_bullwheel_location[1].y
-            && curLocation.z == ride->chairlift_bullwheel_z[1])
+        if (curLocation == ride->ChairliftBullwheelLocation[1])
         {
             vehicle->var_CD = 3;
         }
-        else if (
-            curLocation.x == ride->chairlift_bullwheel_location[0].x && curLocation.y == ride->chairlift_bullwheel_location[0].y
-            && curLocation.z == ride->chairlift_bullwheel_z[0])
+        else if (curLocation == ride->ChairliftBullwheelLocation[0])
         {
             vehicle->var_CD = 4;
         }
@@ -8465,14 +8460,11 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     {
         TileCoordsXYZ curLocation{ CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z } };
 
-        if (ride->chairlift_bullwheel_location[1].x == curLocation.x && ride->chairlift_bullwheel_location[1].y == curLocation.y
-            && ride->chairlift_bullwheel_z[1] == curLocation.z)
+        if (curLocation == ride->ChairliftBullwheelLocation[1])
         {
             vehicle->var_CD = 3;
         }
-        else if (
-            ride->chairlift_bullwheel_location[0].x == curLocation.x && ride->chairlift_bullwheel_location[0].y == curLocation.y
-            && ride->chairlift_bullwheel_z[0] == curLocation.z)
+        else if (curLocation == ride->ChairliftBullwheelLocation[0])
         {
             vehicle->var_CD = 4;
         }

@@ -796,7 +796,15 @@ private:
         }
 
         // Station
-        dst->overall_view = src->overall_view;
+        if (src->overall_view.isNull())
+        {
+            dst->overall_view.setNull();
+        }
+        else
+        {
+            dst->overall_view = { src->overall_view.x, src->overall_view.y };
+        }
+
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
             if (src->station_starts[i].isNull())
@@ -946,15 +954,23 @@ private:
             dst->inversions = src->num_inversions & 0x1F;
         dst->sheltered_eighths = src->num_inversions >> 5;
         dst->boat_hire_return_direction = src->boat_hire_return_direction;
-        dst->boat_hire_return_position = src->boat_hire_return_position;
+        dst->boat_hire_return_position = { src->boat_hire_return_position.x, src->boat_hire_return_position.y };
         dst->chairlift_bullwheel_rotation = src->chairlift_bullwheel_rotation;
         for (int i = 0; i < 2; i++)
         {
-            dst->chairlift_bullwheel_location[i] = src->chairlift_bullwheel_location[i];
-            dst->chairlift_bullwheel_z[i] = src->chairlift_bullwheel_z[i] / 2;
+            dst->ChairliftBullwheelLocation[i] = { src->chairlift_bullwheel_location[i].x,
+                                                   src->chairlift_bullwheel_location[i].y, src->chairlift_bullwheel_z[i] / 2 };
         }
-        dst->cur_test_track_z = src->cur_test_track_z / 2;
-        dst->cur_test_track_location = src->cur_test_track_location;
+
+        if (src->cur_test_track_location.isNull())
+        {
+            dst->CurTestTrackLocation.setNull();
+        }
+        else
+        {
+            dst->CurTestTrackLocation = { src->cur_test_track_location.x, src->cur_test_track_location.y,
+                                          src->cur_test_track_z / 2 };
+        }
         dst->testing_flags = src->testing_flags;
         dst->current_test_segment = src->current_test_segment;
         dst->current_test_station = 0xFF;
