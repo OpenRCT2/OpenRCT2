@@ -1228,11 +1228,8 @@ void Guest::UpdateSitting()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        LocationXYZ16 loc = {
-            (int16_t)((x & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].x),
-            (int16_t)((y & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].y),
-            z,
-        };
+        auto loc = CoordsXYZ{ x, y, z }.ToTileStart()
+            + CoordsXYZ{ BenchUseOffsets[var_37 & 0x7].x, BenchUseOffsets[var_37 & 0x7].y, 0 };
 
         MoveTo(loc.x, loc.y, loc.z);
 
@@ -3537,7 +3534,7 @@ void Guest::UpdateRideAtEntrance()
 }
 
 /** rct2: 0x00981FD4, 0x00981FD6 */
-static constexpr const LocationXY16 _MazeEntranceStart[] = {
+static constexpr const CoordsXY _MazeEntranceStart[] = {
     { 8, 8 },
     { 8, 24 },
     { 24, 24 },
@@ -3634,9 +3631,7 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
     Guard::Assert(!entranceLocation.isNull());
     uint8_t direction_entrance = entranceLocation.direction;
 
-    LocationXY16 waypoint;
-    waypoint.x = ride->stations[peep->current_ride_station].Start.x * 32 + 16;
-    waypoint.y = ride->stations[peep->current_ride_station].Start.y * 32 + 16;
+    CoordsXY waypoint = ride->stations[peep->current_ride_station].Start.ToCoordsXY().ToTileCentre();
 
     TileElement* tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
