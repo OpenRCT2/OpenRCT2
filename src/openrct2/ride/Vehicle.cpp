@@ -7950,8 +7950,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
                         SoundId::BlockBrakeRelease, { vehicle->track_x, vehicle->track_y, vehicle->track_z });
                 }
             }
-            // This is very weird because it uses Z
-            map_invalidate_element({ vehicle->track_x, vehicle->track_z }, tileElement);
+            map_invalidate_element({ vehicle->track_x, vehicle->track_y }, tileElement);
             vehicle_update_block_brakes_open_previous_section(vehicle, tileElement);
         }
     }
