@@ -109,7 +109,7 @@ static bool map_animation_invalidate_ride_entrance(CoordsXYZ loc)
             if (stationObj != nullptr)
             {
                 int32_t height = loc.z + stationObj->Height + 8;
-                map_invalidate_tile_zoom1(loc, height, height + 16);
+                map_invalidate_tile_zoom1({ loc, height, height + 16 });
             }
         }
         return false;
@@ -144,7 +144,7 @@ static bool map_animation_invalidate_queue_banner(CoordsXYZ loc)
         int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + get_current_rotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
         {
-            map_invalidate_tile_zoom1(loc, loc.z + 16, loc.z + 30);
+            map_invalidate_tile_zoom1({ loc, loc.z + 16, loc.z + 30 });
         }
         return false;
     } while (!(tileElement++)->IsLastForTile());
@@ -185,7 +185,7 @@ static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
                 SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
                     | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
         {
-            map_invalidate_tile_zoom1(loc, loc.z, tileElement->GetClearanceZ());
+            map_invalidate_tile_zoom1({ loc, loc.z, tileElement->GetClearanceZ() });
             return false;
         }
 
@@ -221,7 +221,7 @@ static bool map_animation_invalidate_small_scenery(CoordsXYZ loc)
                     break;
                 }
             }
-            map_invalidate_tile_zoom1(loc, loc.z, tileElement->GetClearanceZ());
+            map_invalidate_tile_zoom1({ loc, loc.z, tileElement->GetClearanceZ() });
             return false;
         }
 
@@ -252,7 +252,7 @@ static bool map_animation_invalidate_park_entrance(CoordsXYZ loc)
         if (tileElement->AsEntrance()->GetSequenceIndex())
             continue;
 
-        map_invalidate_tile_zoom1(loc, loc.z + 32, loc.z + 64);
+        map_invalidate_tile_zoom1({ loc, loc.z + 32, loc.z + 64 });
         return false;
     } while (!(tileElement++)->IsLastForTile());
 
@@ -280,7 +280,7 @@ static bool map_animation_invalidate_track_waterfall(CoordsXYZ loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_WATERFALL)
         {
-            map_invalidate_tile_zoom1(loc, loc.z + 14, loc.z + 46);
+            map_invalidate_tile_zoom1({ loc, loc.z + 14, loc.z + 46 });
             return false;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -309,7 +309,7 @@ static bool map_animation_invalidate_track_rapids(CoordsXYZ loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RAPIDS)
         {
-            map_invalidate_tile_zoom1(loc, loc.z + 14, loc.z + 18);
+            map_invalidate_tile_zoom1({ loc, loc.z + 14, loc.z + 18 });
             return false;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -338,7 +338,7 @@ static bool map_animation_invalidate_track_onridephoto(CoordsXYZ loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_ON_RIDE_PHOTO)
         {
-            map_invalidate_tile_zoom1(loc, loc.z, tileElement->GetClearanceZ());
+            map_invalidate_tile_zoom1({ loc, loc.z, tileElement->GetClearanceZ() });
             if (game_is_paused())
             {
                 return false;
@@ -379,7 +379,7 @@ static bool map_animation_invalidate_track_whirlpool(CoordsXYZ loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_WHIRLPOOL)
         {
-            map_invalidate_tile_zoom1(loc, loc.z + 14, loc.z + 18);
+            map_invalidate_tile_zoom1({ loc, loc.z + 14, loc.z + 18 });
             return false;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -408,7 +408,7 @@ static bool map_animation_invalidate_track_spinningtunnel(CoordsXYZ loc)
 
         if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_SPINNING_TUNNEL)
         {
-            map_invalidate_tile_zoom1(loc, loc.z + 14, loc.z + 32);
+            map_invalidate_tile_zoom1({ loc, loc.z + 14, loc.z + 32 });
             return false;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -443,7 +443,7 @@ static bool map_animation_invalidate_banner(CoordsXYZ loc)
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
             continue;
-        map_invalidate_tile_zoom1(loc, loc.z, loc.z + 16);
+        map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
         return false;
     } while (!(tileElement++)->IsLastForTile());
 
@@ -474,7 +474,7 @@ static bool map_animation_invalidate_large_scenery(CoordsXYZ loc)
         sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
         if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED)
         {
-            map_invalidate_tile_zoom1(loc, loc.z, loc.z + 16);
+            map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
             wasInvalidated = true;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -540,7 +540,7 @@ static bool map_animation_invalidate_wall_door(CoordsXYZ loc)
         tileElement->AsWall()->SetAnimationFrame(currentFrame);
         if (invalidate)
         {
-            map_invalidate_tile_zoom1(loc, loc.z, loc.z + 32);
+            map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 32 });
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -575,7 +575,7 @@ static bool map_animation_invalidate_wall(CoordsXYZ loc)
                 && sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE))
             continue;
 
-        map_invalidate_tile_zoom1(loc, loc.z, loc.z + 16);
+        map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
         wasInvalidated = true;
     } while (!(tileElement++)->IsLastForTile());
 

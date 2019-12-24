@@ -111,7 +111,7 @@ public:
 
             wallElement->SetPrimaryColour(_mainColour);
             wallElement->SetSecondaryColour(_textColour);
-            map_invalidate_tile(coords, wallElement->GetBaseZ(), wallElement->GetClearanceZ());
+            map_invalidate_tile({ coords, wallElement->GetBaseZ(), wallElement->GetClearanceZ() });
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);

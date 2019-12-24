@@ -1926,7 +1926,7 @@ static void footpath_remove_edges_towards_here(
     tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
     cd = ((cd + 1) & 3);
     tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
-    map_invalidate_tile({ x, y }, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+    map_invalidate_tile({ x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 
     if (isQueue)
         footpath_disconnect_queue_from_path(x, y, tileElement, -1);
@@ -1950,7 +1950,7 @@ static void footpath_remove_edges_towards_here(
 
         cd = ((direction + 1) & 3);
         tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
-        map_invalidate_tile({ x, y }, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+        map_invalidate_tile({ x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
         break;
     } while (!(tileElement++)->IsLastForTile());
 }

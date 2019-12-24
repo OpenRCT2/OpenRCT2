@@ -53,7 +53,7 @@ repeat:
             continue;
 
         tile_element_remove_banner_entry(tileElement);
-        map_invalidate_tile_zoom1({ x, y }, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72);
+        map_invalidate_tile_zoom1({ x, y, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
         tile_element_remove(tileElement);
         goto repeat;
     } while (!(tileElement++)->IsLastForTile());
@@ -91,7 +91,7 @@ void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1
             continue;
 
         tile_element_remove_banner_entry(tileElement);
-        map_invalidate_tile_zoom1({ x, y }, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72);
+        map_invalidate_tile_zoom1({ x, y, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
         tile_element_remove(tileElement);
         tileElement--;
     } while (!(tileElement++)->IsLastForTile());

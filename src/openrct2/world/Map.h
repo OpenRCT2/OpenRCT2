@@ -207,9 +207,9 @@ bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequen
 void wall_remove_at(int32_t x, int32_t y, int32_t z0, int32_t z1);
 void wall_remove_at_z(int32_t x, int32_t y, int32_t z);
 
-void map_invalidate_tile(const CoordsXY& tilePos, int32_t z0, int32_t z1);
-void map_invalidate_tile_zoom1(const CoordsXY& tilePos, int32_t z0, int32_t z1);
-void map_invalidate_tile_zoom0(const CoordsXY& tilePos, int32_t z0, int32_t z1);
+void map_invalidate_tile(const CoordsXYRangedZ& tilePos);
+void map_invalidate_tile_zoom1(const CoordsXYRangedZ& tilePos);
+void map_invalidate_tile_zoom0(const CoordsXYRangedZ& tilePos);
 void map_invalidate_tile_full(const CoordsXY& tilePos);
 void map_invalidate_element(const CoordsXY& elementPos, TileElement* tileElement);
 void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs);

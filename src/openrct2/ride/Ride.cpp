@@ -2126,10 +2126,10 @@ void Ride::UpdateChairlift()
         return;
 
     auto bullwheelLoc = ChairliftBullwheelLocation[0].ToCoordsXYZ();
-    map_invalidate_tile_zoom1(bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * 8));
+    map_invalidate_tile_zoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * 8) });
 
     bullwheelLoc = ChairliftBullwheelLocation[1].ToCoordsXYZ();
-    map_invalidate_tile_zoom1(bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * 8));
+    map_invalidate_tile_zoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * 8) });
 }
 
 /**
@@ -2240,7 +2240,7 @@ void Ride::UpdateSpiralSlide()
         x += ride_spiral_slide_main_tile_offset[rotation][current_rotation].x;
         y += ride_spiral_slide_main_tile_offset[rotation][current_rotation].y;
 
-        map_invalidate_tile_zoom0({ x, y }, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+        map_invalidate_tile_zoom0({ x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
     }
 }
 

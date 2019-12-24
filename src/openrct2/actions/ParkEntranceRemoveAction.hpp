@@ -101,7 +101,7 @@ private:
             return;
         }
 
-        map_invalidate_tile(loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ());
+        map_invalidate_tile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
         entranceElement->Remove();
         update_park_fences({ loc.x, loc.y });
     }

@@ -151,7 +151,7 @@ public:
         {
             wallElement->SetTertiaryColour(_tertiaryColour);
         }
-        map_invalidate_tile_zoom1(_loc, _loc.z, _loc.z + 72);
+        map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 72 });
 
         return res;
     }

@@ -333,7 +333,7 @@ public:
                 break;
         }
 
-        map_invalidate_tile(_loc.ToTileStart(), tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+        map_invalidate_tile({ _loc.ToTileStart(), tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 
         if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
         {
