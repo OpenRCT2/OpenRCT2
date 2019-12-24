@@ -1900,15 +1900,13 @@ std::optional<CoordsXYZ> map_large_scenery_get_origin(
  *
  *  rct2: 0x006B9B05
  */
-bool sign_set_colour(
-    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, uint8_t mainColour, uint8_t textColour)
+bool sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_large_scenery_tile *sceneryTiles, *tile;
 
-    auto sceneryOrigin = map_large_scenery_get_origin(
-        { x, y, z << 3, static_cast<Direction>(direction) }, sequence, &tileElement);
+    auto sceneryOrigin = map_large_scenery_get_origin(signPos, sequence, &tileElement);
     if (!sceneryOrigin)
     {
         return false;
@@ -1922,18 +1920,17 @@ bool sign_set_colour(
     for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
     {
         CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
-        auto rotatedOffsetPos = offsetPos.Rotate(direction);
+        auto rotatedOffsetPos = offsetPos.Rotate(signPos.direction);
 
-        x = sceneryOrigin->x + rotatedOffsetPos.x;
-        y = sceneryOrigin->y + rotatedOffsetPos.y;
-        z = sceneryOrigin->z + tile->z_offset;
-        tileElement = map_get_large_scenery_segment({ x, y, z, static_cast<Direction>(direction) }, sequence);
+        auto tmpSignPos = CoordsXYZD{ sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
+                                      sceneryOrigin->z + tile->z_offset, signPos.direction };
+        tileElement = map_get_large_scenery_segment(tmpSignPos, sequence);
         if (tileElement != nullptr)
         {
             tileElement->SetPrimaryColour(mainColour);
             tileElement->SetSecondaryColour(textColour);
 
-            map_invalidate_tile(x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+            map_invalidate_tile(tmpSignPos.x, tmpSignPos.y, tileElement->GetBaseZ(), tileElement->GetClearanceZ());
         }
     }
 
