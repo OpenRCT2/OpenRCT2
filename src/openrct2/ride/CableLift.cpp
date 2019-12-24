@@ -271,7 +271,7 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle)
 
         vehicle->track_progress = trackProgress;
         moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, trackProgress);
-        LocationXYZ16 unk = { moveInfo->x, moveInfo->y, moveInfo->z };
+        CoordsXYZ unk = { moveInfo->x, moveInfo->y, moveInfo->z };
 
         unk.x += vehicle->track_x;
         unk.y += vehicle->track_y;
@@ -355,7 +355,7 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle)
         vehicle->track_progress = trackProgress;
 
         moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, trackProgress);
-        LocationXYZ16 unk = { moveInfo->x, moveInfo->y, moveInfo->z };
+        CoordsXYZ unk = { moveInfo->x, moveInfo->y, moveInfo->z };
 
         unk.x += vehicle->track_x;
         unk.y += vehicle->track_y;
