@@ -630,8 +630,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (uint8_t i = 0; i < 2; i++)
     {
-        dst->chairlift_bullwheel_location[i] = src->chairlift_bullwheel_location[i];
-        dst->chairlift_bullwheel_z[i] = src->chairlift_bullwheel_z[i];
+        dst->chairlift_bullwheel_location[i] = { static_cast<uint8_t>(src->ChairliftBullwheelLocation[i].x),
+                                                 static_cast<uint8_t>(src->ChairliftBullwheelLocation[i].y) };
+        dst->chairlift_bullwheel_z[i] = static_cast<uint8_t>(src->ChairliftBullwheelLocation[i].z);
     }
 
     dst->ratings = src->ratings;

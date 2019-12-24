@@ -288,8 +288,7 @@ struct Ride
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[CUSTOMER_HISTORY_SIZE];
     money16 price;
-    LocationXY8 chairlift_bullwheel_location[2];
-    uint8_t chairlift_bullwheel_z[2];
+    TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {
         rating_tuple ratings;

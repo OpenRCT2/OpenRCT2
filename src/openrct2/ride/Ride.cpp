@@ -2126,14 +2126,14 @@ void Ride::UpdateChairlift()
     if (old_chairlift_bullwheel_rotation == speed / 8)
         return;
 
-    x = chairlift_bullwheel_location[0].x * 32;
-    y = chairlift_bullwheel_location[0].y * 32;
-    z = chairlift_bullwheel_z[0] * 8;
+    x = ChairliftBullwheelLocation[0].x * 32;
+    y = ChairliftBullwheelLocation[0].y * 32;
+    z = ChairliftBullwheelLocation[0].z * 8;
     map_invalidate_tile_zoom1(x, y, z, z + (4 * 8));
 
-    x = chairlift_bullwheel_location[1].x * 32;
-    y = chairlift_bullwheel_location[1].y * 32;
-    z = chairlift_bullwheel_z[1] * 8;
+    x = ChairliftBullwheelLocation[1].x * 32;
+    y = ChairliftBullwheelLocation[1].y * 32;
+    z = ChairliftBullwheelLocation[1].z * 8;
     map_invalidate_tile_zoom1(x, y, z, z + (4 * 8));
 }
 
@@ -4203,9 +4203,9 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     {
         return false;
     }
-    ride->chairlift_bullwheel_location[0].x = trackBack.x >> 5;
-    ride->chairlift_bullwheel_location[0].y = trackBack.y >> 5;
-    ride->chairlift_bullwheel_z[0] = trackBack.element->base_height;
+    ride->ChairliftBullwheelLocation[0].x = trackBack.x >> 5;
+    ride->ChairliftBullwheelLocation[0].y = trackBack.y >> 5;
+    ride->ChairliftBullwheelLocation[0].z = trackBack.element->base_height;
 
     // Check front of the track
     track_get_front(input, &trackFront);
@@ -4214,9 +4214,9 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     {
         return false;
     }
-    ride->chairlift_bullwheel_location[1].x = trackFront.x >> 5;
-    ride->chairlift_bullwheel_location[1].y = trackFront.y >> 5;
-    ride->chairlift_bullwheel_z[1] = trackFront.element->base_height;
+    ride->ChairliftBullwheelLocation[1].x = trackFront.x >> 5;
+    ride->ChairliftBullwheelLocation[1].y = trackFront.y >> 5;
+    ride->ChairliftBullwheelLocation[1].z = trackFront.element->base_height;
     return true;
 }
 

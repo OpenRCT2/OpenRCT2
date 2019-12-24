@@ -8069,14 +8069,11 @@ loc_6DB41D:
     {
         TileCoordsXYZ curLocation{ CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z } };
 
-        if (curLocation.x == ride->chairlift_bullwheel_location[1].x && curLocation.y == ride->chairlift_bullwheel_location[1].y
-            && curLocation.z == ride->chairlift_bullwheel_z[1])
+        if (curLocation == ride->ChairliftBullwheelLocation[1])
         {
             vehicle->var_CD = 3;
         }
-        else if (
-            curLocation.x == ride->chairlift_bullwheel_location[0].x && curLocation.y == ride->chairlift_bullwheel_location[0].y
-            && curLocation.z == ride->chairlift_bullwheel_z[0])
+        else if (curLocation == ride->ChairliftBullwheelLocation[0])
         {
             vehicle->var_CD = 4;
         }
@@ -8465,14 +8462,11 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     {
         TileCoordsXYZ curLocation{ CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z } };
 
-        if (ride->chairlift_bullwheel_location[1].x == curLocation.x && ride->chairlift_bullwheel_location[1].y == curLocation.y
-            && ride->chairlift_bullwheel_z[1] == curLocation.z)
+        if (curLocation == ride->ChairliftBullwheelLocation[1])
         {
             vehicle->var_CD = 3;
         }
-        else if (
-            ride->chairlift_bullwheel_location[0].x == curLocation.x && ride->chairlift_bullwheel_location[0].y == curLocation.y
-            && ride->chairlift_bullwheel_z[0] == curLocation.z)
+        else if (curLocation == ride->ChairliftBullwheelLocation[0])
         {
             vehicle->var_CD = 4;
         }
