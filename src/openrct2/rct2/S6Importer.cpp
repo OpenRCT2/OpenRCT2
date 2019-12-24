@@ -614,7 +614,18 @@ public:
         dst->previous_lateral_g = src->previous_lateral_g;
         // pad_106[0x2];
         dst->testing_flags = src->testing_flags;
-        dst->cur_test_track_location = src->cur_test_track_location;
+
+        if (src->cur_test_track_location.isNull())
+        {
+            dst->cur_test_track_location.setNull();
+            dst->cur_test_track_z = 0xFF;
+        }
+        else
+        {
+            dst->cur_test_track_location = { src->cur_test_track_location.x, src->cur_test_track_location.y };
+            dst->cur_test_track_z = src->cur_test_track_z;
+        }
+
         dst->turn_count_default = src->turn_count_default;
         dst->turn_count_banked = src->turn_count_banked;
         dst->turn_count_sloped = src->turn_count_sloped;
@@ -629,7 +640,6 @@ public:
         dst->sheltered_length = src->sheltered_length;
         dst->var_11C = src->var_11C;
         dst->num_sheltered_sections = src->num_sheltered_sections;
-        dst->cur_test_track_z = src->cur_test_track_z;
 
         dst->cur_num_customers = src->cur_num_customers;
         dst->num_customers_timeout = src->num_customers_timeout;

@@ -1595,9 +1595,10 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
 
     // If we have already evaluated this track piece skip to next section
     uint16_t map_location = (vehicle->track_x / 32) | ((vehicle->track_y / 32) << 8);
-    if (vehicle->track_z / 8 != ride->cur_test_track_z || map_location != ride->cur_test_track_location.xy)
+    TileCoordsXYZ curTrackLoc{ CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z } };
+    if (curTrackLoc.z != ride->cur_test_track_z || map_location != ride->cur_test_track_location.xy)
     {
-        ride->cur_test_track_z = vehicle->track_z / 8;
+        ride->cur_test_track_z = curTrackLoc.z;
         ride->cur_test_track_location.xy = map_location;
 
         if (ride_get_entrance_location(ride, ride->current_test_station).isNull())
