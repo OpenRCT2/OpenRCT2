@@ -264,9 +264,9 @@ struct Ride
     fixed16_2dp previous_vertical_g;
     fixed16_2dp previous_lateral_g;
     uint32_t testing_flags;
-    // x y map location of the current track piece during a test
+    // x y z map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
-    LocationXY8 cur_test_track_location;
+    TileCoordsXYZ cur_test_track_location;
     // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
     uint16_t turn_count_default; // X = current turn count
     uint16_t turn_count_banked;
@@ -279,8 +279,6 @@ struct Ride
     // Unused always 0? Should affect nausea
     uint16_t var_11C;
     uint8_t num_sheltered_sections; // (?abY YYYY)
-    // see cur_test_track_location
-    uint8_t cur_test_track_z;
     // Customer counter in the current 960 game tick (about 30 seconds) interval
     uint16_t cur_num_customers;
     // Counts ticks to update customer intervals, resets each 960 game ticks.

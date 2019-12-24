@@ -965,12 +965,11 @@ private:
         if (src->cur_test_track_location.isNull())
         {
             dst->cur_test_track_location.setNull();
-            dst->cur_test_track_z = 0xFF;
         }
         else
         {
-            dst->cur_test_track_location = { src->cur_test_track_location.x, src->cur_test_track_location.y };
-            dst->cur_test_track_z = src->cur_test_track_z / 2;
+            dst->cur_test_track_location = { src->cur_test_track_location.x, src->cur_test_track_location.y,
+                                             src->cur_test_track_z / 2 };
         }
         dst->testing_flags = src->testing_flags;
         dst->current_test_segment = src->current_test_segment;
