@@ -517,7 +517,14 @@ public:
             dst->default_name_number = src->name_arguments_number;
         }
 
-        dst->overall_view = src->overall_view;
+        if (src->overall_view.isNull())
+        {
+            dst->overall_view.setNull();
+        }
+        else
+        {
+            dst->overall_view = { src->overall_view.x, src->overall_view.y };
+        }
 
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {

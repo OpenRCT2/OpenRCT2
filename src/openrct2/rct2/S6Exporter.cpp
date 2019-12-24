@@ -522,7 +522,14 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
         dst->name_arguments_number = src->default_name_number;
     }
 
-    dst->overall_view = src->overall_view;
+    if (src->overall_view.isNull())
+    {
+        dst->overall_view.setNull();
+    }
+    else
+    {
+        dst->overall_view = { static_cast<uint8_t>(src->overall_view.x), static_cast<uint8_t>(src->overall_view.y) };
+    }
 
     for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
     {
