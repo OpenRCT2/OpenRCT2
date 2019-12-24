@@ -610,15 +610,15 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     // pad_106[0x2];
     dst->testing_flags = src->testing_flags;
 
-    if (src->cur_test_track_location.isNull())
+    if (src->CurTestTrackLocation.isNull())
     {
         dst->cur_test_track_location.setNull();
     }
     else
     {
-        dst->cur_test_track_location = { static_cast<uint8_t>(src->cur_test_track_location.x),
-                                         static_cast<uint8_t>(src->cur_test_track_location.y) };
-        dst->cur_test_track_z = static_cast<uint8_t>(src->cur_test_track_location.z);
+        dst->cur_test_track_location = { static_cast<uint8_t>(src->CurTestTrackLocation.x),
+                                         static_cast<uint8_t>(src->CurTestTrackLocation.y) };
+        dst->cur_test_track_z = static_cast<uint8_t>(src->CurTestTrackLocation.z);
     }
 
     dst->turn_count_default = src->turn_count_default;

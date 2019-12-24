@@ -1595,9 +1595,9 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
 
     // If we have already evaluated this track piece skip to next section
     TileCoordsXYZ curTrackLoc{ CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z } };
-    if (curTrackLoc != ride->cur_test_track_location)
+    if (curTrackLoc != ride->CurTestTrackLocation)
     {
-        ride->cur_test_track_location = curTrackLoc;
+        ride->CurTestTrackLocation = curTrackLoc;
 
         if (ride_get_entrance_location(ride, ride->current_test_station).isNull())
             return;
@@ -3073,7 +3073,7 @@ void vehicle_test_reset(rct_vehicle* vehicle)
     ride->previous_vertical_g = 0;
     ride->previous_lateral_g = 0;
     ride->testing_flags = 0;
-    ride->cur_test_track_location.setNull();
+    ride->CurTestTrackLocation.setNull();
     ride->turn_count_default = 0;
     ride->turn_count_banked = 0;
     ride->turn_count_sloped = 0;

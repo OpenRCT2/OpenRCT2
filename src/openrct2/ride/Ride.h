@@ -266,7 +266,7 @@ struct Ride
     uint32_t testing_flags;
     // x y z map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
-    TileCoordsXYZ cur_test_track_location;
+    TileCoordsXYZ CurTestTrackLocation;
     // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
     uint16_t turn_count_default; // X = current turn count
     uint16_t turn_count_banked;
