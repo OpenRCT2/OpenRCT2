@@ -4692,21 +4692,21 @@ static void vehicle_unset_update_flag_b1(rct_vehicle* head)
 static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYElement)
 {
     rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[0]);
-    auto firstPos = CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z };
-    auto firstElement = map_get_track_element_at(firstPos);
+    auto curTrackPos = CoordsXYZ{ vehicle->track_x, vehicle->track_y, vehicle->track_z };
+    auto curTrackElement = map_get_track_element_at(curTrackPos);
 
-    assert(firstElement != nullptr);
+    assert(curTrackElement != nullptr);
 
-    int32_t x = firstPos.x;
-    int32_t y = firstPos.y;
-    auto trackElement = firstElement;
+    int32_t x = curTrackPos.x;
+    int32_t y = curTrackPos.y;
+    auto trackElement = curTrackElement;
     track_begin_end trackBeginEnd;
     while (track_block_get_previous(x, y, reinterpret_cast<TileElement*>(trackElement), &trackBeginEnd))
     {
         x = trackBeginEnd.end_x;
         y = trackBeginEnd.end_y;
         trackElement = trackBeginEnd.begin_element->AsTrack();
-        if (x == firstPos.x && y == firstPos.y && trackElement == firstElement)
+        if (x == curTrackPos.x && y == curTrackPos.y && trackElement == curTrackElement)
         {
             break;
         }
@@ -4750,9 +4750,9 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
         }
     }
 
-    outXYElement->x = firstPos.x;
-    outXYElement->y = firstPos.y;
-    outXYElement->element = reinterpret_cast<TileElement*>(firstElement);
+    outXYElement->x = curTrackPos.x;
+    outXYElement->y = curTrackPos.y;
+    outXYElement->element = reinterpret_cast<TileElement*>(curTrackElement);
 }
 
 /**
