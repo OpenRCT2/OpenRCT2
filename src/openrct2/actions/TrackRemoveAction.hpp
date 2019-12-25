@@ -57,7 +57,7 @@ public:
         res->Position.x = _origin.x + 16;
         res->Position.y = _origin.y + 16;
         res->Position.z = _origin.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
 
         // Stations require some massaging of the track type for comparing
         auto comparableTrackType = _trackType;
@@ -253,7 +253,7 @@ public:
         res->Position.x = _origin.x + 16;
         res->Position.y = _origin.y + 16;
         res->Position.z = _origin.z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
 
         // Stations require some massaging of the track type for comparing
         auto comparableTrackType = _trackType;

@@ -70,7 +70,7 @@ private:
             z = waterHeight;
         }
         res->Position.z = z;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         uint8_t minHeight = GetLowestHeight(validRange);
         bool hasChanged = false;

@@ -42,6 +42,18 @@
 #include <algorithm>
 #include <iterator>
 
+/**
+ * Monthly staff wages
+ *
+ * rct2: 0x00992A00
+ */
+const money32 gStaffWageTable[STAFF_TYPE_COUNT] = {
+    MONEY(50, 00), // Handyman
+    MONEY(80, 00), // Mechanic
+    MONEY(60, 00), // Security guard
+    MONEY(55, 00), // Entertainer
+};
+
 // clang-format off
 const rct_string_id StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PANDA,

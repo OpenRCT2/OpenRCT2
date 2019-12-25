@@ -354,7 +354,7 @@ private:
 
         auto res = MakeResult();
         res->ErrorTitle = _ErrorTitles[_isLowering ? 0 : 1];
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position = { _coords.x, _coords.y, centreZ };
 
         // Do the smoothing

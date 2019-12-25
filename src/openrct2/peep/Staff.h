@@ -62,6 +62,8 @@ enum ENTERTAINER_COSTUME : uint8_t
     ENTERTAINER_COSTUME_COUNT
 };
 
+extern const money32 gStaffWageTable[STAFF_TYPE_COUNT];
+
 extern const rct_string_id StaffCostumeNames[ENTERTAINER_COSTUME_COUNT];
 
 extern uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];

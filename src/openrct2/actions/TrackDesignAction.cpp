@@ -32,7 +32,7 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     res->Position.x = _loc.x + 16;
     res->Position.y = _loc.y + 16;
     res->Position.z = _loc.z;
-    res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+    res->Expenditure = ExpenditureType::RideConstruction;
     _currentTrackPieceDirection = _loc.direction;
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
@@ -124,7 +124,7 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
     res->Position.x = _loc.x + 16;
     res->Position.y = _loc.y + 16;
     res->Position.z = _loc.z;
-    res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+    res->Expenditure = ExpenditureType::RideConstruction;
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 

@@ -68,7 +68,7 @@ public:
         }
 
         res->Cost = entry->small_scenery.removal_price * 10;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc;
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode)
@@ -115,7 +115,7 @@ public:
         }
 
         res->Cost = entry->small_scenery.removal_price * 10;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc;
 
         TileElement* tileElement = FindSceneryElement();

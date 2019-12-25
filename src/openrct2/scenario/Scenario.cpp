@@ -838,7 +838,7 @@ static void scenario_objective_check_guests_and_rating()
 
 static void scenario_objective_check_monthly_ride_income()
 {
-    money32 lastMonthRideIncome = gExpenditureTable[1][RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS];
+    money32 lastMonthRideIncome = gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
     if (lastMonthRideIncome >= gScenarioObjectiveCurrency)
     {
         scenario_success();
@@ -920,9 +920,10 @@ static void scenario_objective_check_replay_loan_and_park_value()
 static void scenario_objective_check_monthly_food_income()
 {
     money32* lastMonthExpenditure = gExpenditureTable[1];
-    int32_t lastMonthProfit = lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES]
-        + lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_STOCK] + lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES]
-        + lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
+    int32_t lastMonthProfit = lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)]
+        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)]
+        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkSales)]
+        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkStock)];
 
     if (lastMonthProfit >= gScenarioObjectiveCurrency)
     {

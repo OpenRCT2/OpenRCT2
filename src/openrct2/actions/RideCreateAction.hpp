@@ -299,7 +299,7 @@ public:
         ride_set_vehicle_colours_to_random_preset(ride, _colour2);
         window_invalidate_by_class(WC_RIDE_LIST);
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
 
         return res;
     }

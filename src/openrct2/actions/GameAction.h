@@ -74,7 +74,7 @@ public:
     std::array<uint8_t, 32> ErrorMessageArgs;
     CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
     money32 Cost = 0;
-    uint16_t ExpenditureType = 0;
+    ExpenditureType Expenditure = ExpenditureType::Count;
 
     GameActionResult() = default;
     GameActionResult(GA_ERROR error, rct_string_id message);

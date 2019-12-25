@@ -15,6 +15,7 @@
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "Peep.h"
+#include "Staff.h"
 
 #include <cstring>
 

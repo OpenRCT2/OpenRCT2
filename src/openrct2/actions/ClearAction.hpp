@@ -74,7 +74,7 @@ private:
     {
         auto result = MakeResult();
         result->ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
-        result->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        result->Expenditure = ExpenditureType::Landscaping;
 
         auto x = (_range.GetLeft() + _range.GetRight()) / 2 + 16;
         auto y = (_range.GetTop() + _range.GetBottom()) / 2 + 16;

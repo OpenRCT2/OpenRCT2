@@ -36,6 +36,7 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "Peep.h"
+#include "Staff.h"
 
 #include <algorithm>
 #include <iterator>
@@ -1707,25 +1708,25 @@ loc_69B221:
         no_of_souvenirs++;
 
     money16* expend_type = &paid_on_souvenirs;
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_SHOP_STOCK;
+    ExpenditureType expenditure = ExpenditureType::ShopStock;
 
     if (shop_item_is_food(shopItem))
     {
         expend_type = &paid_on_food;
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
+        expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (shop_item_is_drink(shopItem))
     {
         expend_type = &paid_on_drink;
-        gCommandExpenditureType = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
+        expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        finance_payment(ShopItems[shopItem].Cost, gCommandExpenditureType);
+        finance_payment(ShopItems[shopItem].Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
-    gCommandExpenditureType--;
+    expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
         item_standard_flags &= ~PEEP_ITEM_VOUCHER;
@@ -1733,7 +1734,7 @@ loc_69B221:
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        SpendMoney(*expend_type, price);
+        SpendMoney(*expend_type, price, expenditure);
     }
     ride->total_profit += (price - ShopItems[shopItem].Cost);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
@@ -2329,10 +2330,10 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 }
 
 // Used when no logging to an expend type required
-void Guest::SpendMoney(money32 amount)
+void Guest::SpendMoney(money32 amount, ExpenditureType expenditure)
 {
     money16 unused;
-    SpendMoney(unused, amount);
+    SpendMoney(unused, amount, expenditure);
 }
 
 /**
@@ -2340,7 +2341,7 @@ void Guest::SpendMoney(money32 amount)
  *  rct2: 0x0069926C
  * Expend type was previously an offset saved in 0x00F1AEC0
  */
-void Guest::SpendMoney(money16& peep_expend_type, money32 amount)
+void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureType expenditure)
 {
     assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
@@ -2351,7 +2352,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount)
 
     window_invalidate_by_number(WC_PEEP, sprite_index);
 
-    finance_payment(-amount, gCommandExpenditureType);
+    finance_payment(-amount, expenditure);
 
     if (gConfigGeneral.show_guest_purchases && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
@@ -3872,8 +3873,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         {
             ride->total_profit += ridePrice;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-            gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
-            SpendMoney(paid_on_rides, ridePrice);
+            SpendMoney(paid_on_rides, ridePrice, ExpenditureType::ParkRideTickets);
         }
     }
 

@@ -57,7 +57,7 @@ private:
         res->Position = _loc;
         res->Position.x += 16;
         res->Position.y += 16;
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+        res->Expenditure = ExpenditureType::RideConstruction;
 
         TileElement* tileElement = map_get_track_element_at_of_type(_loc, _trackType);
         if (tileElement == nullptr)

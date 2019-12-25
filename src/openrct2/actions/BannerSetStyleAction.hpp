@@ -65,7 +65,7 @@ public:
 
         auto banner = GetBanner(_bannerIndex);
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x = banner->position.x * 32 + 16;
         res->Position.y = banner->position.y * 32 + 16;
         res->Position.z = tile_element_height(res->Position);
@@ -115,7 +115,7 @@ public:
 
         auto banner = GetBanner(_bannerIndex);
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+        res->Expenditure = ExpenditureType::Landscaping;
         res->Position.x = banner->position.x * 32 + 16;
         res->Position.y = banner->position.y * 32 + 16;
         res->Position.z = tile_element_height(res->Position);

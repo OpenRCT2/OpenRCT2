@@ -54,7 +54,7 @@ public:
         }
 
         auto res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = CoordsXYZ{ _location.x, _location.y, _location.z / 8 };
 
         if (!map_check_free_elements_and_reorganise(3))
@@ -95,7 +95,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto res = std::make_unique<GameActionResult>();
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+        res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = CoordsXYZ{ _location.x, _location.y, _location.z / 8 };
 
         // If we have reached our max peep spawns, remove the oldest spawns

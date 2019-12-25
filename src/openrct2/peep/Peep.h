@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "../core/Optional.hpp"
+#include "../management/Finance.h"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
@@ -762,8 +763,8 @@ public:
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
-    void SpendMoney(money16& peep_expend_type, money32 amount);
-    void SpendMoney(money32 amount);
+    void SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureType type);
+    void SpendMoney(money32 amount, ExpenditureType type);
     void SetHasRidden(const Ride* ride);
     bool HasRidden(const Ride* ride) const;
     void SetHasRiddenRideType(int32_t rideType);

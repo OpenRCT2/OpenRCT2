@@ -17,6 +17,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
@@ -94,7 +95,7 @@ private:
     {
         auto res = std::make_unique<StaffHireNewActionResult>();
 
-        res->ExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
+        res->Expenditure = ExpenditureType::Wages;
 
         if (_staffType >= STAFF_TYPE_COUNT)
         {
