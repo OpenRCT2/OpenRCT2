@@ -203,7 +203,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const Til
 void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();
 
-bool sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
+bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
 void wall_remove_at(int32_t x, int32_t y, int32_t z0, int32_t z1);
 void wall_remove_at_z(int32_t x, int32_t y, int32_t z);
 

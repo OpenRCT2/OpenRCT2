@@ -1900,7 +1900,7 @@ std::optional<CoordsXYZ> map_large_scenery_get_origin(
  *
  *  rct2: 0x006B9B05
  */
-bool sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
+bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
     rct_scenery_entry* sceneryEntry;
