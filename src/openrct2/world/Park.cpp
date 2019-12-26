@@ -657,7 +657,10 @@ uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
     // This sequence can be defined as PI*(9+n)/2 (the value is floored)
     for (uint8_t n = 1; n < 55; n++)
     {
-        if ((3.14159 * (9 + n)) / 2 >= percentage)
+        // Avoid floating point math by rescaling PI up.
+        constexpr int32_t SCALE = 100000;
+        constexpr int32_t PI_SCALED = 314159; // PI * SCALE;
+        if (((PI_SCALED * (9 + n)) / SCALE) / 2 >= percentage)
         {
             return (9 + n) * 4;
         }
