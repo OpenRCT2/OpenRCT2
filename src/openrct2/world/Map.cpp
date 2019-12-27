@@ -1384,7 +1384,7 @@ bool map_can_construct_with_clear_at(
             loc_68BABC:
                 if (clearFunc != nullptr)
                 {
-                    if (!clearFunc(&tileElement, x, y, flags, price))
+                    if (!clearFunc(&tileElement, { x, y }, flags, price))
                     {
                         continue;
                     }
@@ -1418,7 +1418,7 @@ bool map_can_construct_with_clear_at(
             loc_68BAE6:
                 if (clearFunc != nullptr)
                 {
-                    if (!clearFunc(&tileElement, x, y, flags, price))
+                    if (!clearFunc(&tileElement, { x, y }, flags, price))
                     {
                         goto loc_68B9B7;
                     }

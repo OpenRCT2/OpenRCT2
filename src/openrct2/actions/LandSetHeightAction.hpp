@@ -383,8 +383,8 @@ private:
      *  rct2: 0x00663CB9
      */
     static int32_t map_set_land_height_clear_func(
-        TileElement * *tile_element, [[maybe_unused]] int32_t x, [[maybe_unused]] int32_t y, [[maybe_unused]] uint8_t flags,
-        [[maybe_unused]] money32 * price)
+        TileElement * *tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
+        [[maybe_unused]] money32* price)
     {
         if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
             return 0;
