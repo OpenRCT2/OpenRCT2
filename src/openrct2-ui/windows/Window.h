@@ -49,8 +49,6 @@ rct_window* window_land_open();
 rct_window* window_land_rights_open();
 rct_window* window_main_open();
 rct_window* window_mapgen_open();
-rct_window* window_multiplayer_open();
-rct_window* window_network_open();
 rct_window* window_music_credits_open();
 rct_window* window_news_open();
 rct_window* window_news_options_open();
@@ -59,6 +57,8 @@ rct_window* window_save_prompt_open();
 #ifndef DISABLE_NETWORK
 rct_window* window_server_list_open();
 rct_window* window_server_start_open();
+rct_window* window_multiplayer_open();
+rct_window* window_network_open();
 #endif
 rct_window* window_shortcut_change_open(int32_t selected_key);
 rct_window* window_shortcut_keys_open();
@@ -89,7 +89,9 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride);
 rct_window* window_ride_refurbish_prompt_open(Ride* ride);
 rct_window* window_sign_open(rct_windownumber number);
 rct_window* window_sign_small_open(rct_windownumber number);
+#ifndef DISABLE_NETWORK
 rct_window* window_player_open(uint8_t id);
+#endif
 rct_window* window_new_campaign_open(int16_t campaignType);
 
 rct_window* window_install_track_open(const utf8* path);

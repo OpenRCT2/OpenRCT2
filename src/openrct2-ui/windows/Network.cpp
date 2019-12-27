@@ -7,19 +7,21 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <cmath>
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Game.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/core/CircularBuffer.h>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/network/network.h>
-#include <openrct2/platform/platform.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
+#ifndef DISABLE_NETWORK
+
+#    include <cmath>
+#    include <openrct2-ui/interface/Dropdown.h>
+#    include <openrct2-ui/interface/Widget.h>
+#    include <openrct2-ui/windows/Window.h>
+#    include <openrct2/Game.h>
+#    include <openrct2/config/Config.h>
+#    include <openrct2/core/CircularBuffer.h>
+#    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/localisation/Localisation.h>
+#    include <openrct2/network/network.h>
+#    include <openrct2/platform/platform.h>
+#    include <openrct2/sprites.h>
+#    include <openrct2/util/Util.h>
 
 // clang-format off
 enum {
@@ -209,7 +211,7 @@ static void window_network_set_pressed_tab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB1 + w->page);
 }
 
-#pragma region Information page
+#    pragma region Information page
 
 static void window_network_information_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
@@ -452,7 +454,7 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
     }
 }
 
-#pragma endregion
+#    pragma endregion
 
 static void window_network_draw_tab_image(rct_window* w, rct_drawpixelinfo* dpi, int32_t page, int32_t spriteIndex)
 {
@@ -479,3 +481,5 @@ static void window_network_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi
 {
     window_network_draw_tab_image(w, dpi, WINDOW_NETWORK_PAGE_INFORMATION, SPR_TAB_KIOSKS_AND_FACILITIES_0);
 }
+
+#endif // DISABLE_NETWORK

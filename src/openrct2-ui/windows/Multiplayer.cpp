@@ -7,18 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Game.h>
-#include <openrct2/actions/NetworkModifyGroupAction.hpp>
-#include <openrct2/config/Config.h>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/network/NetworkGroups.h>
-#include <openrct2/network/network.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
+#ifndef DISABLE_NETWORK
+
+#    include <openrct2-ui/interface/Dropdown.h>
+#    include <openrct2-ui/interface/Widget.h>
+#    include <openrct2-ui/windows/Window.h>
+#    include <openrct2/Game.h>
+#    include <openrct2/actions/NetworkModifyGroupAction.hpp>
+#    include <openrct2/config/Config.h>
+#    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/localisation/Localisation.h>
+#    include <openrct2/network/NetworkGroups.h>
+#    include <openrct2/network/network.h>
+#    include <openrct2/sprites.h>
+#    include <openrct2/util/Util.h>
 
 // clang-format off
 enum {
@@ -396,7 +398,7 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window* w, rct_wid
     }
 }
 
-#pragma region Information page
+#    pragma region Information page
 
 static void window_multiplayer_information_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
@@ -539,9 +541,9 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
     }
 }
 
-#pragma endregion
+#    pragma endregion
 
-#pragma region Players page
+#    pragma region Players page
 
 static void window_multiplayer_players_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
@@ -734,9 +736,9 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
     }
 }
 
-#pragma endregion
+#    pragma endregion
 
-#pragma region Groups page
+#    pragma region Groups page
 
 static void window_multiplayer_groups_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
@@ -1012,9 +1014,9 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
     }
 }
 
-#pragma endregion
+#    pragma endregion
 
-#pragma region Options page
+#    pragma region Options page
 
 static void window_multiplayer_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
@@ -1080,7 +1082,7 @@ static void window_multiplayer_options_paint(rct_window* w, rct_drawpixelinfo* d
     window_multiplayer_draw_tab_images(w, dpi);
 }
 
-#pragma endregion
+#    pragma endregion
 
 static void window_multiplayer_draw_tab_image(rct_window* w, rct_drawpixelinfo* dpi, int32_t page, int32_t spriteIndex)
 {
@@ -1110,3 +1112,5 @@ static void window_multiplayer_draw_tab_images(rct_window* w, rct_drawpixelinfo*
     window_multiplayer_draw_tab_image(w, dpi, WINDOW_MULTIPLAYER_PAGE_GROUPS, SPR_TAB_STAFF_OPTIONS_0);
     window_multiplayer_draw_tab_image(w, dpi, WINDOW_MULTIPLAYER_PAGE_OPTIONS, SPR_TAB_GEARS_0);
 }
+
+#endif // DISABLE_NETWORK

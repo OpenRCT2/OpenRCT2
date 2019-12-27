@@ -7,23 +7,25 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Game.h>
-#include <openrct2/Input.h>
-#include <openrct2/actions/PlayerKickAction.hpp>
-#include <openrct2/actions/PlayerSetGroupAction.hpp>
-#include <openrct2/config/Config.h>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/interface/Colour.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/network/NetworkAction.h>
-#include <openrct2/network/NetworkGroups.h>
-#include <openrct2/network/network.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
+#ifndef DISABLE_NETWORK
+
+#    include <openrct2-ui/interface/Dropdown.h>
+#    include <openrct2-ui/interface/Viewport.h>
+#    include <openrct2-ui/interface/Widget.h>
+#    include <openrct2-ui/windows/Window.h>
+#    include <openrct2/Game.h>
+#    include <openrct2/Input.h>
+#    include <openrct2/actions/PlayerKickAction.hpp>
+#    include <openrct2/actions/PlayerSetGroupAction.hpp>
+#    include <openrct2/config/Config.h>
+#    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/interface/Colour.h>
+#    include <openrct2/localisation/Localisation.h>
+#    include <openrct2/network/NetworkAction.h>
+#    include <openrct2/network/NetworkGroups.h>
+#    include <openrct2/network/network.h>
+#    include <openrct2/sprites.h>
+#    include <openrct2/util/Util.h>
 
 // clang-format off
 enum WINDOW_PLAYER_PAGE {
@@ -709,3 +711,5 @@ static void window_player_update_title(rct_window* w)
         set_format_arg(0, const char*, "");
     }
 }
+
+#endif // DISABLE_NETWORK

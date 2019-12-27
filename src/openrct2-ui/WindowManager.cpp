@@ -77,8 +77,10 @@ public:
                 return window_map_open();
             case WC_MAPGEN:
                 return window_mapgen_open();
+#ifndef DISABLE_NETWORK
             case WC_MULTIPLAYER:
                 return window_multiplayer_open();
+#endif
             case WC_MUSIC_CREDITS:
                 return window_music_credits_open();
             case WC_CONSTRUCT_RIDE:
@@ -133,8 +135,10 @@ public:
                 return window_viewport_open();
             case WC_WATER:
                 return window_water_open();
+#ifndef DISABLE_NETWORK
             case WC_NETWORK:
                 return window_network_open();
+#endif
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -193,10 +197,10 @@ public:
                 return window_sign_open(id);
             case WD_SIGN_SMALL:
                 return window_sign_small_open(id);
-
+#ifndef DISABLE_NETWORK
             case WD_PLAYER:
                 return window_player_open(id);
-
+#endif
             default:
                 return nullptr;
         }
