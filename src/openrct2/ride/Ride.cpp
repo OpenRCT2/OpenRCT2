@@ -48,6 +48,7 @@
 #include "../world/Banner.h"
 #include "../world/Climate.h"
 #include "../world/Footpath.h"
+#include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
@@ -2893,9 +2894,7 @@ static void ride_music_update(Ride* ride)
         return;
     }
 
-    TileCoordsXYZ stationTileCoords{ ride->stations[0].Start.x, ride->stations[0].Start.y, ride->stations[0].Height };
-    CoordsXYZ rideCoords{ stationTileCoords.ToCoordsXYZ() };
-    rideCoords = { rideCoords.ToTileCentre(), rideCoords.z };
+    CoordsXYZ rideCoords = ride->stations[0].GetStart().ToTileCentre();
 
     int32_t sampleRate = 22050;
 
@@ -4927,7 +4926,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 
     int32_t x = location.x * 32;
     int32_t y = location.y * 32;
-    int32_t z = ride->stations[stationIndex].Height;
+    int32_t z = ride->stations[stationIndex].GetBaseZ();
 
     bool success = false;
     TileElement* tileElement = map_get_first_element_at({ x, y });
@@ -4937,7 +4936,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->GetBaseZ() != z)
             continue;
 
         if (!(TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
@@ -5127,7 +5126,7 @@ static void loc_6B51C0(const Ride* ride)
     {
         int32_t x = ride->stations[i].Start.x * 32;
         int32_t y = ride->stations[i].Start.y * 32;
-        int32_t z = ride->stations[i].Height * 8;
+        int32_t z = ride->stations[i].GetBaseZ();
         window_scroll_to_location(w, x, y, z);
 
         CoordsXYE trackElement;
@@ -5230,7 +5229,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         ride->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
     }
 
-    // z = ride->stations[i].Height * 8;
+    // z = ride->stations[i].GetBaseZ();
     trackElement.x = ride->stations[stationIndex].Start.x * 32;
     trackElement.y = ride->stations[stationIndex].Start.y * 32;
     trackElement.element = loc_6B4F6B(ride->id, trackElement.x, trackElement.y);
@@ -5366,7 +5365,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         ride->lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
     }
 
-    // z = ride->stations[i].Height * 8;
+    // z = ride->stations[i].GetBaseZ();
     trackElement.x = ride->stations[stationIndex].Start.x * 32;
     trackElement.y = ride->stations[stationIndex].Start.y * 32;
     trackElement.element = loc_6B4F6B(ride->id, trackElement.x, trackElement.y);
@@ -6200,9 +6199,9 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
         return entranceExitCoords;
     }
 
-    stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].Height;
+    stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].GetBaseZ();
 
-    auto coords = screen_get_map_xy_with_z(screenCoords, stationHeight * 8);
+    auto coords = screen_get_map_xy_with_z(screenCoords, stationHeight);
     if (!coords)
     {
         entranceExitCoords.x = LOCATION_NULL;
@@ -6212,7 +6211,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     word_F4418C = coords->x;
     word_F4418E = coords->y;
 
-    entranceExitCoords = { coords->ToTileStart(), stationHeight * 8, INVALID_DIRECTION };
+    entranceExitCoords = { coords->ToTileStart(), stationHeight, INVALID_DIRECTION };
 
     if (ride->type == RIDE_TYPE_NULL)
     {
@@ -6253,7 +6252,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
                 {
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;
-                    if (tileElement->base_height != stationHeight)
+                    if (tileElement->GetBaseZ() != stationHeight)
                         continue;
                     if (tileElement->AsTrack()->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                         continue;
@@ -6649,7 +6648,7 @@ static int32_t ride_get_track_length(Ride* ride)
             continue;
 
         trackStart = stationTileLoc.ToCoordsXY();
-        auto z = ride->stations[i].Height;
+        auto z = ride->stations[i].GetBaseZ();
 
         tileElement = map_get_first_element_at(stationTileLoc.ToCoordsXY());
         if (tileElement == nullptr)
@@ -6663,7 +6662,7 @@ static int32_t ride_get_track_length(Ride* ride)
             if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                 continue;
 
-            if (tileElement->base_height != z)
+            if (tileElement->GetBaseZ() != z)
                 continue;
 
             foundTrack = true;
@@ -6901,7 +6900,7 @@ void sub_6CB945(Ride* ride)
                 continue;
 
             CoordsXYZ location = { ride->stations[stationId].Start.x * 32, ride->stations[stationId].Start.y * 32,
-                                   ride->stations[stationId].Height * 8 };
+                                   ride->stations[stationId].GetBaseZ() };
             auto tileHeight = TileCoordsXYZ(location).z;
             uint8_t direction = 0xFF;
 
@@ -7080,23 +7079,16 @@ void sub_6CB945(Ride* ride)
                     if (!ride_get_exit_location(ride, stationId).isNull())
                         break;
 
-                    ride_set_exit_location(
-                        ride, stationId,
-                        { location.x / 32, location.y / 32, ride->stations[stationId].Height,
-                          (uint8_t)tileElement->GetDirection() });
+                    CoordsXYZD loc = { location, ride->stations[stationId].GetBaseZ(), tileElement->GetDirection() };
+                    ride_set_exit_location(ride, stationId, TileCoordsXYZD{ loc });
                 }
                 else
                 {
                     if (!ride_get_entrance_location(ride, stationId).isNull())
                         break;
 
-                    TileCoordsXYZD entranceLocation = {
-                        location.x / 32,
-                        location.y / 32,
-                        ride->stations[stationId].Height,
-                        (uint8_t)tileElement->GetDirection(),
-                    };
-                    ride_set_entrance_location(ride, stationId, entranceLocation);
+                    CoordsXYZD loc = { location, ride->stations[stationId].GetBaseZ(), tileElement->GetDirection() };
+                    ride_set_entrance_location(ride, stationId, TileCoordsXYZD{ loc });
                 }
 
                 tileElement->AsEntrance()->SetStationIndex(stationId);
@@ -7362,26 +7354,25 @@ bool ride_has_adjacent_station(Ride* ride)
      * adjacent station on either side. */
     for (int32_t stationNum = 0; stationNum < MAX_STATIONS; stationNum++)
     {
-        if (!ride->stations[stationNum].Start.isNull())
+        auto stationStart = ride->stations[stationNum].GetStart();
+        if (!stationStart.isNull())
         {
             /* Get the map element for the station start. */
-            uint16_t stationX = ride->stations[stationNum].Start.x * 32;
-            uint16_t stationY = ride->stations[stationNum].Start.y * 32;
             uint8_t stationZ = ride->stations[stationNum].Height;
 
-            TileElement* stationElement = get_station_platform(stationX, stationY, stationZ, 0);
+            TileElement* stationElement = get_station_platform(stationStart.x, stationStart.y, stationZ, 0);
             if (stationElement == nullptr)
             {
                 continue;
             }
             /* Check the first side of the station */
             int32_t direction = stationElement->GetDirectionWithOffset(1);
-            found = check_for_adjacent_station(stationX, stationY, stationZ, direction);
+            found = check_for_adjacent_station(stationStart.x, stationStart.y, stationZ, direction);
             if (found)
                 break;
             /* Check the other side of the station */
             direction = direction_reverse(direction);
-            found = check_for_adjacent_station(stationX, stationY, stationZ, direction);
+            found = check_for_adjacent_station(stationStart.x, stationStart.y, stationZ, direction);
             if (found)
                 break;
         }

@@ -483,3 +483,19 @@ void TileElementBase::SetClearanceZ(int32_t newZ)
 {
     clearance_height = (newZ / 8);
 }
+
+int32_t RideStation::GetBaseZ() const
+{
+    return Height * 8;
+}
+
+void RideStation::SetBaseZ(int32_t newZ)
+{
+    Height = newZ / 8;
+}
+
+CoordsXYZ RideStation::GetStart() const
+{
+    TileCoordsXYZ stationTileCoords{ Start.x, Start.y, Height };
+    return stationTileCoords.ToCoordsXYZ();
+}

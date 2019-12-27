@@ -1504,7 +1504,7 @@ void Staff::UpdateHeadingToInspect()
     int16_t delta_y = abs(y - destination_y);
     if (auto loc = UpdateAction())
     {
-        int32_t newZ = ride->stations[current_ride_station].Height * 8;
+        int32_t newZ = ride->stations[current_ride_station].GetBaseZ();
 
         if (delta_y < 20)
         {
@@ -1615,7 +1615,7 @@ void Staff::UpdateAnswering()
     int16_t delta_y = abs(y - destination_y);
     if (auto loc = UpdateAction())
     {
-        int32_t newZ = ride->stations[current_ride_station].Height * 8;
+        int32_t newZ = ride->stations[current_ride_station].GetBaseZ();
 
         if (delta_y < 20)
         {
@@ -2344,14 +2344,11 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
             return true;
         }
 
-        auto stationPosition = ride->stations[current_ride_station].Start;
-        if (stationPosition.isNull())
+        auto stationPos = ride->stations[current_ride_station].GetStart();
+        if (stationPos.isNull())
         {
             return true;
         }
-
-        auto stationTilePos = TileCoordsXYZ{ stationPosition, ride->stations[current_ride_station].Height };
-        auto stationPos = stationTilePos.ToCoordsXYZ();
 
         auto tileElement = map_get_track_element_at(stationPos);
         if (tileElement == nullptr)
@@ -2435,18 +2432,16 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
             return true;
         }
 
-        auto stationPosition = ride->stations[current_ride_station].Start;
+        auto stationPosition = ride->stations[current_ride_station].GetStart();
         if (stationPosition.isNull())
         {
             return true;
         }
 
-        uint8_t stationZ = ride->stations[current_ride_station].Height;
-
         CoordsXYE input;
-        input.x = stationPosition.x * 32;
-        input.y = stationPosition.y * 32;
-        input.element = map_get_track_element_at_from_ride({ input.x, input.y, stationZ << 3 }, current_ride);
+        input.x = stationPosition.x;
+        input.y = stationPosition.y;
+        input.element = map_get_track_element_at_from_ride({ input.x, input.y, stationPosition.z }, current_ride);
         if (input.element == nullptr)
         {
             return true;
@@ -2705,7 +2700,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
     int16_t xy_distance;
     if (auto loc = UpdateAction(xy_distance))
     {
-        uint16_t stationHeight = ride->stations[current_ride_station].Height * 8;
+        uint16_t stationHeight = ride->stations[current_ride_station].GetBaseZ();
 
         if (xy_distance >= 16)
         {

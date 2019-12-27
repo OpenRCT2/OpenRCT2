@@ -288,6 +288,11 @@ struct CoordsXYZ : public CoordsXY
     {
         return { floor2(x, 32), floor2(y, 32), z };
     }
+
+    CoordsXYZ ToTileCentre() const
+    {
+        return ToTileStart() + CoordsXYZ{ 16, 16, z };
+    }
 };
 
 struct TileCoordsXYZ : public TileCoordsXY
@@ -454,6 +459,12 @@ struct TileCoordsXYZD : public TileCoordsXYZ
     TileCoordsXYZD(CoordsXYZ c_, Direction d_)
         : TileCoordsXYZ(c_)
         , direction(d_)
+    {
+    }
+
+    TileCoordsXYZD(CoordsXYZD c_)
+        : TileCoordsXYZ(c_)
+        , direction(c_.direction)
     {
     }
 

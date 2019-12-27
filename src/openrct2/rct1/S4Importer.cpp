@@ -815,7 +815,7 @@ private:
             {
                 dst->stations[i].Start = { src->station_starts[i].x, src->station_starts[i].y };
             }
-            dst->stations[i].Height = src->station_height[i] / 2;
+            dst->stations[i].SetBaseZ(src->station_height[i] * 4);
             dst->stations[i].Length = src->station_length[i];
             dst->stations[i].Depart = src->station_light[i];
 

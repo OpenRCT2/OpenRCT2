@@ -623,7 +623,8 @@ static void ride_remove_station(Ride* ride, int32_t x, int32_t y, int32_t z)
 {
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.x == (x >> 5) && ride->stations[i].Start.y == (y >> 5) && ride->stations[i].Height == z)
+        auto stationStart = ride->stations[i].GetStart();
+        if (stationStart.x == x && stationStart.y == y && ride->stations[i].Height == z)
         {
             ride->stations[i].Start.setNull();
             ride->num_stations--;

@@ -396,7 +396,7 @@ static void ride_ratings_begin_proximity_loop()
 
             int32_t x = ride->stations[i].Start.x * 32;
             int32_t y = ride->stations[i].Start.y * 32;
-            int32_t z = ride->stations[i].Height * 8;
+            int32_t z = ride->stations[i].GetBaseZ();
 
             gRideRatingsCalcData.proximity_x = x;
             gRideRatingsCalcData.proximity_y = y;
@@ -1441,7 +1441,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     int32_t z = tile_element_height({ x * 32, y * 32 });
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
-    if (z > ride->stations[i].Height * 8)
+    if (z > ride->stations[i].GetBaseZ())
     {
         return 40;
     }

@@ -334,17 +334,15 @@ static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool
 
 TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex)
 {
-    int32_t x = ride->stations[stationIndex].Start.x;
-    int32_t y = ride->stations[stationIndex].Start.y;
-    int32_t z = ride->stations[stationIndex].Height;
+    auto stationStart = ride->stations[stationIndex].GetStart();
 
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(stationStart);
     if (tileElement == nullptr)
         return nullptr;
     do
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && z == tileElement->base_height)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && stationStart.z == tileElement->GetBaseZ())
             return tileElement;
 
     } while (!(tileElement++)->IsLastForTile());
@@ -433,4 +431,20 @@ void ride_set_entrance_location(Ride* ride, const int32_t stationIndex, const Ti
 void ride_set_exit_location(Ride* ride, const int32_t stationIndex, const TileCoordsXYZD location)
 {
     ride->stations[stationIndex].Exit = location;
+}
+
+int32_t RideStation::GetBaseZ() const
+{
+    return Height * 8;
+}
+
+void RideStation::SetBaseZ(int32_t newZ)
+{
+    Height = newZ / 8;
+}
+
+CoordsXYZ RideStation::GetStart() const
+{
+    TileCoordsXYZ stationTileCoords{ Start.x, Start.y, Height };
+    return stationTileCoords.ToCoordsXYZ();
 }
