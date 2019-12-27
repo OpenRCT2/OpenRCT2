@@ -1217,7 +1217,7 @@ static void sub_6E1F34(
 
     if (w == nullptr)
     {
-        gridPos.x = LOCATION_NULL;
+        gridPos.setNull();
         return;
     }
 
@@ -1349,7 +1349,7 @@ static void sub_6E1F34(
                     auto gridCoords = screen_get_map_xy_quadrant({ x, y }, &cl);
                     if (!gridCoords)
                     {
-                        gridPos.x = LOCATION_NULL;
+                        gridPos.setNull();
                         return;
                     }
                     gridPos = *gridCoords;
@@ -1363,7 +1363,7 @@ static void sub_6E1F34(
 
                         if (surfaceElement == nullptr)
                         {
-                            gridPos.x = LOCATION_NULL;
+                            gridPos.setNull();
                             return;
                         }
 
@@ -1382,7 +1382,7 @@ static void sub_6E1F34(
                     auto mapCoords = screen_get_map_xy_quadrant_with_z({ x, y }, z, &cl);
                     if (!mapCoords)
                     {
-                        gridPos.x = LOCATION_NULL;
+                        gridPos.setNull();
                         return;
                     }
                     gridPos = *mapCoords;
@@ -1398,7 +1398,7 @@ static void sub_6E1F34(
                     gSceneryPlaceZ = z;
                 }
 
-                if (gridPos.x == LOCATION_NULL)
+                if (gridPos.isNull())
                     return;
 
                 uint8_t rotation = gWindowSceneryRotation;
@@ -1437,7 +1437,7 @@ static void sub_6E1F34(
 
                 if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
                 {
-                    gridPos.x = LOCATION_NULL;
+                    gridPos.setNull();
                     return;
                 }
 
@@ -1451,7 +1451,7 @@ static void sub_6E1F34(
 
                     if (surfaceElement == nullptr)
                     {
-                        gridPos.x = LOCATION_NULL;
+                        gridPos.setNull();
                         return;
                     }
 
@@ -1473,7 +1473,7 @@ static void sub_6E1F34(
                 }
                 else
                 {
-                    gridPos.x = LOCATION_NULL;
+                    gridPos.setNull();
                 }
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
@@ -1486,7 +1486,7 @@ static void sub_6E1F34(
                 gSceneryPlaceZ = z;
             }
 
-            if (gridPos.x == LOCATION_NULL)
+            if (gridPos.isNull())
                 return;
 
             gridPos = gridPos.ToTileStart();
@@ -1519,7 +1519,7 @@ static void sub_6E1F34(
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
             {
-                gridPos.x = LOCATION_NULL;
+                gridPos.setNull();
                 return;
             }
 
@@ -1545,7 +1545,7 @@ static void sub_6E1F34(
                 auto gridCoords = screen_get_map_xy_side({ x, y }, &cl);
                 if (!gridCoords)
                 {
-                    gridPos.x = LOCATION_NULL;
+                    gridPos.setNull();
                     return;
                 }
                 gridPos = *gridCoords;
@@ -1559,7 +1559,7 @@ static void sub_6E1F34(
 
                     if (surfaceElement == nullptr)
                     {
-                        gridPos.x = LOCATION_NULL;
+                        gridPos.setNull();
                         return;
                     }
 
@@ -1577,7 +1577,7 @@ static void sub_6E1F34(
                 auto mapCoords = screen_get_map_xy_side_with_z({ x, y }, z, &cl);
                 if (!mapCoords)
                 {
-                    gridPos.x = LOCATION_NULL;
+                    gridPos.setNull();
                     return;
                 }
                 gridPos = *mapCoords;
@@ -1593,7 +1593,7 @@ static void sub_6E1F34(
                 gSceneryPlaceZ = z;
             }
 
-            if (gridPos.x == LOCATION_NULL)
+            if (gridPos.isNull())
                 return;
 
             _secondaryColour = gWindowScenerySecondaryColour;
@@ -1613,7 +1613,7 @@ static void sub_6E1F34(
                 const CoordsXY mapCoords = sub_68A15E({ x, y });
                 gridPos = mapCoords;
 
-                if (gridPos.x == LOCATION_NULL)
+                if (gridPos.isNull())
                     return;
 
                 gSceneryPlaceZ = 0;
@@ -1625,7 +1625,7 @@ static void sub_6E1F34(
 
                     if (surfaceElement == nullptr)
                     {
-                        gridPos.x = LOCATION_NULL;
+                        gridPos.setNull();
                         return;
                     }
 
@@ -1647,7 +1647,7 @@ static void sub_6E1F34(
                 }
                 else
                 {
-                    gridPos.x = LOCATION_NULL;
+                    gridPos.setNull();
                 }
 
                 // If SHIFT pressed
@@ -1661,11 +1661,10 @@ static void sub_6E1F34(
                 gSceneryPlaceZ = z;
             }
 
-            if (gridPos.x == LOCATION_NULL)
+            if (gridPos.isNull())
                 return;
 
-            gridPos.x &= 0xFFE0;
-            gridPos.y &= 0xFFE0;
+            gridPos = gridPos.ToTileStart();
 
             uint8_t rotation = gWindowSceneryRotation;
             rotation -= get_current_rotation();
@@ -1689,7 +1688,7 @@ static void sub_6E1F34(
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
             {
-                gridPos.x = LOCATION_NULL;
+                gridPos.setNull();
                 return;
             }
 
@@ -1752,7 +1751,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
 
     sub_6E1F34(x, y, selectedTab, gridPos, &parameter_1, &parameter_2, &parameter_3);
 
-    if (gridPos.x == LOCATION_NULL)
+    if (gridPos.isNull())
         return;
 
     switch (sceneryType)
@@ -2681,7 +2680,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
 
     sub_6E1F34(x, y, selected_tab, mapTile, &parameter1, &parameter2, &parameter3);
 
-    if (mapTile.x == LOCATION_NULL)
+    if (mapTile.isNull())
     {
         scenery_remove_ghost_tool_placement();
         return;
