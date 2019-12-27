@@ -3811,13 +3811,13 @@ rct_string_id network_get_action_name_string_id(uint32_t index)
 {
     return -1;
 }
-int32_t network_can_perform_action(NetworkGroupId_t groupId, uint32_t index)
+bool network_can_perform_action(NetworkGroupId_t groupId, uint32_t index)
 {
-    return 0;
+    return false;
 }
-int32_t network_can_perform_command(NetworkGroupId_t groupId, int32_t index)
+bool network_can_perform_command(NetworkGroupId_t groupId, int32_t index)
 {
-    return 0;
+    return false;
 }
 void network_set_pickup_peep(uint8_t playerid, Peep* peep)
 {

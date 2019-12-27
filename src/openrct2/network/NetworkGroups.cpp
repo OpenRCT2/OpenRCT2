@@ -1,10 +1,12 @@
-#include "NetworkGroups.h"
+#ifndef DISABLE_NETWORK
 
-#include "../core/Guard.hpp"
-#include "../core/Json.hpp"
-#include "../platform/platform.h"
-#include "../util/Util.h"
-#include "NetworkAction.h"
+#    include "NetworkGroups.h"
+
+#    include "../core/Guard.hpp"
+#    include "../core/Json.hpp"
+#    include "../platform/platform.h"
+#    include "../util/Util.h"
+#    include "NetworkAction.h"
 
 NetworkGroups::NetworkGroups()
 {
@@ -298,3 +300,5 @@ NetworkGroup* NetworkGroups::Create(const std::string& name, bool immutable /*= 
     _groups[nextFreeId] = std::move(group);
     return _groups[nextFreeId].get();
 }
+
+#endif // DISABLE_NETWORK
