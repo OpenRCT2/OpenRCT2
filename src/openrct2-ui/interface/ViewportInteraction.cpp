@@ -296,7 +296,8 @@ int32_t viewport_interaction_get_item_right(ScreenCoordsXY screenCoords, viewpor
             }
             else
             {
-                if (!gCheatsSandboxMode && !map_is_location_owned({ info->x, info->y, tileElement->base_height << 4 }))
+                // FIXME: Why does it *2 the value?
+                if (!gCheatsSandboxMode && !map_is_location_owned({ info->x, info->y, tileElement->GetBaseZ() * 2 }))
                 {
                     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
                 }

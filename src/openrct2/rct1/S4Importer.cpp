@@ -2040,8 +2040,8 @@ private:
         dst->ClearAs(tileElementType);
         dst->SetDirection(src->GetDirection());
         dst->flags = src->flags;
-        dst->base_height = src->base_height / 2;
-        dst->clearance_height = src->clearance_height / 2;
+        dst->SetBaseZ(src->base_height * 4);
+        dst->SetClearanceZ(src->clearance_height * 4);
 
         switch (tileElementType)
         {

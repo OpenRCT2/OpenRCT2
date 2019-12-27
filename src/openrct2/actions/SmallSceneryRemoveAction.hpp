@@ -145,7 +145,7 @@ private:
                 continue;
             if ((tileElement->AsSmallScenery()->GetSceneryQuadrant()) != _quadrant)
                 continue;
-            if (tileElement->base_height != _loc.z / 8)
+            if (tileElement->GetBaseZ() != _loc.z)
                 continue;
             if (tileElement->AsSmallScenery()->GetEntryIndex() != _sceneryType)
                 continue;

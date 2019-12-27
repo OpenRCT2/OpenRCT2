@@ -794,7 +794,7 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(
                 if (tileElement == nullptr)
                     break;
 
-                if (tileElement->base_height != elemZ / 8)
+                if (tileElement->GetBaseZ() != elemZ)
                     continue;
 
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -901,7 +901,7 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
                 if (tileElement == nullptr)
                     break;
 
-                if (tileElement->base_height != elemZ / 8)
+                if (tileElement->GetBaseZ() != elemZ)
                     continue;
 
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)

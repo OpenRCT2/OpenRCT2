@@ -263,7 +263,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             TileElement* tile_element_sub_iterator = tile_element;
             while (!(tile_element_sub_iterator++)->IsLastForTile())
             {
-                if (tile_element_sub_iterator->base_height != tile_element->base_height)
+                if (tile_element_sub_iterator->GetBaseZ() != tile_element->GetBaseZ())
                 {
                     break;
                 }

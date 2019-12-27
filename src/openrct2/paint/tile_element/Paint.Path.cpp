@@ -860,12 +860,11 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     auto surface = map_get_surface_element_at(CoordsXY{ session->MapPosition.x, session->MapPosition.y });
 
-    uint16_t bl = height / 8;
     if (surface == nullptr)
     {
         hasSupports = true;
     }
-    else if (surface->base_height != bl)
+    else if (surface->GetBaseZ() != height)
     {
         hasSupports = true;
     }

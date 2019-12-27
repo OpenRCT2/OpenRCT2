@@ -441,7 +441,7 @@ public:
         sceneryElement->SetAge(0);
         sceneryElement->SetPrimaryColour(_primaryColour);
         sceneryElement->SetSecondaryColour(_secondaryColour);
-        sceneryElement->clearance_height = sceneryElement->base_height + ((sceneryEntry->small_scenery.height + 7) / 8);
+        sceneryElement->SetClearanceZ(sceneryElement->GetBaseZ() + sceneryEntry->small_scenery.height + 7);
 
         if (supportsRequired)
         {
