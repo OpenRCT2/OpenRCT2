@@ -138,7 +138,7 @@ private:
                 break;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
                 continue;
-            if (tileElement->base_height != _loc.z / 8)
+            if (tileElement->GetBaseZ() != _loc.z)
                 continue;
             if (tileElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
                 continue;

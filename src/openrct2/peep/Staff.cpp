@@ -457,8 +457,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
         return 0xFF;
     }
 
-    LocationXY16 litterTile = { static_cast<int16_t>(nearestLitter->x & 0xFFE0),
-                                static_cast<int16_t>(nearestLitter->y & 0xFFE0) };
+    auto litterTile = CoordsXY{ nearestLitter->x, nearestLitter->y }.ToTileStart();
 
     if (!staff_is_location_in_patrol(peep, litterTile.x, litterTile.y))
     {
@@ -677,8 +676,8 @@ static bool staff_path_finding_handyman(Peep* peep)
     // countof(CoordsDirectionDelta)
     assert(direction < 8);
 
-    LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
-                                static_cast<int16_t>(peep->next_y + CoordsDirectionDelta[direction].y) };
+    CoordsXY chosenTile = { peep->next_x + CoordsDirectionDelta[direction].x,
+                            peep->next_y + CoordsDirectionDelta[direction].y };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
@@ -755,7 +754,7 @@ static uint8_t staff_mechanic_direction_surface(Peep* peep)
             location = ride_get_entrance_location(ride, peep->current_ride_station);
         }
 
-        LocationXY16 chosenTile = { static_cast<int16_t>(location.x * 32), static_cast<int16_t>(location.y * 32) };
+        CoordsXY chosenTile = location.ToCoordsXY();
 
         int16_t x_diff = chosenTile.x - peep->x;
         int16_t y_diff = chosenTile.y - peep->y;
@@ -914,8 +913,8 @@ static bool staff_path_finding_mechanic(Peep* peep)
     // countof(CoordsDirectionDelta)
     assert(direction < 8);
 
-    LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
-                                static_cast<int16_t>(peep->next_y + CoordsDirectionDelta[direction].y) };
+    CoordsXY chosenTile = { peep->next_x + CoordsDirectionDelta[direction].x,
+                            peep->next_y + CoordsDirectionDelta[direction].y };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
@@ -999,8 +998,8 @@ static bool staff_path_finding_misc(Peep* peep)
         direction = staff_direction_path(peep, validDirections, pathElement);
     }
 
-    LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
-                                static_cast<int16_t>(peep->next_y + CoordsDirectionDelta[direction].y) };
+    CoordsXY chosenTile = { peep->next_x + CoordsDirectionDelta[direction].x,
+                            peep->next_y + CoordsDirectionDelta[direction].y };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
@@ -1179,7 +1178,7 @@ int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList)
 }
 
 /** rct2: 0x009929C8 */
-static constexpr const LocationXY16 _MowingWaypoints[] = {
+static constexpr const CoordsXY _MowingWaypoints[] = {
     { 28, 28 }, { 28, 4 }, { 20, 4 }, { 20, 28 }, { 12, 28 }, { 12, 4 }, { 4, 4 }, { 4, 28 },
 };
 
@@ -1632,7 +1631,7 @@ void Staff::UpdateAnswering()
 }
 
 /** rct2: 0x00992A5C */
-static constexpr const LocationXY16 _WateringUseOffsets[] = {
+static constexpr const CoordsXY _WateringUseOffsets[] = {
     { 3, 16 }, { 16, 29 }, { 29, 16 }, { 16, 3 }, { 3, 29 }, { 29, 29 }, { 29, 3 }, { 3, 3 },
 };
 
@@ -2220,7 +2219,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
             vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         }
 
-        LocationXY16 offset = word_981D6C[direction];
+        CoordsXY offset = word_981D6C[direction];
         destination_x = (offset.x * -12) + vehicle->x;
         destination_y = (offset.y * -12) + vehicle->y;
         destination_tolerance = 2;
@@ -2598,7 +2597,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
         stationX += 16;
         stationY += 16;
 
-        LocationXY16 stationPlatformDirection = word_981D6C[direction];
+        CoordsXY stationPlatformDirection = word_981D6C[direction];
         stationX += stationPlatformDirection.x * 20;
         stationY += stationPlatformDirection.y * 20;
 
@@ -2689,7 +2688,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
         exitX += 16;
         exitY += 16;
 
-        LocationXY16 ebx_direction = word_981D6C[direction];
+        CoordsXY ebx_direction = word_981D6C[direction];
         exitX -= ebx_direction.x * 19;
         exitY -= ebx_direction.y * 19;
 

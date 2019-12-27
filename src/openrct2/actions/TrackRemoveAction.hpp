@@ -163,7 +163,7 @@ public:
                 if (tileElement == nullptr)
                     break;
 
-                if (tileElement->base_height != mapLoc.z / 8)
+                if (tileElement->GetBaseZ() != mapLoc.z)
                     continue;
 
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -353,7 +353,7 @@ public:
                 if (tileElement == nullptr)
                     break;
 
-                if (tileElement->base_height != mapLoc.z / 8)
+                if (tileElement->GetBaseZ() != mapLoc.z)
                     continue;
 
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)

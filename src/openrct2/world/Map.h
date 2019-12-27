@@ -214,8 +214,8 @@ void map_invalidate_tile_full(int32_t x, int32_t y);
 void map_invalidate_element(int32_t x, int32_t y, TileElement* tileElement);
 void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs);
 
-int32_t map_get_tile_side(int32_t mapX, int32_t mapY);
-int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY);
+int32_t map_get_tile_side(const CoordsXY& mapPos);
+int32_t map_get_tile_quadrant(const CoordsXY& mapPos);
 int32_t map_get_corner_height(int32_t z, int32_t slope, int32_t direction);
 int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int32_t direction);
 

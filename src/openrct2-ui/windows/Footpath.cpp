@@ -731,7 +731,7 @@ static void window_footpath_set_provisional_path_at_point(ScreenCoordsXY screenC
     {
         // Check for change
         if ((gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) && gFootpathProvisionalPosition.x == mapCoord.x
-            && gFootpathProvisionalPosition.y == mapCoord.y && gFootpathProvisionalPosition.z / 8 == tileElement->base_height)
+            && gFootpathProvisionalPosition.y == mapCoord.y && gFootpathProvisionalPosition.z == tileElement->GetBaseZ())
         {
             return;
         }
@@ -771,15 +771,15 @@ static void window_footpath_set_provisional_path_at_point(ScreenCoordsXY screenC
                 break;
             }
         }
-        uint8_t z = tileElement->base_height;
+        uint8_t z = tileElement->GetBaseZ();
         if (slope & RAISE_FOOTPATH_FLAG)
         {
             slope &= ~RAISE_FOOTPATH_FLAG;
-            z += 2;
+            z += (2 * 8);
         }
         int32_t pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
-        _window_footpath_cost = footpath_provisional_set(pathType, { mapCoord, z * 8 }, slope);
+        _window_footpath_cost = footpath_provisional_set(pathType, { mapCoord, z }, slope);
         window_invalidate_by_class(WC_FOOTPATH);
     }
 }
@@ -815,20 +815,20 @@ static void window_footpath_set_selection_start_bridge_at_point(ScreenCoordsXY s
     gMapSelectArrowPosition.x = x;
     gMapSelectArrowPosition.y = y;
 
-    int32_t z = tileElement->base_height;
+    int32_t z = tileElement->GetBaseZ();
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
     {
         uint8_t slope = tileElement->AsSurface()->GetSlope();
         if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
-            z += 2;
+            z += (2 * 8);
         } // Add 2 for a slope
         if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-            z += 2; // Add another 2 for a steep slope
+            z += (2 * 8); // Add another 2 for a steep slope
     }
 
-    gMapSelectArrowPosition.z = z << 3;
+    gMapSelectArrowPosition.z = z;
 
     map_invalidate_selection_rect();
 }
@@ -874,17 +874,17 @@ static void window_footpath_place_path_at_point(ScreenCoordsXY screenCoords)
             }
             break;
     }
-    z = tileElement->base_height;
+    z = tileElement->GetBaseZ();
     if (currentType & RAISE_FOOTPATH_FLAG)
     {
         currentType &= ~RAISE_FOOTPATH_FLAG;
-        z += 2;
+        z += (2 * 8);
     }
     selectedType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    auto footpathPlaceAction = FootpathPlaceAction({ mapCoord.x, mapCoord.y, z * 8 }, currentType, selectedType);
+    auto footpathPlaceAction = FootpathPlaceAction({ mapCoord.x, mapCoord.y, z }, currentType, selectedType);
     footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {
@@ -922,28 +922,28 @@ static void window_footpath_start_bridge_at_point(ScreenCoordsXY screenCoords)
         // If we start the path on a slope, the arrow is slightly raised, so we
         // expect the path to be slightly raised as well.
         uint8_t slope = tileElement->AsSurface()->GetSlope();
-        z = tileElement->base_height;
+        z = tileElement->GetBaseZ();
         if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         {
             // Steep diagonal slope
-            z += 4;
+            z += (4 * 8);
         }
         else if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             // Normal slope
-            z += 2;
+            z += (2 * 8);
         }
     }
     else
     {
-        z = tileElement->base_height;
+        z = tileElement->GetBaseZ();
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
             if (tileElement->AsPath()->IsSloped())
             {
                 if (direction == (tileElement->AsPath()->GetSlopeDirection()))
                 {
-                    z += 2;
+                    z += (2 * 8);
                 }
             }
         }
@@ -952,7 +952,7 @@ static void window_footpath_start_bridge_at_point(ScreenCoordsXY screenCoords)
     tool_cancel();
     gFootpathConstructFromPosition.x = x;
     gFootpathConstructFromPosition.y = y;
-    gFootpathConstructFromPosition.z = z * 8;
+    gFootpathConstructFromPosition.z = z;
     gFootpathConstructDirection = direction;
     gFootpathProvisionalFlags = 0;
     _window_footpath_provisional_path_arrow_timer = 0;
@@ -1016,14 +1016,14 @@ static void window_footpath_construct()
  */
 static void footpath_remove_tile_element(TileElement* tileElement)
 {
-    auto z = tileElement->base_height;
+    auto z = tileElement->GetBaseZ();
     if (tileElement->AsPath()->IsSloped())
     {
         uint8_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
         slopeDirection = direction_reverse(slopeDirection);
         if (slopeDirection == gFootpathConstructDirection)
         {
-            z += 2;
+            z += (2 * 8);
         }
     }
 
@@ -1054,7 +1054,7 @@ static void footpath_remove_tile_element(TileElement* tileElement)
     edge = direction_reverse(edge);
     gFootpathConstructFromPosition.x -= CoordsDirectionDelta[edge].x;
     gFootpathConstructFromPosition.y -= CoordsDirectionDelta[edge].y;
-    gFootpathConstructFromPosition.z = z * 8;
+    gFootpathConstructFromPosition.z = z;
     gFootpathConstructDirection = edge;
     gFootpathConstructValidDirections = 255;
 }

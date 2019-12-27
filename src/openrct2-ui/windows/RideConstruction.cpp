@@ -2459,8 +2459,8 @@ static void sub_6CBCE2(
         _tempTrackTileElement.AsTrack()->SetHasChain((liftHillAndInvertedState & CONSTRUCTION_LIFT_HILL_SELECTED) != 0);
         _tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
         _tempTrackTileElement.SetLastForTile(true);
-        _tempTrackTileElement.base_height = baseZ / 8;
-        _tempTrackTileElement.clearance_height = clearanceZ / 8;
+        _tempTrackTileElement.SetBaseZ(baseZ);
+        _tempTrackTileElement.SetClearanceZ(clearanceZ);
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
         _tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
         _tempTrackTileElement.AsTrack()->SetHasCableLift(false);

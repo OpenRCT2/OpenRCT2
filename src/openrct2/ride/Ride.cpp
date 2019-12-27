@@ -2173,7 +2173,7 @@ void ride_update_popularity(Ride* ride, uint8_t pop_amount)
 }
 
 /** rct2: 0x0098DDB8, 0x0098DDBA */
-static constexpr const LocationXY16 ride_spiral_slide_main_tile_offset[][4] = {
+static constexpr const CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
     {
         { 32, 32 },
         { 0, 32 },
@@ -4364,7 +4364,7 @@ static int32_t count_free_misc_sprite_slots()
     return std::max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 
-static constexpr const LocationXY16 word_9A3AB4[4] = {
+static constexpr const CoordsXY word_9A3AB4[4] = {
     { 0, 0 },
     { 0, -96 },
     { -96, -96 },
@@ -4372,7 +4372,7 @@ static constexpr const LocationXY16 word_9A3AB4[4] = {
 };
 
 // clang-format off
-static constexpr const LocationXY16 word_9A2A60[] = {
+static constexpr const CoordsXY word_9A2A60[] = {
     { 0, 16 },
     { 16, 31 },
     { 31, 16 },
@@ -4474,7 +4474,7 @@ static rct_vehicle* vehicle_create_car(
         vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
         vehicle->update_flags = 0;
 
-        LocationXY16 chosenLoc;
+        CoordsXY chosenLoc;
         // loc_6DDD26:
         do
         {
@@ -6960,7 +6960,6 @@ void sub_6CB945(Ride* ride)
             while ((++trackBlock)->index != 0xFF)
             {
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };
-                auto blockTileHeight = TileCoordsXYZ(blockLocation).z;
 
                 bool trackFound = false;
                 tileElement = map_get_first_element_at(blockLocation);
@@ -6968,7 +6967,7 @@ void sub_6CB945(Ride* ride)
                     break;
                 do
                 {
-                    if (blockTileHeight != tileElement->base_height)
+                    if (blockLocation.z != tileElement->GetBaseZ())
                         continue;
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;

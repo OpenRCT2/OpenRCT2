@@ -317,14 +317,14 @@ void lightfx_prepare_light_list()
                 }
 
                 int32_t minDist = 0;
-                int32_t baseHeight = -999;
+                int32_t baseHeight = (-999) * 8;
 
                 if (interactionType != VIEWPORT_INTERACTION_ITEM_SPRITE && tileElement)
                 {
-                    baseHeight = tileElement->base_height;
+                    baseHeight = tileElement->GetBaseZ();
                 }
 
-                minDist = ((baseHeight * 8) - coord_3d.z) / 2;
+                minDist = (baseHeight - coord_3d.z) / 2;
 
                 int32_t deltaX = mapCoord.x - coord_3d.x;
                 int32_t deltaY = mapCoord.y - coord_3d.y;

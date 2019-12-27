@@ -23,9 +23,9 @@ struct sprite_bb_2
 {
     uint32_t sprite_id_a;
     uint32_t sprite_id_b;
-    LocationXYZ16 offset;
-    LocationXYZ16 bb_offset;
-    LocationXYZ16 bb_size;
+    CoordsXYZ offset;
+    CoordsXYZ bb_offset;
+    CoordsXYZ bb_size;
 };
 
 enum

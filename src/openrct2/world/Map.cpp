@@ -706,7 +706,7 @@ bool map_is_location_owned(const CoordsXYZ& loc)
 
             if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
             {
-                if (loc.z / 8 < surfaceElement->base_height || loc.z / 8 - 2 > surfaceElement->base_height)
+                if (loc.z < surfaceElement->GetBaseZ() || loc.z - (2 * 8) > surfaceElement->GetBaseZ())
                     return true;
             }
         }
@@ -2043,17 +2043,17 @@ void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs)
     }
 }
 
-int32_t map_get_tile_side(int32_t mapX, int32_t mapY)
+int32_t map_get_tile_side(const CoordsXY& mapPos)
 {
-    int32_t subMapX = mapX & (32 - 1);
-    int32_t subMapY = mapY & (32 - 1);
+    int32_t subMapX = mapPos.x & (32 - 1);
+    int32_t subMapY = mapPos.y & (32 - 1);
     return (subMapX < subMapY) ? ((subMapX + subMapY) < 32 ? 0 : 1) : ((subMapX + subMapY) < 32 ? 3 : 2);
 }
 
-int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY)
+int32_t map_get_tile_quadrant(const CoordsXY& mapPos)
 {
-    int32_t subMapX = mapX & (32 - 1);
-    int32_t subMapY = mapY & (32 - 1);
+    int32_t subMapX = mapPos.x & (32 - 1);
+    int32_t subMapY = mapPos.y & (32 - 1);
     return (subMapX > 16) ? (subMapY < 16 ? 1 : 0) : (subMapY < 16 ? 2 : 3);
 }
 
@@ -2212,7 +2212,7 @@ TrackElement* map_get_track_element_at_of_type(CoordsXYZD location, int32_t trac
             auto trackElement = tileElement->AsTrack();
             if (trackElement != nullptr)
             {
-                if (trackElement->base_height != location.z / 8)
+                if (trackElement->GetBaseZ() != location.z)
                     continue;
                 if (trackElement->GetDirection() != location.direction)
                     continue;
@@ -2235,7 +2235,7 @@ TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t 
             auto trackElement = tileElement->AsTrack();
             if (trackElement != nullptr)
             {
-                if (trackElement->base_height != location.z / 8)
+                if (trackElement->GetBaseZ() != location.z)
                     continue;
                 if (trackElement->GetDirection() != location.direction)
                     continue;
