@@ -7080,7 +7080,7 @@ void sub_6CB945(Ride* ride)
                     if (!ride_get_exit_location(ride, stationId).isNull())
                         break;
 
-                    CoordsXYZD loc = { location, ride->stations[stationId].GetBaseZ(), (uint8_t)tileElement->GetDirection() };
+                    CoordsXYZD loc = { location, ride->stations[stationId].GetBaseZ(), tileElement->GetDirection() };
                     ride_set_exit_location(ride, stationId, TileCoordsXYZD{ loc });
                 }
                 else
@@ -7088,7 +7088,7 @@ void sub_6CB945(Ride* ride)
                     if (!ride_get_entrance_location(ride, stationId).isNull())
                         break;
 
-                    CoordsXYZD loc = { location, ride->stations[stationId].GetBaseZ(), (uint8_t)tileElement->GetDirection() };
+                    CoordsXYZD loc = { location, ride->stations[stationId].GetBaseZ(), tileElement->GetDirection() };
                     ride_set_entrance_location(ride, stationId, TileCoordsXYZD{ loc });
                 }
 
