@@ -1655,6 +1655,7 @@ void Network::Server_Send_GROUPLIST(NetworkConnection& connection)
     DataSerialiser ds(true);
     _groups.Serialise(ds);
 
+    *packet << static_cast<uint32_t>(ds.GetStream().GetLength());
     packet->Write(static_cast<const uint8_t*>(ds.GetStream().GetData()), ds.GetStream().GetLength());
 
     connection.QueuePacket(std::move(packet));
@@ -2929,9 +2930,16 @@ void Network::Client_Handle_SHOWERROR([[maybe_unused]] NetworkConnection& connec
 
 void Network::Client_Handle_GROUPLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
+    uint32_t len = 0;
+    packet >> len;
+
     DataSerialiser ds(false);
-    ds.GetStream().Write(packet.GetData(), packet.Size);
-    ds.GetStream().SetPosition(0);
+    auto& stream = ds.GetStream();
+
+    const uint8_t* data = packet.Read(len);
+    stream.Write(data, len);
+    stream.SetPosition(0);
+
     _groups.Serialise(ds);
 }
 
