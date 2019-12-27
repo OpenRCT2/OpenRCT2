@@ -42,4 +42,5 @@ private:
     std::string _name;
     bool _immutable = false;
     bool _canDefaultTo = true;
+    bool _hidden = false;
 };

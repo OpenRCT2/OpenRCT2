@@ -239,7 +239,7 @@ static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget
 
     dropdownWidget = widget - 1;
 
-    auto groups = networkGroups->GetAll();
+    auto groups = networkGroups->GetAll(true);
     int32_t numItems = static_cast<int32_t>(groups.size());
 
     window_dropdown_show_text_custom_width(
@@ -324,7 +324,7 @@ void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     NetworkGroups* networkGroups = network_get_groups();
     Guard::Assert(networkGroups != nullptr);
 
-    auto groups = networkGroups->GetAll();
+    auto groups = networkGroups->GetAll(true);
     Guard::Assert(dropdownIndex < groups.size());
 
     auto* group = groups[dropdownIndex];

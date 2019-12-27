@@ -15,7 +15,7 @@
 #include <climits>
 #include <string>
 
-static constexpr size_t kMaxGroups = 0xFF;
+static constexpr size_t kMaxGroups = std::numeric_limits<NetworkGroupId_t>::max();
 
 static constexpr NetworkGroupId_t kGroupIdHost = static_cast<NetworkGroupId_t>(kMaxGroups - 1);
 static constexpr NetworkGroupId_t kGroupIdAdmin = 0;
@@ -40,7 +40,7 @@ public:
     NetworkGroup* GetById(NetworkGroupId_t id) const;
     NetworkGroup* GetByName(const std::string& name) const;
 
-    std::vector<NetworkGroup*> GetAll() const;
+    std::vector<NetworkGroup*> GetAll(bool excludeHost) const;
     size_t GetCount() const;
 
     void Serialise(DataSerialiser& ds);

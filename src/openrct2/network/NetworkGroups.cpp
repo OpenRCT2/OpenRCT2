@@ -50,32 +50,43 @@ bool NetworkGroups::Load()
     }
 
     if (json == nullptr)
-    {
         return true;
-    }
+
+    auto addOrUpdateGroup = [&](json_t* jsonGroup) -> void {
+        auto tmpGroup = NetworkGroup::FromJson(jsonGroup);
+
+        // Name always has priority over id.
+        auto* group = GetByName(tmpGroup.GetName());
+        if (group != nullptr && group->IsImmutable())
+        {
+            // Don't modify immutable groups, old group.json files still contain immutable groups.
+            return;
+        }
+
+        // If it doesn't exist, create one with the given name.
+        if (group == nullptr)
+            group = Create(tmpGroup.GetName(), false, true);
+
+        // Update.
+        group->ActionsAllowed = tmpGroup.ActionsAllowed;
+    };
 
     json_t* json_groups = json_object_get(json, "groups");
     size_t groupCount = (size_t)json_array_size(json_groups);
     for (size_t i = 0; i < groupCount; i++)
     {
-        // json_t* jsonGroup = json_array_get(json_groups, i);
-
-        // auto newgroup = std::make_unique<NetworkGroup>(NetworkGroup::FromJson(jsonGroup));
-        // group_list.push_back(std::move(newgroup));
+        json_t* jsonGroup = json_array_get(json_groups, i);
+        addOrUpdateGroup(jsonGroup);
     }
 
-    /*
     json_t* jsonDefaultGroup = json_object_get(json, "default_group");
-    default_group = (uint8_t)json_integer_value(jsonDefaultGroup);
-    if (GetGroupByID(default_group) == nullptr)
+    NetworkGroupId_t defaultId = static_cast<NetworkGroupId_t>(json_integer_value(jsonDefaultGroup));
+    if (auto* group = GetById(defaultId))
     {
-        default_group = 0;
+        SetDefault(group);
     }
-    */
-    json_decref(json);
 
-    // Host group should always contain all permissions.
-    // group_list.at(0)->ActionsAllowed.fill(0xFF);
+    json_decref(json);
 
     return true;
 }
@@ -86,14 +97,16 @@ bool NetworkGroups::Save()
 
     platform_get_user_directory(path, nullptr, sizeof(path));
     safe_strcat_path(path, "groups.json", sizeof(path));
-    /*
+
     json_t* jsonGroupsCfg = json_object();
     json_t* jsonGroups = json_array();
-    for (auto& group : group_list)
+
+    auto groups = GetAll(true);
+    for (auto* group : groups)
     {
         json_array_append_new(jsonGroups, group->ToJson());
     }
-    json_object_set_new(jsonGroupsCfg, "default_group", json_integer(default_group));
+    json_object_set_new(jsonGroupsCfg, "default_group", json_integer(_defaultId));
     json_object_set_new(jsonGroupsCfg, "groups", jsonGroups);
     try
     {
@@ -105,7 +118,7 @@ bool NetworkGroups::Save()
     }
 
     json_decref(jsonGroupsCfg);
-    */
+
     return true;
 }
 
@@ -129,7 +142,7 @@ NetworkGroup* NetworkGroups::GetByName(const std::string& name) const
     return nullptr;
 }
 
-std::vector<NetworkGroup*> NetworkGroups::GetAll() const
+std::vector<NetworkGroup*> NetworkGroups::GetAll(bool excludeHost) const
 {
     std::vector<NetworkGroup*> res;
     res.reserve(_groups.size());
@@ -137,7 +150,11 @@ std::vector<NetworkGroup*> NetworkGroups::GetAll() const
     for (auto& group : _groups)
     {
         if (group != nullptr)
+        {
+            if (excludeHost && group->Id == kGroupIdHost)
+                continue;
             res.push_back(group.get());
+        }
     }
     return res;
 }
@@ -159,7 +176,7 @@ void NetworkGroups::Serialise(DataSerialiser& ds)
     uint8_t count = 0;
     if (ds.IsSaving())
     {
-        auto groups = GetAll();
+        auto groups = GetAll(false);
         count = static_cast<uint8_t>(groups.size());
         ds << count;
         for (auto& group : groups)
@@ -253,7 +270,7 @@ NetworkGroup* NetworkGroups::GetDefault() const
 
 NetworkGroupId_t NetworkGroups::GetDefaultId() const
 {
-    return GetDefault()->Id;
+    return _defaultId;
 }
 
 NetworkGroup* NetworkGroups::Create(const std::string& name, bool immutable /*= false*/, bool canBeDefault /*= true*/)
