@@ -168,7 +168,7 @@ extern uint8_t gFootpathConstructValidDirections;
 extern money32 gFootpathPrice;
 extern uint8_t gFootpathGroundFlags;
 
-extern const LocationXY16 word_981D6C[4];
+extern const CoordsXY word_981D6C[4];
 extern const LocationXY16 BinUseOffsets[4];
 extern const LocationXY16 BenchUseOffsets[8];
 
