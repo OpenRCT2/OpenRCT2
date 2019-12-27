@@ -3194,9 +3194,14 @@ GameActionResult::Ptr network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, NetworkGroupId_t groupId, bool isExecuting)
 {
     NetworkGroups& groups = gNetwork.GetGroups();
-    NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
 
-    NetworkGroup* fromGroup = groups.GetById(player->Group);
+    NetworkPlayer* callee = gNetwork.GetPlayerByID(actionPlayerId);
+    if (callee == nullptr)
+    {
+        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
+    }
+
+    NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
     if (player == nullptr)
     {
         return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
@@ -3212,7 +3217,8 @@ GameActionResult::Ptr network_set_player_group(
         return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
     }
 
-    if (groupId == 0 && fromGroup && fromGroup->Id != 0)
+    NetworkGroup* fromGroup = groups.GetById(callee->Group);
+    if (groupId == kGroupIdAdmin && fromGroup != nullptr && fromGroup->Id != kGroupIdAdmin && fromGroup->Id != kGroupIdHost)
     {
         return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_SET_TO_THIS_GROUP);
     }

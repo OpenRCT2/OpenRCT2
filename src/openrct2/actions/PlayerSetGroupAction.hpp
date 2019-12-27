@@ -42,11 +42,23 @@ public:
     }
     GameActionResult::Ptr Query() const override
     {
-        return network_set_player_group(GetPlayer(), _playerId, _groupId, false);
+        return network_set_player_group(GetPlayerId(), _playerId, _groupId, false);
     }
 
     GameActionResult::Ptr Execute() const override
     {
-        return network_set_player_group(GetPlayer(), _playerId, _groupId, true);
+        return network_set_player_group(GetPlayerId(), _playerId, _groupId, true);
+    }
+
+private:
+    NetworkPlayerId_t GetPlayerId() const
+    {
+        NetworkPlayerId_t res = GetPlayer();
+        // If no round trip happened yet the player id is unassigned, we result the local player id instead.
+        if (res == -1 && !(GetFlags() & GAME_COMMAND_FLAG_NETWORKED))
+        {
+            res = network_get_current_player_id();
+        }
+        return res;
     }
 };
