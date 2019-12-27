@@ -126,7 +126,7 @@ static constexpr rct_string_id WindowMultiplayerPageTitles[] = {
 };
 
 static uint8_t _selectedGroupId = kInvalidNetworkGroupId;
-static int32_t _selectedGroupIndex = -1;
+static int32_t _selectedGroupIndex = 0;
 
 static void window_multiplayer_information_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_multiplayer_information_resize(rct_window *w);
@@ -910,10 +910,15 @@ static void window_multiplayer_groups_invalidate(rct_window* w)
     // Select other group if one is removed
     NetworkGroups* networkGroups = network_get_groups();
     Guard::Assert(networkGroups != nullptr);
-    while (networkGroups->GetById(_selectedGroupId) == nullptr && _selectedGroupId > 0)
-    {
-        _selectedGroupId--;
-    }
+
+    auto groups = networkGroups->GetAll();
+    while (_selectedGroupIndex > 0 && _selectedGroupIndex >= groups.size())
+        _selectedGroupIndex--;
+
+    if (_selectedGroupIndex >= 0)
+        _selectedGroupId = groups[_selectedGroupIndex]->Id;
+    else
+        _selectedGroupId = kInvalidNetworkGroupId;
 }
 
 static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dpi)
