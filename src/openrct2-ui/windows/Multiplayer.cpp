@@ -912,7 +912,7 @@ static void window_multiplayer_groups_invalidate(rct_window* w)
     Guard::Assert(networkGroups != nullptr);
 
     auto groups = networkGroups->GetAll(true);
-    while (_selectedGroupIndex > 0 && _selectedGroupIndex >= groups.size())
+    while (_selectedGroupIndex > 0 && static_cast<size_t>(_selectedGroupIndex) >= groups.size())
         _selectedGroupIndex--;
 
     if (_selectedGroupIndex >= 0)

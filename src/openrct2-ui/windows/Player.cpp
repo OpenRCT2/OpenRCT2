@@ -325,7 +325,7 @@ void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     Guard::Assert(networkGroups != nullptr);
 
     auto groups = networkGroups->GetAll(true);
-    Guard::Assert(dropdownIndex < groups.size());
+    Guard::Assert(static_cast<size_t>(dropdownIndex) < groups.size());
 
     auto* group = groups[dropdownIndex];
     auto playerSetGroupAction = PlayerSetGroupAction(w->number, group->Id);
