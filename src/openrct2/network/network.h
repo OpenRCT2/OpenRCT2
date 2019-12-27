@@ -69,23 +69,22 @@ void network_set_player_last_action_coord(uint32_t index, const CoordsXYZ& coord
 uint32_t network_get_player_commands_ran(uint32_t index);
 int32_t network_get_player_index(uint32_t id);
 uint8_t network_get_player_group(uint32_t index);
-void network_set_player_group(uint32_t index, uint32_t groupindex);
 int32_t network_get_group_index(uint8_t id);
-int32_t network_get_current_player_group_index();
+NetworkGroupId_t network_get_current_player_group_id();
 uint8_t network_get_group_id(uint32_t index);
 int32_t network_get_num_groups();
 const char* network_get_group_name(uint32_t index);
 std::unique_ptr<GameActionResult> network_set_player_group(
-    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, NetworkGroupId_t groupId, bool isExecuting);
 std::unique_ptr<GameActionResult> network_modify_groups(
-    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
-    PermissionState permissionState, bool isExecuting);
+    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, NetworkGroupId_t groupId, const std::string& name,
+    uint32_t permissionIndex, PermissionState permissionState, bool isExecuting);
 std::unique_ptr<GameActionResult> network_kick_player(NetworkPlayerId_t playerId, bool isExecuting);
 uint8_t network_get_default_group();
 int32_t network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32_t index);
-int32_t network_can_perform_action(NetworkGroupId groupId, uint32_t index);
-int32_t network_can_perform_command(NetworkGroupId groupId, int32_t index);
+bool network_can_perform_action(NetworkGroupId_t groupId, uint32_t index);
+bool network_can_perform_command(NetworkGroupId_t groupId, int32_t index);
 void network_set_pickup_peep(uint8_t playerid, Peep* peep);
 Peep* network_get_pickup_peep(uint8_t playerid);
 void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x);

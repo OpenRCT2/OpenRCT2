@@ -1813,7 +1813,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
             int32_t quantity = 1;
             bool isCluster = gWindowSceneryScatterEnabled
                 && (network_get_mode() != NETWORK_MODE_CLIENT
-                    || network_can_perform_command(network_get_current_player_group_index(), -2));
+                    || network_can_perform_command(network_get_current_player_group_id(), -2));
 
             if (isCluster)
             {

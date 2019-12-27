@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "NetworkGroup.h"
 
+#include <climits>
 #include <string>
 
 class NetworkGroups
@@ -24,13 +25,13 @@ public:
     bool Load();
     bool Save();
     bool Remove(const NetworkGroup* group);
-    bool Remove(NetworkGroupId id);
+    bool Remove(NetworkGroupId_t id);
 
     void SetDefault(const NetworkGroup* group);
     NetworkGroup* GetDefault() const;
 
     NetworkGroup* Create(const std::string& name);
-    NetworkGroup* GetById(NetworkGroupId id) const;
+    NetworkGroup* GetById(NetworkGroupId_t id) const;
     NetworkGroup* GetByName(const std::string& name) const;
 
     std::vector<NetworkGroup*> GetAll() const;
@@ -43,5 +44,5 @@ private:
 
 private:
     std::array<std::unique_ptr<NetworkGroup>, 256> _groups;
-    NetworkGroupId _defaultId = 0;
+    NetworkGroupId_t _defaultId = 0;
 };

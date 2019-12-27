@@ -21,7 +21,7 @@ class NetworkGroup final
 {
 public:
     std::array<uint8_t, 8> ActionsAllowed{};
-    NetworkGroupId Id = 0;
+    NetworkGroupId_t Id = 0;
 
     static NetworkGroup FromJson(const json_t* json);
 

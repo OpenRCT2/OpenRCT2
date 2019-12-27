@@ -117,7 +117,8 @@ using NetworkPlayerId_t = NetworkObjectId_t<int32_t, 0>;
 using NetworkRideId_t = NetworkObjectId_t<ride_id_t, 1>;
 using NetworkCheatType_t = NetworkObjectId_t<int32_t, 2>;
 
-using NetworkGroupId = int32_t;
+using NetworkGroupId_t = uint8_t;
+static constexpr NetworkGroupId_t kInvalidNetworkGroupId = std::numeric_limits<NetworkGroupId_t>::max();
 
 enum NetworkStatisticsGroup
 {

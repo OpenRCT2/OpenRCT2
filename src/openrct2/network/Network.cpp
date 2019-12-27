@@ -149,10 +149,10 @@ public:
     NetworkPlayer* GetPlayerByID(NetworkPlayerId_t id);
 
     NetworkGroups& GetGroups();
-    void RemoveGroup(NetworkGroupId id);
-    NetworkGroupId GetDefaultGroup();
-    NetworkGroupId GetGroupIDByHash(const std::string& keyhash);
-    void SetDefaultGroup(NetworkGroupId id);
+    void RemoveGroup(NetworkGroupId_t id);
+    NetworkGroupId_t GetDefaultGroup();
+    NetworkGroupId_t GetGroupIDByHash(const std::string& keyhash);
+    void SetDefaultGroup(NetworkGroupId_t id);
     void SaveGroups();
     void LoadGroups();
 
@@ -1056,7 +1056,7 @@ std::string Network::GetMasterServerUrl()
     }
 }
 
-void Network::RemoveGroup(NetworkGroupId id)
+void Network::RemoveGroup(NetworkGroupId_t id)
 {
     NetworkGroup* group = _groups.GetById(id);
     if (group == nullptr)
@@ -1071,7 +1071,7 @@ void Network::RemoveGroup(NetworkGroupId id)
     }
 }
 
-NetworkGroupId Network::GetGroupIDByHash(const std::string& keyhash)
+NetworkGroupId_t Network::GetGroupIDByHash(const std::string& keyhash)
 {
     const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
 
@@ -1093,12 +1093,12 @@ NetworkGroupId Network::GetGroupIDByHash(const std::string& keyhash)
     return groupId;
 }
 
-NetworkGroupId Network::GetDefaultGroup()
+NetworkGroupId_t Network::GetDefaultGroup()
 {
     return _groups.GetDefault()->Id;
 }
 
-void Network::SetDefaultGroup(NetworkGroupId id)
+void Network::SetDefaultGroup(NetworkGroupId_t id)
 {
     NetworkGroup* group = _groups.GetById(id);
     if (group)
@@ -3179,11 +3179,6 @@ uint8_t network_get_player_group(uint32_t index)
     return gNetwork.player_list[index]->Group;
 }
 
-void network_set_player_group(uint32_t index, uint32_t groupindex)
-{
-    // gNetwork.player_list[index]->Group = gNetwork.group_list[groupindex]->Id;
-}
-
 int32_t network_get_group_index(uint8_t id)
 {
     return -1;
@@ -3240,7 +3235,7 @@ void network_chat_show_server_greeting()
 }
 
 GameActionResult::Ptr network_set_player_group(
-    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
+    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, NetworkGroupId_t groupId, bool isExecuting)
 {
     NetworkGroups& groups = gNetwork.GetGroups();
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
@@ -3298,8 +3293,8 @@ GameActionResult::Ptr network_set_player_group(
 }
 
 GameActionResult::Ptr network_modify_groups(
-    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
-    PermissionState permissionState, bool isExecuting)
+    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, NetworkGroupId_t groupId, const std::string& name,
+    uint32_t permissionIndex, PermissionState permissionState, bool isExecuting)
 {
     NetworkGroups& groups = gNetwork.GetGroups();
 
@@ -3479,7 +3474,7 @@ rct_string_id network_get_action_name_string_id(uint32_t index)
     }
 }
 
-int32_t network_can_perform_action(NetworkGroupId groupId, uint32_t index)
+bool network_can_perform_action(NetworkGroupId_t groupId, uint32_t index)
 {
     auto& groups = gNetwork.GetGroups();
     NetworkGroup* group = groups.GetById(groupId);
@@ -3488,7 +3483,7 @@ int32_t network_can_perform_action(NetworkGroupId groupId, uint32_t index)
     return group->CanPerformAction(index);
 }
 
-int32_t network_can_perform_command(NetworkGroupId groupId, int32_t index)
+bool network_can_perform_command(NetworkGroupId_t groupId, int32_t index)
 {
     auto& groups = gNetwork.GetGroups();
     NetworkGroup* group = groups.GetById(groupId);
@@ -3563,14 +3558,14 @@ int32_t network_get_pickup_peep_old_x(uint8_t playerid)
     }
 }
 
-int32_t network_get_current_player_group_index()
+NetworkGroupId_t network_get_current_player_group_id()
 {
     NetworkPlayer* player = gNetwork.GetPlayerByID(gNetwork.GetPlayerID());
     if (player)
     {
-        return network_get_group_index(player->Group);
+        return player->Group;
     }
-    return -1;
+    return kInvalidNetworkGroupId;
 }
 
 void network_send_map()
@@ -3831,9 +3826,6 @@ uint8_t network_get_player_group(uint32_t index)
 {
     return 0;
 }
-void network_set_player_group(uint32_t index, uint32_t groupindex)
-{
-}
 int32_t network_get_group_index(uint8_t id)
 {
     return -1;
@@ -3878,11 +3870,11 @@ rct_string_id network_get_action_name_string_id(uint32_t index)
 {
     return -1;
 }
-int32_t network_can_perform_action(uint32_t groupindex, uint32_t index)
+int32_t network_can_perform_action(NetworkGroupId_t groupId, uint32_t index)
 {
     return 0;
 }
-int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
+int32_t network_can_perform_command(NetworkGroupId_t groupId, int32_t index)
 {
     return 0;
 }
@@ -3927,9 +3919,9 @@ uint8_t network_get_current_player_id()
 {
     return 0;
 }
-int32_t network_get_current_player_group_index()
+NetworkGroupId_t network_get_current_player_group_id()
 {
-    return 0;
+    return kInvalidNetworkGroupId;
 }
 void network_append_chat_log(const utf8* text)
 {

@@ -109,9 +109,9 @@ bool NetworkGroups::Save()
     return true;
 }
 
-NetworkGroup* NetworkGroups::GetById(NetworkGroupId id) const
+NetworkGroup* NetworkGroups::GetById(NetworkGroupId_t id) const
 {
-    if (id < 0 || id >= _groups.size())
+    if (static_cast<size_t>(id) >= _groups.size())
         return nullptr;
 
     return _groups[id].get();
@@ -224,9 +224,9 @@ bool NetworkGroups::Remove(const NetworkGroup* group)
     return Remove(group->Id);
 }
 
-bool NetworkGroups::Remove(NetworkGroupId id)
+bool NetworkGroups::Remove(NetworkGroupId_t id)
 {
-    if (id < 0 || id >= _groups.size())
+    if (static_cast<size_t>(id) >= _groups.size())
         return false;
 
     if (_groups[id] == nullptr)
@@ -243,7 +243,7 @@ void NetworkGroups::SetDefault(const NetworkGroup* group)
 
 NetworkGroup* NetworkGroups::GetDefault() const
 {
-    Guard::Assert(_defaultId >= 0 && _defaultId < _groups.size());
+    Guard::Assert(static_cast<size_t>(_defaultId) < _groups.size());
     return _groups[_defaultId].get();
 }
 
@@ -260,10 +260,13 @@ NetworkGroup* NetworkGroups::Create(const std::string& name)
     }
 
     if (nextFreeId == std::numeric_limits<size_t>::max())
+    {
+        log_error("Unable to create group, no free group slots left");
         return nullptr;
+    }
 
     auto group = std::make_unique<NetworkGroup>();
-    group->Id = static_cast<NetworkGroupId>(nextFreeId);
+    group->Id = static_cast<NetworkGroupId_t>(nextFreeId);
     group->SetName(name);
 
     _groups[nextFreeId] = std::move(group);

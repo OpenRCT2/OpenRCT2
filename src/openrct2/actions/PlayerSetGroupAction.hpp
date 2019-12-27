@@ -16,14 +16,14 @@ DEFINE_GAME_ACTION(PlayerSetGroupAction, GAME_COMMAND_SET_PLAYER_GROUP, GameActi
 {
 private:
     NetworkPlayerId_t _playerId{ -1 };
-    uint8_t _groupId{ std::numeric_limits<uint8_t>::max() };
+    NetworkGroupId_t _groupId{ std::numeric_limits<NetworkGroupId_t>::max() };
 
 public:
     PlayerSetGroupAction()
     {
     }
 
-    PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId)
+    PlayerSetGroupAction(NetworkPlayerId_t playerId, NetworkGroupId_t groupId)
         : _playerId(playerId)
         , _groupId(groupId)
     {

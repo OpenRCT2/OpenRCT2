@@ -26,7 +26,7 @@ public:
     std::string Name;
     uint16_t Ping = 0;
     uint8_t Flags = 0;
-    NetworkGroupId Group = -1;
+    NetworkGroupId_t Group = kInvalidNetworkGroupId;
     money32 MoneySpent = MONEY(0, 0);
     uint32_t CommandsRan = 0;
     int32_t LastAction = -999;
