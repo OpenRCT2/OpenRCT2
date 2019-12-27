@@ -99,7 +99,7 @@ public:
             }
         }
 
-        auto z = ride->stations[_stationNum].Height * 8;
+        auto z = ride->stations[_stationNum].GetBaseZ();
         if (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
@@ -166,7 +166,7 @@ public:
             }
         }
 
-        auto z = ride->stations[_stationNum].Height * 8;
+        auto z = ride->stations[_stationNum].GetBaseZ();
         if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             footpath_remove_litter(_loc.x, _loc.y, z);

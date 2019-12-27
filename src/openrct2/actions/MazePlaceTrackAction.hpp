@@ -193,7 +193,7 @@ public:
         map_invalidate_tile_full(flooredX, flooredY);
 
         ride->maze_tiles++;
-        ride->stations[0].Height = tileElement->base_height;
+        ride->stations[0].SetBaseZ(tileElement->GetBaseZ());
         ride->stations[0].Start.x = 0;
         ride->stations[0].Start.y = 0;
 

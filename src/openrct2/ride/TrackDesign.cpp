@@ -260,7 +260,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     {
         for (int32_t station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++)
         {
-            z = ride.stations[station_index].Height;
+            z = ride.stations[station_index].GetBaseZ();
 
             TileCoordsXYZD location;
             if (i == 0)
@@ -277,9 +277,9 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
                 continue;
             }
 
-            CoordsXY mapLocation{ location.x * 32, location.y * 32 };
+            CoordsXY mapLocation = location.ToCoordsXY();
 
-            TileElement* tileElement = map_get_first_element_at(location.ToCoordsXY());
+            TileElement* tileElement = map_get_first_element_at(mapLocation);
             if (tileElement == nullptr)
                 continue;
 
@@ -287,7 +287,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                     continue;
-                if (tileElement->base_height == z)
+                if (tileElement->GetBaseZ() == z)
                     break;
             } while (!(tileElement++)->IsLastForTile());
 
@@ -307,7 +307,6 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             entrance.x = rotatedMapLocation.x;
             entrance.y = rotatedMapLocation.y;
 
-            z *= 8;
             z -= gTrackPreviewOrigin.z;
             z /= 8;
 

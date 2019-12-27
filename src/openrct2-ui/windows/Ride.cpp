@@ -1915,7 +1915,7 @@ static void window_ride_init_viewport(rct_window* w)
 
         focus.coordinate.x = location.x * 32;
         focus.coordinate.y = location.y * 32;
-        focus.coordinate.z = ride->stations[stationIndex].Height << 3;
+        focus.coordinate.z = ride->stations[stationIndex].GetBaseZ();
         focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
     }
     else

@@ -2796,12 +2796,12 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
         return false;
 
     int32_t station = vehicle->current_station;
-    auto location = ride->stations[station].Start;
-    int32_t x = location.x * 32;
-    int32_t y = location.y * 32;
+    auto location = ride->stations[station].GetStart();
+    int32_t x = location.x;
+    int32_t y = location.y;
     int32_t z = ride->stations[station].Height;
 
-    auto tileElement = map_get_track_element_at({ x, y, z << 3 });
+    auto tileElement = map_get_track_element_at(location);
     if (tileElement == nullptr)
     {
         return false;
@@ -2836,8 +2836,8 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
     }
 
     // Reset back to starting tile.
-    x = location.x * 32;
-    y = location.y * 32;
+    x = location.x;
+    y = location.y;
 
     // Other search direction.
     direction = direction_reverse(direction) & 3;
@@ -2876,10 +2876,10 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
                     if (!(sv_ride->stations[sv->station_id].Depart & STATION_DEPART_FLAG))
                     {
                         sv = _synchronisedVehicles;
-                        uint8_t rideId = 0xFF;
+                        uint8_t rideId = RIDE_ID_NULL;
                         for (; sv < _lastSynchronisedVehicle; sv++)
                         {
-                            if (rideId == 0xFF)
+                            if (rideId == RIDE_ID_NULL)
                             {
                                 rideId = sv->ride_id;
                             }
@@ -9277,7 +9277,7 @@ loc_6DCE68:
         {
             continue;
         }
-        if ((vehicle->track_z >> 3) != ride->stations[i].Height)
+        if ((vehicle->track_z) != ride->stations[i].GetBaseZ())
         {
             continue;
         }

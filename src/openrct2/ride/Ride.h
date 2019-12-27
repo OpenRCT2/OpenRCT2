@@ -176,6 +176,10 @@ struct RideStation
     uint16_t LastPeepInQueue;
 
     static constexpr uint8_t NO_TRAIN = std::numeric_limits<uint8_t>::max();
+
+    int32_t GetBaseZ() const;
+    void SetBaseZ(int32_t newZ);
+    CoordsXYZ GetStart() const;
 };
 
 struct RideMeasurement
