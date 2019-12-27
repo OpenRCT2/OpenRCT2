@@ -251,6 +251,11 @@ NetworkGroup* NetworkGroups::GetDefault() const
     return _groups[_defaultId].get();
 }
 
+NetworkGroupId_t NetworkGroups::GetDefaultId() const
+{
+    return GetDefault()->Id;
+}
+
 NetworkGroup* NetworkGroups::Create(const std::string& name, bool immutable /*= false*/, bool canBeDefault /*= true*/)
 {
     size_t nextFreeId = std::numeric_limits<size_t>::max();

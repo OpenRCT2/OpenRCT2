@@ -34,6 +34,7 @@ public:
 
     void SetDefault(const NetworkGroup* group);
     NetworkGroup* GetDefault() const;
+    NetworkGroupId_t GetDefaultId() const;
 
     NetworkGroup* Create(const std::string& name, bool immutable = false, bool canBeDefault = true);
     NetworkGroup* GetById(NetworkGroupId_t id) const;

@@ -81,26 +81,6 @@ void NetworkGroup::SetName(std::string name)
     _name = name;
 }
 
-void NetworkGroup::Read(NetworkPacket& packet)
-{
-    packet >> Id;
-    SetName(packet.ReadString());
-    for (auto& action : ActionsAllowed)
-    {
-        packet >> action;
-    }
-}
-
-void NetworkGroup::Write(NetworkPacket& packet)
-{
-    packet << Id;
-    packet.WriteString(GetName().c_str());
-    for (const auto& action : ActionsAllowed)
-    {
-        packet << action;
-    }
-}
-
 void NetworkGroup::ToggleActionPermission(size_t index)
 {
     size_t byte = index / 8;

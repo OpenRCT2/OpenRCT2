@@ -150,11 +150,7 @@ public:
 
     NetworkGroups& GetGroups();
     void RemoveGroup(NetworkGroupId_t id);
-    NetworkGroupId_t GetDefaultGroup();
     NetworkGroupId_t GetGroupIDByHash(const std::string& keyhash);
-    void SetDefaultGroup(NetworkGroupId_t id);
-    void SaveGroups();
-    void LoadGroups();
 
     std::string BeginLog(const std::string& directory, const std::string& midName, const std::string& filenameFormat);
     void AppendLog(std::ostream& fs, const std::string& s);
@@ -199,11 +195,11 @@ public:
     json_t* GetServerInfoAsJson() const;
 
     std::vector<std::unique_ptr<NetworkPlayer>> player_list;
+    NetworkUserManager _userManager;
     NetworkGroups _groups;
     NetworkKey _key;
     std::vector<uint8_t> _challenge;
     std::map<uint32_t, GameAction::Callback_t> _gameActionCallbacks;
-    NetworkUserManager _userManager;
     std::string ServerName;
     std::string ServerDescription;
     std::string ServerGreeting;
@@ -226,7 +222,6 @@ private:
 
     std::string GetMasterServerUrl();
     std::string GenerateAdvertiseKey();
-    void SetupDefaultGroups();
 
     bool LoadMap(IStream* stream);
     bool SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
@@ -416,7 +411,7 @@ void Network::Close()
         GameActions::ClearQueue();
         GameActions::ResumeQueue();
         player_list.clear();
-        // group_list.clear();
+        _groups.Clear();
         _serverTickData.clear();
         _pendingPlayerLists.clear();
         _pendingPlayerInfo.clear();
@@ -595,8 +590,8 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
     ServerProviderEmail = gConfigNetwork.provider_email;
     ServerProviderWebsite = gConfigNetwork.provider_website;
 
+    _groups.Load();
     CheatsReset();
-    LoadGroups();
     BeginChatLog();
     BeginServerLog();
 
@@ -1075,7 +1070,7 @@ NetworkGroupId_t Network::GetGroupIDByHash(const std::string& keyhash)
 {
     const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
 
-    uint8_t groupId = GetDefaultGroup();
+    uint8_t groupId = _groups.GetDefaultId();
     if (networkUser != nullptr && networkUser->GroupId.HasValue())
     {
         const uint8_t assignedGroup = networkUser->GroupId.GetValue();
@@ -1091,36 +1086,6 @@ NetworkGroupId_t Network::GetGroupIDByHash(const std::string& keyhash)
         }
     }
     return groupId;
-}
-
-NetworkGroupId_t Network::GetDefaultGroup()
-{
-    return _groups.GetDefault()->Id;
-}
-
-void Network::SetDefaultGroup(NetworkGroupId_t id)
-{
-    NetworkGroup* group = _groups.GetById(id);
-    if (group)
-    {
-        _groups.SetDefault(group);
-    }
-}
-
-void Network::SaveGroups()
-{
-    Guard::Assert(GetMode() == NETWORK_MODE_SERVER);
-    _groups.Save();
-}
-
-void Network::SetupDefaultGroups()
-{
-    _groups.Reset();
-}
-
-void Network::LoadGroups()
-{
-    _groups.Load();
 }
 
 std::string Network::BeginLog(const std::string& directory, const std::string& midName, const std::string& filenameFormat)
@@ -1980,7 +1945,7 @@ NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& ke
             player->KeyHash = keyhash;
             if (networkUser == nullptr)
             {
-                player->Group = GetDefaultGroup();
+                player->Group = _groups.GetDefaultId();
                 if (!name.empty())
                 {
                     player->SetName(MakePlayerNameUnique(String::Trim(name)));
@@ -1988,7 +1953,7 @@ NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& ke
             }
             else
             {
-                player->Group = networkUser->GroupId.GetValueOrDefault(GetDefaultGroup());
+                player->Group = networkUser->GroupId.GetValueOrDefault(_groups.GetDefaultId());
                 player->SetName(networkUser->Name);
             }
 
@@ -1999,7 +1964,7 @@ NetworkPlayer* Network::AddPlayer(const std::string& name, const std::string& ke
         {
             player = std::make_unique<NetworkPlayer>();
             player->Id = newid;
-            player->Group = GetDefaultGroup();
+            player->Group = _groups.GetDefaultId();
             player->SetName(String::Trim(std::string(name)));
         }
 
@@ -3192,28 +3157,6 @@ uint8_t network_get_player_group_id(uint32_t index)
     return gNetwork.player_list[index]->Group;
 }
 
-int32_t network_get_group_index(uint8_t id)
-{
-    return -1;
-}
-
-uint8_t network_get_group_id(uint32_t index)
-{
-    return 0;
-}
-
-int32_t network_get_num_groups()
-{
-    // return (int32_t)gNetwork.group_list.size();
-    return 0;
-}
-
-const char* network_get_group_name(uint32_t index)
-{
-    // return gNetwork.group_list[index]->GetName().c_str();
-    return "BROKEN";
-}
-
 void network_chat_show_connected_message()
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
@@ -3343,7 +3286,7 @@ GameActionResult::Ptr network_modify_groups(
             }
             if (isExecuting)
             {
-                groups.Remove(groupId);
+                gNetwork.RemoveGroup(groupId);
             }
         }
         break;
@@ -3464,11 +3407,6 @@ GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExe
         }
     }
     return std::make_unique<GameActionResult>();
-}
-
-uint8_t network_get_default_group()
-{
-    return gNetwork.GetDefaultGroup();
 }
 
 int32_t network_get_num_actions()
@@ -3844,23 +3782,6 @@ uint8_t network_get_player_group_id(uint32_t index)
 {
     return 0;
 }
-int32_t network_get_group_index(uint8_t id)
-{
-    return -1;
-}
-uint8_t network_get_group_id(uint32_t index)
-{
-    return 0;
-}
-int32_t network_get_num_groups()
-{
-    return 0;
-}
-const char* network_get_group_name(uint32_t index)
-{
-    return "";
-};
-
 GameActionResult::Ptr network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
@@ -3875,10 +3796,6 @@ GameActionResult::Ptr network_modify_groups(
 GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
 {
     return std::make_unique<GameActionResult>();
-}
-uint8_t network_get_default_group()
-{
-    return 0;
 }
 int32_t network_get_num_actions()
 {

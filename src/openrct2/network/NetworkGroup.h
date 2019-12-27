@@ -28,9 +28,6 @@ public:
 
     const std::string& GetName() const;
     void SetName(std::string name);
-
-    void Read(NetworkPacket& packet);
-    void Write(NetworkPacket& packet);
     void ToggleActionPermission(size_t index);
     bool CanPerformAction(size_t index) const;
     bool CanPerformCommand(int32_t command) const;

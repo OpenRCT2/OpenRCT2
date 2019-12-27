@@ -72,10 +72,7 @@ void network_set_player_last_action_coord(uint32_t index, const CoordsXYZ& coord
 uint32_t network_get_player_commands_ran(uint32_t index);
 int32_t network_get_player_index(uint32_t id);
 uint8_t network_get_player_group_id(uint32_t index);
-int32_t network_get_group_index(uint8_t id);
 NetworkGroupId_t network_get_current_player_group_id();
-uint8_t network_get_group_id(uint32_t index);
-int32_t network_get_num_groups();
 const char* network_get_group_name(uint32_t index);
 std::unique_ptr<GameActionResult> network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, NetworkGroupId_t groupId, bool isExecuting);
@@ -83,7 +80,6 @@ std::unique_ptr<GameActionResult> network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, NetworkGroupId_t groupId, const std::string& name,
     uint32_t permissionIndex, PermissionState permissionState, bool isExecuting);
 std::unique_ptr<GameActionResult> network_kick_player(NetworkPlayerId_t playerId, bool isExecuting);
-uint8_t network_get_default_group();
 int32_t network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32_t index);
 bool network_can_perform_action(NetworkGroupId_t groupId, uint32_t index);
