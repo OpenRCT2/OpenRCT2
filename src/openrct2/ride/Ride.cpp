@@ -1382,7 +1382,7 @@ void ride_construction_invalidate_current_track()
         case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
             {
-                map_invalidate_tile_full({ _currentTrackBegin.x & 0xFFE0, _currentTrackBegin.y & 0xFFE0 });
+                map_invalidate_tile_full(_currentTrackBegin.ToTileStart());
                 gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             }
             break;
