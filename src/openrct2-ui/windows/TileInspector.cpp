@@ -1002,8 +1002,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
     {
         case WIDX_SPINNER_X_INCREASE:
             windowTileInspectorTileX = std::min<uint32_t>(windowTileInspectorTileX + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
-            windowTileInspectorToolMap.x = std::min<int32_t>(
-                windowTileInspectorToolMap.x + 32, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+            windowTileInspectorToolMap.x = std::min<int32_t>(windowTileInspectorToolMap.x + 32, MAXIMUM_TILE_START_XY);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_X_DECREASE:
@@ -1013,8 +1012,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
             break;
         case WIDX_SPINNER_Y_INCREASE:
             windowTileInspectorTileY = std::min<uint32_t>(windowTileInspectorTileY + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
-            windowTileInspectorToolMap.y = std::min<int32_t>(
-                windowTileInspectorToolMap.y + 32, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+            windowTileInspectorToolMap.y = std::min<int32_t>(windowTileInspectorToolMap.y + 32, MAXIMUM_TILE_START_XY);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_Y_DECREASE:

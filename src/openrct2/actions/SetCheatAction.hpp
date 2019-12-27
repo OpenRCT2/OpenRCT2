@@ -732,9 +732,9 @@ private:
         const int32_t min = 32;
         const int32_t max = gMapSizeUnits - 32;
 
-        for (CoordsXY coords = { min, min }; coords.y <= max; coords.y += 32)
+        for (CoordsXY coords = { min, min }; coords.y <= max; coords.y += COORDS_XY_STEP)
         {
-            for (coords.x = min; coords.x <= max; coords.x += 32)
+            for (coords.x = min; coords.x <= max; coords.x += COORDS_XY_STEP)
             {
                 auto* surfaceElement = map_get_surface_element_at(coords);
                 if (surfaceElement == nullptr)

@@ -114,7 +114,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
 
-    if (x >= 8192 || y >= 8192)
+    if (x >= MAXIMUM_MAP_SIZE_BIG || y >= MAXIMUM_MAP_SIZE_BIG)
     {
         // This could loop!
         return guest_surface_path_finding(peep);

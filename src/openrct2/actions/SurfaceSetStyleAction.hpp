@@ -114,9 +114,9 @@ public:
 
         money32 surfaceCost = 0;
         money32 edgeCost = 0;
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
         {
-            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
+            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
             {
                 if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 {
@@ -185,9 +185,9 @@ public:
 
         money32 surfaceCost = 0;
         money32 edgeCost = 0;
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
         {
-            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
+            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
             {
                 if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 {

@@ -89,9 +89,9 @@ public:
             gStaffModes[peep->staff_id] |= (1 << 1);
         }
 
-        for (int32_t y = 0; y < 4 * 32; y += 32)
+        for (int32_t y = 0; y < 4 * 32; y += COORDS_XY_STEP)
         {
-            for (int32_t x = 0; x < 4 * 32; x += 32)
+            for (int32_t x = 0; x < 4 * 32; x += COORDS_XY_STEP)
             {
                 map_invalidate_tile_full({ (_loc.x & 0x1F80) + x, (_loc.y & 0x1F80) + y });
             }

@@ -94,9 +94,9 @@ private:
 
         uint8_t minHeight = map_get_lowest_land_height(validRange);
 
-        for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
+        for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
         {
-            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
+            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
             {
                 auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)

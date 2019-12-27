@@ -566,8 +566,8 @@ static void window_map_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
 static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, ScreenCoordsXY screenCoords)
 {
     CoordsXY c = map_window_screen_to_map(screenCoords);
-    int32_t mapX = std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
-    int32_t mapY = std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
+    int32_t mapX = std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1);
+    int32_t mapY = std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1);
     int32_t mapZ = tile_element_height({ mapX, mapY });
 
     rct_window* mainWindow = window_get_main();
@@ -1021,15 +1021,15 @@ static MapCoordsXY window_map_transform_to_map_coords(CoordsXY c)
     {
         case 3:
             std::swap(x, y);
-            x = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x;
+            x = MAXIMUM_MAP_SIZE_BIG - 1 - x;
             break;
         case 2:
-            x = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x;
-            y = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
+            x = MAXIMUM_MAP_SIZE_BIG - 1 - x;
+            y = MAXIMUM_MAP_SIZE_BIG - 1 - y;
             break;
         case 1:
             std::swap(x, y);
-            y = MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y;
+            y = MAXIMUM_MAP_SIZE_BIG - 1 - y;
             break;
         case 0:
             break;
@@ -1641,27 +1641,27 @@ static void map_window_set_pixels(rct_window* w)
     switch (get_current_rotation())
     {
         case 0:
-            x = _currentLine * 32;
+            x = _currentLine * COORDS_XY_STEP;
             y = 0;
             dx = 0;
-            dy = 32;
+            dy = COORDS_XY_STEP;
             break;
         case 1:
-            x = (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32;
-            y = _currentLine * 32;
-            dx = -32;
+            x = MAXIMUM_TILE_START_XY;
+            y = _currentLine * COORDS_XY_STEP;
+            dx = -COORDS_XY_STEP;
             dy = 0;
             break;
         case 2:
-            x = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) - _currentLine) * 32;
-            y = (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32;
+            x = MAXIMUM_MAP_SIZE_BIG - ((_currentLine + 1) * COORDS_XY_STEP);
+            y = MAXIMUM_TILE_START_XY;
             dx = 0;
-            dy = -32;
+            dy = -COORDS_XY_STEP;
             break;
         case 3:
             x = 0;
-            y = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) - _currentLine) * 32;
-            dx = 32;
+            y = MAXIMUM_MAP_SIZE_BIG - ((_currentLine + 1) * COORDS_XY_STEP);
+            dx = COORDS_XY_STEP;
             dy = 0;
             break;
     }
@@ -1706,11 +1706,11 @@ static CoordsXY map_window_screen_to_map(ScreenCoordsXY screenCoords)
         case 0:
             return { x, y };
         case 1:
-            return { MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y, x };
+            return { MAXIMUM_MAP_SIZE_BIG - 1 - y, x };
         case 2:
-            return { MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - y };
+            return { MAXIMUM_MAP_SIZE_BIG - 1 - x, MAXIMUM_MAP_SIZE_BIG - 1 - y };
         case 3:
-            return { y, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1 - x };
+            return { y, MAXIMUM_MAP_SIZE_BIG - 1 - x };
     }
 
     return { 0, 0 }; // unreachable
