@@ -26,6 +26,8 @@ struct GameAction;
 struct Peep;
 struct CoordsXYZ;
 class GameActionResult;
+class NetworkGroups;
+
 enum class ModifyGroupType : uint8_t;
 enum class PermissionState : uint8_t;
 
@@ -52,6 +54,7 @@ void network_update();
 void network_process_pending();
 void network_flush();
 
+NetworkGroups* network_get_groups();
 int32_t network_get_authstatus();
 uint32_t network_get_server_tick();
 uint8_t network_get_current_player_id();
@@ -68,7 +71,7 @@ CoordsXYZ network_get_player_last_action_coord(uint32_t index);
 void network_set_player_last_action_coord(uint32_t index, const CoordsXYZ& coord);
 uint32_t network_get_player_commands_ran(uint32_t index);
 int32_t network_get_player_index(uint32_t id);
-uint8_t network_get_player_group(uint32_t index);
+uint8_t network_get_player_group_id(uint32_t index);
 int32_t network_get_group_index(uint8_t id);
 NetworkGroupId_t network_get_current_player_group_id();
 uint8_t network_get_group_id(uint32_t index);

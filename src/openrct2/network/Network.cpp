@@ -3051,6 +3051,11 @@ void network_flush()
     gNetwork.Flush();
 }
 
+NetworkGroups* network_get_groups()
+{
+    return &gNetwork._groups;
+}
+
 int32_t network_get_mode()
 {
     return gNetwork.GetMode();
@@ -3174,7 +3179,7 @@ int32_t network_get_player_index(uint32_t id)
     return (int32_t)(gNetwork.GetPlayerIteratorByID(id) - gNetwork.player_list.begin());
 }
 
-uint8_t network_get_player_group(uint32_t index)
+uint8_t network_get_player_group_id(uint32_t index)
 {
     return gNetwork.player_list[index]->Group;
 }
@@ -3716,6 +3721,10 @@ json_t* network_get_server_info_as_json()
     return gNetwork.GetServerInfoAsJson();
 }
 #else
+NetworkGroups* network_get_groups()
+{
+    return nullptr;
+}
 int32_t network_get_mode()
 {
     return NETWORK_MODE_NONE;
@@ -3822,7 +3831,7 @@ int32_t network_get_player_index(uint32_t id)
 {
     return -1;
 }
-uint8_t network_get_player_group(uint32_t index)
+uint8_t network_get_player_group_id(uint32_t index)
 {
     return 0;
 }

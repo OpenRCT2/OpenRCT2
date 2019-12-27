@@ -15,6 +15,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/NetworkGroups.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -124,7 +125,8 @@ static constexpr rct_string_id WindowMultiplayerPageTitles[] = {
     STR_MULTIPLAYER_OPTIONS_TITLE,
 };
 
-static uint8_t _selectedGroup = 0;
+static uint8_t _selectedGroupId = kInvalidNetworkGroupId;
+static int32_t _selectedGroupIndex = -1;
 
 static void window_multiplayer_information_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_multiplayer_information_resize(rct_window *w);
@@ -360,28 +362,37 @@ static void window_multiplayer_set_pressed_tab(rct_window* w)
 static void window_multiplayer_groups_show_group_dropdown(rct_window* w, rct_widget* widget)
 {
     rct_widget* dropdownWidget;
-    int32_t numItems, i;
+    int32_t numItems = 0;
+    int32_t defaultIndex = -1;
 
     dropdownWidget = widget - 1;
 
-    numItems = network_get_num_groups();
+    NetworkGroups* networkGroups = network_get_groups();
+    auto groups = networkGroups->GetAll();
+
+    numItems = static_cast<int32_t>(groups.size());
 
     window_dropdown_show_text_custom_width(
         w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
         dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
-    for (i = 0; i < network_get_num_groups(); i++)
+    for (int32_t i = 0; i < numItems; i++)
     {
         gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItemsArgs[i] = (uintptr_t)network_get_group_name(i);
+        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(groups[i]->GetName().c_str());
+        if (networkGroups->GetDefault() == groups[i])
+        {
+            defaultIndex = i;
+        }
     }
+
     if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
     {
-        dropdown_set_checked(network_get_group_index(network_get_default_group()), true);
+        dropdown_set_checked(defaultIndex, true);
     }
     else if (widget == &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP_DROPDOWN])
     {
-        dropdown_set_checked(network_get_group_index(_selectedGroup), true);
+        dropdown_set_checked(_selectedGroupIndex, true);
     }
 }
 
@@ -643,6 +654,8 @@ static void window_multiplayer_players_paint(rct_window* w, rct_drawpixelinfo* d
 
 static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
+    NetworkGroups* networkGroups = network_get_groups();
+
     int32_t y = 0;
     for (int32_t i = 0; i < network_get_num_players(); i++)
     {
@@ -681,11 +694,11 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
 
             // Draw group name
             lineCh = buffer;
-            int32_t group = network_get_group_index(network_get_player_group(i));
-            if (group != -1)
+            NetworkGroup* group = networkGroups->GetById(network_get_player_group_id(i));
+            if (group != nullptr)
             {
                 lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
-                safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
+                safe_strcpy(lineCh, group->GetName().c_str(), sizeof(buffer) - (lineCh - buffer));
                 gfx_clip_string(buffer, 80);
                 gfx_draw_string(dpi, buffer, colour, 173, y);
             }
@@ -727,6 +740,9 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
 
 static void window_multiplayer_groups_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
+    NetworkGroups* networkGroups = network_get_groups();
+    Guard::Assert(networkGroups != nullptr);
+
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
@@ -749,15 +765,19 @@ static void window_multiplayer_groups_mouseup(rct_window* w, rct_widgetindex wid
         break;
         case WIDX_REMOVE_GROUP:
         {
-            auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, _selectedGroup);
+            auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, _selectedGroupId);
             GameActions::Execute(&networkModifyGroup);
         }
         break;
-        case WIDX_RENAME_GROUP:;
-            int32_t groupIndex = network_get_group_index(_selectedGroup);
-            const utf8* groupName = network_get_group_name(groupIndex);
+        case WIDX_RENAME_GROUP:
+        {
+            auto* group = networkGroups->GetById(_selectedGroupId);
+            Guard::Assert(group != nullptr);
+
+            const utf8* groupName = group->GetName().c_str();
             window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, (utf8*)groupName, 32);
-            break;
+        }
+        break;
     }
 }
 
@@ -792,17 +812,20 @@ static void window_multiplayer_groups_dropdown(rct_window* w, rct_widgetindex wi
         return;
     }
 
+    NetworkGroups* networkGroups = network_get_groups();
+    auto groups = networkGroups->GetAll();
+
     switch (widgetIndex)
     {
         case WIDX_DEFAULT_GROUP_DROPDOWN:
         {
-            auto networkModifyGroup = NetworkModifyGroupAction(
-                ModifyGroupType::SetDefault, network_get_group_id(dropdownIndex));
+            auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::SetDefault, groups[dropdownIndex]->Id);
             GameActions::Execute(&networkModifyGroup);
         }
         break;
         case WIDX_SELECTED_GROUP_DROPDOWN:
-            _selectedGroup = network_get_group_id(dropdownIndex);
+            _selectedGroupId = groups[dropdownIndex]->Id;
+            _selectedGroupIndex = dropdownIndex;
             break;
     }
 
@@ -848,7 +871,7 @@ static void window_multiplayer_groups_scrollmousedown(rct_window* w, int32_t scr
     w->Invalidate();
 
     auto networkModifyGroup = NetworkModifyGroupAction(
-        ModifyGroupType::SetPermissions, _selectedGroup, "", index, PermissionState::Toggle);
+        ModifyGroupType::SetPermissions, _selectedGroupId, "", index, PermissionState::Toggle);
     GameActions::Execute(&networkModifyGroup);
 }
 
@@ -872,7 +895,7 @@ static void window_multiplayer_groups_text_input(rct_window* w, rct_widgetindex 
     if (text == nullptr)
         return;
 
-    auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::SetName, _selectedGroup, text);
+    auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::SetName, _selectedGroupId, text);
     GameActions::Execute(&networkModifyGroup);
 }
 
@@ -884,27 +907,32 @@ static void window_multiplayer_groups_invalidate(rct_window* w)
     window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].bottom = w->height - 0x0F;
     window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
 
-    // select other group if one is removed
-    while (network_get_group_index(_selectedGroup) == -1 && _selectedGroup > 0)
+    // Select other group if one is removed
+    NetworkGroups* networkGroups = network_get_groups();
+    Guard::Assert(networkGroups != nullptr);
+    while (networkGroups->GetById(_selectedGroupId) == nullptr && _selectedGroupId > 0)
     {
-        _selectedGroup--;
+        _selectedGroupId--;
     }
 }
 
 static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
+    NetworkGroups* networkGroups = network_get_groups();
+    Guard::Assert(networkGroups != nullptr);
+
     window_draw_widgets(w, dpi);
     window_multiplayer_draw_tab_images(w, dpi);
 
     rct_widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
-    int32_t group = network_get_group_index(network_get_default_group());
-    if (group != -1)
+    auto* defaultGroup = networkGroups->GetDefault();
+    if (defaultGroup != nullptr)
     {
         char buffer[300];
         char* lineCh;
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
-        safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
+        safe_strcpy(lineCh, defaultGroup->GetName().c_str(), sizeof(buffer) - (lineCh - buffer));
         set_format_arg(0, const char*, buffer);
         gfx_draw_string_centred_clipped(
             dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right - 11) / 2,
@@ -921,14 +949,14 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
     gfx_fill_rect_inset(dpi, x, y - 6, x + 310, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
-    group = network_get_group_index(_selectedGroup);
-    if (group != -1)
+    auto* group = networkGroups->GetById(_selectedGroupId);
+    if (group != nullptr)
     {
         char buffer[300];
         char* lineCh;
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
-        safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
+        safe_strcpy(lineCh, group->GetName().c_str(), sizeof(buffer) - (lineCh - buffer));
         set_format_arg(0, const char*, buffer);
         gfx_draw_string_centred_clipped(
             dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos.x + (widget->left + widget->right - 11) / 2,
@@ -938,6 +966,9 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
 
 static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
+    NetworkGroups* networkGroups = network_get_groups();
+    Guard::Assert(networkGroups != nullptr);
+
     int32_t y = 0;
 
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
@@ -955,12 +986,12 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
 
         if (y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
         {
-            char buffer[300] = { 0 };
-            int32_t groupindex = network_get_group_index(_selectedGroup);
-            if (groupindex != -1)
+            auto* group = networkGroups->GetById(_selectedGroupId);
+            if (group != nullptr)
             {
-                if (network_can_perform_action(groupindex, i))
+                if (group->CanPerformAction(i))
                 {
+                    char buffer[300] = { 0 };
                     char* lineCh = buffer;
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
                     lineCh = utf8_write_codepoint(lineCh, UnicodeChar::tick);

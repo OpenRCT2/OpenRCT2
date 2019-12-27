@@ -20,6 +20,7 @@
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/NetworkAction.h>
+#include <openrct2/network/NetworkGroups.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -226,8 +227,10 @@ rct_window* window_player_open(uint8_t id)
 
 static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget* widget)
 {
+    NetworkGroups* networkGroups = network_get_groups();
+    Guard::Assert(networkGroups != nullptr);
+
     rct_widget* dropdownWidget;
-    int32_t numItems, i;
     int32_t player = network_get_player_index((uint8_t)w->number);
     if (player == -1)
     {
@@ -236,19 +239,28 @@ static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget
 
     dropdownWidget = widget - 1;
 
-    numItems = network_get_num_groups();
+    auto groups = networkGroups->GetAll();
+    int32_t numItems = static_cast<int32_t>(groups.size());
 
     window_dropdown_show_text_custom_width(
         w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
         dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
-    for (i = 0; i < network_get_num_groups(); i++)
+    NetworkGroupId_t playerGroupId = network_get_player_group_id(player);
+
+    int32_t defaultIndex = 0;
+    for (int32_t i = 0; i < numItems; i++)
     {
+        auto* group = groups[i];
         gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItemsArgs[i] = (uintptr_t)network_get_group_name(i);
+        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(group->GetName().c_str());
+        if (group->Id == playerGroupId)
+        {
+            defaultIndex = i;
+        }
     }
 
-    dropdown_set_checked(network_get_group_index(network_get_player_group(player)), true);
+    dropdown_set_checked(defaultIndex, true);
 }
 
 void window_player_overview_close(rct_window* w)
@@ -305,17 +317,18 @@ void window_player_overview_mouse_down(rct_window* w, rct_widgetindex widgetInde
 
 void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    int32_t player = network_get_player_index((uint8_t)w->number);
-    if (player == -1)
-    {
+    int32_t playerIndex = network_get_player_index((uint8_t)w->number);
+    if (playerIndex == -1 || dropdownIndex == -1)
         return;
-    }
-    if (dropdownIndex == -1)
-    {
-        return;
-    }
-    int32_t group = network_get_group_id(dropdownIndex);
-    auto playerSetGroupAction = PlayerSetGroupAction(w->number, group);
+
+    NetworkGroups* networkGroups = network_get_groups();
+    Guard::Assert(networkGroups != nullptr);
+
+    auto groups = networkGroups->GetAll();
+    Guard::Assert(dropdownIndex < groups.size());
+
+    auto* group = groups[dropdownIndex];
+    auto playerSetGroupAction = PlayerSetGroupAction(w->number, group->Id);
     playerSetGroupAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {
@@ -355,6 +368,9 @@ void window_player_overview_update(rct_window* w)
 
 void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
+    NetworkGroups* networkGroups = network_get_groups();
+    Guard::Assert(networkGroups != nullptr);
+
     window_draw_widgets(w, dpi);
     window_player_draw_tab_images(dpi, w);
 
@@ -365,15 +381,15 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw current group
-    int32_t groupindex = network_get_group_index(network_get_player_group(player));
-    if (groupindex != -1)
+    auto* group = networkGroups->GetById(network_get_player_group_id(player));
+    if (group != nullptr)
     {
         rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
         char buffer[300];
         char* lineCh;
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
-        safe_strcpy(lineCh, network_get_group_name(groupindex), sizeof(buffer) - (lineCh - buffer));
+        safe_strcpy(lineCh, group->GetName().c_str(), sizeof(buffer) - (lineCh - buffer));
         set_format_arg(0, const char*, buffer);
 
         gfx_draw_string_centred_clipped(
