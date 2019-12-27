@@ -330,7 +330,7 @@ private:
                 continue;
             }
 
-            static constexpr const LocationXY16 DirOffsets[] = {
+            static constexpr const CoordsXY DirOffsets[] = {
                 { 0, 0 },
                 { 0, 16 },
                 { 16, 16 },
@@ -339,7 +339,7 @@ private:
 
             for (Direction dir : ALL_DIRECTIONS)
             {
-                const LocationXY16& off = DirOffsets[dir];
+                const CoordsXY& off = DirOffsets[dir];
                 money32 removePrice = MazeRemoveTrack(x + off.x, y + off.y, z, dir);
                 if (removePrice != MONEY32_UNDEFINED)
                     refundPrice += removePrice;

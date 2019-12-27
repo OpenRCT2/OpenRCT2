@@ -160,6 +160,11 @@ struct CoordsXY
     {
         return x == COORDS_NULL;
     };
+
+    void setNull()
+    {
+        x = COORDS_NULL;
+    }
 };
 
 struct TileCoordsXY

@@ -587,7 +587,7 @@ private:
                     { 1, 2, 0, 3 }, // MAP_SELECT_TYPE_EDGE_3
                 };
                 // Big coordinate offsets for the neigbouring tile for the given edge selection
-                static constexpr sLocationXY8 stepOffsets[] = {
+                static constexpr CoordsXY stepOffsets[] = {
                     { -32, 0 },
                     { 0, 32 },
                     { 32, 0 },
