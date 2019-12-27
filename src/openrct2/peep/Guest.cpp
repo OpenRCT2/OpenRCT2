@@ -4181,7 +4181,7 @@ void Guest::UpdateRideLeaveVehicle()
                 {
                     if (inner_map->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;
-                    if (inner_map->base_height == vehicle->track_z / 8)
+                    if (inner_map->GetBaseZ() == vehicle->track_z)
                         break;
                 }
 
@@ -6893,7 +6893,7 @@ void Guest::UpdateSpriteType()
             {
                 if (tileElement == nullptr)
                     break;
-                if ((z / 8) < tileElement->base_height)
+                if (z < tileElement->GetBaseZ())
                     break;
 
                 if (tileElement->IsLastForTile())

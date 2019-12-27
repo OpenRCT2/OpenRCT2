@@ -184,7 +184,7 @@ private:
 
             auto pathElement = tileElement->AsPath();
 
-            if (pathElement->base_height != _loc.z / 8 && pathElement->base_height != _loc.z / 8 - 2)
+            if (pathElement->GetBaseZ() != _loc.z && pathElement->GetBaseZ() != _loc.z - (2 * 8))
                 continue;
 
             if (!(pathElement->GetEdges() & (1 << _loc.direction)))

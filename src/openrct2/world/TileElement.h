@@ -79,7 +79,9 @@ struct TileElementBase
     uint8_t GetOccupiedQuadrants() const;
     void SetOccupiedQuadrants(uint8_t quadrants);
     int32_t GetBaseZ() const;
+    void SetBaseZ(int32_t newZ);
     int32_t GetClearanceZ() const;
+    void SetClearanceZ(int32_t newZ);
 };
 
 /**

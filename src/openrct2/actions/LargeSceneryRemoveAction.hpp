@@ -178,7 +178,7 @@ public:
                     if (sceneryElement->AsLargeScenery()->GetSequenceIndex() != i)
                         continue;
 
-                    if (sceneryElement->base_height != currentTile.z / 8)
+                    if (sceneryElement->GetBaseZ() != currentTile.z)
                         continue;
 
                     // If we are removing ghost elements
@@ -216,7 +216,7 @@ private:
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 continue;
 
-            if (tileElement->base_height != _loc.z / 8)
+            if (tileElement->GetBaseZ() != _loc.z)
                 continue;
 
             if (tileElement->AsLargeScenery()->GetSequenceIndex() != _tileIndex)

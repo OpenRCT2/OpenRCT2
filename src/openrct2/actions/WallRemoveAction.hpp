@@ -104,7 +104,7 @@ private:
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
                 continue;
-            if (tileElement->base_height != location.z / 8)
+            if (tileElement->GetBaseZ() != location.z)
                 continue;
             if (tileElement->GetDirection() != location.direction)
                 continue;

@@ -6961,7 +6961,6 @@ void sub_6CB945(Ride* ride)
             while ((++trackBlock)->index != 0xFF)
             {
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };
-                auto blockTileHeight = TileCoordsXYZ(blockLocation).z;
 
                 bool trackFound = false;
                 tileElement = map_get_first_element_at(blockLocation);
@@ -6969,7 +6968,7 @@ void sub_6CB945(Ride* ride)
                     break;
                 do
                 {
-                    if (blockTileHeight != tileElement->base_height)
+                    if (blockLocation.z != tileElement->GetBaseZ())
                         continue;
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;

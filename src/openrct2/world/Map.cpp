@@ -706,7 +706,7 @@ bool map_is_location_owned(const CoordsXYZ& loc)
 
             if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
             {
-                if (loc.z / 8 < surfaceElement->base_height || loc.z / 8 - 2 > surfaceElement->base_height)
+                if (loc.z < surfaceElement->GetBaseZ() || loc.z - (2 * 8) > surfaceElement->GetBaseZ())
                     return true;
             }
         }
@@ -2212,7 +2212,7 @@ TrackElement* map_get_track_element_at_of_type(CoordsXYZD location, int32_t trac
             auto trackElement = tileElement->AsTrack();
             if (trackElement != nullptr)
             {
-                if (trackElement->base_height != location.z / 8)
+                if (trackElement->GetBaseZ() != location.z)
                     continue;
                 if (trackElement->GetDirection() != location.direction)
                     continue;
@@ -2235,7 +2235,7 @@ TrackElement* map_get_track_element_at_of_type_seq(CoordsXYZD location, int32_t 
             auto trackElement = tileElement->AsTrack();
             if (trackElement != nullptr)
             {
-                if (trackElement->base_height != location.z / 8)
+                if (trackElement->GetBaseZ() != location.z)
                     continue;
                 if (trackElement->GetDirection() != location.direction)
                     continue;

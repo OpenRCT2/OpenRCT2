@@ -243,7 +243,7 @@ bool JumpingFountain::IsJumpingFountain(const int32_t newType, const CoordsXYZ n
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (tileElement->base_height != newLoc.z / 8)
+        if (tileElement->GetBaseZ() != newLoc.z)
             continue;
         if (tileElement->AsPath()->AdditionIsGhost())
             continue;

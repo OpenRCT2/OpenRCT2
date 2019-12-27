@@ -176,7 +176,7 @@ public:
             }
         }
 
-        if (targetHeight / 8 < surfaceElement->base_height && !gCheatsDisableClearanceChecks)
+        if (targetHeight < surfaceElement->GetBaseZ() && !gCheatsDisableClearanceChecks)
         {
             return std::make_unique<WallPlaceActionResult>(GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
         }
