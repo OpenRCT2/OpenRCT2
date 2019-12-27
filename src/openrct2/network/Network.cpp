@@ -602,7 +602,7 @@ bool Network::BeginServer(uint16_t port, const std::string& address)
 
     NetworkPlayer* player = AddPlayer(gConfigNetwork.player_name, "");
     player->Flags |= NETWORK_PLAYER_FLAG_ISSERVER;
-    player->Group = 0;
+    player->Group = kGroupIdHost;
     player_id = player->Id;
 
     if (network_get_mode() == NETWORK_MODE_SERVER)
@@ -3328,7 +3328,8 @@ GameActionResult::Ptr network_modify_groups(
         break;
         case ModifyGroupType::RemoveGroup:
         {
-            if (groupId == 0)
+            auto* group = groups.GetById(groupId);
+            if (group == nullptr || group->IsImmutable())
             {
                 return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }
@@ -3342,14 +3343,15 @@ GameActionResult::Ptr network_modify_groups(
             }
             if (isExecuting)
             {
-                gNetwork.RemoveGroup(groupId);
+                groups.Remove(groupId);
             }
         }
         break;
         case ModifyGroupType::SetPermissions:
         {
-            if (groupId == 0)
-            { // cant change admin group permissions
+            auto* group = groups.GetById(groupId);
+            if (group == nullptr || group->IsImmutable())
+            {
                 return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }
             NetworkGroup* myGroup = nullptr;
@@ -3365,36 +3367,34 @@ GameActionResult::Ptr network_modify_groups(
             }
             if (isExecuting)
             {
-                NetworkGroup* group = groups.GetById(groupId);
-                if (group != nullptr)
+                if (permissionState != PermissionState::Toggle)
                 {
-                    if (permissionState != PermissionState::Toggle)
+                    if (myGroup != nullptr)
                     {
-                        if (myGroup != nullptr)
+                        if (permissionState == PermissionState::SetAll)
                         {
-                            if (permissionState == PermissionState::SetAll)
-                            {
-                                group->ActionsAllowed = myGroup->ActionsAllowed;
-                            }
-                            else
-                            {
-                                group->ActionsAllowed.fill(0x00);
-                            }
+                            group->ActionsAllowed = myGroup->ActionsAllowed;
+                        }
+                        else
+                        {
+                            group->ActionsAllowed.fill(0x00);
                         }
                     }
-                    else
-                    {
-                        group->ToggleActionPermission(permissionIndex);
-                    }
+                }
+                else
+                {
+                    group->ToggleActionPermission(permissionIndex);
                 }
             }
         }
         break;
         case ModifyGroupType::SetName:
         {
-            NetworkGroup* group = groups.GetById(groupId);
-            if (group == nullptr)
-                break;
+            auto* group = groups.GetById(groupId);
+            if (group == nullptr || group->IsImmutable())
+            {
+                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
+            }
 
             if (group->GetName() == name)
             {
@@ -3415,7 +3415,8 @@ GameActionResult::Ptr network_modify_groups(
         break;
         case ModifyGroupType::SetDefault:
         {
-            if (groupId == 0)
+            auto* group = groups.GetById(groupId);
+            if (group == nullptr || !group->CanBeDefault())
             {
                 return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_SET_TO_THIS_GROUP);
             }
@@ -3445,7 +3446,7 @@ GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExe
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
     }
 
-    if (player && player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
+    if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
     {
         return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_KICK_THE_HOST);
     }

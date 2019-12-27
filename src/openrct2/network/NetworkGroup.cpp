@@ -14,6 +14,12 @@
 #    include "NetworkAction.h"
 #    include "NetworkTypes.h"
 
+NetworkGroup::NetworkGroup(bool immutable /*= false*/, bool canDefaultTo /*= true*/)
+    : _immutable(immutable)
+    , _canDefaultTo(canDefaultTo)
+{
+}
+
 NetworkGroup NetworkGroup::FromJson(const json_t* json)
 {
     NetworkGroup group;
@@ -129,7 +135,17 @@ bool NetworkGroup::CanPerformCommand(int32_t command) const
 
 void NetworkGroup::Serialise(DataSerialiser& ds)
 {
-    ds << Id << _name << ActionsAllowed;
+    ds << Id << _name << ActionsAllowed << _immutable << _canDefaultTo;
+}
+
+bool NetworkGroup::IsImmutable() const
+{
+    return _immutable;
+}
+
+bool NetworkGroup::CanBeDefault() const
+{
+    return _canDefaultTo;
 }
 
 #endif

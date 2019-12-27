@@ -15,6 +15,11 @@
 #include <climits>
 #include <string>
 
+static constexpr size_t kMaxGroups = 0xFF;
+
+static constexpr NetworkGroupId_t kGroupIdHost = static_cast<NetworkGroupId_t>(kMaxGroups - 1);
+static constexpr NetworkGroupId_t kGroupIdAdmin = 0;
+
 class NetworkGroups
 {
 public:
@@ -30,7 +35,7 @@ public:
     void SetDefault(const NetworkGroup* group);
     NetworkGroup* GetDefault() const;
 
-    NetworkGroup* Create(const std::string& name);
+    NetworkGroup* Create(const std::string& name, bool immutable = false, bool canBeDefault = true);
     NetworkGroup* GetById(NetworkGroupId_t id) const;
     NetworkGroup* GetByName(const std::string& name) const;
 
@@ -43,6 +48,6 @@ private:
     void CreateDefaultGroups();
 
 private:
-    std::array<std::unique_ptr<NetworkGroup>, 256> _groups;
+    std::array<std::unique_ptr<NetworkGroup>, kMaxGroups> _groups;
     NetworkGroupId_t _defaultId = 0;
 };

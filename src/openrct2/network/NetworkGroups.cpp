@@ -184,15 +184,19 @@ void NetworkGroups::Serialise(DataSerialiser& ds)
 
 void NetworkGroups::CreateDefaultGroups()
 {
-    // Host group
+    // Host group, this is a special one that indicates the server machine.
     {
-        NetworkGroup* group = Create("Host");
+        auto group = std::make_unique<NetworkGroup>(true, false);
+        group->Id = kGroupIdHost;
+        group->SetName("Host");
         group->ActionsAllowed.fill(0xFF);
+
+        _groups[kGroupIdHost] = std::move(group);
     }
 
     // Admin group
     {
-        NetworkGroup* group = Create("Admin");
+        NetworkGroup* group = Create("Admin", true, false);
         group->ActionsAllowed.fill(0xFF);
     }
 
@@ -247,7 +251,7 @@ NetworkGroup* NetworkGroups::GetDefault() const
     return _groups[_defaultId].get();
 }
 
-NetworkGroup* NetworkGroups::Create(const std::string& name)
+NetworkGroup* NetworkGroups::Create(const std::string& name, bool immutable /*= false*/, bool canBeDefault /*= true*/)
 {
     size_t nextFreeId = std::numeric_limits<size_t>::max();
     for (size_t i = 0; i < _groups.size(); i++)
@@ -265,7 +269,7 @@ NetworkGroup* NetworkGroups::Create(const std::string& name)
         return nullptr;
     }
 
-    auto group = std::make_unique<NetworkGroup>();
+    auto group = std::make_unique<NetworkGroup>(immutable, canBeDefault);
     group->Id = static_cast<NetworkGroupId_t>(nextFreeId);
     group->SetName(name);
 

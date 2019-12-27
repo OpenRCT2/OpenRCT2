@@ -23,6 +23,7 @@ public:
     std::array<uint8_t, 8> ActionsAllowed{};
     NetworkGroupId_t Id = 0;
 
+    NetworkGroup(bool immutable = false, bool canDefaultTo = true);
     static NetworkGroup FromJson(const json_t* json);
 
     const std::string& GetName() const;
@@ -33,6 +34,8 @@ public:
     void ToggleActionPermission(size_t index);
     bool CanPerformAction(size_t index) const;
     bool CanPerformCommand(int32_t command) const;
+    bool IsImmutable() const;
+    bool CanBeDefault() const;
 
     void Serialise(DataSerialiser& ds);
 
@@ -40,4 +43,6 @@ public:
 
 private:
     std::string _name;
+    bool _immutable = false;
+    bool _canDefaultTo = true;
 };
