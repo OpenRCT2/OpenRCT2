@@ -61,6 +61,7 @@ void TextureCache::InvalidateImage(uint32_t image)
     }
 }
 
+// Note: for performance reasons, this returns a BasicTextureInfo over an AtlasTextureInfo (also to not expose the cache)
 BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
 {
     uint32_t index;
