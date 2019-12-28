@@ -133,10 +133,11 @@ public:
                 auto zLow = _loc.z / 8;
                 auto zHigh = zLow + 4;
                 wall_remove_intersecting_walls(
-                    _loc.x, _loc.y, zLow, zHigh + ((_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 2 : 0),
+                    { _loc, zLow * 8, (zHigh + ((_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 2 : 0)) * 8 },
                     direction_reverse(_direction));
                 wall_remove_intersecting_walls(
-                    _loc.x - CoordsDirectionDelta[_direction].x, _loc.y - CoordsDirectionDelta[_direction].y, zLow, zHigh,
+                    { _loc.x - CoordsDirectionDelta[_direction].x, _loc.y - CoordsDirectionDelta[_direction].y, zLow * 8,
+                      zHigh * 8 },
                     _direction);
             }
         }
@@ -411,10 +412,10 @@ private:
     {
         if (pathElement->IsSloped() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            int32_t direction = pathElement->GetSlopeDirection();
-            int32_t z = pathElement->base_height;
-            wall_remove_intersecting_walls(_loc.x, _loc.y, z, z + 6, direction_reverse(direction));
-            wall_remove_intersecting_walls(_loc.x, _loc.y, z, z + 6, direction);
+            auto direction = pathElement->GetSlopeDirection();
+            int32_t z = pathElement->GetBaseZ();
+            wall_remove_intersecting_walls({ _loc, z, z + 6 * 8 }, direction_reverse(direction));
+            wall_remove_intersecting_walls({ _loc, z, z + 6 * 8 }, direction);
             // Removing walls may have made the pointer invalid, so find it again
             auto tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, z);
             if (tileElement == nullptr)

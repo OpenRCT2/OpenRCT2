@@ -72,11 +72,11 @@ void wall_remove_at_z(const CoordsXYZ& wallPos)
  *
  *  rct2: 0x006E5935
  */
-void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
+void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction direction)
 {
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at({ x, y });
+    tileElement = map_get_first_element_at(wallPos);
     if (tileElement == nullptr)
         return;
     do
@@ -84,14 +84,15 @@ void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        if (tileElement->clearance_height <= z0 || tileElement->base_height >= z1)
+        // TODO: It looks like base and clearance are swapped in here
+        if (tileElement->GetClearanceZ() <= wallPos.baseZ || tileElement->GetBaseZ() >= wallPos.clearanceZ)
             continue;
 
         if (direction != tileElement->GetDirection())
             continue;
 
         tile_element_remove_banner_entry(tileElement);
-        map_invalidate_tile_zoom1({ x, y, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
+        map_invalidate_tile_zoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
         tile_element_remove(tileElement);
         tileElement--;
     } while (!(tileElement++)->IsLastForTile());

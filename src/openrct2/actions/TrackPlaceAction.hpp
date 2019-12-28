@@ -483,7 +483,7 @@ public:
                     {
                         if (intersectingDirections & (1 << i))
                         {
-                            wall_remove_intersecting_walls(mapLoc.x, mapLoc.y, baseZ, clearanceZ, i);
+                            wall_remove_intersecting_walls({ mapLoc, baseZ * 8, clearanceZ * 8 }, i);
                         }
                     }
                 }
@@ -647,7 +647,7 @@ public:
                             tempLoc.x += CoordsDirectionDelta[tempDirection].x;
                             tempLoc.y += CoordsDirectionDelta[tempDirection].y;
                             tempDirection = direction_reverse(tempDirection);
-                            wall_remove_intersecting_walls(tempLoc.x, tempLoc.y, baseZ, clearanceZ, tempDirection & 3);
+                            wall_remove_intersecting_walls({ tempLoc, baseZ * 8, clearanceZ * 8 }, tempDirection & 3);
                         }
                     }
                 }

@@ -194,7 +194,6 @@ void tile_element_iterator_begin(tile_element_iterator* it);
 int32_t tile_element_iterator_next(tile_element_iterator* it);
 void tile_element_iterator_restart_for_tile(tile_element_iterator* it);
 
-void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction);
 void map_update_tiles();
 int32_t map_get_highest_z(const CoordsXY& loc);
 
@@ -206,6 +205,7 @@ void map_extend_boundary_surface();
 bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
 void wall_remove_at(const CoordsXYRangedZ& wallPos);
 void wall_remove_at_z(const CoordsXYZ& wallPos);
+void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction direction);
 
 void map_invalidate_tile(const CoordsXYRangedZ& tilePos);
 void map_invalidate_tile_zoom1(const CoordsXYRangedZ& tilePos);
