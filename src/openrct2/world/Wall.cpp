@@ -63,9 +63,9 @@ repeat:
  *
  *  rct2: 0x006E57E6
  */
-void wall_remove_at_z(int32_t x, int32_t y, int32_t z)
+void wall_remove_at_z(const CoordsXYZ& wallPos)
 {
-    wall_remove_at({ x, y, z, z + 48 });
+    wall_remove_at({ wallPos, wallPos.z, wallPos.z + 48 });
 }
 
 /**
