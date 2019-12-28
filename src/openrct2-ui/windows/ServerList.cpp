@@ -521,8 +521,12 @@ static void join_server(std::string address)
     {
         if (endBracketIndex != std::string::npos || dotIndex != std::string::npos)
         {
-            std::sscanf(&address[colonIndex + 1], "%d", &port);
-            address = address.substr(0, colonIndex);
+            auto ret = std::sscanf(&address[colonIndex + 1], "%d", &port);
+            assert(ret);
+            if (ret > 0)
+            {
+                address = address.substr(0, colonIndex);
+            }
         }
     }
 

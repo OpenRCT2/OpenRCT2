@@ -49,7 +49,7 @@ MemoryStream::MemoryStream(const void* data, size_t dataSize)
 {
 }
 
-MemoryStream::MemoryStream(MemoryStream&& mv)
+MemoryStream::MemoryStream(MemoryStream&& mv) noexcept
 {
     *this = std::move(mv);
 }
@@ -65,7 +65,7 @@ MemoryStream::~MemoryStream()
     _data = nullptr;
 }
 
-MemoryStream& MemoryStream::operator=(MemoryStream&& mv)
+MemoryStream& MemoryStream::operator=(MemoryStream&& mv) noexcept
 {
     _access = mv._access;
     _dataCapacity = mv._dataCapacity;

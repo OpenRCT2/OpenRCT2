@@ -36,13 +36,13 @@ private:
 public:
     MemoryStream() = default;
     MemoryStream(const MemoryStream& copy);
-    MemoryStream(MemoryStream&& mv);
+    MemoryStream(MemoryStream&& mv) noexcept;
     explicit MemoryStream(size_t capacity);
     MemoryStream(void* data, size_t dataSize, uint8_t access = MEMORY_ACCESS::READ);
     MemoryStream(const void* data, size_t dataSize);
     virtual ~MemoryStream();
 
-    MemoryStream& operator=(MemoryStream&& mv);
+    MemoryStream& operator=(MemoryStream&& mv) noexcept;
 
     const void* GetData() const override;
     void* GetDataCopy() const;

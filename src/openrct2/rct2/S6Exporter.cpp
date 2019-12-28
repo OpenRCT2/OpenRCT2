@@ -168,8 +168,8 @@ void S6Exporter::Export()
         auto temp = utf8_to_rct2(gS6Info.details);
         safe_strcpy(_s6.info.details, temp.data(), sizeof(_s6.info.details));
     }
-    uint32_t researchedTrackPiecesA[128];
-    uint32_t researchedTrackPiecesB[128];
+    uint32_t researchedTrackPiecesA[128] = {};
+    uint32_t researchedTrackPiecesB[128] = {};
 
     for (int32_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
     {
