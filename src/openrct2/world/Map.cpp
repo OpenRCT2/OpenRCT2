@@ -1439,9 +1439,9 @@ bool map_can_construct_with_clear_at(
  *
  *  rct2: 0x0068B93A
  */
-int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, QuarterTile bl)
+int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl)
 {
-    return map_can_construct_with_clear_at({ x, y, zLow * 8, zHigh * 8 }, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
+    return map_can_construct_with_clear_at(pos, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
 }
 
 /**

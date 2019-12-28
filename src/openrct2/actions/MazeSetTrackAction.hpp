@@ -135,7 +135,7 @@ public:
                 return res;
             }
 
-            if (!map_can_construct_at(floor2(_loc.x, 32), floor2(_loc.y, 32), baseHeight, clearanceHeight, { 0b1111, 0 }))
+            if (!map_can_construct_at({ _loc.ToTileStart(), baseHeight * 8, clearanceHeight * 8 }, { 0b1111, 0 }))
             {
                 return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
             }

@@ -91,7 +91,7 @@ public:
             zLow = temp;
         }
 
-        if (!map_can_construct_at(_coords.x, _coords.y, zLow, zHigh, { 0b1111, 0b1111 }))
+        if (!map_can_construct_at({ _coords, zLow * 8, zHigh * 8 }, { 0b1111, 0b1111 }))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
         }
