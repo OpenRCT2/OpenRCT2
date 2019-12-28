@@ -318,8 +318,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
  */
 static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool greenLight)
 {
-    int32_t x = ride->stations[stationIndex].Start.x * 32;
-    int32_t y = ride->stations[stationIndex].Start.y * 32;
+    auto startPos = ride->stations[stationIndex].GetStart();
     TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
 
     // If no station track found return
@@ -329,7 +328,7 @@ static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool
     tileElement->AsTrack()->SetHasGreenLight(greenLight);
 
     // Invalidate map tile
-    map_invalidate_tile_zoom1({ x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    map_invalidate_tile_zoom1({ startPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 }
 
 TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex)
@@ -350,17 +349,17 @@ TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationInd
     return nullptr;
 }
 
-TileElement* ride_get_station_exit_element(int32_t x, int32_t y, int32_t z)
+TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos)
 {
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(elementPos);
     if (tileElement == nullptr)
         return nullptr;
     do
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE && z == tileElement->base_height)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE && elementPos.z == tileElement->GetBaseZ())
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
 
