@@ -471,7 +471,7 @@ public:
                 footpath_remove_litter(mapLoc.x, mapLoc.y, mapLoc.z);
                 if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
                 {
-                    wall_remove_at(mapLoc.x, mapLoc.y, baseZ * 8, clearanceZ * 8);
+                    wall_remove_at({ mapLoc, baseZ * 8, clearanceZ * 8 });
                 }
                 else
                 {

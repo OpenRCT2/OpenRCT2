@@ -33,27 +33,27 @@
  *
  *  rct2: 0x006E588E
  */
-void wall_remove_at(int32_t x, int32_t y, int32_t z0, int32_t z1)
+void wall_remove_at(const CoordsXYRangedZ& wallPos)
 {
     TileElement* tileElement;
 
-    z0 /= 8;
-    z1 /= 8;
+    auto baseZ = wallPos.baseZ / 8;
+    auto clearanceZ = wallPos.clearanceZ / 8;
 repeat:
-    tileElement = map_get_first_element_at({ x, y });
+    tileElement = map_get_first_element_at(wallPos);
     if (tileElement == nullptr)
         return;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (z0 >= tileElement->clearance_height)
+        if (baseZ >= tileElement->clearance_height)
             continue;
-        if (z1 <= tileElement->base_height)
+        if (clearanceZ <= tileElement->base_height)
             continue;
 
         tile_element_remove_banner_entry(tileElement);
-        map_invalidate_tile_zoom1({ x, y, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
+        map_invalidate_tile_zoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
         tile_element_remove(tileElement);
         goto repeat;
     } while (!(tileElement++)->IsLastForTile());
@@ -65,7 +65,7 @@ repeat:
  */
 void wall_remove_at_z(int32_t x, int32_t y, int32_t z)
 {
-    wall_remove_at(x, y, z, z + 48);
+    wall_remove_at({ x, y, z, z + 48 });
 }
 
 /**

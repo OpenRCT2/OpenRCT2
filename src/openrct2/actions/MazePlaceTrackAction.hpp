@@ -155,7 +155,7 @@ public:
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
             footpath_remove_litter(_loc.x, _loc.y, _loc.z);
-            wall_remove_at(floor2(_loc.x, 32), floor2(_loc.y, 32), _loc.z, _loc.z + 32);
+            wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
         uint8_t baseHeight = _loc.z / 8;

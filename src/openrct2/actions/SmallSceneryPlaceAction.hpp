@@ -373,7 +373,8 @@ public:
             footpath_remove_litter(_loc.x, _loc.y, targetHeight);
             if (!gCheatsDisableClearanceChecks && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS)))
             {
-                wall_remove_at(_loc.x, _loc.y, targetHeight, targetHeight + sceneryEntry->small_scenery.height);
+                // TODO: Seems like heights are in small coords and should be *8 ?
+                wall_remove_at({ _loc, targetHeight, targetHeight + sceneryEntry->small_scenery.height });
             }
         }
 
