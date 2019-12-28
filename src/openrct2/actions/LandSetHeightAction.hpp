@@ -124,7 +124,7 @@ public:
                 }
             }
             if (!map_can_construct_with_clear_at(
-                    _coords.x, _coords.y, _height, zCorner, &map_set_land_height_clear_func, { 0b1111, 0 }, 0, nullptr,
+                    { _coords, _height * 8, zCorner * 8 }, &map_set_land_height_clear_func, { 0b1111, 0 }, 0, nullptr,
                     CREATE_CROSSING_MODE_NONE))
             {
                 return std::make_unique<GameActionResult>(

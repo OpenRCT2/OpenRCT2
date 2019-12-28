@@ -1264,8 +1264,8 @@ void map_obstruction_set_error_text(TileElement* tileElement)
  *  bl = bl
  */
 bool map_can_construct_with_clear_at(
-    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
-    money32* price, uint8_t crossingMode)
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
+    uint8_t crossingMode)
 {
     int32_t al, ah, bh, cl, ch, water_height;
     al = ah = bh = cl = ch = water_height = 0;
@@ -1273,7 +1273,7 @@ bool map_can_construct_with_clear_at(
 
     gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
-    if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32)
+    if (pos.x >= gMapSizeUnits || pos.y >= gMapSizeUnits || pos.x < 32 || pos.y < 32)
     {
         gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
         return false;
@@ -1284,14 +1284,15 @@ bool map_can_construct_with_clear_at(
         return true;
     }
 
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(pos);
     if (tileElement == nullptr)
         return false;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
         {
-            if (zLow < tileElement->clearance_height && zHigh > tileElement->base_height && !(tileElement->IsGhost()))
+            if (pos.baseZ < tileElement->GetClearanceZ() && pos.clearanceZ > tileElement->GetBaseZ()
+                && !(tileElement->IsGhost()))
             {
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
@@ -1300,11 +1301,11 @@ bool map_can_construct_with_clear_at(
             }
             continue;
         }
-        water_height = tileElement->AsSurface()->GetWaterHeight() * 2;
-        if (water_height && water_height > zLow && tileElement->base_height < zHigh)
+        water_height = tileElement->AsSurface()->GetWaterHeight() * 2 * 8;
+        if (water_height && water_height > pos.baseZ && tileElement->GetBaseZ() < pos.clearanceZ)
         {
             gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
-            if (water_height < zHigh)
+            if (water_height < pos.clearanceZ)
             {
                 goto loc_68BAE6;
             }
@@ -1312,7 +1313,7 @@ bool map_can_construct_with_clear_at(
     loc_68B9B7:
         if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
         {
-            al = zHigh - tileElement->base_height;
+            al = pos.clearanceZ / 8 - tileElement->base_height;
             if (al >= 0)
             {
                 if (al > 18)
@@ -1325,14 +1326,14 @@ bool map_can_construct_with_clear_at(
 
         // Only allow building crossings directly on a flat surface tile.
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE
-            && (tileElement->AsSurface()->GetSlope()) == TILE_ELEMENT_SLOPE_FLAT && tileElement->base_height == zLow)
+            && (tileElement->AsSurface()->GetSlope()) == TILE_ELEMENT_SLOPE_FLAT && tileElement->GetBaseZ() == pos.baseZ)
         {
             canBuildCrossing = true;
         }
 
         if (quarterTile.GetZQuarterOccupied() != 0b1111)
         {
-            if (tileElement->base_height >= zHigh)
+            if (tileElement->GetBaseZ() >= pos.clearanceZ)
             {
                 // loc_68BA81
                 gMapGroundFlags |= ELEMENT_IS_UNDERGROUND;
@@ -1369,14 +1370,14 @@ bool map_can_construct_with_clear_at(
                     if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         ch += 2;
                 }
-                bh = zLow + 4;
+                bh = pos.baseZ / 8 + 4;
                 {
                     auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
                     auto zQuarter = quarterTile.GetZQuarterOccupied();
-                    if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || zLow >= al) && bh >= al))
-                        && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || zLow >= ah) && bh >= ah))
-                        && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || zLow >= cl) && bh >= cl))
-                        && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || zLow >= ch) && bh >= ch)))
+                    if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || pos.baseZ / 8 >= al) && bh >= al))
+                        && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || pos.baseZ / 8 >= ah) && bh >= ah))
+                        && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || pos.baseZ / 8 >= cl) && bh >= cl))
+                        && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || pos.baseZ / 8 >= ch) && bh >= ch)))
                     {
                         continue;
                     }
@@ -1384,7 +1385,7 @@ bool map_can_construct_with_clear_at(
             loc_68BABC:
                 if (clearFunc != nullptr)
                 {
-                    if (!clearFunc(&tileElement, { x, y }, flags, price))
+                    if (!clearFunc(&tileElement, pos, flags, price))
                     {
                         continue;
                     }
@@ -1392,7 +1393,7 @@ bool map_can_construct_with_clear_at(
 
                 // Crossing mode 1: building track over path
                 if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_PATH
-                    && tileElement->base_height == zLow && !tileElement->AsPath()->IsQueue()
+                    && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue()
                     && !tileElement->AsPath()->IsSloped())
                 {
                     continue;
@@ -1400,7 +1401,7 @@ bool map_can_construct_with_clear_at(
                 // Crossing mode 2: building path over track
                 else if (
                     crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
-                    && tileElement->base_height == zLow && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
+                    && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
                 {
                     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                     if (ride != nullptr && ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
@@ -1418,7 +1419,7 @@ bool map_can_construct_with_clear_at(
             loc_68BAE6:
                 if (clearFunc != nullptr)
                 {
-                    if (!clearFunc(&tileElement, { x, y }, flags, price))
+                    if (!clearFunc(&tileElement, pos, flags, price))
                     {
                         goto loc_68B9B7;
                     }
@@ -1440,7 +1441,7 @@ bool map_can_construct_with_clear_at(
  */
 int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, QuarterTile bl)
 {
-    return map_can_construct_with_clear_at(x, y, zLow, zHigh, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
+    return map_can_construct_with_clear_at({ x, y, zLow * 8, zHigh * 8 }, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
 }
 
 /**
