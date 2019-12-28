@@ -118,7 +118,7 @@ GameActionResult::Ptr tile_inspector_insert_corrupt_at(CoordsXY loc, int16_t ele
             }
         }
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         // Update the tile inspector's list for everyone who has the tile selected
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
@@ -158,7 +158,7 @@ GameActionResult::Ptr tile_inspector_remove_element_at(CoordsXY loc, int16_t ele
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
         }
         tile_element_remove(tileElement);
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         // Update the window
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
@@ -191,7 +191,7 @@ GameActionResult::Ptr tile_inspector_swap_elements_at(CoordsXY loc, int16_t firs
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
         }
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         // Update the window
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
@@ -281,7 +281,7 @@ GameActionResult::Ptr tile_inspector_rotate_element_at(CoordsXY loc, int32_t ele
             }
         }
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
@@ -328,7 +328,7 @@ GameActionResult::Ptr tile_inspector_paste_element_at(CoordsXY loc, TileElement 
         *pastedElement = element;
         pastedElement->SetLastForTile(lastForTile);
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -394,7 +394,7 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(CoordsXY loc, bool isExecu
             }
         }
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         // Deselect tile for clients who had it selected
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
@@ -454,7 +454,7 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(
         tileElement->base_height += heightOffset;
         tileElement->clearance_height += heightOffset;
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -482,7 +482,7 @@ GameActionResult::Ptr tile_inspector_surface_show_park_fences(CoordsXY loc, bool
         else
             update_park_fences(loc);
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -549,7 +549,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_corner(CoordsXY loc, int32_t
             surfaceElement->clearance_height = surfaceElement->base_height + (diagonal ? 2 : 0);
         }
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -587,7 +587,7 @@ GameActionResult::Ptr tile_inspector_surface_toggle_diagonal(CoordsXY loc, bool 
             surfaceElement->clearance_height = surfaceElement->base_height;
         }
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -611,7 +611,7 @@ GameActionResult::Ptr tile_inspector_path_set_sloped(CoordsXY loc, int32_t eleme
     {
         pathElement->AsPath()->SetSloped(sloped);
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -635,7 +635,7 @@ GameActionResult::Ptr tile_inspector_path_set_broken(CoordsXY loc, int32_t eleme
     {
         pathElement->AsPath()->SetIsBroken(broken);
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -660,7 +660,7 @@ GameActionResult::Ptr tile_inspector_path_toggle_edge(CoordsXY loc, int32_t elem
         uint8_t newEdges = pathElement->AsPath()->GetEdgesAndCorners() ^ (1 << edgeIndex);
         pathElement->AsPath()->SetEdgesAndCorners(newEdges);
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -725,7 +725,7 @@ GameActionResult::Ptr tile_inspector_wall_set_slope(CoordsXY loc, int32_t elemen
         // Set new slope value
         wallElement->AsWall()->SetSlope(slopeValue);
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -785,7 +785,7 @@ GameActionResult::Ptr tile_inspector_track_base_height_offset(
             elem += offsets.Rotate(originDirection);
             elemZ += trackBlock->z;
 
-            map_invalidate_tile_full(elem.x, elem.y);
+            map_invalidate_tile_full(elem);
 
             bool found = false;
             TileElement* tileElement = map_get_first_element_at({ elem.x, elem.y });
@@ -892,7 +892,7 @@ GameActionResult::Ptr tile_inspector_track_set_chain(
             elem += offsets.Rotate(originDirection);
             elemZ += trackBlock->z;
 
-            map_invalidate_tile_full(elem.x, elem.y);
+            map_invalidate_tile_full(elem);
 
             bool found = false;
             TileElement* tileElement = map_get_first_element_at({ elem.x, elem.y });
@@ -958,7 +958,7 @@ GameActionResult::Ptr tile_inspector_track_set_block_brake(
     {
         trackElement->AsTrack()->SetBlockBrakeClosed(blockBrake);
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -983,7 +983,7 @@ GameActionResult::Ptr tile_inspector_track_set_indestructible(
     {
         trackElement->AsTrack()->SetIsIndestructible(isIndestructible);
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
 
         rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
         if (tileInspectorWindow != nullptr && (uint32_t)(loc.x / 32) == windowTileInspectorTileX
@@ -1012,7 +1012,7 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_location(
         // Update collision
         tileElement->SetOccupiedQuadrants(1 << ((quarterIndex + 2) & 3));
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
         if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate_by_class(WC_TILE_INSPECTOR);
@@ -1036,7 +1036,7 @@ GameActionResult::Ptr tile_inspector_scenery_set_quarter_collision(
         occupiedQuadrants ^= 1 << quarterIndex;
         tileElement->SetOccupiedQuadrants(occupiedQuadrants);
 
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
         if ((uint32_t)(loc.x / 32) == windowTileInspectorTileX && (uint32_t)(loc.y / 32) == windowTileInspectorTileY)
         {
             window_invalidate_by_class(WC_TILE_INSPECTOR);

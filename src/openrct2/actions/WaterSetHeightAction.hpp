@@ -133,7 +133,7 @@ public:
         {
             surfaceElement->SetWaterHeight(0);
         }
-        map_invalidate_tile_full(_coords.x, _coords.y);
+        map_invalidate_tile_full(_coords);
 
         res->Cost = 250;
 

@@ -322,9 +322,9 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
     if (mapCoords)
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-        map_invalidate_tile_full(gMapSelectPositionA.x, gMapSelectPositionA.y);
+        map_invalidate_tile_full(gMapSelectPositionA);
         gMapSelectPositionA = gMapSelectPositionB = *mapCoords;
-        map_invalidate_tile_full(mapCoords->x, mapCoords->y);
+        map_invalidate_tile_full(*mapCoords);
         gMapSelectType = MAP_SELECT_TYPE_FULL;
     }
 }

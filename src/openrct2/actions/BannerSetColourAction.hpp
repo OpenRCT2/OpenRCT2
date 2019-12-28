@@ -103,7 +103,7 @@ private:
 
             auto banner = GetBanner(index);
             banner->colour = _primaryColour;
-            map_invalidate_tile_zoom1(_loc.x, _loc.y, _loc.z, _loc.z + 32);
+            map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
         }
 
         return res;

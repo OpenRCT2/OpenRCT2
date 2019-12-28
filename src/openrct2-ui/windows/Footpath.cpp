@@ -505,7 +505,7 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
         {
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         }
-        map_invalidate_tile_full(footpathLoc.x, footpathLoc.y);
+        map_invalidate_tile_full(footpathLoc);
     }
 }
 

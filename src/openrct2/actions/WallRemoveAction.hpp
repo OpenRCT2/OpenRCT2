@@ -87,7 +87,7 @@ public:
         res->Position.z = tile_element_height(res->Position);
 
         tile_element_remove_banner_entry(wallElement);
-        map_invalidate_tile_zoom1(_loc.x, _loc.y, wallElement->GetBaseZ(), (wallElement->GetBaseZ()) + 72);
+        map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), (wallElement->GetBaseZ()) + 72 });
         tile_element_remove(wallElement);
 
         return res;

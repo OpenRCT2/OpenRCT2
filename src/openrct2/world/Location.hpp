@@ -167,6 +167,27 @@ struct CoordsXY
     }
 };
 
+struct CoordsXYRangedZ : public CoordsXY
+{
+    int32_t baseZ = 0;
+    int32_t clearanceZ = 0;
+
+    CoordsXYRangedZ() = default;
+    constexpr CoordsXYRangedZ(int32_t _x, int32_t _y, int32_t _baseZ, int32_t _clearanceZ)
+        : CoordsXY(_x, _y)
+        , baseZ(_baseZ)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+
+    constexpr CoordsXYRangedZ(CoordsXY _c, int32_t _baseZ, int32_t _clearanceZ)
+        : CoordsXY(_c)
+        , baseZ(_baseZ)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+};
+
 struct TileCoordsXY
 {
     int32_t x = 0;

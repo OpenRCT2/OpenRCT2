@@ -181,7 +181,7 @@ static void track_design_save_push_tile_element(CoordsXY loc, TileElement* tileE
     if (_trackSavedTileElements.size() < TRACK_MAX_SAVED_TILE_ELEMENTS)
     {
         _trackSavedTileElements.push_back(tileElement);
-        map_invalidate_tile_full(loc.x, loc.y);
+        map_invalidate_tile_full(loc);
     }
 }
 
@@ -336,7 +336,7 @@ static bool track_design_save_add_tile_element(int32_t interactionType, CoordsXY
  */
 static void track_design_save_pop_tile_element(CoordsXY loc, TileElement* tileElement)
 {
-    map_invalidate_tile_full(loc.x, loc.y);
+    map_invalidate_tile_full(loc);
 
     // Find index of map element to remove
     size_t removeIndex = SIZE_MAX;

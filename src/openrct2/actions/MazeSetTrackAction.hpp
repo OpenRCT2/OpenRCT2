@@ -230,7 +230,7 @@ public:
                 tileElement->SetGhost(true);
             }
 
-            map_invalidate_tile_full(flooredX, flooredY);
+            map_invalidate_tile_full({ flooredX, flooredY });
 
             ride->maze_tiles++;
             ride->stations[0].SetBaseZ(tileElement->GetBaseZ());
@@ -292,7 +292,7 @@ public:
                     tileElement = map_get_track_element_at_of_type_from_ride(
                         { previousSegmentX, previousSegmentY, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
-                    map_invalidate_tile_full(floor2(previousSegmentX, 32), floor2(previousSegmentY, 32));
+                    map_invalidate_tile_full(CoordsXY{ previousSegmentX, previousSegmentY }.ToTileStart());
                     if (tileElement == nullptr)
                     {
                         log_error("No surface found");
@@ -333,7 +333,7 @@ public:
                 break;
         }
 
-        map_invalidate_tile(floor2(_loc.x, 32), floor2(_loc.y, 32), tileElement->GetBaseZ(), tileElement->GetClearanceZ());
+        map_invalidate_tile({ _loc.ToTileStart(), tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 
         if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
         {

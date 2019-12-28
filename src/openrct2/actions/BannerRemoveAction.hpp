@@ -120,7 +120,7 @@ public:
         }
 
         tile_element_remove_banner_entry(reinterpret_cast<TileElement*>(bannerElement));
-        map_invalidate_tile_zoom1(_loc.x, _loc.y, _loc.z / 8, _loc.z / 8 + 32);
+        map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
         bannerElement->Remove();
 
         return res;

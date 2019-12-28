@@ -185,7 +185,7 @@ public:
                     if ((flags & GAME_COMMAND_FLAG_GHOST) && sceneryElement->IsGhost() == false)
                         continue;
 
-                    map_invalidate_tile_full(currentTile.x, currentTile.y);
+                    map_invalidate_tile_full(currentTile);
                     tile_element_remove(sceneryElement);
 
                     element_found = true;

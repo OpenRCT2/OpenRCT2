@@ -157,7 +157,7 @@ public:
         {
             bannerElement->SetGhost(true);
         }
-        map_invalidate_tile_full(_loc.x, _loc.y);
+        map_invalidate_tile_full(_loc);
         map_animation_create(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
 
         rct_scenery_entry* bannerEntry = get_banner_entry(_bannerType);

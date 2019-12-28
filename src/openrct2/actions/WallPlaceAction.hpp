@@ -431,7 +431,7 @@ public:
         }
 
         res->tileElement = tileElement;
-        map_invalidate_tile_zoom1(_loc.x, _loc.y, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72);
+        map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
         res->Cost = wallEntry->wall.price;
         return res;

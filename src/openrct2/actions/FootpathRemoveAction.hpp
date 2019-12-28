@@ -92,7 +92,7 @@ public:
                 res->Cost += bannerRes->Cost;
             }
             footpath_remove_edges_at(_loc.x, _loc.y, footpathElement);
-            map_invalidate_tile_full(_loc.x, _loc.y);
+            map_invalidate_tile_full(_loc);
             tile_element_remove(footpathElement);
             footpath_update_queue_chains();
         }

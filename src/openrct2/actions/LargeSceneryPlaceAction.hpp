@@ -324,7 +324,7 @@ public:
             {
                 res->tileElement = newTileElement;
             }
-            map_invalidate_tile_full(curTile.x, curTile.y);
+            map_invalidate_tile_full(curTile);
         }
 
         // Force ride construction to recheck area
