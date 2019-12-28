@@ -40,9 +40,7 @@ public:
     {
         auto res = std::make_unique<GameActionResult>();
 
-        res->Position.x = _loc.x + 8;
-        res->Position.y = _loc.y + 8;
-        res->Position.z = _loc.z;
+        res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
         res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         if (!map_check_free_elements_and_reorganise(1))
@@ -130,9 +128,7 @@ public:
     {
         auto res = std::make_unique<GameActionResult>();
 
-        res->Position.x = _loc.x + 8;
-        res->Position.y = _loc.y + 8;
-        res->Position.z = _loc.z;
+        res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
         res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
@@ -172,10 +168,9 @@ public:
         money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
         res->Cost = clearCost + price / 2 * 10;
 
-        uint16_t flooredX = floor2(_loc.x, 32);
-        uint16_t flooredY = floor2(_loc.y, 32);
+        auto startLoc = _loc.ToTileStart();
 
-        auto tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0b1111);
+        auto tileElement = tile_element_insert({ TileCoordsXY{ _loc }, baseHeight }, 0b1111);
         assert(tileElement != nullptr);
 
         tileElement->clearance_height = clearanceHeight + 4;
@@ -190,17 +185,16 @@ public:
             tileElement->SetGhost(true);
         }
 
-        map_invalidate_tile_full({ flooredX, flooredY });
+        map_invalidate_tile_full(startLoc);
 
         ride->maze_tiles++;
         ride->stations[0].SetBaseZ(tileElement->GetBaseZ());
-        ride->stations[0].Start.x = 0;
-        ride->stations[0].Start.y = 0;
+        ride->stations[0].Start = { 0, 0 };
 
         if (ride->maze_tiles == 1)
         {
-            ride->overall_view.x = flooredX / 32;
-            ride->overall_view.y = flooredY / 32;
+            auto tileStartLoc = TileCoordsXY{ startLoc };
+            ride->overall_view = tileStartLoc;
         }
 
         return res;
