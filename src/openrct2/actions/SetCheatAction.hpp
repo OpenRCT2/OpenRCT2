@@ -359,11 +359,9 @@ private:
 
     void SetGrassLength(int32_t length) const
     {
-        int32_t x, y;
-
-        for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+        for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
         {
-            for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+            for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
             {
                 auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
                 if (surfaceElement == nullptr)
@@ -761,18 +759,13 @@ private:
         // Completely unown peep spawn points
         for (const auto& spawn : gPeepSpawns)
         {
-            int32_t x = spawn.x;
-            int32_t y = spawn.y;
-            if (x != PEEP_SPAWN_UNDEFINED)
+            auto* surfaceElement = map_get_surface_element_at(spawn);
+            if (surfaceElement != nullptr)
             {
-                auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
-                if (surfaceElement != nullptr)
-                {
-                    surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
-                    update_park_fences_around_tile({ x, y });
-                    uint16_t baseHeight = surfaceElement->GetBaseZ();
-                    map_invalidate_tile({ x, y, baseHeight, baseHeight + 16 });
-                }
+                surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
+                update_park_fences_around_tile(spawn);
+                uint16_t baseHeight = surfaceElement->GetBaseZ();
+                map_invalidate_tile({ spawn, baseHeight, baseHeight + 16 });
             }
         }
 
