@@ -6162,7 +6162,6 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
 {
     int16_t entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
     int32_t interactionType, stationDirection;
-    uint8_t stationHeight;
     TileElement* tileElement;
     rct_viewport* viewport;
     Ride* ride;
@@ -6199,7 +6198,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
         return entranceExitCoords;
     }
 
-    stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].GetBaseZ();
+    auto stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].GetBaseZ();
 
     auto coords = screen_get_map_xy_with_z(screenCoords, stationHeight);
     if (!coords)
