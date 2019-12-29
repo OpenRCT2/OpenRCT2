@@ -6188,9 +6188,9 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
         return entranceExitCoords;
     }
 
-    auto stationHeight = ride->stations[gRideEntranceExitPlaceStationIndex].GetBaseZ();
+    auto stationBaseZ = ride->stations[gRideEntranceExitPlaceStationIndex].GetBaseZ();
 
-    auto coords = screen_get_map_xy_with_z(screenCoords, stationHeight);
+    auto coords = screen_get_map_xy_with_z(screenCoords, stationBaseZ);
     if (!coords)
     {
         entranceExitCoords.x = LOCATION_NULL;
@@ -6200,7 +6200,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     word_F4418C = coords->x;
     word_F4418E = coords->y;
 
-    entranceExitCoords = { coords->ToTileStart(), stationHeight, INVALID_DIRECTION };
+    entranceExitCoords = { coords->ToTileStart(), stationBaseZ, INVALID_DIRECTION };
 
     if (ride->type == RIDE_TYPE_NULL)
     {
@@ -6241,7 +6241,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
                 {
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                         continue;
-                    if (tileElement->GetBaseZ() != stationHeight)
+                    if (tileElement->GetBaseZ() != stationBaseZ)
                         continue;
                     if (tileElement->AsTrack()->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                         continue;

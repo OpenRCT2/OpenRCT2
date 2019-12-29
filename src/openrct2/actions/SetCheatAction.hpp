@@ -742,16 +742,15 @@ private:
                 if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
                     continue;
 
-                int32_t base_z = surfaceElement->GetBaseZ();
-                int32_t destOwnership = check_max_allowable_land_rights_for_tile({ coords, base_z });
+                int32_t baseZ = surfaceElement->GetBaseZ();
+                int32_t destOwnership = check_max_allowable_land_rights_for_tile({ coords, baseZ });
 
                 // only own tiles that were not set to 0
                 if (destOwnership != OWNERSHIP_UNOWNED)
                 {
                     surfaceElement->SetOwnership(destOwnership);
                     update_park_fences_around_tile(coords);
-                    uint16_t baseHeight = surfaceElement->GetBaseZ();
-                    map_invalidate_tile({ coords, baseHeight, baseHeight + 16 });
+                    map_invalidate_tile({ coords, baseZ, baseZ + 16 });
                 }
             }
         }
@@ -764,8 +763,8 @@ private:
             {
                 surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
                 update_park_fences_around_tile(spawn);
-                uint16_t baseHeight = surfaceElement->GetBaseZ();
-                map_invalidate_tile({ spawn, baseHeight, baseHeight + 16 });
+                uint16_t baseZ = surfaceElement->GetBaseZ();
+                map_invalidate_tile({ spawn, baseZ, baseZ + 16 });
             }
         }
 

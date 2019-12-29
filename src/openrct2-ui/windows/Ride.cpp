@@ -1495,16 +1495,16 @@ static void window_ride_update_overall_view(Ride* ride)
 
         int32_t x = it.x * 32;
         int32_t y = it.y * 32;
-        int32_t z1 = it.element->GetBaseZ();
-        int32_t z2 = it.element->GetClearanceZ();
+        int32_t baseZ = it.element->GetBaseZ();
+        int32_t clearZ = it.element->GetClearanceZ();
 
         minx = std::min(minx, x);
         miny = std::min(miny, y);
-        minz = std::min(minz, z1);
+        minz = std::min(minz, baseZ);
 
         maxx = std::max(maxx, x);
         maxy = std::max(maxy, y);
-        maxz = std::max(maxz, z2);
+        maxz = std::max(maxz, clearZ);
     }
 
     if (ride->id >= ride_overall_views.size())

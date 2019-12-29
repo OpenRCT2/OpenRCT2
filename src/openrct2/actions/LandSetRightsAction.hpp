@@ -152,24 +152,24 @@ private:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-                    uint16_t baseHeight = surfaceElement->GetBaseZ();
-                    map_invalidate_tile({ loc, baseHeight, baseHeight + 16 });
+                    uint16_t baseZ = surfaceElement->GetBaseZ();
+                    map_invalidate_tile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
             case LandSetRightSetting::SetForSale:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
-                    uint16_t baseHeight = surfaceElement->GetBaseZ();
-                    map_invalidate_tile({ loc, baseHeight, baseHeight + 16 });
+                    uint16_t baseZ = surfaceElement->GetBaseZ();
+                    map_invalidate_tile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
             case LandSetRightSetting::SetConstructionRightsForSale:
                 if (isExecuting)
                 {
                     surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
-                    uint16_t baseHeight = surfaceElement->GetBaseZ();
-                    map_invalidate_tile({ loc, baseHeight, baseHeight + 16 });
+                    uint16_t baseZ = surfaceElement->GetBaseZ();
+                    map_invalidate_tile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
             case LandSetRightSetting::SetOwnershipWithChecks:

@@ -1429,27 +1429,23 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
             auto surfaceElement = map_get_surface_element_at(mapCoord);
             if (surfaceElement == nullptr)
                 continue;
-            int16_t map_height = surfaceElement->GetBaseZ();
+            int16_t surfaceZ = surfaceElement->GetBaseZ();
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
-                map_height += 16;
+                surfaceZ += 16;
                 if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
-                    map_height += 16;
+                    surfaceZ += 16;
                 }
             }
 
-            if (surfaceElement->GetWaterHeight() > 0)
+            int16_t waterZ = surfaceElement->GetWaterHeight() * 16;
+            if (waterZ > 0 && waterZ > surfaceZ)
             {
-                int16_t water_height = surfaceElement->GetWaterHeight();
-                water_height *= 16;
-                if (water_height > map_height)
-                {
-                    map_height = water_height;
-                }
+                surfaceZ = waterZ;
             }
 
-            int16_t temp_z = z + _trackDesignPlaceZ - map_height;
+            int16_t temp_z = z + _trackDesignPlaceZ - surfaceZ;
             if (temp_z < 0)
             {
                 _trackDesignPlaceZ -= temp_z;
@@ -1597,22 +1593,22 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         return false;
                     }
 
-                    int32_t height = surfaceElement->GetBaseZ();
+                    int32_t surfaceZ = surfaceElement->GetBaseZ();
                     if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     {
-                        height += 16;
+                        surfaceZ += 16;
                         if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                         {
-                            height += 16;
+                            surfaceZ += 16;
                         }
                     }
 
-                    uint8_t water_height = surfaceElement->GetWaterHeight() * 16;
-                    if (water_height > 0 && water_height > height)
+                    uint8_t waterZ = surfaceElement->GetWaterHeight() * 16;
+                    if (waterZ > 0 && waterZ > surfaceZ)
                     {
-                        height = water_height;
+                        surfaceZ = waterZ;
                     }
-                    int32_t heightDifference = tempZ + _trackDesignPlaceZ + trackBlock->z - height;
+                    int32_t heightDifference = tempZ + _trackDesignPlaceZ + trackBlock->z - surfaceZ;
                     if (heightDifference < 0)
                     {
                         _trackDesignPlaceZ -= heightDifference;

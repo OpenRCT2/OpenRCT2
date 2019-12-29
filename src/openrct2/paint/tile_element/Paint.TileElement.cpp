@@ -243,7 +243,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->DidPassSurface = false;
-    int32_t previousHeight = 0;
+    int32_t previousBaseZ = 0;
     do
     {
         // Only paint tile_elements below the clip height.
@@ -251,13 +251,13 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             continue;
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);
-        int32_t height = tile_element->GetBaseZ();
+        int32_t baseZ = tile_element->GetBaseZ();
 
-        // If we are on a new height level, look through elements on the
-        //  same height and store any types might be relevant to others
-        if (height != previousHeight)
+        // If we are on a new baseZ level, look through elements on the
+        //  same baseZ and store any types might be relevant to others
+        if (baseZ != previousBaseZ)
         {
-            previousHeight = height;
+            previousBaseZ = baseZ;
             session->PathElementOnSameHeight = nullptr;
             session->TrackElementOnSameHeight = nullptr;
             TileElement* tile_element_sub_iterator = tile_element;
@@ -294,28 +294,28 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         switch (tile_element->GetType())
         {
             case TILE_ELEMENT_TYPE_SURFACE:
-                surface_paint(session, direction, height, tile_element);
+                surface_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                path_paint(session, height, tile_element);
+                path_paint(session, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
-                track_paint(session, direction, height, tile_element);
+                track_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                scenery_paint(session, direction, height, tile_element);
+                scenery_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                entrance_paint(session, direction, height, tile_element);
+                entrance_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_WALL:
-                fence_paint(session, direction, height, tile_element);
+                fence_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                large_scenery_paint(session, direction, height, tile_element);
+                large_scenery_paint(session, direction, baseZ, tile_element);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
-                banner_paint(session, direction, height, tile_element);
+                banner_paint(session, direction, baseZ, tile_element);
                 break;
             // A corrupt element inserted by OpenRCT2 itself, which skips the drawing of the next element only.
             case TILE_ELEMENT_TYPE_CORRUPT:

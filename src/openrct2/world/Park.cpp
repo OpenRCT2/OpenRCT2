@@ -166,9 +166,9 @@ void update_park_fences(const CoordsXY coords)
 
     if (surfaceElement->GetParkFences() != newFences)
     {
-        int32_t z0 = surfaceElement->GetBaseZ();
-        int32_t z1 = z0 + 16;
-        map_invalidate_tile({ coords, z0, z1 });
+        int32_t baseZ = surfaceElement->GetBaseZ();
+        int32_t clearZ = baseZ + 16;
+        map_invalidate_tile({ coords, baseZ, clearZ });
         surfaceElement->SetParkFences(newFences);
     }
 }

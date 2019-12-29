@@ -17,6 +17,7 @@
 #include "../world/LargeScenery.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
+#include "../world/Surface.h"
 #include "GameAction.h"
 
 class LargeSceneryPlaceActionResult final : public GameActionResult
@@ -364,21 +365,21 @@ private:
             if (surfaceElement == nullptr)
                 continue;
 
-            int32_t height = surfaceElement->GetBaseZ();
+            int32_t baseZ = surfaceElement->GetBaseZ();
             int32_t slope = surfaceElement->GetSlope();
 
-            if (slope & 0xF)
+            if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
             {
-                height += 16;
-                if (slope & 0x10)
+                baseZ += LAND_HEIGHT_STEP;
+                if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
-                    height += 16;
+                    baseZ += LAND_HEIGHT_STEP;
                 }
             }
 
-            if (height > maxHeight)
+            if (baseZ > maxHeight)
             {
-                maxHeight = height;
+                maxHeight = baseZ;
             }
         }
         return maxHeight;

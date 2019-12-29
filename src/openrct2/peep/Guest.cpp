@@ -4875,10 +4875,10 @@ void Guest::UpdateRideMazePathfinding()
 
     CoordsXY targetLoc = { destination_x & 0xFFE0, destination_y & 0xFFE0 };
 
-    int16_t stationHeight = ride->stations[0].GetBaseZ();
+    int16_t stationBaseZ = ride->stations[0].GetBaseZ();
 
     // Find the station track element
-    auto trackElement = map_get_track_element_at({ targetLoc, stationHeight });
+    auto trackElement = map_get_track_element_at({ targetLoc, stationBaseZ });
     if (trackElement == nullptr)
     {
         return;
@@ -4941,7 +4941,7 @@ void Guest::UpdateRideMazePathfinding()
         return;
     do
     {
-        if (stationHeight != tileElement->GetBaseZ())
+        if (stationBaseZ != tileElement->GetBaseZ())
             continue;
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
