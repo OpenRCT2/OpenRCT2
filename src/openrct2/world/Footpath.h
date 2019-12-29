@@ -23,6 +23,7 @@ enum
 
 constexpr auto FootpathMaxHeight = 248;
 constexpr auto FootpathMinHeight = 2;
+constexpr auto PATH_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 

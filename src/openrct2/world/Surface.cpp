@@ -122,9 +122,9 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
     // if there is an object placed on top of it.
 
     int32_t zLow = GetBaseZ();
-    int32_t zHigh = GetBaseZ() + (2 * 8);
+    int32_t zHigh = GetBaseZ() + LAND_HEIGHT_STEP;
     if (Slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-        zHigh += (2 * 8);
+        zHigh += LAND_HEIGHT_STEP;
 
     // Check objects above grass
     TileElement* tileElementAbove = (TileElement*)this;

@@ -508,8 +508,8 @@ void game_fix_save_vars()
             // At this point, we can be sure that surfaceElement is not NULL.
             if (x == 0 || x == gMapSize - 1 || y == 0 || y == gMapSize - 1)
             {
-                surfaceElement->SetBaseZ(2 * 8);
-                surfaceElement->SetClearanceZ(2 * 8);
+                surfaceElement->SetBaseZ(2 * COORDS_Z_STEP);
+                surfaceElement->SetClearanceZ(2 * COORDS_Z_STEP);
                 surfaceElement->SetSlope(0);
                 surfaceElement->SetWaterHeight(0);
             }

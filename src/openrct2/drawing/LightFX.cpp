@@ -317,7 +317,7 @@ void lightfx_prepare_light_list()
                 }
 
                 int32_t minDist = 0;
-                int32_t baseHeight = (-999) * 8;
+                int32_t baseHeight = (-999) * COORDS_Z_STEP;
 
                 if (interactionType != VIEWPORT_INTERACTION_ITEM_SPRITE && tileElement)
                 {
