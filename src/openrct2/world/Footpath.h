@@ -168,9 +168,10 @@ extern uint8_t gFootpathConstructValidDirections;
 extern money32 gFootpathPrice;
 extern uint8_t gFootpathGroundFlags;
 
-extern const CoordsXY word_981D6C[4];
-extern const LocationXY16 BinUseOffsets[4];
-extern const LocationXY16 BenchUseOffsets[8];
+// Given a direction, this will return how to increase/decrease the x and y coordinates.
+extern const CoordsXY DirectionOffsets[NumOrthogonalDirections];
+extern const LocationXY16 BinUseOffsets[NumOrthogonalDirections];
+extern const LocationXY16 BenchUseOffsets[NumOrthogonalDirections * 2];
 
 TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z);
 struct PathElement;

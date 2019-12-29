@@ -2522,8 +2522,8 @@ static void peep_go_to_ride_entrance(Guest* peep, Ride* ride)
     x += 16;
     y += 16;
 
-    int16_t x_shift = word_981D6C[direction].x;
-    int16_t y_shift = word_981D6C[direction].y;
+    int16_t x_shift = DirectionOffsets[direction].x;
+    int16_t y_shift = DirectionOffsets[direction].y;
 
     uint8_t shift_multiplier = 21;
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
@@ -3819,8 +3819,8 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
     x += 16;
     y += 16;
 
-    int16_t x_shift = word_981D6C[exit_direction].x;
-    int16_t y_shift = word_981D6C[exit_direction].y;
+    int16_t x_shift = DirectionOffsets[exit_direction].x;
+    int16_t y_shift = DirectionOffsets[exit_direction].y;
 
     int16_t shift_multiplier = 20;
 
@@ -3919,8 +3919,8 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride
 
     int32_t x = entranceLocation.x * 32;
     int32_t y = entranceLocation.y * 32;
-    x += 16 - word_981D6C[entranceLocation.direction].x * 20;
-    y += 16 - word_981D6C[entranceLocation.direction].y * 20;
+    x += 16 - DirectionOffsets[entranceLocation.direction].x * 20;
+    y += 16 - DirectionOffsets[entranceLocation.direction].y * 20;
 
     peep->destination_x = x;
     peep->destination_y = y;
@@ -4214,8 +4214,8 @@ void Guest::UpdateRideLeaveVehicle()
                 }
             }
 
-            int16_t xShift = word_981D6C[specialDirection].x;
-            int16_t yShift = word_981D6C[specialDirection].y;
+            int16_t xShift = DirectionOffsets[specialDirection].x;
+            int16_t yShift = DirectionOffsets[specialDirection].y;
 
             platformLocation.x = vehicle->x + xShift * shiftMultiplier;
             platformLocation.y = vehicle->y + yShift * shiftMultiplier;
@@ -4225,8 +4225,8 @@ void Guest::UpdateRideLeaveVehicle()
             return;
         }
 
-        platformLocation.x = vehicle->x + word_981D6C[platformLocation.direction].x * 12;
-        platformLocation.y = vehicle->y + word_981D6C[platformLocation.direction].y * 12;
+        platformLocation.x = vehicle->x + DirectionOffsets[platformLocation.direction].x * 12;
+        platformLocation.y = vehicle->y + DirectionOffsets[platformLocation.direction].y * 12;
 
         // This can evaluate to false with buggy custom rides.
         if (current_seat < vehicle_entry->peep_loading_positions.size())
@@ -4329,8 +4329,8 @@ static void peep_update_ride_prepare_for_exit(Peep* peep)
     x += 16;
     y += 16;
 
-    int16_t x_shift = word_981D6C[exit_direction].x;
-    int16_t y_shift = word_981D6C[exit_direction].y;
+    int16_t x_shift = DirectionOffsets[exit_direction].x;
+    int16_t y_shift = DirectionOffsets[exit_direction].y;
 
     int16_t shift_multiplier = 20;
 
@@ -4560,8 +4560,8 @@ void Guest::UpdateRideApproachExitWaypoints()
     CoordsXY targetLoc = { exit.x * 32 + 16, exit.y * 32 + 16 };
     uint8_t exit_direction = direction_reverse(exit.direction);
 
-    int16_t x_shift = word_981D6C[exit_direction].x;
-    int16_t y_shift = word_981D6C[exit_direction].y;
+    int16_t x_shift = DirectionOffsets[exit_direction].x;
+    int16_t y_shift = DirectionOffsets[exit_direction].y;
 
     int16_t shift_multiplier = 20;
 
@@ -4809,8 +4809,8 @@ void Guest::UpdateRideLeaveSpiralSlide()
     auto exit = ride_get_exit_location(ride, current_ride_station);
     CoordsXY targetLoc{ exit.x * 32 + 16, exit.y * 32 + 16 };
 
-    int16_t xShift = word_981D6C[direction_reverse(exit.direction)].x;
-    int16_t yShift = word_981D6C[direction_reverse(exit.direction)].y;
+    int16_t xShift = DirectionOffsets[direction_reverse(exit.direction)].x;
+    int16_t yShift = DirectionOffsets[direction_reverse(exit.direction)].y;
 
     int16_t shiftMultiplier = 20;
 

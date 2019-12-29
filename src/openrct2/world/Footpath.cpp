@@ -70,7 +70,7 @@ const LocationXY16 BenchUseOffsets[8] = {
 };
 
 /** rct2: 0x00981D6C, 0x00981D6E */
-const CoordsXY word_981D6C[4] = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
+const CoordsXY DirectionOffsets[4] = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
 
 // rct2: 0x0097B974
 static constexpr const uint16_t EntranceDirections[] = {
