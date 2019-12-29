@@ -105,7 +105,7 @@ public:
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }
 
-        int8_t clear_z = (z / 8) + (_isExit ? 5 : 7);
+        auto clear_z = (z / 8) + (_isExit ? 5 : 7);
         auto cost = MONEY32_UNDEFINED;
         if (!map_can_construct_with_clear_at(
                 _loc.x, _loc.y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags(), &cost,
@@ -173,7 +173,7 @@ public:
             wall_remove_at_z(_loc.x, _loc.y, z);
         }
 
-        int8_t clear_z = (z / 8) + (_isExit ? 5 : 7);
+        auto clear_z = (z / 8) + (_isExit ? 5 : 7);
         auto cost = MONEY32_UNDEFINED;
         if (!map_can_construct_with_clear_at(
                 _loc.x, _loc.y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 },
