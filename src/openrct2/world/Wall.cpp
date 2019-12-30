@@ -37,8 +37,6 @@ void wall_remove_at(const CoordsXYRangedZ& wallPos)
 {
     TileElement* tileElement;
 
-    auto baseZ = wallPos.baseZ / 8;
-    auto clearanceZ = wallPos.clearanceZ / 8;
 repeat:
     tileElement = map_get_first_element_at(wallPos);
     if (tileElement == nullptr)
@@ -47,9 +45,9 @@ repeat:
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (baseZ >= tileElement->clearance_height)
+        if (wallPos.baseZ >= tileElement->GetClearanceZ())
             continue;
-        if (clearanceZ <= tileElement->base_height)
+        if (wallPos.clearanceZ <= tileElement->GetBaseZ())
             continue;
 
         tile_element_remove_banner_entry(tileElement);
@@ -84,7 +82,6 @@ void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction di
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        // TODO: It looks like base and clearance are swapped in here
         if (tileElement->GetClearanceZ() <= wallPos.baseZ || tileElement->GetBaseZ() >= wallPos.clearanceZ)
             continue;
 

@@ -116,7 +116,6 @@ public:
         int32_t surfaceHeight = tile_element_height(_coords);
         footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
         if (!gCheatsDisableClearanceChecks)
-            // TODO: Seems to be missing the *8 on surfaceHeight?
             wall_remove_at_z({ _coords, surfaceHeight });
 
         SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
