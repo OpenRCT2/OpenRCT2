@@ -45,12 +45,6 @@ struct LocationXY8
 };
 assert_struct_size(LocationXY8, 2);
 
-struct sLocationXY8
-{
-    int8_t x, y;
-};
-assert_struct_size(sLocationXY8, 2);
-
 struct LocationXY16
 {
     int16_t x, y;
