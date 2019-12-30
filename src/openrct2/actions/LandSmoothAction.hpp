@@ -346,8 +346,8 @@ private:
         // Cap bounds to map
         auto l = std::max(normRange.GetLeft(), 32);
         auto t = std::max(normRange.GetTop(), 32);
-        auto r = std::clamp(normRange.GetRight(), 0, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
-        auto b = std::clamp(normRange.GetBottom(), 0, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+        auto r = std::clamp(normRange.GetRight(), 0, MAXIMUM_TILE_START_XY);
+        auto b = std::clamp(normRange.GetBottom(), 0, MAXIMUM_TILE_START_XY);
         auto validRange = MapRange{ l, t, r, b };
 
         int32_t centreZ = tile_element_height(_coords);
@@ -409,7 +409,7 @@ private:
 
                 // Smooth the edges
                 int32_t z1, z2;
-                for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
+                for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
                 {
                     auto surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetLeft(), y });
                     if (surfaceElement != nullptr)
@@ -428,7 +428,7 @@ private:
                     }
                 }
 
-                for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
+                for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
                 {
                     auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, validRange.GetTop() });
                     if (surfaceElement != nullptr)

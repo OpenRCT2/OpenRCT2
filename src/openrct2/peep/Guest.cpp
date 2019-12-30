@@ -1924,9 +1924,9 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
         constexpr auto radius = 10 * 32;
         int32_t cx = floor2(x, 32);
         int32_t cy = floor2(y, 32);
-        for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += 32)
+        for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += COORDS_XY_STEP)
         {
-            for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += 32)
+            for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += COORDS_XY_STEP)
             {
                 if (map_is_location_valid({ tileX, tileY }))
                 {
@@ -2941,12 +2941,12 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
 
     int16_t initial_x = std::max(centre_x - 160, 0);
     int16_t initial_y = std::max(centre_y - 160, 0);
-    int16_t final_x = std::min(centre_x + 160, 8192);
-    int16_t final_y = std::min(centre_y + 160, 8192);
+    int16_t final_x = std::min(centre_x + 160, MAXIMUM_MAP_SIZE_BIG);
+    int16_t final_y = std::min(centre_y + 160, MAXIMUM_MAP_SIZE_BIG);
 
-    for (int16_t x = initial_x; x < final_x; x += 32)
+    for (int16_t x = initial_x; x < final_x; x += COORDS_XY_STEP)
     {
-        for (int16_t y = initial_y; y < final_y; y += 32)
+        for (int16_t y = initial_y; y < final_y; y += COORDS_XY_STEP)
         {
             TileElement* tileElement = map_get_first_element_at({ x, y });
             if (tileElement == nullptr)
@@ -3181,9 +3181,9 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         constexpr auto searchRadius = 10 * 32;
         int32_t cx = floor2(peep->x, 32);
         int32_t cy = floor2(peep->y, 32);
-        for (auto x = cx - searchRadius; x <= cx + searchRadius; x += 32)
+        for (auto x = cx - searchRadius; x <= cx + searchRadius; x += COORDS_XY_STEP)
         {
-            for (auto y = cy - searchRadius; y <= cy + searchRadius; y += 32)
+            for (auto y = cy - searchRadius; y <= cy + searchRadius; y += COORDS_XY_STEP)
             {
                 if (map_is_location_valid({ x, y }))
                 {

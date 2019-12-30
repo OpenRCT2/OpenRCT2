@@ -98,9 +98,9 @@ private:
         auto x1 = std::min(_range.GetRight(), (int32_t)gMapSizeMaxXY);
         auto y1 = std::min(_range.GetBottom(), (int32_t)gMapSizeMaxXY);
 
-        for (int32_t y = y0; y <= y1; y += 32)
+        for (int32_t y = y0; y <= y1; y += COORDS_XY_STEP)
         {
-            for (int32_t x = x0; x <= x1; x += 32)
+            for (int32_t x = x0; x <= x1; x += COORDS_XY_STEP)
             {
                 if (MapCanClearAt(x, y))
                 {

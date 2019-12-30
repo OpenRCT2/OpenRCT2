@@ -2420,10 +2420,10 @@ static void sub_6CBCE2(
     int16_t preserveMapSize = gMapSize;
     int16_t preserveMapSizeMaxXY = gMapSizeMaxXY;
 
-    gMapSizeUnits = (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32;
+    gMapSizeUnits = MAXIMUM_TILE_START_XY;
     gMapSizeMinus2 = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32) + 286;
     gMapSize = MAXIMUM_MAP_SIZE_TECHNICAL;
-    gMapSizeMaxXY = (MAXIMUM_MAP_SIZE_TECHNICAL * 32) - 1;
+    gMapSizeMaxXY = MAXIMUM_MAP_SIZE_BIG - 1;
 
     auto trackBlock = get_track_def_from_ride(ride, trackType);
     while (trackBlock->index != 255)
@@ -2433,7 +2433,7 @@ static void sub_6CBCE2(
         CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
         int32_t baseZ = originZ + trackBlock->z;
-        int32_t clearanceZ = trackBlock->var_07 + RideData5[ride->type].clearance_height + baseZ + (4 * 8);
+        int32_t clearanceZ = trackBlock->var_07 + RideData5[ride->type].clearance_height + baseZ + (4 * COORDS_Z_STEP);
 
         auto centreTileCoords = TileCoordsXY{ coords };
         auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];

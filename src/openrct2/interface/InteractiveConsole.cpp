@@ -1269,7 +1269,7 @@ static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe
 
     // All cases involve providing a year, so grab that first
     year = atoi(argv[0].c_str());
-    if (year < 1 || year > 8192)
+    if (year < 1 || year > MAX_YEAR)
     {
         return -1;
     }

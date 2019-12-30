@@ -99,9 +99,9 @@ private:
         res->Expenditure = ExpenditureType::LandPurchase;
 
         // Game command modified to accept selection size
-        for (auto y = validRange.GetTop(); y <= validRange.GetBottom(); y += 32)
+        for (auto y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
         {
-            for (auto x = validRange.GetLeft(); x <= validRange.GetRight(); x += 32)
+            for (auto x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
             {
                 auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
                 if (result->Error == GA_ERROR::OK)

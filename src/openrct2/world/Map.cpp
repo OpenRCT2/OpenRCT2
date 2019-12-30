@@ -628,12 +628,12 @@ void map_update_path_wide_flags()
         footpath_update_path_wide_flags(x, y);
 
         // Next x, y tile
-        x += 32;
-        if (x >= MAXIMUM_MAP_SIZE_TECHNICAL * 32)
+        x += COORDS_XY_STEP;
+        if (x >= MAXIMUM_MAP_SIZE_BIG)
         {
             x = 0;
-            y += 32;
-            if (y >= MAXIMUM_MAP_SIZE_TECHNICAL * 32)
+            y += COORDS_XY_STEP;
+            if (y >= MAXIMUM_MAP_SIZE_BIG)
             {
                 y = 0;
             }
@@ -668,8 +668,8 @@ int32_t map_height_from_slope(const CoordsXY& coords, int32_t slope, bool isSlop
 
 bool map_is_location_valid(const CoordsXY& coords)
 {
-    const bool is_x_valid = coords.x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.x >= 0;
-    const bool is_y_valid = coords.y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32) && coords.y >= 0;
+    const bool is_x_valid = coords.x < MAXIMUM_MAP_SIZE_BIG && coords.x >= 0;
+    const bool is_y_valid = coords.y < MAXIMUM_MAP_SIZE_BIG && coords.y >= 0;
     return is_x_valid && is_y_valid;
 }
 
@@ -706,7 +706,7 @@ bool map_is_location_owned(const CoordsXYZ& loc)
 
             if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
             {
-                if (loc.z < surfaceElement->GetBaseZ() || loc.z - (2 * 8) > surfaceElement->GetBaseZ())
+                if (loc.z < surfaceElement->GetBaseZ() || loc.z - LAND_HEIGHT_STEP > surfaceElement->GetBaseZ())
                     return true;
             }
         }
@@ -865,9 +865,9 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
                             std::min(range.GetBottom(), (int32_t)gMapSizeMaxXY) };
 
     uint8_t min_height = 0xFF;
-    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += 32)
+    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
     {
-        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += 32)
+        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += COORDS_XY_STEP)
         {
             auto* surfaceElement = map_get_surface_element_at(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr && min_height > surfaceElement->base_height)
@@ -886,9 +886,9 @@ uint8_t map_get_highest_land_height(const MapRange& range)
                             std::min(range.GetBottom(), (int32_t)gMapSizeMaxXY) };
 
     uint8_t max_height = 0;
-    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += 32)
+    for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
     {
-        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += 32)
+        for (int32_t xi = validRange.GetLeft(); xi <= validRange.GetRight(); xi += COORDS_XY_STEP)
         {
             auto* surfaceElement = map_get_surface_element_at(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
@@ -908,8 +908,7 @@ uint8_t map_get_highest_land_height(const MapRange& range)
 
 bool map_is_location_at_edge(const CoordsXY& loc)
 {
-    return loc.x < 32 || loc.y < 32 || loc.x >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32)
-        || loc.y >= ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+    return loc.x < 32 || loc.y < 32 || loc.x >= (MAXIMUM_TILE_START_XY) || loc.y >= (MAXIMUM_TILE_START_XY);
 }
 
 /**
@@ -1540,9 +1539,9 @@ void map_remove_out_of_range_elements()
     bool buildState = gCheatsBuildInPauseMode;
     gCheatsBuildInPauseMode = true;
 
-    for (int32_t y = 0; y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); y += 32)
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_BIG; y += COORDS_XY_STEP)
     {
-        for (int32_t x = 0; x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); x += 32)
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
         {
             if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY)
             {
@@ -2113,9 +2112,9 @@ bool map_surface_is_blocked(CoordsXY mapCoords)
 /* Clears all map elements, to be used before generating a new map */
 void map_clear_all_elements()
 {
-    for (int32_t y = 0; y < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); y += 32)
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_BIG; y += COORDS_XY_STEP)
     {
-        for (int32_t x = 0; x < (MAXIMUM_MAP_SIZE_TECHNICAL * 32); x += 32)
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
         {
             clear_elements_at({ x, y });
         }

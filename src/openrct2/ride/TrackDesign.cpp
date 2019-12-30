@@ -354,9 +354,9 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
     // x is defined here as we can start the search
     // on tile start_x, start_y but then the next row
     // must restart on 0
-    for (int32_t y = startLoc.y, x = startLoc.y; y < 8192; y += 32)
+    for (int32_t y = startLoc.y, x = startLoc.y; y < MAXIMUM_MAP_SIZE_BIG; y += COORDS_XY_STEP)
     {
-        for (; x < 8192; x += 32)
+        for (; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
         {
             auto tileElement = map_get_first_element_at({ x, y });
             do
@@ -460,9 +460,9 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
 CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
 {
     CoordsXYE tile{};
-    for (tile.y = 0; tile.y < 8192; tile.y += 32)
+    for (tile.y = 0; tile.y < MAXIMUM_MAP_SIZE_BIG; tile.y += COORDS_XY_STEP)
     {
-        for (tile.x = 0; tile.x < 8192; tile.x += 32)
+        for (tile.x = 0; tile.x < MAXIMUM_MAP_SIZE_BIG; tile.x += COORDS_XY_STEP)
         {
             tile.element = map_get_first_element_at({ tile.x, tile.y });
             do
