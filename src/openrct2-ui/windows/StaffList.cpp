@@ -205,8 +205,7 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_STAFF_LIST_CLOSE:
             window_close(w);
             break;
-        case WIDX_STAFF_LIST_HIRE_BUTTON:
-        {
+        case WIDX_STAFF_LIST_HIRE_BUTTON: {
             STAFF_TYPE staffType = static_cast<STAFF_TYPE>(_windowStaffListSelectedTab);
             ENTERTAINER_COSTUME costume = ENTERTAINER_COSTUME_COUNT;
             if (staffType == STAFF_TYPE_ENTERTAINER)
@@ -347,7 +346,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         if (footpathCoords.x == LOCATION_NULL)
             return;
 
-        bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, footpathCoords.x, footpathCoords.y);
+        bool isPatrolAreaSet = staff_is_patrol_area_set_for_type((STAFF_TYPE)selectedPeepType, footpathCoords);
 
         uint16_t spriteIndex;
         Peep *peep, *closestPeep = nullptr;

@@ -900,15 +900,15 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
         if (!is_staff_list)
         {
-            Peep* staff = GET_PEEP(staffIndex);
-            if (!staff_is_patrol_area_set(staff->staff_id, x, y))
+            Staff* staff = (GET_PEEP(staffIndex))->AsStaff();
+            if (!staff->IsPatrolAreaSet({ x, y }))
             {
                 patrolColour = COLOUR_GREY;
             }
             staffType = staff->staff_type;
         }
 
-        if (staff_is_patrol_area_set(200 + staffType, x, y))
+        if (staff_is_patrol_area_set_for_type((STAFF_TYPE)staffType, session->MapPosition))
         {
             uint32_t imageId = 2618;
             int32_t height2 = tile_element->GetBaseZ();
