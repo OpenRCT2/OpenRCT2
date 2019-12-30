@@ -1250,13 +1250,12 @@ static void sub_6E1F34(
         rct_scenery_entry* scenery_entry = get_large_scenery_entry(selected_scenery);
         if (scenery_entry)
         {
-            int16_t tileZ = 0;
+            int16_t maxClearZ = 0;
             for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; ++i)
             {
-                assert(i < MAXIMUM_MAP_SIZE_TECHNICAL);
-                tileZ += scenery_entry->large_scenery.tiles[i].z_clearance;
+                maxClearZ = std::max(maxClearZ, static_cast<int16_t>(scenery_entry->large_scenery.tiles[i].z_clearance));
             }
-            maxPossibleHeight = std::max(0, maxPossibleHeight - tileZ);
+            maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
         }
         can_raise_item = true;
     }
