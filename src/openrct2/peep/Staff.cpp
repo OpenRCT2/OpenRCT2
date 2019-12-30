@@ -1487,8 +1487,8 @@ void Staff::UpdateHeadingToInspect()
 
         direction = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = next_x + 16 + word_981D6C[direction].x * 53;
-        int32_t destY = next_y + 16 + word_981D6C[direction].y * 53;
+        int32_t destX = next_x + 16 + DirectionOffsets[direction].x * 53;
+        int32_t destY = next_y + 16 + DirectionOffsets[direction].y * 53;
 
         destination_x = destX;
         destination_y = destY;
@@ -1598,8 +1598,8 @@ void Staff::UpdateAnswering()
 
         direction = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = next_x + 16 + word_981D6C[direction].x * 53;
-        int32_t destY = next_y + 16 + word_981D6C[direction].y * 53;
+        int32_t destX = next_x + 16 + DirectionOffsets[direction].x * 53;
+        int32_t destY = next_y + 16 + DirectionOffsets[direction].y * 53;
 
         destination_x = destX;
         destination_y = destY;
@@ -2218,7 +2218,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
             vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         }
 
-        CoordsXY offset = word_981D6C[direction];
+        CoordsXY offset = DirectionOffsets[direction];
         destination_x = (offset.x * -12) + vehicle->x;
         destination_y = (offset.y * -12) + vehicle->y;
         destination_tolerance = 2;
@@ -2596,7 +2596,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
         stationX += 16;
         stationY += 16;
 
-        CoordsXY stationPlatformDirection = word_981D6C[direction];
+        CoordsXY stationPlatformDirection = DirectionOffsets[direction];
         stationX += stationPlatformDirection.x * 20;
         stationY += stationPlatformDirection.y * 20;
 
@@ -2687,7 +2687,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
         exitX += 16;
         exitY += 16;
 
-        CoordsXY ebx_direction = word_981D6C[direction];
+        CoordsXY ebx_direction = DirectionOffsets[direction];
         exitX -= ebx_direction.x * 19;
         exitY -= ebx_direction.y * 19;
 

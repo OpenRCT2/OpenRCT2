@@ -1102,8 +1102,8 @@ void ride_remove_peeps(Ride* ride)
             exitZ = location.z;
             exitDirection = location.direction;
 
-            exitX = (exitX * 32) - (word_981D6C[exitDirection].x * 20) + 16;
-            exitY = (exitY * 32) - (word_981D6C[exitDirection].y * 20) + 16;
+            exitX = (exitX * 32) - (DirectionOffsets[exitDirection].x * 20) + 16;
+            exitY = (exitY * 32) - (DirectionOffsets[exitDirection].y * 20) + 16;
             exitZ = (exitZ * 8) + 2;
 
             // Reverse direction

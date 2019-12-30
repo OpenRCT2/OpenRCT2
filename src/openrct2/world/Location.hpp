@@ -16,6 +16,8 @@
 #define LOCATION_NULL ((int16_t)(uint16_t)0x8000)
 #define RCT_XY8_UNDEFINED 0xFFFF
 
+constexpr const auto NumOrthogonalDirections = 4;
+
 #pragma pack(push, 1)
 struct LocationXY8
 {
@@ -410,7 +412,7 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 
 [[maybe_unused]] static constexpr bool direction_valid(Direction dir)
 {
-    return dir < 4;
+    return dir < NumOrthogonalDirections;
 }
 
 /**

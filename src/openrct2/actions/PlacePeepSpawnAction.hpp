@@ -110,8 +110,8 @@ public:
 
         // Shift the spawn point to the middle of the tile
         int32_t middleX, middleY;
-        middleX = _location.x + 16 + (word_981D6C[_location.direction].x * 15);
-        middleY = _location.y + 16 + (word_981D6C[_location.direction].y * 15);
+        middleX = _location.x + 16 + (DirectionOffsets[_location.direction].x * 15);
+        middleY = _location.y + 16 + (DirectionOffsets[_location.direction].y * 15);
 
         // Set peep spawn
         PeepSpawn spawn;
