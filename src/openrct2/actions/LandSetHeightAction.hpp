@@ -152,7 +152,7 @@ public:
 
         if (!gCheatsDisableClearanceChecks)
         {
-            wall_remove_at(_coords.x, _coords.y, _height * 8 - 16, _height * 8 + 32);
+            wall_remove_at({ _coords, _height * 8 - 16, _height * 8 + 32 });
             cost += GetSmallSceneryRemovalCost();
             SmallSceneryRemoval();
         }

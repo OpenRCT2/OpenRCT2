@@ -116,7 +116,7 @@ public:
         int32_t surfaceHeight = tile_element_height(_coords);
         footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
         if (!gCheatsDisableClearanceChecks)
-            wall_remove_at_z(_coords.x, _coords.y, surfaceHeight);
+            wall_remove_at_z({ _coords, surfaceHeight });
 
         SurfaceElement* surfaceElement = map_get_surface_element_at(_coords);
         if (surfaceElement == nullptr)

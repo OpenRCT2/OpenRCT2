@@ -170,7 +170,7 @@ public:
         if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             footpath_remove_litter(_loc.x, _loc.y, z);
-            wall_remove_at_z(_loc.x, _loc.y, z);
+            wall_remove_at_z({ _loc, z });
         }
 
         auto clear_z = (z / 8) + (_isExit ? 5 : 7);

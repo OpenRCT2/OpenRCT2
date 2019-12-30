@@ -306,7 +306,7 @@ public:
                 footpath_remove_litter(curTile.x, curTile.y, zLow * 8);
                 if (!gCheatsDisableClearanceChecks)
                 {
-                    wall_remove_at(curTile.x, curTile.y, zLow * 8, zHigh * 8);
+                    wall_remove_at({ curTile, zLow * 8, zHigh * 8 });
                 }
             }
 
