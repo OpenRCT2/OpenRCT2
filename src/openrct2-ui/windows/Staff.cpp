@@ -461,7 +461,8 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_LOCATE:
             w->ScrollToViewport();
             break;
-        case WIDX_PICKUP: {
+        case WIDX_PICKUP:
+        {
             w->picked_peep_old_x = peep->x;
 
             PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, {}, network_get_current_player_id() };
@@ -477,13 +478,15 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             GameActions::Execute(&pickupAction);
         }
         break;
-        case WIDX_FIRE: {
+        case WIDX_FIRE:
+        {
             auto intent = Intent(WC_FIRE_PROMPT);
             intent.putExtra(INTENT_EXTRA_PEEP, peep);
             context_open_intent(&intent);
             break;
         }
-        case WIDX_RENAME: {
+        case WIDX_RENAME:
+        {
             auto peepName = peep->GetName();
             window_text_input_raw_open(
                 w, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, peepName.c_str(), 32);
