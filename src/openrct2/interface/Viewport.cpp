@@ -1746,29 +1746,31 @@ std::optional<CoordsXY> screen_get_map_xy(ScreenCoordsXY screenCoords, rct_viewp
 {
     int32_t interactionType;
     rct_viewport* myViewport = nullptr;
-    CoordsXY map_pos;
+    CoordsXY tileLoc;
+    // This will get the tile location but we will need the more accuracy
     get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN, map_pos, &interactionType, nullptr, &myViewport);
+        screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN, tileLoc, &interactionType, nullptr, &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         return std::nullopt;
     }
 
     auto start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenCoords);
-    CoordsXY modifiedPos = { map_pos.x + 16, map_pos.y + 16 };
+    CoordsXY cursorMapPos = { tileLoc.x + 16, tileLoc.y + 16 };
 
+    // Iterates the cursor location to work out exactly where on the tile it is
     for (int32_t i = 0; i < 5; i++)
     {
-        int32_t z = tile_element_height(map_pos);
-        modifiedPos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        modifiedPos.x = std::clamp<int32_t>(modifiedPos.x, map_pos.x, map_pos.x + 31);
-        modifiedPos.y = std::clamp<int32_t>(modifiedPos.y, map_pos.y, map_pos.y + 31);
+        int32_t z = tile_element_height(cursorMapPos);
+        cursorMapPos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+        cursorMapPos.x = std::clamp(cursorMapPos.x, tileLoc.x, tileLoc.x + 31);
+        cursorMapPos.y = std::clamp(cursorMapPos.y, tileLoc.y, tileLoc.y + 31);
     }
 
     if (viewport != nullptr)
         *viewport = myViewport;
 
-    return modifiedPos;
+    return cursorMapPos;
 }
 
 /**
