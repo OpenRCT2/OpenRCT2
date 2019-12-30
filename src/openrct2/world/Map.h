@@ -176,9 +176,9 @@ using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coord
 int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 bool map_can_construct_with_clear_at(
-    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
-    money32* price, uint8_t crossingMode);
-int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, QuarterTile bl);
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
+    uint8_t crossingMode);
+int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl);
 
 struct tile_element_iterator
 {

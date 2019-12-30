@@ -233,7 +233,7 @@ public:
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
-                    mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &cost,
+                    { mapLoc, baseZ * 8, clearanceZ * 8 }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &cost,
                     crossingMode))
             {
                 return std::make_unique<TrackPlaceActionResult>(
@@ -459,7 +459,7 @@ public:
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
-                    mapLoc.x, mapLoc.y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, quarterTile,
+                    { mapLoc, baseZ * 8, clearanceZ * 8 }, &map_place_non_scenery_clear_func, quarterTile,
                     GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost, crossingMode))
             {
                 return std::make_unique<TrackPlaceActionResult>(

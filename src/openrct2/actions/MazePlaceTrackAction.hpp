@@ -92,8 +92,8 @@ public:
         money32 clearCost = 0;
 
         if (!map_can_construct_with_clear_at(
-                floor2(_loc.x, 32), floor2(_loc.y, 32), baseHeight, clearanceHeight, &map_place_non_scenery_clear_func,
-                { 0b1111, 0 }, GetFlags(), &clearCost, CREATE_CROSSING_MODE_NONE))
+                { _loc.ToTileStart(), baseHeight * 8, clearanceHeight * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
+                GetFlags(), &clearCost, CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
         }
@@ -163,8 +163,8 @@ public:
 
         money32 clearCost = 0;
         if (!map_can_construct_with_clear_at(
-                floor2(_loc.x, 32), floor2(_loc.y, 32), baseHeight, clearanceHeight, &map_place_non_scenery_clear_func,
-                { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY, &clearCost, CREATE_CROSSING_MODE_NONE))
+                { _loc.ToTileStart(), baseHeight * 8, clearanceHeight * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
+                GetFlags() | GAME_COMMAND_FLAG_APPLY, &clearCost, CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
         }

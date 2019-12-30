@@ -163,7 +163,7 @@ public:
 
             QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
             if (!map_can_construct_with_clear_at(
-                    curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
+                    { curTile, zLow * 8, zHigh * 8 }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
                     CREATE_CROSSING_MODE_NONE))
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(
@@ -292,7 +292,7 @@ public:
 
             QuarterTile quarterTile = QuarterTile{ static_cast<uint8_t>(tile->flags >> 12), 0 }.Rotate(_loc.direction);
             if (!map_can_construct_with_clear_at(
-                    curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
+                    { curTile, zLow * 8, zHigh * 8 }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &supportsCost,
                     CREATE_CROSSING_MODE_NONE))
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(

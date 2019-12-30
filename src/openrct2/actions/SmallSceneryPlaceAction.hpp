@@ -280,7 +280,7 @@ public:
         money32 clearCost = 0;
 
         if (!map_can_construct_with_clear_at(
-                _loc.x, _loc.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
+                { _loc, zLow * 8, zHigh * 8 }, &map_place_scenery_clear_func, quarterTile, GetFlags(), &clearCost,
                 CREATE_CROSSING_MODE_NONE))
         {
             return std::make_unique<SmallSceneryPlaceActionResult>(
@@ -418,7 +418,7 @@ public:
         money32 clearCost = 0;
 
         if (!map_can_construct_with_clear_at(
-                _loc.x, _loc.y, zLow, zHigh, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
+                { _loc, zLow * 8, zHigh * 8 }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
                 &clearCost, CREATE_CROSSING_MODE_NONE))
         {
             return std::make_unique<SmallSceneryPlaceActionResult>(

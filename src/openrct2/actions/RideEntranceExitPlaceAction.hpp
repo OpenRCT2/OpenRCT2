@@ -108,7 +108,7 @@ public:
         auto clear_z = (z / 8) + (_isExit ? 5 : 7);
         auto cost = MONEY32_UNDEFINED;
         if (!map_can_construct_with_clear_at(
-                _loc.x, _loc.y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags(), &cost,
+                { _loc, z, clear_z * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags(), &cost,
                 CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
@@ -176,7 +176,7 @@ public:
         auto clear_z = (z / 8) + (_isExit ? 5 : 7);
         auto cost = MONEY32_UNDEFINED;
         if (!map_can_construct_with_clear_at(
-                _loc.x, _loc.y, z / 8, clear_z, &map_place_non_scenery_clear_func, { 0b1111, 0 },
+                { _loc, z, clear_z * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
                 GetFlags() | GAME_COMMAND_FLAG_APPLY, &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
@@ -250,7 +250,7 @@ public:
         int16_t clearZ = baseZ + (isExit ? 5 : 7);
         auto cost = MONEY32_UNDEFINED;
         if (!map_can_construct_with_clear_at(
-                loc.x, loc.y, baseZ, clearZ, &map_place_non_scenery_clear_func, { 0b1111, 0 }, 0, &cost,
+                { loc, baseZ * 8, clearZ * 8 }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, 0, &cost,
                 CREATE_CROSSING_MODE_NONE))
         {
             return MakeResult(GA_ERROR::NO_CLEARANCE, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
