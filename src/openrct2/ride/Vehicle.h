@@ -95,7 +95,7 @@ struct rct_ride_entry_vehicle
                                             // it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8_t peep_loading_waypoint_segments; // 0x61 new
     uint8_t pad_62[6] = {};                 // 0x62 , 0x7B
-    std::vector<std::array<sLocationXY8, 3>> peep_loading_waypoints = {};
+    std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {}; // previously 0x61 , 0x7B
 };
 #ifdef __TESTPAINT__

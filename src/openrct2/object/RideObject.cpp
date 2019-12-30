@@ -123,7 +123,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
             for (int32_t j = 1; j < numPeepLoadingPositions; j += 4 * 2)
             {
-                std::array<sLocationXY8, 3> entry;
+                std::array<CoordsXY, 3> entry;
                 entry[0].x = stream->ReadValue<int8_t>();
                 entry[0].y = stream->ReadValue<int8_t>();
                 entry[1].x = stream->ReadValue<int8_t>();
@@ -804,13 +804,13 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t* jCar)
                 {
                     size_t j;
                     json_t* waypoint;
-                    std::array<sLocationXY8, 3> entry;
+                    std::array<CoordsXY, 3> entry;
                     json_array_foreach(route, j, waypoint)
                     {
                         if (json_is_array(waypoint) && json_array_size(waypoint) >= 2)
                         {
-                            auto x = (int8_t)json_integer_value(json_array_get(waypoint, 0));
-                            auto y = (int8_t)json_integer_value(json_array_get(waypoint, 1));
+                            int32_t x = json_integer_value(json_array_get(waypoint, 0));
+                            int32_t y = json_integer_value(json_array_get(waypoint, 1));
                             entry[j] = { x, y };
                         }
                     }
