@@ -156,8 +156,8 @@ public:
         }
         else
         {
-            x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
-            y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
+            x2 += SceneryQuadrantOffsets[quadrant & 3].x - 1;
+            y2 += SceneryQuadrantOffsets[quadrant & 3].y - 1;
         }
         landHeight = tile_element_height({ x2, y2 });
         waterHeight = tile_element_water_height({ x2, y2 });
@@ -349,8 +349,8 @@ public:
         }
         else
         {
-            x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
-            y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
+            x2 += SceneryQuadrantOffsets[quadrant & 3].x - 1;
+            y2 += SceneryQuadrantOffsets[quadrant & 3].y - 1;
         }
         landHeight = tile_element_height({ x2, y2 });
         waterHeight = tile_element_water_height({ x2, y2 });

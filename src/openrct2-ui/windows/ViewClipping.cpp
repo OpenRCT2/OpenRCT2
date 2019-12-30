@@ -239,8 +239,8 @@ static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIn
             _dragging = false;
 
             // Reset clip selection to show all tiles
-            _previousClipSelectionA = TileCoordsXY{ gClipSelectionA.x, gClipSelectionA.y };
-            _previousClipSelectionB = TileCoordsXY{ gClipSelectionB.x, gClipSelectionB.y };
+            _previousClipSelectionA = gClipSelectionA;
+            _previousClipSelectionB = gClipSelectionB;
             gClipSelectionA = { 0, 0 };
             gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
             gfx_invalidate_screen();
@@ -303,8 +303,8 @@ static void window_view_clipping_update(rct_window* w)
     if (_toolActive && !window_view_clipping_tool_is_active())
     {
         _toolActive = false;
-        gClipSelectionA = { static_cast<uint8_t>(_previousClipSelectionA.x), static_cast<uint8_t>(_previousClipSelectionA.y) };
-        gClipSelectionB = { static_cast<uint8_t>(_previousClipSelectionB.x), static_cast<uint8_t>(_previousClipSelectionB.y) };
+        gClipSelectionA = _previousClipSelectionA;
+        gClipSelectionB = _previousClipSelectionB;
     }
 
     widget_invalidate(w, WIDX_CLIP_HEIGHT_SLIDER);
@@ -364,8 +364,8 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
 
 static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, ScreenCoordsXY)
 {
-    gClipSelectionA = { uint8_t(gMapSelectPositionA.x / 32), uint8_t(gMapSelectPositionA.y / 32) };
-    gClipSelectionB = { uint8_t(gMapSelectPositionB.x / 32), uint8_t(gMapSelectPositionB.y / 32) };
+    gClipSelectionA = TileCoordsXY{ gMapSelectPositionA };
+    gClipSelectionB = TileCoordsXY{ gMapSelectPositionB };
     _toolActive = false;
     tool_cancel();
     gfx_invalidate_screen();

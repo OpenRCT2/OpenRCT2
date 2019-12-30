@@ -115,9 +115,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     else
     {
         // 6DFFC2:
-        uint8_t ecx = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) & 3;
-        x_offset = ScenerySubTileOffsets[ecx].x;
-        y_offset = ScenerySubTileOffsets[ecx].y;
+        uint8_t quadrant = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) & 3;
+        x_offset = SceneryQuadrantOffsets[quadrant].x;
+        y_offset = SceneryQuadrantOffsets[quadrant].y;
         boxoffset.x = x_offset;
         boxoffset.y = y_offset;
     }
