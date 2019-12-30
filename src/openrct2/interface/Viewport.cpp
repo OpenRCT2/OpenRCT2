@@ -110,7 +110,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(CoordsXYZ loc, rct_viewport*
     // If the start location was invalid
     // propagate the invalid location to the output.
     // This fixes a bug that caused the game to enter an infinite loop.
-    if (loc.x == LOCATION_NULL)
+    if (loc.isNull())
     {
         return std::nullopt;
     }

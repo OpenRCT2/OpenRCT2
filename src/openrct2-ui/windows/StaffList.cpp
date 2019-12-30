@@ -344,7 +344,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         TileElement* tileElement;
         CoordsXY footpathCoords;
         footpath_get_coordinates_from_pos(screenCoords, &footpathCoords.x, &footpathCoords.y, &direction, &tileElement);
-        if (footpathCoords.x == LOCATION_NULL)
+        if (footpathCoords.isNull())
             return;
 
         bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, footpathCoords.x, footpathCoords.y);

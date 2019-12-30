@@ -2174,7 +2174,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     if (!_trackPlaceCtrlState)
     {
         mapCoords = sub_68A15E(screenCoords);
-        if (mapCoords.x == LOCATION_NULL)
+        if (mapCoords.isNull())
             return std::nullopt;
 
         _trackPlaceZ = 0;
@@ -3578,6 +3578,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
                 break;
 
             _currentTrackBegin.z -= 8;
+            // FIXME: Unexpected & LOCATION_NULL. This will be hit on any negative value
             if (_currentTrackBegin.z & LOCATION_NULL)
                 break;
 
@@ -3605,6 +3606,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
             break;
 
         _currentTrackBegin.z -= 8;
+        // FIXME: Unexpected & LOCATION_NULL. This will be hit on any negative value
         if (_currentTrackBegin.z & LOCATION_NULL)
             break;
 

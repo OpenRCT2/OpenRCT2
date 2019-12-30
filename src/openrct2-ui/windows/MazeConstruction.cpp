@@ -363,7 +363,7 @@ static void window_maze_construction_entrance_tooldown(ScreenCoordsXY screenCoor
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
-    if (entranceOrExitCoords.x == LOCATION_NULL)
+    if (entranceOrExitCoords.isNull())
         return;
 
     if (gRideEntranceExitPlaceDirection == 0xFF)

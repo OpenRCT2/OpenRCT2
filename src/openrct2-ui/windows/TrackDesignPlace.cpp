@@ -273,7 +273,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
 
     // Get the tool map position
     CoordsXY mapCoords = sub_68A15E(screenCoords);
-    if (mapCoords.x == LOCATION_NULL)
+    if (mapCoords.isNull())
     {
         window_track_place_clear_provisional();
         return;
@@ -343,7 +343,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     const CoordsXY mapCoords = sub_68A15E(screenCoords);
-    if (mapCoords.x == LOCATION_NULL)
+    if (mapCoords.isNull())
         return;
 
     // Try increasing Z until a feasible placement is found

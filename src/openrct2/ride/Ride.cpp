@@ -6184,7 +6184,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     ride = get_ride(gRideEntranceExitPlaceRideIndex);
     if (ride == nullptr)
     {
-        entranceExitCoords.x = LOCATION_NULL;
+        entranceExitCoords.setNull();
         return entranceExitCoords;
     }
 
@@ -6193,7 +6193,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
     auto coords = screen_get_map_xy_with_z(screenCoords, stationHeight);
     if (!coords)
     {
-        entranceExitCoords.x = LOCATION_NULL;
+        entranceExitCoords.setNull();
         return entranceExitCoords;
     }
 
@@ -6204,14 +6204,14 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
 
     if (ride->type == RIDE_TYPE_NULL)
     {
-        entranceExitCoords.x = LOCATION_NULL;
+        entranceExitCoords.setNull();
         return entranceExitCoords;
     }
 
     auto stationStart = ride->stations[gRideEntranceExitPlaceStationIndex].Start;
     if (stationStart.isNull())
     {
-        entranceExitCoords.x = LOCATION_NULL;
+        entranceExitCoords.setNull();
         return entranceExitCoords;
     }
 
@@ -6280,7 +6280,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(ScreenCoordsX
         tileElement = ride_get_station_start_track_element(ride, gRideEntranceExitPlaceStationIndex);
         if (tileElement == nullptr)
         {
-            entranceExitCoords.x = LOCATION_NULL;
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
         entranceExitCoords.direction = tileElement->GetDirection();

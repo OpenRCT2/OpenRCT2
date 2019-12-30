@@ -768,7 +768,7 @@ namespace OpenRCT2
                 }
 
                 // Focus camera on event.
-                if (isPositionValid && result->Position.x != LOCATION_NULL)
+                if (isPositionValid && !result->Position.isNull())
                 {
                     auto* mainWindow = window_get_main();
                     if (mainWindow != nullptr)

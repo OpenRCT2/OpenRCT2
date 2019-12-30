@@ -431,7 +431,7 @@ namespace GameActions
                         network_add_player_money_spent(playerIndex, result->Cost);
                     }
 
-                    if (result->Position.x != LOCATION_NULL)
+                    if (!result->Position.isNull())
                     {
                         network_set_player_last_action_coord(playerId, result->Position);
                     }
