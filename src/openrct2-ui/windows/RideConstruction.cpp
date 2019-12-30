@@ -2611,13 +2611,11 @@ void sub_6C94D8()
             z = _currentTrackBegin.z;
             direction = _currentTrackPieceDirection;
             type = _currentTrackPieceType;
-            gMapSelectArrowPosition.x = x;
-            gMapSelectArrowPosition.y = y;
-            gMapSelectArrowPosition.z = z;
             if (direction >= 4)
                 direction += 4;
             if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
                 direction = direction_reverse(direction);
+            gMapSelectArrowPosition = CoordsXYZ{ x, y, z };
             gMapSelectArrowDirection = direction;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
@@ -2655,9 +2653,7 @@ void sub_6C94D8()
             x = _currentTrackBegin.x & 0xFFE0;
             y = _currentTrackBegin.y & 0xFFE0;
             z = _currentTrackBegin.z + 15;
-            gMapSelectArrowPosition.x = x;
-            gMapSelectArrowPosition.y = y;
-            gMapSelectArrowPosition.z = z;
+            gMapSelectArrowPosition = CoordsXYZ{ x, y, z };
             gMapSelectArrowDirection = 4;
             if (((_currentTrackBegin.x & 0x1F) | (_currentTrackBegin.y & 0x1F)) != 0)
             {
@@ -3499,10 +3495,8 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+    gMapSelectArrowPosition = CoordsXYZ{ *mapCoords, z };
     gMapSelectArrowDirection = _currentTrackPieceDirection;
-    gMapSelectArrowPosition.x = mapCoords->x;
-    gMapSelectArrowPosition.y = mapCoords->y;
-    gMapSelectArrowPosition.z = z;
     gMapSelectionTiles.clear();
     gMapSelectionTiles.push_back(*mapCoords);
 
@@ -3709,10 +3703,8 @@ void ride_construction_toolupdate_entrance_exit(ScreenCoordsXY screenCoords)
     gMapSelectType = MAP_SELECT_TYPE_FULL;
     gMapSelectPositionA = entranceOrExitCoords;
     gMapSelectPositionB = entranceOrExitCoords;
+    gMapSelectArrowPosition = entranceOrExitCoords;
     gMapSelectArrowDirection = direction_reverse(entranceOrExitCoords.direction);
-    gMapSelectArrowPosition.x = entranceOrExitCoords.x;
-    gMapSelectArrowPosition.y = entranceOrExitCoords.y;
-    gMapSelectArrowPosition.z = entranceOrExitCoords.z;
     map_invalidate_selection_rect();
 
     entranceOrExitCoords.direction = direction_reverse(gRideEntranceExitPlaceDirection);

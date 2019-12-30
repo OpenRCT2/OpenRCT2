@@ -1249,9 +1249,7 @@ static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoor
     gMapSelectionTiles.push_back({ parkEntrancePosition.x - CoordsDirectionDelta[sideDirection].x,
                                    parkEntrancePosition.y - CoordsDirectionDelta[sideDirection].y });
 
-    gMapSelectArrowPosition.x = parkEntrancePosition.x;
-    gMapSelectArrowPosition.y = parkEntrancePosition.y;
-    gMapSelectArrowPosition.z = parkEntrancePosition.z;
+    gMapSelectArrowPosition = parkEntrancePosition;
     gMapSelectArrowDirection = parkEntrancePosition.direction;
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT | MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -1297,10 +1295,8 @@ static void window_map_set_peep_spawn_tool_update(ScreenCoordsXY screenCoords)
     gMapSelectPositionA.y = mapY;
     gMapSelectPositionB.x = mapX;
     gMapSelectPositionB.y = mapY;
+    gMapSelectArrowPosition = CoordsXYZ{ mapX, mapY, mapZ };
     gMapSelectArrowDirection = direction_reverse(direction);
-    gMapSelectArrowPosition.x = mapX;
-    gMapSelectArrowPosition.y = mapY;
-    gMapSelectArrowPosition.z = mapZ;
     map_invalidate_selection_rect();
 }
 

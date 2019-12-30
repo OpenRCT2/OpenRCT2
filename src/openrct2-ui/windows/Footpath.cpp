@@ -493,9 +493,7 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
         gFootpathProvisionalFlags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
         CoordsXYZ footpathLoc;
         footpath_get_next_path_info(&type, footpathLoc, &slope);
-        gMapSelectArrowPosition.x = footpathLoc.x;
-        gMapSelectArrowPosition.y = footpathLoc.y;
-        gMapSelectArrowPosition.z = footpathLoc.z;
+        gMapSelectArrowPosition = footpathLoc;
         gMapSelectArrowDirection = gFootpathConstructDirection;
         if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
         {
@@ -811,10 +809,6 @@ static void window_footpath_set_selection_start_bridge_at_point(ScreenCoordsXY s
     gMapSelectPositionA.y = y;
     gMapSelectPositionB.y = y;
 
-    gMapSelectArrowDirection = direction;
-    gMapSelectArrowPosition.x = x;
-    gMapSelectArrowPosition.y = y;
-
     int32_t z = tileElement->GetBaseZ();
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
@@ -828,7 +822,8 @@ static void window_footpath_set_selection_start_bridge_at_point(ScreenCoordsXY s
             z += PATH_HEIGHT_STEP; // Add another 2 for a steep slope
     }
 
-    gMapSelectArrowPosition.z = z;
+    gMapSelectArrowPosition = CoordsXYZ{ x, y, z };
+    gMapSelectArrowDirection = direction;
 
     map_invalidate_selection_rect();
 }

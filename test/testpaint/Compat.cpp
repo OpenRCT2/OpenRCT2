@@ -93,7 +93,7 @@ uint16_t gMapSelectFlags;
 uint16_t gMapSelectType;
 CoordsXY gMapSelectPositionA;
 CoordsXY gMapSelectPositionB;
-LocationXYZ16 gMapSelectArrowPosition;
+CoordsXYZ gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
 void entrance_paint(paint_session* session, uint8_t direction, int height, const TileElement* tile_element)

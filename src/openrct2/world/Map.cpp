@@ -73,7 +73,7 @@ uint16_t gMapSelectFlags;
 uint16_t gMapSelectType;
 CoordsXY gMapSelectPositionA;
 CoordsXY gMapSelectPositionB;
-LocationXYZ16 gMapSelectArrowPosition;
+CoordsXYZ gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
 uint8_t gMapGroundFlags;
