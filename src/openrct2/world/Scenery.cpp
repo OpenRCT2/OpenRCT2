@@ -66,7 +66,7 @@ int16_t gSceneryCtrlPressZ;
 money32 gClearSceneryCost;
 
 // rct2: 0x009A3E74
-const LocationXY8 ScenerySubTileOffsets[] = { { 7, 7 }, { 7, 23 }, { 23, 23 }, { 23, 7 } };
+const CoordsXY SceneryQuadrantOffsets[] = { { 7, 7 }, { 7, 23 }, { 23, 23 }, { 23, 7 } };
 
 void scenery_update_tile(int32_t x, int32_t y)
 {

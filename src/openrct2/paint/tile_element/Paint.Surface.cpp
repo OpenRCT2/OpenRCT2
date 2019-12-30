@@ -224,14 +224,14 @@ struct tile_descriptor
 
 struct tile_surface_boundary_data
 {
-    int32_t       bit_1;
-    int32_t       bit_8;
-    int32_t       bit_4;
-    int32_t       bit_2;
-    uint32_t       image[5];
-    LocationXY8  offset;
-    LocationXY16 box_offset;
-    LocationXY16 box_size;
+    int32_t  bit_1;
+    int32_t  bit_8;
+    int32_t  bit_4;
+    int32_t  bit_2;
+    uint32_t image[5];
+    CoordsXY offset;
+    CoordsXY box_offset;
+    CoordsXY box_size;
 };
 
 static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
@@ -534,8 +534,8 @@ static void viewport_surface_draw_tile_side_bottom(
 {
     int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
 
-    LocationXY8 offset = { 0, 0 };
-    LocationXY8 bounds = { 0, 0 };
+    CoordsXY offset = { 0, 0 };
+    CoordsXY bounds = { 0, 0 };
     LocationXY16 tunnelBounds = { 1, 1 };
     LocationXY16 tunnelTopBoundBoxOffset = { 0, 0 };
 
@@ -751,8 +751,8 @@ static void viewport_surface_draw_tile_side_top(
 
     int16_t al, ah, cl, ch, dl = 0, waterHeight;
 
-    sLocationXY8 offset = { 0, 0 };
-    sLocationXY8 bounds = { 0, 0 };
+    CoordsXY offset = { 0, 0 };
+    CoordsXY bounds = { 0, 0 };
 
     switch (edge)
     {
