@@ -2707,13 +2707,9 @@ static void ride_call_closest_mechanic(Ride* ride)
 
 Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
 {
-    int32_t x, y, z, stationIndex;
-    TileCoordsXYZD location;
-    TileElement* tileElement;
-
     // Get either exit position or entrance position if there is no exit
-    stationIndex = ride->inspection_station;
-    location = ride_get_exit_location(ride, stationIndex);
+    int32_t stationIndex = ride->inspection_station;
+    TileCoordsXYZD location = ride_get_exit_location(ride, stationIndex);
     if (location.isNull())
     {
         location = ride_get_entrance_location(ride, stationIndex);
@@ -2722,21 +2718,15 @@ Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
     }
 
     // Get station start track element and position
-    x = location.x;
-    y = location.y;
-    z = location.z;
-    tileElement = ride_get_station_exit_element(x, y, z);
+    auto mapLocation = location.ToCoordsXYZ();
+    TileElement* tileElement = ride_get_station_exit_element(mapLocation);
     if (tileElement == nullptr)
         return nullptr;
 
-    x *= 32;
-    y *= 32;
-
     // Set x,y to centre of the station exit for the mechanic search.
-    x += 16;
-    y += 16;
+    auto centreMapLocation = mapLocation.ToTileCentre();
 
-    return find_closest_mechanic(x, y, forInspection);
+    return find_closest_mechanic(centreMapLocation.x, centreMapLocation.y, forInspection);
 }
 
 /**

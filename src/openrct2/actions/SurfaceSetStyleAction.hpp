@@ -114,17 +114,18 @@ public:
 
         money32 surfaceCost = 0;
         money32 edgeCost = 0;
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
+             coords.x += COORDS_XY_STEP)
         {
-            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+            for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += COORDS_XY_STEP)
             {
                 if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 {
-                    if (!map_is_location_in_park({ x, y }))
+                    if (!map_is_location_in_park(coords))
                         continue;
                 }
 
-                auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+                auto surfaceElement = map_get_surface_element_at(coords);
                 if (surfaceElement == nullptr)
                 {
                     continue;
@@ -185,17 +186,18 @@ public:
 
         money32 surfaceCost = 0;
         money32 edgeCost = 0;
-        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        for (CoordsXY coords = { validRange.GetLeft(), validRange.GetTop() }; coords.x <= validRange.GetRight();
+             coords.x += COORDS_XY_STEP)
         {
-            for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
+            for (coords.y = validRange.GetTop(); coords.y <= validRange.GetBottom(); coords.y += COORDS_XY_STEP)
             {
                 if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 {
-                    if (!map_is_location_in_park({ x, y }))
+                    if (!map_is_location_in_park(coords))
                         continue;
                 }
 
-                auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+                auto surfaceElement = map_get_surface_element_at(coords);
                 if (surfaceElement == nullptr)
                 {
                     continue;
@@ -216,8 +218,8 @@ public:
 
                             surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
-                            map_invalidate_tile_full({ x, y });
-                            footpath_remove_litter(x, y, tile_element_height({ x, y }));
+                            map_invalidate_tile_full(coords);
+                            footpath_remove_litter(coords.x, coords.y, tile_element_height(coords));
                         }
                     }
                 }
@@ -231,14 +233,14 @@ public:
                         edgeCost += 100;
 
                         surfaceElement->SetEdgeStyle(_edgeStyle);
-                        map_invalidate_tile_full({ x, y });
+                        map_invalidate_tile_full(coords);
                     }
                 }
 
                 if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
                 {
                     surfaceElement->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                    map_invalidate_tile_full({ x, y });
+                    map_invalidate_tile_full(coords);
                 }
             }
         }

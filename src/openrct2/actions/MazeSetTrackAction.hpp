@@ -76,9 +76,7 @@ public:
     {
         auto res = std::make_unique<GameActionResult>();
 
-        res->Position.x = _loc.x + 8;
-        res->Position.y = _loc.y + 8;
-        res->Position.z = _loc.z;
+        res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
         res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         if (!map_check_free_elements_and_reorganise(1))
@@ -175,9 +173,7 @@ public:
     {
         auto res = std::make_unique<GameActionResult>();
 
-        res->Position.x = _loc.x + 8;
-        res->Position.y = _loc.y + 8;
-        res->Position.z = _loc.z;
+        res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
         res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
@@ -212,10 +208,9 @@ public:
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
 
-            uint16_t flooredX = floor2(_loc.x, 32);
-            uint16_t flooredY = floor2(_loc.y, 32);
+            auto startLoc = _loc.ToTileStart();
 
-            tileElement = tile_element_insert({ _loc.x / 32, _loc.y / 32, baseHeight }, 0b1111);
+            tileElement = tile_element_insert({ TileCoordsXY{ _loc }, baseHeight }, 0b1111);
             assert(tileElement != nullptr);
 
             tileElement->clearance_height = clearanceHeight;
@@ -230,17 +225,16 @@ public:
                 tileElement->SetGhost(true);
             }
 
-            map_invalidate_tile_full({ flooredX, flooredY });
+            map_invalidate_tile_full(startLoc);
 
             ride->maze_tiles++;
             ride->stations[0].SetBaseZ(tileElement->GetBaseZ());
-            ride->stations[0].Start.x = 0;
-            ride->stations[0].Start.y = 0;
+            ride->stations[0].Start = { 0, 0 };
 
             if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                ride->overall_view.x = flooredX / 32;
-                ride->overall_view.y = flooredY / 32;
+                auto tileStartLoc = TileCoordsXY{ startLoc };
+                ride->overall_view = tileStartLoc;
             }
         }
 
@@ -260,11 +254,10 @@ public:
                     uint8_t temp_edx = byte_993CFC[segmentOffset];
                     if (temp_edx != 0xFF)
                     {
-                        uint16_t previousElementX = floor2(_loc.x, 32) - CoordsDirectionDelta[_loc.direction].x;
-                        uint16_t previousElementY = floor2(_loc.y, 32) - CoordsDirectionDelta[_loc.direction].y;
+                        auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
 
                         TileElement* previousTileElement = map_get_track_element_at_of_type_from_ride(
-                            { previousElementX, previousElementY, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
+                            { previousElementLoc, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
                         if (previousTileElement != nullptr)
                         {
@@ -286,13 +279,13 @@ public:
             case GC_SET_MAZE_TRACK_FILL:
                 if (!_initialPlacement)
                 {
-                    uint16_t previousSegmentX = _loc.x - CoordsDirectionDelta[_loc.direction].x / 2;
-                    uint16_t previousSegmentY = _loc.y - CoordsDirectionDelta[_loc.direction].y / 2;
+                    auto previousSegment = CoordsXY{ _loc.x - CoordsDirectionDelta[_loc.direction].x / 2,
+                                                     _loc.y - CoordsDirectionDelta[_loc.direction].y / 2 };
 
                     tileElement = map_get_track_element_at_of_type_from_ride(
-                        { previousSegmentX, previousSegmentY, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
+                        { previousSegment, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
-                    map_invalidate_tile_full(CoordsXY{ previousSegmentX, previousSegmentY }.ToTileStart());
+                    map_invalidate_tile_full(previousSegment.ToTileStart());
                     if (tileElement == nullptr)
                     {
                         log_error("No surface found");
@@ -301,7 +294,7 @@ public:
                         return res;
                     }
 
-                    uint32_t segmentBit = MazeGetSegmentBit(previousSegmentX, previousSegmentY);
+                    uint32_t segmentBit = MazeGetSegmentBit(previousSegment.x, previousSegment.y);
 
                     tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
                     segmentBit--;
@@ -315,11 +308,10 @@ public:
                         tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
 
                         uint32_t direction1 = byte_993D0C[segmentBit];
-                        uint16_t nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
-                        uint16_t nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
+                        auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
                         TileElement* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
-                            { nextElementX, nextElementY, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
+                            { nextElementLoc, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
 
                         if (tmp_tileElement != nullptr)
                         {
