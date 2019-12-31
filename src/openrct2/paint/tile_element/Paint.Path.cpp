@@ -911,28 +911,28 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         if (staff_is_patrol_area_set(200 + staffType, x, y))
         {
             uint32_t imageId = 2618;
-            int32_t height2 = tile_element->GetBaseZ();
+            int32_t patrolAreaBaseZ = tile_element->GetBaseZ();
             if (tile_element->AsPath()->IsSloped())
             {
                 imageId = 2619 + ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 3);
-                height2 += 16;
+                patrolAreaBaseZ += 16;
             }
 
-            sub_98196C(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, height2 + 2);
+            sub_98196C(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, patrolAreaBaseZ + 2);
         }
     }
 
     if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS)
     {
-        uint16_t height2 = 3 + tile_element->GetBaseZ();
+        uint16_t heightMarkerBaseZ = tile_element->GetBaseZ() + 3;
         if (tile_element->AsPath()->IsSloped())
         {
-            height2 += 8;
+            heightMarkerBaseZ += 8;
         }
-        uint32_t imageId = (SPR_HEIGHT_MARKER_BASE + height2 / 16) | COLOUR_GREY << 19 | IMAGE_TYPE_REMAP;
+        uint32_t imageId = (SPR_HEIGHT_MARKER_BASE + heightMarkerBaseZ / 16) | COLOUR_GREY << 19 | IMAGE_TYPE_REMAP;
         imageId += get_height_marker_offset();
         imageId -= gMapBaseZ;
-        sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2);
+        sub_98196C(session, imageId, 16, 16, 1, 1, 0, heightMarkerBaseZ);
     }
 
     PathSurfaceEntry* footpathEntry = tile_element->AsPath()->GetPathEntry();

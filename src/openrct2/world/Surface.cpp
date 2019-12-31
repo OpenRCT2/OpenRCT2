@@ -121,10 +121,10 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
     // Grass can't grow any further than CLUMPS_2 but this code also cuts grass
     // if there is an object placed on top of it.
 
-    int32_t zLow = GetBaseZ();
-    int32_t zHigh = GetBaseZ() + LAND_HEIGHT_STEP;
+    int32_t baseZ = GetBaseZ();
+    int32_t clearZ = GetBaseZ() + LAND_HEIGHT_STEP;
     if (Slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-        zHigh += LAND_HEIGHT_STEP;
+        clearZ += LAND_HEIGHT_STEP;
 
     // Check objects above grass
     TileElement* tileElementAbove = (TileElement*)this;
@@ -166,9 +166,9 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
             // Grass should not be affected by ghost elements.
             if (tileElementAbove->IsGhost())
                 continue;
-            if (zLow >= tileElementAbove->GetClearanceZ())
+            if (baseZ >= tileElementAbove->GetClearanceZ())
                 continue;
-            if (zHigh < tileElementAbove->GetBaseZ())
+            if (clearZ < tileElementAbove->GetBaseZ())
                 continue;
 
             if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)
