@@ -78,6 +78,7 @@ The following people are not part of the development team, but have been contrib
 * Olivier Wervers (oli414) - Remove unused objects command, various bugfixes
 * Christian Schubert (Osmodium) - Ensuring custom user content folders, incl. open folder.
 * (Xkeeper0) - Improved banner tooltips; multiplayer status in toolbar.
+* Kevin Strehl (bitman2049) - Tile inspector keybindings
 
 ## Bug fixes
 * (halfbro)

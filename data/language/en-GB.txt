@@ -3654,6 +3654,18 @@ STR_6331    :Create Ducks
 STR_6332    :Remove Ducks
 STR_6333    :Increase scale factor
 STR_6334    :Decrease scale factor
+STR_6335    :Tile Inspector: Insert corrupt element
+STR_6336    :Tile Inspector: Copy element
+STR_6337    :Tile Inspector: Paste element
+STR_6338    :Tile Inspector: Delete element
+STR_6339    :Tile Inspector: Move element up
+STR_6340    :Tile Inspector: Move element down
+STR_6341    :Tile Inspector: Increase X coordinate
+STR_6342    :Tile Inspector: Decrease X coordinate
+STR_6343    :Tile Inspector: Increase Y coordinate
+STR_6344    :Tile Inspector: Decrease Y coordinate
+STR_6345    :Tile Inspector: Increase element height
+STR_6346    :Tile Inspector: Decrease element height
 
 #############
 # Scenarios #
