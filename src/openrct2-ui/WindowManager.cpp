@@ -77,10 +77,6 @@ public:
                 return window_map_open();
             case WC_MAPGEN:
                 return window_mapgen_open();
-#ifndef DISABLE_NETWORK
-            case WC_MULTIPLAYER:
-                return window_multiplayer_open();
-#endif
             case WC_MUSIC_CREDITS:
                 return window_music_credits_open();
             case WC_CONSTRUCT_RIDE:
@@ -105,12 +101,6 @@ public:
                 return window_scenery_open();
             case WC_SCENERY_SCATTER:
                 return window_scenery_scatter_open();
-#ifndef DISABLE_NETWORK
-            case WC_SERVER_LIST:
-                return window_server_list_open();
-            case WC_SERVER_START:
-                return window_server_start_open();
-#endif
             case WC_KEYBOARD_SHORTCUT_LIST:
                 return window_shortcut_keys_open();
             case WC_STAFF_LIST:
@@ -136,6 +126,12 @@ public:
             case WC_WATER:
                 return window_water_open();
 #ifndef DISABLE_NETWORK
+            case WC_MULTIPLAYER:
+                return window_multiplayer_open();
+            case WC_SERVER_LIST:
+                return window_server_list_open();
+            case WC_SERVER_START:
+                return window_server_start_open();
             case WC_NETWORK:
                 return window_network_open();
 #endif

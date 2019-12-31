@@ -363,16 +363,13 @@ static void window_multiplayer_set_pressed_tab(rct_window* w)
 
 static void window_multiplayer_groups_show_group_dropdown(rct_window* w, rct_widget* widget)
 {
-    rct_widget* dropdownWidget;
-    int32_t numItems = 0;
     int32_t defaultIndex = -1;
-
-    dropdownWidget = widget - 1;
+    rct_widget* dropdownWidget = widget - 1;
 
     NetworkGroups* networkGroups = network_get_groups();
     auto groups = networkGroups->GetAll(true);
 
-    numItems = static_cast<int32_t>(groups.size());
+    auto numItems = static_cast<int32_t>(groups.size());
 
     window_dropdown_show_text_custom_width(
         w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
@@ -777,7 +774,7 @@ static void window_multiplayer_groups_mouseup(rct_window* w, rct_widgetindex wid
             Guard::Assert(group != nullptr);
 
             const utf8* groupName = group->GetName().c_str();
-            window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, (utf8*)groupName, 32);
+            window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, groupName, 32);
         }
         break;
     }
