@@ -32,8 +32,8 @@ int16_t gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 uint8_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
 uint8_t gClipHeight = 255;
-LocationXY8 gClipSelectionA = { 0, 0 };
-LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
+TileCoordsXY gClipSelectionA = { 0, 0 };
+TileCoordsXY gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
 uint32_t gScenarioTicks;
 uint8_t gCurrentRotation;
 
