@@ -347,7 +347,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         if (footpathCoords.isNull())
             return;
 
-        bool isPatrolAreaSet = staff_is_patrol_area_set(200 + selectedPeepType, footpathCoords.x, footpathCoords.y);
+        bool isPatrolAreaSet = staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(selectedPeepType), footpathCoords);
 
         uint16_t spriteIndex;
         Peep *peep, *closestPeep = nullptr;

@@ -832,6 +832,7 @@ public:
     void UpdateStaff(uint32_t stepsToTake);
     void Tick128UpdateStaff();
     bool IsMechanic() const;
+    bool IsPatrolAreaSet(CoordsXY coords) const;
 
 private:
     void UpdatePatrolling();

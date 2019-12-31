@@ -169,14 +169,6 @@ void staff_update_greyed_patrol_areas()
     }
 }
 
-static bool staff_is_location_in_patrol_area(Peep* peep, int32_t x, int32_t y)
-{
-    // Patrol quads are stored in a bit map (8 patrol quads per byte)
-    // Each patrol quad is 4x4
-    // Therefore there are in total 64 x 64 patrol quads in the 256 x 256 map
-    return staff_is_patrol_area_set(peep->staff_id, x, y);
-}
-
 /**
  *
  *  rct2: 0x006C0905
@@ -191,7 +183,7 @@ bool staff_is_location_in_patrol(Peep* staff, int32_t x, int32_t y)
     if (!(gStaffModes[staff->staff_id] & 2))
         return true;
 
-    return staff_is_location_in_patrol_area(staff, x, y);
+    return staff->AsStaff()->IsPatrolAreaSet({ x, y });
 }
 
 bool staff_is_location_on_patrol_edge(Peep* mechanic, int32_t x, int32_t y)
@@ -386,8 +378,14 @@ void staff_reset_stats()
     }
 }
 
-bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
+static bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
 {
+    // Patrol quads are stored in a bit map (8 patrol quads per byte).
+    // Each patrol quad is 4x4.
+    // Therefore there are in total 64 x 64 patrol quads in the 256 x 256 map.
+    // At the end of the array (after the slots for individual staff members),
+    // there are slots that save the combined patrol area for every staff type.
+
     x = (x & 0x1F80) >> 7;
     y = (y & 0x1F80) >> 1;
 
@@ -395,6 +393,16 @@ bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
     int32_t offset = (x | y) >> 5;
     int32_t bitIndex = (x | y) & 0x1F;
     return gStaffPatrolAreas[peepOffset + offset] & (((uint32_t)1) << bitIndex);
+}
+
+bool Staff::IsPatrolAreaSet(CoordsXY coords) const
+{
+    return staff_is_patrol_area_set(staff_id, coords.x, coords.y);
+}
+
+bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, CoordsXY coords)
+{
+    return staff_is_patrol_area_set(STAFF_MAX_COUNT + type, coords.x, coords.y);
 }
 
 void staff_set_patrol_area(int32_t staffIndex, int32_t x, int32_t y, bool value)

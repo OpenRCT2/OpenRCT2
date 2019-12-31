@@ -1042,15 +1042,15 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
         if (!is_staff_list)
         {
-            Peep* staff = GET_PEEP(staffIndex);
-            if (!staff_is_patrol_area_set(staff->staff_id, x, y))
+            Staff* staff = (GET_PEEP(staffIndex))->AsStaff();
+            if (!staff->IsPatrolAreaSet({ x, y }))
             {
                 patrolColour = COLOUR_GREY;
             }
             staffType = staff->staff_type;
         }
 
-        if (staff_is_patrol_area_set(200 + staffType, x, y))
+        if (staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(staffType), session->MapPosition))
         {
             assert(surfaceShape < std::size(byte_97B444));
 
