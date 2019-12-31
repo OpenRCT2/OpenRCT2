@@ -418,7 +418,7 @@ namespace GameActions
 
             if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && result->Error == GA_ERROR::OK)
             {
-                if (network_get_mode() == NETWORK_MODE_SERVER)
+                if (network_get_mode() != NETWORK_MODE_NONE)
                 {
                     NetworkPlayerId_t playerId = action->GetPlayer();
 
@@ -436,7 +436,7 @@ namespace GameActions
                         network_set_player_last_action_coord(playerId, result->Position);
                     }
                 }
-                else if (network_get_mode() == NETWORK_MODE_NONE)
+                else
                 {
                     bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
