@@ -380,9 +380,11 @@ void staff_reset_stats()
 
 static bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
 {
-    // Patrol quads are stored in a bit map (8 patrol quads per byte)
-    // Each patrol quad is 4x4
-    // Therefore there are in total 64 x 64 patrol quads in the 256 x 256 map
+    // Patrol quads are stored in a bit map (8 patrol quads per byte).
+    // Each patrol quad is 4x4.
+    // Therefore there are in total 64 x 64 patrol quads in the 256 x 256 map.
+    // At the end of the array (after the slots for individual staff members),
+    // there are slots that save the combined patrol area for every staff type.
 
     x = (x & 0x1F80) >> 7;
     y = (y & 0x1F80) >> 1;

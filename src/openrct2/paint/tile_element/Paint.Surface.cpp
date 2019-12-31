@@ -1050,7 +1050,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             staffType = staff->staff_type;
         }
 
-        if (staff_is_patrol_area_set_for_type((STAFF_TYPE)staffType, session->MapPosition))
+        if (staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(staffType), session->MapPosition))
         {
             assert(surfaceShape < std::size(byte_97B444));
 

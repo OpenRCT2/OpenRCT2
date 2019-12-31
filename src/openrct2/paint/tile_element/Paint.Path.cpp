@@ -908,7 +908,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
             staffType = staff->staff_type;
         }
 
-        if (staff_is_patrol_area_set_for_type((STAFF_TYPE)staffType, session->MapPosition))
+        if (staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(staffType), session->MapPosition))
         {
             uint32_t imageId = 2618;
             int32_t height2 = tile_element->GetBaseZ();
