@@ -1253,7 +1253,7 @@ static void sub_6E1F34(
             int16_t maxClearZ = 0;
             for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; ++i)
             {
-                maxClearZ = std::max(maxClearZ, static_cast<int16_t>(scenery_entry->large_scenery.tiles[i].z_clearance));
+                maxClearZ = std::max<int16_t>(maxClearZ, scenery_entry->large_scenery.tiles[i].z_clearance);
             }
             maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
         }
