@@ -1175,7 +1175,8 @@ void ride_clear_blocked_tiles(Ride* ride)
                     if (element->GetType() == TILE_ELEMENT_TYPE_TRACK && element->AsTrack()->GetRideIndex() == ride->id)
                     {
                         // Unblock footpath element that is at same position
-                        auto footpathElement = map_get_footpath_element(x, y, element->base_height);
+                        auto footpathElement = map_get_footpath_element(
+                            TileCoordsXYZ{ x, y, element->base_height }.ToCoordsXYZ());
                         if (footpathElement != nullptr)
                         {
                             footpathElement->AsPath()->SetIsBlockedByVehicle(false);
