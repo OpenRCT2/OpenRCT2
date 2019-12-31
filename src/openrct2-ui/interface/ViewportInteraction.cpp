@@ -670,7 +670,7 @@ CoordsXY sub_68A15E(ScreenCoordsXY screenCoords)
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
-        initialPos.x = LOCATION_NULL;
+        initialPos.setNull();
         return initialPos;
     }
 

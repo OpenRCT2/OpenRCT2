@@ -77,7 +77,7 @@ void rct_money_effect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, 
  */
 void rct_money_effect::Create(money32 value, CoordsXYZ loc)
 {
-    if (loc.x == LOCATION_NULL)
+    if (loc.isNull())
     {
         // If game actions return no valid location of the action we can not use the screen
         // coordinates as every client will have different ones.

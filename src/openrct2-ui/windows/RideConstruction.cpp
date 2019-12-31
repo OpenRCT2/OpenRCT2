@@ -2174,7 +2174,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
     if (!_trackPlaceCtrlState)
     {
         mapCoords = sub_68A15E(screenCoords);
-        if (mapCoords.x == LOCATION_NULL)
+        if (mapCoords.isNull())
             return std::nullopt;
 
         _trackPlaceZ = 0;
@@ -3578,7 +3578,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
                 break;
 
             _currentTrackBegin.z -= 8;
-            if (_currentTrackBegin.z & LOCATION_NULL)
+            if (_currentTrackBegin.z < 0)
                 break;
 
             if (bx >= 0)
@@ -3605,7 +3605,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
             break;
 
         _currentTrackBegin.z -= 8;
-        if (_currentTrackBegin.z & LOCATION_NULL)
+        if (_currentTrackBegin.z < 0)
             break;
 
         if (bx >= 0)

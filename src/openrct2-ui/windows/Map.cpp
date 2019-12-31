@@ -1194,13 +1194,13 @@ static CoordsXYZD place_park_entrance_get_map_position(ScreenCoordsXY screenCoor
     CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, INVALID_DIRECTION };
     const CoordsXY mapCoords = sub_68A15E(screenCoords);
     parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, INVALID_DIRECTION };
-    if (parkEntranceMapPosition.x == LOCATION_NULL)
+    if (parkEntranceMapPosition.isNull())
         return parkEntranceMapPosition;
 
     auto surfaceElement = map_get_surface_element_at(mapCoords);
     if (surfaceElement == nullptr)
     {
-        parkEntranceMapPosition.x = LOCATION_NULL;
+        parkEntranceMapPosition.setNull();
         return parkEntranceMapPosition;
     }
 
@@ -1235,7 +1235,7 @@ static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoor
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
-    if (parkEntrancePosition.x == LOCATION_NULL)
+    if (parkEntrancePosition.isNull())
     {
         park_entrance_remove_ghost();
         return;
@@ -1309,7 +1309,7 @@ static void window_map_place_park_entrance_tool_down(ScreenCoordsXY screenCoords
     park_entrance_remove_ghost();
 
     CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
-    if (parkEntrancePosition.x != LOCATION_NULL)
+    if (!parkEntrancePosition.isNull())
     {
         auto gameAction = PlaceParkEntranceAction(parkEntrancePosition);
         auto result = GameActions::Execute(&gameAction);
