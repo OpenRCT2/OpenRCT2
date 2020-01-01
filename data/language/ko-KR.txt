@@ -803,7 +803,7 @@ STR_1418    :{WINDOW_COLOUR_2}측면 중력
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}{POP16}{STRINGID}을 기준으로 데이터 기록 중
+STR_1422    :{SMALLFONT}{BLACK}{POP16}{STRINGID} 기준으로 데이터 기록 중
 STR_1423    :{SMALLFONT}{BLACK}대기 줄
 STR_1424    :{SMALLFONT}{BLACK}보도
 STR_1425    :보도
@@ -3662,6 +3662,18 @@ STR_6331    :오리 생성하기
 STR_6332    :오리 제거하기
 STR_6333    :창 크기 증가
 STR_6334    :창 크기 감소
+STR_6335    :칸 조사 창: 오류 요소 삽입
+STR_6336    :칸 조사 창: 요소 복사
+STR_6337    :칸 조사 창: 요소 붙여넣기
+STR_6338    :칸 조사 창: 요소 삭제
+STR_6339    :칸 조사 창: 요소 위로 이동
+STR_6340    :칸 조사 창: 요소 아래로 이동
+STR_6341    :칸 조사 창: X 좌표 증가
+STR_6342    :칸 조사 창: X 좌표 감소
+STR_6343    :칸 조사 창: Y 좌표 증가
+STR_6344    :칸 조사 창: Y 좌표 감소
+STR_6345    :칸 조사 창: 요소 높이 증가
+STR_6346    :칸 조사 창: 요소 높이 감소
 
 
 #############
