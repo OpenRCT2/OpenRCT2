@@ -111,14 +111,14 @@ static bool entrance_has_direction(TileElement* tileElement, int32_t direction)
     return entrance_get_directions(tileElement) & (1 << (direction & 3));
 }
 
-TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z)
+TileElement* map_get_footpath_element(CoordsXYZ coords)
 {
-    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+    TileElement* tileElement = map_get_first_element_at(coords);
     do
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->GetBaseZ() == coords.z)
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
 

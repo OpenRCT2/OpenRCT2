@@ -413,10 +413,10 @@ private:
         {
             auto direction = pathElement->GetSlopeDirection();
             int32_t z = pathElement->GetBaseZ();
-            wall_remove_intersecting_walls({ _loc, z, z + (6 * 8) }, direction_reverse(direction));
-            wall_remove_intersecting_walls({ _loc, z, z + (6 * 8) }, direction);
+            wall_remove_intersecting_walls({ _loc, z, z + (6 * COORDS_Z_STEP) }, direction_reverse(direction));
+            wall_remove_intersecting_walls({ _loc, z, z + (6 * COORDS_Z_STEP) }, direction);
             // Removing walls may have made the pointer invalid, so find it again
-            auto tileElement = map_get_footpath_element(_loc.x / 32, _loc.y / 32, z);
+            auto tileElement = map_get_footpath_element(CoordsXYZ(_loc, z));
             if (tileElement == nullptr)
             {
                 log_error("Something went wrong. Could not refind footpath.");

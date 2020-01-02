@@ -3615,14 +3615,12 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
     if (_autoRotatingShop && _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE
         && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
     {
-        TileElement* pathsByDir[4];
-        constexpr TileCoordsXY DirOffsets[4] = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
+        TileElement* pathsByDir[NumOrthogonalDirections];
 
         bool keepOrientation = false;
-        for (int8_t i = 0; i < 4; i++)
+        for (int8_t i = 0; i < NumOrthogonalDirections; i++)
         {
-            pathsByDir[i] = map_get_footpath_element(
-                (mapCoords->x >> 5) + DirOffsets[i].x, (mapCoords->y >> 5) + DirOffsets[i].y, z >> 3);
+            pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z });
 
             if (pathsByDir[i] && (pathsByDir[i])->AsPath()->IsSloped() && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
             {
@@ -3632,8 +3630,7 @@ void ride_construction_toolupdate_construct(ScreenCoordsXY screenCoords)
             // Sloped path on the level below
             if (!pathsByDir[i])
             {
-                pathsByDir[i] = map_get_footpath_element(
-                    (mapCoords->x >> 5) + DirOffsets[i].x, (mapCoords->y >> 5) + DirOffsets[i].y, (z >> 3) - 2);
+                pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
 
                 if (pathsByDir[i]
                     && (!(pathsByDir[i])->AsPath()->IsSloped()

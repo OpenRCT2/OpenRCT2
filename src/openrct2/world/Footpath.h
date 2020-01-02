@@ -174,7 +174,7 @@ extern const CoordsXY DirectionOffsets[NumOrthogonalDirections];
 extern const LocationXY16 BinUseOffsets[NumOrthogonalDirections];
 extern const LocationXY16 BenchUseOffsets[NumOrthogonalDirections * 2];
 
-TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z);
+TileElement* map_get_footpath_element(CoordsXYZ coords);
 struct PathElement;
 PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope);
 void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z);
