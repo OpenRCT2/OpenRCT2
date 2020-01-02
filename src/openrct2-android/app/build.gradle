@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId 'website.openrct2'
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
 
         versionCode 2
@@ -94,6 +94,14 @@ dependencies {
     implementation 'commons-io:commons-io:2.6'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.gms:play-services-analytics:17.0.0'
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:deprecation"
+        }
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
