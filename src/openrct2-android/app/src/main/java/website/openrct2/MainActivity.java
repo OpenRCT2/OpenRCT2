@@ -8,9 +8,9 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startGame() {
-        copyAssets();
+        copyAssets(); // TODO Don't copy/enumerate assets on every startup
         Intent intent = new Intent(this, GameActivity.class);
         if (getIntent().hasExtra("commandLineArgs")) {
             intent.putExtra("commandLineArgs", getIntent().getStringArrayExtra("commandLineArgs"));
@@ -155,10 +155,13 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    // TODO Don't copy/enumerate assets on every startup
+    // When building, ensure OpenRCT2 assets are inside their own directory within the APK assets,
+    // so that we do not attempt to copy files out of the standard Android asset folders - webkit, etc.
     private void copyAssets() {
         File dataDir = new File("/sdcard/openrct2/");
         try {
-            copyAsset(getAssets(), "data", dataDir, "");
+            copyAsset(getAssets(), "openrct2", dataDir, "");
         } catch (IOException e) {
             Log.e(TAG, "Error extracting files", e);
             return;
@@ -167,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         assetsCopied = true;
     }
 
+    // srcPath cannot be the empty string
     private void copyAsset(AssetManager assets, String srcPath, File dataDir, String destPath) throws IOException {
         String[] list = assets.list(srcPath);
 
@@ -188,7 +192,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for (String fileName : list) {
-            copyAsset(assets, srcPath + File.separator + fileName, dataDir, destPath + File.separator + fileName);
+            // This ternary expression makes sure that this string does not begin with a slash
+            String destination = destPath + (destPath.equals("") ? "" : File.separator) + fileName;
+            copyAsset(assets, srcPath + File.separator + fileName, dataDir, destination);
         }
     }
 

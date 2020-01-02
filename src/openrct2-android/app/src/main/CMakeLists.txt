@@ -51,9 +51,18 @@ ExternalProject_Add(libs
     LOG_INSTALL 1
 )
 
+# Files must be copied individually as the old Windows console does not support wildcards in the copy command
+# Doing multiple individual commands looks "less bad" than one massive line
 add_custom_command(TARGET libs POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/*.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+#    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/*.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libcrypto.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libfreetype.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libjansson.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libpng16.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libSDL2-2.0.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libspeexdsp.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libssl.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
 add_library(freetype SHARED IMPORTED)
@@ -130,12 +139,13 @@ include_directories("${CMAKE_BINARY_DIR}/libs/include/SDL2")
 # now build app's shared lib
 include_directories(./ndk_helper
                     ${ANDROID_NDK}/sources/android/cpufeatures)
-add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
+add_definitions(-DDISABLE_HTTP -DDISABLE_DISCORD_RPC -DDISABLE_HTTP_TWITCH -DDISABLE_NETWORK -DDISABLE_TWITCH -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
 
 # Fix SpeexDSP compilation
 add_definitions(-DHAVE_STDINT_H)
 
-set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Werror -Wundef -Wmissing-declarations -Winit-self -Wall -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
+# -Werror -Wall
+set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-aliasing -Wundef -Wmissing-declarations -Winit-self  -Wno-unknown-pragmas -Wno-unused-function -Wno-missing-braces ")
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -Wno-comment -Wshadow  -Wmissing-declarations -Wnonnull")
 set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fPIC")
 
@@ -165,16 +175,13 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${ORCT2_ROOT}/src/openrct2-cli/*.hpp")
 
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
-target_link_libraries(openrct2
-                        android log dl z SDL2
-                        png jansson icu icuuc icudata ssl crypto
-                      )
+target_link_libraries(openrct2 android stdc++ log dl z SDL2 png jansson icu icuuc icudata ssl crypto)
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
-add_executable(openrct2-cli ${OPENRCT2_CLI_SOURCES})
+target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main speexdsp)
 
-target_link_libraries(openrct2-ui openrct2 GLESv1_CM GLESv2 SDL2main speexdsp)
-target_link_libraries(openrct2-cli openrct2)
+add_executable(openrct2-cli ${OPENRCT2_CLI_SOURCES})
+target_link_libraries(openrct2-cli openrct2 android stdc++ GLESv1_CM GLESv2)
 
 target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src")
 target_include_directories(openrct2-cli PRIVATE "${ORCT2_ROOT}/src")
