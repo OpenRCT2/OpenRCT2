@@ -19,7 +19,7 @@
 
 #define RCT2_MAX_STAFF 200
 #define RCT2_MAX_BANNERS_IN_PARK 250
-#define RCT2_MAX_VEHICLES_PER_RIDE 32
+#define RCT2_MAX_VEHICLES_PER_RIDE 31
 #define RCT2_MAX_CARS_PER_TRAIN 32
 #define RCT2_MAX_CATEGORIES_PER_RIDE 2
 #define RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
@@ -86,7 +86,7 @@ struct rct2_ride
     LocationXY8 exits[RCT12_MAX_STATIONS_PER_RIDE];           // 0x072
     uint16_t last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE]; // 0x07A
     uint8_t pad_082[RCT12_MAX_STATIONS_PER_RIDE];  // 0x082, Used to be number of peeps in queue in RCT1, but this has moved.
-    uint16_t vehicles[RCT2_MAX_VEHICLES_PER_RIDE]; // 0x086, Points to the first car in the train
+    uint16_t vehicles[RCT2_MAX_VEHICLES_PER_RIDE + 1]; // 0x086, Points to the first car in the train
     uint8_t depart_flags;                          // 0x0C6
 
     // Not sure if these should be uint or sint.

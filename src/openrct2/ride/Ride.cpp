@@ -1031,7 +1031,7 @@ static void ride_remove_vehicles(Ride* ride)
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
         ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
-        for (size_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
+        for (size_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
         {
             uint16_t spriteIndex = ride->vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL)
@@ -3109,10 +3109,7 @@ vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
     vehicle_colour result;
 
     // Prevent indexing array out of bounds
-    if (vehicleIndex > 31)
-    {
-        vehicleIndex = 31;
-    }
+    vehicleIndex = std::min(vehicleIndex, MAX_CARS_PER_TRAIN);
 
     result.main = ride->vehicle_colours[vehicleIndex].Body;
     result.additional_1 = ride->vehicle_colours[vehicleIndex].Trim;
@@ -4643,7 +4640,7 @@ static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int
 
         // Add train to ride vehicle list
         move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_VEHICLE_HEAD);
-        for (int32_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
+        for (int32_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
         {
             if (ride->vehicles[i] == SPRITE_INDEX_NULL)
             {
@@ -6499,7 +6496,7 @@ void ride_update_vehicle_colours(Ride* ride)
         gfx_invalidate_screen();
     }
 
-    for (int32_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
+    for (int32_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
     {
         int32_t carIndex = 0;
         uint16_t spriteIndex = ride->vehicles[i];
@@ -7531,7 +7528,7 @@ void fix_invalid_vehicle_sprite_sizes()
 {
     for (const auto& ride : GetRideManager())
     {
-        for (uint16_t j = 0; j < MAX_VEHICLES_PER_RIDE; j++)
+        for (uint16_t j = 0; j <= MAX_VEHICLES_PER_RIDE; j++)
         {
             uint16_t rideSpriteIndex = ride.vehicles[j];
             while (rideSpriteIndex != SPRITE_INDEX_NULL)

@@ -569,7 +569,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
         dst->queue_length[i] = src->stations[i].QueueLength;
     }
 
-    for (uint8_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)
+    for (uint8_t i = 0; i <= RCT2_MAX_VEHICLES_PER_RIDE; i++)
     {
         dst->vehicles[i] = src->vehicles[i];
     }
