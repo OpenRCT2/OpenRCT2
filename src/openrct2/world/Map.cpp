@@ -1191,65 +1191,80 @@ TileElement* tile_element_insert(const TileCoordsXYZ& loc, int32_t occupiedQuadr
     return insertedElement;
 }
 
+class ConstructClearResult final : public GameActionResult
+{
+public:
+    uint8_t GroundFlags{ 0 };
+};
+
 /**
  *
  *  rct2: 0x0068BB18
  */
-void map_obstruction_set_error_text(TileElement* tileElement)
+void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& res)
 {
-    rct_string_id errorStringId;
     Ride* ride;
     rct_scenery_entry* sceneryEntry;
 
-    errorStringId = STR_OBJECT_IN_THE_WAY;
+    res.ErrorMessage = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->GetType())
     {
         case TILE_ELEMENT_TYPE_SURFACE:
-            errorStringId = STR_RAISE_OR_LOWER_LAND_FIRST;
+            res.ErrorMessage = STR_RAISE_OR_LOWER_LAND_FIRST;
             break;
         case TILE_ELEMENT_TYPE_PATH:
-            errorStringId = STR_FOOTPATH_IN_THE_WAY;
+            res.ErrorMessage = STR_FOOTPATH_IN_THE_WAY;
             break;
         case TILE_ELEMENT_TYPE_TRACK:
             ride = get_ride(tileElement->AsTrack()->GetRideIndex());
             if (ride != nullptr)
             {
-                errorStringId = STR_X_IN_THE_WAY;
-                ride->FormatNameTo(gCommonFormatArgs);
+                res.ErrorMessage = STR_X_IN_THE_WAY;
+                ride->FormatNameTo(res.ErrorMessageArgs.data());
             }
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-            errorStringId = STR_X_IN_THE_WAY;
-            set_format_arg(0, rct_string_id, sceneryEntry->name);
+            res.ErrorMessage = STR_X_IN_THE_WAY;
+            set_format_arg<rct_string_id>(res.ErrorMessageArgs.data(), 0, sceneryEntry->name);
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
             switch (tileElement->AsEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                    errorStringId = STR_RIDE_ENTRANCE_IN_THE_WAY;
+                    res.ErrorMessage = STR_RIDE_ENTRANCE_IN_THE_WAY;
                     break;
                 case ENTRANCE_TYPE_RIDE_EXIT:
-                    errorStringId = STR_RIDE_EXIT_IN_THE_WAY;
+                    res.ErrorMessage = STR_RIDE_EXIT_IN_THE_WAY;
                     break;
                 case ENTRANCE_TYPE_PARK_ENTRANCE:
-                    errorStringId = STR_PARK_ENTRANCE_IN_THE_WAY;
+                    res.ErrorMessage = STR_PARK_ENTRANCE_IN_THE_WAY;
                     break;
             }
             break;
         case TILE_ELEMENT_TYPE_WALL:
             sceneryEntry = tileElement->AsWall()->GetEntry();
-            errorStringId = STR_X_IN_THE_WAY;
-            set_format_arg(0, rct_string_id, sceneryEntry->name);
+            res.ErrorMessage = STR_X_IN_THE_WAY;
+            set_format_arg<rct_string_id>(res.ErrorMessageArgs.data(), 0, sceneryEntry->name);
             break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            errorStringId = STR_X_IN_THE_WAY;
-            set_format_arg(0, rct_string_id, sceneryEntry->name);
+            res.ErrorMessage = STR_X_IN_THE_WAY;
+            set_format_arg<rct_string_id>(res.ErrorMessageArgs.data(), 0, sceneryEntry->name);
             break;
     }
+}
 
-    gGameCommandErrorText = errorStringId;
+bool map_can_construct_with_clear_at(
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
+    uint8_t crossingMode)
+{
+    GameActionResult::Ptr res = map_can_construct_with_clear_at(pos, clearFunc, quarterTile, flags, crossingMode);
+    gGameCommandErrorText = res->ErrorMessage;
+    std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
+    *price = res->Cost;
+    gMapGroundFlags = dynamic_cast<ConstructClearResult*>(res.get())->GroundFlags;
+    return res->Error == GA_ERROR::OK;
 }
 
 /**
@@ -1262,30 +1277,35 @@ void map_obstruction_set_error_text(TileElement* tileElement)
  *  ebp = clearFunc
  *  bl = bl
  */
-bool map_can_construct_with_clear_at(
-    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
-    uint8_t crossingMode)
+GameActionResult::Ptr map_can_construct_with_clear_at(
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode)
 {
+    auto res = std::make_unique<ConstructClearResult>();
     int32_t al, ah, bh, cl, ch, water_height;
     al = ah = bh = cl = ch = water_height = 0;
     uint8_t slope = 0;
 
-    gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
+    res->GroundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
     if (pos.x >= gMapSizeUnits || pos.y >= gMapSizeUnits || pos.x < 32 || pos.y < 32)
     {
-        gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
-        return false;
+        res->Error == GA_ERROR::INVALID_PARAMETERS;
+        res->ErrorMessage = STR_OFF_EDGE_OF_MAP;
+        return res;
     }
 
     if (gCheatsDisableClearanceChecks)
     {
-        return true;
+        return res;
     }
 
     TileElement* tileElement = map_get_first_element_at(pos);
     if (tileElement == nullptr)
+    {
+        res->Error == GA_ERROR::UNKNOWN;
+        res->ErrorMessage = 0;
         return false;
+    }
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
@@ -1303,7 +1323,7 @@ bool map_can_construct_with_clear_at(
         water_height = tileElement->AsSurface()->GetWaterHeight() * 2 * 8;
         if (water_height && water_height > pos.baseZ && tileElement->GetBaseZ() < pos.clearanceZ)
         {
-            gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
+            res->GroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < pos.clearanceZ)
             {
                 goto loc_68BAE6;
@@ -1312,13 +1332,14 @@ bool map_can_construct_with_clear_at(
     loc_68B9B7:
         if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
         {
-            al = pos.clearanceZ / 8 - tileElement->base_height;
-            if (al >= 0)
+            auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
+            if (heightFromGround >= 0)
             {
-                if (al > 18)
+                if (heightFromGround > (18 * 8))
                 {
-                    gGameCommandErrorText = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
-                    return false;
+                    res->Error = GA_ERROR::DISALLOWED;
+                    res->ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
+                    return res;
                 }
             }
         }
@@ -1335,8 +1356,8 @@ bool map_can_construct_with_clear_at(
             if (tileElement->GetBaseZ() >= pos.clearanceZ)
             {
                 // loc_68BA81
-                gMapGroundFlags |= ELEMENT_IS_UNDERGROUND;
-                gMapGroundFlags &= ~ELEMENT_IS_ABOVE_GROUND;
+                res->GroundFlags |= ELEMENT_IS_UNDERGROUND;
+                res->GroundFlags &= ~ELEMENT_IS_ABOVE_GROUND;
             }
             else
             {
@@ -1384,7 +1405,7 @@ bool map_can_construct_with_clear_at(
             loc_68BABC:
                 if (clearFunc != nullptr)
                 {
-                    if (!clearFunc(&tileElement, pos, flags, price))
+                    if (!clearFunc(&tileElement, pos, flags, &res->Cost))
                     {
                         continue;
                     }
@@ -1411,27 +1432,28 @@ bool map_can_construct_with_clear_at(
 
                 if (tileElement != nullptr)
                 {
-                    map_obstruction_set_error_text(tileElement);
+                    map_obstruction_set_error_text(tileElement, *res);
                 }
-                return false;
+                return res;
 
             loc_68BAE6:
                 if (clearFunc != nullptr)
                 {
-                    if (!clearFunc(&tileElement, pos, flags, price))
+                    if (!clearFunc(&tileElement, pos, flags, &res->Cost))
                     {
                         goto loc_68B9B7;
                     }
                 }
                 if (tileElement != nullptr)
                 {
-                    gGameCommandErrorText = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
+                    res->Error = GA_ERROR::NO_CLEARANCE;
+                    res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                 }
-                return false;
+                return res;
             }
         }
     } while (!(tileElement++)->IsLastForTile());
-    return true;
+    return res;
 }
 
 /**

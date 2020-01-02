@@ -85,6 +85,12 @@ extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
     std::memcpy(args + offset, &value, size);
 }
 
+template<typename T> void constexpr set_format_arg(uint8_t* args, size_t offset, uintptr_t value)
+{
+    static_assert(sizeof(T) <= sizeof(uintptr_t), "Type too large");
+    set_format_arg_body(args, offset, value, sizeof(T));
+}
+
 #define set_format_arg(offset, type, value)                                                                                    \
     do                                                                                                                         \
     {                                                                                                                          \
