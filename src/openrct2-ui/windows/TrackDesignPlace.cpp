@@ -391,6 +391,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
 
     // Unable to build track
     audio_play_sound_at_location(SoundId::Error, trackLoc);
+    std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
     context_show_error(res->ErrorTitle, res->ErrorMessage);
 }
 

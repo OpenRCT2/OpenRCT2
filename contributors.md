@@ -137,6 +137,7 @@ The following people are not part of the development team, but have been contrib
 * Joseph Atkins-Turkish (Spacerat)
 * Tulio Paschoalin Leao (tupaschoal)
 * Denis Khabenkov (kodmord)
+* Kevin Laframboise (klaframboise)
 
 ## Toolchain
 * (Balletie) - macOS
