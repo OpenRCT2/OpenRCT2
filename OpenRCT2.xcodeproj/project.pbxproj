@@ -4456,7 +4456,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = website.openrct2.OpenRCT2;
+				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -4499,7 +4499,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = website.openrct2.OpenRCT2;
+				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -5,7 +5,7 @@ android {
     buildToolsVersion '29.0.2'
 
     defaultConfig {
-        applicationId 'website.openrct2'
+        applicationId 'io.openrct2'
         minSdkVersion 19
         targetSdkVersion 29
 
