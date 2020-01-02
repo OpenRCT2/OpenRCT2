@@ -916,8 +916,8 @@ bool rct_vehicle::SoundCanPlay() const
  */
 uint16_t rct_vehicle::GetSoundPriority() const
 {
-    int32_t mass = get_train_mass(this);
-    int32_t result = mass + (std::abs(velocity) >> 13);
+    int32_t trainMass = get_train_mass(this);
+    int32_t result = trainMass + (std::abs(velocity) >> 13);
     rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[0];
 
     while (vehicle_sound->id != sprite_index)
