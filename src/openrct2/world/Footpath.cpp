@@ -656,12 +656,12 @@ static void neighbour_list_sort(rct_neighbour_list* neighbourList)
     qsort(neighbourList->items, neighbourList->count, sizeof(rct_neighbour), rct_neighbour_compare);
 }
 
-static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
+static TileElement* footpath_get_element(const CoordsXYRangedZ& footpathPos, int32_t direction)
 {
     TileElement* tileElement;
     int32_t slope;
 
-    tileElement = map_get_first_element_at({ x, y });
+    tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -669,7 +669,7 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        if (z1 == tileElement->base_height)
+        if (footpathPos.clearanceZ == tileElement->GetBaseZ())
         {
             if (tileElement->AsPath()->IsSloped())
             {
@@ -679,7 +679,7 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
             }
             return tileElement;
         }
-        if (z0 == tileElement->base_height)
+        if (footpathPos.baseZ == tileElement->GetBaseZ())
         {
             if (!tileElement->AsPath()->IsSloped())
                 break;
@@ -715,24 +715,23 @@ static bool footpath_reconnect_queue_to_path(
             return false;
     }
 
-    int32_t z = tileElement->base_height;
-    TileElement* otherTileElement = footpath_get_element(targetQueuePos.x, targetQueuePos.y, z - 2, z, direction);
-    if (otherTileElement != nullptr && !otherTileElement->AsPath()->IsQueue())
+    int32_t z = tileElement->GetBaseZ();
+    TileElement* targetFootpathElement = footpath_get_element({ targetQueuePos, z - LAND_HEIGHT_STEP, z }, direction);
+    if (targetFootpathElement != nullptr && !targetFootpathElement->AsPath()->IsQueue())
     {
+        auto targetQueueElement = targetFootpathElement->AsPath();
         tileElement->AsPath()->SetSlopeDirection(0);
         if (action > 0)
         {
             tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() & ~(1 << direction));
-            otherTileElement->AsPath()->SetEdges(
-                otherTileElement->AsPath()->GetEdges() & ~(1 << (direction_reverse(direction) & 3)));
+            targetQueueElement->SetEdges(targetQueueElement->GetEdges() & ~(1 << (direction_reverse(direction) & 3)));
             if (action >= 2)
                 tileElement->AsPath()->SetSlopeDirection(direction);
         }
         else if (action < 0)
         {
             tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction));
-            otherTileElement->AsPath()->SetEdges(
-                otherTileElement->AsPath()->GetEdges() | (1 << (direction_reverse(direction) & 3)));
+            targetQueueElement->SetEdges(targetQueueElement->GetEdges() | (1 << (direction_reverse(direction) & 3)));
         }
         if (action != 0)
             map_invalidate_tile_full(targetQueuePos);
