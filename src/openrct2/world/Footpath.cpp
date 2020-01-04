@@ -1285,24 +1285,23 @@ static bool get_next_direction(int32_t edges, int32_t* direction)
  *              (1 << 7): Ignore no entry signs
  */
 static int32_t footpath_is_connected_to_map_edge_recurse(
-    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t level, int32_t distanceFromJunction,
+    const CoordsXYZ& footpathPos, int32_t direction, int32_t flags, int32_t level, int32_t distanceFromJunction,
     int32_t junctionTolerance)
 {
     TileElement* tileElement;
     int32_t edges, slopeDirection;
 
-    x += CoordsDirectionDelta[direction].x;
-    y += CoordsDirectionDelta[direction].y;
+    auto targetPos = CoordsXYZ{ CoordsXY{ footpathPos } + CoordsDirectionDelta[direction], footpathPos.z };
     if (++level > 250)
         return FOOTPATH_SEARCH_TOO_COMPLEX;
 
     // Check if we are at edge of map
-    if (x < 32 || y < 32)
+    if (targetPos.x < COORDS_XY_STEP || targetPos.y < COORDS_XY_STEP)
         return FOOTPATH_SEARCH_SUCCESS;
-    if (x >= gMapSizeUnits || y >= gMapSizeUnits)
+    if (targetPos.x >= gMapSizeUnits || targetPos.y >= gMapSizeUnits)
         return FOOTPATH_SEARCH_SUCCESS;
 
-    tileElement = map_get_first_element_at({ x, y });
+    tileElement = map_get_first_element_at(targetPos);
     if (tileElement == nullptr)
         return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
     do
@@ -1314,10 +1313,10 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
         {
             if (direction_reverse(slopeDirection) != direction)
                 continue;
-            if (tileElement->base_height + 2 != z)
+            if (tileElement->GetBaseZ() + PATH_HEIGHT_STEP != targetPos.z)
                 continue;
         }
-        else if (tileElement->base_height != z)
+        else if (tileElement->GetBaseZ() != targetPos.z)
         {
             continue;
         }
@@ -1332,7 +1331,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
 
         if (flags & (1 << 5))
         {
-            footpath_fix_ownership(x, y);
+            footpath_fix_ownership(targetPos.x, targetPos.y);
         }
         edges = tileElement->AsPath()->GetEdges();
         direction = direction_reverse(direction);
@@ -1367,14 +1366,16 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
 
 searchFromFootpath:
     // Exclude direction we came from
-    z = tileElement->base_height;
+    targetPos.z = tileElement->GetBaseZ();
     edges &= ~(1 << direction);
 
     // Find next direction to go
-    if (!get_next_direction(edges, &direction))
+    int32_t newDirection{};
+    if (!get_next_direction(edges, &newDirection))
     {
         return FOOTPATH_SEARCH_INCOMPLETE;
     }
+    direction = newDirection;
 
     edges &= ~(1 << direction);
     if (edges == 0)
@@ -1382,10 +1383,10 @@ searchFromFootpath:
         // Only possible direction to go
         if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
         {
-            z += 2;
+            targetPos.z += PATH_HEIGHT_STEP;
         }
         return footpath_is_connected_to_map_edge_recurse(
-            x, y, z, direction, flags, level, distanceFromJunction + 1, junctionTolerance);
+            targetPos, direction, flags, level, distanceFromJunction + 1, junctionTolerance);
     }
     else
     {
@@ -1402,17 +1403,19 @@ searchFromFootpath:
 
         do
         {
+            direction = newDirection;
             edges &= ~(1 << direction);
             if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
             {
-                z += 2;
+                targetPos.z += PATH_HEIGHT_STEP;
             }
-            int32_t result = footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, level, 0, junctionTolerance);
+            int32_t result = footpath_is_connected_to_map_edge_recurse(
+                targetPos, direction, flags, level, 0, junctionTolerance);
             if (result == FOOTPATH_SEARCH_SUCCESS)
             {
                 return result;
             }
-        } while (get_next_direction(edges, &direction));
+        } while (get_next_direction(edges, &newDirection));
 
         return FOOTPATH_SEARCH_INCOMPLETE;
     }
@@ -1422,8 +1425,7 @@ searchFromFootpath:
 int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags)
 {
     flags |= (1 << 0);
-    return footpath_is_connected_to_map_edge_recurse(
-        footpathPos.x, footpathPos.y, footpathPos.z / COORDS_Z_STEP, direction, flags, 0, 0, 16);
+    return footpath_is_connected_to_map_edge_recurse(footpathPos, direction, flags, 0, 0, 16);
 }
 
 bool PathElement::IsSloped() const
