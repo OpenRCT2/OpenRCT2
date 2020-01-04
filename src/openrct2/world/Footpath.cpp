@@ -479,14 +479,14 @@ bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction)
     return false;
 }
 
-static PathElement * footpath_connect_corners_get_neighbour(int32_t x, int32_t y, int32_t z, int32_t requireEdges)
+static PathElement* footpath_connect_corners_get_neighbour(const CoordsXYZ& footpathPos, int32_t requireEdges)
 {
-    if (!map_is_location_valid({ x, y }))
+    if (!map_is_location_valid(footpathPos))
     {
         return nullptr;
     }
 
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -496,7 +496,7 @@ static PathElement * footpath_connect_corners_get_neighbour(int32_t x, int32_t y
         auto pathElement = tileElement->AsPath();
         if (pathElement->IsQueue())
             continue;
-        if (tileElement->base_height != z)
+        if (tileElement->GetBaseZ() != footpathPos.z)
             continue;
         if (!(pathElement->GetEdgesAndCorners() & requireEdges))
             continue;
@@ -532,16 +532,14 @@ static void footpath_connect_corners(const CoordsXY& footpathPos, PathElement* i
         int32_t direction = initialDirection;
         auto currentPos = footpathPos + CoordsDirectionDelta[direction];
 
-        tileElements[1] = { footpath_connect_corners_get_neighbour(
-                                currentPos.x, currentPos.y, z, (1 << direction_reverse(direction))),
+        tileElements[1] = { footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << direction_reverse(direction))),
                             currentPos };
         if (tileElements[1].first == nullptr)
             continue;
 
         direction = direction_next(direction);
         currentPos += CoordsDirectionDelta[direction];
-        tileElements[2] = { footpath_connect_corners_get_neighbour(
-                                currentPos.x, currentPos.y, z, (1 << direction_reverse(direction))),
+        tileElements[2] = { footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << direction_reverse(direction))),
                             currentPos };
         if (tileElements[2].first == nullptr)
             continue;
@@ -549,13 +547,12 @@ static void footpath_connect_corners(const CoordsXY& footpathPos, PathElement* i
         direction = direction_next(direction);
         currentPos += CoordsDirectionDelta[direction];
         // First check link to previous tile
-        tileElements[3] = { footpath_connect_corners_get_neighbour(
-                                currentPos.x, currentPos.y, z, (1 << direction_reverse(direction))),
+        tileElements[3] = { footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << direction_reverse(direction))),
                             currentPos };
         if (tileElements[3].first == nullptr)
             continue;
         // Second check link to initial tile
-        tileElements[3] = { footpath_connect_corners_get_neighbour(currentPos.x, currentPos.y, z, (1 << ((direction + 1) & 3))),
+        tileElements[3] = { footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << ((direction + 1) & 3))),
                             currentPos };
         if (tileElements[3].first == nullptr)
             continue;
