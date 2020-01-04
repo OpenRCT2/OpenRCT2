@@ -178,7 +178,7 @@ extern const LocationXY16 BenchUseOffsets[NumOrthogonalDirections * 2];
 TileElement* map_get_footpath_element(CoordsXYZ coords);
 struct PathElement;
 PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope);
-void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z);
+void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
 money32 footpath_remove(CoordsXYZ footpathLoc, int32_t flags);
 money32 footpath_provisional_set(int32_t type, CoordsXYZ footpathLoc, int32_t slope);
 void footpath_provisional_remove();

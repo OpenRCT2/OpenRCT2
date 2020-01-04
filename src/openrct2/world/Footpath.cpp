@@ -421,9 +421,9 @@ void footpath_remove_litter(int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x0069A48B
  */
-void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
+void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
 {
-    uint16_t spriteIndex = sprite_get_first_in_quadrant(x, y);
+    uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
         Peep* peep = &get_sprite(spriteIndex)->peep;
@@ -432,7 +432,7 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
         {
             if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING)
             {
-                if (peep->z == z)
+                if (peep->z == footpathPos.z)
                 {
                     peep->SetState(PEEP_STATE_WALKING);
                     peep->destination_x = (peep->x & 0xFFE0) + 16;
@@ -917,7 +917,7 @@ static void loc_6A6D7E(
         }
         if (!(flags & (GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)))
         {
-            footpath_interrupt_peeps(targetPos.x, targetPos.y, tileElement->GetBaseZ());
+            footpath_interrupt_peeps({ targetPos, tileElement->GetBaseZ() });
         }
         map_invalidate_element(targetPos, tileElement);
     }

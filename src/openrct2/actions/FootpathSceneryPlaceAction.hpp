@@ -176,7 +176,7 @@ public:
         }
         else
         {
-            footpath_interrupt_peeps(_loc.x, _loc.y, _loc.z);
+            footpath_interrupt_peeps(_loc);
         }
 
         if ((_pathItemType != 0 && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
