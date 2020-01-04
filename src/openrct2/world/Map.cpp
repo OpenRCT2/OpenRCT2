@@ -1469,11 +1469,12 @@ void map_update_tiles()
             interleaved_xy >>= 1;
         }
 
-        auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+        auto mapPos = TileCoordsXY{ x, y }.ToCoordsXY();
+        auto* surfaceElement = map_get_surface_element_at(mapPos);
         if (surfaceElement != nullptr)
         {
-            surfaceElement->UpdateGrassLength({ x * 32, y * 32 });
-            scenery_update_tile(x * 32, y * 32);
+            surfaceElement->UpdateGrassLength(mapPos);
+            scenery_update_tile(mapPos);
         }
 
         gGrassSceneryTileLoopPosition++;

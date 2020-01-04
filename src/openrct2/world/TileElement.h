@@ -371,7 +371,7 @@ public:
     rct_scenery_entry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
-    void IncreaseAge(int32_t x, int32_t y);
+    void IncreaseAge(const CoordsXY& sceneryPos);
     uint8_t GetSceneryQuadrant() const;
     void SetSceneryQuadrant(uint8_t newQuadrant);
     colour_t GetPrimaryColour() const;
