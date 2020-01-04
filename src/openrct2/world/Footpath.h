@@ -24,6 +24,7 @@ enum
 constexpr auto FootpathMaxHeight = 248;
 constexpr auto FootpathMinHeight = 2;
 constexpr auto PATH_HEIGHT_STEP = 2 * COORDS_Z_STEP;
+constexpr auto PATH_HEIGHT = 4 * COORDS_Z_STEP;
 
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 
@@ -189,7 +190,7 @@ void footpath_bridge_get_info_from_pos(
 void footpath_remove_litter(int32_t x, int32_t y, int32_t z);
 void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
 void footpath_update_queue_chains();
-bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction);
+bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction);
 void footpath_chain_ride_queue(
     ride_id_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, TileElement* tileElement, int32_t direction);
 void footpath_update_path_wide_flags(int32_t x, int32_t y);

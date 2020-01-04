@@ -454,11 +454,11 @@ void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x006E59DC
  */
-bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
+bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction)
 {
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at({ x, y });
+    tileElement = map_get_first_element_at(fencePos);
     if (tileElement == nullptr)
         return false;
     do
@@ -467,9 +467,9 @@ bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t dire
             continue;
         if (tileElement->IsGhost())
             continue;
-        if (z0 >= tileElement->clearance_height)
+        if (fencePos.baseZ >= tileElement->GetClearanceZ())
             continue;
-        if (z1 <= tileElement->base_height)
+        if (fencePos.clearanceZ <= tileElement->GetBaseZ())
             continue;
         if ((tileElement->GetDirection()) != direction)
             continue;
@@ -710,10 +710,10 @@ static bool footpath_reconnect_queue_to_path(int32_t x, int32_t y, TileElement* 
 
     if (action < 0)
     {
-        if (fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction))
+        if (fence_in_the_way({ x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction))
             return false;
 
-        if (fence_in_the_way(x1, y1, tileElement->base_height, tileElement->clearance_height, direction_reverse(direction)))
+        if (fence_in_the_way({ x1, y1, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction_reverse(direction)))
             return false;
     }
 
@@ -876,8 +876,7 @@ static void loc_6A6D7E(
         if (query)
         {
             if (fence_in_the_way(
-                    targetPos.x, targetPos.y, tileElement->base_height, tileElement->clearance_height,
-                    direction_reverse(direction)))
+                    { targetPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction_reverse(direction)))
             {
                 return;
             }
@@ -941,8 +940,7 @@ static void loc_6A6C85(
 {
     if (query
         && fence_in_the_way(
-            tileElementPos.x, tileElementPos.y, tileElementPos.element->base_height, tileElementPos.element->clearance_height,
-            direction))
+            { tileElementPos, tileElementPos.element->GetBaseZ(), tileElementPos.element->GetClearanceZ() }, direction))
         return;
 
     if (tileElementPos.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
