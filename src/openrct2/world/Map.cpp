@@ -1312,14 +1312,11 @@ bool map_can_construct_with_clear_at(
     loc_68B9B7:
         if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
         {
-            auto heightFromGround = pos.clearanceZ / 8 - tileElement->base_height;
-            if (heightFromGround >= 0)
+            auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
+            if (heightFromGround > (18 * COORDS_Z_STEP))
             {
-                if (heightFromGround > 18)
-                {
-                    gGameCommandErrorText = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
-                    return false;
-                }
+                gGameCommandErrorText = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
+                return false;
             }
         }
 
@@ -1340,43 +1337,43 @@ bool map_can_construct_with_clear_at(
             }
             else
             {
-                northZ = tileElement->base_height;
+                northZ = tileElement->GetBaseZ();
                 eastZ = northZ;
                 southZ = northZ;
                 westZ = northZ;
                 slope = tileElement->AsSurface()->GetSlope();
                 if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
                 {
-                    northZ += 2;
+                    northZ += LAND_HEIGHT_STEP;
                     if (slope == (TILE_ELEMENT_SLOPE_S_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
-                        northZ += 2;
+                        northZ += LAND_HEIGHT_STEP;
                 }
                 if (slope & TILE_ELEMENT_SLOPE_E_CORNER_UP)
                 {
-                    eastZ += 2;
+                    eastZ += LAND_HEIGHT_STEP;
                     if (slope == (TILE_ELEMENT_SLOPE_W_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
-                        eastZ += 2;
+                        eastZ += LAND_HEIGHT_STEP;
                 }
                 if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP)
                 {
-                    southZ += 2;
+                    southZ += LAND_HEIGHT_STEP;
                     if (slope == (TILE_ELEMENT_SLOPE_N_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
-                        southZ += 2;
+                        southZ += LAND_HEIGHT_STEP;
                 }
                 if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP)
                 {
-                    westZ += 2;
+                    westZ += LAND_HEIGHT_STEP;
                     if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
-                        westZ += 2;
+                        westZ += LAND_HEIGHT_STEP;
                 }
-                baseHeight = pos.baseZ / 8 + 4;
+                baseHeight = pos.baseZ + (4 * COORDS_Z_STEP);
                 {
                     auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
                     auto zQuarter = quarterTile.GetZQuarterOccupied();
-                    if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || pos.baseZ / 8 >= northZ) && baseHeight >= northZ))
-                        && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || pos.baseZ / 8 >= eastZ) && baseHeight >= eastZ))
-                        && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || pos.baseZ / 8 >= southZ) && baseHeight >= southZ))
-                        && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || pos.baseZ / 8 >= westZ) && baseHeight >= westZ)))
+                    if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || pos.baseZ >= northZ) && baseHeight >= northZ))
+                        && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || pos.baseZ >= eastZ) && baseHeight >= eastZ))
+                        && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || pos.baseZ >= southZ) && baseHeight >= southZ))
+                        && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || pos.baseZ >= westZ) && baseHeight >= westZ)))
                     {
                         continue;
                     }
