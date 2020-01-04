@@ -1767,7 +1767,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
     json_t* jsonProvider = json_object();
     json_object_set_new(jsonProvider, "name", json_string(gConfigNetwork.provider_name.c_str()));
     json_object_set_new(jsonProvider, "email", json_string(gConfigNetwork.provider_email.c_str()));
-    json_object_set_new(jsonProvider, "io", json_string(gConfigNetwork.provider_website.c_str()));
+    json_object_set_new(jsonProvider, "website", json_string(gConfigNetwork.provider_website.c_str()));
     json_object_set_new(obj, "provider", jsonProvider);
 
     packet->WriteString(json_dumps(obj, 0));
@@ -3141,7 +3141,7 @@ void Network::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connect
     {
         ServerProviderName = json_stdstring_value(json_object_get(jsonProvider, "name"));
         ServerProviderEmail = json_stdstring_value(json_object_get(jsonProvider, "email"));
-        ServerProviderWebsite = json_stdstring_value(json_object_get(jsonProvider, "io"));
+        ServerProviderWebsite = json_stdstring_value(json_object_get(jsonProvider, "website"));
     }
     json_decref(root);
 
