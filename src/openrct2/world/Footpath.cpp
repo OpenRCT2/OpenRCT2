@@ -1418,10 +1418,12 @@ searchFromFootpath:
     }
 }
 
-int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags)
+// TODO: Use GAME_COMMAND_FLAGS
+int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags)
 {
     flags |= (1 << 0);
-    return footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, 0, 0, 16);
+    return footpath_is_connected_to_map_edge_recurse(
+        footpathPos.x, footpathPos.y, footpathPos.z / COORDS_Z_STEP, direction, flags, 0, 0, 16);
 }
 
 bool PathElement::IsSloped() const

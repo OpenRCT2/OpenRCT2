@@ -196,7 +196,7 @@ void footpath_chain_ride_queue(
 void footpath_update_path_wide_flags(int32_t x, int32_t y);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
-int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags);
+int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
 void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
 int32_t entrance_get_directions(const TileElement* tileElement);
 
