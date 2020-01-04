@@ -676,7 +676,7 @@ public:
 
             if (!gCheatsDisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
-                footpath_connect_edges(mapLoc.x, mapLoc.y, tileElement, GetFlags());
+                footpath_connect_edges(mapLoc, tileElement, GetFlags());
             }
             map_invalidate_tile_full(mapLoc);
         }

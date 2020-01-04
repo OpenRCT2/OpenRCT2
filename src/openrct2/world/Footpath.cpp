@@ -987,7 +987,7 @@ static void loc_6A6C85(
  *
  *  rct2: 0x006A6C66
  */
-void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int32_t flags)
+void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags)
 {
     rct_neighbour_list neighbourList;
     rct_neighbour neighbour;
@@ -996,10 +996,10 @@ void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int3
 
     neighbour_list_init(&neighbourList);
 
-    footpath_update_queue_entrance_banner(x, y, tileElement);
+    footpath_update_queue_entrance_banner(footpathPos.x, footpathPos.y, tileElement);
     for (Direction direction : ALL_DIRECTIONS)
     {
-        loc_6A6C85(x, y, direction, tileElement, flags, true, &neighbourList);
+        loc_6A6C85(footpathPos.x, footpathPos.y, direction, tileElement, flags, true, &neighbourList);
     }
 
     neighbour_list_sort(&neighbourList);
@@ -1035,12 +1035,12 @@ void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int3
 
     while (neighbour_list_pop(&neighbourList, &neighbour))
     {
-        loc_6A6C85(x, y, neighbour.direction, tileElement, flags, false, nullptr);
+        loc_6A6C85(footpathPos.x, footpathPos.y, neighbour.direction, tileElement, flags, false, nullptr);
     }
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
     {
-        footpath_connect_corners(x, y, tileElement);
+        footpath_connect_corners(footpathPos.x, footpathPos.y, tileElement);
     }
 }
 

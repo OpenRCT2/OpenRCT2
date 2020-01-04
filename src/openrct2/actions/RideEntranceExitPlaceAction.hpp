@@ -224,7 +224,7 @@ public:
             maze_entrance_hedge_removal(_loc.x, _loc.y, tileElement);
         }
 
-        footpath_connect_edges(_loc.x, _loc.y, tileElement, GetFlags());
+        footpath_connect_edges(_loc, tileElement, GetFlags());
         footpath_update_queue_chains();
 
         map_invalidate_tile_full(_loc);

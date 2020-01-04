@@ -171,7 +171,7 @@ public:
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                footpath_connect_edges(entranceLoc.x, entranceLoc.y, newElement, 1);
+                footpath_connect_edges(entranceLoc, newElement, GAME_COMMAND_FLAG_APPLY);
             }
 
             update_park_fences(entranceLoc);

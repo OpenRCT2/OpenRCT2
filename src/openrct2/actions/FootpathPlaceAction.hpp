@@ -426,7 +426,7 @@ private:
         }
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
-            footpath_connect_edges(_loc.x, _loc.y, (TileElement*)pathElement, GetFlags());
+            footpath_connect_edges(_loc, reinterpret_cast<TileElement*>(pathElement), GetFlags());
 
         footpath_update_queue_chains();
         map_invalidate_tile_full(_loc);

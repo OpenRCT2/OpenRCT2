@@ -187,7 +187,7 @@ void footpath_get_coordinates_from_pos(
 void footpath_bridge_get_info_from_pos(
     ScreenCoordsXY screenCoords, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
 void footpath_remove_litter(int32_t x, int32_t y, int32_t z);
-void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int32_t flags);
+void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
 void footpath_update_queue_chains();
 bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction);
 void footpath_chain_ride_queue(

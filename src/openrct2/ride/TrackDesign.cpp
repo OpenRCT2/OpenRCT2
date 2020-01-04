@@ -1205,7 +1205,7 @@ static bool TrackDesignPlaceSceneryElement(
                             | GAME_COMMAND_FLAG_GHOST;
                     }
 
-                    footpath_connect_edges(mapCoord.x, mapCoord.y, reinterpret_cast<TileElement*>(pathElement), flags);
+                    footpath_connect_edges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
                     footpath_update_queue_chains();
                     return true;
                 }
