@@ -2130,7 +2130,7 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, TileElement* pathE
  * @param x x-coordinate in units (not tiles)
  * @param y y-coordinate in units (not tiles)
  */
-void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement)
+void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement)
 {
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
@@ -2140,7 +2140,7 @@ void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement)
             return;
     }
 
-    footpath_update_queue_entrance_banner({ x, y }, tileElement);
+    footpath_update_queue_entrance_banner(footpathPos, tileElement);
 
     bool fixCorners = false;
     for (uint8_t direction = 0; direction < 4; direction++)
@@ -2163,12 +2163,13 @@ void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement)
         // When clearance checks were disabled a neighbouring path can be connected to both the path-ghost and to something
         // else, so before removing edges from neighbouring paths we have to make sure there is nothing else they are connected
         // to.
-        if (!tile_element_wants_path_connection_towards({ x / 32, y / 32, z1, direction }, tileElement))
+        if (!tile_element_wants_path_connection_towards({ TileCoordsXY{ footpathPos }, z1, direction }, tileElement))
         {
             bool isQueue = tileElement->GetType() == TILE_ELEMENT_TYPE_PATH ? tileElement->AsPath()->IsQueue() : false;
             int32_t z0 = z1 - 2;
             footpath_remove_edges_towards(
-                x + CoordsDirectionDelta[direction].x, y + CoordsDirectionDelta[direction].y, z0, z1, direction, isQueue);
+                footpathPos.x + CoordsDirectionDelta[direction].x, footpathPos.y + CoordsDirectionDelta[direction].y, z0, z1,
+                direction, isQueue);
         }
         else
         {
@@ -2180,7 +2181,8 @@ void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement)
     // Only fix corners when needed, to avoid changing corners that have been set for its looks.
     if (fixCorners && tileElement->IsGhost())
     {
-        footpath_fix_corners_around(x / 32, y / 32, tileElement);
+        auto tileFootpathPos = TileCoordsXY{ footpathPos };
+        footpath_fix_corners_around(tileFootpathPos.x, tileFootpathPos.y, tileElement);
     }
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)

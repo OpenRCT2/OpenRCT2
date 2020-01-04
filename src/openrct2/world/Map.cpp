@@ -964,7 +964,7 @@ void map_remove_all_rides()
                 [[fallthrough]];
             case TILE_ELEMENT_TYPE_TRACK:
                 footpath_queue_chain_reset();
-                footpath_remove_edges_at(it.x * 32, it.y * 32, it.element);
+                footpath_remove_edges_at(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
                 tile_element_remove(it.element);
                 tile_element_iterator_restart_for_tile(&it);
                 break;

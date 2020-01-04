@@ -7089,7 +7089,7 @@ void sub_6CB945(Ride* ride)
             {
                 footpath_queue_chain_reset();
                 maze_entrance_hedge_replacement(location.x, location.y, tileElement);
-                footpath_remove_edges_at(location.x, location.y, tileElement);
+                footpath_remove_edges_at(location, tileElement);
                 footpath_update_queue_chains();
                 map_invalidate_tile_full(location);
                 tile_element_remove(tileElement);

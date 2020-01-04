@@ -182,7 +182,7 @@ private:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
         {
-            footpath_remove_edges_at(_loc.x, _loc.y, (TileElement*)pathElement);
+            footpath_remove_edges_at(_loc, reinterpret_cast<TileElement*>(pathElement));
         }
 
         pathElement->SetPathEntryIndex(_type);
@@ -358,7 +358,7 @@ private:
 
             if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
             {
-                footpath_remove_edges_at(_loc.x, _loc.y, tileElement);
+                footpath_remove_edges_at(_loc, tileElement);
             }
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
