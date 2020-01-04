@@ -772,12 +772,11 @@ static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, TileElemen
  *  rct2: 0x006A6D7E
  */
 static void loc_6A6D7E(
-    int32_t initialX, int32_t initialY, int32_t z, int32_t direction, TileElement* initialTileElement, int32_t flags,
-    bool query, rct_neighbour_list* neighbourList)
+    const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, int32_t flags, bool query,
+    rct_neighbour_list* neighbourList)
 {
-    int32_t x = initialX + CoordsDirectionDelta[direction].x;
-    int32_t y = initialY + CoordsDirectionDelta[direction].y;
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge({ x, y }))
+    auto targetPos = CoordsXY{ initialTileElementPos } + CoordsDirectionDelta[direction];
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(targetPos))
     {
         if (query)
         {
@@ -786,7 +785,7 @@ static void loc_6A6D7E(
     }
     else
     {
-        TileElement* tileElement = map_get_first_element_at({ x, y });
+        TileElement* tileElement = map_get_first_element_at(targetPos);
         if (tileElement == nullptr)
             return;
         do
@@ -794,7 +793,7 @@ static void loc_6A6D7E(
             switch (tileElement->GetType())
             {
                 case TILE_ELEMENT_TYPE_PATH:
-                    if (z == tileElement->base_height)
+                    if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
                         if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() != direction)
                         {
@@ -805,7 +804,7 @@ static void loc_6A6D7E(
                             goto loc_6A6F1F;
                         }
                     }
-                    if (z - 2 == tileElement->base_height)
+                    if (initialTileElementPos.z - LAND_HEIGHT_STEP == tileElement->GetBaseZ())
                     {
                         if (!tileElement->AsPath()->IsSloped()
                             || tileElement->AsPath()->GetSlopeDirection() != direction_reverse(direction))
@@ -816,7 +815,7 @@ static void loc_6A6D7E(
                     }
                     break;
                 case TILE_ELEMENT_TYPE_TRACK:
-                    if (z == tileElement->base_height)
+                    if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
                         auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                         if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
@@ -844,7 +843,7 @@ static void loc_6A6D7E(
                     }
                     break;
                 case TILE_ELEMENT_TYPE_ENTRANCE:
-                    if (z == tileElement->base_height)
+                    if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
                         if (entrance_has_direction(tileElement, direction_reverse(direction - tileElement->GetDirection())))
                         {
@@ -872,7 +871,9 @@ static void loc_6A6D7E(
     loc_6A6F1F:
         if (query)
         {
-            if (fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction_reverse(direction)))
+            if (fence_in_the_way(
+                    targetPos.x, targetPos.y, tileElement->base_height, tileElement->clearance_height,
+                    direction_reverse(direction)))
             {
                 return;
             }
@@ -888,7 +889,7 @@ static void loc_6A6D7E(
                 {
                     if ((initialTileElement)->GetType() == TILE_ELEMENT_TYPE_PATH && initialTileElement->AsPath()->IsQueue())
                     {
-                        if (footpath_disconnect_queue_from_path(x, y, tileElement, 0))
+                        if (footpath_disconnect_queue_from_path(targetPos.x, targetPos.y, tileElement, 0))
                         {
                             neighbour_list_push(
                                 neighbourList, 3, direction, tileElement->AsPath()->GetRideIndex(),
@@ -904,7 +905,7 @@ static void loc_6A6D7E(
         }
         else
         {
-            footpath_disconnect_queue_from_path(x, y, tileElement, 1 + ((flags >> 6) & 1));
+            footpath_disconnect_queue_from_path(targetPos.x, targetPos.y, tileElement, 1 + ((flags >> 6) & 1));
             tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction_reverse(direction)));
             if (tileElement->AsPath()->IsQueue())
             {
@@ -913,9 +914,9 @@ static void loc_6A6D7E(
         }
         if (!(flags & (GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)))
         {
-            footpath_interrupt_peeps(x, y, tileElement->GetBaseZ());
+            footpath_interrupt_peeps(targetPos.x, targetPos.y, tileElement->GetBaseZ());
         }
-        map_invalidate_element({ x, y }, tileElement);
+        map_invalidate_element(targetPos, tileElement);
     }
 
 loc_6A6FD2:
@@ -924,63 +925,67 @@ loc_6A6FD2:
         if (!query)
         {
             initialTileElement->AsPath()->SetEdges(initialTileElement->AsPath()->GetEdges() | (1 << direction));
-            map_invalidate_element({ initialX, initialY }, initialTileElement);
+            map_invalidate_element(initialTileElementPos, initialTileElement);
         }
     }
 }
 
+// TODO: Change this into a simple check that validates if the direction should be fully checked with loc_6A6D7E and move the
+// calling of loc_6A6D7E into the parent function.
 static void loc_6A6C85(
-    int32_t x, int32_t y, int32_t direction, TileElement* tileElement, int32_t flags, bool query,
-    rct_neighbour_list* neighbourList)
+    const CoordsXYE& tileElementPos, int32_t direction, int32_t flags, bool query, rct_neighbour_list* neighbourList)
 {
-    if (query && fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction))
+    if (query
+        && fence_in_the_way(
+            tileElementPos.x, tileElementPos.y, tileElementPos.element->base_height, tileElementPos.element->clearance_height,
+            direction))
         return;
 
-    if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+    if (tileElementPos.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        if (!entrance_has_direction(tileElement, direction - tileElement->GetDirection()))
+        if (!entrance_has_direction(tileElementPos.element, direction - tileElementPos.element->GetDirection()))
         {
             return;
         }
     }
 
-    if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+    if (tileElementPos.element->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+        auto ride = get_ride(tileElementPos.element->AsTrack()->GetRideIndex());
         if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             return;
         }
-        const uint8_t trackType = tileElement->AsTrack()->GetTrackType();
-        const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
+        const uint8_t trackType = tileElementPos.element->AsTrack()->GetTrackType();
+        const uint8_t trackSequence = tileElementPos.element->AsTrack()->GetSequenceIndex();
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
         {
             return;
         }
-        uint16_t dx = (direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
+        uint16_t dx = (direction - tileElementPos.element->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx)))
         {
             return;
         }
     }
 
-    int32_t z = tileElement->base_height;
-    if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+    auto pos = CoordsXYZ{ tileElementPos, tileElementPos.element->GetBaseZ() };
+    if (tileElementPos.element->GetType() == TILE_ELEMENT_TYPE_PATH)
     {
-        if (tileElement->AsPath()->IsSloped())
+        if (tileElementPos.element->AsPath()->IsSloped())
         {
-            if ((tileElement->AsPath()->GetSlopeDirection() - direction) & 1)
+            if ((tileElementPos.element->AsPath()->GetSlopeDirection() - direction) & 1)
             {
                 return;
             }
-            if (tileElement->AsPath()->GetSlopeDirection() == direction)
+            if (tileElementPos.element->AsPath()->GetSlopeDirection() == direction)
             {
-                z += 2;
+                pos.z += LAND_HEIGHT_STEP;
             }
         }
     }
 
-    loc_6A6D7E(x, y, z, direction, tileElement, flags, query, neighbourList);
+    loc_6A6D7E(pos, direction, tileElementPos.element, flags, query, neighbourList);
 }
 
 /**
@@ -999,7 +1004,7 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
     footpath_update_queue_entrance_banner(footpathPos.x, footpathPos.y, tileElement);
     for (Direction direction : ALL_DIRECTIONS)
     {
-        loc_6A6C85(footpathPos.x, footpathPos.y, direction, tileElement, flags, true, &neighbourList);
+        loc_6A6C85({ footpathPos, tileElement }, direction, flags, true, &neighbourList);
     }
 
     neighbour_list_sort(&neighbourList);
@@ -1035,7 +1040,7 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
 
     while (neighbour_list_pop(&neighbourList, &neighbour))
     {
-        loc_6A6C85(footpathPos.x, footpathPos.y, neighbour.direction, tileElement, flags, false, nullptr);
+        loc_6A6C85({ footpathPos, tileElement }, neighbour.direction, flags, false, nullptr);
     }
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)

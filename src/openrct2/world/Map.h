@@ -43,9 +43,20 @@ constexpr const int32_t LAND_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 
 typedef CoordsXYZD PeepSpawn;
 
-struct CoordsXYE
+struct CoordsXYE : public CoordsXY
 {
-    int32_t x, y;
+    CoordsXYE() = default;
+    constexpr CoordsXYE(int32_t _x, int32_t _y, TileElement* _e)
+        : CoordsXY(_x, _y)
+        , element(_e)
+    {
+    }
+
+    constexpr CoordsXYE(CoordsXY c, TileElement* _e)
+        : CoordsXY(c)
+        , element(_e)
+    {
+    }
     TileElement* element;
 };
 
