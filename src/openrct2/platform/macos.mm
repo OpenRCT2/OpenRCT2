@@ -23,28 +23,6 @@
 #    include <mach-o/dyld.h>
 #    include <pwd.h>
 
-void macos_disallow_automatic_window_tabbing()
-{
-    @autoreleasepool {
-        if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)])
-        {
-            [NSWindow setAllowsAutomaticWindowTabbing:NO];
-        }
-    }
-}
-
-utf8* macos_str_decomp_to_precomp(utf8* input)
-{
-    @autoreleasepool {
-        if (input == NULL)
-        {
-            return NULL;
-        }
-
-        NSString* inputDecomp = [NSString stringWithUTF8String:input];
-        return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
-    }
-}
 
 #    ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)

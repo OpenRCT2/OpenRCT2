@@ -149,6 +149,16 @@ namespace Platform
 #    endif
         return exePath;
     }
+
+    uintptr_t StrDecompToPrecomp(utf8* input)
+    {
+        return reinterpret_cast<uintptr_t>(input);
+    }
+
+    bool HandleSpecialCommandLineArgument(const char* argument)
+    {
+        return false;
+    }
 } // namespace Platform
 
 #endif

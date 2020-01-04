@@ -701,11 +701,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
     safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
 
     // Draw path text
-#ifdef __APPLE__
-    set_format_arg(0, uintptr_t, (uintptr_t)macos_str_decomp_to_precomp(buffer));
-#else
-    set_format_arg(0, uintptr_t, (uintptr_t)buffer);
-#endif
+    set_format_arg(0, uintptr_t, Platform::StrDecompToPrecomp(buffer));
     gfx_draw_string_left_clipped(dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 4, w->y + 20, w->width - 8);
 
     // Name button text
