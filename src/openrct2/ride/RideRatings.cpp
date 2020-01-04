@@ -28,10 +28,10 @@ enum
 {
     RIDE_RATINGS_STATE_FIND_NEXT_RIDE,
     RIDE_RATINGS_STATE_INITIALISE,
-    RIDE_RATINGS_STATE_2,
+    RIDE_RATINGS_STATE_TRAVERSE_FORWARD,
     RIDE_RATINGS_STATE_CALCULATE,
-    RIDE_RATINGS_STATE_4,
-    RIDE_RATINGS_STATE_5
+    RIDE_RATINGS_STATE_INITIALIZE_BACKWARD,
+    RIDE_RATINGS_STATE_TRAVERSE_BACKWARD
 };
 
 enum
@@ -133,16 +133,16 @@ static void ride_ratings_update_state()
         case RIDE_RATINGS_STATE_INITIALISE:
             ride_ratings_update_state_1();
             break;
-        case RIDE_RATINGS_STATE_2:
+        case RIDE_RATINGS_STATE_TRAVERSE_FORWARD:
             ride_ratings_update_state_2();
             break;
         case RIDE_RATINGS_STATE_CALCULATE:
             ride_ratings_update_state_3();
             break;
-        case RIDE_RATINGS_STATE_4:
+        case RIDE_RATINGS_STATE_INITIALIZE_BACKWARD:
             ride_ratings_update_state_4();
             break;
-        case RIDE_RATINGS_STATE_5:
+        case RIDE_RATINGS_STATE_TRAVERSE_BACKWARD:
             ride_ratings_update_state_5();
             break;
     }
@@ -183,7 +183,7 @@ static void ride_ratings_update_state_1()
     }
     gRideRatingsCalcData.num_brakes = 0;
     gRideRatingsCalcData.num_reversers = 0;
-    gRideRatingsCalcData.state = RIDE_RATINGS_STATE_2;
+    gRideRatingsCalcData.state = RIDE_RATINGS_STATE_TRAVERSE_FORWARD;
     gRideRatingsCalcData.station_flags = 0;
     ride_ratings_begin_proximity_loop();
 }
@@ -219,7 +219,7 @@ static void ride_ratings_update_state_2()
         && gRideRatingsCalcData.proximity_y == gRideRatingsCalcData.cycle_proximity_y
         && gRideRatingsCalcData.proximity_z == gRideRatingsCalcData.cycle_proximity_z)
     {
-        gRideRatingsCalcData.state = RIDE_RATINGS_STATE_4;
+        gRideRatingsCalcData.state = RIDE_RATINGS_STATE_INITIALIZE_BACKWARD;
         return;
     }
 
@@ -255,7 +255,7 @@ static void ride_ratings_update_state_2()
             CoordsXYE nextTrackElement;
             if (!track_block_get_next(&trackElement, &nextTrackElement, nullptr, nullptr))
             {
-                gRideRatingsCalcData.state = RIDE_RATINGS_STATE_4;
+                gRideRatingsCalcData.state = RIDE_RATINGS_STATE_INITIALIZE_BACKWARD;
                 return;
             }
 
@@ -306,7 +306,7 @@ static void ride_ratings_update_state_3()
  */
 static void ride_ratings_update_state_4()
 {
-    gRideRatingsCalcData.state = RIDE_RATINGS_STATE_5;
+    gRideRatingsCalcData.state = RIDE_RATINGS_STATE_TRAVERSE_BACKWARD;
     ride_ratings_begin_proximity_loop();
 }
 
