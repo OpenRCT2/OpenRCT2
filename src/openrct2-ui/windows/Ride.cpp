@@ -1703,7 +1703,7 @@ rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
 
     // Get view index
     int32_t view = 1;
-    for (int32_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
+    for (int32_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
     {
         if (ride->vehicles[i] == headVehicleSpriteIndex)
             break;

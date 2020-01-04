@@ -211,7 +211,7 @@ private:
             }
         }
         // Set remaining vehicles to same colour as first vehicle
-        for (int32_t i = RCT1_MAX_TRAINS_PER_RIDE; i < MAX_VEHICLES_PER_RIDE; i++)
+        for (int32_t i = RCT1_MAX_TRAINS_PER_RIDE; i <= MAX_VEHICLES_PER_RIDE; i++)
         {
             td->vehicle_colours[i] = td->vehicle_colours[0];
             td->vehicle_additional_colour[i] = td->vehicle_additional_colour[0];

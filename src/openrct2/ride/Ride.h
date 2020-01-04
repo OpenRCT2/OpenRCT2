@@ -31,7 +31,7 @@ struct Staff;
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
 #define MAX_VEHICLES_PER_RIDE_ENTRY 4
-#define MAX_VEHICLES_PER_RIDE 32
+#define MAX_VEHICLES_PER_RIDE 31
 #define RIDE_ENTRY_INDEX_NULL 255
 #define NUM_COLOUR_SCHEMES 4
 #define MAX_CATEGORIES_PER_RIDE 2
@@ -228,7 +228,7 @@ struct Ride
     std::string custom_name;
     uint16_t default_name_number;
     TileCoordsXY overall_view;
-    uint16_t vehicles[MAX_VEHICLES_PER_RIDE]; // Points to the first car in the train
+    uint16_t vehicles[MAX_VEHICLES_PER_RIDE + 1]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
     uint8_t num_vehicles;
