@@ -192,7 +192,7 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
 void footpath_update_queue_chains();
 bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction);
 void footpath_chain_ride_queue(
-    ride_id_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, TileElement* tileElement, int32_t direction);
+    ride_id_t rideIndex, int32_t entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
 void footpath_update_path_wide_flags(int32_t x, int32_t y);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 

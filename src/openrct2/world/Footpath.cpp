@@ -1055,34 +1055,36 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
  *  rct2: 0x006A742F
  */
 void footpath_chain_ride_queue(
-    ride_id_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, TileElement* tileElement, int32_t direction)
+    ride_id_t rideIndex, int32_t entranceIndex, const CoordsXY& initialFootpathPos, TileElement* const initialTileElement,
+    int32_t direction)
 {
     TileElement *lastPathElement, *lastQueuePathElement;
-    int32_t lastPathX = x, lastPathY = y, lastPathDirection = direction;
+    auto tileElement = initialTileElement;
+    auto curQueuePos = initialFootpathPos;
+    auto lastPath = curQueuePos;
+    int32_t baseZ = tileElement->GetBaseZ();
+    int32_t lastPathDirection = direction;
 
     lastPathElement = nullptr;
     lastQueuePathElement = nullptr;
-    int32_t z = tileElement->base_height;
     for (;;)
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
             lastPathElement = tileElement;
-            lastPathX = x;
-            lastPathY = y;
+            lastPath = curQueuePos;
             lastPathDirection = direction;
             if (tileElement->AsPath()->IsSloped())
             {
                 if (tileElement->AsPath()->GetSlopeDirection() == direction)
                 {
-                    z += 2;
+                    baseZ += LAND_HEIGHT_STEP;
                 }
             }
         }
 
-        x += CoordsDirectionDelta[direction].x;
-        y += CoordsDirectionDelta[direction].y;
-        tileElement = map_get_first_element_at({ x, y });
+        auto targetQueuePos = curQueuePos + CoordsDirectionDelta[direction];
+        tileElement = map_get_first_element_at(targetQueuePos);
         if (tileElement != nullptr)
         {
             do
@@ -1091,7 +1093,7 @@ void footpath_chain_ride_queue(
                     continue;
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                     continue;
-                if (tileElement->base_height == z)
+                if (tileElement->GetBaseZ() == baseZ)
                 {
                     if (tileElement->AsPath()->IsSloped())
                     {
@@ -1100,7 +1102,7 @@ void footpath_chain_ride_queue(
                     }
                     goto foundNextPath;
                 }
-                if (tileElement->base_height == z - 2)
+                if (tileElement->GetBaseZ() == baseZ - LAND_HEIGHT_STEP)
                 {
                     if (!tileElement->AsPath()->IsSloped())
                         break;
@@ -1108,7 +1110,7 @@ void footpath_chain_ride_queue(
                     if (direction_reverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
                         break;
 
-                    z -= 2;
+                    baseZ -= LAND_HEIGHT_STEP;
                     goto foundNextPath;
                 }
             } while (!(tileElement++)->IsLastForTile());
@@ -1136,7 +1138,8 @@ void footpath_chain_ride_queue(
             tileElement->AsPath()->SetRideIndex(rideIndex);
             tileElement->AsPath()->SetStationIndex(entranceIndex);
 
-            map_invalidate_element({ x, y }, tileElement);
+            curQueuePos = targetQueuePos;
+            map_invalidate_element(targetQueuePos, tileElement);
 
             if (lastQueuePathElement == nullptr)
             {
@@ -1164,7 +1167,7 @@ void footpath_chain_ride_queue(
             lastPathElement->AsPath()->SetHasQueueBanner(true);
             lastPathElement->AsPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign direction
 
-            map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, { lastPathX, lastPathY, lastPathElement->GetBaseZ() });
+            map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, { lastPath, lastPathElement->GetBaseZ() });
         }
     }
 }
@@ -1222,7 +1225,7 @@ void footpath_update_queue_chains()
                         continue;
 
                     Direction direction = direction_reverse(tileElement->GetDirection());
-                    footpath_chain_ride_queue(rideIndex, i, location.x << 5, location.y << 5, tileElement, direction);
+                    footpath_chain_ride_queue(rideIndex, i, location.ToCoordsXY(), tileElement, direction);
                 } while (!(tileElement++)->IsLastForTile());
             }
         }
@@ -1902,7 +1905,7 @@ void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElem
                 {
                     if (tileElement->AsPath()->GetEdges() & (1 << direction))
                     {
-                        footpath_chain_ride_queue(255, 0, footpathPos.x, footpathPos.y, tileElement, direction);
+                        footpath_chain_ride_queue(255, 0, footpathPos, tileElement, direction);
                     }
                 }
                 tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
@@ -1912,8 +1915,7 @@ void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElem
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
                 footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
-                footpath_chain_ride_queue(
-                    255, 0, footpathPos.x, footpathPos.y, tileElement, direction_reverse(tileElement->GetDirection()));
+                footpath_chain_ride_queue(255, 0, footpathPos, tileElement, direction_reverse(tileElement->GetDirection()));
             }
             break;
     }
