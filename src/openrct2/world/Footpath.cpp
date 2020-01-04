@@ -479,7 +479,7 @@ bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t dire
     return false;
 }
 
-static TileElement* footpath_connect_corners_get_neighbour(int32_t x, int32_t y, int32_t z, int32_t requireEdges)
+static PathElement * footpath_connect_corners_get_neighbour(int32_t x, int32_t y, int32_t z, int32_t requireEdges)
 {
     if (!map_is_location_valid({ x, y }))
     {
@@ -493,14 +493,15 @@ static TileElement* footpath_connect_corners_get_neighbour(int32_t x, int32_t y,
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (tileElement->AsPath()->IsQueue())
+        auto pathElement = tileElement->AsPath();
+        if (pathElement->IsQueue())
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (!(tileElement->AsPath()->GetEdgesAndCorners() & requireEdges))
+        if (!(pathElement->GetEdgesAndCorners() & requireEdges))
             continue;
 
-        return tileElement;
+        return pathElement;
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
@@ -514,65 +515,68 @@ static TileElement* footpath_connect_corners_get_neighbour(int32_t x, int32_t y,
  *
  *  rct2: 0x006A70EB
  */
-static void footpath_connect_corners(int32_t initialX, int32_t initialY, TileElement* initialTileElement)
+static void footpath_connect_corners(const CoordsXY& footpathPos, PathElement* initialTileElement)
 {
-    TileElement* tileElement[4];
+    using PathElementCoordsPair = std::pair<PathElement*, CoordsXY>;
+    std::array<PathElementCoordsPair, 4> tileElements;
 
-    if (initialTileElement->AsPath()->IsQueue())
+    if (initialTileElement->IsQueue())
         return;
-    if (initialTileElement->AsPath()->IsSloped())
+    if (initialTileElement->IsSloped())
         return;
 
-    tileElement[0] = initialTileElement;
-    int32_t z = initialTileElement->base_height;
+    tileElements[0] = { initialTileElement, footpathPos };
+    int32_t z = initialTileElement->GetBaseZ();
     for (int32_t initialDirection = 0; initialDirection < 4; initialDirection++)
     {
-        int32_t x = initialX;
-        int32_t y = initialY;
         int32_t direction = initialDirection;
+        auto currentPos = footpathPos + CoordsDirectionDelta[direction];
 
-        x += CoordsDirectionDelta[direction].x;
-        y += CoordsDirectionDelta[direction].y;
-        tileElement[1] = footpath_connect_corners_get_neighbour(x, y, z, (1 << direction_reverse(direction)));
-        if (tileElement[1] == nullptr)
+        tileElements[1] = { footpath_connect_corners_get_neighbour(
+                                currentPos.x, currentPos.y, z, (1 << direction_reverse(direction))),
+                            currentPos };
+        if (tileElements[1].first == nullptr)
             continue;
 
-        direction = (direction + 1) & 3;
-        x += CoordsDirectionDelta[direction].x;
-        y += CoordsDirectionDelta[direction].y;
-        tileElement[2] = footpath_connect_corners_get_neighbour(x, y, z, (1 << direction_reverse(direction)));
-        if (tileElement[2] == nullptr)
+        direction = direction_next(direction);
+        currentPos += CoordsDirectionDelta[direction];
+        tileElements[2] = { footpath_connect_corners_get_neighbour(
+                                currentPos.x, currentPos.y, z, (1 << direction_reverse(direction))),
+                            currentPos };
+        if (tileElements[2].first == nullptr)
             continue;
 
-        direction = (direction + 1) & 3;
-        x += CoordsDirectionDelta[direction].x;
-        y += CoordsDirectionDelta[direction].y;
+        direction = direction_next(direction);
+        currentPos += CoordsDirectionDelta[direction];
         // First check link to previous tile
-        tileElement[3] = footpath_connect_corners_get_neighbour(x, y, z, (1 << direction_reverse(direction)));
-        if (tileElement[3] == nullptr)
+        tileElements[3] = { footpath_connect_corners_get_neighbour(
+                                currentPos.x, currentPos.y, z, (1 << direction_reverse(direction))),
+                            currentPos };
+        if (tileElements[3].first == nullptr)
             continue;
         // Second check link to initial tile
-        tileElement[3] = footpath_connect_corners_get_neighbour(x, y, z, (1 << ((direction + 1) & 3)));
-        if (tileElement[3] == nullptr)
+        tileElements[3] = { footpath_connect_corners_get_neighbour(currentPos.x, currentPos.y, z, (1 << ((direction + 1) & 3))),
+                            currentPos };
+        if (tileElements[3].first == nullptr)
             continue;
 
-        direction = (direction + 1) & 3;
-        tileElement[3]->AsPath()->SetCorners(tileElement[3]->AsPath()->GetCorners() | (1 << (direction)));
-        map_invalidate_element({ x, y }, tileElement[3]);
+        direction = direction_next(direction);
+        tileElements[3].first->SetCorners(tileElements[3].first->GetCorners() | (1 << (direction)));
+        map_invalidate_element(tileElements[3].second, reinterpret_cast<TileElement*>(tileElements[3].first));
 
-        direction = (direction - 1) & 3;
-        tileElement[2]->AsPath()->SetCorners(tileElement[2]->AsPath()->GetCorners() | (1 << (direction)));
+        direction = direction_prev(direction);
+        tileElements[2].first->SetCorners(tileElements[2].first->GetCorners() | (1 << (direction)));
 
-        map_invalidate_element({ x, y }, tileElement[2]);
+        map_invalidate_element(tileElements[2].second, reinterpret_cast<TileElement*>(tileElements[2].first));
 
-        direction = (direction - 1) & 3;
-        tileElement[1]->AsPath()->SetCorners(tileElement[1]->AsPath()->GetCorners() | (1 << (direction)));
+        direction = direction_prev(direction);
+        tileElements[1].first->SetCorners(tileElements[1].first->GetCorners() | (1 << (direction)));
 
-        map_invalidate_element({ x, y }, tileElement[1]);
+        map_invalidate_element(tileElements[1].second, reinterpret_cast<TileElement*>(tileElements[1].first));
 
         direction = initialDirection;
-        tileElement[0]->AsPath()->SetCorners(tileElement[0]->AsPath()->GetCorners() | (1 << (direction)));
-        map_invalidate_element({ x, y }, tileElement[0]);
+        tileElements[0].first->SetCorners(tileElements[0].first->GetCorners() | (1 << (direction)));
+        map_invalidate_element(tileElements[0].second, reinterpret_cast<TileElement*>(tileElements[0].first));
     }
 }
 
@@ -1045,7 +1049,7 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
     {
-        footpath_connect_corners(footpathPos.x, footpathPos.y, tileElement);
+        footpath_connect_corners(footpathPos, tileElement->AsPath());
     }
 }
 
