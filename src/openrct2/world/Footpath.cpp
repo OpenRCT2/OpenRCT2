@@ -697,42 +697,45 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
 /**
  * Attempt to connect a newly disconnected queue tile to the specified path tile
  */
-static bool footpath_reconnect_queue_to_path(int32_t x, int32_t y, TileElement* tileElement, int32_t action, int32_t direction)
+static bool footpath_reconnect_queue_to_path(
+    const CoordsXY& footpathPos, TileElement* tileElement, int32_t action, int32_t direction)
 {
     if (((tileElement->AsPath()->GetEdges() & (1 << direction)) == 0) ^ (action < 0))
         return false;
 
-    int32_t x1 = x + CoordsDirectionDelta[direction].x;
-    int32_t y1 = y + CoordsDirectionDelta[direction].y;
+    auto targetQueuePos = footpathPos + CoordsDirectionDelta[direction];
 
     if (action < 0)
     {
-        if (fence_in_the_way({ x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction))
+        if (fence_in_the_way({ footpathPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction))
             return false;
 
-        if (fence_in_the_way({ x1, y1, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction_reverse(direction)))
+        if (fence_in_the_way(
+                { targetQueuePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction_reverse(direction)))
             return false;
     }
 
     int32_t z = tileElement->base_height;
-    TileElement* otherTileElement = footpath_get_element(x1, y1, z - 2, z, direction);
+    TileElement* otherTileElement = footpath_get_element(targetQueuePos.x, targetQueuePos.y, z - 2, z, direction);
     if (otherTileElement != nullptr && !otherTileElement->AsPath()->IsQueue())
     {
         tileElement->AsPath()->SetSlopeDirection(0);
         if (action > 0)
         {
             tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() & ~(1 << direction));
-            otherTileElement->AsPath()->SetEdges(otherTileElement->AsPath()->GetEdges() & ~(1 << ((direction + 2) & 3)));
+            otherTileElement->AsPath()->SetEdges(
+                otherTileElement->AsPath()->GetEdges() & ~(1 << (direction_reverse(direction) & 3)));
             if (action >= 2)
                 tileElement->AsPath()->SetSlopeDirection(direction);
         }
         else if (action < 0)
         {
             tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction));
-            otherTileElement->AsPath()->SetEdges(otherTileElement->AsPath()->GetEdges() | (1 << ((direction + 2) & 3)));
+            otherTileElement->AsPath()->SetEdges(
+                otherTileElement->AsPath()->GetEdges() | (1 << (direction_reverse(direction) & 3)));
         }
         if (action != 0)
-            map_invalidate_tile_full({ x1, y1 });
+            map_invalidate_tile_full(targetQueuePos);
         return true;
     }
     return false;
@@ -753,7 +756,7 @@ static bool footpath_disconnect_queue_from_path(const CoordsXY& footpathPos, Til
     if (action < 0)
     {
         uint8_t direction = tileElement->AsPath()->GetSlopeDirection();
-        if (footpath_reconnect_queue_to_path(footpathPos.x, footpathPos.y, tileElement, action, direction))
+        if (footpath_reconnect_queue_to_path(footpathPos, tileElement, action, direction))
             return true;
     }
 
@@ -761,7 +764,7 @@ static bool footpath_disconnect_queue_from_path(const CoordsXY& footpathPos, Til
     {
         if ((action < 0) && (direction == tileElement->AsPath()->GetSlopeDirection()))
             continue;
-        if (footpath_reconnect_queue_to_path(footpathPos.x, footpathPos.y, tileElement, action, direction))
+        if (footpath_reconnect_queue_to_path(footpathPos, tileElement, action, direction))
             return true;
     }
 
