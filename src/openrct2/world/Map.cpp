@@ -1266,8 +1266,8 @@ bool map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
     uint8_t crossingMode)
 {
-    int32_t al, ah, bh, cl, ch, water_height;
-    al = ah = bh = cl = ch = water_height = 0;
+    int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
+    northZ = eastZ = baseHeight = southZ = westZ = water_height = 0;
     uint8_t slope = 0;
 
     gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
@@ -1312,10 +1312,10 @@ bool map_can_construct_with_clear_at(
     loc_68B9B7:
         if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
         {
-            al = pos.clearanceZ / 8 - tileElement->base_height;
-            if (al >= 0)
+            auto heightFromGround = pos.clearanceZ / 8 - tileElement->base_height;
+            if (heightFromGround >= 0)
             {
-                if (al > 18)
+                if (heightFromGround > 18)
                 {
                     gGameCommandErrorText = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
                     return false;
@@ -1340,43 +1340,43 @@ bool map_can_construct_with_clear_at(
             }
             else
             {
-                al = tileElement->base_height;
-                ah = al;
-                cl = al;
-                ch = al;
+                northZ = tileElement->base_height;
+                eastZ = northZ;
+                southZ = northZ;
+                westZ = northZ;
                 slope = tileElement->AsSurface()->GetSlope();
                 if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP)
                 {
-                    al += 2;
+                    northZ += 2;
                     if (slope == (TILE_ELEMENT_SLOPE_S_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
-                        al += 2;
+                        northZ += 2;
                 }
                 if (slope & TILE_ELEMENT_SLOPE_E_CORNER_UP)
                 {
-                    ah += 2;
+                    eastZ += 2;
                     if (slope == (TILE_ELEMENT_SLOPE_W_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
-                        ah += 2;
+                        eastZ += 2;
                 }
                 if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP)
                 {
-                    cl += 2;
+                    southZ += 2;
                     if (slope == (TILE_ELEMENT_SLOPE_N_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
-                        cl += 2;
+                        southZ += 2;
                 }
                 if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP)
                 {
-                    ch += 2;
+                    westZ += 2;
                     if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
-                        ch += 2;
+                        westZ += 2;
                 }
-                bh = pos.baseZ / 8 + 4;
+                baseHeight = pos.baseZ / 8 + 4;
                 {
                     auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
                     auto zQuarter = quarterTile.GetZQuarterOccupied();
-                    if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || pos.baseZ / 8 >= al) && bh >= al))
-                        && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || pos.baseZ / 8 >= ah) && bh >= ah))
-                        && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || pos.baseZ / 8 >= cl) && bh >= cl))
-                        && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || pos.baseZ / 8 >= ch) && bh >= ch)))
+                    if ((!(baseQuarter & 0b0001) || ((zQuarter & 0b0001 || pos.baseZ / 8 >= northZ) && baseHeight >= northZ))
+                        && (!(baseQuarter & 0b0010) || ((zQuarter & 0b0010 || pos.baseZ / 8 >= eastZ) && baseHeight >= eastZ))
+                        && (!(baseQuarter & 0b0100) || ((zQuarter & 0b0100 || pos.baseZ / 8 >= southZ) && baseHeight >= southZ))
+                        && (!(baseQuarter & 0b1000) || ((zQuarter & 0b1000 || pos.baseZ / 8 >= westZ) && baseHeight >= westZ)))
                     {
                         continue;
                     }
