@@ -54,6 +54,11 @@ struct RideRatingCalculationData
     uint16_t num_brakes;
     uint16_t num_reversers;
     uint16_t station_flags;
+    uint16_t cycle_proximity_x;
+    uint16_t cycle_proximity_y;
+    uint16_t cycle_proximity_z;
+    uint8_t cycle_proximity_track_type;
+    bool cycle_detection_toggle;
 };
 
 extern RideRatingCalculationData gRideRatingsCalcData;

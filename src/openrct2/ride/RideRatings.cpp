@@ -88,6 +88,7 @@ static void ride_ratings_begin_proximity_loop();
 static void ride_ratings_calculate(Ride* ride);
 static void ride_ratings_calculate_value(Ride* ride);
 static void ride_ratings_score_close_proximity(TileElement* inputTileElement);
+static void ride_ratings_update_cycle_detection_loop(bool reverse);
 
 static void ride_ratings_add(rating_tuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
 
@@ -212,6 +213,16 @@ static void ride_ratings_update_state_2()
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
     }
+
+    ride_ratings_update_cycle_detection_loop(false);
+    if (gRideRatingsCalcData.proximity_x == gRideRatingsCalcData.cycle_proximity_x
+        && gRideRatingsCalcData.proximity_y == gRideRatingsCalcData.cycle_proximity_y
+        && gRideRatingsCalcData.proximity_z == gRideRatingsCalcData.cycle_proximity_z)
+    {
+        gRideRatingsCalcData.state = RIDE_RATINGS_STATE_4;
+        return;
+    }
+
     do
     {
         if (tileElement->IsGhost())
@@ -323,6 +334,16 @@ static void ride_ratings_update_state_5()
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
     }
+
+    ride_ratings_update_cycle_detection_loop(true);
+    if (gRideRatingsCalcData.proximity_x == gRideRatingsCalcData.cycle_proximity_x
+        && gRideRatingsCalcData.proximity_y == gRideRatingsCalcData.cycle_proximity_y
+        && gRideRatingsCalcData.proximity_z == gRideRatingsCalcData.cycle_proximity_z)
+    {
+        gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
+        return;
+    }
+
     do
     {
         if (tileElement->IsGhost())
@@ -405,11 +426,71 @@ static void ride_ratings_begin_proximity_loop()
             gRideRatingsCalcData.proximity_start_x = x;
             gRideRatingsCalcData.proximity_start_y = y;
             gRideRatingsCalcData.proximity_start_z = z;
+            gRideRatingsCalcData.cycle_proximity_x = x;
+            gRideRatingsCalcData.cycle_proximity_y = y;
+            gRideRatingsCalcData.cycle_proximity_z = z;
+            gRideRatingsCalcData.cycle_proximity_track_type = 255;
+            gRideRatingsCalcData.cycle_detection_toggle = false;
             return;
         }
     }
 
     gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
+}
+
+static void ride_ratings_update_cycle_detection_loop(bool reverse)
+{
+    gRideRatingsCalcData.cycle_detection_toggle = !gRideRatingsCalcData.cycle_detection_toggle;
+    if (gRideRatingsCalcData.cycle_detection_toggle)
+        return;
+
+    int32_t x = gRideRatingsCalcData.cycle_proximity_x / 32;
+    int32_t y = gRideRatingsCalcData.cycle_proximity_y / 32;
+    int32_t z = gRideRatingsCalcData.cycle_proximity_z / 8;
+    int32_t trackType = gRideRatingsCalcData.cycle_proximity_track_type;
+    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+
+    do
+    {
+        if (tileElement->IsGhost())
+            continue;
+        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            continue;
+        if (tileElement->base_height != z)
+            continue;
+
+        if (trackType == 255
+            || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
+        {
+            CoordsXYE trackElement = {
+                /* .x = */ gRideRatingsCalcData.cycle_proximity_x,
+                /* .y = */ gRideRatingsCalcData.cycle_proximity_y,
+                /* .element = */ tileElement,
+            };
+            if (reverse)
+            {
+                track_begin_end trackBeginEnd;
+                track_block_get_previous(x, y, tileElement, &trackBeginEnd);
+                x = trackBeginEnd.begin_x;
+                y = trackBeginEnd.begin_y;
+                z = trackBeginEnd.begin_z;
+                gRideRatingsCalcData.cycle_proximity_track_type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
+            }
+            else
+            {
+                CoordsXYE nextTrackElement;
+                track_block_get_next(&trackElement, &nextTrackElement, nullptr, nullptr);
+                x = nextTrackElement.x;
+                y = nextTrackElement.y;
+                z = nextTrackElement.element->GetBaseZ();
+                gRideRatingsCalcData.cycle_proximity_track_type = nextTrackElement.element->AsTrack()->GetTrackType();
+            }
+            gRideRatingsCalcData.cycle_proximity_x = x;
+            gRideRatingsCalcData.cycle_proximity_y = y;
+            gRideRatingsCalcData.cycle_proximity_z = z;
+            return;
+        }
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 static void proximity_score_increment(int32_t type)
@@ -492,8 +573,7 @@ static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTi
 
         switch (tileElement->GetType())
         {
-            case TILE_ELEMENT_TYPE_PATH:
-            {
+            case TILE_ELEMENT_TYPE_PATH: {
                 int32_t zDiff = (int32_t)tileElement->base_height - (int32_t)inputTileElement->base_height;
                 if (zDiff >= 0 && zDiff <= 16)
                 {
@@ -502,8 +582,7 @@ static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTi
             }
             break;
 
-            case TILE_ELEMENT_TYPE_TRACK:
-            {
+            case TILE_ELEMENT_TYPE_TRACK: {
                 bool elementsAreAt90DegAngle = ((tileElement->GetDirection() ^ inputTileElement->GetDirection()) & 1) != 0;
                 if (elementsAreAt90DegAngle)
                 {
@@ -629,8 +708,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                     }
                 }
                 break;
-            case TILE_ELEMENT_TYPE_TRACK:
-            {
+            case TILE_ELEMENT_TYPE_TRACK: {
                 int32_t trackType = tileElement->AsTrack()->GetTrackType();
                 if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
                 {
