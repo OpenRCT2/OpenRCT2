@@ -195,7 +195,7 @@ public:
         uint32_t flags = GetFlags();
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_remove_litter(_loc.x, _loc.y, _loc.z);
+            footpath_remove_litter(_loc);
             wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 

@@ -370,7 +370,7 @@ public:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_remove_litter(_loc.x, _loc.y, targetHeight);
+            footpath_remove_litter({ _loc, targetHeight });
             if (!gCheatsDisableClearanceChecks && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS)))
             {
                 wall_remove_at({ _loc, targetHeight, targetHeight + sceneryEntry->small_scenery.height });

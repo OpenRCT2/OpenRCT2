@@ -397,16 +397,16 @@ void footpath_bridge_get_info_from_pos(
  *
  *  rct2: 0x00673883
  */
-void footpath_remove_litter(int32_t x, int32_t y, int32_t z)
+void footpath_remove_litter(const CoordsXYZ& footpathPos)
 {
-    uint16_t spriteIndex = sprite_get_first_in_quadrant(x, y);
+    uint16_t spriteIndex = sprite_get_first_in_quadrant(footpathPos.x, footpathPos.y);
     while (spriteIndex != SPRITE_INDEX_NULL)
     {
         rct_litter* sprite = &get_sprite(spriteIndex)->litter;
         uint16_t nextSpriteIndex = sprite->next_in_quadrant;
         if (sprite->linked_list_index == SPRITE_LIST_LITTER)
         {
-            int32_t distanceZ = abs(sprite->z - z);
+            int32_t distanceZ = abs(sprite->z - footpathPos.z);
             if (distanceZ <= 32)
             {
                 invalidate_sprite_0((rct_sprite*)sprite);

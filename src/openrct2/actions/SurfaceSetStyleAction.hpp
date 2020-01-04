@@ -219,7 +219,7 @@ public:
                             surfaceElement->SetSurfaceStyle(_surfaceStyle);
 
                             map_invalidate_tile_full(coords);
-                            footpath_remove_litter(coords.x, coords.y, tile_element_height(coords));
+                            footpath_remove_litter({ coords, tile_element_height(coords) });
                         }
                     }
                 }

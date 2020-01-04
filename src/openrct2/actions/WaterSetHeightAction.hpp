@@ -114,7 +114,7 @@ public:
         res->Position.z = _height * 8;
 
         int32_t surfaceHeight = tile_element_height(_coords);
-        footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
+        footpath_remove_litter({ _coords, surfaceHeight });
         if (!gCheatsDisableClearanceChecks)
             wall_remove_at_z({ _coords, surfaceHeight });
 

@@ -468,7 +468,7 @@ public:
 
             if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
             {
-                footpath_remove_litter(mapLoc.x, mapLoc.y, mapLoc.z);
+                footpath_remove_litter(mapLoc);
                 if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
                 {
                     wall_remove_at({ mapLoc, baseZ * 8, clearanceZ * 8 });
