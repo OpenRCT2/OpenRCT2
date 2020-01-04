@@ -35,7 +35,7 @@
 #include <algorithm>
 #include <iterator>
 
-void footpath_update_queue_entrance_banner(int32_t x, int32_t y, TileElement* tileElement);
+void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElement* tileElement);
 
 uint8_t gFootpathProvisionalFlags;
 CoordsXYZ gFootpathProvisionalPosition;
@@ -1001,7 +1001,7 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
 
     neighbour_list_init(&neighbourList);
 
-    footpath_update_queue_entrance_banner(footpathPos.x, footpathPos.y, tileElement);
+    footpath_update_queue_entrance_banner(footpathPos, tileElement);
     for (Direction direction : ALL_DIRECTIONS)
     {
         loc_6A6C85({ footpathPos, tileElement }, direction, flags, true, &neighbourList);
@@ -1884,7 +1884,7 @@ bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position)
  *
  *  rct2: 0x006A7642
  */
-void footpath_update_queue_entrance_banner(int32_t x, int32_t y, TileElement* tileElement)
+void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElement* tileElement)
 {
     int32_t elementType = tileElement->GetType();
     switch (elementType)
@@ -1897,7 +1897,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, TileElement* ti
                 {
                     if (tileElement->AsPath()->GetEdges() & (1 << direction))
                     {
-                        footpath_chain_ride_queue(255, 0, x, y, tileElement, direction);
+                        footpath_chain_ride_queue(255, 0, footpathPos.x, footpathPos.y, tileElement, direction);
                     }
                 }
                 tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
@@ -1907,7 +1907,8 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, TileElement* ti
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
                 footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
-                footpath_chain_ride_queue(255, 0, x, y, tileElement, direction_reverse(tileElement->GetDirection()));
+                footpath_chain_ride_queue(
+                    255, 0, footpathPos.x, footpathPos.y, tileElement, direction_reverse(tileElement->GetDirection()));
             }
             break;
     }
@@ -2137,7 +2138,7 @@ void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement)
             return;
     }
 
-    footpath_update_queue_entrance_banner(x, y, tileElement);
+    footpath_update_queue_entrance_banner({ x, y }, tileElement);
 
     bool fixCorners = false;
     for (uint8_t direction = 0; direction < 4; direction++)
