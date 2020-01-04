@@ -73,6 +73,7 @@ struct ShelteredEights
 
 using ride_ratings_calculation = void (*)(Ride* ride);
 
+RideRatingCycleDetectionData _cycleDetectionData;
 RideRatingCalculationData gRideRatingsCalcData;
 
 static ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType);
@@ -215,9 +216,9 @@ static void ride_ratings_update_state_2()
     }
 
     ride_ratings_update_cycle_detection_loop(false);
-    if (gRideRatingsCalcData.proximity_x == gRideRatingsCalcData.cycle_proximity_x
-        && gRideRatingsCalcData.proximity_y == gRideRatingsCalcData.cycle_proximity_y
-        && gRideRatingsCalcData.proximity_z == gRideRatingsCalcData.cycle_proximity_z)
+    if (gRideRatingsCalcData.proximity_x == _cycleDetectionData.cycle_proximity_x
+        && gRideRatingsCalcData.proximity_y == _cycleDetectionData.cycle_proximity_y
+        && gRideRatingsCalcData.proximity_z == _cycleDetectionData.cycle_proximity_z)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_INITIALIZE_BACKWARD;
         return;
@@ -336,9 +337,9 @@ static void ride_ratings_update_state_5()
     }
 
     ride_ratings_update_cycle_detection_loop(true);
-    if (gRideRatingsCalcData.proximity_x == gRideRatingsCalcData.cycle_proximity_x
-        && gRideRatingsCalcData.proximity_y == gRideRatingsCalcData.cycle_proximity_y
-        && gRideRatingsCalcData.proximity_z == gRideRatingsCalcData.cycle_proximity_z)
+    if (gRideRatingsCalcData.proximity_x == _cycleDetectionData.cycle_proximity_x
+        && gRideRatingsCalcData.proximity_y == _cycleDetectionData.cycle_proximity_y
+        && gRideRatingsCalcData.proximity_z == _cycleDetectionData.cycle_proximity_z)
     {
         gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
         return;
@@ -426,11 +427,7 @@ static void ride_ratings_begin_proximity_loop()
             gRideRatingsCalcData.proximity_start_x = x;
             gRideRatingsCalcData.proximity_start_y = y;
             gRideRatingsCalcData.proximity_start_z = z;
-            gRideRatingsCalcData.cycle_proximity_x = x;
-            gRideRatingsCalcData.cycle_proximity_y = y;
-            gRideRatingsCalcData.cycle_proximity_z = z;
-            gRideRatingsCalcData.cycle_proximity_track_type = 255;
-            gRideRatingsCalcData.cycle_detection_toggle = false;
+            ride_ratings_cycle_detection_data_init();
             return;
         }
     }
@@ -438,16 +435,25 @@ static void ride_ratings_begin_proximity_loop()
     gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
+void ride_ratings_cycle_detection_data_init()
+{
+    _cycleDetectionData.cycle_proximity_x = gRideRatingsCalcData.proximity_x;
+    _cycleDetectionData.cycle_proximity_y = gRideRatingsCalcData.proximity_y;
+    _cycleDetectionData.cycle_proximity_z = gRideRatingsCalcData.proximity_z;
+    _cycleDetectionData.cycle_proximity_track_type = gRideRatingsCalcData.proximity_track_type;
+    _cycleDetectionData.cycle_detection_toggle = false;
+}
+
 static void ride_ratings_update_cycle_detection_loop(bool reverse)
 {
-    gRideRatingsCalcData.cycle_detection_toggle = !gRideRatingsCalcData.cycle_detection_toggle;
-    if (gRideRatingsCalcData.cycle_detection_toggle)
+    _cycleDetectionData.cycle_detection_toggle = !_cycleDetectionData.cycle_detection_toggle;
+    if (_cycleDetectionData.cycle_detection_toggle)
         return;
 
-    int32_t x = gRideRatingsCalcData.cycle_proximity_x / 32;
-    int32_t y = gRideRatingsCalcData.cycle_proximity_y / 32;
-    int32_t z = gRideRatingsCalcData.cycle_proximity_z / 8;
-    int32_t trackType = gRideRatingsCalcData.cycle_proximity_track_type;
+    int32_t x = _cycleDetectionData.cycle_proximity_x / 32;
+    int32_t y = _cycleDetectionData.cycle_proximity_y / 32;
+    int32_t z = _cycleDetectionData.cycle_proximity_z / 8;
+    int32_t trackType = _cycleDetectionData.cycle_proximity_track_type;
     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
     do
@@ -463,8 +469,8 @@ static void ride_ratings_update_cycle_detection_loop(bool reverse)
             || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
             CoordsXYE trackElement = {
-                /* .x = */ gRideRatingsCalcData.cycle_proximity_x,
-                /* .y = */ gRideRatingsCalcData.cycle_proximity_y,
+                /* .x = */ _cycleDetectionData.cycle_proximity_x,
+                /* .y = */ _cycleDetectionData.cycle_proximity_y,
                 /* .element = */ tileElement,
             };
             if (reverse)
@@ -474,7 +480,7 @@ static void ride_ratings_update_cycle_detection_loop(bool reverse)
                 x = trackBeginEnd.begin_x;
                 y = trackBeginEnd.begin_y;
                 z = trackBeginEnd.begin_z;
-                gRideRatingsCalcData.cycle_proximity_track_type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
+                _cycleDetectionData.cycle_proximity_track_type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             }
             else
             {
@@ -483,11 +489,11 @@ static void ride_ratings_update_cycle_detection_loop(bool reverse)
                 x = nextTrackElement.x;
                 y = nextTrackElement.y;
                 z = nextTrackElement.element->GetBaseZ();
-                gRideRatingsCalcData.cycle_proximity_track_type = nextTrackElement.element->AsTrack()->GetTrackType();
+                _cycleDetectionData.cycle_proximity_track_type = nextTrackElement.element->AsTrack()->GetTrackType();
             }
-            gRideRatingsCalcData.cycle_proximity_x = x;
-            gRideRatingsCalcData.cycle_proximity_y = y;
-            gRideRatingsCalcData.cycle_proximity_z = z;
+            _cycleDetectionData.cycle_proximity_x = x;
+            _cycleDetectionData.cycle_proximity_y = y;
+            _cycleDetectionData.cycle_proximity_z = z;
             return;
         }
     } while (!(tileElement++)->IsLastForTile());

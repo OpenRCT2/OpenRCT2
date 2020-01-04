@@ -54,6 +54,10 @@ struct RideRatingCalculationData
     uint16_t num_brakes;
     uint16_t num_reversers;
     uint16_t station_flags;
+};
+
+struct RideRatingCycleDetectionData
+{
     uint16_t cycle_proximity_x;
     uint16_t cycle_proximity_y;
     uint16_t cycle_proximity_z;
@@ -65,3 +69,4 @@ extern RideRatingCalculationData gRideRatingsCalcData;
 
 void ride_ratings_update_ride(const Ride& ride);
 void ride_ratings_update_all();
+void ride_ratings_cycle_detection_data_init();
