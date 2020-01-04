@@ -95,7 +95,7 @@ public:
         }
 
         footpath_provisional_remove();
-        auto tileElement = map_get_footpath_element_slope((_loc.x / 32), (_loc.y / 32), _loc.z / 8, _slope);
+        auto tileElement = map_get_footpath_element_slope(_loc, _slope);
         if (tileElement == nullptr)
         {
             return ElementInsertQuery(std::move(res));
@@ -141,7 +141,7 @@ public:
             }
         }
 
-        auto tileElement = map_get_footpath_element_slope((_loc.x / 32), (_loc.y / 32), _loc.z / 8, _slope);
+        auto tileElement = map_get_footpath_element_slope(_loc, _slope);
         if (tileElement == nullptr)
         {
             return ElementInsertExecute(std::move(res));
@@ -432,17 +432,17 @@ private:
         map_invalidate_tile_full(_loc);
     }
 
-    PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope) const
+    PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const
     {
         TileElement* tileElement;
         bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 
-        tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+        tileElement = map_get_first_element_at(footpathPos);
         do
         {
             if (tileElement == nullptr)
                 break;
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->GetBaseZ() == footpathPos.z
                 && (tileElement->AsPath()->IsSloped() == isSloped)
                 && (tileElement->AsPath()->GetSlopeDirection() == (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)))
             {
