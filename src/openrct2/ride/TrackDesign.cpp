@@ -110,7 +110,7 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
     ride_mode = ride.mode;
     colour_scheme = ride.colour_scheme_type & 3;
 
-    for (int32_t i = 0; i < RCT12_MAX_VEHICLES_PER_RIDE; i++)
+    for (int32_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
     {
         vehicle_colours[i].body_colour = ride.vehicle_colours[i].Body;
         vehicle_colours[i].trim_colour = ride.vehicle_colours[i].Trim;
