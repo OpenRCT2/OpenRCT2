@@ -68,11 +68,11 @@ money32 gClearSceneryCost;
 // rct2: 0x009A3E74
 const CoordsXY SceneryQuadrantOffsets[] = { { 7, 7 }, { 7, 23 }, { 23, 23 }, { 23, 7 } };
 
-void scenery_update_tile(int32_t x, int32_t y)
+void scenery_update_tile(const CoordsXY& sceneryPos)
 {
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at({ x, y });
+    tileElement = map_get_first_element_at(sceneryPos);
     if (tileElement == nullptr)
         return;
     do
@@ -87,7 +87,7 @@ void scenery_update_tile(int32_t x, int32_t y)
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
         {
-            scenery_update_age(x, y, tileElement);
+            scenery_update_age(sceneryPos, tileElement);
         }
         else if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
@@ -98,11 +98,11 @@ void scenery_update_tile(int32_t x, int32_t y)
                 {
                     if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER)
                     {
-                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_WATER, { x, y }, tileElement);
+                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_WATER, sceneryPos, tileElement);
                     }
                     else if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)
                     {
-                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_SNOW, { x, y }, tileElement);
+                        JumpingFountain::StartAnimation(JUMPING_FOUNTAIN_TYPE_SNOW, sceneryPos, tileElement);
                     }
                 }
             }
@@ -114,7 +114,7 @@ void scenery_update_tile(int32_t x, int32_t y)
  *
  *  rct2: 0x006E33D9
  */
-void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
+void scenery_update_age(const CoordsXY& sceneryPos, TileElement* tileElement)
 {
     TileElement* tileElementAbove;
     rct_scenery_entry* sceneryEntry;
@@ -133,7 +133,7 @@ void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
     if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED)
         || (gClimateCurrent.Weather < WEATHER_RAIN) || (tileElement->AsSmallScenery()->GetAge() < 5))
     {
-        tileElement->AsSmallScenery()->IncreaseAge(x, y);
+        tileElement->AsSmallScenery()->IncreaseAge(sceneryPos);
         return;
     }
 
@@ -154,14 +154,14 @@ void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             case TILE_ELEMENT_TYPE_ENTRANCE:
             case TILE_ELEMENT_TYPE_PATH:
-                map_invalidate_tile_zoom1({ x, y, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ() });
-                tileElement->AsSmallScenery()->IncreaseAge(x, y);
+                map_invalidate_tile_zoom1({ sceneryPos, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ() });
+                tileElement->AsSmallScenery()->IncreaseAge(sceneryPos);
                 return;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 sceneryEntry = tileElementAbove->AsSmallScenery()->GetEntry();
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
-                    tileElement->AsSmallScenery()->IncreaseAge(x, y);
+                    tileElement->AsSmallScenery()->IncreaseAge(sceneryPos);
                     return;
                 }
                 break;
@@ -170,7 +170,7 @@ void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
 
     // Reset age / water plant
     tileElement->AsSmallScenery()->SetAge(0);
-    map_invalidate_tile_zoom1({ x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    map_invalidate_tile_zoom1({ sceneryPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 }
 
 /**

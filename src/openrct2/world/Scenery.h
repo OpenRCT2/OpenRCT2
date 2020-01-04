@@ -283,8 +283,8 @@ extern const CoordsXY SceneryQuadrantOffsets[];
 extern money32 gClearSceneryCost;
 
 void init_scenery();
-void scenery_update_tile(int32_t x, int32_t y);
-void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement);
+void scenery_update_tile(const CoordsXY& sceneryPos);
+void scenery_update_age(const CoordsXY& sceneryPos, TileElement* tileElement);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 
