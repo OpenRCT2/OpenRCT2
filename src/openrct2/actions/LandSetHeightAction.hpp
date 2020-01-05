@@ -105,6 +105,15 @@ public:
         if (surfaceElement == nullptr)
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
+        // We need to check if there is _currently_ a level crossing on the tile. For that, we need the old height,
+        // so we can't use the _height variable.
+        auto oldCoords = CoordsXYZ{ _coords, surfaceElement->GetBaseZ() };
+        auto* pathElement = map_get_footpath_element(oldCoords);
+        if (pathElement != nullptr && pathElement->AsPath()->IsLevelCrossing(oldCoords))
+        {
+            return MakeResult(GA_ERROR::DISALLOWED, STR_REMOVE_LEVEL_CROSSING_FIRST);
+        }
+
         TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
         if (tileElement != nullptr)
         {

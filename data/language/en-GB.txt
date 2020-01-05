@@ -3666,6 +3666,8 @@ STR_6343    :Tile Inspector: Increase Y coordinate
 STR_6344    :Tile Inspector: Decrease Y coordinate
 STR_6345    :Tile Inspector: Increase element height
 STR_6346    :Tile Inspector: Decrease element height
+STR_6347    :Path additions cannot be placed on level crossings!
+STR_6348    :Remove level crossing first!
 
 #############
 # Scenarios #

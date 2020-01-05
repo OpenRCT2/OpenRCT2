@@ -3891,6 +3891,10 @@ enum
     STR_SHORTCUT_DECREASE_Y_COORD = 6344,
     STR_SHORTCUT_INCREASE_ELEM_HEIGHT = 6345,
     STR_SHORTCUT_DECREASE_ELEM_HEIGHT = 6346,
+
+    STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS = 6347,
+    STR_REMOVE_LEVEL_CROSSING_FIRST = 6348,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

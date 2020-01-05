@@ -254,6 +254,8 @@ public:
 
     bool ShouldDrawPathOverSupports();
     void SetShouldDrawPathOverSupports(bool on);
+
+    bool IsLevelCrossing(CoordsXY coords) const;
 };
 assert_struct_size(PathElement, 16);
 

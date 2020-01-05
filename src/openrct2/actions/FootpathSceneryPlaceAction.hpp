@@ -81,6 +81,11 @@ public:
         }
 
         auto pathElement = tileElement->AsPath();
+        if (pathElement->IsLevelCrossing(_loc))
+        {
+            return MakeResult(
+                GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS);
+        }
 
         // No change
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType

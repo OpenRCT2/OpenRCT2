@@ -2258,3 +2258,25 @@ void PathElement::SetEdgesAndCorners(uint8_t newEdgesAndCorners)
 {
     edges = newEdgesAndCorners;
 }
+
+bool PathElement::IsLevelCrossing(CoordsXY coords) const
+{
+    auto trackElement = map_get_track_element_at({ coords, GetBaseZ() });
+    if (trackElement == nullptr)
+    {
+        return false;
+    }
+
+    if (trackElement->GetTrackType() != TRACK_ELEM_FLAT)
+    {
+        return false;
+    }
+
+    auto ride = get_ride(trackElement->GetRideIndex());
+    if (ride == nullptr)
+    {
+        return false;
+    }
+
+    return (ride->type == RIDE_TYPE_MINIATURE_RAILWAY);
+}
