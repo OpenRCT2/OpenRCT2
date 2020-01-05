@@ -6,6 +6,7 @@
 - Change: [#1164] Use available translations for shortcut key bindings.
 - Fix: [#5249] No collision detection when building ride entrance at heights > 85.5m.
 - Fix: [#10228] Can't import RCT1 Deluxe from Steam.
+- Fix: [#10313] Path furniture can be placed on level crossings.
 - Fix: [#10325] Crash when banners have no text.
 - Fix: [#10420] Money effect causing false positive desync.
 - Fix: [#10477] Large Scenery cannot be placed higher using SHIFT.

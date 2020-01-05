@@ -240,6 +240,16 @@ public:
                     GA_ERROR::NO_CLEARANCE, gGameCommandErrorText, gCommonFormatArgs);
             }
 
+            // When building a level crossing, remove any pre-existing path furniture.
+            if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH)
+            {
+                auto footpathElement = map_get_footpath_element(mapLoc);
+                if (footpathElement != nullptr && footpathElement->AsPath()->HasAddition())
+                {
+                    footpathElement->AsPath()->SetAddition(0);
+                }
+            }
+
             uint8_t mapGroundFlags = gMapGroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
             if (res->GroundFlags != 0 && (res->GroundFlags & mapGroundFlags) == 0)
             {

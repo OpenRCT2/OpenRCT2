@@ -2130,12 +2130,11 @@ TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos)
     TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
         return nullptr;
-    auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->base_height != trackTilePos.z)
+        if (tileElement->GetBaseZ() != trackPos.z)
             continue;
 
         return tileElement->AsTrack();
