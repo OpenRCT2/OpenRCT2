@@ -3677,6 +3677,18 @@ STR_6331    :Anbring ænder
 STR_6332    :Fjern ænder
 STR_6333    :Forøg skalerings faktor
 STR_6334    :Reducer skalerings faktor
+STR_6335    :Felt Undersøger: Indsæt korrupt element
+STR_6336    :Felt Undersøger: Kopier element
+STR_6337    :Felt Undersøger: Indsæt element
+STR_6338    :Felt Undersøger: Slet element
+STR_6339    :Felt Undersøger: Flyt element op
+STR_6340    :Felt Undersøger: Flyt element ned
+STR_6341    :Felt Undersøger: Forøg X koordinat
+STR_6342    :Felt Undersøger: Reducer X koordinat
+STR_6343    :Felt Undersøger: Forøg Y koordinat
+STR_6344    :Felt Undersøger: Reducer Y koordinat
+STR_6345    :Felt Undersøger: Forøg element højde
+STR_6346    :Felt Undersøger: Reducer element højde
 
 #############
 # Scenarios #
