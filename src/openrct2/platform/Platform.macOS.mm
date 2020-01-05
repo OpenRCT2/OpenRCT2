@@ -108,7 +108,7 @@ namespace Platform
         @autoreleasepool {
             if (input == NULL)
             {
-                return NULL;
+                return 0;
             }
 
             NSString* inputDecomp = [NSString stringWithUTF8String:input];
