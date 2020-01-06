@@ -77,7 +77,7 @@ public:
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        uint8_t baseHeight = _loc.z + PATH_HEIGHT_STEP;
+        auto baseHeight = _loc.z + PATH_HEIGHT_STEP;
         BannerElement* existingBannerElement = map_get_banner_element_at({ _loc.x, _loc.y, baseHeight }, _loc.direction);
         if (existingBannerElement != nullptr)
         {
