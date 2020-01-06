@@ -3653,6 +3653,22 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :Lade [{STRING}] von {STRING} herunter ({COMMA16} / {COMMA16})
 STR_6331    :Enten erzeugen
 STR_6332    :Enten entfernen
+STR_6333    :Skalierungsfaktor erhöhen
+STR_6334    :Skalierungsfaktor verringern
+STR_6335    :Kachelinspektor: Kaputtes Element einfügen
+STR_6336    :Kachelinspektor: Element kopieren
+STR_6337    :Kachelinspektor: Element einfügen
+STR_6338    :Kachelinspektor: Element löschen
+STR_6339    :Kachelinspektor: Element nach oben
+STR_6340    :Kachelinspektor: Element nach unten
+STR_6341    :Kachelinspektor: X-Koordinate erhöhen
+STR_6342    :Kachelinspektor: X-Koordinate verringern
+STR_6343    :Kachelinspektor: Y-Koordinate erhöhen
+STR_6344    :Kachelinspektor: Y-Koordinate verringern
+STR_6345    :Kachelinspektor: Elementhöhe erhöhen
+STR_6346    :Kachelinspektor: Elementhöhe verringern
+STR_6347    :Wegextras können nicht auf Bahnübergängen platziert werden!
+STR_6348    :Bahnübergang muss zuerst entfernt werden!
 
 #############
 # Scenarios #

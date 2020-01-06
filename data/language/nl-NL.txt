@@ -113,10 +113,10 @@ STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het
 STR_0531    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
 STR_0532    :
 STR_0533    :
-STR_0534    :Go-karts met benzinemotor die de passagiers zelf besturen.
-STR_0535    :Boten in de vorm van een boomstam varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
+STR_0534    :Bezoekers racen tegen elkaar in go-karts op een asfaltbaan.
+STR_0535    :Bezoekers varen in bootjes door een waterbak, waarbij ze van steile hellingen afdalen en doorweekt raken.
 STR_0536    :Ronde boten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
-STR_0537    :
+STR_0537    :Bezoekers botsen tegen elkaar in elektrisch aangedreven botsauto's die ze zelf kunnen besturen.
 STR_0538    :
 STR_0539    :
 STR_0540    :
@@ -155,7 +155,7 @@ STR_0578    :Karretjes rijden in een baan omgeven door hoepels en gaan door stei
 STR_0579    :
 STR_0580    :Een gigantische stalen achtbaan die in staat is tot soepele afdalingen en heuvels die hoger zijn dan 90 meter.
 STR_0581    :Een ring van stoelen wordt naar de bovenkant van een hoge toren getrokken terwijl hij rustig ronddraait, waarna hij losgelaten wordt in een vrije val, waarna hij beneden rustig wordt afgeremd door middel van magnetische remmen.
-STR_0582    :
+STR_0582    :Bezoekers botsen tegen elkaar in hovercrafts die ze zelf kunnen besturen.
 STR_0583    :
 STR_0584    :Speciale fietsen rijden over een stalen monorail, voortbewogen door het trappen van de passagiers.
 STR_0585    :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
@@ -3668,6 +3668,22 @@ STR_6329    :{STRING}{STRINGID}
 STR_6330    :[{STRING}] wordt gedownload van {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Eenden aanmaken
 STR_6332    :Eenden verw.
+STR_6333    :Vergrotingsfactor verhogen
+STR_6334    :Vergrotingsfactor verlagen
+STR_6335    :Vakinspecteur: Ongeldig element invoegen
+STR_6336    :Vakinspecteur: Element kopiëren
+STR_6337    :Vakinspecteur: Element plakken
+STR_6338    :Vakinspecteur: Element verwijderen
+STR_6339    :Vakinspecteur: Element hoger rangschikken
+STR_6340    :Vakinspecteur: Element lager rangschikken
+STR_6341    :Vakinspecteur: X-coordinaat verhogen
+STR_6342    :Vakinspecteur: X-coordinaat verlagen
+STR_6343    :Vakinspecteur: Y-coordinaat verhogen
+STR_6344    :Vakinspecteur: Y-coordinaat verlagen
+STR_6345    :Vakinspecteur: Elementhoogte vergroten
+STR_6346    :Vakinspecteur: Elementhoogte verkleinen
+STR_6347    :Straatmeubilair kan niet op overwegen worden geplaatst!
+STR_6348    :Verwijder eerst de overweg.
 
 #############
 # Scenarios #
