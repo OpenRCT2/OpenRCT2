@@ -3489,26 +3489,26 @@ STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
 STR_6144    :Show dirty visuals
 STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
 STR_6146    :Enable all drawable track pieces
-STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
-STR_6148    :Connecting to master server...
-STR_6149    :Unable to connect to master server
-STR_6150    :Invalid response from master server (no JSON number)
+STR_6147    :{SMALLFONT}{BLACK}Aktiverer alle sporstykker, som forlystelses typen er i stand til i konstruktions vinduet, uanset om køretøjet understøtter dem.
+STR_6148    :Forbinder til master server...
+STR_6149    :Kamn ikke forbinde til master server
+STR_6150    :Ugyldigt svar fra master server (ingen JSON nummer)
 STR_6151    :Master server failed to return servers
-STR_6152    :Invalid response from master server (no JSON array)
-STR_6153    :Pay to enter park / Pay per ride
-STR_6154    :For security reasons, it is not recommended to run OpenRCT2 with elevated permissions.
-STR_6155    :Neither KDialog nor Zenity are installed. Please install one, or configure from the command line.
-STR_6156    :Name is reserved
-STR_6157    :Console
-STR_6158    :Failed to load this file...{NEWLINE}Incompatible RCTC version: {COMMA16}
-STR_6159    :Smooth Nearest Neighbour
-STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
-STR_6161    :Gridlines display toggle
-STR_6162    :Spinning Wild Mouse
-STR_6163    :Mouse shaped cars speed through tight corners and short drops, gently spinning around to disorientate the riders
+STR_6152    :Ugyldigt svar fra master server (ingen JSON array)
+STR_6153    :Betal ved indgang / Betal per tur
+STR_6154    :Af sikkerhedsmæssige årsager anbefales det ikke at køre OpenRCT2 med forhøjede tilladelser.
+STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linje.
+STR_6156    :Navn er reserveret
+STR_6157    :Konsol
+STR_6158    :Kan ikke hente denne fil...{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
+STR_6159    :Blødgør til nærmeste nabo
+STR_6160    :{WINDOW_COLOUR_2}Tilgængelige køretøjer: {BLACK}{STRING}
+STR_6161    :Skift gitterlinjer Visning til/fra
+STR_6162    :Snurrende Vild Mus
+STR_6163    :Muse formede biler suser gennem skarpe kurver og korte fald, imens de snurrer lidt rundt for at desorientere gæsterne
 STR_6164    :{WHITE}❌
-STR_6165    :Use vertical sync
-STR_6166    :{SMALLFONT}{BLACK}Synchronises each frame displayed to the monitor's refresh rate, preventing screen tearing.
+STR_6165    :Brug vertikal synkronisering
+STR_6166    :{SMALLFONT}{BLACK}Synkroniserer hvert billede, som vises, til skærmens opdateringshastighed, hvilket forhindrer, udrivninger i grafikken.
 STR_6167    :{SMALLFONT}{BLACK}Avanceret
 STR_6168    :Titel Sekvens
 STR_6169    :Scenarie valg
@@ -3689,6 +3689,8 @@ STR_6343    :Felt Undersøger: Forøg Y koordinat
 STR_6344    :Felt Undersøger: Reducer Y koordinat
 STR_6345    :Felt Undersøger: Forøg element højde
 STR_6346    :Felt Undersøger: Reducer element højde
+STR_6347    :Sti tilføjelse kan ikke placeres på jernbaneoverskæring!
+STR_6348    :Fjern jernbaneoverskæring først!
 
 #############
 # Scenarios #
