@@ -56,8 +56,10 @@
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
-#include "title/TitleScreen.h"
-#include "title/TitleSequenceManager.h"
+#include "scenes/game/GameScene.h"
+#include "scenes/loading/LoadingScene.h"
+#include "scenes/title/TitleScene.h"
+#include "scenes/title/TitleSequenceManager.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/Util.h"
@@ -103,8 +105,13 @@ namespace OpenRCT2
         Networking::Http::Http _http;
 #endif
 
+        // Scenes.
+        std::unique_ptr<LoadingScene> _loadingScene;
+        std::unique_ptr<TitleScene> _titleScene;
+        std::unique_ptr<GameScene> _gameScene;
+        IScene* _activeScene = nullptr;
+
         // Game states
-        std::unique_ptr<TitleScreen> _titleScreen;
         std::unique_ptr<GameState> _gameState;
 
         int32_t _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
@@ -137,6 +144,16 @@ namespace OpenRCT2
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
             , _painter(std::make_unique<Painter>(uiContext))
+            , _objectRepository(CreateObjectRepository(env))
+            , _objectManager(CreateObjectManager(*_objectRepository))
+            , _trackDesignRepository(CreateTrackDesignRepository(env))
+            , _scenarioRepository(CreateScenarioRepository(env))
+            , _replayManager(CreateReplayManager())
+            , _gameState(std::make_unique<GameState>())
+            , _loadingScene(std::make_unique<LoadingScene>(*this))
+            , _titleScene(std::make_unique<TitleScene>(*this))
+            , _gameScene(std::make_unique<GameScene>(*this))
+            , _gameStateSnapshots(CreateGameStateSnapshots())
         {
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
@@ -247,6 +264,48 @@ namespace OpenRCT2
             return gExitCode;
         }
 
+        IScene* GetLoadingScene() override
+        {
+            // TODO: Implement me.
+            return _loadingScene.get();
+        }
+
+        IScene* GetIntroScene() override
+        {
+            // TODO: Implement me.
+            return nullptr;
+        }
+
+        IScene* GetTitleScene() override
+        {
+            return _titleScene.get();
+        }
+
+        IScene* GetGameScene() override
+        {
+            return _gameScene.get();
+        }
+
+        IScene* GetEditorScene() override
+        {
+            // TODO: Implement me.
+            return nullptr;
+        }
+
+        virtual IScene* GetActiveScene() override
+        {
+            return _activeScene;
+        }
+
+        void SetActiveScene(IScene* screen) override
+        {
+            if (_activeScene != nullptr)
+                _activeScene->Stop();
+            _activeScene = screen;
+            if (_activeScene)
+                _activeScene->Load();
+        }
+
         void WriteLine(const std::string& s) override
         {
             _stdInOutConsole.WriteLine(s);
@@ -347,12 +406,6 @@ namespace OpenRCT2
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
 
-            _objectRepository = CreateObjectRepository(_env);
-            _objectManager = CreateObjectManager(*_objectRepository);
-            _trackDesignRepository = CreateTrackDesignRepository(_env);
-            _scenarioRepository = CreateScenarioRepository(_env);
-            _replayManager = CreateReplayManager();
-            _gameStateSnapshots = CreateGameStateSnapshots();
 #ifdef __ENABLE_DISCORD__
             if (!gOpenRCT2Headless)
             {
@@ -398,19 +451,6 @@ namespace OpenRCT2
 
             EnsureUserContentDirectoriesExist();
 
-            // TODO Ideally we want to delay this until we show the title so that we can
-            //      still open the game window and draw a progress screen for the creation
-            //      of the object cache.
-            _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
-
-            // TODO Like objects, this can take a while if there are a lot of track designs
-            //      its also really something really we might want to do in the background
-            //      as its not required until the player wants to place a new ride.
-            _trackDesignRepository->Scan(_localisationService->GetCurrentLanguage());
-
-            _scenarioRepository->Scan(_localisationService->GetCurrentLanguage());
-            TitleSequenceManager::Scan();
-
             if (!gOpenRCT2Headless)
             {
                 audio_init();
@@ -437,10 +477,23 @@ namespace OpenRCT2
             input_reset_place_obj_modifier();
             viewport_init_all();
 
-            _gameState = std::make_unique<GameState>();
-            _gameState->InitAll(150);
+            _loadingScene->AddJob([&]() {
+                // TODO Ideally we want to delay this until we show the title so that we can
+                //      still open the game window and draw a progress screen for the creation
+                //      of the object cache.
+                _objectRepository->LoadOrConstruct(_localisationService->GetCurrentLanguage());
 
-            _titleScreen = std::make_unique<TitleScreen>(*_gameState);
+                // TODO Like objects, this can take a while if there are a lot of track designs
+                //      its also really something really we might want to do in the background
+                //      as its not required until the player wants to place a new ride.
+                _trackDesignRepository->Scan(_localisationService->GetCurrentLanguage());
+
+                _scenarioRepository->Scan(_localisationService->GetCurrentLanguage());
+                TitleSequenceManager::Scan();
+            });
+            _loadingScene->SetCompletionScene(GetTitleScene());
+            SetActiveScene(_loadingScene.get());
+
             return true;
         }
 
@@ -596,7 +649,7 @@ namespace OpenRCT2
                         // to ensure that the title sequence loads before the window
                         if (loadTitleScreenFirstOnFail)
                         {
-                            title_load();
+                            SetActiveScene(GetTitleScene());
                         }
                         // The path needs to be duplicated as it's a const here
                         // which the window function doesn't like
@@ -614,7 +667,7 @@ namespace OpenRCT2
                         // to ensure that the title sequence loads before the window
                         if (loadTitleScreenFirstOnFail)
                         {
-                            title_load();
+                            SetActiveScene(GetTitleScene());
                         }
 
                         auto windowManager = _uiContext->GetWindowManager();
@@ -625,7 +678,7 @@ namespace OpenRCT2
                     {
                         // If loading the SV6 or SV4 failed for a reason other than invalid objects
                         // the current park state will be corrupted so just go back to the title screen.
-                        title_load();
+                        SetActiveScene(GetTitleScene());
                         Console::Error::WriteLine(e.what());
                     }
                 }
@@ -707,10 +760,10 @@ namespace OpenRCT2
             {
                 case STARTUP_ACTION_INTRO:
                     gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
-                    title_load();
+                    SetActiveScene(GetLoadingScene());
                     break;
                 case STARTUP_ACTION_TITLE:
-                    title_load();
+                    SetActiveScene(GetLoadingScene());
                     break;
                 case STARTUP_ACTION_OPEN:
                 {
@@ -724,7 +777,7 @@ namespace OpenRCT2
                         size_t dataSize = Networking::Http::DownloadPark(gOpenRCT2StartupActionPath, &data);
                         if (dataSize == 0)
                         {
-                            title_load();
+                            SetActiveScene(GetTitleScene());
                             break;
                         }
 
@@ -732,7 +785,7 @@ namespace OpenRCT2
                         if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            title_load();
+                            SetActiveScene(GetTitleScene());
                             break;
                         }
 #endif
@@ -750,12 +803,12 @@ namespace OpenRCT2
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                             Console::Error::WriteLine("%s", ex.what());
-                            title_load();
+                            SetActiveScene(GetTitleScene());
                             break;
                         }
                     }
 
-                    gScreenFlags = SCREEN_FLAGS_PLAYING;
+                    SetActiveScene(GetGameScene());
 
 #ifndef DISABLE_NETWORK
                     if (gNetworkStart == NETWORK_MODE_SERVER)
@@ -790,7 +843,7 @@ namespace OpenRCT2
                     }
                     else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                     {
-                        title_load();
+                        SetActiveScene(GetTitleScene());
                     }
                     break;
             }
@@ -974,18 +1027,8 @@ namespace OpenRCT2
 
             date_update_real_time_of_day();
 
-            if (gIntroState != INTRO_STATE_NONE)
-            {
-                intro_update();
-            }
-            else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
-            {
-                _titleScreen->Update();
-            }
-            else
-            {
-                _gameState->Update();
-            }
+            if (_activeScene)
+                _activeScene->Update();
 
 #ifdef __ENABLE_DISCORD__
             if (_discordService != nullptr)

@@ -118,9 +118,14 @@ public:
         }
     }
 
-    size_t CountPending()
+    size_t CountPending() const
     {
         return _pending.size();
+    }
+
+    size_t CountProcessing() const
+    {
+        return _processing;
     }
 
 private:

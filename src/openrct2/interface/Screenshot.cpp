@@ -460,7 +460,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     }
 
     gIntroState = INTRO_STATE_NONE;
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
+    context->SetActiveScene(context->GetGameScene());
 
     // Create Viewport and DPI for every rotation and zoom.
     constexpr int32_t MAX_ROTATIONS = 4;
@@ -665,7 +665,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         }
 
         gIntroState = INTRO_STATE_NONE;
-        gScreenFlags = SCREEN_FLAGS_PLAYING;
+        context->SetActiveScene(context->GetGameScene());
 
         rct_viewport viewport{};
         if (giantScreenshot)

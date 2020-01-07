@@ -7,26 +7,26 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "TitleScreen.h"
+#include "TitleScene.h"
 
-#include "../Context.h"
-#include "../Game.h"
-#include "../GameState.h"
-#include "../Input.h"
-#include "../OpenRCT2.h"
-#include "../Version.h"
-#include "../audio/audio.h"
-#include "../config/Config.h"
-#include "../core/Console.hpp"
-#include "../drawing/Drawing.h"
-#include "../interface/Screenshot.h"
-#include "../interface/Viewport.h"
-#include "../interface/Window.h"
-#include "../localisation/Localisation.h"
-#include "../network/network.h"
-#include "../scenario/Scenario.h"
-#include "../scenario/ScenarioRepository.h"
-#include "../ui/UiContext.h"
+#include "../../Context.h"
+#include "../../Game.h"
+#include "../../GameState.h"
+#include "../../Input.h"
+#include "../../OpenRCT2.h"
+#include "../../Version.h"
+#include "../../audio/audio.h"
+#include "../../config/Config.h"
+#include "../../core/Console.hpp"
+#include "../../drawing/Drawing.h"
+#include "../../interface/Screenshot.h"
+#include "../../interface/Viewport.h"
+#include "../../interface/Window.h"
+#include "../../localisation/Localisation.h"
+#include "../../network/network.h"
+#include "../../scenario/Scenario.h"
+#include "../../scenario/ScenarioRepository.h"
+#include "../../ui/UiContext.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
@@ -35,30 +35,18 @@ using namespace OpenRCT2;
 
 // TODO Remove when no longer required.
 bool gPreviewingTitleSequenceInGame;
-static TitleScreen* _singleton = nullptr;
 
-TitleScreen::TitleScreen(GameState& gameState)
-    : _gameState(gameState)
-{
-    _singleton = this;
-}
-
-TitleScreen::~TitleScreen()
-{
-    _singleton = nullptr;
-}
-
-ITitleSequencePlayer* TitleScreen::GetSequencePlayer()
+ITitleSequencePlayer* TitleScene::GetSequencePlayer()
 {
     return _sequencePlayer;
 }
 
-size_t TitleScreen::GetCurrentSequence()
+size_t TitleScene::GetCurrentSequence()
 {
     return _currentSequence;
 }
 
-bool TitleScreen::PreviewSequence(size_t value)
+bool TitleScene::PreviewSequence(size_t value)
 {
     _currentSequence = value;
     _previewingSequence = TryLoadSequence(true);
@@ -80,7 +68,7 @@ bool TitleScreen::PreviewSequence(size_t value)
     return _previewingSequence;
 }
 
-void TitleScreen::StopPreviewingSequence()
+void TitleScene::StopPreviewingSequence()
 {
     if (_previewingSequence)
     {
@@ -95,22 +83,22 @@ void TitleScreen::StopPreviewingSequence()
     }
 }
 
-bool TitleScreen::IsPreviewingSequence()
+bool TitleScene::IsPreviewingSequence()
 {
     return _previewingSequence;
 }
 
-bool TitleScreen::ShouldHideVersionInfo()
+bool TitleScene::ShouldHideVersionInfo()
 {
     return _hideVersionInfo;
 }
 
-void TitleScreen::SetHideVersionInfo(bool value)
+void TitleScene::SetHideVersionInfo(bool value)
 {
     _hideVersionInfo = value;
 }
 
-void TitleScreen::Load()
+void TitleScene::Load()
 {
     log_verbose("TitleScreen::Load()");
 
@@ -124,8 +112,7 @@ void TitleScreen::Load()
     gCurrentLoadedPath = "";
 
     network_close();
-    audio_stop_all_music_and_sounds();
-    GetContext()->GetGameState()->InitAll(150);
+    GetGameState()->InitAll(150);
     viewport_init_all();
     context_open_window(WC_MAIN_WINDOW);
     CreateWindows();
@@ -151,7 +138,7 @@ void TitleScreen::Load()
     log_verbose("TitleScreen::Load() finished");
 }
 
-void TitleScreen::Update()
+void TitleScene::Update()
 {
     gInUpdateCode = true;
 
@@ -170,7 +157,7 @@ void TitleScreen::Update()
         }
         for (int32_t i = 0; i < numUpdates; i++)
         {
-            _gameState.UpdateLogic();
+            GetGameState()->UpdateLogic();
         }
         update_palette_effects();
         // update_rain_animation();
@@ -188,7 +175,12 @@ void TitleScreen::Update()
     gInUpdateCode = false;
 }
 
-void TitleScreen::ChangePresetSequence(size_t preset)
+void TitleScene::Stop()
+{
+    audio_stop_all_music_and_sounds();
+}
+
+void TitleScene::ChangePresetSequence(size_t preset)
 {
     size_t count = TitleSequenceManager::GetCount();
     if (preset >= count)
@@ -209,7 +201,7 @@ void TitleScreen::ChangePresetSequence(size_t preset)
  * Creates the windows shown on the title screen; New game, load game,
  * tutorial, toolbox and exit.
  */
-void TitleScreen::CreateWindows()
+void TitleScene::CreateWindows()
 {
     context_open_window(WC_TITLE_MENU);
     context_open_window(WC_TITLE_EXIT);
@@ -219,11 +211,11 @@ void TitleScreen::CreateWindows()
     _hideVersionInfo = false;
 }
 
-void TitleScreen::TitleInitialise()
+void TitleScene::TitleInitialise()
 {
     if (_sequencePlayer == nullptr)
     {
-        _sequencePlayer = GetContext()->GetUiContext()->GetTitleSequencePlayer();
+        _sequencePlayer = GetContext().GetUiContext()->GetTitleSequencePlayer();
     }
     size_t seqId = title_get_config_sequence();
     if (seqId == SIZE_MAX)
@@ -237,7 +229,7 @@ void TitleScreen::TitleInitialise()
     ChangePresetSequence((int32_t)seqId);
 }
 
-bool TitleScreen::TryLoadSequence(bool loadPreview)
+bool TitleScene::TryLoadSequence(bool loadPreview)
 {
     if (_loadedTitleSequenceId != _currentSequence || loadPreview)
     {
@@ -270,62 +262,62 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
         {
-            GetContext()->GetGameState()->InitAll(150);
+            GetGameState()->InitAll(150);
         }
         return false;
     }
     return true;
 }
 
-void title_load()
-{
-    if (_singleton != nullptr)
-    {
-        _singleton->Load();
-    }
-}
-
 void title_create_windows()
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
+    if (titleScreen != nullptr)
     {
-        _singleton->CreateWindows();
+        titleScreen->CreateWindows();
     }
 }
 
 void* title_get_sequence_player()
 {
-    void* result = nullptr;
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
+    if (titleScreen != nullptr)
     {
-        result = _singleton->GetSequencePlayer();
+        return titleScreen->GetSequencePlayer();
     }
-    return result;
+    return nullptr;
 }
 
 void title_sequence_change_preset(size_t preset)
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
+    if (titleScreen != nullptr)
     {
-        _singleton->ChangePresetSequence(preset);
+        titleScreen->ChangePresetSequence(preset);
     }
 }
 
 bool title_should_hide_version_info()
 {
-    bool result = false;
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
+    if (titleScreen != nullptr)
     {
-        result = _singleton->ShouldHideVersionInfo();
+        return titleScreen->ShouldHideVersionInfo();
     }
-    return result;
+    return false;
 }
 
 void title_set_hide_version_info(bool value)
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
+    if (titleScreen != nullptr)
     {
-        _singleton->SetHideVersionInfo(value);
+        titleScreen->SetHideVersionInfo(value);
     }
 }
 
@@ -336,36 +328,43 @@ size_t title_get_config_sequence()
 
 size_t title_get_current_sequence()
 {
-    size_t result = 0;
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
+    if (titleScreen != nullptr)
     {
-        result = _singleton->GetCurrentSequence();
+        return titleScreen->GetCurrentSequence();
     }
-    return result;
+    return 0;
 }
 
 bool title_preview_sequence(size_t value)
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
+    if (titleScreen != nullptr)
     {
-        return _singleton->PreviewSequence(value);
+        return titleScreen->PreviewSequence(value);
     }
     return false;
 }
 
 void title_stop_previewing_sequence()
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
+    if (titleScreen != nullptr)
     {
-        _singleton->StopPreviewingSequence();
+        titleScreen->StopPreviewingSequence();
     }
 }
 
 bool title_is_previewing_sequence()
 {
-    if (_singleton != nullptr)
+    auto* ctx = OpenRCT2::GetContext();
+    auto* titleScreen = static_cast<TitleScene*>(ctx->GetTitleScene());
+    if (titleScreen != nullptr)
     {
-        return _singleton->IsPreviewingSequence();
+        return titleScreen->IsPreviewingSequence();
     }
     return false;
 }

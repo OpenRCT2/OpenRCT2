@@ -9,17 +9,19 @@
 
 #pragma once
 
-#include "../common.h"
+#include "../../common.h"
+#include "../../drawing/Drawing.h"
+#include "../Scene.h"
 
-interface ITitleSequencePlayer
+namespace OpenRCT2
 {
-    virtual ~ITitleSequencePlayer() = default;
+    class GameScene final : public Scene
+    {
+    public:
+        using Scene::Scene;
 
-    virtual int32_t GetCurrentPosition() const abstract;
-
-    virtual bool Begin(size_t titleSequenceId) abstract;
-    virtual void Reset() abstract;
-    virtual bool Update() abstract;
-    virtual void Seek(int32_t position) abstract;
-    virtual void Eject() abstract;
-};
+        void Load() override;
+        void Update() override;
+        void Stop() override;
+    };
+} // namespace OpenRCT2

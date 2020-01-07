@@ -69,6 +69,7 @@ namespace OpenRCT2
 
     interface IPlatformEnvironment;
     interface IReplayManager;
+    interface IScene;
 
     namespace Audio
     {
@@ -116,6 +117,15 @@ namespace OpenRCT2
         virtual int32_t GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
         virtual Paint::Painter* GetPainter() abstract;
+
+        virtual IScene* GetLoadingScene() abstract;
+        virtual IScene* GetIntroScene() abstract;
+        virtual IScene* GetTitleScene() abstract;
+        virtual IScene* GetGameScene() abstract;
+        virtual IScene* GetEditorScene() abstract;
+
+        virtual IScene* GetActiveScene() abstract;
+        virtual void SetActiveScene(IScene * screen) abstract;
 
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 

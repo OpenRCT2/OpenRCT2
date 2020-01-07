@@ -44,7 +44,7 @@
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
-#include "title/TitleScreen.h"
+#include "scenes/title/TitleScene.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/SawyerCoding.h"
@@ -535,11 +535,13 @@ void game_load_init()
 {
     rct_window* mainWindow;
 
-    IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
+    auto* ctx = GetContext();
+
+    IGameStateSnapshots* snapshots = ctx->GetGameStateSnapshots();
     snapshots->Reset();
 
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
-    audio_stop_all_music_and_sounds();
+    ctx->SetActiveScene(ctx->GetGameScene());
+
     if (!gLoadKeepWindowsOpen)
     {
         viewport_init_all();
@@ -552,7 +554,7 @@ void game_load_init()
         window_unfollow_sprite(mainWindow);
     }
 
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = ctx->GetUiContext()->GetWindowManager();
     windowManager->SetMainView(gSavedViewX, gSavedViewY, gSavedViewZoom, gSavedViewRotation);
 
     if (network_get_mode() != NETWORK_MODE_CLIENT)
@@ -577,7 +579,6 @@ void game_load_init()
         window_update_all();
     }
 
-    audio_stop_title_music();
     gGameSpeed = 1;
 }
 
@@ -833,7 +834,10 @@ void game_load_or_quit_no_save_prompt()
             }
             gGameSpeed = 1;
             gFirstTimeSaving = true;
-            title_load();
+
+            auto* ctx = OpenRCT2::GetContext();
+            ctx->SetActiveScene(ctx->GetTitleScene());
+
             break;
         }
         default:
