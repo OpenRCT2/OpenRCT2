@@ -19,6 +19,26 @@ class MazePathfindingEntry;
 void swap(MazePathfindingEntry& a, MazePathfindingEntry& b);
 
 // TODO: Check if these classes need to move into guest.h/cpp
+class MazeLastEdge
+{
+    // 7-2: unused
+    // 3-2: last edge direction at the last intersection
+    // 1-0: last edge direction at the last subTile
+    uint8_t data;
+
+public:
+    MazeLastEdge& operator=(Direction last_edge);
+    operator Direction() const;
+    MazeLastEdge& operator+=(Direction offset);
+    MazeLastEdge& operator-=(Direction offset);
+    MazeLastEdge& operator++(int);
+    MazeLastEdge& operator--(int);
+
+    void setAtLastIntersection(Direction last_edge);
+    Direction atLastIntersection();
+};
+static_assert(sizeof(MazeLastEdge) == sizeof(uint8_t));
+
 class MazePathfindingEntry
 {
     // 31-21: yTile (31-16: yCoord)
@@ -46,7 +66,7 @@ public:
     bool hasPeeked();
     bool getPeekedState() const;
     bool matchCoords(const CoordsXY& coords, uint8_t subTileIndex) const;
-    bool operator==(const MazePathfindingEntry& entry) const;
+    bool matchCoords(const MazePathfindingEntry& e) const;
 };
 
 class MazePathfindingHistory

@@ -213,6 +213,51 @@ TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType)
 
 #pragma region Maze Pathfinding
 
+MazeLastEdge& MazeLastEdge::operator=(Direction last_edge)
+{
+    data = data & 0xfc | last_edge & 0x3;
+    return *this;
+}
+
+MazeLastEdge::operator Direction() const
+{
+    return data & 0x3;
+}
+
+MazeLastEdge& MazeLastEdge::operator+=(Direction offset)
+{
+    data = data & 0xfc | (*this + offset) & 0x3;
+    return *this;
+}
+
+MazeLastEdge& MazeLastEdge::operator-=(Direction offset)
+{
+    data = data & 0xfc | (*this - offset) & 0x3;
+    return *this;
+}
+
+MazeLastEdge& MazeLastEdge::operator++(int)
+{
+    data = data & 0xfc | (*this + 1) & 0x3;
+    return *this;
+}
+
+MazeLastEdge& MazeLastEdge::operator--(int)
+{
+    data = data & 0xfc | (*this - 1) & 0x3;
+    return *this;
+}
+
+void MazeLastEdge::setAtLastIntersection(Direction last_edge)
+{
+    data = data & 0xf3 | (last_edge & 0x3) << 2;
+}
+
+Direction MazeLastEdge::atLastIntersection()
+{
+    return data >> 2 & 0x3;
+}
+
 void swap(MazePathfindingEntry& a, MazePathfindingEntry& b)
 {
     std::swap(a.data, b.data);
@@ -283,15 +328,15 @@ bool MazePathfindingEntry::getPeekedState() const
 
 bool MazePathfindingEntry::matchCoords(const CoordsXY& coords, uint8_t subTileIndex) const
 {
-    assert(coords.x > 0 && coords.y > 0);
+    assert(coords.x >= 0 && coords.y >= 0);
     return (int32_t)(data >> 16 & 0xffe0) == (coords.y & 0xffe0) && (int32_t)(data & 0xffe0) == (coords.x & 0xffe0)
         && (data & 0x3) == subTileIndex;
 }
 
-bool MazePathfindingEntry::operator==(const MazePathfindingEntry& entry) const
+bool MazePathfindingEntry::matchCoords(const MazePathfindingEntry& e) const
 {
-    // FIXME: PeekedFlag prevents data == entry.data
-    return (data & ~0x10) == (entry.data & ~0x10);
+    auto [coords, subTileIndex] = e.getCoords();
+    return matchCoords(coords, subTileIndex);
 }
 
 void MazePathfindingHistory::initialize()

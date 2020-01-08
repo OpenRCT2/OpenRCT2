@@ -3274,7 +3274,7 @@ static constexpr const CoordsXY _MazeEntranceStart[] = {
 
 static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
 {
-    peep->MazeLastEdge = entrance_loc.direction + 1;
+    peep->PeepMazeLastEdge = entrance_loc.direction + 1;
 
     entrance_loc.x += CoordsDirectionDelta[entrance_loc.direction].x;
     entrance_loc.y += CoordsDirectionDelta[entrance_loc.direction].y;
@@ -3283,13 +3283,12 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
     if (scenario_rand() & 0x40)
     {
         direction += 4;
-        peep->MazeLastEdge += 2;
+        peep->PeepMazeLastEdge += 2;
     }
 
     direction &= 0xF;
     // Direction is 11, 15, 3, or 7
     peep->Var37 = direction;
-    peep->MazeLastEdge &= 3;
 
     entrance_loc.x += _MazeEntranceStart[direction / 4].x;
     entrance_loc.y += _MazeEntranceStart[direction / 4].y;
@@ -4617,7 +4616,7 @@ void Guest::UpdateRideMazePathfinding()
     if (openEdgesFlags == 0)
         return;
 
-    Direction mazeReverseLastEdge = direction_reverse(MazeLastEdge);
+    Direction mazeReverseLastEdge = direction_reverse(PeepMazeLastEdge);
     openEdgesFlags &= ~(1 << mazeReverseLastEdge);
     if (openEdgesCount > 2) // Intersection
     {
@@ -4626,8 +4625,13 @@ void Guest::UpdateRideMazePathfinding()
             targetLoc, subTileIndex, mazeReverseLastEdge);
 
         // Mark last edge as visited if previously in a dead-end or the previous node completly visited
-        if (currentEntry == previousEntry || previousEntry.isCompletlyVisited())
+        if (currentEntry.matchCoords(previousEntry) || previousEntry.isCompletlyVisited())
+        {
             currentEntry.markVisited(mazeReverseLastEdge, openEdgesCount);
+            // Mark also previous chosen edge in case of dead-end-loop
+            if (currentEntry.matchCoords(previousEntry))
+                currentEntry.markVisited(PeepMazeLastEdge.atLastIntersection(), openEdgesCount);
+        }
 
         // TODO: Reimplement 'wrong way' probability using entry index
         openEdgesFlags &= ~currentEntry.getVisited();
@@ -4648,6 +4652,9 @@ void Guest::UpdateRideMazePathfinding()
     }
     uint8_t chosenEdge = hedges[scenario_rand() % openCount];
     assert(chosenEdge != 0xFF);
+
+    if (openEdgesCount > 2)
+        PeepMazeLastEdge.setAtLastIntersection(chosenEdge);
 
     targetLoc = GetDestination() + CoordsDirectionDelta[chosenEdge] / 2;
 
@@ -4685,13 +4692,12 @@ void Guest::UpdateRideMazePathfinding()
     {
         case maze_type::invalid:
             // TODO Add a warning log message
-            MazeLastEdge++;
-            MazeLastEdge &= 3;
+            PeepMazeLastEdge++;
             return;
         case maze_type::hedge:
             SetDestination(targetLoc);
             Var37 = gMazeGetNewDirectionFromEdge[Var37 / 4][chosenEdge];
-            MazeLastEdge = chosenEdge;
+            PeepMazeLastEdge = chosenEdge;
             break;
         case maze_type::entrance_or_exit:
             targetLoc = GetDestination();
@@ -4705,7 +4711,7 @@ void Guest::UpdateRideMazePathfinding()
             }
             SetDestination(targetLoc);
             Var37 = 16;
-            MazeLastEdge = chosenEdge;
+            PeepMazeLastEdge = chosenEdge;
             break;
     }
 
