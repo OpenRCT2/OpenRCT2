@@ -57,6 +57,20 @@ jobs:
           else
               echo 'Not going to push build'
           fi
+  windows-mingw:
+    name: Windows (win32) using mingw
+    runs-on: ubuntu-latest
+    container:
+      image: openrct2/openrct2-build:0.2.4-mingw
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build OpenRCT2
+        run: |
+          sudo su
+          mkdir bin && cd bin
+          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DFORCE32=on -DBUILD_SHARED_LIBS=ON
+          ninja -v
   macos:
     name: macOS
     runs-on: macos-latest
