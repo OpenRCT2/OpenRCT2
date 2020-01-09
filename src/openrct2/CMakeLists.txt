@@ -18,7 +18,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
 # GCC likes us to pass the -lstdc++fs flag to link C++17 filesystem implementation.
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT MINGW)
     target_link_libraries(${PROJECT_NAME} stdc++fs)
 endif()
 
