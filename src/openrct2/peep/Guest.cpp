@@ -43,6 +43,7 @@
 #include "Staff.h"
 
 #include <algorithm>
+#include <array>
 #include <iterator>
 
 using namespace OpenRCT2;
@@ -3274,31 +3275,36 @@ static constexpr const CoordsXY _MazeEntranceStart[] = {
 
 static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
 {
-    peep->PeepMazeLastEdge = entrance_loc.direction + 1;
+    // By default, the guest turn right after the maze entrance
+    peep->PeepMazeRegister.SetLastDirection(entrance_loc.direction + 1);
 
     entrance_loc.x += CoordsDirectionDelta[entrance_loc.direction].x;
     entrance_loc.y += CoordsDirectionDelta[entrance_loc.direction].y;
 
-    uint8_t direction = entrance_loc.direction * 4 + 11;
+    // Select the maze right subTile connected to the entrance
+    uint8_t firstMazeSubTileRaw = entrance_loc.direction * 4 + 11;
+
+    // Randomly choose to turn left side finally
     if (scenario_rand() & 0x40)
     {
-        direction += 4;
-        peep->PeepMazeLastEdge += 2;
+        peep->PeepMazeRegister.ReverseLastDirection();
+        // Select the left maze subTile connected to the entrance
+        firstMazeSubTileRaw += 4;
     }
 
-    direction &= 0xF;
+    firstMazeSubTileRaw &= 0xF;
     // Direction is 11, 15, 3, or 7
-    peep->Var37 = direction;
+    peep->Var37 = firstMazeSubTileRaw;
 
-    entrance_loc.x += _MazeEntranceStart[direction / 4].x;
-    entrance_loc.y += _MazeEntranceStart[direction / 4].y;
+    entrance_loc.x += _MazeEntranceStart[firstMazeSubTileRaw / 4].x;
+    entrance_loc.y += _MazeEntranceStart[firstMazeSubTileRaw / 4].y;
 
     peep->SetDestination(entrance_loc, 3);
 
     ride->cur_num_customers++;
     peep->OnEnterRide(peep->CurrentRide);
     peep->RideSubState = PeepRideSubState::MazePathfinding;
-    peep->MazePathfindHistory.initialize();
+    peep->MazePathfindHistory.Initialize();
 }
 
 static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
@@ -4544,6 +4550,14 @@ void Guest::UpdateRideLeaveSpiralSlide()
 }
 
 /**
+ * Helper function to define maze pathfinding thresholds
+ */
+static constexpr uint16_t maze_forget_odds(double odds)
+{
+    return odds * UINT16_MAX;
+}
+
+/**
  *
  *  rct2: 0x00692A83
  */
@@ -4561,16 +4575,17 @@ void Guest::UpdateRideMazePathfinding()
 
     if (Var37 == 16)
     {
-        MazePathfindHistory.clear();
+        MazePathfindHistory.Free();
         peep_update_ride_prepare_for_exit(this);
         return;
     }
 
+    // Randomly choose to jump, could give some hint on the next direction
     if (Action >= PeepActionType::None1)
     {
         if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
         {
-            MazePathfindHistory.notifyPeeking();
+            PeepMazeRegister.SetPeekFlag();
             Action = PeepActionType::Jump;
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
@@ -4580,32 +4595,35 @@ void Guest::UpdateRideMazePathfinding()
 
     auto targetLoc = GetDestination().ToTileStart();
     uint16_t stationBaseZ = ride->stations[0].GetBaseZ();
-    uint8_t subTileIndex = Var37 / 4; // var_37 is 3, 7, 11 or 15
+    // var_37 is 3, 7, 11 or 15
+    uint8_t subTileIndex = Var37 / 4;
     uint8_t openEdgesFlags = 0;
     uint8_t openEdgesCount = 0;
 
-    // Get info on open edges at the current position
+    // Get info on open edges at the current subTile
     {
         TrackElement* trackElement = map_get_track_element_at({ targetLoc, stationBaseZ });
-        assert(trackElement);
+        if (trackElement == nullptr)
+            return;
 
         uint16_t mazeEntry = trackElement->GetMazeEntry();
         auto nearEntranceTile = ride->stations[0].Entrance.ToCoordsXYZD();
         Direction entranceDirection = nearEntranceTile.direction;
 
-        // Close edges giving to entrance
+        // If the subTile is connected to the maze entrance, close the edge giving to it
         nearEntranceTile += CoordsDirectionDelta[entranceDirection];
         entranceDirection = direction_reverse(entranceDirection);
         if (nearEntranceTile.x == targetLoc.x && nearEntranceTile.y == targetLoc.y
             && (subTileIndex == entranceDirection || subTileIndex == direction_next(entranceDirection)))
         {
-            mazeEntry |= 1 << gMazeCurrentDirectionToHedge[subTileIndex][direction_reverse(nearEntranceTile.direction)];
+            mazeEntry |= 0x1 << gMazeCurrentDirectionToHedge[subTileIndex][direction_reverse(nearEntranceTile.direction)];
         }
 
+        // Check open edges (without hedge)
         for (int dir = 3; dir >= 0; --dir)
         {
             openEdgesFlags <<= 1;
-            if (!(mazeEntry & (1 << gMazeCurrentDirectionToHedge[subTileIndex][dir])))
+            if (!(mazeEntry & (0x1 << gMazeCurrentDirectionToHedge[subTileIndex][dir])))
             {
                 openEdgesFlags |= 1;
                 ++openEdgesCount;
@@ -4616,33 +4634,63 @@ void Guest::UpdateRideMazePathfinding()
     if (openEdgesFlags == 0)
         return;
 
-    Direction mazeReverseLastEdge = direction_reverse(PeepMazeLastEdge);
-    openEdgesFlags &= ~(1 << mazeReverseLastEdge);
-    if (openEdgesCount > 2) // Intersection
+    // Running the pathfinding algorithm and updating possible edges
+    Direction sourceDirection = direction_reverse(PeepMazeRegister.GetLastDirection());
+    openEdgesFlags &= ~(0x1 << sourceDirection);
+    if (openEdgesCount > 2)
     {
-        const MazePathfindingEntry previousEntry = MazePathfindHistory.getLast();
-        auto [currentEntry, entryIndex, hasPeeked] = MazePathfindHistory.meetIntersection(
-            targetLoc, subTileIndex, mazeReverseLastEdge);
+        // The guest is currently at an intersection
+        const MazePathfindingEntry previousEntry = MazePathfindHistory.GetLast();
+        auto [currentEntry, entryIndex] = MazePathfindHistory.MeetIntersection(targetLoc, subTileIndex, sourceDirection);
+        bool peekFlag = PeepMazeRegister.CheckAndResetPeekFlag();
 
-        // Mark last edge as visited if previously in a dead-end or the previous node completly visited
-        if (currentEntry.matchCoords(previousEntry) || previousEntry.isCompletlyVisited())
+        // Mark the last edge as visited if previously in a dead-end or the previous intersection completly visited
+        if (currentEntry.MatchCoords(previousEntry) || previousEntry.IsCompletlyVisited())
         {
-            currentEntry.markVisited(mazeReverseLastEdge, openEdgesCount);
-            // Mark also previous chosen edge in case of dead-end-loop
-            if (currentEntry.matchCoords(previousEntry))
-                currentEntry.markVisited(PeepMazeLastEdge.atLastIntersection(), openEdgesCount);
+            if (currentEntry.IsCompletlyVisited())
+            {
+                // Offer amnesia to completly lost guest
+                MazePathfindHistory.Initialize();
+            }
+            else
+            {
+                currentEntry.MarkVisited(sourceDirection, openEdgesCount);
+                // Mark also the previous chosen edge in case of dead-end-loop
+                if (currentEntry.MatchCoords(previousEntry))
+                    currentEntry.MarkVisited(PeepMazeRegister.GetDirectionAtLastIntersection(), openEdgesCount);
+            }
         }
 
-        // TODO: Reimplement 'wrong way' probability using entry index
-        openEdgesFlags &= ~currentEntry.getVisited();
+        // Probability table that the guest remember of the already taken edges
+        // TODO: Tune these values
+        static const std::array<std::array<uint16_t, 4>, 6> rememberThreshold = {
+            { // visited,               origin,                 visited+peeked,         origin+peeked
+              // Last intersection
+              { maze_forget_odds(0.04), maze_forget_odds(0.02), maze_forget_odds(0.00), maze_forget_odds(0.00) },
+              // -1
+              { maze_forget_odds(0.09), maze_forget_odds(0.03), maze_forget_odds(0.03), maze_forget_odds(0.01) },
+              // -2
+              { maze_forget_odds(0.27), maze_forget_odds(0.18), maze_forget_odds(0.07), maze_forget_odds(0.03) },
+              // -3
+              { maze_forget_odds(0.39), maze_forget_odds(0.25), maze_forget_odds(0.15), maze_forget_odds(0.10) },
+              // -4
+              { maze_forget_odds(0.50), maze_forget_odds(0.45), maze_forget_odds(0.32), maze_forget_odds(0.30) },
+              // New or forgotten intersection
+              { maze_forget_odds(1.00), maze_forget_odds(1.00), maze_forget_odds(1.00), maze_forget_odds(1.00) } }
+        };
 
-        // TODO: Add probability that guest takes origin edge
-        if (bitcount(openEdgesFlags) > 1)
-            openEdgesFlags &= ~(0x1 << currentEntry.getOrigin());
+        // If the guest succeeded his memory roll, remove visited edges (other that the origin edge)
+        if ((scenario_rand() & 0xffff) >= rememberThreshold[entryIndex][peekFlag * 2])
+            openEdgesFlags &= ~currentEntry.GetVisited();
+
+        // Second dice roll, if succeeded remove also the origin edge (unless all the other edges are already visited)
+        if (bitcount(openEdgesFlags) > 1 && (scenario_rand() & 0xffff) >= rememberThreshold[entryIndex][1 + peekFlag * 2])
+            openEdgesFlags &= ~(0x1 << currentEntry.GetOrigin());
     }
     if (openEdgesFlags == 0)
-        openEdgesFlags |= (1 << mazeReverseLastEdge);
+        openEdgesFlags |= (1 << sourceDirection);
 
+    // Selection randomly an available direction
     uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
     uint8_t openCount = bitcount(openEdgesFlags);
     for (int i = 0, j = 0; i < 4 && j < openCount; ++i)
@@ -4654,18 +4702,19 @@ void Guest::UpdateRideMazePathfinding()
     assert(chosenEdge != 0xFF);
 
     if (openEdgesCount > 2)
-        PeepMazeLastEdge.setAtLastIntersection(chosenEdge);
+        PeepMazeRegister.SetDirectionAtLastIntersection(chosenEdge);
 
     targetLoc = GetDestination() + CoordsDirectionDelta[chosenEdge] / 2;
 
-    enum class maze_type
+    enum class MazeNextTileType
     {
-        invalid,
-        hedge,
-        entrance_or_exit
+        Invalid,
+        Hedge,
+        Exit
     };
-    maze_type mazeType = maze_type::invalid;
 
+    // Check the nature of the next tile if the guest move in this direction...
+    MazeNextTileType nextSubTile = MazeNextTileType::Invalid;
     auto tileElement = map_get_first_element_at(targetLoc);
     if (tileElement == nullptr)
         return;
@@ -4676,30 +4725,30 @@ void Guest::UpdateRideMazePathfinding()
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
-            mazeType = maze_type::hedge;
+            nextSubTile = MazeNextTileType::Hedge;
             break;
         }
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE
             && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
         {
-            mazeType = maze_type::entrance_or_exit;
+            nextSubTile = MazeNextTileType::Exit;
             break;
         }
     } while (!(tileElement++)->IsLastForTile());
-
-    switch (mazeType)
+    // ... and update the guest next move
+    switch (nextSubTile)
     {
-        case maze_type::invalid:
-            // TODO Add a warning log message
-            PeepMazeLastEdge++;
+        case MazeNextTileType::Invalid:
+            // Occurs when the maze is open on the outside (by playing with the tile inspector)
+            PeepMazeRegister.SetLastDirection(direction_next(PeepMazeRegister.GetLastDirection()));
             return;
-        case maze_type::hedge:
+        case MazeNextTileType::Hedge:
             SetDestination(targetLoc);
             Var37 = gMazeGetNewDirectionFromEdge[Var37 / 4][chosenEdge];
-            PeepMazeLastEdge = chosenEdge;
+            PeepMazeRegister.SetLastDirection(chosenEdge);
             break;
-        case maze_type::entrance_or_exit:
+        case MazeNextTileType::Exit:
             targetLoc = GetDestination();
             if (chosenEdge & 1)
             {
@@ -4711,7 +4760,7 @@ void Guest::UpdateRideMazePathfinding()
             }
             SetDestination(targetLoc);
             Var37 = 16;
-            PeepMazeLastEdge = chosenEdge;
+            PeepMazeRegister.SetLastDirection(chosenEdge);
             break;
     }
 
@@ -4997,7 +5046,6 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
  */
 void Guest::UpdateWalking()
 {
-    // if (!CheckForPath() || sub_state == PEEP_RIDE_MAZE_PATHFINDING)
     if (!CheckForPath())
         return;
 

@@ -2071,21 +2071,24 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += LIST_ROW_HEIGHT;
     if (peep->RideSubState == PeepRideSubState::MazePathfinding)
     {
-        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_MAZE_PATHFINDING, NULL);
+        {
+            auto ft = Formatter();
+            ft.Add<uint16_t>(peep->PeepMazeRegister.GetPeekFlag());
+            DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_MAZE_PATHFINDING, ft);
+        }
         screenCoords.y += LIST_ROW_HEIGHT;
 
         screenCoords.x += 10;
-        for (const auto& maze_pathfind_item: peep->MazePathfindHistory.readHistory())
+        for (const auto& maze_pathfind_item : peep->MazePathfindHistory.GetHistory())
         {
-            auto [coords, subTileIndex] = maze_pathfind_item.getCoords();
+            auto [coords, subTileIndex] = maze_pathfind_item.GetCoords();
             auto ft = Formatter();
             ft.Add<uint16_t>(coords.x >> 5);
             ft.Add<uint16_t>(coords.y >> 5);
             ft.Add<uint16_t>(subTileIndex);
-            ft.Add<uint16_t>(maze_pathfind_item.getOrigin());
-            ft.Add<uint16_t>(maze_pathfind_item.getVisited());
-            ft.Add<uint16_t>(maze_pathfind_item.isCompletlyVisited());
-            ft.Add<uint16_t>(maze_pathfind_item.getPeekedState());
+            ft.Add<uint16_t>(maze_pathfind_item.GetOrigin());
+            ft.Add<uint16_t>(maze_pathfind_item.GetVisited());
+            ft.Add<uint16_t>(maze_pathfind_item.IsCompletlyVisited());
             DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_MAZE_PATHFINDING_ITEM, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }

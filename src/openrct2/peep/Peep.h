@@ -13,10 +13,10 @@
 #include "../common.h"
 #include "../management/Finance.h"
 #include "../rct12/RCT12.h"
-#include "../ride/gentle/MazePathfinding.h"
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
+#include "../ride/gentle/Maze.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
@@ -631,8 +631,8 @@ struct Peep : SpriteBase
     };
     union
     {
-        MazeLastEdge PeepMazeLastEdge;
-        Direction PeepDirection; // Direction ?
+        PeepMazeStateRegister PeepMazeRegister;
+        Direction PeepDirection;
     };
     ride_id_t InteractionRideIndex;
     uint16_t TimeInQueue;

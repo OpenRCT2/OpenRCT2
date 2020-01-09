@@ -19,10 +19,6 @@
 #include "../../world/Map.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
-#include "MazePathfinding.h"
-
-#include <algorithm>
-#include <set>
 
 enum
 {
@@ -213,190 +209,220 @@ TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType)
 
 #pragma region Maze Pathfinding
 
-MazeLastEdge& MazeLastEdge::operator=(Direction last_edge)
+template<typename _T> static constexpr _T MaskField(uint8_t size, uint8_t offset = 0)
 {
-    data = data & 0xfc | last_edge & 0x3;
-    return *this;
+    return ((1 << size) - 1) << offset;
 }
 
-MazeLastEdge::operator Direction() const
+template<typename _T> static inline _T GetField(_T opaqueData, uint8_t size, uint8_t offset = 0)
 {
-    return data & 0x3;
+    return (opaqueData & MaskField<_T>(size, offset)) >> offset;
 }
 
-MazeLastEdge& MazeLastEdge::operator+=(Direction offset)
+template<typename _T> static inline void SetField(_T& opaqueData, _T value, uint8_t size, uint8_t offset)
 {
-    data = data & 0xfc | (*this + offset) & 0x3;
-    return *this;
+    opaqueData &= ~MaskField<_T>(size, offset);
+    opaqueData |= GetField(value, size) << offset;
 }
 
-MazeLastEdge& MazeLastEdge::operator-=(Direction offset)
+void PeepMazeStateRegister::SetLastDirection(Direction lastEdge)
 {
-    data = data & 0xfc | (*this - offset) & 0x3;
-    return *this;
+    SetField(Data, lastEdge, 2, 0);
 }
 
-MazeLastEdge& MazeLastEdge::operator++(int)
+Direction PeepMazeStateRegister::GetLastDirection() const
 {
-    data = data & 0xfc | (*this + 1) & 0x3;
-    return *this;
+    return GetField(Data, 2, 0);
 }
 
-MazeLastEdge& MazeLastEdge::operator--(int)
+void PeepMazeStateRegister::ReverseLastDirection()
 {
-    data = data & 0xfc | (*this - 1) & 0x3;
-    return *this;
+    SetField(Data, direction_reverse(GetField(Data, 2, 0)), 2, 0);
 }
 
-void MazeLastEdge::setAtLastIntersection(Direction last_edge)
+void PeepMazeStateRegister::SetDirectionAtLastIntersection(Direction lastEdge)
 {
-    data = data & 0xf3 | (last_edge & 0x3) << 2;
+    SetField(Data, lastEdge, 2, 2);
 }
 
-Direction MazeLastEdge::atLastIntersection()
+Direction PeepMazeStateRegister::GetDirectionAtLastIntersection() const
 {
-    return data >> 2 & 0x3;
+    return GetField(Data, 2, 2);
 }
 
-void swap(MazePathfindingEntry& a, MazePathfindingEntry& b)
+bool PeepMazeStateRegister::GetPeekFlag() const
 {
-    std::swap(a.data, b.data);
+    return GetField(Data, 1, 4);
 }
 
-void MazePathfindingEntry::reset()
+bool PeepMazeStateRegister::CheckAndResetPeekFlag()
 {
-    data = 0;
+    bool state = GetPeekFlag();
+
+    SetField<uint8_t>(Data, false, 1, 4);
+
+    return state;
 }
 
-void MazePathfindingEntry::clear()
+void PeepMazeStateRegister::SetPeekFlag()
 {
-    data = 0xffffffff;
+    SetField<uint8_t>(Data, true, 1, 4);
 }
 
-void MazePathfindingEntry::set(const CoordsXY& coords, uint8_t subTileIndex, Direction origin)
+void MazePathfindingEntry::SetSubTileIndex(uint8_t subTileIndex)
+{
+    SetField<uint32_t>(Data, subTileIndex, 2, 0);
+}
+
+uint8_t MazePathfindingEntry::GetSubTileIndex() const
+{
+    return GetField(Data, 2, 0);
+}
+
+void MazePathfindingEntry::SetOrigin(Direction origin)
+{
+    SetField<uint32_t>(Data, origin, 2, 2);
+}
+
+void MazePathfindingEntry::SetXTile(uint16_t xTile)
+{
+    SetField<uint32_t>(Data, xTile, 11, 5);
+}
+
+uint16_t MazePathfindingEntry::GetXTile() const
+{
+    return GetField(Data, 11, 5);
+}
+
+void MazePathfindingEntry::SetVisitedFlags(uint8_t visitedFlags)
+{
+    SetField<uint32_t>(Data, visitedFlags, 4, 16);
+}
+
+void MazePathfindingEntry::AddVisitedFlags(Direction visitedDirection)
+{
+    SetVisitedFlags(GetVisited() | (1 << GetField(visitedDirection, 2)));
+}
+
+void MazePathfindingEntry::SetCompletlyVisited(bool completlyVisited)
+{
+    SetField<uint32_t>(Data, completlyVisited, 1, 20);
+}
+
+void MazePathfindingEntry::SetYTile(uint16_t yTile)
+{
+    SetField<uint32_t>(Data, yTile, 11, 21);
+}
+
+uint16_t MazePathfindingEntry::GetYTile() const
+{
+    return GetField(Data, 11, 21);
+}
+
+void MazePathfindingEntry::Reset()
+{
+    Data = 0x0;
+}
+
+void MazePathfindingEntry::Free()
+{
+    Data = ~0x0u;
+}
+
+void MazePathfindingEntry::Set(const CoordsXY& coords, uint8_t subTileIndex, Direction origin)
 {
     assert(coords.x > 0 && coords.y > 0);
-    data = (coords.y & 0xffe0) << 16 | (coords.x & 0xffe0) | (origin & 0x3) << 2 | (subTileIndex & 0x3);
+    TileCoordsXY tileCoords(coords);
+
+    Reset();
+    SetSubTileIndex(subTileIndex);
+    SetOrigin(origin);
+    SetXTile(tileCoords.x);
+    SetYTile(tileCoords.y);
 }
 
-std::tuple<CoordsXY, uint8_t> MazePathfindingEntry::getCoords() const
+std::pair<CoordsXY, uint8_t> MazePathfindingEntry::GetCoords() const
 {
-    return std::tuple(CoordsXY(data & 0xffe0, data >> 16 & 0xffe0), (uint8_t)(data & 0x3));
+    TileCoordsXY tileCoords(GetXTile(), GetYTile());
+
+    return std::pair(tileCoords.ToCoordsXY(), GetSubTileIndex());
 }
 
-Direction MazePathfindingEntry::getOrigin() const
+Direction MazePathfindingEntry::GetOrigin() const
 {
-    return data >> 2 & 0x3;
+    return GetField(Data, 2, 2);
 }
 
-void MazePathfindingEntry::markVisited(Direction origin, uint8_t openEdgesCount)
+void MazePathfindingEntry::MarkVisited(Direction source, uint8_t openEdgesCount)
 {
-    uint8_t visited;
+    AddVisitedFlags(source);
 
-    data |= 0x1 << ((origin & 0x3) + 16);
-    visited = getVisited();
-
-    if (bitcount(visited) >= openEdgesCount - 1)
-        data |= 0x1 << 20;
+    if (bitcount(GetVisited()) >= openEdgesCount - 1)
+        SetCompletlyVisited(true);
 }
 
-uint8_t MazePathfindingEntry::getVisited() const
+uint8_t MazePathfindingEntry::GetVisited() const
 {
-    return data >> 16 & 0xf;
+    return GetField(Data, 4, 16);
 }
 
-bool MazePathfindingEntry::isCompletlyVisited() const
+bool MazePathfindingEntry::IsCompletlyVisited() const
 {
-    return data >> 20 & 0x1;
+    return GetField(Data, 1, 20);
 }
 
-void MazePathfindingEntry::notifyPeeking()
+bool MazePathfindingEntry::MatchCoords(const CoordsXY& coords, uint8_t subTileIndex) const
 {
-    data |= 0x1 << 4;
+    TileCoordsXY tileCoords(coords);
+
+    return (GetXTile() == tileCoords.x) && (GetYTile() == tileCoords.y) && (GetSubTileIndex() == subTileIndex);
 }
 
-bool MazePathfindingEntry::hasPeeked()
+bool MazePathfindingEntry::MatchCoords(const MazePathfindingEntry& e) const
 {
-    bool hasPeeked = (data & 0x1 << 4) != 0;
-    data &= ~(0x1 << 4);
-    return hasPeeked;
-}
-bool MazePathfindingEntry::getPeekedState() const
-{
-    return (data & 0x1 << 4) != 0;
+    return (GetXTile() == e.GetXTile()) && (GetYTile() == e.GetYTile()) && (GetSubTileIndex() == e.GetSubTileIndex());
 }
 
-bool MazePathfindingEntry::matchCoords(const CoordsXY& coords, uint8_t subTileIndex) const
+void MazePathfindingHistory::Initialize()
 {
-    assert(coords.x >= 0 && coords.y >= 0);
-    return (int32_t)(data >> 16 & 0xffe0) == (coords.y & 0xffe0) && (int32_t)(data & 0xffe0) == (coords.x & 0xffe0)
-        && (data & 0x3) == subTileIndex;
+    for (auto& item : Stack)
+        item.Reset();
 }
 
-bool MazePathfindingEntry::matchCoords(const MazePathfindingEntry& e) const
+void MazePathfindingHistory::Free()
 {
-    auto [coords, subTileIndex] = e.getCoords();
-    return matchCoords(coords, subTileIndex);
+    for (auto& item : Stack)
+        item.Free();
 }
 
-void MazePathfindingHistory::initialize()
-{
-    for (auto& item : stack)
-        item.reset();
-}
-
-void MazePathfindingHistory::clear()
-{
-    for (auto& item : stack)
-        item.clear();
-}
-
-std::tuple<MazePathfindingEntry&, uint8_t, bool> MazePathfindingHistory::meetIntersection(
-    const CoordsXY& coords, uint8_t subTileIndex, Direction origin)
+std::pair<MazePathfindingEntry&, uint8_t> MazePathfindingHistory::MeetIntersection(
+    const CoordsXY& coords, uint8_t subTileIndex, Direction source)
 {
     uint8_t i;
-    bool hasPeeked = stack[0].hasPeeked();
 
-    for (i = 0; i < 5; ++i)
+    for (i = 0; i < Stack.size(); ++i)
     {
-        if (stack[i].matchCoords(coords, subTileIndex))
+        if (Stack[i].MatchCoords(coords, subTileIndex))
             break;
     }
 
-    for (int j = std::min<int>(4, i); j > 0; --j)
-        swap(stack[j - 1], stack[j]);
+    for (uint8_t j = std::min((uint8_t)(Stack.size() - 1), i); j > 0; --j)
+        std::swap(Stack[j - 1], Stack[j]);
 
-    if (i == 5)
-        stack[0].set(coords, subTileIndex, origin);
+    if (i == Stack.size())
+        Stack[0].Set(coords, subTileIndex, source);
 
-    return std::tuple(std::ref(stack[0]), i, hasPeeked);
+    return std::pair(std::ref(Stack[0]), i);
 }
 
-std::optional<std::reference_wrapper<MazePathfindingEntry>> MazePathfindingHistory::updateIntersection(
-    const CoordsXY& coords, uint8_t subTileIndex)
+const MazePathfindingEntry& MazePathfindingHistory::GetLast() const
 {
-    for (auto& item : stack)
-    {
-        if (item.matchCoords(coords, subTileIndex))
-            return std::make_optional(std::ref(item));
-    }
-
-    return {};
+    return Stack[0];
 }
 
-const MazePathfindingEntry& MazePathfindingHistory::getLast() const
+const std::array<MazePathfindingEntry, 5>& MazePathfindingHistory::GetHistory() const
 {
-    return stack[0];
-}
-
-void MazePathfindingHistory::notifyPeeking()
-{
-    stack[0].notifyPeeking();
-}
-
-const std::array<MazePathfindingEntry, 5>& MazePathfindingHistory::readHistory() const
-{
-    return stack;
+    return Stack;
 }
 
 #pragma endregion
