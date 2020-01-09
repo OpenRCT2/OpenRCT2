@@ -1,5 +1,9 @@
 name: CI
 on: [push, pull_request]
+env:
+  BUILD_SERVER: GitHub
+  OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
+  OPENRCT2_VERSION: 0.2.4
 jobs:
   check-code-formatting:
     name: Check code formatting
@@ -10,6 +14,43 @@ jobs:
       - uses: actions/checkout@v1
       - name: Run clang-format
         run: scripts/run-clang-format.py -r src test --exclude src/openrct2/thirdparty
+  osx:
+    name: macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+        name: Checkout
+      - name: Build OpenRCT2
+        run: |
+          xcodebuild
+          mkdir -p artifacts
+          mv build/Release/OpenRCT2.app artifacts
+      - uses: actions/upload-artifact@master
+        name: Upload artifacts (CI)
+        with:
+          name: "OpenRCT2-macOS"
+          path: artifacts
+      - name: Upload artifacts (openrct2.org)
+        env:
+          GITHUB_SHA1: ${{ github.sha }}
+        run: |
+          if [[ "$OPENRCT2_ORG_TOKEN" != "" ]]; then
+              if [[ $GITHUB_REF == refs/tags/* ]]; then
+                  GITHUB_BRANCH=
+              else
+                  GITHUB_BRANCH=${GITHUB_REF#refs/heads/}
+                  GITHUB_BRANCH=push/testg
+                  if [[ ! "$GITHUB_BRANCH" =~ ^(develop|push/) ]]; then
+                      exit 0
+                  fi
+              fi
+
+              echo -e '\033[0;36mCompressing OpenRCT2.app...'
+              cd artifacts
+              zip -rq openrct2-macos.zip OpenRCT2.app
+
+              ../scripts/upload-build openrct2-macos.zip macos $OPENRCT2_VERSION $GITHUB_SHA1 $GITHUB_BRANCH
+          fi
   build-appimage:
     name: Linux (x64, AppImage)
     runs-on: ubuntu-latest
