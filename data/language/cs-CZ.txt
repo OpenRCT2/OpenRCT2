@@ -3674,6 +3674,20 @@ STR_6331    :Přivolat kachny
 STR_6332    :Zmizet kachny
 STR_6333    :Zvýšit koeficient škálování
 STR_6334    :Snížit koeficient škálování
+STR_6335    :Průzkumník dlaždic: Vložit neplatný prvek
+STR_6336    :Průzkumník dlaždic: Kopírovat prvek
+STR_6337    :Průzkumník dlaždic: Vložit prvek
+STR_6338    :Průzkumník dlaždic: Smazat prvek
+STR_6339    :Průzkumník dlaždic: Posunout prvek nahoru
+STR_6340    :Průzkumník dlaždic: Posunout prvek dolů
+STR_6341    :Průzkumník dlaždic: Zvýšit X souřadnici
+STR_6342    :Průzkumník dlaždic: Snížit X souřadnici
+STR_6343    :Průzkumník dlaždic: Zvýšit Y souřadnici
+STR_6344    :Průzkumník dlaždic: Snížit Y souřadnici
+STR_6345    :Průzkumník dlaždic: Zvýšit výšku prvku
+STR_6346    :Průzkumník dlaždic: Snížit výšku prvku
+STR_6347    :Doplňky cest nelze kombinovat s přejezdem!
+STR_6348    :Napřed je nutné odstranit přejezd!
 
 ###############################################################################
 ## RCT2 Scenarios
