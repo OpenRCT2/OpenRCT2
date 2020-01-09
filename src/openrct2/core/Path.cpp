@@ -144,7 +144,7 @@ namespace Path
 
     const std::string GetExtension(const std::string& path)
     {
-        return fs::path{ path }.extension().string();
+        return fs::u8path(path).extension().string();
     }
 
     const utf8* GetExtension(const utf8* path)
