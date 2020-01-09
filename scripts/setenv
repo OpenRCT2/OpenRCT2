@@ -50,7 +50,7 @@ fi
 realpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$(pwd)/${1#./}"
 }
-scriptsdir="$(realpath `dirname ${BASH_SOURCE[0]}`)"
+scriptsdir="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 export PATH="$scriptsdir:$PATH"
 
 # Output all the variables

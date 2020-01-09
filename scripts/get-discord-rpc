@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+basedir="$(readlink -f `dirname $0`/..)"
+cd $basedir
+
+git clone https://github.com/discordapp/discord-rpc -b v3.4.0
+git clone https://github.com/janisozaur/rapidjson discord-rpc/thirdparty/rapidjson -b patch-1

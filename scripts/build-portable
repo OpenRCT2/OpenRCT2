@@ -31,14 +31,19 @@ else
     if [[ "$#" -ne 2 ]]; then
         echo 'Turn an OpenRCT2 cmake install into a portable tar.gz.'
         echo ''
-        echo 'Usage: create-portable-build <output-file> <install-path>'
+        echo 'Usage: build-portable <output-file> <install-path>'
         exit 1
     fi
 
     output=$1
     install=$2
 
-    echo -e "\033[0;36mCreating $output..."
+    echo -e "\033[0;36mCreating $output...\033[0m"
+    outputdir=$(dirname $output)
+    if ! [[ -d $outputdir ]]; then
+        mkdir -p $outputdir
+    fi
+
     workdir=$output-temp
     if [[ -d "$workdir" ]]
     then
@@ -47,12 +52,12 @@ else
 
     mkdir -p $workdir/OpenRCT2
     cp -r $install/bin/* $workdir/OpenRCT2
-    cp -r $install/share/doc $workdir/OpenRCT2
+    cp -r $install/share/doc/openrct2 $workdir/OpenRCT2/doc
     cp -r $install/share/openrct2 $workdir/OpenRCT2/data
     pushd $workdir > /dev/null
         tar -czf output.tar.gz OpenRCT2
     popd > /dev/null
     mv $workdir/output.tar.gz $output
     rm -rf $workdir
-    echo -e "\033[0;32m$output created successfully"
+    echo -e "\033[0;32m$output created successfully\033[0m"
 fi

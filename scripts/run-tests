@@ -5,13 +5,18 @@ set -e
 basedir="$(readlink -f `dirname $0`/..)"
 cd $basedir/bin
 
-# Ensure test data uses LF
-dos2unix testdata/keys/*
-
 # Scan objects first so that does not happen within a test
 echo -e "\033[0;36mBuilding OpenRCT2 repository indexes...\033[0m"
 ./openrct2 scan-objects
 
-# Now run all the tests
-echo -e "\033[0;36mRunning OpenRCT2 tests...\033[0m"
-./tests --gtest_output=xml:../artifacts/test-results.xml
+if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
+    # Ensure test data uses LF
+    dos2unix testdata/keys/*
+
+    # Now run all the tests
+    echo -e "\033[0;36mRunning OpenRCT2 tests...\033[0m"
+    ./tests --gtest_output=xml:../artifacts/test-results.xml
+else
+    echo -e "\033[0;36mRunning OpenRCT2 tests...\033[0m"
+    ctest --output-on-failure
+fi

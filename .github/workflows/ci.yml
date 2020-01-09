@@ -9,11 +9,12 @@ jobs:
     name: Check code formatting
     runs-on: ubuntu-latest
     container:
-      image: openrct2/openrct2:format
+      image: openrct2/openrct2-build:0.2.4-format
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v1
       - name: Run clang-format
-        run: scripts/run-clang-format.py -r src test --exclude src/openrct2/thirdparty
+        run: scripts/check-code-formatting
   windows:
     name: Windows
     runs-on: windows-latest
@@ -25,8 +26,8 @@ jobs:
       CONFIGURATION: Release
       PLATFORM: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v1
-        name: Checkout
+      - name: Checkout
+        uses: actions/checkout@v1
       - name: Build OpenRCT2
         shell: bash
         run: . scripts/setenv && build
@@ -37,8 +38,8 @@ jobs:
           build-portable
           build-symbols
           build-installer -i
-      - uses: actions/upload-artifact@master
-        name: Upload artifacts (CI)
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v1
         with:
           name: "OpenRCT2-Windows-${{ matrix.platform }}"
           path: artifacts
@@ -56,20 +57,20 @@ jobs:
           else
               echo 'Not going to push build'
           fi
-  osx:
+  macos:
     name: macOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v1
-        name: Checkout
+      - name: Checkout
+        uses: actions/checkout@v1
       - name: Build OpenRCT2
         run: |
           . scripts/setenv
           xcodebuild
           mkdir -p artifacts
           mv build/Release/OpenRCT2.app artifacts
-      - uses: actions/upload-artifact@master
-        name: Upload artifacts (CI)
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v1
         with:
           name: "OpenRCT2-macOS"
           path: artifacts
@@ -84,36 +85,111 @@ jobs:
           else
               echo 'Not going to push build'
           fi
-  build-appimage:
+  linux-portable:
+    name: Linux (x64, portable)
+    runs-on: ubuntu-latest
+    container:
+      image: openrct2/openrct2-build:0.2.4-bionic
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Get pre-reqs
+        shell: bash
+        run: . scripts/setenv && get-discord-rpc
+      - name: Build OpenRCT2
+        shell: bash
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DCMAKE_CXX_FLAGS="-g -gz"
+      - name: Build artifacts
+        shell: bash
+        run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-x86_64.tar.gz bin/install/usr
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v1
+        with:
+          name: "OpenRCT2-Linux-x86_64"
+          path: artifacts
+      - name: Run Tests
+        shell: bash
+        run: . scripts/setenv -q && run-tests
+      - name: Upload artifacts (openrct2.org)
+        shell: bash
+        run: |
+          . scripts/setenv -q
+          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
+              upload-build artifacts/OpenRCT2-Linux-x86_64.tar.gz linux-x86_64 $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+          else
+              echo 'Not going to push build'
+          fi
+  linux-portable-32:
+    name: Linux (i686, portable)
+    runs-on: ubuntu-latest
+    container:
+      image: openrct2/openrct2-build:0.2.4-bionic32
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Get pre-reqs
+        shell: bash
+        run: . scripts/setenv && get-discord-rpc
+      - name: Build OpenRCT2
+        shell: bash
+        env:
+          TESTPAINT: true
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DCMAKE_CXX_FLAGS="-m32 -gz"
+      - name: Build artifacts
+        shell: bash
+        run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-i686.tar.gz bin/install/usr
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v1
+        with:
+          name: "OpenRCT2-Linux-i686"
+          path: artifacts
+      - name: Run Tests
+        shell: bash
+        run: . scripts/setenv -q && run-tests
+      - name: Run testpaint
+        shell: bash
+        run: . scripts/setenv -q && run-testpaint
+      - name: Upload artifacts (openrct2.org)
+        shell: bash
+        run: |
+          . scripts/setenv -q
+          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
+              upload-build artifacts/OpenRCT2-Linux-i686.tar.gz linux-i686 $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+          else
+              echo 'Not going to push build'
+          fi
+  linux-appimage:
     name: Linux (x64, AppImage)
     runs-on: ubuntu-latest
     container:
-      image: openrct2/openrct2:ubuntu_amd64
+      image: openrct2/openrct2-build:0.2.4-bionic
     steps:
-      - uses: actions/checkout@v1
-        name: Checkout
+      - name: Checkout
+        uses: actions/checkout@v1
       - name: Get pre-reqs
-        run: |
-          git clone https://github.com/discordapp/discord-rpc -b v3.4.0
-          git clone https://github.com/janisozaur/rapidjson discord-rpc/thirdparty/rapidjson -b patch-1
-          mkdir bin && cd bin
-          apt-get update
-          apt-get install -y wget libcairo2
-          wget https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
-          chmod +x linuxdeploy*.AppImage
+        shell: bash
+        run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
-        working-directory: bin
-        run: |
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
-          ninja -v
-          DESTDIR=AppDir ninja install
+        shell: bash
+        env:
+          DESTDIR: AppDir
+        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release
       - name: Build AppImage
-        working-directory: bin
-        run: |
-          ./linuxdeploy*.AppImage --appimage-extract-and-run --appdir AppDir/ --output appimage --desktop-file AppDir/usr/share/applications/openrct2.desktop
-          mkdir artifacts
-          mv OpenRCT2*.AppImage artifacts
-      - uses: actions/upload-artifact@master
+        shell: bash
+        run: . scripts/setenv -q && build-appimage
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v1
         with:
           name: OpenRCT2-AppImage
-          path: bin/artifacts
+          path: artifacts
+  linux-clang:
+    name: Linux (Debug, [http, network, OpenGL] disabled) using clang
+    runs-on: ubuntu-latest
+    container:
+      image: openrct2/openrct2-build:0.2.4-bionic
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build OpenRCT2
+        shell: bash
+        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DDISABLE_OPENGL=ON
