@@ -39,7 +39,6 @@ jobs:
                   GITHUB_BRANCH=
               else
                   GITHUB_BRANCH=${GITHUB_REF#refs/heads/}
-                  GITHUB_BRANCH=push/testg
                   if [[ ! "$GITHUB_BRANCH" =~ ^(develop|push/) ]]; then
                       exit 0
                   fi
