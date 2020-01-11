@@ -148,6 +148,8 @@ enum VEHICLE_STATUS
     VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
+struct rct_vehicle_sound_params;
+
 struct rct_vehicle : rct_sprite_common
 {
     uint8_t vehicle_sprite_type; // 0x1F
@@ -274,6 +276,12 @@ struct rct_vehicle : rct_sprite_common
     void Invalidate();
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
+    void UpdateSoundParams() const;
+
+private:
+    bool SoundCanPlay() const;
+    uint16_t GetSoundPriority() const;
+    rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
 };
 
 struct train_ref

@@ -80,7 +80,6 @@ static int32_t vehicle_update_motion_dodgems(rct_vehicle* vehicle);
 static void vehicle_update_additional_animation(rct_vehicle* vehicle);
 static bool vehicle_update_motion_collision_detection(
     rct_vehicle* vehicle, int16_t x, int16_t y, int16_t z, uint16_t* otherVehicleIndex);
-static int32_t vehicle_get_sound_priority_factor(rct_vehicle* vehicle);
 static void vehicle_update_sound(rct_vehicle* vehicle);
 static SoundId vehicle_update_scream_sound(rct_vehicle* vehicle);
 
@@ -848,11 +847,11 @@ void rct_vehicle::Invalidate()
     invalidate_sprite_2((rct_sprite*)this);
 }
 
-static int32_t get_train_mass(rct_vehicle* first_vehicle)
+static int32_t get_train_mass(const rct_vehicle* first_vehicle)
 {
     int32_t totalMass = 0;
 
-    for (rct_vehicle* vehicle = first_vehicle; vehicle != nullptr;)
+    for (const rct_vehicle* vehicle = first_vehicle; vehicle != nullptr;)
     {
         totalMass += vehicle->mass;
 
@@ -865,26 +864,22 @@ static int32_t get_train_mass(rct_vehicle* first_vehicle)
     return totalMass;
 }
 
-/**
- *
- *  rct2: 0x006BB9FF
- */
-static void vehicle_update_sound_params(rct_vehicle* vehicle)
+bool rct_vehicle::SoundCanPlay() const
 {
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        return;
+        return false;
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
-        return;
+        return false;
 
-    if (vehicle->sound1_id == SoundId::Null && vehicle->sound2_id == SoundId::Null)
-        return;
+    if (sound1_id == SoundId::Null && sound2_id == SoundId::Null)
+        return false;
 
-    if (vehicle->sprite_left == LOCATION_NULL)
-        return;
+    if (sprite_left == LOCATION_NULL)
+        return false;
 
     if (g_music_tracking_viewport == nullptr)
-        return;
+        return false;
 
     int16_t left = g_music_tracking_viewport->view_x;
     int16_t bottom = g_music_tracking_viewport->view_y;
@@ -897,8 +892,8 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
         bottom -= quarter_h;
     }
 
-    if (left >= vehicle->sprite_right || bottom >= vehicle->sprite_bottom)
-        return;
+    if (left >= sprite_right || bottom >= sprite_bottom)
+        return false;
 
     int16_t right = g_music_tracking_viewport->view_width + left;
     int16_t top = g_music_tracking_viewport->view_height + bottom;
@@ -909,14 +904,111 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
         top += quarter_h + quarter_h;
     }
 
-    if (right < vehicle->sprite_left || top < vehicle->sprite_top)
+    if (right < sprite_left || top < sprite_top)
+        return false;
+
+    return true;
+}
+
+/**
+ *
+ *  rct2: 0x006BC2F3
+ */
+uint16_t rct_vehicle::GetSoundPriority() const
+{
+    int32_t trainMass = get_train_mass(this);
+    int32_t result = trainMass + (std::abs(velocity) >> 13);
+    rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[0];
+
+    while (vehicle_sound->id != sprite_index)
+    {
+        vehicle_sound++;
+
+        if (vehicle_sound >= &gVehicleSoundList[std::size(gVehicleSoundList)])
+        {
+            return result;
+        }
+    }
+
+    // Vehicle sounds will get higher priority if they are already playing
+    return result + 300;
+}
+
+rct_vehicle_sound_params rct_vehicle::CreateSoundParam(uint16_t priority) const
+{
+    rct_vehicle_sound_params param;
+    param.priority = priority;
+    int32_t panX = (sprite_left / 2) + (sprite_right / 2) - g_music_tracking_viewport->view_x;
+    panX >>= g_music_tracking_viewport->zoom;
+    panX += g_music_tracking_viewport->x;
+
+    uint16_t screenWidth = context_get_width();
+    if (screenWidth < 64)
+    {
+        screenWidth = 64;
+    }
+    param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
+
+    int32_t panY = (sprite_top / 2) + (sprite_bottom / 2) - g_music_tracking_viewport->view_y;
+    panY >>= g_music_tracking_viewport->zoom;
+    panY += g_music_tracking_viewport->y;
+
+    uint16_t screenHeight = context_get_height();
+    if (screenHeight < 64)
+    {
+        screenHeight = 64;
+    }
+    param.pan_y = ((((panY * 65536) / screenHeight) - 0x8000) >> 4);
+
+    int32_t frequency = std::abs(velocity);
+
+    rct_ride_entry* rideType = get_ride_entry(ride_subtype);
+    if (rideType != nullptr)
+    {
+        if (rideType->vehicles[vehicle_type].double_sound_frequency & 1)
+        {
+            frequency *= 2;
+        }
+    }
+
+    // * 0.0105133...
+    frequency >>= 5; // /32
+    frequency *= 5512;
+    frequency >>= 14; // /16384
+
+    frequency += 11025;
+    frequency += 16 * sound_vector_factor;
+    param.frequency = (uint16_t)frequency;
+    param.id = sprite_index;
+    param.volume = 0;
+
+    if (x != LOCATION_NULL)
+    {
+        auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+
+        // vehicle underground
+        if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > z)
+        {
+            param.volume = 0x30;
+        }
+    }
+    return param;
+}
+
+/**
+ *
+ *  rct2: 0x006BB9FF
+ */
+void rct_vehicle::UpdateSoundParams() const
+{
+    if (!SoundCanPlay())
         return;
 
-    uint16_t sound_priority = vehicle_get_sound_priority_factor(vehicle);
+    uint16_t soundPriority = GetSoundPriority();
     rct_vehicle_sound_params* soundParam;
     // Find a sound param of lower priority to use
     for (soundParam = &gVehicleSoundParamsList[0];
-         soundParam < gVehicleSoundParamsListEnd && sound_priority <= soundParam->priority; soundParam++)
+         soundParam < gVehicleSoundParamsListEnd && soundPriority <= soundParam->priority; soundParam++)
         ;
 
     if (soundParam >= &gVehicleSoundParamsList[std::size(gVehicleSoundParamsList)])
@@ -934,83 +1026,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
             soundParam + 1, soundParam, ((gVehicleSoundParamsListEnd - soundParam) - 1) * sizeof(rct_vehicle_sound_params));
     }
 
-    soundParam->priority = sound_priority;
-    int32_t pan_x = (vehicle->sprite_left / 2) + (vehicle->sprite_right / 2) - g_music_tracking_viewport->view_x;
-    pan_x >>= g_music_tracking_viewport->zoom;
-    pan_x += g_music_tracking_viewport->x;
-
-    uint16_t screenwidth = context_get_width();
-    if (screenwidth < 64)
-    {
-        screenwidth = 64;
-    }
-    soundParam->pan_x = ((((pan_x * 65536) / screenwidth) - 0x8000) >> 4);
-
-    int32_t pan_y = (vehicle->sprite_top / 2) + (vehicle->sprite_bottom / 2) - g_music_tracking_viewport->view_y;
-    pan_y >>= g_music_tracking_viewport->zoom;
-    pan_y += g_music_tracking_viewport->y;
-
-    uint16_t screenheight = context_get_height();
-    if (screenheight < 64)
-    {
-        screenheight = 64;
-    }
-    soundParam->pan_y = ((((pan_y * 65536) / screenheight) - 0x8000) >> 4);
-
-    int32_t frequency = std::abs(vehicle->velocity);
-
-    rct_ride_entry* ride_type = get_ride_entry(vehicle->ride_subtype);
-    if (ride_type != nullptr)
-    {
-        if (ride_type->vehicles[vehicle->vehicle_type].double_sound_frequency & 1)
-        {
-            frequency *= 2;
-        }
-    }
-
-    frequency >>= 5;
-    frequency *= 5512;
-    frequency >>= 14;
-    frequency += 11025;
-    frequency += 16 * vehicle->sound_vector_factor;
-    soundParam->frequency = (uint16_t)frequency;
-    soundParam->id = vehicle->sprite_index;
-    soundParam->volume = 0;
-
-    if (vehicle->x != LOCATION_NULL)
-    {
-        auto surfaceElement = map_get_surface_element_at(CoordsXY{ vehicle->x, vehicle->y });
-
-        // vehicle underground
-        if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > vehicle->z)
-        {
-            soundParam->volume = 0x30;
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x006BC2F3
- */
-static int32_t vehicle_get_sound_priority_factor(rct_vehicle* vehicle)
-{
-    int32_t mass = get_train_mass(vehicle);
-    int32_t result = mass + (std::abs(vehicle->velocity) >> 13);
-    rct_vehicle_sound* vehicle_sound = &gVehicleSoundList[0];
-
-    while (vehicle_sound->id != vehicle->sprite_index)
-    {
-        vehicle_sound++;
-
-        if (vehicle_sound >= &gVehicleSoundList[std::size(gVehicleSoundList)])
-        {
-            return result;
-        }
-    }
-
-    // Vehicle sounds will get higher priority if they are already playing
-    return result + 300;
+    *soundParam = CreateSoundParam(soundPriority);
 }
 
 static void vehicle_sounds_update_window_setup()
@@ -1262,7 +1278,7 @@ void vehicle_sounds_update()
     gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
     for (uint16_t i = gSpriteListHead[SPRITE_LIST_VEHICLE_HEAD]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
     {
-        vehicle_update_sound_params(&get_sprite(i)->vehicle);
+        get_sprite(i)->vehicle.UpdateSoundParams();
     }
 
     // Stop all playing sounds that no longer have priority to play after vehicle_update_sound_params
