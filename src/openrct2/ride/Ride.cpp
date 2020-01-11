@@ -3108,8 +3108,16 @@ vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
 {
     vehicle_colour result;
 
-    // Prevent indexing array out of bounds
-    vehicleIndex = std::min(vehicleIndex, MAX_CARS_PER_TRAIN);
+    if (ride->colour_scheme_type == VEHICLE_COLOUR_SCHEME_PER_VEHICLE)
+    {
+        // Prevent indexing array out of bounds
+        vehicleIndex = std::min(vehicleIndex, MAX_CARS_PER_TRAIN);
+    }
+    else
+    {
+        // In this case, only the first car will be set and the rest will be either black or some residual colour.
+        vehicleIndex = 0;
+    }
 
     result.main = ride->vehicle_colours[vehicleIndex].Body;
     result.additional_1 = ride->vehicle_colours[vehicleIndex].Trim;
