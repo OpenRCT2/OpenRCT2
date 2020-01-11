@@ -500,12 +500,9 @@ namespace Editor
 
         for (const auto& parkEntrance : gParkEntrances)
         {
-            int32_t x = parkEntrance.x;
-            int32_t y = parkEntrance.y;
-            int32_t z = parkEntrance.z / 8;
             int32_t direction = direction_reverse(parkEntrance.direction);
 
-            switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0))
+            switch (footpath_is_connected_to_map_edge(parkEntrance, direction, 0))
             {
                 case FOOTPATH_SEARCH_NOT_FOUND:
                     gGameCommandErrorText = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
@@ -516,7 +513,7 @@ namespace Editor
                     return false;
                 case FOOTPATH_SEARCH_SUCCESS:
                     // Run the search again and unown the path
-                    footpath_is_connected_to_map_edge(x, y, z, direction, (1 << 5));
+                    footpath_is_connected_to_map_edge(parkEntrance, direction, (1 << 5));
                     break;
             }
         }

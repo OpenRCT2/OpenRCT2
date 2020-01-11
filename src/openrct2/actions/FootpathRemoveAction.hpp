@@ -78,8 +78,8 @@ public:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_interrupt_peeps(_loc.x, _loc.y, _loc.z);
-            footpath_remove_litter(_loc.x, _loc.y, _loc.z);
+            footpath_interrupt_peeps(_loc);
+            footpath_remove_litter(_loc);
         }
 
         TileElement* footpathElement = GetFootpathElement();
@@ -91,7 +91,7 @@ public:
             {
                 res->Cost += bannerRes->Cost;
             }
-            footpath_remove_edges_at(_loc.x, _loc.y, footpathElement);
+            footpath_remove_edges_at(_loc, footpathElement);
             map_invalidate_tile_full(_loc);
             tile_element_remove(footpathElement);
             footpath_update_queue_chains();

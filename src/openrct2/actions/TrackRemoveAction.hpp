@@ -434,7 +434,7 @@ public:
             footpath_queue_chain_reset();
             if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
             {
-                footpath_remove_edges_at(mapLoc.x, mapLoc.y, tileElement);
+                footpath_remove_edges_at(mapLoc, tileElement);
             }
             tile_element_remove(tileElement);
             sub_6CB945(ride);

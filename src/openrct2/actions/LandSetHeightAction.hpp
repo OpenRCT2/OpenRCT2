@@ -157,7 +157,7 @@ public:
     {
         money32 cost = MONEY(0, 0);
         auto surfaceHeight = tile_element_height(_coords);
-        footpath_remove_litter(_coords.x, _coords.y, surfaceHeight);
+        footpath_remove_litter({ _coords, surfaceHeight });
 
         if (!gCheatsDisableClearanceChecks)
         {

@@ -169,7 +169,7 @@ public:
         auto z = ride->stations[_stationNum].GetBaseZ();
         if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_remove_litter(_loc.x, _loc.y, z);
+            footpath_remove_litter({ _loc, z });
             wall_remove_at_z({ _loc, z });
         }
 
@@ -224,7 +224,7 @@ public:
             maze_entrance_hedge_removal(_loc.x, _loc.y, tileElement);
         }
 
-        footpath_connect_edges(_loc.x, _loc.y, tileElement, GetFlags());
+        footpath_connect_edges(_loc, tileElement, GetFlags());
         footpath_update_queue_chains();
 
         map_invalidate_tile_full(_loc);

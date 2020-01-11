@@ -95,7 +95,7 @@ public:
         }
 
         footpath_provisional_remove();
-        auto tileElement = map_get_footpath_element_slope((_loc.x / 32), (_loc.y / 32), _loc.z / 8, _slope);
+        auto tileElement = map_get_footpath_element_slope(_loc, _slope);
         if (tileElement == nullptr)
         {
             return ElementInsertQuery(std::move(res));
@@ -117,7 +117,7 @@ public:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            footpath_interrupt_peeps(_loc.x, _loc.y, _loc.z);
+            footpath_interrupt_peeps(_loc);
         }
 
         gFootpathGroundFlags = 0;
@@ -141,7 +141,7 @@ public:
             }
         }
 
-        auto tileElement = map_get_footpath_element_slope((_loc.x / 32), (_loc.y / 32), _loc.z / 8, _slope);
+        auto tileElement = map_get_footpath_element_slope(_loc, _slope);
         if (tileElement == nullptr)
         {
             return ElementInsertExecute(std::move(res));
@@ -182,7 +182,7 @@ private:
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
         {
-            footpath_remove_edges_at(_loc.x, _loc.y, (TileElement*)pathElement);
+            footpath_remove_edges_at(_loc, reinterpret_cast<TileElement*>(pathElement));
         }
 
         pathElement->SetPathEntryIndex(_type);
@@ -272,7 +272,7 @@ private:
 
         if (!(GetFlags() & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
         {
-            footpath_remove_litter(_loc.x, _loc.y, _loc.z);
+            footpath_remove_litter(_loc);
         }
 
         res->Cost = MONEY(12, 00);
@@ -358,7 +358,7 @@ private:
 
             if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
             {
-                footpath_remove_edges_at(_loc.x, _loc.y, tileElement);
+                footpath_remove_edges_at(_loc, tileElement);
             }
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
@@ -426,23 +426,23 @@ private:
         }
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
-            footpath_connect_edges(_loc.x, _loc.y, (TileElement*)pathElement, GetFlags());
+            footpath_connect_edges(_loc, reinterpret_cast<TileElement*>(pathElement), GetFlags());
 
         footpath_update_queue_chains();
         map_invalidate_tile_full(_loc);
     }
 
-    PathElement* map_get_footpath_element_slope(int32_t x, int32_t y, int32_t z, int32_t slope) const
+    PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const
     {
         TileElement* tileElement;
         bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 
-        tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+        tileElement = map_get_first_element_at(footpathPos);
         do
         {
             if (tileElement == nullptr)
                 break;
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->base_height == z
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->GetBaseZ() == footpathPos.z
                 && (tileElement->AsPath()->IsSloped() == isSloped)
                 && (tileElement->AsPath()->GetSlopeDirection() == (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)))
             {

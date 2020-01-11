@@ -727,10 +727,16 @@ static uint8_t staff_direction_surface(Peep* peep, uint8_t initialDirection)
 
         direction &= 3;
 
-        if (fence_in_the_way(peep->next_x, peep->next_y, peep->next_z, peep->next_z + 4, direction))
+        if (fence_in_the_way(
+                { peep->next_x, peep->next_y, peep->next_z * COORDS_Z_STEP,
+                  (peep->next_z * COORDS_Z_STEP) + PEEP_CLEARANCE_HEIGHT },
+                direction))
             continue;
 
-        if (fence_in_the_way(peep->next_x, peep->next_y, peep->next_z, peep->next_z + 4, direction_reverse(direction)))
+        if (fence_in_the_way(
+                { peep->next_x, peep->next_y, peep->next_z * COORDS_Z_STEP,
+                  (peep->next_z * COORDS_Z_STEP) + PEEP_CLEARANCE_HEIGHT },
+                direction_reverse(direction)))
             continue;
 
         CoordsXY chosenTile = { peep->next_x + CoordsDirectionDelta[direction].x,

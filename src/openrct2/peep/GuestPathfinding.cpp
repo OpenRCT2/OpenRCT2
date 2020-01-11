@@ -137,20 +137,19 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
  */
 static int32_t guest_surface_path_finding(Peep* peep)
 {
-    int16_t x = peep->next_x;
-    int16_t y = peep->next_y;
-    int16_t z = peep->next_z;
+    auto pathPos = CoordsXYRangedZ{ peep->next_x, peep->next_y, peep->next_z * COORDS_Z_STEP,
+                                    (peep->next_z * COORDS_Z_STEP) + PATH_HEIGHT };
     Direction randDirection = scenario_rand() & 3;
 
-    if (!fence_in_the_way(x, y, z, z + 4, randDirection))
+    if (!fence_in_the_way(pathPos, randDirection))
     {
-        x += CoordsDirectionDelta[randDirection].x;
-        y += CoordsDirectionDelta[randDirection].y;
+        pathPos.x += CoordsDirectionDelta[randDirection].x;
+        pathPos.y += CoordsDirectionDelta[randDirection].y;
         Direction backwardsDirection = direction_reverse(randDirection);
 
-        if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
+        if (!fence_in_the_way(pathPos, backwardsDirection))
         {
-            if (!map_surface_is_blocked({ x, y }))
+            if (!map_surface_is_blocked(pathPos))
             {
                 return peep_move_one_tile(randDirection, peep);
             }
@@ -165,17 +164,17 @@ static int32_t guest_surface_path_finding(Peep* peep)
     }
     randDirection &= 3;
 
-    x = peep->next_x;
-    y = peep->next_y;
-    if (!fence_in_the_way(x, y, z, z + 4, randDirection))
+    pathPos.x = peep->next_x;
+    pathPos.y = peep->next_y;
+    if (!fence_in_the_way(pathPos, randDirection))
     {
-        x += CoordsDirectionDelta[randDirection].x;
-        y += CoordsDirectionDelta[randDirection].y;
+        pathPos.x += CoordsDirectionDelta[randDirection].x;
+        pathPos.y += CoordsDirectionDelta[randDirection].y;
         Direction backwardsDirection = direction_reverse(randDirection);
 
-        if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
+        if (!fence_in_the_way(pathPos, backwardsDirection))
         {
-            if (!map_surface_is_blocked({ x, y }))
+            if (!map_surface_is_blocked(pathPos))
             {
                 return peep_move_one_tile(randDirection, peep);
             }
@@ -185,17 +184,17 @@ static int32_t guest_surface_path_finding(Peep* peep)
     randDirection -= 2;
     randDirection &= 3;
 
-    x = peep->next_x;
-    y = peep->next_y;
-    if (!fence_in_the_way(x, y, z, z + 4, randDirection))
+    pathPos.x = peep->next_x;
+    pathPos.y = peep->next_y;
+    if (!fence_in_the_way(pathPos, randDirection))
     {
-        x += CoordsDirectionDelta[randDirection].x;
-        y += CoordsDirectionDelta[randDirection].y;
+        pathPos.x += CoordsDirectionDelta[randDirection].x;
+        pathPos.y += CoordsDirectionDelta[randDirection].y;
         Direction backwardsDirection = direction_reverse(randDirection);
 
-        if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
+        if (!fence_in_the_way(pathPos, backwardsDirection))
         {
-            if (!map_surface_is_blocked({ x, y }))
+            if (!map_surface_is_blocked(pathPos))
             {
                 return peep_move_one_tile(randDirection, peep);
             }

@@ -3001,7 +3001,7 @@ private:
                 // Trigger footpath update
                 footpath_queue_chain_reset();
                 footpath_connect_edges(
-                    entranceCoords.x * 32, (entranceCoords.y) * 32, (TileElement*)entranceElement,
+                    entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
                     GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
                 footpath_update_queue_chains();
             }

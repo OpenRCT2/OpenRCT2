@@ -304,7 +304,7 @@ public:
 
             if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
-                footpath_remove_litter(curTile.x, curTile.y, zLow * 8);
+                footpath_remove_litter({ curTile, zLow * COORDS_Z_STEP });
                 if (!gCheatsDisableClearanceChecks)
                 {
                     wall_remove_at({ curTile, zLow * 8, zHigh * 8 });

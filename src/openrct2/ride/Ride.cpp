@@ -3928,9 +3928,7 @@ static void sub_6B5952(Ride* ride)
         if (location.isNull())
             continue;
 
-        int32_t x = location.x * 32;
-        int32_t y = location.y * 32;
-        int32_t z = location.z;
+        auto mapLocation = location.ToCoordsXYZ();
 
         // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
         // the ride or not.
@@ -3941,11 +3939,11 @@ static void sub_6B5952(Ride* ride)
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                     continue;
-                if (tileElement->base_height != z)
+                if (tileElement->GetBaseZ() != mapLocation.z)
                     continue;
 
                 int32_t direction = tileElement->GetDirection();
-                footpath_chain_ride_queue(ride->id, i, x, y, tileElement, direction_reverse(direction));
+                footpath_chain_ride_queue(ride->id, i, mapLocation, tileElement, direction_reverse(direction));
             } while (!(tileElement++)->IsLastForTile());
         }
     }
@@ -7086,7 +7084,7 @@ void sub_6CB945(Ride* ride)
             {
                 footpath_queue_chain_reset();
                 maze_entrance_hedge_replacement(location.x, location.y, tileElement);
-                footpath_remove_edges_at(location.x, location.y, tileElement);
+                footpath_remove_edges_at(location, tileElement);
                 footpath_update_queue_chains();
                 map_invalidate_tile_full(location);
                 tile_element_remove(tileElement);

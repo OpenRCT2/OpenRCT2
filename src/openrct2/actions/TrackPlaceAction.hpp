@@ -478,7 +478,7 @@ public:
 
             if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
             {
-                footpath_remove_litter(mapLoc.x, mapLoc.y, mapLoc.z);
+                footpath_remove_litter(mapLoc);
                 if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
                 {
                     wall_remove_at({ mapLoc, baseZ * 8, clearanceZ * 8 });
@@ -686,7 +686,7 @@ public:
 
             if (!gCheatsDisableClearanceChecks || !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
-                footpath_connect_edges(mapLoc.x, mapLoc.y, tileElement, GetFlags());
+                footpath_connect_edges(mapLoc, tileElement, GetFlags());
             }
             map_invalidate_tile_full(mapLoc);
         }

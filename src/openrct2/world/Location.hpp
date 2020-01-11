@@ -475,6 +475,12 @@ struct TileCoordsXYZD : public TileCoordsXYZ
     {
     }
 
+    TileCoordsXYZD(TileCoordsXY t_, int32_t z_, Direction d_)
+        : TileCoordsXYZ(t_, z_)
+        , direction(d_)
+    {
+    }
+
     TileCoordsXYZD(CoordsXY c_, int32_t z_, Direction d_)
         : TileCoordsXYZ(c_, z_)
         , direction(d_)
