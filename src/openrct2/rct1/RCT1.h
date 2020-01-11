@@ -187,7 +187,7 @@ struct rct1_ride
     uint8_t broken_vehicle;            // 0x141
     uint8_t broken_car;                // 0x142
     uint8_t breakdown_reason;          // 0x143
-    uint8_t unk_144[2];                // 0x144
+    money16 price_secondary;           // 0x144
     union
     {
         struct
