@@ -11,6 +11,7 @@
 - Fix: [#10420] Money effect causing false positive desync.
 - Fix: [#10477] Large Scenery cannot be placed higher using SHIFT.
 - Fix: [#10489] Hosts last player action not being synchronized.
+- Fix: [#10543] Secondary shop item prices are not imported correctly from RCT1 saves.
 
 0.2.4 (2019-10-28)
 ------------------------------------------------------------------------
