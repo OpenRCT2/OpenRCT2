@@ -955,9 +955,6 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                     set_format_arg(0, uintptr_t, _editingTitleSequence->Saves[command->SaveIndex]);
                 }
                 break;
-            case TITLE_SCRIPT_LOADMM:
-                commandName = STR_TITLE_EDITOR_COMMAND_LOAD_SFMM;
-                break;
             case TITLE_SCRIPT_LOCATION:
                 commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
                 set_format_arg(0, uint16_t, command->X);
@@ -996,18 +993,6 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             case TITLE_SCRIPT_END:
                 commandName = STR_TITLE_EDITOR_END;
                 break;
-            case TITLE_SCRIPT_LOADRCT1:
-            {
-                commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
-                const char* name = "";
-                source_desc desc;
-                if (ScenarioSources::TryGetById(command->SaveIndex, &desc))
-                {
-                    name = desc.title;
-                }
-                set_format_arg(0, uintptr_t, name);
-                break;
-            }
             case TITLE_SCRIPT_LOADSC:
             {
                 commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
