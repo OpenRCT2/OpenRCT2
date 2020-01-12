@@ -622,9 +622,8 @@ public:
         if (_titleSequencePlayer == nullptr)
         {
             auto context = GetContext();
-            auto scenarioRepository = context->GetScenarioRepository();
             auto gameState = context->GetGameState();
-            _titleSequencePlayer = CreateTitleSequencePlayer(*scenarioRepository, *gameState);
+            _titleSequencePlayer = CreateTitleSequencePlayer(*gameState);
         }
         return _titleSequencePlayer.get();
     }
