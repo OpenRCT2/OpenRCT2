@@ -769,7 +769,7 @@ static void window_footpath_set_provisional_path_at_point(ScreenCoordsXY screenC
                 break;
             }
         }
-        uint8_t z = tileElement->GetBaseZ();
+        auto z = tileElement->GetBaseZ();
         if (slope & RAISE_FOOTPATH_FLAG)
         {
             slope &= ~RAISE_FOOTPATH_FLAG;
