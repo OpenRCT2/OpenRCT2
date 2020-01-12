@@ -14,6 +14,7 @@
 - Fix: [#10477] Large Scenery cannot be placed higher using SHIFT.
 - Fix: [#10489] Hosts last player action not being synchronized.
 - Fix: [#10543] Secondary shop item prices are not imported correctly from RCT1 saves.
+- Fix: [#10547] RCT1 parks have too many rides available.
 - Removed: [#6898] LOADMM and LOADRCT1 title sequence commands (use LOADSC instead).
 
 0.2.4 (2019-10-28)

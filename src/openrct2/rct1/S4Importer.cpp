@@ -429,67 +429,11 @@ private:
                     AddEntriesForSceneryTheme(researchItem->item);
                     break;
                 case RCT1_RESEARCH_TYPE_RIDE:
-                {
-                    uint8_t rideType = researchItem->item;
-
-                    // Add all vehicles for this ride type
-                    uint32_t numVehicles = 0;
-                    for (size_t j = 0; j < researchListCount; j++)
-                    {
-                        const rct1_research_item* researchItem2 = &researchList[j];
-                        if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
-                        {
-                            if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE
-                                || researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
-                            {
-                                continue;
-                            }
-                            else if (researchItem2->item == RCT1_RESEARCH_END)
-                            {
-                                break;
-                            }
-                        }
-
-                        if (researchItem2->type == RCT1_RESEARCH_TYPE_VEHICLE && researchItem2->related_ride == rideType)
-                        {
-                            AddEntryForVehicleType(rideType, researchItem2->item);
-                            numVehicles++;
-                        }
-                    }
-
-                    // If no vehicles found so just add the default for this ride
-                    if (numVehicles == 0)
-                    {
-                        AddEntryForRideType(rideType);
-                    }
+                    AddEntryForRideType(researchItem->item);
                     break;
-                }
-            }
-        }
-
-        // In addition to the research list, there is also a list of invented ride/vehicles in general.
-        // This is especially useful if the research list is damaged or if the save is hacked.
-        for (int32_t rideType = 0; rideType < RCT1_RIDE_TYPE_COUNT; rideType++)
-        {
-            int32_t quadIndex = rideType >> 5;
-            int32_t bitIndex = rideType & 0x1F;
-            bool invented = (_s4.available_rides[quadIndex] & ((uint32_t)1 << bitIndex));
-
-            if (invented)
-            {
-                AddEntryForRideType(rideType);
-            }
-        }
-
-        for (int32_t vehicleType = 0; vehicleType < RCT1_VEHICLE_TYPE_COUNT; vehicleType++)
-        {
-            int32_t quadIndex = vehicleType >> 5;
-            int32_t bitIndex = vehicleType & 0x1F;
-            bool invented = (_s4.available_vehicles[quadIndex] & ((uint32_t)1 << bitIndex));
-
-            if (invented)
-            {
-                AddEntryForVehicleType(RIDE_TYPE_NULL, vehicleType);
+                case RCT1_RESEARCH_TYPE_VEHICLE:
+                    AddEntryForVehicleType(researchItem->related_ride, researchItem->item);
+                    break;
             }
         }
     }
@@ -597,7 +541,7 @@ private:
     {
         const char* entryName;
 
-        if (_s4.game_version < FILE_VERSION_RCT1_LL)
+        if (_gameVersion < FILE_VERSION_RCT1_LL)
         {
             entryName = RCT1::GetWaterObject(RCT1_WATER_CYAN);
         }
@@ -635,7 +579,7 @@ private:
                 _vehicleTypeToRideEntryMap[vehicleType] = (uint8_t)entryIndex;
 
                 if (rideType != RIDE_TYPE_NULL)
-                    _rideTypeToRideEntryMap[rideType] = (uint8_t)entryIndex;
+                    AddEntryForRideType(rideType);
             }
         }
     }
@@ -2291,6 +2235,9 @@ private:
         }
 
         bool researched = true;
+        std::bitset<RCT1_RIDE_TYPE_COUNT> rideTypeInResearch = GetRideTypesPresentInResearchList(
+            researchList, researchListCount);
+        std::vector<rct1_research_item> vehiclesWithMissingRideTypes;
         for (size_t i = 0; i < researchListCount; i++)
         {
             const rct1_research_item* researchItem = &researchList[i];
@@ -2301,11 +2248,8 @@ private:
                     researched = false;
                     continue;
                 }
-                else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE)
-                {
-                    continue;
-                }
-                else if (researchItem->item == RCT1_RESEARCH_END)
+                // We don't import the random items yet.
+                else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE || researchItem->item == RCT1_RESEARCH_END)
                 {
                     break;
                 }
@@ -2328,82 +2272,83 @@ private:
                     uint8_t rct1RideType = researchItem->item;
                     _researchRideTypeUsed[rct1RideType] = true;
 
-                    // Add all vehicles for this ride type that are researched or before this research item
-                    uint32_t numVehicles = 0;
-                    for (size_t j = 0; j < researchListCount; j++)
-                    {
-                        const rct1_research_item* researchItem2 = &researchList[j];
-                        if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR
-                            && (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE
-                                || researchItem2->item == RCT1_RESEARCH_END_AVAILABLE))
-                        {
-                            continue;
-                        }
+                    auto ownRideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
+                    Guard::Assert(ownRideEntryIndex != RIDE_ENTRY_INDEX_NULL, "ownRideEntryIndex was RIDE_ENTRY_INDEX_NULL");
 
-                        if (researchItem2->type == RCT1_RESEARCH_TYPE_VEHICLE && researchItem2->related_ride == rct1RideType)
+                    bool foundOwnType = false;
+                    // If the ride type does not use vehicles, no point looking for them in the research list.
+                    if (RCT1::RideTypeUsesVehicles(rct1RideType))
+                    {
+                        // Add all vehicles for this ride type that are researched or before this research item
+                        for (size_t j = 0; j < researchListCount; j++)
                         {
-                            // Only add the vehicles that were listed before this ride, otherwise we might
-                            // change the research order
-                            if (j < i)
+                            const rct1_research_item* researchItem2 = &researchList[j];
+                            if (researchItem2->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
                             {
-                                InsertResearchVehicle(researchItem2, researched);
+                                if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE
+                                    || researchItem2->item == RCT1_RESEARCH_END)
+                                {
+                                    break;
+                                }
+
+                                continue;
                             }
-                            numVehicles++;
+
+                            if (researchItem2->type == RCT1_RESEARCH_TYPE_VEHICLE
+                                && researchItem2->related_ride == rct1RideType)
+                            {
+                                auto rideEntryIndex2 = _vehicleTypeToRideEntryMap[researchItem2->item];
+                                bool isOwnType = (ownRideEntryIndex == rideEntryIndex2);
+                                if (isOwnType)
+                                {
+                                    foundOwnType = true;
+                                }
+
+                                // Only add the vehicles that were listed before this ride, otherwise we might
+                                // change the research order
+                                if (j < i && (researched || isOwnType))
+                                {
+                                    InsertResearchVehicle(researchItem2, researched);
+                                }
+                            }
                         }
                     }
 
-                    if (numVehicles == 0)
+                    if (!foundOwnType)
                     {
-                        // No vehicles found so just add the default for this ride
-                        uint8_t rideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
-                        Guard::Assert(rideEntryIndex != RIDE_ENTRY_INDEX_NULL, "rideEntryIndex was RIDE_ENTRY_INDEX_NULL");
-                        if (!_researchRideEntryUsed[rideEntryIndex])
+                        if (!_researchRideEntryUsed[ownRideEntryIndex])
                         {
-                            _researchRideEntryUsed[rideEntryIndex] = true;
-                            research_insert_ride_entry(rideEntryIndex, researched);
+                            _researchRideEntryUsed[ownRideEntryIndex] = true;
+                            research_insert_ride_entry(ownRideEntryIndex, researched);
                         }
                     }
 
                     break;
                 }
                 case RCT1_RESEARCH_TYPE_VEHICLE:
+                {
                     // Only add vehicle if the related ride has been seen, this to make sure that vehicles
-                    // are researched only after the ride has been researched
+                    // are researched only after the ride has been researched. Otherwise, remove them from the research list,
+                    // so that they are automatically co-invented when their master ride is invented.
                     if (_researchRideTypeUsed[researchItem->related_ride])
                     {
                         InsertResearchVehicle(researchItem, researched);
                     }
+                    else if (!rideTypeInResearch[researchItem->related_ride] && _gameVersion == FILE_VERSION_RCT1_LL)
+                    {
+                        vehiclesWithMissingRideTypes.push_back(*researchItem);
+                    }
 
                     break;
+                }
                 case RCT1_RESEARCH_TYPE_SPECIAL:
                     // Not supported
                     break;
             }
         }
-
-        // Also import the tables that register the invented status, in case the research list is damaged.
-        for (int32_t rideType = 0; rideType < RCT1_RIDE_TYPE_COUNT; rideType++)
+        for (const rct1_research_item& researchItem : vehiclesWithMissingRideTypes)
         {
-            int32_t quadIndex = rideType >> 5;
-            int32_t bitIndex = rideType & 0x1F;
-            bool invented = (_s4.available_rides[quadIndex] & ((uint32_t)1 << bitIndex));
-
-            if (invented)
-            {
-                ride_type_set_invented(RCT1::GetRideType(rideType));
-            }
-        }
-
-        for (int32_t vehicleType = 0; vehicleType < RCT1_VEHICLE_TYPE_COUNT; vehicleType++)
-        {
-            int32_t quadIndex = vehicleType >> 5;
-            int32_t bitIndex = vehicleType & 0x1F;
-            bool invented = (_s4.available_vehicles[quadIndex] & ((uint32_t)1 << bitIndex));
-
-            if (invented)
-            {
-                ride_entry_set_invented(_vehicleTypeToRideEntryMap[vehicleType]);
-            }
+            InsertResearchVehicle(&researchItem, false);
         }
 
         // Research funding / priority
@@ -2450,6 +2395,35 @@ private:
             gResearchProgress = 0;
         }
         ConvertResearchEntry(&gResearchLastItem, _s4.last_research_item, _s4.last_research_type);
+    }
+
+    static std::bitset<RCT1_RIDE_TYPE_COUNT> GetRideTypesPresentInResearchList(
+        const rct1_research_item* researchList, size_t researchListCount)
+    {
+        std::bitset<RCT1_RIDE_TYPE_COUNT> ret = {};
+
+        for (size_t i = 0; i < researchListCount; i++)
+        {
+            const rct1_research_item* researchItem = &researchList[i];
+            if (researchItem->flags == RCT1_RESEARCH_FLAGS_SEPARATOR)
+            {
+                if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE || researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE)
+                {
+                    continue;
+                }
+                else if (researchItem->item == RCT1_RESEARCH_END)
+                {
+                    break;
+                }
+            }
+
+            if (researchItem->type == RCT1_RESEARCH_TYPE_RIDE)
+            {
+                ret[researchItem->item] = true;
+            }
+        }
+
+        return ret;
     }
 
     void InsertResearchVehicle(const rct1_research_item* researchItem, bool researched)
