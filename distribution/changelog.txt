@@ -6,6 +6,7 @@
 - Change: [#1164] Use available translations for shortcut key bindings.
 - Fix: [#5249] No collision detection when building ride entrance at heights > 85.5m.
 - Fix: [#7784] Vehicle tab takes 1st car colour instead of tab_vehicle's colour.
+- Fix: [#8875] RCT1 competition scenarios are classified incorrectly.
 - Fix: [#10228] Can't import RCT1 Deluxe from Steam.
 - Fix: [#10313] Path furniture can be placed on level crossings.
 - Fix: [#10325] Crash when banners have no text.
