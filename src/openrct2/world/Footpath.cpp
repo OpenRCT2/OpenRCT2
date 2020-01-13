@@ -1625,9 +1625,9 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
  *  clears the wide footpath flag for all footpaths
  *  at location
  */
-static void footpath_clear_wide(int32_t x, int32_t y)
+static void footpath_clear_wide(const CoordsXY& footpathPos)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
         return;
     do
@@ -1644,9 +1644,9 @@ static void footpath_clear_wide(int32_t x, int32_t y)
  *  returns footpath element if it can be made wide
  *  returns NULL if it can not be made wide
  */
-static TileElement* footpath_can_be_wide(int32_t x, int32_t y, uint8_t height)
+static TileElement* footpath_can_be_wide(const CoordsXY& footpathPos, uint8_t height)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -1669,18 +1669,12 @@ static TileElement* footpath_can_be_wide(int32_t x, int32_t y, uint8_t height)
  *
  *  rct2: 0x006A87BB
  */
-void footpath_update_path_wide_flags(int32_t x, int32_t y)
+void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
 {
-    if (x < 0x20)
-        return;
-    if (y < 0x20)
-        return;
-    if (x > 0x1FDF)
-        return;
-    if (y > 0x1FDF)
+    if (map_is_location_at_edge(footpathPos))
         return;
 
-    footpath_clear_wide(x, y);
+    footpath_clear_wide(footpathPos);
     /* Rather than clearing the wide flag of the following tiles and
      * checking the state of them later, leave them intact and assume
      * they were cleared. Consequently only the wide flag for this single
@@ -1699,7 +1693,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
     // footpath_clear_wide(x, y);
     // y -= 0x20;
 
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
         return;
     do
@@ -1722,24 +1716,24 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         // Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
         TileElement* pathList[8];
 
-        x -= 0x20;
-        y -= 0x20;
-        pathList[0] = footpath_can_be_wide(x, y, height);
-        y += 0x20;
-        pathList[1] = footpath_can_be_wide(x, y, height);
-        y += 0x20;
-        pathList[2] = footpath_can_be_wide(x, y, height);
-        x += 0x20;
-        pathList[3] = footpath_can_be_wide(x, y, height);
-        x += 0x20;
-        pathList[4] = footpath_can_be_wide(x, y, height);
-        y -= 0x20;
-        pathList[5] = footpath_can_be_wide(x, y, height);
-        y -= 0x20;
-        pathList[6] = footpath_can_be_wide(x, y, height);
-        x -= 0x20;
-        pathList[7] = footpath_can_be_wide(x, y, height);
-        y += 0x20;
+        // TODO: Use DirectionDelta
+        auto pathPos = footpathPos - CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
+        pathList[0] = footpath_can_be_wide(pathPos, height);
+        pathPos.y += COORDS_XY_STEP;
+        pathList[1] = footpath_can_be_wide(pathPos, height);
+        pathPos.y += COORDS_XY_STEP;
+        pathList[2] = footpath_can_be_wide(pathPos, height);
+        pathPos.x += COORDS_XY_STEP;
+        pathList[3] = footpath_can_be_wide(pathPos, height);
+        pathPos.x += COORDS_XY_STEP;
+        pathList[4] = footpath_can_be_wide(pathPos, height);
+        pathPos.y -= COORDS_XY_STEP;
+        pathList[5] = footpath_can_be_wide(pathPos, height);
+        pathPos.y -= COORDS_XY_STEP;
+        pathList[6] = footpath_can_be_wide(pathPos, height);
+        pathPos.x -= COORDS_XY_STEP;
+        pathList[7] = footpath_can_be_wide(pathPos, height);
+        pathPos.y += COORDS_XY_STEP;
 
         uint8_t pathConnections = 0;
         if (tileElement->AsPath()->GetEdges() & EDGE_NW)

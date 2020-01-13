@@ -625,7 +625,7 @@ void map_update_path_wide_flags()
     uint16_t y = gWidePathTileLoopY;
     for (int32_t i = 0; i < 128; i++)
     {
-        footpath_update_path_wide_flags(x, y);
+        footpath_update_path_wide_flags({ x, y });
 
         // Next x, y tile
         x += COORDS_XY_STEP;
