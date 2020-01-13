@@ -2780,7 +2780,6 @@ STR_5410    :편집
 STR_5411    :다시 불러오기
 STR_5412    :건너뛰기
 STR_5413    :불러오기
-STR_5414    :불러오기 - {MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :불러오기 - {MOVE_X}{87}{STRING}
 STR_5416    :불러오기 - {MOVE_X}{87}세이브 선택되지 않음
 STR_5417    :위치

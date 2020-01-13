@@ -2787,7 +2787,6 @@ STR_5410    :Düzenle
 STR_5411    :Yeniden yükle
 STR_5412    :Atla
 STR_5413    :Yükle
-STR_5414    :Yükle{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Yükle{MOVE_X}{87}{STRING}
 STR_5416    :Yükle{MOVE_X}{87}Kayıt seçilmedi
 STR_5417    :Bir yer

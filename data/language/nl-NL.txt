@@ -2789,7 +2789,6 @@ STR_5410    :Bewerken
 STR_5411    :Herladen
 STR_5412    :Spring naar
 STR_5413    :Laad
-STR_5414    :Laad{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Laad{MOVE_X}{87}{STRING}
 STR_5416    :Laad{MOVE_X}{87}Geen opgeslagen spel geselecteerd
 STR_5417    :Locatie

@@ -2778,7 +2778,6 @@ STR_5410    :Redigera
 STR_5411    :Börja om
 STR_5412    :Hoppa till
 STR_5413    :Ladda
-STR_5414    :Ladda{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Ladda{MOVE_X}{87}{STRING}
 STR_5416    :Ladda{MOVE_X}{87}Ingen sparfil vald
 STR_5417    :Plats

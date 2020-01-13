@@ -2796,7 +2796,6 @@ STR_5410    :編輯
 STR_5411    :重新載入
 STR_5412    :跳至
 STR_5413    :載入
-STR_5414    :載入{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :載入{MOVE_X}{87}{STRING}
 STR_5416    :載入{MOVE_X}{87}無存檔被選中
 STR_5417    :定位

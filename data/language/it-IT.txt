@@ -2783,7 +2783,6 @@ STR_5410    :Modifica
 STR_5411    :Ricarica
 STR_5412    :Salta a
 STR_5413    :Carica
-STR_5414    :Carica{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Carica{MOVE_X}{87}{STRING}
 STR_5416    :Carica{MOVE_X}{87}Nessun salvataggio selezionato
 STR_5417    :Posizione

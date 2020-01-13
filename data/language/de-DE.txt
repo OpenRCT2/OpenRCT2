@@ -2777,7 +2777,6 @@ STR_5410    :Bearbeiten
 STR_5411    :Neu laden
 STR_5412    :Springen zu
 STR_5413    :Laden
-STR_5414    :Laden{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Laden{MOVE_X}{87}{STRING}
 STR_5416    :Laden{MOVE_X}{87}Kein Spielstand ausgewählt
 STR_5417    :Position

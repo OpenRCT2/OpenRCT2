@@ -2781,7 +2781,6 @@ STR_5410    :تعديل
 STR_5411    :إعادة تحميل
 STR_5412    :تخطي لـ
 STR_5413    :تحميل
-STR_5414    :تحميل{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :تحميل{MOVE_X}{87}{STRING}
 STR_5416    :تحميل{MOVE_X}{87}لا ملف حفظ محدد
 STR_5417    :الموقع

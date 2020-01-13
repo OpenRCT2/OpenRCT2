@@ -2798,7 +2798,6 @@ STR_5410    :Muokkaa
 STR_5411    :Lataa uudelleen
 STR_5412    :Skip to
 STR_5413    :Lataa
-STR_5414    :Lataa{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Lataa{MOVE_X}{87}{STRING}
 STR_5416    :Lataa{MOVE_X}{87}Tallennetta ei ole valittu
 STR_5417    :Sijainti

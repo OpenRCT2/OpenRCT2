@@ -2743,7 +2743,6 @@ STR_5410    :Szerkesztés
 STR_5411    :Újratöltés
 STR_5412    :Ugrás
 STR_5413    :Betöltés
-STR_5414    :Betöltés{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Betöltés{MOVE_X}{87}{STRING}
 STR_5416    :Betöltés{MOVE_X}{87}Nincs kiválasztva mentés
 STR_5417    :Hely

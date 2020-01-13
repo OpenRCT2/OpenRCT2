@@ -2797,7 +2797,6 @@ STR_5410    :編集
 STR_5411    :リロード
 STR_5412    :スキップ
 STR_5413    :ロード
-STR_5414    :ロード{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :ロード{MOVE_X}{87}{STRING}
 STR_5416    :ロード{MOVE_X}{87}セーブ選定なし
 STR_5417    :場所

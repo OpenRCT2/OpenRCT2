@@ -2794,7 +2794,6 @@ STR_5410    :Rediger
 STR_5411    :Genindlæs
 STR_5412    :Skip til
 STR_5413    :Hent
-STR_5414    :Hent{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Hent{MOVE_X}{87}{STRING}
 STR_5416    :Hent{MOVE_X}{87}Ingen gemt valgt
 STR_5417    :Lokation

@@ -2793,7 +2793,6 @@ STR_5410    :Upravit
 STR_5411    :Znovu načíst
 STR_5412    :Přeskočit na
 STR_5413    :Načíst
-STR_5414    :Načíst{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Načíst{MOVE_X}{87}{STRING}
 STR_5416    :Načíst{MOVE_X}{87}Nebyla vybrána uložená hra
 STR_5417    :Umístění
