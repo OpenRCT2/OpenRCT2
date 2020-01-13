@@ -77,9 +77,9 @@ size_t Banner::FormatTextTo(void* argsV) const
  *
  *  rct2: 0x006B7EAB
  */
-static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
+static uint8_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(bannerCoords);
     ride_id_t resultRideIndex = RIDE_ID_NULL;
     if (tileElement == nullptr)
         return resultRideIndex;
@@ -93,7 +93,7 @@ static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
         if (ride == nullptr || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
-        if ((tileElement->GetClearanceZ()) + 32 <= z)
+        if ((tileElement->GetClearanceZ()) + (4 * COORDS_Z_STEP) <= bannerCoords.z)
             continue;
 
         resultRideIndex = rideIndex;
@@ -223,7 +223,7 @@ uint8_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 
     for (const auto& neighhbourCoords : NeighbourCheckOrder)
     {
-        ride_id_t rideIndex = banner_get_ride_index_at(mapPos.x + neighhbourCoords.x, mapPos.y + neighhbourCoords.y, mapPos.z);
+        ride_id_t rideIndex = banner_get_ride_index_at({ CoordsXY{ mapPos } + neighhbourCoords, mapPos.z });
         if (rideIndex != RIDE_ID_NULL)
         {
             return rideIndex;
