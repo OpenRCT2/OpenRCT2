@@ -1596,6 +1596,15 @@ static int32_t cc_terminate([[maybe_unused]] InteractiveConsole& console, [[mayb
 }
 #pragma warning(pop)
 
+static int32_t cc_assert([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    if (!argv.empty())
+        Guard::Assert(false, "%s", argv[0].c_str());
+    else
+        Guard::Assert(false);
+    return 0;
+}
+
 using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
 struct console_command
 {
@@ -1655,6 +1664,7 @@ static constexpr const utf8* console_window_table[] = {
 
 static constexpr const console_command console_command_table[] = {
     { "abort", cc_abort, "Calls std::abort(), for testing purposes only.", "abort" },
+    { "assert", cc_assert, "Triggers assertion failure, for testing purposes only", "assert" },
     { "clear", cc_clear, "Clears the console.", "clear" },
     { "close", cc_close, "Closes the console.", "close" },
     { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]." },
