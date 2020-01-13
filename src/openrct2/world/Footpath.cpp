@@ -1227,16 +1227,16 @@ void footpath_update_queue_chains()
  *
  *  rct2: 0x0069ADBD
  */
-static void footpath_fix_ownership(int32_t x, int32_t y)
+static void footpath_fix_ownership(const CoordsXY& mapPos)
 {
-    const auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    const auto* surfaceElement = map_get_surface_element_at(mapPos);
     uint16_t ownership;
 
     // Unlikely to be NULL unless deliberate.
     if (surfaceElement != nullptr)
     {
         // If the tile is not safe to own construction rights of, erase them.
-        if (check_max_allowable_land_rights_for_tile({ x, y, surfaceElement->base_height << 3 }) == OWNERSHIP_UNOWNED)
+        if (check_max_allowable_land_rights_for_tile({ mapPos, surfaceElement->base_height << 3 }) == OWNERSHIP_UNOWNED)
         {
             ownership = OWNERSHIP_UNOWNED;
         }
@@ -1256,7 +1256,7 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         ownership = OWNERSHIP_UNOWNED;
     }
 
-    auto landSetRightsAction = LandSetRightsAction({ x, y }, LandSetRightSetting::SetOwnershipWithChecks, ownership);
+    auto landSetRightsAction = LandSetRightsAction(mapPos, LandSetRightSetting::SetOwnershipWithChecks, ownership);
     landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
     GameActions::Execute(&landSetRightsAction);
 }
@@ -1325,7 +1325,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
 
         if (flags & (1 << 5))
         {
-            footpath_fix_ownership(targetPos.x, targetPos.y);
+            footpath_fix_ownership(targetPos);
         }
         edges = tileElement->AsPath()->GetEdges();
         direction = direction_reverse(direction);
