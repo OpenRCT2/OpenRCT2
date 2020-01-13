@@ -10,8 +10,10 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 #include <stdarg.h>
 #include <stdbool.h>
+#include <string>
 
 void openrct2_assert_fwd(bool expression, const char* message, ...);
 
@@ -40,6 +42,8 @@ namespace Guard
     void Assert_VA(bool expression, const char* message, va_list args);
     void Fail(const char* message = nullptr, ...);
     void Fail_VA(const char* message, va_list args);
+
+    std::optional<std::string> GetLastAssertMessage();
 
     template<typename T> static void ArgumentNotNull(T* argument, const char* message = nullptr, ...)
     {
