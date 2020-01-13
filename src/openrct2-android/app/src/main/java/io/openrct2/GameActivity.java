@@ -1,4 +1,4 @@
-package website.openrct2;
+package io.openrct2;
 
 import android.view.View;
 

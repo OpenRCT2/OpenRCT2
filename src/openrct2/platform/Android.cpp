@@ -85,7 +85,7 @@ AndroidClassLoader::AndroidClassLoader()
     // Take an arbitrary class. While the class does not really matter, it
     // makes sense to use one that's most likely already loaded and is unlikely
     // to be removed from code.
-    auto randomClass = env->FindClass("website/openrct2/MainActivity");
+    auto randomClass = env->FindClass("io/openrct2/MainActivity");
     jclass classClass = env->GetObjectClass(randomClass);
 
     // Get its class loader
