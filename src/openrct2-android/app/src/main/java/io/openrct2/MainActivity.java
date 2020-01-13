@@ -11,6 +11,8 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -159,7 +161,9 @@ public class MainActivity extends AppCompatActivity {
     // When building, ensure OpenRCT2 assets are inside their own directory within the APK assets,
     // so that we do not attempt to copy files out of the standard Android asset folders - webkit, etc.
     private void copyAssets() {
-        File dataDir = new File("/sdcard/openrct2/");
+        File dataDir = new File(Environment.getExternalStorageDirectory().toString()
+            + File.separator + "openrct2" + File.separator);
+
         try {
             copyAsset(getAssets(), "openrct2", dataDir, "");
         } catch (IOException e) {
