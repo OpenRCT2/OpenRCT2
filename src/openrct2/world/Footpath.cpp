@@ -339,8 +339,7 @@ CoordsXY footpath_get_coordinates_from_pos(ScreenCoordsXY screenCoords, int32_t*
  * direction: cl
  * tileElement: edx
  */
-void footpath_bridge_get_info_from_pos(
-    ScreenCoordsXY screenCoords, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement)
+CoordsXY footpath_bridge_get_info_from_pos(ScreenCoordsXY screenCoords, int32_t* direction, TileElement** tileElement)
 {
     // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
     int32_t interactionType;
@@ -349,8 +348,6 @@ void footpath_bridge_get_info_from_pos(
     CoordsXY map_pos = {};
     get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_RIDE, map_pos, &interactionType, tileElement, &viewport);
-    *x = map_pos.x;
-    *y = map_pos.y;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
@@ -364,15 +361,13 @@ void footpath_bridge_get_info_from_pos(
             bx &= 3;
             if (direction != nullptr)
                 *direction = bx;
-            return;
+            return map_pos;
         }
     }
 
     get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
         map_pos, &interactionType, tileElement, &viewport);
-    *x = map_pos.x;
-    *y = map_pos.y;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         int32_t directions = entrance_get_directions(*tileElement);
@@ -381,14 +376,12 @@ void footpath_bridge_get_info_from_pos(
             int32_t bx = (*tileElement)->GetDirectionWithOffset(bitscanforward(directions));
             if (direction != nullptr)
                 *direction = bx;
-            return;
+            return map_pos;
         }
     }
 
     // We point at something else
-    auto coords = footpath_get_coordinates_from_pos(screenCoords, direction, tileElement);
-    *x = coords.x;
-    *y = coords.y;
+    return footpath_get_coordinates_from_pos(screenCoords, direction, tileElement);
 }
 
 /**
