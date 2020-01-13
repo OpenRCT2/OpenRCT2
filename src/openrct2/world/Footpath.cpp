@@ -2072,7 +2072,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const Til
 }
 
 // fix up the corners around the given path element that gets removed
-static void footpath_fix_corners_around(int32_t x, int32_t y, TileElement* pathElement)
+static void footpath_fix_corners_around(const TileCoordsXY& footpathPos, TileElement* pathElement)
 {
     // A mask for the paths' corners of each possible neighbour
     static constexpr uint8_t cornersTouchingTile[3][3] = {
@@ -2093,7 +2093,8 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, TileElement* pathE
             if (xOffset == 0 && yOffset == 0)
                 continue;
 
-            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x + xOffset, y + yOffset }.ToCoordsXY());
+            TileElement* tileElement = map_get_first_element_at(
+                TileCoordsXY{ footpathPos.x + xOffset, footpathPos.y + yOffset }.ToCoordsXY());
             if (tileElement == nullptr)
                 continue;
             do
@@ -2170,7 +2171,7 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
     if (fixCorners && tileElement->IsGhost())
     {
         auto tileFootpathPos = TileCoordsXY{ footpathPos };
-        footpath_fix_corners_around(tileFootpathPos.x, tileFootpathPos.y, tileElement);
+        footpath_fix_corners_around(tileFootpathPos, tileElement);
     }
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
