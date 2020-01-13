@@ -244,8 +244,7 @@ void footpath_provisional_update()
  *      direction: ecx
  *      tileElement: edx
  */
-void footpath_get_coordinates_from_pos(
-    ScreenCoordsXY screenCoords, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement)
+CoordsXY footpath_get_coordinates_from_pos(ScreenCoordsXY screenCoords, int32_t* direction, TileElement** tileElement)
 {
     int32_t z = 0, interactionType;
     TileElement* myTileElement;
@@ -262,9 +261,8 @@ void footpath_get_coordinates_from_pos(
             &myTileElement, &viewport);
         if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         {
-            if (x != nullptr)
-                *x = LOCATION_NULL;
-            return;
+            position.setNull();
+            return position;
         }
     }
 
@@ -323,14 +321,12 @@ void footpath_get_coordinates_from_pos(
 
     position = position.ToTileStart();
 
-    if (x != nullptr)
-        *x = position.x;
-    if (y != nullptr)
-        *y = position.y;
     if (direction != nullptr)
         *direction = myDirection;
     if (tileElement != nullptr)
         *tileElement = myTileElement;
+
+    return position;
 }
 
 /**
@@ -390,7 +386,9 @@ void footpath_bridge_get_info_from_pos(
     }
 
     // We point at something else
-    footpath_get_coordinates_from_pos(screenCoords, x, y, direction, tileElement);
+    auto coords = footpath_get_coordinates_from_pos(screenCoords, direction, tileElement);
+    *x = coords.x;
+    *y = coords.y;
 }
 
 /**

@@ -1146,16 +1146,13 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    int32_t map_x, map_y;
-    footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, &map_x, &map_y, nullptr, nullptr);
-    if (map_x != LOCATION_NULL)
+    auto mapCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
+    if (!mapCoords.isNull())
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        gMapSelectPositionA.x = map_x;
-        gMapSelectPositionB.x = map_x;
-        gMapSelectPositionA.y = map_y;
-        gMapSelectPositionB.y = map_y;
+        gMapSelectPositionA = mapCoords;
+        gMapSelectPositionB = mapCoords;
         map_invalidate_selection_rect();
     }
 
@@ -1196,15 +1193,14 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
 {
     if (widgetIndex == WIDX_PICKUP)
     {
-        int32_t dest_x, dest_y;
         TileElement* tileElement;
-        footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, &dest_x, &dest_y, nullptr, &tileElement);
+        auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
-        if (dest_x == LOCATION_NULL)
+        if (destCoords.isNull())
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Place, w->number, { dest_x, dest_y, tileElement->base_height }, network_get_current_player_id()
+            PeepPickupType::Place, w->number, { destCoords, tileElement->base_height }, network_get_current_player_id()
         };
         pickupAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
             if (result->Error != GA_ERROR::OK)
@@ -1216,10 +1212,9 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     }
     else if (widgetIndex == WIDX_PATROL)
     {
-        int32_t dest_x, dest_y;
-        footpath_get_coordinates_from_pos(screenCoords, &dest_x, &dest_y, nullptr, nullptr);
+        auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-        if (dest_x == LOCATION_NULL)
+        if (destCoords.isNull())
             return;
 
         rct_sprite* sprite = try_get_sprite(w->number);
@@ -1231,7 +1226,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
             return;
 
         auto staff = peep.AsStaff();
-        if (staff->IsPatrolAreaSet({ dest_x, dest_y }))
+        if (staff->IsPatrolAreaSet(destCoords))
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::UNSET;
         }
@@ -1239,7 +1234,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
         }
-        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, { dest_x, dest_y });
+        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, destCoords);
         GameActions::Execute(&staffSetPatrolAreaAction);
     }
 }
@@ -1258,10 +1253,9 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::NONE)
         return; // Do nothing if we do not have a paintvalue(this should never happen)
 
-    int32_t dest_x, dest_y;
-    footpath_get_coordinates_from_pos(screenCoords, &dest_x, &dest_y, nullptr, nullptr);
+    auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
 
-    if (dest_x == LOCATION_NULL)
+    if (destCoords.isNull())
         return;
 
     rct_sprite* sprite = try_get_sprite(w->number);
@@ -1272,13 +1266,13 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (peep.type != PEEP_TYPE_STAFF)
         return;
 
-    bool patrolAreaValue = peep.AsStaff()->IsPatrolAreaSet({ dest_x, dest_y });
+    bool patrolAreaValue = peep.AsStaff()->IsPatrolAreaSet(destCoords);
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::SET && patrolAreaValue)
         return; // Since area is already the value we want, skip...
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && !patrolAreaValue)
         return; // Since area is already the value we want, skip...
 
-    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, { dest_x, dest_y });
+    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(w->number, destCoords);
     GameActions::Execute(&staffSetPatrolAreaAction);
 }
 

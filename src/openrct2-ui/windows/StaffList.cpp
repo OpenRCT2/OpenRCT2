@@ -342,8 +342,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
 
         int32_t direction;
         TileElement* tileElement;
-        CoordsXY footpathCoords;
-        footpath_get_coordinates_from_pos(screenCoords, &footpathCoords.x, &footpathCoords.y, &direction, &tileElement);
+        auto footpathCoords = footpath_get_coordinates_from_pos(screenCoords, &direction, &tileElement);
         if (footpathCoords.isNull())
             return;
 
