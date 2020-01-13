@@ -209,15 +209,21 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  *
  *  rct2: 0x006B7D86
  */
-uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
+uint8_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 {
-    static constexpr const LocationXY16 NeighbourCheckOrder[] = { { 32, 0 },    { -32, 0 },   { 0, 32 },
-                                                                  { 0, -32 },   { -32, +32 }, { +32, -32 },
-                                                                  { +32, +32 }, { -32, +32 }, { 0, 0 } };
+    static constexpr const std::array<CoordsXY, 9> NeighbourCheckOrder = { CoordsXY{ COORDS_XY_STEP, 0 },
+                                                                           CoordsXY{ -COORDS_XY_STEP, 0 },
+                                                                           { 0, COORDS_XY_STEP },
+                                                                           CoordsXY{ 0, -COORDS_XY_STEP },
+                                                                           CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+                                                                           CoordsXY{ +COORDS_XY_STEP, -COORDS_XY_STEP },
+                                                                           CoordsXY{ +COORDS_XY_STEP, +COORDS_XY_STEP },
+                                                                           CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+                                                                           CoordsXY{ 0, 0 } };
 
-    for (size_t i = 0; i < std::size(NeighbourCheckOrder); i++)
+    for (const auto& neighhbourCoords : NeighbourCheckOrder)
     {
-        ride_id_t rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
+        ride_id_t rideIndex = banner_get_ride_index_at(mapPos.x + neighhbourCoords.x, mapPos.y + neighhbourCoords.y, mapPos.z);
         if (rideIndex != RIDE_ID_NULL)
         {
             return rideIndex;
@@ -235,9 +241,8 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
         if (location.isNull())
             continue;
 
-        int32_t rideX = location.x * 32;
-        int32_t rideY = location.y * 32;
-        int32_t distance = abs(x - rideX) + abs(y - rideY);
+        auto rideCoords = location.ToCoordsXY();
+        int32_t distance = abs(mapPos.x - rideCoords.x) + abs(mapPos.y - rideCoords.y);
         if (distance < resultDistance)
         {
             resultDistance = distance;
