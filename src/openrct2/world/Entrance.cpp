@@ -165,15 +165,14 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
  * Removes the hedge walls for an entrance placement.
  *  rct2: 0x00666CBE
  */
-void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
+void maze_entrance_hedge_removal(const CoordsXYE& entrance)
 {
-    int32_t direction = tileElement->GetDirection();
-    x += CoordsDirectionDelta[direction].x;
-    y += CoordsDirectionDelta[direction].y;
-    int32_t z = tileElement->GetBaseZ();
-    ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
+    int32_t direction = entrance.element->GetDirection();
+    auto hedgePos = entrance + CoordsDirectionDelta[direction];
+    int32_t z = entrance.element->GetBaseZ();
+    ride_id_t rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
-    tileElement = map_get_first_element_at({ x, y });
+    auto tileElement = map_get_first_element_at(hedgePos);
     if (tileElement == nullptr)
         return;
     do
@@ -200,7 +199,7 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
         // Remove the bottom hedge section
         tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
 
-        map_invalidate_tile({ x, y, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+        map_invalidate_tile({ hedgePos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
         return;
     } while (!(tileElement++)->IsLastForTile());
 }

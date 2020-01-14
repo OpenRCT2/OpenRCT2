@@ -46,7 +46,7 @@ money32 park_entrance_place_ghost(CoordsXYZD entranceLoc);
 
 void reset_park_entrance();
 void maze_entrance_hedge_replacement(const CoordsXYE& entrance);
-void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement);
+void maze_entrance_hedge_removal(const CoordsXYE& entrance);
 
 void fix_park_entrance_locations();
 
