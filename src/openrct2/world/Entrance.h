@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "Location.hpp"
+#include "Map.h"
 
 #include <vector>
 
@@ -44,7 +45,7 @@ void park_entrance_remove_ghost();
 money32 park_entrance_place_ghost(CoordsXYZD entranceLoc);
 
 void reset_park_entrance();
-void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElement);
+void maze_entrance_hedge_replacement(const CoordsXYE& entrance);
 void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement);
 
 void fix_park_entrance_locations();

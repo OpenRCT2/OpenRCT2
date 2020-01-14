@@ -171,7 +171,7 @@ public:
         res->Position.z = tile_element_height(res->Position);
 
         footpath_queue_chain_reset();
-        maze_entrance_hedge_replacement(_loc.x, _loc.y, tileElement);
+        maze_entrance_hedge_replacement({ _loc, tileElement });
         footpath_remove_edges_at(_loc, tileElement);
 
         tile_element_remove(tileElement);
