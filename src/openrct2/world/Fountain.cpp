@@ -38,12 +38,25 @@ namespace FOUNTAIN_FLAG
     const uint32_t DIRECTION = 1 << 7;
 }; // namespace FOUNTAIN_FLAG
 
-static constexpr const CoordsXY _fountainDirectionsNegative[] = {
-    { -32, 0 }, { -32, -32 }, { 0, 0 }, { -32, 0 }, { 0, 0 }, { 0, -32 }, { 0, -32 }, { -32, -32 },
+static constexpr const std::array<CoordsXY, 8> _fountainDirectionsNegative = {
+    CoordsXY{ -COORDS_XY_STEP, 0 },
+    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
+    CoordsXY{ 0, 0 },
+    CoordsXY{ -COORDS_XY_STEP, 0 },
+    CoordsXY{ 0, 0 },
+    CoordsXY{ 0, -COORDS_XY_STEP },
+    CoordsXY{ 0, -COORDS_XY_STEP },
+    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
 };
 
-static constexpr const CoordsXY _fountainDirectionsPositive[] = { { 32, 0 },  { 0, 0 },  { 0, 32 }, { 32, 32 },
-                                                                  { 32, 32 }, { 32, 0 }, { 0, 0 },  { 0, 32 } };
+static constexpr const std::array<CoordsXY, 8> _fountainDirectionsPositive = { CoordsXY{ COORDS_XY_STEP, 0 },
+                                                                               CoordsXY{ 0, 0 },
+                                                                               CoordsXY{ 0, COORDS_XY_STEP },
+                                                                               CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
+                                                                               CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP },
+                                                                               CoordsXY{ COORDS_XY_STEP, 0 },
+                                                                               CoordsXY{ 0, 0 },
+                                                                               CoordsXY{ 0, COORDS_XY_STEP } };
 constexpr auto _FountainChanceOfStoppingEdgeMode = 0x3333;   // 0.200
 constexpr auto _FountainChanceOfStoppingRandomMode = 0x2000; // 0.125
 
@@ -192,7 +205,7 @@ void JumpingFountain::AdvanceAnimation()
     const CoordsXY newLoc = CoordsXY{ x, y } + CoordsDirectionDelta[direction];
 
     int32_t availableDirections = 0;
-    for (int32_t i = 0; i < 8; i++)
+    for (uint32_t i = 0; i < _fountainDirectionsNegative.size(); i++)
     {
         if (IsJumpingFountain(newType, { newLoc + _fountainDirectionsNegative[i], z }))
         {
