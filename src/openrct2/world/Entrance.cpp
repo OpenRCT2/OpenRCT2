@@ -36,10 +36,10 @@ CoordsXYZD gRideEntranceExitGhostPosition;
 uint8_t gRideEntranceExitGhostStationIndex;
 
 static money32 RideEntranceExitPlaceGhost(
-    ride_id_t rideIndex, int16_t x, int16_t y, uint8_t direction, uint8_t placeType, uint8_t stationNum)
+    ride_id_t rideIndex, const CoordsXY& entranceExitCoords, uint8_t direction, uint8_t placeType, uint8_t stationNum)
 {
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-        { x, y }, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
+        entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
     rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
 
@@ -85,8 +85,8 @@ void ride_entrance_exit_place_provisional_ghost()
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
         RideEntranceExitPlaceGhost(
-            _currentRideIndex, gRideEntranceExitGhostPosition.x, gRideEntranceExitGhostPosition.y,
-            gRideEntranceExitGhostPosition.direction, gRideEntranceExitPlaceType, gRideEntranceExitGhostStationIndex);
+            _currentRideIndex, gRideEntranceExitGhostPosition, gRideEntranceExitGhostPosition.direction,
+            gRideEntranceExitPlaceType, gRideEntranceExitGhostStationIndex);
     }
 }
 
@@ -95,8 +95,8 @@ void ride_entrance_exit_remove_ghost()
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
-            { gRideEntranceExitGhostPosition.x, gRideEntranceExitGhostPosition.y }, _currentRideIndex,
-            gRideEntranceExitGhostStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
+            gRideEntranceExitGhostPosition, _currentRideIndex, gRideEntranceExitGhostStationIndex,
+            gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitRemove.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         GameActions::Execute(&rideEntranceExitRemove);
@@ -108,16 +108,16 @@ void ride_entrance_exit_remove_ghost()
  *  rct2: 0x006CA28C
  */
 money32 ride_entrance_exit_place_ghost(
-    Ride* ride, int32_t x, int32_t y, int32_t direction, int32_t placeType, int32_t stationNum)
+    Ride* ride, const CoordsXY& entranceExitCoords, int32_t direction, int32_t placeType, int32_t stationNum)
 {
     ride_construction_remove_ghosts();
-    money32 result = RideEntranceExitPlaceGhost(ride->id, x, y, direction, placeType, stationNum);
+    money32 result = RideEntranceExitPlaceGhost(ride->id, entranceExitCoords, direction, placeType, stationNum);
 
     if (result != MONEY32_UNDEFINED)
     {
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
-        gRideEntranceExitGhostPosition.x = x;
-        gRideEntranceExitGhostPosition.y = y;
+        gRideEntranceExitGhostPosition.x = entranceExitCoords.x;
+        gRideEntranceExitGhostPosition.y = entranceExitCoords.y;
         gRideEntranceExitGhostPosition.direction = direction;
         gRideEntranceExitGhostStationIndex = stationNum & 0xFF;
     }
