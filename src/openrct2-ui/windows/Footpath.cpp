@@ -788,15 +788,15 @@ static void window_footpath_set_provisional_path_at_point(ScreenCoordsXY screenC
  */
 static void window_footpath_set_selection_start_bridge_at_point(ScreenCoordsXY screenCoords)
 {
-    int32_t x, y, direction;
+    int32_t direction;
     TileElement* tileElement;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    footpath_bridge_get_info_from_pos(screenCoords, &x, &y, &direction, &tileElement);
-    if (x == LOCATION_NULL)
+    auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+    if (mapCoords.isNull())
     {
         return;
     }
@@ -804,10 +804,8 @@ static void window_footpath_set_selection_start_bridge_at_point(ScreenCoordsXY s
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectType = MAP_SELECT_TYPE_FULL;
-    gMapSelectPositionA.x = x;
-    gMapSelectPositionB.x = x;
-    gMapSelectPositionA.y = y;
-    gMapSelectPositionB.y = y;
+    gMapSelectPositionA = mapCoords;
+    gMapSelectPositionB = mapCoords;
 
     int32_t z = tileElement->GetBaseZ();
 
@@ -822,7 +820,7 @@ static void window_footpath_set_selection_start_bridge_at_point(ScreenCoordsXY s
             z += PATH_HEIGHT_STEP; // Add another 2 for a steep slope
     }
 
-    gMapSelectArrowPosition = CoordsXYZ{ x, y, z };
+    gMapSelectArrowPosition = CoordsXYZ{ mapCoords, z };
     gMapSelectArrowDirection = direction;
 
     map_invalidate_selection_rect();
@@ -903,11 +901,11 @@ static void window_footpath_place_path_at_point(ScreenCoordsXY screenCoords)
  */
 static void window_footpath_start_bridge_at_point(ScreenCoordsXY screenCoords)
 {
-    int32_t x, y, z, direction;
+    int32_t z, direction;
     TileElement* tileElement;
 
-    footpath_bridge_get_info_from_pos(screenCoords, &x, &y, &direction, &tileElement);
-    if (x == LOCATION_NULL)
+    auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+    if (mapCoords.isNull())
     {
         return;
     }
@@ -945,9 +943,7 @@ static void window_footpath_start_bridge_at_point(ScreenCoordsXY screenCoords)
     }
 
     tool_cancel();
-    gFootpathConstructFromPosition.x = x;
-    gFootpathConstructFromPosition.y = y;
-    gFootpathConstructFromPosition.z = z;
+    gFootpathConstructFromPosition = { mapCoords, z };
     gFootpathConstructDirection = direction;
     gFootpathProvisionalFlags = 0;
     _window_footpath_provisional_path_arrow_timer = 0;

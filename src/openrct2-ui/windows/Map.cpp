@@ -1269,14 +1269,14 @@ static void window_map_place_park_entrance_tool_update(ScreenCoordsXY screenCoor
  */
 static void window_map_set_peep_spawn_tool_update(ScreenCoordsXY screenCoords)
 {
-    int32_t mapX, mapY, mapZ, direction;
+    int32_t mapZ, direction;
     TileElement* tileElement;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    footpath_bridge_get_info_from_pos(screenCoords, &mapX, &mapY, &direction, &tileElement);
-    if ((mapX & 0xFFFF) == 0x8000)
+    auto mapCoords = footpath_bridge_get_info_from_pos(screenCoords, &direction, &tileElement);
+    if (mapCoords.isNull())
         return;
 
     mapZ = tileElement->GetBaseZ();
@@ -1291,11 +1291,9 @@ static void window_map_set_peep_spawn_tool_update(ScreenCoordsXY screenCoords)
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectType = MAP_SELECT_TYPE_FULL;
-    gMapSelectPositionA.x = mapX;
-    gMapSelectPositionA.y = mapY;
-    gMapSelectPositionB.x = mapX;
-    gMapSelectPositionB.y = mapY;
-    gMapSelectArrowPosition = CoordsXYZ{ mapX, mapY, mapZ };
+    gMapSelectPositionA = mapCoords;
+    gMapSelectPositionB = mapCoords;
+    gMapSelectArrowPosition = CoordsXYZ{ mapCoords, mapZ };
     gMapSelectArrowDirection = direction_reverse(direction);
     map_invalidate_selection_rect();
 }
@@ -1327,16 +1325,16 @@ static void window_map_place_park_entrance_tool_down(ScreenCoordsXY screenCoords
 static void window_map_set_peep_spawn_tool_down(ScreenCoordsXY screenCoords)
 {
     TileElement* tileElement;
-    int32_t mapX, mapY, mapZ, direction;
+    int32_t mapZ, direction;
 
     // Verify footpath exists at location, and retrieve coordinates
-    footpath_get_coordinates_from_pos(screenCoords, &mapX, &mapY, &direction, &tileElement);
-    if (mapX == LOCATION_NULL)
+    auto mapCoords = footpath_get_coordinates_from_pos(screenCoords, &direction, &tileElement);
+    if (mapCoords.isNull())
         return;
 
     mapZ = tileElement->GetBaseZ();
 
-    auto gameAction = PlacePeepSpawnAction({ mapX, mapY, mapZ, static_cast<Direction>(direction) });
+    auto gameAction = PlacePeepSpawnAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
     auto result = GameActions::Execute(&gameAction);
     if (result->Error == GA_ERROR::OK)
     {

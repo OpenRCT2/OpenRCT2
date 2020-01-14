@@ -183,17 +183,15 @@ money32 footpath_remove(CoordsXYZ footpathLoc, int32_t flags);
 money32 footpath_provisional_set(int32_t type, CoordsXYZ footpathLoc, int32_t slope);
 void footpath_provisional_remove();
 void footpath_provisional_update();
-void footpath_get_coordinates_from_pos(
-    ScreenCoordsXY screenCoords, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
-void footpath_bridge_get_info_from_pos(
-    ScreenCoordsXY screenCoords, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
+CoordsXY footpath_get_coordinates_from_pos(ScreenCoordsXY screenCoords, int32_t* direction, TileElement** tileElement);
+CoordsXY footpath_bridge_get_info_from_pos(ScreenCoordsXY screenCoords, int32_t* direction, TileElement** tileElement);
 void footpath_remove_litter(const CoordsXYZ& footpathPos);
 void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
 void footpath_update_queue_chains();
 bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction);
 void footpath_chain_ride_queue(
     ride_id_t rideIndex, int32_t entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
-void footpath_update_path_wide_flags(int32_t x, int32_t y);
+void footpath_update_path_wide_flags(const CoordsXY& footpathPos);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
 int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);

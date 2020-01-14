@@ -244,8 +244,7 @@ void footpath_provisional_update()
  *      direction: ecx
  *      tileElement: edx
  */
-void footpath_get_coordinates_from_pos(
-    ScreenCoordsXY screenCoords, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement)
+CoordsXY footpath_get_coordinates_from_pos(ScreenCoordsXY screenCoords, int32_t* direction, TileElement** tileElement)
 {
     int32_t z = 0, interactionType;
     TileElement* myTileElement;
@@ -262,9 +261,8 @@ void footpath_get_coordinates_from_pos(
             &myTileElement, &viewport);
         if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         {
-            if (x != nullptr)
-                *x = LOCATION_NULL;
-            return;
+            position.setNull();
+            return position;
         }
     }
 
@@ -323,14 +321,12 @@ void footpath_get_coordinates_from_pos(
 
     position = position.ToTileStart();
 
-    if (x != nullptr)
-        *x = position.x;
-    if (y != nullptr)
-        *y = position.y;
     if (direction != nullptr)
         *direction = myDirection;
     if (tileElement != nullptr)
         *tileElement = myTileElement;
+
+    return position;
 }
 
 /**
@@ -343,8 +339,7 @@ void footpath_get_coordinates_from_pos(
  * direction: cl
  * tileElement: edx
  */
-void footpath_bridge_get_info_from_pos(
-    ScreenCoordsXY screenCoords, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement)
+CoordsXY footpath_bridge_get_info_from_pos(ScreenCoordsXY screenCoords, int32_t* direction, TileElement** tileElement)
 {
     // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
     int32_t interactionType;
@@ -353,8 +348,6 @@ void footpath_bridge_get_info_from_pos(
     CoordsXY map_pos = {};
     get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_RIDE, map_pos, &interactionType, tileElement, &viewport);
-    *x = map_pos.x;
-    *y = map_pos.y;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
@@ -368,15 +361,13 @@ void footpath_bridge_get_info_from_pos(
             bx &= 3;
             if (direction != nullptr)
                 *direction = bx;
-            return;
+            return map_pos;
         }
     }
 
     get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
         map_pos, &interactionType, tileElement, &viewport);
-    *x = map_pos.x;
-    *y = map_pos.y;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         int32_t directions = entrance_get_directions(*tileElement);
@@ -385,12 +376,12 @@ void footpath_bridge_get_info_from_pos(
             int32_t bx = (*tileElement)->GetDirectionWithOffset(bitscanforward(directions));
             if (direction != nullptr)
                 *direction = bx;
-            return;
+            return map_pos;
         }
     }
 
     // We point at something else
-    footpath_get_coordinates_from_pos(screenCoords, x, y, direction, tileElement);
+    return footpath_get_coordinates_from_pos(screenCoords, direction, tileElement);
 }
 
 /**
@@ -1236,16 +1227,16 @@ void footpath_update_queue_chains()
  *
  *  rct2: 0x0069ADBD
  */
-static void footpath_fix_ownership(int32_t x, int32_t y)
+static void footpath_fix_ownership(const CoordsXY& mapPos)
 {
-    const auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+    const auto* surfaceElement = map_get_surface_element_at(mapPos);
     uint16_t ownership;
 
     // Unlikely to be NULL unless deliberate.
     if (surfaceElement != nullptr)
     {
         // If the tile is not safe to own construction rights of, erase them.
-        if (check_max_allowable_land_rights_for_tile({ x, y, surfaceElement->base_height << 3 }) == OWNERSHIP_UNOWNED)
+        if (check_max_allowable_land_rights_for_tile({ mapPos, surfaceElement->base_height << 3 }) == OWNERSHIP_UNOWNED)
         {
             ownership = OWNERSHIP_UNOWNED;
         }
@@ -1265,7 +1256,7 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         ownership = OWNERSHIP_UNOWNED;
     }
 
-    auto landSetRightsAction = LandSetRightsAction({ x, y }, LandSetRightSetting::SetOwnershipWithChecks, ownership);
+    auto landSetRightsAction = LandSetRightsAction(mapPos, LandSetRightSetting::SetOwnershipWithChecks, ownership);
     landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
     GameActions::Execute(&landSetRightsAction);
 }
@@ -1334,7 +1325,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
 
         if (flags & (1 << 5))
         {
-            footpath_fix_ownership(targetPos.x, targetPos.y);
+            footpath_fix_ownership(targetPos);
         }
         edges = tileElement->AsPath()->GetEdges();
         direction = direction_reverse(direction);
@@ -1634,9 +1625,9 @@ void PathElement::SetShouldDrawPathOverSupports(bool on)
  *  clears the wide footpath flag for all footpaths
  *  at location
  */
-static void footpath_clear_wide(int32_t x, int32_t y)
+static void footpath_clear_wide(const CoordsXY& footpathPos)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
         return;
     do
@@ -1653,9 +1644,9 @@ static void footpath_clear_wide(int32_t x, int32_t y)
  *  returns footpath element if it can be made wide
  *  returns NULL if it can not be made wide
  */
-static TileElement* footpath_can_be_wide(int32_t x, int32_t y, uint8_t height)
+static TileElement* footpath_can_be_wide(const CoordsXY& footpathPos, uint8_t height)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -1678,18 +1669,12 @@ static TileElement* footpath_can_be_wide(int32_t x, int32_t y, uint8_t height)
  *
  *  rct2: 0x006A87BB
  */
-void footpath_update_path_wide_flags(int32_t x, int32_t y)
+void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
 {
-    if (x < 0x20)
-        return;
-    if (y < 0x20)
-        return;
-    if (x > 0x1FDF)
-        return;
-    if (y > 0x1FDF)
+    if (map_is_location_at_edge(footpathPos))
         return;
 
-    footpath_clear_wide(x, y);
+    footpath_clear_wide(footpathPos);
     /* Rather than clearing the wide flag of the following tiles and
      * checking the state of them later, leave them intact and assume
      * they were cleared. Consequently only the wide flag for this single
@@ -1708,7 +1693,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
     // footpath_clear_wide(x, y);
     // y -= 0x20;
 
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
         return;
     do
@@ -1731,24 +1716,24 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         // Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
         TileElement* pathList[8];
 
-        x -= 0x20;
-        y -= 0x20;
-        pathList[0] = footpath_can_be_wide(x, y, height);
-        y += 0x20;
-        pathList[1] = footpath_can_be_wide(x, y, height);
-        y += 0x20;
-        pathList[2] = footpath_can_be_wide(x, y, height);
-        x += 0x20;
-        pathList[3] = footpath_can_be_wide(x, y, height);
-        x += 0x20;
-        pathList[4] = footpath_can_be_wide(x, y, height);
-        y -= 0x20;
-        pathList[5] = footpath_can_be_wide(x, y, height);
-        y -= 0x20;
-        pathList[6] = footpath_can_be_wide(x, y, height);
-        x -= 0x20;
-        pathList[7] = footpath_can_be_wide(x, y, height);
-        y += 0x20;
+        // TODO: Use DirectionDelta
+        auto pathPos = footpathPos - CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
+        pathList[0] = footpath_can_be_wide(pathPos, height);
+        pathPos.y += COORDS_XY_STEP;
+        pathList[1] = footpath_can_be_wide(pathPos, height);
+        pathPos.y += COORDS_XY_STEP;
+        pathList[2] = footpath_can_be_wide(pathPos, height);
+        pathPos.x += COORDS_XY_STEP;
+        pathList[3] = footpath_can_be_wide(pathPos, height);
+        pathPos.x += COORDS_XY_STEP;
+        pathList[4] = footpath_can_be_wide(pathPos, height);
+        pathPos.y -= COORDS_XY_STEP;
+        pathList[5] = footpath_can_be_wide(pathPos, height);
+        pathPos.y -= COORDS_XY_STEP;
+        pathList[6] = footpath_can_be_wide(pathPos, height);
+        pathPos.x -= COORDS_XY_STEP;
+        pathList[7] = footpath_can_be_wide(pathPos, height);
+        pathPos.y += COORDS_XY_STEP;
 
         uint8_t pathConnections = 0;
         if (tileElement->AsPath()->GetEdges() & EDGE_NW)
@@ -2087,7 +2072,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const Til
 }
 
 // fix up the corners around the given path element that gets removed
-static void footpath_fix_corners_around(int32_t x, int32_t y, TileElement* pathElement)
+static void footpath_fix_corners_around(const TileCoordsXY& footpathPos, TileElement* pathElement)
 {
     // A mask for the paths' corners of each possible neighbour
     static constexpr uint8_t cornersTouchingTile[3][3] = {
@@ -2108,7 +2093,8 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, TileElement* pathE
             if (xOffset == 0 && yOffset == 0)
                 continue;
 
-            TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x + xOffset, y + yOffset }.ToCoordsXY());
+            TileElement* tileElement = map_get_first_element_at(
+                TileCoordsXY{ footpathPos.x + xOffset, footpathPos.y + yOffset }.ToCoordsXY());
             if (tileElement == nullptr)
                 continue;
             do
@@ -2185,7 +2171,7 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
     if (fixCorners && tileElement->IsGhost())
     {
         auto tileFootpathPos = TileCoordsXY{ footpathPos };
-        footpath_fix_corners_around(tileFootpathPos.x, tileFootpathPos.y, tileElement);
+        footpath_fix_corners_around(tileFootpathPos, tileElement);
     }
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
