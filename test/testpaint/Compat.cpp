@@ -38,15 +38,15 @@ uint32_t gScenarioTicks;
 uint8_t gCurrentRotation;
 
 // clang-format off
-const CoordsXY CoordsDirectionDelta[] = {
-    { -32, 0 },
-    { 0, +32 },
-    { +32, 0 },
-    { 0, -32 },
-    { -32, +32 },
-    { +32, +32 },
-    { +32, -32 },
-    { -32, -32 },
+constexpr const std::array<CoordsXY, 8> CoordsDirectionDelta = {
+    CoordsXY{ -COORDS_XY_STEP, 0 },
+    CoordsXY{               0, +COORDS_XY_STEP },
+    CoordsXY{ +COORDS_XY_STEP, 0 },
+    CoordsXY{               0, -COORDS_XY_STEP },
+    CoordsXY{ -COORDS_XY_STEP, +COORDS_XY_STEP },
+    CoordsXY{ +COORDS_XY_STEP, +COORDS_XY_STEP },
+    CoordsXY{ +COORDS_XY_STEP, -COORDS_XY_STEP },
+    CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
 };
 
 const TileCoordsXY TileDirectionDelta[] = {
