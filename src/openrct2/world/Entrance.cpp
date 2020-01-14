@@ -61,12 +61,12 @@ void park_entrance_remove_ghost()
     }
 }
 
-int32_t park_entrance_get_index(int32_t x, int32_t y, int32_t z)
+int32_t park_entrance_get_index(const CoordsXYZ& entrancePos)
 {
     int32_t i = 0;
     for (const auto& entrance : gParkEntrances)
     {
-        if (x == entrance.x && y == entrance.y && z == entrance.z)
+        if (entrancePos == entrance)
         {
             return i;
         }

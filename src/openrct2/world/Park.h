@@ -120,7 +120,7 @@ void update_park_fences_around_tile(CoordsXY coords);
 uint8_t calculate_guest_initial_happiness(uint8_t percentage);
 
 void park_set_open(bool open);
-int32_t park_entrance_get_index(int32_t x, int32_t y, int32_t z);
+int32_t park_entrance_get_index(const CoordsXYZ& entrancePos);
 void park_set_entrance_fee(money32 value);
 money16 park_get_entrance_fee();
 
