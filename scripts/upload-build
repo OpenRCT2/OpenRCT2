@@ -22,43 +22,48 @@ sha1=$4
 branch=$5
 
 case "$flavour" in
-    windows-portable-x86)
-        flavour=windows
+    windows-portable-win32)
+        flavour=windows-win32.zip
         flavourid=1
         ;;
     windows-portable-x64)
-        flavour=windows
+        flavour=windows-x64.zip
         flavourid=6
         ;;
-    windows-installer-x86)
-        flavour=windows
+    windows-installer-win32)
+        flavour=windows-win32.exe
         flavourid=2
         ;;
     windows-installer-x64)
-        flavour=windows
+        flavour=windows-x64.exe
         flavourid=7
         ;;
-    windows-symbols-x86)
-        flavour=windows
+    windows-symbols-win32)
+        flavour=windows-win32-symbols.zip
         flavourid=5
         ;;
     windows-symbols-x64)
-        flavour=windows
+        flavour=windows-x64-symbols.zip
         flavourid=10
         ;;
     macos)
+        flavour=macos.zip
         flavourid=3
         ;;
     linux-i686)
+        flavour=linux-i686.tar.gz
         flavourid=4
         ;;
     linux-x86_64)
+        flavour=linux-x86_64.tar.gz
         flavourid=9
         ;;
     android-arm)
+        flavour=android-arm.apk
         flavourid=11
         ;;
     android-x86)
+        flavour=android-x86.apk
         flavourid=12
         ;;
     *)
@@ -69,14 +74,14 @@ esac
 if [ "$branch" != "" ]; then
     versionextra=-$branch-${sha1:0:7}
 fi
-filename=OpenRCT2-$version$versionextra-$flavour.zip
+filename=OpenRCT2-$version$versionextra-$flavour
 
 echo -e "\033[0;36mUploading to openrct2.org as '$filename'..."
 if [ "$OPENRCT2_ORG_TOKEN" == "" ]; then
     echo -e "\033[0;31mOPENRCT2_ORG_TOKEN not set"
     exit 1
 fi
-curl -m 300 --connect-timeout 5 -o - -v \
+curl -m 300 --connect-timeout 5 -o - \
     --form "key=$OPENRCT2_ORG_TOKEN" \
     --form "fileName=$filename" \
     --form "version=$version" \
