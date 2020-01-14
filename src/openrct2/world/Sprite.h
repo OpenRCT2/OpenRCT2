@@ -69,7 +69,7 @@ struct rct_duck : rct_sprite_generic
     uint32_t GetFrameImage(int32_t direction) const;
     void Invalidate();
     void Remove();
-    void MoveTo(int16_t x, int16_t y, int16_t z);
+    void MoveTo(const CoordsXYZ& destination);
 };
 
 struct rct_money_effect : rct_sprite_common
