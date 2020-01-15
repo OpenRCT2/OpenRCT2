@@ -182,7 +182,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     ride_get_start_of_track(&trackElement);
 
     int32_t z = trackElement.element->GetBaseZ();
-    uint8_t trackType = trackElement.element->AsTrack()->GetTrackType();
+    auto trackType = trackElement.element->AsTrack()->GetTrackType();
     uint8_t direction = trackElement.element->GetDirection();
     _saveDirection = direction;
 

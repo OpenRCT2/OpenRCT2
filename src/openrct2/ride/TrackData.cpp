@@ -15,7 +15,7 @@
 #include <iterator>
 
 // clang-format off
-const rct_track_coordinates FlatTrackCoordinates[] = {
+const rct_track_coordinates FlatTrackCoordinates[TRACK_ELEM_COUNT] = {
     {    0,    0,    0,    0,    0,    0 },
     {    0,    0,    0,    0,    0,    0 },
     {    0,    0,    0,    0,    0,    0 },
@@ -271,7 +271,7 @@ const rct_track_coordinates FlatTrackCoordinates[] = {
     {    0,    1,   96,    0,    0,  -32 },
 };
 
-const rct_track_coordinates TrackCoordinates[256] = {
+const rct_track_coordinates TrackCoordinates[TRACK_ELEM_COUNT] = {
         { 0, 0, 0, 0, 0, 0 },       // ELEM_FLAT
         { 0, 0, 0, 0, 0, 0 },       // ELEM_END_STATION
         { 0, 0, 0, 0, 0, 0 },       // ELEM_BEGIN_STATION
@@ -3032,7 +3032,7 @@ static constexpr const rct_preview_track TrackBlocks255[] = {
 };
 
 // rct2: 0x00994638
-const rct_preview_track *TrackBlocks[256] = {
+const rct_preview_track *TrackBlocks[TRACK_ELEM_COUNT] = {
     TrackBlocks000,
     TrackBlocks001,
     TrackBlocks002,
@@ -5204,7 +5204,7 @@ static constexpr const rct_preview_track FlatRideTrackBlocks255[] = {
 };
 
 // rct2: 0x00994A38
-const rct_preview_track *FlatRideTrackBlocks[256] = {
+const rct_preview_track *FlatRideTrackBlocks[TRACK_ELEM_COUNT] = {
     FlatRideTrackBlocks000,
     FlatRideTrackBlocks001,
     FlatRideTrackBlocks002,
@@ -5463,7 +5463,7 @@ const rct_preview_track *FlatRideTrackBlocks[256] = {
     FlatRideTrackBlocks255
 };
 
-const uint8_t TrackPieceLengths[256] = {
+const uint8_t TrackPieceLengths[TRACK_ELEM_COUNT] = {
     32,     // TRACK_ELEM_FLAT
     32,     // TRACK_ELEM_END_STATION
     32,     // TRACK_ELEM_BEGIN_STATION
@@ -5723,7 +5723,7 @@ const uint8_t TrackPieceLengths[256] = {
 };
 
 // rct2: 0x00998C95
-const track_curve_chain gTrackCurveChain[256] = {
+const track_curve_chain gTrackCurveChain[TRACK_ELEM_COUNT] = {
     { 0, 0 },
     { 257, 257 },
     { 257, 257 },
@@ -5983,7 +5983,7 @@ const track_curve_chain gTrackCurveChain[256] = {
 };
 
 // rct2: 0x00999095
-const track_curve_chain gFlatRideTrackCurveChain[256] = {
+const track_curve_chain gFlatRideTrackCurveChain[TRACK_ELEM_COUNT] = {
     { 0, 0 },
     { 257, 257 },
     { 257, 257 },
@@ -29719,7 +29719,7 @@ constexpr const rct_vehicle_info_list * const * gTrackVehicleInfo[17] = {
 };
 
 /** rct2: 0x00993D1C */
-const int16_t AlternativeTrackTypes[256] = {
+const int16_t AlternativeTrackTypes[TRACK_ELEM_COUNT] = {
     TRACK_ELEM_FLAT_COVERED,                        // TRACK_ELEM_FLAT
     -1,
     -1,
@@ -31013,7 +31013,7 @@ const uint8_t TrackElementMirrorMap[] = {
 };
 
 /** rct2: 0x00999694 */
-const uint32_t TrackHeightMarkerPositions[256] = {
+const uint32_t TrackHeightMarkerPositions[TRACK_ELEM_COUNT] = {
     (1 << 0), // TRACK_ELEM_FLAT
     (1 << 0), // TRACK_ELEM_END_STATION
     (1 << 0), // TRACK_ELEM_BEGIN_STATION

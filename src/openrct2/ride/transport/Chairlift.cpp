@@ -180,7 +180,7 @@ static void chairlift_paint_station_ne_sw(
         return;
 
     const CoordsXY pos = session->MapPosition;
-    uint8_t trackType = tileElement->AsTrack()->GetTrackType();
+    auto trackType = tileElement->AsTrack()->GetTrackType();
     uint32_t imageId;
 
     bool isStart = chairlift_paint_util_is_first_track(rideIndex, tileElement, pos, trackType);
@@ -273,7 +273,7 @@ static void chairlift_paint_station_se_nw(
         return;
 
     const CoordsXY pos = session->MapPosition;
-    uint8_t trackType = tileElement->AsTrack()->GetTrackType();
+    auto trackType = tileElement->AsTrack()->GetTrackType();
     uint32_t imageId;
 
     bool isStart = chairlift_paint_util_is_first_track(rideIndex, tileElement, pos, trackType);

@@ -3004,7 +3004,7 @@ private:
                         if (!tileElement->AsTrack()->HasChain())
                             continue;
 
-                        uint8_t trackType = tileElement->AsTrack()->GetTrackType();
+                        auto trackType = tileElement->AsTrack()->GetTrackType();
                         switch (trackType)
                         {
                             case TRACK_ELEM_25_DEG_UP_TO_FLAT:

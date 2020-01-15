@@ -93,7 +93,7 @@ public:
             if (tileElement->IsGhost() != isGhost)
                 continue;
 
-            uint8_t tileTrackType = tileElement->AsTrack()->GetTrackType();
+            auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
                 case TRACK_ELEM_BEGIN_STATION:
@@ -289,7 +289,7 @@ public:
             if (tileElement->IsGhost() != isGhost)
                 continue;
 
-            uint8_t tileTrackType = tileElement->AsTrack()->GetTrackType();
+            auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
                 case TRACK_ELEM_BEGIN_STATION:

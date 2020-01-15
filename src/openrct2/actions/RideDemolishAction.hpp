@@ -307,7 +307,7 @@ private:
             int32_t z = it.element->GetBaseZ();
 
             uint8_t rotation = it.element->GetDirection();
-            uint8_t type = it.element->AsTrack()->GetTrackType();
+            auto type = it.element->AsTrack()->GetTrackType();
 
             if (type != TRACK_ELEM_MAZE)
             {

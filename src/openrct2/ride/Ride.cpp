@@ -96,14 +96,14 @@ ride_id_t _currentRideIndex;
 CoordsXYZ _currentTrackBegin;
 
 uint8_t _currentTrackPieceDirection;
-uint8_t _currentTrackPieceType;
+track_type_t _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
 int8_t _rideConstructionArrowPulseTime;
 uint8_t _currentTrackSlopeEnd;
 uint8_t _currentTrackBankEnd;
 uint8_t _currentTrackLiftHill;
 uint8_t _currentTrackAlternative;
-uint8_t _selectedTrackType;
+track_type_t _selectedTrackType;
 
 uint8_t _previousTrackBankEnd;
 uint8_t _previousTrackSlopeEnd;
@@ -1333,7 +1333,7 @@ void ride_remove_provisional_track_piece()
         CoordsXYE next_track;
         if (track_block_get_next_from_zero(x, y, z, ride, direction, &next_track, &z, &direction, true))
         {
-            uint8_t trackType = next_track.element->AsTrack()->GetTrackType();
+            auto trackType = next_track.element->AsTrack()->GetTrackType();
             int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
             auto trackRemoveAction = TrackRemoveAction{ trackType,
                                                         trackSequence,
@@ -3299,7 +3299,7 @@ static void ride_shop_connected(Ride* ride)
         return;
 
     uint8_t entrance_directions = 0;
-    uint8_t track_type = trackElement->GetTrackType();
+    auto track_type = trackElement->GetTrackType();
     ride = get_ride(trackElement->GetRideIndex());
     if (ride == nullptr)
     {
@@ -7051,7 +7051,7 @@ void sub_6CB945(Ride* ride)
                 if (trackElement->base_height != tileElement->base_height)
                     continue;
 
-                uint8_t trackType = trackElement->AsTrack()->GetTrackType();
+                auto trackType = trackElement->AsTrack()->GetTrackType();
                 uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
                 Direction direction = (tileElement->GetDirection() - direction_reverse(trackElement->GetDirection())) & 3;

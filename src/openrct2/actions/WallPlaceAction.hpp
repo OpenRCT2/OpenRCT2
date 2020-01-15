@@ -496,7 +496,7 @@ private:
     bool WallCheckObstructionWithTrack(rct_scenery_entry * wall, int32_t z0, TrackElement * trackElement, bool* wallAcrossTrack)
         const
     {
-        int32_t trackType = trackElement->GetTrackType();
+        track_type_t trackType = trackElement->GetTrackType();
         int32_t sequence = trackElement->GetSequenceIndex();
         int32_t direction = (_edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
         auto ride = get_ride(trackElement->GetRideIndex());

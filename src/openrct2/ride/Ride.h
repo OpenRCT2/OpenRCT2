@@ -1103,14 +1103,14 @@ extern ride_id_t _currentRideIndex;
 extern CoordsXYZ _currentTrackBegin;
 
 extern uint8_t _currentTrackPieceDirection;
-extern uint8_t _currentTrackPieceType;
+extern track_type_t _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
 extern int8_t _rideConstructionArrowPulseTime;
 extern uint8_t _currentTrackSlopeEnd;
 extern uint8_t _currentTrackBankEnd;
 extern uint8_t _currentTrackLiftHill;
 extern uint8_t _currentTrackAlternative;
-extern uint8_t _selectedTrackType;
+extern track_type_t _selectedTrackType;
 
 extern uint8_t _previousTrackBankEnd;
 extern uint8_t _previousTrackSlopeEnd;
