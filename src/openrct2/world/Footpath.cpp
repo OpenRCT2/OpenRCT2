@@ -1717,22 +1717,16 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
         TileElement* pathList[8];
 
         auto pathPos = footpathPos + CoordsDirectionDelta[7];
-        pathList[0] = footpath_can_be_wide(pathPos, height);
-        pathPos += CoordsDirectionDelta[1];
-        pathList[1] = footpath_can_be_wide(pathPos, height);
-        pathPos += CoordsDirectionDelta[1];
-        pathList[2] = footpath_can_be_wide(pathPos, height);
-        pathPos += CoordsDirectionDelta[2];
-        pathList[3] = footpath_can_be_wide(pathPos, height);
-        pathPos += CoordsDirectionDelta[2];
-        pathList[4] = footpath_can_be_wide(pathPos, height);
-        pathPos += CoordsDirectionDelta[3];
-        pathList[5] = footpath_can_be_wide(pathPos, height);
-        pathPos += CoordsDirectionDelta[3];
-        pathList[6] = footpath_can_be_wide(pathPos, height);
-        pathPos += CoordsDirectionDelta[0];
-        pathList[7] = footpath_can_be_wide(pathPos, height);
-        pathPos += CoordsDirectionDelta[1];
+        Direction direction = 1;
+        int32_t i = 0;
+        while (i < 8)
+        {
+            pathList[i++] = footpath_can_be_wide(pathPos, height);
+            pathPos += CoordsDirectionDelta[direction];
+            pathList[i++] = footpath_can_be_wide(pathPos, height);
+            pathPos += CoordsDirectionDelta[direction];
+            direction = direction_next(direction);
+        }
 
         uint8_t pathConnections = 0;
         if (tileElement->AsPath()->GetEdges() & EDGE_NW)
