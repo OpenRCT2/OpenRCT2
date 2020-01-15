@@ -1716,24 +1716,23 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
         // Spanned from 0x00F3EFA8 to 0x00F3EFC7 (8 elements) in the original
         TileElement* pathList[8];
 
-        // TODO: Use DirectionDelta
-        auto pathPos = footpathPos - CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
+        auto pathPos = footpathPos + CoordsDirectionDelta[7];
         pathList[0] = footpath_can_be_wide(pathPos, height);
-        pathPos.y += COORDS_XY_STEP;
+        pathPos += CoordsDirectionDelta[1];
         pathList[1] = footpath_can_be_wide(pathPos, height);
-        pathPos.y += COORDS_XY_STEP;
+        pathPos += CoordsDirectionDelta[1];
         pathList[2] = footpath_can_be_wide(pathPos, height);
-        pathPos.x += COORDS_XY_STEP;
+        pathPos += CoordsDirectionDelta[2];
         pathList[3] = footpath_can_be_wide(pathPos, height);
-        pathPos.x += COORDS_XY_STEP;
+        pathPos += CoordsDirectionDelta[2];
         pathList[4] = footpath_can_be_wide(pathPos, height);
-        pathPos.y -= COORDS_XY_STEP;
+        pathPos += CoordsDirectionDelta[3];
         pathList[5] = footpath_can_be_wide(pathPos, height);
-        pathPos.y -= COORDS_XY_STEP;
+        pathPos += CoordsDirectionDelta[3];
         pathList[6] = footpath_can_be_wide(pathPos, height);
-        pathPos.x -= COORDS_XY_STEP;
+        pathPos += CoordsDirectionDelta[0];
         pathList[7] = footpath_can_be_wide(pathPos, height);
-        pathPos.y += COORDS_XY_STEP;
+        pathPos += CoordsDirectionDelta[1];
 
         uint8_t pathConnections = 0;
         if (tileElement->AsPath()->GetEdges() & EDGE_NW)
