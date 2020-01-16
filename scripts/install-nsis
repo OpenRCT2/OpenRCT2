@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+nsisdir="C:/ProgramData/chocolatey/lib/nsis.portable"
+if [[ -d $nsisdir ]]
+then
+    echo -e "\033[0;36mNSIS already installed."
+    exit 0
+fi
+
+echo -e "\033[0;36mDownloading NSIS from chocolatey..."
+cinst nsis.portable --version=3.01-beta1
+
+echo -e "\033[0;36mDownloading KillProcDLL for NSIS..."
+curl -sLo nsisxtra.zip "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip"
+7z x nsisxtra.zip
+cp FindProcDLL.dll "$nsisdir/tools/nsis-3.0b1/Plugins/x86-ansi"
+
+echo -e "\033[0;36mDownloading UAC plugin for NSIS..."
+curl -sLo uac.zip "http://nsis.sourceforge.net/mediawiki/images/8/8f/UAC.zip"
+7z x uac.zip
+cp UAC.nsh "$nsisdir/tools/nsis-3.0b1/Include"
+cp -r Plugins "$nsisdir/tools/nsis-3.0b1"
+
+echo -e "\033[0;32mNSIS installed!"
