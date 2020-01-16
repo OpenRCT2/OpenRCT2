@@ -2272,7 +2272,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 
         // The amount that peeps are willing to pay to use the Toilets scales with their bathroom stat.
         // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
-        if (ride->price * 40 > toilet)
+        if (ride_get_price(ride) * 40 > toilet)
         {
             if (peepAtShop)
             {
@@ -2298,7 +2298,8 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
     }
 
     // Basic price checks
-    if (ride->price != 0 && ride->price > cash_in_pocket)
+    auto ridePrice = ride_get_price(ride);
+    if (ridePrice != 0 && ridePrice > cash_in_pocket)
     {
         if (peepAtShop)
         {
